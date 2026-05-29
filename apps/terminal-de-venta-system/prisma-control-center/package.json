@@ -1,0 +1,16 @@
+{
+  "name": "@prisma/control-center-local",
+  "version": "2026.05.26-playwright-startable-v2",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File internal\\wrappers\\_invoke_control_center.ps1 -Action panel",
+    "start": "powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File internal\\wrappers\\_invoke_control_center.ps1 -Action panel",
+    "smoke": "powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File internal\\wrappers\\_invoke_control_center.ps1 -Action panel --smoke"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "motion": "^12.40.0",
+    "pixi.js": "^8.18.1"
+  }
+}

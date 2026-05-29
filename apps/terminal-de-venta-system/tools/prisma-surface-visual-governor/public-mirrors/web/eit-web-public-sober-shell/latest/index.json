@@ -1,0 +1,28 @@
+{
+  "pilot": "11_eit_web_public_sober_shell",
+  "surface": "eit_web",
+  "mode": "adaptive_if_found_else_skip_with_evidence",
+  "route": "/surface-governor-public-sober",
+  "contract": {
+    "public_sober": true,
+    "isolated_reference_route": true,
+    "no_root_page_rewrite": true,
+    "no_dark_storm_active": true,
+    "no_webgl": true,
+    "no_pixi_vapor": true,
+    "no_heavy_blur": true,
+    "pos_protected": true,
+    "checkout_protected": true,
+    "db_untouched": true,
+    "dependencies_untouched": true,
+    "deploy_not_performed": true
+  },
+  "active_visual_budget": {
+    "background": "low_medium",
+    "glass": "low",
+    "rim": "hairline_only",
+    "glow": "one_primary_action_only",
+    "motion": "none_micro",
+    "webgl": "forbidden"
+  }
+}

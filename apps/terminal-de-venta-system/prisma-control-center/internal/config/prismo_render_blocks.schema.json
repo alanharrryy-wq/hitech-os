@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/prismo-render-block.schema.json",
+  "title": "PrismoRenderBlock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "title", "priority", "layout", "safety", "data"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "type": {
+      "enum": [
+        "direct_answer_card",
+        "evidence_cards",
+        "authority_map",
+        "flow_diagram",
+        "impact_map",
+        "runtime_map",
+        "timeline",
+        "improvement_brief_board",
+        "context_pack_explorer",
+        "diff_view",
+        "risk_matrix",
+        "checklist",
+        "html_sandbox_preview",
+        "chart_spec"
+      ]
+    },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "priority": { "enum": ["primary", "secondary", "supporting"] },
+    "layout": { "enum": ["full", "half", "third", "drawer", "inline"] },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trusted", "sanitized", "interactive", "allows_scripts", "allows_network", "allows_forms", "reason"],
+      "properties": {
+        "trusted": { "const": false },
+        "sanitized": { "type": "boolean" },
+        "interactive": { "type": "boolean" },
+        "allows_scripts": { "const": false },
+        "allows_network": { "const": false },
+        "allows_forms": { "const": false },
+        "reason": { "type": "string" }
+      }
+    },
+    "data": {}
+  }
+}

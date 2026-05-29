@@ -1,0 +1,20 @@
+{
+  "version": "v4-excelsior",
+  "ui_contract": "La interfaz visible se mantiene simple: Inyectar, Clear y dashboard.",
+  "no_downgrade": [
+    "Mantener API lifecycle",
+    "Mantener planner de modos",
+    "Mantener motores de generación por dominio",
+    "Mantener ledger",
+    "Mantener clear generated-only",
+    "Mantener dashboard por dominio",
+    "Mantener PIN/email fallback",
+    "Mantener backups/evidencia/rollback",
+    "Mantener estética colgada del Control Center"
+  ],
+  "destructive_actions": {
+    "clear": "PIN + backup + ledger + FK check",
+    "rollback": "PIN + backup previo + manifest",
+    "factory_clear": "No implementado por default"
+  }
+}

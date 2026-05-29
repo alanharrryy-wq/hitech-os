@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0-master",
+  "default_policy": "generated_only",
+  "pin_required": true,
+  "backup_required": true,
+  "clear_order": [
+    "Chart Lab",
+    "Audit",
+    "Sync",
+    "Sales",
+    "Cash",
+    "Inventory",
+    "Purchasing",
+    "Suppliers",
+    "Catalog",
+    "Devices",
+    "Identity",
+    "Tenant",
+    "License"
+  ],
+  "never_clear_by_default": [
+    "real_license_activation",
+    "source_code",
+    "schema_migrations",
+    "manual_data_without_ledger"
+  ],
+  "notes": [
+    "Clear usa lifecycle_records y no borra datos manuales no rastreados.",
+    "Factory clear no esta expuesto en UI v2 master.",
+    "Backup se genera antes de inyectar y antes de limpiar."
+  ]
+}

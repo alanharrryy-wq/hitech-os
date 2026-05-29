@@ -1,0 +1,25 @@
+{
+  "surface": "pos",
+  "allowed_after_gate": true,
+  "gate_source": "pilot_06_pos_final_gate_audit",
+  "requirements": {
+    "light_only": true,
+    "touch_first": true,
+    "no_webgl": true,
+    "no_pixi_vapor": true,
+    "no_dark_storm": true,
+    "no_heavy_blur": true,
+    "no_background_competing_with_product_or_payment": true,
+    "checkout_unchanged": true,
+    "dependencies_unchanged": true,
+    "db_unchanged": true
+  },
+  "explicitly_forbidden": [
+    "webgl",
+    "pixi_vapor",
+    "storm_cloud_default",
+    "obsidian_default",
+    "heavy_blur",
+    "background_over_payment_or_products"
+  ]
+}

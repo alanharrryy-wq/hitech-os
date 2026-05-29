@@ -1,0 +1,29 @@
+{
+  "schema": "prisma.surface_twin",
+  "pilot": "05_tablet_light_shell",
+  "surface": "tablet_light_shell",
+  "route": "/",
+  "consumer_role": "real_tablet_app_shell_consumer",
+  "upstream_contracts": [
+    "visual-os/materiality-catalog",
+    "chart-lab/recipe-export/latest",
+    "pc/dashboard/pilot-04"
+  ],
+  "material_layers": [
+    "B0_light",
+    "B1_cloud_image",
+    "B3_white_scrim",
+    "G1",
+    "G2",
+    "R1",
+    "N1",
+    "N2"
+  ],
+  "forbidden_layers": [
+    "G5_physical_glass",
+    "webgl",
+    "pixi_vapor",
+    "dark_storm_active",
+    "pos_checkout"
+  ]
+}

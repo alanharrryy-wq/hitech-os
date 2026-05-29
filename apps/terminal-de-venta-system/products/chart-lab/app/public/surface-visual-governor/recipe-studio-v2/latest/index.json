@@ -1,0 +1,31 @@
+{
+  "schema": "prisma.surface.visual.governor.chart_lab.recipe_studio_v2",
+  "version": "16.0.0",
+  "pilot": "16_chart_lab_recipe_studio_v2",
+  "created": "2026-05-27",
+  "surface": "chart_lab",
+  "route": "/recipe-studio-v2",
+  "purpose": "Edit and validate Chart Lab recipe exports before promotion to governed surfaces.",
+  "uses": [
+    "recipe-export/latest",
+    "route-budget-enforcer runtime policy",
+    "public leak guard",
+    "POS and checkout active visual term guard"
+  ],
+  "governance": {
+    "mode": "workbench",
+    "allows_editing": true,
+    "requires_validation_before_export": true,
+    "pos_checkout_remain_protected": true,
+    "db_modified": false,
+    "deploy_performed": false,
+    "dependencies_installed": false
+  },
+  "inputs": {
+    "chart": "/surface-visual-governor/recipe-export/latest/chart.recipe.json",
+    "visual": "/surface-visual-governor/recipe-export/latest/visual.recipe.json",
+    "motion": "/surface-visual-governor/recipe-export/latest/motion.recipe.json",
+    "background": "/surface-visual-governor/recipe-export/latest/background.recipe.json",
+    "surface": "/surface-visual-governor/recipe-export/latest/surface.compatibility.json"
+  }
+}

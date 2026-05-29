@@ -50,6 +50,25 @@ try:
 except Exception:
     _prisma_license_ops_payload = None
 # PRISMA_LICENSE_OPS_IMPORT_END
+# PRISMA_DATA_LIFECYCLE_IMPORT_BEGIN
+try:
+    from lifecycle_api import lifecycle_payload as _prisma_lifecycle_payload
+except Exception:
+    _prisma_lifecycle_payload = None
+# PRISMA_DATA_LIFECYCLE_IMPORT_END
+# PRISMO_AI_BRIDGE_IMPORT_BEGIN
+try:
+    from prismo_ai_bridge import (
+        prismo_demo_payload as _prismo_demo_payload,
+        prismo_query_payload as _prismo_query_payload,
+        prismo_status_payload as _prismo_status_payload,
+    )
+except Exception:
+    _prismo_demo_payload = None
+    _prismo_query_payload = None
+    _prismo_status_payload = None
+# PRISMO_AI_BRIDGE_IMPORT_END
+
 
 
 
@@ -77,7 +96,7 @@ class PanelHandler(SimpleHTTPRequestHandler):
         self.send_header(
             "Content-Security-Policy",
             "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
-            "connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+            "connect-src 'self'; font-src 'self'; frame-src 'self' about:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
         )
         super().end_headers()
 
@@ -119,12 +138,170 @@ class PanelHandler(SimpleHTTPRequestHandler):
         return sanitize_for_public(payload) if public and path.name != "public-health.json" else payload
 
     def _send_json(self, payload: Any, status: int = 200) -> None:
+        # PRISMO_QUERY_NULL_GUARD_PANEL_SEND_JSON
+        if payload is None:
+            payload = {
+                "ok": False,
+                "status": "error",
+                "request_id": "prismo_panel_null_guard",
+                "mode": "ASK",
+                "demo_mode": False,
+                "read_only": True,
+                "mutation_allowed": False,
+                "direct_answer": "PRISMO evitó una respuesta null del endpoint y devolvió un error seguro estructurado.",
+                "certainty_level": "NO_CONFIRMADO",
+                "authority": {
+                    "winning_source": "panel_3150.py",
+                    "winning_source_type": "code",
+                    "precedence_applied": ["runtime_guard", "read_only_v1"],
+                    "notes": "El handler detectó payload None antes de serializar JSON."
+                },
+                "evidence": [],
+                "risk": {
+                    "level": "medium",
+                    "summary": "El bridge interno devolvió None.",
+                    "reasons": ["Respuesta no serializable o vacía en /api/prismo/query."],
+                    "mitigations": ["Revisar ledger PRISMO y provider Gemini."]
+                },
+                "safe_next_step": "Reintentar la consulta o revisar logs sanitizados del bridge.",
+                "render_blocks": [],
+                "warnings": ["PRISMO_QUERY_NULL_GUARD_PANEL_SEND_JSON"],
+                "errors": [
+                    {
+                        "code": "PRISMO_QUERY_RETURNED_NULL",
+                        "message": "PRISMO query returned None before JSON serialization.",
+                        "safe_message": "El endpoint devolvió error seguro en vez de null.",
+                        "recoverable": True
+                    }
+                ],
+                "meta": {
+                    "provider": "gemini",
+                    "schema_version": "1.0.0",
+                    "generated_at": "",
+                    "input_chars": 0,
+                    "render_block_count": 0
+                }
+            }
+            if status == 200:
+                status = 500
         data = json.dumps(payload, ensure_ascii=True, indent=2).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
+        try:
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
+            return
+
+    def _read_json_body(self, max_bytes: int = 750000) -> dict[str, Any]:
+        length_raw = self.headers.get("Content-Length", "0")
+        try:
+            length = int(length_raw)
+        except ValueError:
+            raise ValueError("Invalid Content-Length")
+        if length < 0 or length > max_bytes:
+            raise ValueError("Request body exceeds PRISMO safe size limit")
+        raw = self.rfile.read(length) if length else b"{}"
+        if not raw:
+            return {}
+        try:
+            payload = json.loads(raw.decode("utf-8", errors="replace"))
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"Invalid JSON body: {exc}") from exc
+        if not isinstance(payload, dict):
+            raise ValueError("JSON body must be an object")
+        return payload
+
+    def do_POST(self) -> None:  # noqa: N802 - stdlib handler name.
+        if self.path in {"/api/prismo/query", "/api/prismo/query/"}:
+            if not self._is_local_request():
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "blocked",
+                        "blocked": True,
+                        "block_reason": "PUBLIC_REDACTED_READ_ONLY",
+                        "direct_answer": "Bloqueado: PRISMO query v1 solo acepta consultas locales para proteger evidencia interna.",
+                    },
+                    status=403,
+                )
+                return
+            try:
+                if _prismo_query_payload is None:
+                    self._send_json({"ok": False, "status": "error", "error": "PRISMO bridge unavailable"}, status=503)
+                    return
+                payload = self._read_json_body(max_bytes=750000)
+                result = _prismo_query_payload(payload, public=False)
+                if not isinstance(result, dict):
+                    result = {
+                        "ok": False,
+                        "status": "error",
+                        "request_id": "prismo_panel_query_type_guard",
+                        "mode": str(payload.get("mode") or "ASK").upper() if isinstance(payload, dict) else "ASK",
+                        "demo_mode": False,
+                        "read_only": True,
+                        "mutation_allowed": False,
+                        "direct_answer": "PRISMO evitó devolver una respuesta vacía o no-objeto desde /api/prismo/query.",
+                        "certainty_level": "NO_CONFIRMADO",
+                        "authority": {
+                            "winning_source": "panel_3150.py",
+                            "winning_source_type": "code",
+                            "precedence_applied": ["runtime_guard", "read_only_v1"],
+                            "notes": "El handler convirtió una respuesta inválida del bridge en JSON seguro."
+                        },
+                        "evidence": [],
+                        "risk": {
+                            "level": "medium",
+                            "summary": "El bridge devolvió un tipo inválido.",
+                            "reasons": [f"Tipo recibido: {type(result).__name__}"],
+                            "mitigations": ["Corregir provider o bridge; no se ejecutó ninguna acción."]
+                        },
+                        "safe_next_step": "Reintentar y revisar reporte PRISMO.",
+                        "render_blocks": [],
+                        "warnings": ["PRISMO_QUERY_NULL_GUARD_PANEL_POST"],
+                        "errors": [
+                            {
+                                "code": "PRISMO_QUERY_RETURNED_NON_OBJECT",
+                                "message": f"Expected dict response, got {type(result).__name__}",
+                                "safe_message": "El endpoint devolvió error seguro estructurado.",
+                                "recoverable": True
+                            }
+                        ],
+                        "meta": {
+                            "provider": "gemini",
+                            "schema_version": "1.0.0",
+                            "generated_at": "",
+                            "input_chars": len(json.dumps(payload, ensure_ascii=True)) if isinstance(payload, dict) else 0,
+                            "render_block_count": 0
+                        }
+                    }
+                self._send_json(result)
+            except ValueError as exc:
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "blocked",
+                        "blocked": True,
+                        "block_reason": "BLOCKED_SIZE_OR_JSON_LIMIT",
+                        "direct_answer": "Bloqueado: la solicitud no cumplió el límite seguro de JSON de PRISMO.",
+                        "safe_next_step": "Reduce la evidencia temporal y vuelve a intentar.",
+                        "error": str(exc),
+                    },
+                    status=413,
+                )
+            except Exception as exc:  # noqa: BLE001 - never expose stack traces to UI.
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "error",
+                        "direct_answer": "No se pudo validar la consulta de PRISMO. No se ejecutó ninguna acción.",
+                        "error": str(exc),
+                    },
+                    status=500,
+                )
+            return
+        self.send_error(404, "Unknown POST endpoint")
 
     def do_GET(self) -> None:  # noqa: N802 - stdlib handler name.
         if self.path in {"/api/health", "/api/health/"}:
@@ -139,11 +316,43 @@ class PanelHandler(SimpleHTTPRequestHandler):
             except Exception as exc:  # noqa: BLE001 - panel must degrade gracefully.
                 self._send_json({"empty": True, "overallStatus": "ERROR", "safetyMode": "PUBLIC_REDACTED", "error": str(exc)}, status=500)
             return
+        # PRISMO_AI_BRIDGE_ROUTE_BEGIN
+        if self.path in {"/api/prismo/status", "/api/prismo/status/"}:
+            try:
+                if _prismo_status_payload is None:
+                    self._send_json({"ok": False, "status": "PRISMO_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prismo_status_payload(public=not self._is_local_request()))
+            except Exception as exc:  # noqa: BLE001 - status must degrade gracefully.
+                self._send_json({"ok": False, "status": "PRISMO_STATUS_ERROR", "error": str(exc)}, status=500)
+            return
+        if self.path in {"/api/prismo/demo-response", "/api/prismo/demo-response/"}:
+            try:
+                if _prismo_demo_payload is None:
+                    self._send_json({"ok": False, "status": "PRISMO_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prismo_demo_payload())
+            except Exception as exc:  # noqa: BLE001 - demo must degrade gracefully.
+                self._send_json({"ok": False, "status": "PRISMO_DEMO_ERROR", "error": str(exc)}, status=500)
+            return
+        # PRISMO_AI_BRIDGE_ROUTE_END
         # PRISMA_BLACKBOX_BRIDGE_V1_PANEL_BEGIN
         # PRISMA_BLACKBOX_COMMAND_ITER3_ROUTE_BEGIN
         # PRISMA_CLOUDFLARE_ACTIONS_ITER4_ROUTE_BEGIN
         # PRISMA_ULTRA_POLISH_RELEASE_ITER5_ROUTE_BEGIN
 
+
+        # PRISMA_DATA_LIFECYCLE_ROUTE_BEGIN
+        if self.path.startswith("/api/lifecycle"):
+            try:
+                if _prisma_lifecycle_payload is None:
+                    self._send_json({"ok": False, "status": "LIFECYCLE_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prisma_lifecycle_payload(self.path, public=not self._is_local_request()))
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "LIFECYCLE_ERROR", "error": str(exc)}, status=500)
+            return
+        # PRISMA_DATA_LIFECYCLE_ROUTE_END
         # PRISMA_LICENSE_OPS_ROUTE_BEGIN
         if self.path.startswith("/api/license-ops"):
             try:
@@ -242,7 +451,7 @@ class PanelHandler(SimpleHTTPRequestHandler):
                 return
             self.send_error(404, "No latest report")
             return
-        if self.path == "/":
+        if self.path in {"/", "/prismo", "/prismo/"}:
             self.path = "/index.html"
         super().do_GET()
 
@@ -293,27 +502,45 @@ def smoke_panel() -> dict[str, Any]:
     time.sleep(0.4)
     try:
         with urllib.request.urlopen(f"http://127.0.0.1:{CONTROL_CENTER_PORT}/", timeout=5) as response:
-            html = response.read(200000).decode("utf-8", errors="ignore")
+            panel_status = int(getattr(response, "status", 200))
+            html = response.read(300000).decode("utf-8", errors="ignore")
         with urllib.request.urlopen(f"http://127.0.0.1:{CONTROL_CENTER_PORT}/api/health", timeout=5) as response:
+            health_status_code = int(getattr(response, "status", 200))
             health = json.loads(response.read(200000).decode("utf-8", errors="ignore"))
         public_request = urllib.request.Request(
             f"http://127.0.0.1:{CONTROL_CENTER_PORT}/api/health",
             headers={"Host": "control.hitechrts.com"},
         )
         with urllib.request.urlopen(public_request, timeout=5) as response:
+            public_status_code = int(getattr(response, "status", 200))
             public_health = json.loads(response.read(200000).decode("utf-8", errors="ignore"))
             public_text = json.dumps(public_health, ensure_ascii=False)
         sensitive_hits = [
             needle
-            for needle in ["commandLine", "executablePath", "C:\\Users\\", "F:\\repos\\hitech-os\\", "credentials-file", "token", "secret"]
+            for needle in ["commandLine", "executablePath", "<LOCAL_PATH>", "<LOCAL_PATH>", "credentials-file", "token", "secret"]
             if needle.lower() in public_text.lower()
         ]
+        html_ok = ("PRISMA Control Center" in html) or ("CONTROL CENTER PRISMA" in html) or ("Control Center" in html and "PRISMA" in html)
+        public_mode = public_health.get("safetyMode")
+        ok = bool(
+            panel_status == 200
+            and health_status_code == 200
+            and public_status_code == 200
+            and html_ok
+            and health.get("overallStatus") in {"PASS", "DEGRADED", "EMPTY"}
+            and public_mode == "PUBLIC_REDACTED"
+            and not sensitive_hits
+        )
         return {
-            "ok": response.status == 200 and "PRISMA Control Center" in html and public_health.get("safetyMode") == "PUBLIC_REDACTED" and not sensitive_hits,
-            "status": "PASS",
+            "ok": ok,
+            "status": "PASS" if ok else "FAIL",
+            "panelStatusCode": panel_status,
+            "healthStatusCode": health_status_code,
+            "publicStatusCode": public_status_code,
             "htmlBytes": len(html),
+            "htmlOk": html_ok,
             "healthStatus": health.get("overallStatus"),
-            "publicMode": public_health.get("safetyMode"),
+            "publicMode": public_mode,
             "publicSensitiveHits": sensitive_hits,
         }
     except Exception as exc:  # noqa: BLE001 - smoke returns diagnostics.

@@ -1,0 +1,30 @@
+{
+  "schema": "prisma.surface_visual_governor.route_budget",
+  "pilot": "05_tablet_light_shell",
+  "route": "/",
+  "surface": "tablet_light_shell",
+  "intent": "Tablet productive shell with light-first materiality and governed Atmosphere Engine.",
+  "visual_budget": {
+    "background": "light_low_medium",
+    "glass": "low_medium",
+    "rim": "R0_R2_signature_only",
+    "glow_strong_max": 1,
+    "glow_medium_max": 2,
+    "motion": "micro_only_ambient_slow_optional",
+    "webgl": "forbidden",
+    "pixi_vapor": "forbidden",
+    "dark_storm": "forbidden_active_background"
+  },
+  "clarity_gates": [
+    "tablet_light_first",
+    "touch_targets_large",
+    "background_below_text_and_actions",
+    "reduced_motion_freezes_ambient_layers",
+    "no_pos_checkout_links_added"
+  ],
+  "writes_allowed": [
+    "products/tablet/app/app/page.tsx",
+    "products/tablet/app/app/prisma-tablet-light-shell.module.css",
+    "products/tablet/app/public/surface-visual-governor/tablet-light-shell"
+  ]
+}

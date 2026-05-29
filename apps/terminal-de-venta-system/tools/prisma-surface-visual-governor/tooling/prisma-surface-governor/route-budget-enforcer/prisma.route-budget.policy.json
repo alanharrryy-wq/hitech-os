@@ -1,0 +1,300 @@
+{
+  "schema": "prisma.surface.visual.governor.route_budget_policy",
+  "version": "15.0.2-hotfix02",
+  "created": "2026-05-27",
+  "description": "Route Budget Enforcer runtime policy. Distinguishes active CSS/runtime use from governance manifest documentation.",
+  "global_public_denied": [
+    "<LOCAL_PATH>",
+    "<LOCAL_PATH>",
+    ".sqlite",
+    ".sqlite3",
+    "tablet-pos.db",
+    "databasePaths"
+  ],
+  "budget_classes": {
+    "visual_os_reference": {
+      "mode": "reference_gallery",
+      "required_any": [
+        "materiality",
+        "catalog",
+        "visual-os"
+      ],
+      "denied": [],
+      "warn": []
+    },
+    "recipe_export": {
+      "mode": "recipe_export",
+      "required_any": [
+        "recipe",
+        "export",
+        "surface"
+      ],
+      "denied": [
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": []
+    },
+    "pc_reference_gallery": {
+      "mode": "reference_gallery",
+      "required_any": [
+        "reference",
+        "visual",
+        "materiality"
+      ],
+      "denied": [
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": [
+        "storm-cloud-operations-real.jpg"
+      ]
+    },
+    "pc_dashboard_high_governed": {
+      "mode": "productive_dashboard",
+      "required_any": [
+        "governed",
+        "governor",
+        "surface-visual-governor",
+        "pilot-04",
+        "dashboard"
+      ],
+      "denied": [
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths",
+        "webgl",
+        "@react-three",
+        "pixi"
+      ],
+      "warn": [
+        "backdrop-filter",
+        "blur("
+      ]
+    },
+    "tablet_light_first": {
+      "mode": "productive_tablet_shell",
+      "required_all": [
+        "light"
+      ],
+      "required_any": [
+        "tablet",
+        "shell",
+        "surface-visual-governor"
+      ],
+      "denied": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg",
+        "webgl",
+        "@react-three",
+        "pixi",
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>"
+      ],
+      "warn": [
+        "backdrop-filter",
+        "blur("
+      ]
+    },
+    "pos_governance_gate": {
+      "mode": "governance_manifest",
+      "context": "documentation_of_denied_terms_is_allowed",
+      "required_all": [
+        "pos"
+      ],
+      "required_any": [
+        "gate",
+        "governance",
+        "protected",
+        "final"
+      ],
+      "denied": [
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg"
+      ]
+    },
+    "pos_light_safe": {
+      "mode": "productive_shell",
+      "required_all": [
+        "light",
+        "safe"
+      ],
+      "required_any": [
+        "pos",
+        "tablet",
+        "shell"
+      ],
+      "denied": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg",
+        "backdrop-filter",
+        "blur(",
+        "webgl",
+        "@react-three",
+        "pixi",
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": []
+    },
+    "checkout_light_safe": {
+      "mode": "productive_shell",
+      "required_all": [
+        "light",
+        "safe"
+      ],
+      "required_any": [
+        "checkout",
+        "payment",
+        "shell"
+      ],
+      "denied": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg",
+        "backdrop-filter",
+        "blur(",
+        "webgl",
+        "@react-three",
+        "pixi",
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": []
+    },
+    "mobile_thin_mist": {
+      "mode": "mobile_supervisor_shell",
+      "required_any": [
+        "mobile",
+        "thin",
+        "mist",
+        "supervisor"
+      ],
+      "denied": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg",
+        "backdrop-filter",
+        "blur(",
+        "webgl",
+        "@react-three",
+        "pixi",
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": []
+    },
+    "public_sober": {
+      "mode": "public_shell",
+      "required_all": [
+        "public",
+        "sober",
+        "light"
+      ],
+      "denied": [
+        "storm-cloud-operations-real.jpg",
+        "obsidian-cloud-motion.svg",
+        "backdrop-filter",
+        "blur(",
+        "webgl",
+        "@react-three",
+        "pixi",
+        "<LOCAL_PATH>",
+        "<LOCAL_PATH>",
+        ".sqlite",
+        ".sqlite3",
+        "tablet-pos.db",
+        "databasePaths"
+      ],
+      "warn": []
+    }
+  },
+  "routes": [
+    {
+      "pilot": "01",
+      "budget_class": "visual_os_reference",
+      "path": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx"
+    },
+    {
+      "pilot": "02",
+      "budget_class": "recipe_export",
+      "path": "products/chart-lab/app/public/surface-visual-governor/recipe-export/latest/index.json"
+    },
+    {
+      "pilot": "03",
+      "budget_class": "pc_reference_gallery",
+      "path": "products/pc/app/public/surface-visual-governor/reference-visual/latest/index.json"
+    },
+    {
+      "pilot": "04",
+      "budget_class": "pc_dashboard_high_governed",
+      "path": "products/pc/app/app/dashboard/prisma-surface-dashboard.module.css"
+    },
+    {
+      "pilot": "05",
+      "budget_class": "tablet_light_first",
+      "path": "products/tablet/app/app/prisma-tablet-light-shell.module.css"
+    },
+    {
+      "pilot": "06",
+      "budget_class": "pos_governance_gate",
+      "path": "products/tablet/app/public/surface-visual-governor/pos-final-gate/latest/index.json"
+    },
+    {
+      "pilot": "07",
+      "budget_class": "pos_light_safe",
+      "path": "products/tablet/app/app/pos/prisma-pos-light-safe-shell.module.css"
+    },
+    {
+      "pilot": "08",
+      "budget_class": "checkout_light_safe",
+      "path": "products/tablet/app/app/checkout/prisma-checkout-light-safe-shell.module.css"
+    },
+    {
+      "pilot": "09",
+      "budget_class": "mobile_thin_mist",
+      "path": "products/mobile/app/app/prisma-mobile-thin-mist-shell.module.css"
+    },
+    {
+      "pilot": "11",
+      "budget_class": "public_sober",
+      "path": "products/web/app/app/surface-governor-public-sober/prisma-public-sober-shell.module.css",
+      "optional": true
+    },
+    {
+      "pilot": "12",
+      "budget_class": "skip_with_evidence",
+      "path": "<LOCAL_PATH>",
+      "skip": true
+    }
+  ]
+}

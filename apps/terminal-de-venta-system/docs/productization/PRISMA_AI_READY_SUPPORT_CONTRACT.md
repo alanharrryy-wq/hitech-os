@@ -1,88 +1,62 @@
 ---
 title: PRISMA AI Ready Support Contract
-project: PRISMA Terminal de Venta
-package: PRISMA_CUSTOMER_OPERATIONS_FOUNDATION_00
-status: foundation-contract
-visible_language: es-MX
-scope: customer-operations-layer
+path: docs/productization/PRISMA_AI_READY_SUPPORT_CONTRACT.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
+# PRISMA AI-Ready Support Contract
 
-# PRISMA AI Ready Support Contract
+## Purpose
 
-## 1. Decisión
+Prepare PRISMA support, diagnostics and evidence so a future AI assistant can help without becoming a production menace.
 
-PRISMA debe preparar desde ahora la estructura para IA futura, sin meter IA en el corazón transaccional de venta.
+## Supported AI modes
 
-La IA futura debe vivir en soporte, explicación, resumen, búsqueda y sugerencias; no en cierre de venta, stock ni licencia crítica.
+| Mode | Meaning | Current allowed? |
+|---|---|---|
+| `read_only` | AI reads and explains. | Yes. |
+| `suggest_actions` | AI recommends next steps. | Yes. |
+| `draft_response` | AI drafts support copy. | Yes. |
+| `execute_approved_actions` | AI executes after explicit approval. | Not v1. |
 
-## 2. Modos
+## Allowed context
 
-| Modo | Permitido |
-|---|---|
-| read_only | leer contexto autorizado y responder |
-| suggest_actions | proponer acciones sin ejecutar |
-| draft_response | redactar respuesta para proveedor o cliente |
-| execute_approved_actions | futuro, solo con aprobación explícita |
+- version
+- plan/license tier labels, not secrets
+- sanitized errors
+- health status
+- sync state
+- outbox state
+- support bundle metadata
+- KPIs aggregated enough for support
+- current-state docs
 
-## 3. Contexto autorizado
+## Forbidden context
 
-- versión,
-- plan,
-- mensajes,
-- ticket,
-- errores saneados,
-- estado sync,
-- estado outbox,
-- plugins,
-- KPIs agregados si el cliente permite.
+- passwords
+- tokens
+- private keys
+- raw DBs
+- unnecessary customer PII
+- payment data
+- arbitrary shell command output with secrets
 
-## 4. Contexto prohibido por defecto
+## Support contract
 
-- contraseñas,
-- tokens,
-- claves,
-- datos bancarios,
-- DB completa,
-- información personal innecesaria,
-- comandos arbitrarios.
+AI may answer “what happened, why it matters, what to inspect next.” It may not decide destructive operations.
 
-## 5. Casos de uso futuros
+## Authority rules used by this document
 
-- explicar errores,
-- guiar instalación,
-- resumir ticket,
-- revisar health report,
-- sugerir reabasto,
-- explicar KPIs,
-- detectar productos sin barcode,
-- redactar respuesta de soporte,
-- clasificar mensajes.
-
-## 6. Reglas
-
-1. IA no debe cerrar ventas.
-2. IA no debe modificar stock sin aprobación.
-3. IA no debe cambiar precios sin aprobación.
-4. IA no debe activar licencias.
-5. IA no debe instalar plugins sola.
-6. IA no debe procesar pagos.
-7. IA debe citar contexto interno cuando aplique.
-
-## 7. Preparación técnica
-
-Crear datos estructurados desde ahora:
-
-```text
-support tickets
-message threads
-diagnostic bundles
-health summaries
-announcement logs
-feature states
-plugin manifests
-```
-
-## 8. Criterio de aceptación
-
-La IA futura debe ser copiloto, no cajero borracho con permisos de admin.
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.

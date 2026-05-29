@@ -1,301 +1,63 @@
 ---
 title: PRISMA Support AI Future Playbook
-project: PRISMA Terminal de Venta
-package: PRISMA_CUSTOMER_OPERATIONS_FOUNDATION_00
-status: foundation-contract
-visible_language: es-MX
-scope: customer-operations-layer
+path: docs/productization/PRISMA_SUPPORT_AI_FUTURE_PLAYBOOK.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
 # PRISMA Support AI Future Playbook
 
-## Caso IA futuro: explicar_error
+## Goal
 
-Modo inicial permitido: `read_only`.
+Use AI to reduce support friction while keeping PRISMA operationally safe.
 
-Contexto permitido:
+## Recommended phases
 
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
+### Phase 1: Evidence reader
 
-Acciones prohibidas:
+- read docs
+- read support bundles
+- explain errors
+- cite source files
+- no mutations
 
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
+### Phase 2: Guided diagnostics
 
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
+- propose commands
+- create draft runbooks
+- generate investigation plans
+- still no execution by AI
 
-## Caso IA futuro: resumir_ticket
+### Phase 3: Approved actions
 
-Modo inicial permitido: `read_only`.
+Only after strict allowlist, confirmations, audit log, backup and rollback exist.
 
-Contexto permitido:
+## Must integrate with
 
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
+- `PRISMA_CURRENT_STATE.md/json`
+- support bundles
+- Control Center health reports
+- Governance staleness reports
+- no-leak scanner outputs
 
-Acciones prohibidas:
+## Anti-patterns
 
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
+- AI reads every repo file with no precedence.
+- AI quotes legacy docs as current.
+- AI receives raw `.env` or DBs.
+- AI claims live status without live check.
 
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
+## Authority rules used by this document
 
-## Caso IA futuro: guiar_configuracion
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: leer_diagnostico
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: sugerir_reabasto
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: explicar_kpi
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: clasificar_mensaje
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: redactar_respuesta
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: detectar_plugin_roto
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
-## Caso IA futuro: preparar_checklist
-
-Modo inicial permitido: `read_only`.
-
-Contexto permitido:
-
-- mensaje del cliente;
-- ticket de soporte;
-- health summary;
-- diagnóstico saneado;
-- versión instalada;
-- plan y entitlements;
-- plugins activos;
-- estado de sync;
-- conteos agregados.
-
-Acciones prohibidas:
-
-- cerrar venta;
-- modificar stock;
-- cambiar precios;
-- activar licencia;
-- instalar plugin;
-- ejecutar comandos;
-- procesar pagos;
-- subir DB completa.
-
-Salida esperada: explicación, resumen o sugerencia. Nada de ponerse creativo con la caja, que la caja no necesita poeta, necesita precisión.
-
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.

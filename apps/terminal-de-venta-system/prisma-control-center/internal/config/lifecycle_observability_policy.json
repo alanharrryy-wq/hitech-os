@@ -1,0 +1,13 @@
+{
+  "policy_version": "v4-excelsior",
+  "operation_lock_ttl_seconds": 1800,
+  "dashboard_snapshot_on_mutation": true,
+  "telemetry_enabled": true,
+  "sanitize_public_responses": true,
+  "history_limits": {
+    "events": 100,
+    "batches": 50,
+    "backups": 50,
+    "records": 500
+  }
+}

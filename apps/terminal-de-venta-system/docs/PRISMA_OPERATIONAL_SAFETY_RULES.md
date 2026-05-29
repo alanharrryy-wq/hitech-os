@@ -1,85 +1,46 @@
+---
+title: PRISMA Operational Safety Rules
+path: docs/PRISMA_OPERATIONAL_SAFETY_RULES.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
+---
+
 # PRISMA Operational Safety Rules
 
-Status: active
-Scope: F:\repos\hitech-os\apps\terminal-de-venta-system
+This document defines safety boundaries for docs, tooling, AI, seed/reset, Clear, sync, backups and public output.
 
-## Leyes no negociables
+## Non-negotiable rules
 
-Tablet vende sola; PC y Mobile potencian.
+1. Production data must never be mutated by test tooling unless an explicit production-safe workflow exists.
+2. Any seed/reset/clear action must be backed by provenance tags, backup, evidence and rollback strategy.
+3. AI v1 is read-only. It can explain and suggest; it cannot mutate.
+4. Secrets, tokens, `.env`, raw DBs, customer PII and credentials must not be uploaded to external AI providers.
+5. Public bundles must run no-leak scanning before deploy or sharing.
+6. Tablet must preserve offline sale capability and must not require PC, Mobile, Chart Lab or AI to sell.
+7. PC may govern when present, but it cannot retroactively corrupt Tablet evidence.
+8. Chart Lab public output must remain public-safe.
+9. Control Center public mode must be redacted.
+10. Legacy docs cannot override current docs.
 
-Sync reconcilia. Eventos cuentan la verdad operacional. Chart Lab disena, valida y promueve, pero Chart Lab no lee DB cruda.
+## Backup rule
 
-## Do Not Touch
+For SQLite databases that may be live, use a consistent backup method. Do not assume a raw file copy is safe during writes.
 
-- No tocar F:\repos\hitech-os\apps\terminal-de-venta-system\products\tablet\app\data\tablet-pos.db sin backup previo verificable.
-- No convertir PC en requisito para cerrar una venta Tablet.
-- No convertir Mobile en POS ni fuente transaccional autoritativa.
-- No romper OutboxEvent ni su semantica de puente operacional.
-- No activar Promotion Bridge apply por default.
-- No conectar componentes visuales a Prisma, SQLite, fs o archivos .db.
-- No llamar live-real a datos mock, fixture o fallback.
-- No actualizar baselines visuales automaticamente.
+## AI rule
 
-## Allowed Changes
+Gemini Copilot may read sanitized docs/reports and cite sources. It must not receive raw secrets or operate system commands. No “robot with admin keys” carnival, gracias.
 
-- Verifiers read-only.
-- Scripts de backup que copian DBs, schemas y migrations sin modificar origen.
-- Documentos de reglas, runbooks e indices.
-- Adapters/server-side que devuelven ViewModels con metadata honesta.
-- Chart Lab contracts/registries que declaran sourceMode y readiness sin tocar DB cruda.
+## Authority rules used by this document
 
-## Blocked Changes
-
-- Mega-migraciones.
-- Cambios de schema sobre DB real sin backup, reporte y prueba sobre copia.
-- UI o Chart Lab importando @prisma/client, sqlite3, better-sqlite3, @libsql/client o abriendo .db.
-- Fixtures usados como sustituto de fuente real cuando ya existe DB/adaptador real.
-- Promotion Bridge apply sin aprobacion explicita del operador.
-
-## Source Modes
-
-Toda grafica o adapter debe declarar:
-
-- sourceMode: mock, fixture, recorded-real o live-real.
-- sourceLabel.
-- confidence.
-- freshness o freshnessStatus.
-- generatedAt.
-- source.
-
-live-real requiere adapter real, lectura server-side o endpoint gobernado, metadata de freshness/confidence y prueba de que no toca DB cruda desde UI.
-
-## Required Verification Before Merge
-
-- pnpm verify:outbox-integrity
-- pnpm verify:sync-health
-- pnpm verify:no-direct-db-in-ui
-- pnpm -C products/tablet/app verify:tablet-sale-flow
-- pnpm -C products/chart-lab/app verify:chart-source-modes
-- pnpm -C products/chart-lab/app verify:promotion-readiness
-- pnpm -C products/mobile/app verify:mobile-snapshot-quality
-
-Si una migracion entra en scope, primero ejecutar backup y validar el ZIP:
-
-- pnpm backup:prisma
-- pnpm backup:prisma:verify
-
-## Rollback Expectation
-
-Toda migracion o write path debe poder explicar:
-
-- backup path.
-- manifest con sha256.
-- DB origen.
-- DB temporal o copia usada para prueba.
-- comando de verificacion.
-- comando o procedimiento de rollback.
-
-## Codex Checklist
-
-- [ ] Confirme si el cambio toca runtime, DB, schema, UI o solo verifiers/docs.
-- [ ] Si toca DB/schema, genero backup verificable antes.
-- [ ] Si toca Chart Lab, sourceMode sigue honesto.
-- [ ] Si toca Tablet, venta local sigue sin PC.
-- [ ] Si toca Mobile, sigue siendo supervision/read-only.
-- [ ] Reporte PASS/WARN/FAIL/SKIP sin esconder simulacros.
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.

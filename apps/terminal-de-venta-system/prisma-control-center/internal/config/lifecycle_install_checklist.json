@@ -1,0 +1,33 @@
+{
+  "checklist_version": "v5-golden",
+  "before_install": [
+    "Confirmar que el ZIP está en F:/descargasf.",
+    "Cerrar Control Center si está corriendo en 3150.",
+    "Confirmar ruta del repo: F:/repos/hitech-os/apps/terminal-de-venta-system.",
+    "No ejecutar contra instalación de cliente en producción sin respaldo externo.",
+    "Leer README y RELEASE_NOTES_V5.md."
+  ],
+  "during_install": [
+    "El instalador detecta prisma-control-center.",
+    "Valida payload completo antes de tocar archivos.",
+    "Compila lifecycle_api.py desde payload.",
+    "Respalda panel_3150.py, index.html y archivos lifecycle previos.",
+    "Copia payload.",
+    "Parchea panel_3150.py e index.html de forma idempotente.",
+    "Corre verificación post-inyección.",
+    "Genera ZIP de resultado en F:/descargasf."
+  ],
+  "after_install": [
+    "Abrir Control Center.",
+    "Entrar a PRISMA Data Lifecycle.",
+    "Abrir /api/lifecycle/health.",
+    "Probar /api/lifecycle/plan/dry-run/light.",
+    "Probar dashboard sin mutar datos.",
+    "No usar Clear hasta verificar PIN/backups."
+  ],
+  "rollback": [
+    "Si el instalador falla, restaura automáticamente panel_3150.py e index.html.",
+    "Se puede ejecutar engine.py --rollback con el manifest del ZIP de resultado.",
+    "No borra evidence ni backups generados."
+  ]
+}

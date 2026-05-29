@@ -1,0 +1,222 @@
+/* PRISMA Control Center V5 Atmosphere Runtime
+   PixiJS behind UI, GSAP drift, Motion-style UI microinteractions.
+   Guardrail: no animated canvas over text, tables, forms, or cards. */
+
+:root{
+  --prisma-v5-atmo-opacity:.72;
+  --prisma-v5-atmo-vignette:.34;
+  --prisma-v5-neon-blue: rgba(86, 214, 255, .40);
+  --prisma-v5-neon-violet: rgba(180, 138, 255, .25);
+  --prisma-v5-neon-mint: rgba(100, 255, 212, .26);
+  --prisma-v5-text-glow: 0 0 10px rgba(145, 213, 255, .13), 0 0 1px rgba(236, 248, 255, .30);
+}
+
+html,
+body{
+  min-height:100%;
+}
+
+body[data-theme="tactical"]{
+  position:relative;
+  isolation:isolate;
+}
+
+/* Exact seam-killer retained: old tactical pseudo-layers were creating horizontal/vertical joins. */
+body[data-theme="tactical"]::before,
+body[data-theme="tactical"]::after{
+  content:none !important;
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  background:none !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+  mask-image:none !important;
+  -webkit-mask-image:none !important;
+  animation:none !important;
+}
+
+body[data-theme="tactical"]{
+  background-color:#172635 !important;
+  background-image:
+    radial-gradient(920px 560px at 12% 8%, rgba(190,224,255,.18), transparent 60%),
+    radial-gradient(760px 520px at 86% 10%, rgba(112,182,235,.16), transparent 62%),
+    linear-gradient(180deg, rgba(8,15,24,.10), rgba(8,15,24,.24) 48%, rgba(5,10,17,.34)),
+    url("/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg") !important;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-size:cover, cover, cover, cover !important;
+  background-position:center center, center center, center center, center center !important;
+  background-attachment:fixed, fixed, fixed, fixed !important;
+}
+
+#prisma-atmosphere-v5{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+  opacity:var(--prisma-v5-atmo-opacity) !important;
+  mix-blend-mode:screen;
+  contain:strict;
+}
+
+.prisma-atmosphere-fallback{
+  position:fixed;
+  inset:-8%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.54;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(520px 280px at 18% 22%, rgba(116, 210, 255, .18), transparent 70%),
+    radial-gradient(460px 250px at 78% 18%, rgba(188, 144, 255, .14), transparent 72%),
+    radial-gradient(640px 360px at 56% 82%, rgba(104, 255, 214, .10), transparent 76%);
+  animation:prismaV5FallbackDrift 56s cubic-bezier(.42,0,.22,1) infinite alternate;
+}
+
+body[data-theme="tactical"] .page,
+body[data-theme="tactical"] main,
+body[data-theme="tactical"] .topbarWrap,
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .glass,
+body[data-theme="tactical"] .prismo-shell,
+body[data-theme="tactical"] .prismo-grid{
+  position:relative;
+  z-index:2;
+}
+
+body[data-theme="tactical"] .topbarWrap{z-index:40;}
+
+body[data-theme="tactical"] .page::before,
+body[data-theme="tactical"] .page::after,
+body[data-theme="tactical"] main::before,
+body[data-theme="tactical"] main::after,
+body[data-theme="tactical"] .prismo-shell::before,
+body[data-theme="tactical"] .prismo-shell::after,
+body[data-theme="tactical"] .prismo-grid::before,
+body[data-theme="tactical"] .prismo-grid::after{
+  content:none !important;
+  display:none !important;
+  opacity:0 !important;
+  background:none !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+body[data-theme="tactical"] h1,
+body[data-theme="tactical"] h2,
+body[data-theme="tactical"] h3,
+body[data-theme="tactical"] h4,
+body[data-theme="tactical"] b,
+body[data-theme="tactical"] strong,
+body[data-theme="tactical"] .topbarTitle,
+body[data-theme="tactical"] .heroTitle,
+body[data-theme="tactical"] .metricValue,
+body[data-theme="tactical"] .node b{
+  color:#e3eefb !important;
+  text-shadow:0 0 14px rgba(145, 213, 255, .16), 0 0 1px rgba(255,255,255,.36) !important;
+}
+
+body[data-theme="tactical"],
+body[data-theme="tactical"] p,
+body[data-theme="tactical"] li,
+body[data-theme="tactical"] small,
+body[data-theme="tactical"] label,
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] input,
+body[data-theme="tactical"] select,
+body[data-theme="tactical"] button,
+body[data-theme="tactical"] .muted,
+body[data-theme="tactical"] .statusLine,
+body[data-theme="tactical"] .nodeMeta{
+  color:#d2e3f4 !important;
+  text-shadow:var(--prisma-v5-text-glow) !important;
+}
+
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .glass,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .node,
+body[data-theme="tactical"] .metric,
+body[data-theme="tactical"] .picker,
+body[data-theme="tactical"] .miniChartWrap,
+body[data-theme="tactical"] .signal{
+  border-color:rgba(214,233,255,.24) !important;
+  box-shadow:
+    0 18px 48px rgba(3, 10, 18, .22),
+    0 36px 96px rgba(5, 13, 23, .15),
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 0 30px rgba(116,214,255,.045) !important;
+  backdrop-filter:blur(7px) saturate(162%) brightness(1.04) !important;
+  -webkit-backdrop-filter:blur(7px) saturate(162%) brightness(1.04) !important;
+}
+
+body[data-theme="tactical"] .opButton,
+body[data-theme="tactical"] .dockBtn,
+body[data-theme="tactical"] button,
+body[data-theme="tactical"] .tab,
+body[data-theme="tactical"] .pill,
+body[data-theme="tactical"] .chip,
+body[data-theme="tactical"] .tag,
+body[data-theme="tactical"] .signal{
+  will-change:transform, filter, box-shadow;
+}
+
+body[data-theme="tactical"] .opButton:hover,
+body[data-theme="tactical"] .dockBtn:hover,
+body[data-theme="tactical"] button:hover,
+body[data-theme="tactical"] .tab:hover,
+body[data-theme="tactical"] .pill:hover,
+body[data-theme="tactical"] .chip:hover,
+body[data-theme="tactical"] .tag:hover{
+  filter:brightness(1.08) saturate(1.12) !important;
+  box-shadow:
+    0 0 0 1px rgba(216,236,255,.24),
+    0 0 20px var(--prisma-v5-neon-blue),
+    0 0 34px var(--prisma-v5-neon-violet),
+    inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+body[data-theme="tactical"] .active,
+body[data-theme="tactical"] .is-active,
+body[data-theme="tactical"] [aria-current="page"],
+body[data-theme="tactical"] [aria-current="true"],
+body[data-theme="tactical"] [aria-selected="true"]{
+  border-color:rgba(143,223,255,.56) !important;
+  box-shadow:
+    0 0 0 1px rgba(220,240,255,.26),
+    0 0 22px rgba(86,214,255,.34),
+    0 0 38px rgba(180,138,255,.22),
+    inset 0 1px 0 rgba(255,255,255,.20) !important;
+}
+
+body[data-theme="tactical"] :focus-visible{
+  outline:none !important;
+  box-shadow:
+    0 0 0 1px rgba(230,246,255,.70),
+    0 0 20px rgba(86,214,255,.34),
+    0 0 32px rgba(180,138,255,.20) !important;
+}
+
+@keyframes prismaV5FallbackDrift{
+  from{transform:translate3d(-1.5%, -.4%, 0) scale(1.01)}
+  to{transform:translate3d(1.6%, .8%, 0) scale(1.035)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  #prisma-atmosphere-v5,
+  .prisma-atmosphere-fallback{
+    animation:none !important;
+    opacity:.34 !important;
+  }
+  body[data-theme="tactical"] *{
+    transition:none !important;
+    animation:none !important;
+  }
+}

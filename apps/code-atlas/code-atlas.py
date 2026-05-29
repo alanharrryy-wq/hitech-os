@@ -40,6 +40,8 @@ import json
 import math
 import os
 import traceback
+import zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -54,7 +56,7 @@ NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
 VisibilityPreset = Literal["executive", "engineering", "raw"]
-OutputMode = Literal["svg", "tree", "tree_html", "black_glass"]
+OutputMode = Literal["svg", "tree", "tree_html", "black_glass", "db_black_glass_erd", "todo_el_show"]
 
 
 # ----------------------------
@@ -112,12 +114,24 @@ MAX_PARSE_ERRORS = 120
 # Salida dinámica: se crea dentro de la ruta seleccionada
 OUTPUT_SUBDIR_NAME = "_dependency_graphs"
 OUTPUT_FILE_PREFIX = "dependency_graph"
-TREE_OUTPUT_DIR = Path(r"F:\trees")
+TREE_OUTPUT_DIR = Path(r"<LOCAL_PATH>")
 TREE_OUTPUT_FILE_PREFIX = "dependency_tree"
 TREE_HTML_OUTPUT_FILE_PREFIX = "dependency_tree_premium"
 # None means: scan until the filesystem naturally ends. No fake depth=10 ceiling.
 TREE_SCAN_MAX_DEPTH: int | None = None
 DATE_STAMP_FORMAT = "%Y%m%d_%H%M%S"
+
+# Performance/sharding knobs. Defaults are tuned for the current workstation workflow:
+# high I/O concurrency for filesystem/SQLite evidence scans, conservative CPU pressure,
+# and browser-friendly virtualized HTML for large trees.
+CODE_ATLAS_IO_WORKERS = max(1, min(32, int(os.environ.get("CODE_ATLAS_IO_WORKERS", "18") or "18")))
+CODE_ATLAS_CPU_WORKERS = max(1, min(max(1, (os.cpu_count() or 4) - 1), int(os.environ.get("CODE_ATLAS_CPU_WORKERS", str(max(1, (os.cpu_count() or 4) - 1))) or "1")))
+CODE_ATLAS_PARALLEL_IMPORTS = os.environ.get("CODE_ATLAS_PARALLEL_IMPORTS", "1").strip().lower() not in {"0", "false", "off", "no"}
+TREE_HTML_VIRTUALIZE_THRESHOLD = max(800, int(os.environ.get("CODE_ATLAS_TREE_VIRTUALIZE_THRESHOLD", "2500") or "2500"))
+TREE_HTML_RENDER_BUFFER_ROWS = max(8, int(os.environ.get("CODE_ATLAS_TREE_RENDER_BUFFER_ROWS", "18") or "18"))
+TREE_HTML_ROW_HEIGHT_PX = max(28, int(os.environ.get("CODE_ATLAS_TREE_ROW_HEIGHT_PX", "38") or "38"))
+CODE_ATLAS_ZIP_MODE = os.environ.get("CODE_ATLAS_ZIP_MODE", "store").strip().lower()
+
 
 TREE_EXCLUDED_DIR_NAMES: set[str] = EXCLUDED_DIR_NAMES | {
     ".next",
@@ -472,7 +486,7 @@ def derive_project_root(selected_path: str) -> Path:
 
 def resolve_output_dir(selected_path: str) -> Path:
     """
-    Nada fijo a F:\\ ni cosas así.
+    Nada fijo a <LOCAL_PATH> ni cosas así.
     El SVG cae dentro de la carpeta analizada, en una subcarpeta propia.
     """
     return derive_project_root(selected_path) / OUTPUT_SUBDIR_NAME
@@ -549,21 +563,72 @@ def is_supported_source_file(path: Path) -> bool:
     return path.is_file() and path.suffix.lower() in SUPPORTED_SOURCE_EXTENSIONS
 
 
-def iter_source_files(project_root: Path) -> Iterator[Path]:
-    """
-    Recorre el proyecto de forma genérica.
-    No asume apps/, tools/, forgeos/ ni ningún nombre especial.
-    """
+def _code_atlas_io_workers(limit: int | None = None) -> int:
+    if limit is None:
+        return CODE_ATLAS_IO_WORKERS
+    try:
+        value = int(limit)
+    except Exception:
+        value = CODE_ATLAS_IO_WORKERS
+    return max(1, min(CODE_ATLAS_IO_WORKERS, max(1, value)))
+
+
+def _code_atlas_cpu_workers(limit: int | None = None) -> int:
+    if limit is None:
+        return CODE_ATLAS_CPU_WORKERS
+    try:
+        value = int(limit)
+    except Exception:
+        value = CODE_ATLAS_CPU_WORKERS
+    return max(1, min(CODE_ATLAS_CPU_WORKERS, max(1, value)))
+
+
+def _code_atlas_zip_settings() -> dict[str, Any]:
+    """Return stdlib zipfile settings optimized for local artifact bundles."""
+    mode = CODE_ATLAS_ZIP_MODE
+    if mode in {"store", "stored", "fast", "none", "no_compress", "nocompress"}:
+        return {"compression": zipfile.ZIP_STORED}
+    if mode in {"low", "fast_deflate", "deflate1"}:
+        return {"compression": zipfile.ZIP_DEFLATED, "compresslevel": 1}
+    return {"compression": zipfile.ZIP_DEFLATED}
+
+
+def _is_supported_source_path(path: Path) -> bool:
+    try:
+        return path.is_file() and path.suffix.lower() in SUPPORTED_SOURCE_EXTENSIONS
+    except OSError:
+        return False
+
+
+def collect_source_files_parallel(project_root: Path) -> list[Path]:
+    """Collect source files with parallel file checks but deterministic ordering."""
+    candidates: list[Path] = []
     for current_root, dir_names, file_names in os.walk(project_root):
         dir_names[:] = sorted(
             d for d in dir_names
             if not is_excluded_dir_name(d)
         )
-
+        root_path = Path(current_root)
         for file_name in sorted(file_names):
-            candidate = Path(current_root) / file_name
-            if is_supported_source_file(candidate):
-                yield candidate
+            candidates.append(root_path / file_name)
+
+    workers = _code_atlas_io_workers(len(candidates))
+    if workers <= 1 or len(candidates) < 128:
+        return [candidate for candidate in candidates if _is_supported_source_path(candidate)]
+
+    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="code-atlas-source") as executor:
+        keep_flags = list(executor.map(_is_supported_source_path, candidates))
+
+    return [candidate for candidate, keep in zip(candidates, keep_flags) if keep]
+
+
+def iter_source_files(project_root: Path) -> Iterator[Path]:
+    """
+    Recorre el proyecto de forma genérica.
+    No asume apps/, tools/, forgeos/ ni ningún nombre especial.
+    Usa checks de archivo en paralelo cuando el árbol es grande.
+    """
+    yield from collect_source_files_parallel(project_root)
 
 
 def module_name_from_path(project_root: Path, file_path: Path) -> str:
@@ -811,88 +876,147 @@ def _tree_icon_class(entry: FileTreeEntry) -> str:
     return f"file {groups.get(suffix, 'icon-generic')}"
 
 
+def _tree_discover_paths(root: Path) -> list[tuple[Path, int, bool, int]]:
+    discovered: list[tuple[Path, int, bool, int]] = []
+    order = 0
+    root = root.expanduser().resolve()
+    discovered.append((root, 0, True, order))
+    order += 1
+
+    for current_root, dir_names, file_names in os.walk(root):
+        current_path = Path(current_root)
+        try:
+            depth = 0 if current_path.resolve() == root else len(current_path.resolve().relative_to(root).parts)
+        except Exception:
+            depth = 0
+
+        if TREE_SCAN_MAX_DEPTH is not None and depth >= TREE_SCAN_MAX_DEPTH:
+            dir_names[:] = []
+            continue
+
+        dir_names[:] = sorted(
+            d for d in dir_names
+            if not should_exclude_tree_dir(current_path / d)
+        )
+
+        for dir_name in dir_names:
+            discovered.append((current_path / dir_name, depth + 1, True, order))
+            order += 1
+
+        for file_name in sorted(file_names):
+            candidate = current_path / file_name
+            if should_exclude_tree_file(candidate):
+                continue
+            discovered.append((candidate, depth + 1, False, order))
+            order += 1
+
+    return discovered
+
+
+def _tree_stat_payload(item: tuple[Path, int, bool, int]) -> dict[str, Any]:
+    path, depth, expected_dir, order = item
+    try:
+        resolved = path.expanduser().resolve()
+    except Exception:
+        resolved = path
+    stat = _safe_file_stat(path)
+    is_symlink = path.is_symlink()
+    is_dir = bool(expected_dir and path.is_dir() and not is_symlink)
+    size_bytes = 0 if is_dir else (int(stat.st_size) if stat is not None else 0)
+    modified_ts = float(stat.st_mtime) if stat is not None else 0.0
+    return {
+        "path": resolved,
+        "depth": depth,
+        "is_dir": is_dir,
+        "size_bytes": size_bytes,
+        "modified_ts": modified_ts,
+        "order": order,
+        "suffix": resolved.suffix.lower() if not is_dir else "",
+    }
+
+
 def collect_filesystem_tree_entries(
     project_root: Path,
 ) -> tuple[list[FileTreeEntry], FileTreeSummary]:
     root = project_root.expanduser().resolve()
     scanned_at = datetime.now().isoformat(timespec="seconds")
-    entries: list[FileTreeEntry] = []
-    visited_dirs: set[str] = set()
+    discovered = _tree_discover_paths(root)
+    workers = _code_atlas_io_workers(len(discovered))
 
-    def scan(path: Path, depth: int) -> FileTreeEntry:
-        resolved_path = path.expanduser().resolve()
-        is_symlink = path.is_symlink()
-        is_dir = path.is_dir() and not is_symlink
-        stat = _safe_file_stat(path)
-        modified_ts = float(stat.st_mtime) if stat is not None else 0.0
+    if workers <= 1 or len(discovered) < 256:
+        payloads = [_tree_stat_payload(item) for item in discovered]
+    else:
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="code-atlas-tree") as executor:
+            payloads = list(executor.map(_tree_stat_payload, discovered))
 
-        if not is_dir:
-            size_bytes = int(stat.st_size) if stat is not None else 0
-            entry = FileTreeEntry(
-                path=resolved_path,
-                relative_path=safe_relative_path(resolved_path, root),
-                name=resolved_path.name or str(resolved_path),
-                depth=depth,
-                is_dir=False,
-                size_bytes=size_bytes,
-                cumulative_size_bytes=size_bytes,
-                modified_ts=modified_ts,
-                child_count=0,
-                file_count=1,
-                folder_count=0,
-                suffix=resolved_path.suffix.lower(),
-            )
-            entries.append(entry)
-            return entry
+    entries_by_path: dict[str, FileTreeEntry] = {}
+    parent_key_by_path: dict[str, str] = {}
 
+    for payload in payloads:
+        resolved_path: Path = payload["path"]
+        is_dir = bool(payload["is_dir"])
+        relative_path = "." if resolved_path == root else safe_relative_path(resolved_path, root)
         entry = FileTreeEntry(
             path=resolved_path,
-            relative_path="." if resolved_path == root else safe_relative_path(resolved_path, root),
+            relative_path=relative_path,
             name=resolved_path.name or str(resolved_path),
-            depth=depth,
+            depth=int(payload["depth"]),
+            is_dir=is_dir,
+            size_bytes=int(payload["size_bytes"]),
+            cumulative_size_bytes=int(payload["size_bytes"]),
+            modified_ts=float(payload["modified_ts"]),
+            child_count=0,
+            file_count=0 if is_dir else 1,
+            folder_count=1 if is_dir else 0,
+            suffix=str(payload["suffix"]),
+        )
+        key = str(resolved_path).lower()
+        entries_by_path[key] = entry
+        if resolved_path != root:
+            try:
+                parent_key_by_path[key] = str(resolved_path.parent.expanduser().resolve()).lower()
+            except Exception:
+                parent_key_by_path[key] = str(resolved_path.parent).lower()
+
+    # Direct child counts.
+    for child_key, parent_key in parent_key_by_path.items():
+        parent = entries_by_path.get(parent_key)
+        if parent is not None:
+            parent.child_count += 1
+
+    # Bottom-up cumulative metrics.
+    for key, entry in sorted(entries_by_path.items(), key=lambda item: item[1].depth, reverse=True):
+        if key == str(root).lower():
+            continue
+        parent = entries_by_path.get(parent_key_by_path.get(key, ""))
+        if parent is None:
+            continue
+        parent.cumulative_size_bytes += entry.cumulative_size_bytes
+        parent.file_count += entry.file_count
+        parent.folder_count += entry.folder_count
+
+    entries = sorted(entries_by_path.values(), key=lambda entry: (entry.depth, entry.relative_path.lower()))
+    # Restore a natural tree order: parent before children, folders/files already encoded in paths.
+    entries = sorted(entries, key=lambda entry: [part.lower() for part in ("" if entry.relative_path == "." else entry.relative_path).replace("\\", "/").split("/")])
+
+    root_entry = entries_by_path.get(str(root).lower())
+    if root_entry is None:
+        root_entry = FileTreeEntry(
+            path=root,
+            relative_path=".",
+            name=root.name or str(root),
+            depth=0,
             is_dir=True,
             size_bytes=0,
             cumulative_size_bytes=0,
-            modified_ts=modified_ts,
+            modified_ts=0.0,
             child_count=0,
             file_count=0,
             folder_count=1,
             suffix="",
         )
-        entries.append(entry)
+        entries.insert(0, root_entry)
 
-        visit_key = str(resolved_path).lower()
-        if visit_key in visited_dirs:
-            return entry
-        visited_dirs.add(visit_key)
-
-        if TREE_SCAN_MAX_DEPTH is not None and depth >= TREE_SCAN_MAX_DEPTH:
-            return entry
-
-        try:
-            children = sorted(
-                path.iterdir(),
-                key=lambda child: (not child.is_dir(), child.name.lower()),
-            )
-        except OSError:
-            children = []
-
-        for child in children:
-            if child.is_dir() and not child.is_symlink():
-                if should_exclude_tree_dir(child):
-                    continue
-            elif should_exclude_tree_file(child):
-                continue
-
-            child_entry = scan(child, depth + 1)
-            entry.child_count += 1
-            entry.file_count += child_entry.file_count
-            entry.folder_count += child_entry.folder_count
-            entry.cumulative_size_bytes += child_entry.cumulative_size_bytes
-
-        return entry
-
-    root_entry = scan(root, 0)
     summary = FileTreeSummary(
         total_files=root_entry.file_count,
         total_folders=root_entry.folder_count,
@@ -963,6 +1087,407 @@ def _json_for_script(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False).replace("</", "<\\/")
 
 
+def _tree_should_virtualize(entries: list[FileTreeEntry]) -> bool:
+    return len(entries) >= TREE_HTML_VIRTUALIZE_THRESHOLD
+
+
+def _tree_entry_to_payload(node: dict[str, Any]) -> dict[str, Any]:
+    entry: FileTreeEntry = node["entry"]
+    size_bytes = entry.cumulative_size_bytes if entry.is_dir else entry.size_bytes
+    return {
+        "id": str(node["id"]),
+        "parent_id": str(node["parent_id"]),
+        "name": entry.name,
+        "path": entry.relative_path,
+        "depth": entry.depth,
+        "kind": "folder" if entry.is_dir else "file",
+        "type": _tree_entry_type(entry),
+        "icon": _tree_icon_class(entry),
+        "size_bytes": int(size_bytes),
+        "size": format_size_bytes(size_bytes),
+        "modified_ts": float(entry.modified_ts),
+        "modified": _format_modified_ts(entry.modified_ts),
+        "child_count": int(entry.child_count),
+    }
+
+
+def build_premium_tree_html_virtualized(
+    *,
+    selected_path: str,
+    project_root: Path,
+    entries: list[FileTreeEntry],
+    summary: FileTreeSummary,
+) -> str:
+    nodes = build_tree_node_model(entries)
+    payload = {
+        "version": "tree-html-virtualized-v2",
+        "selected_path": str(selected_path),
+        "project_root": str(project_root),
+        "summary": {
+            "total_folders": summary.total_folders,
+            "total_files": summary.total_files,
+            "total_size_bytes": summary.total_size_bytes,
+            "total_size": format_size_bytes(summary.total_size_bytes),
+            "max_depth": summary.max_depth,
+            "scanned_at": summary.scanned_at,
+        },
+        "row_height": TREE_HTML_ROW_HEIGHT_PX,
+        "buffer_rows": TREE_HTML_RENDER_BUFFER_ROWS,
+        "high_density": len(entries) >= TREE_HTML_VIRTUALIZE_THRESHOLD,
+        "io_workers": _code_atlas_io_workers(),
+        "nodes": [_tree_entry_to_payload(node) for node in nodes],
+    }
+    tree_text = build_filesystem_tree_text(
+        selected_path=selected_path,
+        project_root=project_root,
+        entries=entries,
+        summary=summary,
+    )
+    export_name = f"{TREE_HTML_OUTPUT_FILE_PREFIX}_{safe_slug(project_root.name or 'project')}_{datetime.now().strftime(DATE_STAMP_FORMAT)}.txt"
+    payload_json = _json_for_script(payload)
+    tree_text_json = _json_for_script(tree_text)
+    export_name_json = _json_for_script(export_name)
+    template = r"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Atlas Tree Premium · Virtualized</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#07090d;
+      --panel:rgba(22,26,32,.82);
+      --panel-strong:rgba(31,36,44,.94);
+      --line:rgba(222,232,246,.16);
+      --line-strong:rgba(222,232,246,.28);
+      --text:#e9eef6;
+      --muted:#8f9bad;
+      --soft:#b8c3d3;
+      --cyan:#8de9ff;
+      --gold:#e4c678;
+      --ok:#82e0aa;
+      --row-h:__ROW_HEIGHT__px;
+      --mono:"Cascadia Mono","SFMono-Regular",Consolas,monospace;
+      --sans:"Segoe UI",system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      color:var(--text);
+      font-family:var(--sans);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(141,233,255,.16), transparent 34rem),
+        radial-gradient(circle at 90% 10%, rgba(228,198,120,.10), transparent 28rem),
+        linear-gradient(135deg,#05070a 0%,#101722 45%,#07090d 100%);
+      overflow:hidden;
+    }
+    .shell{height:100vh;display:grid;grid-template-rows:auto 1fr auto;gap:.75rem;padding:1rem}
+    .hero,.panel,.status{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),var(--panel);
+      box-shadow:0 24px 70px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(18px);
+    }
+    .hero{display:grid;grid-template-columns:minmax(24rem,1fr) minmax(34rem,1.5fr);gap:1rem;align-items:end;padding:1rem 1.1rem}
+    .eyebrow{margin:0 0 .35rem;color:var(--gold);font:800 .72rem var(--sans);letter-spacing:.16em;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(1.5rem,2.4vw,2.55rem);line-height:1.05}
+    .subtitle,.meta{margin:.35rem 0 0;color:var(--soft)}
+    .meta{font:.76rem var(--mono);color:var(--muted);overflow-wrap:anywhere}
+    .toolbar{display:grid;grid-template-columns:1fr repeat(7,auto);gap:.45rem;align-items:center}
+    input,select,button{font:700 .78rem var(--sans)}
+    .search,.type-filter{
+      height:2.35rem;border:1px solid var(--line);border-radius:12px;outline:0;
+      color:var(--text);background:rgba(5,8,12,.62);padding:0 .75rem;
+    }
+    .btn{
+      height:2.35rem;border:1px solid var(--line);border-radius:12px;color:var(--text);
+      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.025)),rgba(12,16,22,.86);
+      cursor:pointer;padding:0 .75rem;white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(141,233,255,.44);transform:translateY(-1px)}
+    .btn.hot{color:#081016;background:linear-gradient(180deg,#a8f2ff,#66d9f0);border-color:rgba(141,233,255,.72)}
+    .workspace{min-height:0;display:grid;grid-template-rows:auto 1fr;overflow:hidden}
+    .table-head{
+      display:grid;grid-template-columns: minmax(30rem,1fr) 10rem 8rem 12rem;
+      border-bottom:1px solid var(--line-strong);
+      background:rgba(9,13,18,.74);
+      position:relative;z-index:3;
+    }
+    .table-head button,.table-head span{
+      padding:.75rem .85rem;text-align:left;color:var(--soft);font:800 .72rem var(--sans);
+      letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0;cursor:pointer;
+    }
+    .table-head .right{text-align:right}
+    .viewport{position:relative;min-height:0;overflow:auto;contain:strict}
+    .spacer{position:relative;width:100%;min-width:76rem}
+    .rows{position:absolute;left:0;right:0;top:0}
+    .row{
+      position:absolute;left:0;right:0;height:var(--row-h);
+      display:grid;grid-template-columns:minmax(30rem,1fr) 10rem 8rem 12rem;
+      align-items:center;border-bottom:1px solid rgba(222,232,246,.075);
+      color:rgba(233,238,246,.78);
+      background:rgba(255,255,255,.012);
+      transform:translateY(var(--y));
+    }
+    .row:hover{background:rgba(141,233,255,.055);color:#fff}
+    .row.selected{background:linear-gradient(90deg,rgba(141,233,255,.16),rgba(255,255,255,.035));box-shadow:inset 4px 0 0 var(--cyan)}
+    .cell{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .85rem}
+    .name{display:flex;align-items:center;gap:.45rem;font-weight:700}
+    .indent{flex:0 0 calc(var(--depth) * 1.25rem)}
+    .twisty{
+      width:1.1rem;height:1.1rem;border:1px solid var(--line);border-radius:6px;
+      display:inline-grid;place-items:center;background:rgba(255,255,255,.035);color:var(--cyan);cursor:pointer;
+    }
+    .twisty.empty{opacity:.25;cursor:default}
+    .icon{width:1.1rem;height:1.1rem;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:7px;color:var(--cyan);font:.62rem var(--mono)}
+    .path{color:var(--muted);font:.72rem var(--mono);margin-left:.35rem;overflow:hidden;text-overflow:ellipsis}
+    .size,.type,.modified{font:.78rem var(--mono);color:var(--soft)}
+    .size{text-align:right}
+    .status{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;overflow:hidden}
+    .metric{padding:.75rem .9rem;border-right:1px solid var(--line)}
+    .metric:last-child{border-right:0}
+    .metric b{display:block;color:#fff;font:.92rem var(--mono);overflow:hidden;text-overflow:ellipsis}
+    .metric span{display:block;color:var(--muted);font:800 .66rem var(--sans);letter-spacing:.12em;text-transform:uppercase}
+    .density{
+      display:inline-flex;align-items:center;gap:.35rem;margin-top:.5rem;padding:.25rem .55rem;border-radius:999px;
+      color:#ffe7ad;border:1px solid rgba(228,198,120,.36);background:rgba(228,198,120,.12);font:800 .68rem var(--sans)
+    }
+    mark{background:rgba(141,233,255,.22);color:#fff;border-radius:4px;padding:0 .1rem}
+    @media (max-width:70rem){
+      .hero{grid-template-columns:1fr}
+      .toolbar{grid-template-columns:1fr 1fr 1fr}
+      .search{grid-column:1/-1}
+      .status{grid-template-columns:1fr 1fr}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <section>
+        <p class="eyebrow">Filesystem inventory · virtualized</p>
+        <h1>Code Atlas Tree Premium</h1>
+        <p class="subtitle">Large tree mode: renderiza sólo lo visible para que el navegador no se vuelva tamal.</p>
+        <p class="meta">Selected: __SELECTED__</p>
+        <p class="meta">Root: __ROOT__</p>
+        <span class="density" id="densityBadge">High density mode</span>
+      </section>
+      <section class="toolbar">
+        <input id="search" class="search" type="search" placeholder="Search folders/files without freezing" autocomplete="off">
+        <select id="typeFilter" class="type-filter"><option value="">All types</option></select>
+        <button class="btn" id="expandAll">Expand</button>
+        <button class="btn" id="collapseAll">Collapse</button>
+        <button class="btn" id="sortName">Sort Name</button>
+        <button class="btn" id="sortSize">Sort Size</button>
+        <button class="btn" id="copyPath">Copy Path</button>
+        <button class="btn hot" id="exportTree">Export Tree</button>
+      </section>
+    </header>
+
+    <section class="panel workspace">
+      <div class="table-head">
+        <button id="headName">Name</button>
+        <button id="headSize" class="right">Size</button>
+        <span>Type</span>
+        <span>Modified</span>
+      </div>
+      <div class="viewport" id="viewport">
+        <div class="spacer" id="spacer"><div class="rows" id="rows"></div></div>
+      </div>
+    </section>
+
+    <footer class="status">
+      <div class="metric"><span>Folders</span><b id="mFolders"></b></div>
+      <div class="metric"><span>Files</span><b id="mFiles"></b></div>
+      <div class="metric"><span>Total size</span><b id="mSize"></b></div>
+      <div class="metric"><span>Max depth</span><b id="mDepth"></b></div>
+      <div class="metric"><span>Visible rows</span><b id="mVisible"></b></div>
+      <div class="metric"><span>I/O workers</span><b id="mWorkers"></b></div>
+    </footer>
+  </main>
+
+  <script id="treeModel" type="application/json">__MODEL_JSON__</script>
+  <script>
+    const MODEL = JSON.parse(document.getElementById("treeModel").textContent);
+    const TREE_TEXT = __TREE_TEXT__;
+    const EXPORT_NAME = __EXPORT_NAME__;
+    const ROW_H = MODEL.row_height || 38;
+    const BUFFER = MODEL.buffer_rows || 18;
+
+    const byId = new Map(MODEL.nodes.map(n => [n.id, n]));
+    const children = new Map();
+    for (const n of MODEL.nodes) {
+      if (!children.has(n.parent_id)) children.set(n.parent_id, []);
+      children.get(n.parent_id).push(n.id);
+      n.expanded = n.depth < 2;
+    }
+
+    let selectedId = MODEL.nodes[0]?.id || "";
+    let query = "";
+    let typeFilter = "";
+    let sortKey = "name";
+    let sortDir = 1;
+    let flat = [];
+    let visible = [];
+
+    const viewport = document.getElementById("viewport");
+    const spacer = document.getElementById("spacer");
+    const rowsEl = document.getElementById("rows");
+    const searchEl = document.getElementById("search");
+    const typeEl = document.getElementById("typeFilter");
+
+    function norm(v){ return String(v || "").toLowerCase(); }
+    function escapeHtml(v){ return String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function sortChildren(ids){
+      return ids.slice().sort((a,b)=>{
+        const A=byId.get(a), B=byId.get(b);
+        let r=0;
+        if(sortKey==="size") r=(A.size_bytes||0)-(B.size_bytes||0);
+        else r=norm(A[sortKey] || A.name).localeCompare(norm(B[sortKey] || B.name), undefined, {numeric:true,sensitivity:"base"});
+        return (r || norm(A.path).localeCompare(norm(B.path), undefined, {numeric:true,sensitivity:"base"})) * sortDir;
+      });
+    }
+
+    function matches(n){
+      const q = norm(query);
+      const typeOk = !typeFilter || n.type === typeFilter;
+      if(!q) return typeOk;
+      return typeOk && (norm(n.name).includes(q) || norm(n.path).includes(q) || norm(n.type).includes(q));
+    }
+
+    function hasMatchingDescendant(id){
+      for(const childId of children.get(id) || []){
+        const child = byId.get(childId);
+        if(matches(child) || hasMatchingDescendant(childId)) return true;
+      }
+      return false;
+    }
+
+    function flatten(){
+      const out=[];
+      function visit(parentId){
+        for(const id of sortChildren(children.get(parentId) || [])){
+          const n=byId.get(id);
+          const activeSearch = query || typeFilter;
+          if(activeSearch && !(matches(n) || hasMatchingDescendant(id))) continue;
+          out.push(id);
+          if((n.expanded || activeSearch) && children.has(id)) visit(id);
+        }
+      }
+      visit("");
+      flat = out;
+      visible = flat.map(id => byId.get(id));
+      spacer.style.height = `${visible.length * ROW_H}px`;
+      document.getElementById("mVisible").textContent = visible.length.toLocaleString();
+      render();
+    }
+
+    function render(){
+      const scrollTop = viewport.scrollTop;
+      const height = viewport.clientHeight || 600;
+      const start = Math.max(0, Math.floor(scrollTop / ROW_H) - BUFFER);
+      const end = Math.min(visible.length, Math.ceil((scrollTop + height) / ROW_H) + BUFFER);
+      const fragment = document.createDocumentFragment();
+      rowsEl.textContent = "";
+      for(let i=start;i<end;i++){
+        const n=visible[i];
+        const row=document.createElement("div");
+        row.className = "row" + (n.id === selectedId ? " selected" : "");
+        row.style.setProperty("--y", `${i * ROW_H}px`);
+        row.style.setProperty("--depth", String(n.depth));
+        row.dataset.id=n.id;
+        const hasKids = (children.get(n.id) || []).length > 0;
+        const twist = hasKids ? (n.expanded ? "▾" : "▸") : "";
+        row.innerHTML = `
+          <div class="cell name">
+            <span class="indent"></span>
+            <button class="twisty ${hasKids ? "" : "empty"}" data-toggle="${escapeHtml(n.id)}">${twist}</button>
+            <span class="icon">${n.kind === "folder" ? "DIR" : (n.type || "FILE").slice(0,3)}</span>
+            <span>${highlight(n.name)}</span>
+            <span class="path">${highlight(n.path)}</span>
+          </div>
+          <div class="cell size">${escapeHtml(n.size)}</div>
+          <div class="cell type">${escapeHtml(n.type)}</div>
+          <div class="cell modified">${escapeHtml(n.modified)}</div>`;
+        fragment.appendChild(row);
+      }
+      rowsEl.appendChild(fragment);
+    }
+
+    function highlight(value){
+      const s=escapeHtml(value);
+      const q=String(query||"").trim();
+      if(!q) return s;
+      const safe=q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return s.replace(new RegExp(safe, "ig"), m => `<mark>${m}</mark>`);
+    }
+
+    rowsEl.addEventListener("click", ev=>{
+      const toggle = ev.target.closest("[data-toggle]");
+      if(toggle){
+        const n=byId.get(toggle.dataset.toggle);
+        if(n && children.has(n.id)){ n.expanded = !n.expanded; flatten(); }
+        return;
+      }
+      const row=ev.target.closest(".row");
+      if(row){ selectedId=row.dataset.id; render(); }
+    });
+
+    viewport.addEventListener("scroll", () => requestAnimationFrame(render));
+    searchEl.addEventListener("input", () => { query=searchEl.value; flatten(); });
+    typeEl.addEventListener("change", () => { typeFilter=typeEl.value; flatten(); });
+
+    document.getElementById("expandAll").onclick = () => { for(const n of MODEL.nodes) n.expanded=true; flatten(); };
+    document.getElementById("collapseAll").onclick = () => { for(const n of MODEL.nodes) n.expanded=n.depth < 1; flatten(); };
+    document.getElementById("sortName").onclick = () => { sortKey="name"; sortDir = sortDir * -1; flatten(); };
+    document.getElementById("sortSize").onclick = () => { sortKey="size"; sortDir = sortDir * -1; flatten(); };
+    document.getElementById("headName").onclick = document.getElementById("sortName").onclick;
+    document.getElementById("headSize").onclick = document.getElementById("sortSize").onclick;
+    document.getElementById("copyPath").onclick = async () => {
+      const n=byId.get(selectedId);
+      if(n && navigator.clipboard) await navigator.clipboard.writeText(n.path);
+    };
+    document.getElementById("exportTree").onclick = () => {
+      const blob = new Blob([TREE_TEXT], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url; a.download=EXPORT_NAME; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+
+    function boot(){
+      const types = [...new Set(MODEL.nodes.map(n=>n.type).filter(Boolean))].sort();
+      for(const t of types){
+        const opt=document.createElement("option");
+        opt.value=t; opt.textContent=t; typeEl.appendChild(opt);
+      }
+      document.getElementById("mFolders").textContent = MODEL.summary.total_folders.toLocaleString();
+      document.getElementById("mFiles").textContent = MODEL.summary.total_files.toLocaleString();
+      document.getElementById("mSize").textContent = MODEL.summary.total_size;
+      document.getElementById("mDepth").textContent = MODEL.summary.max_depth;
+      document.getElementById("mWorkers").textContent = MODEL.io_workers;
+      flatten();
+    }
+    boot();
+  </script>
+</body>
+</html>"""
+    return (
+        template
+        .replace("__ROW_HEIGHT__", str(TREE_HTML_ROW_HEIGHT_PX))
+        .replace("__SELECTED__", _html_escape(selected_path))
+        .replace("__ROOT__", _html_escape(project_root))
+        .replace("__MODEL_JSON__", payload_json)
+        .replace("__TREE_TEXT__", tree_text_json)
+        .replace("__EXPORT_NAME__", export_name_json)
+    )
+
+
 def build_premium_tree_html(
     *,
     selected_path: str,
@@ -970,6 +1495,14 @@ def build_premium_tree_html(
     entries: list[FileTreeEntry],
     summary: FileTreeSummary,
 ) -> str:
+    if _tree_should_virtualize(entries):
+        return build_premium_tree_html_virtualized(
+            selected_path=selected_path,
+            project_root=project_root,
+            entries=entries,
+            summary=summary,
+        )
+
     nodes = build_tree_node_model(entries)
     tree_text = build_filesystem_tree_text(
         selected_path=selected_path,
@@ -2953,10 +3486,22 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
+_THIS_FILE_FOR_REPO_ROOT = Path(__file__).resolve()
+# CODE_ATLAS_SAFE_REPO_ROOT_FOR_LOOSE_RUN_V01
+_THIS_FILE_FOR_REPO_ROOT = Path(__file__).resolve()
+_REPO_ROOT = _THIS_FILE_FOR_REPO_ROOT.parents[2] if len(_THIS_FILE_FOR_REPO_ROOT.parents) > 2 else _THIS_FILE_FOR_REPO_ROOT.parent
 _repo_root_str = str(_REPO_ROOT)
 if _repo_root_str not in sys.path:
     sys.path.insert(0, _repo_root_str)
+
+
+# CODE_ATLAS_FORGEOS_BOOTSTRAP_FOR_LOOSE_RUN_V01
+import sys as _code_atlas_sys
+_CODE_ATLAS_FORGEOS_ROOT = Path(r"<LOCAL_PATH>")
+if _CODE_ATLAS_FORGEOS_ROOT.exists():
+    _code_atlas_root_text = str(_CODE_ATLAS_FORGEOS_ROOT)
+    if _code_atlas_root_text not in _code_atlas_sys.path:
+        _code_atlas_sys.path.insert(0, _code_atlas_root_text)
 
 from forgeos.shared.pyside6_glass.controls import create_button as shared_create_button
 from forgeos.shared.pyside6_glass.scene import (
@@ -3055,6 +3600,28 @@ def _coerce_view(value: Any) -> GraphView:
 
 def _coerce_output_mode(value: Any) -> OutputMode:
     cleaned = _clean_text(value).lower()
+    if cleaned in {
+        "todo_el_show",
+        "todo el show",
+        "todo",
+        "todo_show",
+        "all_in",
+        "all-in",
+        "all",
+        "full_bundle",
+        "full suite",
+    }:
+        return "todo_el_show"
+    if cleaned in {
+        "db_black_glass_erd",
+        "db_erd",
+        "erd",
+        "database_erd",
+        "db glass",
+        "db black glass",
+        "database atlas",
+    }:
+        return "db_black_glass_erd"
     if cleaned in {"black_glass", "black_glass_atlas", "black glass", "atlas", "dependency_visual"}:
         return "black_glass"
     if cleaned in {"tree_html", "html", "premium_html", "tree premium", "tree_html_premium"}:
@@ -3062,8 +3629,6 @@ def _coerce_output_mode(value: Any) -> OutputMode:
     if cleaned in {"tree", "txt", "text", "dependency_tree"}:
         return "tree"
     return "svg"
-
-
 def _coerce_theme_choice(item: Any) -> Optional[_ThemeChoice]:
     if item is None:
         return None
@@ -4849,20 +5414,21 @@ class SelectorDialog(QDialog):
         enable_card_hover(footer)
         shell_layout.addWidget(footer)
 
-        footer_layout = QHBoxLayout(footer)
+        footer_layout = QGridLayout(footer)
         footer_layout.setContentsMargins(18, 14, 18, 14)
-        footer_layout.setSpacing(12)
+        footer_layout.setHorizontalSpacing(12)
+        footer_layout.setVerticalSpacing(10)
 
         footer_text_stack = QVBoxLayout()
         footer_text_stack.setSpacing(4)
-        footer_layout.addLayout(footer_text_stack, 1)
+        footer_layout.addLayout(footer_text_stack, 0, 0, 1, 3)
 
         footer_label = QLabel("Output")
         footer_label.setProperty("role", "eyebrow")
         footer_text_stack.addWidget(footer_label, 0, Qt.AlignLeft)
 
         footer_hint = QLabel(
-            "SVG se guarda junto al proyecto; Trees en F:\\trees; Black Glass Atlas en F:\\descargasf."
+            "SVG se guarda junto al proyecto; Trees en <LOCAL_PATH> Black Glass, DB Glass ERD y Todo El Show ZIP en <LOCAL_PATH>"
         )
         footer_hint.setProperty("role", "hint")
         footer_hint.setWordWrap(True)
@@ -4874,33 +5440,63 @@ class SelectorDialog(QDialog):
             "primary",
             self.confirm,
             default=True,
-            minimum_width=156,
+            minimum_width=150,
         )
         self.tree_button = create_button(
             "Generar Tree .txt",
             "secondary",
             self.confirm_tree,
-            minimum_width=172,
+            minimum_width=156,
         )
         self.tree_html_button = create_button(
             "Generar Tree HTML Premium",
             "secondary",
             self.confirm_tree_html,
-            minimum_width=232,
+            minimum_width=206,
         )
         self.black_glass_button = create_button(
             "Black Glass Atlas",
-            "success",
+            "secondary",
             self.confirm_black_glass,
             tooltip="Genera y abre el atlas de dependencias Black Glass desde dependency-map.",
-            minimum_width=190,
+            minimum_width=168,
         )
-        footer_layout.addWidget(self.cancel_button, 0)
-        footer_layout.addWidget(self.tree_button, 0)
-        footer_layout.addWidget(self.tree_html_button, 0)
-        footer_layout.addWidget(self.black_glass_button, 0)
-        footer_layout.addWidget(self.confirm_button, 0)
+        self.todo_el_show_button = create_button(
+            "Todo El Show",
+            "secondary",
+            self.confirm_todo_el_show,
+            tooltip="Genera Black Glass Atlas, Tree HTML Premium y DB Glass ERD; luego empaqueta todo en un ZIP en <LOCAL_PATH>",
+            minimum_width=164,
+        )
+        self.db_black_glass_erd_button = create_button(
+            "DB Glass ERD",
+            "secondary",
+            self.confirm_db_black_glass_erd,
+            tooltip="Escanea SQLite, Prisma, migrations, seeds y archivos anexos para generar un ERD Black Glass offline.",
+            minimum_width=164,
+        )
 
+        footer_actions_stack = QVBoxLayout()
+        footer_actions_stack.setSpacing(8)
+        footer_layout.addLayout(footer_actions_stack, 1, 0, 1, 3)
+
+        footer_top_row = QHBoxLayout()
+        footer_top_row.setSpacing(10)
+        footer_top_row.addWidget(self.cancel_button, 0)
+        footer_top_row.addStretch(1)
+        footer_top_row.addWidget(self.tree_button, 0)
+        footer_top_row.addWidget(self.tree_html_button, 0)
+        footer_top_row.addWidget(self.black_glass_button, 0)
+
+        footer_bottom_row = QHBoxLayout()
+        footer_bottom_row.setSpacing(10)
+        footer_bottom_row.addStretch(1)
+        footer_bottom_row.addWidget(self.todo_el_show_button, 0)
+        footer_bottom_row.addWidget(self.db_black_glass_erd_button, 0)
+        footer_bottom_row.addWidget(self.confirm_button, 0)
+
+        footer_actions_stack.addLayout(footer_top_row)
+        footer_actions_stack.addLayout(footer_bottom_row)
     def _build_form_panel(self) -> None:
         layout = QVBoxLayout(self.form_card)
         layout.setContentsMargins(18, 18, 18, 18)
@@ -5279,6 +5875,60 @@ class SelectorDialog(QDialog):
             view=self.selected_view,
             focus_target=self.selected_focus_target,
             output_mode="black_glass",
+        )
+        self.accept()
+
+    def confirm_todo_el_show(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar Todo El Show",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="todo_el_show",
+        )
+        self.accept()
+
+    def confirm_db_black_glass_erd(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar DB Glass ERD",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="db_black_glass_erd",
         )
         self.accept()
 
@@ -6121,6 +6771,117 @@ def collect_project_source_files(
     return files
 
 
+def _analyze_single_source_file_worker(payload: tuple[str, str, tuple[str, ...]]) -> dict[str, Any]:
+    file_path_text, module_name, known_modules_tuple = payload
+    file_path = Path(file_path_text)
+    known_modules = set(known_modules_tuple)
+    result: dict[str, Any] = {
+        "file_path": file_path_text,
+        "refs": [],
+        "issues": [],
+        "parsed": 0,
+        "skipped": 0,
+        "parse_errors": 0,
+        "truncated_imports": False,
+    }
+
+    try:
+        source = read_python_source(file_path)
+    except Exception as exc:
+        result["issues"].append(("warning", "source_read_error", f"No se pudo leer el archivo: {exc}", file_path_text))
+        result["skipped"] = 1
+        return result
+
+    try:
+        tree = ast.parse(source, filename=str(file_path))
+    except SyntaxError as exc:
+        result["issues"].append(("warning", "syntax_error", f"SyntaxError en línea {exc.lineno or '?'}: {exc.msg}", file_path_text))
+        result["parse_errors"] = 1
+        result["skipped"] = 1
+        return result
+    except Exception as exc:
+        result["issues"].append(("warning", "ast_parse_error", f"No se pudo parsear el archivo: {exc}", file_path_text))
+        result["parse_errors"] = 1
+        result["skipped"] = 1
+        return result
+
+    refs = extract_import_references_from_ast(
+        tree=tree,
+        module_name=module_name,
+        file_path=file_path,
+        known_modules=known_modules,
+    )
+    result["refs"] = refs
+    result["parsed"] = 1
+    result["truncated_imports"] = len(refs) >= MAX_IMPORTS_PER_FILE
+    if result["truncated_imports"]:
+        result["issues"].append(("warning", "imports_truncated_per_file", f"Se truncaron imports por archivo al llegar a {MAX_IMPORTS_PER_FILE}", file_path_text))
+    return result
+
+
+def analyze_source_files_parallel(
+    *,
+    source_files: list[Path],
+    project_root: Path,
+    known_modules: set[str],
+    analysis_graph: DependencyGraph,
+    state: AnalysisState,
+    notify: Callable[[str, str], None],
+) -> list[ImportReference]:
+    workers = _code_atlas_io_workers(len(source_files))
+    if not CODE_ATLAS_PARALLEL_IMPORTS or workers <= 1 or len(source_files) < 16:
+        all_refs: list[ImportReference] = []
+        for index, file_path in enumerate(source_files, start=1):
+            module_name = module_name_from_path(project_root, file_path)
+            detail = f"[{index}/{len(source_files)}] {safe_relative_path(file_path, project_root)}"
+            notify("Analizando imports...", detail)
+            refs = analyze_single_source_file(
+                file_path=file_path,
+                module_name=module_name,
+                known_modules=known_modules,
+                graph=analysis_graph,
+                state=state,
+            )
+            all_refs.extend(refs)
+            if state.truncated:
+                break
+        return all_refs
+
+    notify("Analizando imports en paralelo...", f"{len(source_files)} archivos · {workers} workers")
+    payloads = [
+        (str(file_path), module_name_from_path(project_root, file_path), tuple(sorted(known_modules)))
+        for file_path in source_files
+    ]
+    all_refs: list[ImportReference] = []
+
+    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="code-atlas-imports") as executor:
+        future_map = {executor.submit(_analyze_single_source_file_worker, payload): payload for payload in payloads}
+        completed = 0
+        for future in as_completed(future_map):
+            completed += 1
+            payload = future_map[future]
+            try:
+                result = future.result()
+            except Exception as exc:
+                analysis_graph.add_issue("warning", "worker_import_analysis_error", f"Falló worker de imports: {exc}", payload[0])
+                state.skipped_files += 1
+                continue
+
+            state.parsed_files += int(result.get("parsed") or 0)
+            state.skipped_files += int(result.get("skipped") or 0)
+            parse_errors = int(result.get("parse_errors") or 0)
+            for _ in range(parse_errors):
+                state.register_parse_error()
+            all_refs.extend(result.get("refs") or [])
+            for level, code, message, path_text in result.get("issues") or []:
+                analysis_graph.add_issue(level, code, message, path_text)
+
+            if completed == 1 or completed % 25 == 0 or completed == len(source_files):
+                notify("Analizando imports en paralelo...", f"{completed}/{len(source_files)} archivos · {workers} workers")
+
+    return all_refs
+
+
 def analyze_project_dependencies(
     *,
     selected_path: str,
@@ -6167,30 +6928,22 @@ def analyze_project_dependencies(
     module_catalog = build_module_catalog(project_root, source_files)
     known_modules = set(module_catalog.keys())
 
-    all_refs: list[ImportReference] = []
+    all_refs = analyze_source_files_parallel(
+        source_files=source_files,
+        project_root=project_root,
+        known_modules=known_modules,
+        analysis_graph=analysis_graph,
+        state=state,
+        notify=notify,
+    )
 
-    for index, file_path in enumerate(source_files, start=1):
-        module_name = module_name_from_path(project_root, file_path)
-        detail = f"[{index}/{len(source_files)}] {safe_relative_path(file_path, project_root)}"
-        notify("Analizando imports...", detail)
-
-        refs = analyze_single_source_file(
-            file_path=file_path,
-            module_name=module_name,
-            known_modules=known_modules,
-            graph=analysis_graph,
-            state=state,
+    if state.truncated:
+        analysis_graph.add_issue(
+            "warning",
+            "analysis_truncated",
+            state.limit_reason or "El análisis fue truncado por límites de seguridad.",
+            str(project_root),
         )
-        all_refs.extend(refs)
-
-        if state.truncated:
-            analysis_graph.add_issue(
-                "warning",
-                "analysis_truncated",
-                state.limit_reason or "El análisis fue truncado por límites de seguridad.",
-                str(project_root),
-            )
-            break
 
     if state.parse_errors > 0:
         analysis_graph.add_issue(
@@ -15231,7 +15984,7 @@ def write_tree_html(
     resolved_path = output_path.expanduser().resolve()
     ensure_output_dir(resolved_path.parent)
 
-    notify("Guardando HTML en F:\\trees...", str(resolved_path))
+    notify("Guardando HTML en <LOCAL_PATH>", str(resolved_path))
     resolved_path.write_text(html_markup, encoding="utf-8")
     notify("Tree HTML Premium guardado.", str(resolved_path))
 
@@ -17130,20 +17883,146 @@ def build_filesystem_tree_success_footer_text(
                 f"Folders: {summary.total_folders} • Files: {summary.total_files} • "
                 f"Size: {format_size_bytes(summary.total_size_bytes)} • Max depth: {summary.max_depth}"
             ),
-            "Cierra esta ventana para generar otro reporte. La carpeta F:\\trees se abrirá al cerrar.",
+            "Cierra esta ventana para generar otro reporte. La carpeta <LOCAL_PATH> se abrirá al cerrar.",
         ]
     )
 
 
 # CODE_ATLAS_BLACK_GLASS_BUTTON_V05: bridge from the PySide selector to the reusable dependency-map visual tools.
 # CODE_ATLAS_BLACK_GLASS_BUTTON_V05_2: selected scope is preserved; project root is used only to locate the analyzer.
-BLACK_GLASS_DOWNLOADS_ROOT = Path(os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", r"F:\descargasf"))
+BLACK_GLASS_DOWNLOADS_ROOT = Path(os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", r"<OUTPUT_DIR>"))
 BLACK_GLASS_CONSUMER_TOOL = "code_atlas_dependency_consumer_v03.py"
 BLACK_GLASS_VISUAL_TOOL = "code_atlas_dependency_visual_v04_2.py"
 
 
+# CODE_ATLAS_BLACK_GLASS_ROBUST_TOOL_RESOLVER_V01
+def _black_glass_candidate_roots(project_root: Path | None = None) -> list[Path]:
+    candidates: list[Path] = []
+
+    def add(value: Any) -> None:
+        if value is None:
+            return
+        raw = str(value).strip()
+        if not raw:
+            return
+        try:
+            candidates.append(Path(raw).expanduser())
+        except Exception:
+            return
+
+    add(os.environ.get("CODE_ATLAS_APP_ROOT", ""))
+    add(os.environ.get("CODE_ATLAS_TOOLS_ROOT", ""))
+    add(globals().get("_CODE_ATLAS_FORGEOS_ROOT"))
+    add(globals().get("_REPO_ROOT"))
+
+    if project_root is not None:
+        add(project_root)
+        try:
+            for parent in Path(project_root).expanduser().parents:
+                add(parent)
+        except Exception:
+            pass
+
+    try:
+        this_file = Path(__file__).expanduser().resolve()
+        add(this_file.parent)
+        for parent in this_file.parents:
+            add(parent)
+    except Exception:
+        pass
+
+    add(r"<REPO_ROOT>")
+    add(r"<REPO_ROOT>\apps\terminal-de-venta-system")
+    add(r"<OUTPUT_DIR>")
+
+    unique: list[Path] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        try:
+            resolved = candidate.expanduser().resolve()
+        except Exception:
+            resolved = candidate
+        key = str(resolved).lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(resolved)
+    return unique
+
+
 def _black_glass_app_root() -> Path:
+    for candidate in _black_glass_candidate_roots():
+        if (candidate / "tools").exists():
+            return candidate
     return Path(__file__).expanduser().resolve().parent
+
+
+def _black_glass_find_repo_tool(tool_name: str, project_root: Path | None = None) -> Path:
+    checked: list[Path] = []
+
+    for root in _black_glass_candidate_roots(project_root):
+        direct_candidates = [
+            root / "tools" / tool_name,
+            root / tool_name,
+        ]
+        for candidate in direct_candidates:
+            checked.append(candidate)
+            if candidate.exists() and candidate.is_file():
+                return candidate
+
+    search_roots: list[Path] = []
+    seen_roots: set[str] = set()
+
+    for root in _black_glass_candidate_roots(project_root):
+        try:
+            resolved = root.expanduser().resolve()
+        except Exception:
+            resolved = root
+        key = str(resolved).lower()
+        if key in seen_roots:
+            continue
+        seen_roots.add(key)
+        if resolved.exists() and resolved.is_dir():
+            search_roots.append(resolved)
+
+    for root in search_roots:
+        try:
+            for candidate in root.rglob(tool_name):
+                norm = str(candidate).replace("\\", "/").lower()
+                if "/node_modules/" in norm or "/.git/" in norm or "/.next/" in norm:
+                    continue
+                checked.append(candidate)
+                if candidate.exists() and candidate.is_file():
+                    return candidate
+        except Exception:
+            continue
+
+    preview = "\n".join(str(path) for path in checked[:30])
+    if len(checked) > 30:
+        preview += f"\n... {len(checked) - 30} rutas más"
+
+    raise FileNotFoundError(
+        f"No encontré la herramienta Black Glass {tool_name!r}.\n\n"
+        f"Busqué en:\n{preview}\n\n"
+        "Si las herramientas viven en otro lugar, define CODE_ATLAS_APP_ROOT o CODE_ATLAS_TOOLS_ROOT."
+    )
+
+
+def _black_glass_resolve_visual_tools(project_root: Path) -> dict[str, Path]:
+    consumer_tool = _black_glass_find_repo_tool(BLACK_GLASS_CONSUMER_TOOL, project_root)
+    visual_tool = _black_glass_find_repo_tool(BLACK_GLASS_VISUAL_TOOL, project_root)
+
+    app_root = consumer_tool.parent.parent if consumer_tool.parent.name.lower() == "tools" else consumer_tool.parent
+    if not (app_root / "tools" / BLACK_GLASS_VISUAL_TOOL).exists() and visual_tool.parent.name.lower() == "tools":
+        app_root = visual_tool.parent.parent
+
+    return {
+        "app_root": app_root,
+        "consumer_tool": consumer_tool,
+        "visual_tool": visual_tool,
+    }
+
+
 
 
 def _black_glass_downloads_root() -> Path:
@@ -17257,6 +18136,48 @@ def _black_glass_open_file(path: Path) -> None:
     webbrowser.open(target.as_uri())
 
 
+def run_tree_html_premium_report(
+    selected_path: str,
+    *,
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para Tree HTML Premium no existe:\n\n{selected_scope}")
+
+    project_root = selected_scope if selected_scope.is_dir() else selected_scope.parent
+    try:
+        project_root = _black_glass_resolve_project_root(selected_scope)
+    except Exception:
+        project_root = project_root.resolve()
+
+    if notify is not None:
+        notify("Escaneando filesystem para Tree HTML Premium...", str(project_root))
+    file_tree_entries, file_tree_summary = collect_filesystem_tree_entries(project_root)
+
+    if notify is not None:
+        notify(
+            "Construyendo Tree HTML Premium...",
+            f"{file_tree_summary.total_folders} folders | {file_tree_summary.total_files} files",
+        )
+
+    html_markup = build_premium_tree_html(
+        selected_path=str(project_root),
+        project_root=project_root,
+        entries=file_tree_entries,
+        summary=file_tree_summary,
+    )
+    output_path = make_tree_html_output_path(
+        selected_path=str(project_root),
+        view="package",
+        focus_target="",
+    )
+    write_tree_html(html_markup, output_path, notify)
+    if not output_path.exists() or output_path.stat().st_size <= 0:
+        raise RuntimeError(f"No se pudo validar el Tree HTML Premium generado: {output_path}")
+    return output_path
+
+
 def run_black_glass_dependency_atlas(
     selected_path: str,
     *,
@@ -17268,11 +18189,11 @@ def run_black_glass_dependency_atlas(
 
     project_root = _black_glass_resolve_project_root(selected_scope)
     downloads_root = _black_glass_downloads_root()
-    app_root = _black_glass_app_root()
-    tools_root = app_root / "tools"
-    consumer_tool = tools_root / BLACK_GLASS_CONSUMER_TOOL
-    visual_tool = tools_root / BLACK_GLASS_VISUAL_TOOL
     analyzer_tool = _black_glass_dependency_analyzer_path(project_root)
+    visual_tools = _black_glass_resolve_visual_tools(project_root)
+    app_root = visual_tools["app_root"]
+    consumer_tool = visual_tools["consumer_tool"]
+    visual_tool = visual_tools["visual_tool"]
 
     missing = [str(path) for path in (consumer_tool, visual_tool, analyzer_tool) if not path.exists()]
     if missing:
@@ -17370,6 +18291,2025 @@ def run_black_glass_dependency_atlas(
     return html_path
 
 
+
+
+# CODE_ATLAS_DB_BLACK_GLASS_ERD_V01: offline SQLite/Prisma ERD atlas, independent from dependency-map.
+DB_BLACK_GLASS_SQLITE_SUFFIXES = {".db", ".sqlite", ".sqlite3"}
+DB_BLACK_GLASS_SQLITE_IGNORED_SUFFIX_MARKERS = (
+    "-wal",
+    "-shm",
+    "-journal",
+    ".wal",
+    ".shm",
+    ".journal",
+)
+DB_BLACK_GLASS_BACKUP_MARKERS = {
+    ".prisma_installer_backups",
+    "backup",
+    "backups",
+    "_backup",
+    "evidence",
+    "handoff",
+    "tmp",
+    "temp",
+}
+DB_BLACK_GLASS_SKIP_DIRS = {
+    ".git",
+    ".hg",
+    ".svn",
+    ".idea",
+    ".vscode",
+    ".next",
+    ".turbo",
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+}
+DB_BLACK_GLASS_EVIDENCE_MAX_BYTES = 2_000_000
+DB_BLACK_GLASS_BOARD_TABLE_LIMIT = 40
+DB_BLACK_GLASS_DEFAULT_MAX_WORKERS = max(1, min(32, int(os.environ.get("CODE_ATLAS_DB_GLASS_MAX_WORKERS", "18") or "18")))
+
+
+def _db_black_glass_max_workers(limit: int | None = None) -> int:
+    workers = DB_BLACK_GLASS_DEFAULT_MAX_WORKERS
+    if limit is None:
+        return workers
+    try:
+        bounded_limit = int(limit)
+    except Exception:
+        bounded_limit = workers
+    return max(1, min(workers, max(1, bounded_limit)))
+
+
+
+def _db_black_glass_stamp() -> str:
+    return datetime.now().strftime(DATE_STAMP_FORMAT)
+
+
+def _db_black_glass_norm_path(path: Path) -> str:
+    return str(path).replace("\\", "/").lower()
+
+
+def _db_black_glass_is_backup_snapshot(path: Path) -> bool:
+    parts = {part.lower() for part in path.parts}
+    norm = _db_black_glass_norm_path(path)
+    return bool(parts & DB_BLACK_GLASS_BACKUP_MARKERS) or any(
+        marker in norm for marker in ("/backup/", "/backups/", "/_backup/", "/evidence/", "/handoff/", "/tmp/")
+    )
+
+
+def _db_black_glass_surface(path: Path) -> str:
+    norm = _db_black_glass_norm_path(path)
+    if _db_black_glass_is_backup_snapshot(path):
+        return "backup_snapshot"
+    if "/products/pc/" in norm or norm.endswith("/products/pc") or "/pc/" in norm:
+        return "pc"
+    if "/products/tablet/" in norm or norm.endswith("/products/tablet") or "/tablet/" in norm or "tablet-pos" in norm:
+        return "tablet"
+    if "/products/mobile/" in norm or norm.endswith("/products/mobile") or "/mobile/" in norm:
+        return "mobile"
+    if "chart_lab" in norm or "chart-lab" in norm or ("chart" in norm and "lab" in norm):
+        return "chart_lab"
+    if "/shared/" in norm or "/packages/" in norm:
+        return "shared"
+    if "/tools/" in norm or "/scripts/" in norm:
+        return "tools"
+    return "unknown"
+
+
+def _db_black_glass_is_active_candidate(path: Path) -> bool:
+    norm = _db_black_glass_norm_path(path)
+    active_markers = (
+        "/products/pc/app/data/",
+        "/products/tablet/app/data/",
+        "/products/mobile/app/data/",
+        "/prisma/data/",
+        "/app/data/",
+        "/data/",
+    )
+    return any(marker in norm for marker in active_markers) and not _db_black_glass_is_backup_snapshot(path)
+
+
+def _db_black_glass_resolve_project_root(selected_scope: Path) -> Path:
+    anchor = selected_scope.expanduser().resolve()
+    if not anchor.exists():
+        raise FileNotFoundError(f"La ruta seleccionada para DB Glass ERD no existe:\n\n{anchor}")
+
+    search_from = anchor if anchor.is_dir() else anchor.parent
+    signals = {"package.json", "pnpm-workspace.yaml", "tools", "products", "prisma", ".git"}
+    best: tuple[int, Path] | None = None
+    for candidate in [search_from, *search_from.parents]:
+        if not candidate.exists() or not candidate.is_dir():
+            continue
+        score = sum(1 for signal in signals if (candidate / signal).exists())
+        if score > 0 and (best is None or score > best[0]):
+            best = (score, candidate)
+        if score >= 2:
+            return candidate
+    if best is not None:
+        return best[1]
+    return search_from
+
+
+def _db_black_glass_relative(path: Path, root: Path) -> str:
+    return safe_relative_path(path, root).replace("\\", "/")
+
+
+def _db_black_glass_qident(name: str) -> str:
+    return '"' + str(name).replace('"', '""') + '"'
+
+
+def _db_black_glass_is_sqlite_candidate(path: Path) -> bool:
+    name = path.name.lower()
+    if any(name.endswith(marker) for marker in DB_BLACK_GLASS_SQLITE_IGNORED_SUFFIX_MARKERS):
+        return False
+    return path.suffix.lower() in DB_BLACK_GLASS_SQLITE_SUFFIXES
+
+
+def _db_black_glass_has_sqlite_header(path: Path) -> bool:
+    try:
+        with path.open("rb") as handle:
+            return handle.read(16) == b"SQLite format 3\x00"
+    except OSError:
+        return False
+
+
+def _db_black_glass_iter_files(scope: Path) -> Iterator[Path]:
+    for current_root, dir_names, file_names in os.walk(scope):
+        dir_names[:] = sorted(
+            dirname for dirname in dir_names
+            if dirname.lower() not in DB_BLACK_GLASS_SKIP_DIRS
+        )
+        for file_name in sorted(file_names):
+            yield Path(current_root) / file_name
+
+
+def _db_black_glass_file_record(path: Path, project_root: Path, *, evidence_type: str, reason: str) -> dict[str, Any]:
+    stat = _safe_file_stat(path)
+    size_bytes = int(stat.st_size) if stat is not None else 0
+    modified_ts = float(stat.st_mtime) if stat is not None else 0.0
+    return {
+        "path": str(path),
+        "relative_path": _db_black_glass_relative(path, project_root),
+        "type": evidence_type,
+        "size_bytes": size_bytes,
+        "size": format_size_bytes(size_bytes),
+        "modified_ts": modified_ts,
+        "modified": _format_modified_ts(modified_ts),
+        "surface": _db_black_glass_surface(path),
+        "backup_snapshot": _db_black_glass_is_backup_snapshot(path),
+        "reason": reason,
+    }
+
+
+def _db_black_glass_find_sqlite_databases(scope: Path, project_root: Path) -> list[dict[str, Any]]:
+    databases: list[dict[str, Any]] = []
+    for path in _db_black_glass_iter_files(scope):
+        if not path.is_file() or not _db_black_glass_is_sqlite_candidate(path):
+            continue
+        stat = _safe_file_stat(path)
+        size_bytes = int(stat.st_size) if stat is not None else 0
+        modified_ts = float(stat.st_mtime) if stat is not None else 0.0
+        header_ok = _db_black_glass_has_sqlite_header(path)
+        surface = _db_black_glass_surface(path)
+        backup_snapshot = _db_black_glass_is_backup_snapshot(path)
+        active_candidate = _db_black_glass_is_active_candidate(path)
+        databases.append(
+            {
+                "id": f"db{len(databases) + 1}",
+                "path": str(path),
+                "relative_path": _db_black_glass_relative(path, project_root),
+                "name": path.name,
+                "size_bytes": size_bytes,
+                "size": format_size_bytes(size_bytes),
+                "modified_ts": modified_ts,
+                "modified": _format_modified_ts(modified_ts),
+                "surface": surface,
+                "active_candidate": active_candidate,
+                "backup_snapshot": backup_snapshot,
+                "status": "backup_snapshot" if backup_snapshot else ("active_candidate" if active_candidate else "detected"),
+                "sqlite_header_ok": header_ok,
+                "integrity_check": "not_checked",
+                "tables": [],
+                "views": [],
+                "indexes": [],
+                "foreign_keys": [],
+                "errors": [] if header_ok else ["El encabezado no coincide con SQLite format 3."],
+                "total_rows": 0,
+                "table_count": 0,
+                "view_count": 0,
+                "empty_table_count": 0,
+                "tables_with_rows_count": 0,
+            }
+        )
+    return databases
+
+
+def _db_black_glass_sqlite_uri(path: Path) -> str:
+    try:
+        return path.expanduser().resolve().as_uri() + "?mode=ro"
+    except Exception:
+        return "file:" + str(path).replace("\\", "/") + "?mode=ro"
+
+
+def _db_black_glass_fetch_one_value(cursor: Any, sql: str) -> Any:
+    cursor.execute(sql)
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return row[0]
+
+
+def _db_black_glass_inspect_database(db: dict[str, Any], project_root: Path) -> None:
+    import sqlite3
+
+    if not db.get("sqlite_header_ok"):
+        return
+
+    path = Path(str(db["path"]))
+    try:
+        connection = sqlite3.connect(_db_black_glass_sqlite_uri(path), uri=True, timeout=2.0)
+        connection.row_factory = sqlite3.Row
+    except Exception as exc:
+        db.setdefault("errors", []).append(f"No se pudo abrir en modo lectura: {exc}")
+        return
+
+    try:
+        cursor = connection.cursor()
+        try:
+            cursor.execute("PRAGMA query_only=ON")
+        except Exception:
+            pass
+
+        try:
+            db["integrity_check"] = str(_db_black_glass_fetch_one_value(cursor, "PRAGMA integrity_check"))
+        except Exception as exc:
+            db["integrity_check"] = "error"
+            db.setdefault("errors", []).append(f"integrity_check falló: {exc}")
+
+        try:
+            cursor.execute(
+                "SELECT name, type, sql FROM sqlite_master "
+                "WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' "
+                "ORDER BY type, name"
+            )
+            sqlite_objects = [dict(row) for row in cursor.fetchall()]
+        except Exception as exc:
+            db.setdefault("errors", []).append(f"No se pudo leer sqlite_master: {exc}")
+            return
+
+        tables: list[dict[str, Any]] = []
+        views: list[dict[str, Any]] = []
+        foreign_keys: list[dict[str, Any]] = []
+        indexes_flat: list[dict[str, Any]] = []
+
+        for item in sqlite_objects:
+            object_name = str(item.get("name") or "")
+            object_type = str(item.get("type") or "")
+            object_sql = str(item.get("sql") or "")
+            if not object_name:
+                continue
+            record = {
+                "db_id": db["id"],
+                "db_relative_path": db["relative_path"],
+                "table_key": f"{db['id']}::{object_name}",
+                "name": object_name,
+                "type": object_type,
+                "sql": object_sql,
+                "columns": [],
+                "indexes": [],
+                "foreign_keys": [],
+                "row_count": None,
+                "has_rows": False,
+                "empty": True,
+                "errors": [],
+                "surface": db.get("surface", "unknown"),
+                "status": db.get("status", "detected"),
+            }
+
+            qname = _db_black_glass_qident(object_name)
+            try:
+                cursor.execute(f"PRAGMA table_info({qname})")
+                for col in cursor.fetchall():
+                    col_dict = dict(col)
+                    column = {
+                        "cid": int(col_dict.get("cid", 0)),
+                        "name": str(col_dict.get("name") or ""),
+                        "type": str(col_dict.get("type") or ""),
+                        "notnull": bool(col_dict.get("notnull")),
+                        "default": col_dict.get("dflt_value"),
+                        "pk": int(col_dict.get("pk") or 0),
+                        "nullable": not bool(col_dict.get("notnull")) and int(col_dict.get("pk") or 0) == 0,
+                        "is_real_fk": False,
+                    }
+                    record["columns"].append(column)
+            except Exception as exc:
+                record["errors"].append(f"PRAGMA table_info falló: {exc}")
+
+            if object_type == "table":
+                try:
+                    cursor.execute(f"SELECT COUNT(*) FROM {qname}")
+                    row = cursor.fetchone()
+                    row_count = int(row[0]) if row is not None else 0
+                    record["row_count"] = row_count
+                    record["has_rows"] = row_count > 0
+                    record["empty"] = row_count <= 0
+                except Exception as exc:
+                    record["errors"].append(f"COUNT(*) falló: {exc}")
+                    record["row_count"] = None
+
+                try:
+                    cursor.execute(f"PRAGMA foreign_key_list({qname})")
+                    for fk in cursor.fetchall():
+                        fk_dict = dict(fk)
+                        child_column = str(fk_dict.get("from") or "")
+                        parent_table = str(fk_dict.get("table") or "")
+                        parent_column = str(fk_dict.get("to") or "") or "id"
+                        rel = {
+                            "id": f"real_fk::{db['id']}::{object_name}::{child_column}::{parent_table}::{parent_column}::{fk_dict.get('id')}::{fk_dict.get('seq')}",
+                            "relationship_type": "real_fk",
+                            "kind": "real_fk",
+                            "db_id": db["id"],
+                            "db_relative_path": db["relative_path"],
+                            "surface": db.get("surface", "unknown"),
+                            "child_table": object_name,
+                            "child_column": child_column,
+                            "child_key": f"{db['id']}::{object_name}",
+                            "parent_table": parent_table,
+                            "parent_column": parent_column,
+                            "parent_key": f"{db['id']}::{parent_table}",
+                            "on_update": str(fk_dict.get("on_update") or ""),
+                            "on_delete": str(fk_dict.get("on_delete") or ""),
+                            "match": str(fk_dict.get("match") or ""),
+                            "confidence": "contract",
+                            "evidence": f"PRAGMA foreign_key_list({object_name})",
+                            "risk": False,
+                            "label": f"{parent_table}.{parent_column} → {object_name}.{child_column}",
+                        }
+                        record["foreign_keys"].append(rel)
+                        foreign_keys.append(rel)
+                except Exception as exc:
+                    record["errors"].append(f"PRAGMA foreign_key_list falló: {exc}")
+
+                fk_columns = {fk.get("child_column") for fk in record["foreign_keys"]}
+                for column in record["columns"]:
+                    if column.get("name") in fk_columns:
+                        column["is_real_fk"] = True
+
+                try:
+                    cursor.execute(f"PRAGMA index_list({qname})")
+                    for idx in cursor.fetchall():
+                        idx_dict = dict(idx)
+                        index_name = str(idx_dict.get("name") or "")
+                        index_record = {
+                            "name": index_name,
+                            "unique": bool(idx_dict.get("unique")),
+                            "origin": str(idx_dict.get("origin") or ""),
+                            "partial": bool(idx_dict.get("partial")),
+                            "columns": [],
+                            "table": object_name,
+                            "db_id": db["id"],
+                        }
+                        if index_name:
+                            try:
+                                cursor.execute(f"PRAGMA index_info({_db_black_glass_qident(index_name)})")
+                                index_record["columns"] = [str(row["name"] or "") for row in cursor.fetchall()]
+                            except Exception as exc:
+                                index_record["error"] = str(exc)
+                        record["indexes"].append(index_record)
+                        indexes_flat.append(index_record)
+                except Exception as exc:
+                    record["errors"].append(f"PRAGMA index_list falló: {exc}")
+
+                tables.append(record)
+            else:
+                views.append(record)
+
+        db["tables"] = tables
+        db["views"] = views
+        db["indexes"] = indexes_flat
+        db["foreign_keys"] = foreign_keys
+        db["table_count"] = len(tables)
+        db["view_count"] = len(views)
+        db["total_rows"] = sum(int(table.get("row_count") or 0) for table in tables)
+        db["empty_table_count"] = sum(1 for table in tables if not int(table.get("row_count") or 0))
+        db["tables_with_rows_count"] = sum(1 for table in tables if int(table.get("row_count") or 0) > 0)
+    except Exception as exc:
+        db.setdefault("errors", []).append(f"Error inspeccionando DB: {exc}")
+        db.setdefault("errors", []).append(traceback.format_exc(limit=6))
+    finally:
+        try:
+            connection.close()
+        except Exception:
+            pass
+
+
+def _db_black_glass_inspect_databases_parallel(databases: list[dict[str, Any]], project_root: Path) -> None:
+    if not databases:
+        return
+    workers = _db_black_glass_max_workers(len(databases))
+    if workers <= 1:
+        for db in databases:
+            _db_black_glass_inspect_database(db, project_root)
+        return
+
+    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="db-glass-inspect") as executor:
+        future_map = {executor.submit(_db_black_glass_inspect_database, db, project_root): db for db in databases}
+        for future in as_completed(future_map):
+            db = future_map[future]
+            try:
+                future.result()
+            except Exception as exc:
+                db.setdefault("errors", []).append(f"Worker inspect falló: {exc}")
+
+
+def _db_black_glass_evidence_reason(path: Path) -> tuple[str, str] | None:
+    name = path.name.lower()
+    suffix = path.suffix.lower()
+    norm = _db_black_glass_norm_path(path)
+    parts = [part.lower() for part in path.parts]
+
+    if name == "schema.prisma":
+        return "prisma_schema", "schema.prisma"
+    if suffix == ".sql" and "migrations" in parts:
+        return "migration_sql", "migrations/*.sql"
+    if suffix == ".sql":
+        return "sql", "archivo SQL"
+    if name in {"seed.ts", "seed.js", "seed.mjs", "seed.py"} or name.startswith("seed."):
+        return "seed", "seed script"
+    if name in {".env", ".env.local", ".env.development"} or name.startswith(".env"):
+        return "env", "archivo de variables de entorno"
+    if "/app/api/" in norm and any(token in norm for token in ("backoffice", "sync", "proveedores", "supplier", "tablet")):
+        return "api_route", "app/api relacionado a backoffice/sync/proveedores/tablet"
+    if any(token in norm for token in ("/tools/", "/scripts/")) and any(
+        token in norm for token in ("db", "prisma", "seed", "migration", "sync", "ingest", "bridge", "canonical", "tablet-pos", "sqlite")
+    ):
+        return "tool_or_script", "script/tool relacionado a db/prisma/seed/migration/sync/ingest/bridge/canonical/tablet-pos/sqlite"
+    return None
+
+
+def _db_black_glass_contains_database_url(path: Path) -> bool:
+    stat = _safe_file_stat(path)
+    if stat is None or int(stat.st_size) > DB_BLACK_GLASS_EVIDENCE_MAX_BYTES:
+        return False
+    if path.suffix.lower() not in {".ts", ".tsx", ".js", ".mjs", ".cjs", ".py", ".env", ".sql", ".prisma", ".json", ".md", ".txt", ""} and not path.name.lower().startswith(".env"):
+        return False
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    return "DATABASE_URL" in text
+
+
+def _db_black_glass_scan_evidence_file(path: Path, project_root: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    reason_info = _db_black_glass_evidence_reason(path)
+    database_url = _db_black_glass_contains_database_url(path)
+    if reason_info is None and not database_url:
+        return None
+    evidence_type = reason_info[0] if reason_info is not None else "database_url_reference"
+    reason = reason_info[1] if reason_info is not None else "contiene DATABASE_URL"
+    if database_url and "DATABASE_URL" not in reason:
+        reason = f"{reason}; contiene DATABASE_URL"
+    return _db_black_glass_file_record(path, project_root, evidence_type=evidence_type, reason=reason)
+
+
+def _db_black_glass_collect_evidence(scope: Path, project_root: Path) -> list[dict[str, Any]]:
+    evidence_by_path: dict[str, dict[str, Any]] = {}
+    paths = [path for path in _db_black_glass_iter_files(scope) if path.is_file()]
+    workers = _db_black_glass_max_workers(len(paths))
+    if workers <= 1:
+        scanned = [_db_black_glass_scan_evidence_file(path, project_root) for path in paths]
+    else:
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="db-glass-evidence") as executor:
+            scanned = list(executor.map(lambda item: _db_black_glass_scan_evidence_file(item, project_root), paths))
+
+    for record in scanned:
+        if not record:
+            continue
+        key = str(Path(str(record.get("path") or "")).expanduser().resolve())
+        evidence_by_path[key] = record
+    return sorted(evidence_by_path.values(), key=lambda item: (item.get("type", ""), item.get("relative_path", "")))
+
+
+def _db_black_glass_parse_list_literal(text: str) -> list[str]:
+    return [part.strip().strip('"\'') for part in text.split(",") if part.strip().strip('"\'')]
+
+
+def _db_black_glass_parse_prisma_schema(path: Path, project_root: Path) -> dict[str, Any]:
+    import re
+
+    schema_text = path.read_text(encoding="utf-8", errors="replace")
+    schema: dict[str, Any] = {
+        "path": str(path),
+        "relative_path": _db_black_glass_relative(path, project_root),
+        "datasources": [],
+        "models": [],
+        "relationships": [],
+        "errors": [],
+    }
+
+    for ds_match in re.finditer(r"datasource\s+(\w+)\s*\{(?P<body>.*?)^\}", schema_text, flags=re.S | re.M):
+        body = ds_match.group("body")
+        provider_match = re.search(r"provider\s*=\s*\"([^\"]+)\"", body)
+        url_env_match = re.search(r"url\s*=\s*env\(\s*\"([^\"]+)\"\s*\)", body)
+        url_literal_match = re.search(r"url\s*=\s*\"([^\"]+)\"", body)
+        url_value = ""
+        resolved_file = ""
+        if url_env_match:
+            url_value = f"env({url_env_match.group(1)})"
+        elif url_literal_match:
+            url_value = url_literal_match.group(1)
+            if url_value.startswith("file:"):
+                raw_file = url_value[5:]
+                resolved_file = str((path.parent / raw_file).expanduser().resolve())
+        schema["datasources"].append(
+            {
+                "name": ds_match.group(1),
+                "provider": provider_match.group(1) if provider_match else "",
+                "url": url_value,
+                "resolved_file": resolved_file,
+            }
+        )
+
+    model_map: dict[str, str] = {}
+    raw_models: list[dict[str, Any]] = []
+    for model_match in re.finditer(r"^model\s+(\w+)\s*\{(?P<body>.*?)^\}", schema_text, flags=re.S | re.M):
+        model_name = model_match.group(1)
+        body = model_match.group("body")
+        map_match = re.search(r"@@map\(\s*\"([^\"]+)\"\s*\)", body)
+        table_name = map_match.group(1) if map_match else model_name
+        model_record = {
+            "name": model_name,
+            "table": table_name,
+            "fields": [],
+            "map": table_name if map_match else "",
+        }
+        model_map[model_name] = table_name
+        for raw_line in body.splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("//") or line.startswith("@@"):
+                continue
+            parts = line.split()
+            if len(parts) < 2:
+                continue
+            field_name = parts[0]
+            field_type = parts[1].rstrip("?").rstrip("[]")
+            model_record["fields"].append(
+                {
+                    "name": field_name,
+                    "type": field_type,
+                    "raw": line,
+                    "is_id": "@id" in line,
+                    "is_relation": "@relation" in line,
+                }
+            )
+        raw_models.append(model_record)
+    schema["models"] = raw_models
+
+    for model_record in raw_models:
+        child_table = str(model_record.get("table") or model_record.get("name"))
+        for field in model_record.get("fields", []):
+            raw = str(field.get("raw") or "")
+            if "@relation" not in raw:
+                continue
+            rel_match = re.search(r"@relation\s*\((.*?)\)", raw)
+            if not rel_match:
+                continue
+            rel_body = rel_match.group(1)
+            fields_match = re.search(r"fields\s*:\s*\[([^\]]+)\]", rel_body)
+            refs_match = re.search(r"references\s*:\s*\[([^\]]+)\]", rel_body)
+            child_columns = _db_black_glass_parse_list_literal(fields_match.group(1)) if fields_match else []
+            parent_columns = _db_black_glass_parse_list_literal(refs_match.group(1)) if refs_match else []
+            target_model = str(field.get("type") or "")
+            parent_table = model_map.get(target_model, target_model)
+            if not child_columns and not parent_columns:
+                continue
+            relation = {
+                "id": f"prisma_relation::{schema['relative_path']}::{child_table}::{','.join(child_columns)}::{parent_table}::{','.join(parent_columns)}",
+                "relationship_type": "prisma_relation",
+                "kind": "prisma_relation",
+                "schema_path": schema["relative_path"],
+                "db_id": "",
+                "db_relative_path": "",
+                "surface": _db_black_glass_surface(path),
+                "child_table": child_table,
+                "child_column": child_columns[0] if child_columns else "",
+                "child_columns": child_columns,
+                "parent_table": parent_table,
+                "parent_column": parent_columns[0] if parent_columns else "id",
+                "parent_columns": parent_columns,
+                "confidence": "schema_contract",
+                "evidence": f"{schema['relative_path']} @relation",
+                "risk": False,
+                "label": f"{parent_table}.{parent_columns[0] if parent_columns else 'id'} → {child_table}.{child_columns[0] if child_columns else '?'}",
+            }
+            schema["relationships"].append(relation)
+    return schema
+
+
+def _db_black_glass_parse_prisma_schemas(evidence: list[dict[str, Any]], project_root: Path) -> list[dict[str, Any]]:
+    schemas: list[dict[str, Any]] = []
+    for item in evidence:
+        if item.get("type") != "prisma_schema":
+            continue
+        path = Path(str(item.get("path") or ""))
+        try:
+            schemas.append(_db_black_glass_parse_prisma_schema(path, project_root))
+        except Exception as exc:
+            schemas.append(
+                {
+                    "path": str(path),
+                    "relative_path": _db_black_glass_relative(path, project_root),
+                    "datasources": [],
+                    "models": [],
+                    "relationships": [],
+                    "errors": [f"No se pudo parsear schema.prisma: {exc}", traceback.format_exc(limit=5)],
+                }
+            )
+    return schemas
+
+
+def _db_black_glass_norm_name(value: str) -> str:
+    import re
+
+    value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value or "")
+    value = value.replace("-", "_").replace(" ", "_").lower()
+    value = re.sub(r"[^a-z0-9_]+", "", value)
+    value = re.sub(r"_+", "_", value).strip("_")
+    return value
+
+
+def _db_black_glass_singular(value: str) -> str:
+    cleaned = _db_black_glass_norm_name(value)
+    if cleaned.endswith("ies") and len(cleaned) > 3:
+        return cleaned[:-3] + "y"
+    if cleaned.endswith("ses") and len(cleaned) > 3:
+        return cleaned[:-2]
+    if cleaned.endswith("s") and not cleaned.endswith("ss") and len(cleaned) > 2:
+        return cleaned[:-1]
+    return cleaned
+
+
+def _db_black_glass_column_base(column_name: str) -> str:
+    norm = _db_black_glass_norm_name(column_name)
+    if norm.endswith("_id"):
+        return norm[:-3]
+    if norm.endswith("id") and len(norm) > 2:
+        return norm[:-2]
+    return ""
+
+
+def _db_black_glass_infer_relationships(databases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    inferred: list[dict[str, Any]] = []
+    existing_fk = {
+        (rel.get("db_id"), rel.get("child_table"), rel.get("child_column"), rel.get("parent_table"), rel.get("parent_column"))
+        for db in databases
+        for rel in db.get("foreign_keys", [])
+    }
+
+    common_columns = {
+        "id",
+        "created_id",
+        "updated_id",
+        "deleted_id",
+        "external_id",
+        "legacy_id",
+    }
+
+    for db in databases:
+        tables = list(db.get("tables", []))
+        table_by_norm: dict[str, dict[str, Any]] = {}
+        table_aliases: dict[str, str] = {}
+        for table in tables:
+            table_name = str(table.get("name") or "")
+            norm = _db_black_glass_norm_name(table_name)
+            singular = _db_black_glass_singular(table_name)
+            table_by_norm[norm] = table
+            table_aliases[norm] = norm
+            table_aliases[singular] = norm
+            table_aliases[f"{singular}_id"] = norm
+            table_aliases[f"{norm}_id"] = norm
+
+        for child in tables:
+            child_name = str(child.get("name") or "")
+            for column in child.get("columns", []):
+                column_name = str(column.get("name") or "")
+                norm_column = _db_black_glass_norm_name(column_name)
+                if norm_column in common_columns:
+                    continue
+                base = _db_black_glass_column_base(column_name)
+                if not base:
+                    continue
+                target_norm = table_aliases.get(base)
+                confidence = ""
+                if target_norm:
+                    confidence = "high"
+                else:
+                    for alias, norm in table_aliases.items():
+                        if base == alias or base == _db_black_glass_singular(alias):
+                            target_norm = norm
+                            confidence = "medium"
+                            break
+                        if base and (base in alias or alias in base) and len(base) >= 4:
+                            target_norm = norm
+                            confidence = "medium"
+                            break
+                if not target_norm or target_norm not in table_by_norm:
+                    continue
+                parent = table_by_norm[target_norm]
+                parent_name = str(parent.get("name") or "")
+                if parent_name == child_name:
+                    continue
+                parent_column = "id"
+                pk_columns = [str(col.get("name") or "") for col in parent.get("columns", []) if int(col.get("pk") or 0) > 0]
+                if pk_columns:
+                    parent_column = pk_columns[0]
+                key = (db.get("id"), child_name, column_name, parent_name, parent_column)
+                if key in existing_fk:
+                    continue
+                rel = {
+                    "id": f"inferred_name_match::{db['id']}::{child_name}::{column_name}::{parent_name}::{parent_column}",
+                    "relationship_type": "inferred_name_match",
+                    "kind": "inferred_name_match",
+                    "db_id": db["id"],
+                    "db_relative_path": db.get("relative_path", ""),
+                    "surface": db.get("surface", "unknown"),
+                    "child_table": child_name,
+                    "child_column": column_name,
+                    "child_key": f"{db['id']}::{child_name}",
+                    "parent_table": parent_name,
+                    "parent_column": parent_column,
+                    "parent_key": f"{db['id']}::{parent_name}",
+                    "confidence": confidence or "medium",
+                    "evidence": f"Nombre de columna sospechoso: {column_name}",
+                    "risk": True,
+                    "label": f"{parent_name}.{parent_column} → {child_name}.{column_name}",
+                }
+                inferred.append(rel)
+    return sorted(inferred, key=lambda item: (str(item.get("db_id")), str(item.get("parent_table")), str(item.get("child_table"))))
+
+
+def _db_black_glass_attach_prisma_relations_to_databases(
+    prisma_schemas: list[dict[str, Any]],
+    databases: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    db_by_relpath = {str(db.get("relative_path", "")): db for db in databases}
+    table_lookup: dict[tuple[str, str], str] = {}
+    for db in databases:
+        for table in db.get("tables", []):
+            table_lookup[(str(db.get("id")), _db_black_glass_norm_name(str(table.get("name") or "")))] = str(table.get("name") or "")
+
+    relationships: list[dict[str, Any]] = []
+    for schema in prisma_schemas:
+        schema_db_id = ""
+        schema_db_rel = ""
+        for datasource in schema.get("datasources", []):
+            resolved_file = str(datasource.get("resolved_file") or "")
+            if not resolved_file:
+                continue
+            for db in databases:
+                try:
+                    if Path(str(db.get("path"))).expanduser().resolve() == Path(resolved_file).expanduser().resolve():
+                        schema_db_id = str(db.get("id"))
+                        schema_db_rel = str(db.get("relative_path"))
+                        break
+                except Exception:
+                    continue
+            if schema_db_id:
+                break
+        if not schema_db_id and len(databases) == 1:
+            schema_db_id = str(databases[0].get("id"))
+            schema_db_rel = str(databases[0].get("relative_path"))
+
+        for rel in schema.get("relationships", []):
+            rel = dict(rel)
+            if schema_db_id:
+                parent_table_norm = _db_black_glass_norm_name(str(rel.get("parent_table") or ""))
+                child_table_norm = _db_black_glass_norm_name(str(rel.get("child_table") or ""))
+                parent_actual = table_lookup.get((schema_db_id, parent_table_norm), str(rel.get("parent_table") or ""))
+                child_actual = table_lookup.get((schema_db_id, child_table_norm), str(rel.get("child_table") or ""))
+                rel["db_id"] = schema_db_id
+                rel["db_relative_path"] = schema_db_rel
+                rel["parent_table"] = parent_actual
+                rel["child_table"] = child_actual
+                rel["parent_key"] = f"{schema_db_id}::{parent_actual}"
+                rel["child_key"] = f"{schema_db_id}::{child_actual}"
+                rel["label"] = f"{parent_actual}.{rel.get('parent_column') or 'id'} → {child_actual}.{rel.get('child_column') or '?'}"
+            relationships.append(rel)
+    return relationships
+
+
+def _db_black_glass_flat_tables(databases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    tables: list[dict[str, Any]] = []
+    for db in databases:
+        for table in db.get("tables", []):
+            record = dict(table)
+            record["db_name"] = db.get("name", "")
+            record["db_relative_path"] = db.get("relative_path", "")
+            record["db_id"] = db.get("id", "")
+            record["surface"] = db.get("surface", "unknown")
+            record["active_candidate"] = db.get("active_candidate", False)
+            record["backup_snapshot"] = db.get("backup_snapshot", False)
+            tables.append(record)
+    return tables
+
+
+def _db_black_glass_table_degree(relationships: list[dict[str, Any]]) -> dict[str, int]:
+    degree: dict[str, int] = {}
+    for rel in relationships:
+        for key in (str(rel.get("parent_key") or ""), str(rel.get("child_key") or "")):
+            if key:
+                degree[key] = degree.get(key, 0) + 1
+    return degree
+
+
+def _db_black_glass_find_orphan_like_columns(tables: list[dict[str, Any]], real_fk: list[dict[str, Any]], inferred: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    real_cols = {(rel.get("db_id"), rel.get("child_table"), rel.get("child_column")) for rel in real_fk}
+    inferred_cols = {(rel.get("db_id"), rel.get("child_table"), rel.get("child_column")) for rel in inferred}
+    results: list[dict[str, Any]] = []
+    for table in tables:
+        for column in table.get("columns", []):
+            column_name = str(column.get("name") or "")
+            if not _db_black_glass_column_base(column_name):
+                continue
+            key = (table.get("db_id"), table.get("name"), column_name)
+            if key in real_cols or key in inferred_cols:
+                continue
+            results.append(
+                {
+                    "db_id": table.get("db_id", ""),
+                    "db_relative_path": table.get("db_relative_path", ""),
+                    "table": table.get("name", ""),
+                    "column": column_name,
+                    "type": column.get("type", ""),
+                    "reason": "Parece columna *_id sin FK real ni match inferido.",
+                }
+            )
+    return results
+
+
+def _db_black_glass_duplicate_logical_tables(tables: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_name: dict[str, list[dict[str, Any]]] = {}
+    for table in tables:
+        by_name.setdefault(_db_black_glass_norm_name(str(table.get("name") or "")), []).append(table)
+    duplicates: list[dict[str, Any]] = []
+    for norm, items in by_name.items():
+        db_ids = {str(item.get("db_id")) for item in items}
+        if norm and len(db_ids) > 1:
+            duplicates.append(
+                {
+                    "logical_table": norm,
+                    "count": len(items),
+                    "locations": [f"{item.get('db_relative_path')}::{item.get('name')}" for item in items],
+                }
+            )
+    return duplicates
+
+
+def _db_black_glass_build_mermaid_for_db(db: dict[str, Any], relationships: list[dict[str, Any]]) -> str:
+    lines = ["erDiagram"]
+    tables = list(db.get("tables", []))
+    if not tables:
+        lines.append("  EMPTY_DB {")
+        lines.append("    string note")
+        lines.append("  }")
+        return "\n".join(lines) + "\n"
+
+    for table in tables:
+        table_name = _db_black_glass_norm_name(str(table.get("name") or "table")) or "table"
+        lines.append(f"  {table_name} {{")
+        columns = list(table.get("columns", []))[:80]
+        if not columns:
+            lines.append("    string no_columns")
+        for column in columns:
+            col_type = _db_black_glass_norm_name(str(column.get("type") or "string")) or "string"
+            col_name = _db_black_glass_norm_name(str(column.get("name") or "column")) or "column"
+            badges = []
+            if int(column.get("pk") or 0) > 0:
+                badges.append("PK")
+            if column.get("is_real_fk"):
+                badges.append("FK")
+            badge = " " + " ".join(badges) if badges else ""
+            lines.append(f"    {col_type} {col_name}{badge}")
+        lines.append("  }")
+
+    for rel in relationships:
+        if str(rel.get("db_id")) != str(db.get("id")):
+            continue
+        parent = _db_black_glass_norm_name(str(rel.get("parent_table") or ""))
+        child = _db_black_glass_norm_name(str(rel.get("child_table") or ""))
+        if not parent or not child:
+            continue
+        label = str(rel.get("relationship_type") or "rel")
+        lines.append(f"  {parent} ||--o{{ {child} : \"{label}\"")
+    return "\n".join(lines) + "\n"
+
+
+def _db_black_glass_make_model(selected_scope: Path, project_root: Path, databases: list[dict[str, Any]], evidence: list[dict[str, Any]], prisma_schemas: list[dict[str, Any]]) -> dict[str, Any]:
+    prisma_relationships = _db_black_glass_attach_prisma_relations_to_databases(prisma_schemas, databases)
+    inferred_relationships = _db_black_glass_infer_relationships(databases)
+    real_relationships = [rel for db in databases for rel in db.get("foreign_keys", [])]
+    all_relationships = real_relationships + prisma_relationships + inferred_relationships
+    tables = _db_black_glass_flat_tables(databases)
+    degree = _db_black_glass_table_degree(all_relationships)
+    for table in tables:
+        table["degree"] = degree.get(str(table.get("table_key") or ""), 0)
+        table["score"] = int(table.get("degree") or 0) * 1000 + int(table.get("row_count") or 0)
+    for db in databases:
+        for table in db.get("tables", []):
+            table["degree"] = degree.get(str(table.get("table_key") or ""), 0)
+            table["score"] = int(table.get("degree") or 0) * 1000 + int(table.get("row_count") or 0)
+
+    orphan_like_columns = _db_black_glass_find_orphan_like_columns(tables, real_relationships, inferred_relationships)
+    duplicate_logical_tables = _db_black_glass_duplicate_logical_tables(tables)
+    empty_tables = [
+        {
+            "db_id": table.get("db_id", ""),
+            "db_relative_path": table.get("db_relative_path", ""),
+            "table": table.get("name", ""),
+            "columns": len(table.get("columns", [])),
+        }
+        for table in tables if not int(table.get("row_count") or 0)
+    ]
+    mermaid_by_db = {
+        str(db.get("id")): _db_black_glass_build_mermaid_for_db(db, all_relationships)
+        for db in databases
+    }
+    issues = [
+        {"db_id": db.get("id"), "db_relative_path": db.get("relative_path"), "error": err}
+        for db in databases
+        for err in db.get("errors", [])
+    ]
+    for schema in prisma_schemas:
+        for err in schema.get("errors", []):
+            issues.append({"schema": schema.get("relative_path", ""), "error": err})
+
+    metrics = {
+        "database_count": len(databases),
+        "table_count": len(tables),
+        "view_count": sum(len(db.get("views", [])) for db in databases),
+        "total_rows": sum(int(db.get("total_rows") or 0) for db in databases),
+        "real_fk_count": len(real_relationships),
+        "prisma_relation_count": len(prisma_relationships),
+        "inferred_relation_count": len(inferred_relationships),
+        "empty_db_count": sum(1 for db in databases if not int(db.get("total_rows") or 0)),
+        "attached_evidence_count": len(evidence),
+        "error_count": len(issues),
+    }
+    return {
+        "meta": {
+            "title": "DB Glass ERD",
+            "subtitle": "Mapa visual de bases, tablas, columnas y relaciones reales/inferidas.",
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "selected_scope": str(selected_scope),
+            "selected_scope_relative": _db_black_glass_relative(selected_scope, project_root),
+            "project_root": str(project_root),
+            "downloads_root": str(_black_glass_downloads_root()),
+            "board_table_limit": DB_BLACK_GLASS_BOARD_TABLE_LIMIT,
+        },
+        "metrics": metrics,
+        "databases": databases,
+        "tables": sorted(tables, key=lambda item: (-int(item.get("score") or 0), str(item.get("db_relative_path")), str(item.get("name")))),
+        "relationships": {
+            "real_fk": real_relationships,
+            "prisma": prisma_relationships,
+            "inferred": inferred_relationships,
+            "all": all_relationships,
+        },
+        "evidence": evidence,
+        "prisma_schemas": prisma_schemas,
+        "diagnostics": {
+            "orphan_like_columns": orphan_like_columns,
+            "duplicate_logical_tables": duplicate_logical_tables,
+            "empty_tables": empty_tables,
+            "issues": issues,
+        },
+        "mermaid": mermaid_by_db,
+    }
+
+
+def _db_black_glass_write_json(path: Path, model: dict[str, Any]) -> None:
+    path.write_text(json.dumps(model, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _db_black_glass_write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) -> None:
+    import csv
+
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({key: row.get(key, "") for key in fieldnames})
+
+
+def _db_black_glass_write_artifacts(downloads_root: Path, scope_slug: str, stamp: str, model: dict[str, Any]) -> dict[str, Any]:
+    html_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}.html"
+    raw_json_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}_raw.json"
+    tables_csv_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}_tables.csv"
+    relationships_csv_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}_relationships.csv"
+    evidence_csv_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}_evidence.csv"
+
+    html_path.write_text(build_db_black_glass_erd_html(model), encoding="utf-8")
+    _db_black_glass_write_json(raw_json_path, model)
+
+    table_rows = []
+    for table in model.get("tables", []):
+        pk_columns = [str(col.get("name") or "") for col in table.get("columns", []) if int(col.get("pk") or 0) > 0]
+        fk_columns = [str(col.get("name") or "") for col in table.get("columns", []) if col.get("is_real_fk")]
+        table_rows.append(
+            {
+                "db_id": table.get("db_id", ""),
+                "db_relative_path": table.get("db_relative_path", ""),
+                "surface": table.get("surface", ""),
+                "status": table.get("status", ""),
+                "table": table.get("name", ""),
+                "row_count": table.get("row_count", ""),
+                "column_count": len(table.get("columns", [])),
+                "pk_columns": ";".join(pk_columns),
+                "fk_columns": ";".join(fk_columns),
+                "degree": table.get("degree", 0),
+                "empty": table.get("empty", ""),
+            }
+        )
+    _db_black_glass_write_csv(
+        tables_csv_path,
+        ["db_id", "db_relative_path", "surface", "status", "table", "row_count", "column_count", "pk_columns", "fk_columns", "degree", "empty"],
+        table_rows,
+    )
+
+    rel_rows = []
+    for rel in model.get("relationships", {}).get("all", []):
+        rel_rows.append(
+            {
+                "relationship_type": rel.get("relationship_type", ""),
+                "db_id": rel.get("db_id", ""),
+                "db_relative_path": rel.get("db_relative_path", ""),
+                "surface": rel.get("surface", ""),
+                "parent_table": rel.get("parent_table", ""),
+                "parent_column": rel.get("parent_column", ""),
+                "child_table": rel.get("child_table", ""),
+                "child_column": rel.get("child_column", ""),
+                "confidence": rel.get("confidence", ""),
+                "risk": rel.get("risk", ""),
+                "evidence": rel.get("evidence", ""),
+            }
+        )
+    _db_black_glass_write_csv(
+        relationships_csv_path,
+        ["relationship_type", "db_id", "db_relative_path", "surface", "parent_table", "parent_column", "child_table", "child_column", "confidence", "risk", "evidence"],
+        rel_rows,
+    )
+
+    _db_black_glass_write_csv(
+        evidence_csv_path,
+        ["relative_path", "type", "size_bytes", "size", "modified", "surface", "backup_snapshot", "reason"],
+        list(model.get("evidence", [])),
+    )
+
+    mermaid_paths: list[Path] = []
+    for db in model.get("databases", []):
+        db_id = str(db.get("id") or "db")
+        db_slug = _black_glass_safe_scope_slug(Path(str(db.get("relative_path") or db_id)))
+        mmd_path = downloads_root / f"prisma_db_black_glass_erd_{scope_slug}_{stamp}_{db_slug}.mmd"
+        mmd_path.write_text(str(model.get("mermaid", {}).get(db_id, "erDiagram\n")), encoding="utf-8")
+        mermaid_paths.append(mmd_path)
+
+    return {
+        "html": html_path,
+        "raw_json": raw_json_path,
+        "tables_csv": tables_csv_path,
+        "relationships_csv": relationships_csv_path,
+        "evidence_csv": evidence_csv_path,
+        "mermaid_paths": mermaid_paths,
+    }
+
+
+def build_db_black_glass_erd_html(model: dict[str, Any]) -> str:
+    meta = model.setdefault("meta", {})
+    metrics = model.get("metrics", {})
+    table_count = int(metrics.get("table_count") or len(model.get("tables", [])) or 0)
+    rel_count = int(metrics.get("real_fk_count") or 0) + int(metrics.get("prisma_relation_count") or 0) + int(metrics.get("inferred_relation_count") or 0)
+    density_mode = "high" if table_count > 80 or rel_count > 140 else "normal"
+    initial_limit = int(meta.get("board_table_limit") or DB_BLACK_GLASS_BOARD_TABLE_LIMIT or 40)
+    storage_key_base = "db-glass-erd-board-v2:" + safe_slug(str(meta.get("project_root") or "")) + ":" + safe_slug(str(meta.get("selected_scope_relative") or meta.get("selected_scope") or "scope"))
+    meta["layout_version"] = "db-glass-erd-board-v2"
+    meta["initial_visible_limit"] = initial_limit
+    meta["relationship_density_mode"] = density_mode
+    meta["saved_layout_storage_key_base"] = storage_key_base
+    model["ui"] = {
+        **dict(model.get("ui") or {}),
+        "layout_version": "db-glass-erd-board-v2",
+        "initial_visible_limit": initial_limit,
+        "relationship_density_mode": density_mode,
+        "saved_layout_storage_key_base": storage_key_base,
+    }
+
+    safe_title = html.escape(str(meta.get("title", "DB Glass ERD")), quote=True)
+    model_json = _json_for_script(model)
+    template = r"""<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__SAFE_TITLE__</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg0:#03060a;
+      --bg1:#08111a;
+      --panel:rgba(10, 18, 27, .78);
+      --panel2:rgba(15, 25, 38, .88);
+      --line:rgba(139, 229, 255, .18);
+      --line2:rgba(198, 239, 255, .32);
+      --text:#eaf8ff;
+      --muted:#90a8b9;
+      --cyan:#89edff;
+      --blue:#84a7ff;
+      --green:#82ffc4;
+      --amber:#ffd28a;
+      --red:#ff7e8e;
+      --violet:#bca9ff;
+      --lane:#122031;
+      --mono:"Cascadia Mono","SFMono-Regular",Consolas,monospace;
+      --sans:"Segoe UI",Aptos,system-ui,sans-serif;
+      --card-w: 286px;
+      --card-radius: 18px;
+      --shadow: rgba(0,0,0,.48);
+    }
+    * { box-sizing:border-box; }
+    html, body { height:100%; margin:0; overflow:hidden; }
+    body {
+      color:var(--text);
+      font-family:var(--sans);
+      background:
+        radial-gradient(circle at 16% 7%, rgba(77, 210, 245, .16), transparent 33rem),
+        radial-gradient(circle at 78% 0%, rgba(130, 96, 255, .13), transparent 30rem),
+        linear-gradient(135deg, #03060a 0%, #101722 50%, #040509 100%);
+    }
+    button, input, select { font: inherit; }
+    button { cursor:pointer; }
+    .app-shell { height:100vh; display:grid; grid-template-rows:auto auto 1fr; gap:.72rem; padding:.85rem; min-width:0; }
+    .glass {
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.016)), var(--panel);
+      box-shadow:0 1.3rem 3rem var(--shadow), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(18px);
+    }
+    .hero { border-radius:22px; padding:1rem; display:grid; grid-template-columns:minmax(18rem, 1fr) auto; gap:1rem; overflow:hidden; position:relative; }
+    .hero:before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.46; background:repeating-linear-gradient(100deg, rgba(255,255,255,.025) 0 1px, transparent 1px 12px); }
+    .hero > * { position:relative; z-index:1; }
+    .eyebrow { margin:0 0 .35rem; color:var(--cyan); font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; }
+    h1 { margin:0; font-size:clamp(1.55rem, 2.5vw, 2.7rem); line-height:1.05; letter-spacing:-.04em; }
+    .subtitle { margin:.42rem 0 0; color:#b9ccda; max-width:60rem; }
+    .meta-line { margin:.55rem 0 0; color:#7f97a8; font: .76rem var(--mono); overflow-wrap:anywhere; }
+    .metrics { display:grid; grid-template-columns:repeat(4, minmax(7rem, 1fr)); gap:.54rem; min-width:min(54vw, 54rem); }
+    .metric { border:1px solid rgba(142,229,255,.15); border-radius:16px; padding:.72rem .82rem; background:rgba(255,255,255,.045); }
+    .metric b { display:block; font:800 1.18rem var(--mono); color:#fff; }
+    .metric span { display:block; margin-top:.18rem; color:#8aa2b3; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; }
+    .toolbar { border-radius:20px; padding:.72rem; display:flex; gap:.55rem; align-items:center; flex-wrap:wrap; }
+    .search { flex:1 1 24rem; min-width:16rem; height:2.42rem; padding:0 .85rem; color:var(--text); border:1px solid rgba(174,231,255,.22); border-radius:14px; outline:none; background:rgba(4,8,13,.72); font:.88rem var(--sans); }
+    .search:focus { border-color:rgba(137,237,255,.72); box-shadow:0 0 0 3px rgba(137,237,255,.12); }
+    .btn, .chip {
+      height:2.42rem; border:1px solid rgba(174,231,255,.2); border-radius:14px; color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)), rgba(9,16,24,.84);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.11);
+      padding:0 .78rem; font-weight:750; font-size:.76rem; white-space:nowrap;
+    }
+    .btn:hover, .chip:hover { border-color:rgba(137,237,255,.45); transform:translateY(-1px); }
+    .chip.active, .btn.active { color:#031016; background:linear-gradient(180deg, rgba(137,237,255,.95), rgba(72,190,220,.78)); border-color:rgba(190,248,255,.72); }
+    .btn.warn.active { background:linear-gradient(180deg, rgba(255,210,138,.96), rgba(240,161,83,.78)); }
+    .tabs { display:flex; gap:.35rem; padding:.18rem; border-radius:15px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.08); }
+    .workspace { min-height:0; display:grid; grid-template-columns:260px minmax(0, 1fr) 0px; gap:.72rem; transition:grid-template-columns 160ms ease; }
+    .workspace.detail-open { grid-template-columns:260px minmax(0, 1fr) 360px; }
+    .workspace.left-hidden { grid-template-columns:0 minmax(0, 1fr) 0px; }
+    .workspace.left-hidden.detail-open { grid-template-columns:0 minmax(0, 1fr) 360px; }
+    .workspace.focus-canvas { grid-template-columns:0 minmax(0, 1fr) 0px; }
+    .workspace.focus-canvas.detail-open { grid-template-columns:0 minmax(0, 1fr) 0px; }
+    .side-panel, .detail-panel { min-width:0; min-height:0; border-radius:22px; overflow:hidden; display:grid; grid-template-rows:auto 1fr; }
+    .workspace.left-hidden .side-panel, .workspace.focus-canvas .side-panel, .workspace.focus-canvas .detail-panel { display:none; }
+    .side-head { padding:.75rem; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+    .side-head h2 { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:#bfefff; }
+    .db-list, .detail-scroll { overflow:auto; padding:.72rem; }
+    .db-item { border:1px solid rgba(137,237,255,.16); border-radius:16px; padding:.7rem; background:rgba(255,255,255,.035); margin-bottom:.58rem; cursor:pointer; }
+    .db-item:hover, .db-item.active { border-color:rgba(137,237,255,.54); background:rgba(137,237,255,.08); }
+    .db-item b { display:block; font-size:.84rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .db-item small { display:block; color:var(--muted); margin-top:.22rem; font:.68rem var(--mono); overflow-wrap:anywhere; }
+    .canvas-shell { min-width:0; min-height:0; border-radius:22px; overflow:hidden; display:grid; grid-template-rows:auto 1fr; position:relative; }
+    .canvas-topbar { border-bottom:1px solid var(--line); padding:.55rem .62rem; display:flex; align-items:center; gap:.45rem; flex-wrap:wrap; background:rgba(0,0,0,.14); }
+    .density-note { color:#ffd28a; font:.72rem var(--mono); margin-left:auto; }
+    .board-scroll { min-height:0; overflow:auto; position:relative; cursor:grab; background:
+        radial-gradient(circle at 30% 20%, rgba(137,237,255,.08), transparent 34rem),
+        linear-gradient(rgba(137,237,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(137,237,255,.045) 1px, transparent 1px),
+        rgba(3,7,11,.78);
+      background-size:auto, 42px 42px, 42px 42px, auto;
+    }
+    .board-scroll.panning { cursor:grabbing; }
+    .board-world { position:relative; width:2600px; height:1600px; transform-origin:0 0; transition:transform 120ms ease; }
+    .rel-layer, .mini-svg { position:absolute; inset:0; overflow:visible; pointer-events:none; z-index:4; }
+    .rel-layer .rel-hit { pointer-events:stroke; cursor:pointer; opacity:0; stroke-width:15; fill:none; }
+    .rel-path { fill:none; stroke-width:2.1; opacity:.38; filter:drop-shadow(0 0 5px rgba(137,237,255,.16)); transition:opacity 140ms ease, stroke-width 140ms ease; }
+    .rel-path.real_fk { stroke:var(--green); opacity:.58; }
+    .rel-path.prisma_relation, .rel-path.prisma { stroke:var(--blue); opacity:.38; stroke-width:1.65; }
+    .rel-path.inferred_name_match, .rel-path.inferred { stroke:var(--amber); opacity:.32; stroke-dasharray:10 8; }
+    .rel-path.risk { stroke:var(--red); opacity:.56; stroke-dasharray:6 7; }
+    .rel-path.dim { opacity:.08; }
+    .rel-path.hot { opacity:1; stroke-width:3.2; }
+    .rel-label { pointer-events:none; font:700 11px var(--mono); fill:#eaf8ff; paint-order:stroke; stroke:rgba(3,7,11,.86); stroke-width:5px; opacity:0; }
+    .labels-on .rel-label, .rel-label.hot { opacity:.95; }
+    .lane { position:absolute; z-index:1; border:1px solid rgba(137,237,255,.14); border-radius:28px; background:linear-gradient(180deg, rgba(137,237,255,.055), rgba(255,255,255,.018)); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+    .lane:before { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(137,237,255,.055), transparent 33%, rgba(132,167,255,.035)); }
+    .lane-head { position:sticky; left:0; top:0; z-index:2; display:flex; gap:.7rem; align-items:center; padding:1rem 1.1rem; color:#dff8ff; }
+    .lane-title { font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .lane-metric { color:#8fb3c5; font:.72rem var(--mono); }
+    .table-card { position:absolute; z-index:5; width:var(--card-w); min-height:178px; border:1px solid rgba(137,237,255,.20); border-radius:var(--card-radius); background:
+        linear-gradient(180deg, rgba(255,255,255,.088), rgba(255,255,255,.025)), rgba(8,15,23,.94);
+      box-shadow:0 18px 38px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.12);
+      overflow:hidden; user-select:none; transition: box-shadow 140ms ease, opacity 140ms ease, border-color 140ms ease, transform 80ms linear;
+    }
+    .table-card:hover { border-color:rgba(137,237,255,.56); box-shadow:0 22px 48px rgba(0,0,0,.48), 0 0 26px rgba(137,237,255,.10); }
+    .table-card.selected { border-color:rgba(137,237,255,.95); box-shadow:0 0 0 2px rgba(137,237,255,.20), 0 26px 58px rgba(0,0,0,.52), 0 0 42px rgba(137,237,255,.22); }
+    .table-card.dim { opacity:.22; }
+    .table-card.connected { opacity:1; }
+    .table-head-card { padding:.72rem .78rem .62rem; border-bottom:1px solid rgba(137,237,255,.16); background:rgba(137,237,255,.055); cursor:grab; }
+    .table-card.dragging .table-head-card { cursor:grabbing; }
+    .table-name { display:flex; align-items:center; justify-content:space-between; gap:.4rem; font-weight:900; letter-spacing:-.02em; }
+    .table-name span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .table-badges { margin-top:.45rem; display:flex; gap:.28rem; flex-wrap:wrap; }
+    .badge { border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.13rem .4rem; font:700 .62rem var(--mono); color:#c5d9e5; background:rgba(255,255,255,.045); }
+    .badge.pk { color:#051012; background:var(--cyan); }
+    .badge.fk { color:#04120c; background:var(--green); }
+    .badge.null { color:#1a1000; background:var(--amber); }
+    .badge.empty { color:#ffd7d7; border-color:rgba(255,126,142,.38); }
+    .columns { max-height:204px; overflow:auto; padding:.58rem .66rem .7rem; }
+    .col { display:grid; grid-template-columns:auto 1fr auto; gap:.35rem; align-items:center; min-height:1.35rem; font:.72rem var(--mono); color:#c8dce8; border-bottom:1px solid rgba(255,255,255,.055); }
+    .col:last-child { border-bottom:0; }
+    .col-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .col-type { color:#7f98a9; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .more-cols { color:#8fb3c5; font:.7rem var(--mono); padding:.35rem .05rem 0; }
+    .detail-card { border:1px solid rgba(137,237,255,.16); border-radius:16px; padding:.78rem; background:rgba(255,255,255,.035); margin-bottom:.62rem; }
+    .detail-card h3 { margin:.1rem 0 .55rem; font-size:1rem; }
+    .kv { display:grid; grid-template-columns:7rem minmax(0,1fr); gap:.6rem; padding:.22rem 0; color:#b9cddb; font:.74rem var(--mono); }
+    .kv b { color:#84eaff; }
+    details { border:1px solid rgba(137,237,255,.14); border-radius:14px; padding:.58rem; margin:.55rem 0; background:rgba(0,0,0,.16); }
+    summary { cursor:pointer; color:#bfefff; font-weight:800; }
+    pre { white-space:pre-wrap; overflow:auto; color:#bcd2df; font:.7rem var(--mono); max-height:22rem; }
+    .toast { position:fixed; left:50%; bottom:1rem; transform:translateX(-50%); z-index:50; border:1px solid rgba(137,237,255,.32); border-radius:999px; padding:.65rem .9rem; background:rgba(7,14,22,.92); color:#eaf8ff; box-shadow:0 1rem 2rem rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity 160ms ease; }
+    .toast.show { opacity:1; }
+    .minimap { position:absolute; right:1rem; bottom:1rem; z-index:20; width:220px; height:148px; border:1px solid rgba(137,237,255,.28); border-radius:18px; background:rgba(3,8,13,.78); box-shadow:0 .8rem 2rem rgba(0,0,0,.36); overflow:hidden; }
+    .minimap-title { position:absolute; top:.42rem; left:.6rem; color:#8fb3c5; font:800 .62rem var(--mono); letter-spacing:.08em; text-transform:uppercase; z-index:2; }
+    .mini-svg { width:100%; height:100%; }
+    .mini-table { fill:rgba(137,237,255,.34); }
+    .mini-viewport { fill:rgba(137,237,255,.08); stroke:rgba(137,237,255,.86); stroke-width:2; }
+    .constellation { padding:2rem; color:#aac0ce; }
+    .constellation-grid { display:flex; flex-wrap:wrap; gap:1.4rem; align-content:flex-start; }
+    .star { border:1px solid rgba(137,237,255,.18); border-radius:999px; padding:.55rem .75rem; background:rgba(137,237,255,.06); font:.74rem var(--mono); }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns:1fr; }
+      .metrics { min-width:0; grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .workspace, .workspace.detail-open { grid-template-columns:0 minmax(0,1fr) 0; }
+      .side-panel, .detail-panel { display:none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero glass">
+      <section>
+        <p class="eyebrow">Database cartography</p>
+        <h1>DB Glass ERD</h1>
+        <p class="subtitle">Mapa visual de bases, tablas, columnas y relaciones reales/inferidas.</p>
+        <p class="meta-line" id="scopeLine"></p>
+      </section>
+      <section class="metrics" id="metrics"></section>
+    </header>
+
+    <section class="toolbar glass">
+      <input id="globalSearch" class="search" type="search" placeholder="Buscar DB, tabla, columna, relación o evidencia" autocomplete="off">
+      <div class="tabs">
+        <button class="btn active" data-view="erd">ERD Board</button>
+        <button class="btn" data-view="constellation">Constellation</button>
+      </div>
+      <button class="btn" id="exportJson">Export JSON</button>
+      <button class="btn" id="copySummary">Copy Summary</button>
+      <button class="btn" id="copyMermaid">Copy Mermaid</button>
+      <button class="btn" id="focusCanvas">Focus Canvas</button>
+      <button class="btn" id="hideDbPanel">Hide DB panel</button>
+      <button class="btn" id="hideDetail">Hide detail</button>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <aside class="side-panel glass" id="dbPanel">
+        <div class="side-head"><h2>Databases</h2><button class="btn" id="clearDb">All</button></div>
+        <div class="db-list" id="dbList"></div>
+      </aside>
+
+      <section class="canvas-shell glass">
+        <div class="canvas-topbar" id="chips">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="pc">PC</button>
+          <button class="chip" data-filter="tablet">Tablet</button>
+          <button class="chip active" data-filter="active">Active candidates</button>
+          <button class="chip active" data-filter="hasRows">Has Rows</button>
+          <button class="chip" data-filter="empty">Empty Tables</button>
+          <button class="chip active" data-filter="real">Real FK</button>
+          <button class="chip active" data-filter="prisma">Prisma</button>
+          <button class="chip warn" data-filter="inferred">Inferred</button>
+          <button class="chip active" data-filter="hideEmpty">Hide empty</button>
+          <button class="chip" data-filter="onlyConnected">Only connected</button>
+          <button class="chip" data-filter="focusDb">Focus selected DB</button>
+          <button class="chip active" data-filter="limit">Top 40</button>
+          <button class="btn" id="showAllTables">Show all tables</button>
+          <button class="btn" id="clearFocus">Clear focus</button>
+          <button class="btn" id="showLabels">Show labels</button>
+          <button class="btn" id="toggleInferred">Toggle inferred</button>
+          <button class="btn" id="zoomOut">Zoom -</button>
+          <button class="btn" id="zoomIn">Zoom +</button>
+          <button class="btn" id="zoom100">100%</button>
+          <button class="btn" id="fitView">Fit view</button>
+          <button class="btn" id="autoLayout">Auto layout</button>
+          <button class="btn" id="resetLayout">Reset layout</button>
+          <span class="density-note" id="densityNote"></span>
+        </div>
+        <div class="board-scroll" id="boardScroll">
+          <div class="board-world" id="boardWorld">
+            <svg class="rel-layer" id="relLayer" aria-hidden="true"></svg>
+            <div id="boardSurface"></div>
+          </div>
+          <div class="minimap" id="minimap">
+            <div class="minimap-title">Mini-map</div>
+            <svg class="mini-svg" id="miniSvg"></svg>
+          </div>
+        </div>
+      </section>
+
+      <aside class="detail-panel glass" id="detailPanelWrap">
+        <div class="side-head"><h2>Detail</h2><button class="btn" id="closeDetail">Close</button></div>
+        <div class="detail-scroll" id="detailPanel"></div>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+  <script id="model-data" type="application/json">__MODEL_JSON__</script>
+  <script>
+    (() => {
+      const model = JSON.parse(document.getElementById('model-data').textContent);
+      const $ = id => document.getElementById(id);
+      const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const slug = value => String(value ?? '').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'') || 'x';
+      const metrics = model.metrics || {};
+      const ui = model.ui || {};
+      const meta = model.meta || {};
+      const storageBase = meta.saved_layout_storage_key_base || ui.saved_layout_storage_key_base || 'db-glass-erd-board-v2';
+      const initialLimit = Number(meta.initial_visible_limit || ui.initial_visible_limit || 40);
+      const highDensity = String(meta.relationship_density_mode || ui.relationship_density_mode || 'normal') === 'high';
+      const parentPriority = ['business','store','terminal','user','product','supplier','sale','cashsession','cash_session','purchaseorder','purchase_order','goodsreceipt','goods_receipt'];
+      const childPriority = ['barcode','saleline','sale_line','salepaymenttender','sale_payment_tender','stockmovement','stock_movement','goodsreceiptline','goods_receipt_line','purchaseorderline','purchase_order_line','rolepermission','role_permission','userrole','user_role'];
+      const laneOrder = ['pc','tablet','chart_lab','mobile','tools','shared','backup_snapshot','unknown'];
+      const laneLabel = {pc:'PC', tablet:'Tablet', chart_lab:'Chart Lab', mobile:'Mobile', tools:'Tools', shared:'Shared', backup_snapshot:'Backups / Snapshots', unknown:'Unknown'};
+
+      const state = {
+        view: 'erd',
+        query: '',
+        selectedDb: '',
+        selectedTable: '',
+        selectedRelation: '',
+        focusNeighborhood: false,
+        selectedSurface: '',
+        activeOnly: true,
+        hideEmpty: true,
+        showEmpty: false,
+        onlyConnected: false,
+        focusDb: false,
+        limitEnabled: true,
+        showReal: true,
+        showPrisma: true,
+        showInferred: !highDensity && Number(metrics.inferred_relation_count || 0) <= 60,
+        showLabels: false,
+        zoom: 1,
+        panX: 0,
+        panY: 0,
+        positions: {},
+        worldW: 2600,
+        worldH: 1600,
+        drag: null,
+        panning: null,
+      };
+
+      const tablesByKey = new Map((model.tables || []).map(t => [String(t.table_key), t]));
+      const dbById = new Map((model.databases || []).map(db => [String(db.id), db]));
+      const allRelationships = [
+        ...((model.relationships || {}).real_fk || []),
+        ...((model.relationships || {}).prisma || []),
+        ...((model.relationships || {}).inferred || []),
+      ];
+      const connectedKeys = new Set();
+      allRelationships.forEach(r => { if (r.parent_key) connectedKeys.add(String(r.parent_key)); if (r.child_key) connectedKeys.add(String(r.child_key)); });
+
+      function toast(message) {
+        const t = $('toast'); t.textContent = message; t.classList.add('show');
+        clearTimeout(toast._timer); toast._timer = setTimeout(() => t.classList.remove('show'), 1500);
+      }
+      function relationType(r) { return String(r.relationship_type || r.kind || '').toLowerCase(); }
+      function relationVisibleByType(r) {
+        const type = relationType(r);
+        if (type.includes('real_fk')) return state.showReal;
+        if (type.includes('prisma')) return state.showPrisma;
+        if (type.includes('infer')) return state.showInferred;
+        return true;
+      }
+      function tableSearchBlob(t) {
+        const cols = (t.columns || []).map(c => `${c.name} ${c.type}`).join(' ');
+        return `${t.name} ${t.db_relative_path} ${t.surface} ${cols}`.toLowerCase();
+      }
+      function relSearchBlob(r) { return `${r.relationship_type} ${r.parent_table}.${r.parent_column} ${r.child_table}.${r.child_column} ${r.evidence || ''}`.toLowerCase(); }
+      function isActiveTable(t) {
+        const db = dbById.get(String(t.db_id));
+        return Boolean(t.active_candidate || (db && db.active_candidate));
+      }
+      function normName(value) { return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+      function tableRank(t) {
+        const name = normName(t.name);
+        let laneBias = 1;
+        if (parentPriority.some(p => name === normName(p) || name.includes(normName(p)))) laneBias = 0;
+        else if (childPriority.some(p => name === normName(p) || name.includes(normName(p)))) laneBias = 2;
+        return laneBias * 100000000 - Number(t.score || 0);
+      }
+      function selectedNeighbors() {
+        if (!state.selectedTable) return new Set();
+        const set = new Set([state.selectedTable]);
+        allRelationships.forEach(r => {
+          if (String(r.parent_key) === state.selectedTable || String(r.child_key) === state.selectedTable) {
+            if (r.parent_key) set.add(String(r.parent_key));
+            if (r.child_key) set.add(String(r.child_key));
+          }
+        });
+        return set;
+      }
+      function visibleTables() {
+        let arr = (model.tables || []).slice();
+        if (state.selectedSurface) arr = arr.filter(t => String(t.surface || 'unknown') === state.selectedSurface);
+        if (state.activeOnly) arr = arr.filter(isActiveTable);
+        if (state.hideEmpty) arr = arr.filter(t => Number(t.row_count || 0) > 0);
+        if (state.showEmpty) arr = arr.filter(t => Number(t.row_count || 0) <= 0);
+        if (state.onlyConnected) arr = arr.filter(t => connectedKeys.has(String(t.table_key)));
+        if (state.selectedDb && state.focusDb) arr = arr.filter(t => String(t.db_id) === state.selectedDb);
+        if (state.query) arr = arr.filter(t => tableSearchBlob(t).includes(state.query));
+        if (state.focusNeighborhood && state.selectedTable) {
+          const hood = selectedNeighbors();
+          arr = arr.filter(t => hood.has(String(t.table_key)));
+        }
+        arr.sort((a,b) => tableRank(a) - tableRank(b) || String(a.name).localeCompare(String(b.name)));
+        if (state.limitEnabled && !state.focusNeighborhood) arr = arr.slice(0, initialLimit);
+        return arr;
+      }
+      function visibleRelationshipList(tables) {
+        const keys = new Set(tables.map(t => String(t.table_key)));
+        return allRelationships.filter(r => keys.has(String(r.parent_key)) && keys.has(String(r.child_key)) && relationVisibleByType(r) && (!state.query || relSearchBlob(r).includes(state.query) || keys.has(String(r.parent_key)) || keys.has(String(r.child_key))));
+      }
+      function storageKey(t) { return `${storageBase}:${t.db_relative_path}:${t.name}`; }
+      function loadPositions() {
+        try {
+          for (const t of (model.tables || [])) {
+            const raw = localStorage.getItem(storageKey(t));
+            if (!raw) continue;
+            const pos = JSON.parse(raw);
+            if (Number.isFinite(pos.x) && Number.isFinite(pos.y)) state.positions[String(t.table_key)] = pos;
+          }
+        } catch {}
+      }
+      function savePosition(t, pos) {
+        state.positions[String(t.table_key)] = pos;
+        try { localStorage.setItem(storageKey(t), JSON.stringify(pos)); } catch {}
+      }
+      function clearSavedPositions() {
+        for (const t of (model.tables || [])) {
+          try { localStorage.removeItem(storageKey(t)); } catch {}
+        }
+        state.positions = {};
+      }
+
+      function computeLayout(tables, force=false) {
+        const groups = new Map();
+        tables.forEach(t => {
+          const s = String(t.surface || 'unknown');
+          if (!groups.has(s)) groups.set(s, []);
+          groups.get(s).push(t);
+        });
+        const orderedSurfaces = [...groups.keys()].sort((a,b) => (laneOrder.indexOf(a) < 0 ? 999 : laneOrder.indexOf(a)) - (laneOrder.indexOf(b) < 0 ? 999 : laneOrder.indexOf(b)) || a.localeCompare(b));
+        const cardW = 286, cardH = 242, gapX = 140, gapY = 90, lanePad = 80, laneHead = 68;
+        let y = 80;
+        let maxW = 2600;
+        const lanes = [];
+        const pos = {};
+        for (const surface of orderedSurfaces) {
+          const list = groups.get(surface).slice().sort((a,b) => tableRank(a) - tableRank(b));
+          const maxCols = Math.max(3, Math.min(6, Math.ceil(Math.sqrt(list.length || 1) + 1)));
+          const columns = Array.from({length:maxCols}, () => 0);
+          list.forEach((t, idx) => {
+            const name = normName(t.name);
+            let col = 1;
+            if (parentPriority.some(p => name === normName(p) || name.includes(normName(p)))) col = 0;
+            else if (childPriority.some(p => name === normName(p) || name.includes(normName(p)))) col = Math.min(maxCols - 1, 2 + (idx % Math.max(1, maxCols - 2)));
+            else col = Math.min(maxCols - 1, 1 + (idx % Math.max(1, maxCols - 1)));
+            const row = columns[col]++;
+            const x = lanePad + col * (cardW + gapX);
+            const yy = y + laneHead + lanePad + row * (cardH + gapY);
+            const saved = state.positions[String(t.table_key)];
+            pos[String(t.table_key)] = (!force && saved) ? saved : {x, y: yy};
+          });
+          const rows = Math.max(...columns, 1);
+          const laneW = Math.max(1400, lanePad*2 + maxCols*cardW + (maxCols-1)*gapX);
+          const laneH = Math.max(520, laneHead + lanePad*2 + rows*cardH + Math.max(0, rows-1)*gapY);
+          const laneTables = list;
+          const laneRows = laneTables.reduce((sum,t) => sum + Number(t.row_count || 0), 0);
+          const laneFk = allRelationships.filter(r => relationType(r).includes('real_fk') && laneTables.some(t => String(t.table_key) === String(r.parent_key) || String(t.table_key) === String(r.child_key))).length;
+          lanes.push({surface, x:40, y, w:laneW, h:laneH, tables:laneTables.length, rows:laneRows, fk:laneFk});
+          maxW = Math.max(maxW, laneW + 120);
+          y += laneH + 140;
+        }
+        state.worldW = Math.max(2600, maxW);
+        state.worldH = Math.max(1600, y + 120);
+        return {lanes, pos};
+      }
+
+      function renderMetrics() {
+        $('scopeLine').textContent = `Scope: ${meta.selected_scope || ''} · Layout ${meta.layout_version || 'db-glass-erd-board-v2'}`;
+        const pairs = [
+          ['DBs', metrics.database_count], ['Tables', metrics.table_count], ['Rows', metrics.total_rows], ['Real FK', metrics.real_fk_count],
+          ['Prisma', metrics.prisma_relation_count], ['Inferred', metrics.inferred_relation_count], ['Empty DBs', metrics.empty_db_count], ['Evidence', metrics.attached_evidence_count],
+        ];
+        $('metrics').innerHTML = pairs.map(([k,v]) => `<div class="metric"><b>${esc(v ?? 0)}</b><span>${esc(k)}</span></div>`).join('');
+        $('densityNote').textContent = highDensity ? 'High density mode: inferred/labels off initially' : `${visibleTables().length} visible tables`;
+      }
+
+      function renderDbList() {
+        $('dbList').innerHTML = (model.databases || []).map(db => {
+          const active = String(db.id) === state.selectedDb ? ' active' : '';
+          return `<div class="db-item${active}" data-db="${esc(db.id)}"><b>${esc(db.name)}</b><small>${esc(db.surface)} · ${esc(db.table_count || 0)} tables · ${esc(db.total_rows || 0)} rows</small><small>${esc(db.relative_path)}</small></div>`;
+        }).join('') || '<div class="detail-card">No databases detected.</div>';
+        $('dbList').querySelectorAll('[data-db]').forEach(el => el.onclick = () => { state.selectedDb = String(el.dataset.db || ''); state.focusDb = true; document.querySelector('[data-filter="focusDb"]').classList.add('active'); renderAll(); });
+      }
+
+      function columnHtml(c) {
+        const bits = [];
+        if (Number(c.pk || 0) > 0) bits.push('<span class="badge pk">PK</span>');
+        if (c.is_real_fk) bits.push('<span class="badge fk">FK</span>');
+        if (c.nullable) bits.push('<span class="badge null">NULL</span>');
+        return `<div class="col"><span class="col-name">${esc(c.name)}</span><span class="col-type">${esc(c.type || '')}</span><span>${bits.join('')}</span></div>`;
+      }
+
+      function renderBoard(forceLayout=false) {
+        const surface = $('boardSurface');
+        const world = $('boardWorld');
+        const tables = visibleTables();
+        const rels = visibleRelationshipList(tables);
+        const {lanes, pos} = computeLayout(tables, forceLayout);
+        world.style.width = `${state.worldW}px`;
+        world.style.height = `${state.worldH}px`;
+        world.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom})`;
+        surface.innerHTML = '';
+
+        lanes.forEach(l => {
+          const div = document.createElement('section');
+          div.className = 'lane';
+          div.style.left = `${l.x}px`; div.style.top = `${l.y}px`; div.style.width = `${l.w}px`; div.style.height = `${l.h}px`;
+          div.innerHTML = `<div class="lane-head"><span class="lane-title">${esc(laneLabel[l.surface] || l.surface)}</span><span class="lane-metric">${l.tables} tables</span><span class="lane-metric">${l.rows} rows</span><span class="lane-metric">${l.fk} real FK</span></div>`;
+          surface.appendChild(div);
+        });
+
+        const connected = selectedNeighbors();
+        tables.forEach(t => {
+          const p = pos[String(t.table_key)] || {x:100,y:100};
+          const db = dbById.get(String(t.db_id)) || {};
+          const card = document.createElement('article');
+          card.className = 'table-card';
+          card.dataset.key = String(t.table_key);
+          card.style.left = `${p.x}px`;
+          card.style.top = `${p.y}px`;
+          const fkCount = (t.foreign_keys || []).length;
+          const cols = (t.columns || []);
+          const shown = cols.slice(0, 9).map(columnHtml).join('');
+          const more = cols.length > 9 ? `<div class="more-cols">+${cols.length - 9} columns</div>` : '';
+          const hasRows = Number(t.row_count || 0) > 0;
+          card.innerHTML = `
+            <div class="table-head-card">
+              <div class="table-name"><span>${esc(t.name)}</span><span class="badge">${esc(t.surface || db.surface || 'unknown')}</span></div>
+              <div class="table-badges">
+                <span class="badge">${esc(t.row_count ?? 0)} rows</span>
+                <span class="badge">${fkCount} FK</span>
+                <span class="badge ${hasRows ? '' : 'empty'}">${hasRows ? 'Con datos' : 'Sin filas'}</span>
+              </div>
+            </div>
+            <div class="columns">${shown}${more}</div>`;
+          if (state.selectedTable === String(t.table_key)) card.classList.add('selected');
+          if (state.selectedTable && !connected.has(String(t.table_key))) card.classList.add('dim');
+          else if (state.selectedTable) card.classList.add('connected');
+          card.addEventListener('click', ev => { ev.stopPropagation(); selectTable(String(t.table_key)); });
+          card.addEventListener('dblclick', ev => { ev.stopPropagation(); state.selectedTable = String(t.table_key); state.focusNeighborhood = true; state.limitEnabled = false; document.querySelector('[data-filter="limit"]').classList.remove('active'); renderAll(); toast('Focus neighborhood'); });
+          const head = card.querySelector('.table-head-card');
+          head.addEventListener('pointerdown', ev => startDrag(ev, card, t));
+          surface.appendChild(card);
+        });
+
+        requestAnimationFrame(() => { drawRelationships(rels); renderMiniMap(tables); });
+        renderDetail();
+        if (state.view === 'constellation') renderConstellation();
+      }
+
+      function renderConstellation() {
+        const surface = $('boardSurface');
+        const tables = visibleTables();
+        $('relLayer').innerHTML = '';
+        surface.innerHTML = `<div class="constellation"><h2>Constellation</h2><p>Vista secundaria global. El ERD Board es la vista principal.</p><div class="constellation-grid">${tables.map(t => `<span class="star">${esc(t.surface)} · ${esc(t.name)}</span>`).join('')}</div></div>`;
+      }
+
+      function drawRelationships(rels) {
+        const svg = $('relLayer');
+        const world = $('boardWorld');
+        svg.classList.toggle('labels-on', state.showLabels);
+        svg.setAttribute('width', state.worldW);
+        svg.setAttribute('height', state.worldH);
+        svg.setAttribute('viewBox', `0 0 ${state.worldW} ${state.worldH}`);
+        svg.innerHTML = `<defs><marker id="arrowReal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="rgba(130,255,196,.85)"/></marker><marker id="arrowSoft" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="rgba(132,167,255,.78)"/></marker></defs>`;
+        const selected = state.selectedTable;
+        rels.forEach((r, idx) => {
+          const parent = document.querySelector(`.table-card[data-key="${CSS.escape(String(r.parent_key))}"]`);
+          const child = document.querySelector(`.table-card[data-key="${CSS.escape(String(r.child_key))}"]`);
+          if (!parent || !child) return;
+          const p = {x: parent.offsetLeft + parent.offsetWidth, y: parent.offsetTop + parent.offsetHeight/2};
+          const c = {x: child.offsetLeft, y: child.offsetTop + child.offsetHeight/2};
+          const mid = Math.max(p.x + 70, (p.x + c.x) / 2);
+          const path = `M ${p.x} ${p.y} H ${mid} V ${c.y} H ${c.x}`;
+          const type = relationType(r);
+          const cls = type.includes('real_fk') ? 'real_fk' : (type.includes('prisma') ? 'prisma' : 'inferred');
+          const hot = selected && (String(r.parent_key) === selected || String(r.child_key) === selected);
+          const dim = selected && !hot;
+          const risk = r.risk ? ' risk' : '';
+          const marker = cls === 'real_fk' ? 'url(#arrowReal)' : 'url(#arrowSoft)';
+          const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+          const label = `${r.parent_table}.${r.parent_column} → ${r.child_table}.${r.child_column}`;
+          g.innerHTML = `<path class="rel-hit" d="${path}" data-rel="${idx}"></path><path class="rel-path ${cls}${risk}${hot ? ' hot' : ''}${dim ? ' dim' : ''}" marker-end="${marker}" d="${path}"></path><text class="rel-label${hot ? ' hot' : ''}" x="${mid + 8}" y="${(p.y+c.y)/2 - 8}">1 → N · ${esc(label)}</text>`;
+          g.querySelector('.rel-hit').addEventListener('click', ev => { ev.stopPropagation(); showRelationDetail(r); });
+          svg.appendChild(g);
+        });
+      }
+
+      function selectTable(key) {
+        state.selectedTable = key;
+        state.selectedRelation = '';
+        $('workspace').classList.add('detail-open');
+        renderAll();
+      }
+      function showRelationDetail(r) {
+        state.selectedRelation = String(r.id || '');
+        $('workspace').classList.add('detail-open');
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="detail-card"><h3>${esc(r.relationship_type || 'relationship')}</h3><div class="kv"><b>Parent</b><span>${esc(r.parent_table)}.${esc(r.parent_column)}</span></div><div class="kv"><b>Child</b><span>${esc(r.child_table)}.${esc(r.child_column)}</span></div><div class="kv"><b>Confidence</b><span>${esc(r.confidence)}</span></div><div class="kv"><b>Evidence</b><span>${esc(r.evidence)}</span></div></div><details open><summary>Raw relationship</summary><pre>${esc(JSON.stringify(r,null,2))}</pre></details>`;
+        $('detailPanel').replaceChildren(div);
+      }
+      function renderDetail() {
+        if (state.selectedRelation) return;
+        const t = tablesByKey.get(state.selectedTable);
+        if (!t) {
+          const d = model.diagnostics || {};
+          $('detailPanel').innerHTML = `<div class="detail-card"><h3>DB Glass ERD</h3><div class="kv"><b>Scope</b><span>${esc(meta.selected_scope)}</span></div><div class="kv"><b>Project</b><span>${esc(meta.project_root)}</span></div><div class="kv"><b>Mode</b><span>${esc(meta.layout_version)}</span></div></div><details><summary>relationships_real_fk</summary><pre>${esc(JSON.stringify((model.relationships||{}).real_fk||[],null,2))}</pre></details><details><summary>relationships_prisma</summary><pre>${esc(JSON.stringify((model.relationships||{}).prisma||[],null,2))}</pre></details><details><summary>relationships_inferred</summary><pre>${esc(JSON.stringify((model.relationships||{}).inferred||[],null,2))}</pre></details><details><summary>orphan-like columns</summary><pre>${esc(JSON.stringify(d.orphan_like_columns||[],null,2))}</pre></details><details><summary>duplicate logical tables across DBs</summary><pre>${esc(JSON.stringify(d.duplicate_logical_tables||[],null,2))}</pre></details><details><summary>empty tables</summary><pre>${esc(JSON.stringify(d.empty_tables||[],null,2))}</pre></details><details><summary>Attached Evidence</summary><pre>${esc(JSON.stringify(model.evidence||[],null,2))}</pre></details><details><summary>Issues / DB errors</summary><pre>${esc(JSON.stringify(d.issues||[],null,2))}</pre></details>`;
+          return;
+        }
+        const outgoing = allRelationships.filter(r => String(r.parent_key) === String(t.table_key) || String(r.child_key) === String(t.table_key));
+        $('detailPanel').innerHTML = `<div class="detail-card"><h3>${esc(t.name)}</h3><div class="kv"><b>DB</b><span>${esc(t.db_relative_path)}</span></div><div class="kv"><b>Surface</b><span>${esc(t.surface)}</span></div><div class="kv"><b>Rows</b><span>${esc(t.row_count ?? 0)}</span></div><div class="kv"><b>Columns</b><span>${esc((t.columns||[]).length)}</span></div><div class="kv"><b>Relations</b><span>${outgoing.length}</span></div></div><details open><summary>Columns</summary><pre>${esc(JSON.stringify(t.columns||[],null,2))}</pre></details><details><summary>Indexes</summary><pre>${esc(JSON.stringify(t.indexes||[],null,2))}</pre></details><details><summary>Incoming / outgoing relationships</summary><pre>${esc(JSON.stringify(outgoing,null,2))}</pre></details>`;
+      }
+
+      function startDrag(ev, card, table) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        card.setPointerCapture(ev.pointerId);
+        const startX = ev.clientX, startY = ev.clientY;
+        const origin = {x: card.offsetLeft, y: card.offsetTop};
+        state.drag = {card, table, startX, startY, origin};
+        card.classList.add('dragging');
+        const move = e => {
+          if (!state.drag) return;
+          const dx = (e.clientX - state.drag.startX) / state.zoom;
+          const dy = (e.clientY - state.drag.startY) / state.zoom;
+          const nx = Math.max(30, state.drag.origin.x + dx);
+          const ny = Math.max(30, state.drag.origin.y + dy);
+          card.style.left = `${nx}px`; card.style.top = `${ny}px`;
+          savePosition(table, {x:nx, y:ny});
+          drawRelationships(visibleRelationshipList(visibleTables()));
+          renderMiniMap(visibleTables());
+        };
+        const up = () => {
+          card.classList.remove('dragging');
+          state.drag = null;
+          window.removeEventListener('pointermove', move);
+          window.removeEventListener('pointerup', up);
+        };
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', up, {once:true});
+      }
+
+      function renderMiniMap(tables) {
+        const svg = $('miniSvg');
+        const scroll = $('boardScroll');
+        const w = 220, h = 148;
+        const sx = w / state.worldW, sy = h / state.worldH;
+        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        svg.innerHTML = '';
+        tables.forEach(t => {
+          const card = document.querySelector(`.table-card[data-key="${CSS.escape(String(t.table_key))}"]`);
+          if (!card) return;
+          const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+          r.setAttribute('class','mini-table');
+          r.setAttribute('x', card.offsetLeft * sx);
+          r.setAttribute('y', card.offsetTop * sy);
+          r.setAttribute('width', Math.max(2, card.offsetWidth * sx));
+          r.setAttribute('height', Math.max(2, card.offsetHeight * sy));
+          svg.appendChild(r);
+        });
+        const vr = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        vr.setAttribute('class','mini-viewport');
+        vr.setAttribute('x', (scroll.scrollLeft / state.zoom) * sx);
+        vr.setAttribute('y', (scroll.scrollTop / state.zoom) * sy);
+        vr.setAttribute('width', Math.min(w, (scroll.clientWidth / state.zoom) * sx));
+        vr.setAttribute('height', Math.min(h, (scroll.clientHeight / state.zoom) * sy));
+        svg.appendChild(vr);
+      }
+
+      function renderAll(forceLayout=false) {
+        renderMetrics();
+        renderDbList();
+        if (state.view === 'erd') renderBoard(forceLayout); else renderConstellation();
+        updateButtons();
+      }
+      function updateButtons() {
+        document.querySelectorAll('[data-filter]').forEach(b => {
+          const f = b.dataset.filter;
+          const active = f === 'all' ? !state.selectedSurface : (
+            f === 'pc' ? state.selectedSurface === 'pc' :
+            f === 'tablet' ? state.selectedSurface === 'tablet' :
+            f === 'active' ? state.activeOnly :
+            f === 'hasRows' ? !state.hideEmpty && !state.showEmpty ? false : !state.showEmpty :
+            f === 'empty' ? state.showEmpty :
+            f === 'real' ? state.showReal :
+            f === 'prisma' ? state.showPrisma :
+            f === 'inferred' ? state.showInferred :
+            f === 'hideEmpty' ? state.hideEmpty :
+            f === 'onlyConnected' ? state.onlyConnected :
+            f === 'focusDb' ? state.focusDb :
+            f === 'limit' ? state.limitEnabled : false
+          );
+          b.classList.toggle('active', Boolean(active));
+        });
+        $('showLabels').classList.toggle('active', state.showLabels);
+        $('toggleInferred').classList.toggle('active', state.showInferred);
+      }
+
+      document.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => {
+        state.view = btn.dataset.view;
+        document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b === btn));
+        renderAll();
+      }));
+      document.querySelectorAll('[data-filter]').forEach(btn => btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        if (f === 'all') state.selectedSurface = '';
+        if (f === 'pc') state.selectedSurface = state.selectedSurface === 'pc' ? '' : 'pc';
+        if (f === 'tablet') state.selectedSurface = state.selectedSurface === 'tablet' ? '' : 'tablet';
+        if (f === 'active') state.activeOnly = !state.activeOnly;
+        if (f === 'hasRows') { state.showEmpty = false; state.hideEmpty = true; }
+        if (f === 'empty') { state.showEmpty = !state.showEmpty; if (state.showEmpty) state.hideEmpty = false; }
+        if (f === 'real') state.showReal = !state.showReal;
+        if (f === 'prisma') state.showPrisma = !state.showPrisma;
+        if (f === 'inferred') state.showInferred = !state.showInferred;
+        if (f === 'hideEmpty') state.hideEmpty = !state.hideEmpty;
+        if (f === 'onlyConnected') state.onlyConnected = !state.onlyConnected;
+        if (f === 'focusDb') state.focusDb = !state.focusDb;
+        if (f === 'limit') state.limitEnabled = !state.limitEnabled;
+        renderAll();
+      }));
+      $('globalSearch').addEventListener('input', e => { state.query = e.target.value.trim().toLowerCase(); renderAll(); });
+      $('showAllTables').onclick = () => { state.limitEnabled = false; state.hideEmpty = false; state.showEmpty = false; renderAll(true); };
+      $('clearFocus').onclick = () => { state.selectedTable = ''; state.focusNeighborhood = false; state.selectedRelation = ''; renderAll(); };
+      $('showLabels').onclick = () => { state.showLabels = !state.showLabels; drawRelationships(visibleRelationshipList(visibleTables())); updateButtons(); };
+      $('toggleInferred').onclick = () => { state.showInferred = !state.showInferred; renderAll(); };
+      $('zoomIn').onclick = () => { state.zoom = Math.min(2.4, state.zoom + .12); renderAll(); };
+      $('zoomOut').onclick = () => { state.zoom = Math.max(.35, state.zoom - .12); renderAll(); };
+      $('zoom100').onclick = () => { state.zoom = 1; renderAll(); };
+      $('fitView').onclick = () => { const s=$('boardScroll'); s.scrollTo({left:0,top:0,behavior:'smooth'}); state.zoom = Math.min(1, Math.max(.42, s.clientWidth / Math.max(2600, state.worldW))); renderAll(); };
+      $('autoLayout').onclick = () => { renderAll(true); toast('Auto layout recalculado'); };
+      $('resetLayout').onclick = () => { clearSavedPositions(); renderAll(true); toast('Layout guardado borrado'); };
+      $('focusCanvas').onclick = () => { $('workspace').classList.toggle('focus-canvas'); };
+      $('hideDbPanel').onclick = () => { $('workspace').classList.toggle('left-hidden'); };
+      $('hideDetail').onclick = () => { $('workspace').classList.toggle('detail-open'); };
+      $('closeDetail').onclick = () => { $('workspace').classList.remove('detail-open'); };
+      $('clearDb').onclick = () => { state.selectedDb = ''; state.focusDb = false; renderAll(); };
+      $('exportJson').onclick = () => { const blob = new Blob([JSON.stringify(model,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'db_glass_erd_raw.json'; a.click(); URL.revokeObjectURL(url); };
+      $('copySummary').onclick = async () => { const m = model.metrics || {}; await navigator.clipboard.writeText(`DB Glass ERD\nDBs: ${m.database_count}\nTables: ${m.table_count}\nRows: ${m.total_rows}\nReal FK: ${m.real_fk_count}\nPrisma: ${m.prisma_relation_count}\nInferred: ${m.inferred_relation_count}\nScope: ${meta.selected_scope}`); toast('Summary copied'); };
+      $('copyMermaid').onclick = async () => { const db = state.selectedDb ? dbById.get(state.selectedDb) : (model.databases || [])[0]; const text = db ? ((model.mermaid || {})[db.id] || 'erDiagram\n') : 'erDiagram\n'; await navigator.clipboard.writeText(text); toast('Mermaid copied'); };
+      $('boardSurface').addEventListener('click', () => { state.selectedTable = ''; state.focusNeighborhood = false; state.selectedRelation = ''; renderAll(); });
+      $('boardScroll').addEventListener('wheel', ev => {
+        if (!ev.ctrlKey) return;
+        ev.preventDefault();
+        const old = state.zoom;
+        state.zoom = Math.max(.35, Math.min(2.4, state.zoom + (ev.deltaY < 0 ? .08 : -.08)));
+        const s = $('boardScroll');
+        const ratio = state.zoom / old;
+        s.scrollLeft = (s.scrollLeft + ev.offsetX) * ratio - ev.offsetX;
+        s.scrollTop = (s.scrollTop + ev.offsetY) * ratio - ev.offsetY;
+        renderAll();
+      }, {passive:false});
+      $('boardScroll').addEventListener('pointerdown', ev => {
+        if (ev.target.closest && ev.target.closest('.table-card')) return;
+        state.panning = {x:ev.clientX, y:ev.clientY, left:$('boardScroll').scrollLeft, top:$('boardScroll').scrollTop};
+        $('boardScroll').classList.add('panning');
+      });
+      window.addEventListener('pointermove', ev => {
+        if (!state.panning) return;
+        $('boardScroll').scrollLeft = state.panning.left - (ev.clientX - state.panning.x);
+        $('boardScroll').scrollTop = state.panning.top - (ev.clientY - state.panning.y);
+        renderMiniMap(visibleTables());
+      });
+      window.addEventListener('pointerup', () => { state.panning = null; $('boardScroll').classList.remove('panning'); });
+      $('boardScroll').addEventListener('scroll', () => renderMiniMap(visibleTables()));
+      $('minimap').addEventListener('click', ev => {
+        const rect = $('minimap').getBoundingClientRect();
+        const x = (ev.clientX - rect.left) / rect.width * state.worldW * state.zoom;
+        const y = (ev.clientY - rect.top) / rect.height * state.worldH * state.zoom;
+        $('boardScroll').scrollTo({left: Math.max(0, x - $('boardScroll').clientWidth/2), top: Math.max(0, y - $('boardScroll').clientHeight/2), behavior:'smooth'});
+      });
+      window.addEventListener('resize', () => requestAnimationFrame(() => renderAll()));
+      window.addEventListener('keydown', ev => { if (ev.key === 'Escape') { state.focusNeighborhood = false; state.selectedTable = ''; state.selectedRelation = ''; renderAll(); } });
+
+      loadPositions();
+      if (!state.showInferred) document.querySelector('[data-filter="inferred"]').classList.remove('active');
+      renderAll(true);
+    })();
+  </script>
+</body>
+</html>"""
+    return template.replace("__SAFE_TITLE__", safe_title).replace("__MODEL_JSON__", model_json)
+
+def run_db_black_glass_erd_atlas(
+    selected_path: str,
+    *,
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para DB Glass ERD no existe:\n\n{selected_scope}")
+
+    project_root = _db_black_glass_resolve_project_root(selected_scope)
+    downloads_root = _black_glass_downloads_root()
+    scope_slug = _black_glass_safe_scope_slug(selected_scope)
+    stamp = _db_black_glass_stamp()
+
+    if notify is not None:
+        notify("Escaneando SQLite DBs...", str(selected_scope))
+    databases = _db_black_glass_find_sqlite_databases(selected_scope, project_root)
+
+    inspect_workers = _db_black_glass_max_workers(len(databases))
+    if notify is not None:
+        notify("Inspeccionando SQLite...", f"{len(databases)} DBs detectadas · {inspect_workers} workers")
+    _db_black_glass_inspect_databases_parallel(databases, project_root)
+
+    if notify is not None:
+        notify("Recolectando evidencia anexa...", f"{selected_scope} · hasta {_db_black_glass_max_workers()} workers")
+    evidence = _db_black_glass_collect_evidence(selected_scope, project_root)
+
+    if notify is not None:
+        notify("Parseando Prisma schemas...", f"{sum(1 for item in evidence if item.get('type') == 'prisma_schema')} schemas")
+    prisma_schemas = _db_black_glass_parse_prisma_schemas(evidence, project_root)
+
+    if notify is not None:
+        notify("Construyendo modelo ERD...", f"{len(databases)} DBs")
+    model = _db_black_glass_make_model(selected_scope, project_root, databases, evidence, prisma_schemas)
+
+    if notify is not None:
+        notify("Escribiendo artefactos DB Glass ERD...", str(downloads_root))
+    artifacts = _db_black_glass_write_artifacts(downloads_root, scope_slug, stamp, model)
+    html_path = artifacts["html"]
+    if not html_path.exists() or html_path.stat().st_size <= 0:
+        raise RuntimeError(f"El HTML DB Glass ERD generado está vacío: {html_path}")
+    return html_path
+
+
+def _collect_recent_files(directory: Path, patterns: Iterable[str], since_ts: float) -> list[Path]:
+    found: list[Path] = []
+    seen: set[str] = set()
+    for pattern in patterns:
+        for path in sorted(directory.glob(pattern), key=lambda item: item.stat().st_mtime):
+            try:
+                mtime = float(path.stat().st_mtime)
+            except OSError:
+                continue
+            if mtime + 0.001 < since_ts:
+                continue
+            key = str(path.expanduser().resolve())
+            if key in seen:
+                continue
+            seen.add(key)
+            found.append(path)
+    return found
+
+
+def _db_black_glass_related_artifacts(output_path: Path) -> list[Path]:
+    directory = output_path.parent
+    prefix = output_path.stem
+    candidates = sorted(directory.glob(prefix + "*"))
+    return [path for path in candidates if path.is_file()]
+
+
+def run_todo_el_show_bundle(
+    selected_path: str,
+    *,
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para Todo El Show no existe:\n\n{selected_scope}")
+
+    downloads_root = _black_glass_downloads_root()
+    scope_slug = _black_glass_safe_scope_slug(selected_scope)
+    stamp = time.strftime("%y%m%d_%H%M%S")
+
+    if notify is not None:
+        notify("Todo El Show · Tree HTML Premium...", str(selected_scope))
+    tree_html_path = run_tree_html_premium_report(selected_path, notify=notify)
+
+    black_since = time.time() - 1.0
+    if notify is not None:
+        notify("Todo El Show · Black Glass Atlas...", str(selected_scope))
+    black_html_path = run_black_glass_dependency_atlas(selected_path, notify=notify)
+    black_artifacts = _collect_recent_files(
+        downloads_root,
+        (
+            "dependency_map_raw_*.json",
+            "code_atlas_dependency_consumer_v03_*_graph.json",
+            "code_atlas_dependency_consumer_v03_*_summary.json",
+            "code_atlas_dependency_visual_v04_2_*.html",
+        ),
+        black_since,
+    )
+    if black_html_path not in black_artifacts:
+        black_artifacts.append(black_html_path)
+
+    if notify is not None:
+        notify("Todo El Show · DB Glass ERD...", f"scope {selected_scope} · {_db_black_glass_max_workers()} workers")
+    db_html_path = run_db_black_glass_erd_atlas(selected_path, notify=notify)
+    db_artifacts = _db_black_glass_related_artifacts(db_html_path)
+
+    bundle_path = downloads_root / f"prisma_todo_el_show_{scope_slug}_{stamp}.zip"
+    manifest = {
+        "selected_scope": str(selected_scope),
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "tree_html": str(tree_html_path),
+        "black_glass": [str(path) for path in black_artifacts],
+        "db_glass_erd": [str(path) for path in db_artifacts],
+        "max_workers": _db_black_glass_max_workers(),
+        "io_workers": _code_atlas_io_workers(),
+        "cpu_workers": _code_atlas_cpu_workers(),
+        "tree_virtualize_threshold": TREE_HTML_VIRTUALIZE_THRESHOLD,
+    }
+
+    zip_settings = _code_atlas_zip_settings()
+    manifest["zip_mode"] = CODE_ATLAS_ZIP_MODE
+    manifest["zip_settings"] = {key: str(value) for key, value in zip_settings.items()}
+    with zipfile.ZipFile(bundle_path, "w", **zip_settings) as zf:
+        zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+        if tree_html_path.exists():
+            zf.write(tree_html_path, arcname=f"tree_html/{tree_html_path.name}")
+        for path in black_artifacts:
+            if path.exists():
+                zf.write(path, arcname=f"black_glass/{path.name}")
+        for path in db_artifacts:
+            if path.exists():
+                zf.write(path, arcname=f"db_glass_erd/{path.name}")
+
+    if not bundle_path.exists() or bundle_path.stat().st_size <= 0:
+        raise RuntimeError(f"No se pudo validar el ZIP Todo El Show generado: {bundle_path}")
+    return bundle_path
+
+
+def build_todo_el_show_success_footer_text(output_path: Path) -> str:
+    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el ZIP de Todo El Show. Salida: <LOCAL_PATH>"
+
+
+def build_db_black_glass_success_footer_text(output_path: Path) -> str:
+    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el DB Glass ERD. Salida: <LOCAL_PATH>"
+
 def build_black_glass_success_footer_text(output_path: Path) -> str:
     return "\n".join(
         [
@@ -17424,6 +20364,73 @@ def main() -> int:
                     state.focus_target or "sin objetivo explícito, se elegirá por conectividad",
                 )
 
+            if output_mode == "todo_el_show":
+                notify("Preparando Todo El Show...", str(Path(state.project_root)))
+                output_path = run_todo_el_show_bundle(
+                    state.selected_path,
+                    notify=notify,
+                )
+                notify("Validando Todo El Show...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el ZIP Todo El Show generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "Todo El Show listo.",
+                    "\n".join(
+                        [
+                            "ZIP generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            f"Workers DB Glass: {_db_black_glass_max_workers()}",
+                            "Salida: <LOCAL_PATH>",
+                        ]
+                    ),
+                )
+                _set_progress_footer(
+                    progress,
+                    build_todo_el_show_success_footer_text(output_path),
+                )
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+
+            if output_mode == "db_black_glass_erd":
+                notify("Preparando DB Glass ERD...", str(Path(state.project_root)))
+                output_path = run_db_black_glass_erd_atlas(
+                    state.selected_path,
+                    notify=notify,
+                )
+                notify("Validando DB Glass ERD...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el HTML DB Glass ERD generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "DB Glass ERD listo.",
+                    "\n".join(
+                        [
+                            "HTML generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            "Salida: <LOCAL_PATH>",
+                        ]
+                    ),
+                )
+                _set_progress_footer(
+                    progress,
+                    build_db_black_glass_success_footer_text(output_path),
+                )
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+
             if output_mode == "black_glass":
                 notify("Preparando Black Glass Atlas...", str(Path(state.project_root)))
                 output_path = run_black_glass_dependency_atlas(
@@ -17443,7 +20450,7 @@ def main() -> int:
                             "",
                             f"Archivo: {output_path}",
                             f"Proyecto: {state.project_root}",
-                            "Salida: F:\\descargasf",
+                            "Salida: <LOCAL_PATH>",
                         ]
                     ),
                 )

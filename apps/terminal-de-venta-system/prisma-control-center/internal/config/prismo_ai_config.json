@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "mode": "READ_ONLY_V1",
+  "controlCenterRoot": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\prisma-control-center",
+  "gemini": {
+    "enabled": true,
+    "apiKeyEnv": "",
+    "modelEnv": "PRISMO_AI_MODEL",
+    "defaultModel": "gemini-2.5-flash",
+    "apiBaseUrlEnv": "PRISMO_GEMINI_API_BASE_URL",
+    "defaultApiBaseUrl": "https://generativelanguage.googleapis.com/v1beta",
+    "temperature": 0.2,
+    "topP": 0.8,
+    "maxOutputTokens": "",
+    "structuredOutput": true,
+    "fileSearch": {
+      "enabled": false,
+      "storeIdEnv": "PRISMO_GEMINI_FILE_SEARCH_STORE_ID",
+      "storeId": "",
+      "fallbackToLocalContext": true
+    },
+    "filesApi": {
+      "enabled": false,
+      "maxTemporaryFileMb": 20
+    },
+    "contextCaching": {
+      "enabled": false,
+      "cacheName": "prismo_base_context_v1"
+    },
+    "functionCalling": {
+      "enabled": false,
+      "reason": "Blocked in v1. Read-only recommendations only."
+    }
+  },
+  "limits": {
+    "maxPromptChars": 24000,
+    "maxEvidenceChars": 250000,
+    "maxRequestBytes": 750000,
+    "maxClientFilePreviewChars": 180000,
+    "maxRenderBlocks": 12
+  },
+  "publicMode": {
+    "allowQuery": false,
+    "allowStatus": true,
+    "redactEverythingSensitive": true
+  },
+  "htmlPreview": {
+    "enabledEnv": "PRISMO_AI_ALLOW_HTML_PREVIEW",
+    "defaultEnabled": false,
+    "sandbox": "no scripts, no network, no forms, no same-origin"
+  }
+}

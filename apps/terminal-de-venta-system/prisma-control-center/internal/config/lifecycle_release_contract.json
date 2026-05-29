@@ -1,0 +1,63 @@
+{
+  "contract_version": "v5-golden-release-candidate",
+  "built_on": "PRISMA_DATA_LIFECYCLE_CONTROL_CENTER_04_EXCELSIOR",
+  "intent": "Cierre profesional: no agregar features grandes, consolidar instalación, safety, docs, verificación cruzada y evidencia.",
+  "no_downgrade_required_tokens": [
+    "operation_lock",
+    "dry_run_inject",
+    "dry_run_clear",
+    "evidence_bundle",
+    "schema_inventory",
+    "domain_drilldown",
+    "batch_detail",
+    "lifecycle_history",
+    "data_quality_report",
+    "safety_doctor",
+    "rollback_preview_enhanced",
+    "retention_preview",
+    "retention_prune",
+    "public_sanitizer_strict",
+    "route_catalog",
+    "feature_catalog",
+    "no_downgrade_manifest",
+    "telemetry_metrics",
+    "operation_ids",
+    "backup_before_dangerous_ops",
+    "evidence_hash_manifest",
+    "excelsior_marker"
+  ],
+  "ui_contract": {
+    "primary_actions": [
+      "Inyectar datos",
+      "Clear"
+    ],
+    "required_modes": [
+      "Ligera",
+      "Pesada",
+      "Pasada de longaniza"
+    ],
+    "dashboard_required": true,
+    "technical_panel_allowed": true,
+    "no_domain_button_explosion": true
+  },
+  "safety_contract": {
+    "clear_default_scope": "generated_only_by_ledger",
+    "requires_backup_before_clear": true,
+    "requires_pin_unless_config_disabled": true,
+    "public_mutations_blocked": true,
+    "factory_clear_not_exposed_in_primary_ui": true,
+    "license_real_reset_excluded_by_default": true
+  },
+  "release_gates": [
+    "pack_content",
+    "python_compile",
+    "json_config_integrity",
+    "api_route_contract",
+    "temp_db_inject_clear",
+    "no_downgrade",
+    "installer_static_patch",
+    "engine_failfast",
+    "docs_presence",
+    "zip_hygiene"
+  ]
+}

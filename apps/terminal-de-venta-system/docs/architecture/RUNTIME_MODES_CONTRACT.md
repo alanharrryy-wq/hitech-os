@@ -1,58 +1,43 @@
+---
+title: Runtime Modes Contract
+path: docs/architecture/RUNTIME_MODES_CONTRACT.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
+---
+
 # Runtime Modes Contract
 
-Estado: canon listo para codigo.
-Idioma operativo: es-MX.
-Alcance: contratos, arquitectura y criterios de implementacion; no implementa motores finales.
+## Runtime mode labels
 
-Regla madre:
+| Mode | Meaning |
+|---|---|
+| `local_full` | Local machine, full diagnostic capability. |
+| `public_redacted` | Public/tunnel/cloud-safe view with sensitive data redacted. |
+| `demo` | Demonstration mode; must be clearly labeled. |
+| `shadow` | Realistic validation without production mutation. |
+| `planned` | Design documented, not implemented. |
+| `stub_guard` | Endpoint exists but intentionally blocks work. |
+| `runtime_live` | Live local service. Requires fresh verification. |
 
-Tablet vende sola.
-PC gobierna cuando existe.
-Shared Kernel es contrato.
-Sync es puente.
-Eventos son verdad operacional.
+## Rules
 
-## Proposito
+- Public output must be sanitized.
+- Demo/stub data must not masquerade as production.
+- Shadow or lifecycle modes must tag generated data.
+- Control Center may expose full detail only in local/full mode.
+- Gemini may read sanitized evidence in v1; it must not execute runtime changes.
 
-Define los modos oficiales de ejecucion para Tablet/PC sin dejar que sync sustituya autonomia local.
+## Authority rules used by this document
 
-
-## `standalone`
-
-Tablet operates with local DB and exports data.
-PC required: no.
-Internet required: no.
-
-## `managed`
-
-Tablet syncs with PC/backoffice.
-PC required: yes for governance/sync.
-Internet/network: intermittent or stable.
-
-## `degraded_managed`
-
-Tablet belongs to a managed operation, but keeps selling if PC/network goes down.
-PC required: yes for governance, no for basic sales.
-Internet required: no for basic sales.
-
-## Mandatory runtime rules
-
-- Tablet must never block basic sale because PC is absent.
-- If sync fails, allowed local sale continues.
-- Sensitive operations are marked.
-- Events go to outbox.
-- PC resolves conflicts later.
-- Tablet commands must not validate PC existence for Tablet tasks.
-- Do not depend on tools/_local/data/terminal-de-venta-system/canonical.db for selling.
-- Do not use cwd as trusted root.
-- Do not invent magic DB paths.
-
-## Variables Tablet
-
-- `TABLET_DATABASE_URL`
-- `TABLET_RUNTIME_MODE`
-
-## DB local canonica
-
-- Ruta del proyecto: `products/tablet/app/data/tablet-pos.db`
-- Fallback Prisma: `file:./data/tablet-pos.db`
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.

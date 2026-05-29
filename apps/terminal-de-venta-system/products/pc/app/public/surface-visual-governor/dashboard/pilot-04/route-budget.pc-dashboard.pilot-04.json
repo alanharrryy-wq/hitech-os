@@ -1,0 +1,28 @@
+{
+  "schema": "prisma.surface_visual_governor.route_budget",
+  "pilot": "04_pc_dashboard_governed_hoy",
+  "route": "/dashboard",
+  "surface": "pc_dashboard",
+  "intent": "PC Hoy / dashboard with governed materiality and Atmosphere Engine.",
+  "visual_budget": {
+    "background": "high",
+    "glass": "medium_high",
+    "rim": "signature_only",
+    "glow_strong_max": 1,
+    "glow_medium_max": 3,
+    "motion": "ambient_slow_plus_micro",
+    "webgl": "forbidden",
+    "pixi_vapor": "forbidden_in_pilot_04"
+  },
+  "clarity_gates": [
+    "text_above_background_scrim",
+    "no_background_competes_with_actions",
+    "no_glow_without_semantic_meaning",
+    "reduced_motion_freezes_ambient_layers",
+    "technical_evidence_visible_but_not_primary"
+  ],
+  "writes_allowed": [
+    "products/pc/app/app/dashboard",
+    "products/pc/app/public/surface-visual-governor/dashboard"
+  ]
+}

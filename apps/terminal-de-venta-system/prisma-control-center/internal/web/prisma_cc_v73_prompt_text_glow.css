@@ -1,0 +1,17 @@
+/* V73 · PRISMO prompt typed text only */
+body[data-prisma-interface="prismo"] #prismoPrompt{
+  font-size:18px !important;
+  line-height:1.55 !important;
+  letter-spacing:.012em !important;
+  color:rgba(246,252,255,.96) !important;
+  caret-color:rgba(190,235,255,.95) !important;
+  text-shadow:
+    0 0 2px rgba(255,255,255,.42),
+    0 0 7px rgba(225,246,255,.24) !important;
+}
+
+body[data-prisma-interface="prismo"] #prismoPrompt::placeholder{
+  font-size:15px !important;
+  color:rgba(180,198,216,.62) !important;
+  text-shadow:none !important;
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "prisma.surface_visual_governor.pos_final_gate.audit.v1",
+  "pilot": "06_pos_final_gate_audit",
+  "name": "PRISMA Surface Visual Governor · Pilot 06 POS Final Gate Audit",
+  "created_at": "2026-05-26T19:59:29",
+  "repo_root": "PRISMA_LOCAL_PATH_REDACTED",
+  "purpose": "Install a strict POS final visual gate before any POS visual application.",
+  "writes_scope": "tablet governance artifacts only; no POS route/component mutation",
+  "protected_routes": [
+    "/pos",
+    "/checkout"
+  ],
+  "protected_paths": [
+    "products/tablet/app/app/pos/**",
+    "products/tablet/app/app/checkout/**",
+    "products/tablet/app/components/pos/**",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "status_policy": "PASS only if gate artifacts install, verifier passes, and protected paths remain byte-identical.",
+  "next_step_after_pass": "Pilot 07 can apply a light-only POS shell only after reviewing this gate evidence."
+}

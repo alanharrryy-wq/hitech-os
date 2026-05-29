@@ -31,6 +31,24 @@ $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8:replace"
 $env:NO_COLOR = "1"
 
+# PRISMO_LAUNCHER_GEMINI_ENV_GUARD_BEGIN
+function Set-PrismoAiProcessEnv {
+  $userGemini = [Environment]::GetEnvironmentVariable("GEMINI_API_KEY", "User")
+  if ([string]::IsNullOrWhiteSpace($env:GEMINI_API_KEY) -and -not [string]::IsNullOrWhiteSpace($userGemini)) {
+    $env:GEMINI_API_KEY = $userGemini
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($env:GEMINI_API_KEY)) {
+    $env:PRISMO_AI_ENABLED = "true"
+    $env:PRISMO_AI_DEMO_MODE = "false"
+  } else {
+    if ([string]::IsNullOrWhiteSpace($env:PRISMO_AI_ENABLED)) { $env:PRISMO_AI_ENABLED = "false" }
+    if ([string]::IsNullOrWhiteSpace($env:PRISMO_AI_DEMO_MODE)) { $env:PRISMO_AI_DEMO_MODE = "true" }
+  }
+}
+Set-PrismoAiProcessEnv
+# PRISMO_LAUNCHER_GEMINI_ENV_GUARD_END
+
 function ConvertTo-ScalarExitCode {
   param(
     [object]$Code,
@@ -150,7 +168,7 @@ $CloudflareConfigPath = Join-Path $ControlRoot "internal\config\cloudflare.json"
 
 $LauncherName = $Profile.ToUpperInvariant().Replace("-", "_")
 $Stamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$BaseLogRoot = "F:\descargasf"
+$BaseLogRoot = "<OUTPUT_DIR>"
 $WorkRoot = Join-Path $env:TEMP "PRISMA_OPERATOR_RUNS"
 $RunDir = Join-Path $WorkRoot ("{0}_{1}" -f $LauncherName, $Stamp)
 $LatestZip = Join-Path $BaseLogRoot ("latest_{0}.zip" -f $LauncherName)
@@ -773,8 +791,10 @@ try {
     }
 
     "panel" {
-      Start-Process "http://127.0.0.1:3150"
-      $ExitCode = 0
+      # PRISMO_PANEL_PROFILE_STARTS_SERVER_BEGIN
+      # El perfil panel no debe solo abrir navegador: debe asegurar servidor 3150 vivo.
+      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-ControlCenterDetached -OpenBrowser) -Default 1
+      # PRISMO_PANEL_PROFILE_STARTS_SERVER_END
       break
     }
 

@@ -1,0 +1,40 @@
+.shell {
+  --prisma-pos-bg: #f6f8fb;
+  --prisma-pos-ink: #0f172a;
+  --prisma-pos-line: rgba(15, 23, 42, 0.10);
+  --prisma-pos-panel: rgba(255, 255, 255, 0.78);
+  --prisma-pos-focus: rgba(37, 99, 235, 0.42);
+  min-height: 100dvh;
+  color: var(--prisma-pos-ink);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.96), transparent 34%),
+    radial-gradient(circle at 88% 14%, rgba(219, 234, 254, 0.70), transparent 30%),
+    linear-gradient(180deg, #f8fbff 0%, var(--prisma-pos-bg) 46%, #edf3fb 100%);
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+.shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/surface-visual-governor/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg');
+  background-size: cover;
+  background-position: center top;
+  opacity: 0.16;
+}
+.shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.20), transparent 34%), radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.08), transparent 48%);
+}
+.content { position: relative; z-index: 1; min-height: 100dvh; }
+.shell :global(button), .shell :global([role="button"]), .shell :global(a), .shell :global(input), .shell :global(select), .shell :global(textarea) { touch-action: manipulation; }
+.shell :global(button:focus-visible), .shell :global([role="button"]:focus-visible), .shell :global(a:focus-visible), .shell :global(input:focus-visible), .shell :global(select:focus-visible), .shell :global(textarea:focus-visible) { outline: 3px solid var(--prisma-pos-focus); outline-offset: 3px; }
+.shell :global(.pos-card), .shell :global([data-pos-card]), .shell :global([data-prisma-card]) { background-color: var(--prisma-pos-panel); border-color: var(--prisma-pos-line); box-shadow: 0 10px 28px rgba(15, 23, 42, 0.10); }
+@media (prefers-reduced-motion: reduce) { .shell, .shell::before, .shell::after, .content { animation: none !important; transition: none !important; } }

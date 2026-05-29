@@ -5,7 +5,7 @@
   var UX_IMPROVEMENTS = ["Ctrl K command palette", "Esc closes palette", "Ctrl 1 theme Liquid", "Ctrl 2 theme Tactical", "Ctrl 3 theme Rose", "Ctrl 4 theme Pearl", "D cycles density", "Question mark opens help", "Quick jump to reactor", "Quick jump to commands", "Quick jump to status", "Quick jump to topology", "Quick jump to timeline", "Quick switch to Quality Bay", "Quick switch to Operation", "Theme choice persisted", "Density choice persisted", "Online state reflected", "Offline state reflected", "ARIA live for reactor", "ARIA live for queue", "ARIA live for topology", "Buttons get aria labels", "Buttons get titles", "Palette uses button roles", "Palette search filters", "Palette first result selection", "Click outside closes palette", "Skip link to main", "Toast feedback", "Helpful keyboard hints", "Status capsule reports theme", "Status capsule reports density", "Health fetch mirrors runtime", "No false green on health failure", "No stale English placeholders", "Queue wording localized", "Topology wording localized", "Health score updates bars", "Warnings update queue card", "Errors update risk", "Latency is measured", "Safe JSON parsing", "Network failure is honest", "Visual state mirrors data state", "LocalStorage guarded", "Progressive enhancement", "Works if v24 is absent", "Works if API is absent", "No backend dependency for polish"];
   var THEMES = [
     {id:'liquid', label:'Liquid', key:'1'},
-    {id:'tactical', label:'Tactical', key:'2'},
+    {id:'tactical', label:'Tactical Frost', key:'2'},
     {id:'piel', label:'Rose', key:'3'},
     {id:'pearl', label:'Pearl', key:'4'}
   ];
@@ -88,7 +88,7 @@
       {icon:'Q', title:'Quality Bay', meta:'Verificaciones audit-only', run:function(){clickInterface('quality');}},
       {icon:'O', title:'Operacion', meta:'Volver a cabina operativa', run:function(){clickInterface('operation');}},
       {icon:'1', title:'Tema Liquid Metal', meta:'Ctrl+1', run:function(){switchTheme('liquid');}},
-      {icon:'2', title:'Tema Tactical Graphite', meta:'Ctrl+2', run:function(){switchTheme('tactical');}},
+      {icon:'2', title:'Tema Tactical Frost', meta:'Ctrl+2', run:function(){switchTheme('tactical');}},
       {icon:'3', title:'Tema Obsidian Rose', meta:'Ctrl+3', run:function(){switchTheme('piel');}},
       {icon:'4', title:'Tema Pearl Ice', meta:'Ctrl+4', run:function(){switchTheme('pearl');}},
       {icon:'D', title:'Alternar densidad', meta:'Normal / compacta', run:cycleDensity},

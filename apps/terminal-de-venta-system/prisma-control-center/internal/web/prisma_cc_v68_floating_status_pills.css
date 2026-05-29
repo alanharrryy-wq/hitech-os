@@ -1,0 +1,53 @@
+/* V68 · PRISMO floating status pills only */
+/* Quita paneles detrás de READ-ONLY / BACKEND BRIDGE / NO MUTATION. No toca topbar, cards ni composer. */
+
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-footer-status,
+body[data-prisma-interface="prismo"] #prismo-console .prisma-v56-status-surface,
+body[data-prisma-interface="prismo"] #prismo-console .prisma-v56-status-flat{
+  background:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-footer-status{
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:8px 0 0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+}
+
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card{
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-chip,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-tag[data-state],
+body[data-prisma-interface="prismo"] #prismo-console .prisma-v56-status-copy{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.018)),
+    rgba(28,44,62,.30) !important;
+  border:1px solid rgba(170,220,255,.24) !important;
+  border-radius:999px !important;
+  box-shadow:
+    0 0 16px rgba(100,200,255,.12),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+  backdrop-filter:blur(4px) saturate(120%) !important;
+  -webkit-backdrop-filter:blur(4px) saturate(120%) !important;
+}

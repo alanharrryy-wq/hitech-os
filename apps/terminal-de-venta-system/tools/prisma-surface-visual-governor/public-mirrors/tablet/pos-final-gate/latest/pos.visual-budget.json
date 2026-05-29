@@ -1,0 +1,34 @@
+{
+  "schema": "prisma.surface_visual_governor.pos.visual_budget.v1",
+  "surface": "tablet_pos",
+  "route_family": "pos_payment_critical",
+  "budget": {
+    "background_intensity": {
+      "max": 0.16,
+      "default": 0.08
+    },
+    "cloud_alpha": {
+      "max": 0.12,
+      "default": 0.06
+    },
+    "scrim": "white/light readability scrim only",
+    "glass": "G0-G1 for rows/buttons; G2 only for summary panel if proven legible",
+    "rim": "R0-R1",
+    "glow": "N0 default; N1 focus; one N2 live/status max; no N3/N4 decorative glow",
+    "motion": "M0/M1 only; no ambient loops over selling/payment UI",
+    "blur_px": {
+      "max": 1
+    },
+    "webgl": 0,
+    "pixi": 0
+  },
+  "acceptance": [
+    "product tiles remain highest contrast",
+    "payment amount remains dominant",
+    "touch targets remain large",
+    "cashier can read under glare",
+    "no dark storm default",
+    "no animated background in payment flow",
+    "reduced motion and low transparency fallback preserved"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/surface-visual-governor/pilot-02/chart-lab-recipe-export.schema.json",
+  "title": "PRISMA Chart Lab Recipe Export Pilot 02",
+  "type": "object",
+  "required": [
+    "schema_family",
+    "schema_version",
+    "pilot",
+    "recipe_type",
+    "public_safety"
+  ],
+  "properties": {
+    "schema_family": {
+      "const": "prisma.surface_visual_governor.recipe_export"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "pilot": {
+      "const": "02_chart_lab_recipe_export"
+    },
+    "recipe_type": {
+      "type": "string"
+    },
+    "public_safety": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

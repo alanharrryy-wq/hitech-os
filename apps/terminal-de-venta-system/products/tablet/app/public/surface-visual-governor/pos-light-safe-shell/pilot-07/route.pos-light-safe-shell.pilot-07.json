@@ -1,0 +1,27 @@
+{
+  "id": "route.pos.light_safe_shell.pilot07",
+  "route": "/pos",
+  "surface": "tablet",
+  "allowed": true,
+  "budget": {
+    "background": "low_medium",
+    "glass": "G1_G2_only",
+    "rim": "R0_R1",
+    "glow": {
+      "strong_max": 1,
+      "medium_max": 2,
+      "semantic_only": true
+    },
+    "motion": "none_or_micro",
+    "webgl": 0,
+    "ambient_layers": 1,
+    "blur": "0_to_1px_on_shell_only"
+  },
+  "must_not_touch": [
+    "/checkout",
+    "DB",
+    "dependencies",
+    "deploy"
+  ],
+  "active_asset": "tablet-soft-gray-clouds.svg"
+}

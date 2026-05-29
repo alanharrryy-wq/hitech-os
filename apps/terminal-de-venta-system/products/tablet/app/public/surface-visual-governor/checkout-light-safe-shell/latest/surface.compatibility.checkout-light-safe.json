@@ -1,0 +1,22 @@
+{
+  "surface": "tablet_checkout",
+  "allowed": true,
+  "inherits": "pos_final_gate",
+  "forbidden": [
+    "dark storm active background",
+    "webgl",
+    "pixi vapor",
+    "heavy blur",
+    "background competing with payment",
+    "motion loops",
+    "checkout page mutation"
+  ],
+  "required": [
+    "light-first",
+    "touch-first",
+    "focus visible",
+    "reduced motion",
+    "payment clarity first",
+    "POS unchanged"
+  ]
+}

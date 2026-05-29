@@ -3037,10 +3037,42 @@ body[data-prisma-interface="quality"] main{
 </style>
   <link rel="icon" type="image/png" href="./assets/prisma_logo_mark.png" />
 <link rel="stylesheet" href="/quality_bay.css?v=quality-bay-v44-evidence-fit">
+<link rel="stylesheet" href="/lifecycle_console.css?v=data-lifecycle-v5-3-visibility">
 <link rel="stylesheet" href="/license_ops_console.css?v=license-ops-v1">
 <link rel="stylesheet" href="/prisma_v40_uiux.css?v=v40-uiux-theme-hardening">
+<link rel="preload" as="image" href="/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg">
+<link rel="stylesheet" href="/prisma_frost_tactical.css?v=frost-tactical-v4-background-panel-system">
+<link rel="stylesheet" href="/prisma_frost_tactical.css?v=frost-tactical-v3-codex-lowblur-base">
+<link rel="stylesheet" href="/prisma_frost_tactical_bright.css?v=frost-tactical-v41-bright-bg">
+<link rel="stylesheet" href="/prismo_console.css?v=prismo-command-nexus-v1">
+  <link rel="stylesheet" href="/prisma_frost_tactical_repair_v42.css?v=frost-tactical-v42-light-layout-repair">
+<link rel="stylesheet" href="/prisma_frost_tactical_v44_hotfix.css?v=20260526_162900">
+<link rel="stylesheet" href="/prisma_cc_seam_killer_v45.css?v=seam-killer-v45-20260526_181952">
+<link rel="stylesheet" href="/prisma_cc_atmosphere_v5.css?v=20260526_190904">
+<script src="/vendor/pixi.min.js?v=20260526_190904" defer></script>
+<script src="/vendor/gsap.min.js?v=20260526_190904" defer></script>
+<script src="/prisma_cc_atmosphere_v5.js?v=20260526_190904" defer></script>
+<link rel="stylesheet" href="/prisma_cc_atmosphere_v52_layer_fix.css?v=20260526_191122">
+
+
+<link rel="stylesheet" href="/prisma_cc_atmosphere_v54.css?v=20260526_192605">
+<script defer src="/prisma_cc_atmosphere_v54.js?v=20260526_192605"></script>
+<link rel="stylesheet" href="/prisma_cc_atmosphere_v54_true_mist_glacier.css?v=20260526_192743">
+<script defer src="/prisma_cc_atmosphere_v54_true_mist_glacier.js?v=20260526_192743"></script>
+<link rel="stylesheet" href="/prisma_cc_v56_prismo_safe_retune.css?v=20260526_200506">
+<script defer src="/prisma_cc_v56_prismo_safe_retune.js?v=20260526_200506"></script>
+<link rel="stylesheet" href="/prisma_cc_v57_panel_text_clarity.css?v=20260526_201116">
+  <link rel="stylesheet" href="/prisma_cc_v59_prismo_selector_safe_frost_evidence.css?v=20260526_235636">
+  <link rel="stylesheet" href="/prisma_cc_v60_prismo_topbar_fix.css?v=20260527_000901">
+  <link rel="stylesheet" href="/prisma_cc_v61_prismo_compact_premium.css?v=20260527_001220">
+  <link rel="stylesheet" href="/prisma_cc_v62_remove_ghost_rects.css?v=20260527_001706">
+  <link rel="stylesheet" href="/prisma_cc_v64_undo_v63_prismo_glass.css?v=20260527_002734">
+  <link rel="stylesheet" href="/prisma_cc_v66_prismo_container_only.css?v=20260527_012530">
+  <link rel="stylesheet" href="/prisma_cc_v67_prismo_edge_logo_fix.css?v=20260527_012934">
+<link rel="stylesheet" href="/prisma_cc_v75_prompt_glow_only.css?v=20260527_023437">
+  <link rel="stylesheet" href="/prisma_cc_v76_all_surfaces_neon_contrast.css?v=20260527_024854">
 </head>
-<body data-theme="liquid" data-prisma="v43-v40-uiux-theme-hardening">
+<body data-theme="tactical" data-prisma="v44-frost-tactical-background-panel-system">
 <svg class="prismaSvgFilters" width="0" height="0" aria-hidden="true" focusable="false">
   <filter id="prisma-v36-edge-lens" x="-32%" y="-70%" width="164%" height="240%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency="0.010 0.034" numOctaves="2" seed="36" result="edgeNoise" />
@@ -3082,6 +3114,8 @@ body[data-prisma-interface="quality"] main{
         <button type="button" class="active" data-prisma-interface-target="operation" aria-pressed="true">Operación</button>
         <button type="button" data-prisma-interface-target="quality" aria-pressed="false">Quality Bay</button>
         <button type="button" data-prisma-interface-target="license" aria-pressed="false">Licencias</button>
+              <button type="button" data-prisma-interface-target="lifecycle" aria-pressed="false">Data Lifecycle</button>
+        <button type="button" data-prisma-interface-target="prismo" aria-pressed="false">PRISMO</button>
       </nav>
     </header>
   </div>
@@ -3099,7 +3133,7 @@ body[data-prisma-interface="quality"] main{
             </div>
             <div class="qualitySeal">
               <div class="qualitySealCard" data-tone="ok"><small>Modo</small><strong>Audit-only</strong></div>
-              <div class="qualitySealCard"><small>Salida</small><strong id="qualityOutDir">F:\descargasf</strong></div>
+              <div class="qualitySealCard"><small>Salida</small><strong id="qualityOutDir"><OUTPUT_DIR></strong></div>
               <div class="qualitySealCard"><small>Regla</small><strong>Quality verifica</strong></div>
             </div>
           </div>
@@ -3187,6 +3221,101 @@ body[data-prisma-interface="quality"] main{
         </div>
       </div>
     </section>
+    <section class="prismoConsoleSurface" id="prismoConsoleSurface" aria-label="PRISMO Gemini Command Nexus" hidden>
+      <div id="prismo-console" class="prismo-shell" data-prismo-console="command-nexus-v1">
+        <div class="prismo-atmosphere" aria-hidden="true"></div>
+
+        <header class="prismo-topbar">
+          <div>
+            <p class="prismo-kicker">PRISMO · Gemini Command Nexus</p>
+            <h2>Improvement Intelligence</h2>
+            <p>Consola interna read-only para entender, inspeccionar, mejorar y clasificar evidencia con autoridad visible y render blocks seguros.</p>
+          </div>
+          <div class="prismo-status-strip" aria-label="Estado PRISMO">
+            <span class="prismo-status-chip" id="prismoBridgeStatus" data-state="demo">Gemini Bridge checking</span>
+            <span class="prismo-status-chip" id="prismoAuthorityStatus" data-state="demo">Authority loading</span>
+            <span class="prismo-status-chip" id="prismoSafetyStatus" data-state="online">Read-only v1</span>
+            <span class="prismo-status-chip" id="prismoHtmlStatus" data-state="online">HTML preview off</span>
+          </div>
+        </header>
+
+        <div class="prismo-grid">
+          <aside class="prismo-panel" aria-label="Authority map">
+            <div class="prismo-panel-head">
+              <div>
+                <h3>Authority Map</h3>
+                <p>Fuente ganadora, precedencia y alertas legacy/planned.</p>
+              </div>
+              <span class="prismo-tag" id="prismoUiState" data-state="warn">booting</span>
+            </div>
+            <div class="prismo-authority-list" id="prismoAuthorityList">
+              <div class="prismo-empty">Esperando primera consulta.</div>
+            </div>
+          </aside>
+
+          <section class="prismo-center-stage" aria-label="Composer PRISMO">
+            <form id="prismoComposer" class="prismo-composer">
+              <p class="prismo-label">Command Composer</p>
+              <label for="prismoPrompt">¿Qué quieres entender, revisar o mejorar?</label>
+              <textarea id="prismoPrompt" class="prismo-textarea" rows="5" placeholder="Ej: revisa la contradicción de sync PC → Tablet y genera mapa visual"></textarea>
+
+              <div class="prismo-mode-row" role="radiogroup" aria-label="Modo PRISMO">
+                <button type="button" class="prismo-mode-chip" data-prismo-mode="ASK" aria-pressed="true">ASK</button>
+                <button type="button" class="prismo-mode-chip" data-prismo-mode="INSPECT" aria-pressed="false">INSPECT</button>
+                <button type="button" class="prismo-mode-chip" data-prismo-mode="IMPROVE" aria-pressed="false">IMPROVE</button>
+                <button type="button" class="prismo-mode-chip" data-prismo-mode="EVIDENCE" aria-pressed="false">EVIDENCE</button>
+              </div>
+
+              <div class="prismo-suggestion-row" id="prismoSuggestionRow" aria-label="Sugerencias rápidas"></div>
+
+              <textarea id="prismoEvidenceText" class="prismo-evidence-input" rows="3" placeholder="Pega evidencia temporal opcional: logs, rutas, fragmentos, reportes o manifest..."></textarea>
+              <div class="prismo-file-row">
+                <input id="prismoEvidenceFile" class="prismo-file-input" type="file" multiple accept=".txt,.md,.json,.jsonc,.log,.csv,.html,.xml,.yaml,.yml,.zip" />
+                <span class="prismo-file-note" id="prismoFileNote">Sin archivos adjuntos.</span>
+              </div>
+
+              <div class="prismo-actions-row">
+                <button type="submit" id="prismoSendButton" class="prismo-primary-action">Consultar PRISMO</button>
+                <button type="button" id="prismoClearButton" class="prismo-secondary-action">Limpiar</button>
+              </div>
+            </form>
+
+            <section id="prismoResponseStream" class="prismo-response-stream" aria-live="polite">
+              <div class="prismo-response-card">
+                <div class="prismo-response-meta">
+                  <span class="prismo-tag" data-state="ok">read-only</span>
+                  <span class="prismo-tag">backend bridge</span>
+                  <span class="prismo-tag">no mutation</span>
+                </div>
+                <p class="prismo-answer">PRISMO está listo. Autoridad cargada. Modo seguro activo. Puedes preguntar, inspeccionar evidencia o generar un brief.</p>
+              </div>
+            </section>
+          </section>
+
+          <aside class="prismo-panel" aria-label="Evidence deck">
+            <div class="prismo-panel-head">
+              <div>
+                <h3>Evidence Deck</h3>
+                <p>Current, código, temporal, legacy y no confirmado.</p>
+              </div>
+              <span class="prismo-tag">deck</span>
+            </div>
+            <div class="prismo-evidence-list" id="prismoEvidenceList">
+              <div class="prismo-empty">Sin evidencia clasificada todavía.</div>
+            </div>
+          </aside>
+        </div>
+
+        <section class="prismo-render-grid" id="prismoRenderGrid" aria-label="Render blocks PRISMO"></section>
+
+        <footer class="prismo-bottom-rail" id="prismoBottomRail" aria-label="Bottom intelligence rail">
+          <div class="prismo-bottom-card"><small>Impact Map</small><strong>idle</strong></div>
+          <div class="prismo-bottom-card"><small>Runtime Signals</small><strong>waiting</strong></div>
+          <div class="prismo-bottom-card"><small>Context Pack</small><strong>ready</strong></div>
+          <div class="prismo-bottom-card"><small>Ledger</small><strong>local</strong></div>
+        </footer>
+      </div>
+    </section>
     <section class="picker" style="clip-path:var(--shape-card)">
       <div class="pickerGrid">
         <div>
@@ -3196,7 +3325,7 @@ body[data-prisma-interface="quality"] main{
         <div class="selectWrap">
           <select class="themeSelect" id="themeSelect" aria-label="Elegir tema">
             <option value="liquid">Liquid Metal</option>
-            <option value="tactical">Tactical Graphite</option>
+            <option value="tactical">Tactical Frost V4</option>
             <option value="piel">Obsidian Rose Royale</option>
             <option value="pearl">Pearl Ice</option>
           </select>
@@ -3429,9 +3558,15 @@ body[data-prisma-interface="quality"] main{
 
 <script src="/v24_cockpit.js?v=43_topbar_chart_life_quality_bay_position"></script>
 <script src="/quality_bay.js?v=quality-bay-v1"></script>
+<script src="/lifecycle_console.js?v=data-lifecycle-v5-3-visibility"></script>
 <script src="/license_ops_console.js?v=license-ops-v1"></script>
 <script src="/prisma_v40_uiux.js?v=v40-uiux-theme-hardening"></script>
-
+<script src="/prisma_frost_tactical.js?v=frost-tactical-v4-background-panel-system"></script>
+<script src="/prisma_frost_tactical.js?v=frost-tactical-v3-codex-lowblur-base"></script>
+<script src="/prismo_demo_payloads.js?v=prismo-command-nexus-v1"></script>
+<script src="/prismo_renderers.js?v=prismo-command-nexus-v1"></script>
+<script src="/prismo_console.js?v=prismo-command-nexus-v1"></script>
+  <script src="/prisma_cc_v59_prismo_selector_safe_frost_evidence.js?v=20260526_235636" defer></script>
 <script>
 /* === PRISMA V39 TRUTHFUL REACTOR JS START === */
 (function(){
@@ -3725,5 +3860,7 @@ body[data-prisma-interface="quality"] main{
 /* === PRISMA V39 TRUTHFUL REACTOR JS END === */
 </script>
 
+  <script src="/prisma_cc_v60_prismo_topbar_fix.js?v=20260527_000901" defer></script>
+  <script src="/prisma_cc_v76_all_surfaces_neon_contrast.js?v=20260527_024854" defer></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "pilot": "03_pc_referencia_visual",
+  "surface": "pc",
+  "surface_role": "Centro de decisiones premium",
+  "route": "/referencia-visual",
+  "consumes": {
+    "materiality_catalog": true,
+    "chart_lab_recipe_export": true,
+    "atmosphere_engine_assets": true,
+    "ultra_codex": true
+  },
+  "does_not_apply_to": [
+    "dashboard",
+    "inventory",
+    "sales",
+    "sync",
+    "pos",
+    "checkout"
+  ],
+  "next_candidate": "Pilot 04 · PC Dashboard / Hoy after visual approval",
+  "governor_summary": "PC reference room validates look before productive rollout. POS remains locked."
+}

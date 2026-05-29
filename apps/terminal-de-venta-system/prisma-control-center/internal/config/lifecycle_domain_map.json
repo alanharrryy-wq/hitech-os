@@ -1,0 +1,149 @@
+{
+  "schema_version": "2.0-master",
+  "domains": {
+    "Sales": {
+      "label": "Sales",
+      "includes": "Ventas, lineas, pagos, devoluciones",
+      "tables": [
+        "Sale",
+        "SaleLine",
+        "SalePaymentTender",
+        "SaleReturn",
+        "SaleReturnLine"
+      ]
+    },
+    "Cash": {
+      "label": "Cash",
+      "includes": "Sesiones de caja, cortes, movimientos, diferencias",
+      "tables": [
+        "CashSession",
+        "CashMovement",
+        "CashAdjustment"
+      ]
+    },
+    "Inventory": {
+      "label": "Inventory",
+      "includes": "Stock, movimientos, conteos, reabasto",
+      "tables": [
+        "StockSnapshot",
+        "StockMovement",
+        "ReplenishmentSignal"
+      ]
+    },
+    "Catalog": {
+      "label": "Catalog",
+      "includes": "Productos, codigos, precios, impuestos, catalogos",
+      "tables": [
+        "Product",
+        "Barcode",
+        "Brand",
+        "TaxRate",
+        "PriceList",
+        "PriceListItem",
+        "DropdownCatalog",
+        "DropdownOption"
+      ]
+    },
+    "Suppliers": {
+      "label": "Suppliers",
+      "includes": "Proveedores y producto-proveedor",
+      "tables": [
+        "Supplier",
+        "ProductSupplier"
+      ]
+    },
+    "Purchasing": {
+      "label": "Purchasing",
+      "includes": "Ordenes, lineas, recepciones, diferencias",
+      "tables": [
+        "PurchaseOrder",
+        "PurchaseOrderLine",
+        "GoodsReceipt",
+        "GoodsReceiptLine"
+      ]
+    },
+    "Sync": {
+      "label": "Sync",
+      "includes": "Outbox, ACK, checkpoints, conflictos, freshness",
+      "tables": [
+        "OutboxEvent",
+        "SyncCheckpoint",
+        "SyncAttempt",
+        "SyncConflict",
+        "SyncOutboxStatusBucket",
+        "DataSourceFreshness"
+      ]
+    },
+    "Devices": {
+      "label": "Devices",
+      "includes": "Tablets/terminales, heartbeats, seguridad local",
+      "tables": [
+        "Terminal",
+        "DeviceHeartbeat",
+        "TabletLocalSecuritySecret"
+      ]
+    },
+    "Identity": {
+      "label": "Identity",
+      "includes": "Usuarios, roles, permisos, sesiones",
+      "tables": [
+        "User",
+        "Role",
+        "Permission",
+        "_RoleToUser",
+        "_PermissionToRole"
+      ]
+    },
+    "Tenant": {
+      "label": "Tenant",
+      "includes": "Cliente, negocio, sucursales",
+      "tables": [
+        "Business",
+        "Store"
+      ]
+    },
+    "License": {
+      "label": "License",
+      "includes": "Overrides/simulaciones lifecycle, sin tocar licencia real",
+      "tables": [
+        "LicenseRuntime",
+        "LicenseOverride",
+        "Entitlement",
+        "lifecycle_license_simulations"
+      ]
+    },
+    "Audit": {
+      "label": "Audit",
+      "includes": "Eventos, conteos, incidentes de soporte",
+      "tables": [
+        "AuditEvent",
+        "AuditCount",
+        "SupportIncident"
+      ]
+    },
+    "Chart Lab": {
+      "label": "Chart Lab",
+      "includes": "Payloads runtime, metadata, fuentes",
+      "tables": [
+        "runtime_chart_payloads",
+        "runtime_metadata",
+        "runtime_sources"
+      ]
+    }
+  },
+  "all_order": [
+    "Tenant",
+    "Identity",
+    "Devices",
+    "Catalog",
+    "Suppliers",
+    "Purchasing",
+    "Inventory",
+    "Cash",
+    "Sales",
+    "Sync",
+    "Audit",
+    "Chart Lab",
+    "License"
+  ]
+}

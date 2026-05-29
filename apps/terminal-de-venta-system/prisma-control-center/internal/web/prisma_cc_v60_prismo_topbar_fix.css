@@ -1,0 +1,110 @@
+/* PRISMA CC V60 · PRISMO topbar repair */
+body[data-prisma-interface="prismo"]{
+  --topbar-height:136px !important;
+}
+body[data-prisma-interface="prismo"] .topbarWrap{
+  width:min(1320px, calc(100vw - 56px)) !important;
+}
+body[data-prisma-interface="prismo"] .topbar,
+body[data-prisma-interface="prismo"] .topbar.glass{
+  min-height:var(--topbar-height) !important;
+  height:var(--topbar-height) !important;
+  padding:18px 22px !important;
+  overflow:visible !important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.035) 38%,rgba(255,255,255,.055)),
+    rgba(35,49,66,.44) !important;
+  border:1px solid rgba(214,231,252,.24) !important;
+  border-radius:32px !important;
+  box-shadow:0 22px 58px rgba(4,10,18,.24), inset 0 1px 0 rgba(255,255,255,.18) !important;
+  backdrop-filter:blur(8px) saturate(132%) brightness(.98) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(132%) brightness(.98) !important;
+}
+body[data-prisma-interface="prismo"] .topbar::before,
+body[data-prisma-interface="prismo"] .topbar::after{
+  content:none !important;
+  display:none !important;
+}
+body[data-prisma-interface="prismo"] .topbarGrid{
+  min-height:72px !important;
+  height:72px !important;
+  padding:0 470px 0 0 !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  align-items:center !important;
+}
+body[data-prisma-interface="prismo"] .brandRow{
+  display:flex !important;
+  align-items:center !important;
+  gap:16px !important;
+  min-width:0 !important;
+  overflow:visible !important;
+}
+body[data-prisma-interface="prismo"] .brandRow .heroIcon,
+body[data-prisma-interface="prismo"] .heroIcon{
+  position:relative !important;
+  left:auto !important;
+  top:auto !important;
+  width:76px !important;
+  height:76px !important;
+  min-width:76px !important;
+  min-height:76px !important;
+  flex:0 0 76px !important;
+  display:grid !important;
+  place-items:center !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  overflow:visible !important;
+}
+body[data-prisma-interface="prismo"] .heroLogo{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+body[data-prisma-interface="prismo"] .titles{
+  min-width:0 !important;
+  max-width:none !important;
+  overflow:visible !important;
+}
+body[data-prisma-interface="prismo"] .titles h1{
+  max-width:none !important;
+  white-space:nowrap !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  font-size:clamp(30px,3.2vw,46px) !important;
+  line-height:1 !important;
+  letter-spacing:.10em !important;
+}
+body[data-prisma-interface="prismo"] .brandEyebrow,
+body[data-prisma-interface="prismo"] .titles p,
+body[data-prisma-interface="prismo"] .chips{
+  display:none !important;
+}
+body[data-prisma-interface="prismo"] .topbar > .surfaceSwitch{
+  position:absolute !important;
+  right:22px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:440px !important;
+  max-width:440px !important;
+  min-width:440px !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+}
+body[data-prisma-interface="prismo"] .topbar > .surfaceSwitch button{
+  flex:0 0 auto !important;
+  min-width:132px !important;
+  max-width:180px !important;
+  height:40px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+body[data-prisma-interface="prismo"] main{
+  padding-top:calc(var(--topbar-height) + 24px) !important;
+}

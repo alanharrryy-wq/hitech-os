@@ -223,7 +223,21 @@ function buildMissingGallery(config: TabletGalleryLoadConfig, warnings: string[]
 export function loadTabletGallerySource(config: TabletGalleryLoadConfig): TabletGallerySource {
   const appRoot = findTabletAppRoot();
   const projectRoot = findProjectRoot(appRoot);
+  const materialityCandidates = config.routePath.includes("materiality-catalog")
+    ? [
+        {
+          kind: "public-fallback" as const,
+          dir: path.join(appRoot, "public", "visual-os", "materiality-catalog")
+        },
+        {
+          kind: "repo-docs" as const,
+          dir: path.join(projectRoot, "docs", "design", "materiality-catalog")
+        }
+      ]
+    : [];
+
   const candidates = [
+    ...materialityCandidates,
     {
       kind: "repo-docs" as const,
       dir: path.join(projectRoot, "docs", "design", "tablet-light-visual-preset-engine")
@@ -311,6 +325,7 @@ export function GalleryChrome({ gallery }: { gallery: TabletGallerySource }) {
           </div>
           <nav style={{ display: "flex", gap: "10px", flexWrap: "wrap" }} aria-label="Visual OS gallery navigation">
             <a style={pill} href="/visual-os">Visual OS</a>
+            <a style={pill} href="/visual-os/materiality-catalog">Materiality Catalog</a>
             <a style={pill} href="/visual-os/tablet-codex-gallery">Codex Gallery</a>
             <a style={pill} href="/visual-os/tablet-background-gallery">Background Gallery</a>
           </nav>

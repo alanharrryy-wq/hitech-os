@@ -1145,3 +1145,160 @@ html[data-theme] .supplier-readable-v07 .trust-card-v07 {
     grid-template-columns: 1fr;
   }
 }
+
+/* PRISMA_PROVEEDORES_SHELL_PLAYWRIGHT_FIX_20260526_BEGIN */
+/*
+  Proveedores now renders inside the PC AppShell. These scoped guards keep the
+  legacy supplier cockpit readable inside the narrower main column and prevent
+  the letter-by-letter column collapse observed in the 1920x1080 Playwright shot.
+*/
+.supplier-page,
+.supplier-page * {
+  box-sizing: border-box;
+}
+
+.supplier-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+  overflow-x: hidden;
+}
+
+.supplier-page :where(section, article, div, header, footer, aside, form, label, p, small, span, strong, h1, h2, h3, h4, li, td, th) {
+  min-width: 0;
+  max-width: 100%;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.supplier-page :where(.product-name-v07, .recommendation-title-block-v07, .metric, .metric-note, .decision-card-v07 strong, .order-card-v07 strong, .inventory-item-card-v11 strong) {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.supplier-page :where(input, select, textarea, button, a) {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.supplier-page :where(.card, .hero, .supplier-hero-v07, .supplier-action-cockpit-v09, .recommendation-card-v07, .money-panel-v07, .order-card-v07, .trust-card-v07, .inventory-item-card-v11, .surface-signal-card-v07, .audit-event-card-v07) {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.supplier-hero-grid-v07,
+.supplier-action-head-v09,
+.inventory-bridge-head-v11 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.supplier-hero-actions,
+.supplier-action-flow-v09 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.supplier-summary-grid-v07,
+.supplier-decision-strip-v07,
+.signal-card-grid-v07,
+.recommendation-grid-v07,
+.reason-group-grid-v07,
+.inventory-item-grid-v11,
+.trust-checklist-v07,
+.audit-event-stack-v07,
+.date-chip-grid-v07 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.supplier-action-grid-v09 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.65fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.supplier-action-form-v09 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.supplier-action-form-v09 label {
+  display: grid;
+  gap: 6px;
+}
+
+.supplier-action-reason-v09 {
+  grid-column: 1 / -1;
+}
+
+.supplier-action-buttons-v09,
+.supplier-persistence-actions-v10 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  align-content: start;
+}
+
+.money-panel-v07,
+.order-card-metrics-v07,
+.inventory-item-stats-v11,
+.supplier-action-detail-grid-v09,
+.supplier-persistence-metrics-v10 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.product-line-v07,
+.mini-card-table-row-v07,
+.order-card-head-v07,
+.trust-card-head-v07,
+.supplier-context-bar-v07 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 1320px) {
+  .supplier-hero-grid-v07,
+  .supplier-action-head-v09,
+  .inventory-bridge-head-v11,
+  .supplier-action-grid-v09 {
+    grid-template-columns: 1fr;
+  }
+
+  .supplier-hero-actions,
+  .supplier-action-flow-v09 {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 820px) {
+  .supplier-action-form-v09,
+  .supplier-summary-grid-v07,
+  .supplier-decision-strip-v07,
+  .signal-card-grid-v07,
+  .recommendation-grid-v07,
+  .reason-group-grid-v07,
+  .inventory-item-grid-v11,
+  .trust-checklist-v07,
+  .audit-event-stack-v07,
+  .date-chip-grid-v07 {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_PROVEEDORES_SHELL_PLAYWRIGHT_FIX_20260526_END */

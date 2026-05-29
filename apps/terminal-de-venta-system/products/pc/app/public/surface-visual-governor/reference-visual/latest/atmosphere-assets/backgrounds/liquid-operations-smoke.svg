@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="blurA"><feGaussianBlur stdDeviation="34"/></filter>
+    <filter id="blurB"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.86" numOctaves="4" seed="22" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 .22"/></feComponentTransfer>
+    </filter>
+    <radialGradient id="hot" cx="18%" cy="32%" r="42%"><stop offset="0" stop-color="#ff7a55" stop-opacity=".40"/><stop offset=".48" stop-color="#ff8760" stop-opacity=".09"/><stop offset="1" stop-color="#07090b" stop-opacity="0"/></radialGradient>
+    <radialGradient id="cyan" cx="78%" cy="72%" r="48%"><stop offset="0" stop-color="#54e6f4" stop-opacity=".26"/><stop offset=".46" stop-color="#4bb2d3" stop-opacity=".12"/><stop offset="1" stop-color="#07090b" stop-opacity="0"/></radialGradient>
+    <linearGradient id="base" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0a0708"/><stop offset=".45" stop-color="#11191c"/><stop offset="1" stop-color="#070a0e"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#base)"/>
+  <rect width="1600" height="1000" fill="url(#hot)"/>
+  <rect width="1600" height="1000" fill="url(#cyan)"/>
+  <g filter="url(#blurA)" opacity=".78">
+    <ellipse cx="275" cy="150" rx="440" ry="230" fill="#dbe8ee" opacity=".16"/>
+    <ellipse cx="740" cy="230" rx="520" ry="240" fill="#768d94" opacity=".17"/>
+    <ellipse cx="1180" cy="180" rx="400" ry="220" fill="#22343b" opacity=".72"/>
+    <ellipse cx="1180" cy="640" rx="530" ry="270" fill="#abc4c8" opacity=".12"/>
+    <ellipse cx="540" cy="760" rx="500" ry="230" fill="#16232a" opacity=".90"/>
+  </g>
+  <g filter="url(#blurB)" opacity=".62">
+    <path d="M-80 640 C260 470 490 820 825 610 C1030 482 1260 520 1690 380 L1690 1000 L-80 1000 Z" fill="#e8eef1" opacity=".08"/>
+    <path d="M-50 330 C260 240 540 360 790 260 C1040 160 1300 300 1660 170" fill="none" stroke="#e8f2f4" stroke-width="80" stroke-linecap="round" opacity=".10"/>
+    <path d="M-40 820 C380 690 670 900 980 725 C1240 580 1440 650 1660 540" fill="none" stroke="#4ef0f0" stroke-width="38" stroke-linecap="round" opacity=".12"/>
+  </g>
+  <rect width="1600" height="1000" filter="url(#grain)" opacity=".55"/>
+  <rect width="1600" height="1000" fill="rgba(0,0,0,.18)"/>
+</svg>

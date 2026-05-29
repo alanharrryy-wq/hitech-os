@@ -1,0 +1,28 @@
+{
+  "policy_version": "v5-golden",
+  "fatal_missing_files": [
+    "payload/lifecycle_api.py",
+    "payload/lifecycle_console.js",
+    "payload/lifecycle_console.css",
+    "payload/lifecycle_config.json",
+    "payload/lifecycle_domain_map.json",
+    "payload/lifecycle_seed_profiles.json",
+    "payload/lifecycle_clear_policy.json",
+    "payload/lifecycle_release_contract.json"
+  ],
+  "fatal_markers": [
+    "def lifecycle_payload",
+    "PRISMA_DATA_LIFECYCLE_API_V5",
+    "Pasada de longaniza",
+    "generated_only"
+  ],
+  "installer_must_abort_when": [
+    "control_center_not_found",
+    "payload_incomplete",
+    "payload_python_compile_failed",
+    "panel_route_patch_anchor_missing",
+    "index_patch_anchor_missing",
+    "post_verify_failed"
+  ],
+  "no_fake_green": true
+}

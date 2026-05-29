@@ -1,0 +1,89 @@
+{
+  "pilot": "03_pc_referencia_visual",
+  "name": "PRISMA Surface Visual Governor · Pilot 03 · PC Referencia Visual",
+  "installed_at": "20260526_191908",
+  "surface": "pc",
+  "route": "/referencia-visual",
+  "purpose": "Visual QA room for PC consuming Materiality Catalog and Chart Lab recipe export without applying the look to operational routes.",
+  "source_contracts": {
+    "materiality_catalog": {
+      "source": "PRISMA_LOCAL_PATH_REDACTED",
+      "bytes": 1462047,
+      "public_href": "/surface-visual-governor/reference-visual/pilot-03/materiality-catalog.registry.json"
+    },
+    "chart_lab_recipe_export": {
+      "source": "products/chart-lab/app/public/surface-visual-governor/recipe-export/latest or payload fallback",
+      "public_href": "/surface-visual-governor/reference-visual/pilot-03/recipe-export/index.json",
+      "files": [
+        "chart.recipe.json",
+        "visual.recipe.json",
+        "motion.recipe.json",
+        "background.recipe.json",
+        "surface.compatibility.json",
+        "ultra-codex.index.json",
+        "index.json"
+      ]
+    },
+    "atmosphere_engine": {
+      "public_dir": "/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds",
+      "asset_count": 7
+    }
+  },
+  "route_budget": {
+    "background_intensity": 0.55,
+    "glass_density": "medium",
+    "rim_policy": "signature only",
+    "glow_policy": "semantic budget: 1 strong, 3 medium max",
+    "motion_policy": "reduced-motion compliant; no loop visible enough to annoy",
+    "webgl": 0,
+    "pixi_vapor": 0
+  },
+  "gates": {
+    "pc": {
+      "allowed": true,
+      "mode": "isolated_reference_visual"
+    },
+    "tablet": {
+      "allowed": true,
+      "light_first": true,
+      "modified": false
+    },
+    "pos": {
+      "allowed": false,
+      "modified": false,
+      "blocked": [
+        "dark_storm",
+        "webgl",
+        "pixi_vapor",
+        "heavy_blur",
+        "background_competing_with_product_or_payment",
+        "direct_recipe_application"
+      ]
+    },
+    "db": {
+      "touched": false
+    },
+    "deploy": {
+      "performed": false
+    },
+    "dependencies": {
+      "installed": false
+    }
+  },
+  "write_boundary": {
+    "allowed": [
+      "products/pc/app/app/referencia-visual",
+      "products/pc/app/public/surface-visual-governor/reference-visual",
+      "products/pc/app/scripts/verify-surface-visual-governor-pilot03.mjs",
+      "products/pc/app/docs/surface-visual-governor/pilot-03-pc-referencia-visual.md"
+    ],
+    "forbidden": [
+      "products/tablet/app/app/pos",
+      "products/tablet/app/app/checkout",
+      "package.json",
+      "pnpm-lock.yaml",
+      "*_db_public_safe",
+      "deploy/cloudflare"
+    ]
+  }
+}

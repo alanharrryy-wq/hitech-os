@@ -1,0 +1,1817 @@
+{
+  "schema_family": "prisma.surface_visual_governor.recipe_export",
+  "schema_version": "0.2.0-pilot-02",
+  "pilot": "02_chart_lab_recipe_export",
+  "generated_at": "2026-05-27T00:56:19.246646+00:00",
+  "source_materiality_catalog": {
+    "repo_relative_path": "products/tablet/app/public/visual-os/materiality-catalog/prisma.materiality-catalog.registry.3000-3150.json",
+    "sha256": "1752aad422282ddfd75f2211b89ce3d39c3a6d4221e8cb55950044e3d9dd531b",
+    "bytes": 1462047,
+    "summary": {
+      "root_type": "dict",
+      "root_keys": [
+        "$schema",
+        "created_at",
+        "artifact_status",
+        "project",
+        "plain_language_summary",
+        "source_files",
+        "principles",
+        "global_axes",
+        "library_matrix",
+        "surfaces",
+        "atmosphere_assets",
+        "background_presets_from_gallery",
+        "panel_presets_from_gallery",
+        "tablet_light_adapter",
+        "visual_verifier_rules",
+        "materiality_recipe_bundles",
+        "component_variant_catalog",
+        "governor_gates",
+        "codex_layer_presets_preserved",
+        "codex_source_payload_preserved",
+        "fusion_codex_reference_preserved",
+        "zip_manifest",
+        "outputs_this_registry_enables",
+        "not_yet_doing"
+      ],
+      "node_count_estimate": 32973,
+      "string_count_sampled": 20000,
+      "route_candidates_sample": [
+        "/pos",
+        "/catalog",
+        "/sales",
+        "/settings",
+        "/dashboard",
+        "/reference",
+        "/visual-os",
+        "/stock",
+        "/sales/history",
+        "/settings/license",
+        "/checkout",
+        "/customer-display",
+        "/sync",
+        "/events/outbox",
+        "/offline",
+        "/idle",
+        "/ambient",
+        "/visual-reference",
+        "/audit",
+        "/release-gate",
+        "/sales/detail",
+        "/checkout/success",
+        "/demo",
+        "/landing",
+        "/settings/export",
+        "/sales/today",
+        "/prisma-pulse",
+        "/visual-os/pro",
+        "/screen-standard-preview",
+        "/referencia-visual"
+      ],
+      "asset_candidates_sample": [
+        "aurora-slate-veil.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/aurora-slate-veil.svg",
+        "liquid-operations-smoke.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-smoke.svg",
+        "liquid-operations-ui-reference.png",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-ui-reference.png",
+        "obsidian-cloud-motion.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/obsidian-cloud-motion.svg",
+        "storm-cloud-operations-real.jpg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/storm-cloud-operations-real.jpg",
+        "storm-glass-horizon.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/storm-glass-horizon.svg",
+        "tablet-soft-gray-clouds.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/tablet-soft-gray-clouds.svg",
+        "assets/backgrounds/storm-cloud-operations-real.jpg",
+        "assets/backgrounds/liquid-operations-smoke.svg",
+        "assets/backgrounds/liquid-operations-ui-reference.png",
+        "assets/backgrounds/tablet-soft-gray-clouds.svg",
+        "assets/backgrounds/obsidian-cloud-motion.svg",
+        "assets/backgrounds/storm-glass-horizon.svg",
+        "assets/backgrounds/aurora-slate-veil.svg",
+        "Usa storm-cloud-operations-real.jpg como fondo real con scrim, displacement/vapor y freeze frame."
+      ],
+      "id_candidates_sample": [
+        "prisma.materiality-catalog.registry.v1",
+        "created_at",
+        "2026-05-26T20:04:33.160624+00:00",
+        "artifact_status",
+        "plain_language_summary",
+        "source_files",
+        "ultra_codex_json",
+        "prisma.ultra-parametric-preset-codex.json",
+        "size_bytes",
+        "sha256_12",
+        "ultra_codex_md",
+        "PRISMA_ULTRA_PARAMETRIC_PRESET_CODEX.md",
+        "cloudglass_recipe_md",
+        "PRISMA_REAL_SURFACES_CLOUDGLASS_RECIPE_V1_260525.md",
+        "chart_lab_checklist_md",
+        "PRISMA_Chart_Lab_ECharts_Power_Studio_Checklist.md",
+        "pc_uiux_md",
+        "PRISMA_PC_UIUX_MARKET_BEST_EDITION_260524.md",
+        "chart_lab_deploy_md",
+        "PRISMA_CHART_LAB_CLOUDFLARE_PAGES_RUNTIME_DEPLOYMENT_README.md",
+        "surface_governor_md",
+        "PRISMA_SURFACE_GOVERNOR_3000_3150_ANALISIS_COMPLETO_260526.md",
+        "fusion_codex_json",
+        "prisma.surface-visual-governor.fusion-codex.3000-3150.json",
+        "tablet_background_zip",
+        "PRISMA_TABLET_BACKGROUND_GALLERY_SOURCE_20260526_133019.zip",
+        "golden_rule",
+        "The preset can be cinematic; the route budget decides how much of it is allowed to show.",
+        "hard_limits",
+        "Never put G5/R3F/physical glass in routine dense tables.",
+        "Never put strong glow in more than one primary CTA per viewport.",
+        "Never animate background faster than the user can ignore.",
+        "Never use hydro rim on every card.",
+        "Never make the AppShell itself a hero card.",
+        "our_decision",
+        "Gallery is lab. Materiality Catalog is contract. Governor is enforcement. Chart Lab is workshop. Apps are consumers.",
+        "global_axes",
+        "chart_lab",
+        "G6_route_cinematic",
+        "M0_none",
+        "M1_micro",
+        "M2_soft",
+        "M3_ambient",
+        "M4_choreographed",
+        "M5_demo",
+        "data_density",
+        "library_matrix",
+        "css_custom_properties",
+        "max_use",
+        "Every preset exposes tunable knobs as variables/tokens.",
+        "Random local tokens create visual contraband.",
+        "tailwind_v4",
+        "Use for spacing, grid spans, states and arbitrary CSS variables; never as random color soup.",
+        "Utility sprawl without recipes becomes digital confetti.",
+        "radix_ui",
+        "Dialogs, tooltips, popovers, dropdowns, select, tabs, accordion, alert dialogs.",
+        "Styling Radix without respecting focus/aria throws away the good part.",
+        "shadcn_ui",
+        "Use as structural seed, then skin with PRISMA recipes.",
+        "Leaving default shadcn look unskinned breaks identity.",
+        "cva_clsx_tailwind_merge",
+        "Every major component gets material/tone/density/surface variants.",
+        "Manual class concatenation becomes a cursed enchilada.",
+        "motion_for_react",
+        "Microinteraction layer: cards, buttons, nav, command palette, drawers, tabs.",
+        "Long ambient timelines are better in GSAP.",
+        "Background drift, hero intro, tours, demo mode, premium route transitions.",
+        "Do not GSAP every hover, hermano.",
+        "svg_filters",
+        "Hydro rim pseudo-elements, not text containers.",
+        "Applying displacement to content makes text look drunk.",
+        "three_r3f_drei_postprocessing",
+        "Landing, splash, chart lab wow stage, rare hero objects.",
+        "If it appears on CRUD, alguien se emocionó demasiado.",
+        "echarts_echarts_gl",
+        "Charts, insights, chart lab, visual investigations, hotspots.",
+        "Charts without question/reading/action become decoration.",
+        "tanstack_table",
+        "Sorting/filtering/pagination/selection/visibility while PRISMA owns markup.",
+        "Default table styling or too much glass kills readability.",
+        "react_hook_form_zod",
+        "Settings, filters, bulk actions, create/edit flows, validation contracts.",
+        "Visual beauty cannot hide bad validation copy.",
+        "Transient success/warning/loading/error with PRISMA glass shell.",
+        "Do not toast every tiny state change.",
+        "Global launcher, route search, quick actions, entity lookup.",
+        "A command palette without ranking is a junk drawer.",
+        "Mobile/tablet bottom sheets, evidence drawers, action drawers.",
+        "Desktop side panels still need desktop rhythm.",
+        "resizable_panels",
+        "Chart Lab, comparison mode, audit studios, data workspaces.",
+        "Resizable everything turns the app into a cockpit garage sale.",
+        "lucide_react",
+        "All component icons with strict sizing and stroke discipline.",
+        "Icon-only navigation without tooltip/label creates mystery meat.",
+        "date_fns_day_picker",
+        "Filters, reports, audit and KPI date windows.",
+        "Raw timestamps visible by default are UI crimes.",
+        "next_themes",
+        "Theme/skin switching, reduced visual intensity modes, future light/dark families.",
+        "Theme switching without component tokens causes Frankenstyles.",
+        "chart_lab_3000",
+        "allowed_materials",
+        "G5_demo_optional",
+        "background_policy",
+        "must_have",
+        "tablet_3120_productive",
+        "G3_light_only",
+        "pc_3130_decision_center",
+        "G4_route_signature",
+        "mobile_3140_supervisor",
+        "control_center_3150",
+        "control_center",
+        "G3_quiet",
+        "atmosphere_assets",
+        "aurora-slate-veil.svg",
+        "zip_path",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/aurora-slate-veil.svg",
+        "svg_width_raw",
+        "svg_height_raw",
+        "svg_viewbox",
+        "storm_graphite_dark_showcase",
+        "governor_default_policy",
+        "use_as_real_background",
+        "never_inline_base64",
+        "requires_scrim",
+        "requires_low_power_fallback",
+        "surface_fit",
+        "visual_os",
+        "pc_reference",
+        "avoid_on",
+        "tablet_pos_default",
+        "liquid-operations-smoke.svg",
+        "liquid_vapor_reference",
+        "pc_dashboard_optional",
+        "dense_tables",
+        "liquid-operations-ui-reference.png",
+        "obsidian-cloud-motion.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/obsidian-cloud-motion.svg",
+        "storm-cloud-operations-real.jpg",
+        "storm-glass-horizon.svg",
+        "repo/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/storm-glass-horizon.svg",
+        "tablet-soft-gray-clouds.svg",
+        "tablet_light_soft_clouds",
+        "tablet_productive",
+        "tablet_pos_candidate",
+        "mobile_light",
+        "background_presets_from_gallery",
+        "layer.background.executive_mineral_calm",
+        "layer.glass.g3_double_glass_stage",
+        "_source",
+        "tablet-codex-background-gallery.demo.json",
+        "layer.background.graphite_icefield_layer_stack",
+        "gsap_optional",
+        "layer.background.mobile_thin_mist",
+        "layer.background.sync_night_pulse",
+        "layer.glow.glow_live_ice_dot",
+        "css_keyframes",
+        "layer.motion.motion_ambient_glacier",
+        "prefers_reduced_motion"
+      ]
+    }
+  },
+  "source_ultra_codex": {
+    "schema_name": "prisma_ultra_parametric_preset_codex",
+    "schema_version": "2.0-ultra-overkill-analysis-not-implementation",
+    "counts": {
+      "layer_presets": 37,
+      "component_presets": 57,
+      "route_family_combinations": 12,
+      "showpiece_bundles": 12,
+      "library_entries": 19
+    },
+    "philosophy": {
+      "core": "Maximum visual expression, but parameterized and governable. Pasado de lanza en presets, no pasado de lanza en cada screen.",
+      "principle": "The preset can be cinematic; the route budget decides how much of it is allowed to show.",
+      "translation": "La receta puede traer turbo, alerón y luces debajo del carro; la pantalla decide si va en modo valet o modo pista.",
+      "hierarchy": [
+        "clarity",
+        "state",
+        "affordance",
+        "materiality",
+        "motion",
+        "wow"
+      ],
+      "hard_limits": [
+        "Never put G5/R3F/physical glass in routine dense tables.",
+        "Never put strong glow in more than one primary CTA per viewport.",
+        "Never animate background faster than the user can ignore.",
+        "Never use hydro rim on every card.",
+        "Never make the AppShell itself a hero card."
+      ]
+    }
+  },
+  "public_safety": {
+    "contains_local_absolute_paths": false,
+    "contains_db_paths": false,
+    "contains_tokens_or_secrets": "",
+    "cloudflare_deploy_performed": false,
+    "database_touched": false,
+    "dependencies_installed": false
+  },
+  "recipe_type": "visual.recipe.json",
+  "purpose": "Governed visual presets and material layers for Chart Lab exports, derived from Materiality Catalog + Ultra Codex.",
+  "priority_hierarchy": [
+    "clarity",
+    "state",
+    "affordance",
+    "materiality",
+    "motion",
+    "wow"
+  ],
+  "preset_families": [
+    {
+      "id": "visual.crystal_ops",
+      "name": "Crystal Ops",
+      "surface_bias": [
+        "pc",
+        "chart_lab"
+      ],
+      "material_stack": [
+        "G2",
+        "G3",
+        "R2",
+        "N1"
+      ],
+      "notes": "clean executive glass; moderate contrast; chart frame ready"
+    },
+    {
+      "id": "visual.forensic_paper",
+      "name": "Forensic Paper",
+      "surface_bias": [
+        "pc",
+        "tablet",
+        "mobile"
+      ],
+      "material_stack": [
+        "G0",
+        "G1",
+        "R0",
+        "N0"
+      ],
+      "notes": "audit-safe, high legibility, low motion"
+    },
+    {
+      "id": "visual.tablet_touch",
+      "name": "Tablet Touch",
+      "surface_bias": [
+        "tablet"
+      ],
+      "material_stack": [
+        "G1",
+        "G2",
+        "R1",
+        "N1"
+      ],
+      "notes": "light-first, large touch targets, semantic glow only"
+    },
+    {
+      "id": "visual.executive_dense",
+      "name": "Executive Dense",
+      "surface_bias": [
+        "pc"
+      ],
+      "material_stack": [
+        "G1",
+        "G2",
+        "R1",
+        "N1"
+      ],
+      "notes": "dense signal without dashboard tianguis"
+    },
+    {
+      "id": "visual.heat_beast",
+      "name": "Heat Beast",
+      "surface_bias": [
+        "chart_lab",
+        "pc"
+      ],
+      "material_stack": [
+        "G3",
+        "R3",
+        "N3"
+      ],
+      "notes": "dramatic heatmap tuning, route budget required"
+    },
+    {
+      "id": "visual.calm_intelligence",
+      "name": "Calm Intelligence",
+      "surface_bias": [
+        "pc",
+        "tablet",
+        "mobile"
+      ],
+      "material_stack": [
+        "G1",
+        "G2",
+        "R1",
+        "N1"
+      ],
+      "notes": "soft premium, does not scream"
+    }
+  ],
+  "material_layers_from_ultra_codex": [
+    {
+      "id": "layer.none.g0_naked_content_plane",
+      "name": "G0 Naked Content Plane",
+      "layer_group": "none",
+      "kind": "parametric",
+      "role": "Pure content/layer helper with no glass.",
+      "material_recipe": "no surface effects; only layout/text",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g1_quiet_work_glass",
+      "name": "G1 Quiet Work Glass",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Tables, inputs, rows, toolbars.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g1_frosted_row_tint",
+      "name": "G1 Frosted Row Tint",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Selected/hover rows without drama.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g2_executive_card_glass",
+      "name": "G2 Executive Card Glass",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Default cards and secondary panels.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g2_dense_evidence_glass",
+      "name": "G2 Dense Evidence Glass",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Evidence and technical details with low glow.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g3_double_glass_stage",
+      "name": "G3 Double Glass Stage",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Hero, decision header, major frames.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glass.g3_floating_modal_glass",
+      "name": "G3 Floating Modal Glass",
+      "layer_group": "glass",
+      "kind": "parametric",
+      "role": "Modal/drawer surfaces with deeper shadow.",
+      "material_recipe": "alpha + border + blur + inset highlight + shadow tuned by density",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": [
+          0,
+          34
+        ],
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0.5,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.rim.g4_hydro_rim_signature",
+      "name": "G4 Hydro Rim Signature",
+      "layer_group": "rim",
+      "kind": "parametric",
+      "role": "Signature refractive rim for major surfaces.",
+      "material_recipe": "pseudo-element rim with optional SVG displacement",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": [
+          1,
+          5
+        ],
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [
+          "svg_filters"
+        ],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0.6,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.rim.g4_active_navigation_capsule",
+      "name": "G4 Active Navigation Capsule",
+      "layer_group": "rim",
+      "kind": "parametric",
+      "role": "Active nav and selected tabs.",
+      "material_recipe": "pseudo-element rim with optional SVG displacement",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": [
+          1,
+          5
+        ],
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [
+          "svg_filters"
+        ],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0.6,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.physical.g5_physical_glass_object",
+      "name": "G5 Physical Glass Object",
+      "layer_group": "physical",
+      "kind": "parametric",
+      "role": "R3F/Drei physical glass hero object.",
+      "material_recipe": "R3F mesh/material/postprocessing object, isolated and optional",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": [
+          "three_r3f_drei_postprocessing"
+        ]
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0.8
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.shadow.shadow_soft_lift",
+      "name": "Shadow Soft Lift",
+      "layer_group": "shadow",
+      "kind": "parametric",
+      "role": "Low elevation for panels.",
+      "material_recipe": "box-shadow depth token",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.shadow.shadow_executive_depth",
+      "name": "Shadow Executive Depth",
+      "layer_group": "shadow",
+      "kind": "parametric",
+      "role": "Deep premium elevation.",
+      "material_recipe": "box-shadow depth token",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.shadow.shadow_floating_dialog",
+      "name": "Shadow Floating Dialog",
+      "layer_group": "shadow",
+      "kind": "parametric",
+      "role": "Modal/drawer elevation.",
+      "material_recipe": "box-shadow depth token",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": []
+    },
+    {
+      "id": "layer.glow.glow_focus_halo",
+      "name": "Glow Focus Halo",
+      "layer_group": "glow",
+      "kind": "parametric",
+      "role": "Accessible focus states.",
+      "material_recipe": "semantic box-shadow/filter glow token",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": [
+          0.08,
+          0.48
+        ],
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0.5,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.glow.glow_live_ice_dot",
+      "name": "Glow Live Ice Dot",
+      "layer_group": "glow",
+      "kind": "parametric",
+      "role": "Live/sync activity.",
+      "material_recipe": "semantic box-shadow/filter glow token",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": [
+          0.08,
+          0.48
+        ],
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0.5,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.glow.glow_critical_coral",
+      "name": "Glow Critical Coral",
+      "layer_group": "glow",
+      "kind": "parametric",
+      "role": "Critical state priority.",
+      "material_recipe": "semantic box-shadow/filter glow token",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": [
+          0.08,
+          0.48
+        ],
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0.5,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.glow.glow_action_blue",
+      "name": "Glow Action Blue",
+      "layer_group": "glow",
+      "kind": "parametric",
+      "role": "Primary action.",
+      "material_recipe": "semantic box-shadow/filter glow token",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": [
+          0.08,
+          0.48
+        ],
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0.5,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.glow.glow_insight_violet",
+      "name": "Glow Insight Violet",
+      "layer_group": "glow",
+      "kind": "parametric",
+      "role": "Insights and chart special readings.",
+      "material_recipe": "semantic box-shadow/filter glow token",
+      "parameters": {
+        "alpha_range": [
+          0.04,
+          0.22
+        ],
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": [
+          0.08,
+          0.48
+        ],
+        "duration_ms": null,
+        "motion_amplitude": null,
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0.5,
+        "motion": 0,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.motion.motion_pressed_nickel",
+      "name": "Motion Pressed Nickel",
+      "layer_group": "motion",
+      "kind": "parametric",
+      "role": "Tactile press/hover.",
+      "material_recipe": "duration/ease/transform state recipe",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": [
+          80,
+          420
+        ],
+        "motion_amplitude": "tiny unless demo",
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [
+          "motion_for_react"
+        ],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0.5,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.motion.motion_layout_silk",
+      "name": "Motion Layout Silk",
+      "layer_group": "motion",
+      "kind": "parametric",
+      "role": "Tabs, drawers, layout changes.",
+      "material_recipe": "duration/ease/transform state recipe",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": [
+          80,
+          420
+        ],
+        "motion_amplitude": "tiny unless demo",
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [
+          "motion_for_react"
+        ],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0.5,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.motion.motion_ambient_glacier",
+      "name": "Motion Ambient Glacier",
+      "layer_group": "motion",
+      "kind": "parametric",
+      "role": "Slow background/hero drift.",
+      "material_recipe": "duration/ease/transform state recipe",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": [
+          80,
+          420
+        ],
+        "motion_amplitude": "tiny unless demo",
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [
+          "motion_for_react"
+        ],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0.5,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    },
+    {
+      "id": "layer.motion.motion_demo_velvet_cannon",
+      "name": "Motion Demo Velvet Cannon",
+      "layer_group": "motion",
+      "kind": "parametric",
+      "role": "Cinematic demo only.",
+      "material_recipe": "duration/ease/transform state recipe",
+      "parameters": {
+        "alpha_range": null,
+        "blur_px": null,
+        "rim_width_px": null,
+        "glow_strength": null,
+        "duration_ms": [
+          80,
+          420
+        ],
+        "motion_amplitude": "tiny unless demo",
+        "reduced_motion": "must degrade to static premium frame"
+      },
+      "libraries": {
+        "primary": [
+          "css_custom_properties"
+        ],
+        "secondary": [
+          "tailwind_v4",
+          "cva_clsx_tailwind_merge"
+        ],
+        "interaction": [
+          "motion_for_react"
+        ],
+        "rim_filter": [],
+        "webgl": []
+      },
+      "variants": {
+        "quiet": {
+          "visual_output": "barely present; supports work"
+        },
+        "standard": {
+          "visual_output": "PRISMA default"
+        },
+        "premium": {
+          "visual_output": "noticeable but governed"
+        },
+        "cinematic": {
+          "visual_output": "route-gated wow"
+        }
+      },
+      "visual_budget": {
+        "glass": 0,
+        "rim": 0,
+        "glow": 0,
+        "motion": 0.5,
+        "background": 0.0,
+        "webgl": 0
+      },
+      "use_on": [
+        "component presets declare usage"
+      ],
+      "avoid_on": [
+        "dense_text"
+      ]
+    }
+  ],
+  "control_contract": {
+    "visualIntensity": {
+      "min": 0,
+      "max": 200,
+      "safe": [
+        0,
+        100
+      ],
+      "wild": [
+        101,
+        160
+      ],
+      "insane": [
+        161,
+        200
+      ]
+    },
+    "contrastPunch": {
+      "min": 0,
+      "max": 200,
+      "safe": [
+        0,
+        110
+      ],
+      "wild": [
+        111,
+        165
+      ],
+      "insane": [
+        166,
+        200
+      ]
+    },
+    "glowAura": {
+      "min": 0,
+      "max": 80,
+      "safe": [
+        0,
+        28
+      ],
+      "wild": [
+        29,
+        56
+      ],
+      "insane": [
+        57,
+        80
+      ]
+    },
+    "depth": {
+      "min": 0,
+      "max": 100,
+      "safe": [
+        0,
+        55
+      ],
+      "wild": [
+        56,
+        82
+      ],
+      "insane": [
+        83,
+        100
+      ]
+    },
+    "decalMode": [
+      "off",
+      "subtle",
+      "strong"
+    ]
+  },
+  "hard_limits": [
+    "Do not put strong glow on more than one primary CTA per viewport.",
+    "Do not use hydro rim on every card.",
+    "Do not use physical/WebGL glass in dense operational surfaces.",
+    "If contrast drops, lower background/rim before changing text color."
+  ]
+}
