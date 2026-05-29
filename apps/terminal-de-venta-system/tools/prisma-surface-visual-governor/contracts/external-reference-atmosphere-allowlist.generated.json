@@ -1,0 +1,129 @@
+{
+  "schema": "prisma.surface.visual_governor.external_reference_atmosphere_allowlist",
+  "version": "M-04B.generated",
+  "created_at": "2026-05-28T23:41:00",
+  "source_zip": "<OUTPUT_DIR>\\prisma_unsplash_reference_analysis.zip",
+  "rule": "Estas imágenes Unsplash son referencia primaria externa del Atmosphere Engine. Entran por familia y route budget, nunca como wallpaper al azar.",
+  "families": [
+    {
+      "id": "external_storm_graphite_vault",
+      "label": "External Storm / Graphite / Vault",
+      "detected_count": 0,
+      "allowed_surfaces": [
+        "control_center",
+        "pc",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional_surfaces": [],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "premium governed; no dense CRUD default"
+    },
+    {
+      "id": "external_liquid_teal_vapor",
+      "label": "External Liquid / Teal / Vapor",
+      "detected_count": 0,
+      "allowed_surfaces": [
+        "chart_lab",
+        "control_center",
+        "visual_os"
+      ],
+      "conditional_surfaces": [
+        "pc"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public",
+        "dense_tables"
+      ],
+      "budget": "showcase/studio only; route-gated"
+    },
+    {
+      "id": "external_tablet_light_soft",
+      "label": "External Tablet Light / Soft Clouds / Snow",
+      "detected_count": 1,
+      "allowed_surfaces": [
+        "tablet_productive",
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional_surfaces": [
+        "pos_checkout"
+      ],
+      "blocked_surfaces": [
+        "pc_dark_showcase_default"
+      ],
+      "budget": "light-first; low noise; POS only with gate"
+    },
+    {
+      "id": "external_mobile_thin_mist",
+      "label": "External Mobile Thin Mist / Quiet Vault",
+      "detected_count": 0,
+      "allowed_surfaces": [
+        "mobile",
+        "web_eit_public",
+        "control_center_audit"
+      ],
+      "conditional_surfaces": [
+        "tablet_productive"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "low noise; battery-friendly; audit-safe"
+    },
+    {
+      "id": "external_showcase_aurora_night",
+      "label": "External Showcase / Aurora / Night",
+      "detected_count": 0,
+      "allowed_surfaces": [
+        "control_center",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional_surfaces": [
+        "pc_reference"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "demo/reference only; never default productive"
+    },
+    {
+      "id": "external_decorative_subject_review",
+      "label": "External Decorative / Subject Review",
+      "detected_count": 0,
+      "allowed_surfaces": [],
+      "conditional_surfaces": [
+        "manual_review_only"
+      ],
+      "blocked_surfaces": [
+        "all_until_reviewed"
+      ],
+      "budget": "not direct atmosphere until approved"
+    }
+  ],
+  "hard_bans": {
+    "pos_checkout": [
+      "storm_graphite",
+      "liquid_vapor",
+      "aurora_night",
+      "dark_default",
+      "heavy_blur",
+      "webgl",
+      "pixi"
+    ],
+    "tablet_productive": [
+      "dark_default",
+      "showcase_default",
+      "liquid_vapor_default"
+    ]
+  }
+}
