@@ -1,0 +1,28 @@
+{
+  "folder": "autogit",
+  "root_files_allowed": [
+    "AutoGit.cmd"
+  ],
+  "subfolders": [
+    "bin",
+    "engine",
+    "config",
+    "docs",
+    "state",
+    "logs",
+    "reports",
+    "trash_manifests",
+    "rollback"
+  ],
+  "outputs": {
+    "primary": "F:\\descargasf",
+    "trash": "F:\\Trash-old"
+  },
+  "principles": [
+    "fail_fast",
+    "never_delete_permanently",
+    "exact_stage",
+    "no_force_push",
+    "no_merge_on_failed_checks"
+  ]
+}
