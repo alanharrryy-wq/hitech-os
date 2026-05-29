@@ -85,11 +85,13 @@ function listTrackedFiles() {
     stdio: ["ignore", "pipe", "pipe"]
   });
 
-  return output
+  const files = output
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
     .map((line) => toPosix(line));
+
+  return files;
 }
 
 function getIsShallow() {
