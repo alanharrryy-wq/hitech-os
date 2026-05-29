@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PRISMA M-04B · External Reference Atmosphere Pack</title>
+<style>
+:root {
+  --bg:#071018; --text:#eef8ff; --muted:#9fb7c9; --line:rgba(210,232,255,.18);
+  --panel:rgba(255,255,255,.08); --cyan:#8de8ff; --mint:#9fffd8; --amber:#ffd58a;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(141,232,255,.20), transparent 30%),
+    radial-gradient(circle at 90% 12%, rgba(159,255,216,.12), transparent 30%),
+    linear-gradient(135deg,#06101a,#101c29 52%,#071018);
+}
+header {
+  position:sticky; top:0; z-index:5; padding:28px clamp(18px,3vw,44px);
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(7,16,24,.96), rgba(7,16,24,.78));
+  backdrop-filter: blur(14px);
+}
+.eyebrow { margin:0 0 8px; color:var(--cyan); text-transform:uppercase; letter-spacing:.16em; font-size:12px; font-weight:900; }
+h1 { margin:0; font-size:clamp(30px,5vw,58px); letter-spacing:-.055em; line-height:.95; }
+.subtitle { max-width:980px; color:var(--muted); line-height:1.6; }
+main { padding:28px clamp(18px,3vw,44px) 70px; }
+.family {
+  margin-bottom:36px; padding:22px; border:1px solid var(--line); border-radius:32px;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.052));
+  box-shadow:0 24px 80px rgba(0,0,0,.34);
+}
+.familyHead { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; }
+.family h2 { margin:0; font-size:30px; letter-spacing:-.04em; }
+.family p { color:var(--muted); }
+.badge { color:var(--mint); border:1px solid var(--line); border-radius:22px; padding:12px 18px; font-size:28px; font-weight:900; }
+.policy { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0 20px; }
+.policy div { border:1px solid var(--line); border-radius:18px; padding:12px; background:rgba(0,0,0,.16); }
+.policy b { display:block; margin-bottom:5px; }
+.policy span { color:var(--muted); font-size:13px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+.card { overflow:hidden; border:1px solid var(--line); border-radius:24px; background:var(--panel); }
+.img { height:170px; background:#0d1722; }
+.img img { width:100%; height:100%; object-fit:cover; display:block; }
+.body { padding:13px; }
+.body h3 { margin:0 0 6px; font-size:13px; word-break:break-word; }
+.body p { margin:0; color:var(--muted); font-size:11px; word-break:break-word; }
+.chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.chips span { border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:5px 8px; color:var(--amber); font-size:11px; }
+@media (max-width:800px) { .policy { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">PRISMA Surface Visual Governor</p>
+  <h1>M-04B External Reference Atmosphere Pack</h1>
+  <p class="subtitle">
+    Estas son las imágenes Unsplash originales de referencia integradas al Governor como atmósferas externas.
+    No reemplazan M-04: lo complementan como paquete canónico de fondos reales para Surface Visual Governor.
+  </p>
+</header>
+<main>
+
+<section class="family">
+  <div class="familyHead">
+    <div>
+      <p class="eyebrow">Familia externa</p>
+      <h2>External Tablet Light / Soft Clouds / Snow</h2>
+      <p>light-first; low noise; POS only with gate</p>
+    </div>
+    <div class="badge">1</div>
+  </div>
+  <div class="policy">
+    <div><b>Permitido</b><span>tablet_productive, mobile, web_eit_public</span></div>
+    <div><b>Condicional</b><span>pos_checkout</span></div>
+    <div><b>Bloqueado</b><span>pc_dark_showcase_default</span></div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="img"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/assets/external-reference-atmospheres/unsplash-intricate-explorer/unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg" loading="lazy" /></div>
+      <div class="body">
+        <h3>unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg</h3>
+        <p>prisma_unsplash_reference_contact_sheet.jpg</p>
+        <div class="chips">
+          <span>conf 42</span>
+          <span>order_fallback_review_recommended</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+</main>
+</body>
+</html>

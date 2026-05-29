@@ -1,0 +1,127 @@
+{
+  "schema": "prisma.surface.visual_governor.surface_atmosphere_assets_external_overlay",
+  "version": "M-04B.generated",
+  "created_at": "2026-05-28T23:41:00",
+  "source_zip": "<OUTPUT_DIR>\\prisma_unsplash_reference_analysis.zip",
+  "assets": [
+    {
+      "index": 1,
+      "original_filename": "prisma_unsplash_reference_contact_sheet.jpg",
+      "source_inside_pack": "<OUTPUT_DIR>\\gov m04b 2805 2340 work\\input_images_extract\\prisma_unsplash_reference_contact_sheet.jpg",
+      "relative_path": "tools/prisma-surface-visual-governor/assets/external-reference-atmospheres/unsplash-intricate-explorer/unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg",
+      "public_toolbox_path": "tools/prisma-surface-visual-governor/assets/external-reference-atmospheres/unsplash-intricate-explorer/unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg",
+      "filename": "unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg",
+      "extension": ".jpg",
+      "bytes": 519231,
+      "sha256": "07f8a681cedc9061a449e28ec802c826dafc789e2ab404ca1f7a0fb4bbcc7fd9",
+      "family_id": "external_tablet_light_soft",
+      "family_label": "External Tablet Light / Soft Clouds / Snow",
+      "classification_confidence": 42,
+      "classification_reason": "order_fallback_review_recommended",
+      "allowed_surfaces": "tablet_productive|mobile|web_eit_public",
+      "conditional_surfaces": "pos_checkout",
+      "blocked_surfaces": "pc_dark_showcase_default",
+      "budget": "light-first; low noise; POS only with gate",
+      "pil_available": true,
+      "width": 1040,
+      "height": 1712,
+      "brightness": 102.67,
+      "saturation_hint": 4,
+      "preview_relative": "preview_assets/external_tablet_light_soft/unsplash_ref_01_prisma_unsplash_reference_contact_sheet.jpg"
+    }
+  ],
+  "surface_policy": {
+    "external_storm_graphite_vault": {
+      "label": "External Storm / Graphite / Vault",
+      "allowed": [
+        "control_center",
+        "pc",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional": [],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "premium governed; no dense CRUD default"
+    },
+    "external_liquid_teal_vapor": {
+      "label": "External Liquid / Teal / Vapor",
+      "allowed": [
+        "chart_lab",
+        "control_center",
+        "visual_os"
+      ],
+      "conditional": [
+        "pc"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public",
+        "dense_tables"
+      ],
+      "budget": "showcase/studio only; route-gated"
+    },
+    "external_tablet_light_soft": {
+      "label": "External Tablet Light / Soft Clouds / Snow",
+      "allowed": [
+        "tablet_productive",
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional": [
+        "pos_checkout"
+      ],
+      "blocked": [
+        "pc_dark_showcase_default"
+      ],
+      "budget": "light-first; low noise; POS only with gate"
+    },
+    "external_mobile_thin_mist": {
+      "label": "External Mobile Thin Mist / Quiet Vault",
+      "allowed": [
+        "mobile",
+        "web_eit_public",
+        "control_center_audit"
+      ],
+      "conditional": [
+        "tablet_productive"
+      ],
+      "blocked": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "low noise; battery-friendly; audit-safe"
+    },
+    "external_showcase_aurora_night": {
+      "label": "External Showcase / Aurora / Night",
+      "allowed": [
+        "control_center",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional": [
+        "pc_reference"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "demo/reference only; never default productive"
+    },
+    "external_decorative_subject_review": {
+      "label": "External Decorative / Subject Review",
+      "allowed": [],
+      "conditional": [
+        "manual_review_only"
+      ],
+      "blocked": [
+        "all_until_reviewed"
+      ],
+      "budget": "not direct atmosphere until approved"
+    }
+  }
+}
