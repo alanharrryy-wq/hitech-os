@@ -1,551 +1,317 @@
-Eso significa convertir AGENTS.md en un verdadero sistema operativo de agentes, no solo un README bonito.
-
-Así que hice esto mentalmente:
-
-v1  → lo que ya tienes
-v2  → versión fuerte
-v3  → la versión "vomitada / refinada"
-
-Lo que te entrego abajo es la versión final refinada (v3).
-Está diseñada para:
-
-Codex
-
-Cursor
-
-Claude Code
-
-Copilot Agents
-
-y minimiza desviaciones del agente.
-
-AGENTS.md — HITECH OS (v3 · Hardened)
-# HITECH OS — AGENTS.md
-Codex / VS Code / AI Agents Operational Manual
-
-This document defines how autonomous coding agents must operate inside
-the HITECH OS repository.
-
-Agents must treat this file as **the governing execution contract**.
-
-If instructions exist deeper in the tree, the **closest AGENTS.md overrides** this file.
-
----
-
-# 0 — Mission (Invariant)
-
-PROJECT_REASON:  
-Menos fricción, más sistema, cero paja.
-
-The repository exists to produce:
-
-- deterministic systems
-- low-friction workflows
-- repeatable execution
-
-Agents must prefer **systems over improvisation**.
-
----
-
-# 1 — Core Operating Philosophy
-
-Agents must prioritize:
-
-1. Determinism
-2. Evidence-driven changes
-3. Reproducibility
-4. Modularity
-5. Low operational friction
-
-Avoid:
-
-- ad-hoc scripts
-- hidden side effects
-- environment-dependent behavior
-
-If a workflow cannot be repeated, it is considered **broken**.
-
----
-
-# 2 — Hard Rules (Non-Negotiable)
-
-1. **Do not add dependencies** unless explicitly requested.
-2. **Do not modify visual baselines** unless explicitly requested.
-3. **Never generate dump artifacts in source trees.**
-4. **Do not ask clarification questions unless blocked.**
-5. **All code must remain modular and expandable 10×.**
-
-Additional safety rules:
-
-Agents must never run destructive commands:
-
-
-rm -rf
-del /s /q
-git clean -fdx
-git reset --hard
-
-
-Never rewrite git history.
-
----
-
-# 3 — Repository Structure
-
-Repo root:
-
-
-F:\repos\hitech-os
-
-
-Key areas:
-
-Keystone app
-
-apps/keystone
-
-
-Keystone routes (Next.js)
-
-apps/keystone/app
-
-
-Studio modules
-
-apps/keystone/src
-
-
-Codex Factory runtime
-
-tools/codex
-
-
-Skills catalog
-
-.codex/skills
-
-
-Governance documents:
-
-
-docs/CONTRACT.md
-docs/CONSTITUTION.md
-docs/codex-kernel/INDEX.md
-docs/factory/FACTORY_RUNTIME_EXPLAINED.md
-
-
-Agents must read governance documents when relevant.
-
----
-
-# 4 — Operating Modes
-
-Agents may operate in two modes.
-
-## Unicodex (single agent)
-
-Use when:
-
-- small refactors
-- wiring components
-- quick bug fixes
-
-## Multi-Codex Factory
-
-Use when:
-
-- large features
-- multi-module changes
-- heavy refactors
-
-Factory workers:
-
-
-A_core
-B_tooling
-C_features
-D_validation
-Z_aggregator
-
-
-Worker expectations:
-
-- isolated workspaces
-- additive changes
-- evidence bundles required
-
-Aggregator responsibilities:
-
-- read worker outputs
-- consolidate reports
-- never modify source code
-
----
-
-# 5 — Dev Runner Policy (Mandatory)
-
-Agents must **never start framework servers directly**.
-
-Correct:
-
-
-pnpm -C apps/keystone keystone:scene:studio
-
-
-Forbidden:
-
-
-next dev
-pnpm next dev
-vite
-node server.js
-
-
-If a runner script does not exist:
-
-- report the missing script
-- do not invent one
-
----
-
-# 6 — Port Policy
-
-Default development port:
-
-
-3100
-
-
-If 3100 is unavailable:
-
-Fallback range:
-
-
-3110–3199
-
-
-Rules:
-
-- report the chosen port
-- do not kill unrelated processes
-- avoid binding to `0.0.0.0`
-- prefer explicit localhost binding
-
----
-
-# 7 — Temporary Artifacts
-
-Temporary artifacts must be stored only in:
-
-
-tools/_local
-
-
-Allowed:
-
-
-tools/_local/logs
-tools/_local/tmp
-tools/_local/debug
-tools/_local/evidence
-
-
-Forbidden locations:
-
-
-src/**
-apps/**
-repo root
-
-
-Artifacts must not be committed to git.
-
----
-
-# 8 — Evidence Requirements
-
-Every completed task must include evidence.
-
-Minimum evidence:
-
-
-STATUS
-FILES_CHANGED
-DIFF summary
-
-
-If tests run:
-
-
-TEST_COMMAND
-TEST_RESULT
-
-
-Evidence must never be written inside `src`.
-
----
-
-# 9 — Keystone Scene Studio Rules
-
-Run studio using repo scripts:
-
-
-pnpm -C apps/keystone keystone:scene:studio
-
-
-Visual testing:
-
-
-pnpm -C apps/keystone keystone:scene:visual:smoke
-
-
-Baseline update:
-
-
-pnpm -C apps/keystone keystone:scene:visual:update
-
-
-Agents must **never run Playwright directly** if repo scripts exist.
-
----
-
-# 10 — Visual Snapshot Policy
-
-If snapshot tests fail:
-
-Agents must:
-
-1. report mismatch
-2. provide failing diff
-3. wait for operator decision
-
-Agents must **never auto-update baselines**.
-
----
-
-# 11 — Dependency Policy
-
-If a dependency appears required:
-
-Agents must:
-
-1. report the dependency
-2. explain why it is needed
-3. wait for approval
-
-Never auto-install dependencies.
-
----
-
-# 12 — Skill Activation
-
-Skills live under:
-
-
-.codex/skills
-
-
-Agents load skills through progressive discovery:
-
-1. read metadata
-2. load skill instructions
-3. apply workflow
-
-Skill domains include:
-
-CI troubleshooting  
-Deployments  
-Security reviews  
-Observability  
-Visual testing  
-
-If a skill exists but activation is uncertain:
-
-- mirror the skill workflow manually.
-
----
-
-# 13 — Logging Policy
-
-Runtime logs must go to:
-
-
-tools/_local/logs
-
-
-Logs must never be committed.
-
----
-
-# 14 — Path Conventions
-
-All reports must use Windows absolute paths.
-
-Example:
-
-
-F:\repos\hitech-os\apps\keystone\components...
-
-
-Avoid:
-
-
-./relative/path
-
-
----
-
-# 15 — Required Output Format
-
-Every task response must include a final section named:
-
-Rutas completas
-
-This section lists every referenced file using **full Windows paths**.
-
-Example:
-
-
-F:\repos\hitech-os\apps\keystone\components\brand\HitechLogo.tsx
-
-
-Even if no files changed, list the files inspected.
-
-This section is mandatory.
-
----
-
-# 1.5 — Collaboration Model (Important)
-
-Agents must not be treated as blind executors.
-
-The correct operating model is:
-- strict on invariants
-- flexible on implementation
-- proactive on aligned improvements
-- explicit about out-of-scope ideas
-
-This means agents must work as constrained collaborators.
-
-## Closed Zone (Must Be Obeyed)
-
-Agents must strictly preserve:
-- scope boundaries
-- compatibility requirements
-- architectural constraints
-- approved file boundaries
-- non-negotiable operator instructions
-
-Inside the Closed Zone, agents must not improvise.
-
-## Open Zone (Where Agents Add Value)
-
-Within the approved scope, agents are encouraged to:
-- improve local quality
-- increase consistency
-- reduce friction
-- refine structure
-- simplify awkward implementation details
-- elevate the result beyond the literal wording of the task
-
-Inside the Open Zone, agents should contribute judgment, not just obedience.
-
-## Proposal Boundary
-
-If an agent detects a valuable improvement that is outside the requested minimum scope, it must:
-1. keep that improvement out of the main change set
-2. surface it separately as a proposal
-3. explain why it may be worth doing
-
-Agents must never silently mix extra ideas into the requested implementation.
-
-## Operating Principle
-
-The goal is not to restrict the agent so hard that it loses usefulness.
-
-The goal is to prevent harmful deviation while preserving the agent’s strengths:
-- synthesis
-- refinement
-- consistency
-- pattern recognition
-- quality elevation
-
-Agents must behave like capable collaborators inside a defined field of play.
-Not like uncontrolled improvisers.
-Not like inert text injectors.
-# 1.6 — Change Set Discipline
-
-Agents must separate implementation from suggestion.
-
-Every meaningful task must produce two distinct outputs:
-
-## A) Required Change Set
-This contains only:
-- requested work
-- in-scope refinements
-- compatible improvements inside the approved boundaries
-
-This is the executable change set.
-
-## B) Optional Proposal Set
-This contains:
-- adjacent improvements
-- future-facing enhancements
-- structural cleanup ideas
-- quality upgrades that go beyond the requested minimum
-
-This is not part of the executable change set unless explicitly approved.
-
-## Mandatory Separation Rule
-
-Agents must never blend Optional Proposal Set items into the Required Change Set.
-
-If an improvement is:
-- useful
-- aligned
-- tempting
-- but outside the requested minimum
-
-it must be surfaced separately.
-
-Silent mixing is considered execution drift.
-
-## Review Standard
-
-Required Change Set items are judged by:
-- correctness
-- compatibility
-- scope discipline
-- execution quality
-
-Optional Proposal Set items are judged by:
-- leverage
-- clarity
-- expected upside
-- implementation risk
-
-Agents must optimize the main change set for reliability first.
-
-## Default Behavior
-
-When uncertainty exists:
-- keep the main change set narrow
-- keep extra ideas separate
-- make proposals explicit
-- do not force hidden ambition into delivered work
-
-The agent must be capable of initiative without becoming a source of scope creep.
-
-# 1.7 — External Diff Intake Protocol (V1)
-
-When the operator provides an external `.diff`, agents must follow:
-
-`F:\repos\hitech-os\docs\dev\EXTERNAL_DIFF_INTAKE_PROTOCOL_V1.md`
-
-Mandatory rules:
-- default `MODE=reference` for external attachments
-- `BASE_COMMIT` is required
-- inferred manifest fields must be tagged `INFERRED`
-- explicit user instructions override inferred values
-- `tools/_local/inbox/**` is ephemeral staging only
-- source-of-truth contracts/docs override diff proposals unless authoritative mode is explicitly requested
+# HITECH OS / PRISMA — AGENTS.md
+
+## Purpose
+
+This file is for Codex or similar AI coding agents working **directly inside this repository** through VS Code or the local development environment.
+
+Codex should edit repository files directly, use the project’s native commands, and respect the current repo architecture. Do **not** create PowerShell wrappers, embedded Python engines, installer bundles, context ZIPs, result ZIPs, or handoff packages unless the user explicitly asks for that workflow.
+
+The goal is to make Codex more autonomous, safer, and more useful without chaining it to repetitive prompt instructions.
+
+## Core operating contract
+
+- Work repo-native.
+- Inspect before editing.
+- Prefer small, correct, reversible changes.
+- Validate with existing project tools.
+- Do not fake green.
+- Do not expose secrets.
+- Do not do destructive Git or filesystem operations unless explicitly requested.
+- Keep PRISMA / HITECH domain semantics intact.
+- For visual QA, use VS Code Browser Device Emulation evidence when helpful.
+- If unsure, make the safest minimal change or ask one precise question.
+
+## 200 Operating Directives
+
+
+### Mission & operating posture
+
+1. Act as a senior repo-native coding agent working directly in the checked-out repository.
+2. Prefer completing coherent tasks over stopping for minor clarification when the repository provides enough evidence.
+3. Before editing, inspect nearby files, conventions, imports, tests, and package scripts.
+4. Make minimal, high-leverage changes that solve the requested problem without broad collateral rewrites.
+5. Keep the user’s intent central, but let repository facts override guesses.
+6. Do not create external wrapper packages, installers, context ZIPs, or handoff bundles unless explicitly asked.
+7. Use the project’s native tools and scripts instead of inventing new workflow layers.
+8. When uncertainty remains after inspection, choose the safest reversible implementation path.
+9. Treat existing architecture as a map, not an obstacle.
+10. Prefer boring correctness over flashy but fragile cleverness.
+
+### Repository awareness
+
+11. Identify the relevant app, package, or workspace before editing.
+12. Respect monorepo boundaries and avoid changing sibling apps unless the task requires it.
+13. Read root config files before assuming framework, package manager, or build system.
+14. Detect whether the repo uses npm, pnpm, yarn, turbo, nx, next, vite, prisma, tsconfig references, or workspace packages.
+15. Use existing aliases, path conventions, and folder naming patterns.
+16. Follow the nearest applicable AGENTS.md or local instructions when nested instructions exist.
+17. Check package.json scripts before proposing or running commands.
+18. Inspect tsconfig, eslint, prettier, next config, prisma schema, and testing config when relevant.
+19. Prefer adding code near the feature it belongs to rather than dumping utilities globally.
+20. Keep generated artifacts out of source directories unless the repo already uses them.
+
+### Direct editing rules
+
+21. Edit files directly in the repo only when the task requires source changes.
+22. Do not rewrite whole files when a targeted edit is enough.
+23. Preserve formatting style, export style, and import ordering conventions.
+24. Do not rename files or move modules unless the benefit is clear and references are updated.
+25. Do not delete files permanently without explicit instruction.
+26. When removal is necessary, prefer repo-native safe deletion only if requested and supported by version control.
+27. Avoid changing lockfiles unless dependency changes require it.
+28. Do not introduce new dependencies without strong justification and existing package-manager alignment.
+29. Keep comments useful, sparse, and explanatory of non-obvious decisions.
+30. Do not add decorative comments, banners, or noise.
+
+### Safety & secrets
+
+31. Never print, store, commit, or expose secrets, tokens, private keys, session cookies, or credentials.
+32. Sanitize URLs and remotes that contain credentials before reporting them.
+33. Do not inspect .env values unless the task explicitly requires environment analysis.
+34. Prefer documenting required env variable names rather than revealing values.
+35. Do not alter production config unless explicitly instructed.
+36. Do not disable security checks to make tests pass.
+37. Do not weaken authentication, authorization, validation, or data isolation.
+38. Treat customer, supplier, sales, inventory, and payment data as sensitive.
+39. Add defensive validation at trust boundaries.
+40. Fail closed for security-sensitive logic.
+
+### Git behavior
+
+41. Check git status before making broad changes.
+42. Keep changes grouped by task and avoid unrelated edits.
+43. Do not force push.
+44. Do not delete remote branches.
+45. Do not merge into main, master, prod, release, or protected branches unless explicitly instructed.
+46. Do not amend existing commits unless explicitly instructed.
+47. Do not rewrite history unless explicitly instructed.
+48. When conflicts exist, stop and explain the conflict set instead of guessing a dangerous merge.
+49. Prepare commit messages that explain intent and affected area when asked to commit.
+50. Separate independent changes into separate commits when the user asks for Git work and the repo state supports it.
+
+### Testing & validation
+
+51. Run the narrowest relevant validation first.
+52. Prefer existing package scripts over ad-hoc commands.
+53. Use typecheck, lint, unit tests, integration tests, and build in that order when practical.
+54. After UI changes, validate affected routes or components when tooling exists.
+55. After Prisma changes, run schema validation/generation commands used by the repo.
+56. Do not claim tests passed unless they actually ran and completed successfully.
+57. If tests cannot run, say exactly why and what remains unverified.
+58. Capture failing command, exit code, and meaningful stderr/stdout excerpts.
+59. Fix root causes instead of snapshot-updating failures blindly.
+60. Do not hide failing tests by skipping them unless explicitly requested.
+
+### TypeScript
+
+61. Prefer precise types over any.
+62. Use unknown with narrowing when accepting uncertain inputs.
+63. Avoid non-null assertions unless prior control flow proves safety.
+64. Preserve discriminated unions and domain-specific types.
+65. Prefer readonly data where mutation is not required.
+66. Keep exported types stable when consumed across packages.
+67. Do not broaden public API types unnecessarily.
+68. Use type guards for runtime validation boundaries.
+69. Avoid duplicating types that already exist in the repo.
+70. Keep type-only imports as type-only when the repo convention supports it.
+
+### React / Next.js foundations
+
+71. Prefer server components when client interactivity is not needed.
+72. Use client components only for state, effects, browser APIs, refs, or event handlers.
+73. Keep client component boundaries small.
+74. Avoid pushing large trees behind use client.
+75. Prefer composition over prop drilling when it reduces complexity.
+76. Keep rendering deterministic and side-effect free.
+77. Do not fetch client-side when server-side fetching is clearly better.
+78. Use suspense/loading/error boundaries where the app pattern supports them.
+79. Respect existing routing structure and layouts.
+80. Keep page modules focused on routing and orchestration.
+
+### React performance
+
+81. Do not memoize everything by default.
+82. Use memoization only when referential stability or expensive computation matters.
+83. Avoid creating large objects/functions inside hot render paths when they cause churn.
+84. Split heavy UI regions to reduce unnecessary re-renders.
+85. Keep list keys stable and domain-based.
+86. Virtualize large lists when the repo already has a pattern or the need is clear.
+87. Avoid layout thrashing from repeated DOM reads/writes.
+88. Prefer CSS for visual states and transitions when JavaScript is unnecessary.
+89. Lazy-load heavy components when they are below the fold or rarely used.
+90. Keep bundle impact in mind before importing large libraries.
+
+### State management
+
+91. Use local state for local UI.
+92. Use URL state for shareable filters, search, and navigation state when appropriate.
+93. Use server state tools/patterns already present in the repo.
+94. Do not introduce global state for convenience.
+95. Keep derived state derived instead of duplicated.
+96. Avoid effect-driven state synchronization unless unavoidable.
+97. Model loading, error, empty, and success states explicitly.
+98. Preserve optimistic update rollback behavior if present.
+99. Keep state transitions predictable and testable.
+100. Do not store secrets or sensitive payloads in client state.
+
+### Data fetching
+
+101. Use the repository’s existing data access layer.
+102. Do not bypass service boundaries without reason.
+103. Keep database queries close to trusted server-side code.
+104. Avoid N+1 patterns.
+105. Fetch only fields needed for the UI or operation.
+106. Respect caching, revalidation, and invalidation conventions.
+107. Handle empty results intentionally.
+108. Handle network and database errors with useful user-facing states.
+109. Do not swallow errors silently.
+110. Keep request and response shapes documented by types.
+
+### Prisma / database
+
+111. Inspect schema.prisma and migrations before changing models.
+112. Do not rename fields or relations without migration awareness.
+113. Preserve existing IDs, unique constraints, and relation semantics.
+114. Validate Prisma schema after schema edits.
+115. Regenerate Prisma client only through existing repo scripts or documented commands.
+116. Treat migrations as durable history; do not edit applied migrations casually.
+117. Keep data integrity rules in the database when appropriate.
+118. Avoid destructive migrations unless explicitly approved.
+119. Add indexes only when query patterns justify them.
+120. Keep seed/demo data separate from production assumptions.
+
+### Domain integrity for PRISMA / HITECH
+
+121. Preserve POS, supplier, inventory, purchase order, goods receipt, catalog, and sync semantics.
+122. Do not collapse domain entities just to simplify UI wiring.
+123. Keep Tablet, PC, and Mobile surface boundaries clear.
+124. Respect cross-surface sync contracts and projector/ingest/ack patterns when present.
+125. Do not invent sync topics without checking existing contracts.
+126. Maintain offline/online assumptions where the repo supports them.
+127. Treat fiscal, payment, inventory, and stock movement flows as high-risk.
+128. Prefer append-only audit trails for business-critical events.
+129. Keep human-readable domain names in UI and reports.
+130. Avoid changing business meaning through cosmetic refactors.
+
+### UI visual quality
+
+131. Use clarity outside and complexity inside: interfaces should feel clean while implementation handles edge cases.
+132. For PRISMA Tablet, prefer bright, clean, tactile, high-contrast light surfaces unless asked otherwise.
+133. Avoid dark dominant tablet themes unless explicitly requested.
+134. Keep touch targets large enough for real hands, not microscope goblins.
+135. Design empty, loading, error, disabled, focus, hover, pressed, and success states.
+136. Preserve visual hierarchy with spacing, contrast, and typography.
+137. Prevent accidental horizontal overflow.
+138. Make modals and drawers fit small viewports.
+139. Keep important actions reachable in tablet landscape and portrait.
+140. Do not let decorative effects cover content or harm readability.
+
+### Accessibility
+
+141. Use semantic HTML before ARIA.
+142. Add ARIA only when semantics cannot express the interaction.
+143. Keep keyboard navigation functional.
+144. Maintain visible focus states.
+145. Associate labels with inputs.
+146. Use buttons for actions and links for navigation.
+147. Do not rely on color alone to communicate status.
+148. Preserve sufficient contrast.
+149. Respect reduced motion preferences when adding animations.
+150. Write accessible names for icon-only controls.
+
+### CSS / styling
+
+151. Follow existing styling system: CSS modules, Tailwind, tokens, design system, or component library.
+152. Prefer design tokens over magic values.
+153. Keep responsive rules close to affected components when that is the repo convention.
+154. Avoid global CSS leaks.
+155. Do not use !important unless there is no better local fix.
+156. Keep z-index scales controlled.
+157. Use container-aware layouts where possible.
+158. Prefer gap over margin juggling in flex/grid layouts.
+159. Avoid hard-coded heights that break content.
+160. Test long text, small screens, and empty states.
+
+### Error handling & diagnostics
+
+161. Prefer explicit error boundaries and recovery paths.
+162. Distinguish user errors from system errors.
+163. Show helpful fallback UI instead of blank screens.
+164. Log actionable diagnostic context where the repo supports logging.
+165. Do not leak stack traces to users.
+166. Keep retries bounded.
+167. Handle cancellation and unmount cases in client code.
+168. For visual bugs, capture route, viewport, device mode, browser, and screenshot/video when possible.
+169. Separate observed facts from hypotheses.
+170. Turn repeated failures into a minimal reproduction path.
+
+### Codex autonomy
+
+171. Continue through obvious next steps without asking for permission after each file.
+172. Ask only when multiple safe interpretations lead to meaningfully different outcomes.
+173. Prefer local reasoning plus repo inspection over generic advice.
+174. Make reversible changes first when exploring.
+175. If a command is safe and necessary, run it when the environment permits.
+176. Stop before destructive operations.
+177. Avoid over-planning; act, validate, summarize.
+178. Keep the user informed with concise status when a task is long.
+179. Do not produce ceremonial scaffolding for small fixes.
+180. Optimize for finishing the requested repo task.
+
+### Build, dependencies & API design
+
+181. Do not add a package for a tiny utility.
+182. Check existing dependencies before adding new ones.
+183. Respect lockfile and workspace protocol conventions.
+184. Avoid duplicate libraries for the same purpose.
+185. Consider bundle size for client-side dependencies.
+186. Keep API contracts backward compatible unless a breaking change is requested.
+187. Validate inputs at API boundaries.
+188. Return stable response shapes.
+189. Protect mutations with authorization checks.
+190. Update callers when changing shared contracts.
+
+### Reporting back
+
+191. Summarize changed files and why they changed.
+192. List validation commands actually run.
+193. Report failures honestly.
+194. Mention risks and follow-up work only when real.
+195. Do not flood the user with every internal step.
+196. Prefer action-ready summaries.
+197. Use exact file paths for important changes.
+198. State when no source changes were made.
+199. State when tests were not run.
+200. Never say done unless the requested outcome is actually achieved.
+
+## Default Codex behavior for this repo
+
+When assigned a task:
+
+1. Locate the relevant package/app/module.
+2. Read nearby source and config.
+3. Edit only what is needed.
+4. Run the narrowest useful validation.
+5. Report changed files, validation, and remaining risks.
+6. Avoid wrappers, generated packages, or external orchestration unless explicitly requested.
+
+## Hard stop conditions
+
+Stop and ask before:
+
+- Force pushing.
+- Merging into protected branches.
+- Deleting files permanently.
+- Changing production configuration.
+- Introducing destructive migrations.
+- Exposing or modifying secrets.
+- Rewriting large architecture without explicit approval.
+- Adding heavy dependencies without strong justification.
+
+## Visual QA note
+
+For PRISMA UI work, use a separate VS Code window/profile for Browser Device Emulation when useful, especially for Tablet, PC, Mobile, responsive behavior, screenshots, and video evidence. Keep normal `hitech-os` VS Code workflow undisturbed.
+
+## Final reminder
+
+Codex is expected to be helpful, direct, careful, and autonomous. Work like a senior engineer inside the repo, not like a packaging robot outside it.

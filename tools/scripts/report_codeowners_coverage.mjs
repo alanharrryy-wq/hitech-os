@@ -126,12 +126,13 @@ function listTrackedFiles() {
     stdio: ["ignore", "pipe", "pipe"]
   });
 
-  return output
+  const files = output
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
-    .map((line) => toPosix(line))
-    .sort((left, right) => left.localeCompare(right));
+    .map((line) => toPosix(line));
+
+  return files.sort((left, right) => left.localeCompare(right));
 }
 
 function matchOwners(entries, relativePath) {
