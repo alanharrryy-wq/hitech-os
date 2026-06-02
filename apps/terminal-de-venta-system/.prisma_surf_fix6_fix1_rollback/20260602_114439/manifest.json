@@ -1,0 +1,55 @@
+{
+  "task": "surf fix6",
+  "phase": "fix1",
+  "created_at": "2026-06-02T11:44:44",
+  "repo_root": "<REPO_ROOT>\\apps\\terminal-de-venta-system",
+  "rollback_root": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\.prisma_surf_fix6_fix1_rollback\\20260602_114439",
+  "changed_files": [
+    {
+      "relative_path": "products/pc/app/app/prisma-surf-fix6-lifecycle-runtime.tsx",
+      "action": "write_lifecycle_runtime_component",
+      "existed_before": false,
+      "backup_path": null,
+      "sha256_before": null,
+      "sha256_after": "4dc60edb233552a856b616ef773573b188e0605268caa32c963fea561409425f",
+      "note": "Runtime marks #lifecycleSurface only from real data-prisma-interface-target lifecycle tab"
+    },
+    {
+      "relative_path": "products/pc/app/app/layout.tsx",
+      "action": "wire_lifecycle_runtime_component",
+      "existed_before": true,
+      "backup_path": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\.prisma_surf_fix6_fix1_rollback\\20260602_114439\\files\\products\\pc\\app\\app\\layout.tsx",
+      "sha256_before": "551ff2c08940c6f0325f8780bb39aeb229c5864e4de05562b13f4b6f49dd3545",
+      "sha256_after": "6ddf9a99632cf038cb3f1a707e48c9d2c463959692c1cf3cfb2a7dc0c2b79fab",
+      "note": "Inserted PrismaSurfFix6LifecycleRuntime via body"
+    },
+    {
+      "relative_path": "tests/prisma-surfaces/surf-fix6.internal-surfaces.spec.js",
+      "action": "write_playwright_internal_surface_spec",
+      "existed_before": false,
+      "backup_path": null,
+      "sha256_before": null,
+      "sha256_after": "7f7a01d7f34981b7391a4d1ab74407a7b284ecd383ccae7ddb702034aead0edd",
+      "note": "Captures internal sub-surfaces for 3000,3110,3120,3130,3140,3150"
+    },
+    {
+      "relative_path": "tests/prisma-surfaces/surf-fix6.targets.json",
+      "action": "write_playwright_targets_manifest",
+      "existed_before": false,
+      "backup_path": null,
+      "sha256_before": null,
+      "sha256_after": "0eab36aeb603d89205eb4e39e0e2527aecb2f6ba7124be594e3b67d59da2eb3f",
+      "note": "Surf fix6 explicit target capture contract"
+    },
+    {
+      "relative_path": "tools/prisma-surfaces/run-surf-fix6-capture.ps1",
+      "action": "write_capture_runner",
+      "existed_before": false,
+      "backup_path": null,
+      "sha256_before": null,
+      "sha256_after": "c1b91ae37e0d2f1be0ffbd96cd2ed2a6373bbf475722283bf3af669b8789e3e2",
+      "note": "Direct runner for surf fix6 internal capture"
+    }
+  ],
+  "instructions": "Run ROLLBACK.ps1. New files are moved to <LOCAL_PATH> not permanently deleted."
+}
