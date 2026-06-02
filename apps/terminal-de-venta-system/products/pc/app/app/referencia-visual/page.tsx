@@ -63,6 +63,7 @@ export default function ReferenciaVisualPage() {
             <a className="prvButton prvButtonPrimary" href="/surface-visual-governor/reference-visual/pilot-03/index.json">Abrir contrato Pilot 03</a>
             <a className="prvButton" href="/surface-visual-governor/reference-visual/pilot-03/materiality-catalog.registry.json">Ver Materiality Catalog</a>
             <a className="prvButton" href="/surface-visual-governor/reference-visual/pilot-03/recipe-export/index.json">Ver recetas Chart Lab</a>
+            <a className="prvButton prvButtonPrimary" href="/referencia-visual/liquid-glass">Abrir Liquid Glass Lab</a>
           </div>
         </div>
         <aside className="prvStatusCard" aria-label="Estado del piloto">
@@ -143,7 +144,7 @@ export default function ReferenciaVisualPage() {
         <span className="prvEyebrow">Evidencia técnica colapsable por diseño futuro</span>
         <h2>Contrato de seguridad</h2>
         <p>
-          Pilot 03 sólo escribe en PC /referencia-visual, public reference assets, docs y verifier. No modifica POS, checkout, package.json, lockfiles, bases de datos ni deploy. Si algo truena, rollback automático y evidencia en <OUTPUT_DIR>.
+          Pilot 03 sólo escribe en PC /referencia-visual, public reference assets, docs y verifier. No modifica POS, checkout, package.json, lockfiles, bases de datos ni deploy. Si algo truena, rollback automático y evidencia en &lt;OUTPUT_DIR&gt;.
         </p>
         <code>La galería es laboratorio · el Materiality Catalog es contrato · Chart Lab es taller · PC ahora es sala · POS se toca al final.</code>
       </section>

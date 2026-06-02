@@ -1,0 +1,223 @@
+{
+  "schema": "prisma.surface_visual_governor.liquid_glass.index",
+  "pilot": "20_liquid_glass_reference_room",
+  "name": "PRISMA Surface Visual Governor · Pilot 20 · Liquid Glass Reference Room",
+  "status": "installed_with_governed_4_family_background_pack",
+  "installed_at": "20260601_114434",
+  "surface": "pc_reference_visual",
+  "route": "/referencia-visual/liquid-glass",
+  "purpose": "Isolated PC reference room to validate Liquid Glass material, refraction, rim light and governed adoption boundaries without touching POS, checkout, tablet production, database or deploy.",
+  "artifacts": {
+    "page": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+    "css_module": "products/pc/app/app/prisma-liquid-glass.module.css",
+    "route_budget": "route-budget.liquid-glass.pilot-20.json",
+    "compatibility": "surface.compatibility.liquid-glass.json",
+    "verifier": "products/pc/app/scripts/verify-surface-visual-governor-pilot20.mjs"
+  },
+  "material_budget": {
+    "background": "governed-family-director",
+    "glass": "medium-high",
+    "rim": "signature_only",
+    "glow": "1 strong / 3 medium max",
+    "blur": "heavy only in isolated reference room; dense-safe specimen capped",
+    "webgl": "off_by_default",
+    "ogl": "available_dependency_not_activated",
+    "motion": "reduced-motion compliant",
+    "default_family": "aurora-night"
+  },
+  "gates": {
+    "pc_reference_visual": {
+      "allowed": true,
+      "mode": "isolated_reference_room"
+    },
+    "pc_dashboard": {
+      "allowed": true,
+      "adoption": "future_controlled_material_only"
+    },
+    "tablet": {
+      "allowed": false,
+      "light_first_preserved": true,
+      "modified": false
+    },
+    "pos": {
+      "allowed": false,
+      "modified": false,
+      "blocked": [
+        "webgl",
+        "pixi_vapor",
+        "liquid_vapor_background",
+        "heavy_blur",
+        "dark_storm",
+        "dense_table_blur"
+      ]
+    },
+    "checkout": {
+      "allowed": false,
+      "modified": false,
+      "blocked": [
+        "webgl",
+        "pixi_vapor",
+        "liquid_vapor_background",
+        "heavy_blur",
+        "dark_storm"
+      ]
+    },
+    "db": {
+      "touched": false
+    },
+    "deploy": {
+      "performed": false
+    },
+    "dependencies": {
+      "installed_by_this_pilot": false,
+      "requires_existing_workspace_deps": true
+    }
+  },
+  "write_boundary": {
+    "allowed": [
+      "products/pc/app/app/referencia-visual",
+      "products/pc/app/app/prisma-liquid-glass.module.css",
+      "products/pc/app/public/surface-visual-governor/liquid-glass",
+      "products/pc/app/scripts/verify-surface-visual-governor-pilot20.mjs",
+      "products/pc/app/docs/surface-visual-governor/pilot-20-liquid-glass-reference-room.md"
+    ],
+    "forbidden": [
+      "products/tablet/app/app/pos",
+      "products/tablet/app/app/checkout",
+      "products/tablet/app/components/pos",
+      "products/pc/app/app/pos",
+      "products/pc/app/app/checkout",
+      "package.json",
+      "pnpm-lock.yaml",
+      "deploy/cloudflare",
+      "*.db",
+      "*.sqlite"
+    ]
+  },
+  "updated_at": "20260601_152441",
+  "family_pack": {
+    "id": "unsplash-governed-4",
+    "count": 4,
+    "source_archive": "intricate-explorer-gjI-YoxuFys-unsplash.zip",
+    "families": [
+      {
+        "id": "alpine-crystal",
+        "label": "Alpine Crystal",
+        "governorFamily": "crystal_reference",
+        "mood": "laguna, montaña, cristal frío",
+        "source": "intricate-explorer-gjI-YoxuFys-unsplash.jpg",
+        "url": "/surface-visual-governor/liquid-glass/families/alpine-crystal/alpine-crystal.jpg",
+        "publicRelativePath": "products/pc/app/public/surface-visual-governor/liquid-glass/families/alpine-crystal/alpine-crystal.jpg",
+        "sha256": "5c45ddb39bf5e4793d7f63a4638aa291d51a8b016e27029d2cc344220b1dbdb5",
+        "bytes": 869316,
+        "dimensions": [
+          2560,
+          1565
+        ]
+      },
+      {
+        "id": "ocean-vapor",
+        "label": "Ocean Vapor",
+        "governorFamily": "liquid_teal_vapor",
+        "mood": "turquesa líquido, vapor acuático",
+        "source": "leon-rohrwild-MxcwgJGO-Us-unsplash.jpg",
+        "url": "/surface-visual-governor/liquid-glass/families/ocean-vapor/ocean-vapor.jpg",
+        "publicRelativePath": "products/pc/app/public/surface-visual-governor/liquid-glass/families/ocean-vapor/ocean-vapor.jpg",
+        "sha256": "5951504615aaa85fdf31b8c3d8c15a6ba7f027b15cbff85f156fcc35ce6dcc42",
+        "bytes": 622672,
+        "dimensions": [
+          1920,
+          2560
+        ]
+      },
+      {
+        "id": "fog-forest",
+        "label": "Fog Forest",
+        "governorFamily": "mist_light_reference",
+        "mood": "niebla, bosque, profundidad suave",
+        "source": "roberto-shumski-VJ5k8_oYl_4-unsplash.jpg",
+        "url": "/surface-visual-governor/liquid-glass/families/fog-forest/fog-forest.jpg",
+        "publicRelativePath": "products/pc/app/public/surface-visual-governor/liquid-glass/families/fog-forest/fog-forest.jpg",
+        "sha256": "79c1741e5246c17a21bdaa389382c750e5c2aa7fe9420212cd9f61684b52e2f9",
+        "bytes": 1045992,
+        "dimensions": [
+          1706,
+          2560
+        ]
+      },
+      {
+        "id": "aurora-night",
+        "label": "Aurora Night",
+        "governorFamily": "storm_graphite_showcase",
+        "mood": "noche, nieve, aurora cálida",
+        "source": "philipp-dusel-2F-m1FvoJT4-unsplash.jpg",
+        "url": "/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg",
+        "publicRelativePath": "products/pc/app/public/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg",
+        "sha256": "05a0dd8631eb31ad730b1aeb4e1750551206e6c83e144d3a277fcd349ff74ca4",
+        "bytes": 1100065,
+        "dimensions": [
+          2560,
+          1706
+        ]
+      }
+    ]
+  },
+  "default_family": "aurora-night",
+  "director_cut": {
+    "enabled": true,
+    "name": "Aurora Director Cut",
+    "default_family": "aurora-night",
+    "route": "/referencia-visual/liquid-glass",
+    "family_selector": true,
+    "families": [
+      {
+        "id": "aurora-night",
+        "name": "Aurora Night",
+        "label": "STORM_GRAPHITE_SHOWCASE",
+        "mood": "noche, nieve, aurora cÃ¡lida",
+        "url": "/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg",
+        "exists": true,
+        "sha256": "05a0dd8631eb31ad730b1aeb4e1750551206e6c83e144d3a277fcd349ff74ca4",
+        "size": 1100065
+      },
+      {
+        "id": "alpine-crystal",
+        "name": "Alpine Crystal",
+        "label": "ICE_CLEAR_REFERENCE",
+        "mood": "cristal frÃ­o, aire blanco, lectura limpia",
+        "url": "/surface-visual-governor/liquid-glass/families/alpine-crystal/alpine-crystal.jpg",
+        "exists": true,
+        "sha256": "5c45ddb39bf5e4793d7f63a4638aa291d51a8b016e27029d2cc344220b1dbdb5",
+        "size": 869316
+      },
+      {
+        "id": "ocean-vapor",
+        "name": "Ocean Vapor",
+        "label": "BLUE_LIQUID_OPERATIONAL",
+        "mood": "azul lÃ­quido, vapor suave, profundidad",
+        "url": "/surface-visual-governor/liquid-glass/families/ocean-vapor/ocean-vapor.jpg",
+        "exists": true,
+        "sha256": "5951504615aaa85fdf31b8c3d8c15a6ba7f027b15cbff85f156fcc35ce6dcc42",
+        "size": 622672
+      },
+      {
+        "id": "fog-forest",
+        "name": "Fog Forest",
+        "label": "MIST_GREEN_CALM",
+        "mood": "niebla orgÃ¡nica, sombra verde, descanso visual",
+        "url": "/surface-visual-governor/liquid-glass/families/fog-forest/fog-forest.jpg",
+        "exists": true,
+        "sha256": "79c1741e5246c17a21bdaa389382c750e5c2aa7fe9420212cd9f61684b52e2f9",
+        "size": 1045992
+      }
+    ],
+    "safety": {
+      "pos": "blocked",
+      "checkout": "blocked",
+      "tablet_productive": "blocked",
+      "db": "untouched",
+      "deploy": "untouched",
+      "package_lockfiles": "untouched"
+    }
+  }
+}
