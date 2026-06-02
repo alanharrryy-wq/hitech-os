@@ -1,4 +1,4 @@
-# ATLAS_MOBILE_PREMIUM_POLISH_V12_ROLLBACK
+﻿# ATLAS_MOBILE_PREMIUM_POLISH_V12_ROLLBACK
 
 Rollback automático con backup por archivo.
 

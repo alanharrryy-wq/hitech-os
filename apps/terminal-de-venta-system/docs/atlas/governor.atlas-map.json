@@ -1,0 +1,97 @@
+{
+  "schema": "prisma.governor_atlas_map.v1",
+  "generated_at": "2026-06-01T18:06:55",
+  "source_root": "F:\\repos\\hitech-os",
+  "target_root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "target_docs": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs",
+  "purpose": "Atlas navigation and ownership input for PRISMA Surface Visual Governor.",
+  "note": "These Atlas files are navigation/ownership inputs, not a runtime mutator.",
+  "entrypoints": [
+    "docs/atlas/atlas.registry.json",
+    "docs/atlas/atlas.shared-core.json",
+    "docs/atlas/ATLAS_MASTER_INDEX.md",
+    "docs/atlas/ATLAS_SHARED_CORE_VISUAL_OS.md",
+    "products/pc/app/docs/atlas/atlas.pc.json",
+    "products/tablet/app/docs/atlas/atlas.tablet.json",
+    "products/mobile/app/docs/atlas/atlas.mobile.json"
+  ],
+  "surfaces": {
+    "shared": {
+      "canonical_files": [
+        "docs/atlas/ATLAS_MASTER_INDEX.md",
+        "docs/atlas/ATLAS_SHARED_CORE.md",
+        "docs/atlas/ATLAS_SHARED_CORE_CONTRACTS.md",
+        "docs/atlas/ATLAS_SHARED_CORE_VISUAL_OS.md",
+        "docs/atlas/ATLAS_SHARED_CORE_FUNCTIONAL_ENGINES.md",
+        "docs/atlas/ATLAS_SHARED_CORE_RUNTIME_INFRA.md",
+        "docs/atlas/atlas.shared-core.json",
+        "docs/atlas/atlas.registry.json"
+      ],
+      "canonical_dirs": [
+        "docs/atlas"
+      ]
+    },
+    "mobile": {
+      "canonical_files": [
+        "products/mobile/app/docs/atlas/ATLAS_MOBILE.md",
+        "products/mobile/app/docs/atlas/ATLAS_MOBILE_VISUAL.md",
+        "products/mobile/app/docs/atlas/ATLAS_MOBILE_INTERACTION.md",
+        "products/mobile/app/docs/atlas/ATLAS_MOBILE_FUNCTIONAL_ENGINES.md",
+        "products/mobile/app/docs/atlas/ATLAS_MOBILE_RUNTIME_DELIVERY.md",
+        "products/mobile/app/docs/atlas/atlas.mobile.json"
+      ],
+      "canonical_dirs": [
+        "products/mobile/app/docs/atlas"
+      ]
+    },
+    "tablet": {
+      "canonical_files": [
+        "products/tablet/app/docs/atlas/ATLAS_TABLET.md",
+        "products/tablet/app/docs/atlas/ATLAS_TABLET_VISUAL.md",
+        "products/tablet/app/docs/atlas/ATLAS_TABLET_INTERACTION.md",
+        "products/tablet/app/docs/atlas/ATLAS_TABLET_FUNCTIONAL_ENGINES.md",
+        "products/tablet/app/docs/atlas/ATLAS_TABLET_RUNTIME_DELIVERY.md",
+        "products/tablet/app/docs/atlas/atlas.tablet.json"
+      ],
+      "canonical_dirs": [
+        "products/tablet/app/docs/atlas"
+      ]
+    },
+    "pc": {
+      "canonical_files": [
+        "products/pc/app/docs/atlas/ATLAS_PC.md",
+        "products/pc/app/docs/atlas/ATLAS_PC_VISUAL.md",
+        "products/pc/app/docs/atlas/ATLAS_PC_INTERACTION.md",
+        "products/pc/app/docs/atlas/ATLAS_PC_FUNCTIONAL_ENGINES.md",
+        "products/pc/app/docs/atlas/ATLAS_PC_RUNTIME_DELIVERY.md",
+        "products/pc/app/docs/atlas/atlas.pc.json"
+      ],
+      "canonical_dirs": [
+        "products/pc/app/docs/atlas"
+      ]
+    }
+  },
+  "rules": {
+    "shared_core_required_when_touching": [
+      "shared/",
+      "packages/shared-kernel/",
+      "products/shared-ui/prisma/",
+      "config/prisma-visual-os/",
+      "styles/prisma-visual-os/",
+      "prisma/",
+      "docs/contracts/",
+      "docs/productization/",
+      "tooling/",
+      "sync",
+      "licensing",
+      "Visual OS",
+      "shared tokens",
+      "cross-surface dependencies"
+    ],
+    "do_not_use_as": [
+      "runtime mutator",
+      "automatic approval",
+      "test replacement"
+    ]
+  }
+}
