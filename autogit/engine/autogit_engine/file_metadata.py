@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import hashlib,os
+from .paths import repo_path
 TEXT_EXTS={".ts",".tsx",".js",".jsx",".mjs",".cjs",".json",".jsonc",".css",".scss",".html",".md",".mdx",".txt",".yml",".yaml",".toml",".ini",".env",".example",".prisma",".sql",".py",".ps1",".psm1",".bat",".cmd",".sh",".xml",".svg",".csv",".tsv",".lock"}
 BINARY_OK_EXTS={".png",".jpg",".jpeg",".webp",".gif",".ico",".bmp",".mp3",".wav",".mp4",".mov",".pdf"}
 @dataclass
@@ -17,6 +18,6 @@ def probably_text(path:Path,rel:str)->bool:
     try: return b"\x00" not in path.read_bytes()[:4096]
     except Exception: return False
 def build_meta(repo:Path,rel:str,status:str)->FileMeta:
-    full=repo/rel.replace("/",os.sep); exists=full.exists(); ext=Path(rel).suffix.lower()
+    full=repo_path(repo, rel); exists=full.exists(); ext=Path(rel).suffix.lower()
     if not exists: return FileMeta(rel,status,False,0,ext,None,False,False)
     return FileMeta(rel,status,True,full.stat().st_size,ext,sha256(full) if full.is_file() else None,probably_text(full,rel),ext in BINARY_OK_EXTS)

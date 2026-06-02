@@ -1,11 +1,12 @@
 @echo off
 setlocal EnableExtensions
-set "TOOL_ROOT=%~dp0"
+set "REPO_ROOT=%~dp0"
+set "TOOL_ROOT=%REPO_ROOT%autogit\"
 
 if not exist "%TOOL_ROOT%bin\autogit.ps1" (
   echo.
   echo [AutoGit] ERROR: no encontre "%TOOL_ROOT%bin\autogit.ps1".
-  echo Este AutoGit.cmd debe vivir dentro de F:\repos\hitech-os\autogit
+  echo Revisa que exista F:\repos\hitech-os\autogit\bin\autogit.ps1
   echo.
   exit /b 9009
 )
