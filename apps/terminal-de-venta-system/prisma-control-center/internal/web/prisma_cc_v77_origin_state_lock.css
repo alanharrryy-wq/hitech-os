@@ -1,0 +1,39 @@
+/* PRISMA CC V77 - Origin State Lock - Fix3 stable
+   Scope: interface state only. No visual retune, no forced topbar, no auto-scroll.
+*/
+:root { --prisma-v77-state-lock: "origin-state-lock-fix3"; }
+
+body[data-prisma-interface="prismo"] #prismoConsoleSurface {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+body[data-prisma-interface="prismo"] #prismo-console,
+body[data-prisma-interface="prismo"] .prismo-shell,
+body[data-prisma-interface="prismo"] .prismo-topbar,
+body[data-prisma-interface="prismo"] .prismo-grid {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body:not([data-prisma-interface="prismo"]) #prismoConsoleSurface {
+  display: none !important;
+}
+
+body[data-prisma-interface="operation"] #qualityBaySurface,
+body[data-prisma-interface="operation"] #prismoConsoleSurface,
+body[data-prisma-interface="operation"] .licenseOpsSurface,
+body[data-prisma-interface="operation"] .lifecycleSurface {
+  display: none !important;
+}
+
+body[data-prisma-interface="quality"] #qualityBaySurface,
+body[data-prisma-interface="license"] .licenseOpsSurface,
+body[data-prisma-interface="lifecycle"] .lifecycleSurface {
+  visibility: visible !important;
+  opacity: 1 !important;
+}

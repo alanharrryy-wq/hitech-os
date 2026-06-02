@@ -1,0 +1,215 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-025",
+  "intent": {
+    "objective": "compare",
+    "domain": "tablet",
+    "lens": "reports",
+    "scene": "visual_recipe",
+    "freeText": "Pregunta fixture 25 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare tablet",
+    "summary": "Usando reports y escena visual_recipe."
+  },
+  "blocks": [
+    {
+      "id": "fixture-025-block-00",
+      "type": "checklist",
+      "title": "Checklist · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 84
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 3
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 70
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-01",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 96
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 10
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 74
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-02",
+      "type": "next_action",
+      "title": "Next Action · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.86,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 62
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 70
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 42
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 1
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-03",
+      "type": "decision_summary",
+      "title": "Decision Summary · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 48
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 32
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 3
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 99
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 87
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-04",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 87
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 15
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 60
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 82
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-05",
+      "type": "timeline",
+      "title": "Timeline · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 32
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 39
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 50
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-025-block-06",
+      "type": "visual_recipe_card",
+      "title": "Visual Recipe Card · tablet",
+      "summary": "Escena visual_recipe generada para compare/tablet/reports.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 37
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 38
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260555
+  }
+}

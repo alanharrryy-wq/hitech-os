@@ -1,0 +1,191 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-053",
+  "intent": {
+    "objective": "prepare_action",
+    "domain": "system",
+    "lens": "runtime",
+    "scene": "flow_diagram",
+    "freeText": "Pregunta fixture 53 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: prepare_action system",
+    "summary": "Usando runtime y escena flow_diagram."
+  },
+  "blocks": [
+    {
+      "id": "fixture-053-block-00",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · system",
+      "summary": "Escena flow_diagram generada para prepare_action/system/runtime.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 72
+          },
+          {
+            "label": "system signal 2",
+            "value": 52
+          },
+          {
+            "label": "system signal 3",
+            "value": 47
+          },
+          {
+            "label": "system signal 4",
+            "value": 51
+          },
+          {
+            "label": "system signal 5",
+            "value": 19
+          },
+          {
+            "label": "system signal 6",
+            "value": 98
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-053-block-01",
+      "type": "next_action",
+      "title": "Next Action · system",
+      "summary": "Escena flow_diagram generada para prepare_action/system/runtime.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 69
+          },
+          {
+            "label": "system signal 2",
+            "value": 55
+          },
+          {
+            "label": "system signal 3",
+            "value": 7
+          },
+          {
+            "label": "system signal 4",
+            "value": 46
+          },
+          {
+            "label": "system signal 5",
+            "value": 37
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-053-block-02",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · system",
+      "summary": "Escena flow_diagram generada para prepare_action/system/runtime.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 34
+          },
+          {
+            "label": "system signal 2",
+            "value": 99
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-053-block-03",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · system",
+      "summary": "Escena flow_diagram generada para prepare_action/system/runtime.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 60
+          },
+          {
+            "label": "system signal 2",
+            "value": 53
+          },
+          {
+            "label": "system signal 3",
+            "value": 64
+          },
+          {
+            "label": "system signal 4",
+            "value": 6
+          },
+          {
+            "label": "system signal 5",
+            "value": 91
+          },
+          {
+            "label": "system signal 6",
+            "value": 49
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-053-block-04",
+      "type": "executive_brief",
+      "title": "Executive Brief · system",
+      "summary": "Escena flow_diagram generada para prepare_action/system/runtime.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 18
+          },
+          {
+            "label": "system signal 2",
+            "value": 4
+          },
+          {
+            "label": "system signal 3",
+            "value": 61
+          },
+          {
+            "label": "system signal 4",
+            "value": 75
+          },
+          {
+            "label": "system signal 5",
+            "value": 24
+          },
+          {
+            "label": "system signal 6",
+            "value": 48
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260583
+  }
+}

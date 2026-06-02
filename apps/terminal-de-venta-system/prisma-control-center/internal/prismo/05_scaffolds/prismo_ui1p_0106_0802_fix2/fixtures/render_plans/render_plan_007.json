@@ -1,0 +1,137 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-007",
+  "intent": {
+    "objective": "diagnose",
+    "domain": "chart_lab",
+    "lens": "runtime",
+    "scene": "checklist",
+    "freeText": "Pregunta fixture 7 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: diagnose chart_lab",
+    "summary": "Usando runtime y escena checklist."
+  },
+  "blocks": [
+    {
+      "id": "fixture-007-block-00",
+      "type": "decision_summary",
+      "title": "Decision Summary · chart_lab",
+      "summary": "Escena checklist generada para diagnose/chart_lab/runtime.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 79
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 79
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-007-block-01",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · chart_lab",
+      "summary": "Escena checklist generada para diagnose/chart_lab/runtime.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 92
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 22
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 1
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 98
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-007-block-02",
+      "type": "comparison_board",
+      "title": "Comparison Board · chart_lab",
+      "summary": "Escena checklist generada para diagnose/chart_lab/runtime.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 44
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 76
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 42
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 89
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 85
+          },
+          {
+            "label": "chart_lab signal 6",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-007-block-03",
+      "type": "hero_response",
+      "title": "Hero Response · chart_lab",
+      "summary": "Escena checklist generada para diagnose/chart_lab/runtime.",
+      "confidence": 0.85,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 95
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 89
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 94
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260537
+  }
+}

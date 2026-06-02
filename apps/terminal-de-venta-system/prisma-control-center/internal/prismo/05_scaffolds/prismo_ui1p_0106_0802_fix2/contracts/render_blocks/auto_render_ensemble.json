@@ -1,0 +1,71 @@
+{
+  "schema": "prismo.auto_render_ensemble.v1",
+  "purpose": "Codex must implement automatic visual response composition without a removed format selector.",
+  "input_fields": [
+    "objective",
+    "domain",
+    "lens",
+    "freeText",
+    "contextNote",
+    "runtimeStatus",
+    "memoryContext",
+    "evidenceContext"
+  ],
+  "output_fields": [
+    "hero",
+    "blocks",
+    "actions",
+    "evidenceRefs",
+    "memoryRefs",
+    "technicalTrace",
+    "visualPreset",
+    "feedbackHooks"
+  ],
+  "block_priority_formula": "relevance * confidence * actionability * visualFit - overloadPenalty",
+  "overload_controls": {
+    "dedupe_similar_blocks": true,
+    "collapse_low_priority_technical_blocks": true,
+    "technical_drawer_default": "closed_but_present",
+    "never_render_raw_json_as_primary": true,
+    "progressive_disclosure": "primary scene first, details under drawer/tabs"
+  },
+  "required_blocks_by_response": {
+    "always": [
+      "hero_response",
+      "action_bar"
+    ],
+    "if_protocol_found": [
+      "protocol_ladder",
+      "procedural_steps"
+    ],
+    "if_risk_detected": [
+      "risk_matrix"
+    ],
+    "if_history_detected": [
+      "timeline"
+    ],
+    "if_evidence_found": [
+      "evidence_board"
+    ],
+    "if_memory_used": [
+      "memory_trace"
+    ],
+    "if_flow_needed": [
+      "flow_diagram"
+    ],
+    "if_comparison_requested": [
+      "comparison_board"
+    ],
+    "if_debug_needed": [
+      "technical_drawer"
+    ]
+  },
+  "visual_quality_bar": [
+    "looks premium",
+    "feels alive",
+    "has clear hierarchy",
+    "uses real data contract",
+    "does not expose ugly safety labels",
+    "does not look like static mock"
+  ]
+}

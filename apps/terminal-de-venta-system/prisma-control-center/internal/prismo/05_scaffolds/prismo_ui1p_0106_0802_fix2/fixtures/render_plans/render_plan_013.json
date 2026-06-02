@@ -1,0 +1,201 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-013",
+  "intent": {
+    "objective": "investigate",
+    "domain": "mobile",
+    "lens": "screenshots",
+    "scene": "visual_recipe",
+    "freeText": "Pregunta fixture 13 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate mobile",
+    "summary": "Usando screenshots y escena visual_recipe."
+  },
+  "blocks": [
+    {
+      "id": "fixture-013-block-00",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 36
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 59
+          },
+          {
+            "label": "mobile signal 3",
+            "value": 32
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-013-block-01",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 84
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 62
+          },
+          {
+            "label": "mobile signal 3",
+            "value": 86
+          },
+          {
+            "label": "mobile signal 4",
+            "value": 8
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-013-block-02",
+      "type": "checklist",
+      "title": "Checklist · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.86,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 92
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 69
+          },
+          {
+            "label": "mobile signal 3",
+            "value": 51
+          },
+          {
+            "label": "mobile signal 4",
+            "value": 6
+          },
+          {
+            "label": "mobile signal 5",
+            "value": 14
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-013-block-03",
+      "type": "insight_chips",
+      "title": "Insight Chips · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 10
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 34
+          },
+          {
+            "label": "mobile signal 3",
+            "value": 89
+          },
+          {
+            "label": "mobile signal 4",
+            "value": 11
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-013-block-04",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 9
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 92
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-013-block-05",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · mobile",
+      "summary": "Escena visual_recipe generada para investigate/mobile/screenshots.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "mobile signal 1",
+            "value": 86
+          },
+          {
+            "label": "mobile signal 2",
+            "value": 75
+          },
+          {
+            "label": "mobile signal 3",
+            "value": 97
+          },
+          {
+            "label": "mobile signal 4",
+            "value": 94
+          },
+          {
+            "label": "mobile signal 5",
+            "value": 32
+          },
+          {
+            "label": "mobile signal 6",
+            "value": 62
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260543
+  }
+}

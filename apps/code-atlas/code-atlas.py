@@ -114,7 +114,35 @@ MAX_PARSE_ERRORS = 120
 # Salida dinámica: se crea dentro de la ruta seleccionada
 OUTPUT_SUBDIR_NAME = "_dependency_graphs"
 OUTPUT_FILE_PREFIX = "dependency_graph"
-TREE_OUTPUT_DIR = Path(r"<LOCAL_PATH>")
+CODE_ATLAS_OUTPUT_PLACEHOLDERS = {"", ".", "%OUTPUT_DIR%", "{{OUTPUT_DIR}}", "__OUTPUT_DIR__"}
+CODE_ATLAS_OUTPUT_PLACEHOLDERS.add(chr(60) + "OUTPUT_DIR" + chr(62))
+CODE_ATLAS_OUTPUT_PLACEHOLDERS.add(chr(60) + "LOCAL_PATH" + chr(62))
+
+def _code_atlas_default_downloads_root() -> Path:
+    return Path(os.environ.get("CODE_ATLAS_DEFAULT_OUTPUT_ROOT", r"F:\descargasf"))
+
+
+def _code_atlas_repo_root() -> Path:
+    try:
+        return Path(__file__).expanduser().resolve().parents[2]
+    except Exception:
+        return Path.cwd()
+
+
+def _code_atlas_safe_downloads_root(raw: Any | None = None) -> Path:
+    value = os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", str(_code_atlas_default_downloads_root())) if raw is None else raw
+    value = str(value or "").strip().strip('"').strip("'")
+    if value in CODE_ATLAS_OUTPUT_PLACEHOLDERS or "<" in value or ">" in value:
+        value = str(_code_atlas_default_downloads_root())
+    try:
+        root = Path(value).expanduser()
+        if not root.is_absolute():
+            root = _code_atlas_default_downloads_root()
+        return root.resolve()
+    except Exception:
+        return _code_atlas_default_downloads_root().expanduser().resolve()
+
+TREE_OUTPUT_DIR = _code_atlas_safe_downloads_root()
 TREE_OUTPUT_FILE_PREFIX = "dependency_tree"
 TREE_HTML_OUTPUT_FILE_PREFIX = "dependency_tree_premium"
 # None means: scan until the filesystem naturally ends. No fake depth=10 ceiling.
@@ -486,7 +514,7 @@ def derive_project_root(selected_path: str) -> Path:
 
 def resolve_output_dir(selected_path: str) -> Path:
     """
-    Nada fijo a <LOCAL_PATH> ni cosas así.
+    Nada fijo a rutas locales ni cosas así.
     El SVG cae dentro de la carpeta analizada, en una subcarpeta propia.
     """
     return derive_project_root(selected_path) / OUTPUT_SUBDIR_NAME
@@ -3497,7 +3525,7 @@ if _repo_root_str not in sys.path:
 
 # CODE_ATLAS_FORGEOS_BOOTSTRAP_FOR_LOOSE_RUN_V01
 import sys as _code_atlas_sys
-_CODE_ATLAS_FORGEOS_ROOT = Path(r"<LOCAL_PATH>")
+_CODE_ATLAS_FORGEOS_ROOT = Path(os.environ.get("CODE_ATLAS_FORGEOS_ROOT", str(Path(__file__).expanduser().resolve().parent)))
 if _CODE_ATLAS_FORGEOS_ROOT.exists():
     _code_atlas_root_text = str(_CODE_ATLAS_FORGEOS_ROOT)
     if _code_atlas_root_text not in _code_atlas_sys.path:
@@ -5428,7 +5456,7 @@ class SelectorDialog(QDialog):
         footer_text_stack.addWidget(footer_label, 0, Qt.AlignLeft)
 
         footer_hint = QLabel(
-            "SVG se guarda junto al proyecto; Trees en <LOCAL_PATH> Black Glass, DB Glass ERD y Todo El Show ZIP en <LOCAL_PATH>"
+            "SVG se guarda junto al proyecto; Trees, Black Glass, DB Glass ERD y Todo El Show ZIP van a la carpeta de salida configurada."
         )
         footer_hint.setProperty("role", "hint")
         footer_hint.setWordWrap(True)
@@ -5465,7 +5493,7 @@ class SelectorDialog(QDialog):
             "Todo El Show",
             "secondary",
             self.confirm_todo_el_show,
-            tooltip="Genera Black Glass Atlas, Tree HTML Premium y DB Glass ERD; luego empaqueta todo en un ZIP en <LOCAL_PATH>",
+            tooltip="Genera Black Glass Atlas, Tree HTML Premium y DB Glass ERD; luego empaqueta todo en un ZIP en la carpeta de salida configurada.",
             minimum_width=164,
         )
         self.db_black_glass_erd_button = create_button(
@@ -15984,7 +16012,7 @@ def write_tree_html(
     resolved_path = output_path.expanduser().resolve()
     ensure_output_dir(resolved_path.parent)
 
-    notify("Guardando HTML en <LOCAL_PATH>", str(resolved_path))
+    notify("Guardando HTML...", str(resolved_path))
     resolved_path.write_text(html_markup, encoding="utf-8")
     notify("Tree HTML Premium guardado.", str(resolved_path))
 
@@ -17883,14 +17911,14 @@ def build_filesystem_tree_success_footer_text(
                 f"Folders: {summary.total_folders} • Files: {summary.total_files} • "
                 f"Size: {format_size_bytes(summary.total_size_bytes)} • Max depth: {summary.max_depth}"
             ),
-            "Cierra esta ventana para generar otro reporte. La carpeta <LOCAL_PATH> se abrirá al cerrar.",
+            "Cierra esta ventana para generar otro reporte. La carpeta de salida se abrirá al cerrar.",
         ]
     )
 
 
 # CODE_ATLAS_BLACK_GLASS_BUTTON_V05: bridge from the PySide selector to the reusable dependency-map visual tools.
 # CODE_ATLAS_BLACK_GLASS_BUTTON_V05_2: selected scope is preserved; project root is used only to locate the analyzer.
-BLACK_GLASS_DOWNLOADS_ROOT = Path(os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", r"<OUTPUT_DIR>"))
+BLACK_GLASS_DOWNLOADS_ROOT = _code_atlas_safe_downloads_root()
 BLACK_GLASS_CONSUMER_TOOL = "code_atlas_dependency_consumer_v03.py"
 BLACK_GLASS_VISUAL_TOOL = "code_atlas_dependency_visual_v04_2.py"
 
@@ -17931,9 +17959,10 @@ def _black_glass_candidate_roots(project_root: Path | None = None) -> list[Path]
     except Exception:
         pass
 
-    add(r"<REPO_ROOT>")
-    add(r"<REPO_ROOT>\apps\terminal-de-venta-system")
-    add(r"<OUTPUT_DIR>")
+    repo_root = _code_atlas_repo_root()
+    add(repo_root / "apps" / "code-atlas")
+    add(repo_root / "apps" / "terminal-de-venta-system")
+    add(_code_atlas_safe_downloads_root())
 
     unique: list[Path] = []
     seen: set[str] = set()
@@ -18026,7 +18055,7 @@ def _black_glass_resolve_visual_tools(project_root: Path) -> dict[str, Path]:
 
 
 def _black_glass_downloads_root() -> Path:
-    root = BLACK_GLASS_DOWNLOADS_ROOT.expanduser().resolve()
+    root = _code_atlas_safe_downloads_root()
     root.mkdir(parents=True, exist_ok=True)
     return root
 
@@ -20304,11 +20333,11 @@ def run_todo_el_show_bundle(
 
 
 def build_todo_el_show_success_footer_text(output_path: Path) -> str:
-    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el ZIP de Todo El Show. Salida: <LOCAL_PATH>"
+    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el ZIP de Todo El Show. Salida: carpeta configurada"
 
 
 def build_db_black_glass_success_footer_text(output_path: Path) -> str:
-    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el DB Glass ERD. Salida: <LOCAL_PATH>"
+    return f"Archivo: {short_path(str(output_path), 92)}. Cierra esta ventana para abrir el DB Glass ERD. Salida: carpeta configurada"
 
 def build_black_glass_success_footer_text(output_path: Path) -> str:
     return "\n".join(
@@ -20384,7 +20413,7 @@ def main() -> int:
                             f"Archivo: {output_path}",
                             f"Proyecto: {state.project_root}",
                             f"Workers DB Glass: {_db_black_glass_max_workers()}",
-                            "Salida: <LOCAL_PATH>",
+                            "Salida: carpeta configurada",
                         ]
                     ),
                 )
@@ -20417,7 +20446,7 @@ def main() -> int:
                             "",
                             f"Archivo: {output_path}",
                             f"Proyecto: {state.project_root}",
-                            "Salida: <LOCAL_PATH>",
+                            "Salida: carpeta configurada",
                         ]
                     ),
                 )
@@ -20450,7 +20479,7 @@ def main() -> int:
                             "",
                             f"Archivo: {output_path}",
                             f"Proyecto: {state.project_root}",
-                            "Salida: <LOCAL_PATH>",
+                            "Salida: carpeta configurada",
                         ]
                     ),
                 )

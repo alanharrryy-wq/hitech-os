@@ -19,10 +19,27 @@ class Orchestrator:
         self.ctx=ctx; self.backup=BackupManager(ctx.repo,ctx.artifact("backups_before_changes")); self.trash=TrashManager(ctx.repo,Path(ctx.policy.trash_root),ctx.run_id)
     def run(self):
         ctx=self.ctx; phase("PREFLIGHT"); git,gh=run_preflight(ctx)
+
+        if ctx.policy.mode == "pr-only":
+            phase("PR GATE")
+            if not gh:
+                raise RuntimeError("pr-only mode requires GitHub CLI authentication")
+            pr_result=run_pr_gate(ctx,git,gh)
+            summary={"result":"ok","mode":"pr-only","commits":[],"moved_to_trash":[],"pr":pr_result,"recipes":[]}
+            zip_path=write_success(ctx,summary); line(f"RESULT_ZIP: {zip_path}"); return summary
+
         phase("SCAN DIRTY TREE"); groups,included,rejected,trash=build_index(ctx.repo,git,ctx.artifact("index.json"))
-        for row in trash: ctx.moved_to_trash.append(self.trash.move(row["path"],row["decision"]["reason"]))
-        self.trash.write_manifest(); ctx.artifact("rejected.json").write_text(json.dumps(rejected,indent=2,ensure_ascii=False),encoding="utf-8")
+        ctx.artifact("rejected.json").write_text(json.dumps(rejected,indent=2,ensure_ascii=False),encoding="utf-8")
         all_paths=[p for paths in groups.values() for p in paths]
+
+        if ctx.policy.mode == "audit":
+            phase("VALIDATE AUDIT")
+            validate_all(ctx.repo,all_paths,ctx.shell,ctx.artifact("scratch"),ctx.artifact("validation.json"))
+            summary={"result":"ok","mode":"audit","included":included,"rejected":rejected,"trash_candidates":trash,"commits":[],"moved_to_trash":[],"pr":{"result":"skipped","reason":"audit mode"},"recipes":[]}
+            zip_path=write_success(ctx,summary); line(f"RESULT_ZIP: {zip_path}"); return summary
+
+        for row in trash: ctx.moved_to_trash.append(self.trash.move(row["path"],row["decision"]["reason"]))
+        self.trash.write_manifest()
         phase("SANITIZE"); sanitize_paths(ctx.repo,all_paths,self.backup,ctx.artifact("sanitize_manifest.json")); self.backup.write_manifest()
         phase("VALIDATE"); validate_all(ctx.repo,all_paths,ctx.shell,ctx.artifact("scratch"),ctx.artifact("validation.json"))
         phase("KNOWN FIXES"); recipe_rows=apply_known_fixes(ctx,"spawnSync git ENOBUFS CODEOWNERS apps/code-atlas",ctx.artifact("known_fix_results.json"))
@@ -31,6 +48,6 @@ class Orchestrator:
         phase("LOCAL GUARDRAILS"); guardrail_rows=run_local_guardrails(ctx.repo,ctx.shell,ctx.artifact("local_guardrails")); ctx.artifact("local_guardrails.json").write_text(json.dumps(guardrail_rows,indent=2,ensure_ascii=False),encoding="utf-8")
         phase("COMMIT"); plans=build_plans(groups2); ctx.created_commits=commit_plans(ctx.repo,git,plans,self.backup,ctx.report_dir); ctx.write_state("committed")
         phase("PR GATE"); pr_result={"result":"skipped","reason":"mode"}
-        if ctx.policy.mode in {"full","pr-only"} and gh: pr_result=run_pr_gate(ctx,git,gh)
-        summary={"result":"ok","commits":ctx.created_commits,"moved_to_trash":ctx.moved_to_trash,"pr":pr_result,"recipes":recipe_rows}
+        if ctx.policy.mode == "full" and gh: pr_result=run_pr_gate(ctx,git,gh)
+        summary={"result":"ok","mode":ctx.policy.mode,"commits":ctx.created_commits,"moved_to_trash":ctx.moved_to_trash,"pr":pr_result,"recipes":recipe_rows}
         zip_path=write_success(ctx,summary); line(f"RESULT_ZIP: {zip_path}"); return summary

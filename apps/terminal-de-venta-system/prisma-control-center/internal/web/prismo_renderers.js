@@ -3,33 +3,37 @@
 
   const BLOCKED_TEXT = "Bloque visual bloqueado porque no cumplió las reglas de seguridad.";
   const ALLOWED = new Set([
-    "direct_answer_card",
+    "hero_response",
+    "executive_brief",
+    "next_best_action",
+    "protocol_ladder",
+    "procedural_steps",
+    "procedural_recipe",
+    "evidence_board",
     "evidence_cards",
-    "authority_map",
+    "risk_matrix",
+    "timeline",
     "flow_diagram",
+    "comparison_board",
+    "memory_trace",
+    "authority_strip",
+    "context_cards",
+    "insight_chips",
+    "technical_drawer",
+    "action_bar",
+    "error_recovery",
+    "loading_state",
+    "feedback_dock",
+    "direct_answer_card",
+    "authority_map",
     "impact_map",
     "runtime_map",
-    "timeline",
     "improvement_brief_board",
     "context_pack_explorer",
     "diff_view",
-    "risk_matrix",
     "checklist",
-    "html_sandbox_preview",
     "chart_spec"
   ]);
-  const HTML_RISK = [
-    /<\s*script/i,
-    /\son[a-z]+\s*=/i,
-    /fetch\s*\(/i,
-    /XMLHttpRequest/i,
-    /document\.cookie/i,
-    /localStorage|sessionStorage|indexedDB/i,
-    /javascript:/i,
-    /<\s*(iframe|object|embed|form|meta|link)/i,
-    /https?:\/\//i
-  ];
-
   function esc(value) {
     return String(value ?? "").replace(/[&<>'"]/g, (ch) => ({
       "&": "&amp;",
@@ -64,6 +68,95 @@
     return card(block, `<p class="prismo-answer">${esc(data.answer || block.description || "")}</p>`);
   }
 
+  function renderHero(block) {
+    const data = block.data || {};
+    const interpretation = data.interpretation || {};
+    const chips = asArray(interpretation.chips).map((chip) => `
+      <span class="prismo-theater-chip" data-source="${esc(chip.source || "inferred")}">${esc(chip.label || chip.value || "")}</span>`).join("");
+    return card(block, `
+      <p class="prismo-answer">${esc(data.answer || block.summary || block.message || "")}</p>
+      <div class="prismo-response-meta">${chips}</div>`);
+  }
+
+  function renderNextAction(block) {
+    const data = block.data || {};
+    return card(block, `
+      <div class="prismo-safe-step"><strong>${esc(data.action || block.title || "Next action")}</strong><br>${esc(block.summary || data.impact || "")}</div>
+      <div class="prismo-response-meta">
+        <span class="prismo-tag" data-state="ok">review impact</span>
+        <span class="prismo-tag">prepare action</span>
+      </div>`);
+  }
+
+  function renderProtocolLadder(block) {
+    const protocols = asArray((block.data || {}).protocols);
+    return card(block, `<div class="prismo-ranked-ladder">${protocols.map((item, index) => `
+      <div class="prismo-ladder-step">
+        <small>${esc(String(Math.round(Number(item.score || 0) * 100)))}%</small>
+        <strong>${esc(item.label || item.id || `Protocol ${index + 1}`)}</strong>
+        <p>${esc(item.reason || "")}</p>
+      </div>`).join("") || `<div class="prismo-empty">Sin protocolo rankeado.</div>`}</div>`);
+  }
+
+  function renderProcedural(block) {
+    const steps = asArray((block.data || {}).steps || (block.data || {}).items);
+    return card(block, `<div class="prismo-checklist">${steps.map((item, index) => `
+      <div class="prismo-check-item" data-done="${esc(item.status || "ready")}">
+        <strong>${index + 1}. ${esc(item.label || item.title || item)}</strong>
+        <small>${esc(item.status || "ready")}</small>
+      </div>`).join("") || `<div class="prismo-empty">Sin pasos procedurales.</div>`}</div>`);
+  }
+
+  function renderEvidenceBoard(block) {
+    const items = asArray((block.data || {}).items);
+    const html = `<div class="prismo-evidence-board">${items.map((item) => `
+      <div class="prismo-mini-card" data-relevance="${esc(item.relevance || "supporting")}">
+        <strong>${esc(item.title || item.id || "Evidencia")}</strong>
+        <small>${esc(item.source_type || "runtime")} · ${esc(item.freshness || "current")} · ${esc(item.confidence || "medium")}</small>
+        <p>${esc(item.summary || "")}</p>
+      </div>`).join("") || `<div class="prismo-empty">Sin evidencia renderizable.</div>`}</div>`;
+    return card(block, html);
+  }
+
+  function renderMemoryTrace(block) {
+    const items = asArray((block.data || {}).items);
+    return card(block, `<div class="prismo-memory-trace">${items.map((item) => `
+      <div class="prismo-mini-card">
+        <strong>${esc(String(item.type || "memory").replaceAll("_", " "))}</strong>
+        <small>${esc(item.confidence || "contextual")}</small>
+        <p>${esc(item.summary || "")}</p>
+      </div>`).join("")}</div>`);
+  }
+
+  function renderAuthorityStrip(block) {
+    const data = block.data || {};
+    const precedence = asArray(data.precedence);
+    return card(block, `<div class="prismo-response-meta">
+      <span class="prismo-tag" data-state="ok">${esc(data.winning_source || "PRISMO runtime")}</span>
+      ${precedence.slice(0, 4).map((item) => `<span class="prismo-tag">${esc(item)}</span>`).join("")}
+    </div><p>${esc(block.summary || "")}</p>`);
+  }
+
+  function renderInsightChips(block) {
+    const chips = asArray((block.data || {}).chips);
+    return card(block, `<div class="prismo-response-meta">${chips.map((chip) => `
+      <span class="prismo-theater-chip" data-source="${esc(chip.source || "inferred")}">
+        <small>${esc(chip.key || "chip")}</small>${esc(chip.label || chip.value || "")}
+      </span>`).join("")}</div>`);
+  }
+
+  function renderActionBar(block) {
+    const actions = asArray((block.data || {}).actions);
+    return card(block, `<div class="prismo-actions-row">${actions.map((action) => `
+      <button type="button" class="prismo-secondary-action" data-prismo-action="${esc(action)}">${esc(String(action).replaceAll("_", " "))}</button>`).join("")}</div>`);
+  }
+
+  function renderFeedbackDock(block) {
+    const states = asArray((block.data || {}).states);
+    return card(block, `<div class="prismo-feedback-inline">${states.slice(1).map((state) => `
+      <span class="prismo-theater-chip">${esc(String(state).replaceAll("_", " "))}</span>`).join("")}</div>`);
+  }
+
   function renderEvidence(block) {
     const items = asArray((block.data || {}).items);
     const html = `<div class="prismo-mini-grid">${items.map((item) => `
@@ -88,11 +181,27 @@
 
   function renderFlow(block) {
     const data = block.data || {};
+    if (data.variant === "neural_operations_graph") return renderNeuralGraph(block);
     const nodes = asArray(data.nodes);
     const html = `<div class="prismo-flow">${nodes.map((node, index) => {
       const next = index < nodes.length - 1 ? `<div class="prismo-flow-arrow">→</div>` : "";
       return `<div class="prismo-flow-node" data-status="${esc(node.status || "unknown")}"><strong>${esc(node.label || node.id)}</strong><small>${esc(node.status || "")}</small></div>${next}`;
     }).join("") || `<div class="prismo-empty">Sin nodos.</div>`}</div>`;
+    return card(block, html);
+  }
+
+  function renderNeuralGraph(block) {
+    const data = block.data || {};
+    const nodes = asArray(data.nodes).slice(0, 8);
+    const zones = ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"];
+    const html = `<div class="prismo-neural-graph" aria-label="Neural Operations Graph render">
+      <div class="prismo-graph-core"><small>Neural Operations Graph</small><strong>PRISMO Core</strong><span>decisión guiada</span></div>
+      ${nodes.map((node, index) => `
+        <div class="prismo-graph-node" data-zone="${esc(zones[index] || "north")}">
+          <strong>${esc(node.label || node.id || "Nodo")}</strong>
+          <small>${esc(node.status || node.edge || node.summary || "")}</small>
+        </div>`).join("")}
+    </div>`;
     return card(block, html);
   }
 
@@ -158,25 +267,6 @@
       <div class="prismo-check-item" data-done="${item.done ? "true" : "false"}"><strong>${item.done ? "✓" : "•"} ${esc(item.label || item)}</strong><small>${esc(item.status || "")}</small></div>`).join("")}</div>`);
   }
 
-  function sanitizePreviewHtml(html) {
-    const raw = String(html || "");
-    if (HTML_RISK.some((pattern) => pattern.test(raw))) return "";
-    return raw.replace(/<\/?(script|iframe|object|embed|form|meta|link)[^>]*>/gi, "");
-  }
-
-  function renderHtml(block) {
-    const html = sanitizePreviewHtml((block.data || {}).html || "");
-    if (!html) return blockedCard();
-    const wrap = document.createElement("div");
-    const iframe = document.createElement("iframe");
-    iframe.className = "prismo-html-frame";
-    iframe.setAttribute("sandbox", "");
-    iframe.setAttribute("referrerpolicy", "no-referrer");
-    iframe.srcdoc = html;
-    wrap.appendChild(iframe);
-    return card(block, wrap);
-  }
-
   function renderChart(block) {
     const spec = block.data || {};
     const labels = (spec.xAxis && spec.xAxis.data) || asArray(spec.labels);
@@ -195,6 +285,23 @@
   function renderBlock(block) {
     if (!block || !ALLOWED.has(block.type)) return blockedCard();
     switch (block.type) {
+      case "hero_response": return renderHero(block);
+      case "executive_brief": return renderBrief({ ...block, data: { sections: ((block.data || {}).sections || []) } });
+      case "next_best_action": return renderNextAction(block);
+      case "protocol_ladder": return renderProtocolLadder(block);
+      case "procedural_steps":
+      case "procedural_recipe": return renderProcedural(block);
+      case "evidence_board": return renderEvidenceBoard(block);
+      case "comparison_board": return renderDiff({ ...block, data: { columns: ((block.data || {}).columns || []) } });
+      case "memory_trace": return renderMemoryTrace(block);
+      case "authority_strip": return renderAuthorityStrip(block);
+      case "context_cards": return renderContext({ ...block, data: { items: ((block.data || {}).items || []) } });
+      case "insight_chips": return renderInsightChips(block);
+      case "technical_drawer": return card(block, `<p>${esc(block.summary || "Open technical detail for full trace.")}</p>`);
+      case "action_bar": return renderActionBar(block);
+      case "error_recovery": return renderDirect({ ...block, data: { answer: block.summary || block.message || "" } });
+      case "loading_state": return card(block, `<p>${esc(block.summary || "Reading memory, checking evidence, building render plan.")}</p>`);
+      case "feedback_dock": return renderFeedbackDock(block);
       case "direct_answer_card": return renderDirect(block);
       case "evidence_cards": return renderEvidence(block);
       case "authority_map": return renderAuthority(block);
@@ -207,7 +314,6 @@
       case "diff_view": return renderDiff(block);
       case "risk_matrix": return renderRisk(block);
       case "checklist": return renderChecklist(block);
-      case "html_sandbox_preview": return renderHtml(block);
       case "chart_spec": return renderChart(block);
       default: return blockedCard();
     }
@@ -216,7 +322,6 @@
   window.PRISMO_RENDERERS = {
     esc,
     renderBlock,
-    blockedCard,
-    sanitizePreviewHtml
+    blockedCard
   };
 })();

@@ -1,0 +1,219 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-002",
+  "intent": {
+    "objective": "explain",
+    "domain": "evidence_vault",
+    "lens": "release_train",
+    "scene": "timeline",
+    "freeText": "Pregunta fixture 2 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: explain evidence_vault",
+    "summary": "Usando release_train y escena timeline."
+  },
+  "blocks": [
+    {
+      "id": "fixture-002-block-00",
+      "type": "executive_brief",
+      "title": "Executive Brief · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.88,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 42
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 87
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 45
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 42
+          },
+          {
+            "label": "evidence_vault signal 5",
+            "value": 48
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-01",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 23
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 62
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 85
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-02",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.87,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 96
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 82
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 22
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 93
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-03",
+      "type": "executive_brief",
+      "title": "Executive Brief · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 61
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 88
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-04",
+      "type": "timeline",
+      "title": "Timeline · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 85
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 81
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-05",
+      "type": "executive_brief",
+      "title": "Executive Brief · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 96
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 90
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 6
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-002-block-06",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · evidence_vault",
+      "summary": "Escena timeline generada para explain/evidence_vault/release_train.",
+      "confidence": 0.78,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 45
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 61
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 58
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 43
+          },
+          {
+            "label": "evidence_vault signal 5",
+            "value": 52
+          },
+          {
+            "label": "evidence_vault signal 6",
+            "value": 1
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260532
+  }
+}

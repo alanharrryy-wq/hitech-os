@@ -1,0 +1,225 @@
+{
+  "schema": "prisma.surface.visual_governor.external_reference_family_aliases",
+  "version": "M-04B.fix2",
+  "created_at": "2026-06-01T20:36:47",
+  "engine_version": "M-04B.fix2-family-policy-alias-normalizer",
+  "explicit_aliases": {
+    "audit_quiet_vault": "mobile_thin_mist",
+    "thin_mist_blue": "mobile_thin_mist",
+    "thin_mist": "mobile_thin_mist",
+    "mobile_thin_mist": "mobile_thin_mist",
+    "tablet_light_minimal_fog": "tablet_light_soft",
+    "tablet_light_snow": "tablet_light_soft",
+    "tablet_soft_clouds": "tablet_light_soft",
+    "tablet_light_soft": "tablet_light_soft",
+    "storm_graphite_motion": "storm_graphite_vault",
+    "storm_graphite_vault": "storm_graphite_vault",
+    "storm_vapor_dusk": "storm_graphite_vault",
+    "visual_os_night": "visual_os_celestial",
+    "visual_os_celestial": "visual_os_celestial",
+    "liquid_teal_vapor": "liquid_teal_vapor",
+    "alpine_graphite_hero": "alpine_graphite_hero",
+    "light_architecture_material": "light_architecture_material",
+    "warm_showcase_mountain": "warm_showcase_mountain",
+    "subject_photo_blocked": "subject_photo_blocked",
+    "decorative_subject_review": "subject_photo_blocked",
+    "external_review": ""
+  },
+  "canonical_families": {
+    "alpine_graphite_hero": {
+      "label": "Alpine Graphite Hero",
+      "allowed": [
+        "pc",
+        "control_center"
+      ],
+      "conditional": [
+        "chart_lab",
+        "pc_reference"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout"
+      ],
+      "budget": "premium calm executive background"
+    },
+    "storm_graphite_vault": {
+      "label": "Storm Graphite Vault",
+      "allowed": [
+        "control_center",
+        "chart_lab",
+        "pc_reference"
+      ],
+      "conditional": [
+        "visual_os"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "premium dark governance/storm mood; strong scrim required"
+    },
+    "visual_os_celestial": {
+      "label": "Visual OS Celestial",
+      "allowed": [
+        "control_center",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional": [
+        "pc_reference"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "showcase/reference only; never default productive"
+    },
+    "liquid_teal_vapor": {
+      "label": "Liquid Teal Vapor",
+      "allowed": [
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional": [
+        "control_center",
+        "pc_reference"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "dense_tables",
+        "web_eit_public"
+      ],
+      "budget": "high wow, studio/showcase only"
+    },
+    "tablet_light_soft": {
+      "label": "Tablet Light Soft",
+      "allowed": [
+        "tablet_productive",
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional": [
+        "pos_checkout"
+      ],
+      "blocked": [
+        "pc_dark_showcase_default"
+      ],
+      "budget": "light-first low-noise background"
+    },
+    "mobile_thin_mist": {
+      "label": "Mobile Thin Mist",
+      "allowed": [
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional": [
+        "tablet_productive",
+        "control_center_audit"
+      ],
+      "blocked": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "low-noise, battery-friendly, audit-safe"
+    },
+    "light_architecture_material": {
+      "label": "Light Architecture Material",
+      "allowed": [
+        "web_eit_public",
+        "tablet_productive",
+        "settings"
+      ],
+      "conditional": [
+        "control_center_audit"
+      ],
+      "blocked": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "light/sober material reference"
+    },
+    "warm_showcase_mountain": {
+      "label": "Warm Showcase Mountain",
+      "allowed": [
+        "chart_lab",
+        "marketing_reference"
+      ],
+      "conditional": [
+        "control_center_showcase"
+      ],
+      "blocked": [
+        "tablet_productive",
+        "pos_checkout",
+        "dense_tables"
+      ],
+      "budget": "decorative/showcase, sparingly"
+    },
+    "subject_photo_blocked": {
+      "label": "Subject Photo Blocked",
+      "allowed": [],
+      "conditional": [
+        "manual_review_only"
+      ],
+      "blocked": [
+        "all_background_use"
+      ],
+      "budget": "not direct UI atmosphere"
+    },
+    "external_review": {
+      "label": "External Review",
+      "allowed": [],
+      "conditional": [
+        "manual_review_only"
+      ],
+      "blocked": [
+        "all_until_reviewed"
+      ],
+      "budget": "requires human review"
+    }
+  },
+  "original_family_counts": {
+    "audit_quiet_vault": 2,
+    "decorative_winter_path": 1,
+    "decorative_landing_warm": 1,
+    "thin_mist_blue": 1,
+    "tablet_light_snow": 1,
+    "audit_winter_steam": 1,
+    "subject_photo_blocked": 1,
+    "tablet_light_minimal_water": 1,
+    "tablet_light_minimal_fog": 1,
+    "storm_vapor_dusk": 1,
+    "warm_fog_showcase": 1,
+    "tablet_light_clouds": 1,
+    "visual_os_night": 1,
+    "alpine_graphite_hero": 1,
+    "decorative_green_forest": 1,
+    "warm_showcase_mountain": 1,
+    "tablet_light_snow_forest": 1,
+    "tablet_light_minimal_sky": 1,
+    "light_architecture_material": 1,
+    "liquid_teal_vapor": 2,
+    "storm_graphite_landscape": 1,
+    "visual_os_celestial": 1,
+    "storm_forest_vault": 1,
+    "tablet_light_snow_minimal": 1,
+    "aurora_showcase": 1,
+    "thin_mist_forest": 1,
+    "storm_graphite_motion": 1,
+    "storm_graphite_vault": 1,
+    "mobile_thin_mist_blue": 1
+  },
+  "normalized_family_counts": {
+    "mobile_thin_mist": 6,
+    "external_review": 1,
+    "liquid_teal_vapor": 3,
+    "tablet_light_soft": 9,
+    "subject_photo_blocked": 2,
+    "storm_graphite_vault": 3,
+    "warm_showcase_mountain": 2,
+    "visual_os_celestial": 3,
+    "alpine_graphite_hero": 1,
+    "light_architecture_material": 1
+  },
+  "rule": "Use normalized_family_id for route budgets. Never consume raw granular external family IDs directly."
+}

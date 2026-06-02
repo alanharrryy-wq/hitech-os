@@ -1,9 +1,10 @@
 from __future__ import annotations
+from ..paths import repo_path
 def validate(repo,paths,shell):
     node=shell.which("node") or shell.which("node.exe"); rows=[]
     if not node: return [{"skipped":"node not found"}]
     for rel in paths:
-        full=repo/rel.replace("/","\\")
+        full=repo_path(repo, rel)
         if full.suffix.lower() in {".js",".mjs",".cjs"} and full.exists():
             if rel.lower().endswith(".min.js"): rows.append({"path":rel,"skipped":"minified"}); continue
             r=shell.run([node,"--check",str(full)],timeout=120,name="node_check_"+full.name)

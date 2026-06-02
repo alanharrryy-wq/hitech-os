@@ -24,13 +24,17 @@ export type PrismaSurfaceRuntimeDecision = {
 };
 
 const SURFACE = "pc";
+const SURFACE_FLAGS = {
+  isTablet: false,
+  isMobile: false,
+  isWeb: false,
+} as const;
 
 export function evaluatePrismaSurfaceRuntime(route: string): PrismaSurfaceRuntimeDecision {
   const normalizedRoute = route || "/";
   const isPos = normalizedRoute.startsWith("/pos");
   const isCheckout = normalizedRoute.startsWith("/checkout");
-  const isTablet = SURFACE === "tablet";
-  const isMobile = SURFACE === "mobile";
+  const { isTablet, isMobile, isWeb } = SURFACE_FLAGS;
 
   return {
     allowed: true,
@@ -41,7 +45,7 @@ export function evaluatePrismaSurfaceRuntime(route: string): PrismaSurfaceRuntim
     budget: {
       lightFirst: isTablet || isMobile || isPos || isCheckout,
       touchFirst: isTablet || isMobile || isPos || isCheckout,
-      publicSober: SURFACE === "web",
+      publicSober: isWeb,
       posSafe: isPos || isCheckout,
       allowAtmosphereAssets: true,
       allowHeavyBlur: !(isTablet || isMobile || isPos || isCheckout),

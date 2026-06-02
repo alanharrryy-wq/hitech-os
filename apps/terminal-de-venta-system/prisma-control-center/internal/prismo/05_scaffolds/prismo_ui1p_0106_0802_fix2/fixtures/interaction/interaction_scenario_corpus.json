@@ -1,0 +1,7006 @@
+{
+  "schema": "prismo.ui1p.interaction_scenarios.v2",
+  "count": 320,
+  "scenarios": [
+    {
+      "id": "interaction_scenario_001",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 1: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_002",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 2: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_003",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 3: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_004",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 4: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_005",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 5: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_006",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 6: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_007",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 7: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_008",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 8: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_009",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 9: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_010",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 10: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_011",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 11: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_012",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 12: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_013",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 13: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_014",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 14: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_015",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 15: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_016",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 16: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_017",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 17: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_018",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 18: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_019",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 19: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_020",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 20: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_021",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 21: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_022",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 22: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_023",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 23: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_024",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 24: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_025",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 25: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_026",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 26: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_027",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 27: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_028",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 28: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_029",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 29: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_030",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 30: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_031",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 31: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_032",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 32: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_033",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 33: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_034",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 34: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_035",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 35: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_036",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 36: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_037",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 37: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_038",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 38: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_039",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 39: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_040",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 40: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_041",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 41: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_042",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 42: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_043",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 43: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_044",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 44: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_045",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 45: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_046",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 46: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_047",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 47: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_048",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 48: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_049",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 49: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_050",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 50: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_051",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 51: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_052",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 52: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_053",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 53: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_054",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 54: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_055",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 55: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_056",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 56: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_057",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 57: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_058",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 58: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_059",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 59: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_060",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 60: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_061",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 61: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_062",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 62: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_063",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 63: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_064",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 64: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_065",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 65: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_066",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 66: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_067",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 67: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_068",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 68: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_069",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 69: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_070",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 70: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_071",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 71: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_072",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 72: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_073",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 73: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_074",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 74: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_075",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 75: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_076",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 76: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_077",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 77: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_078",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 78: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_079",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 79: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_080",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 80: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_081",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 81: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_082",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 82: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_083",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 83: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_084",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 84: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_085",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 85: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_086",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 86: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_087",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 87: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_088",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 88: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_089",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 89: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_090",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 90: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_091",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 91: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_092",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 92: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_093",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 93: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_094",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 94: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_095",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 95: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_096",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 96: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_097",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 97: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_098",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 98: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_099",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 99: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_100",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 100: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_101",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 101: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_102",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 102: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_103",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 103: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_104",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 104: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_105",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 105: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_106",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 106: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_107",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 107: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_108",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 108: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_109",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 109: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_110",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 110: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_111",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 111: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_112",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 112: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_113",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 113: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_114",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 114: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_115",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 115: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_116",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 116: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_117",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 117: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_118",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 118: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_119",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 119: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_120",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 120: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_121",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 121: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_122",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 122: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_123",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 123: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_124",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 124: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_125",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 125: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_126",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 126: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_127",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 127: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_128",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 128: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_129",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 129: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_130",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 130: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_131",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 131: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_132",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 132: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_133",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 133: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_134",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 134: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_135",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 135: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_136",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 136: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_137",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 137: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_138",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 138: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_139",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 139: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_140",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 140: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_141",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 141: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_142",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 142: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_143",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 143: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_144",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 144: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_145",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 145: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_146",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 146: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_147",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 147: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_148",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 148: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_149",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 149: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_150",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 150: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_151",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 151: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_152",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 152: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_153",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 153: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_154",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 154: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_155",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 155: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_156",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 156: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_157",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 157: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_158",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 158: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_159",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 159: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_160",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 160: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_161",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 161: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_162",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 162: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_163",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 163: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_164",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 164: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_165",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 165: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_166",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 166: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_167",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 167: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_168",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 168: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_169",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 169: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_170",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 170: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_171",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 171: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_172",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 172: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_173",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 173: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_174",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 174: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_175",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 175: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_176",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 176: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_177",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 177: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_178",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 178: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_179",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 179: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_180",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 180: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_181",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 181: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_182",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 182: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_183",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 183: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_184",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 184: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_185",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 185: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_186",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 186: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_187",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 187: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_188",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 188: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_189",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 189: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_190",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 190: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_191",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 191: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_192",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 192: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_193",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 193: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_194",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 194: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_195",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 195: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_196",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 196: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_197",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 197: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_198",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 198: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_199",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 199: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_200",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 200: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_201",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 201: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_202",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 202: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_203",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 203: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_204",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 204: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_205",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 205: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_206",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 206: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_207",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 207: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_208",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 208: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_209",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 209: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_210",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 210: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_211",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 211: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_212",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 212: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_213",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 213: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_214",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 214: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_215",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 215: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_216",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 216: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_217",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 217: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_218",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 218: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_219",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 219: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_220",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 220: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_221",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 221: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_222",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 222: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_223",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 223: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_224",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 224: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_225",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 225: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_226",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 226: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_227",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 227: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_228",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 228: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_229",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 229: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_230",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 230: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_231",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 231: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_232",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 232: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_233",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 233: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_234",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 234: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_235",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 235: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_236",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 236: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_237",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 237: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_238",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 238: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_239",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 239: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_240",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 240: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_241",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 241: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_242",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 242: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_243",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 243: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_244",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 244: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_245",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 245: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_246",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 246: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_247",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 247: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_248",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 248: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_249",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 249: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_250",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 250: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_251",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 251: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_252",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 252: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_253",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 253: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_254",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 254: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_255",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 255: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_256",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 256: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_257",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 257: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_258",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 258: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_259",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 259: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_260",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 260: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_261",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 261: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_262",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 262: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_263",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 263: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_264",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 264: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_265",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 265: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_266",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 266: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_267",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 267: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_268",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 268: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_269",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 269: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_270",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 270: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_271",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 271: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_272",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 272: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_273",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 273: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_274",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 274: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_275",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 275: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_276",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 276: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_277",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 277: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_278",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 278: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_279",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 279: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_280",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 280: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_281",
+      "input": {
+        "objective": "explain",
+        "domain": "tablet",
+        "lens": "governance",
+        "freeText": "Escenario 281: revisar tablet usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_282",
+      "input": {
+        "objective": "recommend",
+        "domain": "governance",
+        "lens": "protocols",
+        "freeText": "Escenario 282: revisar governance usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_283",
+      "input": {
+        "objective": "compare",
+        "domain": "visual_os",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 283: revisar visual_os usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_284",
+      "input": {
+        "objective": "audit",
+        "domain": "pc_ui",
+        "lens": "runtime",
+        "freeText": "Escenario 284: revisar pc_ui usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_285",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "chart_lab",
+        "lens": "patterns",
+        "freeText": "Escenario 285: revisar chart_lab usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_286",
+      "input": {
+        "objective": "summarize",
+        "domain": "protocols",
+        "lens": "visual_memory",
+        "freeText": "Escenario 286: revisar protocols usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_287",
+      "input": {
+        "objective": "investigate",
+        "domain": "sync",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 287: revisar sync usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_288",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pos",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 288: revisar pos usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_289",
+      "input": {
+        "objective": "explain",
+        "domain": "evidence_vault",
+        "lens": "governance",
+        "freeText": "Escenario 289: revisar evidence_vault usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_290",
+      "input": {
+        "objective": "recommend",
+        "domain": "learning",
+        "lens": "protocols",
+        "freeText": "Escenario 290: revisar learning usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_291",
+      "input": {
+        "objective": "compare",
+        "domain": "tablet",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 291: revisar tablet usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_292",
+      "input": {
+        "objective": "audit",
+        "domain": "governance",
+        "lens": "runtime",
+        "freeText": "Escenario 292: revisar governance usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_293",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "visual_os",
+        "lens": "patterns",
+        "freeText": "Escenario 293: revisar visual_os usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_294",
+      "input": {
+        "objective": "summarize",
+        "domain": "pc_ui",
+        "lens": "visual_memory",
+        "freeText": "Escenario 294: revisar pc_ui usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_295",
+      "input": {
+        "objective": "investigate",
+        "domain": "chart_lab",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 295: revisar chart_lab usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_296",
+      "input": {
+        "objective": "diagnose",
+        "domain": "protocols",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 296: revisar protocols usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_297",
+      "input": {
+        "objective": "explain",
+        "domain": "sync",
+        "lens": "governance",
+        "freeText": "Escenario 297: revisar sync usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_298",
+      "input": {
+        "objective": "recommend",
+        "domain": "pos",
+        "lens": "protocols",
+        "freeText": "Escenario 298: revisar pos usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_299",
+      "input": {
+        "objective": "compare",
+        "domain": "evidence_vault",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 299: revisar evidence_vault usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_300",
+      "input": {
+        "objective": "audit",
+        "domain": "learning",
+        "lens": "runtime",
+        "freeText": "Escenario 300: revisar learning usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_301",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "tablet",
+        "lens": "patterns",
+        "freeText": "Escenario 301: revisar tablet usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_302",
+      "input": {
+        "objective": "summarize",
+        "domain": "governance",
+        "lens": "visual_memory",
+        "freeText": "Escenario 302: revisar governance usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_303",
+      "input": {
+        "objective": "investigate",
+        "domain": "visual_os",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 303: revisar visual_os usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_304",
+      "input": {
+        "objective": "diagnose",
+        "domain": "pc_ui",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 304: revisar pc_ui usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_305",
+      "input": {
+        "objective": "explain",
+        "domain": "chart_lab",
+        "lens": "governance",
+        "freeText": "Escenario 305: revisar chart_lab usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_306",
+      "input": {
+        "objective": "recommend",
+        "domain": "protocols",
+        "lens": "protocols",
+        "freeText": "Escenario 306: revisar protocols usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_307",
+      "input": {
+        "objective": "compare",
+        "domain": "sync",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 307: revisar sync usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_308",
+      "input": {
+        "objective": "audit",
+        "domain": "pos",
+        "lens": "runtime",
+        "freeText": "Escenario 308: revisar pos usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_309",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "evidence_vault",
+        "lens": "patterns",
+        "freeText": "Escenario 309: revisar evidence_vault usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_310",
+      "input": {
+        "objective": "summarize",
+        "domain": "learning",
+        "lens": "visual_memory",
+        "freeText": "Escenario 310: revisar learning usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    },
+    {
+      "id": "interaction_scenario_311",
+      "input": {
+        "objective": "investigate",
+        "domain": "tablet",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 311: revisar tablet usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "liquid_crystal_select"
+    },
+    {
+      "id": "interaction_scenario_312",
+      "input": {
+        "objective": "diagnose",
+        "domain": "governance",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 312: revisar governance usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "hydro_command_palette"
+    },
+    {
+      "id": "interaction_scenario_313",
+      "input": {
+        "objective": "explain",
+        "domain": "visual_os",
+        "lens": "governance",
+        "freeText": "Escenario 313: revisar visual_os usando governance para explain.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "evidence_luminous_board"
+    },
+    {
+      "id": "interaction_scenario_314",
+      "input": {
+        "objective": "recommend",
+        "domain": "pc_ui",
+        "lens": "protocols",
+        "freeText": "Escenario 314: revisar pc_ui usando protocols para recommend.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "action_mint_circuit"
+    },
+    {
+      "id": "interaction_scenario_315",
+      "input": {
+        "objective": "compare",
+        "domain": "chart_lab",
+        "lens": "episodic_memory",
+        "freeText": "Escenario 315: revisar chart_lab usando episodic_memory para compare.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "timeline_glacier_flow"
+    },
+    {
+      "id": "interaction_scenario_316",
+      "input": {
+        "objective": "audit",
+        "domain": "protocols",
+        "lens": "runtime",
+        "freeText": "Escenario 316: revisar protocols usando runtime para audit.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "risk_coral_lens"
+    },
+    {
+      "id": "interaction_scenario_317",
+      "input": {
+        "objective": "prepare_action",
+        "domain": "sync",
+        "lens": "patterns",
+        "freeText": "Escenario 317: revisar sync usando patterns para prepare_action.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "technical_hydro_drawer"
+    },
+    {
+      "id": "interaction_scenario_318",
+      "input": {
+        "objective": "summarize",
+        "domain": "pos",
+        "lens": "visual_memory",
+        "freeText": "Escenario 318: revisar pos usando visual_memory para summarize.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "presentation_showpiece"
+    },
+    {
+      "id": "interaction_scenario_319",
+      "input": {
+        "objective": "investigate",
+        "domain": "evidence_vault",
+        "lens": "procedural_memory",
+        "freeText": "Escenario 319: revisar evidence_vault usando procedural_memory para investigate.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "procedural_steps"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "low_power_crystal"
+    },
+    {
+      "id": "interaction_scenario_320",
+      "input": {
+        "objective": "diagnose",
+        "domain": "learning",
+        "lens": "evidence_recent",
+        "freeText": "Escenario 320: revisar learning usando evidence_recent para diagnose.",
+        "autoRender": true
+      },
+      "expected_blocks": [
+        "hero_response",
+        "next_best_action",
+        "risk_matrix",
+        "evidence_board"
+      ],
+      "expected_interactions": [
+        "open_detail",
+        "feedback",
+        "ask_followup",
+        "command_palette"
+      ],
+      "visual_preset": "refrigerant_emerald_theater"
+    }
+  ]
+}

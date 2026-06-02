@@ -1,0 +1,125 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-047",
+  "intent": {
+    "objective": "investigate",
+    "domain": "pos",
+    "lens": "release_train",
+    "scene": "risk_matrix",
+    "freeText": "Pregunta fixture 47 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate pos",
+    "summary": "Usando release_train y escena risk_matrix."
+  },
+  "blocks": [
+    {
+      "id": "fixture-047-block-00",
+      "type": "hero_response",
+      "title": "Hero Response · pos",
+      "summary": "Escena risk_matrix generada para investigate/pos/release_train.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 21
+          },
+          {
+            "label": "pos signal 2",
+            "value": 14
+          },
+          {
+            "label": "pos signal 3",
+            "value": 56
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-047-block-01",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · pos",
+      "summary": "Escena risk_matrix generada para investigate/pos/release_train.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 15
+          },
+          {
+            "label": "pos signal 2",
+            "value": 63
+          },
+          {
+            "label": "pos signal 3",
+            "value": 49
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-047-block-02",
+      "type": "next_action",
+      "title": "Next Action · pos",
+      "summary": "Escena risk_matrix generada para investigate/pos/release_train.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 2
+          },
+          {
+            "label": "pos signal 2",
+            "value": 29
+          },
+          {
+            "label": "pos signal 3",
+            "value": 94
+          },
+          {
+            "label": "pos signal 4",
+            "value": 22
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-047-block-03",
+      "type": "visual_recipe_card",
+      "title": "Visual Recipe Card · pos",
+      "summary": "Escena risk_matrix generada para investigate/pos/release_train.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 97
+          },
+          {
+            "label": "pos signal 2",
+            "value": 97
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260577
+  }
+}

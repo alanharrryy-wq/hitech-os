@@ -1,0 +1,183 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-045",
+  "intent": {
+    "objective": "recommend",
+    "domain": "pos",
+    "lens": "reports",
+    "scene": "visual_recipe",
+    "freeText": "Pregunta fixture 45 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: recommend pos",
+    "summary": "Usando reports y escena visual_recipe."
+  },
+  "blocks": [
+    {
+      "id": "fixture-045-block-00",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · pos",
+      "summary": "Escena visual_recipe generada para recommend/pos/reports.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 48
+          },
+          {
+            "label": "pos signal 2",
+            "value": 87
+          },
+          {
+            "label": "pos signal 3",
+            "value": 42
+          },
+          {
+            "label": "pos signal 4",
+            "value": 11
+          },
+          {
+            "label": "pos signal 5",
+            "value": 80
+          },
+          {
+            "label": "pos signal 6",
+            "value": 89
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-045-block-01",
+      "type": "memory_card",
+      "title": "Memory Card · pos",
+      "summary": "Escena visual_recipe generada para recommend/pos/reports.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 24
+          },
+          {
+            "label": "pos signal 2",
+            "value": 93
+          },
+          {
+            "label": "pos signal 3",
+            "value": 9
+          },
+          {
+            "label": "pos signal 4",
+            "value": 50
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-045-block-02",
+      "type": "operational_status",
+      "title": "Operational Status · pos",
+      "summary": "Escena visual_recipe generada para recommend/pos/reports.",
+      "confidence": 0.85,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 10
+          },
+          {
+            "label": "pos signal 2",
+            "value": 24
+          },
+          {
+            "label": "pos signal 3",
+            "value": 73
+          },
+          {
+            "label": "pos signal 4",
+            "value": 4
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-045-block-03",
+      "type": "question_stack",
+      "title": "Question Stack · pos",
+      "summary": "Escena visual_recipe generada para recommend/pos/reports.",
+      "confidence": 0.92,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 72
+          },
+          {
+            "label": "pos signal 2",
+            "value": 6
+          },
+          {
+            "label": "pos signal 3",
+            "value": 39
+          },
+          {
+            "label": "pos signal 4",
+            "value": 13
+          },
+          {
+            "label": "pos signal 5",
+            "value": 91
+          },
+          {
+            "label": "pos signal 6",
+            "value": 40
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-045-block-04",
+      "type": "executive_brief",
+      "title": "Executive Brief · pos",
+      "summary": "Escena visual_recipe generada para recommend/pos/reports.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 98
+          },
+          {
+            "label": "pos signal 2",
+            "value": 12
+          },
+          {
+            "label": "pos signal 3",
+            "value": 96
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260575
+  }
+}

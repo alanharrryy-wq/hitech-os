@@ -62,12 +62,71 @@ try:
         prismo_demo_payload as _prismo_demo_payload,
         prismo_query_payload as _prismo_query_payload,
         prismo_status_payload as _prismo_status_payload,
+        prismo_theater_query_payload as _prismo_theater_query_payload,
+        prismo_tools_status_payload as _prismo_tools_status_payload,
     )
 except Exception:
     _prismo_demo_payload = None
     _prismo_query_payload = None
     _prismo_status_payload = None
+    _prismo_theater_query_payload = None
+    _prismo_tools_status_payload = None
 # PRISMO_AI_BRIDGE_IMPORT_END
+# PRISMO_LEARNING_CORE_V1_IMPORT_BEGIN
+try:
+    from prismo_learning.api import (
+        learning_status_payload as _prismo_learning_status_payload,
+        learning_evidence_index_payload as _prismo_learning_evidence_index_payload,
+        learning_recommend_protocol_payload as _prismo_learning_recommend_protocol_payload,
+        learning_insights_payload as _prismo_learning_insights_payload,
+        learning_graph_payload as _prismo_learning_graph_payload,
+        learning_feedback_payload as _prismo_learning_feedback_payload,
+        learning_intake_status_payload as _prismo_learning_intake_status_payload,
+        learning_intake_plan_payload as _prismo_learning_intake_plan_payload,
+        learning_intake_run_payload as _prismo_learning_intake_run_payload,
+        learning_patterns_payload as _prismo_learning_patterns_payload,
+        learning_authority_payload as _prismo_learning_authority_payload,
+        learning_f3_status_payload as _prismo_learning_f3_status_payload,
+        learning_f3_run_payload as _prismo_learning_f3_run_payload,
+        learning_safe_summary_payload as _prismo_learning_safe_summary_payload,
+        learning_technical_drawer_payload as _prismo_learning_technical_drawer_payload,
+        learning_feedback_stats_payload as _prismo_learning_feedback_stats_payload,
+        learning_compaction_status_payload as _prismo_learning_compaction_status_payload,
+        learning_compaction_run_payload as _prismo_learning_compaction_run_payload,
+        learning_governance_status_payload as _prismo_learning_governance_status_payload,
+        learning_context_enrichment_payload as _prismo_learning_context_enrichment_payload,
+        learning_action_status_payload as _prismo_learning_action_status_payload,
+        learning_action_preview_payload as _prismo_learning_action_preview_payload,
+        learning_completion_status_payload as _prismo_learning_completion_status_payload,
+        learning_completion_run_payload as _prismo_learning_completion_run_payload,
+    )
+except Exception:
+    _prismo_learning_status_payload = None
+    _prismo_learning_evidence_index_payload = None
+    _prismo_learning_recommend_protocol_payload = None
+    _prismo_learning_insights_payload = None
+    _prismo_learning_graph_payload = None
+    _prismo_learning_feedback_payload = None
+    _prismo_learning_intake_status_payload = None
+    _prismo_learning_intake_plan_payload = None
+    _prismo_learning_intake_run_payload = None
+    _prismo_learning_patterns_payload = None
+    _prismo_learning_authority_payload = None
+    _prismo_learning_f3_status_payload = None
+    _prismo_learning_f3_run_payload = None
+    _prismo_learning_safe_summary_payload = None
+    _prismo_learning_technical_drawer_payload = None
+    _prismo_learning_feedback_stats_payload = None
+    _prismo_learning_compaction_status_payload = None
+    _prismo_learning_compaction_run_payload = None
+    _prismo_learning_governance_status_payload = None
+    _prismo_learning_context_enrichment_payload = None
+    _prismo_learning_action_status_payload = None
+    _prismo_learning_action_preview_payload = None
+    _prismo_learning_completion_status_payload = None
+    _prismo_learning_completion_run_payload = None
+# PRISMO_LEARNING_CORE_V1_IMPORT_END
+
 
 
 
@@ -93,10 +152,18 @@ class PanelHandler(SimpleHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("X-Frame-Options", "DENY")
+        # PRISMA_MOTORES_FIX2_LOCAL_API_CORS_BEGIN
+        origin = self.headers.get("Origin", "")
+        if origin.startswith(("http://127.0.0.1:", "http://localhost:", "http://[::1]:")):
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type, Accept")
+        # PRISMA_MOTORES_FIX2_LOCAL_API_CORS_END
         self.send_header(
             "Content-Security-Policy",
             "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
-            "connect-src 'self'; font-src 'self'; frame-src 'self' about:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+            "connect-src 'self' http://127.0.0.1:3150 http://localhost:3150 ws://127.0.0.1:3150 ws://localhost:3150; font-src 'self'; frame-src 'self' about:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
         )
         super().end_headers()
 
@@ -108,6 +175,16 @@ class PanelHandler(SimpleHTTPRequestHandler):
         host = self._host_name()
         client = self.client_address[0] if self.client_address else ""
         return host in LOCAL_HOSTS or client in {"127.0.0.1", "::1"} and host not in PUBLIC_HOSTS
+
+    # PRISMA_MOTORES_FIX2_OPTIONS_BEGIN
+    def do_OPTIONS(self) -> None:
+        if self.path.startswith("/api/"):
+            self.send_response(204)
+            self.end_headers()
+            return
+        self.send_response(404)
+        self.end_headers()
+    # PRISMA_MOTORES_FIX2_OPTIONS_END
 
     def _load_health_payload(self, public: bool) -> dict[str, Any]:
         path = LATEST_ROOT / ("public-health.json" if public else "health.json")
@@ -214,6 +291,50 @@ class PanelHandler(SimpleHTTPRequestHandler):
         return payload
 
     def do_POST(self) -> None:  # noqa: N802 - stdlib handler name.
+        if self.path in {"/api/prismo/theater/query", "/api/prismo/theater/query/"}:
+            if not self._is_local_request():
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "blocked",
+                        "blocked": True,
+                        "block_reason": "PUBLIC_REDACTED_READ_ONLY",
+                        "direct_answer": "Bloqueado: PRISMO Theater Query sólo acepta consultas locales para proteger evidencia interna.",
+                    },
+                    status=403,
+                )
+                return
+            try:
+                if _prismo_theater_query_payload is None:
+                    self._send_json({"ok": False, "status": "error", "error": "PRISMO Theater adapter unavailable"}, status=503)
+                    return
+                payload = self._read_json_body(max_bytes=750000)
+                self._send_json(_prismo_theater_query_payload(payload, public=False))
+            except ValueError as exc:
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "blocked",
+                        "blocked": True,
+                        "block_reason": "BLOCKED_SIZE_OR_JSON_LIMIT",
+                        "direct_answer": "Bloqueado: la solicitud no cumplió el límite seguro de JSON de PRISMO Theater.",
+                        "safe_next_step": "Reduce la evidencia temporal y vuelve a intentar.",
+                        "error": str(exc),
+                    },
+                    status=413,
+                )
+            except Exception as exc:  # noqa: BLE001 - never expose stack traces to UI.
+                self._send_json(
+                    {
+                        "ok": False,
+                        "status": "error",
+                        "direct_answer": "No se pudo validar Theater Query. No se ejecutó ninguna acción.",
+                        "error": str(exc),
+                    },
+                    status=500,
+                )
+            return
+
         if self.path in {"/api/prismo/query", "/api/prismo/query/"}:
             if not self._is_local_request():
                 self._send_json(
@@ -301,6 +422,34 @@ class PanelHandler(SimpleHTTPRequestHandler):
                     status=500,
                 )
             return
+
+
+
+
+
+
+        # PRISMO_LEARNING_CORE_V1_POST_ROUTE_BEGIN
+        if self.path in {"/api/prismo/learning/completion/run", "/api/prismo/learning/completion/run/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_COMPLETION_RUN_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            self._send_json(_prismo_learning_completion_run_payload(public=False) if _prismo_learning_completion_run_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_completion_run_payload else 503); return
+        if self.path in {"/api/prismo/learning/memory/compact/run", "/api/prismo/learning/memory/compact/run/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_COMPACTION_RUN_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            self._send_json(_prismo_learning_compaction_run_payload(public=False) if _prismo_learning_compaction_run_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_compaction_run_payload else 503); return
+        if self.path in {"/api/prismo/learning/actions/preview", "/api/prismo/learning/actions/preview/"}:
+            payload = self._read_json_body(max_bytes=250000) if self._is_local_request() else {}
+            self._send_json(_prismo_learning_action_preview_payload(payload, public=not self._is_local_request()) if _prismo_learning_action_preview_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_action_preview_payload else 503); return
+        if self.path in {"/api/prismo/learning/f3/run", "/api/prismo/learning/f3/run/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_F3_RUN_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            self._send_json(_prismo_learning_f3_run_payload(public=False) if _prismo_learning_f3_run_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_f3_run_payload else 503); return
+        if self.path in {"/api/prismo/learning/feedback", "/api/prismo/learning/feedback/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_FEEDBACK_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            payload = self._read_json_body(max_bytes=250000)
+            self._send_json(_prismo_learning_feedback_payload(payload, public=False) if _prismo_learning_feedback_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_feedback_payload else 503); return
+        if self.path in {"/api/prismo/learning/intake/run", "/api/prismo/learning/intake/run/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_INTAKE_RUN_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            self._send_json(_prismo_learning_intake_run_payload(public=False) if _prismo_learning_intake_run_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_intake_run_payload else 503); return
+        # PRISMO_LEARNING_CORE_V1_POST_ROUTE_END
+
         self.send_error(404, "Unknown POST endpoint")
 
     def do_GET(self) -> None:  # noqa: N802 - stdlib handler name.
@@ -335,6 +484,67 @@ class PanelHandler(SimpleHTTPRequestHandler):
             except Exception as exc:  # noqa: BLE001 - demo must degrade gracefully.
                 self._send_json({"ok": False, "status": "PRISMO_DEMO_ERROR", "error": str(exc)}, status=500)
             return
+        if self.path in {"/api/prismo/tools/status", "/api/prismo/tools/status/"}:
+            try:
+                if _prismo_tools_status_payload is None:
+                    self._send_json({"ok": False, "status": "PRISMO_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prismo_tools_status_payload(public=not self._is_local_request()))
+            except Exception as exc:  # noqa: BLE001 - tools status must degrade gracefully.
+                self._send_json({"ok": False, "status": "PRISMO_TOOLS_STATUS_ERROR", "error": str(exc)}, status=500)
+            return
+
+
+
+
+
+
+        # PRISMO_LEARNING_CORE_V1_ROUTE_BEGIN
+        if self.path in {"/api/prismo/learning/status", "/api/prismo/learning/status/"}:
+            self._send_json(_prismo_learning_status_payload(public=not self._is_local_request()) if _prismo_learning_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_status_payload else 503); return
+        if self.path in {"/api/prismo/learning/evidence-index", "/api/prismo/learning/evidence-index/"}:
+            self._send_json(_prismo_learning_evidence_index_payload(public=not self._is_local_request()) if _prismo_learning_evidence_index_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_evidence_index_payload else 503); return
+        if self.path.startswith("/api/prismo/learning/recommend-protocol"):
+            raw_query = ""
+            if "?" in self.path:
+                from urllib.parse import parse_qs, urlparse
+                raw_query = (parse_qs(urlparse(self.path).query).get("q") or [""])[0]
+            self._send_json(_prismo_learning_recommend_protocol_payload(query=raw_query, public=not self._is_local_request()) if _prismo_learning_recommend_protocol_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_recommend_protocol_payload else 503); return
+        if self.path in {"/api/prismo/learning/insights", "/api/prismo/learning/insights/"}:
+            self._send_json(_prismo_learning_insights_payload(public=not self._is_local_request()) if _prismo_learning_insights_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_insights_payload else 503); return
+        if self.path in {"/api/prismo/learning/graph", "/api/prismo/learning/graph/"}:
+            self._send_json(_prismo_learning_graph_payload(public=not self._is_local_request()) if _prismo_learning_graph_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_graph_payload else 503); return
+        if self.path in {"/api/prismo/learning/patterns", "/api/prismo/learning/patterns/"}:
+            self._send_json(_prismo_learning_patterns_payload(public=not self._is_local_request()) if _prismo_learning_patterns_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_patterns_payload else 503); return
+        if self.path in {"/api/prismo/learning/authority", "/api/prismo/learning/authority/"}:
+            self._send_json(_prismo_learning_authority_payload(public=not self._is_local_request()) if _prismo_learning_authority_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_authority_payload else 503); return
+        if self.path in {"/api/prismo/learning/f3/status", "/api/prismo/learning/f3/status/"}:
+            self._send_json(_prismo_learning_f3_status_payload(public=not self._is_local_request()) if _prismo_learning_f3_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_f3_status_payload else 503); return
+        if self.path in {"/api/prismo/learning/intake/status", "/api/prismo/learning/intake/status/"}:
+            self._send_json(_prismo_learning_intake_status_payload(public=not self._is_local_request()) if _prismo_learning_intake_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_intake_status_payload else 503); return
+        if self.path in {"/api/prismo/learning/safe-summary", "/api/prismo/learning/safe-summary/"}:
+            self._send_json(_prismo_learning_safe_summary_payload(public=not self._is_local_request()) if _prismo_learning_safe_summary_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_safe_summary_payload else 503); return
+        if self.path in {"/api/prismo/learning/technical-drawer", "/api/prismo/learning/technical-drawer/"}:
+            if not self._is_local_request(): self._send_json({"ok":False,"status":"blocked","block_reason":"PUBLIC_TECHNICAL_DRAWER_BLOCKED","read_only":True,"mutation_allowed":False}, status=403); return
+            self._send_json(_prismo_learning_technical_drawer_payload(public=False) if _prismo_learning_technical_drawer_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_technical_drawer_payload else 503); return
+        if self.path in {"/api/prismo/learning/feedback/stats", "/api/prismo/learning/feedback/stats/"}:
+            self._send_json(_prismo_learning_feedback_stats_payload(public=not self._is_local_request()) if _prismo_learning_feedback_stats_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_feedback_stats_payload else 503); return
+        if self.path in {"/api/prismo/learning/memory/compact/status", "/api/prismo/learning/memory/compact/status/"}:
+            self._send_json(_prismo_learning_compaction_status_payload(public=not self._is_local_request()) if _prismo_learning_compaction_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_compaction_status_payload else 503); return
+        if self.path in {"/api/prismo/learning/governance/status", "/api/prismo/learning/governance/status/"}:
+            self._send_json(_prismo_learning_governance_status_payload(public=not self._is_local_request()) if _prismo_learning_governance_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_governance_status_payload else 503); return
+        if self.path.startswith("/api/prismo/learning/context/enrich"):
+            raw_query = ""
+            if "?" in self.path:
+                from urllib.parse import parse_qs, urlparse
+                raw_query = (parse_qs(urlparse(self.path).query).get("q") or [""])[0]
+            self._send_json(_prismo_learning_context_enrichment_payload(query=raw_query, public=not self._is_local_request()) if _prismo_learning_context_enrichment_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_context_enrichment_payload else 503); return
+        if self.path in {"/api/prismo/learning/actions/status", "/api/prismo/learning/actions/status/"}:
+            self._send_json(_prismo_learning_action_status_payload(public=not self._is_local_request()) if _prismo_learning_action_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_action_status_payload else 503); return
+        if self.path in {"/api/prismo/learning/completion/status", "/api/prismo/learning/completion/status/"}:
+            self._send_json(_prismo_learning_completion_status_payload(public=not self._is_local_request()) if _prismo_learning_completion_status_payload else {"ok":False,"status":"PRISMO_LEARNING_UNAVAILABLE","read_only":True,"mutation_allowed":False}, status=200 if _prismo_learning_completion_status_payload else 503); return
+        # PRISMO_LEARNING_CORE_V1_ROUTE_END
+
         # PRISMO_AI_BRIDGE_ROUTE_END
         # PRISMA_BLACKBOX_BRIDGE_V1_PANEL_BEGIN
         # PRISMA_BLACKBOX_COMMAND_ITER3_ROUTE_BEGIN

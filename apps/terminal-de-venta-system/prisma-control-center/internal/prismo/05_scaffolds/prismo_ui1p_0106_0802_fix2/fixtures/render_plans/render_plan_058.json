@@ -1,0 +1,157 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-058",
+  "intent": {
+    "objective": "compare",
+    "domain": "tablet",
+    "lens": "canon",
+    "scene": "decision_board",
+    "freeText": "Pregunta fixture 58 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare tablet",
+    "summary": "Usando canon y escena decision_board."
+  },
+  "blocks": [
+    {
+      "id": "fixture-058-block-00",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · tablet",
+      "summary": "Escena decision_board generada para compare/tablet/canon.",
+      "confidence": 0.97,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 95
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 83
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 18
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 63
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 53
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-058-block-01",
+      "type": "hero_response",
+      "title": "Hero Response · tablet",
+      "summary": "Escena decision_board generada para compare/tablet/canon.",
+      "confidence": 0.91,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 80
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 61
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 18
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-058-block-02",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · tablet",
+      "summary": "Escena decision_board generada para compare/tablet/canon.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 99
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 80
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 61
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 73
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 40
+          },
+          {
+            "label": "tablet signal 6",
+            "value": 26
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-058-block-03",
+      "type": "evidence_board",
+      "title": "Evidence Board · tablet",
+      "summary": "Escena decision_board generada para compare/tablet/canon.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 96
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 53
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 1
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 32
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 20
+          },
+          {
+            "label": "tablet signal 6",
+            "value": 92
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260588
+  }
+}

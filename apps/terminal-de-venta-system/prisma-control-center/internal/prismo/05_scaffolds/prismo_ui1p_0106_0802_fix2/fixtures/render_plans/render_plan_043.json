@@ -1,0 +1,175 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-043",
+  "intent": {
+    "objective": "diagnose",
+    "domain": "tablet",
+    "lens": "graph",
+    "scene": "visual_recipe",
+    "freeText": "Pregunta fixture 43 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: diagnose tablet",
+    "summary": "Usando graph y escena visual_recipe."
+  },
+  "blocks": [
+    {
+      "id": "fixture-043-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · tablet",
+      "summary": "Escena visual_recipe generada para diagnose/tablet/graph.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 11
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 47
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 54
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 17
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 74
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-043-block-01",
+      "type": "timeline",
+      "title": "Timeline · tablet",
+      "summary": "Escena visual_recipe generada para diagnose/tablet/graph.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 31
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 29
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 39
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-043-block-02",
+      "type": "governance_notice",
+      "title": "Governance Notice · tablet",
+      "summary": "Escena visual_recipe generada para diagnose/tablet/graph.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 56
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 15
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 87
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 23
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 43
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-043-block-03",
+      "type": "hero_response",
+      "title": "Hero Response · tablet",
+      "summary": "Escena visual_recipe generada para diagnose/tablet/graph.",
+      "confidence": 0.74,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 17
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 27
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-043-block-04",
+      "type": "comparison_board",
+      "title": "Comparison Board · tablet",
+      "summary": "Escena visual_recipe generada para diagnose/tablet/graph.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 69
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 75
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 65
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 73
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 73
+          },
+          {
+            "label": "tablet signal 6",
+            "value": 91
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260573
+  }
+}

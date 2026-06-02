@@ -1,0 +1,906 @@
+{
+  "schema": "prismo.codex.improvements.v1",
+  "count": 150,
+  "improvements": [
+    {
+      "id": "IMP-001",
+      "category": "Composer / entrada",
+      "task": "Auto reset de dropdowns dependientes cuando cambia objetivo",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-002",
+      "category": "Composer / entrada",
+      "task": "Chips sugeridos generados por objetivo+dominio+lente",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-003",
+      "category": "Composer / entrada",
+      "task": "Atajos de teclado para ejecutar y limpiar",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-004",
+      "category": "Composer / entrada",
+      "task": "Context note con detección de rutas/errores/ZIPs",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-005",
+      "category": "Composer / entrada",
+      "task": "Validación de pregunta vacía con sugerencias",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-006",
+      "category": "Composer / entrada",
+      "task": "Persistencia local de últimas selecciones",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-007",
+      "category": "Composer / entrada",
+      "task": "Recientes por intención",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-008",
+      "category": "Composer / entrada",
+      "task": "Favoritos de consultas",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-009",
+      "category": "Composer / entrada",
+      "task": "Autocompletado de dominios",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-010",
+      "category": "Composer / entrada",
+      "task": "Hint humano por cada lente",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-011",
+      "category": "Composer / entrada",
+      "task": "Badges visuales en opciones",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-012",
+      "category": "Composer / entrada",
+      "task": "Búsqueda dentro de dropdowns si crecen",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-013",
+      "category": "Composer / entrada",
+      "task": "Agrupar opciones por superficie",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-014",
+      "category": "Composer / entrada",
+      "task": "Soporte para pegar error/log y clasificarlo",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-015",
+      "category": "Composer / entrada",
+      "task": "Modo pregunta rápida sin contexto extra",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-016",
+      "category": "Auto Render Ensemble",
+      "task": "Ranking de bloques por relevancia",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-017",
+      "category": "Auto Render Ensemble",
+      "task": "Dedupe de bloques parecidos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-018",
+      "category": "Auto Render Ensemble",
+      "task": "Colapsar bloques técnicos por defecto",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-019",
+      "category": "Auto Render Ensemble",
+      "task": "Mostrar tabs sólo si hay contenido",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-020",
+      "category": "Auto Render Ensemble",
+      "task": "No renderizar raw JSON primario",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-021",
+      "category": "Auto Render Ensemble",
+      "task": "Priorizar next action sobre data dumps",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-022",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir risk matrix sólo si hay riesgo",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-023",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir timeline si hay historial",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-024",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir flow diagram si hay proceso",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-025",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir evidence board si hay evidencia",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-026",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir comparison board sólo si se compara",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-027",
+      "category": "Auto Render Ensemble",
+      "task": "Elegir protocol ladder si hay protocolo",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-028",
+      "category": "Auto Render Ensemble",
+      "task": "Fallback a executive brief si hay poca data",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-029",
+      "category": "Auto Render Ensemble",
+      "task": "Score de confianza por bloque",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-030",
+      "category": "Auto Render Ensemble",
+      "task": "Rastro de por qué se eligió cada bloque",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-031",
+      "category": "Memorias",
+      "task": "Memoria procedural como criterio visible",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-032",
+      "category": "Memorias",
+      "task": "Memoria episódica para aprender de fixes",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-033",
+      "category": "Memorias",
+      "task": "Memoria semántica para términos humanos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-034",
+      "category": "Memorias",
+      "task": "Memoria visual para Cloudglass",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-035",
+      "category": "Memorias",
+      "task": "Memoria governance para no-go",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-036",
+      "category": "Memorias",
+      "task": "Working memory por consulta",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-037",
+      "category": "Memorias",
+      "task": "Operational memory para estado actual",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-038",
+      "category": "Memorias",
+      "task": "Memory trace colapsable",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-039",
+      "category": "Memorias",
+      "task": "Feedback alimenta memoria",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-040",
+      "category": "Memorias",
+      "task": "Guardar “esto sirvió” como señal",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-041",
+      "category": "Memorias",
+      "task": "Guardar “esto no sirvió” como anti patrón",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-042",
+      "category": "Memorias",
+      "task": "Asociar protocolo con resultado",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-043",
+      "category": "Memorias",
+      "task": "Evitar repetir fixes fallidos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-044",
+      "category": "Memorias",
+      "task": "Priorizar episodios recientes PASS",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-045",
+      "category": "Memorias",
+      "task": "Penalizar evidencias UNKNOWN antiguas",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-046",
+      "category": "HTTP / backend contract",
+      "task": "Endpoint único theater/query",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-047",
+      "category": "HTTP / backend contract",
+      "task": "Adapter sobre endpoints existentes",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-048",
+      "category": "HTTP / backend contract",
+      "task": "Timeout por subconsulta",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-049",
+      "category": "HTTP / backend contract",
+      "task": "Partial response si un endpoint falla",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-050",
+      "category": "HTTP / backend contract",
+      "task": "Trace técnico por fetch",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-051",
+      "category": "HTTP / backend contract",
+      "task": "No veinte fetchs desde UI",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-052",
+      "category": "HTTP / backend contract",
+      "task": "Cache corta para status",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-053",
+      "category": "HTTP / backend contract",
+      "task": "Retry sólo en endpoints seguros",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-054",
+      "category": "HTTP / backend contract",
+      "task": "Normalización de payloads viejos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-055",
+      "category": "HTTP / backend contract",
+      "task": "Validación de render_plan",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-056",
+      "category": "HTTP / backend contract",
+      "task": "Sanitización de paths visibles",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-057",
+      "category": "HTTP / backend contract",
+      "task": "No exponer secretos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-058",
+      "category": "HTTP / backend contract",
+      "task": "Transformar safe flags en copy humano",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-059",
+      "category": "HTTP / backend contract",
+      "task": "Reportar endpoint health",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-060",
+      "category": "HTTP / backend contract",
+      "task": "Contrato JSON versionado",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-061",
+      "category": "Render blocks",
+      "task": "Hero response premium",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-062",
+      "category": "Render blocks",
+      "task": "Executive brief",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-063",
+      "category": "Render blocks",
+      "task": "Next best action",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-064",
+      "category": "Render blocks",
+      "task": "Protocol ladder",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-065",
+      "category": "Render blocks",
+      "task": "Procedural steps",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-066",
+      "category": "Render blocks",
+      "task": "Evidence board",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-067",
+      "category": "Render blocks",
+      "task": "Risk matrix",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-068",
+      "category": "Render blocks",
+      "task": "Timeline",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-069",
+      "category": "Render blocks",
+      "task": "Flow diagram",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-070",
+      "category": "Render blocks",
+      "task": "Comparison board",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-071",
+      "category": "Render blocks",
+      "task": "Memory trace",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-072",
+      "category": "Render blocks",
+      "task": "Technical drawer",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-073",
+      "category": "Render blocks",
+      "task": "Action bar",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-074",
+      "category": "Render blocks",
+      "task": "Feedback panel",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-075",
+      "category": "Render blocks",
+      "task": "Glass health card",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-076",
+      "category": "Visual / Cloudglass",
+      "task": "Presets anti-opacidad",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-077",
+      "category": "Visual / Cloudglass",
+      "task": "Dropdowns cristal verde",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-078",
+      "category": "Visual / Cloudglass",
+      "task": "Specular highlights",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-079",
+      "category": "Visual / Cloudglass",
+      "task": "Hairline obligatorio",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-080",
+      "category": "Visual / Cloudglass",
+      "task": "Glow budget",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-081",
+      "category": "Visual / Cloudglass",
+      "task": "Motion de entrada",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-082",
+      "category": "Visual / Cloudglass",
+      "task": "Motion de cambio de bloques",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-083",
+      "category": "Visual / Cloudglass",
+      "task": "Reduced motion bonito",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-084",
+      "category": "Visual / Cloudglass",
+      "task": "Fondos graphite/refrigerant",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-085",
+      "category": "Visual / Cloudglass",
+      "task": "Scrim balanceado",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-086",
+      "category": "Visual / Cloudglass",
+      "task": "No blur sobre texto",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-087",
+      "category": "Visual / Cloudglass",
+      "task": "Drawer hidroglass",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-088",
+      "category": "Visual / Cloudglass",
+      "task": "Error coral glass",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-089",
+      "category": "Visual / Cloudglass",
+      "task": "Evidence luminous board",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-090",
+      "category": "Visual / Cloudglass",
+      "task": "Scene preview strip",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-091",
+      "category": "Estados de producto",
+      "task": "Empty state premium",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-092",
+      "category": "Estados de producto",
+      "task": "Loading thinking scene",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-093",
+      "category": "Estados de producto",
+      "task": "Response ready",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-094",
+      "category": "Estados de producto",
+      "task": "Partial data",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-095",
+      "category": "Estados de producto",
+      "task": "No evidence found",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-096",
+      "category": "Estados de producto",
+      "task": "Recoverable error",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-097",
+      "category": "Estados de producto",
+      "task": "Technical drawer open",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-098",
+      "category": "Estados de producto",
+      "task": "Action prepared",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-099",
+      "category": "Estados de producto",
+      "task": "Feedback saved",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-100",
+      "category": "Estados de producto",
+      "task": "Endpoint degraded",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-101",
+      "category": "Estados de producto",
+      "task": "Memory unavailable",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-102",
+      "category": "Estados de producto",
+      "task": "Evidence stale",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-103",
+      "category": "Estados de producto",
+      "task": "Protocol not found",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-104",
+      "category": "Estados de producto",
+      "task": "Governance warning",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-105",
+      "category": "Estados de producto",
+      "task": "Visual QA pending",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-106",
+      "category": "QA / verificación",
+      "task": "Screenshots obligatorios",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-107",
+      "category": "QA / verificación",
+      "task": "Verificar dropdowns 3 no 4",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-108",
+      "category": "QA / verificación",
+      "task": "Verificar no forbidden labels",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-109",
+      "category": "QA / verificación",
+      "task": "Verificar render blocks válidos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-110",
+      "category": "QA / verificación",
+      "task": "Verificar presets JSON",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-111",
+      "category": "QA / verificación",
+      "task": "Verificar CSS anti opacidad",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-112",
+      "category": "QA / verificación",
+      "task": "Verificar no DB touched",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-113",
+      "category": "QA / verificación",
+      "task": "Verificar no .env",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-114",
+      "category": "QA / verificación",
+      "task": "Verificar no deploy",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-115",
+      "category": "QA / verificación",
+      "task": "Verificar rollback",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-116",
+      "category": "QA / verificación",
+      "task": "Verificar result/fail zip",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-117",
+      "category": "QA / verificación",
+      "task": "Verificar contracts parse",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-118",
+      "category": "QA / verificación",
+      "task": "Verificar TSX compila si se integra",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-119",
+      "category": "QA / verificación",
+      "task": "Verificar endpoint query",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-120",
+      "category": "QA / verificación",
+      "task": "Verificar feedback endpoint",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-121",
+      "category": "Codex workflow",
+      "task": "No improvisar nombres",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-122",
+      "category": "Codex workflow",
+      "task": "Detectar archivos reales antes de tocar",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-123",
+      "category": "Codex workflow",
+      "task": "Usar scaffold como canon",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-124",
+      "category": "Codex workflow",
+      "task": "Registrar archivos tocados",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-125",
+      "category": "Codex workflow",
+      "task": "Patch reversible",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-126",
+      "category": "Codex workflow",
+      "task": "Separar integración de visual",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-127",
+      "category": "Codex workflow",
+      "task": "No reescribir core learning",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-128",
+      "category": "Codex workflow",
+      "task": "No tocar store evidencia",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-129",
+      "category": "Codex workflow",
+      "task": "No correr learn5 salvo orden",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-130",
+      "category": "Codex workflow",
+      "task": "Generar CONTINUATION",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-131",
+      "category": "Codex workflow",
+      "task": "Crear reportes humanos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-132",
+      "category": "Codex workflow",
+      "task": "Incluir riesgos",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-133",
+      "category": "Codex workflow",
+      "task": "Incluir comandos rollback",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-134",
+      "category": "Codex workflow",
+      "task": "Hacer visual evidence",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-135",
+      "category": "Codex workflow",
+      "task": "No fake green",
+      "codex_value": "reduce improvisation / improve operational polish"
+    },
+    {
+      "id": "IMP-136",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #136 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-137",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #137 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-138",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #138 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-139",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #139 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-140",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #140 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-141",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #141 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-142",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #142 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-143",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #143 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-144",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #144 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-145",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #145 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-146",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #146 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-147",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #147 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-148",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #148 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-149",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #149 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    },
+    {
+      "id": "IMP-150",
+      "category": "Robustez adicional",
+      "task": "Agregar guardrail incremental #150 para preservar Theater vivo, glass claro y respuesta conectada a motor",
+      "codex_value": "extra hardening"
+    }
+  ]
+}

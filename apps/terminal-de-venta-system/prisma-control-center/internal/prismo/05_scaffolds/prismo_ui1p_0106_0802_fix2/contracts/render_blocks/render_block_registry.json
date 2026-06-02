@@ -1,0 +1,728 @@
+{
+  "schema": "prismo.render_blocks.registry.v2",
+  "allowed_types": [
+    "hero_response",
+    "executive_brief",
+    "next_action",
+    "action_bar",
+    "checklist",
+    "timeline",
+    "risk_matrix",
+    "evidence_board",
+    "flow_diagram",
+    "decision_summary",
+    "protocol_ladder",
+    "authority_strip",
+    "comparison_board",
+    "insight_chips",
+    "detail_drawer",
+    "memory_card",
+    "procedural_steps",
+    "procedural_recipe",
+    "episodic_trace",
+    "semantic_fact_grid",
+    "visual_recipe_card",
+    "governance_notice",
+    "operational_status",
+    "chart_spec_preview",
+    "question_stack",
+    "recommendation_ladder",
+    "memory_trace",
+    "visual_acceptance_card",
+    "theater_query_status",
+    "feedback_panel",
+    "visual_preview_strip",
+    "glass_health_card"
+  ],
+  "forbidden_types": [
+    "external_embed",
+    "full_graph_main",
+    "giant_table_main",
+    "iframe",
+    "output_format_dropdown",
+    "raw_html",
+    "raw_json_main",
+    "script",
+    "unbounded_markdown"
+  ],
+  "global_limits": {
+    "max_primary_blocks": 7,
+    "max_evidence_cards_main": 5,
+    "max_actions_main": 6,
+    "max_badges_main": 5,
+    "technical_detail_default": "drawer"
+  },
+  "block_contracts": {
+    "hero_response": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g3_g4",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "executive_brief": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "next_action": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "action_bar": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "checklist": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "timeline": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "risk_matrix": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "evidence_board": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "flow_diagram": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g3_g4",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "decision_summary": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "protocol_ladder": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "authority_strip": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "comparison_board": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "insight_chips": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "detail_drawer": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g3_g4",
+      "user_visible": false,
+      "technical_allowed": true
+    },
+    "memory_card": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "procedural_recipe": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": true
+    },
+    "episodic_trace": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": true
+    },
+    "semantic_fact_grid": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "visual_recipe_card": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "governance_notice": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": true
+    },
+    "operational_status": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "chart_spec_preview": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "question_stack": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "recommendation_ladder": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "memory_trace": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": true
+    },
+    "visual_acceptance_card": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "theater_query_status": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "feedback_panel": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    },
+    "glass_health_card": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": true
+    },
+    "visual_preview_strip": {
+      "required": [
+        "id",
+        "type",
+        "title",
+        "payload"
+      ],
+      "optional": [
+        "summary",
+        "severity",
+        "confidence",
+        "actions",
+        "evidenceRefs",
+        "memoryRefs",
+        "motion",
+        "visualTone",
+        "visualPreset",
+        "collapseDefault"
+      ],
+      "default_visual": "g2",
+      "user_visible": true,
+      "technical_allowed": false
+    }
+  },
+  "auto_render_ensemble": {
+    "enabled": true,
+    "fourth_dropdown_removed": true,
+    "required_orchestrator": "PrismoAutoRenderEnsemble",
+    "block_order_is_model_generated": true,
+    "ui_may_offer_tabs_after_render": true,
+    "ui_must_not_require_format_selection_before_query": true
+  }
+}

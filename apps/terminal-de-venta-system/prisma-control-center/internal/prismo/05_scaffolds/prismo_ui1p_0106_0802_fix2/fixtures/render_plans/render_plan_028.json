@@ -1,0 +1,153 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-028",
+  "intent": {
+    "objective": "prepare_action",
+    "domain": "system",
+    "lens": "semantic_memory",
+    "scene": "forensic_trace",
+    "freeText": "Pregunta fixture 28 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: prepare_action system",
+    "summary": "Usando semantic_memory y escena forensic_trace."
+  },
+  "blocks": [
+    {
+      "id": "fixture-028-block-00",
+      "type": "executive_brief",
+      "title": "Executive Brief · system",
+      "summary": "Escena forensic_trace generada para prepare_action/system/semantic_memory.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 9
+          },
+          {
+            "label": "system signal 2",
+            "value": 12
+          },
+          {
+            "label": "system signal 3",
+            "value": 7
+          },
+          {
+            "label": "system signal 4",
+            "value": 43
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-028-block-01",
+      "type": "decision_summary",
+      "title": "Decision Summary · system",
+      "summary": "Escena forensic_trace generada para prepare_action/system/semantic_memory.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 79
+          },
+          {
+            "label": "system signal 2",
+            "value": 11
+          },
+          {
+            "label": "system signal 3",
+            "value": 2
+          },
+          {
+            "label": "system signal 4",
+            "value": 56
+          },
+          {
+            "label": "system signal 5",
+            "value": 89
+          },
+          {
+            "label": "system signal 6",
+            "value": 70
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-028-block-02",
+      "type": "authority_strip",
+      "title": "Authority Strip · system",
+      "summary": "Escena forensic_trace generada para prepare_action/system/semantic_memory.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 98
+          },
+          {
+            "label": "system signal 2",
+            "value": 3
+          },
+          {
+            "label": "system signal 3",
+            "value": 5
+          },
+          {
+            "label": "system signal 4",
+            "value": 69
+          },
+          {
+            "label": "system signal 5",
+            "value": 67
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-028-block-03",
+      "type": "governance_notice",
+      "title": "Governance Notice · system",
+      "summary": "Escena forensic_trace generada para prepare_action/system/semantic_memory.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 67
+          },
+          {
+            "label": "system signal 2",
+            "value": 4
+          },
+          {
+            "label": "system signal 3",
+            "value": 91
+          },
+          {
+            "label": "system signal 4",
+            "value": 12
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260558
+  }
+}

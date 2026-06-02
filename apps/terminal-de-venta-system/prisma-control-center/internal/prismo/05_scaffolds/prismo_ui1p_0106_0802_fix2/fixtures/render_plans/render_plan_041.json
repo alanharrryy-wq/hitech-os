@@ -1,0 +1,125 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-041",
+  "intent": {
+    "objective": "investigate",
+    "domain": "sync",
+    "lens": "graph",
+    "scene": "action_plan",
+    "freeText": "Pregunta fixture 41 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate sync",
+    "summary": "Usando graph y escena action_plan."
+  },
+  "blocks": [
+    {
+      "id": "fixture-041-block-00",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · sync",
+      "summary": "Escena action_plan generada para investigate/sync/graph.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 61
+          },
+          {
+            "label": "sync signal 2",
+            "value": 76
+          },
+          {
+            "label": "sync signal 3",
+            "value": 69
+          },
+          {
+            "label": "sync signal 4",
+            "value": 14
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-041-block-01",
+      "type": "visual_recipe_card",
+      "title": "Visual Recipe Card · sync",
+      "summary": "Escena action_plan generada para investigate/sync/graph.",
+      "confidence": 0.92,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 99
+          },
+          {
+            "label": "sync signal 2",
+            "value": 99
+          },
+          {
+            "label": "sync signal 3",
+            "value": 98
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-041-block-02",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · sync",
+      "summary": "Escena action_plan generada para investigate/sync/graph.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 88
+          },
+          {
+            "label": "sync signal 2",
+            "value": 85
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-041-block-03",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · sync",
+      "summary": "Escena action_plan generada para investigate/sync/graph.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 12
+          },
+          {
+            "label": "sync signal 2",
+            "value": 63
+          },
+          {
+            "label": "sync signal 3",
+            "value": 5
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260571
+  }
+}

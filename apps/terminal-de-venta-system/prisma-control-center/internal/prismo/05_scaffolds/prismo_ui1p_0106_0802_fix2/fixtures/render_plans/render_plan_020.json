@@ -1,0 +1,239 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-020",
+  "intent": {
+    "objective": "diagnose",
+    "domain": "sync",
+    "lens": "screenshots",
+    "scene": "chart_spec_preview",
+    "freeText": "Pregunta fixture 20 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: diagnose sync",
+    "summary": "Usando screenshots y escena chart_spec_preview."
+  },
+  "blocks": [
+    {
+      "id": "fixture-020-block-00",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.88,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 58
+          },
+          {
+            "label": "sync signal 2",
+            "value": 73
+          },
+          {
+            "label": "sync signal 3",
+            "value": 27
+          },
+          {
+            "label": "sync signal 4",
+            "value": 7
+          },
+          {
+            "label": "sync signal 5",
+            "value": 30
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-01",
+      "type": "timeline",
+      "title": "Timeline · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 16
+          },
+          {
+            "label": "sync signal 2",
+            "value": 23
+          },
+          {
+            "label": "sync signal 3",
+            "value": 86
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-02",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 68
+          },
+          {
+            "label": "sync signal 2",
+            "value": 95
+          },
+          {
+            "label": "sync signal 3",
+            "value": 77
+          },
+          {
+            "label": "sync signal 4",
+            "value": 3
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-03",
+      "type": "hero_response",
+      "title": "Hero Response · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 73
+          },
+          {
+            "label": "sync signal 2",
+            "value": 61
+          },
+          {
+            "label": "sync signal 3",
+            "value": 80
+          },
+          {
+            "label": "sync signal 4",
+            "value": 73
+          },
+          {
+            "label": "sync signal 5",
+            "value": 22
+          },
+          {
+            "label": "sync signal 6",
+            "value": 34
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-04",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 22
+          },
+          {
+            "label": "sync signal 2",
+            "value": 94
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-05",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 85
+          },
+          {
+            "label": "sync signal 2",
+            "value": 83
+          },
+          {
+            "label": "sync signal 3",
+            "value": 1
+          },
+          {
+            "label": "sync signal 4",
+            "value": 25
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-020-block-06",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · sync",
+      "summary": "Escena chart_spec_preview generada para diagnose/sync/screenshots.",
+      "confidence": 0.86,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 14
+          },
+          {
+            "label": "sync signal 2",
+            "value": 6
+          },
+          {
+            "label": "sync signal 3",
+            "value": 99
+          },
+          {
+            "label": "sync signal 4",
+            "value": 43
+          },
+          {
+            "label": "sync signal 5",
+            "value": 77
+          },
+          {
+            "label": "sync signal 6",
+            "value": 29
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260550
+  }
+}

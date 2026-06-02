@@ -1,5 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $env:PYTHONIOENCODING = 'utf-8'
+$env:PYTHONDONTWRITEBYTECODE = '1'
 $ToolRoot = Split-Path -Parent $PSScriptRoot
 $RepoRoot = Split-Path -Parent $ToolRoot
 $EngineRoot = Join-Path $ToolRoot 'engine'

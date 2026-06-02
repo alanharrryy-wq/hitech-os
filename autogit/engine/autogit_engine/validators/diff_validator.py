@@ -1,6 +1,7 @@
 from __future__ import annotations
 import json,re
 from ..text_io import trim_whitespace
+from ..paths import repo_path
 WHITESPACE_LINE=re.compile(r"^([^:]+):\d+:\s+(trailing whitespace\.|new blank line at EOF\.)$")
 def fix_cached_whitespace(repo,git,paths,backup,manifest_path):
     r=git.sh.run(["git","diff","--cached","--check"],name="git_diff_cached_check_before")
@@ -19,5 +20,5 @@ def fix_cached_whitespace(repo,git,paths,backup,manifest_path):
         raise RuntimeError("diff --check failed with non-whitespace errors")
     rows=[]
     for rel in sorted(hits):
-        backup.backup(rel,"whitespace"); changed=trim_whitespace(repo/rel.replace("/","\\")); rows.append({"path":rel,"changed":changed})
+        backup.backup(rel,"whitespace"); changed=trim_whitespace(repo_path(repo, rel)); rows.append({"path":rel,"changed":changed})
     git.add_exact(sorted(hits)); git.diff_check(cached=True); manifest_path.write_text(json.dumps(rows,indent=2),encoding="utf-8"); return rows

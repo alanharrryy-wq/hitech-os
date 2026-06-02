@@ -1,0 +1,227 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-017",
+  "intent": {
+    "objective": "compare",
+    "domain": "chart_lab",
+    "lens": "canon",
+    "scene": "timeline",
+    "freeText": "Pregunta fixture 17 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare chart_lab",
+    "summary": "Usando canon y escena timeline."
+  },
+  "blocks": [
+    {
+      "id": "fixture-017-block-00",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 68
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 16
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 80
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 79
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-01",
+      "type": "timeline",
+      "title": "Timeline · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.97,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 19
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 34
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-02",
+      "type": "next_action",
+      "title": "Next Action · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 1
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 24
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 85
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 31
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 74
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-03",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.8,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 96
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 76
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 99
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-04",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.88,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 80
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 37
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-05",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 33
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 56
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 69
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 7
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 24
+          },
+          {
+            "label": "chart_lab signal 6",
+            "value": 75
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-017-block-06",
+      "type": "decision_summary",
+      "title": "Decision Summary · chart_lab",
+      "summary": "Escena timeline generada para compare/chart_lab/canon.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 96
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 88
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 15
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 11
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 40
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260547
+  }
+}
