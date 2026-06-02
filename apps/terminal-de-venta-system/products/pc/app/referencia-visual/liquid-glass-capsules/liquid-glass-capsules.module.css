@@ -1,0 +1,16 @@
+.page { min-height: 100vh; padding: clamp(1rem, 3vw, 2rem); color: rgba(255,255,255,.94); background: radial-gradient(circle at 18% 8%, rgba(86,138,255,.34), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(255,96,178,.34), transparent 24rem), radial-gradient(circle at 50% 96%, rgba(68,255,218,.18), transparent 30rem), linear-gradient(135deg, #080914 0%, #171023 45%, #21111b 100%); }
+.hero { width: min(100%, 58rem); margin: clamp(2.2rem, 8vw, 5rem) auto 2rem; }
+.messageCard, .panelRose, .panelLight, .scrollProof { border: 1px solid rgba(255,255,255,.14); border-radius: 2rem; box-shadow: 0 26px 80px rgba(0,0,0,.28); }
+.messageCard { padding: clamp(1.5rem, 5vw, 3.5rem); background: radial-gradient(circle at 78% 0%, rgba(255,255,255,.14), transparent 18rem), linear-gradient(140deg, rgba(126,42,86,.76), rgba(47,30,74,.72)); }
+.kicker { margin: 0 0 .75rem; color: rgba(255,214,238,.82); font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.messageCard h1 { margin: 0; font-size: clamp(2.6rem, 8vw, 6rem); line-height: .92; letter-spacing: -.07em; }
+.messageCard p:not(.kicker), .testGrid p, .scrollProof p { color: rgba(255,255,255,.76); font-size: clamp(1rem, 1.6vw, 1.18rem); line-height: 1.65; }
+.testGrid { width: min(100%, 58rem); margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.panelRose, .panelLight { padding: clamp(1.2rem, 3vw, 2rem); }
+.panelRose { background: radial-gradient(circle at 80% 12%, rgba(255,255,255,.18), transparent 13rem), linear-gradient(135deg, rgba(111,37,84,.82), rgba(48,20,54,.72)); }
+.panelLight { color: rgba(22,25,34,.92); background: radial-gradient(circle at 80% 12%, rgba(255,255,255,.86), transparent 16rem), linear-gradient(135deg, rgba(238,244,255,.92), rgba(205,223,255,.76)); }
+.panelLight p { color: rgba(22,25,34,.68); }
+.sampleRow { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-top: 1.4rem; }
+.demoGlyph { font-size: 1.6rem; line-height: 0; transform: translateY(-1px); }
+.scrollProof { width: min(100%, 58rem); margin: 1rem auto 8rem; padding: clamp(1.2rem, 3vw, 2rem); background: rgba(255,255,255,.08); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+@media (max-width: 760px) { .testGrid { grid-template-columns: 1fr; } }
