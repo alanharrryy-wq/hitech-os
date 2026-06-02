@@ -1,0 +1,194 @@
+{
+  "schema": "prisma.surface.visual_governor.external_reference_atmosphere_allowlist_normalized",
+  "version": "M-04B.fix2",
+  "created_at": "2026-06-01T20:36:47",
+  "families": [
+    {
+      "id": "alpine_graphite_hero",
+      "label": "Alpine Graphite Hero",
+      "detected_count": 1,
+      "allowed_surfaces": [
+        "pc",
+        "control_center"
+      ],
+      "conditional_surfaces": [
+        "chart_lab",
+        "pc_reference"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout"
+      ],
+      "budget": "premium calm executive background"
+    },
+    {
+      "id": "storm_graphite_vault",
+      "label": "Storm Graphite Vault",
+      "detected_count": 3,
+      "allowed_surfaces": [
+        "control_center",
+        "chart_lab",
+        "pc_reference"
+      ],
+      "conditional_surfaces": [
+        "visual_os"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "premium dark governance/storm mood; strong scrim required"
+    },
+    {
+      "id": "visual_os_celestial",
+      "label": "Visual OS Celestial",
+      "detected_count": 3,
+      "allowed_surfaces": [
+        "control_center",
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional_surfaces": [
+        "pc_reference"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "web_eit_public"
+      ],
+      "budget": "showcase/reference only; never default productive"
+    },
+    {
+      "id": "liquid_teal_vapor",
+      "label": "Liquid Teal Vapor",
+      "detected_count": 3,
+      "allowed_surfaces": [
+        "chart_lab",
+        "visual_os"
+      ],
+      "conditional_surfaces": [
+        "control_center",
+        "pc_reference"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "dense_tables",
+        "web_eit_public"
+      ],
+      "budget": "high wow, studio/showcase only"
+    },
+    {
+      "id": "tablet_light_soft",
+      "label": "Tablet Light Soft",
+      "detected_count": 9,
+      "allowed_surfaces": [
+        "tablet_productive",
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional_surfaces": [
+        "pos_checkout"
+      ],
+      "blocked_surfaces": [
+        "pc_dark_showcase_default"
+      ],
+      "budget": "light-first low-noise background"
+    },
+    {
+      "id": "mobile_thin_mist",
+      "label": "Mobile Thin Mist",
+      "detected_count": 6,
+      "allowed_surfaces": [
+        "mobile",
+        "web_eit_public"
+      ],
+      "conditional_surfaces": [
+        "tablet_productive",
+        "control_center_audit"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "low-noise, battery-friendly, audit-safe"
+    },
+    {
+      "id": "light_architecture_material",
+      "label": "Light Architecture Material",
+      "detected_count": 1,
+      "allowed_surfaces": [
+        "web_eit_public",
+        "tablet_productive",
+        "settings"
+      ],
+      "conditional_surfaces": [
+        "control_center_audit"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout_without_gate"
+      ],
+      "budget": "light/sober material reference"
+    },
+    {
+      "id": "warm_showcase_mountain",
+      "label": "Warm Showcase Mountain",
+      "detected_count": 2,
+      "allowed_surfaces": [
+        "chart_lab",
+        "marketing_reference"
+      ],
+      "conditional_surfaces": [
+        "control_center_showcase"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "dense_tables"
+      ],
+      "budget": "decorative/showcase, sparingly"
+    },
+    {
+      "id": "subject_photo_blocked",
+      "label": "Subject Photo Blocked",
+      "detected_count": 2,
+      "allowed_surfaces": [],
+      "conditional_surfaces": [
+        "manual_review_only"
+      ],
+      "blocked_surfaces": [
+        "all_background_use"
+      ],
+      "budget": "not direct UI atmosphere"
+    },
+    {
+      "id": "external_review",
+      "label": "External Review",
+      "detected_count": 1,
+      "allowed_surfaces": [],
+      "conditional_surfaces": [
+        "manual_review_only"
+      ],
+      "blocked_surfaces": [
+        "all_until_reviewed"
+      ],
+      "budget": "requires human review"
+    }
+  ],
+  "hard_bans": {
+    "pos_checkout": [
+      "storm",
+      "liquid",
+      "vapor",
+      "aurora",
+      "webgl",
+      "pixi",
+      "heavy_blur"
+    ],
+    "tablet_productive": [
+      "dark_default",
+      "showcase_default",
+      "liquid_vapor_default"
+    ]
+  }
+}
