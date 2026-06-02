@@ -848,3 +848,31 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] [data-prisma-co
   }
 }
 /* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_END */
+
+/* PRISMA_QAFIX3_NO_ACCIDENTAL_SELECTION_START */
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) a,
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) button,
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [role="button"],
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) .prisma-action,
+[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) .prisma-card {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-prisma-surface="tablet"] input,
+[data-prisma-surface="tablet"] textarea,
+[data-prisma-surface="tablet"] select,
+[data-prisma-surface="tablet"] pre,
+[data-prisma-surface="tablet"] code,
+[data-prisma-surface="tablet"] [contenteditable="true"],
+[data-prisma-surface="tablet"] [data-allow-text-selection="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* PRISMA_QAFIX3_NO_ACCIDENTAL_SELECTION_END */
