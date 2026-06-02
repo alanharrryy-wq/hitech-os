@@ -1,0 +1,204 @@
+{
+  "schema": "prismo.visual_presets.refrigerant_cloudglass.v1",
+  "purpose": "Prevent opacity drift, lechoso glass and dull static UI while giving Codex exact preset tokens.",
+  "global_non_negotiables": [
+    "No opaque panels for Theater, Composer, dropdowns, drawers or modals unless accessibility override explicitly applies.",
+    "Glass fill alpha must stay below preset max; clarity is achieved by hairline, scrim balance and typography, not solid fill.",
+    "One strong glow per viewport max; glows are semantic: action/live/warning/insight/success only.",
+    "No safe mode / preview only / coming soon labels visible.",
+    "No raw JSON as primary scene."
+  ],
+  "presets": {
+    "refrigerant_emerald_theater": {
+      "use_on": [
+        "PRISMO main theater",
+        "hero response",
+        "query composer"
+      ],
+      "background": "graphite_icefield_layer_stack",
+      "glass_level": "G3/G4 mix",
+      "fill_alpha": {
+        "min": 0.055,
+        "target": 0.095,
+        "max": 0.145
+      },
+      "blur_px": {
+        "min": 2,
+        "target": 6,
+        "max": 10
+      },
+      "border_alpha": {
+        "target": 0.28
+      },
+      "rim": "R2-R3 selective",
+      "glow": "N2 mint + N3 primary action only",
+      "notes": "Verde refrigerante translúcido, no verde sólido."
+    },
+    "crystal_dropdown_refrigerant": {
+      "use_on": [
+        "dependent dropdown triggers",
+        "popover surfaces",
+        "select content"
+      ],
+      "glass_level": "G2",
+      "fill_alpha": {
+        "min": 0.035,
+        "target": 0.075,
+        "max": 0.115
+      },
+      "blur_px": {
+        "min": 1,
+        "target": 4,
+        "max": 7
+      },
+      "border_alpha": {
+        "target": 0.34
+      },
+      "rim": "R1/R2 active",
+      "glow": "N1 focus, N2 selected",
+      "notes": "Los dropdowns deben sentirse como cajitas de cristal verde, no como selects grises."
+    },
+    "evidence_vault_luminous_board": {
+      "use_on": [
+        "evidence board",
+        "memory trace",
+        "technical drawer summary"
+      ],
+      "glass_level": "G2 dense evidence",
+      "fill_alpha": {
+        "min": 0.045,
+        "target": 0.08,
+        "max": 0.125
+      },
+      "blur_px": {
+        "min": 0,
+        "target": 2,
+        "max": 4
+      },
+      "border_alpha": {
+        "target": 0.22
+      },
+      "rim": "R1",
+      "glow": "N0/N1, warning only when real",
+      "notes": "Evidencia legible, densa y elegante sin convertirla en tabla aburrida."
+    },
+    "technical_drawer_hydro_panel": {
+      "use_on": [
+        "technical drawer",
+        "perito detail",
+        "trace panel"
+      ],
+      "glass_level": "G4 drawer",
+      "fill_alpha": {
+        "min": 0.07,
+        "target": 0.12,
+        "max": 0.16
+      },
+      "blur_px": {
+        "min": 4,
+        "target": 8,
+        "max": 10
+      },
+      "border_alpha": {
+        "target": 0.3
+      },
+      "rim": "R2/R3 only outer frame",
+      "glow": "N1 focus only",
+      "notes": "Drawer premium, técnico y profundo; no abrir como modal opaco."
+    },
+    "action_bar_mint_circuit": {
+      "use_on": [
+        "primary action bar",
+        "feedback hooks",
+        "prepare action cards"
+      ],
+      "glass_level": "G2/G3",
+      "fill_alpha": {
+        "min": 0.055,
+        "target": 0.095,
+        "max": 0.14
+      },
+      "blur_px": {
+        "min": 1,
+        "target": 3,
+        "max": 6
+      },
+      "border_alpha": {
+        "target": 0.24
+      },
+      "rim": "R2 selected action only",
+      "glow": "N3 on one primary CTA max",
+      "notes": "Acciones claras y poderosas, no fila de botones-rancho."
+    },
+    "presentation_scene_glacier": {
+      "use_on": [
+        "empty state",
+        "loading state",
+        "presentable response"
+      ],
+      "glass_level": "G3 cinematic governed",
+      "fill_alpha": {
+        "min": 0.045,
+        "target": 0.085,
+        "max": 0.13
+      },
+      "blur_px": {
+        "min": 2,
+        "target": 5,
+        "max": 8
+      },
+      "border_alpha": {
+        "target": 0.26
+      },
+      "rim": "R2/R3 hero only",
+      "glow": "N2 insight accents",
+      "notes": "Modo presumible: vivo, caro, claro."
+    },
+    "error_recovery_coral_glass": {
+      "use_on": [
+        "recoverable error",
+        "partial data",
+        "no evidence found"
+      ],
+      "glass_level": "G2",
+      "fill_alpha": {
+        "min": 0.05,
+        "target": 0.09,
+        "max": 0.13
+      },
+      "blur_px": {
+        "min": 1,
+        "target": 3,
+        "max": 6
+      },
+      "border_alpha": {
+        "target": 0.3
+      },
+      "rim": "R2 coral only on error block",
+      "glow": "N2/N3 coral only when actionable",
+      "notes": "Errores bonitos, humanos y accionables."
+    }
+  },
+  "anti_opacity_tests": [
+    {
+      "id": "no_surface_fill_over_018",
+      "rule": "no main Theater/Composer/Drawer fill alpha above .18"
+    },
+    {
+      "id": "no_modal_solid_white",
+      "rule": "no rgba(255,255,255,.80+) on overlay content"
+    },
+    {
+      "id": "no_black_block_panels",
+      "rule": "no rgba(0,0,0,.90+) on glass panels"
+    },
+    {
+      "id": "hairline_required",
+      "rule": "every glass panel needs visible border/hairline or inner highlight"
+    },
+    {
+      "id": "glow_budget",
+      "rule": "max one N3 strong CTA per viewport"
+    }
+  ]
+}

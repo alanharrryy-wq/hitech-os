@@ -1,0 +1,204 @@
+{
+  "schema": "prismo.ui1p.cloudglass_refrigerant_effects.v2",
+  "package": "prismo ui1p 0106 0802 fix2",
+  "goal": "Exploit effects without turning windows opaque or milky.",
+  "presets": {
+    "refrigerant_emerald_theater": {
+      "description": "Main stage: transparent green coolant glass, cinematic but readable",
+      "surface_fill_alpha_max": 0.105,
+      "border_alpha": 0.28,
+      "blur_px_max": 8,
+      "glow_alpha_max": 0.26,
+      "motion_profile": "M2+M3",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "liquid_crystal_select": {
+      "description": "Dropdown/select: refractive green edge, crisp text, low fill",
+      "surface_fill_alpha_max": 0.075,
+      "border_alpha": 0.34,
+      "blur_px_max": 6,
+      "glow_alpha_max": 0.34,
+      "motion_profile": "M1",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "hydro_command_palette": {
+      "description": "Command palette: G4 hydro rim, strong hierarchy, no opaque shell",
+      "surface_fill_alpha_max": 0.118,
+      "border_alpha": 0.38,
+      "blur_px_max": 10,
+      "glow_alpha_max": 0.3,
+      "motion_profile": "M2",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "evidence_luminous_board": {
+      "description": "Evidence blocks: denser but still transparent, table stays readable",
+      "surface_fill_alpha_max": 0.092,
+      "border_alpha": 0.24,
+      "blur_px_max": 4,
+      "glow_alpha_max": 0.16,
+      "motion_profile": "M1",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "action_mint_circuit": {
+      "description": "Primary action: one strong mint glow only",
+      "surface_fill_alpha_max": 0.14,
+      "border_alpha": 0.42,
+      "blur_px_max": 4,
+      "glow_alpha_max": 0.42,
+      "motion_profile": "M1",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "timeline_glacier_flow": {
+      "description": "Timeline: subtle vertical light rail and staged reveal",
+      "surface_fill_alpha_max": 0.084,
+      "border_alpha": 0.2,
+      "blur_px_max": 4,
+      "glow_alpha_max": 0.2,
+      "motion_profile": "M2",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "risk_coral_lens": {
+      "description": "Risk/alert: coral only for real priority",
+      "surface_fill_alpha_max": 0.105,
+      "border_alpha": 0.32,
+      "blur_px_max": 5,
+      "glow_alpha_max": 0.28,
+      "motion_profile": "M1",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "technical_hydro_drawer": {
+      "description": "Detail drawer: G4 shell, trace text on G0/G1 content planes",
+      "surface_fill_alpha_max": 0.125,
+      "border_alpha": 0.32,
+      "blur_px_max": 8,
+      "glow_alpha_max": 0.18,
+      "motion_profile": "M2",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "presentation_showpiece": {
+      "description": "Presumible view: cinematic background, not dense tables",
+      "surface_fill_alpha_max": 0.115,
+      "border_alpha": 0.3,
+      "blur_px_max": 10,
+      "glow_alpha_max": 0.32,
+      "motion_profile": "M3",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    },
+    "low_power_crystal": {
+      "description": "Reduced intensity: freezes motion but keeps premium glass",
+      "surface_fill_alpha_max": 0.078,
+      "border_alpha": 0.2,
+      "blur_px_max": 2,
+      "glow_alpha_max": 0.12,
+      "motion_profile": "M0",
+      "anti_opacity_rules": [
+        "If surface looks solid, lower fill first",
+        "Text sits on content plane, not distorted glass",
+        "Use border/highlight before increasing blur",
+        "One strong glow per viewport"
+      ]
+    }
+  },
+  "css_tokens_required": [
+    "--prismo-glass-fill-g1",
+    "--prismo-glass-fill-g2",
+    "--prismo-glass-fill-g3",
+    "--prismo-glass-fill-g4",
+    "--prismo-rim-alpha",
+    "--prismo-refraction-alpha",
+    "--prismo-coolant-rgb",
+    "--prismo-anti-opacity-ceiling"
+  ],
+  "library_mapping": {
+    "radix_ui": [
+      "select content portals",
+      "popover positioning",
+      "dialog focus trap"
+    ],
+    "motion_for_react": [
+      "layoutId transitions",
+      "whileHover/whileTap",
+      "AnimatePresence response reveal"
+    ],
+    "gsap": [
+      "stage intro timeline",
+      "background drift",
+      "response choreography"
+    ],
+    "svg_filters": [
+      "hydro rim filter",
+      "subtle refractive edge only"
+    ],
+    "echarts": [
+      "chart_spec_preview blocks",
+      "risk heat strips",
+      "evidence micro charts"
+    ],
+    "sonner": [
+      "glass toasts"
+    ],
+    "cmdk": [
+      "command palette"
+    ],
+    "vaul": [
+      "technical/evidence drawer"
+    ],
+    "resizable_panels": [
+      "optional workbench split"
+    ],
+    "next_themes": [
+      "reduced-intensity/presentation modes"
+    ]
+  },
+  "pass_criteria": [
+    "No component fill alpha above .18 except deliberately tiny active affordance",
+    "No backdrop blur above 12px on text-heavy surfaces",
+    "No opaque white/gray panels",
+    "No hardcoded black boxes except content-plane text wells"
+  ]
+}

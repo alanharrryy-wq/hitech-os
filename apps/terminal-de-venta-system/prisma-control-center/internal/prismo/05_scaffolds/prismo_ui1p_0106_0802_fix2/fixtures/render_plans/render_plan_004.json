@@ -1,0 +1,223 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-004",
+  "intent": {
+    "objective": "investigate",
+    "domain": "system",
+    "lens": "patterns",
+    "scene": "action_plan",
+    "freeText": "Pregunta fixture 4 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate system",
+    "summary": "Usando patterns y escena action_plan."
+  },
+  "blocks": [
+    {
+      "id": "fixture-004-block-00",
+      "type": "insight_chips",
+      "title": "Insight Chips · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.92,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 79
+          },
+          {
+            "label": "system signal 2",
+            "value": 96
+          },
+          {
+            "label": "system signal 3",
+            "value": 47
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-01",
+      "type": "operational_status",
+      "title": "Operational Status · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.88,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 82
+          },
+          {
+            "label": "system signal 2",
+            "value": 67
+          },
+          {
+            "label": "system signal 3",
+            "value": 13
+          },
+          {
+            "label": "system signal 4",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-02",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 23
+          },
+          {
+            "label": "system signal 2",
+            "value": 11
+          },
+          {
+            "label": "system signal 3",
+            "value": 29
+          },
+          {
+            "label": "system signal 4",
+            "value": 86
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-03",
+      "type": "checklist",
+      "title": "Checklist · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 41
+          },
+          {
+            "label": "system signal 2",
+            "value": 12
+          },
+          {
+            "label": "system signal 3",
+            "value": 2
+          },
+          {
+            "label": "system signal 4",
+            "value": 6
+          },
+          {
+            "label": "system signal 5",
+            "value": 34
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-04",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.85,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 31
+          },
+          {
+            "label": "system signal 2",
+            "value": 71
+          },
+          {
+            "label": "system signal 3",
+            "value": 29
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-05",
+      "type": "operational_status",
+      "title": "Operational Status · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 44
+          },
+          {
+            "label": "system signal 2",
+            "value": 31
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-004-block-06",
+      "type": "comparison_board",
+      "title": "Comparison Board · system",
+      "summary": "Escena action_plan generada para investigate/system/patterns.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 62
+          },
+          {
+            "label": "system signal 2",
+            "value": 98
+          },
+          {
+            "label": "system signal 3",
+            "value": 88
+          },
+          {
+            "label": "system signal 4",
+            "value": 60
+          },
+          {
+            "label": "system signal 5",
+            "value": 37
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260534
+  }
+}

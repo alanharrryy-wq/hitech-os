@@ -8,33 +8,37 @@ from prismo_safety import _as_bool, _as_dict, _as_list, _as_str, redact_secrets
 
 
 ALLOWED_RENDER_BLOCK_TYPES = {
-    "direct_answer_card",
+    "hero_response",
+    "executive_brief",
+    "next_best_action",
+    "protocol_ladder",
+    "procedural_steps",
+    "procedural_recipe",
+    "evidence_board",
     "evidence_cards",
-    "authority_map",
+    "risk_matrix",
+    "timeline",
     "flow_diagram",
+    "comparison_board",
+    "memory_trace",
+    "authority_strip",
+    "context_cards",
+    "insight_chips",
+    "technical_drawer",
+    "action_bar",
+    "error_recovery",
+    "loading_state",
+    "feedback_dock",
+    "direct_answer_card",
+    "authority_map",
     "impact_map",
     "runtime_map",
-    "timeline",
     "improvement_brief_board",
     "context_pack_explorer",
     "diff_view",
-    "risk_matrix",
     "checklist",
-    "html_sandbox_preview",
     "chart_spec",
 }
-
-HTML_BLOCK_PATTERNS: list[re.Pattern[str]] = [
-    re.compile(r"(?i)<\s*script"),
-    re.compile(r"(?i)\son[a-z]+\s*="),
-    re.compile(r"(?i)fetch\s*\("),
-    re.compile(r"(?i)XMLHttpRequest"),
-    re.compile(r"(?i)document\.cookie"),
-    re.compile(r"(?i)localStorage|sessionStorage|indexedDB"),
-    re.compile(r"(?i)javascript:"),
-    re.compile(r"(?i)<\s*(iframe|object|embed|form|meta|link)"),
-    re.compile(r"(?i)https?://"),
-]
 
 CHART_UNSAFE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"(?i)\bfunction\s*\("),
@@ -81,10 +85,6 @@ def _stringify(value: Any) -> str:
     return str(value)
 
 
-def _contains_html_risk(html: str) -> bool:
-    return any(pattern.search(html or "") for pattern in HTML_BLOCK_PATTERNS)
-
-
 def _contains_chart_risk(value: Any) -> bool:
     text = _stringify(value)
     return any(pattern.search(text) for pattern in CHART_UNSAFE_PATTERNS)
@@ -129,7 +129,8 @@ def normalize_block(block: Any, index: int = 0) -> tuple[dict[str, Any], list[di
     normalized["type"] = block_type
     normalized["title"] = redact_secrets(str(normalized.get("title") or block_type.replace("_", " ").title()))
     normalized["description"] = redact_secrets(str(normalized.get("description") or ""))
-    normalized["priority"] = normalized.get("priority") if normalized.get("priority") in {"primary", "secondary", "supporting"} else "supporting"
+    priority = normalized.get("priority")
+    normalized["priority"] = priority if priority in {"primary", "secondary", "supporting"} or isinstance(priority, (int, float)) else "supporting"
     normalized["layout"] = normalized.get("layout") if normalized.get("layout") in {"full", "half", "third", "drawer", "inline"} else "half"
     raw_safety = _as_dict(normalized.get("safety"))
     normalized["safety"] = _safety(sanitized=True, interactive=_as_bool(raw_safety.get("interactive"), False))
@@ -140,16 +141,6 @@ def normalize_block(block: Any, index: int = 0) -> tuple[dict[str, Any], list[di
         normalized["data"] = {}
     else:
         normalized["data"] = {"value": redact_secrets(_as_str(raw_data))}
-
-    if block_type == "html_sandbox_preview":
-        allow_html = str(os.environ.get("PRISMO_AI_ALLOW_HTML_PREVIEW", "false")).strip().lower() in {"1", "true", "yes", "on"}
-        data = _as_dict(normalized.get("data"))
-        html = _as_str(data.get("html") or normalized.get("html") or "")
-        if not allow_html or _contains_html_risk(html):
-            events.append({"code": "HTML_PREVIEW_BLOCKED", "message": "HTML preview bloqueado por política segura."})
-            return safe_block(), events
-        normalized["data"]["html"] = html
-        normalized["safety"]["interactive"] = False
 
     if block_type == "chart_spec" and _contains_chart_risk(normalized.get("data")):
         events.append({"code": "CHART_SPEC_BLOCKED", "message": "chart_spec bloqueado porque contenía JS, HTML, red externa, secreto o ruta sensible."})

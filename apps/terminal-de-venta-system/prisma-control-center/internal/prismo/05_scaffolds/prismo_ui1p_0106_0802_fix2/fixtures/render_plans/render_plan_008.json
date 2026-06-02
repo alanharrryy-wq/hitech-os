@@ -1,0 +1,255 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-008",
+  "intent": {
+    "objective": "prepare_action",
+    "domain": "sync",
+    "lens": "reports",
+    "scene": "executive_brief",
+    "freeText": "Pregunta fixture 8 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: prepare_action sync",
+    "summary": "Usando reports y escena executive_brief."
+  },
+  "blocks": [
+    {
+      "id": "fixture-008-block-00",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 13
+          },
+          {
+            "label": "sync signal 2",
+            "value": 51
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-01",
+      "type": "evidence_board",
+      "title": "Evidence Board · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 79
+          },
+          {
+            "label": "sync signal 2",
+            "value": 47
+          },
+          {
+            "label": "sync signal 3",
+            "value": 11
+          },
+          {
+            "label": "sync signal 4",
+            "value": 79
+          },
+          {
+            "label": "sync signal 5",
+            "value": 93
+          },
+          {
+            "label": "sync signal 6",
+            "value": 74
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-02",
+      "type": "governance_notice",
+      "title": "Governance Notice · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 92
+          },
+          {
+            "label": "sync signal 2",
+            "value": 69
+          },
+          {
+            "label": "sync signal 3",
+            "value": 71
+          },
+          {
+            "label": "sync signal 4",
+            "value": 49
+          },
+          {
+            "label": "sync signal 5",
+            "value": 21
+          },
+          {
+            "label": "sync signal 6",
+            "value": 99
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-03",
+      "type": "memory_card",
+      "title": "Memory Card · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 41
+          },
+          {
+            "label": "sync signal 2",
+            "value": 1
+          },
+          {
+            "label": "sync signal 3",
+            "value": 57
+          },
+          {
+            "label": "sync signal 4",
+            "value": 76
+          },
+          {
+            "label": "sync signal 5",
+            "value": 99
+          },
+          {
+            "label": "sync signal 6",
+            "value": 45
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-04",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 84
+          },
+          {
+            "label": "sync signal 2",
+            "value": 40
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-05",
+      "type": "insight_chips",
+      "title": "Insight Chips · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 28
+          },
+          {
+            "label": "sync signal 2",
+            "value": 34
+          },
+          {
+            "label": "sync signal 3",
+            "value": 11
+          },
+          {
+            "label": "sync signal 4",
+            "value": 78
+          },
+          {
+            "label": "sync signal 5",
+            "value": 43
+          },
+          {
+            "label": "sync signal 6",
+            "value": 75
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-008-block-06",
+      "type": "decision_summary",
+      "title": "Decision Summary · sync",
+      "summary": "Escena executive_brief generada para prepare_action/sync/reports.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "sync signal 1",
+            "value": 56
+          },
+          {
+            "label": "sync signal 2",
+            "value": 44
+          },
+          {
+            "label": "sync signal 3",
+            "value": 31
+          },
+          {
+            "label": "sync signal 4",
+            "value": 79
+          },
+          {
+            "label": "sync signal 5",
+            "value": 96
+          },
+          {
+            "label": "sync signal 6",
+            "value": 53
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260538
+  }
+}

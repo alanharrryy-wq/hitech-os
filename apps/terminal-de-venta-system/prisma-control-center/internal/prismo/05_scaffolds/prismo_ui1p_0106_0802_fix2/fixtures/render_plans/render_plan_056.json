@@ -1,0 +1,203 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-056",
+  "intent": {
+    "objective": "diagnose",
+    "domain": "system",
+    "lens": "runtime",
+    "scene": "evidence_board",
+    "freeText": "Pregunta fixture 56 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: diagnose system",
+    "summary": "Usando runtime y escena evidence_board."
+  },
+  "blocks": [
+    {
+      "id": "fixture-056-block-00",
+      "type": "governance_notice",
+      "title": "Governance Notice · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 20
+          },
+          {
+            "label": "system signal 2",
+            "value": 53
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-01",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 22
+          },
+          {
+            "label": "system signal 2",
+            "value": 62
+          },
+          {
+            "label": "system signal 3",
+            "value": 9
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-02",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.91,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 9
+          },
+          {
+            "label": "system signal 2",
+            "value": 11
+          },
+          {
+            "label": "system signal 3",
+            "value": 49
+          },
+          {
+            "label": "system signal 4",
+            "value": 23
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-03",
+      "type": "authority_strip",
+      "title": "Authority Strip · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 98
+          },
+          {
+            "label": "system signal 2",
+            "value": 60
+          },
+          {
+            "label": "system signal 3",
+            "value": 13
+          },
+          {
+            "label": "system signal 4",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-04",
+      "type": "decision_summary",
+      "title": "Decision Summary · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 28
+          },
+          {
+            "label": "system signal 2",
+            "value": 83
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-05",
+      "type": "timeline",
+      "title": "Timeline · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 22
+          },
+          {
+            "label": "system signal 2",
+            "value": 55
+          },
+          {
+            "label": "system signal 3",
+            "value": 39
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-056-block-06",
+      "type": "authority_strip",
+      "title": "Authority Strip · system",
+      "summary": "Escena evidence_board generada para diagnose/system/runtime.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 80
+          },
+          {
+            "label": "system signal 2",
+            "value": 9
+          },
+          {
+            "label": "system signal 3",
+            "value": 46
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260586
+  }
+}

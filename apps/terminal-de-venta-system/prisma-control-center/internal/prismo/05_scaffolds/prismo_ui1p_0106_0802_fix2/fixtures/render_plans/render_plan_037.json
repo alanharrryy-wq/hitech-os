@@ -1,0 +1,177 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-037",
+  "intent": {
+    "objective": "investigate",
+    "domain": "governance",
+    "lens": "visual_memory",
+    "scene": "checklist",
+    "freeText": "Pregunta fixture 37 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate governance",
+    "summary": "Usando visual_memory y escena checklist."
+  },
+  "blocks": [
+    {
+      "id": "fixture-037-block-00",
+      "type": "checklist",
+      "title": "Checklist · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 64
+          },
+          {
+            "label": "governance signal 2",
+            "value": 8
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-037-block-01",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 74
+          },
+          {
+            "label": "governance signal 2",
+            "value": 22
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-037-block-02",
+      "type": "authority_strip",
+      "title": "Authority Strip · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 55
+          },
+          {
+            "label": "governance signal 2",
+            "value": 99
+          },
+          {
+            "label": "governance signal 3",
+            "value": 19
+          },
+          {
+            "label": "governance signal 4",
+            "value": 57
+          },
+          {
+            "label": "governance signal 5",
+            "value": 70
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-037-block-03",
+      "type": "comparison_board",
+      "title": "Comparison Board · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.78,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 17
+          },
+          {
+            "label": "governance signal 2",
+            "value": 88
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-037-block-04",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.74,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 74
+          },
+          {
+            "label": "governance signal 2",
+            "value": 60
+          },
+          {
+            "label": "governance signal 3",
+            "value": 7
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-037-block-05",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · governance",
+      "summary": "Escena checklist generada para investigate/governance/visual_memory.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 88
+          },
+          {
+            "label": "governance signal 2",
+            "value": 79
+          },
+          {
+            "label": "governance signal 3",
+            "value": 33
+          },
+          {
+            "label": "governance signal 4",
+            "value": 5
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260567
+  }
+}

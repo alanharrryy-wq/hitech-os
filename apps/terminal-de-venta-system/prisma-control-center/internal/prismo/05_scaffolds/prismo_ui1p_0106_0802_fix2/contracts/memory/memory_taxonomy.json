@@ -1,0 +1,84 @@
+{
+  "schema": "prismo.memory_taxonomy.v2",
+  "memory_types": {
+    "semantic_memory": {
+      "purpose": "facts, definitions, canon, stable architecture",
+      "default_render": "semantic_fact_grid",
+      "durability": "long"
+    },
+    "episodic_memory": {
+      "purpose": "dated events, PASS/FAIL, incidents, fixes",
+      "default_render": "episodic_trace",
+      "durability": "medium_long"
+    },
+    "procedural_memory": {
+      "purpose": "recipes, commands, workflows, rollback, validation",
+      "default_render": "procedural_recipe",
+      "durability": "long"
+    },
+    "working_memory": {
+      "purpose": "current request and composer selections",
+      "default_render": "question_stack",
+      "durability": "short"
+    },
+    "operational_memory": {
+      "purpose": "current runtime/status/artifacts",
+      "default_render": "operational_status",
+      "durability": "medium"
+    },
+    "governance_memory": {
+      "purpose": "rules, safety, no-go, budgets",
+      "default_render": "governance_notice",
+      "durability": "long"
+    },
+    "visual_memory": {
+      "purpose": "Cloudglass, route budgets, presets",
+      "default_render": "visual_recipe_card",
+      "durability": "long"
+    }
+  },
+  "routing_rules": [
+    {
+      "when": [
+        "diagnose",
+        "sync"
+      ],
+      "include": [
+        "episodic_memory",
+        "procedural_memory",
+        "operational_memory",
+        "governance_memory"
+      ]
+    },
+    {
+      "when": [
+        "explain"
+      ],
+      "include": [
+        "semantic_memory",
+        "episodic_memory",
+        "visual_memory"
+      ]
+    },
+    {
+      "when": [
+        "prepare_action"
+      ],
+      "include": [
+        "procedural_memory",
+        "governance_memory",
+        "operational_memory"
+      ]
+    },
+    {
+      "when": [
+        "visualize"
+      ],
+      "include": [
+        "visual_memory",
+        "semantic_memory",
+        "procedural_memory"
+      ]
+    }
+  ]
+}

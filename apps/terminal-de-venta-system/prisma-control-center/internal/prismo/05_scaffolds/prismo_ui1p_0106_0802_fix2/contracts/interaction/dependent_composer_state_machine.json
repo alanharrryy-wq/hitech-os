@@ -1,0 +1,93 @@
+{
+  "schema": "prismo.ui1p.dependent_composer_state_machine.v2",
+  "package": "prismo ui1p 0106 0802 fix2",
+  "dropdown_count": 3,
+  "removed": "output_format/scene dropdown removed permanently; Auto Render Ensemble owns output composition.",
+  "states": [
+    {
+      "id": "idle",
+      "visible": "premium empty state",
+      "next": [
+        "objective_selected",
+        "free_text_typing",
+        "command_palette_open"
+      ]
+    },
+    {
+      "id": "objective_selected",
+      "effect": "domain options recalc; lens reset if invalid",
+      "next": [
+        "domain_selected"
+      ]
+    },
+    {
+      "id": "domain_selected",
+      "effect": "lens options recalc; suggested chips refresh",
+      "next": [
+        "lens_selected"
+      ]
+    },
+    {
+      "id": "lens_selected",
+      "effect": "memory hints and top protocols refresh",
+      "next": [
+        "ready_to_query"
+      ]
+    },
+    {
+      "id": "free_text_typing",
+      "effect": "debounced suggested chips and command ranking",
+      "next": [
+        "ready_to_query"
+      ]
+    },
+    {
+      "id": "ready_to_query",
+      "effect": "primary action glows once; submit enabled",
+      "next": [
+        "query_loading"
+      ]
+    },
+    {
+      "id": "query_loading",
+      "effect": "motion skeleton + progress microcopy",
+      "next": [
+        "response_ready",
+        "response_partial",
+        "response_error"
+      ]
+    },
+    {
+      "id": "response_ready",
+      "effect": "Auto Render Ensemble staged reveal",
+      "next": [
+        "feedback_saved",
+        "detail_open",
+        "new_query"
+      ]
+    },
+    {
+      "id": "response_partial",
+      "effect": "show usable result + recoverable warning strip",
+      "next": [
+        "detail_open",
+        "retry",
+        "new_query"
+      ]
+    },
+    {
+      "id": "response_error",
+      "effect": "beautiful recovery card, retry, detail hidden by default",
+      "next": [
+        "retry",
+        "new_query"
+      ]
+    }
+  ],
+  "derived_ui": {
+    "quick_chips": "Generated from objective+domain+lens+operational_memory; max 8 visible; never static button wall.",
+    "auto_render": "The client sends autoRender=true; server/client render planner returns ordered blocks.",
+    "keyboard": "Cmd/Ctrl+K opens palette; Enter submits if textarea not multiline intent; Escape closes overlays.",
+    "accessibility": "Radix handles focus and aria; visible labels required; no mystery meat icons."
+  }
+}

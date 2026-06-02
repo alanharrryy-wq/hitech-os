@@ -1,0 +1,205 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-003",
+  "intent": {
+    "objective": "recommend",
+    "domain": "authority_protocols",
+    "lens": "runtime",
+    "scene": "executive_brief",
+    "freeText": "Pregunta fixture 3 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: recommend authority_protocols",
+    "summary": "Usando runtime y escena executive_brief."
+  },
+  "blocks": [
+    {
+      "id": "fixture-003-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 52
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 63
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 64
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-003-block-01",
+      "type": "next_action",
+      "title": "Next Action · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.85,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 73
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 72
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 61
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 85
+          },
+          {
+            "label": "authority_protocols signal 5",
+            "value": 50
+          },
+          {
+            "label": "authority_protocols signal 6",
+            "value": 50
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-003-block-02",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 32
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 66
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 52
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 16
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-003-block-03",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 75
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 85
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 58
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 62
+          },
+          {
+            "label": "authority_protocols signal 5",
+            "value": 56
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-003-block-04",
+      "type": "next_action",
+      "title": "Next Action · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 73
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 59
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-003-block-05",
+      "type": "insight_chips",
+      "title": "Insight Chips · authority_protocols",
+      "summary": "Escena executive_brief generada para recommend/authority_protocols/runtime.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 11
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 87
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 22
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 81
+          },
+          {
+            "label": "authority_protocols signal 5",
+            "value": 39
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260533
+  }
+}

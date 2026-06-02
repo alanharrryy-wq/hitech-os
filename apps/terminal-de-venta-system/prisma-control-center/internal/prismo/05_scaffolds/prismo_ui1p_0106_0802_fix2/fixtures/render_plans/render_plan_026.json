@@ -1,0 +1,179 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-026",
+  "intent": {
+    "objective": "compare",
+    "domain": "pc_ui",
+    "lens": "evidence_recent",
+    "scene": "visual_recipe",
+    "freeText": "Pregunta fixture 26 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare pc_ui",
+    "summary": "Usando evidence_recent y escena visual_recipe."
+  },
+  "blocks": [
+    {
+      "id": "fixture-026-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · pc_ui",
+      "summary": "Escena visual_recipe generada para compare/pc_ui/evidence_recent.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "pc_ui signal 1",
+            "value": 4
+          },
+          {
+            "label": "pc_ui signal 2",
+            "value": 94
+          },
+          {
+            "label": "pc_ui signal 3",
+            "value": 76
+          },
+          {
+            "label": "pc_ui signal 4",
+            "value": 79
+          },
+          {
+            "label": "pc_ui signal 5",
+            "value": 20
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-026-block-01",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · pc_ui",
+      "summary": "Escena visual_recipe generada para compare/pc_ui/evidence_recent.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "pc_ui signal 1",
+            "value": 52
+          },
+          {
+            "label": "pc_ui signal 2",
+            "value": 58
+          },
+          {
+            "label": "pc_ui signal 3",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-026-block-02",
+      "type": "question_stack",
+      "title": "Question Stack · pc_ui",
+      "summary": "Escena visual_recipe generada para compare/pc_ui/evidence_recent.",
+      "confidence": 0.74,
+      "payload": {
+        "items": [
+          {
+            "label": "pc_ui signal 1",
+            "value": 37
+          },
+          {
+            "label": "pc_ui signal 2",
+            "value": 41
+          },
+          {
+            "label": "pc_ui signal 3",
+            "value": 66
+          },
+          {
+            "label": "pc_ui signal 4",
+            "value": 55
+          },
+          {
+            "label": "pc_ui signal 5",
+            "value": 18
+          },
+          {
+            "label": "pc_ui signal 6",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-026-block-03",
+      "type": "timeline",
+      "title": "Timeline · pc_ui",
+      "summary": "Escena visual_recipe generada para compare/pc_ui/evidence_recent.",
+      "confidence": 0.95,
+      "payload": {
+        "items": [
+          {
+            "label": "pc_ui signal 1",
+            "value": 94
+          },
+          {
+            "label": "pc_ui signal 2",
+            "value": 94
+          },
+          {
+            "label": "pc_ui signal 3",
+            "value": 36
+          },
+          {
+            "label": "pc_ui signal 4",
+            "value": 74
+          },
+          {
+            "label": "pc_ui signal 5",
+            "value": 10
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-026-block-04",
+      "type": "checklist",
+      "title": "Checklist · pc_ui",
+      "summary": "Escena visual_recipe generada para compare/pc_ui/evidence_recent.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "pc_ui signal 1",
+            "value": 59
+          },
+          {
+            "label": "pc_ui signal 2",
+            "value": 34
+          },
+          {
+            "label": "pc_ui signal 3",
+            "value": 63
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260556
+  }
+}

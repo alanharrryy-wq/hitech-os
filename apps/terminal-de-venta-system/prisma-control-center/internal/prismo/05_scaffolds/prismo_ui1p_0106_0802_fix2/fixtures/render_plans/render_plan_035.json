@@ -1,0 +1,227 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-035",
+  "intent": {
+    "objective": "compare",
+    "domain": "chart_lab",
+    "lens": "episodic_memory",
+    "scene": "evidence_board",
+    "freeText": "Pregunta fixture 35 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare chart_lab",
+    "summary": "Usando episodic_memory y escena evidence_board."
+  },
+  "blocks": [
+    {
+      "id": "fixture-035-block-00",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 50
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 72
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 29
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-01",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 83
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 93
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 31
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 34
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-02",
+      "type": "comparison_board",
+      "title": "Comparison Board · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 24
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 87
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 13
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 99
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 98
+          },
+          {
+            "label": "chart_lab signal 6",
+            "value": 32
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-03",
+      "type": "action_bar",
+      "title": "Action Bar · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.97,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 57
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 76
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 10
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 68
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-04",
+      "type": "visual_recipe_card",
+      "title": "Visual Recipe Card · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 3
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 96
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 81
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 68
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-05",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 91
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 17
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-035-block-06",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · chart_lab",
+      "summary": "Escena evidence_board generada para compare/chart_lab/episodic_memory.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 43
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 31
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 69
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 1
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260565
+  }
+}

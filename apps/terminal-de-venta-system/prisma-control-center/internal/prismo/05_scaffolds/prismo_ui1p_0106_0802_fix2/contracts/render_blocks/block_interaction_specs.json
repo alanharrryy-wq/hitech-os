@@ -1,0 +1,505 @@
+{
+  "schema": "prismo.ui1p.block_interaction_specs.v2",
+  "blocks": [
+    {
+      "type": "hero_response",
+      "priority_default": 97,
+      "interaction": {
+        "primary": "filter",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "risk_coral_lens",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "executive_brief",
+      "priority_default": 94,
+      "interaction": {
+        "primary": "drilldown",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "presentation_showpiece",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "next_best_action",
+      "priority_default": 91,
+      "interaction": {
+        "primary": "prepare_action",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "evidence_luminous_board",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "protocol_ladder",
+      "priority_default": 88,
+      "interaction": {
+        "primary": "copy_summary",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "liquid_crystal_select",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "procedural_steps",
+      "priority_default": 85,
+      "interaction": {
+        "primary": "filter",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "evidence_luminous_board",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "evidence_board",
+      "priority_default": 82,
+      "interaction": {
+        "primary": "save_feedback",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "evidence_luminous_board",
+      "data_policy": {
+        "max_items_main": 8,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "risk_matrix",
+      "priority_default": 79,
+      "interaction": {
+        "primary": "compare",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "risk_coral_lens",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "timeline",
+      "priority_default": 76,
+      "interaction": {
+        "primary": "save_feedback",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "action_mint_circuit",
+      "data_policy": {
+        "max_items_main": 8,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "flow_diagram",
+      "priority_default": 73,
+      "interaction": {
+        "primary": "expand",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "low_power_crystal",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "comparison_board",
+      "priority_default": 70,
+      "interaction": {
+        "primary": "copy_summary",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "hydro_command_palette",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "memory_trace",
+      "priority_default": 67,
+      "interaction": {
+        "primary": "drilldown",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "evidence_luminous_board",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "technical_drawer",
+      "priority_default": 64,
+      "interaction": {
+        "primary": "drilldown",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "timeline_glacier_flow",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "action_bar",
+      "priority_default": 61,
+      "interaction": {
+        "primary": "save_feedback",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "timeline_glacier_flow",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "question_stack",
+      "priority_default": 58,
+      "interaction": {
+        "primary": "copy_summary",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "timeline_glacier_flow",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "chart_spec_preview",
+      "priority_default": 55,
+      "interaction": {
+        "primary": "prepare_action",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "refrigerant_emerald_theater",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "authority_strip",
+      "priority_default": 52,
+      "interaction": {
+        "primary": "drilldown",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "liquid_crystal_select",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "governance_notice",
+      "priority_default": 49,
+      "interaction": {
+        "primary": "compare",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "presentation_showpiece",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "visual_recipe_card",
+      "priority_default": 46,
+      "interaction": {
+        "primary": "prepare_action",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "timeline_glacier_flow",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "operational_status",
+      "priority_default": 43,
+      "interaction": {
+        "primary": "filter",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "hydro_command_palette",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    },
+    {
+      "type": "feedback_panel",
+      "priority_default": 40,
+      "interaction": {
+        "primary": "filter",
+        "secondary": [
+          "open_detail",
+          "pin",
+          "ask_followup"
+        ],
+        "keyboard": "Enter activates primary; Space toggles; Escape closes nested overlay",
+        "motion": "M1 for hover, M2 for reveal; reduced-motion static frame"
+      },
+      "visual_recipe": "refrigerant_emerald_theater",
+      "data_policy": {
+        "max_items_main": 5,
+        "technical_overflow": "technical_drawer",
+        "forbidden": [
+          "raw_html",
+          "script",
+          "iframe",
+          "unbounded_markdown"
+        ]
+      }
+    }
+  ]
+}

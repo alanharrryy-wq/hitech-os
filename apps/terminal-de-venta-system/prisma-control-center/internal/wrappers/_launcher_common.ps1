@@ -176,13 +176,13 @@ if ($forwardOutputDir) {
 } elseif (-not [string]::IsNullOrWhiteSpace($env:PRISMA_OUTPUT_DIR)) {
   $BaseLogRoot = $env:PRISMA_OUTPUT_DIR
 } else {
-  $BaseLogRoot = "<OUTPUT_DIR>"
+  $BaseLogRoot = "F:\descargasf"
 }
 $BaseLogRoot = [Environment]::ExpandEnvironmentVariables($BaseLogRoot)
 try {
   $BaseLogRoot = [System.IO.Path]::GetFullPath($BaseLogRoot)
 } catch {
-  $BaseLogRoot = "<OUTPUT_DIR>"
+  $BaseLogRoot = "F:\descargasf"
 }
 if ([string]::IsNullOrWhiteSpace($BaseLogRoot) -or $BaseLogRoot -match '[<>"]') {
   throw "Output directory invalido para launcher PRISMA: $BaseLogRoot"

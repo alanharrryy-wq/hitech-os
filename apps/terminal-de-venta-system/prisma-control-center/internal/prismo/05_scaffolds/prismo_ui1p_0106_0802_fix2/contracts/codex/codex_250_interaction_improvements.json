@@ -1,0 +1,3256 @@
+{
+  "schema": "prismo.ui1p.codex_interaction_improvements.v2",
+  "count": 250,
+  "tasks": [
+    {
+      "id": "ui1p_fx2_001",
+      "category": "composer",
+      "title": "Composer improvement 001",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_002",
+      "category": "theater_query",
+      "title": "Theater Query improvement 002",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_003",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 003",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_004",
+      "category": "memory",
+      "title": "Memory improvement 004",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_005",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 005",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_006",
+      "category": "accessibility",
+      "title": "Accessibility improvement 006",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_007",
+      "category": "keyboard",
+      "title": "Keyboard improvement 007",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_008",
+      "category": "feedback",
+      "title": "Feedback improvement 008",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_009",
+      "category": "qa",
+      "title": "Qa improvement 009",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_010",
+      "category": "safety",
+      "title": "Safety improvement 010",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_011",
+      "category": "performance",
+      "title": "Performance improvement 011",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_012",
+      "category": "responsive",
+      "title": "Responsive improvement 012",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_013",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 013",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_014",
+      "category": "charts",
+      "title": "Charts improvement 014",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_015",
+      "category": "drawers",
+      "title": "Drawers improvement 015",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_016",
+      "category": "command_palette",
+      "title": "Command Palette improvement 016",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_017",
+      "category": "motion",
+      "title": "Motion improvement 017",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_018",
+      "category": "evidence",
+      "title": "Evidence improvement 018",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_019",
+      "category": "governance",
+      "title": "Governance improvement 019",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_020",
+      "category": "documentation",
+      "title": "Documentation improvement 020",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_021",
+      "category": "composer",
+      "title": "Composer improvement 021",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_022",
+      "category": "theater_query",
+      "title": "Theater Query improvement 022",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_023",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 023",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_024",
+      "category": "memory",
+      "title": "Memory improvement 024",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_025",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 025",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_026",
+      "category": "accessibility",
+      "title": "Accessibility improvement 026",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_027",
+      "category": "keyboard",
+      "title": "Keyboard improvement 027",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_028",
+      "category": "feedback",
+      "title": "Feedback improvement 028",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_029",
+      "category": "qa",
+      "title": "Qa improvement 029",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_030",
+      "category": "safety",
+      "title": "Safety improvement 030",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_031",
+      "category": "performance",
+      "title": "Performance improvement 031",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_032",
+      "category": "responsive",
+      "title": "Responsive improvement 032",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_033",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 033",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_034",
+      "category": "charts",
+      "title": "Charts improvement 034",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_035",
+      "category": "drawers",
+      "title": "Drawers improvement 035",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_036",
+      "category": "command_palette",
+      "title": "Command Palette improvement 036",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_037",
+      "category": "motion",
+      "title": "Motion improvement 037",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_038",
+      "category": "evidence",
+      "title": "Evidence improvement 038",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_039",
+      "category": "governance",
+      "title": "Governance improvement 039",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_040",
+      "category": "documentation",
+      "title": "Documentation improvement 040",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "ui1p_fx2_041",
+      "category": "composer",
+      "title": "Composer improvement 041",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_042",
+      "category": "theater_query",
+      "title": "Theater Query improvement 042",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_043",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 043",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_044",
+      "category": "memory",
+      "title": "Memory improvement 044",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_045",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 045",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_046",
+      "category": "accessibility",
+      "title": "Accessibility improvement 046",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_047",
+      "category": "keyboard",
+      "title": "Keyboard improvement 047",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_048",
+      "category": "feedback",
+      "title": "Feedback improvement 048",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_049",
+      "category": "qa",
+      "title": "Qa improvement 049",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_050",
+      "category": "safety",
+      "title": "Safety improvement 050",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_051",
+      "category": "performance",
+      "title": "Performance improvement 051",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_052",
+      "category": "responsive",
+      "title": "Responsive improvement 052",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_053",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 053",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_054",
+      "category": "charts",
+      "title": "Charts improvement 054",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_055",
+      "category": "drawers",
+      "title": "Drawers improvement 055",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_056",
+      "category": "command_palette",
+      "title": "Command Palette improvement 056",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_057",
+      "category": "motion",
+      "title": "Motion improvement 057",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_058",
+      "category": "evidence",
+      "title": "Evidence improvement 058",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_059",
+      "category": "governance",
+      "title": "Governance improvement 059",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_060",
+      "category": "documentation",
+      "title": "Documentation improvement 060",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_061",
+      "category": "composer",
+      "title": "Composer improvement 061",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_062",
+      "category": "theater_query",
+      "title": "Theater Query improvement 062",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_063",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 063",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_064",
+      "category": "memory",
+      "title": "Memory improvement 064",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_065",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 065",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_066",
+      "category": "accessibility",
+      "title": "Accessibility improvement 066",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_067",
+      "category": "keyboard",
+      "title": "Keyboard improvement 067",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_068",
+      "category": "feedback",
+      "title": "Feedback improvement 068",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_069",
+      "category": "qa",
+      "title": "Qa improvement 069",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_070",
+      "category": "safety",
+      "title": "Safety improvement 070",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_071",
+      "category": "performance",
+      "title": "Performance improvement 071",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_072",
+      "category": "responsive",
+      "title": "Responsive improvement 072",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_073",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 073",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_074",
+      "category": "charts",
+      "title": "Charts improvement 074",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_075",
+      "category": "drawers",
+      "title": "Drawers improvement 075",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_076",
+      "category": "command_palette",
+      "title": "Command Palette improvement 076",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_077",
+      "category": "motion",
+      "title": "Motion improvement 077",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_078",
+      "category": "evidence",
+      "title": "Evidence improvement 078",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_079",
+      "category": "governance",
+      "title": "Governance improvement 079",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_080",
+      "category": "documentation",
+      "title": "Documentation improvement 080",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_081",
+      "category": "composer",
+      "title": "Composer improvement 081",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_082",
+      "category": "theater_query",
+      "title": "Theater Query improvement 082",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_083",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 083",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_084",
+      "category": "memory",
+      "title": "Memory improvement 084",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_085",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 085",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_086",
+      "category": "accessibility",
+      "title": "Accessibility improvement 086",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_087",
+      "category": "keyboard",
+      "title": "Keyboard improvement 087",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_088",
+      "category": "feedback",
+      "title": "Feedback improvement 088",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_089",
+      "category": "qa",
+      "title": "Qa improvement 089",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_090",
+      "category": "safety",
+      "title": "Safety improvement 090",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_091",
+      "category": "performance",
+      "title": "Performance improvement 091",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_092",
+      "category": "responsive",
+      "title": "Responsive improvement 092",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_093",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 093",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_094",
+      "category": "charts",
+      "title": "Charts improvement 094",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_095",
+      "category": "drawers",
+      "title": "Drawers improvement 095",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_096",
+      "category": "command_palette",
+      "title": "Command Palette improvement 096",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_097",
+      "category": "motion",
+      "title": "Motion improvement 097",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_098",
+      "category": "evidence",
+      "title": "Evidence improvement 098",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_099",
+      "category": "governance",
+      "title": "Governance improvement 099",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_100",
+      "category": "documentation",
+      "title": "Documentation improvement 100",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_101",
+      "category": "composer",
+      "title": "Composer improvement 101",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_102",
+      "category": "theater_query",
+      "title": "Theater Query improvement 102",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_103",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 103",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_104",
+      "category": "memory",
+      "title": "Memory improvement 104",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_105",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 105",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_106",
+      "category": "accessibility",
+      "title": "Accessibility improvement 106",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_107",
+      "category": "keyboard",
+      "title": "Keyboard improvement 107",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_108",
+      "category": "feedback",
+      "title": "Feedback improvement 108",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_109",
+      "category": "qa",
+      "title": "Qa improvement 109",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_110",
+      "category": "safety",
+      "title": "Safety improvement 110",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_111",
+      "category": "performance",
+      "title": "Performance improvement 111",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_112",
+      "category": "responsive",
+      "title": "Responsive improvement 112",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_113",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 113",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_114",
+      "category": "charts",
+      "title": "Charts improvement 114",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_115",
+      "category": "drawers",
+      "title": "Drawers improvement 115",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_116",
+      "category": "command_palette",
+      "title": "Command Palette improvement 116",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_117",
+      "category": "motion",
+      "title": "Motion improvement 117",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_118",
+      "category": "evidence",
+      "title": "Evidence improvement 118",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_119",
+      "category": "governance",
+      "title": "Governance improvement 119",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_120",
+      "category": "documentation",
+      "title": "Documentation improvement 120",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_121",
+      "category": "composer",
+      "title": "Composer improvement 121",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_122",
+      "category": "theater_query",
+      "title": "Theater Query improvement 122",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_123",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 123",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_124",
+      "category": "memory",
+      "title": "Memory improvement 124",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_125",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 125",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_126",
+      "category": "accessibility",
+      "title": "Accessibility improvement 126",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_127",
+      "category": "keyboard",
+      "title": "Keyboard improvement 127",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_128",
+      "category": "feedback",
+      "title": "Feedback improvement 128",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_129",
+      "category": "qa",
+      "title": "Qa improvement 129",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_130",
+      "category": "safety",
+      "title": "Safety improvement 130",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_131",
+      "category": "performance",
+      "title": "Performance improvement 131",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_132",
+      "category": "responsive",
+      "title": "Responsive improvement 132",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_133",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 133",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_134",
+      "category": "charts",
+      "title": "Charts improvement 134",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_135",
+      "category": "drawers",
+      "title": "Drawers improvement 135",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_136",
+      "category": "command_palette",
+      "title": "Command Palette improvement 136",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_137",
+      "category": "motion",
+      "title": "Motion improvement 137",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_138",
+      "category": "evidence",
+      "title": "Evidence improvement 138",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_139",
+      "category": "governance",
+      "title": "Governance improvement 139",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_140",
+      "category": "documentation",
+      "title": "Documentation improvement 140",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_141",
+      "category": "composer",
+      "title": "Composer improvement 141",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_142",
+      "category": "theater_query",
+      "title": "Theater Query improvement 142",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_143",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 143",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_144",
+      "category": "memory",
+      "title": "Memory improvement 144",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_145",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 145",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_146",
+      "category": "accessibility",
+      "title": "Accessibility improvement 146",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_147",
+      "category": "keyboard",
+      "title": "Keyboard improvement 147",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_148",
+      "category": "feedback",
+      "title": "Feedback improvement 148",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_149",
+      "category": "qa",
+      "title": "Qa improvement 149",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_150",
+      "category": "safety",
+      "title": "Safety improvement 150",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_151",
+      "category": "performance",
+      "title": "Performance improvement 151",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_152",
+      "category": "responsive",
+      "title": "Responsive improvement 152",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_153",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 153",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_154",
+      "category": "charts",
+      "title": "Charts improvement 154",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_155",
+      "category": "drawers",
+      "title": "Drawers improvement 155",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_156",
+      "category": "command_palette",
+      "title": "Command Palette improvement 156",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_157",
+      "category": "motion",
+      "title": "Motion improvement 157",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_158",
+      "category": "evidence",
+      "title": "Evidence improvement 158",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_159",
+      "category": "governance",
+      "title": "Governance improvement 159",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_160",
+      "category": "documentation",
+      "title": "Documentation improvement 160",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "ui1p_fx2_161",
+      "category": "composer",
+      "title": "Composer improvement 161",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_162",
+      "category": "theater_query",
+      "title": "Theater Query improvement 162",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_163",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 163",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_164",
+      "category": "memory",
+      "title": "Memory improvement 164",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_165",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 165",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_166",
+      "category": "accessibility",
+      "title": "Accessibility improvement 166",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_167",
+      "category": "keyboard",
+      "title": "Keyboard improvement 167",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_168",
+      "category": "feedback",
+      "title": "Feedback improvement 168",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_169",
+      "category": "qa",
+      "title": "Qa improvement 169",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_170",
+      "category": "safety",
+      "title": "Safety improvement 170",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_171",
+      "category": "performance",
+      "title": "Performance improvement 171",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_172",
+      "category": "responsive",
+      "title": "Responsive improvement 172",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_173",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 173",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_174",
+      "category": "charts",
+      "title": "Charts improvement 174",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_175",
+      "category": "drawers",
+      "title": "Drawers improvement 175",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_176",
+      "category": "command_palette",
+      "title": "Command Palette improvement 176",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_177",
+      "category": "motion",
+      "title": "Motion improvement 177",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_178",
+      "category": "evidence",
+      "title": "Evidence improvement 178",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_179",
+      "category": "governance",
+      "title": "Governance improvement 179",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_180",
+      "category": "documentation",
+      "title": "Documentation improvement 180",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_181",
+      "category": "composer",
+      "title": "Composer improvement 181",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_182",
+      "category": "theater_query",
+      "title": "Theater Query improvement 182",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_183",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 183",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_184",
+      "category": "memory",
+      "title": "Memory improvement 184",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_185",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 185",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_186",
+      "category": "accessibility",
+      "title": "Accessibility improvement 186",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_187",
+      "category": "keyboard",
+      "title": "Keyboard improvement 187",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_188",
+      "category": "feedback",
+      "title": "Feedback improvement 188",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_189",
+      "category": "qa",
+      "title": "Qa improvement 189",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_190",
+      "category": "safety",
+      "title": "Safety improvement 190",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_191",
+      "category": "performance",
+      "title": "Performance improvement 191",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_192",
+      "category": "responsive",
+      "title": "Responsive improvement 192",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_193",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 193",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_194",
+      "category": "charts",
+      "title": "Charts improvement 194",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_195",
+      "category": "drawers",
+      "title": "Drawers improvement 195",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_196",
+      "category": "command_palette",
+      "title": "Command Palette improvement 196",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_197",
+      "category": "motion",
+      "title": "Motion improvement 197",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_198",
+      "category": "evidence",
+      "title": "Evidence improvement 198",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_199",
+      "category": "governance",
+      "title": "Governance improvement 199",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_200",
+      "category": "documentation",
+      "title": "Documentation improvement 200",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_201",
+      "category": "composer",
+      "title": "Composer improvement 201",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_202",
+      "category": "theater_query",
+      "title": "Theater Query improvement 202",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_203",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 203",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_204",
+      "category": "memory",
+      "title": "Memory improvement 204",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_205",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 205",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_206",
+      "category": "accessibility",
+      "title": "Accessibility improvement 206",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_207",
+      "category": "keyboard",
+      "title": "Keyboard improvement 207",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_208",
+      "category": "feedback",
+      "title": "Feedback improvement 208",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_209",
+      "category": "qa",
+      "title": "Qa improvement 209",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_210",
+      "category": "safety",
+      "title": "Safety improvement 210",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_211",
+      "category": "performance",
+      "title": "Performance improvement 211",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_212",
+      "category": "responsive",
+      "title": "Responsive improvement 212",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_213",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 213",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_214",
+      "category": "charts",
+      "title": "Charts improvement 214",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_215",
+      "category": "drawers",
+      "title": "Drawers improvement 215",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_216",
+      "category": "command_palette",
+      "title": "Command Palette improvement 216",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_217",
+      "category": "motion",
+      "title": "Motion improvement 217",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_218",
+      "category": "evidence",
+      "title": "Evidence improvement 218",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_219",
+      "category": "governance",
+      "title": "Governance improvement 219",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_220",
+      "category": "documentation",
+      "title": "Documentation improvement 220",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_221",
+      "category": "composer",
+      "title": "Composer improvement 221",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_222",
+      "category": "theater_query",
+      "title": "Theater Query improvement 222",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_223",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 223",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_224",
+      "category": "memory",
+      "title": "Memory improvement 224",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_225",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 225",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_226",
+      "category": "accessibility",
+      "title": "Accessibility improvement 226",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_227",
+      "category": "keyboard",
+      "title": "Keyboard improvement 227",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_228",
+      "category": "feedback",
+      "title": "Feedback improvement 228",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_229",
+      "category": "qa",
+      "title": "Qa improvement 229",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_230",
+      "category": "safety",
+      "title": "Safety improvement 230",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_231",
+      "category": "performance",
+      "title": "Performance improvement 231",
+      "instruction": "Debounce expensive calls; avoid re-render storms; reduced motion and low-power mode keep visual identity.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_232",
+      "category": "responsive",
+      "title": "Responsive improvement 232",
+      "instruction": "Support desktop first with tablet fallback; composer collapses into drawer on narrow viewports.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_233",
+      "category": "codex_integration",
+      "title": "Codex Integration improvement 233",
+      "instruction": "Discover real files before patching; apply scaffold as source of truth but adapt to repo structures.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_234",
+      "category": "charts",
+      "title": "Charts improvement 234",
+      "instruction": "Use ECharts only when render_plan includes chart_spec_preview/risk/evidence visualization.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_235",
+      "category": "drawers",
+      "title": "Drawers improvement 235",
+      "instruction": "Use Vaul/Radix drawer patterns for evidence and technical trace with readable content planes.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_236",
+      "category": "command_palette",
+      "title": "Command Palette improvement 236",
+      "instruction": "Use cmdk for search across prompts, protocols, memories, and render plan actions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_237",
+      "category": "motion",
+      "title": "Motion improvement 237",
+      "instruction": "Use Motion for React for microinteractions and GSAP for stage choreography only.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_238",
+      "category": "evidence",
+      "title": "Evidence improvement 238",
+      "instruction": "Show top evidence on stage, overflow in drawer with filters and human summaries.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_239",
+      "category": "governance",
+      "title": "Governance improvement 239",
+      "instruction": "Show governance as clean notice/reason; never as alarming internal safe-mode label.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_240",
+      "category": "documentation",
+      "title": "Documentation improvement 240",
+      "instruction": "Update README/CONTINUATION with touched files, decisions, endpoints, QA evidence.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_241",
+      "category": "composer",
+      "title": "Composer improvement 241",
+      "instruction": "Convert button clutter into dependent intent/domain/lens, generated chips, and free text that submits to Theater Query.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_242",
+      "category": "theater_query",
+      "title": "Theater Query improvement 242",
+      "instruction": "Adapt or create /api/prismo/theater/query as the single clean UI contract over existing learning endpoints.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_243",
+      "category": "render_blocks",
+      "title": "Render Blocks improvement 243",
+      "instruction": "Render only allowed contract blocks; no raw HTML; use Auto Render Ensemble to select useful surfaces automatically.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_244",
+      "category": "memory",
+      "title": "Memory improvement 244",
+      "instruction": "Surface semantic/episodic/procedural/operational/visual/governance memory as reasoned context, not as raw tables.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_245",
+      "category": "visual_fx",
+      "title": "Visual Fx improvement 245",
+      "instruction": "Apply refrigerant Cloudglass tokens, transparent alpha budgets, hydro rims, semantic glow and anti-opacity guardrails.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_246",
+      "category": "accessibility",
+      "title": "Accessibility improvement 246",
+      "instruction": "Use Radix focus/keyboard semantics and labels; preserve screen-reader names and focus trap behavior.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_247",
+      "category": "keyboard",
+      "title": "Keyboard improvement 247",
+      "instruction": "Add Cmd/Ctrl+K palette, Tab order, Enter submit, Escape close, arrow navigation for suggestions.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_248",
+      "category": "feedback",
+      "title": "Feedback improvement 248",
+      "instruction": "Wire useful/not useful/save-as-reference feedback to POST feedback or local adapter with Sonner confirmation.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_249",
+      "category": "qa",
+      "title": "Qa improvement 249",
+      "instruction": "Generate screenshots and contract reports for empty/loading/response/error/drawer/dropdowns/feedback states.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "ui1p_fx2_250",
+      "category": "safety",
+      "title": "Safety improvement 250",
+      "instruction": "Keep DB/env/deploy/git untouched; action UI prepares only safe previews and rollback context.",
+      "acceptance": [
+        "No removed format selector",
+        "No forbidden visible labels",
+        "Connected to real/adapter endpoint",
+        "Rollback documented"
+      ],
+      "priority": "P2"
+    }
+  ]
+}

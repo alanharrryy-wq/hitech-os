@@ -1,0 +1,167 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-012",
+  "intent": {
+    "objective": "compare",
+    "domain": "pos",
+    "lens": "episodic_memory",
+    "scene": "timeline",
+    "freeText": "Pregunta fixture 12 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare pos",
+    "summary": "Usando episodic_memory y escena timeline."
+  },
+  "blocks": [
+    {
+      "id": "fixture-012-block-00",
+      "type": "comparison_board",
+      "title": "Comparison Board · pos",
+      "summary": "Escena timeline generada para compare/pos/episodic_memory.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 64
+          },
+          {
+            "label": "pos signal 2",
+            "value": 69
+          },
+          {
+            "label": "pos signal 3",
+            "value": 92
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-012-block-01",
+      "type": "decision_summary",
+      "title": "Decision Summary · pos",
+      "summary": "Escena timeline generada para compare/pos/episodic_memory.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 85
+          },
+          {
+            "label": "pos signal 2",
+            "value": 11
+          },
+          {
+            "label": "pos signal 3",
+            "value": 6
+          },
+          {
+            "label": "pos signal 4",
+            "value": 6
+          },
+          {
+            "label": "pos signal 5",
+            "value": 16
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-012-block-02",
+      "type": "governance_notice",
+      "title": "Governance Notice · pos",
+      "summary": "Escena timeline generada para compare/pos/episodic_memory.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 36
+          },
+          {
+            "label": "pos signal 2",
+            "value": 99
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-012-block-03",
+      "type": "operational_status",
+      "title": "Operational Status · pos",
+      "summary": "Escena timeline generada para compare/pos/episodic_memory.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 32
+          },
+          {
+            "label": "pos signal 2",
+            "value": 13
+          },
+          {
+            "label": "pos signal 3",
+            "value": 74
+          },
+          {
+            "label": "pos signal 4",
+            "value": 15
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-012-block-04",
+      "type": "insight_chips",
+      "title": "Insight Chips · pos",
+      "summary": "Escena timeline generada para compare/pos/episodic_memory.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 19
+          },
+          {
+            "label": "pos signal 2",
+            "value": 52
+          },
+          {
+            "label": "pos signal 3",
+            "value": 42
+          },
+          {
+            "label": "pos signal 4",
+            "value": 96
+          },
+          {
+            "label": "pos signal 5",
+            "value": 49
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260542
+  }
+}

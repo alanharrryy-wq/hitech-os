@@ -1,0 +1,175 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-009",
+  "intent": {
+    "objective": "visualize",
+    "domain": "system",
+    "lens": "episodic_memory",
+    "scene": "action_plan",
+    "freeText": "Pregunta fixture 9 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: visualize system",
+    "summary": "Usando episodic_memory y escena action_plan."
+  },
+  "blocks": [
+    {
+      "id": "fixture-009-block-00",
+      "type": "timeline",
+      "title": "Timeline · system",
+      "summary": "Escena action_plan generada para visualize/system/episodic_memory.",
+      "confidence": 0.77,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 66
+          },
+          {
+            "label": "system signal 2",
+            "value": 85
+          },
+          {
+            "label": "system signal 3",
+            "value": 43
+          },
+          {
+            "label": "system signal 4",
+            "value": 51
+          },
+          {
+            "label": "system signal 5",
+            "value": 44
+          },
+          {
+            "label": "system signal 6",
+            "value": 8
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-009-block-01",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · system",
+      "summary": "Escena action_plan generada para visualize/system/episodic_memory.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 22
+          },
+          {
+            "label": "system signal 2",
+            "value": 21
+          },
+          {
+            "label": "system signal 3",
+            "value": 59
+          },
+          {
+            "label": "system signal 4",
+            "value": 82
+          },
+          {
+            "label": "system signal 5",
+            "value": 36
+          },
+          {
+            "label": "system signal 6",
+            "value": 75
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-009-block-02",
+      "type": "insight_chips",
+      "title": "Insight Chips · system",
+      "summary": "Escena action_plan generada para visualize/system/episodic_memory.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 59
+          },
+          {
+            "label": "system signal 2",
+            "value": 26
+          },
+          {
+            "label": "system signal 3",
+            "value": 88
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-009-block-03",
+      "type": "next_action",
+      "title": "Next Action · system",
+      "summary": "Escena action_plan generada para visualize/system/episodic_memory.",
+      "confidence": 0.95,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 27
+          },
+          {
+            "label": "system signal 2",
+            "value": 87
+          },
+          {
+            "label": "system signal 3",
+            "value": 14
+          },
+          {
+            "label": "system signal 4",
+            "value": 80
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-009-block-04",
+      "type": "decision_summary",
+      "title": "Decision Summary · system",
+      "summary": "Escena action_plan generada para visualize/system/episodic_memory.",
+      "confidence": 0.92,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 68
+          },
+          {
+            "label": "system signal 2",
+            "value": 10
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260539
+  }
+}

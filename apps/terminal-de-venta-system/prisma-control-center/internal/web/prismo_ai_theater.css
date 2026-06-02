@@ -1,0 +1,372 @@
+/* PRISMO AI1 Adaptive Intelligence Theater */
+body[data-prisma-interface="prismo"] .topbar .titles h1 {
+  text-wrap: balance;
+}
+
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] {
+  --prismo-hydro: rgba(105, 202, 255, .52);
+  --prismo-ice: rgba(224, 244, 255, .92);
+  --prismo-ink: rgba(7, 11, 17, .68);
+  --prismo-glass-alpha: .66;
+  --prismo-panel-alpha: .66;
+  --prismo-border-alpha: .18;
+  --prismo-rim-alpha: .20;
+  --prismo-glow-strength: .42;
+  --prismo-blur: 26px;
+  --prismo-shadow-depth: .26;
+  --prismo-bg-atmosphere-alpha: .75;
+  --prismo-z-background: -1;
+  --prismo-z-content: 1;
+  --prismo-z-dropdown: 20;
+  --prismo-z-drawer: 55;
+  --prismo-z-command: 35;
+  --prismo-z-toast: 80;
+  --prismo-reduced-motion: 0;
+  --prismo-portal-layer: var(--prismo-z-drawer);
+}
+
+#prismo-console .prismo-topbar h2 {
+  font-size: 3.85rem;
+  line-height: .92;
+  text-wrap: balance;
+}
+
+.prismo-theater-layout {
+  grid-template-columns: minmax(270px, .72fr) minmax(520px, 1.48fr) minmax(300px, .82fr);
+  align-items: stretch;
+}
+
+.prismo-signal-intake,
+.prismo-center-stage,
+.prismo-side-stack {
+  min-height: 100%;
+}
+
+.prismo-side-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.prismo-signal-intake .prismo-composer {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.prismo-signal-intake .prismo-composer label {
+  margin-top: 12px;
+  font-size: 1.45rem;
+  line-height: 1.12;
+}
+
+.prismo-router-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.prismo-router-head small {
+  color: var(--prismo-muted);
+  font-weight: 800;
+}
+
+.prismo-guidance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.prismo-guidance-field select,
+.prismo-inferred-chip {
+  min-height: 62px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 16px;
+  padding: 10px;
+  color: var(--prismo-muted);
+  text-align: left;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .025)),
+    rgba(7, 13, 22, .52);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.prismo-inferred-chip strong,
+.prismo-inferred-chip small {
+  display: block;
+}
+
+.prismo-inferred-chip strong {
+  color: var(--prismo-text);
+  font-size: .76rem;
+  line-height: 1.15;
+}
+
+.prismo-inferred-chip small {
+  margin-top: 4px;
+  line-height: 1.25;
+}
+
+.prismo-guidance-field select:hover,
+.prismo-guidance-field select:focus-visible,
+.prismo-inferred-chip:hover,
+.prismo-inferred-chip:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--prismo-line-hot);
+  outline: none;
+}
+
+.prismo-theater-card h3 {
+  margin: 4px 0 0;
+  font-size: 1.95rem;
+  line-height: 1.05;
+}
+
+.prismo-inline-pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.prismo-inline-pipeline span {
+  min-height: 34px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 9px;
+  color: var(--prismo-ice);
+  background: rgba(255, 255, 255, .045);
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.prismo-neural-graph {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    "north-west north north-east"
+    "west core east"
+    "south-west south south-east";
+  gap: 12px;
+  min-height: 390px;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid rgba(128, 199, 255, .20);
+  border-radius: 24px;
+  background:
+    linear-gradient(90deg, rgba(128, 199, 255, .08) 1px, transparent 1px),
+    linear-gradient(rgba(128, 199, 255, .07) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(105, 202, 255, .18), transparent 44%),
+    rgba(2, 8, 16, .36);
+  background-size: 42px 42px, 42px 42px, 100% 100%, 100% 100%;
+  overflow: hidden;
+}
+
+.prismo-neural-graph::before,
+.prismo-neural-graph::after {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border: 1px solid rgba(128, 199, 255, .18);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.prismo-neural-graph::after {
+  inset: 34% 18%;
+  border-color: rgba(184, 164, 255, .16);
+}
+
+.prismo-graph-core,
+.prismo-graph-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  min-height: 88px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 18px;
+  padding: 12px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .035)),
+    rgba(6, 13, 23, .74);
+}
+
+.prismo-graph-core {
+  grid-area: core;
+  min-height: 130px;
+  text-align: center;
+  border-color: rgba(115, 242, 195, .38);
+  box-shadow: 0 0 46px rgba(115, 242, 195, .12), inset 0 1px 0 rgba(255, 255, 255, .20);
+}
+
+.prismo-graph-core strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.3rem;
+}
+
+.prismo-graph-core small,
+.prismo-graph-node small {
+  color: var(--prismo-muted);
+}
+
+.prismo-graph-node strong {
+  font-size: .86rem;
+  line-height: 1.18;
+}
+
+.prismo-graph-node[data-zone="north"] { grid-area: north; }
+.prismo-graph-node[data-zone="north-east"] { grid-area: north-east; }
+.prismo-graph-node[data-zone="east"] { grid-area: east; }
+.prismo-graph-node[data-zone="south-east"] { grid-area: south-east; }
+.prismo-graph-node[data-zone="south"] { grid-area: south; }
+.prismo-graph-node[data-zone="south-west"] { grid-area: south-west; }
+.prismo-graph-node[data-zone="west"] { grid-area: west; }
+.prismo-graph-node[data-zone="north-west"] { grid-area: north-west; }
+
+.prismo-capability-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.prismo-capability-cloud span {
+  border: 1px solid var(--prismo-line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--prismo-muted);
+  background: rgba(255, 255, 255, .045);
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.prismo-decision-pipeline {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.prismo-pipeline-card {
+  position: relative;
+  min-height: 118px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 18px;
+  padding: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .105), rgba(255, 255, 255, .032)),
+    rgba(7, 13, 22, .60);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .20), inset 0 1px 0 rgba(255, 255, 255, .17);
+}
+
+.prismo-pipeline-card::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--prismo-info);
+  box-shadow: 0 0 18px rgba(128, 199, 255, .62);
+}
+
+.prismo-pipeline-card small {
+  color: var(--prismo-info);
+  text-transform: uppercase;
+  font-size: .68rem;
+  font-weight: 900;
+}
+
+.prismo-pipeline-card strong,
+.prismo-pipeline-card span {
+  display: block;
+}
+
+.prismo-pipeline-card strong {
+  margin-top: 10px;
+  color: var(--prismo-text);
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.prismo-pipeline-card span {
+  margin-top: 8px;
+  color: var(--prismo-muted);
+  font-size: .82rem;
+  line-height: 1.35;
+}
+
+.prismo-footnote {
+  margin: 10px 6px 0;
+  color: rgba(202, 220, 236, .46);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+
+body[data-prisma-interface="license"] #subtitle {
+  text-transform: none;
+}
+
+@media (max-width: 1320px) {
+  .prismo-theater-layout {
+    grid-template-columns: minmax(260px, .78fr) minmax(440px, 1.22fr);
+  }
+
+  .prismo-side-stack {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prismo-decision-pipeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  #prismo-console .prismo-topbar h2 {
+    font-size: 2.6rem;
+  }
+
+  .prismo-theater-layout,
+  .prismo-side-stack,
+  .prismo-decision-pipeline,
+  .prismo-inline-pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .prismo-neural-graph {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "core"
+      "north"
+      "north-east"
+      "east"
+      "south-east"
+      "south"
+      "south-west"
+      "west"
+      "north-west";
+    min-height: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  #prismo-console .prismo-topbar h2 {
+    font-size: 2rem;
+  }
+
+  .prismo-guidance-grid {
+    grid-template-columns: 1fr;
+  }
+}

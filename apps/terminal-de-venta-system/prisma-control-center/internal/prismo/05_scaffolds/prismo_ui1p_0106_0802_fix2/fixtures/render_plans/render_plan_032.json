@@ -1,0 +1,133 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-032",
+  "intent": {
+    "objective": "compare",
+    "domain": "tablet",
+    "lens": "evidence_recent",
+    "scene": "flow_diagram",
+    "freeText": "Pregunta fixture 32 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare tablet",
+    "summary": "Usando evidence_recent y escena flow_diagram."
+  },
+  "blocks": [
+    {
+      "id": "fixture-032-block-00",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · tablet",
+      "summary": "Escena flow_diagram generada para compare/tablet/evidence_recent.",
+      "confidence": 0.8,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 75
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 60
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 62
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 1
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-032-block-01",
+      "type": "executive_brief",
+      "title": "Executive Brief · tablet",
+      "summary": "Escena flow_diagram generada para compare/tablet/evidence_recent.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 51
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 72
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-032-block-02",
+      "type": "action_bar",
+      "title": "Action Bar · tablet",
+      "summary": "Escena flow_diagram generada para compare/tablet/evidence_recent.",
+      "confidence": 0.97,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 56
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 78
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 66
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 43
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 89
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-032-block-03",
+      "type": "decision_summary",
+      "title": "Decision Summary · tablet",
+      "summary": "Escena flow_diagram generada para compare/tablet/evidence_recent.",
+      "confidence": 0.96,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 27
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 35
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 89
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260562
+  }
+}

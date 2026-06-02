@@ -1,0 +1,179 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-023",
+  "intent": {
+    "objective": "summarize",
+    "domain": "pos",
+    "lens": "episodic_memory",
+    "scene": "risk_matrix",
+    "freeText": "Pregunta fixture 23 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: summarize pos",
+    "summary": "Usando episodic_memory y escena risk_matrix."
+  },
+  "blocks": [
+    {
+      "id": "fixture-023-block-00",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · pos",
+      "summary": "Escena risk_matrix generada para summarize/pos/episodic_memory.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 88
+          },
+          {
+            "label": "pos signal 2",
+            "value": 53
+          },
+          {
+            "label": "pos signal 3",
+            "value": 73
+          },
+          {
+            "label": "pos signal 4",
+            "value": 71
+          },
+          {
+            "label": "pos signal 5",
+            "value": 20
+          },
+          {
+            "label": "pos signal 6",
+            "value": 41
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-023-block-01",
+      "type": "next_action",
+      "title": "Next Action · pos",
+      "summary": "Escena risk_matrix generada para summarize/pos/episodic_memory.",
+      "confidence": 0.87,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 94
+          },
+          {
+            "label": "pos signal 2",
+            "value": 52
+          },
+          {
+            "label": "pos signal 3",
+            "value": 49
+          },
+          {
+            "label": "pos signal 4",
+            "value": 4
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-023-block-02",
+      "type": "question_stack",
+      "title": "Question Stack · pos",
+      "summary": "Escena risk_matrix generada para summarize/pos/episodic_memory.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 50
+          },
+          {
+            "label": "pos signal 2",
+            "value": 63
+          },
+          {
+            "label": "pos signal 3",
+            "value": 58
+          },
+          {
+            "label": "pos signal 4",
+            "value": 11
+          },
+          {
+            "label": "pos signal 5",
+            "value": 26
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-023-block-03",
+      "type": "evidence_board",
+      "title": "Evidence Board · pos",
+      "summary": "Escena risk_matrix generada para summarize/pos/episodic_memory.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 71
+          },
+          {
+            "label": "pos signal 2",
+            "value": 39
+          },
+          {
+            "label": "pos signal 3",
+            "value": 78
+          },
+          {
+            "label": "pos signal 4",
+            "value": 50
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-023-block-04",
+      "type": "hero_response",
+      "title": "Hero Response · pos",
+      "summary": "Escena risk_matrix generada para summarize/pos/episodic_memory.",
+      "confidence": 0.92,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 7
+          },
+          {
+            "label": "pos signal 2",
+            "value": 95
+          },
+          {
+            "label": "pos signal 3",
+            "value": 34
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260553
+  }
+}

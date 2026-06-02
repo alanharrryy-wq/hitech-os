@@ -1,0 +1,181 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-030",
+  "intent": {
+    "objective": "compare",
+    "domain": "governance",
+    "lens": "release_train",
+    "scene": "evidence_board",
+    "freeText": "Pregunta fixture 30 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: compare governance",
+    "summary": "Usando release_train y escena evidence_board."
+  },
+  "blocks": [
+    {
+      "id": "fixture-030-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.87,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 28
+          },
+          {
+            "label": "governance signal 2",
+            "value": 63
+          },
+          {
+            "label": "governance signal 3",
+            "value": 33
+          },
+          {
+            "label": "governance signal 4",
+            "value": 35
+          },
+          {
+            "label": "governance signal 5",
+            "value": 40
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-030-block-01",
+      "type": "procedural_recipe",
+      "title": "Procedural Recipe · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 87
+          },
+          {
+            "label": "governance signal 2",
+            "value": 2
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-030-block-02",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 33
+          },
+          {
+            "label": "governance signal 2",
+            "value": 73
+          },
+          {
+            "label": "governance signal 3",
+            "value": 41
+          },
+          {
+            "label": "governance signal 4",
+            "value": 79
+          },
+          {
+            "label": "governance signal 5",
+            "value": 6
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-030-block-03",
+      "type": "comparison_board",
+      "title": "Comparison Board · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.79,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 90
+          },
+          {
+            "label": "governance signal 2",
+            "value": 14
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-030-block-04",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 85
+          },
+          {
+            "label": "governance signal 2",
+            "value": 36
+          },
+          {
+            "label": "governance signal 3",
+            "value": 62
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-030-block-05",
+      "type": "checklist",
+      "title": "Checklist · governance",
+      "summary": "Escena evidence_board generada para compare/governance/release_train.",
+      "confidence": 0.9,
+      "payload": {
+        "items": [
+          {
+            "label": "governance signal 1",
+            "value": 93
+          },
+          {
+            "label": "governance signal 2",
+            "value": 83
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260560
+  }
+}

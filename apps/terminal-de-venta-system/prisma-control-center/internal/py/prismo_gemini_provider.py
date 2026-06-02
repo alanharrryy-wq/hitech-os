@@ -73,7 +73,6 @@ class GeminiLiveProvider:
                     "diff_view",
                     "risk_matrix",
                     "checklist",
-                    "html_sandbox_preview",
                     "chart_spec",
                 ],
             },

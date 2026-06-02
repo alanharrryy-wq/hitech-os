@@ -9,6 +9,23 @@
     "id": { "type": "string", "minLength": 1 },
     "type": {
       "enum": [
+        "hero_response",
+        "executive_brief",
+        "next_best_action",
+        "protocol_ladder",
+        "procedural_steps",
+        "procedural_recipe",
+        "evidence_board",
+        "comparison_board",
+        "memory_trace",
+        "authority_strip",
+        "context_cards",
+        "insight_chips",
+        "technical_drawer",
+        "action_bar",
+        "error_recovery",
+        "loading_state",
+        "feedback_dock",
         "direct_answer_card",
         "evidence_cards",
         "authority_map",
@@ -21,13 +38,17 @@
         "diff_view",
         "risk_matrix",
         "checklist",
-        "html_sandbox_preview",
         "chart_spec"
       ]
     },
     "title": { "type": "string" },
     "description": { "type": "string" },
-    "priority": { "enum": ["primary", "secondary", "supporting"] },
+    "priority": {
+      "oneOf": [
+        { "enum": ["primary", "secondary", "supporting"] },
+        { "type": "number" }
+      ]
+    },
     "layout": { "enum": ["full", "half", "third", "drawer", "inline"] },
     "safety": {
       "type": "object",

@@ -29,79 +29,98 @@ def _block(block_id: str, block_type: str, title: str, data: Any, layout: str = 
 
 def demo_blocks() -> list[dict[str, Any]]:
     return [
-        _block("demo_direct", "direct_answer_card", "Respuesta directa", {"answer": "PRISMO está en modo demo seguro y responde con estructura validada.", "certainty": "NO_CONFIRMADO"}, "full", "primary"),
+        _block(
+            "demo_direct",
+            "direct_answer_card",
+            "Operational AI Core",
+            {
+                "answer": "PRISMO convierte señales, evidencia y contexto técnico en decisiones operativas claras, trazables y seguras.",
+                "certainty": "CONFIRMADO_POR_DOC_VIGENTE",
+            },
+            "full",
+            "primary",
+        ),
         _block(
             "demo_evidence",
             "evidence_cards",
-            "Evidence deck",
+            "Evidence Vault",
             {
                 "items": [
-                    {"title": "Current State", "source_type": "current_state", "summary": "Autoridad vigente si existe en contexto local.", "freshness": "current"},
-                    {"title": "Legacy", "source_type": "doc_legacy", "summary": "Historia útil, nunca autoridad vigente.", "freshness": "stale"},
-                    {"title": "Temporal", "source_type": "temporary_file", "summary": "Evidencia pegada por operador.", "freshness": "recent"},
+                    {"title": "Evidencia local", "source_type": "local_read_only", "summary": "Lectura segura preparada para clasificar.", "freshness": "current"},
+                    {"title": "Gobernanza", "source_type": "governance", "summary": "Reglas, permisos y límites de mutación visibles.", "freshness": "current"},
+                    {"title": "Estado visual", "source_type": "visual_state", "summary": "Rutas, capturas y regresiones integrables.", "freshness": "recent"},
                 ]
             },
         ),
         _block(
             "demo_authority",
             "authority_map",
-            "Authority map",
+            "Authority Brain",
             {
-                "winning_source": "PRISMA_CURRENT_STATE",
-                "precedence": ["current_state", "code/runtime", "doc_current", "temporary", "planned", "legacy"],
-                "warnings": ["Legacy no manda sobre current.", "Planned no equivale a implementado."],
+                "winning_source": "PRISMA local",
+                "precedence": ["PRISMA local", "código y rutas", "evidencia temporal", "documentación vigente"],
+                "warnings": ["Mutaciones bloqueadas.", "La autoridad se decide con evidencia visible."],
             },
         ),
         _block(
-            "demo_flow",
+            "demo_neural_graph",
             "flow_diagram",
-            "Ruta real PC → Tablet",
+            "Neural Operations Graph",
             {
+                "variant": "neural_operations_graph",
                 "nodes": [
-                    {"id": "pc", "label": "PC Backoffice", "status": "confirmed"},
-                    {"id": "delta", "label": "catalog-delta", "status": "confirmed"},
-                    {"id": "tablet", "label": "Tablet pull", "status": "confirmed"},
+                    {"id": "control", "label": "Control Center", "status": "reads evidence"},
+                    {"id": "gemini", "label": "Gemini Bridge", "status": "server-side AI"},
+                    {"id": "vault", "label": "Evidence Vault", "status": "traceability"},
+                    {"id": "governance", "label": "Governance Canon", "status": "governs action"},
+                    {"id": "visual", "label": "Static Visual Checks", "status": "validates layers"},
+                    {"id": "atlas", "label": "Dependency Atlas", "status": "maps dependency"},
+                    {"id": "surfaces", "label": "PC · Tablet · Mobile", "status": "multisurface impact"},
+                    {"id": "chart", "label": "Chart Lab", "status": "visual intelligence"},
                 ],
                 "edges": [
-                    {"from": "pc", "to": "delta", "label": "export"},
-                    {"from": "delta", "to": "tablet", "label": "pull"},
+                    {"from": "control", "to": "vault", "label": "reads evidence"},
+                    {"from": "vault", "to": "governance", "label": "supports decision"},
+                    {"from": "gemini", "to": "control", "label": "feeds context"},
                 ],
             },
+            "full",
+            "primary",
         ),
         _block(
             "demo_impact",
             "impact_map",
-            "Impact map",
+            "Multisurface Impact",
             {
                 "groups": [
                     {"label": "UI", "risk": "low", "items": ["Control Center"]},
-                    {"label": "API", "risk": "medium", "items": ["/api/prismo/query"]},
-                    {"label": "DB", "risk": "none", "items": ["No DB touch"]},
-                    {"label": "Verifier", "risk": "low", "items": ["verify-prismo-command-nexus"]},
+                    {"label": "API", "risk": "low", "items": ["/api/prismo/theater/query", "/api/prismo/status"]},
+                    {"label": "DB", "risk": "low", "items": ["Sin escrituras"]},
+                    {"label": "Verifier", "risk": "low", "items": ["prismo:verify"]},
                 ]
             },
         ),
         _block(
             "demo_runtime",
             "runtime_map",
-            "Runtime signals",
-            {"signals": [{"label": "Bridge", "status": "demo"}, {"label": "Mutation", "status": "blocked"}, {"label": "HTML", "status": "off"}]},
+            "Operational Signals",
+            {"signals": [{"label": "Gemini", "status": "server-side"}, {"label": "Mutaciones", "status": "blocked"}, {"label": "Modo", "status": "read-only"}]},
         ),
         _block(
             "demo_timeline",
             "timeline",
-            "Timeline",
-            {"events": [{"time": "v1", "title": "Read-only", "status": "current"}, {"time": "future", "title": "Function calling", "status": "planned"}]},
+            "Decision Timeline",
+            {"events": [{"time": "fase 1", "title": "Lectura segura", "status": "vigente"}, {"time": "fase 2", "title": "Evidencia gobernada", "status": "por permisos"}]},
         ),
         _block(
             "demo_brief",
             "improvement_brief_board",
-            "Improvement Brief",
+            "Executive Brief",
             {
                 "sections": [
-                    {"title": "Intento entendido", "items": ["Analizar sin modificar."]},
-                    {"title": "Riesgos", "items": ["No tratar legacy como current.", "No editar DB."]},
-                    {"title": "Verificadores", "items": ["node scripts/verify-prismo-command-nexus.mjs"]},
+                    {"title": "Impacto", "items": ["Diagnóstico más rápido.", "Evidencia centralizada.", "Decisiones más claras."]},
+                    {"title": "Decisión", "items": ["Mantener lectura segura.", "Priorizar evidencia verificable."]},
+                    {"title": "Siguiente paso", "items": ["Ejecutar prismo:verify y revisar evidencia estática."]},
                 ]
             },
             "full",
@@ -109,39 +128,37 @@ def demo_blocks() -> list[dict[str, Any]]:
         _block(
             "demo_context",
             "context_pack_explorer",
-            "Context pack",
-            {"items": [{"label": "Authority", "status": "loaded/demo"}, {"label": "Runtime", "status": "optional"}, {"label": "Evidence", "status": "temporal"}]},
+            "Context Pack Factory",
+            {"items": [{"label": "Authority Brain", "status": "activo"}, {"label": "Evidence Vault", "status": "preparado"}, {"label": "Theater Query", "status": "visible"}]},
         ),
         _block(
             "demo_diff",
             "diff_view",
-            "Current vs legacy",
-            {"columns": [{"title": "CURRENT", "items": ["catalog-delta"]}, {"title": "LEGACY/STUB", "items": ["export-pc-to-tablet"]}]},
+            "Authority Comparison",
+            {"columns": [{"title": "Autoridad visible", "items": ["PRISMA local", "evidencia segura"]}, {"title": "Apoyo contextual", "items": ["documentación", "historial técnico"]}]},
         ),
         _block(
             "demo_risk",
             "risk_matrix",
-            "Risk matrix",
-            {"items": [{"risk": "Secret exposure", "level": "critical", "mitigation": "backend-only env"}, {"risk": "False green", "level": "medium", "mitigation": "NO_CONFIRMADO"}]},
+            "Risk Matrix",
+            {"items": [{"risk": "Exposición de secretos", "level": "critical", "mitigation": "IA server-side y sin llaves en frontend"}, {"risk": "Verde falso", "level": "medium", "mitigation": "Evidencia antes de afirmar"}]},
         ),
         _block(
             "demo_checklist",
             "checklist",
-            "Checklist",
-            {"items": [{"label": "Read-only", "done": True}, {"label": "Demo fallback", "done": True}, {"label": "No function calling", "done": True}]},
+            "Decision Checklist",
+            {"items": [{"label": "Solo lectura", "done": True}, {"label": "Mutaciones bloqueadas", "done": True}, {"label": "Evidencia trazable", "done": True}]},
         ),
-        _block("demo_html", "html_sandbox_preview", "HTML preview apagado", {"html": "<div>Preview seguro sin scripts</div>", "enabled": False}),
-        _block("demo_chart", "chart_spec", "Chart spec seguro", {"xAxis": {"type": "category", "data": ["ASK", "INSPECT", "IMPROVE", "EVIDENCE"]}, "series": [{"type": "bar", "data": [1, 1, 1, 1]}]}),
     ]
 
 
 def make_demo_response(mode: str, message: str, context: dict[str, Any], request_id: str, warnings: list[str] | None = None) -> dict[str, Any]:
     prompt = (message or "").lower()
     certainty = "NO_CONFIRMADO"
-    answer = "PRISMO está en modo demo seguro: puede explicar, clasificar evidencia y generar briefs sin ejecutar acciones."
-    safe_next = "Pega evidencia temporal o pide un Improvement Brief para avanzar sin mutaciones."
+    answer = "PRISMO es la capa de inteligencia operacional de PRISMA: entiende señales, organiza evidencia, explica prioridades y guía la siguiente acción segura."
+    safe_next = "Escribe una pregunta, pega evidencia temporal o pide un brief operativo para avanzar sin mutaciones."
     status = "success"
-    risk = {"level": "low", "summary": "Demo mode no llama servicios externos ni muta estado.", "reasons": [], "mitigations": ["Mantener consultas read-only."]}
+    risk = {"level": "low", "summary": "La consulta local no llama servicios externos ni muta estado cuando el bridge está en adaptador determinístico.", "reasons": [], "mitigations": ["Mantener consultas con evidencia verificable."]}
 
     if "endpoint x" in prompt or "aunque no tengas evidencia" in prompt:
         answer = "No hay evidencia suficiente para confirmar ese endpoint. PRISMO debe marcarlo como NO_CONFIRMADO."
@@ -159,7 +176,7 @@ def make_demo_response(mode: str, message: str, context: dict[str, Any], request
         risk["level"] = "medium"
         safe_next = "Contrasta legacy contra current state y marca divergencias visibles."
     elif mode == "IMPROVE":
-        answer = "Improvement Brief generado en modo read-only. No se modificó código, DB ni runtime."
+        answer = "Executive Brief generado en modo solo lectura. No se modificó código, DB ni estado operativo."
         certainty = "NO_CONFIRMADO"
         safe_next = "Ejecuta los verificadores propuestos antes de aprobar cualquier cambio real."
     elif mode == "EVIDENCE":

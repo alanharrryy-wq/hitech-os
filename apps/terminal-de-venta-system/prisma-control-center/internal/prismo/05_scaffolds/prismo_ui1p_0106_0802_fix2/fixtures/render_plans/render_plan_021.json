@@ -1,0 +1,179 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-021",
+  "intent": {
+    "objective": "recommend",
+    "domain": "authority_protocols",
+    "lens": "protocols",
+    "scene": "checklist",
+    "freeText": "Pregunta fixture 21 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: recommend authority_protocols",
+    "summary": "Usando protocols y escena checklist."
+  },
+  "blocks": [
+    {
+      "id": "fixture-021-block-00",
+      "type": "evidence_board",
+      "title": "Evidence Board · authority_protocols",
+      "summary": "Escena checklist generada para recommend/authority_protocols/protocols.",
+      "confidence": 0.76,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 48
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 22
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 93
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-021-block-01",
+      "type": "comparison_board",
+      "title": "Comparison Board · authority_protocols",
+      "summary": "Escena checklist generada para recommend/authority_protocols/protocols.",
+      "confidence": 0.93,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 12
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 68
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 89
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 76
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    },
+    {
+      "id": "fixture-021-block-02",
+      "type": "semantic_fact_grid",
+      "title": "Semantic Fact Grid · authority_protocols",
+      "summary": "Escena checklist generada para recommend/authority_protocols/protocols.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 46
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 40
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 77
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 60
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-021-block-03",
+      "type": "decision_summary",
+      "title": "Decision Summary · authority_protocols",
+      "summary": "Escena checklist generada para recommend/authority_protocols/protocols.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 22
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 21
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 16
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 54
+          },
+          {
+            "label": "authority_protocols signal 5",
+            "value": 67
+          },
+          {
+            "label": "authority_protocols signal 6",
+            "value": 96
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-021-block-04",
+      "type": "question_stack",
+      "title": "Question Stack · authority_protocols",
+      "summary": "Escena checklist generada para recommend/authority_protocols/protocols.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "authority_protocols signal 1",
+            "value": 75
+          },
+          {
+            "label": "authority_protocols signal 2",
+            "value": 93
+          },
+          {
+            "label": "authority_protocols signal 3",
+            "value": 44
+          },
+          {
+            "label": "authority_protocols signal 4",
+            "value": 46
+          },
+          {
+            "label": "authority_protocols signal 5",
+            "value": 61
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260551
+  }
+}

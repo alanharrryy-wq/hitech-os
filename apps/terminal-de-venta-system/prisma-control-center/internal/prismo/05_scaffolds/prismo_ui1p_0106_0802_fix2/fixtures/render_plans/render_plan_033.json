@@ -1,0 +1,167 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-033",
+  "intent": {
+    "objective": "investigate",
+    "domain": "evidence_vault",
+    "lens": "runtime",
+    "scene": "chart_spec_preview",
+    "freeText": "Pregunta fixture 33 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: investigate evidence_vault",
+    "summary": "Usando runtime y escena chart_spec_preview."
+  },
+  "blocks": [
+    {
+      "id": "fixture-033-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · evidence_vault",
+      "summary": "Escena chart_spec_preview generada para investigate/evidence_vault/runtime.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 55
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 20
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-033-block-01",
+      "type": "next_action",
+      "title": "Next Action · evidence_vault",
+      "summary": "Escena chart_spec_preview generada para investigate/evidence_vault/runtime.",
+      "confidence": 0.95,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 3
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 64
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 42
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 52
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-033-block-02",
+      "type": "insight_chips",
+      "title": "Insight Chips · evidence_vault",
+      "summary": "Escena chart_spec_preview generada para investigate/evidence_vault/runtime.",
+      "confidence": 0.78,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 92
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 37
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 30
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 29
+          },
+          {
+            "label": "evidence_vault signal 5",
+            "value": 63
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-033-block-03",
+      "type": "operational_status",
+      "title": "Operational Status · evidence_vault",
+      "summary": "Escena chart_spec_preview generada para investigate/evidence_vault/runtime.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 57
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 10
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-033-block-04",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · evidence_vault",
+      "summary": "Escena chart_spec_preview generada para investigate/evidence_vault/runtime.",
+      "confidence": 0.78,
+      "payload": {
+        "items": [
+          {
+            "label": "evidence_vault signal 1",
+            "value": 42
+          },
+          {
+            "label": "evidence_vault signal 2",
+            "value": 99
+          },
+          {
+            "label": "evidence_vault signal 3",
+            "value": 70
+          },
+          {
+            "label": "evidence_vault signal 4",
+            "value": 96
+          },
+          {
+            "label": "evidence_vault signal 5",
+            "value": 9
+          },
+          {
+            "label": "evidence_vault signal 6",
+            "value": 85
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260563
+  }
+}

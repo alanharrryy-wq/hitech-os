@@ -1,0 +1,269 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-019",
+  "intent": {
+    "objective": "summarize",
+    "domain": "system",
+    "lens": "canon",
+    "scene": "evidence_board",
+    "freeText": "Pregunta fixture 19 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: summarize system",
+    "summary": "Usando canon y escena evidence_board."
+  },
+  "blocks": [
+    {
+      "id": "fixture-019-block-00",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 44
+          },
+          {
+            "label": "system signal 2",
+            "value": 20
+          },
+          {
+            "label": "system signal 3",
+            "value": 91
+          },
+          {
+            "label": "system signal 4",
+            "value": 7
+          },
+          {
+            "label": "system signal 5",
+            "value": 59
+          },
+          {
+            "label": "system signal 6",
+            "value": 58
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-01",
+      "type": "action_bar",
+      "title": "Action Bar · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 44
+          },
+          {
+            "label": "system signal 2",
+            "value": 93
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-02",
+      "type": "protocol_ladder",
+      "title": "Protocol Ladder · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 71
+          },
+          {
+            "label": "system signal 2",
+            "value": 67
+          },
+          {
+            "label": "system signal 3",
+            "value": 66
+          },
+          {
+            "label": "system signal 4",
+            "value": 88
+          },
+          {
+            "label": "system signal 5",
+            "value": 67
+          },
+          {
+            "label": "system signal 6",
+            "value": 13
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-03",
+      "type": "memory_card",
+      "title": "Memory Card · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.91,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 82
+          },
+          {
+            "label": "system signal 2",
+            "value": 78
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-04",
+      "type": "decision_summary",
+      "title": "Decision Summary · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.91,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 16
+          },
+          {
+            "label": "system signal 2",
+            "value": 38
+          },
+          {
+            "label": "system signal 3",
+            "value": 94
+          },
+          {
+            "label": "system signal 4",
+            "value": 83
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-05",
+      "type": "question_stack",
+      "title": "Question Stack · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.95,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 88
+          },
+          {
+            "label": "system signal 2",
+            "value": 54
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-06",
+      "type": "next_action",
+      "title": "Next Action · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.94,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 24
+          },
+          {
+            "label": "system signal 2",
+            "value": 6
+          },
+          {
+            "label": "system signal 3",
+            "value": 18
+          },
+          {
+            "label": "system signal 4",
+            "value": 48
+          },
+          {
+            "label": "system signal 5",
+            "value": 99
+          },
+          {
+            "label": "system signal 6",
+            "value": 46
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-019-block-07",
+      "type": "question_stack",
+      "title": "Question Stack · system",
+      "summary": "Escena evidence_board generada para summarize/system/canon.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "system signal 1",
+            "value": 37
+          },
+          {
+            "label": "system signal 2",
+            "value": 99
+          },
+          {
+            "label": "system signal 3",
+            "value": 81
+          },
+          {
+            "label": "system signal 4",
+            "value": 11
+          },
+          {
+            "label": "system signal 5",
+            "value": 72
+          },
+          {
+            "label": "system signal 6",
+            "value": 64
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260549
+  }
+}

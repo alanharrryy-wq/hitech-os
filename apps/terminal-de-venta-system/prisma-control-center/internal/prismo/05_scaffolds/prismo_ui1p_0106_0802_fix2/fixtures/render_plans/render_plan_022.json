@@ -1,0 +1,133 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-022",
+  "intent": {
+    "objective": "prepare_action",
+    "domain": "pos",
+    "lens": "procedural_memory",
+    "scene": "comparison",
+    "freeText": "Pregunta fixture 22 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: prepare_action pos",
+    "summary": "Usando procedural_memory y escena comparison."
+  },
+  "blocks": [
+    {
+      "id": "fixture-022-block-00",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · pos",
+      "summary": "Escena comparison generada para prepare_action/pos/procedural_memory.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 91
+          },
+          {
+            "label": "pos signal 2",
+            "value": 63
+          },
+          {
+            "label": "pos signal 3",
+            "value": 22
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-022-block-01",
+      "type": "timeline",
+      "title": "Timeline · pos",
+      "summary": "Escena comparison generada para prepare_action/pos/procedural_memory.",
+      "confidence": 0.83,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 83
+          },
+          {
+            "label": "pos signal 2",
+            "value": 62
+          },
+          {
+            "label": "pos signal 3",
+            "value": 64
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-022-block-02",
+      "type": "governance_notice",
+      "title": "Governance Notice · pos",
+      "summary": "Escena comparison generada para prepare_action/pos/procedural_memory.",
+      "confidence": 0.88,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 59
+          },
+          {
+            "label": "pos signal 2",
+            "value": 3
+          },
+          {
+            "label": "pos signal 3",
+            "value": 52
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-022-block-03",
+      "type": "question_stack",
+      "title": "Question Stack · pos",
+      "summary": "Escena comparison generada para prepare_action/pos/procedural_memory.",
+      "confidence": 0.82,
+      "payload": {
+        "items": [
+          {
+            "label": "pos signal 1",
+            "value": 77
+          },
+          {
+            "label": "pos signal 2",
+            "value": 82
+          },
+          {
+            "label": "pos signal 3",
+            "value": 2
+          },
+          {
+            "label": "pos signal 4",
+            "value": 94
+          },
+          {
+            "label": "pos signal 5",
+            "value": 95
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260552
+  }
+}

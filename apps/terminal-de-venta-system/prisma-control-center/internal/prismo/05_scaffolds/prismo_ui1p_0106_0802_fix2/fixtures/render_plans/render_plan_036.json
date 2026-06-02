@@ -1,0 +1,231 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-036",
+  "intent": {
+    "objective": "recommend",
+    "domain": "chart_lab",
+    "lens": "vault",
+    "scene": "forensic_trace",
+    "freeText": "Pregunta fixture 36 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: recommend chart_lab",
+    "summary": "Usando vault y escena forensic_trace."
+  },
+  "blocks": [
+    {
+      "id": "fixture-036-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.85,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 21
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 72
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 45
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 3
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 41
+          },
+          {
+            "label": "chart_lab signal 6",
+            "value": 89
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-01",
+      "type": "episodic_trace",
+      "title": "Episodic Trace · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.86,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 3
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 28
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 73
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-02",
+      "type": "checklist",
+      "title": "Checklist · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 8
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 29
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 75
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 88
+          },
+          {
+            "label": "chart_lab signal 5",
+            "value": 30
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-03",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.75,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 13
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 3
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 20
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 79
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-04",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 38
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 73
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 55
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 11
+          }
+        ]
+      },
+      "memoryRefs": [
+        "operational_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-05",
+      "type": "timeline",
+      "title": "Timeline · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.84,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 52
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 4
+          }
+        ]
+      },
+      "memoryRefs": [
+        "working_memory"
+      ]
+    },
+    {
+      "id": "fixture-036-block-06",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · chart_lab",
+      "summary": "Escena forensic_trace generada para recommend/chart_lab/vault.",
+      "confidence": 0.72,
+      "payload": {
+        "items": [
+          {
+            "label": "chart_lab signal 1",
+            "value": 69
+          },
+          {
+            "label": "chart_lab signal 2",
+            "value": 44
+          },
+          {
+            "label": "chart_lab signal 3",
+            "value": 85
+          },
+          {
+            "label": "chart_lab signal 4",
+            "value": 72
+          }
+        ]
+      },
+      "memoryRefs": [
+        "governance_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260566
+  }
+}

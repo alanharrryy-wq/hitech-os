@@ -1,0 +1,152 @@
+# CODEX · 150 mejoras para PRISMO Theater Pro
+
+- [ ] **IMP-001 · Composer / entrada**: Auto reset de dropdowns dependientes cuando cambia objetivo
+- [ ] **IMP-002 · Composer / entrada**: Chips sugeridos generados por objetivo+dominio+lente
+- [ ] **IMP-003 · Composer / entrada**: Atajos de teclado para ejecutar y limpiar
+- [ ] **IMP-004 · Composer / entrada**: Context note con detección de rutas/errores/ZIPs
+- [ ] **IMP-005 · Composer / entrada**: Validación de pregunta vacía con sugerencias
+- [ ] **IMP-006 · Composer / entrada**: Persistencia local de últimas selecciones
+- [ ] **IMP-007 · Composer / entrada**: Recientes por intención
+- [ ] **IMP-008 · Composer / entrada**: Favoritos de consultas
+- [ ] **IMP-009 · Composer / entrada**: Autocompletado de dominios
+- [ ] **IMP-010 · Composer / entrada**: Hint humano por cada lente
+- [ ] **IMP-011 · Composer / entrada**: Badges visuales en opciones
+- [ ] **IMP-012 · Composer / entrada**: Búsqueda dentro de dropdowns si crecen
+- [ ] **IMP-013 · Composer / entrada**: Agrupar opciones por superficie
+- [ ] **IMP-014 · Composer / entrada**: Soporte para pegar error/log y clasificarlo
+- [ ] **IMP-015 · Composer / entrada**: Modo pregunta rápida sin contexto extra
+- [ ] **IMP-016 · Auto Render Ensemble**: Ranking de bloques por relevancia
+- [ ] **IMP-017 · Auto Render Ensemble**: Dedupe de bloques parecidos
+- [ ] **IMP-018 · Auto Render Ensemble**: Colapsar bloques técnicos por defecto
+- [ ] **IMP-019 · Auto Render Ensemble**: Mostrar tabs sólo si hay contenido
+- [ ] **IMP-020 · Auto Render Ensemble**: No renderizar raw JSON primario
+- [ ] **IMP-021 · Auto Render Ensemble**: Priorizar next action sobre data dumps
+- [ ] **IMP-022 · Auto Render Ensemble**: Elegir risk matrix sólo si hay riesgo
+- [ ] **IMP-023 · Auto Render Ensemble**: Elegir timeline si hay historial
+- [ ] **IMP-024 · Auto Render Ensemble**: Elegir flow diagram si hay proceso
+- [ ] **IMP-025 · Auto Render Ensemble**: Elegir evidence board si hay evidencia
+- [ ] **IMP-026 · Auto Render Ensemble**: Elegir comparison board sólo si se compara
+- [ ] **IMP-027 · Auto Render Ensemble**: Elegir protocol ladder si hay protocolo
+- [ ] **IMP-028 · Auto Render Ensemble**: Fallback a executive brief si hay poca data
+- [ ] **IMP-029 · Auto Render Ensemble**: Score de confianza por bloque
+- [ ] **IMP-030 · Auto Render Ensemble**: Rastro de por qué se eligió cada bloque
+- [ ] **IMP-031 · Memorias**: Memoria procedural como criterio visible
+- [ ] **IMP-032 · Memorias**: Memoria episódica para aprender de fixes
+- [ ] **IMP-033 · Memorias**: Memoria semántica para términos humanos
+- [ ] **IMP-034 · Memorias**: Memoria visual para Cloudglass
+- [ ] **IMP-035 · Memorias**: Memoria governance para no-go
+- [ ] **IMP-036 · Memorias**: Working memory por consulta
+- [ ] **IMP-037 · Memorias**: Operational memory para estado actual
+- [ ] **IMP-038 · Memorias**: Memory trace colapsable
+- [ ] **IMP-039 · Memorias**: Feedback alimenta memoria
+- [ ] **IMP-040 · Memorias**: Guardar “esto sirvió” como señal
+- [ ] **IMP-041 · Memorias**: Guardar “esto no sirvió” como anti patrón
+- [ ] **IMP-042 · Memorias**: Asociar protocolo con resultado
+- [ ] **IMP-043 · Memorias**: Evitar repetir fixes fallidos
+- [ ] **IMP-044 · Memorias**: Priorizar episodios recientes PASS
+- [ ] **IMP-045 · Memorias**: Penalizar evidencias UNKNOWN antiguas
+- [ ] **IMP-046 · HTTP / backend contract**: Endpoint único theater/query
+- [ ] **IMP-047 · HTTP / backend contract**: Adapter sobre endpoints existentes
+- [ ] **IMP-048 · HTTP / backend contract**: Timeout por subconsulta
+- [ ] **IMP-049 · HTTP / backend contract**: Partial response si un endpoint falla
+- [ ] **IMP-050 · HTTP / backend contract**: Trace técnico por fetch
+- [ ] **IMP-051 · HTTP / backend contract**: No veinte fetchs desde UI
+- [ ] **IMP-052 · HTTP / backend contract**: Cache corta para status
+- [ ] **IMP-053 · HTTP / backend contract**: Retry sólo en endpoints seguros
+- [ ] **IMP-054 · HTTP / backend contract**: Normalización de payloads viejos
+- [ ] **IMP-055 · HTTP / backend contract**: Validación de render_plan
+- [ ] **IMP-056 · HTTP / backend contract**: Sanitización de paths visibles
+- [ ] **IMP-057 · HTTP / backend contract**: No exponer secretos
+- [ ] **IMP-058 · HTTP / backend contract**: Transformar safe flags en copy humano
+- [ ] **IMP-059 · HTTP / backend contract**: Reportar endpoint health
+- [ ] **IMP-060 · HTTP / backend contract**: Contrato JSON versionado
+- [ ] **IMP-061 · Render blocks**: Hero response premium
+- [ ] **IMP-062 · Render blocks**: Executive brief
+- [ ] **IMP-063 · Render blocks**: Next best action
+- [ ] **IMP-064 · Render blocks**: Protocol ladder
+- [ ] **IMP-065 · Render blocks**: Procedural steps
+- [ ] **IMP-066 · Render blocks**: Evidence board
+- [ ] **IMP-067 · Render blocks**: Risk matrix
+- [ ] **IMP-068 · Render blocks**: Timeline
+- [ ] **IMP-069 · Render blocks**: Flow diagram
+- [ ] **IMP-070 · Render blocks**: Comparison board
+- [ ] **IMP-071 · Render blocks**: Memory trace
+- [ ] **IMP-072 · Render blocks**: Technical drawer
+- [ ] **IMP-073 · Render blocks**: Action bar
+- [ ] **IMP-074 · Render blocks**: Feedback panel
+- [ ] **IMP-075 · Render blocks**: Glass health card
+- [ ] **IMP-076 · Visual / Cloudglass**: Presets anti-opacidad
+- [ ] **IMP-077 · Visual / Cloudglass**: Dropdowns cristal verde
+- [ ] **IMP-078 · Visual / Cloudglass**: Specular highlights
+- [ ] **IMP-079 · Visual / Cloudglass**: Hairline obligatorio
+- [ ] **IMP-080 · Visual / Cloudglass**: Glow budget
+- [ ] **IMP-081 · Visual / Cloudglass**: Motion de entrada
+- [ ] **IMP-082 · Visual / Cloudglass**: Motion de cambio de bloques
+- [ ] **IMP-083 · Visual / Cloudglass**: Reduced motion bonito
+- [ ] **IMP-084 · Visual / Cloudglass**: Fondos graphite/refrigerant
+- [ ] **IMP-085 · Visual / Cloudglass**: Scrim balanceado
+- [ ] **IMP-086 · Visual / Cloudglass**: No blur sobre texto
+- [ ] **IMP-087 · Visual / Cloudglass**: Drawer hidroglass
+- [ ] **IMP-088 · Visual / Cloudglass**: Error coral glass
+- [ ] **IMP-089 · Visual / Cloudglass**: Evidence luminous board
+- [ ] **IMP-090 · Visual / Cloudglass**: Scene preview strip
+- [ ] **IMP-091 · Estados de producto**: Empty state premium
+- [ ] **IMP-092 · Estados de producto**: Loading thinking scene
+- [ ] **IMP-093 · Estados de producto**: Response ready
+- [ ] **IMP-094 · Estados de producto**: Partial data
+- [ ] **IMP-095 · Estados de producto**: No evidence found
+- [ ] **IMP-096 · Estados de producto**: Recoverable error
+- [ ] **IMP-097 · Estados de producto**: Technical drawer open
+- [ ] **IMP-098 · Estados de producto**: Action prepared
+- [ ] **IMP-099 · Estados de producto**: Feedback saved
+- [ ] **IMP-100 · Estados de producto**: Endpoint degraded
+- [ ] **IMP-101 · Estados de producto**: Memory unavailable
+- [ ] **IMP-102 · Estados de producto**: Evidence stale
+- [ ] **IMP-103 · Estados de producto**: Protocol not found
+- [ ] **IMP-104 · Estados de producto**: Governance warning
+- [ ] **IMP-105 · Estados de producto**: Visual QA pending
+- [ ] **IMP-106 · QA / verificación**: Screenshots obligatorios
+- [ ] **IMP-107 · QA / verificación**: Verificar dropdowns 3 no 4
+- [ ] **IMP-108 · QA / verificación**: Verificar no forbidden labels
+- [ ] **IMP-109 · QA / verificación**: Verificar render blocks válidos
+- [ ] **IMP-110 · QA / verificación**: Verificar presets JSON
+- [ ] **IMP-111 · QA / verificación**: Verificar CSS anti opacidad
+- [ ] **IMP-112 · QA / verificación**: Verificar no DB touched
+- [ ] **IMP-113 · QA / verificación**: Verificar no .env
+- [ ] **IMP-114 · QA / verificación**: Verificar no deploy
+- [ ] **IMP-115 · QA / verificación**: Verificar rollback
+- [ ] **IMP-116 · QA / verificación**: Verificar result/fail zip
+- [ ] **IMP-117 · QA / verificación**: Verificar contracts parse
+- [ ] **IMP-118 · QA / verificación**: Verificar TSX compila si se integra
+- [ ] **IMP-119 · QA / verificación**: Verificar endpoint query
+- [ ] **IMP-120 · QA / verificación**: Verificar feedback endpoint
+- [ ] **IMP-121 · Codex workflow**: No improvisar nombres
+- [ ] **IMP-122 · Codex workflow**: Detectar archivos reales antes de tocar
+- [ ] **IMP-123 · Codex workflow**: Usar scaffold como canon
+- [ ] **IMP-124 · Codex workflow**: Registrar archivos tocados
+- [ ] **IMP-125 · Codex workflow**: Patch reversible
+- [ ] **IMP-126 · Codex workflow**: Separar integración de visual
+- [ ] **IMP-127 · Codex workflow**: No reescribir core learning
+- [ ] **IMP-128 · Codex workflow**: No tocar store evidencia
+- [ ] **IMP-129 · Codex workflow**: No correr learn5 salvo orden
+- [ ] **IMP-130 · Codex workflow**: Generar CONTINUATION
+- [ ] **IMP-131 · Codex workflow**: Crear reportes humanos
+- [ ] **IMP-132 · Codex workflow**: Incluir riesgos
+- [ ] **IMP-133 · Codex workflow**: Incluir comandos rollback
+- [ ] **IMP-134 · Codex workflow**: Hacer visual evidence
+- [ ] **IMP-135 · Codex workflow**: No fake green
+- [ ] **IMP-136 · Robustez adicional**: Agregar guardrail incremental #136 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-137 · Robustez adicional**: Agregar guardrail incremental #137 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-138 · Robustez adicional**: Agregar guardrail incremental #138 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-139 · Robustez adicional**: Agregar guardrail incremental #139 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-140 · Robustez adicional**: Agregar guardrail incremental #140 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-141 · Robustez adicional**: Agregar guardrail incremental #141 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-142 · Robustez adicional**: Agregar guardrail incremental #142 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-143 · Robustez adicional**: Agregar guardrail incremental #143 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-144 · Robustez adicional**: Agregar guardrail incremental #144 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-145 · Robustez adicional**: Agregar guardrail incremental #145 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-146 · Robustez adicional**: Agregar guardrail incremental #146 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-147 · Robustez adicional**: Agregar guardrail incremental #147 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-148 · Robustez adicional**: Agregar guardrail incremental #148 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-149 · Robustez adicional**: Agregar guardrail incremental #149 para preservar Theater vivo, glass claro y respuesta conectada a motor
+- [ ] **IMP-150 · Robustez adicional**: Agregar guardrail incremental #150 para preservar Theater vivo, glass claro y respuesta conectada a motor

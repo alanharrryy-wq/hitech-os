@@ -1,0 +1,209 @@
+{
+  "schema": "prismo.render_plan.fixture.v2",
+  "id": "ui1p-render-plan-027",
+  "intent": {
+    "objective": "summarize",
+    "domain": "tablet",
+    "lens": "episodic_memory",
+    "scene": "checklist",
+    "freeText": "Pregunta fixture 27 para validar PRISMO Theater"
+  },
+  "hero": {
+    "title": "PRISMO responde: summarize tablet",
+    "summary": "Usando episodic_memory y escena checklist."
+  },
+  "blocks": [
+    {
+      "id": "fixture-027-block-00",
+      "type": "chart_spec_preview",
+      "title": "Chart Spec Preview · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 42
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 8
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 34
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 65
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 90
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-027-block-01",
+      "type": "flow_diagram",
+      "title": "Flow Diagram · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.81,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 31
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 9
+          }
+        ]
+      },
+      "memoryRefs": [
+        "visual_memory"
+      ]
+    },
+    {
+      "id": "fixture-027-block-02",
+      "type": "detail_drawer",
+      "title": "Detail Drawer · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.73,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 92
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 3
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 56
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 40
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 56
+          },
+          {
+            "label": "tablet signal 6",
+            "value": 38
+          }
+        ]
+      },
+      "memoryRefs": [
+        "semantic_memory"
+      ]
+    },
+    {
+      "id": "fixture-027-block-03",
+      "type": "risk_matrix",
+      "title": "Risk Matrix · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.74,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 15
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 40
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 71
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 81
+          },
+          {
+            "label": "tablet signal 5",
+            "value": 87
+          },
+          {
+            "label": "tablet signal 6",
+            "value": 6
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-027-block-04",
+      "type": "timeline",
+      "title": "Timeline · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.89,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 22
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 64
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 81
+          },
+          {
+            "label": "tablet signal 4",
+            "value": 45
+          }
+        ]
+      },
+      "memoryRefs": [
+        "procedural_memory"
+      ]
+    },
+    {
+      "id": "fixture-027-block-05",
+      "type": "recommendation_ladder",
+      "title": "Recommendation Ladder · tablet",
+      "summary": "Escena checklist generada para summarize/tablet/episodic_memory.",
+      "confidence": 0.95,
+      "payload": {
+        "items": [
+          {
+            "label": "tablet signal 1",
+            "value": 39
+          },
+          {
+            "label": "tablet signal 2",
+            "value": 89
+          },
+          {
+            "label": "tablet signal 3",
+            "value": 99
+          }
+        ]
+      },
+      "memoryRefs": [
+        "episodic_memory"
+      ]
+    }
+  ],
+  "trace": {
+    "fixture": true,
+    "seed": 20260557
+  }
+}

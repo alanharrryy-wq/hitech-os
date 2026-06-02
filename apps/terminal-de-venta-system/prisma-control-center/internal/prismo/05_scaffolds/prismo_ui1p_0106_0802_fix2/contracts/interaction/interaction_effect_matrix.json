@@ -1,0 +1,205 @@
+{
+  "schema": "prismo.ui1p.interaction_effect_matrix.v2",
+  "package": "prismo ui1p 0106 0802 fix2",
+  "intent": "Codex must exploit available libraries as governed interaction effects, not random dependency glitter.",
+  "global_rules": [
+    "No static mock UI as final wiring: every primary visual must connect to Theater Query or render_plan contract.",
+    "No removed format selector: output format is selected by Auto Render Ensemble.",
+    "Every interaction has a semantic reason: navigate, reveal, compare, confirm, explain, filter, save feedback, or prepare action.",
+    "No strong glow on more than one primary action per viewport.",
+    "No raw_html/script/iframe render blocks.",
+    "Never solve opacity by raising solid fill; use alpha, hairline, highlight, shadow and scrim budget."
+  ],
+  "libraries": [
+    {
+      "id": "css_custom_properties",
+      "role": "token physics",
+      "implementation_policy": "Expose every alpha/blur/radius/glow/motion value as variables; never hardcode local colors.",
+      "best_use": "global tokens, visual budget, theme switches"
+    },
+    {
+      "id": "tailwind_v4",
+      "role": "responsive composition",
+      "implementation_policy": "Use utility classes only as token consumers; avoid arbitrary color soup.",
+      "best_use": "layout density, grids, glass states"
+    },
+    {
+      "id": "radix_ui",
+      "role": "accessible primitives",
+      "implementation_policy": "Use Select, Dialog, Popover, Tabs, Tooltip, Accordion; preserve focus/aria/keyboard behavior.",
+      "best_use": "dependent selects, technical drawer, filters"
+    },
+    {
+      "id": "shadcn_ui",
+      "role": "component skeletons",
+      "implementation_policy": "Use as structural seed only; skin fully with PRISMO recipes.",
+      "best_use": "buttons, forms, cards"
+    },
+    {
+      "id": "class_variance_authority",
+      "role": "variant discipline",
+      "implementation_policy": "Define material/tone/density/state variants for all major components.",
+      "best_use": "button/card/select/block variants"
+    },
+    {
+      "id": "clsx_tailwind_merge",
+      "role": "safe class composition",
+      "implementation_policy": "Prevent class conflicts and cursed class concatenation.",
+      "best_use": "component state classes"
+    },
+    {
+      "id": "motion_for_react",
+      "role": "microinteraction layer",
+      "implementation_policy": "Use for hover/press/layout transitions, staged block reveal, reorder animations.",
+      "best_use": "cards, dropdowns, drawers, tabs"
+    },
+    {
+      "id": "gsap",
+      "role": "choreographed timelines",
+      "implementation_policy": "Use for Theater intro, background drift, premium response reveal; not every hover.",
+      "best_use": "stage intro, timeline tours"
+    },
+    {
+      "id": "svg_filters",
+      "role": "refractive rims",
+      "implementation_policy": "Use subtle hydro rim pseudo-elements and select/dropdown refractive borders; never distort text.",
+      "best_use": "glass rim, active capsules"
+    },
+    {
+      "id": "three_r3f_drei_postprocessing",
+      "role": "rare physical glass",
+      "implementation_policy": "Blueprint only for future hero object; not in dense UI.",
+      "best_use": "optional splash/landing visual"
+    },
+    {
+      "id": "echarts_echarts_gl",
+      "role": "data visualization",
+      "implementation_policy": "Render charts only when question benefits from chart; include question/action context.",
+      "best_use": "mini charts, risk map, evidence heat"
+    },
+    {
+      "id": "tanstack_table",
+      "role": "headless data grids",
+      "implementation_policy": "Use for technical drawer tables and evidence filtering, not main hero.",
+      "best_use": "evidence table, trace table"
+    },
+    {
+      "id": "react_hook_form",
+      "role": "performant form state",
+      "implementation_policy": "Use for composer validation and dirty/submitted state if wiring is React.",
+      "best_use": "composer state"
+    },
+    {
+      "id": "zod",
+      "role": "schema validation",
+      "implementation_policy": "Validate Theater Query input/output and render blocks at boundaries.",
+      "best_use": "contracts, endpoint adapter"
+    },
+    {
+      "id": "sonner",
+      "role": "toast feedback",
+      "implementation_policy": "Show high-quality glass toasts for saved feedback, query success, recoverable errors.",
+      "best_use": "feedback loop, endpoint errors"
+    },
+    {
+      "id": "cmdk",
+      "role": "command/search",
+      "implementation_policy": "Add command palette for quick prompts, jumping between memories, evidence, protocols.",
+      "best_use": "quick command"
+    },
+    {
+      "id": "vaul",
+      "role": "drawer feel",
+      "implementation_policy": "Use for detail/evidence drawer, especially tablet/touch.",
+      "best_use": "technical drawer"
+    },
+    {
+      "id": "resizable_panels",
+      "role": "workbench layout",
+      "implementation_policy": "Allow optional resizing of composer/theater/detail without turning app into cockpit.",
+      "best_use": "Theater layout"
+    },
+    {
+      "id": "lucide_react",
+      "role": "icons",
+      "implementation_policy": "Use consistent line icons with labels/tooltips; avoid mystery icon-only nav.",
+      "best_use": "block headers, actions"
+    },
+    {
+      "id": "date_fns_day_picker",
+      "role": "date UX",
+      "implementation_policy": "Use when evidence/historial needs date filter; no raw timestamps by default.",
+      "best_use": "evidence temporal filters"
+    },
+    {
+      "id": "next_themes",
+      "role": "skin orchestration",
+      "implementation_policy": "Support presentation/performance/reduced-intensity skins from tokens.",
+      "best_use": "visual intensity modes"
+    },
+    {
+      "id": "pixi_js",
+      "role": "ambient displacement",
+      "implementation_policy": "Only for background vapor if already installed and route budget allows; never content distortion.",
+      "best_use": "ambient background"
+    },
+    {
+      "id": "embla_carousel_react",
+      "role": "horizontal block rail",
+      "implementation_policy": "Optional swipeable suggestions/block variants; no forced carousel for core reading.",
+      "best_use": "suggested questions"
+    },
+    {
+      "id": "input_otp",
+      "role": "compact segmented input",
+      "implementation_policy": "Optional only for short codes/run IDs if needed.",
+      "best_use": "run id lookup"
+    }
+  ],
+  "interaction_layers": {
+    "L0_tokens": [
+      "css_custom_properties",
+      "tailwind_v4",
+      "class_variance_authority",
+      "clsx_tailwind_merge"
+    ],
+    "L1_accessible_controls": [
+      "radix_ui",
+      "react_hook_form",
+      "zod"
+    ],
+    "L2_motion_feedback": [
+      "motion_for_react",
+      "sonner"
+    ],
+    "L3_atmosphere": [
+      "gsap",
+      "svg_filters",
+      "pixi_js"
+    ],
+    "L4_data_blocks": [
+      "echarts_echarts_gl",
+      "tanstack_table",
+      "date_fns_day_picker"
+    ],
+    "L5_advanced_layout": [
+      "cmdk",
+      "vaul",
+      "resizable_panels",
+      "embla_carousel_react"
+    ],
+    "L6_optional_showpiece": [
+      "three_r3f_drei_postprocessing"
+    ]
+  },
+  "must_implement": [
+    "Dependent Radix Select blueprint for objective/domain/lens.",
+    "Command palette blueprint using cmdk for suggested questions and protocol jumps.",
+    "Vaul-style evidence drawer blueprint with touch-friendly snap points.",
+    "Motion staged reveal for render blocks with reduced-motion fallback.",
+    "Sonner-style feedback toasts for saved/useful/not useful actions.",
+    "ECharts mini preview block for evidence/time/risk when render_plan includes chart_spec_preview.",
+    "TanStack table blueprint only inside technical drawer for evidence rows.",
+    "Zod boundary schemas for Theater Query and Render Block payloads."
+  ]
+}
