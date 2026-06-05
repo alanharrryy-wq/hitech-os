@@ -23,7 +23,9 @@ export type PrismaSurfaceRuntimeDecision = {
   };
 };
 
-const SURFACE = "tablet";
+type PrismaSurfaceRuntimeSurface = "tablet" | "mobile" | "web";
+
+const SURFACE = "tablet" as PrismaSurfaceRuntimeSurface;
 
 export function evaluatePrismaSurfaceRuntime(route: string): PrismaSurfaceRuntimeDecision {
   const normalizedRoute = route || "/";
