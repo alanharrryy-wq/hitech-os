@@ -81,6 +81,11 @@ export type TicketEvidence = {
 
 export const POS_CART_STORAGE_KEY = "prisma.tablet.pos.activeCart.v2";
 
+function emitCartUpdated(lines: CartLine[]) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("prisma:tablet-cart-updated", { detail: { lines } }));
+}
+
 export function formatMoney(cents: number | null | undefined) {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format((cents ?? 0) / 100);
 }
@@ -115,14 +120,17 @@ export function writeCartToStorage(lines: CartLine[]) {
   if (typeof window === "undefined") return;
   if (!lines.length) {
     window.localStorage.removeItem(POS_CART_STORAGE_KEY);
+    emitCartUpdated([]);
     return;
   }
   window.localStorage.setItem(POS_CART_STORAGE_KEY, JSON.stringify(lines));
+  emitCartUpdated(lines);
 }
 
 export function clearCartStorage() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(POS_CART_STORAGE_KEY);
+  emitCartUpdated([]);
 }
 
 export async function requestJson<T>(url: string, init?: RequestInit): Promise<ApiOk<T>> {
