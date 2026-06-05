@@ -34,6 +34,10 @@ function mustNot(rel, needle) {
   const text = read(rel);
   if (text.includes(needle)) failures.push(`${rel} should not include ${needle}`);
 }
+function mustMatch(rel, pattern, label) {
+  const text = read(rel);
+  if (!pattern.test(text)) failures.push(`${rel} missing ${label}`);
+}
 
 for (const rel of required) read(rel);
 mustNot("components/pos/pos-ticket-panel.tsx", "href={lines.length ? \"/checkout\"");
@@ -48,7 +52,7 @@ must("src/lib/pos/payment-session.ts", "resolvePaymentSessionContext");
 must("src/server/pos-api/validators.ts", "INVALID_PAYMENT_METHOD");
 must("src/server/pos-engine/repository.prisma.ts", "paymentMethod");
 must("src/server/pos-engine/event-factory.ts", "paymentMethod");
-must("prisma/schema.prisma", "paymentMethod String");
+mustMatch("prisma/schema.prisma", /\bpaymentMethod\s+String\b/, "paymentMethod String field");
 must("prisma/schema.prisma", "cashReceivedCents Int?");
 must("prisma/schema.prisma", "changeCents");
 
