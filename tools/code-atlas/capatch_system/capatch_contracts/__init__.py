@@ -1,0 +1,77 @@
+from __future__ import annotations
+
+"""Canonical contracts for CAPATCH v6 Phase 0."""
+
+from .versions import (
+    BASELINE_SCHEMA_VERSION,
+    CAPATCH_ARCH_SPEC_VERSION,
+    CAPATCH_PLUGIN_RUNTIME_VERSION,
+    CAPATCH_SYSTEM_TARGET_VERSION,
+    INTERVENTION_GATE_SCHEMA_VERSION,
+    PATCH_OPERATION_SCHEMA_VERSION,
+    PATCH_RUN_SCHEMA_VERSION,
+    PLUGIN_PAYLOAD_SCHEMA_VERSION,
+    VERIFICATION_RESULT_SCHEMA_VERSION,
+)
+from .constants import (
+    BACKUP_DIR_NAME,
+    DEFAULT_COMMAND_TIMEOUT_SECONDS,
+    DEFAULT_ENCODING,
+    DEFAULT_GIT_DIRTY_FILE_SOFT_LIMIT,
+    DEFAULT_HASH_ALGORITHM,
+    DEFAULT_LINE_ENDING,
+    DEFAULT_MAX_ARTIFACT_FILES,
+    DEFAULT_MAX_FIX_PROPOSALS_TO_EXECUTE,
+    DEFAULT_MAX_LOG_BYTES,
+    DEFAULT_MAX_LOG_LINES,
+    DEFAULT_MAX_TAIL_FILES,
+    DEFAULT_REPORT_BUNDLE_FORMAT,
+    DEFAULT_ROOT_DIR,
+    PLUGIN_ACTIVE_DIR_NAME,
+    PLUGIN_ARCHIVE_DIR_NAME,
+    PLUGIN_DEFAULT_TAIL_LINES,
+    PLUGIN_DIR_NAME,
+    PLUGIN_DISABLED_DIR_NAME,
+    PLUGIN_DISABLED_NAME,
+    PLUGIN_LOGS_DIR_NAME,
+    PLUGIN_QUARANTINE_DIR_NAME,
+    PLUGIN_REGISTRY_NAME,
+    PLUGIN_TEMPLATES_DIR_NAME,
+)
+from .directories import MANDATORY_OUTPUT_FILES, REPORT_DIRS, build_mandatory_output_paths, build_report_paths
+from .enums import (
+    APP_KINDS,
+    ARTIFACT_CATEGORIES,
+    EXECUTION_MODES,
+    PLUGIN_KINDS,
+    PRIORITIES,
+    RISK_LEVELS,
+    RISK_TIERS,
+    RUNTIME_PHASES,
+    SEVERITIES,
+)
+from .operations import (
+    INT_FIELD_NAMES,
+    MUTATING_OPERATION_TYPES,
+    PATCH_OPERATION_TYPES,
+    READ_ONLY_OPERATION_TYPES,
+    REGEX_FLAG_NAMES,
+    REQUIRED_FIELDS,
+    REQUIRED_FIELDS_BY_OPERATION,
+    SEMANTIC_OPERATION_TYPES,
+    SUPPORT_FIELDS_BY_OPERATION,
+    TEXT_FIELD_NAMES,
+    OperationSpec,
+    build_operation_spec,
+    normalize_operation_payload,
+)
+from .report_catalog import REPORT_FILE_OWNERS
+from .result_status import INTERVENTION_GATE_STATUS, PATCH_RESULT_STATUS, SYSTEM_RESULT_STATUS
+
+__all__ = [name for name in globals() if name.isupper() or name in {
+    'OperationSpec',
+    'build_operation_spec',
+    'normalize_operation_payload',
+    'build_report_paths',
+    'build_mandatory_output_paths',
+}]

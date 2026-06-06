@@ -1,0 +1,177 @@
+[
+  {
+    "type": "EnsureInsertAfterExact",
+    "label": "imports add cast",
+    "file": "code-atlas.py",
+    "anchor": "from typing import Any, Callable, Iterable, Iterator, Literal, Optional",
+    "insert_text": "\nfrom typing import cast"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt attr transparent mouse events",
+    "file": "code-atlas.py",
+    "old_text": "Qt.WA_TransparentForMouseEvents",
+    "new_text": "Qt.WidgetAttribute.WA_TransparentForMouseEvents"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt attr styled background",
+    "file": "code-atlas.py",
+    "old_text": "Qt.WA_StyledBackground",
+    "new_text": "Qt.WidgetAttribute.WA_StyledBackground"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt attr hover",
+    "file": "code-atlas.py",
+    "old_text": "Qt.WA_Hover",
+    "new_text": "Qt.WidgetAttribute.WA_Hover"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt attr translucent background",
+    "file": "code-atlas.py",
+    "old_text": "Qt.WA_TranslucentBackground",
+    "new_text": "Qt.WidgetAttribute.WA_TranslucentBackground"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt no pen",
+    "file": "code-atlas.py",
+    "old_text": "Qt.NoPen",
+    "new_text": "Qt.PenStyle.NoPen"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qpainter antialiasing",
+    "file": "code-atlas.py",
+    "old_text": "QPainter.Antialiasing",
+    "new_text": "QPainter.RenderHint.Antialiasing"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qpainter smooth pixmap",
+    "file": "code-atlas.py",
+    "old_text": "QPainter.SmoothPixmapTransform",
+    "new_text": "QPainter.RenderHint.SmoothPixmapTransform"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qevent enter",
+    "file": "code-atlas.py",
+    "old_text": "QEvent.Enter",
+    "new_text": "QEvent.Type.Enter"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qevent hover enter",
+    "file": "code-atlas.py",
+    "old_text": "QEvent.HoverEnter",
+    "new_text": "QEvent.Type.HoverEnter"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qevent leave",
+    "file": "code-atlas.py",
+    "old_text": "QEvent.Leave",
+    "new_text": "QEvent.Type.Leave"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qevent hover leave",
+    "file": "code-atlas.py",
+    "old_text": "QEvent.HoverLeave",
+    "new_text": "QEvent.Type.HoverLeave"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt size bdiag cursor",
+    "file": "code-atlas.py",
+    "old_text": "Qt.SizeBDiagCursor",
+    "new_text": "Qt.CursorShape.SizeBDiagCursor"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt size fdiag cursor",
+    "file": "code-atlas.py",
+    "old_text": "Qt.SizeFDiagCursor",
+    "new_text": "Qt.CursorShape.SizeFDiagCursor"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt round cap",
+    "file": "code-atlas.py",
+    "old_text": "Qt.RoundCap",
+    "new_text": "Qt.PenCapStyle.RoundCap"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt no brush",
+    "file": "code-atlas.py",
+    "old_text": "Qt.NoBrush",
+    "new_text": "Qt.BrushStyle.NoBrush"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "qt left button",
+    "file": "code-atlas.py",
+    "old_text": "Qt.LeftButton",
+    "new_text": "Qt.MouseButton.LeftButton"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "ensure_app return cast",
+    "file": "code-atlas.py",
+    "old_text": "    return app",
+    "new_text": "    return cast(QApplication, app)"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "setGraphicsEffect none cast",
+    "file": "code-atlas.py",
+    "old_text": "        widget.setGraphicsEffect(None)",
+    "new_text": "        widget.setGraphicsEffect(cast(Any, None))"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "rename duplicate _clean_text",
+    "file": "code-atlas.py",
+    "old_text": "def _clean_text(value: Any) -> str:",
+    "new_text": "def _clean_text_ui(value: Any) -> str:"
+  },
+  {
+    "type": "ReplaceExactMany",
+    "label": "update _clean_text_ui callsites",
+    "file": "code-atlas.py",
+    "old_text": "_clean_text(",
+    "new_text": "_clean_text_ui("
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "keep original clean_text calls",
+    "file": "code-atlas.py",
+    "old_text": "def _clean_text_ui_ui(value: Any) -> str:",
+    "new_text": "def _clean_text_ui(value: Any) -> str:"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "return frosted backdrop precise type",
+    "file": "code-atlas.py",
+    "old_text": "    return layout, panel, backdrop",
+    "new_text": "    return layout, panel, cast(FrostedGlassBackdrop, backdrop)"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "drawLine QPointF x axis",
+    "file": "code-atlas.py",
+    "old_text": "            painter.drawLine(x - cross, y, x + cross, y)",
+    "new_text": "            painter.drawLine(QPointF(x - cross, y), QPointF(x + cross, y))"
+  },
+  {
+    "type": "EnsureReplaceExactOnce",
+    "label": "drawLine QPointF y axis",
+    "file": "code-atlas.py",
+    "old_text": "            painter.drawLine(x, y - cross, x, y + cross)",
+    "new_text": "            painter.drawLine(QPointF(x, y - cross), QPointF(x, y + cross))"
+  }
+]

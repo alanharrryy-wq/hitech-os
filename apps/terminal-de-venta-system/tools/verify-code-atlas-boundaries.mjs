@@ -50,6 +50,10 @@ function scanBrowserViolations() {
     for (const filePath of walkFiles(root, { allowExt: [".ts", ".tsx", ".js", ".jsx", ".mjs"] })) {
       if (allowSegments.some((segment) => filePath.includes(segment))) continue;
       const text = fs.readFileSync(filePath, "utf8");
+      // PRISMA_SURF_FIN2_SERVER_ONLY_BROWSER_SURFACE_GUARD:
+      // Next.js files that explicitly import `server-only` may live under app/
+      // while still being server runtime modules. Do not classify them as browser surfaces.
+      if (/^\s*import\s+["']server-only["'];?/m.test(text) || text.includes("server-only")) continue;
       const rel = path.relative(terminalRoot, filePath);
       for (const pattern of patterns) {
         if (pattern.regex.test(text)) violations.push({ file: rel, pattern: pattern.name });

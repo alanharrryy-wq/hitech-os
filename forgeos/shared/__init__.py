@@ -1,2 +1,1 @@
-"""Shared ForgeOS modules available across tools and products."""
-
+"""ForgeOS shared local support package."""
