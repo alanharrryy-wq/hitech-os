@@ -1,14 +1,28 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@hitech/ui-kit": ["packages/ui-kit/src/index.ts"],
-      "@hitech/ui-kit/*": ["packages/ui-kit/src/*"],
-      "@hitech/contracts": ["packages/contracts/src/index.ts"],
-      "@hitech/contracts/*": ["packages/contracts/src/*"]
+      "@hitech/ui-kit": [
+        "./packages/ui-kit/src/index.ts"
+      ],
+      "@hitech/ui-kit/*": [
+        "./packages/ui-kit/src/*"
+      ],
+      "@hitech/contracts": [
+        "./packages/contracts/src/index.ts"
+      ],
+      "@hitech/contracts/*": [
+        "./packages/contracts/src/*"
+      ]
     }
   },
   "files": [],
-  "references": [{ "path": "./packages/contracts" }, { "path": "./packages/ui-kit" }]
+  "references": [
+    {
+      "path": "./packages/contracts"
+    },
+    {
+      "path": "./packages/ui-kit"
+    }
+  ]
 }

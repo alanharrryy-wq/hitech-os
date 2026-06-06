@@ -1,13 +1,13 @@
 {
   "version": "20260506_v06",
   "status": "READY",
-  "generated_at": "2026-05-11T02:19:17.505418+00:00",
+  "generated_at": "2026-06-06T00:19:26.693661+00:00",
   "roots": {
     "target_root": "F:\\repos\\hitech-os",
     "terminal_root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
     "repo_root": "F:\\repos\\hitech-os",
     "tablet_db": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\data\\tablet-pos.db",
-    "pc_db": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db"
+    "pc_db": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\data\\canonical.db"
   },
   "latest_bridge_summary": "F:\\descargasf\\prisma_tri_db_bridge_20260510_201917.json",
   "latest_bridge_status": "READY",
@@ -23,53 +23,50 @@
       "Business": 1,
       "Store": 1,
       "Terminal": 2,
-      "Product": 145,
-      "Barcode": 145,
-      "StockSnapshot": 145,
-      "CashSession": 6,
-      "CashMovement": 9,
-      "Sale": 15,
-      "SaleLine": 21,
-      "StockMovement": 23,
-      "OutboxEvent": 72
+      "Product": 100,
+      "Barcode": 100,
+      "StockSnapshot": 0,
+      "CashSession": 1,
+      "CashMovement": 1,
+      "Sale": 1,
+      "SaleLine": 4,
+      "StockMovement": 8,
+      "OutboxEvent": 10
     },
     "outbox_by_status": {
-      "acked": 72
+      "acked": 10
     },
-    "sales_total_cents": 72050,
-    "product_count": 145,
-    "barcode_count": 145,
+    "sales_total_cents": 58350,
+    "product_count": 100,
+    "barcode_count": 100,
     "low_stock_count": 0,
     "reference_errors": {},
     "error": null
   },
   "pc": {
-    "path": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db",
+    "path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\data\\canonical.db",
     "exists": true,
     "readable": true,
     "table_counts": {
-      "Business": 2,
-      "Store": 2,
-      "Terminal": 3,
-      "Product": 292,
-      "Barcode": 292,
-      "StockSnapshot": 292,
-      "CashSession": 8,
-      "CashMovement": 12,
-      "Sale": 18,
-      "SaleLine": 26,
-      "StockMovement": 167,
-      "OutboxEvent": 76
+      "Business": 1,
+      "Store": 1,
+      "Terminal": 2,
+      "Product": 100,
+      "Barcode": 100,
+      "StockSnapshot": 0,
+      "CashSession": 1,
+      "CashMovement": 1,
+      "Sale": 1,
+      "SaleLine": 4,
+      "StockMovement": 8,
+      "OutboxEvent": 10
     },
     "outbox_by_status": {
-      "acked": 72,
-      "failed": 1,
-      "pending": 2,
-      "sent": 1
+      "acked": 10
     },
-    "sales_total_cents": 92650,
-    "product_count": 292,
-    "barcode_count": 292,
+    "sales_total_cents": 58350,
+    "product_count": 100,
+    "barcode_count": 100,
     "low_stock_count": 0,
     "reference_errors": {},
     "error": null
@@ -79,75 +76,75 @@
     "tables": {
       "Business": {
         "tablet_rows": 1,
-        "pc_rows": 2,
+        "pc_rows": 1,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 1
+        "delta_pc_minus_tablet": 0
       },
       "Store": {
         "tablet_rows": 1,
-        "pc_rows": 2,
+        "pc_rows": 1,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 1
+        "delta_pc_minus_tablet": 0
       },
       "Terminal": {
         "tablet_rows": 2,
-        "pc_rows": 3,
+        "pc_rows": 2,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 1
+        "delta_pc_minus_tablet": 0
       },
       "Product": {
-        "tablet_rows": 145,
-        "pc_rows": 292,
+        "tablet_rows": 100,
+        "pc_rows": 100,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 147
+        "delta_pc_minus_tablet": 0
       },
       "Barcode": {
-        "tablet_rows": 145,
-        "pc_rows": 292,
+        "tablet_rows": 100,
+        "pc_rows": 100,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 147
+        "delta_pc_minus_tablet": 0
       },
       "StockSnapshot": {
-        "tablet_rows": 145,
-        "pc_rows": 292,
+        "tablet_rows": 0,
+        "pc_rows": 0,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 147
+        "delta_pc_minus_tablet": 0
       },
       "CashSession": {
-        "tablet_rows": 6,
-        "pc_rows": 8,
+        "tablet_rows": 1,
+        "pc_rows": 1,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 2
+        "delta_pc_minus_tablet": 0
       },
       "CashMovement": {
-        "tablet_rows": 9,
-        "pc_rows": 12,
+        "tablet_rows": 1,
+        "pc_rows": 1,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 3
+        "delta_pc_minus_tablet": 0
       },
       "Sale": {
-        "tablet_rows": 15,
-        "pc_rows": 18,
+        "tablet_rows": 1,
+        "pc_rows": 1,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 3
+        "delta_pc_minus_tablet": 0
       },
       "SaleLine": {
-        "tablet_rows": 21,
-        "pc_rows": 26,
+        "tablet_rows": 4,
+        "pc_rows": 4,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 5
+        "delta_pc_minus_tablet": 0
       },
       "StockMovement": {
-        "tablet_rows": 23,
-        "pc_rows": 167,
+        "tablet_rows": 8,
+        "pc_rows": 8,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 144
+        "delta_pc_minus_tablet": 0
       },
       "OutboxEvent": {
-        "tablet_rows": 72,
-        "pc_rows": 76,
+        "tablet_rows": 10,
+        "pc_rows": 10,
         "pc_covers_tablet": true,
-        "delta_pc_minus_tablet": 4
+        "delta_pc_minus_tablet": 0
       }
     }
   },

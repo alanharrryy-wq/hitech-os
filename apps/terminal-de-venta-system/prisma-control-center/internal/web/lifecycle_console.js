@@ -105,7 +105,7 @@
             <div class="lifecyclePanelHead">
               <div>
                 <h3>Clear</h3>
-                <p>Limpia lo generado por Data Lifecycle usando ledger. Hace backup antes de borrar y pide PIN de 6 dígitos si está activo.</p>
+                <p>Limpia lo generado por Data Lifecycle usando ledger + firma externa. Hace backup antes de borrar y pide PIN de 6 dígitos si está activo.</p>
               </div>
               <span class="lifecycleTag warn">BACKUP + PIN</span>
             </div>

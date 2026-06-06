@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2022",
@@ -22,7 +23,6 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

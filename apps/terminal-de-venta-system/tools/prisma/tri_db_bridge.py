@@ -197,17 +197,25 @@ def pick_tablet_db(terminal_root: Path, explicit: str | None) -> Path:
     return non_empty[0]
 
 
-def resolve_pc_db(repo_root: Path, explicit: str | None) -> Path:
+def resolve_pc_db(terminal_root: Path, repo_root: Path, explicit: str | None) -> Path:
     if explicit:
         return Path(explicit).expanduser().resolve()
-    return (repo_root / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
+    candidates = [
+        terminal_root / "products" / "pc" / "app" / "data" / "canonical.db",
+        repo_root / "apps" / "terminal-de-venta-system" / "products" / "pc" / "app" / "data" / "canonical.db",
+        repo_root / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db",
+    ]
+    for candidate in candidates:
+        if candidate.exists() and candidate.stat().st_size > 0:
+            return candidate.resolve()
+    return candidates[0].resolve()
 
 
 def resolve_roots(target_root: str, tablet_db: str | None, pc_db: str | None) -> RootInfo:
     terminal_root = resolve_terminal_root(Path(target_root))
     repo_root = resolve_repo_root(terminal_root)
     src_db = pick_tablet_db(terminal_root, tablet_db)
-    dst_db = resolve_pc_db(repo_root, pc_db)
+    dst_db = resolve_pc_db(terminal_root, repo_root, pc_db)
     return RootInfo(
         target_root=str(Path(target_root).expanduser().resolve()),
         terminal_root=str(terminal_root),

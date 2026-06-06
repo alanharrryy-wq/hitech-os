@@ -3106,3 +3106,523 @@ def lifecycle_payload(path: str, public: bool = False) -> dict[str, Any]:  # typ
     except Exception as exc:
         payload = {"ok": False, "status": "LIFECYCLE_V5_EXCEPTION", "apiVersion": API_VERSION, "hardeningVersion": HARDENING_VERSION, "error": str(exc), "traceback": traceback.format_exc()}
         return public_safe(payload) if public else payload
+
+
+# ============================================================================
+# PRISMA DATA LIFECYCLE V6 - Ledger + Ghost Signature Clear
+# Purpose: make Clear work even when a seed was inserted outside the lifecycle
+# ledger. This preserves ledger cleanup and adds deterministic signature cleanup.
+# ============================================================================
+try:
+    _V6_PREVIOUS_CLEAR_PREVIEW = clear_preview
+    _V6_PREVIOUS_CLEAR_GENERATED = clear_generated
+    _V6_PREVIOUS_LATEST_DASHBOARD = latest_dashboard
+    _V6_PREVIOUS_LIFECYCLE_PAYLOAD = lifecycle_payload
+    _V6_PREVIOUS_ROUTE_CATALOG = route_catalog
+except NameError:
+    _V6_PREVIOUS_CLEAR_PREVIEW = None
+    _V6_PREVIOUS_CLEAR_GENERATED = None
+    _V6_PREVIOUS_LATEST_DASHBOARD = None
+    _V6_PREVIOUS_LIFECYCLE_PAYLOAD = None
+    _V6_PREVIOUS_ROUTE_CATALOG = None
+
+API_VERSION = "PRISMA_DATA_LIFECYCLE_API_V6"
+HARDENING_VERSION = "v6-ledger-plus-ghost-signature-clear"
+
+_V6_DELETE_ORDER = [
+    "SalePaymentTender", "SaleReturnLine", "SaleReturn", "SaleLine", "Sale",
+    "CashMovement", "CashAdjustment", "CashSession",
+    "GoodsReceiptLine", "GoodsReceipt", "PurchaseOrderLine", "PurchaseOrder",
+    "ProductSupplier", "PriceListItem", "Barcode", "StockMovement", "StockSnapshot", "ReplenishmentSignal",
+    "OutboxEvent", "SyncAttempt", "SyncConflict", "SyncOutboxStatusBucket", "DataSourceFreshness", "SyncCheckpoint",
+    "DeviceHeartbeat", "AuditEvent", "AuditCount", "SupportIncident",
+    "_RoleToUser", "_PermissionToRole", "User", "Permission", "Role",
+    "Terminal", "Supplier", "Product", "Brand", "DropdownOption", "DropdownCatalog", "PriceList", "TaxRate", "Store", "Business",
+]
+
+_V6_SIGNATURES = [
+    ("sku", "LIKE", "DL-%"),
+    ("folio", "LIKE", "DL-%"),
+    ("folio", "LIKE", "OC-DL-%"),
+    ("clientRequestId", "LIKE", "dl-lifecycle_%"),
+    ("payloadJson", "LIKE", "%prisma_data_lifecycle%"),
+    ("payloadJson", "LIKE", "%PRISMA Data Lifecycle%"),
+    ("metadataJson", "LIKE", "%prisma_data_lifecycle%"),
+    ("description", "LIKE", "%Data Lifecycle%"),
+    ("source", "=", "prisma_data_lifecycle"),
+    ("cursor", "LIKE", "lifecycle_%"),
+]
+
+_V6_CHART_SIGNATURES = {
+    "runtime_sources": [("sourceKey", "LIKE", "lifecycle-%"), ("path", "=", "PRISMA_DATA_LIFECYCLE"), ("sourceKind", "=", "generated")],
+    "runtime_metadata": [("key", "LIKE", "lifecycle.batch.%")],
+    "runtime_chart_payloads": [("chartKey", "LIKE", "lifecycle-%"), ("sourceMode", "=", "prisma_data_lifecycle"), ("payloadJson", "LIKE", "%PRISMA Data Lifecycle%")],
+}
+
+
+def _v6_ident(name: str) -> str:
+    try:
+        return sql_ident(name)  # type: ignore[name-defined]
+    except Exception:
+        return '"' + str(name).replace('"', '""') + '"'
+
+
+def _v6_tables(con: sqlite3.Connection) -> set[str]:
+    try:
+        return table_names(con)  # type: ignore[name-defined]
+    except Exception:
+        return {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+
+
+def _v6_cols(con: sqlite3.Connection, table: str) -> set[str]:
+    try:
+        return set(table_columns(con, table).keys())  # type: ignore[name-defined]
+    except Exception:
+        return {r[1] for r in con.execute(f'PRAGMA table_info({_v6_ident(table)})')}
+
+
+def _v6_count(con: sqlite3.Connection, table: str) -> int:
+    try:
+        return int(con.execute(f"SELECT COUNT(*) FROM {_v6_ident(table)}").fetchone()[0])
+    except Exception:
+        return 0
+
+
+def _v6_relative(path: str | Path) -> str:
+    try:
+        return relative_to_project(str(path))  # type: ignore[name-defined]
+    except Exception:
+        try:
+            return str(Path(path).resolve().relative_to(project_root())).replace("\\", "/")  # type: ignore[name-defined]
+        except Exception:
+            return str(path).replace("\\", "/")
+
+
+def _v6_qmarks(values: list[str]) -> str:
+    return ",".join(["?"] * len(values))
+
+
+def _v6_domain_for_table(table: str) -> str:
+    try:
+        for domain, tables in domain_map().items():  # type: ignore[name-defined]
+            if table in tables:
+                return domain
+    except Exception:
+        pass
+    if table.startswith("runtime_"):
+        return "Chart Lab"
+    return "External seed"
+
+
+def _v6_detect_seed_business_ids(con: sqlite3.Connection) -> list[str]:
+    tset = _v6_tables(con)
+    ids: set[str] = set()
+    if "Business" in tset:
+        c = _v6_cols(con, "Business")
+        wh: list[str] = []
+        params: list[str] = []
+        if "name" in c:
+            wh.append(f"{_v6_ident('name')} = ?")
+            params.append("Abarrotes Prisma Central")
+        if "taxId" in c:
+            wh.append(f"{_v6_ident('taxId')} = ?")
+            params.append("XAXX010101000")
+        if wh:
+            try:
+                for row in con.execute(f"SELECT {_v6_ident('id')} FROM {_v6_ident('Business')} WHERE " + " OR ".join(wh), params):
+                    if row[0]:
+                        ids.add(str(row[0]))
+            except Exception:
+                pass
+    for table in tset:
+        c = _v6_cols(con, table)
+        if "businessId" not in c:
+            continue
+        clauses: list[str] = []
+        params: list[str] = []
+        for col, op, val in _V6_SIGNATURES:
+            if col in c:
+                clauses.append(f"{_v6_ident(col)} {op} ?")
+                params.append(val)
+        if not clauses:
+            continue
+        try:
+            sql = f"SELECT DISTINCT {_v6_ident('businessId')} FROM {_v6_ident(table)} WHERE " + " OR ".join(clauses)
+            for row in con.execute(sql, params):
+                if row[0]:
+                    ids.add(str(row[0]))
+        except Exception:
+            pass
+    ids.discard("biz_tablet_standalone")
+    return sorted(ids)
+
+
+def _v6_analyze_db(db: dict[str, Any]) -> dict[str, Any]:
+    path = db.get("path") or db.get("relative_path")
+    con = connect(path)  # type: ignore[name-defined]
+    try:
+        tset = _v6_tables(con)
+        seed_ids = _v6_detect_seed_business_ids(con)
+        planned: dict[str, int] = {}
+        chart: dict[str, int] = {}
+        if seed_ids:
+            marks = _v6_qmarks(seed_ids)
+            for table in sorted(tset):
+                c = _v6_cols(con, table)
+                count = 0
+                try:
+                    if table == "Business" and "id" in c:
+                        count = int(con.execute(f"SELECT COUNT(*) FROM {_v6_ident('Business')} WHERE {_v6_ident('id')} IN ({marks})", seed_ids).fetchone()[0])
+                    elif "businessId" in c:
+                        count = int(con.execute(f"SELECT COUNT(*) FROM {_v6_ident(table)} WHERE {_v6_ident('businessId')} IN ({marks})", seed_ids).fetchone()[0])
+                except Exception:
+                    count = 0
+                if count:
+                    planned[table] = count
+        for table, specs in _V6_CHART_SIGNATURES.items():
+            if table not in tset:
+                continue
+            c = _v6_cols(con, table)
+            wh: list[str] = []
+            params: list[str] = []
+            for col, op, val in specs:
+                if col in c:
+                    wh.append(f"{_v6_ident(col)} {op} ?")
+                    params.append(val)
+            if wh:
+                try:
+                    n = int(con.execute(f"SELECT COUNT(*) FROM {_v6_ident(table)} WHERE " + " OR ".join(wh), params).fetchone()[0])
+                    if n:
+                        chart[table] = n
+                except Exception:
+                    pass
+        total = sum(planned.values()) + sum(chart.values())
+        by_domain: dict[str, int] = {}
+        for table, n in planned.items():
+            d = _v6_domain_for_table(table)
+            by_domain[d] = by_domain.get(d, 0) + int(n)
+        for table, n in chart.items():
+            d = _v6_domain_for_table(table)
+            by_domain[d] = by_domain.get(d, 0) + int(n)
+        return {
+            "path": str(path),
+            "relative_path": db.get("relative_path") or _v6_relative(path),
+            "surface": db.get("surface", "unknown"),
+            "seed_business_ids": seed_ids,
+            "planned_deletes": planned,
+            "chart_lab_planned_deletes": chart,
+            "external_seed_records_open": int(total),
+            "by_domain": by_domain,
+        }
+    finally:
+        con.close()
+
+
+def external_seed_scan(public: bool = False) -> dict[str, Any]:
+    dbs = discover_dbs()  # type: ignore[name-defined]
+    analyses: list[dict[str, Any]] = []
+    total = 0
+    by_domain: dict[str, int] = {}
+    errors: list[dict[str, str]] = []
+    for db in dbs:
+        try:
+            item = _v6_analyze_db(db)
+            analyses.append(item)
+            total += int(item.get("external_seed_records_open", 0))
+            for d, n in (item.get("by_domain") or {}).items():
+                by_domain[d] = by_domain.get(d, 0) + int(n)
+        except Exception as exc:
+            errors.append({"db": db.get("relative_path", str(db)), "error": str(exc)})
+    payload = {
+        "ok": not bool(errors),
+        "status": "EXTERNAL_SEED_SCAN_READY" if not errors else "EXTERNAL_SEED_SCAN_WARN",
+        "apiVersion": API_VERSION,
+        "hardeningVersion": HARDENING_VERSION,
+        "clear_engine": "ledger_plus_signature",
+        "external_seed_records_open": int(total),
+        "by_domain": by_domain,
+        "databases": analyses,
+        "errors": errors,
+    }
+    if public:
+        for item in payload.get("databases", []):
+            item.pop("path", None)
+        try:
+            return public_safe(payload)  # type: ignore[name-defined]
+        except Exception:
+            return payload
+    return payload
+
+
+def clear_preview(public: bool = False) -> dict[str, Any]:  # type: ignore[override]
+    base = _V6_PREVIOUS_CLEAR_PREVIEW(public=False) if callable(_V6_PREVIOUS_CLEAR_PREVIEW) else {"ok": True, "status": "CLEAR_PREVIEW_READY", "records_to_clear": 0, "by_domain": {}}
+    scan = external_seed_scan(public=False)
+    ledger_total = int(base.get("records_to_clear") or 0)
+    external_total = int(scan.get("external_seed_records_open") or 0)
+    by_domain = dict(base.get("by_domain") or {})
+    for domain, count in (scan.get("by_domain") or {}).items():
+        by_domain[domain] = max(int(by_domain.get(domain, 0)), int(count))
+    payload = dict(base)
+    payload.update({
+        "ok": bool(base.get("ok", True) and scan.get("ok", True)),
+        "status": "CLEAR_PREVIEW_READY",
+        "apiVersion": API_VERSION,
+        "hardeningVersion": HARDENING_VERSION,
+        "clear_engine": "ledger_plus_signature",
+        "records_to_clear": max(ledger_total, external_total),
+        "ledger_records_to_clear": ledger_total,
+        "external_seed_records_to_clear": external_total,
+        "by_domain": by_domain,
+        "external_seed_scan": scan,
+    })
+    if public:
+        try:
+            return public_safe(payload)  # type: ignore[name-defined]
+        except Exception:
+            return payload
+    return payload
+
+
+def latest_dashboard(public: bool = False) -> dict[str, Any]:  # type: ignore[override]
+    payload = _V6_PREVIOUS_LATEST_DASHBOARD(public=False) if callable(_V6_PREVIOUS_LATEST_DASHBOARD) else {"ok": True, "status": "READY", "domains": [], "generated_records_open": 0}
+    scan = external_seed_scan(public=False)
+    ledger_total = int(payload.get("generated_records_open") or 0)
+    external_total = int(scan.get("external_seed_records_open") or 0)
+    ext_domains = scan.get("by_domain") or {}
+    for domain in payload.get("domains", []) or []:
+        name = domain.get("domain")
+        ext_count = int(ext_domains.get(name, 0))
+        if ext_count:
+            domain["generated"] = max(int(domain.get("generated") or 0), ext_count)
+            domain["manual_or_real"] = max(0, int(domain.get("total") or 0) - int(domain.get("generated") or 0))
+            if int(domain.get("total") or 0) == 0:
+                domain["state"] = "clean"
+            elif int(domain.get("generated") or 0) and int(domain.get("manual_or_real") or 0):
+                domain["state"] = "mixed"
+            elif int(domain.get("generated") or 0):
+                domain["state"] = "generated"
+            else:
+                domain["state"] = "manual_or_real"
+    payload.update({
+        "apiVersion": API_VERSION,
+        "hardeningVersion": HARDENING_VERSION,
+        "clear_engine": "ledger_plus_signature",
+        "ledger_records_open": ledger_total,
+        "external_seed_records_open": external_total,
+        "generated_records_open": max(ledger_total, external_total),
+        "external_seed_scan": scan,
+    })
+    if public:
+        try:
+            return public_safe(payload)  # type: ignore[name-defined]
+        except Exception:
+            return payload
+    return payload
+
+
+def _v6_delete_chart_lab(con: sqlite3.Connection) -> dict[str, int]:
+    deleted: dict[str, int] = {}
+    tset = _v6_tables(con)
+    for table, specs in _V6_CHART_SIGNATURES.items():
+        if table not in tset:
+            continue
+        c = _v6_cols(con, table)
+        wh: list[str] = []
+        params: list[str] = []
+        for col, op, val in specs:
+            if col in c:
+                wh.append(f"{_v6_ident(col)} {op} ?")
+                params.append(val)
+        if not wh:
+            continue
+        before = con.total_changes
+        con.execute(f"DELETE FROM {_v6_ident(table)} WHERE " + " OR ".join(wh), params)
+        delta = con.total_changes - before
+        if delta:
+            deleted[table] = int(delta)
+    return deleted
+
+
+def _v6_delete_external_seed_db(db: dict[str, Any], analysis: dict[str, Any]) -> dict[str, Any]:
+    path = db.get("path") or analysis.get("path")
+    seed_ids = list(analysis.get("seed_business_ids") or [])
+    con = connect(path)  # type: ignore[name-defined]
+    result = {
+        "path": str(path),
+        "relative_path": db.get("relative_path") or analysis.get("relative_path") or _v6_relative(path),
+        "seed_business_ids": seed_ids,
+        "deleted": {},
+        "chart_lab_deleted": {},
+        "foreign_key_check": [],
+        "after_seed_business_ids": [],
+    }
+    try:
+        tset = _v6_tables(con)
+        con.execute("BEGIN")
+        result["chart_lab_deleted"] = _v6_delete_chart_lab(con)
+        if seed_ids:
+            marks = _v6_qmarks(seed_ids)
+            for table in _V6_DELETE_ORDER:
+                if table not in tset:
+                    continue
+                c = _v6_cols(con, table)
+                if table == "Business" and "id" in c:
+                    sql = f"DELETE FROM {_v6_ident('Business')} WHERE {_v6_ident('id')} IN ({marks})"
+                    params = seed_ids
+                elif "businessId" in c:
+                    sql = f"DELETE FROM {_v6_ident(table)} WHERE {_v6_ident('businessId')} IN ({marks})"
+                    params = seed_ids
+                else:
+                    continue
+                before = con.total_changes
+                con.execute(sql, params)
+                delta = con.total_changes - before
+                if delta:
+                    result["deleted"][table] = int(delta)
+            for table in sorted(tset):
+                if table in _V6_DELETE_ORDER:
+                    continue
+                c = _v6_cols(con, table)
+                if "businessId" not in c:
+                    continue
+                before = con.total_changes
+                con.execute(f"DELETE FROM {_v6_ident(table)} WHERE {_v6_ident('businessId')} IN ({marks})", seed_ids)
+                delta = con.total_changes - before
+                if delta:
+                    result["deleted"][table] = int(result["deleted"].get(table, 0)) + int(delta)
+        fk = [tuple(row) for row in con.execute("PRAGMA foreign_key_check").fetchall()]
+        result["foreign_key_check"] = fk[:50]
+        if fk:
+            raise RuntimeError("Foreign key check failed after external signature clear")
+        con.commit()
+        result["after_seed_business_ids"] = _v6_detect_seed_business_ids(con)
+        return result
+    except Exception:
+        try:
+            con.rollback()
+        except Exception:
+            pass
+        raise
+    finally:
+        con.close()
+
+
+def _v6_clear_external_seed(public: bool = False) -> dict[str, Any]:
+    scan = external_seed_scan(public=False)
+    actionable = [item for item in (scan.get("databases") or []) if int(item.get("external_seed_records_open") or 0) > 0]
+    if not actionable:
+        return {"ok": True, "status": "NO_EXTERNAL_SEED_FOUND", "apiVersion": API_VERSION, "hardeningVersion": HARDENING_VERSION, "external_seed_records_cleared": 0, "scan": scan}
+    backup = create_backup("before_external_seed_clear")  # type: ignore[name-defined]
+    cleaned: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+    db_by_rel = {d.get("relative_path"): d for d in discover_dbs()}  # type: ignore[name-defined]
+    db_by_path = {str(d.get("path")): d for d in discover_dbs()}  # type: ignore[name-defined]
+    for item in actionable:
+        db = db_by_path.get(str(item.get("path"))) or db_by_rel.get(item.get("relative_path")) or item
+        try:
+            cleaned.append(_v6_delete_external_seed_db(db, item))
+        except Exception as exc:
+            errors.append({"db": item.get("relative_path"), "error": str(exc), "traceback": traceback.format_exc()})
+    post = external_seed_scan(public=False)
+    status = "PASS" if not errors and int(post.get("external_seed_records_open") or 0) == 0 else "WARN"
+    cleared_total = sum(sum(x.get("deleted", {}).values()) + sum(x.get("chart_lab_deleted", {}).values()) for x in cleaned)
+    payload = {
+        "ok": status == "PASS",
+        "status": status,
+        "apiVersion": API_VERSION,
+        "hardeningVersion": HARDENING_VERSION,
+        "clear_engine": "ledger_plus_signature",
+        "backup": backup,
+        "external_seed_records_cleared": int(cleared_total),
+        "scan_before": scan,
+        "cleaned": cleaned,
+        "scan_after": post,
+        "errors": errors,
+    }
+    try:
+        evidence = write_evidence(f"external_seed_clear_v6_{_dt.datetime.now().strftime('%Y%m%d_%H%M%S')}", payload)  # type: ignore[name-defined]
+        payload["evidence"] = evidence
+        log_event("external_seed_clear_v6", {"status": status, "cleared": cleared_total, "evidence": evidence, "errors": len(errors)})  # type: ignore[name-defined]
+    except Exception:
+        pass
+    if public:
+        try:
+            return public_safe(payload)  # type: ignore[name-defined]
+        except Exception:
+            return payload
+    return payload
+
+
+def clear_generated(public: bool = False, pin: str | None = None, pin_id: str | None = None) -> dict[str, Any]:  # type: ignore[override]
+    base = _V6_PREVIOUS_CLEAR_GENERATED(public=False, pin=pin, pin_id=pin_id) if callable(_V6_PREVIOUS_CLEAR_GENERATED) else {"ok": False, "status": "CLEAR_ENGINE_MISSING"}
+    pin_blocked_statuses = {"PIN_REQUIRED", "NO_ACTIVE_PIN", "PIN_EXPIRED", "PIN_INVALID", "PUBLIC_MUTATION_BLOCKED"}
+    if str(base.get("status")) in pin_blocked_statuses or (not base.get("ok") and "PIN" in str(base.get("status"))):
+        return public_safe(base) if public and "public_safe" in globals() else base  # type: ignore[name-defined]
+    if base.get("ok") is not True and base.get("status") not in {"PASS"}:
+        base["v6_external_signature_clear_skipped"] = "base_ledger_clear_not_green"
+        return public_safe(base) if public and "public_safe" in globals() else base  # type: ignore[name-defined]
+    external = _v6_clear_external_seed(public=False)
+    merged = dict(base)
+    merged.update({
+        "apiVersion": API_VERSION,
+        "hardeningVersion": HARDENING_VERSION,
+        "clear_engine": "ledger_plus_signature",
+        "status": "PASS" if bool(base.get("ok")) and bool(external.get("ok")) else "WARN",
+        "ok": bool(base.get("ok")) and bool(external.get("ok")),
+        "ledger_clear_result": base,
+        "external_signature_clear_result": external,
+        "external_seed_records_cleared": int(external.get("external_seed_records_cleared") or 0),
+    })
+    try:
+        write_evidence(f"clear_v6_ledger_plus_signature_{_dt.datetime.now().strftime('%Y%m%d_%H%M%S')}", merged)  # type: ignore[name-defined]
+    except Exception:
+        pass
+    return public_safe(merged) if public and "public_safe" in globals() else merged  # type: ignore[name-defined]
+
+
+def route_catalog() -> dict[str, Any]:  # type: ignore[override]
+    try:
+        base = _V6_PREVIOUS_ROUTE_CATALOG().get("routes", []) if callable(_V6_PREVIOUS_ROUTE_CATALOG) else []
+    except Exception:
+        base = []
+    extra = [
+        {"method": "GET", "path": "/api/lifecycle/external-seed/scan", "description": "Detecta semillas Data Lifecycle que no estén en ledger"},
+    ]
+    seen = set()
+    routes = []
+    for r in list(base) + extra:
+        key = r.get("path")
+        if key in seen:
+            continue
+        seen.add(key)
+        routes.append(r)
+    return {"ok": True, "status": "ROUTES_READY", "apiVersion": API_VERSION, "hardeningVersion": HARDENING_VERSION, "routes": routes}
+
+
+def lifecycle_payload(path: str, public: bool = False) -> dict[str, Any]:  # type: ignore[override]
+    ensure_dirs()
+    parsed = urlparse(path)
+    clean = parsed.path.rstrip("/")
+    try:
+        if clean.startswith("/api/lifecycle/external-seed/scan"):
+            return external_seed_scan(public=public)
+        payload = _V6_PREVIOUS_LIFECYCLE_PAYLOAD(path, public=False) if callable(_V6_PREVIOUS_LIFECYCLE_PAYLOAD) else {"ok": False, "status": "LIFECYCLE_PAYLOAD_MISSING"}
+        if isinstance(payload, dict):
+            payload["apiVersion"] = API_VERSION
+            payload["hardeningVersion"] = HARDENING_VERSION
+            payload.setdefault("clear_engine", "ledger_plus_signature")
+            if clean in {"/api/lifecycle", "/api/lifecycle/latest", "/api/lifecycle/dashboard"}:
+                payload = latest_dashboard(public=False)
+            if clean.startswith("/api/lifecycle/routes"):
+                payload = route_catalog()
+            if public:
+                try:
+                    return public_safe(payload)  # type: ignore[name-defined]
+                except Exception:
+                    return payload
+        return payload
+    except Exception as exc:
+        payload = {"ok": False, "status": "LIFECYCLE_V6_EXCEPTION", "apiVersion": API_VERSION, "hardeningVersion": HARDENING_VERSION, "error": str(exc), "traceback": traceback.format_exc()}
+        return public_safe(payload) if public and "public_safe" in globals() else payload  # type: ignore[name-defined]
+
+# END PRISMA DATA LIFECYCLE V6 - Ledger + Ghost Signature Clear

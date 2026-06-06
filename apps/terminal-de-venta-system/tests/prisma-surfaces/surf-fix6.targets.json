@@ -1,0 +1,420 @@
+{
+  "task": "surf fix6",
+  "phase": "fix3",
+  "contract": "Optimized internal sub-surface capture. Known sub-surfaces are independent test targets; dynamic surfaces stay discovery targets.",
+  "recommended": {
+    "localWorkers": 6,
+    "localShards": 1,
+    "criticalRun": "-Mode critical -Workers 2 -NoScreenshots"
+  },
+  "testTargets": [
+    {
+      "id": "tablet-Inicio",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Inicio",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Turno y caja",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Turno y caja",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Vender",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Vender",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Catálogo",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Catálogo",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Existencias",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Existencias",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Ventas de hoy",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Ventas de hoy",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Historial ventas",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Historial ventas",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Devoluciones",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Devoluciones",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Sync",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Sync",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Offline",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Offline",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Estado sistema",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Estado sistema",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Datos locales",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Datos locales",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "tablet-Licencia",
+      "macro": "3000",
+      "name": "Tablet",
+      "baseUrl": "http://127.0.0.1:3000",
+      "kind": "text-click",
+      "label": "Licencia",
+      "tags": [
+        "@tablet",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/pos",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/pos",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/ventas",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/ventas",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/catalogo",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/catalogo",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/existencias",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/existencias",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/clientes",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/clientes",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/proveedores",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/proveedores",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/compras",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/compras",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/sync",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/sync",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/offline",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/offline",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/estado-sistema",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/estado-sistema",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/datos-locales",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/datos-locales",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "pc-/referencia-visual/liquid-glass",
+      "macro": "3110",
+      "name": "PC",
+      "baseUrl": "http://127.0.0.1:3110",
+      "kind": "route",
+      "route": "/referencia-visual/liquid-glass",
+      "tags": [
+        "@pc",
+        "@route",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "chartlab-tabs",
+      "macro": "3120",
+      "name": "Chart Lab",
+      "baseUrl": "http://127.0.0.1:3120",
+      "kind": "selector-discovery",
+      "selectors": [
+        "[role='tab']",
+        "[data-prisma-chart-target]",
+        "[data-prisma-interface-target]",
+        "[data-chart-target]"
+      ],
+      "limit": 28,
+      "tags": [
+        "@chartlab",
+        "@tabs",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "controlcenter-real-tabs",
+      "macro": "3130",
+      "name": "Control Center",
+      "baseUrl": "http://127.0.0.1:3130",
+      "kind": "control-center-real-tabs",
+      "selectors": [
+        "[data-prisma-interface-target]"
+      ],
+      "limit": 48,
+      "tags": [
+        "@controlcenter",
+        "@tabs",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "controlcenter-lifecycle",
+      "macro": "3130",
+      "name": "Control Center",
+      "baseUrl": "http://127.0.0.1:3130",
+      "kind": "control-center-lifecycle",
+      "tags": [
+        "@controlcenter",
+        "@lifecycle",
+        "@critical"
+      ]
+    },
+    {
+      "id": "surface-3140-internals",
+      "macro": "3140",
+      "name": "Surface 3140",
+      "baseUrl": "http://127.0.0.1:3140",
+      "kind": "selector-discovery",
+      "selectors": [
+        "[data-prisma-interface-target]",
+        "[role='tab']",
+        "button",
+        "a[href]"
+      ],
+      "limit": 20,
+      "tags": [
+        "@surface3140",
+        "@subsurface"
+      ]
+    },
+    {
+      "id": "surface-3150-internals",
+      "macro": "3150",
+      "name": "Surface 3150",
+      "baseUrl": "http://127.0.0.1:3150",
+      "kind": "selector-discovery",
+      "selectors": [
+        "[data-prisma-interface-target]",
+        "[role='tab']",
+        "button",
+        "a[href]"
+      ],
+      "limit": 20,
+      "tags": [
+        "@surface3150",
+        "@subsurface"
+      ]
+    }
+  ]
+}
