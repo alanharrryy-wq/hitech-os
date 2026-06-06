@@ -4,6 +4,8 @@ import "./prisma-visual-os-pc-binding.css";
 import "./prisma-atmospheric-background.css";
 import { PrismaAtmosphericBackground } from "./components/PrismaAtmosphericBackground";
 import { pcMessages } from "@/lib/i18n/messages/es";
+import { PrismaSurfFix6LifecycleRuntime } from "./prisma-surf-fix6-lifecycle-runtime";
+import { PrismaDevIssueBadgeCleaner } from "./prisma-dev-issue-badge-cleaner";
 
 export const metadata = {
   title: pcMessages.metadata.title,
@@ -13,23 +15,16 @@ export const metadata = {
 const prismaSkinBootstrap = `
 (function () {
   try {
-    var key = "prisma.pc.skin";
-    var value = window.localStorage.getItem(key);
-    var preference = value === "light" || value === "dark" || value === "system" ? value : "light";
-    var resolved = preference;
-    if (preference === "system") {
-      resolved = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    if (resolved !== "dark") resolved = "light";
     var root = document.documentElement;
-    root.dataset.prismaSkin = resolved;
+    root.dataset.prismaSkin = "light";
     root.dataset.prismaSurface = "pc-backoffice";
-    root.dataset.theme = resolved === "light" ? "prisma-light" : "prisma-dark";
-    root.dataset.prismaSkinPreference = preference;
+    root.dataset.theme = "prisma-light";
+    root.dataset.prismaSkinPreference = "light";
   } catch (error) {
     document.documentElement.dataset.prismaSkin = "light";
     document.documentElement.dataset.prismaSurface = "pc-backoffice";
     document.documentElement.dataset.theme = "prisma-light";
+    document.documentElement.dataset.prismaSkinPreference = "light";
   }
 })();
 `;
@@ -49,6 +44,8 @@ export default function RootLayout({ children }: { children: any }) {
         <script dangerouslySetInnerHTML={{ __html: prismaSkinBootstrap }} />
       </head>
       <body>
+        <PrismaDevIssueBadgeCleaner />
+        <PrismaSurfFix6LifecycleRuntime />
         <PrismaAtmosphericBackground />
         <div className="prisma-app-content">{children}</div>
       </body>

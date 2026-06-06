@@ -1,4 +1,5 @@
 "use client";
+// PRISMA_PROVEEDORES_VISUAL_MOTOR_FIX_12
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SmartPurchaseRecommendation, SupplierPayable, SupplierPurchaseOrder, SupplierPurchaseOrderLine } from "@/lib/suppliers/types";
@@ -53,6 +54,7 @@ export function SupplierActionCockpit({
   const [persistedActions, setPersistedActions] = useState<SupplierActionRecord[]>([]);
   const [lastSavedAt, setLastSavedAt] = useState("");
   const [persistenceNote, setPersistenceNote] = useState("Borrador local listo");
+  const [hydrated, setHydrated] = useState(false);
   const [result, setResult] = useState<ActionResult>({
     kind: "simulation",
     status: "idle",
@@ -75,20 +77,43 @@ export function SupplierActionCockpit({
       if (recommendations.some((item) => item.id === draft.recommendationId)) setRecommendationId(draft.recommendationId);
       if (openOrders.some((item) => item.id === draft.orderId)) setOrderId(draft.orderId);
       if (payables.some((item) => item.id === draft.payableId)) setPayableId(draft.payableId);
-      if (draft.budgetPesos) setBudgetPesos(draft.budgetPesos);
-      if (draft.paymentPesos) setPaymentPesos(draft.paymentPesos);
-      if (draft.reason) setReason(draft.reason);
+      if (isVisibleMoneyInput(draft.budgetPesos)) setBudgetPesos(draft.budgetPesos);
+      if (isVisibleMoneyInput(draft.paymentPesos)) setPaymentPesos(draft.paymentPesos);
+      if (typeof draft.reason === "string" && draft.reason.trim().length > 0) setReason(draft.reason);
       setPersistenceNote(`Borrador recuperado: ${formatDate(draft.updatedAt)}`);
     }
     setPersistedActions(stored.actions);
     setLastSavedAt(stored.updatedAt && stored.updatedAt !== new Date(0).toISOString() ? formatDate(stored.updatedAt) : "Sin guardados todavía");
+    setHydrated(true);
   }, [recommendations, openOrders, payables]);
 
   useEffect(() => {
+    if (!firstRecommendation) return;
+    if (!recommendations.some((item) => item.id === recommendationId)) {
+      setRecommendationId(firstRecommendation.id);
+      setBudgetPesos(String(Math.round(getBudgetLimitCents(firstRecommendation) / 100)));
+    }
+  }, [firstRecommendation, recommendationId, recommendations]);
+
+  useEffect(() => {
+    if (!firstOrder) return;
+    if (!openOrders.some((item) => item.id === orderId)) setOrderId(firstOrder.id);
+  }, [firstOrder, openOrders, orderId]);
+
+  useEffect(() => {
+    if (!firstPayable) return;
+    if (!payables.some((item) => item.id === payableId)) {
+      setPayableId(firstPayable.id);
+      setPaymentPesos(String(Math.round(firstPayable.amountCents / 100)));
+    }
+  }, [firstPayable, payableId, payables]);
+
+  useEffect(() => {
+    if (!hydrated) return;
     const saved = saveSupplierDraft({ recommendationId, orderId, payableId, budgetPesos, paymentPesos, reason });
     setLastSavedAt(formatDate(saved.updatedAt));
     setPersistenceNote("Borrador guardado en esta PC");
-  }, [recommendationId, orderId, payableId, budgetPesos, paymentPesos, reason]);
+  }, [hydrated, recommendationId, orderId, payableId, budgetPesos, paymentPesos, reason]);
 
   const persistResult = useCallback((next: ActionResult) => {
     if (next.status !== "success" && next.status !== "error") return;
@@ -112,9 +137,11 @@ export function SupplierActionCockpit({
 
   async function runSimulation() {
     if (!selectedRecommendation) return localError("simulation", "Falta recomendación", "Selecciona una recomendación para simular.");
+    const budgetCents = pesosToCents(budgetPesos);
+    if (budgetCents <= 0) return localError("simulation", "Presupuesto inválido", "Captura un presupuesto mayor a cero para simular sin tirar volados.");
     await postAction("simulation", "Simulación lista", `${API_BASE}/compra-inteligente/simular`, {
       recommendationId: selectedRecommendation.id,
-      budgetCents: pesosToCents(budgetPesos),
+      budgetCents,
       excludedLineIds: [],
       quantityOverrides: {}
     });
@@ -122,11 +149,13 @@ export function SupplierActionCockpit({
 
   async function createSuggestedOrder() {
     if (!selectedRecommendation) return localError("order", "Falta recomendación", "Selecciona una recomendación para crear pedido.");
+    const budgetCents = pesosToCents(budgetPesos);
+    if (budgetCents <= 0) return localError("order", "Presupuesto inválido", "Captura un presupuesto mayor a cero antes de crear pedido.");
     await postAction("order", "Pedido sugerido creado", `${API_BASE}/compra-inteligente/crear-pedido`, {
       recommendationId: selectedRecommendation.id,
       actor: ACTOR,
-      reason,
-      budgetCents: pesosToCents(budgetPesos),
+      reason: safeReason(reason),
+      budgetCents,
       excludedLineIds: [],
       quantityOverrides: {}
     });
@@ -134,22 +163,26 @@ export function SupplierActionCockpit({
 
   async function confirmReceiving() {
     if (!selectedOrder) return localError("receiving", "Falta pedido", "Selecciona un pedido para registrar recepción.");
+    const receivableLines = selectedOrder.lines.filter((line: SupplierPurchaseOrderLine) => line.orderedUnits > 0);
+    if (receivableLines.length === 0) return localError("receiving", "Pedido sin líneas", "El pedido seleccionado no tiene unidades para recibir.");
     await postAction("receiving", "Recepción confirmada", `${API_BASE}/recepciones/confirmar`, {
       orderId: selectedOrder.id,
       actor: ACTOR,
-      reason,
-      receivedUnitsByLineId: Object.fromEntries(selectedOrder.lines.map((line: SupplierPurchaseOrderLine) => [line.id, line.orderedUnits])),
+      reason: safeReason(reason),
+      receivedUnitsByLineId: Object.fromEntries(receivableLines.map((line: SupplierPurchaseOrderLine) => [line.id, line.orderedUnits])),
       receivedAt: new Date().toISOString()
     });
   }
 
   async function registerPayment() {
     if (!selectedPayable) return localError("payment", "Falta cuenta por pagar", "Selecciona una cuenta para registrar pago.");
+    const amountCents = pesosToCents(paymentPesos);
+    if (amountCents <= 0) return localError("payment", "Pago inválido", "Captura un monto de pago mayor a cero.");
     await postAction("payment", "Pago registrado", `${API_BASE}/cuentas-pagar/registrar-pago`, {
       payableId: selectedPayable.id,
       actor: ACTOR,
-      reason,
-      amountCents: pesosToCents(paymentPesos),
+      reason: safeReason(reason),
+      amountCents,
       paidAt: new Date().toISOString()
     });
   }
@@ -158,7 +191,7 @@ export function SupplierActionCockpit({
     setResult((current: ActionResult) => ({ ...current, kind: "audit", status: "loading", title: "Consultando auditoría", message: "Estamos trayendo el rastro auditable de Proveedores." }));
     try {
       const response = await fetch(`${API_BASE}/auditoria`, { method: "GET", headers: { Accept: "application/json" } });
-      const envelope = await response.json() as JsonMap;
+      const envelope = await readJsonEnvelope(response) as JsonMap;
       const events = Array.isArray(envelope.data) ? envelope.data : [];
       const next: ActionResult = {
         kind: "audit",
@@ -180,7 +213,7 @@ export function SupplierActionCockpit({
     setResult((current: ActionResult) => ({ ...current, kind, status: "loading", title: "Procesando acción", message: "PRISMA está validando reglas, caja, permisos y auditoría." }));
     try {
       const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
-      const envelope = await response.json() as JsonMap;
+      const envelope = await readJsonEnvelope(response) as JsonMap;
       const next = buildResult(kind, response.ok && Boolean(envelope.ok), title, envelope);
       setResult(next);
       persistResult(next);
@@ -214,7 +247,7 @@ export function SupplierActionCockpit({
   }
 
   return (
-    <section id="acciones-reales" className="card supplier-action-cockpit-v09" aria-label="Acciones reales de Proveedores">
+    <section id="acciones-reales" className="card supplier-action-cockpit-v09 supplier-action-cockpit-v12" aria-label="Acciones reales de Proveedores" aria-busy={busy} data-state={result.status}>
       <div className="supplier-action-head-v09">
         <div>
           <div className="kicker">Acciones reales</div>
@@ -224,14 +257,21 @@ export function SupplierActionCockpit({
         <div className="supplier-action-flow-v09"><span>Simular</span><b>→</b><span>Pedido</span><b>→</b><span>Recepción</span><b>→</b><span>Pago</span><b>→</b><span>Auditoría</span></div>
       </div>
 
+      <div className="supplier-action-command-v12" aria-label="Estado operativo seleccionado">
+        <span><small>Recomendaciones</small><strong>{recommendations.length}</strong></span>
+        <span><small>Pedidos abiertos</small><strong>{openOrders.length}</strong></span>
+        <span><small>Cuentas por pagar</small><strong>{payables.length}</strong></span>
+        <span><small>Selección activa</small><strong>{selectedRecommendation ? selectedRecommendation.supplierName : "Sin recomendación"}</strong></span>
+      </div>
+
       <div className="supplier-action-grid-v09">
         <div className="supplier-action-form-v09">
-          <label><span>Recomendación</span><select value={recommendationId} onChange={(event) => { const id = event.target.value; setRecommendationId(id); const next = recommendations.find((item) => item.id === id); if (next) setBudgetPesos(String(Math.round(getBudgetLimitCents(next) / 100))); }}>{recommendations.map((item) => <option key={item.id} value={item.id}>{cleanOption(item.title)} · {item.supplierName}</option>)}</select></label>
-          <label><span>Presupuesto seguro</span><input value={budgetPesos} inputMode="numeric" onChange={(event) => setBudgetPesos(event.target.value)} /></label>
-          <label><span>Pedido para recepción</span><select value={orderId} onChange={(event) => setOrderId(event.target.value)}>{openOrders.map((item) => <option key={item.id} value={item.id}>{friendlyFolio(item.folio)} · {item.supplierName}</option>)}</select></label>
-          <label><span>Cuenta por pagar</span><select value={payableId} onChange={(event) => { const id = event.target.value; setPayableId(id); const next = payables.find((item) => item.id === id); if (next) setPaymentPesos(String(Math.round(next.amountCents / 100))); }}>{payables.map((item) => <option key={item.id} value={item.id}>{item.supplierName} · {formatMoney(item.amountCents)}</option>)}</select></label>
-          <label><span>Monto de pago</span><input value={paymentPesos} inputMode="numeric" onChange={(event) => setPaymentPesos(event.target.value)} /></label>
-          <label className="supplier-action-reason-v09"><span>Motivo o referencia</span><textarea value={reason} onChange={(event) => setReason(event.target.value)} rows={3} /></label>
+          <label><span>Recomendación</span><select value={recommendationId} disabled={recommendations.length === 0 || busy} onChange={(event) => { const id = event.target.value; setRecommendationId(id); const next = recommendations.find((item) => item.id === id); if (next) setBudgetPesos(String(Math.round(getBudgetLimitCents(next) / 100))); }}>{recommendations.length > 0 ? recommendations.map((item) => <option key={item.id} value={item.id}>{cleanOption(item.title)} · {item.supplierName}</option>) : <option value="">Sin recomendaciones disponibles</option>}</select></label>
+          <label><span>Presupuesto seguro</span><input value={budgetPesos} inputMode="decimal" disabled={busy} placeholder="Ej. 12000" onChange={(event) => setBudgetPesos(normalizeMoneyInput(event.target.value))} /></label>
+          <label><span>Pedido para recepción</span><select value={orderId} disabled={openOrders.length === 0 || busy} onChange={(event) => setOrderId(event.target.value)}>{openOrders.length > 0 ? openOrders.map((item) => <option key={item.id} value={item.id}>{friendlyFolio(item.folio)} · {item.supplierName}</option>) : <option value="">Sin pedidos recepcionables</option>}</select></label>
+          <label><span>Cuenta por pagar</span><select value={payableId} disabled={payables.length === 0 || busy} onChange={(event) => { const id = event.target.value; setPayableId(id); const next = payables.find((item) => item.id === id); if (next) setPaymentPesos(String(Math.round(next.amountCents / 100))); }}>{payables.length > 0 ? payables.map((item) => <option key={item.id} value={item.id}>{item.supplierName} · {formatMoney(item.amountCents)}</option>) : <option value="">Sin cuentas pendientes</option>}</select></label>
+          <label><span>Monto de pago</span><input value={paymentPesos} inputMode="decimal" disabled={busy} placeholder="Ej. 8500" onChange={(event) => setPaymentPesos(normalizeMoneyInput(event.target.value))} /></label>
+          <label className="supplier-action-reason-v09"><span>Motivo o referencia</span><textarea value={reason} disabled={busy} onChange={(event) => setReason(event.target.value)} rows={3} placeholder="Referencia visible para auditoría" /></label>
         </div>
         <div className="supplier-action-buttons-v09">
           <button type="button" onClick={runSimulation} disabled={busy || !selectedRecommendation}>Simular compra</button>
@@ -273,6 +313,29 @@ function PersistencePanel({ actions, lastSavedAt, note, onExport, onClear }: { a
 
 function ActionResultPanel({ result }: { result: ActionResult }) {
   return <div className={`supplier-action-result-v09 state-${result.status}`} aria-live="polite"><div className="supplier-action-result-head-v09"><span>{statusIcon(result.status)}</span><div><strong>{result.title}</strong><p>{result.message}</p></div></div>{result.details.length > 0 ? <div className="supplier-action-detail-grid-v09">{result.details.map((item) => <span key={`${item.label}-${item.value}`}><small>{item.label}</small><b>{item.value}</b></span>)}</div> : null}{result.warnings.length > 0 ? <div className="supplier-action-warnings-v09"><strong>Advertencias</strong><ul>{result.warnings.map((warning, index) => <li key={`warning-${index}-${warning}`}>{warning}</li>)}</ul></div> : null}{result.auditEvents.length > 0 ? <div className="supplier-action-audit-v09"><strong>Rastro generado</strong>{result.auditEvents.map((event) => <article key={event.id}><span>{event.label}</span><p>{event.summary}</p><small>{event.actor} · {event.date}</small></article>)}</div> : null}</div>;
+}
+
+async function readJsonEnvelope(response: Response): Promise<JsonMap> {
+  const text = await response.text();
+  if (!text.trim()) return { ok: response.ok, message: response.ok ? "Acción completada sin detalle adicional." : `Respuesta vacía del servidor (${response.status}).` };
+  try {
+    return JSON.parse(text) as JsonMap;
+  } catch {
+    return { ok: false, code: "NON_JSON_RESPONSE", message: `El servidor respondió con un formato no legible (${response.status}).` };
+  }
+}
+
+function safeReason(value: string) {
+  const cleaned = value.trim();
+  return cleaned.length > 0 ? cleaned : DEFAULT_REASON;
+}
+
+function normalizeMoneyInput(value: string) {
+  return value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1").slice(0, 12);
+}
+
+function isVisibleMoneyInput(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0 && /^[0-9.]+$/.test(value.trim());
 }
 
 function buildResult(kind: ActionKind, ok: boolean, successTitle: string, envelope: JsonMap): ActionResult {

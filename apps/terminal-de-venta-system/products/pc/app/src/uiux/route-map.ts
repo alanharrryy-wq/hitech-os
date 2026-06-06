@@ -174,6 +174,43 @@ export const PC_ROUTE_MAP = [
     "group": "inventario",
     "status": "secondary"
   },
+
+  {
+    "route": "/laboratorio-pc",
+    "humanName": "Laboratorio PC",
+    "group": "ayuda",
+    "status": "lab"
+  },
+  {
+    "route": "/laboratorio-pc/referencia-visual",
+    "humanName": "Referencia visual PC",
+    "group": "ayuda",
+    "status": "lab"
+  },
+  {
+    "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+    "humanName": "Liquid Glass Lab",
+    "group": "ayuda",
+    "status": "lab"
+  },
+  {
+    "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+    "humanName": "Glass Capsules Lab",
+    "group": "ayuda",
+    "status": "lab"
+  },
+  {
+    "route": "/laboratorio-pc/chart-lab",
+    "humanName": "Chart Lab",
+    "group": "analisis",
+    "status": "lab"
+  },
+  {
+    "route": "/laboratorio-pc/dashboard-governor",
+    "humanName": "Dashboard Governor Lab",
+    "group": "ayuda",
+    "status": "lab"
+  },
   {
     "route": "/license-runtime",
     "humanName": "Licencia",

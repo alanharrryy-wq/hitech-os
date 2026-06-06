@@ -1,8 +1,8 @@
 import { DecisionScreen } from "@components/uiux/decision-screen";
 import { purchasingScreenContract } from "@/uiux/purchasing-screen-contract";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
-export default async function PurchaseOrdersPage() {
-  return <DecisionScreen {...purchasingScreenContract} currentPath="/purchasing" />;
+export default function PurchaseOrdersPage() {
+  return <DecisionScreen {...purchasingScreenContract} currentPath="/ordenes-compra" />;
 }

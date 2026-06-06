@@ -70,8 +70,7 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   analisis: [
     { label: "Resumen", href: "/prisma-insights", kind: "standard" },
     { label: "Pendientes", href: "/tablero-kpi", kind: "standard" },
-    { label: "Historial", href: "/vistas-ejecutivas", kind: "standard" },
-    { label: "Chart Lab", href: "/prisma-insights/chart-lab", kind: "optional" }
+    { label: "Historial", href: "/vistas-ejecutivas", kind: "standard" }
   ],
   sistema: [
     { label: "Resumen", href: "/devices", kind: "standard" },
@@ -87,8 +86,7 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
     { label: "Evidencia", href: "/gobierno", kind: "optional" }
   ],
   ayuda: [
-    { label: "Resumen", href: "/glosario", kind: "standard" },
-    { label: "Evidencia", href: "/referencia-visual", kind: "optional" }
+    { label: "Resumen", href: "/glosario", kind: "standard" }
   ]
 };
 

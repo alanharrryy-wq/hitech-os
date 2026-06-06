@@ -6,17 +6,24 @@ import { getCriticalStockRows } from "@/lib/services/catalog";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const criticalStockRows = await getCriticalStockRows();
+  const { rows: criticalStockRows, notice } = await getCriticalStockRows();
 
   return (
     <AppShell currentPath="/existencias-criticas">
       <section className="hero">
-        <div className="kicker">inyección 02</div>
+        <div className="kicker">inventario</div>
         <h1 style={{ margin: 0 }}>Existencias críticas</h1>
-        <div className="subtle">Overlay operativo para quiebres y riesgo sin modificar el módulo base de existencias.</div>
+        <div className="subtle">Prioridad de quiebres y cobertura baja sin romper la pantalla si la base local no abre.</div>
       </section>
 
-      <SectionCard title="Prioridad de atención" subtitle="Filas de ejemplo para quiebre, cobertura baja y seguimiento de reabasto.">
+      {notice ? (
+        <div className="alert-strip" role="status">
+          <strong>{notice.title}</strong>
+          <span className="subtle">{notice.detail}</span>
+        </div>
+      ) : null}
+
+      <SectionCard title="Prioridad de atención" subtitle="Filas para quiebre, cobertura baja y seguimiento de reabasto.">
         <TableSimple
           columns={["SKU", "Producto", "Ubicación", "Disponible", "Días", "Estado"]}
           rows={criticalStockRows.map((row) => ({
@@ -27,6 +34,7 @@ export default async function Page() {
             "Días": row.diasCobertura,
             "Estado": row.estado
           }))}
+          emptyMessage="No hay existencias críticas disponibles en esta lectura."
         />
       </SectionCard>
     </AppShell>

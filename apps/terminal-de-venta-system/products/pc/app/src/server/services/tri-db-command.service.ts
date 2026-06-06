@@ -93,6 +93,9 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
   const python = resolvePython(repoRoot);
   const bridgeTool = path.join(terminalRoot, "tools", "prisma", "tri_db_bridge.py");
   const statusTool = path.join(terminalRoot, "tools", "prisma", "tri_db_status.py");
+  const tabletDb = path.join(terminalRoot, "products", "tablet", "app", "data", "tablet-pos.db");
+  const pcDb = path.join(terminalRoot, "products", "pc", "app", "data", "canonical.db");
+  const latestStatusJson = path.join(terminalRoot, "shared", "tri-db", "status.latest.json");
 
   if (!existsSync(bridgeTool)) {
     throw new Error(`No existe tri_db_bridge.py. Instala primero v04: ${bridgeTool}`);
@@ -103,7 +106,7 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
 
   const bridge = await runCommand(
     python,
-    [bridgeTool, "--run", "--target-root", repoRoot, "--out-root", outRoot],
+    [bridgeTool, "--run", "--target-root", repoRoot, "--tablet-db", tabletDb, "--pc-db", pcDb, "--out-root", outRoot],
     terminalRoot
   );
 
@@ -122,7 +125,7 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
 
   const statusRefresh = await runCommand(
     python,
-    [statusTool, "--run", "--target-root", repoRoot, "--out-root", outRoot],
+    [statusTool, "--run", "--target-root", repoRoot, "--out-root", outRoot, "--latest-json", latestStatusJson],
     terminalRoot
   );
 
