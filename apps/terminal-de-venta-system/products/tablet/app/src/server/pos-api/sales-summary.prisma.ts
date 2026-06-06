@@ -103,20 +103,44 @@ function ticketRows(sales: any[]) {
 
 export async function getTodaySalesSummary(input: SalesTodayInput) {
   const { from, to, date } = localDayRange(input.date);
-  const sales = await prisma.sale.findMany({
-    where: {
-      businessId: input.businessId,
-      status: "COMPLETED",
-      createdAt: { gte: from, lt: to },
-      ...(input.terminalId ? { terminalId: input.terminalId } : {})
-    },
-    include: { lines: true },
-    orderBy: { createdAt: "desc" }
-  });
+  const [sales, returns] = await Promise.all([
+    prisma.sale.findMany({
+      where: {
+        businessId: input.businessId,
+        status: "COMPLETED",
+        createdAt: { gte: from, lt: to },
+        ...(input.terminalId ? { terminalId: input.terminalId } : {})
+      },
+      include: { lines: true },
+      orderBy: { createdAt: "desc" }
+    }),
+    prisma.saleReturn.findMany({
+      where: {
+        businessId: input.businessId,
+        status: { not: "CANCELLED" },
+        createdAt: { gte: from, lt: to }
+      },
+      orderBy: { createdAt: "desc" }
+    })
+  ]);
 
-  const totalCents = sales.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
+  const grossTotalCents = sales.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
+  const returnsTotalCents = returns.reduce((sum: number, row: any) => sum + row.amountCents, 0);
+  const netTotalCents = grossTotalCents - returnsTotalCents;
   const unitsSold = sales.flatMap((sale: any) => sale.lines).reduce((sum: number, line: any) => sum + line.qty, 0);
-  const topProducts: any[] = [];
+  const topProducts = Array.from(
+    sales
+      .flatMap((sale: any) => sale.lines)
+      .reduce((map: Map<string, any>, line: any) => {
+        const key = line.productId || line.sku || line.productName;
+        const current = map.get(key) ?? { productId: line.productId, sku: line.sku, productName: line.productName, qty: 0, amountCents: 0 };
+        current.qty += line.qty;
+        current.amountCents += line.totalCents ?? line.qty * line.priceCents;
+        map.set(key, current);
+        return map;
+      }, new Map<string, any>())
+      .values()
+  ).sort((a: any, b: any) => b.amountCents - a.amountCents).slice(0, 5);
 
   return {
     businessId: input.businessId,
@@ -124,10 +148,15 @@ export async function getTodaySalesSummary(input: SalesTodayInput) {
     date,
     salesCount: sales.length,
     ticketsClosed: sales.length,
-    totalCents,
-    total: totalCents / 100,
-    averageTicketCents: sales.length ? Math.round(totalCents / sales.length) : 0,
-    averageTicket: sales.length ? Math.round(totalCents / sales.length) / 100 : 0,
+    returnCount: returns.length,
+    returnsTotalCents,
+    grossTotalCents,
+    netTotalCents,
+    totalCents: grossTotalCents,
+    total: grossTotalCents / 100,
+    netTotal: netTotalCents / 100,
+    averageTicketCents: sales.length ? Math.round(grossTotalCents / sales.length) : 0,
+    averageTicket: sales.length ? Math.round(grossTotalCents / sales.length) / 100 : 0,
     unitsSold,
     topProducts,
     tickets: ticketRows(sales)
@@ -166,6 +195,15 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
     : sales;
   const tickets = ticketRows(filtered).filter((ticket) => ticket.saleId && ticket.saleId !== "undefined");
   const totalCents = tickets.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
+  const returns = await prisma.saleReturn.findMany({
+    where: {
+      businessId: input.businessId,
+      status: { not: "CANCELLED" },
+      createdAt: { gte: range.from, lt: range.to }
+    }
+  });
+  const returnsTotalCents = returns.reduce((sum: number, row: any) => sum + row.amountCents, 0);
+  const netTotalCents = totalCents - returnsTotalCents;
   const unitsSold = tickets.reduce((sum: number, sale: any) => sum + sale.unitsSold, 0);
 
   return {
@@ -182,7 +220,11 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
     salesCount: tickets.length,
     ticketsClosed: tickets.length,
     totalCents,
+    grossTotalCents: totalCents,
+    returnsTotalCents,
+    netTotalCents,
     total: totalCents / 100,
+    netTotal: netTotalCents / 100,
     averageTicketCents: tickets.length ? Math.round(totalCents / tickets.length) : 0,
     averageTicket: tickets.length ? Math.round(totalCents / tickets.length) / 100 : 0,
     unitsSold,

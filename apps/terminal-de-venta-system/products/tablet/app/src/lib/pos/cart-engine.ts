@@ -232,6 +232,10 @@ export type CheckoutPayload = {
   items: Array<{ productId: string; sku: string; qty: number; unitPriceCents: number }>;
 };
 
+function defaultCheckoutTerminalId() {
+  return process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
+}
+
 function normalizeCheckoutPayloadInput(input: CartLine[] | CheckoutPayloadInput): CheckoutPayloadInput {
   if (Array.isArray(input)) {
     return { lines: input };
@@ -249,7 +253,7 @@ export function buildCheckoutPayload(input: CartLine[] | CheckoutPayloadInput): 
     totalCents: readiness.totalCents,
     totalQty: readiness.totalQty,
     businessId: lines[0]?.product.businessId ?? null,
-    terminalId: normalized.terminalId ?? "terminal_tablet_local_01",
+    terminalId: normalized.terminalId ?? defaultCheckoutTerminalId(),
     cashier: normalized.cashier ?? "tablet-cashier",
     clientRequestId: normalized.clientRequestId ?? null,
     paymentMethod: normalized.paymentMethod ?? "cash",

@@ -163,7 +163,7 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
 
   async completeLocalSale(input: CompleteLocalSaleInput): Promise<CompleteLocalSaleResult> {
     const businessId = input.businessId ?? DEFAULT_BUSINESS_ID;
-    const terminalId = input.terminalId ?? DEFAULT_TERMINAL_ID;
+    let terminalId = input.terminalId ?? DEFAULT_TERMINAL_ID;
     const requestedCashSessionId = input.cashSessionId ?? null;
     const cashier = input.cashier ?? DEFAULT_CASHIER;
     const location = input.location ?? DEFAULT_LOCATION;
@@ -179,7 +179,11 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         throw new PosEngineError("BUSINESS_NOT_FOUND", "No existe el negocio local para registrar la venta.", { businessId });
       }
 
-      const terminal = await tx.terminal.findFirst({ where: { id: terminalId, businessId, isActive: true } });
+      let terminal = await tx.terminal.findFirst({ where: { id: terminalId, businessId, isActive: true } });
+      if (!terminal) {
+        terminal = await tx.terminal.findFirst({ where: { businessId, isActive: true }, orderBy: { id: "asc" } });
+        if (terminal?.id) terminalId = terminal.id;
+      }
       if (!terminal) {
         throw new PosEngineError("TERMINAL_NOT_FOUND", "No existe una terminal local activa para cerrar la venta.", {
           businessId,

@@ -804,6 +804,8 @@ function baseResult(input: Omit<TabletCatalogPullResult, "stream" | "health"> & 
 }
 
 async function fetchCatalogDelta(config: PrismaTabletPcOriginConfig, input: TabletCatalogPullInput, cursor: string | null, mode: CatalogDeltaMode) {
+  const sourceBusinessId = asString(input.pcBusinessId) || undefined;
+  const targetBusinessId = asString(input.targetBusinessId) || DEFAULT_POS_API_BUSINESS_ID;
   const url = pcUrl(config, "/api/sync/export/catalog-delta");
   if (!url) return { ok: false as const, reason: "missing_pc_origin", url: null, status: 0, payload: null };
   const controller = new AbortController();
@@ -817,10 +819,11 @@ async function fetchCatalogDelta(config: PrismaTabletPcOriginConfig, input: Tabl
       body: JSON.stringify({
         mode,
         cursor,
-        businessId: asString(input.pcBusinessId) || undefined,
+        businessId: sourceBusinessId,
         terminalId: asString(input.terminalId) || DEFAULT_POS_API_TERMINAL_ID,
         storeId: asString(input.storeId) || undefined,
         target: "tablet",
+        targetBusinessId,
         limit: normalizeLimit(input.limit),
         requestedBy: asString(input.requestedBy) || "tablet-operator"
       })
