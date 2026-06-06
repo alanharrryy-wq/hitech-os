@@ -676,3 +676,97 @@
     transform: none !important;
   }
 }
+
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_START */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .screen {
+  gap: 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip {
+  border-color: rgba(217, 235, 252, 0.58);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.52), rgba(224, 242, 255, 0.24));
+  box-shadow:
+    0 12px 28px rgba(31, 65, 105, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard {
+  padding: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, auto);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricGrid {
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard {
+  min-height: 84px;
+  padding: 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace {
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(286px, 350px);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel {
+  padding: 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchPanel {
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterRail {
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive {
+  min-width: 132px;
+  min-height: 42px;
+  padding: 8px 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow {
+  grid-template-columns: minmax(170px, 1fr) minmax(68px, auto) minmax(64px, auto) minmax(88px, auto) minmax(92px, auto);
+  gap: 7px;
+  padding: 7px;
+  border-color: rgba(217, 235, 252, 0.52);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid {
+  gap: 7px;
+}
+
+@media (max-width: 1180px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchPanel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton {
+    grid-column: 1 / -1;
+  }
+}
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_END */

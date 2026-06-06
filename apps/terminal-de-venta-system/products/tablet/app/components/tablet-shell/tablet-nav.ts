@@ -37,12 +37,11 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
   { href: "/sync", label: "Sincronización", shortLabel: "Sinc.", description: "Envíos pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
   { href: "/offline", label: "Sin conexión / Exportar", shortLabel: "Exportar", description: "Auditoría local, exportación y evidencia operativa.", icon: "receipt", group: "soporte" },
   { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revisión operativa de flujos críticos antes de liberar.", icon: "settings", group: "soporte" },
-  { href: "/settings/data", label: "Datos locales", shortLabel: "Datos", description: "Herramientas bloqueadas para reset seguro de ventas.", icon: "settings", group: "soporte" },
   { href: "/settings/license", label: "Licencia", shortLabel: "Lic.", description: "Estado de licencia y permisos de uso de Tablet.", icon: "settings", group: "soporte" }
 ];
 
 const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock", "/sales", "/sales/today", "/sales/history", "/returns"]);
-const SOPORTE_PATHS = new Set(["/sync", "/offline", "/settings/export", "/settings/data", "/settings/license", "/release-gate"]);
+const SOPORTE_PATHS = new Set(["/sync", "/offline", "/settings/export", "/settings/license", "/release-gate"]);
 const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/shift"]);
 
 export function isTabletNavActive(currentPath: string, href: string) {

@@ -1,41 +1,26 @@
 {
-  "schema": "prisma.surface_compatibility",
-  "pilot": "05_tablet_light_shell",
+  "surface": "tablet_light_shell",
   "surfaces": {
     "tablet_light_shell": {
       "allowed": true,
-      "mode": "productive_light_first_shell",
       "route": "/"
-    },
-    "tablet_visual_os": {
-      "allowed": true,
-      "mode": "reference_source_only",
-      "route": "/visual-os/materiality-catalog"
-    },
-    "pc_dashboard": {
-      "allowed": false,
-      "policy": "already_handled_by_pilot_04_no_pc_write"
-    },
-    "chart_lab": {
-      "allowed": true,
-      "mode": "recipe_source_only_no_write"
-    },
-    "mobile": {
-      "allowed": false,
-      "policy": "no_mobile_write_in_pilot_05"
     },
     "pos": {
       "allowed": false,
-      "hard_gate": "POS_final_only",
-      "blocked": [
-        "recipe_application",
-        "dark_storm",
-        "pixi_vapor",
-        "webgl",
-        "heavy_blur",
-        "background_competing_with_product_or_payment",
-        "checkout_write"
-      ]
+      "reason": "cashier and checkout routes remain protected"
+    },
+    "checkout": {
+      "allowed": false,
+      "reason": "payment clarity shell is out of scope"
+    },
+    "pc": {
+      "allowed": false
+    },
+    "mobile": {
+      "allowed": false
     }
+  },
+  "legacy_asset_aliases": {
+    "tablet-soft-gray-clouds.svg": "kept as compatibility background alias"
   }
 }

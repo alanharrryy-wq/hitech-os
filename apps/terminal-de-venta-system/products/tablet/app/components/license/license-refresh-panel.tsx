@@ -15,20 +15,20 @@ type RefreshStatus = {
 
 function refreshStateLabel(state: string) {
   const labels: Record<string, string> = {
-    refresh_disabled: "Refresh remoto no configurado",
-    missing_server_url: "Servidor remoto no configurado",
-    missing_device_id: "Device ID no configurado",
-    configured: "Configurado",
-    disabled: "Refresh remoto no configurado",
-    never_refreshed: "Sin refresh remoto todavía",
-    fresh: "Refresh remoto vigente",
-    stale: "Refresh remoto pendiente",
-    refresh_failed: "Refresh remoto falló",
-    offline_grace: "Gracia offline activa",
+    refresh_disabled: "Actualización remota no configurada",
+    missing_server_url: "Servidor no configurado",
+    missing_device_id: "Equipo sin identificador",
+    configured: "Configurada",
+    disabled: "Desactivada",
+    never_refreshed: "Sin actualización remota",
+    fresh: "Actualizada",
+    stale: "Pendiente de revisión",
+    refresh_failed: "Actualización fallida",
+    offline_grace: "Continuidad offline activa",
     revoked: "Licencia revocada",
     suspended: "Licencia suspendida"
   };
-  return labels[state] ?? "Refresh requiere revisión";
+  return labels[state] ?? "Requiere revisión";
 }
 
 function visibleValue(value: string | null | undefined, fallback: string) {
@@ -36,53 +36,40 @@ function visibleValue(value: string | null | undefined, fallback: string) {
 }
 
 export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshStatus }) {
-  const message = initialStatus.enabled
-    ? "Refresh remoto disponible si el servidor de licencias está configurado."
-    : "Refresh remoto no configurado. La operación local continúa si la licencia local es válida.";
-  const lastErrorMessage = initialStatus.lastError
-    ? "No se pudo refrescar licencia remota. Se conserva política local vigente."
-    : null;
+  const hasError = Boolean(initialStatus.lastError);
+  const headline = initialStatus.enabled ? "Actualización automática disponible" : "Licencia local primero";
+  const copy = initialStatus.enabled
+    ? "El sistema puede recibir actualización remota si el entorno administrativo lo tiene configurado. Esta Tablet no dispara cambios manuales de licencia."
+    : "La Tablet sólo muestra el estado instalado. Activar, importar o corregir licencias corresponde al administrador, fuera del equipo del cliente.";
 
   return (
-    <section className={styles.card} id="license-refresh">
-      <p className={styles.eyebrow}>Refresh remoto</p>
-      <h2 className={styles.title}>Actualización de licencia</h2>
-      <p className={styles.copy}>{message}</p>
+    <section className={`${styles.card} ${styles.refreshPanel}`} id="license-refresh" data-prisma-license-refresh-view="readonly">
+      <div className={styles.sectionHeader}>
+        <div>
+          <p className={styles.eyebrow}>Actualización</p>
+          <h2 className={styles.sectionTitle}>{headline}</h2>
+        </div>
+        <span className={styles.readonlyPill}>Sin acciones</span>
+      </div>
+      <p className={styles.copy}>{copy}</p>
 
-      <div className={styles.metricGrid}>
+      <div className={styles.compactMetricGrid}>
         <Metric label="Estado" value={refreshStateLabel(initialStatus.state)} />
-        <Metric label="Habilitado" value={initialStatus.enabled ? "sí" : "no"} />
+        <Metric label="Modo" value={initialStatus.enabled ? "Automático si está configurado" : "Local"} />
         <Metric label="Configuración" value={refreshStateLabel(initialStatus.configurationState ?? initialStatus.state)} />
-        <Metric label="Último intento" value={initialStatus.lastRefreshAt ?? "nunca"} />
-        <Metric label="Último éxito" value={initialStatus.lastSuccessAt ?? "nunca"} />
-        <Metric label="Último fallo" value={initialStatus.lastFailureAt ?? "nunca"} />
-        <Metric label="Plan" value={visibleValue(initialStatus.plan, "Sin licencia local")} />
+        <Metric label="Último intento" value={initialStatus.lastRefreshAt ?? "Nunca"} />
+        <Metric label="Último éxito" value={initialStatus.lastSuccessAt ?? "Nunca"} />
+        <Metric label="Plan detectado" value={visibleValue(initialStatus.plan, "Sin licencia local")} />
       </div>
 
-      {lastErrorMessage ? (
-        <div className={styles.warning}>{lastErrorMessage} Detalle: {initialStatus.lastError}</div>
+      {hasError ? (
+        <div className={styles.warning}>
+          <strong>Última actualización no completada</strong>
+          <span>Se conserva la política local vigente. El administrador puede revisar el detalle técnico fuera de esta Tablet.</span>
+        </div>
       ) : null}
 
-      {initialStatus.enabled ? (
-        <form action="/api/license/refresh" method="post" className={styles.refreshForm}>
-          <button type="submit" className={styles.primaryButton}>
-            Actualizar licencia
-          </button>
-        </form>
-      ) : (
-        <div className={styles.refreshActions} data-prisma-refresh-state="disabled">
-          <a className={styles.primaryLink} href="mailto:contacto@hitechrts.com?subject=Soporte%20licencia%20PRISMA%20Tablet">Request support</a>
-          <a className={styles.secondaryLink} href="#license-status">View license status</a>
-          <a className={styles.secondaryLink} href="https://wa.me/525629563031">View support contact</a>
-          <button className={styles.disabledButton} type="button" disabled>
-            Update license
-          </button>
-        </div>
-      )}
-
-      <p className={styles.helper}>
-        El refresh remoto es opcional. Si no hay servidor configurado, la licencia local firmada sigue siendo la fuente de operación.
-      </p>
+      <p className={styles.helper}>Esta vista no contiene botones de activación, importación, renovación ni administración.</p>
     </section>
   );
 }

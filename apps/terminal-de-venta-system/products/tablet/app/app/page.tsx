@@ -2,53 +2,60 @@ import styles from './prisma-tablet-light-shell.module.css';
 
 const attentionCards = [
   {
-    label: 'Operación táctil',
-    value: 'Light-first',
-    detail: 'Superficie clara, botones grandes y contraste suave para trabajo de tablet.',
+    label: 'Venta rápida',
+    value: 'Listo para vender',
+    detail: 'Inicia ventas desde la tablet, agrega productos al ticket y cobra de forma clara y segura.',
     tone: 'live',
   },
   {
-    label: 'Sync y evidencia',
-    value: 'Visible',
-    detail: 'El shell deja estado y rutas seguras a la mano sin abrir el POS.',
-    tone: 'info',
+    label: 'Control central',
+    value: 'PC + Tablet',
+    detail: 'Conecta una o varias tablets a la PC para administrar catálogo, ventas, inventario y operación.',
+    tone: 'ice',
   },
   {
-    label: 'Caja protegida',
-    value: 'POS cerrado',
-    detail: 'Este piloto no toca venta, cobro, checkout ni componentes de POS.',
+    label: 'Crecimiento',
+    value: 'Multi-comercio',
+    detail: 'PRISMA puede acompañar la operación de varios comercios con más visibilidad y control.',
     tone: 'locked',
   },
 ];
 
-const safeRoutes = [
-  ['Visual OS', '/visual-os', 'Museo visual y rutas de laboratorio.'],
-  ['Materiality Catalog', '/visual-os/materiality-catalog', 'Contrato visual instalado en Pilot 01.'],
-  ['Inventario', '/inventory', 'Ruta operativa segura para validar claridad.'],
-  ['Sincronización', '/sync', 'Estado vivo sin efectos pesados.'],
-  ['Licencia', '/settings/license', 'Pantalla de sistema con bajo ruido visual.'],
+const quickRoutes = [
+  ['Vender', '/pos', 'Inicia una nueva venta en la tablet.'],
+  ['Catálogo', '/catalog', 'Consulta productos, precios y existencias.'],
+  ['Ventas de hoy', '/sales/today', 'Revisa tickets, totales y actividad diaria.'],
+  ['Turno y caja', '/shift', 'Controla el turno activo y prepara el cierre.'],
+  ['Sincronización', '/sync', 'Verifica conexión, actualizaciones y operaciones pendientes.'],
+  ['Licencia', '/settings/license', 'Revisa activación, permisos y estado del sistema.'],
 ];
 
-const evidence = [
-  ['Pilot', '05 · Tablet Light Shell'],
-  ['Surface', 'Tablet productiva light-first'],
-  ['Background', 'Tablet Light Cloudglass + Atmosphere Engine'],
-  ['Motion', 'Micro only / reduced-motion safe'],
-  ['Forbidden', 'POS, checkout, WebGL, Pixi vapor, dark storm'],
-  ['Output', '<LOCAL_PATH> result ZIP'],
+const ecosystem = [
+  ['Tablet', 'Punto de venta ágil para atender clientes en piso.'],
+  ['PC', 'Centro de administración para catálogo, ventas, inventario y reportes.'],
+  ['App', 'Consulta móvil para mantenerte cerca de la operación.'],
+  ['Varias tablets', 'Conecta múltiples tablets a una PC para ampliar la atención.'],
+  ['Multi-comercio', 'Monitorea más de un negocio desde el ecosistema PRISMA.'],
+];
+
+const statusSummary = [
+  ['Operación', 'Lista'],
+  ['Sync', 'Activa'],
+  ['Licencia', 'Vigente'],
+  ['Modo local', 'Disponible'],
 ];
 
 export default function TabletHomePage() {
   return (
     <main
       className={styles.tabletShell}
-      data-prisma-surface-governor="pilot-05"
       data-prisma-surface="tablet-light-shell"
       data-tablet-light-first="true"
-      data-pos-protected="true"
+      data-prisma-background="tablet-fuji-cloudglass"
     >
       <section className={styles.atmosphere} aria-hidden="true" />
       <section className={styles.lightScrim} aria-hidden="true" />
+      <section className={styles.grain} aria-hidden="true" />
 
       <div className={styles.frame}>
         <header className={styles.chromeBar}>
@@ -59,34 +66,43 @@ export default function TabletHomePage() {
               <h1>Inicio operativo</h1>
             </div>
           </div>
-          <div className={styles.guardrailPill} aria-label="Estado del piloto visual">
+          <div className={styles.guardrailPill} aria-label="Estado operativo">
             <span className={styles.liveDot} />
-            <span>Light Shell activo</span>
+            <span>Sistema listo para operar</span>
           </div>
         </header>
 
         <section className={styles.heroPanel}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Pilot 05 · Tablet productiva</p>
-            <h2>La tablet se vuelve luminosa, táctil y gobernada.</h2>
+            <p className={styles.eyebrow}>Punto de venta conectado</p>
+            <h2>Vende, administra y crece con PRISMA.</h2>
             <p>
-              Este shell traslada tokens y variants seguros a la superficie Tablet sin abrir la caja registradora.
-              El fondo respira con imágenes reales, pero el trabajo sigue mandando: lectura primero, acción después, show al final.
+              Desde esta tablet puedes atender clientes, iniciar ventas, consultar productos,
+              revisar existencias y mantener tu operación sincronizada. PRISMA también se conecta
+              con PC y App para darte más control, más alcance y una visión completa de tu negocio.
             </p>
             <div className={styles.heroActions}>
-              <a className={styles.primaryAction} href="/visual-os/materiality-catalog">Abrir Materiality Catalog</a>
+              <a className={styles.primaryAction} href="/pos">Iniciar venta</a>
               <a className={styles.secondaryAction} href="/sync">Revisar sincronización</a>
             </div>
           </div>
 
-          <aside className={styles.protectionCard}>
-            <span className={styles.cardKicker}>Governor verdict</span>
-            <strong>Tablet light-first aprobado</strong>
-            <p>No dark storm, no vapor pesado, no WebGL, no POS.</p>
+          <aside className={styles.weatherCard} aria-label="Resumen del ecosistema PRISMA">
+            <span className={styles.cardKicker}>Ecosistema PRISMA</span>
+            <strong>3</strong>
+            <p>Tablet, PC y App trabajando juntos para vender, administrar y monitorear mejor.</p>
+            <div className={styles.forecastStrip}>
+              {statusSummary.map(([label, value]) => (
+                <span key={label}>
+                  <small>{label}</small>
+                  <b>{value}</b>
+                </span>
+              ))}
+            </div>
           </aside>
         </section>
 
-        <section className={styles.cardGrid} aria-label="Resumen operativo">
+        <section className={styles.cardGrid} aria-label="Beneficios principales">
           {attentionCards.map((item) => (
             <article key={item.label} className={styles.kpiCard} data-tone={item.tone}>
               <span>{item.label}</span>
@@ -98,10 +114,10 @@ export default function TabletHomePage() {
 
         <section className={styles.workspaceGrid}>
           <article className={styles.routePanel}>
-            <p className={styles.eyebrow}>Rutas seguras</p>
-            <h3>Validar shell sin tocar cobro</h3>
+            <p className={styles.eyebrow}>Accesos rápidos</p>
+            <h3>Todo lo esencial para operar tu negocio</h3>
             <div className={styles.routeList}>
-              {safeRoutes.map(([label, href, detail]) => (
+              {quickRoutes.map(([label, href, detail]) => (
                 <a key={href} href={href} className={styles.routeRow}>
                   <span>
                     <strong>{label}</strong>
@@ -114,10 +130,10 @@ export default function TabletHomePage() {
           </article>
 
           <article className={styles.evidencePanel}>
-            <p className={styles.eyebrow}>Evidencia técnica</p>
-            <h3>Contrato del piloto</h3>
+            <p className={styles.eyebrow}>PRISMA conectado</p>
+            <h3>Más que una tablet</h3>
             <dl>
-              {evidence.map(([key, value]) => (
+              {ecosystem.map(([key, value]) => (
                 <div key={key}>
                   <dt>{key}</dt>
                   <dd>{value}</dd>
@@ -126,6 +142,15 @@ export default function TabletHomePage() {
             </dl>
           </article>
         </section>
+
+        <nav className={styles.bottomDock} aria-label="Navegación principal">
+          <a href="/">Inicio</a>
+          <a href="/pos">Vender</a>
+          <a href="/catalog">Catálogo</a>
+          <a href="/sales/today">Ventas</a>
+          <a href="/sync">Sync</a>
+          <a href="/settings/license">Licencia</a>
+        </nav>
       </div>
     </main>
   );

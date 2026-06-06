@@ -2,70 +2,50 @@ import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../
 import type { RuntimeContext } from "../../../../../shared/runtime";
 import styles from "./license-ui.module.css";
 
-function toneForState(state: string) {
-  if (state === "active" || state === "development") return "ok" as const;
-  if (state === "offline_grace") return "warn" as const;
-  return "danger" as const;
+type Tone = "ok" | "warn" | "danger" | "neutral";
+
+function toneForState(state: string): Tone {
+  if (state === "active" || state === "development") return "ok";
+  if (state === "offline_grace") return "warn";
+  return "danger";
 }
 
 function stateLabel(state: string) {
   const labels: Record<string, string> = {
-    active: "Licencia local activa",
+    active: "Licencia activa",
     development: "Modo desarrollo",
-    offline_grace: "Licencia en gracia offline",
-    missing: "Licencia no configurada",
+    offline_grace: "Operando con gracia offline",
+    missing: "Licencia pendiente",
     invalid: "Licencia inválida",
     expired: "Licencia vencida",
     suspended: "Licencia suspendida",
     revoked: "Licencia revocada"
   };
-  return labels[state] ?? "Estado de licencia requiere revisión";
+  return labels[state] ?? "Estado por revisar";
 }
 
 function assignmentLabel(state: string) {
   const labels: Record<string, string> = {
     assigned: "Equipo asignado",
-    unassigned: "Equipo no asignado",
-    wrong_business: "Negocio incorrecto",
-    wrong_store: "Tienda incorrecta",
-    wrong_device: "Dispositivo incorrecto",
-    wrong_terminal: "Terminal incorrecta",
+    unassigned: "Equipo pendiente de asignar",
+    wrong_business: "Negocio no coincide",
+    wrong_store: "Sucursal no coincide",
+    wrong_device: "Dispositivo no coincide",
+    wrong_terminal: "Terminal no coincide",
     exceeded_limit: "Límite de terminales excedido",
     unknown: "Asignación no declarada"
   };
-  return labels[state] ?? "Asignación requiere revisión";
+  return labels[state] ?? "Asignación por revisar";
 }
 
 function decisionLabel(decision: string) {
   const labels: Record<string, string> = {
     allow: "Operación permitida",
     allow_with_warning: "Operación permitida con aviso",
-    degrade: "Continuidad local limitada",
+    degrade: "Operación limitada",
     deny: "Operación bloqueada"
   };
-  return labels[decision] ?? "Decisión requiere revisión";
-}
-
-function denialReasonLabel(reason: string) {
-  const labels: Record<string, string> = {
-    license_missing: "Licencia no configurada. Revisa instalación local.",
-    license_invalid: "Licencia inválida o alterada. Revisa diagnóstico.",
-    license_expired: "Licencia vencida. Requiere renovación.",
-    license_suspended: "Licencia suspendida. Revisa soporte del cliente.",
-    license_revoked: "Licencia revocada. Revisa soporte y evidencia de activación.",
-    device_unassigned: "Equipo no asignado a esta licencia. Revisa cliente, negocio y terminal.",
-    wrong_business: "Licencia asignada a otro negocio. Revisa activación.",
-    wrong_store: "Licencia asignada a otra tienda o sucursal. Revisa activación.",
-    wrong_device: "Licencia asignada a otro dispositivo. Revisa activación.",
-    wrong_terminal: "Licencia asignada a otra terminal. Revisa activación.",
-    exceeded_limit: "Límite de terminales excedido. Revisa licencia del cliente.",
-    feature_not_entitled: "La función no está incluida en el plan actual."
-  };
-  return labels[reason] ?? "Licencia requiere revisión operativa.";
-}
-
-function visibleValue(value: string | null | undefined, fallback: string) {
-  return value && value.trim() ? value : fallback;
+  return labels[decision] ?? "Decisión por revisar";
 }
 
 function runtimeModeLabel(mode: RuntimeContext["runtimeMode"]) {
@@ -78,144 +58,194 @@ function runtimeModeLabel(mode: RuntimeContext["runtimeMode"]) {
   return labels[mode];
 }
 
-function provenanceLabel(context: RuntimeContext) {
-  const source = context.provenance.runtimeConfig?.source;
-  if (source === "explicit" || source === "env") return "Runtime config explícito";
-  if (source === "programdata") return "ProgramData canonical";
-  if (source === "legacy_programdata") return "ProgramData legacy";
-  if (source === "dev_fallback") return "Fallback dev";
-  return "Sin runtime.json";
+function visibleValue(value: string | null | undefined, fallback: string) {
+  return value && value.trim() ? value : fallback;
 }
 
-function signatureLabel(status: NormalizedLicenseStatus) {
-  if (status.state === "missing") return "No disponible";
-  if (status.state === "invalid") return "Inválida o no verificada";
-  if (status.warnings.some((warning) => warning.code === "LICENSE_UNSIGNED_DEV")) return "Dev sin firma";
-  if (status.source === "local_file" || status.source === "dev_file") return "Firma validada";
-  return "No determinada";
+function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext) {
+  if (status.state === "active" || status.state === "development") {
+    return {
+      title: "No requiere acción",
+      copy: "La Tablet tiene autorización local suficiente para operar según el plan instalado."
+    };
+  }
+  if (status.state === "offline_grace") {
+    return {
+      title: "Operación local protegida",
+      copy: "La Tablet puede seguir trabajando de forma limitada. El administrador debe revisar la licencia cuando termine la venta o el turno."
+    };
+  }
+  if (context.runtimeMode === "dev") {
+    return {
+      title: "Entorno de desarrollo",
+      copy: "Esta Tablet está en modo desarrollo. La licencia real debe instalarse antes de entregar el equipo a cliente."
+    };
+  }
+  return {
+    title: "Avisar al administrador",
+    copy: "La activación, importación, renovación y revisión de licencias se hacen fuera de esta Tablet. Esta pantalla sólo informa el estado actual."
+  };
 }
 
-function statusCopy(status: NormalizedLicenseStatus, context: RuntimeContext) {
-  if (status.state === "missing" && context.runtimeMode === "dev") {
-    return "Licencia no configurada. La operación local continúa según capacidades permitidas.";
-  }
-  if (status.state === "missing") {
-    return "Instalación pendiente de licencia local. La venta básica puede continuar en modo limitado si la política lo permite.";
-  }
-  if (status.denialReason === "wrong_device") return "Equipo no asignado a esta licencia. Revisa cliente, negocio, tienda y terminal.";
-  if (status.operationalDecision === "deny") return "La operación requiere revisión antes de vender.";
-  return "La operación local continúa según capacidades permitidas.";
+function issueCopy(status: NormalizedLicenseStatus) {
+  const reason = status.denialReason;
+  const labels: Record<string, string> = {
+    license_missing: "Falta instalar una licencia local válida.",
+    license_invalid: "La licencia instalada no se pudo validar.",
+    license_expired: "La vigencia de la licencia terminó.",
+    license_suspended: "La licencia está suspendida.",
+    license_revoked: "La licencia fue revocada.",
+    device_unassigned: "Este equipo no está asignado en la licencia.",
+    wrong_business: "La licencia pertenece a otro negocio.",
+    wrong_store: "La licencia pertenece a otra sucursal.",
+    wrong_device: "La licencia pertenece a otro dispositivo.",
+    wrong_terminal: "La licencia pertenece a otra terminal.",
+    exceeded_limit: "Se excedió el límite de terminales permitidas.",
+    feature_not_entitled: "El plan no incluye una función solicitada."
+  };
+  if (reason && labels[reason]) return labels[reason];
+  if (status.state === "active" || status.state === "development") return "No se detectaron bloqueos principales.";
+  if (status.state === "offline_grace") return "La Tablet conserva continuidad local con restricciones.";
+  return "La licencia requiere revisión administrativa.";
+}
+
+function categoryForFeature(key: string) {
+  const raw = key.toLowerCase();
+  if (raw.includes("sale") || raw.includes("pos") || raw.includes("ticket") || raw.includes("checkout")) return "Ventas";
+  if (raw.includes("cash") || raw.includes("shift") || raw.includes("session") || raw.includes("corte")) return "Turno y caja";
+  if (raw.includes("stock") || raw.includes("inventory") || raw.includes("catalog") || raw.includes("product")) return "Inventario local";
+  if (raw.includes("sync") || raw.includes("outbox") || raw.includes("export") || raw.includes("evidence")) return "Sincronización y evidencia";
+  if (raw.includes("report") || raw.includes("audit") || raw.includes("history")) return "Reportes";
+  return "Otras funciones";
+}
+
+function featureLabel(key: string) {
+  const raw = key.replace(/[._:-]+/g, " ").trim();
+  return raw ? raw.replace(/\b\w/g, (ch) => ch.toUpperCase()) : "Función";
 }
 
 export function LicenseStatusCard({ status, runtimeContext }: { status: NormalizedLicenseStatus; runtimeContext: RuntimeContext }) {
   const tone = toneForState(status.state);
-  const isCustomerPending = status.state === "missing" && runtimeContext.runtimeMode !== "dev";
+  const action = supportAction(status, runtimeContext);
+  const headline = tone === "ok" ? "Tablet lista para operar" : tone === "warn" ? "Tablet operando con aviso" : "Licencia requiere atención";
+
   return (
-    <section className={styles.card} id="license-status">
-      <p className={styles.eyebrow}>Licencia local</p>
-      <h1 className={styles.title}>{isCustomerPending ? "LICENSE_CUSTOMER_PENDING" : status.state === "missing" ? "Continuidad local" : `Plan ${status.plan}`}</h1>
-      <p className={styles.copy}>{stateLabel(status.state)}. {statusCopy(status, runtimeContext)}</p>
-      {isCustomerPending ? (
-        <div className={styles.actionPanel} data-prisma-license-state="LICENSE_CUSTOMER_PENDING">
-          <div>
-            <strong>Instalación pendiente de licencia local</strong>
-            <span>Runtime e identidad quedan trazados. Soporte puede entregar o actualizar la licencia firmada sin sacar al operador de Tablet.</span>
-          </div>
-          <div className={styles.ctaGrid}>
-            <a className={styles.primaryLink} href="mailto:contacto@hitechrts.com?subject=Soporte%20licencia%20PRISMA%20Tablet">Request support</a>
-            <a className={styles.secondaryLink} href="#license-refresh">Update license</a>
-            <a className={styles.secondaryLink} href="#license-status">View license status</a>
-            <a className={styles.secondaryLink} href="https://wa.me/525629563031">View support contact</a>
-          </div>
-        </div>
-      ) : null}
-      <div className={styles.metricGrid}>
-        <Metric label="Modo runtime" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
-        <Metric label="Origen config" value={provenanceLabel(runtimeContext)} />
-        <Metric label="Vertical" value={runtimeContext.vertical} />
-        <Metric label="Rol" value={runtimeContext.role} />
-        <Metric label="Estado" value={stateLabel(status.state)} accent={tone} />
-        <Metric label="Cliente" value={visibleValue(status.customerId, "Sin licencia configurada")} />
-        <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "Negocio no declarado")} />
-        <Metric label="Tienda/sucursal" value={visibleValue(status.storeId ?? status.branchId ?? runtimeContext.storeId, "Tienda no declarada")} />
-        <Metric label="Terminal" value={visibleValue(status.terminalId ?? runtimeContext.terminalId, "Terminal no declarada")} />
-        <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "Equipo no declarado")} />
-        <Metric label="Asignación" value={assignmentLabel(status.assignmentState)} />
-        <Metric label="Firma" value={signatureLabel(status)} />
-        <Metric label="Vence" value={visibleValue(status.validUntil, "Vigencia no disponible")} />
-        <Metric label="Días restantes" value={status.daysRemaining === null ? "Sin vigencia disponible" : String(status.daysRemaining)} />
-        <Metric label="Última decisión" value={visibleValue(status.lastDecisionAt, "Sin decisión registrada")} />
-        <Metric label="Decisión operativa" value={decisionLabel(status.operationalDecision)} />
-        <Metric label="Archivo licencia" value={visibleValue(runtimeContext.licenseFile, "Sin ruta resuelta")} />
-        <Metric label="Identidad local" value={runtimeContext.deviceIdentity ? "Cargada" : "Pendiente"} />
-      </div>
-      {status.denialReason ? <div className={styles.warning}>Motivo de revisión: {denialReasonLabel(status.denialReason)}</div> : null}
-      {runtimeContext.blockingIssues.length > 0 ? (
-        <div className={styles.warningList}>
-          {runtimeContext.blockingIssues.map((issue) => (
-            <div key={issue.code} className={styles.warning}>
-              <strong>{issue.code}</strong>: {issue.message}
+    <section className={styles.statusCluster} id="license-status" data-prisma-license-state={status.state} data-prisma-client-license-view="readonly">
+      <div className={styles.heroCard}>
+        <div className={`${styles.statusMark} ${styles[tone]}`} aria-hidden="true">✓</div>
+        <div className={styles.heroBody}>
+          <div className={styles.heroHeader}>
+            <div className={styles.heroCopyBlock}>
+              <p className={styles.eyebrow}>Estado del equipo</p>
+              <h1 className={styles.title}>{headline}</h1>
+              <p className={styles.copy}>{stateLabel(status.state)}. {issueCopy(status)}</p>
             </div>
-          ))}
+            <span className={`${styles.statusBadge} ${styles[tone]}`}>{decisionLabel(status.operationalDecision)}</span>
+          </div>
+
+          <div className={styles.operatorNotice}>
+            <strong>{action.title}</strong>
+            <span>{action.copy}</span>
+          </div>
         </div>
-      ) : null}
+      </div>
+
+      <div className={styles.identityStrip} aria-label="Resumen de licencia y equipo">
+        <Metric label="Estado" value={stateLabel(status.state)} tone={tone} />
+        <Metric label="Plan" value={visibleValue(status.plan, "Sin plan instalado")} />
+        <Metric label="Asignación" value={assignmentLabel(status.assignmentState)} />
+        <Metric label="Terminal" value={visibleValue(status.terminalId ?? runtimeContext.terminalId, "No declarada")} />
+        <Metric label="Sucursal" value={visibleValue(status.storeId ?? status.branchId ?? runtimeContext.storeId, "No declarada")} />
+        <Metric label="Vigencia" value={status.daysRemaining === null ? visibleValue(status.validUntil, "No disponible") : `${status.daysRemaining} días restantes`} />
+      </div>
+
       {status.warnings.length > 0 ? (
-        <div className={styles.warningList}>
+        <div className={styles.warningStack} aria-label="Avisos de licencia">
           {status.warnings.map((warning) => (
             <div key={warning.code} className={styles.warning}>
-              <strong>{warning.code}</strong>: {warning.message}
+              <strong>Revisión recomendada</strong>
+              <span>{warning.message || warning.code}</span>
             </div>
           ))}
         </div>
       ) : null}
+
+      <details className={styles.evidenceDisclosure}>
+        <summary>Ver detalle para soporte</summary>
+        <div className={styles.compactMetricGrid}>
+          <Metric label="Modo" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
+          <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "No declarado")} />
+          <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "No declarado")} />
+          <Metric label="Fuente" value={status.source} />
+          <Metric label="Cliente" value={visibleValue(status.customerId, "No declarado")} />
+          <Metric label="Motivo" value={status.denialReason ? issueCopy(status) : "Sin bloqueo principal"} />
+        </div>
+      </details>
     </section>
   );
 }
 
-function Metric({ label, value, accent }: { label: string; value: string; accent?: "ok" | "warn" | "danger" }) {
+function Metric({ label, value, tone }: { label: string; value: string; tone?: Tone }) {
   return (
     <div className={styles.metric}>
       <div className={styles.metricLabel}>{label}</div>
-      <div className={[styles.metricValue, accent ? styles[`metric_${accent}`] : ""].join(" ")}>{value}</div>
+      <div className={`${styles.metricValue} ${tone ? styles[tone] : ""}`}>{value}</div>
     </div>
   );
 }
 
 export function FeatureList({ features }: { features: FeatureResolution[] }) {
+  const byCategory = features.reduce<Record<string, FeatureResolution[]>>((acc, feature) => {
+    const category = categoryForFeature(feature.key);
+    acc[category] = acc[category] || [];
+    acc[category].push(feature);
+    return acc;
+  }, {});
+  const categories = Object.entries(byCategory);
+  const allowed = features.filter((feature) => feature.allowed).length;
+  const blocked = Math.max(features.length - allowed, 0);
+
   return (
-    <section className={styles.card}>
-      <h2 className={styles.title}>Features resueltas</h2>
-      <div className={styles.featureList}>
-        {features.map((feature) => (
-          <div key={feature.key} className={styles.featureItem}>
-            <div>
-              <strong className={styles.featureKey}>{feature.key}</strong>
-              <div className={styles.featureReason}>{feature.reason}</div>
-            </div>
-            <span className={[styles.badge, feature.allowed ? styles.allowed : styles.blocked].join(" ")}>
-              {feature.allowed ? "Permitida" : "Bloqueada"}
-            </span>
-          </div>
-        ))}
+    <section className={`${styles.card} ${styles.featurePanel}`} id="license-features">
+      <div className={styles.sectionHeader}>
+        <div>
+          <p className={styles.eyebrow}>Funciones disponibles</p>
+          <h2 className={styles.sectionTitle}>Permisos de operación</h2>
+        </div>
+        <span className={styles.readonlyPill}>Sólo lectura</span>
+      </div>
+      <p className={styles.copy}>Resumen de lo que esta Tablet puede usar con la licencia local instalada. No administra licencias desde aquí.</p>
+
+      <div className={styles.summaryStrip}>
+        <span className={styles.summaryTile}><strong>{allowed}</strong><small>permitidas</small></span>
+        <span className={styles.summaryTile}><strong>{blocked}</strong><small>bloqueadas o limitadas</small></span>
+        <span className={styles.summaryTile}><strong>{features.length}</strong><small>revisadas</small></span>
+      </div>
+
+      <div className={styles.featureGroups}>
+        {categories.map(([category, group]) => {
+          const groupAllowed = group.filter((feature) => feature.allowed).length;
+          return (
+            <details key={category} className={styles.featureGroup}>
+              <summary>
+                <span>{category}</span>
+                <em>{groupAllowed}/{group.length} permitidas</em>
+              </summary>
+              <div className={styles.featureList}>
+                {group.map((feature) => (
+                  <div key={feature.key} className={styles.featureItem}>
+                    <div>
+                      <strong>{featureLabel(feature.key)}</strong>
+                      <span>{feature.reason || "Revisado por la licencia local."}</span>
+                    </div>
+                    <span className={`${styles.featurePill} ${feature.allowed ? styles.ok : styles.danger}`}>{feature.allowed ? "Permitida" : "No disponible"}</span>
+                  </div>
+                ))}
+              </div>
+            </details>
+          );
+        })}
       </div>
     </section>
   );
-}
-
-export function LicenseGateBanner({ message }: { message: string }) {
-  return <div className={styles.warning}>{message}</div>;
-}
-
-export function LicenseBlockedCard({ title, reason }: { title: string; reason: string }) {
-  return (
-    <section className={styles.blockedCard}>
-      <h2 className={styles.title}>{title}</h2>
-      <p>{reason}</p>
-      <p>La venta básica de Tablet permanece protegida por política de continuidad.</p>
-    </section>
-  );
-}
-
-export function LicenseWarningBadge({ children }: { children: React.ReactNode }) {
-  return <span className={styles.warningBadge}>{children}</span>;
 }

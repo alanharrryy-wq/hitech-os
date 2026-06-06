@@ -291,3 +291,57 @@
     transform: none !important;
   }
 }
+
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::OFFLINE_START */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page {
+  gap: 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alert,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span {
+  padding: 12px;
+  border-color: rgba(217, 235, 252, 0.58);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.50), rgba(224, 242, 255, 0.24));
+  box-shadow:
+    0 12px 28px rgba(31, 65, 105, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard {
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis {
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(142px, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions {
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .columns {
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row {
+  padding: 9px 0;
+}
+
+@media (max-width: 900px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .columns {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::OFFLINE_END */

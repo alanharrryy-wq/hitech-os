@@ -1,9 +1,9 @@
 export const POS_ENGINE_VERSION = "01A_ENGINE";
 
-export const DEFAULT_BUSINESS_ID = "biz_tablet_standalone";
-export const DEFAULT_TERMINAL_ID = "terminal_tablet_local_01";
+export const DEFAULT_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || "biz_tablet_standalone";
+export const DEFAULT_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
 export const DEFAULT_LOCATION = "tablet-floor";
-export const DEFAULT_CASHIER = "tablet-cashier";
+export const DEFAULT_CASHIER = process.env.PRISMA_TABLET_CASHIER?.trim() || "tablet-cashier";
 
 export const SALE_STATUS_COMPLETED = "COMPLETED";
 export const SALE_STATUS_CANCELLED = "CANCELLED";

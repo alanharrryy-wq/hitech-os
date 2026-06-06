@@ -44,12 +44,7 @@ const checks = [
       "Permisos por rol"
     ]
   },
-  {
-    id: "local_data_page",
-    file: "app/settings/data/page.tsx",
-    must: ["LocalUsersRolesPanel", "getLocalAdminSnapshot", "SalesResetPanel"]
-  },
-  {
+    {
     id: "secure_reset_no_phrase",
     file: "components/settings/sales-reset-panel.tsx",
     must: ["Pregunta de seguridad", "PIN admin", "alerta silenciosa"]

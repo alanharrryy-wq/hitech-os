@@ -1,9 +1,9 @@
 
 import type { CompleteLocalSaleInput, PosCartLineInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
 
-export const DEFAULT_POS_API_BUSINESS_ID = "biz_tablet_standalone";
-export const DEFAULT_POS_API_TERMINAL_ID = "terminal_tablet_local_01";
-export const DEFAULT_POS_API_CASHIER = "tablet-cashier";
+export const DEFAULT_POS_API_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || "biz_tablet_standalone";
+export const DEFAULT_POS_API_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
+export const DEFAULT_POS_API_CASHIER = process.env.PRISMA_TABLET_CASHIER?.trim() || "tablet-cashier";
 
 export type ProductSearchInput = {
   q: string;
@@ -48,6 +48,18 @@ export type PosExportInput = PosListInput & {
 
 function asString(value: unknown, fallback = "") {
   return typeof value === "string" ? value.trim() : fallback;
+}
+
+function normalizeBusinessId(value: unknown) {
+  const incoming = asString(value, "");
+  if (!incoming || incoming === "biz_tablet_standalone") return DEFAULT_POS_API_BUSINESS_ID;
+  return incoming;
+}
+
+function normalizeTerminalId(value: unknown) {
+  const incoming = asString(value, "");
+  if (!incoming || incoming === "terminal_tablet_local_01") return DEFAULT_POS_API_TERMINAL_ID;
+  return incoming;
 }
 
 function asPositiveInteger(value: unknown, fallback: number, max = 100) {
@@ -97,7 +109,7 @@ function readPaymentTenders(value: unknown): SalePaymentTenderInput[] | undefine
 export function readProductSearchInput(searchParams: URLSearchParams): ProductSearchInput {
   return {
     q: asString(searchParams.get("q")),
-    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    businessId: normalizeBusinessId(searchParams.get("businessId")),
     limit: asPositiveInteger(searchParams.get("limit"), 144, 240),
     includeInactive: asBoolean(searchParams.get("includeInactive"), false)
   };
@@ -106,12 +118,12 @@ export function readProductSearchInput(searchParams: URLSearchParams): ProductSe
 export function readProductResolveInput(searchParams: URLSearchParams): ProductResolveInput {
   const code = asString(searchParams.get("code"));
   if (!code) throw new Error("MISSING_PRODUCT_CODE");
-  return { code, businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID) };
+  return { code, businessId: normalizeBusinessId(searchParams.get("businessId")) };
 }
 
 export function readSalesTodayInput(searchParams: URLSearchParams): SalesTodayInput {
   return {
-    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    businessId: normalizeBusinessId(searchParams.get("businessId")),
     terminalId: asString(searchParams.get("terminalId"), "") || undefined,
     date: asString(searchParams.get("date"), "") || undefined
   };
@@ -121,7 +133,7 @@ export function readSalesHistoryInput(searchParams: URLSearchParams): SalesHisto
   const rawPreset = asString(searchParams.get("preset"), "7d").toLowerCase();
   const preset = rawPreset === "today" || rawPreset === "yesterday" || rawPreset === "30d" || rawPreset === "custom" ? rawPreset : "7d";
   return {
-    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    businessId: normalizeBusinessId(searchParams.get("businessId")),
     terminalId: asString(searchParams.get("terminalId"), "") || undefined,
     preset,
     from: asString(searchParams.get("from"), "") || undefined,
@@ -133,7 +145,7 @@ export function readSalesHistoryInput(searchParams: URLSearchParams): SalesHisto
 
 export function readPosListInput(searchParams: URLSearchParams, defaultLimit = 50, maxLimit = 200): PosListInput {
   return {
-    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    businessId: normalizeBusinessId(searchParams.get("businessId")),
     terminalId: asString(searchParams.get("terminalId"), "") || undefined,
     date: asString(searchParams.get("date"), "") || undefined,
     limit: asPositiveInteger(searchParams.get("limit"), defaultLimit, maxLimit),
@@ -176,8 +188,8 @@ export async function readCompleteSaleInput(request: Request): Promise<CompleteL
   if (paymentMethod === "cash" && cashReceivedCents === null && !paymentTenders?.length) throw new Error("CASH_RECEIVED_REQUIRED");
 
   return {
-    businessId: asString(body?.businessId, DEFAULT_POS_API_BUSINESS_ID),
-    terminalId: asString(body?.terminalId, DEFAULT_POS_API_TERMINAL_ID),
+    businessId: normalizeBusinessId(body?.businessId),
+    terminalId: normalizeTerminalId(body?.terminalId),
     cashSessionId: asString(body?.cashSessionId, "") || null,
     cashier: asString(body?.cashier ?? body?.operatorId, DEFAULT_POS_API_CASHIER),
     location: asString(body?.location, "tablet-floor"),

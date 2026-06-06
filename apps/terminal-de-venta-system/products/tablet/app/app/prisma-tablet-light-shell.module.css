@@ -1,11 +1,12 @@
-:root {
+.tabletShell {
   --prisma-tablet-bg: #f4f7fb;
   --prisma-tablet-bg-soft: #eaf1f8;
   --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: rgba(41, 57, 80, 0.72);
-  --prisma-tablet-hairline: rgba(76, 103, 139, 0.18);
-  --prisma-tablet-glass: rgba(255, 255, 255, 0.72);
-  --prisma-tablet-glass-strong: rgba(255, 255, 255, 0.86);
+  --prisma-tablet-muted: rgba(41, 57, 80, 0.74);
+  --prisma-tablet-hairline: rgba(223, 238, 255, 0.54);
+  --prisma-tablet-glass: rgba(255, 255, 255, 0.38);
+  --prisma-tablet-glass-strong: rgba(255, 255, 255, 0.60);
+  --prisma-tablet-glass-panel: rgba(234, 244, 255, 0.42);
   --prisma-tablet-ice: #2d7ff9;
   --prisma-tablet-mint: #1ca678;
   --prisma-tablet-amber: #b67812;
@@ -19,36 +20,47 @@
   overflow: hidden;
   color: var(--prisma-tablet-ink);
   background:
-    radial-gradient(circle at 14% 8%, rgba(91, 148, 226, 0.16), transparent 34%),
-    radial-gradient(circle at 84% 0%, rgba(140, 211, 191, 0.16), transparent 30%),
-    linear-gradient(135deg, #f7fbff 0%, var(--prisma-tablet-bg) 48%, #e8f0f8 100%);
+    radial-gradient(circle at 16% 8%, rgba(255, 255, 255, 0.72), transparent 32%),
+    radial-gradient(circle at 88% 10%, rgba(152, 202, 255, 0.22), transparent 36%),
+    linear-gradient(135deg, #f7fbff 0%, var(--prisma-tablet-bg) 48%, #dbeaf7 100%);
 }
 
 .atmosphere,
-.lightScrim {
+.lightScrim,
+.grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
 .atmosphere {
-  z-index: -3;
-  opacity: 0.42;
+  z-index: -4;
+  opacity: 0.96;
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.72)),
-    url('/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg');
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(237, 247, 255, 0.10) 42%, rgba(5, 45, 74, 0.18)),
+    url('/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg');
   background-size: cover;
-  background-position: center;
-  filter: saturate(0.86) contrast(1.02) brightness(1.08);
+  background-position: center 45%;
+  filter: saturate(0.96) contrast(1.04) brightness(1.08);
   transform: scale(1.018);
-  animation: tabletCloudDrift 96s ease-in-out infinite alternate;
+  animation: tabletCloudDrift 112s ease-in-out infinite alternate;
 }
 
 .lightScrim {
-  z-index: -2;
+  z-index: -3;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0.14) 46%, rgba(236, 243, 251, 0.74)),
-    radial-gradient(circle at 50% 35%, transparent 0%, rgba(98, 120, 148, 0.10) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.22) 38%, rgba(220, 239, 255, 0.36) 68%, rgba(10, 54, 83, 0.22)),
+    radial-gradient(circle at 50% 35%, transparent 0%, rgba(98, 120, 148, 0.12) 100%);
+}
+
+.grain {
+  z-index: -2;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.45) 0 1px, transparent 1px),
+    radial-gradient(circle at 72% 64%, rgba(255, 255, 255, 0.36) 0 1px, transparent 1px);
+  background-size: 34px 34px, 46px 46px;
+  mix-blend-mode: screen;
 }
 
 .frame {
@@ -64,10 +76,15 @@
 .kpiCard,
 .routePanel,
 .evidencePanel,
-.protectionCard {
+.weatherCard,
+.bottomDock {
   border: 1px solid var(--prisma-tablet-hairline);
-  box-shadow: 0 16px 42px rgba(84, 107, 139, 0.14), inset 0 1px rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(3px) saturate(1.02);
+  box-shadow:
+    0 24px 58px rgba(27, 60, 98, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.76),
+    inset 0 -1px rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(1.22);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22);
 }
 
 .chromeBar {
@@ -77,15 +94,16 @@
   justify-content: space-between;
   gap: 14px;
   padding: 12px 14px;
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.78);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(226, 241, 255, 0.34));
 }
 
 .brandCluster,
 .guardrailPill,
 .heroActions,
 .routeRow,
-.kpiCard {
+.kpiCard,
+.bottomDock {
   display: flex;
   align-items: center;
 }
@@ -95,25 +113,25 @@
 }
 
 .brandMark {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
-  border-radius: 16px;
+  border-radius: 17px;
   color: white;
-  font-weight: 900;
-  background: linear-gradient(135deg, #2d7ff9, #1ca678);
-  box-shadow: 0 12px 26px rgba(45, 127, 249, 0.24);
+  font-weight: 950;
+  background: linear-gradient(135deg, rgba(45, 127, 249, 0.92), rgba(28, 166, 120, 0.86));
+  box-shadow: 0 16px 30px rgba(45, 127, 249, 0.28), inset 0 1px rgba(255, 255, 255, 0.42);
 }
 
 .eyebrow,
 .cardKicker {
   margin: 0 0 4px;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 850;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(32, 64, 103, 0.68);
+  color: rgba(32, 64, 103, 0.70);
 }
 
 .chromeBar h1,
@@ -132,11 +150,11 @@
   gap: 8px;
   padding: 10px 12px;
   border-radius: 999px;
-  background: rgba(236, 248, 244, 0.88);
+  background: rgba(236, 248, 244, 0.72);
   color: #12624a;
   font-size: 0.9rem;
-  font-weight: 800;
-  border: 1px solid rgba(28, 166, 120, 0.20);
+  font-weight: 850;
+  border: 1px solid rgba(28, 166, 120, 0.22);
 }
 
 .liveDot {
@@ -144,36 +162,39 @@
   height: 10px;
   border-radius: 999px;
   background: var(--prisma-tablet-mint);
-  box-shadow: 0 0 0 6px rgba(28, 166, 120, 0.12);
+  box-shadow: 0 0 0 6px rgba(28, 166, 120, 0.13), 0 0 16px rgba(28, 166, 120, 0.48);
 }
 
 .heroPanel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.36fr);
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.36fr);
   gap: 16px;
   padding: clamp(18px, 3vw, 30px);
-  border-radius: 34px;
-  background: rgba(255, 255, 255, 0.70);
+  border-radius: 36px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(219, 237, 255, 0.28)),
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.76), transparent 44%);
 }
 
 .heroCopy h2 {
-  max-width: 780px;
-  font-size: clamp(2rem, 5.4vw, 4.2rem);
+  max-width: 820px;
+  font-size: clamp(2rem, 5.4vw, 4.35rem);
   line-height: 0.92;
+  text-wrap: balance;
 }
 
 .heroCopy p,
-.protectionCard p,
+.weatherCard p,
 .kpiCard p,
 .routeRow small {
   color: var(--prisma-tablet-muted);
 }
 
 .heroCopy > p:not(.eyebrow) {
-  max-width: 760px;
+  max-width: 780px;
   margin: 16px 0 0;
-  font-size: clamp(1rem, 1.45vw, 1.15rem);
-  line-height: 1.55;
+  font-size: clamp(1rem, 1.45vw, 1.16rem);
+  line-height: 1.56;
 }
 
 .heroActions {
@@ -184,13 +205,14 @@
 
 .primaryAction,
 .secondaryAction,
-.routeRow {
+.routeRow,
+.bottomDock a {
   text-decoration: none;
 }
 
 .primaryAction,
 .secondaryAction {
-  min-height: 46px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -202,31 +224,60 @@
 .primaryAction {
   color: white;
   background: linear-gradient(135deg, #2d7ff9, #1c8f7a);
-  box-shadow: 0 14px 28px rgba(45, 127, 249, 0.22);
+  box-shadow: 0 16px 30px rgba(45, 127, 249, 0.25), inset 0 1px rgba(255, 255, 255, 0.34);
 }
 
 .secondaryAction {
   color: #1f3f66;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(45, 127, 249, 0.18);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(222, 238, 255, 0.68);
 }
 
-.protectionCard {
+.weatherCard {
   align-self: stretch;
   display: grid;
   align-content: end;
-  gap: 8px;
-  min-height: 220px;
-  padding: 18px;
-  border-radius: 28px;
+  gap: 10px;
+  min-height: 236px;
+  padding: 20px;
+  border-radius: 30px;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(239, 247, 252, 0.72)),
-    radial-gradient(circle at 12% 0%, rgba(45, 127, 249, 0.18), transparent 42%);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.55), rgba(206, 230, 251, 0.25)),
+    radial-gradient(circle at 78% 12%, rgba(255, 230, 172, 0.72), transparent 24%);
 }
 
-.protectionCard strong {
-  font-size: 1.38rem;
-  line-height: 1.05;
+.weatherCard strong {
+  font-size: clamp(3rem, 7vw, 5.4rem);
+  letter-spacing: -0.08em;
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 12px 28px rgba(30, 73, 111, 0.24);
+}
+
+.forecastStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.forecastStrip span {
+  display: grid;
+  gap: 4px;
+  padding: 9px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+}
+
+.forecastStrip small {
+  color: rgba(32, 64, 103, 0.64);
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.forecastStrip b {
+  font-size: 0.95rem;
 }
 
 .cardGrid {
@@ -236,18 +287,18 @@
 }
 
 .kpiCard {
-  min-height: 150px;
+  min-height: 152px;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
   padding: 16px;
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.72);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.46), rgba(224, 240, 255, 0.28));
 }
 
 .kpiCard span {
-  color: rgba(32, 64, 103, 0.62);
+  color: rgba(32, 64, 103, 0.66);
   font-weight: 900;
   font-size: 0.84rem;
 }
@@ -266,21 +317,25 @@
   border-color: rgba(28, 166, 120, 0.24);
 }
 
+.kpiCard[data-tone='ice'] {
+  border-color: rgba(45, 127, 249, 0.28);
+}
+
 .kpiCard[data-tone='locked'] {
   border-color: rgba(45, 127, 249, 0.24);
 }
 
 .workspaceGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 0.42fr);
   gap: 12px;
 }
 
 .routePanel,
 .evidencePanel {
   padding: 18px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.74);
+  border-radius: 30px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(224, 240, 255, 0.30));
 }
 
 .routeList {
@@ -293,10 +348,10 @@
   justify-content: space-between;
   gap: 14px;
   padding: 14px;
-  border-radius: 20px;
+  border-radius: 21px;
   color: var(--prisma-tablet-ink);
-  background: rgba(246, 250, 255, 0.78);
-  border: 1px solid rgba(76, 103, 139, 0.12);
+  background: rgba(246, 250, 255, 0.48);
+  border: 1px solid rgba(224, 238, 255, 0.54);
 }
 
 .routeRow span {
@@ -318,15 +373,15 @@
 
 .evidencePanel div {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 116px 1fr;
   gap: 10px;
   padding: 10px 0;
-  border-top: 1px solid rgba(76, 103, 139, 0.12);
+  border-top: 1px solid rgba(224, 238, 255, 0.46);
 }
 
 .evidencePanel dt {
-  color: rgba(32, 64, 103, 0.58);
-  font-weight: 800;
+  color: rgba(32, 64, 103, 0.60);
+  font-weight: 850;
 }
 
 .evidencePanel dd {
@@ -334,9 +389,33 @@
   font-weight: 850;
 }
 
+.bottomDock {
+  justify-self: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: min(720px, 100%);
+  padding: 10px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.44), rgba(209, 232, 255, 0.28));
+}
+
+.bottomDock a {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: #1d426a;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+}
+
 @keyframes tabletCloudDrift {
-  from { transform: scale(1.018) translate3d(-4px, -2px, 0); }
-  to { transform: scale(1.028) translate3d(5px, 3px, 0); }
+  from { transform: scale(1.018) translate3d(-5px, -2px, 0); }
+  to { transform: scale(1.034) translate3d(6px, 4px, 0); }
 }
 
 @media (max-width: 860px) {
@@ -354,6 +433,10 @@
   .cardGrid {
     grid-template-columns: 1fr;
   }
+
+  .forecastStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -364,7 +447,8 @@
 
   .primaryAction,
   .secondaryAction,
-  .routeRow {
+  .routeRow,
+  .bottomDock a {
     transition: none;
   }
 }
@@ -375,242 +459,46 @@
   .kpiCard,
   .routePanel,
   .evidencePanel,
-  .protectionCard {
+  .weatherCard,
+  .bottomDock {
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     background: rgba(255, 255, 255, 0.94);
+  }
+
+  .atmosphere {
+    opacity: 0.36;
   }
 }
 
-/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_START */
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"])) {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  background:
-    radial-gradient(circle at 14% 8%, rgba(255,255,255,.96), transparent 28%),
-    radial-gradient(circle at 92% 0%, rgba(210,226,248,.62), transparent 34%),
-    linear-gradient(135deg, #f7faff 0%, #eef4fb 54%, #f9fbff 100%);
-  color: var(--prisma-tablet-ink);
+/* PRISMA_TABLET_STATIC_FUJI_ALL_START */
+.tabletShell {
+  background: transparent !important;
+  background-attachment: fixed !important;
 }
 
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-shell]),
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-panel]),
-:global(.prisma-tablet-light-shell),
-:global(.tablet-light-shell) {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,250,255,.72)),
-    radial-gradient(circle at 12% 0%, rgba(255,255,255,.88), transparent 28%);
-  border: 1px solid var(--prisma-tablet-line);
-  box-shadow: 0 14px 34px rgba(31,51,77,.10);
-  color: var(--prisma-tablet-ink);
+.atmosphere,
+.lightScrim,
+.grain {
+  position: fixed !important;
+  inset: 0 !important;
 }
 
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-card]) {
-  background: var(--prisma-tablet-card);
-  border: 1px solid var(--prisma-tablet-line);
-  box-shadow: 0 10px 24px rgba(31,51,77,.08);
-}
-
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"])) {
-  min-height: 42px;
-  touch-action: manipulation;
-}
-
-:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, a, input, select, textarea):focus-visible) {
-  outline: 3px solid var(--prisma-tablet-focus);
-  outline-offset: 2px;
-}
-
-
-.cardGrid {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.cardGrid :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.cardGrid :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.cardKicker {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.cardKicker :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.cardKicker :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.evidencePanel {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.evidencePanel :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.evidencePanel :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
+.atmosphere {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.34), rgba(237,247,255,.10) 42%, rgba(5,45,74,.20)),
+    url('/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg') !important;
+  background-size: cover !important;
+  background-position: center 45% !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  transform: translateZ(0) scale(1.018) !important;
+  animation: none !important;
+  will-change: auto !important;
 }
 
 .frame {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
+  position: relative;
+  z-index: 2;
 }
-
-.frame :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.frame :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.heroPanel {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.heroPanel :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.heroPanel :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.kpiCard {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.kpiCard :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.kpiCard :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.protectionCard {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.protectionCard :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.protectionCard :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.routePanel {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.routePanel :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.routePanel :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  :global([data-prisma-surface="tablet"]) *,
-  :global(.prisma-tablet-light-shell *),
-  :global(.tablet-light-shell *) {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-@media (hover: hover) {
-  :global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"]):hover) {
-    transform: translateY(-1px);
-  }
-}
-/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_END */
+/* PRISMA_TABLET_STATIC_FUJI_ALL_END */

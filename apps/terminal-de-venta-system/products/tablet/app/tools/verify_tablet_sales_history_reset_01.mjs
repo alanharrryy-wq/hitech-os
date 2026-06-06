@@ -45,12 +45,7 @@ const checks = [
     file: "components/settings/sales-reset-panel.tsx",
     must: ["Herramienta bloqueada", "Pregunta de seguridad", "PIN admin", "No toca licencia"]
   },
-  {
-    id: "nav",
-    file: "components/tablet-shell/tablet-nav.ts",
-    must: ["/sales/history", "/settings/data"]
-  }
-];
+  ];
 
 const results = checks.map((check) => {
   const abs = path.join(root, check.file);

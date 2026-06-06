@@ -34,6 +34,14 @@ function now() {
   return new Date();
 }
 
+function forcedSyncBusinessId() {
+  return process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || "";
+}
+
+function forcedSyncTerminalId() {
+  return process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "";
+}
+
 function toJson(value: unknown): string | null {
   if (value === undefined || value === null) return null;
   try {
@@ -50,11 +58,13 @@ function backoffDate(attempts: number) {
   return new Date(Date.now() + (seconds + jitter) * 1000);
 }
 
+const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "PENDING", "FAILED"];
+
 async function loadPendingEvents(limit: number, force = false) {
   const where: any = force
-    ? { status: { in: ["pending", "failed"] } }
+    ? { status: { in: DISPATCHABLE_OUTBOX_STATUSES } }
     : {
-        status: { in: ["pending", "failed"] },
+        status: { in: DISPATCHABLE_OUTBOX_STATUSES },
         OR: [{ nextRetryAt: null }, { nextRetryAt: { lte: now() } }]
       };
   return prisma.outboxEvent.findMany({
@@ -77,8 +87,8 @@ function buildBatch(events: TabletOutboxEvent[]) {
         eventType: pickString(record.eventType, record.topic, event.topic),
         topic: pickString(record.topic, record.eventType, event.topic),
         idempotencyKey: pickString(record.idempotencyKey, event.idempotencyKey, event.id),
-        businessId: pickString(record.businessId, event.businessId),
-        terminalId: pickString(record.terminalId, event.terminalId, "tablet-terminal-local"),
+        businessId: pickString(forcedSyncBusinessId(), record.businessId, event.businessId),
+        terminalId: pickString(forcedSyncTerminalId(), record.terminalId, event.terminalId, "tablet-terminal-local"),
         actorId: pickString(record.actorId, payload.actorId, "tablet-operator"),
         aggregateId: pickString(record.aggregateId, event.aggregateId),
         correlationId: pickString(record.correlationId, event.aggregateId, event.id),

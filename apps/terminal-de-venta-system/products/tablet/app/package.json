@@ -46,12 +46,15 @@
     "verify:05-release": "node tools/verify_tablet_05_release_readiness.mjs",
     "verify:tablet-sale-flow": "node tools/verify_tablet_standalone_core_closeout_02.mjs",
     "verify:tablet-mixed-payment-contract": "node tools/verify_tablet_mixed_payment_contract_01.mjs",
+    "verify:tablet-functional-visual-cleanup": "node tools/verify_tablet_functional_visual_cleanup_0605.mjs",
     "verify:tablet-license-missing-fallback": "node tools/verify_tablet_license_missing_fallback.mjs",
     "verify:tablet-sync-dispatcher": "node tools/verify_tablet_sync_dispatcher_01.mjs",
     "verify:tablet-operational-gate": "node tools/verify_tablet_operational_gate_01.mjs",
     "verify:tablet-ticket-license-bundle": "node tools/verify_tablet_ticket_license_bundle_01.mjs",
     "verify:tablet-sales-history-reset": "node tools/verify_tablet_sales_history_reset_01.mjs",
-    "verify:tablet-local-admin-security": "node tools/verify_tablet_local_admin_security_01.mjs"
+    "verify:tablet-local-admin-security": "node tools/verify_tablet_local_admin_security_01.mjs",
+    "verify:tablet-returns-contextual": "node tools/verify_tablet_returns_contextual_0506.mjs",
+    "verify:tablet-catalog-pull-target-business": "node tools/verify_tablet_catalog_pull_target_business_0506.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

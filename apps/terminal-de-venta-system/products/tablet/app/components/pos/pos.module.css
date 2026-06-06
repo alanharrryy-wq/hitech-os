@@ -4364,3 +4364,168 @@ html[data-layer-profile="perf"] .productAura {
     0 10px 22px rgba(96,126,171,0.08) !important;
 }
 /* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::POS_END */
+
+/* PRISMA_TABLET_STATIC_FUJI_ALL_START */
+.posWorkspace,
+.catalogArea,
+.ticketPanel,
+.searchCard,
+.successCard,
+.productCard {
+  position: relative;
+  z-index: 2;
+}
+
+.catalogArea,
+.ticketPanel,
+.searchCard,
+.successCard,
+.productCard {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.60), rgba(218,238,255,.34)) !important;
+  border-color: rgba(223,238,255,.62) !important;
+  box-shadow:
+    0 22px 54px rgba(12,47,77,.18),
+    inset 0 1px rgba(255,255,255,.76),
+    inset 0 -1px rgba(255,255,255,.20) !important;
+  backdrop-filter: blur(22px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.18) !important;
+}
+/* PRISMA_TABLET_STATIC_FUJI_ALL_END */
+
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_START */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  gap: 10px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(308px, 352px) !important;
+  align-items: start !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+  padding: 10px !important;
+  border-color: rgba(217, 235, 252, 0.58) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(222, 241, 255, 0.24)) !important;
+  box-shadow:
+    0 14px 32px rgba(31, 65, 105, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.70) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard {
+  gap: 8px !important;
+  padding: 6px !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid {
+  gap: 8px !important;
+  grid-template-columns: repeat(auto-fit, minmax(154px, 1fr)) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard {
+  min-height: 210px !important;
+  padding: 8px !important;
+  grid-template-rows: auto 104px minmax(42px, auto) auto !important;
+  border-color: rgba(217, 235, 252, 0.54) !important;
+  background: rgba(255, 255, 255, 0.54) !important;
+  box-shadow:
+    0 10px 24px rgba(31, 65, 105, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage {
+  min-height: 104px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+  max-height: calc(100dvh - 96px) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines {
+  min-height: 104px !important;
+  gap: 7px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine {
+  padding: 6px !important;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto auto !important;
+  border-color: rgba(217, 235, 252, 0.52) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotalsBreakdown,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button {
+  min-height: 42px !important;
+  background: rgba(255, 255, 255, 0.58) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+.paymentPanelCard {
+  width: min(920px, calc(100vw - 18px)) !important;
+  max-height: calc(100dvh - 16px) !important;
+}
+
+@media (min-width: 980px) and (min-height: 660px) {
+  .paymentPanelCard {
+    grid-template-columns: minmax(260px, 0.88fr) minmax(320px, 1.12fr) !important;
+    align-items: start !important;
+  }
+
+  .paymentHeader,
+  .paymentSummary,
+  .paymentReview,
+  .paymentReviewReady,
+  .paymentBusyNote,
+  .paymentError {
+    grid-column: 1 !important;
+  }
+
+  .paymentTenderList,
+  .cashBox,
+  .paymentTotalsGrid,
+  .paymentFooter {
+    grid-column: 2 !important;
+  }
+
+  .paymentFooter {
+    bottom: -8px !important;
+  }
+}
+
+@media (max-height: 760px) {
+  .paymentTenderRow {
+    gap: 7px !important;
+    padding: 8px !important;
+  }
+
+  .paymentTotalsGrid {
+    gap: 6px !important;
+  }
+
+  .paymentFooter {
+    padding-top: 2px !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+    grid-template-columns: minmax(0, 1fr) minmax(292px, 326px) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+    grid-template-columns: 1fr !important;
+  }
+
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+    max-height: none !important;
+  }
+}
+/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_END */
