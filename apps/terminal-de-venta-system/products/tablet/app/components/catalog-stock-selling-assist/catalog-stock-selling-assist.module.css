@@ -591,6 +591,91 @@
   box-shadow: var(--prisma-shadow-card-hover);
 }
 
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:hover {
+  transform: translateY(-1px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productMainButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: 0.25;
+  transform: translateX(-110%);
+  animation: prismaStockSkeletonSweep 1.2s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid div,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
 
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_START */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .screen {
@@ -685,88 +770,3 @@
   }
 }
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_END */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:hover {
-  transform: translateY(-1px);
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: var(--prisma-light-shadow-card);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productMainButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within {
-  outline: none;
-  border-color: var(--prisma-action-primary);
-  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:disabled {
-  color: var(--prisma-disabled-text) !important;
-  background: var(--prisma-disabled-surface) !important;
-  border-color: var(--prisma-border-soft) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
-  position: relative;
-  overflow: hidden;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--prisma-skeleton-surface);
-  opacity: 0.25;
-  transform: translateX(-110%);
-  animation: prismaStockSkeletonSweep 1.2s var(--prisma-ease-premium) infinite;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid div,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
-}

@@ -1,14 +1,10 @@
 {
-  "schema": "prisma.tablet_light_shell.tokens",
-  "pilot": "05_tablet_light_shell",
   "surface": "tablet_light_shell",
-  "tokens": "",
-  "forbidden": [
-    "dark_storm",
-    "webgl",
-    "pixi_vapor",
-    "heavy_blur",
-    "checkout_write",
-    "pos_write"
-  ]
+  "tokens": {
+    "--tablet-bg-base": "#f4f7fb",
+    "--tablet-glass-panel": "rgba(234, 244, 255, 0.42)",
+    "--tablet-glass-line": "rgba(223, 238, 255, 0.54)",
+    "--tablet-ink": "#132033",
+    "--tablet-cloudglass-asset": "tablet-fuji-cloudglass.jpg"
+  }
 }

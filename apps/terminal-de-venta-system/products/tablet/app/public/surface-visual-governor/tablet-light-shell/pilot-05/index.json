@@ -1,26 +1,23 @@
 {
-  "schema": "prisma.surface_visual_governor.tablet_light_shell.index",
   "pilot": "05_tablet_light_shell",
-  "status": "installed_by_injector_pending_local_verifier",
-  "route": "/",
   "surface": "tablet_light_shell",
-  "installed_at": "20260526_195528",
-  "artifacts": {
-    "route_budget": "route-budget.tablet-light-shell.pilot-05.json",
-    "surface_twin": "surface-twin.tablet-light-shell.json",
-    "compatibility": "surface.compatibility.tablet-light-shell.json",
-    "tokens": "",
-    "registry_pointer": "materiality-catalog.pointer.json",
-    "recipe_export_dir": "recipe-export",
-    "atmosphere_assets_dir": "atmosphere-assets/backgrounds"
-  },
-  "safety": {
-    "pos_modified": false,
-    "checkout_modified": false,
-    "db_modified": false,
-    "deploy_performed": false,
-    "dependencies_installed": false,
-    "tablet_light_first_preserved": true
-  },
-  "next": "POS final gate only after explicit approval."
+  "route": "/",
+  "activePresetId": "tablet-fuji-cloudglass",
+  "activeBackground": "/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg",
+  "compatibilityAlias": "tablet-soft-gray-clouds.svg",
+  "mode": "light-first-cloudglass",
+  "protectedRoutes": [
+    "/pos",
+    "/checkout"
+  ],
+  "forbidden": [
+    "webgl",
+    "pixi",
+    "three/fiber",
+    "dark-storm",
+    "pos-mutation",
+    "checkout-mutation"
+  ],
+  "assetSha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
+  "assetBytes": 415340
 }

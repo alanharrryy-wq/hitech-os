@@ -122,6 +122,10 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid strong{color:var(--prisma-action-primary)}
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogEntityList span{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary)}
+@media(max-width:900px){.catalogHeader{display:grid}.catalogActions{justify-content:flex-start}.catalogGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalogResultGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.catalogGrid,.catalogResultGrid{grid-template-columns:1fr}.catalogActions button{width:100%}}
+/* PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1::END */
 
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SYNC_START */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page {
@@ -188,7 +192,226 @@
   }
 }
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SYNC_END */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogEntityList span{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary)}
-@media(max-width:900px){.catalogHeader{display:grid}.catalogActions{justify-content:flex-start}.catalogGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalogResultGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.catalogGrid,.catalogResultGrid{grid-template-columns:1fr}.catalogActions button{width:100%}}
-/* PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1::END */
+
+/* PRISMA_SYNC_FIX2_CLIENT_POLISH_0606
+   Corrige la pantalla /sync después de quitar la barra superior:
+   - mantiene estilos completos de CatalogPullPanel
+   - compacta botones de cabecera
+   - elimina apariencia de botones HTML default
+   - mejora separación/legibilidad sin cambiar lógica
+*/
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page {
+  gap: 14px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  min-height: auto;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero h1 {
+  margin: 6px 0 8px;
+  font-size: clamp(1.9rem, 2.6vw, 2.6rem);
+  line-height: 1.03;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero p {
+  margin: 0;
+  max-width: 780px;
+  line-height: 1.45;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  max-width: 520px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 38px;
+  width: auto;
+  max-width: 100%;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(91, 151, 230, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(238,246,255,0.82));
+  color: #125bd9;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(49, 100, 170, 0.10),
+    inset 0 1px 0 rgba(255,255,255,0.92);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryAction {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.52);
+  background: linear-gradient(180deg, #9dccff 0%, #3f8cff 48%, #1764d8 100%);
+  box-shadow:
+    0 12px 24px rgba(36, 114, 232, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.48);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .secondaryAction {
+  color: #125bd9;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,247,255,0.88));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:last-child {
+  color: #7f93b3;
+  border-color: rgba(148, 170, 202, 0.28);
+  background: linear-gradient(180deg, rgba(250,252,255,0.86), rgba(232,241,252,0.70));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+  transform: none !important;
+  color: #8aa0bf !important;
+  background: linear-gradient(180deg, rgba(248,251,255,0.82), rgba(229,238,249,0.72)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.70) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: rgba(47, 123, 231, 0.48);
+  box-shadow:
+    0 12px 26px rgba(49, 100, 170, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.94);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button:active {
+  transform: translateY(1px) scale(.99);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote {
+  padding: 11px 14px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(243,248,255,.68));
+}
+
+/* Catálogo entrante: evitar look de HTML crudo */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogPull {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader h2 {
+  margin: 5px 0 8px;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.1;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader p {
+  margin: 0;
+  max-width: 850px;
+  line-height: 1.45;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 520px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid {
+  display: grid;
+  gap: 10px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid article {
+  min-width: 0;
+  padding: 13px 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(242,248,255,.72));
+  border-color: rgba(209, 228, 250, .78);
+  box-shadow:
+    0 10px 24px rgba(52, 92, 145, .08),
+    inset 0 1px 0 rgba(255,255,255,.84);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid small {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogEntityList,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogFindings,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogEntityList span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogFindings span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+@media (max-width: 980px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader {
+    grid-template-columns: 1fr;
+  }
+
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions {
+    justify-content: flex-start;
+  }
+}

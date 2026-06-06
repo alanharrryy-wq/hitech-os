@@ -433,3 +433,33 @@
     transform: none !important;
   }
 }
+
+/* PRISMA_TABLET_STATIC_FUJI_ALL_START */
+.checkoutGrid,
+.summaryCard,
+.paymentCard,
+.successCard,
+.summaryLines article,
+.totalHero,
+.cashBox {
+  position: relative;
+  z-index: 2;
+}
+
+.summaryCard,
+.paymentCard,
+.successCard,
+.summaryLines article,
+.totalHero,
+.cashBox {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.62), rgba(218,238,255,.34)) !important;
+  border-color: rgba(223,238,255,.62) !important;
+  box-shadow:
+    0 22px 54px rgba(12,47,77,.18),
+    inset 0 1px rgba(255,255,255,.76),
+    inset 0 -1px rgba(255,255,255,.20) !important;
+  backdrop-filter: blur(22px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.18) !important;
+}
+/* PRISMA_TABLET_STATIC_FUJI_ALL_END */

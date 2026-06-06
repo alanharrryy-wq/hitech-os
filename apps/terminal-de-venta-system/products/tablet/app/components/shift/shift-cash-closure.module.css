@@ -112,6 +112,14 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .flowGuard,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryLink,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dangerButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field textarea {
+    transition: none !important;
+    transform: none !important;
+  }
+}
 
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SHIFT_START */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page {
@@ -170,11 +178,3 @@
   }
 }
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SHIFT_END */
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dangerButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field textarea {
-    transition: none !important;
-    transform: none !important;
-  }
-}

@@ -54,14 +54,17 @@ ok('page contains pilot marker', page.includes('data-prisma-surface-governor="pi
 ok('page imports css module', page.includes('prisma-tablet-light-shell.module.css'));
 ok('page declares light-first', page.includes('data-tablet-light-first="true"'));
 ok('page protects POS marker', page.includes('data-pos-protected="true"'));
+ok('page declares fuji background', page.includes('tablet-fuji-cloudglass'));
 ok('page has no /pos link', !/href=["']\/pos["']/.test(page));
 ok('page has no /checkout link', !/href=["']\/checkout["']/.test(page));
-ok('css uses tablet light base', css.includes('--prisma-tablet-bg: #f4f7fb'));
-ok('css uses tablet atmosphere asset', css.includes('tablet-soft-gray-clouds.svg'));
+ok('css keeps tablet light base', css.includes('--prisma-tablet-bg: #f4f7fb'));
+ok('css uses fuji cloudglass atmosphere asset', css.includes('tablet-fuji-cloudglass.jpg'));
+ok('css preserves glass panels', css.includes('backdrop-filter') && css.includes('blur('));
 ok('css includes reduced motion', css.includes('prefers-reduced-motion'));
 ok('css includes reduced transparency', css.includes('prefers-reduced-transparency'));
 ok('css avoids dark storm asset as active background', !css.includes('storm-cloud-operations-real.jpg') && !css.includes('obsidian-cloud-motion.svg'));
 ok('css has no external imports', !css.includes('@import') && !css.includes('http://') && !css.includes('https://'));
+ok('css avoids WebGL/Pixi terms', !/webgl|pixi|three\/fiber|@react-three/i.test(css));
 
 const index = readJson(indexPath);
 const budget = readJson(budgetPath);
@@ -70,18 +73,21 @@ const compat = readJson(compatPath);
 const tokens = readJson(tokensPath);
 ok('index declares pilot 05', index?.pilot === '05_tablet_light_shell');
 ok('index declares tablet root route', index?.route === '/');
-ok('route budget is light-first', budget?.visual_budget?.background === 'light_low_medium' && budget?.visual_budget?.webgl === 'forbidden');
+ok('index declares active fuji preset', index?.activePresetId === 'tablet-fuji-cloudglass');
+ok('route budget is light-first and no webgl', budget?.visual_budget?.background === 'light_photo_medium' && budget?.visual_budget?.webgl === 'forbidden');
 ok('surface twin declares tablet_light_shell', twin?.surface === 'tablet_light_shell');
 ok('compat forbids POS application', compat?.surfaces?.pos?.allowed === false);
 ok('compat allows tablet shell only', compat?.surfaces?.tablet_light_shell?.allowed === true);
-ok('tokens declare light base', tokens?.tokens?.['--tablet-bg-base'] === '#f4f7fb');
+ok('tokens declare glass panel token', Boolean(tokens?.tokens?.['--tablet-glass-panel']));
 
-const assets = walk(path.join(latestRoot, 'atmosphere-assets','backgrounds'));
-ok('at least 3 atmosphere assets copied', assets.length >= 3, `${assets.length} assets`);
-ok('tablet cloud svg copied', assets.some((p) => path.basename(p) === 'tablet-soft-gray-clouds.svg'));
+for (const rootDir of [latestRoot, pilotRoot]) {
+  const assets = walk(path.join(rootDir, 'atmosphere-assets','backgrounds'));
+  ok(`${path.basename(rootDir)} fuji jpg copied`, assets.some((p) => path.basename(p) === 'tablet-fuji-cloudglass.jpg'));
+  ok(`${path.basename(rootDir)} soft-gray compatibility alias copied`, assets.some((p) => path.basename(p) === 'tablet-soft-gray-clouds.svg'));
+}
 
 const publicFiles = walk(publicRoot);
-const leakPattern = /(<LOCAL_PATH>|<LOCAL_PATH>|tablet-pos\.db|\.sqlite|\.db\b|databasePaths|<LOCAL_PATH>|<LOCAL_PATH>)/i;
+const leakPattern = /(<LOCAL_PATH>|<OUTPUT_DIR>|<REPO_ROOT>|<HOME_PATH>|tablet-pos\.db|\.sqlite|\.db\b|databasePaths)/i;
 const leaks = [];
 for (const f of publicFiles) {
   if (fs.statSync(f).size > 5_000_000) continue;
@@ -103,6 +109,7 @@ ok('page does not reference protected implementation paths', protectedTokens.eve
 
 const result = {
   pilot: '05_tablet_light_shell',
+  background: 'tablet-fuji-cloudglass',
   status: fail.length ? 'FAIL' : 'PASS',
   pass,
   fail,
