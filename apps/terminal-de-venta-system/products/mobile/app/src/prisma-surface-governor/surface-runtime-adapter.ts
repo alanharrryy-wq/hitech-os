@@ -29,8 +29,8 @@ export function evaluatePrismaSurfaceRuntime(route: string): PrismaSurfaceRuntim
   const normalizedRoute = route || "/";
   const isPos = normalizedRoute.startsWith("/pos");
   const isCheckout = normalizedRoute.startsWith("/checkout");
-  const isTablet = SURFACE === "tablet";
-  const isMobile = SURFACE === "mobile";
+  const isTablet = false;
+  const isMobile = true;
 
   return {
     allowed: true,
@@ -41,7 +41,7 @@ export function evaluatePrismaSurfaceRuntime(route: string): PrismaSurfaceRuntim
     budget: {
       lightFirst: isTablet || isMobile || isPos || isCheckout,
       touchFirst: isTablet || isMobile || isPos || isCheckout,
-      publicSober: SURFACE === "web",
+      publicSober: false,
       posSafe: isPos || isCheckout,
       allowAtmosphereAssets: true,
       allowHeavyBlur: !(isTablet || isMobile || isPos || isCheckout),

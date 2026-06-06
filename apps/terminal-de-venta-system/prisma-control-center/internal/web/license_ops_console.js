@@ -2,18 +2,17 @@
   "use strict";
 
   const ACTION_LABELS = {
-    "detect-runtime": "Detectar runtime",
-    "provision-tablet-solo": "Provisionar Tablet Solo",
-    "provision-tablet-solo-dry-run": "Dry run provisioning",
-    "import-local-license": "Importar licencia local",
-    "validate-runtime-config": "Validar runtime",
-    "validate-provisioning": "Validar provisioning",
-    "tablet-solo-smoke": "Tablet Solo smoke",
-    "no-direct-db-in-ui": "No direct DB/licencia UI",
-    "customer-smoke": "Customer smoke",
+    "detect-runtime": "Ver estado actual",
+    "provision-tablet-solo": "Crear instalación Tablet Solo",
+    "provision-tablet-solo-dry-run": "Probar creación sin aplicar",
+    "import-local-license": "Importar licencia firmada",
+    "validate-runtime-config": "Verificar runtime",
+    "validate-provisioning": "Verificar instalación",
+    "tablet-solo-smoke": "Probar operación Tablet Solo",
+    "no-direct-db-in-ui": "Verificar UI sin lectura directa",
+    "customer-smoke": "Probar flujo cliente",
     "export-evidence-zip": "Exportar evidencia ZIP",
-    "open-programdata": "Abrir ProgramData",
-    "start-tablet-runtime-config": "Levantar Tablet runtime"
+    "open-programdata": "Abrir carpeta de licencias"
   };
 
   const ACTION_ORDER = [
@@ -27,8 +26,7 @@
     "no-direct-db-in-ui",
     "customer-smoke",
     "export-evidence-zip",
-    "open-programdata",
-    "start-tablet-runtime-config"
+    "open-programdata"
   ];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -124,15 +122,15 @@
     section.className = "licenseOpsSurface";
     section.id = "licenseOpsSurface";
     section.hidden = true;
-    section.setAttribute("aria-label", "PRISMA License Ops Console");
+    section.setAttribute("aria-label", "PRISMA License Administration Console");
     section.innerHTML = `
       <div class="licenseOps">
         <div class="licenseOpsHero">
           <div class="licenseOpsHeroGrid">
             <div>
-              <p class="licenseOpsKicker">Runtime local-first</p>
-              <h2>Licencias y Runtime</h2>
-              <p>Cabina local para preparar Tablet Solo, validar runtime config, importar licencia firmada y exportar evidencia sin volver Tablet dependiente de PC, cloud o internet.</p>
+              <p class="licenseOpsKicker">Administración local-first</p>
+              <h2>Licencias de cliente</h2>
+              <p>Cabina administrativa para crear, importar, verificar, monitorear y exportar evidencia de licencias. La Tablet del cliente sólo muestra estado de lectura.</p>
             </div>
             <div class="licenseOpsSeal">
               <div class="licenseOpsSealCard"><small>Estado</small><strong id="licenseOpsStatus">Cargando</strong></div>
@@ -146,8 +144,8 @@
           <section class="licenseOpsPanel" aria-label="Estado runtime">
             <div class="licenseOpsPanelHead">
               <div>
-                <h3>Contexto resuelto</h3>
-                <p>Lectura local de runtime, identidad, licencia y rutas canonical.</p>
+                <h3>Estado resuelto</h3>
+                <p>Lectura administrativa de runtime, identidad, licencia y rutas canonical.</p>
               </div>
               <span class="licenseOpsTag" id="licenseOpsStatusTag">IDLE</span>
             </div>
@@ -157,13 +155,13 @@
           <section class="licenseOpsPanel" aria-label="Acciones licencia">
             <div class="licenseOpsPanelHead">
               <div>
-                <h3>Acciones seguras</h3>
-                <p>Botones locales que llaman shared/runtime, shared/licensing, provisioning y verifiers.</p>
+                <h3>Administrar licencias</h3>
+                <p>Crear instalación, importar licencia firmada, validar contratos y empaquetar evidencia. No inicia ni reinicia runtimes.</p>
               </div>
               <span class="licenseOpsTag">LOCAL ONLY</span>
             </div>
             <div class="licenseOpsInputRow">
-              <input id="licenseOpsLicensePath" placeholder="Ruta absoluta de licencia firmada para importar" />
+              <input id="licenseOpsLicensePath" placeholder="Ruta absoluta de licencia firmada para importar desde este equipo" />
               <button id="licenseOpsImportButton" type="button">Importar</button>
             </div>
             <div class="licenseOpsActions" id="licenseOpsActions"></div>
@@ -174,8 +172,8 @@
           <section class="licenseOpsPanel" aria-label="Runtime and Data Explorer">
             <div class="licenseOpsPanelHead">
               <div>
-                <h3>Runtime and Data Explorer</h3>
-                <p>Busqueda read-only por cliente, negocio, terminal, device, licencia, folio, venta, outbox o entitlement.</p>
+                <h3>Monitor read-only</h3>
+                <p>Búsqueda administrativa por cliente, negocio, terminal, dispositivo, licencia, venta, outbox o permiso.</p>
               </div>
               <span class="licenseOpsTag">READ ONLY</span>
             </div>

@@ -110,11 +110,23 @@ def resolve_terminal_root(target_root: Path) -> Path:
     )
 
 
+def resolve_pc_db(terminal_root: Path, repo_root: Path) -> Path:
+    candidates = [
+        terminal_root / "products" / "pc" / "app" / "data" / "canonical.db",
+        repo_root / "apps" / "terminal-de-venta-system" / "products" / "pc" / "app" / "data" / "canonical.db",
+        repo_root / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db",
+    ]
+    for candidate in candidates:
+        if candidate.exists() and candidate.stat().st_size > 0:
+            return candidate.resolve()
+    return candidates[0].resolve()
+
+
 def build_roots(target_root: Path) -> Roots:
     terminal_root = resolve_terminal_root(target_root)
     repo_root = terminal_root.parent.parent if terminal_root.parent.name.lower() == "apps" else terminal_root
     tablet_db = terminal_root / "products" / "tablet" / "app" / "data" / "tablet-pos.db"
-    pc_db = repo_root / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db"
+    pc_db = resolve_pc_db(terminal_root, repo_root)
     return Roots(
         target_root=str(target_root.expanduser().resolve()),
         terminal_root=str(terminal_root),
