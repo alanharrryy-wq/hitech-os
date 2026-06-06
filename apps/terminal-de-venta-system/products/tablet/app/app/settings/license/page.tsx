@@ -15,16 +15,16 @@ function statusTone(state: string) {
 
 function statusLabel(state: string) {
   const labels: Record<string, string> = {
-    active: "Licencia activa",
-    development: "Desarrollo",
-    offline_grace: "Gracia offline",
-    missing: "Licencia no configurada",
+    active: "Lista para operar",
+    development: "Modo desarrollo",
+    offline_grace: "Operando offline",
+    missing: "Licencia pendiente",
     invalid: "Licencia inválida",
     expired: "Licencia vencida",
     suspended: "Licencia suspendida",
     revoked: "Licencia revocada"
   };
-  return labels[state] ?? "Licencia requiere revisión";
+  return labels[state] ?? "Requiere revisión";
 }
 
 export default async function TabletLicensePage() {
@@ -32,15 +32,16 @@ export default async function TabletLicensePage() {
   const status = governor.status;
   const refreshStatus = getTabletLicenseRefreshStatus();
   const features = governor.decisions;
+
   return (
     <PrismaTabletShellUnified
       currentPath="/settings/license"
-      title="Licencia"
-      subtitle="Estado local de licenciamiento y continuidad operativa de Tablet."
-      kicker="Configuracion Tablet"
+      title="Licencia y equipo"
+      subtitle="Estado visible de autorización y continuidad de esta Tablet."
+      kicker="Configuración Tablet"
       status={<TabletShellStatusPill tone={statusTone(status.state)}>{statusLabel(status.state)}</TabletShellStatusPill>}
     >
-      <main className={styles.pageStack}>
+      <main className={styles.pageStack} data-prisma-license-client-view="readonly">
         <LicenseStatusCard status={status} runtimeContext={governor.runtimeContext} />
         <LicenseRefreshPanel initialStatus={refreshStatus} />
         <FeatureList features={features} />
