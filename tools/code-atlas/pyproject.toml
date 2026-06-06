@@ -1,0 +1,10 @@
+[project]
+name = "code-atlas"
+version = "0.2.0"
+description = "Code Atlas modular workspace with Atlas Plus audits"
+requires-python = ">=3.10"
+dependencies = ["PySide6"]
+
+[tool.code-atlas]
+layout = "root-compatible-modular-v2"
+features = ["atlas_coverage", "important_gate", "db_reality_check", "todo_el_show_manifest_plus"]

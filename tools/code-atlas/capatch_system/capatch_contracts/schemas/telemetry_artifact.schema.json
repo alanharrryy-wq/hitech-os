@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.telemetry_artifact.schema.json",
+  "title": "TelemetryArtifact",
+  "type": "object",
+  "required": [
+    "name",
+    "status",
+    "schema_version",
+    "generated_at_utc",
+    "tool_version",
+    "runtime_version",
+    "artifact_kind",
+    "artifact_scope",
+    "source_command",
+    "root_dir",
+    "is_historical",
+    "environment_fingerprint",
+    "payload_digest"
+  ],
+  "properties": {
+    "name": {"type": "string"},
+    "status": {"type": "string"},
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "generated_at_utc": {"type": "string"},
+    "tool_version": {"type": "string"},
+    "runtime_version": {"type": "string"},
+    "artifact_kind": {"type": "string"},
+    "artifact_scope": {"type": "string"},
+    "source_command": {"type": "string"},
+    "root_dir": {"type": "string"},
+    "is_historical": {"type": "boolean"},
+    "historical_reason": {"type": ["string", "null"]},
+    "superseded_by": {"type": ["string", "null"]},
+    "freshness_window": {"type": ["string", "null"]},
+    "run_id": {"type": ["string", "null"]},
+    "checkpoint_id": {"type": ["string", "null"]},
+    "baseline_id": {"type": ["string", "null"]},
+    "trace_id": {"type": ["string", "null"]},
+    "environment_fingerprint": {"type": "object"},
+    "payload_digest": {"type": "string"}
+  }
+}
