@@ -35,7 +35,7 @@ function canonicalDatabaseUrl() {
     ? path.resolve(process.env.TV_SYSTEM_ROOT)
     : findTerminalRoot(process.cwd()) ?? path.resolve(process.cwd(), "..", "..", "..");
   const repoRoot = path.resolve(terminalRoot, "..", "..");
-  const dbPath = path.join(repoRoot, "tools", "_local", "data", "terminal-de-venta-system", "canonical.db");
+  const dbPath = path.join(terminalRoot, "products", "pc", "app", "data", "canonical.db");
   mkdirSync(path.dirname(dbPath), { recursive: true });
   return toPrismaFileUrl(dbPath);
 }

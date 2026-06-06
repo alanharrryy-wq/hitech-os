@@ -1,8 +1,8 @@
 import { DecisionScreen } from "@components/uiux/decision-screen";
 import { reportsScreenContract } from "@/uiux/reports-screen-contract";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
-export default async function MetricasDiaPage() {
+export default function MetricasDiaPage() {
   return <DecisionScreen {...reportsScreenContract} currentPath="/metricas-dia" />;
 }

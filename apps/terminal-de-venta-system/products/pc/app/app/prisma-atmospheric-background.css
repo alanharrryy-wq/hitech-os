@@ -226,3 +226,83 @@ html[data-prisma-surface="pc-backoffice"] body::before {
     opacity: 0 !important;
   }
 }
+
+/* PRISMA PC CLIENT BACKGROUND BG1 0506 START */
+:root {
+  --prisma-pc-client-bg-image: url("/backgrounds/prisma/pc-client-snow-mountains.png");
+  --prisma-pc-client-bg-opacity: 0.98;
+  --prisma-pc-client-bg-brightness: 1.04;
+  --prisma-pc-client-bg-saturation: 0.98;
+  --prisma-pc-client-bg-contrast: 1.02;
+}
+
+html[data-prisma-surface="pc-backoffice"] {
+  background: #eaf7ff;
+}
+
+html[data-prisma-surface="pc-backoffice"] body {
+  background:
+    radial-gradient(circle at 52% -18%, rgba(255, 255, 255, 0.46), transparent 42%),
+    linear-gradient(180deg, #dff6ff 0%, #edf9ff 48%, #f7fbff 100%) !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-atmosphere {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.34), transparent 38%),
+    linear-gradient(180deg, rgba(199, 235, 249, 0.46), rgba(244, 251, 255, 0.72));
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-base {
+  background-image: var(--prisma-pc-client-bg-image);
+  background-size: cover;
+  background-position: center center;
+  opacity: var(--prisma-pc-client-bg-opacity);
+  filter:
+    saturate(var(--prisma-pc-client-bg-saturation))
+    contrast(var(--prisma-pc-client-bg-contrast))
+    brightness(var(--prisma-pc-client-bg-brightness));
+  transform: translate3d(
+    calc(var(--prisma-bg-x, 0) * 0.22px),
+    calc(var(--prisma-bg-y, 0) * 0.16px),
+    0
+  ) scale(1.012);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-fractures {
+  opacity: 0.10;
+  mix-blend-mode: screen;
+  filter: saturate(0.62) brightness(1.05) blur(0.35px);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-mist {
+  opacity: 0.085;
+  mix-blend-mode: screen;
+  filter: blur(0.9px) saturate(0.78) brightness(1.16);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-distant-mist,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-pearl-mist {
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-hero-light {
+  opacity: 0.42;
+  background:
+    radial-gradient(ellipse at 34% 7%, rgba(255, 255, 255, 0.38), transparent 30%),
+    radial-gradient(ellipse at 73% 18%, rgba(143, 207, 232, 0.18), transparent 42%);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-vignette {
+  opacity: 0.44;
+  background:
+    radial-gradient(ellipse at center, transparent 38%, rgba(49, 118, 158, 0.10) 82%, rgba(19, 65, 93, 0.18) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(229, 244, 252, 0.22));
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-scrim {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(235, 248, 255, 0.22) 42%, rgba(207, 234, 247, 0.30)),
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.18), transparent 46%);
+}
+/* PRISMA PC CLIENT BACKGROUND BG1 0506 END */

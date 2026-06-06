@@ -71,6 +71,10 @@ const ROUTE_MAP_BY_ROUTE = new Map<string, PcRouteMapEntry>(PC_ROUTE_MAP.map((en
 const MODULE_BY_ROUTE = new Map(pcModuleRegistry.map((module) => [module.route, module]));
 const PRIMARY_BY_GROUP = new Map(PC_PRIMARY_NAVIGATION.map((item) => [item.group, item]));
 
+function isClientVisibleRouteStatus(status: PcRouteStatus) {
+  return status !== "internal" && status !== "lab";
+}
+
 function findRouteEntry(pathname: string): PcRouteMapEntry | undefined {
   const normalized = normalizePcPathname(pathname);
   const exact = ROUTE_MAP_BY_ROUTE.get(normalized);
@@ -109,7 +113,7 @@ export function getNavigation(): PcNavigationItem[] {
   const moduleRoutes = new Set(fromModules.map((item) => item.href));
   const routeOnlyEntries = PC_ROUTE_MAP
     .filter((entry) => !moduleRoutes.has(entry.route))
-    .filter((entry) => entry.status !== "internal")
+    .filter((entry) => isClientVisibleRouteStatus(entry.status))
     .map((entry) => ({
       href: entry.route,
       title: entry.humanName,
@@ -151,5 +155,5 @@ export function getCurrentRouteMeta(currentPath: string) {
 
 export function getSecondaryNavigationForPath(currentPath: string) {
   const current = getCurrentRouteMeta(currentPath);
-  return getNavigation().filter((item) => item.group === current.group && item.status !== "internal");
+  return getNavigation().filter((item) => item.group === current.group && isClientVisibleRouteStatus(item.status));
 }

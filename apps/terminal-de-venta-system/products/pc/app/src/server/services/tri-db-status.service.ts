@@ -66,11 +66,17 @@ function parityRows(data: any): TriDbStatusTableParity[] {
 function candidateStatusPaths(): string[] {
   const cwd = process.cwd();
   const envPath = process.env.PRISMA_TRI_DB_STATUS_JSON;
+  const terminalRoot = process.env.PRISMA_TERMINAL_ROOT || process.env.TV_SYSTEM_ROOT;
   const candidates = [
     envPath,
-    path.resolve(cwd, "../../../shared/tri-db/status.latest.json"),
+    terminalRoot ? path.resolve(terminalRoot, "shared/tri-db/status.latest.json") : null,
     path.resolve(cwd, "shared/tri-db/status.latest.json"),
-    path.resolve(cwd, "../../../../apps/terminal-de-venta-system/shared/tri-db/status.latest.json")
+    path.resolve(cwd, "../shared/tri-db/status.latest.json"),
+    path.resolve(cwd, "../../shared/tri-db/status.latest.json"),
+    path.resolve(cwd, "../../../shared/tri-db/status.latest.json"),
+    path.resolve(cwd, "../../../../shared/tri-db/status.latest.json"),
+    path.resolve(cwd, "../../../../apps/terminal-de-venta-system/shared/tri-db/status.latest.json"),
+    path.resolve(cwd, "../../../apps/terminal-de-venta-system/shared/tri-db/status.latest.json")
   ].filter((item): item is string => Boolean(item && item.trim()));
   return Array.from(new Set(candidates));
 }

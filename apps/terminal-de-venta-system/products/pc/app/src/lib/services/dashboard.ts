@@ -10,6 +10,8 @@ export async function getPcDashboard() {
     getProcurementConsole(),
     getOutboxConsole()
   ]);
+  const criticalStockRows = criticalStock.rows;
+  const dataNotice = catalog.notice ?? criticalStock.notice;
   const pendingEvents = outbox.outboxPending;
   const openOrders = procurement.purchasePulse.slice(0, 4).map((order) => ({
     po: order.folio,
@@ -25,7 +27,7 @@ export async function getPcDashboard() {
       subtitle: pcMessages.home.subtitle,
       pills: [
         `SKUs activos (${catalog.snapshot.skusActivos})`,
-        `Stock bajo (${criticalStock.length})`,
+        `Stock bajo (${criticalStockRows.length})`,
         `Outbox pendiente (${pendingEvents.length})`
       ]
     },
@@ -42,12 +44,12 @@ export async function getPcDashboard() {
       },
       {
         label: "Stock bajo",
-        value: String(criticalStock.length),
+        value: String(criticalStockRows.length),
         note: "StockSnapshot con cobertura menor a dos días.",
         icon: "△",
         details: [
-          { label: "Críticos", value: String(criticalStock.filter((row) => row.estado === "critico").length) },
-          { label: "Riesgo", value: String(criticalStock.filter((row) => row.estado !== "critico").length) }
+          { label: "Críticos", value: String(criticalStockRows.filter((row) => row.estado === "critico").length) },
+          { label: "Riesgo", value: String(criticalStockRows.filter((row) => row.estado !== "critico").length) }
         ]
       },
       {
@@ -62,7 +64,7 @@ export async function getPcDashboard() {
       }
     ],
     categoryMix: catalog.categorySummary.map((row) => [row.categoria, row.skus] as const),
-    lowStock: criticalStock.map((row) => ({
+    lowStock: criticalStockRows.map((row) => ({
       sku: row.sku,
       name: row.producto,
       location: row.ubicacion,
@@ -91,8 +93,8 @@ export async function getPcDashboard() {
       }
     ],
     alertStrip: {
-      title: "Prisma canónico activo en tablero",
-      subtitle: "Las rutas críticas consumen repositorios Prisma, no arreglos demo."
+      title: dataNotice?.title ?? "Prisma canónico activo en tablero",
+      subtitle: dataNotice?.detail ?? "Las rutas críticas consumen repositorios Prisma, no arreglos demo."
     }
   };
 }

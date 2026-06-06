@@ -52,7 +52,7 @@ export function PrismaAtmosphericBackground() {
       ref={ref}
       className="prisma-atmosphere"
       aria-hidden="true"
-      data-prisma-background="cloudglass-mist-v2-executive-pearl"
+      data-prisma-background="client-snow-mountains-bg1"
     >
       <div className="prisma-bg-layer prisma-bg-base" />
       <div className="prisma-bg-layer prisma-bg-fractures" />

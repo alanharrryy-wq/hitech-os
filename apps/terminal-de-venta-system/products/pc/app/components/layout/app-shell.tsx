@@ -3,7 +3,6 @@ import { getCurrentRouteMeta, getPrimaryNavigation, getSecondaryNavigationForPat
 import { getPrimaryRouteActions } from "@/uiux/decision-model";
 import { NavLink } from "./nav-link";
 import { pcMessages } from "@/lib/i18n/messages/es";
-import { PrismaDarkSelector } from "../ui/prisma-dark-selector";
 import { PcSubnav } from "../uiux/pc-subnav";
 
 function isActive(currentPath: string, href: string) {
@@ -14,7 +13,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
   const current = getCurrentRouteMeta(currentPath);
   const primaryNav = getPrimaryNavigation();
   const groupedNavigation = primaryNav;
-  const secondaryNav = getSecondaryNavigationForPath(currentPath).filter((item) => item.href !== current.primaryHref);
+  const secondaryNav = getSecondaryNavigationForPath(currentPath).filter((item) => item.href !== current.primaryHref && item.status !== "internal" && item.status !== "lab");
   const routeActions = getPrimaryRouteActions(currentPath);
 
   return (
@@ -85,7 +84,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             <strong>{pcMessages.shell.lastSync}</strong>
           </div>
           <div className="footer-actions">
-            <a className="footer-chip" href="/referencia-visual">Guías</a>
+            <a className="footer-chip" href="/glosario">Ayuda</a>
             <a className="footer-chip" href="/sync">Sincronización</a>
           </div>
         </div>
@@ -106,7 +105,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </form>
 
           <div className="user-shell" data-prisma-component="UserMenu">
-            <PrismaDarkSelector />
+            <div className="sync-chip" title="PC cliente final en modo claro">Modo claro</div>
             {routeActions.slice(0, 1).map((action) => (
               <a key={action.label} className={action.primary ? "btn btn-primary" : "btn btn-secondary"} href={action.href}>
                 {action.label}
