@@ -1046,7 +1046,8 @@ html[data-prisma-skin="light"] {
 
 /* PRISMA_TABLET_STATIC_FUJI_ALL_START */
 :root {
-  --prisma-tablet-static-fuji-bg: url('/surface-visual-governor/tablet-global-cloudglass/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg');
+  --tablet-active-background-image: url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
+  --prisma-tablet-static-fuji-bg: var(--tablet-active-background-image);
   --prisma-tablet-static-fuji-overlay:
     linear-gradient(180deg, rgba(255,255,255,.78), rgba(244,250,255,.28) 38%, rgba(8,42,68,.20)),
     radial-gradient(circle at 50% 28%, rgba(255,255,255,.18), transparent 36%);

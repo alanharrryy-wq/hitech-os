@@ -3993,7 +3993,7 @@ html[data-layer-profile="perf"] .header {
   pointer-events: none !important;
   background-image:
     linear-gradient(180deg, rgba(255,255,255,.40), rgba(238,248,255,.14) 42%, rgba(7,46,74,.18)),
-    url('/surface-visual-governor/tablet-global-cloudglass/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg') !important;
+    url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg') !important;
   background-size: cover !important;
   background-position: center 45% !important;
   background-repeat: no-repeat !important;
@@ -4372,3 +4372,278 @@ html[data-layer-profile="perf"] .header {
   border-color: transparent !important;
 }
 /* PRISMA_SUPPORT_NAV_FOCUS_FIX_01_END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Tablet shell: one shell, not shell-inside-shell-inside-tortillería. Keep nav hierarchy; kill decorative panes.
+*/
+:where(.sidebar, .brand, .terminalCard, .header, .actionBand, .statusPill, .headerIconButton, .navItem, .navActive) {
+  background: rgba(255, 255, 255, 0.56) !important;
+  border-color: rgba(75, 139, 218, 0.16) !important;
+  box-shadow: 0 6px 18px rgba(43, 96, 156, 0.07) !important;
+  backdrop-filter: blur(6px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(1.02) !important;
+}
+
+:where(.brand, .terminalCard, .header, .actionBand, .statusPill, .headerIconButton, .navItem, .navActive)::before,
+:where(.brand, .terminalCard, .header, .actionBand, .statusPill, .headerIconButton, .navItem, .navActive)::after {
+  display: none !important;
+}
+
+.navActive {
+  color: var(--prisma-accent-gold-strong) !important;
+  background: rgba(231, 242, 255, 0.74) !important;
+  box-shadow: inset 3px 0 0 var(--prisma-accent-gold) !important;
+}
+/* PRISMA_DELAYER_01_END */
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.content,
+.main,
+.shell {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.runtimeMetricGrid,
+.runtimePanel,
+.runtimePanelHeader,
+.runtimeStrip,
+.runtimeStripCompact,
+.terminalCard {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.actionBand,
+.footerAction,
+.navActive,
+.navBadge,
+.navFlowHint,
+.navGroupChevron,
+.navGroupItems,
+.navGroupMeta,
+.navGroupSummary,
+.navItem,
+.navList,
+.navPrimary,
+.runtimeChipDot,
+.runtimeChipValueRow,
+.runtimeChips,
+.sidebarToggleInput,
+.statusArea,
+.statusPill,
+.status_danger,
+.status_neutral,
+.status_ok,
+.status_warn {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
+/* PRISMA_SHIFT_ONLY_DIRECT_WORKBENCH_1006::SHELL_START
+ * Route scope: only PrismaTabletShellUnified with visualPreset="shift-direct-workbench".
+ * Goal: /shift gets a clean visual workbench. Other Tablet screens remain untouched.
+ */
+.shell[data-prisma-visual-preset="shift-direct-workbench"] {
+  background: transparent !important;
+  animation: none !important;
+  color: #152238 !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"]::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .main {
+  gap: 8px !important;
+  padding: 8px 10px 16px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow-x: hidden !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .content {
+  gap: 8px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .header,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .actionBand,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStrip,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStripCompact {
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .header::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .header::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .actionBand::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .actionBand::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStrip::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStrip::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStripCompact::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeStripCompact::after {
+  display: none !important;
+  content: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .header {
+  min-height: unset !important;
+  padding: 0 0 8px !important;
+  border-bottom: 1px solid rgba(78,124,184,.16) !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .titleGroup h1 {
+  color: #155ad6 !important;
+  text-shadow: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .titleGroup p,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .kicker {
+  color: #60718a !important;
+  text-shadow: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .sidebar {
+  border-right: 1px solid rgba(78, 124, 184, 0.16) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .sidebar::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .sidebar::after {
+  display: none !important;
+  content: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .brand,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navFlowHint,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navItem,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navActive,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navPrimary,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .statusPill,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .headerTextButton,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .headerIconButton,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeIdentity,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeChip,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimePanel,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeMetricGrid div {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .brand::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .brand::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navItem::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navItem::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navActive::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navActive::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navPrimary::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navPrimary::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .statusPill::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .statusPill::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .headerTextButton::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .headerTextButton::after,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeChip::before,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeChip::after {
+  display: none !important;
+  content: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .brand,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard {
+  border-color: transparent !important;
+  background: transparent !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navFlowHint,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navItem,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .headerTextButton,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .statusPill,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeChip {
+  border-color: rgba(78,124,184,.16) !important;
+  background: rgba(255,255,255,.42) !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navActive:not([data-primary="true"]) {
+  color: #155ad6 !important;
+  border-color: rgba(29,120,255,.26) !important;
+  background: rgba(232,244,255,.62) !important;
+  box-shadow: inset 3px 0 0 rgba(29,120,255,.72) !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navPrimary,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navActive[data-primary="true"] {
+  color: #ffffff !important;
+  border-color: rgba(29,120,255,.38) !important;
+  background: linear-gradient(180deg, #2d8bff, #1168e8) !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeIdentity {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeChipValueRow strong,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeIdentity strong,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard strong {
+  color: #152238 !important;
+}
+
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeIdentity span,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .runtimeIdentity small,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .terminalCard small,
+.shell[data-prisma-visual-preset="shift-direct-workbench"] .navFlowHint small {
+  color: #60718a !important;
+}
+
+@media (max-width: 900px) {
+  .shell[data-prisma-visual-preset="shift-direct-workbench"] .sidebar {
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(78,124,184,.16) !important;
+    background: rgba(255,255,255,.22) !important;
+  }
+}
+/* PRISMA_SHIFT_ONLY_DIRECT_WORKBENCH_1006::SHELL_END */

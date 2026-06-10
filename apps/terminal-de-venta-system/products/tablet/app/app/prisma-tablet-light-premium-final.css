@@ -876,3 +876,78 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] [data-prisma-co
   user-select: text;
 }
 /* PRISMA_QAFIX3_NO_ACCIDENTAL_SELECTION_END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Tablet Light POS de-layer pass. Mantiene contraste y acción primaria; baja vidrio, halos, pseudo-capas y saturación.
+*/
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] {
+  --prisma-panel-gradient: rgba(255, 255, 255, 0.58);
+  --prisma-card-surface: rgba(255, 255, 255, 0.52);
+  --prisma-glass-gradient: rgba(255, 255, 255, 0.48);
+  --prisma-glass-panel-governed: rgba(255, 255, 255, 0.56);
+  --prisma-glass-card-governed: rgba(255, 255, 255, 0.48);
+  --prisma-glass-control-governed: rgba(255, 255, 255, 0.62);
+  --prisma-glass-stage-governed: rgba(255, 255, 255, 0.34);
+  --prisma-tablet-pearl-sheen: transparent;
+  --prisma-tablet-shadow-soft: 0 9px 22px rgba(50, 104, 166, 0.075);
+  --prisma-tablet-shadow-lift: 0 12px 28px rgba(40, 100, 176, 0.10);
+  --prisma-shadow-depth-governed: 0 10px 26px rgba(43, 96, 156, 0.08);
+  --prisma-shadow-card-governed: 0 8px 20px rgba(48, 103, 166, 0.07);
+  --prisma-inner-stroke-governed: inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  --prisma-blur-panel-governed: 8px;
+  --prisma-blur-card-governed: 6px;
+  --prisma-blur-chip-governed: 4px;
+  --prisma-blur-stage-governed: 6px;
+  --prisma-optical-panel-saturate: 1.02;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
+  display: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] :is(
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="TopCommandBar"],
+  [data-prisma-zone="tablet-home-root"],
+  [data-prisma-zone="tablet-sales-today-root"],
+  [data-prisma-zone="tablet-shift-root"],
+  [data-prisma-zone="tablet-sync-root"],
+  [data-prisma-zone="tablet-offline-export-root"],
+  [data-prisma-zone="tablet-catalog-stock-assist-root"],
+  [data-prisma-zone="tablet-pos-search"],
+  [data-prisma-zone="tablet-pos-ticket-panel"],
+  [data-prisma-zone="tablet-checkout-root"] > *,
+  [data-prisma-card],
+  [data-surface-card]
+) {
+  background: rgba(255, 255, 255, 0.58) !important;
+  border-color: rgba(75, 139, 218, 0.18) !important;
+  box-shadow: 0 8px 22px rgba(43, 96, 156, 0.07) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] :is(
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="TopCommandBar"],
+  [data-prisma-zone],
+  [data-prisma-card],
+  [data-surface-card]
+)::before,
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] :is(
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="TopCommandBar"],
+  [data-prisma-zone],
+  [data-prisma-card],
+  [data-surface-card]
+)::after {
+  opacity: 0.10 !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] :is(button, a, input, select, textarea, [role="button"]) {
+  text-shadow: none !important;
+}
+/* PRISMA_DELAYER_01_END */
