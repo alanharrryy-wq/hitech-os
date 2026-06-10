@@ -720,3 +720,14 @@ html[data-theme="prisma-dark"] [data-prisma-component="ScanButton"][data-prisma-
   box-shadow: var(--prisma-reference-shadow-gold) !important;
 }
 /* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Shared UI safety net: cards keep shape, decorative pseudo glass gets very quiet.
+*/
+:where([data-prisma-card], [data-surface-card], .prisma-card, .prisma-panel, .prisma-glass, .prisma-surface)::before,
+:where([data-prisma-card], [data-surface-card], .prisma-card, .prisma-panel, .prisma-glass, .prisma-surface)::after {
+  opacity: 0.10 !important;
+  filter: none !important;
+  animation: none !important;
+}
+/* PRISMA_DELAYER_01_END */
