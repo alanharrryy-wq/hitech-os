@@ -75,6 +75,12 @@ function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext)
       copy: "La Tablet puede seguir trabajando de forma limitada. El administrador debe revisar la licencia cuando termine la venta o el turno."
     };
   }
+  if (status.state === "missing" && context.runtimeMode === "customer") {
+    return {
+      title: "Instalación pendiente de licencia local",
+      copy: "Instalación pendiente de licencia local. La Tablet conserva venta básica en modo limitado mientras el administrador completa la activación."
+    };
+  }
   if (context.runtimeMode === "dev") {
     return {
       title: "Entorno de desarrollo",
@@ -173,7 +179,9 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       <details className={styles.evidenceDisclosure}>
         <summary>Ver detalle para soporte</summary>
         <div className={styles.compactMetricGrid}>
-          <Metric label="Modo" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
+          <Metric label="Modo runtime" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
+          <Metric label="Origen config" value={visibleValue(runtimeContext.configPath, "Config por defecto o no declarada")} />
+          <Metric label="Archivo licencia" value={visibleValue(status.path ?? runtimeContext.licenseFile ?? runtimeContext.paths.licenseFile, "No declarado")} />
           <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "No declarado")} />
           <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "No declarado")} />
           <Metric label="Fuente" value={status.source} />
