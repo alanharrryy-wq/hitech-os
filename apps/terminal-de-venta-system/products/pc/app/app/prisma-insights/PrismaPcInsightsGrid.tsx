@@ -19,7 +19,18 @@ type PrismaPcInsightsGridProps = {
 
 export function PrismaPcInsightsGrid({ envelope, flags }: PrismaPcInsightsGridProps) {
   const [focusLabel, setFocusLabel] = useState("Sin foco seleccionado");
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const charts = useMemo(() => chartsForSurface("pc"), []);
+
+  function selectFilter(filterId: string, value: string) {
+    setSelectedFilters((current) => ({ ...current, [filterId]: value }));
+    setFocusLabel(`Filtro PC activo: ${filterId} = ${value}`);
+  }
+
+  function resetFilters() {
+    setSelectedFilters({});
+    setFocusLabel("Filtros PC limpios; mostrando gobernanza completa.");
+  }
 
   if (!flags.enabled) {
     return (
@@ -35,7 +46,7 @@ export function PrismaPcInsightsGrid({ envelope, flags }: PrismaPcInsightsGridPr
   }
 
   return (
-    <main className={styles.shell} data-prisma-charts-surface="pc" data-prisma-charts-enabled="true">
+    <main className={styles.shell} data-prisma-charts-surface="pc" data-prisma-charts-enabled="true" data-prisma-hardening="pc-insights-filters-260611">
       <section className={styles.hero}>
         <div>
           <p className={styles.eyebrow}>PC gobierna</p>
@@ -55,12 +66,20 @@ export function PrismaPcInsightsGrid({ envelope, flags }: PrismaPcInsightsGridPr
             <span>{filter.label}</span>
             <div>
               {filter.values.slice(0, 4).map((value) => (
-                <button type="button" key={value}>{value}</button>
+                <button
+                  type="button"
+                  key={value}
+                  aria-pressed={selectedFilters[filter.id] === value}
+                  data-active={selectedFilters[filter.id] === value ? "true" : "false"}
+                  onClick={() => selectFilter(filter.id, value)}
+                >
+                  {value}
+                </button>
               ))}
             </div>
           </div>
         ))}
-        <button className={styles.resetButton} type="button">Reset</button>
+        <button className={styles.resetButton} type="button" onClick={resetFilters}>Reset</button>
       </section>
 
       <section className={styles.focusPanel} aria-live="polite">

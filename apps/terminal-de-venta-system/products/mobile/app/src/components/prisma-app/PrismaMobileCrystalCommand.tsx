@@ -141,8 +141,9 @@ function MomentumSparkline({ chart }: { chart: ChartViewModel | null }) {
 }
 
 function InventoryRiskRanking({ chart }: { chart: ChartViewModel | null }) {
+  const { active, setSelected } = useSelectedPoint(chart);
   return (
-    <section className={styles.crystalPanel} aria-label="Inventory Risk Ranking">
+    <section className={styles.crystalPanel} aria-label="Inventory Risk Ranking" data-prisma-hardening="mobile-inventory-ranking-260611">
       <header>
         <span>Inventory Risk</span>
         <h3>{chart?.title ?? "Inventario"}</h3>
@@ -150,7 +151,13 @@ function InventoryRiskRanking({ chart }: { chart: ChartViewModel | null }) {
       {chart && chart.points.length > 0 ? (
         <div className={styles.rankingList}>
           {chart.points.map((point) => (
-            <button key={point.x} type="button" aria-label={`${point.label}: riesgo ${percent(point.y)}`}>
+            <button
+              key={point.x}
+              type="button"
+              aria-label={`${point.label}: riesgo ${percent(point.y)}`}
+              aria-pressed={active?.x === point.x}
+              onClick={() => setSelected(point)}
+            >
               <div>
                 <strong>{point.label}</strong>
                 <span>{point.x} · {point.meta.stockQty ?? "?"} pzas · {point.meta.daysToStockOut ?? "sin velocidad"} días</span>
@@ -161,6 +168,10 @@ function InventoryRiskRanking({ chart }: { chart: ChartViewModel | null }) {
           ))}
         </div>
       ) : <EmptyState chart={chart} />}
+      <div className={styles.tooltipLine} aria-live="polite">
+        <strong>{active ? `${active.label}: ${percent(active.y)}` : "Sin riesgo seleccionado"}</strong>
+        <span>{active ? `${active.meta.stockQty ?? "?"} piezas · ${active.meta.daysToStockOut ?? "sin velocidad"} días` : chart?.summary}</span>
+      </div>
       <EvidenceStrip chart={chart} />
     </section>
   );
@@ -285,21 +296,27 @@ function HealthRadarMini({ chart }: { chart: ChartViewModel | null }) {
 
 function TimelinePreview({ clientSnapshot }: { clientSnapshot: PrismaMobileClientSnapshot }) {
   const events = clientSnapshot.snapshot.timeline.slice(0, 5);
+  const [selectedEventId, setSelectedEventId] = useState(events[0]?.id ?? "");
+  const activeEvent = events.find((event) => event.id === selectedEventId) ?? events[0] ?? null;
   return (
-    <section className={styles.crystalPanel} aria-label="Pulse Timeline">
+    <section className={styles.crystalPanel} aria-label="Pulse Timeline" data-prisma-hardening="mobile-timeline-actions-260611">
       <header>
         <span>Pulse Timeline</span>
         <h3>Qué pasó y por qué importa</h3>
       </header>
       <div className={styles.timelineList}>
         {events.map((event) => (
-          <button key={event.id} type="button">
+          <button key={event.id} type="button" aria-pressed={activeEvent?.id === event.id} onClick={() => setSelectedEventId(event.id)}>
             <i />
             <span>{event.source}</span>
             <strong>{event.title}</strong>
             <p>{event.whyItMatters}</p>
           </button>
         ))}
+      </div>
+      <div className={styles.tooltipLine} aria-live="polite">
+        <strong>{activeEvent?.title ?? "Sin evento seleccionado"}</strong>
+        <span>{activeEvent?.whyItMatters ?? "No hay eventos recientes en el snapshot."}</span>
       </div>
     </section>
   );

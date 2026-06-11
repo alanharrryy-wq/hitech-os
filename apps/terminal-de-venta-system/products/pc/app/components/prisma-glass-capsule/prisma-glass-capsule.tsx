@@ -24,6 +24,13 @@ function cx(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(' ');
 }
 
+function emitPrismaGlassAction(label: string) {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new CustomEvent('prisma:glass-action', {
+    detail: { label, source: 'PrismaGlassTopDock', ts: new Date().toISOString() }
+  }));
+}
+
 export function PrismaGlassCapsule({
   as = 'button',
   variant = 'neutral',
@@ -112,13 +119,13 @@ export function PrismaGlassTopDock({
   const finalActions: PrismaGlassTopDockAction[] = actions?.length
     ? actions
     : [
-        { label: 'Editar', icon: <EditGlyph /> },
-        { label: 'Más opciones', icon: <DotsGlyph /> },
+        { label: 'Editar', icon: <EditGlyph />, onClick: () => emitPrismaGlassAction('Editar') },
+        { label: 'Más opciones', icon: <DotsGlyph />, onClick: () => emitPrismaGlassAction('Más opciones') },
       ];
 
   return (
-    <div className={cx(styles.topDock, className)} aria-label="Controles flotantes Liquid Glass">
-      <PrismaGlassCapsule aria-label={leftLabel} shape="circle" tone="graphite" density="regular">
+    <div className={cx(styles.topDock, className)} aria-label="Controles flotantes Liquid Glass" data-prisma-hardening="glass-actions-260611">
+      <PrismaGlassCapsule aria-label={leftLabel} shape="circle" tone="graphite" density="regular" onClick={() => emitPrismaGlassAction(leftLabel)}>
         <MenuGlyph />
       </PrismaGlassCapsule>
 
@@ -148,7 +155,7 @@ export function PrismaGlassTopDock({
             type="button"
             className={styles.actionButton}
             aria-label={action.label}
-            onClick={action.onClick}
+            onClick={action.onClick ?? (() => emitPrismaGlassAction(action.label))}
           >
             {action.icon ?? <DotsGlyph />}
           </button>

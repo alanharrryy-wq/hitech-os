@@ -12,8 +12,21 @@ type PrismaTabletPulsePanelProps = {
   flags: PrismaChartFlags;
 };
 
+const QUICK_FILTERS = [
+  { id: "shift", label: "Turno actual", summary: "Vista enfocada en salud del turno y continuidad de venta local." },
+  { id: "risks", label: "Solo riesgos", summary: "Filtro de revisión: prioriza alertas y señales de riesgo operativo." },
+  { id: "sync", label: "Pendientes sync", summary: "Filtro de revisión: mira outbox, reintentos y cola local Tablet." },
+  { id: "reset", label: "Reset", summary: "Filtros limpios. Vista completa del pulso Tablet." }
+] as const;
+
 export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePanelProps) {
   const [focusLabel, setFocusLabel] = useState("Toque un bloque para ver foco local");
+  const [activeFilter, setActiveFilter] = useState<(typeof QUICK_FILTERS)[number]["id"]>("reset");
+
+  function applyQuickFilter(filter: (typeof QUICK_FILTERS)[number]) {
+    setActiveFilter(filter.id);
+    setFocusLabel(filter.summary);
+  }
 
   if (!flags.enabled) {
     return (
@@ -29,7 +42,7 @@ export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePan
   }
 
   return (
-    <main className={styles.shell} data-prisma-charts-surface="tablet" data-prisma-charts-enabled="true">
+    <main className={styles.shell} data-prisma-charts-surface="tablet" data-prisma-charts-enabled="true" data-prisma-hardening="tablet-pulse-filters-260611">
       <section className={styles.header}>
         <div>
           <p>Tablet opera</p>
@@ -44,10 +57,17 @@ export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePan
       </section>
 
       <section className={styles.quickFilters} aria-label="Filtros tactiles Tablet">
-        <button type="button">Turno actual</button>
-        <button type="button">Solo riesgos</button>
-        <button type="button">Pendientes sync</button>
-        <button type="button">Reset</button>
+        {QUICK_FILTERS.map((filter) => (
+          <button
+            key={filter.id}
+            type="button"
+            aria-pressed={activeFilter === filter.id}
+            data-active={activeFilter === filter.id ? "true" : "false"}
+            onClick={() => applyQuickFilter(filter)}
+          >
+            {filter.label}
+          </button>
+        ))}
       </section>
 
       <section className={styles.focusPanel} aria-live="polite">
