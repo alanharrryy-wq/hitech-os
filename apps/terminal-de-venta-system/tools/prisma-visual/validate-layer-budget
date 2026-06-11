@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+const j=JSON.parse(fs.readFileSync('config/prisma-visual/layer-budget.json','utf8'));
+const routes=j.routes||[]; const bad=routes.filter(x=>!x.route||typeof x.maxObstructions!=='number');
+console.log(JSON.stringify({validator:'validate-layer-budget',status:bad.length?'FAIL':'PASS',routes:routes.length,bad},null,2)); if(bad.length) process.exit(1);

@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+const j=JSON.parse(fs.readFileSync('config/prisma-visual/recipe-map.json','utf8'));
+const recipes=j.recipes||[]; const bad=recipes.filter(x=>!x.name||!(x.surface||x.surfaces)||!x.status);
+console.log(JSON.stringify({validator:'validate-recipes',status:bad.length?'FAIL':'PASS',recipes:recipes.length,bad},null,2)); if(bad.length) process.exit(1);

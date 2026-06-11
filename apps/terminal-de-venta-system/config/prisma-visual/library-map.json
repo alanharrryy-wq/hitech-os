@@ -1,0 +1,74 @@
+{
+  "libraries": [
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "^1.1.15",
+      "role": "dialog primitive",
+      "recommendedUse": "Use for modal/dialog interactions",
+      "restriction": "Do not reimplement dialogs with raw div overlays"
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "version": "^2.1.16",
+      "role": "menu primitive",
+      "recommendedUse": "Use for menus/dropdowns",
+      "restriction": "Do not create local ungoverned dropdowns"
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "version": "^1.2.10",
+      "role": "scroll primitive",
+      "recommendedUse": "Use for governed scroll areas",
+      "restriction": "Do not hide content/background with custom scroll shells"
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "version": "^2.2.6",
+      "role": "select primitive",
+      "recommendedUse": "Use for accessible selects",
+      "restriction": "Do not use custom select clones"
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "version": "^1.1.13",
+      "role": "tabs primitive",
+      "recommendedUse": "Use for tabs/navigation panels",
+      "restriction": "No local tab state hacks if Radix fits"
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "version": "^1.2.8",
+      "role": "tooltip primitive",
+      "recommendedUse": "Use for tooltips",
+      "restriction": "Avoid hover-only inaccessible hints"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "^1.2.4",
+      "role": "composition primitive",
+      "recommendedUse": "Use for asChild composition",
+      "restriction": "Keep styling via tokens/adapters"
+    },
+    {
+      "name": "ogl",
+      "version": "^1.0.11",
+      "role": "effects library",
+      "recommendedUse": "Use for atmospheric/background/visual lab effects",
+      "restriction": "Not for buttons/cards/layout"
+    },
+    {
+      "name": "ajv",
+      "version": "not detected in root package",
+      "role": "schema validator",
+      "recommendedUse": "Use for registries/schemas",
+      "restriction": "Must support 2020-12 for current schemas"
+    },
+    {
+      "name": "@playwright/test",
+      "version": "not detected in root package",
+      "role": "visual QA",
+      "recommendedUse": "Use for evidence/screenshots when available",
+      "restriction": "Not a substitute for design approval"
+    }
+  ]
+}

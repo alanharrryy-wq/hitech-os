@@ -1,0 +1,514 @@
+{
+  "summary": {
+    "status": "ok",
+    "runId": "260610_2101",
+    "createdAt": "2026-06-10T21:01:49-06:00",
+    "routesMapped": 35,
+    "layersDetected": 3303,
+    "filesAnalyzed": 431,
+    "backgroundReferences": 51,
+    "centralBackgroundFilesOrMetadata": 67
+  },
+  "layerTypeCounts": {
+    "unknown": 1397,
+    "shell": 293,
+    "navigation": 262,
+    "viewport": 144,
+    "card": 348,
+    "page-surface": 46,
+    "fx": 45,
+    "panel": 664,
+    "background": 52,
+    "scrim": 1,
+    "grain": 2,
+    "state": 46,
+    "overlay": 3
+  },
+  "actionCounts": {
+    "conservar": 3192,
+    "transparentar/revisar": 59,
+    "conservar/consolidar": 52
+  },
+  "routeBudgets": [
+    {
+      "route": "/",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 34,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/catalog",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 44,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/checkout",
+      "blockingLayersFromMap": 29,
+      "visualqaObstructionCandidates": 113,
+      "consoleIssues": 10,
+      "networkFailures": 10,
+      "risk": "high",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/events/outbox",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 37,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/existencias",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 45,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/inventory",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 46,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/inventory/low-stock",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 34,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/offline",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 38,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/pos",
+      "blockingLayersFromMap": 29,
+      "visualqaObstructionCandidates": 113,
+      "consoleIssues": 11,
+      "networkFailures": 11,
+      "risk": "high",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/prisma-dark-pos-reference",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 65,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/prisma-pulse",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 4,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/referencia-visual",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 3,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/release-gate",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 38,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": false,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/returns",
+      "blockingLayersFromMap": 1,
+      "visualqaObstructionCandidates": 38,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/runtime-snapshot-preview",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 38,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/sales",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 36,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/sales/history",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 38,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/sales/today",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 36,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/screen-standard-preview",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 98,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "high",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/settings/data",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 53,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/settings/export",
+      "blockingLayersFromMap": 5,
+      "visualqaObstructionCandidates": 33,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/settings/license",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 53,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": false,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/shift",
+      "blockingLayersFromMap": 3,
+      "visualqaObstructionCandidates": 40,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/stock",
+      "blockingLayersFromMap": 2,
+      "visualqaObstructionCandidates": 46,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/sync",
+      "blockingLayersFromMap": 10,
+      "visualqaObstructionCandidates": 52,
+      "consoleIssues": 0,
+      "networkFailures": 0,
+      "risk": "medium",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "audit route wrappers and opaque panels"
+    },
+    {
+      "route": "/visual-os",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 17,
+      "consoleIssues": 5,
+      "networkFailures": 5,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/detached",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 16,
+      "consoleIssues": 5,
+      "networkFailures": 5,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/materiality-catalog",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 3,
+      "consoleIssues": 1,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/pro",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 16,
+      "consoleIssues": 5,
+      "networkFailures": 5,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/realtime",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 4,
+      "consoleIssues": 1,
+      "networkFailures": 1,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/tablet-background-gallery",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 3,
+      "consoleIssues": 5,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    },
+    {
+      "route": "/visual-os/tablet-codex-gallery",
+      "blockingLayersFromMap": 0,
+      "visualqaObstructionCandidates": 3,
+      "consoleIssues": 1,
+      "networkFailures": 0,
+      "risk": "low",
+      "budget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true,
+        "permanentOverlayAllowed": false
+      },
+      "firstAction": "monitor only"
+    }
+  ]
+}

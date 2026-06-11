@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+const j=JSON.parse(fs.readFileSync('config/prisma-visual/authority-map.json','utf8'));
+const items=j.items||[]; const statuses=new Set(['core','recipe','archive','deprecated','blocked','review']);
+const bad=items.filter(x=>!x.name||!statuses.has(x.status));
+console.log(JSON.stringify({validator:'validate-authority',status:bad.length?'FAIL':'PASS',items:items.length,bad},null,2)); if(bad.length) process.exit(1);
