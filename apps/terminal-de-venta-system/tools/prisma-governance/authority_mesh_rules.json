@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "3.0.0",
   "name": "PRISMA Authority Mesh Rules",
   "principle": "Single operational authority entrypoint; many live sources; mandatory readset lock before patches.",
   "global_required": [
@@ -485,5 +485,40 @@
     ".prisma_installer_backups",
     "__pycache__"
   ],
-  "max_runtime_matches_per_pattern": 200
+  "max_runtime_matches_per_pattern": 200,
+  "visual_capability_resolver": {
+    "generated_files": [
+      ".governance/current/VISUAL_CAPABILITY_MATRIX.json",
+      ".governance/current/VISUAL_CAPABILITY_MATRIX.md",
+      ".governance/current/VISUAL_STACK_DECISION.md",
+      ".governance/current/APP_VISUAL_EXPLOITATION_MATRIX.md"
+    ],
+    "principle": "Exploit all necessary and safe visual capabilities per app/surface; do not use libraries blindly; justify available capabilities not used in premium/visual work.",
+    "required_gates_when_visual": [
+      "visual_capability_matrix_required",
+      "visual_stack_decision_required",
+      "app_visual_exploitation_matrix_required",
+      "visual_capability_rejection_reasons_required"
+    ]
+  },
+  "govmesh3": {
+    "name": "Visual Exploitation Contract all phases",
+    "mode": "all_phases_single_iteration",
+    "outputs": [
+      "VISUAL_EXPLOITATION_CONTRACT.md",
+      "VISUAL_EXPLOITATION_CONTRACT.json",
+      "APP_CAPABILITY_REQUIREMENTS.json",
+      "APP_CAPABILITY_REQUIREMENTS.md",
+      "SCREEN_VISUAL_STACK_PLAN.md",
+      "PREMIUM_ACCEPTANCE_BAR.md",
+      "USED_REJECTED_REQUIREMENT.md"
+    ],
+    "hard_gates": [
+      "visual_exploitation_contract_required",
+      "used_rejected_capability_matrix_required",
+      "premium_acceptance_bar_required",
+      "screen_visual_stack_plan_required"
+    ],
+    "principle": "Do not merely detect visual availability; decide what must/should/consider/bounded/high-risk/forbidden capabilities apply per task and app."
+  }
 }
