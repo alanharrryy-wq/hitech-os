@@ -13,7 +13,7 @@ export default async function PcLicensePage() {
   const features = getPcFeatureList();
 
   return (
-    <DecisionScreen {...settingsLicenseScreenContract} currentPath="/settings">
+    <DecisionScreen {...settingsLicenseScreenContract} currentPath="/settings/license">
       <section className="card" data-prisma-component="LicenseLiveStatus">
         <div className="section-head">
           <div>

@@ -267,7 +267,7 @@ export const PC_ROUTE_MAP = [
   },
   {
     "route": "/purchasing",
-    "humanName": "Pedidos",
+    "humanName": "Compras",
     "group": "compras",
     "status": "primary"
   },
@@ -378,5 +378,17 @@ export const PC_ROUTE_MAP = [
     "humanName": "Vistas ejecutivas",
     "group": "reportes",
     "status": "secondary"
+  },
+  {
+      "route": "/referencia-visual/liquid-glass",
+      "humanName": "Liquid Glass Lab alias",
+      "group": "ayuda",
+      "status": "internal"
+  },
+  {
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "humanName": "Glass Capsules Lab alias",
+      "group": "ayuda",
+      "status": "internal"
   }
 ] as const satisfies readonly PcRouteMapEntry[];

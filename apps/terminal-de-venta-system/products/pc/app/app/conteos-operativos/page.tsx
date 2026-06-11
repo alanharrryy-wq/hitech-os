@@ -4,7 +4,7 @@ import { conteosPorUbicacion } from "@/lib/i03/audit-data";
 
 export default function Page() {
   return (
-    <AppShell currentPath="/counts">
+    <AppShell currentPath="/conteos-operativos">
       <section className="hero">
         <div className="kicker">inyección i03</div>
         <h1 style={{ margin: 0 }}>Conteos operativos</h1>

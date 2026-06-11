@@ -4,7 +4,7 @@ import { ajustesResumen, projectIterationIndex } from "@/lib/i03/project-index";
 
 export default function Page() {
   return (
-    <AppShell currentPath="/audit">
+    <AppShell currentPath="/ajustes-inventario">
       <section className="hero">
         <div className="kicker">inyección i03</div>
         <h1 style={{ margin: 0 }}>Ajustes de inventario</h1>
