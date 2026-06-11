@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Rutas dev para precalentar compilacion Next sin abrir navegador ni levantar/matar procesos.",
+  "maxWorkers": 14,
+  "timeoutSeconds": 25,
+  "waitSeconds": 180,
+  "retries": 1,
+  "treat404AsWarning": true,
+  "globalPaths": [
+    "/"
+  ],
+  "serviceRoutes": {
+    "prisma-web-3110": [
+      "/"
+    ],
+    "tablet-3120": [
+      "/",
+      "/pos",
+      "/checkout",
+      "/carrito",
+      "/ventas",
+      "/inventario",
+      "/productos",
+      "/clientes",
+      "/proveedores"
+    ],
+    "pc-3130": [
+      "/",
+      "/dashboard",
+      "/ventas",
+      "/inventario",
+      "/productos",
+      "/clientes",
+      "/proveedores",
+      "/reportes",
+      "/referencia-visual/liquid-glass"
+    ],
+    "mobile-3140": [
+      "/",
+      "/prisma-app"
+    ]
+  }
+}
