@@ -1,132 +1,215 @@
 {
-  "schemaVersion": "1.0",
-  "generatedAt": "2026-06-11T00:46:03",
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.086Z",
   "libraries": [
     {
       "name": "@radix-ui/react-dialog",
-      "role": "dialog primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.1.15"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^1.1.15",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-dropdown-menu",
-      "role": "menu primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^2.1.16"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^2.1.16",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-scroll-area",
-      "role": "scroll primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.2.10"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^1.2.10",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-select",
-      "role": "select primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^2.2.6"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^2.2.6",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-tabs",
-      "role": "tabs primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.1.13"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^1.1.13",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-tooltip",
-      "role": "tooltip primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.2.8"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^1.2.8",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "@radix-ui/react-slot",
-      "role": "composition primitive",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.2.4"
-        }
-      ],
       "status": "available",
-      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+      "version": "^1.2.4",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "framer-motion",
-      "role": "microinteractions",
-      "detected": false,
-      "detectedIn": [],
       "status": "not-detected-no-install",
-      "restriction": "Sólo microinteracciones sobrias."
+      "version": null,
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "motion",
-      "role": "microinteractions",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^12.40.0"
-        }
-      ],
       "status": "available",
-      "restriction": "Sólo microinteracciones sobrias."
+      "version": "^12.40.0",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     },
     {
       "name": "ogl",
-      "role": "background/atmosphere/lab effects",
-      "detected": true,
-      "detectedIn": [
-        {
-          "packageJson": "package.json",
-          "version": "^1.0.11"
-        }
-      ],
       "status": "available",
-      "restriction": "Sólo background/atmosphere/lab; no cards/forms/layout."
+      "version": "^1.0.11",
+      "allowedUse": [
+        "backgrounds",
+        "lab effects"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "visual-os"
+      ]
+    },
+    {
+      "name": "lucide-react",
+      "status": "available",
+      "version": "^1.16.0",
+      "allowedUse": [
+        "accessible primitive or UI utility"
+      ],
+      "forbiddenUse": [
+        "replace domain logic",
+        "bypass adapters"
+      ],
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ]
     }
   ],
-  "rule": "No instalar dependencias nuevas salvo justificación fuerte."
+  "rule": "No new dependencies were installed by this v2 pass."
 }

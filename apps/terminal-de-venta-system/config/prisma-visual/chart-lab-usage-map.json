@@ -1,7 +1,7 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
   "surface": "chart-lab",
-  "generatedAt": "2026-06-11T00:46:03",
+  "generatedAt": "2026-06-11T09:49:15.088Z",
   "routes": [
     {
       "route": "/",
@@ -22,7 +22,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "none-detected",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 50,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-none-detected"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/recipe-studio-v2",
@@ -43,7 +56,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "none-detected",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 50,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-none-detected"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     }
   ]
 }

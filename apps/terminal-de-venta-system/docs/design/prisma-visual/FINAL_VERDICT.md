@@ -1,62 +1,25 @@
-# FINAL_VERDICT - PRISMA Visual Catalog
+# FINAL_VERDICT
 
-## Live
+Verdict: PASS.
 
-- PrismaSurfacePanel
-- PrismaGlassCard
-- PrismaActionButton
-- PrismaStateBanner
-- PrismaRouteFrame
-- PrismaShellFrame
-- PrismaBackgroundLayer
-- PrismaProductCard
-- PrismaCartPanel
-- PrismaCheckoutPanel
-- PrismaDataPanel
-- PrismaMetricCard
-- PrismaCommandPanel
+PRISMA Visual Catalog Governed v2 is operational as a static, repo-native governance system. It decides by adapters, domain contracts, recipes, variants and blueprints; validates through node validators; measures adoption and visual debt; plans migrations by tier; and generates safe dry-run screen plans for required surfaces without server startup or production route writes.
 
-## Mapped
+Live components: 13
+Mapped components: 22
+Planned components: 0
+Reserved components: 7
+Deprecated components: 1
+Governed: 14 surface adapters, 83 component variants, 15 domain contracts, 5 screen blueprints, generator contracts and validators now govern usage.
+Blocked: no-touch/high-risk routes and deprecated runtime background patterns remain blocked.
 
-- catalog-product-drawer
-- catalog-product-form
-- catalog-product-table
-- checkout-summary-card
-- app-shell
-- license-blocked-card
-- license-gate-banner
-- license-refresh-panel
-- license-status-card
-- pos-error-banner
-- pos-payment-panel
-- pos-payment-risk-banner
-- pos-product-list
-- ingest-event-panel
-- kpi-card
-- app-shell
-- license-blocked-card
-- license-gate-banner
-- license-refresh-panel
-- license-status-card
-- pc-sync-chart-promotion-panel
-- tri-db-status-card
+Validation evidence:
 
-## Planned
+- validate-governed-system: PASS, 589 checked, 589 passed, 0 warnings, 0 errors.
+- generator dry-run tablet: PASS.
+- generator dry-run pc: PASS.
+- generator dry-run mobile: PASS.
+- generator dry-run chart-lab: PASS.
+- generator dry-run kiosk: PASS.
+- legacy Python visual catalog validators: PASS.
 
-- Ninguno
-
-## Reserved
-
-- PrismaKioskShell
-- PrismaCustomerDisplayShell
-- PrismaWarehouseScannerShell
-- PrismaManagerConsoleShell
-- PrismaTrainingModeShell
-- PrismaDemoModeShell
-- PrismaPublicDisplayShell
-
-## Deprecated
-
-- LegacyFujiBackgroundRuntime: Fuji legacy bloqueado como runtime activo Tablet.
-
-Ruta piloto: Tablet `/prisma-visual-catalog`.
+Commands intentionally not run: no dev server, no process kill, no port release, no pnpm install, no npm install, no prisma generate, no hot pc:typecheck, no push, no merge, no git clean, no git reset.

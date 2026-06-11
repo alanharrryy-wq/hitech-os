@@ -1,11 +1,8 @@
-# CONTINUATION - PRISMA Visual Catalog
+# CONTINUATION
 
-Run: prisma_catalog_20260611_004603
+Recommended next step:
 
-- Catálogo: `config/prisma-visual/component-catalog.json`
-- Adapters: `config/prisma-visual/surface-adapters.json`
-- Usage maps: `config/prisma-visual/*-usage-map.json`
-- Componentes: `products/shared-ui/prisma/components`
-- Piloto: Tablet `/prisma-visual-catalog`
-
-No declarar PASS visual por smoke funcional.
+1. Pick the first route from MIGRATION_PLAN.md recommendedBatch.
+2. Run visual review focal for that route.
+3. Apply tier-1-wrapper only if validators pass and rollback is prepared.
+4. Re-run measure-adoption and plan-migration.

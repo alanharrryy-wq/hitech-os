@@ -1,7 +1,7 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
   "surface": "tablet",
-  "generatedAt": "2026-06-11T00:46:03",
+  "generatedAt": "2026-06-11T09:49:15.088Z",
   "routes": [
     {
       "route": "/prisma-visual-catalog",
@@ -24,7 +24,20 @@
       "layerRisk": "low",
       "backgroundRisk": "none-detected",
       "nextAction": "visual-evidence-next; then migrate existing low-risk route",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "low",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 10,
+        "signals": [
+          "shared-ui-or-low-local-css",
+          "layer-risk-low",
+          "background-risk-none-detected"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/",
@@ -45,7 +58,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/catalog",
@@ -68,7 +94,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/checkout",
@@ -92,7 +131,20 @@
       "layerRisk": "high",
       "backgroundRisk": "review",
       "nextAction": "do-not-touch-critical-route-without-visual-evidence",
-      "noTouch": true
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
     },
     {
       "route": "/events/outbox",
@@ -113,7 +165,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/existencias",
@@ -134,7 +199,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/inventory",
@@ -157,7 +235,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/inventory/low-stock",
@@ -180,7 +271,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/offline",
@@ -201,7 +305,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/pos",
@@ -225,7 +342,20 @@
       "layerRisk": "high",
       "backgroundRisk": "review",
       "nextAction": "do-not-touch-critical-route-without-visual-evidence",
-      "noTouch": true
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
     },
     {
       "route": "/prisma-dark-pos-reference",
@@ -249,7 +379,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/prisma-pulse",
@@ -270,7 +413,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/referencia-visual",
@@ -291,7 +447,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/release-gate",
@@ -312,7 +481,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/returns",
@@ -333,7 +515,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/runtime-snapshot-preview",
@@ -354,7 +549,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales",
@@ -375,7 +583,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales/history",
@@ -396,7 +617,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales/history/[saleId]",
@@ -417,7 +651,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales/today",
@@ -438,7 +685,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales/today/[saleId]",
@@ -459,7 +719,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sales/today/[saleId]/return",
@@ -480,7 +753,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/screen-standard-preview",
@@ -501,7 +787,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/settings/data",
@@ -522,7 +821,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/settings/export",
@@ -543,7 +855,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/settings/license",
@@ -564,7 +889,20 @@
       "layerRisk": "high",
       "backgroundRisk": "review",
       "nextAction": "do-not-touch-critical-route-without-visual-evidence",
-      "noTouch": true
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
     },
     {
       "route": "/shift",
@@ -585,7 +923,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/stock",
@@ -608,7 +959,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/sync",
@@ -629,7 +993,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os",
@@ -650,7 +1027,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/detached",
@@ -671,7 +1061,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/materiality-catalog",
@@ -694,7 +1097,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/pro",
@@ -715,7 +1131,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/realtime",
@@ -736,7 +1165,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/tablet-background-gallery",
@@ -757,7 +1199,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     },
     {
       "route": "/visual-os/tablet-codex-gallery",
@@ -778,7 +1233,20 @@
       "layerRisk": "medium",
       "backgroundRisk": "review",
       "nextAction": "eligible-for-catalog-migration-after-visual-review",
-      "noTouch": false
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
     }
   ]
 }

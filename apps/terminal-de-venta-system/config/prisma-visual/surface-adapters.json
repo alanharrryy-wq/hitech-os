@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0",
-  "generatedAt": "2026-06-11T00:46:03",
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.084Z",
   "adapters": [
     {
       "surfaceId": "tablet",
@@ -10,6 +10,7 @@
       "defaultTheme": "light-operational-cloudglass",
       "backgroundContract": {
         "runtimePublicUrl": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+        "reserved": false,
         "forbiddenRuntimeSources": [
           "products/0.backgrounds",
           "Fuji",
@@ -37,20 +38,35 @@
         "framer-motion"
       ],
       "forbiddenPatterns": [
-        "dark-dominante",
+        "products/0.backgrounds-runtime-url",
         "Fuji",
         "soft-gray-clouds",
-        "products/0.backgrounds-runtime-url"
+        "dark-dominante"
       ],
       "accessibilityConstraints": [
-        "touch-target-min-44",
+        "focus-visible",
         "contrast-readable",
-        "focus-visible"
+        "touch-target-min-44"
       ],
       "runtimeBoundaries": [
+        "no-private-background-runtime",
         "no-pc-dependency-to-sell",
         "no-prisma-generate-hot-gate"
-      ]
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "tablet",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_tablet"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
     },
     {
       "surfaceId": "pc",
@@ -60,6 +76,7 @@
       "defaultTheme": "graphite-admin-cloudglass",
       "backgroundContract": {
         "runtimePublicUrl": "/visual-backgrounds/pc/assets/pc-cloudglass-default.jpg",
+        "reserved": false,
         "forbiddenRuntimeSources": [
           "products/0.backgrounds"
         ]
@@ -85,22 +102,41 @@
         "@radix-ui/react-tooltip",
         "@radix-ui/react-slot",
         "motion",
-        "framer-motion",
-        "ogl"
+        "ogl",
+        "framer-motion"
       ],
       "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds",
         "tablet-aesthetic-direct-copy",
         "oversized-touch-containers",
         "ogl-for-layout"
       ],
       "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable",
         "keyboard-navigation",
-        "data-density-legible",
-        "focus-visible"
+        "data-density-legible"
       ],
       "runtimeBoundaries": [
+        "no-private-background-runtime",
         "no-tablet-shell-inheritance"
-      ]
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "pc",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_pc"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
     },
     {
       "surfaceId": "mobile",
@@ -110,6 +146,7 @@
       "defaultTheme": "mobile-mist",
       "backgroundContract": {
         "runtimePublicUrl": "/visual-backgrounds/mobile/assets/mobile-mist-default.jpg",
+        "reserved": false,
         "forbiddenRuntimeSources": [
           "products/0.backgrounds"
         ]
@@ -134,16 +171,36 @@
         "framer-motion"
       ],
       "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds",
         "tablet-small-copy",
         "wide-table-layout"
       ],
       "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable",
         "thumb-zone",
         "tap-target-min-44"
       ],
       "runtimeBoundaries": [
+        "no-private-background-runtime",
         "mobile-is-companion-not-tablet"
-      ]
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "mobile",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_app_movil"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
     },
     {
       "surfaceId": "chart-lab",
@@ -153,6 +210,7 @@
       "defaultTheme": "analytical-glass",
       "backgroundContract": {
         "runtimePublicUrl": "/visual-backgrounds/chart-lab/assets/chart-lab-default.jpg",
+        "reserved": false,
         "forbiddenRuntimeSources": [
           "products/0.backgrounds"
         ]
@@ -170,21 +228,206 @@
       "allowedLibraries": [
         "ogl",
         "motion",
-        "framer-motion",
         "@radix-ui/react-tabs",
-        "@radix-ui/react-tooltip"
+        "@radix-ui/react-tooltip",
+        "framer-motion"
       ],
       "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds",
         "production-promotion-without-contract",
         "global-css-export"
       ],
       "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable",
         "lab-contrast-notes",
         "no-seizure-motion"
       ],
       "runtimeBoundaries": [
+        "no-private-background-runtime",
         "isolated-lab"
-      ]
+      ],
+      "motionBudget": "bounded-lab-motion",
+      "effectBudget": "lab-isolated-effects",
+      "atlasAllowed": [
+        "chart-lab",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_lab_chart"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
+    },
+    {
+      "surfaceId": "shared-ui",
+      "status": "current",
+      "role": "shared component and token authority",
+      "density": "adaptive",
+      "defaultTheme": "shared-prisma-neutral",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "shellContract": "shared component and token authority",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "shared-ui-foundation",
+        "surface-panel",
+        "glass-card",
+        "action-button"
+      ],
+      "allowedLibraries": [
+        "@radix-ui/react-slot",
+        "@radix-ui/react-tooltip"
+      ],
+      "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
+      ],
+      "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable"
+      ],
+      "runtimeBoundaries": [
+        "no-private-background-runtime"
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "shared-ui",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_shared-ui"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
+    },
+    {
+      "surfaceId": "visual-os",
+      "status": "current",
+      "role": "Visual OS recipes, scorecards and release gates",
+      "density": "governance",
+      "defaultTheme": "visual-os-governed",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "shellContract": "Visual OS recipes, scorecards and release gates",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "visual-os-governance"
+      ],
+      "allowedLibraries": [
+        "motion",
+        "ogl"
+      ],
+      "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
+      ],
+      "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable"
+      ],
+      "runtimeBoundaries": [
+        "no-private-background-runtime"
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "visual-os",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_visual-os"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
+    },
+    {
+      "surfaceId": "surface-governor",
+      "status": "current",
+      "role": "surface policy and promotion authority",
+      "density": "governance",
+      "defaultTheme": "surface-governor-governed",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "shellContract": "surface policy and promotion authority",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "surface-governor-policy"
+      ],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
+      ],
+      "accessibilityConstraints": [
+        "focus-visible",
+        "contrast-readable"
+      ],
+      "runtimeBoundaries": [
+        "no-private-background-runtime"
+      ],
+      "motionBudget": "subtle-operational-motion",
+      "effectBudget": "low-noise-effects",
+      "atlasAllowed": [
+        "surface-governor",
+        "shared"
+      ],
+      "motorsAllowed": [
+        "motor_gobierno"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "tiered migration with validator and rollback evidence"
     },
     {
       "surfaceId": "kiosk",
@@ -201,19 +444,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "customer-display",
@@ -230,19 +495,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "warehouse-scanner",
@@ -259,19 +546,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "manager-console",
@@ -288,19 +597,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "training-mode",
@@ -317,19 +648,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "demo-mode",
@@ -346,19 +699,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     },
     {
       "surfaceId": "public-display",
@@ -375,19 +750,41 @@
       },
       "shellContract": "Reserved. No usar hasta promoción explícita.",
       "layerBudget": {
-        "reserved": true
+        "reserved": true,
+        "maxShellDepth": 1,
+        "backgroundMustRemainVisible": true
       },
-      "allowedRecipes": [],
+      "allowedRecipes": [
+        "reserved-safe-display"
+      ],
       "allowedLibraries": [],
       "forbiddenPatterns": [
-        "production-use-before-promotion"
+        "production-use-before-promotion",
+        "products/0.backgrounds-runtime-url",
+        "Fuji",
+        "soft-gray-clouds"
       ],
       "accessibilityConstraints": [
-        "define-before-live"
+        "define-before-live",
+        "focus-visible"
       ],
       "runtimeBoundaries": [
+        "reserved-no-production-runtime",
         "reserved-no-runtime"
-      ]
+      ],
+      "motionBudget": "none-until-promotion",
+      "effectBudget": "none-until-promotion",
+      "atlasAllowed": [
+        "future-surface"
+      ],
+      "motorsAllowed": [
+        "inspect-only"
+      ],
+      "generationAllowed": [
+        "dry-run",
+        "safe-scaffold-under-tools-only"
+      ],
+      "migrationPolicy": "blocked until explicit promotion"
     }
   ]
 }
