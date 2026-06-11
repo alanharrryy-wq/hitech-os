@@ -52,7 +52,7 @@ Las rutas documentadas en este atlas se consideran confirmadas solo cuando apare
 
 Mobile es el tablero rápido de supervisión del ecosistema PRISMA. No está documentado como POS ni como consola completa de administración. Su intención principal es mostrar pulso operativo: ventas, caja, alertas, inventario, salud, acciones pendientes y resumen diario.
 
-La regla de barrio: Tablet vende en mostrador, PC gobierna la oficina, Mobile es el dueño mirando el changarro desde la banqueta con el celular en la mano. No se le carga la camioneta completa, solo lo necesario para decidir rápido.
+La regla de barrio: Tablet vende en mostrador, PC administra backoffice, Mobile es el dueño mirando el changarro desde la banqueta con el celular en la mano. No se le carga la camioneta completa, solo lo necesario para decidir rápido.
 
 ## 5. Rutas confirmadas
 
