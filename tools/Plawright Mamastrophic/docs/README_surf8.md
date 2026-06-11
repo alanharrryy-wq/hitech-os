@@ -46,5 +46,17 @@ The installer now validates PowerShell parseability before reporting PASS.
 ## arr5 fix2 validator repair
 
 - Fixes the installer validator itself: PowerShell parse validation now runs through a temporary `-File` validator instead of passing target paths with spaces after `-Command`.
-- This prevents false install failure on `F:epos\hitech-os	ools\Plawright Mamastrophic\...`.
+- This prevents false install failure on `F:
+epos\hitech-os	ools\Plawright Mamastrophic\...`.
 - Keeps the arr5 fix1 GPU string repairs and GPU modes `off|auto|on`.
+
+## arr7 timeout-guard
+
+La version arr7 corrige una inconsistencia de tiempos: el motor podia intentar hasta 3 navegaciones de 45s, pero el test global moria a los 90s. Ahora el timeout del test se calcula de forma coherente y puede ajustarse con `-TestTimeoutMs`, `-GotoTimeoutMs`, `-GotoRetries`, `-ScreenshotTimeoutMs` y `-ProbeTimeoutMs`.
+
+Tambien registra `navigation.softNavigation=true` cuando una ruta reporta timeout de navegacion pero ya esta en la URL esperada con DOM/body renderizado, para capturar evidencia util sin fabricar PASS falso.
+
+
+## arr8 installer parser guard
+
+El bundle de instalacion corrige el falso `powershell_parse` en rutas con espacios usando un parser temporal invocado por `-File -Path`.
