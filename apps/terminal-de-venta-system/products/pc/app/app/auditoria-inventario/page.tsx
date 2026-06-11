@@ -4,7 +4,7 @@ import { varianzaPorUsuario } from "@/lib/i03/audit-data";
 
 export default function Page() {
   return (
-    <AppShell currentPath="/audit">
+    <AppShell currentPath="/auditoria-inventario">
       <section className="hero">
         <div className="kicker">inyección i03</div>
         <h1 style={{ margin: 0 }}>Auditoría de inventario</h1>

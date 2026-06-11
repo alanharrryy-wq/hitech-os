@@ -2258,7 +2258,7 @@ export const PC_PAGE_CONTRACTS = [
   },
   {
     "route": "/purchasing",
-    "humanName": "Pedidos",
+    "humanName": "Compras",
     "group": "compras",
     "status": "primary",
     "primaryQuestion": "¿Qué debo pedir o recibir?",
@@ -3414,5 +3414,493 @@ export const PC_PAGE_CONTRACTS = [
       "actionLabel": "Reintentar",
       "actionHref": "/vistas-ejecutivas"
     }
+  },
+  {
+      "route": "/laboratorio-pc",
+      "humanName": "Laboratorio PC",
+      "group": "ayuda",
+      "status": "lab",
+      "primaryQuestion": "¿Qué experimento visual o técnico debo revisar?",
+      "routeIntent": "¿Qué experimento visual o técnico debo revisar?",
+      "subtitle": "Laboratorio interno de PC para validar referencias sin contaminar pantallas productivas.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Abrir laboratorio",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Laboratorio PC",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Laboratorio PC",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc"
+      }
+  },
+  {
+      "route": "/laboratorio-pc/chart-lab",
+      "humanName": "Chart Lab",
+      "group": "analisis",
+      "status": "lab",
+      "primaryQuestion": "¿Qué visualización experimental debo evaluar?",
+      "routeIntent": "¿Qué visualización experimental debo evaluar?",
+      "subtitle": "Laboratorio de gráficas y exploración visual, separado de operación diaria.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Revisar gráfica",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/chart-lab",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Chart Lab",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc/chart-lab"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Chart Lab",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc/chart-lab"
+      }
+  },
+  {
+      "route": "/laboratorio-pc/dashboard-governor",
+      "humanName": "Dashboard Governor Lab",
+      "group": "ayuda",
+      "status": "lab",
+      "primaryQuestion": "¿Qué regla visual del dashboard debo comprobar?",
+      "routeIntent": "¿Qué regla visual del dashboard debo comprobar?",
+      "subtitle": "Laboratorio de gobierno visual para dashboard PC.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Revisar gobierno",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/dashboard-governor",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Dashboard Governor Lab",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc/dashboard-governor"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Dashboard Governor Lab",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc/dashboard-governor"
+      }
+  },
+  {
+      "route": "/laboratorio-pc/referencia-visual",
+      "humanName": "Referencia visual PC",
+      "group": "ayuda",
+      "status": "lab",
+      "primaryQuestion": "¿Qué referencia visual debo consultar?",
+      "routeIntent": "¿Qué referencia visual debo consultar?",
+      "subtitle": "Galería interna para comparar tratamientos visuales PC sin mezclar operación productiva.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Ver referencia",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/referencia-visual",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Referencia visual PC",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc/referencia-visual"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Referencia visual PC",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc/referencia-visual"
+      }
+  },
+  {
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "humanName": "Liquid Glass Lab",
+      "group": "ayuda",
+      "status": "lab",
+      "primaryQuestion": "¿Qué comportamiento liquid glass debo validar?",
+      "routeIntent": "¿Qué comportamiento liquid glass debo validar?",
+      "subtitle": "Referencia técnica visual de liquid glass para PC.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Ver liquid glass",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/referencia-visual/liquid-glass",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Liquid Glass Lab",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc/referencia-visual/liquid-glass"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Liquid Glass Lab",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc/referencia-visual/liquid-glass"
+      }
+  },
+  {
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "humanName": "Glass Capsules Lab",
+      "group": "ayuda",
+      "status": "lab",
+      "primaryQuestion": "¿Qué cápsula glass debo validar?",
+      "routeIntent": "¿Qué cápsula glass debo validar?",
+      "subtitle": "Referencia técnica visual de cápsulas glass para PC.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Ver cápsulas",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Glass Capsules Lab",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Glass Capsules Lab",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
+      }
+  },
+  {
+      "route": "/referencia-visual/liquid-glass",
+      "humanName": "Liquid Glass Lab alias",
+      "group": "ayuda",
+      "status": "internal",
+      "primaryQuestion": "¿Qué alias visual redirige a laboratorio?",
+      "routeIntent": "¿Qué alias visual redirige a laboratorio?",
+      "subtitle": "Alias interno que canonicaliza hacia /laboratorio-pc/referencia-visual/liquid-glass.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Abrir canonical",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/referencia-visual/liquid-glass",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Liquid Glass Lab alias",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/referencia-visual/liquid-glass"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Liquid Glass Lab alias",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/referencia-visual/liquid-glass"
+      }
+  },
+  {
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "humanName": "Glass Capsules Lab alias",
+      "group": "ayuda",
+      "status": "internal",
+      "primaryQuestion": "¿Qué alias visual redirige a laboratorio?",
+      "routeIntent": "¿Qué alias visual redirige a laboratorio?",
+      "subtitle": "Alias interno que canonicaliza hacia /laboratorio-pc/referencia-visual/liquid-glass-capsules.",
+      "userRoles": [
+          "dueno",
+          "gerente",
+          "auditor",
+          "soporte"
+      ],
+      "requiredBlocks": [
+          "decisionHeader",
+          "attentionSummary",
+          "nextBestAction",
+          "actionableTable",
+          "evidenceDrawer",
+          "emptyState",
+          "errorState"
+      ],
+      "primaryAction": "Abrir canonical",
+      "secondaryActions": [
+          "Ver detalle",
+          "Ver evidencia"
+      ],
+      "dataSourceKind": "static",
+      "allowsTechnicalTermsOnlyInsideEvidence": true,
+      "evidence": [
+          {
+              "label": "Tipo",
+              "value": "Ruta interna/laboratorio gobernada",
+              "kind": "governance"
+          },
+          {
+              "label": "Alcance",
+              "value": "PC solamente; no afecta Tablet ni Mobile",
+              "kind": "governance"
+          },
+          {
+              "label": "Canonical",
+              "value": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+              "kind": "technical"
+          }
+      ],
+      "emptyState": {
+          "title": "Sin pendientes en Glass Capsules Lab alias",
+          "explanation": "No se detectaron elementos que requieran atención inmediata.",
+          "actionLabel": "Ver detalle",
+          "actionHref": "/referencia-visual/liquid-glass-capsules"
+      },
+      "errorState": {
+          "title": "No se pudo cargar Glass Capsules Lab alias",
+          "explanation": "La información necesaria no estuvo disponible en esta lectura.",
+          "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
+          "actionLabel": "Reintentar",
+          "actionHref": "/referencia-visual/liquid-glass-capsules"
+      }
   }
 ] as const satisfies readonly PcPageContract[];
