@@ -25,7 +25,7 @@ export function TabletPremiumRuntimeEffects() {
     if (reduceMotion || !canvasRef.current) return;
     let raf = 0;
     let renderer: any;
-    let gl: WebGLRenderingContext | undefined;
+    let gl: any;
     let mesh: any;
     let program: any;
     let disposed = false;
@@ -34,15 +34,17 @@ export function TabletPremiumRuntimeEffects() {
       if (disposed || !canvasRef.current) return;
       const canvas = canvasRef.current;
       renderer = new Renderer({ canvas, alpha: true, dpr: Math.min(window.devicePixelRatio || 1, 1.5) });
-      gl = renderer.gl;
-      gl.clearColor(0, 0, 0, 0);
-      const geometry = new Triangle(gl);
-      program = new Program(gl, {
+      const glContext: any = renderer.gl;
+      if (!glContext) return;
+      gl = glContext;
+      glContext.clearColor(0, 0, 0, 0);
+      const geometry = new Triangle(glContext);
+      program = new Program(glContext, {
         vertex: `attribute vec2 uv; attribute vec2 position; varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position, 0.0, 1.0); }`,
         fragment: `precision highp float; varying vec2 vUv; uniform float uTime; void main(){ vec2 p=vUv; float a=sin((p.x*3.2+uTime*.22))*0.5+0.5; float b=sin((p.y*4.1-uTime*.17))*0.5+0.5; float edge=smoothstep(.0,.75,1.0-distance(p,vec2(.78,.18))); vec3 c=mix(vec3(.45,.78,1.0),vec3(1.0,.98,.90),a*b); gl_FragColor=vec4(c, .105*edge + .035*a*b); }`,
         uniforms: { uTime: { value: 0 } },
       });
-      mesh = new Mesh(gl, { geometry, program });
+      mesh = new Mesh(glContext, { geometry, program });
       const resize = () => renderer.setSize(window.innerWidth, window.innerHeight);
       const render = (t: number) => {
         if (disposed) return;

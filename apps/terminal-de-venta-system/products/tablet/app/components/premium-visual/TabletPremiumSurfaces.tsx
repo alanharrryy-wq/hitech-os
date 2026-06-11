@@ -1,30 +1,31 @@
 
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { motion } from "motion/react";
 import styles from "./tablet-premium-surfaces.module.css";
 
 type SurfaceTone = "panel" | "card" | "liquid" | "pill" | "banner";
 
-type SurfaceProps<T extends ElementType> = {
-  as?: T;
+type SurfaceProps = {
+  as?: any;
   tone?: SurfaceTone;
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
-} & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+  [key: string]: any;
+};
 
 function joinClassNames(...values: Array<string | undefined | false>) {
   return values.filter(Boolean).join(" ");
 }
 
-export function TabletBackgroundAwareSurface<T extends ElementType = "section">({
+export function TabletBackgroundAwareSurface({
   as,
   tone = "panel",
   className,
   children,
   ...props
-}: SurfaceProps<T>) {
-  const Tag = (as ?? "section") as ElementType;
+}: SurfaceProps) {
+  const Tag = (as ?? "section") as any;
   return (
     <Tag
       className={joinClassNames(styles.surface, styles[tone], className)}
@@ -38,11 +39,11 @@ export function TabletBackgroundAwareSurface<T extends ElementType = "section">(
   );
 }
 
-export function TabletSurfacePanel(props: Omit<SurfaceProps<"section">, "tone">) {
+export function TabletSurfacePanel(props: Omit<SurfaceProps, "tone">) {
   return <TabletBackgroundAwareSurface as="section" tone="panel" {...props} />;
 }
 
-export function TabletGlassCard({ className, ...props }: Omit<SurfaceProps<"article">, "tone">) {
+export function TabletGlassCard({ className, ...props }: Omit<SurfaceProps, "tone">) {
   return (
     <motion.article
       className={joinClassNames(styles.surface, styles.card, className)}
@@ -56,7 +57,7 @@ export function TabletGlassCard({ className, ...props }: Omit<SurfaceProps<"arti
   );
 }
 
-export function TabletStateBanner(props: Omit<SurfaceProps<"aside">, "tone">) {
+export function TabletStateBanner(props: Omit<SurfaceProps, "tone">) {
   return <TabletBackgroundAwareSurface as="aside" tone="banner" {...props} />;
 }
 
@@ -65,7 +66,7 @@ export function TabletActionButton({
   className,
   children,
   ...props
-}: ComponentPropsWithoutRef<typeof motion.button> & { asChild?: boolean; children: ReactNode }) {
+}: { asChild?: boolean; children?: ReactNode; className?: string; [key: string]: any }) {
   const Comp = asChild ? Slot : motion.button;
   return (
     <Comp

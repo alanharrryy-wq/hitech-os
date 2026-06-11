@@ -4576,3 +4576,62 @@
   }
 }
 /* PRISMA_TABLET_PREMIUM_VISUAL_1006::END */
+
+/* PRISMA_TABLET_PAY2_SHELL_PREMIUM_1106::START */
+.posPremiumShell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.posPremiumShellScene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(236, 248, 255, 0.08) 42%, rgba(12, 59, 94, 0.13)),
+    radial-gradient(ellipse at 12% 6%, rgba(255, 255, 255, 0.42), transparent 34%),
+    radial-gradient(ellipse at 88% 16%, rgba(76, 169, 255, 0.19), transparent 32%),
+    url("/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg") center 44% / cover no-repeat fixed;
+  opacity: 0.64;
+  filter: saturate(1.08) contrast(1.02);
+}
+
+.posPremiumSidebar,
+.posPremiumMain {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumContent {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumHeader {
+  color: #102033;
+}
+
+.posPremiumShell[data-prisma-visual-surface="tablet-pos"] .posPremiumHeader::after {
+  content: "";
+  position: absolute;
+  inset: auto 18px -8px;
+  height: 18px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: rgba(42, 128, 235, 0.12);
+  filter: blur(14px);
+}
+
+.posPremiumShell[data-prisma-visual-surface="tablet-pos"] .posPremiumSidebar::after {
+  content: "";
+  position: absolute;
+  inset: 12px 8px auto;
+  height: 130px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.30), rgba(82,169,255,0.12));
+  filter: blur(18px);
+}
+/* PRISMA_TABLET_PAY2_SHELL_PREMIUM_1106::END */

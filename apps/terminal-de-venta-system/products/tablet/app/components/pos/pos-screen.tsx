@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { BadgeDollarSign, Boxes, ScanLine, ShoppingCart, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 import type { CartLine, CompletedSaleReceipt, PosProduct, UiState } from "@/lib/pos/cart-state";
-import { clearCartStorage, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
+import { cartTotalCents, cartTotalQty, clearCartStorage, formatMoney, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
 import { addProductToCart, clearCart, decrementCartLine, incrementCartLine, removeCartLine, validateCartForCheckout } from "@/lib/pos/cart-engine";
 import type { PaymentMethod, PaymentTenderInput } from "@/lib/pos/payment-state";
 import { createDefaultPaymentTenders, normalizePaymentTenders } from "@/lib/pos/payment-state";
@@ -142,6 +144,8 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   const checkoutBusy = isCheckoutBusy(checkoutState);
   const checkoutReady = validateCartForCheckout(cart);
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
+  const cartQty = cartTotalQty(cart);
+  const cartTotal = cartTotalCents(cart);
 
   function setHeldCartShelf(next: HeldCart[]) {
     setHeldCarts(next);
@@ -362,7 +366,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
           <PrismaIcon name="terminal" size={28} />
           <strong>Caja cerrada / Abrir turno</strong>
           <span>{gate.detail}</span>
-          <a className={styles.checkoutLink} href={gate.actionHref}>{gate.actionLabel}</a>
+          <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>{gate.actionLabel}</a>
         </section>
       </PrismaTabletShellUnified>
     );
@@ -379,7 +383,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
     >
       <div
-        className={styles.posWorkspace}
+        className={styles.posPremiumWorkspace}
         data-prisma-component="PointOfSaleWorkspace"
         data-prisma-vos-note="PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"
         data-prisma-zone="tablet-pos-root"
@@ -399,8 +403,40 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         data-prisma-visual-state={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
       >
         <PosLiveBinding />
+        <span className={styles.posPremiumSceneGlow} aria-hidden="true" />
         <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H" />
-        <section className={styles.catalogArea} data-prisma-role="operational-summary" data-prisma-priority="primary">
+        <motion.section
+          className={styles.posPremiumCatalogArea}
+          data-prisma-role="operational-summary"
+          data-prisma-priority="primary"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <section className={styles.posPremiumHero} aria-label="Estado de venta" data-prisma-zone="tablet-pos-hero" data-prisma-layer="2-cloudglass-hero">
+            <div className={styles.posPremiumHeroCopy}>
+              <span><Sparkles aria-hidden="true" size={16} /> Venta touch PRISMA</span>
+              <h2>Carrito, productos y cobro en una sola vista.</h2>
+              <p>{checkoutReady.ready ? "Ticket preparado para abrir cobro." : checkoutReady.reason || "Escanea o busca productos para activar el cobro."}</p>
+            </div>
+            <div className={styles.posPremiumHeroMetrics} aria-label="Resumen rápido de venta">
+              <span>
+                <ShoppingCart aria-hidden="true" size={18} />
+                <small>Ticket</small>
+                <strong>{cart.length} líneas</strong>
+              </span>
+              <span>
+                <Boxes aria-hidden="true" size={18} />
+                <small>Piezas</small>
+                <strong>{cartQty}</strong>
+              </span>
+              <span data-emphasis="true">
+                <BadgeDollarSign aria-hidden="true" size={18} />
+                <small>Total</small>
+                <strong>{formatMoney(cartTotal)}</strong>
+              </span>
+            </div>
+          </section>
           <PosProductSearch
             query={query}
             setQuery={setQuery}
@@ -417,17 +453,22 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
             }}
           />
           <nav
-            className={styles.categoryRail}
+            className={styles.posPremiumCategoryRail}
             data-prisma-zone="tablet-pos-category-chips"
             data-prisma-role="secondary-action"
             data-prisma-priority="support"
           >
-            {categories.map((category) => (
-              <button
+            {categories.map((category, index) => (
+              <motion.button
                 key={category}
-                className={category === selectedCategory ? styles.categoryButtonActive : styles.categoryButton}
+                className={category === selectedCategory ? styles.posPremiumCategoryButtonActive : styles.posPremiumCategoryButton}
                 type="button"
                 onClick={() => setSelectedCategory(category)}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -1 }}
+                transition={{ duration: 0.16, delay: Math.min(index * 0.018, 0.16), ease: [0.22, 1, 0.36, 1] }}
                 data-prisma-component="CategoryButton"
                 data-active={category === selectedCategory ? "true" : "false"}
                 data-prisma-role="secondary-action"
@@ -435,13 +476,13 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                 data-prisma-state={category === selectedCategory ? "selected" : undefined}
                 data-prisma-motion="press-feedback"
               >
-                <span>{category.slice(0, 2).toUpperCase()}</span>
+                <span>{category === FEATURED_CATEGORY ? <ScanLine aria-hidden="true" size={16} /> : category.slice(0, 2).toUpperCase()}</span>
                 <strong>{category}</strong>
-              </button>
+              </motion.button>
             ))}
           </nav>
           <PosProductList products={visibleProducts} state={productState} error={productError} canAddProduct={gate.canAddProduct} blockedReason={gate.detail} onAdd={addProduct} />
-        </section>
+        </motion.section>
 
         <PosTicketPanel
           lines={cart}
