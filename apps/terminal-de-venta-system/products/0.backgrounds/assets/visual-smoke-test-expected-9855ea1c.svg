@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1366" height="768" viewBox="0 0 1366 768">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f8fcff"/><stop offset="1" stop-color="#edf7ff"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#5f7f9f" flood-opacity=".18"/></filter>
+  </defs>
+  <rect width="1366" height="768" fill="url(#bg)"/>
+  <circle cx="210" cy="110" r="180" fill="#ffffff" opacity=".65"/>
+  <circle cx="1080" cy="120" r="220" fill="#94cfff" opacity=".20"/>
+  <rect x="32" y="26" width="1302" height="70" rx="28" fill="#ffffff" opacity=".78" stroke="#8bb8d8" stroke-opacity=".28" filter="url(#shadow)"/>
+  <text x="68" y="70" font-family="Segoe UI, Arial" font-size="26" font-weight="800" fill="#183044">PRISMA Tablet Light Engine</text>
+  <rect x="32" y="124" width="1302" height="170" rx="34" fill="#ffffff" opacity=".72" stroke="#8bb8d8" stroke-opacity=".28" filter="url(#shadow)"/>
+  <text x="68" y="192" font-family="Segoe UI, Arial" font-size="52" font-weight="850" fill="#183044">Visual smoke test OK</text>
+  <text x="70" y="236" font-family="Segoe UI, Arial" font-size="22" fill="#5f7486">Light, tactile, readable, no dark dominant surface.</text>
+  <rect x="32" y="324" width="630" height="380" rx="30" fill="#ffffff" opacity=".74" stroke="#8bb8d8" stroke-opacity=".28"/>
+  <rect x="704" y="324" width="630" height="380" rx="30" fill="#ffffff" opacity=".74" stroke="#8bb8d8" stroke-opacity=".28"/>
+  <text x="70" y="380" font-family="Segoe UI, Arial" font-size="30" font-weight="800" fill="#183044">Surface map</text>
+  <text x="742" y="380" font-family="Segoe UI, Arial" font-size="30" font-weight="800" fill="#183044">Verifier gates</text>
+  <g font-family="Segoe UI, Arial" font-size="23" fill="#183044">
+    <text x="76" y="442">/pos · Daylight Touch POS</text>
+    <text x="76" y="492">/catalog · Frosted Ledger</text>
+    <text x="76" y="542">/sync · Clean Pulse</text>
+    <text x="76" y="592">/sales · Pearl Ledger</text>
+    <text x="748" y="442">✓ Required files present</text>
+    <text x="748" y="492">✓ JSON parse valid</text>
+    <text x="748" y="542">✓ Light visual sample generated</text>
+    <text x="748" y="592">✓ Human visual check ready</text>
+  </g>
+</svg>

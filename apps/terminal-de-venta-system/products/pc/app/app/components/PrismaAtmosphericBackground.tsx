@@ -6,15 +6,13 @@ import { useEffect, useRef } from "react";
  * PRISMA Cloudglass Mist v2 · Executive Pearl background for PC.
  *
  * Layer contract:
- * B0 graphite base depth
- * B1 wide base asset, intentionally less zoomed
- * B2 restrained fracture/light overlay
- * B3 distant pearl-graphite mist
- * B4 native mist/dust asset, low opacity
- * B5 procedural pearl mist veil
- * B6 soft hero halo
- * B7 fine noise veil
- * B8 vignette + readability scrim
+ * PRISMA_DELAYER_01 keeps only three runtime layers:
+ * B0 base image/color field
+ * B1 low-opacity mist, optional texture
+ * B2 readability vignette
+ *
+ * Removed from runtime DOM: fracture overlay, distant mist, pearl mist, hero halo, noise and scrim.
+ * The visual system stays premium, but no longer stacks nine panes of glass on a cash register.
  */
 export function PrismaAtmosphericBackground() {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,17 +50,12 @@ export function PrismaAtmosphericBackground() {
       ref={ref}
       className="prisma-atmosphere"
       aria-hidden="true"
-      data-prisma-background="client-snow-mountains-bg1"
+      data-prisma-background="client-snow-mountains-delayer-01"
+      data-prisma-layer-budget="3"
     >
       <div className="prisma-bg-layer prisma-bg-base" />
-      <div className="prisma-bg-layer prisma-bg-fractures" />
-      <div className="prisma-bg-layer prisma-bg-distant-mist" />
       <div className="prisma-bg-layer prisma-bg-mist" />
-      <div className="prisma-bg-layer prisma-bg-pearl-mist" />
-      <div className="prisma-bg-layer prisma-bg-hero-light" />
-      <div className="prisma-bg-layer prisma-bg-noise" />
       <div className="prisma-bg-layer prisma-bg-vignette" />
-      <div className="prisma-bg-layer prisma-bg-scrim" />
     </div>
   );
 }

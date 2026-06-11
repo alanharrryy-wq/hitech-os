@@ -131,3 +131,19 @@
 @keyframes mcsCta { 46%, 100% { transform: translateX(120%); } }
 @media (max-width: 980px) { .contextHeader { grid-template-columns: 1fr; } .themeRail { justify-content: start; } .commandGrid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 620px) { .multiContextRoot { border-radius: 26px; padding: 14px; } .contextRail { grid-template-columns: repeat(2, minmax(0,1fr)); } .contextFacet:nth-child(2) { border-right: 0; } .statusQuad { grid-template-columns: repeat(2, minmax(0,1fr)); } .commandGrid { grid-template-columns: 1fr; } .searchRow, .sourceMatrix { grid-template-columns: 1fr; } .recentContexts button { grid-template-columns: 1fr; } }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Multi-context switcher: low-noise controls, no stacked glow moat.
+*/
+:where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard) {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(246, 240, 223, 0.12) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+:where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard)::before,
+:where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard)::after {
+  display: none !important;
+}
+/* PRISMA_DELAYER_01_END */

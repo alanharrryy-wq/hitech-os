@@ -48,3 +48,32 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel li{transition:none!important;transform:none!important}
 }
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.screen {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.eyebrow,
+.grid,
+.hero,
+.kpis,
+.panel,
+.panelGrid,
+.scoreCard {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */

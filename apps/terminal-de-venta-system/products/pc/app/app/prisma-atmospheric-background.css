@@ -306,3 +306,53 @@ html[data-prisma-surface="pc-backoffice"] .prisma-bg-scrim {
     radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.18), transparent 46%);
 }
 /* PRISMA PC CLIENT BACKGROUND BG1 0506 END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Reduce PC background from a nine-layer glass diorama to a three-layer operational backdrop.
+   Keep: base, very soft mist, vignette. Drop: fractures, distant mist, pearl mist, hero halo, noise, scrim.
+*/
+:root {
+  --prisma-bg-base-opacity: 0.90;
+  --prisma-bg-fractures-opacity: 0;
+  --prisma-bg-mist-opacity: 0.055;
+  --prisma-bg-distant-mist-opacity: 0;
+  --prisma-bg-pearl-mist-opacity: 0;
+  --prisma-bg-hero-light-opacity: 0;
+  --prisma-bg-vignette-opacity: 0.34;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-atmosphere {
+  transform: none !important;
+  transition: none !important;
+  background:
+    linear-gradient(180deg, rgba(238, 248, 255, 0.72), rgba(247, 251, 255, 0.92)),
+    #eef7ff !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-fractures,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-distant-mist,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-pearl-mist,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-hero-light,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-noise,
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-scrim {
+  display: none !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-base {
+  opacity: 0.54 !important;
+  filter: saturate(0.78) contrast(0.96) brightness(1.04) !important;
+  transform: none !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-mist {
+  opacity: 0.045 !important;
+  filter: blur(0.2px) saturate(0.75) !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-vignette {
+  opacity: 0.18 !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(24, 62, 98, 0.08)) !important;
+}
+/* PRISMA_DELAYER_01_END */

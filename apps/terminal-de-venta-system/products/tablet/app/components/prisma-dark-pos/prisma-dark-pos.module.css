@@ -2832,3 +2832,171 @@
   text-shadow: 0 1px 10px rgba(0,0,0,0.18) !important;
 }
 /* PRISMA_TABLET_LAYER_FIX_04A END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Dark POS: keep premium dark contract, remove repeated shell glow and heavy radial noise.
+*/
+.screen {
+  background:
+    linear-gradient(180deg, #11141b 0%, #090b10 56%, #050608 100%) !important;
+  isolation: auto !important;
+}
+
+.screen::before,
+.screen::after {
+  opacity: 0.10 !important;
+  filter: none !important;
+}
+
+:where(.sidebar, .terminalCard, .titleBar, .routeNavRail, .pageActive, .summaryCard, .catalogPanel, .ticketPanel, .productCard, .metricCard, .panelCard) {
+  background: rgba(17, 19, 26, 0.62) !important;
+  border-color: rgba(232, 189, 103, 0.12) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+:where(.sidebar, .terminalCard, .titleBar, .routeNavRail, .pageActive, .summaryCard, .catalogPanel, .ticketPanel, .productCard, .metricCard, .panelCard)::before,
+:where(.sidebar, .terminalCard, .titleBar, .routeNavRail, .pageActive, .summaryCard, .catalogPanel, .ticketPanel, .productCard, .metricCard, .panelCard)::after {
+  display: none !important;
+}
+
+.navItemActive {
+  background: rgba(232, 189, 103, 0.16) !important;
+  box-shadow: inset 3px 0 0 var(--prisma-gold-300) !important;
+}
+/* PRISMA_DELAYER_01_END */
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.cartItemMain,
+.pageActive,
+.pageArrow,
+.pageNumber,
+.productStage,
+.productStageCompact,
+.routeContent,
+.routeShell,
+.routeViewport,
+.screen,
+.terminalIconWrap,
+.workspace {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.brandBlock,
+.cartHeader,
+.cartItem,
+.cartItemBottom,
+.cartItemIndex,
+.cartItemPrice,
+.cartItemTitle,
+.cartItemTotal,
+.cartItems,
+.cartPanel,
+.cartThumbFallback,
+.catalogPanel,
+.categoryRail,
+.figureDetail,
+.figureStripe,
+.glow_brown,
+.lookupPanel,
+.metricCard,
+.panelCard,
+.paymentGrid,
+.productAura,
+.productCard,
+.productCardTop,
+.productFigure,
+.productFigureCompact,
+.productGrid,
+.productInfo,
+.productPedestal,
+.returnReasonGrid,
+.routeEmptyState,
+.routeFlowList,
+.routeKpiStrip,
+.routeMetricCard,
+.routeMetricIcon,
+.routePanel,
+.routePanelHeader,
+.routeProductGrid,
+.routeProductIcon,
+.routeProductTile,
+.routeSummaryRow,
+.routeSummaryRows,
+.routeTerminalCard,
+.salesCatalogPanel,
+.shape_box,
+.shape_carton,
+.summaryCard,
+.terminalCard,
+.ticketPanel,
+.totalRow {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.adminAvatar,
+.cartHeaderActions,
+.chargeButton,
+.favoriteButton,
+.moreButton,
+.navItem,
+.navItemActive,
+.navList,
+.routeActionBand,
+.routeActionCard,
+.routeActionCard_danger,
+.routeActionCard_ok,
+.routeActionCard_warn,
+.routeBadge,
+.routeBadge_danger,
+.routeBadge_neutral,
+.routeBadge_ok,
+.routeBadge_warn,
+.routeButtonGrid,
+.routeCategoryChipActive,
+.routeDarkButton,
+.routeGoldGhostButton,
+.routeNavActive,
+.routeNavItem,
+.routeNavList,
+.routeNavRail,
+.routePill,
+.routePillCloud,
+.routePill_danger,
+.routePill_neutral,
+.routePill_ok,
+.routePill_warn,
+.routePrimaryButton,
+.routeSearchControl,
+.routeSearchStrip,
+.routeSecondaryButton,
+.routeTable,
+.routeTableWrap,
+.scanButton,
+.searchBox,
+.searchRow,
+.searchTrailingIcon,
+.secondaryActions,
+.topActions,
+.trashButton {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */

@@ -51,7 +51,7 @@ export default function TabletHomePage() {
       className={styles.tabletShell}
       data-prisma-surface="tablet-light-shell"
       data-tablet-light-first="true"
-      data-prisma-background="tablet-fuji-cloudglass"
+      data-prisma-background="tablet-background-active"
     >
       <section className={styles.atmosphere} aria-hidden="true" />
       <section className={styles.lightScrim} aria-hidden="true" />

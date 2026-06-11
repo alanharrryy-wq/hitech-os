@@ -4529,3 +4529,188 @@ html[data-layer-profile="perf"] .productAura {
   }
 }
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   POS screen: remove nested container shine while preserving product/ticket readability.
+*/
+:where(
+  .catalogArea,
+  .ticketPanel,
+  .searchCard,
+  .successCard,
+  .searchInputWrap,
+  .categoryButton,
+  .productCard,
+  .ticketLine,
+  .catalogInsight,
+  .checkoutSummary,
+  .paymentCard,
+  .emptyState
+) {
+  background: rgba(255, 255, 255, 0.56) !important;
+  border-color: rgba(75, 139, 218, 0.16) !important;
+  box-shadow: 0 6px 18px rgba(43, 96, 156, 0.07) !important;
+  backdrop-filter: blur(6px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(1.02) !important;
+}
+
+:where(
+  .catalogArea,
+  .ticketPanel,
+  .searchCard,
+  .successCard,
+  .searchInputWrap,
+  .categoryButton,
+  .productCard,
+  .ticketLine,
+  .catalogInsight,
+  .checkoutSummary,
+  .paymentCard,
+  .emptyState
+)::before,
+:where(
+  .catalogArea,
+  .ticketPanel,
+  .searchCard,
+  .successCard,
+  .searchInputWrap,
+  .categoryButton,
+  .productCard,
+  .ticketLine,
+  .catalogInsight,
+  .checkoutSummary,
+  .paymentCard,
+  .emptyState
+)::after {
+  display: none !important;
+}
+
+:where(.primaryButton, .addButton, .checkoutLink, .categoryButtonActive) {
+  box-shadow: 0 8px 18px rgba(22, 102, 226, 0.16) !important;
+}
+/* PRISMA_DELAYER_01_END */
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.catalogArea,
+.pageActive,
+.posWorkspace,
+.productImageStage,
+.stageClean,
+.stageCool,
+.stageGold,
+.stageWarm {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.cartThumb,
+.cartThumbBag,
+.cartThumbBlue,
+.cartThumbBottle,
+.cartThumbBread,
+.cartThumbCarton,
+.cartThumbFallback,
+.cartThumbGeneric,
+.cartThumbJar,
+.cartThumbPackshot,
+.cartThumbPackshot_bag,
+.cartThumbPackshot_bottle,
+.cartThumbPackshot_box,
+.cartThumbPackshot_bread,
+.cartThumbPackshot_carton,
+.cartThumbPackshot_jar,
+.cartThumbPackshot_water,
+.cashBox,
+.catalogInsight,
+.categoryRail,
+.checkoutSummary,
+.emptyState,
+.emptyTicket,
+.figureBox,
+.figureBoxBlue,
+.figureCarton,
+.figureStripe,
+.heldCartCard,
+.paymentCard,
+.paymentNonCashNotice,
+.paymentPanelCard,
+.paymentSummary,
+.paymentTenderList,
+.paymentTenderRow,
+.paymentTotalsGrid,
+.productAside,
+.productAura,
+.productBarcode,
+.productCard,
+.productCardDisabled,
+.productCardTop,
+.productFigure,
+.productFigureFallback,
+.productGrid,
+.productMetaRail,
+.productName,
+.productPackshot,
+.productPackshot_bag,
+.productPackshot_bottle,
+.productPackshot_box,
+.productPackshot_bread,
+.productPackshot_carton,
+.productPackshot_jar,
+.productPackshot_water,
+.productPedestal,
+.productSku,
+.productText,
+.rowSignals,
+.statePanel,
+.successCard,
+.ticketHeader,
+.ticketLine,
+.ticketLineText,
+.ticketLines,
+.ticketPanel,
+.ticketTotal,
+.ticketTotalsBreakdown {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.badgeDanger,
+.badgeNeutral,
+.badgeOk,
+.badgeWarn,
+.categoryButton,
+.categoryButtonActive,
+.checkoutLink,
+.checkoutLinkDisabled,
+.ghostButton,
+.heldCartActions,
+.paymentCancelButton,
+.paymentCloseButton,
+.paymentOkButton,
+.primaryButton,
+.productStatusPill,
+.removeButton,
+.searchActions,
+.searchCard,
+.searchInputWrap,
+.secondaryButton,
+.secondaryCheckoutActions,
+.successActions {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */

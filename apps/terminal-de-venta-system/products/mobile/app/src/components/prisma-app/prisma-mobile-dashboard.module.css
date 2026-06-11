@@ -2444,3 +2444,29 @@
     font-size: 1.24rem;
   }
 }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Mobile Pulse: reduce stacked glass containers; keep dark mobile identity and action contrast.
+*/
+.mobileRoot {
+  background: linear-gradient(180deg, #071424, #0b1727) !important;
+}
+
+:where(.heroCopy, .phonePreview, .warningPanel, .controlPanel, .metricCard, .operationsGrid article, .panelCard, .errorShell, .loadingPhone) {
+  background: rgba(255, 255, 255, 0.070) !important;
+  border-color: rgba(246, 240, 223, 0.12) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+:where(.heroBadges span, .controlPanel button, .errorShell button, .metricCard small, .operationsGrid small, .panelCard small, .alertList em, .inventoryList em, .branchList em, .actionList em) {
+  background: rgba(255, 255, 255, 0.055) !important;
+  box-shadow: none !important;
+}
+
+:where(.phoneHero, .phoneStats p, .cashGrid article, .reportGrid article, .actionList article, .inventoryList article, .alertList article, .branchList article) {
+  background: rgba(255, 255, 255, 0.055) !important;
+  box-shadow: none !important;
+}
+/* PRISMA_DELAYER_01_END */

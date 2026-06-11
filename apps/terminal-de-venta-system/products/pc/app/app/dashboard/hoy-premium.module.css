@@ -1204,3 +1204,33 @@
     background: #111827 !important;
   }
 }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Dashboard Hoy: flatten cloudglass shells without touching data structure.
+*/
+.page {
+  --hoy-shadow: 0 12px 34px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --hoy-glass: rgba(13, 18, 27, 0.42);
+}
+
+.page::before,
+.scene,
+.heroGlow {
+  opacity: 0.16 !important;
+  animation: none !important;
+  filter: blur(12px) !important;
+}
+
+:where(.heroShell, .summaryCard, .actionShell, .microCard, .tablePanel, .evidencePanel) {
+  background: rgba(13, 18, 27, 0.48) !important;
+  border-color: rgba(228, 239, 255, 0.14) !important;
+  box-shadow: var(--hoy-shadow) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+:where(.heroShell, .summaryCard, .actionShell, .microCard, .tablePanel, .evidencePanel)::before,
+:where(.heroShell, .summaryCard, .actionShell, .microCard, .tablePanel, .evidencePanel)::after {
+  display: none !important;
+}
+/* PRISMA_DELAYER_01_END */

@@ -7226,3 +7226,103 @@ body,
     width: min(300px, calc(100% - 20px));
   }
 }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Chart Lab de-layer pass: keep charts/data panes; remove decorative micro-layers and hover glow pileups.
+*/
+.chart-lab {
+  --lab-panel-glass: rgba(255, 255, 255, 0.045) !important;
+}
+
+.chart-lab :is(
+  .studio-topbar,
+  .chart-lab__header,
+  .status-strip,
+  .lab-workbench,
+  .chart-lab-workbench,
+  .lab-sidebar,
+  .preview-stage,
+  .inspector,
+  .control-card,
+  .tab-panel,
+  .panel-grid article,
+  .map-stack article,
+  .inspector section,
+  .control-deck,
+  .chart-frame,
+  .sidebar-card,
+  .status-card,
+  .intent-card,
+  .passport-card,
+  .source-card
+) {
+  background: rgba(7, 13, 24, 0.58) !important;
+  border-color: rgba(157, 177, 204, 0.14) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+.chart-lab :is(
+  .studio-topbar,
+  .chart-lab__header,
+  .status-strip,
+  .lab-workbench,
+  .chart-lab-workbench,
+  .lab-sidebar,
+  .preview-stage,
+  .inspector,
+  .control-card,
+  .tab-panel,
+  .panel-grid article,
+  .map-stack article,
+  .inspector section,
+  .control-deck,
+  .chart-frame,
+  .sidebar-card,
+  .status-card,
+  .intent-card,
+  .passport-card,
+  .source-card
+)::before,
+.chart-lab :is(
+  .studio-topbar,
+  .chart-lab__header,
+  .status-strip,
+  .lab-workbench,
+  .chart-lab-workbench,
+  .lab-sidebar,
+  .preview-stage,
+  .inspector,
+  .control-card,
+  .tab-panel,
+  .panel-grid article,
+  .map-stack article,
+  .inspector section,
+  .control-deck,
+  .chart-frame,
+  .sidebar-card,
+  .status-card,
+  .intent-card,
+  .passport-card,
+  .source-card
+)::after {
+  display: none !important;
+}
+
+.chart-lab .chart-list__item,
+.chart-lab .chart-list__item:hover,
+.chart-lab button,
+.chart-lab button:hover {
+  box-shadow: none !important;
+  transition-delay: 0ms !important;
+}
+
+.chart-lab [class*="luxury"],
+.chart-lab [data-polish="luxury-observatory-v1"]::after,
+.lab-echart__luxury-rail,
+.prisma-echart__luxury-rail {
+  opacity: 0.38 !important;
+  animation: none !important;
+}
+/* PRISMA_DELAYER_01_END */
