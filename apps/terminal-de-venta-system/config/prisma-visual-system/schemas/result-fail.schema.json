@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA VisualCat Result/Fail ZIP Contract",
+  "type": "object",
+  "required": [
+    "outcome",
+    "zip_path",
+    "created_at",
+    "files_created",
+    "files_modified",
+    "validations",
+    "reports",
+    "continuation"
+  ],
+  "properties": {
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "zip_path": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "files_created": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files_modified": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files_moved_to_trash": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "SKIPPED",
+              "UNKNOWN"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "continuation": {
+      "type": "string"
+    }
+  }
+}

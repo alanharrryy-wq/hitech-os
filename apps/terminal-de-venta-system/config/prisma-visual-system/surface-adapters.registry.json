@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0",
+  "adapters": [
+    {
+      "surfaceId": "tablet",
+      "status": "current",
+      "role": "light tactile operational POS-first",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/tablet/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "pc",
+      "status": "current",
+      "role": "dense graphite administrative backoffice",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/pc/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "mobile",
+      "status": "current",
+      "role": "compact pulse companion thumb-friendly",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/mobile/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "chart-lab",
+      "status": "current",
+      "role": "experimental analytical isolated",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/chart-lab/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "kiosk",
+      "status": "reserved",
+      "role": "large touch customer/self-service",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/kiosk/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "customer-display",
+      "status": "reserved",
+      "role": "customer-facing readable passive",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/customer-display/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "warehouse-scanner",
+      "status": "reserved",
+      "role": "rugged high contrast low latency",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/warehouse-scanner/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "manager-console",
+      "status": "reserved",
+      "role": "executive dense overview",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/manager-console/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "training-mode",
+      "status": "reserved",
+      "role": "guided safe walkthrough",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/training/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    },
+    {
+      "surfaceId": "demo-mode",
+      "status": "reserved",
+      "role": "seeded presentation-safe",
+      "density": "surface-specific",
+      "runtimeBackgroundPrefix": "/visual-backgrounds/demo/assets/",
+      "mustNot": [
+        "use-products-0-backgrounds-as-public-url",
+        "reuse-legacy-local-backgrounds",
+        "invent-unregistered-shells"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "route-binding",
+        "background-contract",
+        "visual-evidence-if-live-server"
+      ]
+    }
+  ]
+}

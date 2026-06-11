@@ -1,0 +1,235 @@
+{
+  "schemaVersion": "1.0",
+  "bindings": [
+    {
+      "route": "/",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/pos",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/checkout",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/catalog",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/stock",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/inventory",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/inventory/low-stock",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/shift",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/sync",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/settings/license",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/release-gate",
+      "surface": "tablet",
+      "shell": "PrismaTabletShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/dashboard",
+      "surface": "pc",
+      "shell": "PrismaPcShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/suppliers",
+      "surface": "pc",
+      "shell": "PrismaPcShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/reports",
+      "surface": "pc",
+      "shell": "PrismaPcShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/prisma-app",
+      "surface": "mobile",
+      "shell": "PrismaMobileShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/prisma-command",
+      "surface": "mobile",
+      "shell": "PrismaMobileShell",
+      "status": "mapped",
+      "qa": [
+        "route-renders-if-server-live",
+        "no-unregistered-wrapper",
+        "background-contract"
+      ]
+    },
+    {
+      "route": "/kiosk",
+      "surface": "kiosk",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    },
+    {
+      "route": "/customer-display",
+      "surface": "customer-display",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    },
+    {
+      "route": "/warehouse/scanner",
+      "surface": "warehouse",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    },
+    {
+      "route": "/manager",
+      "surface": "manager",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    },
+    {
+      "route": "/training",
+      "surface": "training",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    },
+    {
+      "route": "/demo",
+      "surface": "demo",
+      "shell": "reserved",
+      "status": "reserved",
+      "qa": [
+        "do-not-mark-live-until-implemented"
+      ]
+    }
+  ]
+}

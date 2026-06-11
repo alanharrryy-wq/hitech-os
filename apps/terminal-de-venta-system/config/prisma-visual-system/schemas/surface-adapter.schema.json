@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "surfaceId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "current",
+        "reserved",
+        "deprecated"
+      ]
+    },
+    "role": {
+      "type": "string"
+    },
+    "density": {
+      "type": "string"
+    },
+    "runtimeBackgroundPrefix": {
+      "type": "string"
+    },
+    "mustNot": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "qa": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "surfaceId",
+    "status",
+    "role",
+    "density",
+    "runtimeBackgroundPrefix",
+    "mustNot",
+    "qa"
+  ]
+}
