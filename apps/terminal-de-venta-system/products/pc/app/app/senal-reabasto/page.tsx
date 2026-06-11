@@ -1,8 +1,10 @@
 import { DecisionScreen } from "@components/uiux/decision-screen";
-import { purchasingScreenContract } from "@/uiux/purchasing-screen-contract";
+import { getPurchasingScreenContract } from "@/uiux/purchasing-screen-contract";
 
 export const dynamic = "force-dynamic";
 
+const CURRENT_PATH = "/senal-reabasto";
+
 export default async function ReplenishmentSignalPage() {
-  return <DecisionScreen {...purchasingScreenContract} currentPath="/replenishment" />;
+  return <DecisionScreen {...getPurchasingScreenContract(CURRENT_PATH)} currentPath={CURRENT_PATH} />;
 }

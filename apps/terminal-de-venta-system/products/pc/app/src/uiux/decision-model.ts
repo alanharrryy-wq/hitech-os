@@ -20,6 +20,14 @@ export const PC_GROUP_LABELS: Record<PcUiuxGroup, string> = {
   ayuda: "Ayuda"
 };
 
+export const PC_CANONICAL_ROUTE_ALIASES: Record<string, string> = {
+  "/": "/dashboard",
+  "/referencia-visual": "/laboratorio-pc/referencia-visual",
+  "/referencia-visual/liquid-glass": "/laboratorio-pc/referencia-visual/liquid-glass",
+  "/referencia-visual/liquid-glass-capsules": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+  "/prisma-insights/chart-lab": "/laboratorio-pc/chart-lab"
+};
+
 export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   hoy: [
     { label: "Resumen", href: "/dashboard", kind: "standard" },
@@ -43,16 +51,18 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   ],
   compras: [
     { label: "Resumen", href: "/purchasing", kind: "standard" },
-    { label: "Pendientes", href: "/ordenes-compra", kind: "standard" },
-    { label: "Historial", href: "/receiving", kind: "standard" },
-    { label: "Configurar", href: "/replenishment", kind: "standard" },
-    { label: "Evidencia", href: "/incidencias-recepcion", kind: "optional" }
+    { label: "Órdenes", href: "/ordenes-compra", kind: "standard" },
+    { label: "Recepción", href: "/receiving", kind: "standard" },
+    { label: "Recibir proveedor", href: "/recepcion-proveedor", kind: "standard" },
+    { label: "Reabasto", href: "/replenishment", kind: "standard" },
+    { label: "Señal", href: "/senal-reabasto", kind: "standard" },
+    { label: "Forecast", href: "/forecast-basico", kind: "optional" },
+    { label: "Diferencias", href: "/incidencias-recepcion", kind: "optional" }
   ],
   proveedores: [
     { label: "Resumen", href: "/proveedores", kind: "standard" },
-    { label: "Pendientes", href: "/proveedores", kind: "standard" },
-    { label: "Historial", href: "/audit", kind: "optional" },
-    { label: "Evidencia", href: "/contratos-reporte", kind: "optional" }
+    { label: "Auditoría", href: "/audit", kind: "optional" },
+    { label: "Contratos", href: "/contratos-reporte", kind: "optional" }
   ],
   sincronizacion: [
     { label: "Resumen", href: "/sync", kind: "standard" },
@@ -62,9 +72,8 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   ],
   reportes: [
     { label: "Resumen", href: "/exportables", kind: "standard" },
-    { label: "Pendientes", href: "/contratos-reporte", kind: "standard" },
-    { label: "Historial", href: "/scorecards-negocio", kind: "standard" },
-    { label: "Exportar", href: "/exportables", kind: "optional" },
+    { label: "Contratos", href: "/contratos-reporte", kind: "standard" },
+    { label: "Indicadores", href: "/scorecards-negocio", kind: "standard" },
     { label: "Evidencia", href: "/tablas-operativas", kind: "optional" }
   ],
   analisis: [
@@ -93,10 +102,10 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
 const CONTRACTS_BY_ROUTE = new Map<string, PcPageContract>(PC_PAGE_CONTRACTS.map((contract) => [contract.route, contract]));
 
 export function normalizePcPathname(pathname: string): string {
-  if (!pathname || pathname === "/") return "/";
-  const clean = pathname.split("?")[0]?.split("#")[0] || pathname;
+  const clean = (pathname || "/").split("?")[0]?.split("#")[0] || "/";
   const withoutPcPrefix = clean.startsWith("/pc/") ? clean.slice(3) : clean;
-  return withoutPcPrefix.length > 1 && withoutPcPrefix.endsWith("/") ? withoutPcPrefix.slice(0, -1) : withoutPcPrefix;
+  const normalized = withoutPcPrefix.length > 1 && withoutPcPrefix.endsWith("/") ? withoutPcPrefix.slice(0, -1) : withoutPcPrefix;
+  return PC_CANONICAL_ROUTE_ALIASES[normalized] ?? normalized;
 }
 
 export function getPcRouteContract(pathname: string): PcPageContract {
@@ -119,7 +128,7 @@ export function getPcSubnavItems(pathname: string): PcSubnavItem[] {
 export function getPrimaryRouteActions(pathname: string): PcRouteAction[] {
   const contract = getPcRouteContract(pathname);
   const subnav = getPcSubnavItems(pathname);
-  const primaryHref = subnav[0]?.href ?? contract.route;
+  const primaryHref = subnav.find((item) => normalizePcPathname(item.href) === contract.route)?.href ?? contract.route;
   return [
     { label: contract.primaryAction, href: primaryHref, primary: true },
     { label: "Ver detalle", href: contract.route },
