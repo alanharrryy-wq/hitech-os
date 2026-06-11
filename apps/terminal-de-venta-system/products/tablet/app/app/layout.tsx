@@ -1,6 +1,8 @@
 import "./globals.css";
 import "./prisma-tablet-light-premium-final.css";
 import "./prisma-tablet-background-workbench.css";
+import "./prisma-tablet-premium-governed.css";
+import { TabletPremiumRuntimeEffects } from "../components/premium-visual";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {
@@ -21,7 +23,7 @@ export default function RootLayout({ children }: { children: any }) {
           }}
         />
       </head>
-      <body>{children}</body>
+      <body><TabletPremiumRuntimeEffects />{children}</body>
     </html>
   );
 }

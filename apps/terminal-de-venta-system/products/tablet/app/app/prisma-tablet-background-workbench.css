@@ -201,3 +201,260 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   text-shadow: none !important;
 }
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
+
+/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::GLOBAL_START
+   Código cabrón, no imagen: fondo atmosférico visible en TODA Tablet, oscurecido suave,
+   panels premium glass y botones con relleno. Fuente: layer map + VisualQA + screenshots del usuario.
+   Scope: html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"].
+*/
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] {
+  --tablet-active-background-image: url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
+  --prisma-tablet-static-fuji-bg: var(--tablet-active-background-image);
+
+  /* El cielo se ve, pero ya no encandila como tortillería con tubos nuevos. */
+  --prisma-prem-bg-dim:
+    linear-gradient(180deg, rgba(8, 28, 52, .18) 0%, rgba(12, 48, 78, .13) 42%, rgba(5, 26, 44, .24) 100%),
+    radial-gradient(circle at 54% 30%, rgba(255,255,255,.10), transparent 38%);
+  --prisma-prem-glass-panel: rgba(238, 248, 255, .30);
+  --prisma-prem-glass-card: rgba(242, 249, 255, .36);
+  --prisma-prem-glass-control: rgba(250, 253, 255, .64);
+  --prisma-prem-glass-control-strong: rgba(255, 255, 255, .78);
+  --prisma-prem-edge: rgba(218, 238, 255, .52);
+  --prisma-prem-edge-strong: rgba(106, 164, 230, .46);
+  --prisma-prem-ink: #071a37;
+  --prisma-prem-muted: #3e5674;
+  --prisma-prem-faint: #6b7d94;
+  --prisma-prem-blue: #126ef5;
+  --prisma-prem-blue-2: #2f9bff;
+  --prisma-prem-blue-deep: #074fc6;
+  --prisma-prem-shadow: 0 22px 52px rgba(5, 38, 72, .16), inset 0 1px 0 rgba(255,255,255,.68), inset 0 -1px 0 rgba(255,255,255,.18);
+  --prisma-prem-shadow-card: 0 16px 38px rgba(5, 38, 72, .12), inset 0 1px 0 rgba(255,255,255,.70);
+  --prisma-prem-shadow-control: 0 10px 22px rgba(7, 52, 108, .12), inset 0 1px 0 rgba(255,255,255,.82);
+  --prisma-prem-shadow-blue: 0 16px 32px rgba(18,110,245,.28), inset 0 1px 0 rgba(255,255,255,.36);
+  --prisma-prem-panel-gradient: linear-gradient(180deg, rgba(255,255,255,.34), rgba(225,242,255,.22));
+  --prisma-prem-card-gradient: linear-gradient(180deg, rgba(255,255,255,.44), rgba(229,243,255,.28));
+  --prisma-prem-control-gradient: linear-gradient(180deg, rgba(255,255,255,.78), rgba(229,242,255,.56));
+  --prisma-prem-blue-gradient: radial-gradient(circle at 20% 0%, rgba(255,255,255,.34), transparent 42%), linear-gradient(180deg, #4eabff 0%, #1677f3 48%, #0752cc 100%);
+
+  --prisma-panel-gradient: var(--prisma-prem-panel-gradient) !important;
+  --prisma-card-surface: var(--prisma-prem-card-gradient) !important;
+  --prisma-glass-gradient: var(--prisma-prem-card-gradient) !important;
+  --prisma-frosted-accent-gradient: var(--prisma-prem-control-gradient) !important;
+  --prisma-glass-panel-governed: var(--prisma-prem-panel-gradient) !important;
+  --prisma-glass-card-governed: var(--prisma-prem-card-gradient) !important;
+  --prisma-glass-control-governed: var(--prisma-prem-control-gradient) !important;
+  --prisma-glass-stage-governed: transparent !important;
+  --prisma-sidebar-surface: var(--prisma-prem-panel-gradient) !important;
+  --prisma-active-surface: var(--prisma-prem-blue-gradient) !important;
+  --prisma-border-soft: var(--prisma-prem-edge) !important;
+  --prisma-border-action: rgba(18, 110, 245, .52) !important;
+  --prisma-border-gold: rgba(18, 110, 245, .42) !important;
+  --prisma-shadow-glass: var(--prisma-prem-shadow) !important;
+  --prisma-shadow-card: var(--prisma-prem-shadow-card) !important;
+  --prisma-shadow-card-hover: 0 20px 48px rgba(7, 52, 108, .17), inset 0 1px 0 rgba(255,255,255,.78) !important;
+  --prisma-shadow-depth-governed: var(--prisma-prem-shadow) !important;
+  --prisma-shadow-card-governed: var(--prisma-prem-shadow-card) !important;
+  --prisma-tablet-shadow-soft: var(--prisma-prem-shadow-card) !important;
+  --prisma-tablet-shadow-lift: var(--prisma-prem-shadow) !important;
+  --prisma-shadow-gold: var(--prisma-prem-shadow-blue) !important;
+  --prisma-gold-gradient: var(--prisma-prem-blue-gradient) !important;
+  --prisma-action-primary-gradient: var(--prisma-prem-blue-gradient) !important;
+  --prisma-accent-gold: var(--prisma-prem-blue) !important;
+  --prisma-accent-gold-soft: #348fff !important;
+  --prisma-accent-gold-strong: var(--prisma-prem-blue-deep) !important;
+  --prisma-text-primary: var(--prisma-prem-ink) !important;
+  --prisma-text-secondary: var(--prisma-prem-muted) !important;
+  --prisma-text-muted: var(--prisma-prem-faint) !important;
+  --prisma-text-on-gold: #ffffff !important;
+  color: var(--prisma-prem-ink) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"],
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
+  min-height: 100%;
+  color: var(--prisma-prem-ink) !important;
+  background-color: #d7efff !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
+  background:
+    var(--prisma-prem-bg-dim),
+    var(--tablet-active-background-image) center 45% / cover no-repeat fixed,
+    #d7efff !important;
+  background-attachment: fixed, fixed, scroll !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -3 !important;
+  pointer-events: none !important;
+  background: var(--tablet-active-background-image) center 45% / cover no-repeat fixed !important;
+  opacity: 1 !important;
+  filter: saturate(1.05) contrast(1.08) brightness(.84) !important;
+  transform: translateZ(0) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::after {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -2 !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.045) 38%, rgba(5,28,50,.12) 100%),
+    radial-gradient(circle at 52% 28%, rgba(255,255,255,.16), transparent 36%) !important;
+  opacity: .72 !important;
+  mix-blend-mode: normal !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Wrappers y stage: transparentes de verdad para que el cloudglass atraviese TODO. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [data-prisma-background="tablet-background-active"],
+  [data-prisma-background="tablet-background-active-fixed"],
+  [data-prisma-layer="viewport"],
+  [data-prisma-layer="page-surface"],
+  [data-prisma-layer="stage"],
+  [data-prisma-shell],
+  [data-prisma-zone="tablet-home-root"],
+  [data-prisma-zone="tablet-sales-today-root"],
+  [data-prisma-zone="tablet-shift-root"],
+  [data-prisma-zone="tablet-sync-root"],
+  [data-prisma-zone="tablet-offline-export-root"],
+  [data-prisma-zone="tablet-catalog-stock-assist-root"],
+  [data-prisma-zone="tablet-pos-root"],
+  [data-prisma-zone="tablet-checkout-root"],
+  [data-prisma-zone="tablet-page"],
+  [class*="viewport"], [class*="Viewport"],
+  [class*="layout"], [class*="Layout"],
+  [class*="workspace"], [class*="Workspace"],
+  [class*="content"], [class*="Content"],
+  [class*="screen"], [class*="Screen"],
+  [class*="pageShell"], [class*="PageShell"],
+  [class*="stage"], [class*="Stage"]
+) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Vidrio premium: no blanco sólido, no fantasma ilegible. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [data-prisma-card],
+  [data-surface-card],
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="TopCommandBar"],
+  [data-prisma-component="StatusPill"],
+  [class*="sidebar"], [class*="Sidebar"],
+  [class*="brand"], [class*="Brand"],
+  [class*="header"], [class*="Header"],
+  [class*="panel"], [class*="Panel"],
+  [class*="card"], [class*="Card"],
+  [class*="tile"], [class*="Tile"],
+  [class*="surface"], [class*="Surface"],
+  [class*="section"], [class*="Section"],
+  [class*="strip"], [class*="Strip"],
+  [class*="metric"], [class*="Metric"],
+  [class*="summary"], [class*="Summary"],
+  [class*="payment"], [class*="Payment"],
+  [class*="catalog"], [class*="Catalog"],
+  [class*="ticket"], [class*="Ticket"],
+  [class*="search"], [class*="Search"],
+  [class*="runtime"], [class*="Runtime"],
+  [class*="terminal"], [class*="Terminal"]
+) {
+  color: var(--prisma-prem-ink) !important;
+  border-color: var(--prisma-prem-edge) !important;
+  background: var(--prisma-prem-card-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-card) !important;
+  backdrop-filter: blur(18px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+}
+
+/* Contenedores grandes un poquito más transparentes para enseñar el fondo. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [class*="hero"], [class*="Hero"],
+  [class*="mainPanel"], [class*="MainPanel"],
+  [class*="detailPanel"], [class*="DetailPanel"],
+  [class*="routePanel"], [class*="RoutePanel"],
+  [class*="evidencePanel"], [class*="EvidencePanel"],
+  [class*="actionBand"], [class*="ActionBand"],
+  [class*="runtimePanel"], [class*="RuntimePanel"]
+) {
+  background: var(--prisma-prem-panel-gradient) !important;
+  border-color: var(--prisma-prem-edge) !important;
+  box-shadow: var(--prisma-prem-shadow) !important;
+  backdrop-filter: blur(20px) saturate(1.20) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.20) !important;
+}
+
+/* Botones y controles: relleno premium, nada de letritas perdidas en la nube. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  input, textarea, select,
+  button,
+  a[role="button"],
+  [class*="button"], [class*="Button"],
+  [class*="action"], [class*="Action"],
+  [class*="chip"], [class*="Chip"],
+  [class*="badge"], [class*="Badge"],
+  [class*="pill"], [class*="Pill"],
+  [class*="filter"], [class*="Filter"],
+  [class*="input"], [class*="Input"]
+) {
+  color: var(--prisma-prem-ink) !important;
+  border-color: var(--prisma-prem-edge-strong) !important;
+  background: var(--prisma-prem-control-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-control) !important;
+  backdrop-filter: blur(16px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.14) !important;
+}
+
+/* Acciones primarias / activas: azul lleno con texto blanco. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [aria-current="page"],
+  [data-primary="true"],
+  [data-prisma-role="primary-action"],
+  [class*="primary"], [class*="Primary"],
+  [class*="active"], [class*="Active"],
+  [class*="checkoutLink"], [class*="CheckoutLink"],
+  [class*="addButton"], [class*="AddButton"],
+  [class*="confirm"], [class*="Confirm"]
+) {
+  color: #ffffff !important;
+  border-color: rgba(189, 222, 255, .78) !important;
+  background: var(--prisma-prem-blue-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-blue) !important;
+  text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [class*="danger"], [class*="Danger"]
+) {
+  color: #ffffff !important;
+  border-color: rgba(255, 185, 190, .76) !important;
+  background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.28), transparent 42%), linear-gradient(180deg, #ff7d89, #d63d4b) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  h1,h2,h3,h4,h5,h6,strong,b,label
+) {
+  color: var(--prisma-prem-ink) !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  p,span,small,li,dt,dd
+) {
+  text-shadow: 0 1px 0 rgba(255,255,255,.20) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(svg) {
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.22));
+}
+/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::GLOBAL_END */

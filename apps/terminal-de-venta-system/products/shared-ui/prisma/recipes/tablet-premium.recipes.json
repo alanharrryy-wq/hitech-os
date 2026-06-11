@@ -1,0 +1,43 @@
+{
+  "version": "tablet-premium-max-1106",
+  "surface": "tablet",
+  "principle": "Claridad por fuera, complejidad gobernada por dentro.",
+  "runtimeBackground": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+  "recipes": [
+    {
+      "id": "tablet-cloudglass-light",
+      "kind": "background",
+      "purpose": "background gobernado visible"
+    },
+    {
+      "id": "glass-pill",
+      "kind": "control",
+      "purpose": "acciones tÃ¡ctiles y filtros"
+    },
+    {
+      "id": "liquid-panel",
+      "kind": "panel",
+      "purpose": "contenedores crÃ­ticos legibles sin muro opaco"
+    },
+    {
+      "id": "operational-card",
+      "kind": "card",
+      "purpose": "cards de datos con presupuesto de capas bajo"
+    },
+    {
+      "id": "action-button",
+      "kind": "button",
+      "purpose": "CTA azul claro, premium y legible"
+    },
+    {
+      "id": "state-banner",
+      "kind": "state",
+      "purpose": "estados OK/WARN/DANGER sin tapar background"
+    }
+  ],
+  "libraries": {
+    "radix": "usar primitives accesibles existentes cuando la ruta los requiera",
+    "motion": "microinteracciones reales en componentes premium y atmÃ³sfera sobria",
+    "ogl": "atmÃ³sfera WebGL opcional, defensiva y no bloqueante"
+  }
+}
