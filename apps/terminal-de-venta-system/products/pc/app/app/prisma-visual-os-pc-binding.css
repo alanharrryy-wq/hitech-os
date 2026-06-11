@@ -721,3 +721,30 @@ nav[aria-label="Navegación principal"] {
 .alert-strip .subtle {
   color: var(--prisma-text-secondary, #53617a) !important;
 }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Override last-binding glass stacks: one readable surface, not seven panes and a mariachi fog machine.
+*/
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(
+  .topbar,
+  .main > :not(.topbar),
+  .supplier-page > *,
+  body > main.space-y-6 > *,
+  .supplier-summary-grid-v07 > *,
+  .supplier-decision-strip-v07 > *,
+  .recommendation-grid-v07 > *,
+  .inventory-item-grid-v11 > *
+) {
+  background: rgba(255, 255, 255, 0.62) !important;
+  border-color: rgba(90, 130, 170, 0.18) !important;
+  box-shadow: 0 8px 20px rgba(33, 70, 108, 0.07) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] body > main.space-y-6::before,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.topbar, .main > :not(.topbar), .supplier-page > *)::before,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.topbar, .main > :not(.topbar), .supplier-page > *)::after {
+  display: none !important;
+}
+/* PRISMA_DELAYER_01_END */

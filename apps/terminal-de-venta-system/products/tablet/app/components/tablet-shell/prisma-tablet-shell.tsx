@@ -87,8 +87,8 @@ export function PrismaTabletShellUnified({
         data-prisma-preset={visualPreset}
         data-prisma-vos-runtime="00E"
         data-prisma-motion="ambient"
-        data-prisma-cloudglass="fuji-static-all-tablet"
-        data-prisma-background="tablet-fuji-cloudglass-fixed"
+        data-prisma-cloudglass="background-static-all-tablet"
+        data-prisma-background="tablet-background-active-fixed"
       >
         <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>
         <aside className={styles.sidebar} aria-label="Navegación principal de Tablet" data-prisma-component="Sidebar" data-prisma-role="operational-summary">

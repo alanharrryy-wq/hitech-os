@@ -2911,3 +2911,88 @@ body,
   }
 }
 /* PRISMA_PROVEEDORES_SHELL_PLAYWRIGHT_FIX_20260526_END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   PC de-container pass: keep layout/card hierarchy, remove repeated frosted shells and excessive halos.
+*/
+html[data-prisma-surface="pc-backoffice"] {
+  --prisma-shadow-glass: 0 10px 24px rgba(31, 68, 105, 0.08);
+  --prisma-shadow-card: 0 8px 20px rgba(31, 68, 105, 0.07);
+  --prisma-glass-gradient: rgba(255, 255, 255, 0.54);
+  --prisma-panel-gradient: rgba(255, 255, 255, 0.60);
+  --prisma-sidebar-surface: rgba(255, 255, 255, 0.64);
+  --prisma-cart-panel-surface: rgba(255, 255, 255, 0.58);
+}
+
+html[data-prisma-surface="pc-backoffice"] :is(
+  .sidebar,
+  .brand-block,
+  .sidebar-panel,
+  .footer-stack > *,
+  .hero,
+  .panel,
+  .card,
+  .metric-card,
+  .supplier-page section,
+  .decision-card,
+  .inventory-item-card-v11,
+  .trust-card-v07,
+  .calendar-event-v07,
+  .order-card-v07,
+  .surface-signal-card,
+  .audit-step-v07,
+  .audit-event-card,
+  .money-panel-v07
+) {
+  background: rgba(255, 255, 255, 0.60) !important;
+  border-color: rgba(89, 130, 171, 0.18) !important;
+  box-shadow: 0 8px 22px rgba(31, 68, 105, 0.07) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] :is(
+  .brand-block,
+  .sidebar-panel,
+  .footer-stack > *,
+  .hero,
+  .panel,
+  .card,
+  .metric-card,
+  .decision-card,
+  .inventory-item-card-v11,
+  .trust-card-v07,
+  .calendar-event-v07,
+  .order-card-v07,
+  .surface-signal-card,
+  .audit-step-v07,
+  .audit-event-card,
+  .money-panel-v07
+)::before,
+html[data-prisma-surface="pc-backoffice"] :is(
+  .brand-block,
+  .sidebar-panel,
+  .footer-stack > *,
+  .hero,
+  .panel,
+  .card,
+  .metric-card,
+  .decision-card,
+  .inventory-item-card-v11,
+  .trust-card-v07,
+  .calendar-event-v07,
+  .order-card-v07,
+  .surface-signal-card,
+  .audit-step-v07,
+  .audit-event-card,
+  .money-panel-v07
+)::after {
+  opacity: 0.12 !important;
+  filter: none !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-secondary, .chip, .inline-chip, .data-chip-v07, .workflow-pill) {
+  background: rgba(255, 255, 255, 0.44) !important;
+  box-shadow: none !important;
+}
+/* PRISMA_DELAYER_01_END */

@@ -345,3 +345,35 @@
   .topDock { grid-template-columns: auto auto auto; gap: 0.56rem; }
   .statusPill { min-width: 7.2rem; }
 }
+
+/* PRISMA_DELAYER_01_BEGIN
+   Glass Capsule: collapse decorative inner frames to avoid every pill pretending to be a submarine window.
+*/
+.root {
+  --pgc-blur: 0.35px;
+  --pgc-saturate: 1.02;
+  --pgc-brightness: 1.02;
+  --pgc-contrast: 1.04;
+  background: rgba(4, 6, 14, 0.34) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+.root::before,
+.root::after,
+.refraction,
+.underGlow,
+.lobeLens,
+.edgeFrame,
+.volumeFrame,
+.innerFrame,
+.specular {
+  opacity: 0.12 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.liquidSheen {
+  display: none !important;
+}
+/* PRISMA_DELAYER_01_END */

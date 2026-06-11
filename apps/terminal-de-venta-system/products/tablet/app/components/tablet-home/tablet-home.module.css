@@ -1878,3 +1878,72 @@
   }
 }
 /* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_END */
+
+/* PRISMA_DELAYER_01_BEGIN
+   Home screen: flatten nested cards and remove extra pseudo panes.
+*/
+:where(.heroMain, .heroAside, .metricCard, .actionCard, .alertCard, .checklistCard, .workflowPanel, .toolPanel, .workflowStep, .toolCard) {
+  background: rgba(255, 255, 255, 0.56) !important;
+  border-color: rgba(75, 139, 218, 0.16) !important;
+  box-shadow: 0 6px 18px rgba(43, 96, 156, 0.07) !important;
+  backdrop-filter: blur(6px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(1.02) !important;
+}
+
+:where(.heroMain, .heroAside, .metricCard, .actionCard, .alertCard, .checklistCard, .workflowPanel, .toolPanel, .workflowStep, .toolCard)::before,
+:where(.heroMain, .heroAside, .metricCard, .actionCard, .alertCard, .checklistCard, .workflowPanel, .toolPanel, .workflowStep, .toolCard)::after {
+  display: none !important;
+}
+/* PRISMA_DELAYER_01_END */
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.heroMain,
+.homeShell,
+.mainGrid {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.alertCard,
+.alertItem,
+.alertList,
+.checklistCard,
+.emptyAlert,
+.hero,
+.heroAside,
+.heroCopy,
+.metricCard,
+.metricGrid,
+.toolCard,
+.toolGrid,
+.toolPanel,
+.workflowPanel {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.actionCard,
+.actionGrid,
+.heroActions,
+.primaryButton,
+.prisma-tablet-light-shell,
+.secondaryButton,
+.tablet-light-shell {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */

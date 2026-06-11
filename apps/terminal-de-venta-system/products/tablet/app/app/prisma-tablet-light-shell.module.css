@@ -38,7 +38,7 @@
   opacity: 0.96;
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(237, 247, 255, 0.10) 42%, rgba(5, 45, 74, 0.18)),
-    url('/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg');
+    url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
   background-size: cover;
   background-position: center 45%;
   filter: saturate(0.96) contrast(1.04) brightness(1.08);
@@ -487,7 +487,7 @@
 .atmosphere {
   background-image:
     linear-gradient(180deg, rgba(255,255,255,.34), rgba(237,247,255,.10) 42%, rgba(5,45,74,.20)),
-    url('/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg') !important;
+    url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg') !important;
   background-size: cover !important;
   background-position: center 45% !important;
   background-repeat: no-repeat !important;
@@ -502,3 +502,52 @@
   z-index: 2;
 }
 /* PRISMA_TABLET_STATIC_FUJI_ALL_END */
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
+/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
+.atmosphere,
+.grain,
+.lightScrim,
+.workspaceGrid {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.cardGrid,
+.cardKicker,
+.evidencePanel,
+.eyebrow,
+.forecastStrip,
+.heroCopy,
+.heroPanel,
+.kpiCard,
+.routeList,
+.routePanel,
+.routeRow,
+.weatherCard {
+  background: rgba(255,255,255,.36) !important;
+  border-color: rgba(86,125,170,.17) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.guardrailPill,
+.heroActions,
+.primaryAction,
+.secondaryAction,
+.tabletShell {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */

@@ -1,0 +1,203 @@
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START
+   Objetivo: limpiar contenedores/layers SIN matar el background activo.
+   Fuente: visual_layer_map 260610_0506 + regla operativa: background-image system es primera clase.
+   Modo: reversible, visible, background-preserving. No toca procesos vivos.
+*/
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] {
+  /* Mantener activo el sistema de fondos: no convertir a canvas plano. */
+  --tablet-active-background-image: url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
+  --prisma-tablet-static-fuji-bg: var(--tablet-active-background-image);
+  --prisma-bgwork-overlay:
+    linear-gradient(180deg, rgba(255,255,255,.62), rgba(244,250,255,.20) 38%, rgba(8,42,68,.16)),
+    radial-gradient(circle at 50% 28%, rgba(255,255,255,.14), transparent 36%);
+
+  /* Reducir glass/layers sin borrar el wallpaper atmosfÃ©rico. */
+  --prisma-panel-gradient: rgba(255,255,255,.34) !important;
+  --prisma-card-surface: rgba(255,255,255,.38) !important;
+  --prisma-glass-gradient: rgba(255,255,255,.32) !important;
+  --prisma-frosted-accent-gradient: rgba(255,255,255,.24) !important;
+  --prisma-glass-panel-governed: rgba(255,255,255,.30) !important;
+  --prisma-glass-card-governed: rgba(255,255,255,.28) !important;
+  --prisma-glass-control-governed: rgba(255,255,255,.58) !important;
+  --prisma-glass-stage-governed: rgba(255,255,255,.18) !important;
+  --prisma-disabled-surface: rgba(241,246,252,.70) !important;
+
+  --prisma-border-soft: rgba(89,130,178,.15) !important;
+  --prisma-border-action: rgba(31,112,229,.28) !important;
+  --prisma-border-gold: rgba(31,112,229,.26) !important;
+  --prisma-shadow-glass: none !important;
+  --prisma-shadow-card: none !important;
+  --prisma-shadow-card-hover: none !important;
+  --prisma-shadow-depth-governed: none !important;
+  --prisma-shadow-card-governed: none !important;
+  --prisma-tablet-shadow-soft: none !important;
+  --prisma-tablet-shadow-lift: none !important;
+  --prisma-shadow-gold: none !important;
+  --prisma-glow-gold-soft-governed: none !important;
+  --prisma-inner-stroke-governed: none !important;
+  --prisma-blur-panel-governed: 0px !important;
+  --prisma-blur-card-governed: 0px !important;
+  --prisma-blur-chip-governed: 0px !important;
+  --prisma-blur-stage-governed: 0px !important;
+  --prisma-optical-panel-saturate: 1 !important;
+
+  --prisma-bgwork-ink: #142033;
+  --prisma-bgwork-muted: #66758b;
+  --prisma-bgwork-line: rgba(86,125,170,.17);
+  --prisma-bgwork-line-strong: rgba(50,104,176,.27);
+  --prisma-bgwork-panel: rgba(255,255,255,.24);
+  --prisma-bgwork-card: rgba(255,255,255,.42);
+  --prisma-bgwork-control: rgba(255,255,255,.70);
+  --prisma-bgwork-blue: #1d78ff;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"],
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
+  color: var(--prisma-bgwork-ink) !important;
+  text-shadow: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
+  min-height: 100%;
+  background:
+    var(--prisma-bgwork-overlay),
+    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat fixed,
+    #eaf4ff !important;
+  background-attachment: fixed, fixed, scroll !important;
+}
+
+/* Fondo vivo preservado: se baja el ruido, no se apaga la lÃ¡mpara. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::before {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -2 !important;
+  pointer-events: none !important;
+  background:
+    var(--prisma-bgwork-overlay),
+    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat !important;
+  opacity: .92 !important;
+  filter: saturate(.98) contrast(1.04) brightness(1.08) !important;
+  transform: translateZ(0) !important;
+  will-change: auto !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::after {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.12) 38%, rgba(223,242,255,.24) 70%, rgba(8,45,72,.10)),
+    radial-gradient(circle at 50% 34%, transparent 0%, rgba(72,101,130,.08) 100%) !important;
+  opacity: .78 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [data-prisma-shell],
+  [data-prisma-zone="tablet-home-root"],
+  [data-prisma-zone="tablet-sales-today-root"],
+  [data-prisma-zone="tablet-shift-root"],
+  [data-prisma-zone="tablet-sync-root"],
+  [data-prisma-zone="tablet-offline-export-root"],
+  [data-prisma-zone="tablet-catalog-stock-assist-root"],
+  [data-prisma-zone="tablet-pos-root"],
+  [data-prisma-zone="tablet-checkout-root"],
+  [data-prisma-zone="tablet-page"],
+  [data-prisma-layer="viewport"],
+  [data-prisma-layer="page-surface"]
+) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="TopCommandBar"]
+) {
+  background: rgba(255,255,255,.54) !important;
+  border-color: var(--prisma-bgwork-line) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [data-prisma-card],
+  [data-surface-card],
+  [data-prisma-component]:not([data-prisma-component="Sidebar"]):not([data-prisma-component="TopCommandBar"]),
+  [class*="heroCard"], [class*="HeroCard"], [class*="mainPanel"], [class*="MainPanel"],
+  [class*="detailPanel"], [class*="DetailPanel"], [class*="metricCard"], [class*="MetricCard"],
+  [class*="productRow"], [class*="ProductRow"], [class*="statePanel"], [class*="StatePanel"],
+  [class*="emptyState"], [class*="EmptyState"], [class*="card"], [class*="Card"],
+  [class*="panel"], [class*="Panel"], [class*="tile"], [class*="Tile"],
+  [class*="row"], [class*="Row"], [class*="strip"], [class*="Strip"]
+) {
+  background: var(--prisma-bgwork-card) !important;
+  border-color: var(--prisma-bgwork-line) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [class*="screen"], [class*="Screen"], [class*="workspace"], [class*="Workspace"],
+  [class*="content"], [class*="Content"], [class*="grid"], [class*="Grid"],
+  [class*="list"], [class*="List"], [class*="rail"], [class*="Rail"],
+  [class*="shell"], [class*="Shell"]
+) {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  input, textarea, select,
+  [class*="searchInput"], [class*="SearchInput"], [class*="filterButton"], [class*="FilterButton"],
+  [class*="ghostAction"], [class*="secondaryAction"], [class*="chip"], [class*="Chip"],
+  [class*="badge"], [class*="Badge"], [class*="pill"], [class*="Pill"]
+) {
+  background: var(--prisma-bgwork-control) !important;
+  border-color: var(--prisma-bgwork-line) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
+  [class*="primaryAction"], [class*="PrimaryAction"], [class*="rowAddButton"], [class*="RowAddButton"],
+  [class*="productMainButton"], [class*="ProductMainButton"], button:not(:disabled)[data-primary="true"]
+) {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(:hover, :focus, :focus-visible, :active) {
+  text-shadow: none !important;
+}
+/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
