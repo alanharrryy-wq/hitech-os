@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('discovery','critical','quick','full')][string]$Mode = 'full',
+  [ValidateSet('discovery','critical','quick','full','visualqa','screenshots','screenshotsqa')][string]$Mode = 'full',
   [ValidateSet('all','chart-lab','chart_lab','3000','web','eit-web','eit_web','3110','tablet','tablet-pos','tablet_pos','pos','3120','pc','backoffice','pc-backoffice','pc_backoffice','3130','mobile','app','app-mobile','app_mobile','3140','control-center','control_center','prisma-control-center','prisma_control_center','3150')][string]$Surface = 'all',
   [int]$Workers = 6,
   [int]$Shards = 1,
@@ -7,10 +7,22 @@ param(
   [switch]$FullPage,
   [switch]$AllowPartial,
   [switch]$Strict,
-  [ValidateSet('off','auto','on')][string]$GpuMode = 'off'
+  [ValidateSet('off','auto','on')][string]$GpuMode = 'off',
+  [int]$TestTimeoutMs = 0,
+  [int]$GotoTimeoutMs = 45000,
+  [int]$GotoRetries = 2,
+  [int]$ScreenshotTimeoutMs = 15000,
+  [int]$ProbeTimeoutMs = 1400,
+  [ValidateSet('auto','on','off')][string]$DeepScroll = 'auto',
+  [int]$MaxPageTiles = 180,
+  [int]$MaxScrollContainers = 36,
+  [int]$MaxContainerTiles = 120,
+  [int]$TileOverlapPx = 80,
+  [string]$ArtifactRoot = '',
+  [switch]$NoZip
 )
 $ErrorActionPreference = 'Stop'
-# PRISMA Plawright Mamastrophic arr5 fix2
+# PRISMA Plawright Mamastrophic arr7 timeout-guard
 
 function Normalize-Surf8Surface([string]$Value) {
   $raw = ([string]$Value).Trim().ToLowerInvariant().Replace(' ', '_')
@@ -28,10 +40,30 @@ function Normalize-Surf8Surface([string]$Value) {
 }
 function Get-Surf8RunStem([string]$Mode, [string]$SurfaceKey, [string]$Stamp, [string]$GpuModeValue = 'off') {
   $gpuSuffix = if ($GpuModeValue -and $GpuModeValue -ne 'off') { " gpu-$GpuModeValue" } else { '' }
+  if ($Mode -eq 'visualqa') { return "visualqa $SurfaceKey$gpuSuffix $Stamp" }
+  if ($Mode -eq 'screenshots') { return "screens $SurfaceKey$gpuSuffix $Stamp" }
+  if ($Mode -eq 'screenshotsqa') { return "screensqa $SurfaceKey$gpuSuffix $Stamp" }
   if ($SurfaceKey -eq 'all') { return "surf8 $Mode$gpuSuffix $Stamp" }
   return "surf8 $SurfaceKey $Mode$gpuSuffix $Stamp"
 }
 $SurfaceKey = Normalize-Surf8Surface $Surface
+function Resolve-Surf8PlanMode([string]$ModeValue) {
+  if ($ModeValue -eq 'screenshots') { return 'full' }
+  if ($ModeValue -eq 'screenshotsqa') { return 'visualqa' }
+  return $ModeValue
+}
+$DiscoveryMode = Resolve-Surf8PlanMode $Mode
+
+function Resolve-Surf8DeepScroll([string]$Value, [bool]$ScreensDisabled) {
+  $v = ([string]$Value).Trim().ToLowerInvariant()
+  if ($ScreensDisabled) { return $false }
+  if ($v -eq 'off') { return $false }
+  if ($v -eq 'on') { return $true }
+  # auto is intentionally deep by default. This tool is for visual evidence, not postage-stamp screenshots.
+  return $true
+}
+$EffectiveDeepScroll = Resolve-Surf8DeepScroll $DeepScroll ([bool]$NoScreenshots)
+$EffectiveFullPage = [bool]($FullPage -or $EffectiveDeepScroll)
 
 function Get-Surf8GpuProfile([string]$ModeValue) {
   $m = ([string]$ModeValue).Trim().ToLowerInvariant()
@@ -268,10 +300,13 @@ function Add-Surf8ReportStatuses([object]$Suite, [hashtable]$Map) {
   foreach ($child in @($Suite.suites)) { Add-Surf8ReportStatuses $child $Map }
 }
 function New-Surf8CaptureManifest([object]$PlanObj, [string]$ScreensDir, [string]$JsonReportPath) {
-  $recordFiles = @(Get-ChildItem -LiteralPath $ScreensDir -Filter '*.json' -File -ErrorAction SilentlyContinue)
-  $screenshotFiles = @(Get-ChildItem -LiteralPath $ScreensDir -Filter '*.png' -File -ErrorAction SilentlyContinue)
+  $recordFiles = @(Get-ChildItem -LiteralPath $ScreensDir -Filter '*.json' -File -Recurse -ErrorAction SilentlyContinue)
+  $screenshotFiles = @(Get-ChildItem -LiteralPath $ScreensDir -Filter '*.png' -File -Recurse -ErrorAction SilentlyContinue)
   $recordsByTarget = @{}
   $recordParseErrors = New-Object System.Collections.Generic.List[object]
+  $coveragePartial = New-Object System.Collections.ArrayList
+  $coverageFailed = New-Object System.Collections.ArrayList
+  $coverageCompleteCount = 0
 
   foreach ($file in $recordFiles) {
     try {
@@ -284,11 +319,19 @@ function New-Surf8CaptureManifest([object]$PlanObj, [string]$ScreensDir, [string
       if (-not $recordsByTarget.ContainsKey($targetId)) { $recordsByTarget[$targetId] = New-Object System.Collections.ArrayList }
       $status = [string](Get-Surf8Prop $record 'status')
       if ([string]::IsNullOrWhiteSpace($status)) { $status = 'captured' }
+      $scrollCoverage = Get-Surf8Prop $record 'scrollCoverage'
+      $coverageStatus = if ($scrollCoverage) { [string](Get-Surf8Prop $scrollCoverage 'status') } else { '' }
+      if ($coverageStatus -eq 'complete') { $coverageCompleteCount += 1 }
+      elseif ($coverageStatus -eq 'partial') { [void]$coveragePartial.Add([ordered]@{ targetId=$targetId; file=$file.FullName; status=$coverageStatus }) }
+      elseif ($coverageStatus -eq 'failed') { [void]$coverageFailed.Add([ordered]@{ targetId=$targetId; file=$file.FullName; status=$coverageStatus }) }
       [void]$recordsByTarget[$targetId].Add([ordered]@{
         file = $file.Name
         path = $file.FullName
         status = $status
         screenshot = Get-Surf8Prop $record 'screenshot'
+        screenshotViewport = Get-Surf8Prop $record 'screenshotViewport'
+        screenshotFullPage = Get-Surf8Prop $record 'screenshotFullPage'
+        scrollCoverageStatus = $coverageStatus
         url = Get-Surf8Prop $record 'url'
         error = Get-Surf8RecordErrorMessage $record
         reason = Get-Surf8Prop $record 'reason'
@@ -385,6 +428,11 @@ function New-Surf8CaptureManifest([object]$PlanObj, [string]$ScreensDir, [string
     recordCount = $recordFiles.Count
     targetRecordCount = $targetRecordCount
     screenshotCount = $screenshotFiles.Count
+    scrollCoverageCompleteCount = $coverageCompleteCount
+    scrollCoveragePartialCount = $coveragePartial.Count
+    scrollCoverageFailedCount = $coverageFailed.Count
+    scrollCoveragePartial = @($coveragePartial.ToArray())
+    scrollCoverageFailed = @($coverageFailed.ToArray())
     capturedCount = $capturedArray.Count
     failedCount = $failedArray.Count
     skippedCount = $skippedArray.Count
@@ -475,6 +523,11 @@ function New-Surf8ExpectedMarkdown([object]$Summary, [object]$Manifest, [string]
   [void]$lines.Add("- screen records: $($Summary.recordCount)")
   [void]$lines.Add("- represented targets: $($Summary.targetRecordCount)")
   [void]$lines.Add("- screenshots: $($Summary.screenshotCount)")
+  [void]$lines.Add("- deepScroll: $($Summary.deepScroll)")
+  [void]$lines.Add("- fullPage: $($Summary.fullPage)")
+  [void]$lines.Add("- scroll coverage complete: $($Summary.scrollCoverageCompleteCount)")
+  [void]$lines.Add("- scroll coverage partial: $($Summary.scrollCoveragePartialCount)")
+  [void]$lines.Add("- scroll coverage failed: $($Summary.scrollCoverageFailedCount)")
   [void]$lines.Add("- online ports: $OnlinePortsText")
   [void]$lines.Add("- workers: $($Summary.workers)")
   [void]$lines.Add("- playwrightExitCode: $($Summary.playwrightExitCode)")
@@ -500,31 +553,96 @@ function New-Surf8ExpectedMarkdown([object]$Summary, [object]$Manifest, [string]
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$toolRoot = (Resolve-Path -LiteralPath (Join-Path $scriptRoot '..')).Path
 $defaultTermRoot = 'F:\repos\hitech-os\apps\terminal-de-venta-system'
 $termRootCandidate = if ($env:PRISMA_TERMINAL_ROOT -and -not [string]::IsNullOrWhiteSpace($env:PRISMA_TERMINAL_ROOT)) { $env:PRISMA_TERMINAL_ROOT } else { $defaultTermRoot }
 $termRoot = (Resolve-Path -LiteralPath $termRootCandidate).Path
 $pcRoot = Join-Path $termRoot 'products\pc\app'
-$specRel = 'tests/prisma-surfaces/surf8.all-surfaces.spec.cjs'
-$specPath = Join-Path $pcRoot ($specRel -replace '/', '\')
-$specArg = $specRel
+$visualQaMode = ($Mode -in @('visualqa','screenshotsqa'))
+$specPath = if ($visualQaMode) { Join-Path $toolRoot 'tests\surf8.visualqa.spec.cjs' } else { Join-Path $toolRoot 'tests\surf8.all-surfaces.spec.cjs' }
+$specArg = $specPath
 $discovery = Join-Path $scriptRoot 'surf8_discovery.py'
+$visualQaAggregate = Join-Path $scriptRoot 'visualqa_aggregate.py'
 if (-not (Test-Path -LiteralPath (Join-Path $termRoot 'products\pc\app\package.json'))) { throw "Terminal root invalido: $termRoot" }
-if (-not (Test-Path -LiteralPath $specPath)) { throw "No encontre spec bridge en PC app: $specPath" }
+if (-not (Test-Path -LiteralPath $specPath)) { throw "No encontre spec de Playwright: $specPath" }
 if (-not (Test-Path -LiteralPath $discovery)) { throw "No encontre discovery central: $discovery" }
+if ($visualQaMode -and -not (Test-Path -LiteralPath $visualQaAggregate)) { throw "No encontre agregador VisualQA: $visualQaAggregate" }
 
 $stamp = Get-Date -Format 'ddMM HHmmssfff'
 $runStem = Get-Surf8RunStem $Mode $SurfaceKey $stamp $GpuMode
-$outDir = Join-Path 'F:\descargasf' $runStem
+if ([string]::IsNullOrWhiteSpace($ArtifactRoot)) {
+  $outDir = Join-Path 'F:\descargasf' $runStem
+} else {
+  $outDir = $ArtifactRoot
+}
 $reports = Join-Path $outDir 'reports'
 $screens = Join-Path $outDir 'screens'
+$dom = Join-Path $outDir 'dom'
+$logs = Join-Path $outDir 'logs'
 $pwArtifacts = Join-Path $reports 'playwright-artifacts'
-New-Item -ItemType Directory -Force -Path $reports,$screens,$pwArtifacts | Out-Null
-Write-JsonFile (Join-Path $reports 'gpu-profile.json') $GpuProfile 10
+if ($visualQaMode) {
+  New-Item -ItemType Directory -Force -Path $reports,$screens,$dom,$logs,$pwArtifacts | Out-Null
+} else {
+  New-Item -ItemType Directory -Force -Path $reports,$screens,$pwArtifacts | Out-Null
+}
+
+  # Playwright bridge:
+  # The repo/app can have its own Playwright config with testDir/testMatch that ignores specs outside the app.
+  # We generate a tiny per-run bridge spec + config inside the run artifacts and invoke Playwright through it.
+  # arr12 fix: do NOT pass the absolute bridge spec as a CLI file filter on Windows.
+  # Playwright treats file args as regex filters, and paths with spaces/backslashes can yield "0 tests".
+  # The config owns discovery via testDir/testMatch, and the bridge imports the exact @playwright/test package used by the CLI.
+  $originalSpecPath = $specPath
+  $enginePath = if ($visualQaMode) { Join-Path $toolRoot 'tests\surf8.visualqa.engine.cjs' } else { Join-Path $toolRoot 'tests\surf8.all-surfaces.engine.cjs' }
+  $registerFn = if ($visualQaMode) { 'registerSurf8VisualQaTests' } else { 'registerSurf8Tests' }
+  $bridgeDir = Join-Path $reports 'playwright-bridge'
+  New-Item -ItemType Directory -Force -Path $bridgeDir | Out-Null
+  $bridgeSpecPath = Join-Path $bridgeDir 'surf8.bridge.spec.cjs'
+  $bridgeConfigPath = Join-Path $bridgeDir 'playwright.bridge.config.cjs'
+  $bridgeSpecContent = @'
+const pwModule = process.env.PRISMA_SURF_PLAYWRIGHT_TEST_MODULE;
+const engineModule = process.env.PRISMA_SURF_ENGINE_MODULE;
+const registerFn = process.env.PRISMA_SURF_REGISTER_FN;
+
+if (!pwModule) throw new Error("Missing PRISMA_SURF_PLAYWRIGHT_TEST_MODULE");
+if (!engineModule) throw new Error("Missing PRISMA_SURF_ENGINE_MODULE");
+if (!registerFn) throw new Error("Missing PRISMA_SURF_REGISTER_FN");
+
+const { test, expect } = require(pwModule);
+const engine = require(engineModule);
+
+if (typeof engine[registerFn] !== "function") {
+  throw new Error(`Register function not found: ${registerFn}`);
+}
+
+engine[registerFn](test, expect);
+'@
+  Write-Utf8 $bridgeSpecPath $bridgeSpecContent
+  $bridgeConfigContent = @'
+module.exports = {
+  testDir: __dirname,
+  testMatch: ["**/surf8.bridge.spec.cjs"],
+  fullyParallel: true,
+  forbidOnly: false,
+  timeout: 0,
+  expect: { timeout: 10000 },
+  use: {
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
+    video: "off"
+  }
+};
+'@
+  Write-Utf8 $bridgeConfigPath $bridgeConfigContent
+  $specPath = $bridgeSpecPath
+  $specArg = $bridgeSpecPath
+
+  Write-JsonFile (Join-Path $reports 'gpu-profile.json') $GpuProfile 10
 Write-Utf8 (Join-Path $reports 'gpu-profile.md') (New-Surf8GpuMarkdown $GpuProfile)
 $plan = Join-Path $reports 'surf8.capture-plan.json'
 $resultZip = Join-Path 'F:\descargasf' ("$runStem result.zip")
 $failZip = Join-Path 'F:\descargasf' ("$runStem fail.zip")
-$logPath = Join-Path $reports 'run.log'
+$logPath = if ($visualQaMode) { Join-Path $logs 'run.log' } else { Join-Path $reports 'run.log' }
 $runLines = New-Object System.Collections.Generic.List[string]
 function Add-RunLog([string]$line) {
   $msg = "[{0}] {1}" -f (Get-Date -Format 'HH:mm:ss'), $line
@@ -540,11 +658,13 @@ try {
   Add-RunLog "pcRoot=$pcRoot"
   Add-RunLog "specArg=$specArg"
   Add-RunLog "specPath=$specPath"
+  Add-RunLog "originalSpecPath=$originalSpecPath"
+  Add-RunLog "bridgeConfigPath=$bridgeConfigPath"
   $env:PYTHONDONTWRITEBYTECODE = '1'
   $py = Get-PythonLauncher
   $discArgs = @()
   if ($py.Count -gt 1) { $discArgs += @($py[1..($py.Count-1)] | Where-Object { $_ }) }
-  $discArgs += @($discovery, '--repo-root', $termRoot, '--out', $plan, '--mode', $Mode, '--surface', $SurfaceKey, '--workers', [string]$Workers)
+  $discArgs += @($discovery, '--repo-root', $termRoot, '--out', $plan, '--mode', $DiscoveryMode, '--surface', $SurfaceKey, '--workers', [string]$Workers)
   $discResult = Invoke-NativeCapture -Exe $py[0] -Arguments $discArgs -Cwd $termRoot -LogPath (Join-Path $reports 'discovery.log')
   Add-RunLog "discoveryExitCode=$($discResult.ExitCode)"
   if ($discResult.ExitCode -ne 0) { throw "Discovery fallo con codigo $($discResult.ExitCode). Ver reports/discovery.log" }
@@ -566,13 +686,65 @@ try {
 
   if ($Mode -eq 'discovery') {
     Show-ProgressLine 100 'discovery listo'
-    Write-JsonFile (Join-Path $reports 'summary.json') ([ordered]@{ status='PASS'; mode=$Mode; surface=$SurfaceKey; gpuMode=$GpuMode; gpuAggressive=[bool]$GpuProfile.aggressive; targetCount=[int]$planObj.targetCount; macroCount=@($planObj.macros).Count; onlinePorts=@($onlinePorts); resultZip=$resultZip; macroSummaries=@($planObj.macroSummaries) })
+    Write-JsonFile (Join-Path $reports 'summary.json') ([ordered]@{ status='PASS'; mode=$Mode; surface=$SurfaceKey; gpuMode=$GpuMode; gpuAggressive=[bool]$GpuProfile.aggressive; targetCount=[int]$planObj.targetCount; macroCount=@($planObj.macros).Count; onlinePorts=@($onlinePorts); resultZip=$resultZip; deepScroll=[bool]$EffectiveDeepScroll; fullPage=[bool]$EffectiveFullPage; macroSummaries=@($planObj.macroSummaries) })
+    if ($NoZip) {
+      Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Green
+      exit 0
+    }
     New-ZipFromDir $outDir $resultZip
     Write-Host "ZIP result: $resultZip" -ForegroundColor Green
     exit 0
   }
 
-  if ($onlinePorts.Count -eq 0) { throw 'Ningun puerto macro esta online; no hay nada capturable.' }
+  if ($onlinePorts.Count -eq 0 -and -not $visualQaMode) { throw 'Ningun puerto macro esta online; no hay nada capturable.' }
+
+  if ($onlinePorts.Count -eq 0 -and $visualQaMode) {
+    Show-ProgressLine 70 'visualqa offline-only: sintetizando skipped_offline'
+    Write-Utf8 (Join-Path $logs 'playwright.stdout.log') ''
+    Write-Utf8 (Join-Path $logs 'playwright.stderr.log') ''
+    $aggArgs = @()
+    if ($py.Count -gt 1) { $aggArgs += @($py[1..($py.Count-1)] | Where-Object { $_ }) }
+    $aggArgs += @(
+      $visualQaAggregate,
+      '--out-dir', $outDir,
+      '--reports-dir', $reports,
+      '--dom-dir', $dom,
+      '--screens-dir', $screens,
+      '--logs-dir', $logs,
+      '--plan', $plan,
+      '--ports', (Join-Path $reports 'ports.json'),
+      '--playwright-exit-code', '0',
+      '--surface', $SurfaceKey,
+      '--mode', $Mode,
+      '--workers', [string]$Workers,
+      '--result-zip', $resultZip,
+      '--fail-zip', $failZip,
+      '--offline-only'
+    )
+    if ($Strict) { $aggArgs += '--strict' }
+    if ($AllowPartial) { $aggArgs += '--allow-partial' }
+    $aggResult = Invoke-NativeCapture -Exe $py[0] -Arguments $aggArgs -Cwd $termRoot -LogPath (Join-Path $logs 'visualqa-aggregate.log')
+    Add-RunLog "visualqaAggregateExitCode=$($aggResult.ExitCode) offlineOnly=true"
+    $summary = Get-Content -LiteralPath (Join-Path $reports 'summary.json') -Raw | ConvertFrom-Json
+    Show-ProgressLine 100 'empaquetando visualqa offline-only'
+    if ($summary.status -in @('PASS','PARTIAL_PASS')) {
+      if ($NoZip) {
+        Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Yellow
+        exit 0
+      }
+      New-ZipFromDir $outDir $resultZip
+      Write-Host "ZIP visualqa result: $resultZip" -ForegroundColor Yellow
+      exit 0
+    } else {
+      if ($NoZip) {
+        Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Red
+        exit 1
+      }
+      New-ZipFromDir $outDir $failZip
+      Write-Host "ZIP visualqa fail: $failZip" -ForegroundColor Red
+      exit 1
+    }
+  }
 
   $macroTotal = @($planObj.macros).Count
   if ($onlinePorts.Count -lt $macroTotal) {
@@ -586,16 +758,58 @@ try {
   Add-RunLog "playwrightResolver=$($resolver['Kind']) exe=$($resolver['Exe'])"
   if ($resolver['Kind'] -eq 'missing') { throw 'No pude resolver Playwright CLI desde PC app.' }
 
+  $nodeCmdForModule = Get-Command node -ErrorAction SilentlyContinue
+  $playwrightTestModule = $null
+  $resolverArgsPrefix = @($resolver['ArgsPrefix'])
+  if ($resolverArgsPrefix.Count -gt 0) {
+    $firstResolverArg = [string]$resolverArgsPrefix[0]
+    if ($firstResolverArg -and $firstResolverArg.EndsWith('.js') -and (Test-Path -LiteralPath $firstResolverArg)) {
+      $candidateTestModule = Join-Path (Split-Path -Parent $firstResolverArg) 'index.js'
+      if (Test-Path -LiteralPath $candidateTestModule) { $playwrightTestModule = $candidateTestModule }
+    }
+  }
+  if (-not $playwrightTestModule -and $nodeCmdForModule) {
+    $resolvedTestModule = Invoke-NodeResolve $nodeCmdForModule.Source $pcRoot '@playwright/test'
+    if ($resolvedTestModule -and (Test-Path -LiteralPath $resolvedTestModule)) { $playwrightTestModule = $resolvedTestModule }
+  }
+  if (-not $playwrightTestModule) { throw 'No pude resolver @playwright/test para el bridge spec.' }
+  $env:PRISMA_SURF_PLAYWRIGHT_TEST_MODULE = $playwrightTestModule
+  $env:PRISMA_SURF_ENGINE_MODULE = $enginePath
+  $env:PRISMA_SURF_REGISTER_FN = $registerFn
+  Add-RunLog "playwrightTestModule=$playwrightTestModule"
+  Add-RunLog "bridgeEngine=$enginePath registerFn=$registerFn"
+
   $env:PRISMA_SURF_PLAN_JSON = $plan
   $env:PRISMA_SURF_OUT_DIR = $screens
   $env:PRISMA_SURF_SCREENSHOTS = if ($NoScreenshots) { '0' } else { '1' }
-  $env:PRISMA_SURF_FULLPAGE = if ($FullPage) { '1' } else { '0' }
+  $env:PRISMA_SURF_FULLPAGE = if ($EffectiveFullPage) { '1' } else { '0' }
+  $env:PRISMA_SURF_DEEP_SCROLL = if ($EffectiveDeepScroll) { '1' } else { '0' }
+  $env:PRISMA_SURF_MAX_PAGE_TILES = [string]$MaxPageTiles
+  $env:PRISMA_SURF_MAX_SCROLL_CONTAINERS = [string]$MaxScrollContainers
+  $env:PRISMA_SURF_MAX_CONTAINER_TILES = [string]$MaxContainerTiles
+  $env:PRISMA_SURF_TILE_OVERLAP_PX = [string]$TileOverlapPx
   $env:PRISMA_SURF_ONLINE_PORTS = ($onlinePorts -join ',')
   $env:PRISMA_SURF_WORKERS = [string]$Workers
   $env:PRISMA_SURF_SURFACE = $SurfaceKey
+  $env:PRISMA_SURF_MODE = $Mode
+  $env:PRISMA_SURF_PROGRESS_JSONL = Join-Path $reports 'progress.jsonl'
   $env:PRISMA_SURF_GPU_MODE = $GpuMode
   $env:PRISMA_SURF_GPU_ARGS_JSON = ($GpuProfile.chromiumArgs | ConvertTo-Json -Compress)
-  $env:PRISMA_SURF_CENTRAL_ROOT = (Resolve-Path -LiteralPath (Join-Path $scriptRoot '..')).Path
+  $env:PRISMA_SURF_CENTRAL_ROOT = $toolRoot
+  $env:PRISMA_SURF_PC_ROOT = $pcRoot
+  if ($TestTimeoutMs -gt 0) { $env:PRISMA_SURF_TEST_TIMEOUT_MS = [string]$TestTimeoutMs } else { Remove-Item Env:\PRISMA_SURF_TEST_TIMEOUT_MS -ErrorAction SilentlyContinue }
+  $env:PRISMA_SURF_GOTO_TIMEOUT_MS = [string]$GotoTimeoutMs
+  $env:PRISMA_SURF_GOTO_RETRIES = [string]$GotoRetries
+  $env:PRISMA_SURF_SCREENSHOT_TIMEOUT_MS = [string]$ScreenshotTimeoutMs
+  $env:PRISMA_SURF_PROBE_TIMEOUT_MS = [string]$ProbeTimeoutMs
+  Add-RunLog "timeouts test=$TestTimeoutMs goto=$GotoTimeoutMs retries=$GotoRetries screenshot=$ScreenshotTimeoutMs probe=$ProbeTimeoutMs deepScroll=$EffectiveDeepScroll fullPage=$EffectiveFullPage maxPageTiles=$MaxPageTiles maxScrollContainers=$MaxScrollContainers maxContainerTiles=$MaxContainerTiles"
+  if ($visualQaMode) {
+    $env:PRISMA_VISUALQA_OUT_DIR = $outDir
+    $env:PRISMA_VISUALQA_REPORTS_DIR = $reports
+    $env:PRISMA_VISUALQA_SCREENS_DIR = $screens
+    $env:PRISMA_VISUALQA_DOM_DIR = $dom
+    $env:PRISMA_VISUALQA_LOGS_DIR = $logs
+  }
   $jsonReport = Join-Path $reports 'playwright-report.json'
   $env:PLAYWRIGHT_JSON_OUTPUT_NAME = $jsonReport
 
@@ -603,7 +817,7 @@ try {
   $listSummaryPath = Join-Path $reports 'playwright-list-summary.json'
   $listArgs = @()
   $listArgs += @($resolver['ArgsPrefix'])
-  $listArgs += @($specArg, '--list')
+  $listArgs += @('--config', $bridgeConfigPath, '--list')
 
   Show-ProgressLine 50 'preflight Playwright --list'
   Add-RunLog "playwrightListCommand=$($resolver['Exe']) $($listArgs -join ' ')"
@@ -623,7 +837,7 @@ try {
     specPath = $specPath
     cwd = $pcRoot
     command = @($resolver['Exe']) + @($listArgs)
-    note = 'arr3 uses native process capture to avoid blank PowerShell NativeCommandError and bridge module resolution issues.'
+    note = 'Uses per-run Playwright bridge config/spec so app-level testDir/testMatch cannot hide external tool specs.'
   }
   Write-JsonFile $listSummaryPath $listSummary
   Add-RunLog "playwrightListExitCode=$($listResult.ExitCode) detectedTests=$detectedTests"
@@ -633,18 +847,69 @@ try {
   Show-ProgressLine 65 'ejecutando Playwright paralelo'
   $pwArgs = @()
   $pwArgs += @($resolver['ArgsPrefix'])
-  $pwArgs += @($specArg, "--workers=$Workers", '--reporter=list,json', "--output=$pwArtifacts")
+  $pwArgs += @('--config', $bridgeConfigPath, "--workers=$Workers", '--reporter=list,json', "--output=$pwArtifacts")
   if ($Shards -gt 1) { $pwArgs += "--shard=1/$Shards" }
   Add-RunLog "playwrightRunCommand=$($resolver['Exe']) $($pwArgs -join ' ')"
-  $pwResult = Invoke-NativeCapture -Exe $resolver['Exe'] -Arguments $pwArgs -Cwd $pcRoot -LogPath (Join-Path $reports 'playwright.log')
+  $pwLogPath = if ($visualQaMode) { Join-Path $logs 'playwright.combined.log' } else { Join-Path $reports 'playwright.log' }
+  $pwResult = Invoke-NativeCapture -Exe $resolver['Exe'] -Arguments $pwArgs -Cwd $pcRoot -LogPath $pwLogPath
   $pwCode = $pwResult.ExitCode
+  if ($visualQaMode) {
+    Write-Utf8 (Join-Path $logs 'playwright.stdout.log') ([string]$pwResult.StdOut)
+    Write-Utf8 (Join-Path $logs 'playwright.stderr.log') ([string]$pwResult.StdErr)
+  }
   Add-RunLog "playwrightExitCode=$pwCode"
+
+  if ($visualQaMode) {
+    Show-ProgressLine 85 'agregando VisualQA computed layers'
+    $aggArgs = @()
+    if ($py.Count -gt 1) { $aggArgs += @($py[1..($py.Count-1)] | Where-Object { $_ }) }
+    $aggArgs += @(
+      $visualQaAggregate,
+      '--out-dir', $outDir,
+      '--reports-dir', $reports,
+      '--dom-dir', $dom,
+      '--screens-dir', $screens,
+      '--logs-dir', $logs,
+      '--plan', $plan,
+      '--ports', (Join-Path $reports 'ports.json'),
+      '--playwright-exit-code', [string]$pwCode,
+      '--surface', $SurfaceKey,
+      '--mode', $Mode,
+      '--workers', [string]$Workers,
+      '--result-zip', $resultZip,
+      '--fail-zip', $failZip
+    )
+    if ($Strict) { $aggArgs += '--strict' }
+    if ($AllowPartial) { $aggArgs += '--allow-partial' }
+    $aggResult = Invoke-NativeCapture -Exe $py[0] -Arguments $aggArgs -Cwd $termRoot -LogPath (Join-Path $logs 'visualqa-aggregate.log')
+    Add-RunLog "visualqaAggregateExitCode=$($aggResult.ExitCode)"
+    $summary = Get-Content -LiteralPath (Join-Path $reports 'summary.json') -Raw | ConvertFrom-Json
+    Show-ProgressLine 100 'empaquetando visualqa'
+    if ($summary.status -in @('PASS','PARTIAL_PASS')) {
+      if ($NoZip) {
+        Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Green
+        exit 0
+      }
+      New-ZipFromDir $outDir $resultZip
+      if ($summary.status -eq 'PASS') { Write-Host "ZIP visualqa result: $resultZip" -ForegroundColor Green } else { Write-Host "ZIP visualqa partial result: $resultZip" -ForegroundColor Yellow }
+      exit 0
+    } else {
+      if ($NoZip) {
+        Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Red
+        if ($pwCode -ne 0) { exit $pwCode } else { exit 1 }
+      }
+      New-ZipFromDir $outDir $failZip
+      Write-Host "ZIP visualqa fail: $failZip" -ForegroundColor Red
+      if ($pwCode -ne 0) { exit $pwCode } else { exit 1 }
+    }
+  }
 
   Show-ProgressLine 85 'manifest expected vs captured'
   $manifest = New-Surf8CaptureManifest $planObj $screens $jsonReport
   Write-JsonFile (Join-Path $reports 'capture-manifest.json') $manifest 30
   $zeroRecordFailure = ([int]$planObj.targetCount -gt 0 -and [int]$manifest['recordCount'] -eq 0)
-  $hasRealFailure = ($pwCode -ne 0 -or $zeroRecordFailure -or [int]$manifest['failedCount'] -gt 0 -or [int]$manifest['missingCount'] -gt 0)
+  $coveragePartialFailure = ([int]$manifest['scrollCoveragePartialCount'] -gt 0 -and -not $AllowPartial)
+  $hasRealFailure = ($pwCode -ne 0 -or $zeroRecordFailure -or [int]$manifest['failedCount'] -gt 0 -or [int]$manifest['missingCount'] -gt 0 -or [int]$manifest['scrollCoverageFailedCount'] -gt 0 -or $coveragePartialFailure)
   $hasSkipped = ([int]$manifest['skippedCount'] -gt 0)
   $runStatus = if (-not $hasRealFailure -and -not $hasSkipped) {
     'PASS'
@@ -663,6 +928,11 @@ try {
     recordCount = [int]$manifest['recordCount']
     targetRecordCount = [int]$manifest['targetRecordCount']
     screenshotCount = [int]$manifest['screenshotCount']
+    deepScroll = [bool]$EffectiveDeepScroll
+    fullPage = [bool]$EffectiveFullPage
+    scrollCoverageCompleteCount = [int]$manifest['scrollCoverageCompleteCount']
+    scrollCoveragePartialCount = [int]$manifest['scrollCoveragePartialCount']
+    scrollCoverageFailedCount = [int]$manifest['scrollCoverageFailedCount']
     capturedCount = [int]$manifest['capturedCount']
     failedCount = [int]$manifest['failedCount']
     skippedCount = [int]$manifest['skippedCount']
@@ -673,22 +943,43 @@ try {
     onlinePorts = @($onlinePorts)
     workers = $Workers
     gpuMode = $GpuMode
+    timeouts = [ordered]@{
+      testTimeoutMs = $TestTimeoutMs
+      gotoTimeoutMs = $GotoTimeoutMs
+      gotoRetries = $GotoRetries
+      screenshotTimeoutMs = $ScreenshotTimeoutMs
+      probeTimeoutMs = $ProbeTimeoutMs
+      maxPageTiles = $MaxPageTiles
+      maxScrollContainers = $MaxScrollContainers
+      maxContainerTiles = $MaxContainerTiles
+      tileOverlapPx = $TileOverlapPx
+    }
     gpuAggressive = [bool]$GpuProfile.aggressive
     chromiumArgs = @($GpuProfile.chromiumArgs)
     playwrightExitCode = $pwCode
     playwrightListDetectedTestCount = $detectedTests
     resultZip = $resultZip
     failZip = $failZip
+    noZip = [bool]$NoZip
+    artifactRoot = $outDir
   }
   Write-JsonFile (Join-Path $reports 'summary.json') $summary
   Write-Utf8 (Join-Path $reports 'expected_vs_captured.md') (New-Surf8ExpectedMarkdown $summary $manifest ($onlinePorts -join ', '))
 
   Show-ProgressLine 100 'empaquetando resultado'
   if ($summary.status -in @('PASS','PARTIAL_PASS')) {
+    if ($NoZip) {
+      Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Green
+      exit 0
+    }
     New-ZipFromDir $outDir $resultZip
     if ($summary.status -eq 'PASS') { Write-Host "ZIP result: $resultZip" -ForegroundColor Green } else { Write-Host "ZIP partial result: $resultZip" -ForegroundColor Yellow }
     exit 0
   } else {
+    if ($NoZip) {
+      Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Red
+      if ($pwCode -ne 0) { exit $pwCode } else { exit 1 }
+    }
     New-ZipFromDir $outDir $failZip
     Write-Host "ZIP fail: $failZip" -ForegroundColor Red
     if ($pwCode -ne 0) { exit $pwCode } else { exit 1 }
@@ -707,13 +998,15 @@ try {
     terminalRoot=$termRoot
     specArg=$specArg
     specPath=$specPath
+    originalSpecPath=$originalSpecPath
+    bridgeConfigPath=$bridgeConfigPath
     createdAt=(Get-Date).ToString('o')
   }
   Write-JsonFile (Join-Path $reports 'fatal.json') $err
   Write-Utf8 (Join-Path $reports 'fatal.txt') $errorText
   Add-RunLog "FATAL=$message"
-  New-ZipFromDir $outDir $failZip
+  if (-not $NoZip) { New-ZipFromDir $outDir $failZip }
   Write-Host "FALLO: $message" -ForegroundColor Red
-  Write-Host "ZIP fail: $failZip" -ForegroundColor Red
+  if ($NoZip) { Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Red } else { Write-Host "ZIP fail: $failZip" -ForegroundColor Red }
   exit 1
 }

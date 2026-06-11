@@ -28,6 +28,32 @@ SURFACE_ALIASES = {
 
 CRITICAL_PC_ROUTES = {"/", "/dashboard", "/catalog", "/stock", "/sync", "/settings", "/referencia-visual", "/referencia-visual/liquid-glass"}
 CRITICAL_TABLET = {"/", "/pos", "/shift", "/catalog", "/stock", "/sales/today", "/sync", "/offline", "/settings/license"}
+VISUALQA_TABLET_ROUTES = [
+    "/",
+    "/pos",
+    "/checkout",
+    "/catalog",
+    "/sync",
+    "/sales",
+    "/sales/today",
+    "/sales/history",
+    "/shift",
+    "/returns",
+    "/stock",
+    "/inventory",
+    "/offline",
+    "/settings/license",
+    "/settings/data",
+    "/settings/export",
+    "/release-gate",
+    "/prisma-pulse",
+    "/visual-os",
+    "/visual-os/materiality-catalog",
+    "/visual-os/pro",
+    "/visual-os/realtime",
+    "/visual-os/tablet-background-gallery",
+    "/visual-os/tablet-codex-gallery",
+]
 TEXT_EXTS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".html", ".py", ".md", ".json"}
 EXCLUDE_DIRS = {"node_modules", ".git", ".next", "dist", "build", "coverage", "test-results", "playwright-report", "__pycache__"}
 
@@ -247,30 +273,57 @@ def build_plan(term_root: Path, mode: str, workers: int, surface: str) -> dict:
             if r["dynamic"]:
                 dynamic_skipped.append({"id": tid, "macro":"pc", "route":r["route"], "file":r["file"], "reason":"dynamic route needs params"})
                 continue
-            include = not (mode == "critical" and r["route"] not in CRITICAL_PC_ROUTES) and not (mode == "quick" and r["route"] not in CRITICAL_PC_ROUTES and not r["route"].startswith("/referencia-visual"))
-            reason = "outside quick/critical PC route contract"
-            add_target(targets, filtered, mode, include, reason, id=tid, macro="pc", port=3130, baseUrl=macros["pc"]["baseUrl"], kind="route", route=r["route"], source="pc app router", file=r["file"], tags=["@pc", "@route"])
+            if mode == "visualqa":
+                include = True
+                reason = "visualqa captures discovered renderable PC routes"
+            else:
+                include = not (mode == "critical" and r["route"] not in CRITICAL_PC_ROUTES) and not (mode == "quick" and r["route"] not in CRITICAL_PC_ROUTES and not r["route"].startswith("/referencia-visual"))
+                reason = "outside quick/critical PC route contract"
+            add_target(targets, filtered, mode, include, reason, id=tid, macro="pc", port=3130, baseUrl=macros["pc"]["baseUrl"], kind="route", route=r["route"], source="pc app router", file=r["file"], tags=["@pc", "@route", "@visualqa"] if mode == "visualqa" else ["@pc", "@route"])
 
-    # Tablet: menu items are the contract, plus direct routes from App Router in full.
+    # Tablet: menu items are the capture contract. VisualQA uses direct route probes so it can compare
+    # static visual_layer_map findings against what actually renders in the browser.
     tablet_nav = parse_tablet_nav(term_root)
     tablet_routes = scan_next_routes(term_root / "products" / "tablet" / "app")
-    route_inventory["tablet"] = {"nav": tablet_nav, "appRoutes": tablet_routes}
+    route_inventory["tablet"] = {"nav": tablet_nav, "appRoutes": tablet_routes, "visualqaPriorityRoutes": VISUALQA_TABLET_ROUTES}
     if include_surface(surface, "tablet"):
-        for item in tablet_nav:
-            include = not (mode == "critical" and item["href"] not in CRITICAL_TABLET)
-            reason = "outside critical tablet route contract"
-            add_target(targets, filtered, mode, include, reason, id=f"tablet.nav.{item['href'].strip('/').replace('/','.') or 'home'}", macro="tablet", port=3120, baseUrl=macros["tablet"]["baseUrl"], kind="tablet-nav", route=item["href"], label=item["label"], shortLabel=item["shortLabel"], source="TABLET_NAV_ITEMS", file=item["file"], tags=["@tablet", "@nav"])
-        known_nav_routes = {x["href"] for x in tablet_nav}
-        for r in tablet_routes:
-            tid = f"tablet.route.{r['route'].strip('/').replace('/','.') or 'home'}"
-            if r["dynamic"]:
-                dynamic_skipped.append({"id": tid, "macro":"tablet", "route":r["route"], "file":r["file"], "reason":"dynamic route needs params"})
-                continue
-            if r["route"] in known_nav_routes:
-                filtered.append({"id":tid, "macro":"tablet", "kind":"route", "route":r["route"], "reason":"already represented by TABLET_NAV_ITEMS", "mode":mode, "source":"tablet app router", "file":r["file"]})
-                continue
-            include = mode == "full"
-            add_target(targets, filtered, mode, include, "tablet app route captured only in full mode", id=tid, macro="tablet", port=3120, baseUrl=macros["tablet"]["baseUrl"], kind="route", route=r["route"], source="tablet app router", file=r["file"], tags=["@tablet", "@route"])
+        if mode == "visualqa":
+            discovered_routes = {r["route"]: r for r in tablet_routes if not r["dynamic"]}
+            ordered_routes = []
+            for route in VISUALQA_TABLET_ROUTES:
+                if route not in ordered_routes:
+                    ordered_routes.append(route)
+            for route in sorted(discovered_routes.keys()):
+                if route not in ordered_routes:
+                    ordered_routes.append(route)
+            for route in ordered_routes:
+                r = discovered_routes.get(route, {})
+                tid = f"tablet.visualqa.{route.strip('/').replace('/','.') or 'home'}"
+                add_target(targets, filtered, mode, True, "visualqa tablet render contract", id=tid, macro="tablet", port=3120, baseUrl=macros["tablet"]["baseUrl"], kind="route", route=route, source="visualqa tablet priority + app router", file=r.get("file", ""), tags=["@tablet", "@route", "@visualqa"])
+            for r in tablet_routes:
+                tid = f"tablet.route.{r['route'].strip('/').replace('/','.') or 'home'}"
+                if r["dynamic"]:
+                    dynamic_skipped.append({"id": tid, "macro":"tablet", "route":r["route"], "file":r["file"], "reason":"dynamic route needs params"})
+            known_nav_routes = {x["href"] for x in tablet_nav}
+            for item in tablet_nav:
+                if item["href"] not in ordered_routes:
+                    filtered.append({"id":f"tablet.nav.{item['href'].strip('/').replace('/','.') or 'home'}", "macro":"tablet", "kind":"tablet-nav", "route":item["href"], "reason":"visualqa uses direct route probe instead of nav click", "mode":mode, "source":"TABLET_NAV_ITEMS", "file":item["file"]})
+        else:
+            for item in tablet_nav:
+                include = not (mode == "critical" and item["href"] not in CRITICAL_TABLET)
+                reason = "outside critical tablet route contract"
+                add_target(targets, filtered, mode, include, reason, id=f"tablet.nav.{item['href'].strip('/').replace('/','.') or 'home'}", macro="tablet", port=3120, baseUrl=macros["tablet"]["baseUrl"], kind="tablet-nav", route=item["href"], label=item["label"], shortLabel=item["shortLabel"], source="TABLET_NAV_ITEMS", file=item["file"], tags=["@tablet", "@nav"])
+            known_nav_routes = {x["href"] for x in tablet_nav}
+            for r in tablet_routes:
+                tid = f"tablet.route.{r['route'].strip('/').replace('/','.') or 'home'}"
+                if r["dynamic"]:
+                    dynamic_skipped.append({"id": tid, "macro":"tablet", "route":r["route"], "file":r["file"], "reason":"dynamic route needs params"})
+                    continue
+                if r["route"] in known_nav_routes:
+                    filtered.append({"id":tid, "macro":"tablet", "kind":"route", "route":r["route"], "reason":"already represented by TABLET_NAV_ITEMS", "mode":mode, "source":"tablet app router", "file":r["file"]})
+                    continue
+                include = mode == "full"
+                add_target(targets, filtered, mode, include, "tablet app route captured only in full mode", id=tid, macro="tablet", port=3120, baseUrl=macros["tablet"]["baseUrl"], kind="route", route=r["route"], source="tablet app router", file=r["file"], tags=["@tablet", "@route"])
 
     # Chart Lab: registry charts + real tabs + frames.
     chart_ids, chart_tabs, chart_frames, chart_sources = parse_chart_lab(term_root)
@@ -298,16 +351,22 @@ def build_plan(term_root: Path, mode: str, workers: int, surface: str) -> dict:
             if r["dynamic"]:
                 dynamic_skipped.append({"id": tid, "macro":macro_id, "route":r["route"], "file":r["file"], "reason":"dynamic route needs params"})
                 continue
-            include = not (mode == "critical" and r["route"] != "/")
-            add_target(targets, filtered, mode, include, "only home route is critical for this macro", id=tid, macro=macro_id, port=port, baseUrl=macros[macro_id]["baseUrl"], kind="route", route=r["route"], source=f"{macro_id} app router", file=r["file"], tags=[f"@{macro_id}", "@route"])
+            if mode == "visualqa":
+                include = True
+                reason = "visualqa captures discovered renderable routes"
+            else:
+                include = not (mode == "critical" and r["route"] != "/")
+                reason = "only home route is critical for this macro"
+            add_target(targets, filtered, mode, include, reason, id=tid, macro=macro_id, port=port, baseUrl=macros[macro_id]["baseUrl"], kind="route", route=r["route"], source=f"{macro_id} app router", file=r["file"], tags=[f"@{macro_id}", "@route", "@visualqa"] if mode == "visualqa" else [f"@{macro_id}", "@route"])
 
     # Control Center: only real data-prisma-interface-target values discovered from source.
     cc_targets, cc_markers, cc_sources = parse_control_center(term_root)
     route_inventory["control-center"] = {"targets": cc_targets, "markers": cc_markers, "sources": cc_sources}
     if include_surface(surface, "control-center"):
         for target in cc_targets:
-            include = not (mode == "critical" and target not in {"operation", "lifecycle"})
-            add_target(targets, filtered, mode, include, "outside critical control-center target contract", id=f"controlcenter.target.{target}", macro="control-center", port=3150, baseUrl=macros["control-center"]["baseUrl"], kind="control-center-target", route="/", interfaceTarget=target, source="data-prisma-interface-target", tags=["@controlcenter", "@target"])
+            include = True if mode == "visualqa" else not (mode == "critical" and target not in {"operation", "lifecycle"})
+            reason = "visualqa captures discovered control-center targets" if mode == "visualqa" else "outside critical control-center target contract"
+            add_target(targets, filtered, mode, include, reason, id=f"controlcenter.target.{target}", macro="control-center", port=3150, baseUrl=macros["control-center"]["baseUrl"], kind="control-center-target", route="/", interfaceTarget=target, source="data-prisma-interface-target", tags=["@controlcenter", "@target", "@visualqa"] if mode == "visualqa" else ["@controlcenter", "@target"])
         if "lifecycle" in cc_targets or any("lifecycle" in x.lower() for x in cc_markers):
             include = True
             add_target(targets, filtered, mode, include, "", id="controlcenter.lifecycle.surface", macro="control-center", port=3150, baseUrl=macros["control-center"]["baseUrl"], kind="control-center-lifecycle", route="/", interfaceTarget="lifecycle", source="#lifecycleSurface/.lifecycleSurface source marker", tags=["@controlcenter", "@lifecycle", "@critical"])
@@ -368,13 +427,13 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", default="", help="Exact terminal-de-venta-system root. Monorepo root is not accepted unless it contains apps/terminal-de-venta-system.")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--mode", choices=["discovery", "critical", "quick", "full"], default="full")
+    ap.add_argument("--mode", choices=["discovery", "critical", "quick", "full", "visualqa", "screenshots", "screenshotsqa"], default="full")
     ap.add_argument("--surface", default="all", help="Surface/port: all, pc/3130, tablet/3120, mobile/app/3140, web/3110, chart-lab/3000, control-center/3150")
     ap.add_argument("--workers", type=int, default=6)
     args = ap.parse_args()
     root_arg = Path(args.repo_root) if args.repo_root else None
     term_root = find_terminal_root(root_arg)
-    plan_mode = "full" if args.mode == "discovery" else args.mode
+    plan_mode = "full" if args.mode in {"discovery", "screenshots"} else ("visualqa" if args.mode == "screenshotsqa" else args.mode)
     surface = normalize_surface(args.surface)
     plan = build_plan(term_root, plan_mode, max(1, args.workers), surface)
     out = Path(args.out)

@@ -57,5 +57,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Pl
 ## arr5 fix2 validator repair
 
 - Fixes the installer validator itself: PowerShell parse validation now runs through a temporary `-File` validator instead of passing target paths with spaces after `-Command`.
-- This prevents false install failure on `F:epos\hitech-os	ools\Plawright Mamastrophic\...`.
+- This prevents false install failure on `F:
+epos\hitech-os	ools\Plawright Mamastrophic\...`.
 - Keeps the arr5 fix1 GPU string repairs and GPU modes `off|auto|on`.

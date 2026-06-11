@@ -8,20 +8,37 @@ param(
   [ValidateSet('off','auto','on')]
   [string]$GpuMode = 'off',
 
+  [int]$TestTimeoutMs = 0,
+  [int]$GotoTimeoutMs = 45000,
+  [int]$GotoRetries = 2,
+  [int]$ScreenshotTimeoutMs = 15000,
+  [int]$ProbeTimeoutMs = 1400,
+
+  [ValidateSet('auto','on','off')]
+  [string]$SurfaceParallel = 'auto',
+  [int]$SurfaceParallelMax = 4,
+  [int]$SurfaceChildWorkers = 1,
+
   [int]$Workers = 6,
   [int]$Shards = 1,
   [switch]$AllowPartial,
   [switch]$FullPage,
   [switch]$NoScreenshots,
+  [ValidateSet('auto','on','off')]
+  [string]$DeepScroll = 'auto',
+  [int]$MaxPageTiles = 180,
+  [int]$MaxScrollContainers = 36,
+  [int]$MaxContainerTiles = 120,
+  [int]$TileOverlapPx = 80,
   [string]$StudioPath = '/',
   [switch]$SelfTest
 )
 
 $ErrorActionPreference = 'Stop'
 
-$ToolRoot = 'F:\repos\hitech-os\tools\Plawright Mamastrophic'
+$ToolRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $Runner = Join-Path $ToolRoot 'RUN.ps1'
-$RepoRoot = 'F:\repos\hitech-os\apps\terminal-de-venta-system'
+$RepoRoot = if ($env:PRISMA_TERMINAL_ROOT -and -not [string]::IsNullOrWhiteSpace($env:PRISMA_TERMINAL_ROOT)) { $env:PRISMA_TERMINAL_ROOT } else { 'F:\repos\hitech-os\apps\terminal-de-venta-system' }
 $OutDir = 'F:\descargasf'
 
 $SurfaceCatalog = @(
@@ -31,14 +48,17 @@ $SurfaceCatalog = @(
   [pscustomobject]@{ Key = '4'; Surface = 'pc';             Aliases = @('backoffice','pc_backoffice','3130');         Port = 3130; Label = 'PC Backoffice';         BaseUrl = 'http://127.0.0.1:3130' },
   [pscustomobject]@{ Key = '5'; Surface = 'mobile';         Aliases = @('app','app_mobile','3140');                  Port = 3140; Label = 'App / Mobile';          BaseUrl = 'http://127.0.0.1:3140' },
   [pscustomobject]@{ Key = '6'; Surface = 'control-center'; Aliases = @('control','control_center','3150');          Port = 3150; Label = 'Prisma Control Center'; BaseUrl = 'http://127.0.0.1:3150' },
-  [pscustomobject]@{ Key = '7'; Surface = 'all';            Aliases = @('todo','todos','all_surfaces');              Port = 0;    Label = 'ALL - todas';           BaseUrl = '' }
+  [pscustomobject]@{ Key = '7'; Surface = 'all';            Aliases = @('todo','todos','all_surfaces');              Port = 0;    Label = 'ALL - todas paralelo';  BaseUrl = '' }
 )
 
 $PhaseCatalog = @(
   [pscustomobject]@{ Key = '1'; Phase = 'discovery'; Label = 'Discovery - radar de superficies' },
   [pscustomobject]@{ Key = '2'; Phase = 'quick';     Label = 'Quick - subset rapido' },
   [pscustomobject]@{ Key = '3'; Phase = 'critical';  Label = 'Critical - rutas delicadas' },
-  [pscustomobject]@{ Key = '4'; Phase = 'full';      Label = 'Full - barredora completa' }
+  [pscustomobject]@{ Key = '4'; Phase = 'full';          Label = 'Full - barredora completa' },
+  [pscustomobject]@{ Key = '7'; Phase = 'visualqa';      Label = 'VisualQA - DOM/computed/render layers' },
+  [pscustomobject]@{ Key = '8'; Phase = 'screenshots';   Label = 'Screenshots only - evidencia visual sin QA pesado' },
+  [pscustomobject]@{ Key = '9'; Phase = 'screenshotsqa'; Label = 'Screenshots + QA - capturas con DOM/computed/render layers' }
 )
 
 function Write-Banner {
@@ -133,7 +153,7 @@ function Resolve-Phases {
 
     # Menu option 6 can appear alone or inside comma lists, for example: 1,6.
     if ($norm -in @('6','all','todas','todo','allphases','all_phases')) {
-      return $PhaseCatalog
+      return @($PhaseCatalog | Where-Object { $_.Phase -in @('discovery','quick','critical','full','visualqa') })
     }
 
     # Menu option 5 is the quick+full combo. It must work alone and inside lists,
@@ -173,7 +193,109 @@ function Show-PhaseList {
     Write-Host ("  {0}) {1,-10} {2}" -f $p.Key, $p.Phase, $p.Label) -ForegroundColor White
   }
   Write-Host '  5) quick,full  combo comun' -ForegroundColor White
-  Write-Host '  6) all         todas las fases' -ForegroundColor White
+  Write-Host '  6) all         fases base: discovery, quick, critical, full, visualqa' -ForegroundColor White
+  Write-Host '  8) screenshots solo capturas, sin QA pesado' -ForegroundColor White
+  Write-Host '  9) screenshotsqa capturas + QA DOM/computed/render layers' -ForegroundColor White
+}
+
+
+function New-MenuZipFromDir {
+  param([string]$SourceDir, [string]$ZipPath)
+  if (Test-Path -LiteralPath $ZipPath) { Remove-Item -LiteralPath $ZipPath -Force }
+  if (-not (Test-Path -LiteralPath $SourceDir)) { throw "No existe carpeta para ZIP: $SourceDir" }
+  Compress-Archive -Path (Join-Path $SourceDir '*') -DestinationPath $ZipPath -Force
+}
+
+function Move-MenuStageToTrash {
+  param([string]$StageDir, [string]$RunName)
+  if (-not (Test-Path -LiteralPath $StageDir)) { return }
+  $trashRoot = 'F:\Trash-old'
+  New-Item -ItemType Directory -Force -Path $trashRoot | Out-Null
+  $dest = Join-Path $trashRoot ($RunName + ' stage ' + (Get-Date -Format 'ddMM HHmmss'))
+  New-Item -ItemType Directory -Force -Path $dest | Out-Null
+  $manifest = [ordered]@{ movedAt=(Get-Date).ToString('o'); source=$StageDir; destination=$dest; reason='Mamastrophic menu staging moved after final app ZIPs were created' }
+  $manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $dest 'manifest.json') -Encoding UTF8
+  Set-Content -LiteralPath (Join-Path $dest 'manifest.md') -Encoding UTF8 -Value "# Mamastrophic moved stage`r`n`r`n- source: `$StageDir`r`n- destination: `$dest`r`n- reason: final app ZIPs already contain the evidence."
+  Move-Item -LiteralPath $StageDir -Destination (Join-Path $dest (Split-Path -Leaf $StageDir)) -Force
+}
+
+function Get-AppPhaseStatus {
+  param([string]$AppRoot)
+  $records = @()
+  foreach ($phaseDir in @(Get-ChildItem -LiteralPath (Join-Path $AppRoot 'phases') -Directory -ErrorAction SilentlyContinue)) {
+    $summaryPath = Join-Path $phaseDir.FullName 'reports\summary.json'
+    $fatalPath = Join-Path $phaseDir.FullName 'reports\fatal.json'
+    $status = 'UNKNOWN'
+    $mode = $phaseDir.Name
+    $exitCode = $null
+    if (Test-Path -LiteralPath $summaryPath) {
+      try {
+        $sum = Get-Content -LiteralPath $summaryPath -Raw | ConvertFrom-Json
+        if ($sum.status) { $status = [string]$sum.status }
+        if ($sum.mode) { $mode = [string]$sum.mode }
+        if ($sum.playwrightExitCode -ne $null) { $exitCode = $sum.playwrightExitCode }
+      } catch { $status = 'SUMMARY_PARSE_FAIL' }
+    } elseif (Test-Path -LiteralPath $fatalPath) {
+      $status = 'FAIL'
+    }
+    $records += [ordered]@{ phase=$mode; status=$status; exitCode=$exitCode; path=$phaseDir.FullName }
+  }
+  return @($records)
+}
+
+function Invoke-BundledAllAppsRun {
+  param([object[]]$SelectedPhases)
+  if (-not (Test-Path -LiteralPath $Runner)) { throw "No encuentro Mamastrophic RUN.ps1: $Runner" }
+  $stamp = Get-Date -Format 'ddMM HHmmss'
+  $bundleRoot = Join-Path $OutDir "mambundle $stamp"
+  New-Item -ItemType Directory -Force -Path $bundleRoot | Out-Null
+  $phaseFailures = 0
+
+  Write-Banner 'BUNDLE ALL APPS :: maximo 6 ZIPs finales'
+  Write-Host "Bundle root temporal: $bundleRoot" -ForegroundColor DarkCyan
+  Write-Host 'Cada fase corre Surface all pero sin ZIP hijo; al final se empaqueta 1 ZIP por app.' -ForegroundColor DarkCyan
+
+  $phaseIndex = 0
+  foreach ($phase in $SelectedPhases) {
+    $phaseIndex++
+    Write-Banner ("BUNDLE PHASE {0}/{1} :: {2}" -f $phaseIndex, $SelectedPhases.Count, $phase.Phase)
+    Show-ProgressLine -Index $phaseIndex -Total $SelectedPhases.Count -Message ("fase {0} all apps" -f $phase.Phase)
+    $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$Runner,'-Mode',$phase.Phase,'-Surface','all','-Workers',[string]$Workers,'-Shards',[string]$Shards,'-GpuMode',$GpuMode,'-TestTimeoutMs',[string]$TestTimeoutMs,'-GotoTimeoutMs',[string]$GotoTimeoutMs,'-GotoRetries',[string]$GotoRetries,'-ScreenshotTimeoutMs',[string]$ScreenshotTimeoutMs,'-ProbeTimeoutMs',[string]$ProbeTimeoutMs,'-SurfaceParallel',$SurfaceParallel,'-SurfaceParallelMax',[string]$SurfaceParallelMax,'-SurfaceChildWorkers',[string]$SurfaceChildWorkers,'-DeepScroll',$DeepScroll,'-MaxPageTiles',[string]$MaxPageTiles,'-MaxScrollContainers',[string]$MaxScrollContainers,'-MaxContainerTiles',[string]$MaxContainerTiles,'-TileOverlapPx',[string]$TileOverlapPx,'-ArtifactRoot',$bundleRoot,'-NoZip')
+    if ($AllowPartial) { $args += '-AllowPartial' }
+    if ($FullPage) { $args += '-FullPage' }
+    if ($NoScreenshots) { $args += '-NoScreenshots' }
+    Write-Host ("powershell {0}" -f ($args -join ' ')) -ForegroundColor DarkCyan
+    & powershell @args
+    $code = $LASTEXITCODE
+    if ($code -ne 0) { $phaseFailures++; Write-Host ("WARN bundle phase={0} exit={1}; sigo para empaquetar evidencia." -f $phase.Phase, $code) -ForegroundColor Yellow }
+  }
+
+  $appsRoot = Join-Path $bundleRoot 'apps'
+  $appSurfaces = @($SurfaceCatalog | Where-Object { $_.Surface -ne 'all' })
+  $created = @()
+  foreach ($app in $appSurfaces) {
+    $appRoot = Join-Path $appsRoot $app.Surface
+    if (-not (Test-Path -LiteralPath $appRoot)) { New-Item -ItemType Directory -Force -Path $appRoot | Out-Null }
+    $records = @(Get-AppPhaseStatus -AppRoot $appRoot)
+    $appFail = @($records | Where-Object { [string]$_['status'] -in @('FAIL','UNKNOWN','SUMMARY_PARSE_FAIL') }).Count -gt 0
+    $zipStatus = if ($appFail) { 'fail' } else { 'result' }
+    $summary = [ordered]@{ app=$app.Surface; label=$app.Label; status=$zipStatus.ToUpperInvariant(); phases=@($records); maxZipPolicy='1 zip per app, max 6 final zips'; generatedAt=(Get-Date).ToString('o') }
+    $summary | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath (Join-Path $appRoot 'APP_BUNDLE_SUMMARY.json') -Encoding UTF8
+    $md = @('# Mamastrophic app bundle', '', "- app: $($app.Surface)", "- status: $($zipStatus.ToUpperInvariant())", '- policy: max 6 final ZIPs, one per app', '', '## Phases')
+    foreach ($r in $records) { $md += "- $($r.phase): $($r.status)" }
+    Set-Content -LiteralPath (Join-Path $appRoot 'APP_BUNDLE_SUMMARY.md') -Encoding UTF8 -Value ($md -join "`r`n")
+    $zip = Join-Path $OutDir ("mamshot $($app.Surface) bundle $stamp $zipStatus.zip")
+    New-MenuZipFromDir -SourceDir $appRoot -ZipPath $zip
+    $created += $zip
+    Write-Host ("APP BUNDLE ZIP {0}: {1}" -f $zipStatus.ToUpperInvariant(), $zip) -ForegroundColor ($(if ($appFail) { 'Red' } else { 'Green' }))
+  }
+
+  Move-MenuStageToTrash -StageDir $bundleRoot -RunName 'mambundle'
+  Write-Banner 'BUNDLE FINAL'
+  Write-Host 'ZIPs finales creados:' -ForegroundColor Cyan
+  foreach ($z in $created) { Write-Host "  $z" -ForegroundColor White }
+  if ($phaseFailures -gt 0 -or (@($created | Where-Object { $_ -match ' fail\.zip$' }).Count -gt 0)) { exit 2 }
+  exit 0
 }
 
 function Invoke-CaptureRun {
@@ -184,6 +306,10 @@ function Invoke-CaptureRun {
   if (-not (Test-Path -LiteralPath $Runner)) { throw "No encuentro Mamastrophic RUN.ps1: $Runner" }
   if ($SelectedSurfaces.Count -eq 0) { throw 'No hay superficies seleccionadas.' }
   if ($SelectedPhases.Count -eq 0) { throw 'No hay fases seleccionadas.' }
+
+  if (($SelectedSurfaces | Where-Object { $_.Surface -eq 'all' }).Count -gt 0 -and $SelectedPhases.Count -gt 1) {
+    Invoke-BundledAllAppsRun -SelectedPhases $SelectedPhases
+  }
 
   $jobs = @()
   foreach ($phase in $SelectedPhases) {
@@ -206,7 +332,7 @@ function Invoke-CaptureRun {
       }
     }
 
-    $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$Runner,'-Mode',$job.Phase,'-Surface',$job.Surface,'-Workers',[string]$Workers,'-Shards',[string]$Shards,'-GpuMode',$GpuMode)
+    $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$Runner,'-Mode',$job.Phase,'-Surface',$job.Surface,'-Workers',[string]$Workers,'-Shards',[string]$Shards,'-GpuMode',$GpuMode,'-TestTimeoutMs',[string]$TestTimeoutMs,'-GotoTimeoutMs',[string]$GotoTimeoutMs,'-GotoRetries',[string]$GotoRetries,'-ScreenshotTimeoutMs',[string]$ScreenshotTimeoutMs,'-ProbeTimeoutMs',[string]$ProbeTimeoutMs,'-SurfaceParallel',$SurfaceParallel,'-SurfaceParallelMax',[string]$SurfaceParallelMax,'-SurfaceChildWorkers',[string]$SurfaceChildWorkers,'-DeepScroll',$DeepScroll,'-MaxPageTiles',[string]$MaxPageTiles,'-MaxScrollContainers',[string]$MaxScrollContainers,'-MaxContainerTiles',[string]$MaxContainerTiles,'-TileOverlapPx',[string]$TileOverlapPx)
     if ($AllowPartial) { $args += '-AllowPartial' }
     if ($FullPage) { $args += '-FullPage' }
     if ($NoScreenshots) { $args += '-NoScreenshots' }
@@ -272,7 +398,7 @@ function Invoke-StudioRun {
 function Start-InteractiveMenu {
   Clear-Host
   Write-Banner 'PRISMA Mamastrophic Menu por fases'
-  Write-Host 'Default GPU: off. No start, no kill, no DB, no deploy.' -ForegroundColor Gray
+  Write-Host 'Default GPU: off. Opcion 7 en Apps = ALL superficies. DeepScroll auto = ON. No start, no kill, no DB, no deploy.' -ForegroundColor Gray
   Write-Host ''
   Write-Host '1) Capturas por fases' -ForegroundColor White
   Write-Host '2) Studio / Playwright codegen por app' -ForegroundColor White
@@ -323,15 +449,17 @@ function Start-InteractiveMenu {
 if ($SelfTest) {
   if (-not (Test-Path -LiteralPath $Runner)) { throw "No encuentro RUN.ps1: $Runner" }
   $testSurfaces = Resolve-Surfaces @('pc,tablet,web,mobile,chart-lab,control-center')
-  $testPhases = Resolve-Phases @('discovery,quick,critical,full')
+  $testPhases = Resolve-Phases @('discovery,quick,critical,full,visualqa')
   $comboPhases = Resolve-Phases @('1,5')
   $menuFive = Resolve-Phases @('5')
   $menuSix = Resolve-Phases @('6')
   if ($testSurfaces.Count -ne 6) { throw 'SelfTest fallo: surface catalog incompleto.' }
-  if ($testPhases.Count -ne 4) { throw 'SelfTest fallo: phase catalog incompleto.' }
+  if ($SurfaceParallel -notin @('auto','on','off')) { throw 'SelfTest fallo: SurfaceParallel invalido.' }
+  if ($DeepScroll -notin @('auto','on','off')) { throw 'SelfTest fallo: DeepScroll invalido.' }
+  if ($testPhases.Count -ne 5) { throw 'SelfTest fallo: phase catalog incompleto.' }
   if (($comboPhases | ForEach-Object { $_.Phase }) -join ',' -ne 'discovery,quick,full') { throw 'SelfTest fallo: fases 1,5 no resolvieron discovery,quick,full.' }
   if (($menuFive | ForEach-Object { $_.Phase }) -join ',' -ne 'quick,full') { throw 'SelfTest fallo: fase 5 no resolvio quick,full.' }
-  if ($menuSix.Count -ne 4) { throw 'SelfTest fallo: fase 6/all no resolvio todas las fases.' }
+  if ($menuSix.Count -ne 5) { throw 'SelfTest fallo: fase 6/all no resolvio todas las fases.' }
   Write-Host 'SELFTEST PASS: MENU.ps1 catalogos y RUN.ps1 disponibles.' -ForegroundColor Green
   exit 0
 }
