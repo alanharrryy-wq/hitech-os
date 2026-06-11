@@ -1,165 +1,115 @@
 {
   "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
   "recipes": [
     {
-      "id": "tablet-light-operational",
-      "role": "Tablet clear tactile sales",
-      "status": "planned",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "tablet-cloudglass-light",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "adapter + Visual OS",
+      "intent": "claro, táctil, luminoso, legible",
+      "do": [
+        "use tablet public runtime background",
+        "keep background visible"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "dark dominant"
       ]
     },
     {
-      "id": "tablet-cloudglass",
-      "role": "Tablet governed cloudglass",
-      "status": "planned",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "pc-graphite-glass",
+      "status": "core",
+      "surfaces": [
+        "pc"
+      ],
+      "source": "PC adapter",
+      "intent": "backoffice denso y analítico",
+      "do": [
+        "dense panels",
+        "tokenized graphite"
+      ],
+      "dont": [
+        "copy tablet directly"
       ]
     },
     {
-      "id": "pc-graphite-admin",
-      "role": "PC dense graphite admin",
-      "status": "planned",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "mobile-mist",
+      "status": "core",
+      "surfaces": [
+        "mobile"
+      ],
+      "source": "Mobile adapter",
+      "intent": "companion compacto",
+      "do": [
+        "thumb-friendly",
+        "vertical status"
+      ],
+      "dont": [
+        "tiny tablet"
       ]
     },
     {
-      "id": "mobile-thin-mist",
-      "role": "Mobile compact mist",
-      "status": "planned",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "chart-lab-analysis",
+      "status": "core",
+      "surfaces": [
+        "chart-lab"
+      ],
+      "source": "Chart Lab adapter",
+      "intent": "experimento gobernado",
+      "do": [
+        "isolate lab effects"
+      ],
+      "dont": [
+        "production contamination"
       ]
     },
     {
-      "id": "chart-lab-analysis",
-      "role": "Chart lab isolated analytical",
-      "status": "planned",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "glass-pill",
+      "status": "recipe",
+      "surfaces": [
+        "shared"
+      ],
+      "source": "Liquid Glass/Visual OS",
+      "intent": "controles/chips enfocados",
+      "do": [
+        "contrast"
+      ],
+      "dont": [
+        "blur everywhere"
       ]
     },
     {
-      "id": "kiosk-high-clarity",
-      "role": "Future kiosk clarity",
-      "status": "reserved",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "surface-panel",
+      "status": "core",
+      "surfaces": [
+        "shared"
+      ],
+      "source": "PrismaSurfacePanel",
+      "intent": "panel gobernado",
+      "do": [
+        "tokens"
+      ],
+      "dont": [
+        "global hacks"
       ]
     },
     {
-      "id": "customer-display-readable",
-      "role": "Customer display passive readable",
-      "status": "reserved",
-      "tokenCategories": [
-        "color",
-        "surface",
-        "border",
-        "radius",
-        "shadow",
-        "blur",
-        "glass",
-        "density",
-        "motion",
-        "zIndex",
-        "typography",
-        "spacing",
-        "state",
-        "background",
-        "focus",
-        "accessibility"
+      "name": "product-commerce",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "commerce components",
+      "intent": "venta táctil",
+      "do": [
+        "big touch targets"
+      ],
+      "dont": [
+        "pc dense tables"
       ]
     }
   ]

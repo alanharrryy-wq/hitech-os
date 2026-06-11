@@ -1,234 +1,1346 @@
 {
   "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
   "bindings": [
+    {
+      "route": "/prisma-visual-catalog",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "pilot-live-new-route",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.surface-panel",
+        "prisma.state-banner",
+        "prisma.metric-card",
+        "prisma.action-button"
+      ]
+    },
     {
       "route": "/",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
-      ]
-    },
-    {
-      "route": "/pos",
-      "surface": "tablet",
-      "shell": "PrismaTabletShell",
-      "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
-      ]
-    },
-    {
-      "route": "/checkout",
-      "surface": "tablet",
-      "shell": "PrismaTabletShell",
-      "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
       "route": "/catalog",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
       ]
     },
     {
-      "route": "/stock",
+      "route": "/checkout",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
+      ]
+    },
+    {
+      "route": "/events/outbox",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/existencias",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
       "route": "/inventory",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
       ]
     },
     {
       "route": "/inventory/low-stock",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
       ]
     },
     {
-      "route": "/shift",
+      "route": "/offline",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
-      "route": "/sync",
+      "route": "/pos",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
       ]
     },
     {
-      "route": "/settings/license",
+      "route": "/prisma-dark-pos-reference",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
+      ]
+    },
+    {
+      "route": "/prisma-pulse",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/referencia-visual",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
       "route": "/release-gate",
       "surface": "tablet",
-      "shell": "PrismaTabletShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/returns",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/runtime-snapshot-preview",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales/history",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales/history/[saleId]",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales/today",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales/today/[saleId]",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales/today/[saleId]/return",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/screen-standard-preview",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/settings/data",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/settings/export",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/settings/license",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/shift",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/stock",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/sync",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os/detached",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os/materiality-catalog",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/visual-os/pro",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os/realtime",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os/tablet-background-gallery",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/visual-os/tablet-codex-gallery",
+      "surface": "tablet",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/acciones-masivas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/ajustes-inventario",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/alertas-ejecutivas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
+      ]
+    },
+    {
+      "route": "/alertas-operativas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
+      ]
+    },
+    {
+      "route": "/audit",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/auditoria-inventario",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/cash-sessions",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/catalog",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/catalogo-activo",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/conteos-operativos",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/contratos-reporte",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
+      ]
+    },
+    {
+      "route": "/counts",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
       "route": "/dashboard",
       "surface": "pc",
-      "shell": "PrismaPcShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
       ]
     },
     {
-      "route": "/suppliers",
+      "route": "/data-quality",
       "surface": "pc",
-      "shell": "PrismaPcShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
-      "route": "/reports",
+      "route": "/detalle-registros",
       "surface": "pc",
-      "shell": "PrismaPcShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/devices",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/estados-operativos",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/existencias-criticas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/exportables",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/filtros-avanzados",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/filtros-fecha",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/forecast-basico",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/glosario",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/gobierno",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/incidencias-recepcion",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/integridad-barcodes",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc/chart-lab",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc/dashboard-governor",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc/referencia-visual",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/license-runtime",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/metricas-dia",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "prisma.command-panel"
+      ]
+    },
+    {
+      "route": "/movements",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/ordenes-compra",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/outbox-operativo",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/politica-precios",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/prisma-insights",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/prisma-insights/chart-lab",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/proveedores",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/purchasing",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/receiving",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/recepcion-proveedor",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/referencia-visual",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/referencia-visual/liquid-glass",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/replenishment",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sales-control",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/salud-barcodes",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/scorecards-negocio",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/senal-reabasto",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/settings",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/settings/license",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/stock",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/sync",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/sync-operativo",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/tablas-operativas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/tablero-kpi",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/tablet-communication",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/unknown",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/validacion-catalogo",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ]
+    },
+    {
+      "route": "/vistas-ejecutivas",
+      "surface": "pc",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ]
+    },
+    {
+      "route": "/",
+      "surface": "mobile",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.state-banner",
+        "prisma.metric-card"
       ]
     },
     {
       "route": "/prisma-app",
       "surface": "mobile",
-      "shell": "PrismaMobileShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.state-banner",
+        "prisma.metric-card"
+      ]
+    },
+    {
+      "route": "/prisma-app/install",
+      "surface": "mobile",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.state-banner",
+        "prisma.metric-card"
+      ]
+    },
+    {
+      "route": "/prisma-app/offline",
+      "surface": "mobile",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.state-banner",
+        "prisma.metric-card"
       ]
     },
     {
       "route": "/prisma-command",
       "surface": "mobile",
-      "shell": "PrismaMobileShell",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
       "status": "mapped",
-      "qa": [
-        "route-renders-if-server-live",
-        "no-unregistered-wrapper",
-        "background-contract"
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.state-banner",
+        "prisma.metric-card"
       ]
     },
     {
-      "route": "/kiosk",
-      "surface": "kiosk",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
+      "route": "/",
+      "surface": "chart-lab",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     },
     {
-      "route": "/customer-display",
-      "surface": "customer-display",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
-      ]
-    },
-    {
-      "route": "/warehouse/scanner",
-      "surface": "warehouse",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
-      ]
-    },
-    {
-      "route": "/manager",
-      "surface": "manager",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
-      ]
-    },
-    {
-      "route": "/training",
-      "surface": "training",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
-      ]
-    },
-    {
-      "route": "/demo",
-      "surface": "demo",
-      "shell": "reserved",
-      "status": "reserved",
-      "qa": [
-        "do-not-mark-live-until-implemented"
+      "route": "/recipe-studio-v2",
+      "surface": "chart-lab",
+      "shell": "PrismaShellFrame",
+      "frame": "PrismaRouteFrame",
+      "status": "mapped",
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
       ]
     }
   ]

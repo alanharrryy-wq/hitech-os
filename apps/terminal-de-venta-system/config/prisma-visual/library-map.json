@@ -1,74 +1,132 @@
 {
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
   "libraries": [
     {
       "name": "@radix-ui/react-dialog",
-      "version": "^1.1.15",
       "role": "dialog primitive",
-      "recommendedUse": "Use for modal/dialog interactions",
-      "restriction": "Do not reimplement dialogs with raw div overlays"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.1.15"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-dropdown-menu",
-      "version": "^2.1.16",
       "role": "menu primitive",
-      "recommendedUse": "Use for menus/dropdowns",
-      "restriction": "Do not create local ungoverned dropdowns"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^2.1.16"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-scroll-area",
-      "version": "^1.2.10",
       "role": "scroll primitive",
-      "recommendedUse": "Use for governed scroll areas",
-      "restriction": "Do not hide content/background with custom scroll shells"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.2.10"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-select",
-      "version": "^2.2.6",
       "role": "select primitive",
-      "recommendedUse": "Use for accessible selects",
-      "restriction": "Do not use custom select clones"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^2.2.6"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-tabs",
-      "version": "^1.1.13",
       "role": "tabs primitive",
-      "recommendedUse": "Use for tabs/navigation panels",
-      "restriction": "No local tab state hacks if Radix fits"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.1.13"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-tooltip",
-      "version": "^1.2.8",
       "role": "tooltip primitive",
-      "recommendedUse": "Use for tooltips",
-      "restriction": "Avoid hover-only inaccessible hints"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.2.8"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
     },
     {
       "name": "@radix-ui/react-slot",
-      "version": "^1.2.4",
       "role": "composition primitive",
-      "recommendedUse": "Use for asChild composition",
-      "restriction": "Keep styling via tokens/adapters"
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.2.4"
+        }
+      ],
+      "status": "available",
+      "restriction": "Encapsular en componentes PRISMA, no usar crudo en pantallas."
+    },
+    {
+      "name": "framer-motion",
+      "role": "microinteractions",
+      "detected": false,
+      "detectedIn": [],
+      "status": "not-detected-no-install",
+      "restriction": "Sólo microinteracciones sobrias."
+    },
+    {
+      "name": "motion",
+      "role": "microinteractions",
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^12.40.0"
+        }
+      ],
+      "status": "available",
+      "restriction": "Sólo microinteracciones sobrias."
     },
     {
       "name": "ogl",
-      "version": "^1.0.11",
-      "role": "effects library",
-      "recommendedUse": "Use for atmospheric/background/visual lab effects",
-      "restriction": "Not for buttons/cards/layout"
-    },
-    {
-      "name": "ajv",
-      "version": "not detected in root package",
-      "role": "schema validator",
-      "recommendedUse": "Use for registries/schemas",
-      "restriction": "Must support 2020-12 for current schemas"
-    },
-    {
-      "name": "@playwright/test",
-      "version": "not detected in root package",
-      "role": "visual QA",
-      "recommendedUse": "Use for evidence/screenshots when available",
-      "restriction": "Not a substitute for design approval"
+      "role": "background/atmosphere/lab effects",
+      "detected": true,
+      "detectedIn": [
+        {
+          "packageJson": "package.json",
+          "version": "^1.0.11"
+        }
+      ],
+      "status": "available",
+      "restriction": "Sólo background/atmosphere/lab; no cards/forms/layout."
     }
-  ]
+  ],
+  "rule": "No instalar dependencias nuevas salvo justificación fuerte."
 }
