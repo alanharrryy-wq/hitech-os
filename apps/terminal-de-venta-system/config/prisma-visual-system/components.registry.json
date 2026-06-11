@@ -1,0 +1,2694 @@
+{
+  "schemaVersion": "1.0",
+  "components": [
+    {
+      "id": "prisma-surface-shell",
+      "canonicalName": "PrismaSurfaceShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-tablet-shell",
+      "canonicalName": "PrismaTabletShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-pc-backoffice-shell",
+      "canonicalName": "PrismaPcBackofficeShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-mobile-shell",
+      "canonicalName": "PrismaMobileShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-chart-lab-shell",
+      "canonicalName": "PrismaChartLabShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-kiosk-shell",
+      "canonicalName": "PrismaKioskShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-customer-display-shell",
+      "canonicalName": "PrismaCustomerDisplayShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-warehouse-scanner-shell",
+      "canonicalName": "PrismaWarehouseScannerShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-manager-console-shell",
+      "canonicalName": "PrismaManagerConsoleShell",
+      "family": "shells",
+      "layer": "shell",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-background-runtime",
+      "canonicalName": "PrismaBackgroundRuntime",
+      "family": "backgrounds",
+      "layer": "background",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-atmosphere-layer",
+      "canonicalName": "PrismaAtmosphereLayer",
+      "family": "backgrounds",
+      "layer": "background",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-surface-backdrop",
+      "canonicalName": "PrismaSurfaceBackdrop",
+      "family": "backgrounds",
+      "layer": "background",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-background-manifest-panel",
+      "canonicalName": "PrismaBackgroundManifestPanel",
+      "family": "backgrounds",
+      "layer": "background",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-background-fallback-state",
+      "canonicalName": "PrismaBackgroundFallbackState",
+      "family": "backgrounds",
+      "layer": "background",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-card",
+      "canonicalName": "PrismaCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-metric-card",
+      "canonicalName": "PrismaMetricCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-product-card",
+      "canonicalName": "PrismaProductCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-supplier-card",
+      "canonicalName": "PrismaSupplierCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-inventory-card",
+      "canonicalName": "PrismaInventoryCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-pulse-card",
+      "canonicalName": "PrismaPulseCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-recommendation-card",
+      "canonicalName": "PrismaRecommendationCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-approval-card",
+      "canonicalName": "PrismaApprovalCard",
+      "family": "cards",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-panel",
+      "canonicalName": "PrismaPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-glass-panel",
+      "canonicalName": "PrismaGlassPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-operational-panel",
+      "canonicalName": "PrismaOperationalPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-detail-panel",
+      "canonicalName": "PrismaDetailPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-cart-panel",
+      "canonicalName": "PrismaCartPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-filter-panel",
+      "canonicalName": "PrismaFilterPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-report-panel",
+      "canonicalName": "PrismaReportPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-assistant-panel",
+      "canonicalName": "PrismaAssistantPanel",
+      "family": "panels",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "surface",
+        "border",
+        "radius",
+        "shadow",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-button",
+      "canonicalName": "PrismaButton",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-icon-button",
+      "canonicalName": "PrismaIconButton",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-primary-action",
+      "canonicalName": "PrismaPrimaryAction",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-secondary-action",
+      "canonicalName": "PrismaSecondaryAction",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-danger-action",
+      "canonicalName": "PrismaDangerAction",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-command-action",
+      "canonicalName": "PrismaCommandAction",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-pay-button",
+      "canonicalName": "PrismaPayButton",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-bulk-action",
+      "canonicalName": "PrismaBulkAction",
+      "family": "actions",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-input",
+      "canonicalName": "PrismaInput",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-search-input",
+      "canonicalName": "PrismaSearchInput",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-select",
+      "canonicalName": "PrismaSelect",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-field-group",
+      "canonicalName": "PrismaFieldGroup",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-date-range",
+      "canonicalName": "PrismaDateRange",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-quantity-stepper",
+      "canonicalName": "PrismaQuantityStepper",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-customer-lookup",
+      "canonicalName": "PrismaCustomerLookup",
+      "family": "forms",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-sidebar",
+      "canonicalName": "PrismaSidebar",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-topbar",
+      "canonicalName": "PrismaTopbar",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-route-rail",
+      "canonicalName": "PrismaRouteRail",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-mobile-nav",
+      "canonicalName": "PrismaMobileNav",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-command-palette",
+      "canonicalName": "PrismaCommandPalette",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-breadcrumbs",
+      "canonicalName": "PrismaBreadcrumbs",
+      "family": "navigation",
+      "layer": "action",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-empty-state",
+      "canonicalName": "PrismaEmptyState",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-error-state",
+      "canonicalName": "PrismaErrorState",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-loading-state",
+      "canonicalName": "PrismaLoadingState",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-offline-banner",
+      "canonicalName": "PrismaOfflineBanner",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-sync-status",
+      "canonicalName": "PrismaSyncStatus",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-license-gate",
+      "canonicalName": "PrismaLicenseGate",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-release-gate",
+      "canonicalName": "PrismaReleaseGate",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-conflict-resolver",
+      "canonicalName": "PrismaConflictResolver",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-recovery-panel",
+      "canonicalName": "PrismaRecoveryPanel",
+      "family": "states",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-data-table",
+      "canonicalName": "PrismaDataTable",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-kpi-card",
+      "canonicalName": "PrismaKpiCard",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-audit-timeline",
+      "canonicalName": "PrismaAuditTimeline",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-trend-chart",
+      "canonicalName": "PrismaTrendChart",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-export-panel",
+      "canonicalName": "PrismaExportPanel",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-entity-summary",
+      "canonicalName": "PrismaEntitySummary",
+      "family": "data_display",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "product-grid",
+      "canonicalName": "ProductGrid",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "cart-line-item",
+      "canonicalName": "CartLineItem",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "totals-summary",
+      "canonicalName": "TotalsSummary",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "payment-method-selector",
+      "canonicalName": "PaymentMethodSelector",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "ticket-preview",
+      "canonicalName": "TicketPreview",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "return-flow-panel",
+      "canonicalName": "ReturnFlowPanel",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "discount-panel",
+      "canonicalName": "DiscountPanel",
+      "family": "commerce",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "stock-card",
+      "canonicalName": "StockCard",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "stock-movement-row",
+      "canonicalName": "StockMovementRow",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "low-stock-alert",
+      "canonicalName": "LowStockAlert",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "inventory-table",
+      "canonicalName": "InventoryTable",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "warehouse-selector",
+      "canonicalName": "WarehouseSelector",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "goods-receipt-panel",
+      "canonicalName": "GoodsReceiptPanel",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "supplier-product-link-card",
+      "canonicalName": "SupplierProductLinkCard",
+      "family": "inventory",
+      "layer": "surface",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "prisma-ai-command-panel",
+      "canonicalName": "PrismaAiCommandPanel",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "recommendation-card",
+      "canonicalName": "RecommendationCard",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "command-palette",
+      "canonicalName": "CommandPalette",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "explain-change-panel",
+      "canonicalName": "ExplainChangePanel",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "risk-review-card",
+      "canonicalName": "RiskReviewCard",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "auto-fix-proposal",
+      "canonicalName": "AutoFixProposal",
+      "family": "ai_command",
+      "layer": "state",
+      "status": "planned",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "kitchen-display",
+      "canonicalName": "KitchenDisplay",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "public-display",
+      "canonicalName": "PublicDisplay",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "training-mode-panel",
+      "canonicalName": "TrainingModePanel",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "demo-mode-panel",
+      "canonicalName": "DemoModePanel",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "customer-facing-receipt",
+      "canonicalName": "CustomerFacingReceipt",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "queue-status-board",
+      "canonicalName": "QueueStatusBoard",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    }
+  ]
+}
