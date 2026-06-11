@@ -1,0 +1,806 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.101Z",
+  "motorsRoot": "F:\\PRISMA_CTX\\MOTORES",
+  "motors": [
+    {
+      "id": "motor_all",
+      "name": "motor_all.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_all.py",
+      "type": "global-context",
+      "status": "available",
+      "purpose": "global-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_tablet",
+      "name": "motor_tablet.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_tablet.py",
+      "type": "tablet-context",
+      "status": "available",
+      "purpose": "tablet-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "tablet-usage-map.json",
+        "visual-debt-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_pc",
+      "name": "motor_pc.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_pc.py",
+      "type": "pc-context",
+      "status": "available",
+      "purpose": "pc-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "pc-usage-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_app_movil",
+      "name": "motor_app_movil.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_app_movil.py",
+      "type": "mobile-context",
+      "status": "available",
+      "purpose": "mobile-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "mobile-usage-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_lab_chart",
+      "name": "motor_lab_chart.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_lab_chart.py",
+      "type": "chart-lab-context",
+      "status": "available",
+      "purpose": "chart-lab-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_web_eit",
+      "name": "motor_web_eit.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_web_eit.py",
+      "type": "web-eit-context",
+      "status": "available",
+      "purpose": "web-eit-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_control_center",
+      "name": "motor_control_center.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_control_center.py",
+      "type": "control-center-context",
+      "status": "available",
+      "purpose": "control-center-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_gobierno",
+      "name": "motor_gobierno.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_gobierno.py",
+      "type": "governance-context",
+      "status": "available",
+      "purpose": "governance-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_databases",
+      "name": "motor_databases.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_databases.py",
+      "type": "database-context",
+      "status": "available",
+      "purpose": "database-context",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_verify",
+      "name": "motor_verify.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_verify.py",
+      "type": "context-verifier",
+      "status": "available",
+      "purpose": "context-verifier",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": true,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_visual_uiux_packager",
+      "name": "motor_visual_uiux_packager.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_visual_uiux_packager.py",
+      "type": "uiux-context-packager",
+      "status": "available",
+      "purpose": "uiux-context-packager",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "motor_playwright",
+      "name": "motor_playwright.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\motor_playwright.py",
+      "type": "visual-evidence",
+      "status": "available",
+      "purpose": "visual-evidence",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": true,
+      "requiresPlaywright": true,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [
+        "default-execution"
+      ],
+      "producesContextFor": [
+        "visual-debt-map.json",
+        "adoption-scorecard.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "TodoALV",
+      "name": "TodoALV.py",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\TodoALV.py",
+      "type": "total-context-packager",
+      "status": "available",
+      "purpose": "total-context-packager",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": false,
+      "requiresPlaywright": false,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [],
+      "producesContextFor": [
+        "domain-contracts.json",
+        "authority-map.json"
+      ],
+      "notes": "81920-policy-required",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "run_playwright_all_once",
+      "name": "run_playwright_all_once.ps1",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\run_playwright_all_once.ps1",
+      "type": "visual-wrapper",
+      "status": "available",
+      "purpose": "visual-wrapper",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": true,
+      "requiresPlaywright": true,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [
+        "default-execution"
+      ],
+      "producesContextFor": [
+        "visual-debt-map.json",
+        "adoption-scorecard.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    },
+    {
+      "id": "run_playwright_surface_menu",
+      "name": "run_playwright_surface_menu.ps1",
+      "path": "F:\\PRISMA_CTX\\MOTORES\\run_playwright_surface_menu.ps1",
+      "type": "visual-wrapper",
+      "status": "available",
+      "purpose": "visual-wrapper",
+      "inputs": [
+        "repo paths",
+        "surface roots",
+        "context filters"
+      ],
+      "outputs": [
+        "context package metadata",
+        "reports",
+        "manifests"
+      ],
+      "safeToRun": false,
+      "requiresServer": true,
+      "requiresPlaywright": true,
+      "requiresInstall": false,
+      "allowedPhase": [
+        "inspect",
+        "derive-signals"
+      ],
+      "blockedPhase": [
+        "default-execution"
+      ],
+      "producesContextFor": [
+        "visual-debt-map.json",
+        "adoption-scorecard.json"
+      ],
+      "notes": "Inspected as context motor; not executed by this pass.",
+      "allowedUse": [
+        "inspect",
+        "reuse-patterns",
+        "derive-surface-signals"
+      ],
+      "forbiddenUse": [
+        "replace-result-zip",
+        "mutate-repo",
+        "start-dev-server",
+        "install-dependencies"
+      ],
+      "signals": [
+        "surface roots",
+        "classification policy",
+        "packaging policy"
+      ],
+      "usedBy": [
+        "context-motors-map.json",
+        "context-packaging-policy.json",
+        "adoption-scorecard.json"
+      ]
+    }
+  ]
+}

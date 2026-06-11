@@ -1,0 +1,363 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.090Z",
+  "blueprints": [
+    {
+      "id": "blueprint.tablet.commerce-review",
+      "surface": "tablet",
+      "domain": "commerce",
+      "route": "/catalog",
+      "screenIntent": "operator catalog review",
+      "criticality": "high",
+      "density": "touch",
+      "recipe": "product-commerce",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.state-banner",
+        "prisma.product-card",
+        "prisma.data-panel",
+        "prisma.metric-card"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "background": {
+        "runtimePublicUrl": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "libraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "validatorsRequired": [
+        "validate-screen-blueprints",
+        "validate-generator-contracts",
+        "validate-governed-system"
+      ],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "filesWouldCreate": [
+        "Screen.tsx",
+        "screen.contract.json",
+        "README.md",
+        "validation-plan.md",
+        "manifest.json"
+      ],
+      "productionWired": false
+    },
+    {
+      "id": "blueprint.pc.admin-overview",
+      "surface": "pc",
+      "domain": "admin",
+      "route": "/dashboard",
+      "screenIntent": "backoffice overview",
+      "criticality": "high",
+      "density": "dense",
+      "recipe": "pc-graphite-glass",
+      "allowedComponents": [
+        "mapped-pc-app-shell",
+        "mapped-pc-tri-db-status-card"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "background": {
+        "runtimePublicUrl": "/visual-backgrounds/pc/assets/pc-cloudglass-default.jpg",
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "libraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-select",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "ogl",
+        "framer-motion"
+      ],
+      "validatorsRequired": [
+        "validate-screen-blueprints",
+        "validate-generator-contracts",
+        "validate-governed-system"
+      ],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "motorReferences": [
+        "motor_pc",
+        "motor_gobierno"
+      ],
+      "filesWouldCreate": [
+        "Screen.tsx",
+        "screen.contract.json",
+        "README.md",
+        "validation-plan.md",
+        "manifest.json"
+      ],
+      "productionWired": false
+    },
+    {
+      "id": "blueprint.mobile.owner-pulse",
+      "surface": "mobile",
+      "domain": "mobile-companion",
+      "route": "/",
+      "screenIntent": "owner pulse",
+      "criticality": "medium",
+      "density": "compact/thumb",
+      "recipe": "mobile-mist",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "background": {
+        "runtimePublicUrl": "/visual-backgrounds/mobile/assets/mobile-mist-default.jpg",
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "libraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "validatorsRequired": [
+        "validate-screen-blueprints",
+        "validate-generator-contracts",
+        "validate-governed-system"
+      ],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "motorReferences": [
+        "motor_app_movil"
+      ],
+      "filesWouldCreate": [
+        "Screen.tsx",
+        "screen.contract.json",
+        "README.md",
+        "validation-plan.md",
+        "manifest.json"
+      ],
+      "productionWired": false
+    },
+    {
+      "id": "blueprint.chart-lab.analysis",
+      "surface": "chart-lab",
+      "domain": "chart-lab",
+      "route": "/chart-lab",
+      "screenIntent": "chart analysis lab",
+      "criticality": "medium",
+      "density": "lab",
+      "recipe": "chart-lab-analysis",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "background": {
+        "runtimePublicUrl": "/visual-backgrounds/chart-lab/assets/chart-lab-default.jpg",
+        "reserved": false,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "libraries": [
+        "ogl",
+        "motion",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "framer-motion"
+      ],
+      "validatorsRequired": [
+        "validate-screen-blueprints",
+        "validate-generator-contracts",
+        "validate-governed-system"
+      ],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "motorReferences": [
+        "motor_lab_chart"
+      ],
+      "filesWouldCreate": [
+        "Screen.tsx",
+        "screen.contract.json",
+        "README.md",
+        "validation-plan.md",
+        "manifest.json"
+      ],
+      "productionWired": false
+    },
+    {
+      "id": "blueprint.kiosk.future-display",
+      "surface": "kiosk",
+      "domain": "future-surface",
+      "route": "/kiosk/future-display",
+      "screenIntent": "future kiosk dry-run",
+      "criticality": "reserved",
+      "density": "reserved",
+      "recipe": "reserved-safe-display",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "background": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "libraries": [],
+      "validatorsRequired": [
+        "validate-screen-blueprints",
+        "validate-generator-contracts",
+        "validate-governed-system"
+      ],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "filesWouldCreate": [
+        "Screen.tsx",
+        "screen.contract.json",
+        "README.md",
+        "validation-plan.md",
+        "manifest.json"
+      ],
+      "productionWired": false
+    }
+  ]
+}

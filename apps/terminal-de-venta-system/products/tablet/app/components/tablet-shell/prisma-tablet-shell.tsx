@@ -68,6 +68,12 @@ export function PrismaTabletShellUnified({
   const pendingCount = getTabletPendingCount(runtimeSnapshot);
   const screenZone = getScreenZone(currentPath);
   const screenQa = getScreenQa(currentPath);
+  const premiumPosSurface = visualSurface === "tablet-pos";
+  const shellClassName = premiumPosSurface ? `${styles.shell} ${styles.posPremiumShell}` : styles.shell;
+  const sidebarClassName = premiumPosSurface ? `${styles.sidebar} ${styles.posPremiumSidebar}` : styles.sidebar;
+  const headerClassName = premiumPosSurface ? `${styles.header} ${styles.posPremiumHeader}` : styles.header;
+  const mainClassName = premiumPosSurface ? `${styles.main} ${styles.posPremiumMain}` : styles.main;
+  const contentClassName = premiumPosSurface ? `${styles.content} ${styles.posPremiumContent}` : styles.content;
   const groupedNavItems = NAV_GROUP_ORDER.map((group) => ({
     group,
     label: TABLET_NAV_GROUP_LABELS[group],
@@ -78,7 +84,7 @@ export function PrismaTabletShellUnified({
     <>
       <input id="prisma-tablet-sidebar-toggle" className={styles.sidebarToggleInput} type="checkbox" aria-label="Contraer o expandir navegación de PRISMA Tablet" />
       <div
-        className={styles.shell}
+        className={shellClassName}
         data-prisma-component="AppShell"
         data-prisma-product="tablet"
         data-prisma-flow-stage={flowStage}
@@ -91,7 +97,8 @@ export function PrismaTabletShellUnified({
         data-prisma-background="tablet-background-active-fixed"
       >
         <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>
-        <aside className={styles.sidebar} aria-label="Navegación principal de Tablet" data-prisma-component="Sidebar" data-prisma-role="operational-summary">
+        {premiumPosSurface ? <span className={styles.posPremiumShellScene} aria-hidden="true" /> : null}
+        <aside className={sidebarClassName} aria-label="Navegación principal de Tablet" data-prisma-component="Sidebar" data-prisma-role="operational-summary">
           <label className={styles.brand} htmlFor="prisma-tablet-sidebar-toggle" title="Contraer o expandir navegación" data-prisma-component="BrandCollapseToggle">
             <span className={styles.brandMark} aria-hidden="true">
               <img className={styles.brandImage} src="/prisma/logo-prisma-primary.png" alt="" />
@@ -177,8 +184,8 @@ export function PrismaTabletShellUnified({
           </div>
         </aside>
 
-        <main id="contenido-principal" className={styles.main}>
-          <header className={styles.header} data-prisma-component="TopCommandBar" data-prisma-role="operational-summary">
+        <main id="contenido-principal" className={mainClassName}>
+          <header className={headerClassName} data-prisma-component="TopCommandBar" data-prisma-role="operational-summary">
             <div className={styles.titleGroup}>
               <span className={styles.kicker}>{kicker}</span>
               <h1>{title}</h1>
@@ -201,7 +208,7 @@ export function PrismaTabletShellUnified({
           </header>
           {actions ? <section className={styles.actionBand} aria-label="Acciones de pantalla" data-prisma-component="SecondaryActionCard">{actions}</section> : null}
           <div
-            className={styles.content}
+            className={contentClassName}
             data-prisma-zone={screenZone}
             data-prisma-role={screenZone ? "operational-summary" : undefined}
             data-prisma-priority={screenZone ? "primary" : undefined}

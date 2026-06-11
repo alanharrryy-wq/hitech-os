@@ -10,7 +10,9 @@ export type PosPackshot = {
   fallbackSrcs: string[];
 };
 
-/* PRISMA_TABLET_PACKSHOT_ENGINE_03
+/* PRISMA_TABLET_PACKSHOT_ENGINE_01
+ * PRISMA_TABLET_PACKSHOT_ENGINE_02
+ * PRISMA_TABLET_PACKSHOT_ENGINE_03
  * Visual-only resolver for skin-aware product packshots.
  *
  * Public asset contract:
@@ -284,18 +286,27 @@ function makePackshot(rule: PackshotRule, skin: PrismaPackshotSkin, category: st
   const categorySkinFallback = skinFallbackSlugForCategory(categoryKey);
   const genericFile = categoryFallback?.file ?? (POS_PACKSHOT_FILENAMES.includes(rule.file as LegacyGenericFile) ? (rule.file as LegacyGenericFile) : DEFAULT_FALLBACK_FILE);
   const legacySpecificSrc = rule.base === LEGACY_PRODUCT_BASE ? legacyProductPath(rule.file) : null;
+  const legacyGenericSrc = legacyGenericPath(genericFile);
+  const isLegacyGenericRule = !rule.slug && rule.base !== LEGACY_PRODUCT_BASE && POS_PACKSHOT_FILENAMES.includes(rule.file as LegacyGenericFile);
 
-  const sources = unique([
-    skinPath(skin, slug),
-    skinPath(otherSkin, slug),
-    directSlug && directSlug !== slug ? skinPath(skin, directSlug) : "",
-    directSlug && directSlug !== slug ? skinPath(otherSkin, directSlug) : "",
-    categorySkinFallback ? skinPath(skin, categorySkinFallback) : "",
-    categorySkinFallback ? skinPath(otherSkin, categorySkinFallback) : "",
-    legacySpecificSrc ?? "",
-    legacyGenericPath(genericFile),
-    legacyGenericPath(DEFAULT_FALLBACK_FILE)
-  ]);
+  const sources = isLegacyGenericRule
+    ? unique([
+        legacyGenericSrc,
+        categorySkinFallback ? skinPath(skin, categorySkinFallback) : "",
+        categorySkinFallback ? skinPath(otherSkin, categorySkinFallback) : "",
+        legacyGenericPath(DEFAULT_FALLBACK_FILE)
+      ])
+    : unique([
+        skinPath(skin, slug),
+        skinPath(otherSkin, slug),
+        directSlug && directSlug !== slug ? skinPath(skin, directSlug) : "",
+        directSlug && directSlug !== slug ? skinPath(otherSkin, directSlug) : "",
+        categorySkinFallback ? skinPath(skin, categorySkinFallback) : "",
+        categorySkinFallback ? skinPath(otherSkin, categorySkinFallback) : "",
+        legacySpecificSrc ?? "",
+        legacyGenericSrc,
+        legacyGenericPath(DEFAULT_FALLBACK_FILE)
+      ]);
 
   return {
     src: sources[0],
@@ -404,7 +415,7 @@ function ruleFromGenericCategoryText(text: string): PackshotRule | null {
     return { file: "cereal_box_512.png", alt: "Packshot genérico de cereal", kind: "box", category: "cereales" };
   }
 
-  if (includesAny(text, ["trident", "clorets", "halls", "carlos v", "snickers", "hershey", "mazapan", "pelon", "paleta", "duvalin", "kinder", "m&m", "dulce", "chocolate"])) {
+  if (includesAny(text, ["trident", "clorets", "halls", "carlos v", "snickers", "hershey", "mazapan", "pelon", "paleta", "duvalin", "kinder", "m&m", "dulce", "chocolate", "gomita", "gomitas"])) {
     return { file: "candy_bar_512.png", alt: "Packshot genérico de dulce", kind: "box", category: "dulces" };
   }
 

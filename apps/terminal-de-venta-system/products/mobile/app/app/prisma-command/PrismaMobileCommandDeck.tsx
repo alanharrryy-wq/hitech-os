@@ -16,8 +16,21 @@ type PrismaMobileCommandDeckProps = {
   flags: PrismaChartFlags;
 };
 
+const MOBILE_FILTERS = [
+  { id: "24h", label: "24h", summary: "Ventana móvil enfocada en las últimas 24 horas." },
+  { id: "priority", label: "Prioridad alta", summary: "Foco owner: acciones e incidentes que piden atención alta." },
+  { id: "stale", label: "Datos stale", summary: "Foco owner: fuentes con frescura vencida o confianza degradada." },
+  { id: "reset", label: "Reset", summary: "Filtros Mobile limpios; vista completa del command deck." }
+] as const;
+
 export function PrismaMobileCommandDeck({ envelope, flags }: PrismaMobileCommandDeckProps) {
   const [focusLabel, setFocusLabel] = useState("Toque un chart para ampliar resumen");
+  const [activeFilter, setActiveFilter] = useState<(typeof MOBILE_FILTERS)[number]["id"]>("reset");
+
+  function applyFilter(filter: (typeof MOBILE_FILTERS)[number]) {
+    setActiveFilter(filter.id);
+    setFocusLabel(filter.summary);
+  }
 
   if (!flags.enabled) {
     return (
@@ -33,7 +46,7 @@ export function PrismaMobileCommandDeck({ envelope, flags }: PrismaMobileCommand
   }
 
   return (
-    <main className={styles.shell} data-prisma-charts-surface="mobile" data-prisma-charts-enabled="true">
+    <main className={styles.shell} data-prisma-charts-surface="mobile" data-prisma-charts-enabled="true" data-prisma-hardening="mobile-command-filters-260611">
       <section className={styles.header}>
         <p>Mobile supervisa</p>
         <h1>Owner Command</h1>
@@ -46,10 +59,17 @@ export function PrismaMobileCommandDeck({ envelope, flags }: PrismaMobileCommand
       </section>
 
       <section className={styles.filterRail} aria-label="Filtros Mobile">
-        <button type="button">24h</button>
-        <button type="button">Prioridad alta</button>
-        <button type="button">Datos stale</button>
-        <button type="button">Reset</button>
+        {MOBILE_FILTERS.map((filter) => (
+          <button
+            key={filter.id}
+            type="button"
+            aria-pressed={activeFilter === filter.id}
+            data-active={activeFilter === filter.id ? "true" : "false"}
+            onClick={() => applyFilter(filter)}
+          >
+            {filter.label}
+          </button>
+        ))}
       </section>
 
       <section className={styles.focusPanel} aria-live="polite">

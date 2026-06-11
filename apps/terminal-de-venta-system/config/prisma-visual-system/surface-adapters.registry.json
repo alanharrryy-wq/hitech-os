@@ -1,195 +1,394 @@
 {
   "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
   "adapters": [
     {
       "surfaceId": "tablet",
       "status": "current",
-      "role": "light tactile operational POS-first",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/tablet/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "standalone POS / venta táctil",
+      "density": "touch",
+      "defaultTheme": "light-operational-cloudglass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "shellContract": "claro, táctil, luminoso, legible",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "tablet-cloudglass-light",
+        "glass-pill",
+        "surface-panel",
+        "product-commerce"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "forbiddenPatterns": [
+        "dark-dominante",
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds-runtime-url"
+      ],
+      "accessibilityConstraints": [
+        "touch-target-min-44",
+        "contrast-readable",
+        "focus-visible"
+      ],
+      "runtimeBoundaries": [
+        "no-pc-dependency-to-sell",
+        "no-prisma-generate-hot-gate"
       ]
     },
     {
       "surfaceId": "pc",
       "status": "current",
-      "role": "dense graphite administrative backoffice",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/pc/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "backoffice/admin/análisis",
+      "density": "dense",
+      "defaultTheme": "graphite-admin-cloudglass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/pc/assets/pc-cloudglass-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "denso, legible, analítico, ordenado",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "pc-graphite-glass",
+        "data-panel",
+        "metric-card",
+        "command-panel"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-select",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion",
+        "ogl"
+      ],
+      "forbiddenPatterns": [
+        "tablet-aesthetic-direct-copy",
+        "oversized-touch-containers",
+        "ogl-for-layout"
+      ],
+      "accessibilityConstraints": [
+        "keyboard-navigation",
+        "data-density-legible",
+        "focus-visible"
+      ],
+      "runtimeBoundaries": [
+        "no-tablet-shell-inheritance"
       ]
     },
     {
       "surfaceId": "mobile",
       "status": "current",
-      "role": "compact pulse companion thumb-friendly",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/mobile/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "companion/pulse/alertas",
+      "density": "compact/thumb",
+      "defaultTheme": "mobile-mist",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/mobile/assets/mobile-mist-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "compacto, vertical, rápido, thumb-friendly",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "mobile-mist",
+        "state-banner",
+        "metric-card"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "forbiddenPatterns": [
+        "tablet-small-copy",
+        "wide-table-layout"
+      ],
+      "accessibilityConstraints": [
+        "thumb-zone",
+        "tap-target-min-44"
+      ],
+      "runtimeBoundaries": [
+        "mobile-is-companion-not-tablet"
       ]
     },
     {
       "surfaceId": "chart-lab",
       "status": "current",
-      "role": "experimental analytical isolated",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/chart-lab/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "experimental/lab visual",
+      "density": "lab",
+      "defaultTheme": "analytical-glass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/chart-lab/assets/chart-lab-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "experimental pero gobernado",
+      "layerBudget": {
+        "maxShellDepth": 2,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "chart-lab-analysis",
+        "liquid-panel"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "allowedLibraries": [
+        "ogl",
+        "motion",
+        "framer-motion",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip"
+      ],
+      "forbiddenPatterns": [
+        "production-promotion-without-contract",
+        "global-css-export"
+      ],
+      "accessibilityConstraints": [
+        "lab-contrast-notes",
+        "no-seizure-motion"
+      ],
+      "runtimeBoundaries": [
+        "isolated-lab"
       ]
     },
     {
       "surfaceId": "kiosk",
       "status": "reserved",
-      "role": "large touch customer/self-service",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/kiosk/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved kiosk surface",
+      "density": "reserved",
+      "defaultTheme": "kiosk-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     },
     {
       "surfaceId": "customer-display",
       "status": "reserved",
-      "role": "customer-facing readable passive",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/customer-display/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved customer-display surface",
+      "density": "reserved",
+      "defaultTheme": "customer-display-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     },
     {
       "surfaceId": "warehouse-scanner",
       "status": "reserved",
-      "role": "rugged high contrast low latency",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/warehouse-scanner/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved warehouse-scanner surface",
+      "density": "reserved",
+      "defaultTheme": "warehouse-scanner-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     },
     {
       "surfaceId": "manager-console",
       "status": "reserved",
-      "role": "executive dense overview",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/manager-console/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved manager-console surface",
+      "density": "reserved",
+      "defaultTheme": "manager-console-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     },
     {
       "surfaceId": "training-mode",
       "status": "reserved",
-      "role": "guided safe walkthrough",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/training/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved training-mode surface",
+      "density": "reserved",
+      "defaultTheme": "training-mode-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     },
     {
       "surfaceId": "demo-mode",
       "status": "reserved",
-      "role": "seeded presentation-safe",
-      "density": "surface-specific",
-      "runtimeBackgroundPrefix": "/visual-backgrounds/demo/assets/",
-      "mustNot": [
-        "use-products-0-backgrounds-as-public-url",
-        "reuse-legacy-local-backgrounds",
-        "invent-unregistered-shells"
+      "role": "reserved demo-mode surface",
+      "density": "reserved",
+      "defaultTheme": "demo-mode-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
       ],
-      "qa": [
-        "schema",
-        "registry",
-        "route-binding",
-        "background-contract",
-        "visual-evidence-if-live-server"
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "public-display",
+      "status": "reserved",
+      "role": "reserved public-display surface",
+      "density": "reserved",
+      "defaultTheme": "public-display-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
       ]
     }
-  ]
+  ],
+  "compatibility": "synced-from-prisma-visual"
 }

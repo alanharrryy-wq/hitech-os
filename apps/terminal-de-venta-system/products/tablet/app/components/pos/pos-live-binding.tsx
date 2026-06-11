@@ -29,7 +29,6 @@ function getPrismaRealtimeStateUrl() {
   return `${getPrismaRealtimeBaseUrl()}/state`;
 }
 
-const STATE_URL = "${getPrismaRealtimeBaseUrl()}/state";
 const PACKAGE_MARKER = "PRISMA_VISUAL_OS_LIVE_STATUS_TRUTH_00ZL";
 
 function scoreValue(score: PrismaPayload["score"]): string {
@@ -111,7 +110,7 @@ export function PosLiveBinding() {
 
     async function hydrateLastState() {
       try {
-        const response = await fetch(STATE_URL, { cache: "no-store" });
+        const response = await fetch(getPrismaRealtimeStateUrl(), { cache: "no-store" });
         if (!response.ok) return;
         const body = await response.json();
         consumePayload(body?.lastPayload);
@@ -176,27 +175,28 @@ export function PosLiveBinding() {
       data-prisma-visual-live-status-truth="00ZL"
       style={{
         position: "fixed",
-        right: 12,
-        bottom: 12,
-        zIndex: 20,
+        right: 18,
+        bottom: 18,
+        zIndex: 10,
         display: "grid",
         gap: 2,
-        minWidth: 160,
-        maxWidth: 240,
-        padding: "8px 10px",
-        borderRadius: 14,
-        border: "1px solid rgba(139,236,255,.35)",
-        background: "rgba(8,14,28,.66)",
-        color: "#f3fbff",
-        fontSize: 11,
+        minWidth: 148,
+        maxWidth: 220,
+        padding: "7px 10px",
+        borderRadius: 18,
+        border: "1px solid rgba(127, 178, 255, .34)",
+        background: "linear-gradient(135deg, rgba(255,255,255,.68), rgba(229,244,255,.42))",
+        color: "#1b477a",
+        fontSize: 10,
         lineHeight: 1.2,
+        opacity: .82,
         pointerEvents: "none",
-        boxShadow: "0 12px 28px rgba(0,0,0,.28)",
-        backdropFilter: "blur(8px)",
+        boxShadow: "0 16px 38px rgba(16, 74, 128, .13), inset 0 1px 0 rgba(255,255,255,.72)",
+        backdropFilter: "blur(14px) saturate(1.08)",
       }}
       title={`PRISMA 00T Live POS Binding: ${status}`}
     >
-      <strong style={{ letterSpacing: ".08em" }}>PRISMA Tablet POS</strong>
+      <strong style={{ letterSpacing: ".08em", color: "#0f67d6" }}>PRISMA Tablet POS</strong>
       <span>{visibleRealtimeStatus(status)}</span>
       <small style={{ opacity: .72 }}>{recipe}{score ? ` · ${score}` : ""}</small>
     </div>

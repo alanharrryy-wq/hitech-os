@@ -1,0 +1,3654 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.083Z",
+  "components": [
+    {
+      "id": "prisma.surface-panel",
+      "canonicalName": "PrismaSurfacePanel",
+      "family": "panel",
+      "layer": "surface",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-panel",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/prisma-visual-catalog"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaSurfacePanel.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.surface-panel",
+        "header": "header slot controlled by prisma.surface-panel",
+        "body": "body slot controlled by prisma.surface-panel",
+        "actions": "actions slot controlled by prisma.surface-panel"
+      },
+      "variants": [
+        "prisma.surface-panel.tablet.default",
+        "prisma.surface-panel.pc.default",
+        "prisma.surface-panel.mobile.default",
+        "prisma.surface-panel.chart-lab.default",
+        "prisma.surface-panel.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.glass-card",
+      "canonicalName": "PrismaGlassCard",
+      "family": "card",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "glass-card",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaGlassCard.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.glass-card",
+        "header": "header slot controlled by prisma.glass-card",
+        "content": "content slot controlled by prisma.glass-card",
+        "footer": "footer slot controlled by prisma.glass-card"
+      },
+      "variants": [
+        "prisma.glass-card.tablet.default",
+        "prisma.glass-card.pc.default",
+        "prisma.glass-card.mobile.default",
+        "prisma.glass-card.chart-lab.default",
+        "prisma.glass-card.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.action-button",
+      "canonicalName": "PrismaActionButton",
+      "family": "action",
+      "layer": "control",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "action-button",
+      "allowedLibraries": [
+        "@radix-ui/react-slot"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/prisma-visual-catalog",
+        "tablet:/checkout",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaActionButton.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "label",
+        "icon",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.action-button",
+        "label": "label slot controlled by prisma.action-button",
+        "icon": "icon slot controlled by prisma.action-button",
+        "state": "state slot controlled by prisma.action-button"
+      },
+      "variants": [
+        "prisma.action-button.tablet.default",
+        "prisma.action-button.pc.default",
+        "prisma.action-button.mobile.default",
+        "prisma.action-button.chart-lab.default",
+        "prisma.action-button.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.state-banner",
+      "canonicalName": "PrismaStateBanner",
+      "family": "state",
+      "layer": "feedback",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "state-banner",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/prisma-visual-catalog",
+        "mobile:/",
+        "mobile:/prisma-app",
+        "mobile:/prisma-app/install",
+        "mobile:/prisma-app/offline",
+        "mobile:/prisma-command"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaStateBanner.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "status",
+        "message",
+        "action"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.state-banner",
+        "status": "status slot controlled by prisma.state-banner",
+        "message": "message slot controlled by prisma.state-banner",
+        "action": "action slot controlled by prisma.state-banner"
+      },
+      "variants": [
+        "prisma.state-banner.tablet.default",
+        "prisma.state-banner.pc.default",
+        "prisma.state-banner.mobile.default",
+        "prisma.state-banner.chart-lab.default",
+        "prisma.state-banner.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.route-frame",
+      "canonicalName": "PrismaRouteFrame",
+      "family": "route-frame",
+      "layer": "route",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "route-frame",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/prisma-visual-catalog",
+        "tablet:/",
+        "tablet:/catalog",
+        "tablet:/checkout",
+        "tablet:/events/outbox",
+        "tablet:/existencias",
+        "tablet:/inventory",
+        "tablet:/inventory/low-stock",
+        "tablet:/offline",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference",
+        "tablet:/prisma-pulse",
+        "tablet:/referencia-visual",
+        "tablet:/release-gate",
+        "tablet:/returns",
+        "tablet:/runtime-snapshot-preview",
+        "tablet:/sales",
+        "tablet:/sales/history",
+        "tablet:/sales/history/[saleId]",
+        "tablet:/sales/today",
+        "tablet:/sales/today/[saleId]",
+        "tablet:/sales/today/[saleId]/return",
+        "tablet:/screen-standard-preview",
+        "tablet:/settings/data",
+        "tablet:/settings/export",
+        "tablet:/settings/license",
+        "tablet:/shift",
+        "tablet:/stock",
+        "tablet:/sync",
+        "tablet:/visual-os",
+        "tablet:/visual-os/detached",
+        "tablet:/visual-os/materiality-catalog",
+        "tablet:/visual-os/pro",
+        "tablet:/visual-os/realtime",
+        "tablet:/visual-os/tablet-background-gallery",
+        "tablet:/visual-os/tablet-codex-gallery",
+        "pc:/",
+        "pc:/acciones-masivas",
+        "pc:/ajustes-inventario",
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/audit",
+        "pc:/auditoria-inventario",
+        "pc:/cash-sessions",
+        "pc:/catalog",
+        "pc:/catalogo-activo",
+        "pc:/conteos-operativos",
+        "pc:/contratos-reporte",
+        "pc:/counts",
+        "pc:/dashboard",
+        "pc:/data-quality",
+        "pc:/detalle-registros",
+        "pc:/devices",
+        "pc:/estados-operativos",
+        "pc:/existencias-criticas",
+        "pc:/exportables",
+        "pc:/filtros-avanzados",
+        "pc:/filtros-fecha",
+        "pc:/forecast-basico",
+        "pc:/glosario",
+        "pc:/gobierno",
+        "pc:/incidencias-recepcion",
+        "pc:/integridad-barcodes",
+        "pc:/laboratorio-pc",
+        "pc:/laboratorio-pc/chart-lab",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/laboratorio-pc/referencia-visual",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "pc:/license-runtime",
+        "pc:/metricas-dia",
+        "pc:/movements",
+        "pc:/ordenes-compra",
+        "pc:/outbox-operativo",
+        "pc:/politica-precios",
+        "pc:/prisma-insights",
+        "pc:/prisma-insights/chart-lab",
+        "pc:/proveedores",
+        "pc:/purchasing",
+        "pc:/receiving",
+        "pc:/recepcion-proveedor",
+        "pc:/referencia-visual",
+        "pc:/referencia-visual/liquid-glass",
+        "pc:/referencia-visual/liquid-glass-capsules",
+        "pc:/replenishment",
+        "pc:/sales-control",
+        "pc:/salud-barcodes",
+        "pc:/scorecards-negocio",
+        "pc:/senal-reabasto",
+        "pc:/settings",
+        "pc:/settings/license",
+        "pc:/stock",
+        "pc:/sync",
+        "pc:/sync-operativo",
+        "pc:/tablas-operativas",
+        "pc:/tablero-kpi",
+        "pc:/tablet-communication",
+        "pc:/unknown",
+        "pc:/validacion-catalogo",
+        "pc:/vistas-ejecutivas",
+        "mobile:/",
+        "mobile:/prisma-app",
+        "mobile:/prisma-app/install",
+        "mobile:/prisma-app/offline",
+        "mobile:/prisma-command",
+        "chart-lab:/",
+        "chart-lab:/recipe-studio-v2"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaRouteFrame.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "surface",
+        "content",
+        "navigation"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.route-frame",
+        "surface": "surface slot controlled by prisma.route-frame",
+        "content": "content slot controlled by prisma.route-frame",
+        "navigation": "navigation slot controlled by prisma.route-frame"
+      },
+      "variants": [
+        "prisma.route-frame.tablet.default",
+        "prisma.route-frame.pc.default",
+        "prisma.route-frame.mobile.default",
+        "prisma.route-frame.chart-lab.default",
+        "prisma.route-frame.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.shell-frame",
+      "canonicalName": "PrismaShellFrame",
+      "family": "shell",
+      "layer": "shell",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "shell-frame",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/",
+        "tablet:/catalog",
+        "tablet:/checkout",
+        "tablet:/events/outbox",
+        "tablet:/existencias",
+        "tablet:/inventory",
+        "tablet:/inventory/low-stock",
+        "tablet:/offline",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference",
+        "tablet:/prisma-pulse",
+        "tablet:/referencia-visual",
+        "tablet:/release-gate",
+        "tablet:/returns",
+        "tablet:/runtime-snapshot-preview",
+        "tablet:/sales",
+        "tablet:/sales/history",
+        "tablet:/sales/history/[saleId]",
+        "tablet:/sales/today",
+        "tablet:/sales/today/[saleId]",
+        "tablet:/sales/today/[saleId]/return",
+        "tablet:/screen-standard-preview",
+        "tablet:/settings/data",
+        "tablet:/settings/export",
+        "tablet:/settings/license",
+        "tablet:/shift",
+        "tablet:/stock",
+        "tablet:/sync",
+        "tablet:/visual-os",
+        "tablet:/visual-os/detached",
+        "tablet:/visual-os/materiality-catalog",
+        "tablet:/visual-os/pro",
+        "tablet:/visual-os/realtime",
+        "tablet:/visual-os/tablet-background-gallery",
+        "tablet:/visual-os/tablet-codex-gallery",
+        "pc:/",
+        "pc:/acciones-masivas",
+        "pc:/ajustes-inventario",
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/audit",
+        "pc:/auditoria-inventario",
+        "pc:/cash-sessions",
+        "pc:/catalog",
+        "pc:/catalogo-activo",
+        "pc:/conteos-operativos",
+        "pc:/contratos-reporte",
+        "pc:/counts",
+        "pc:/dashboard",
+        "pc:/data-quality",
+        "pc:/detalle-registros",
+        "pc:/devices",
+        "pc:/estados-operativos",
+        "pc:/existencias-criticas",
+        "pc:/exportables",
+        "pc:/filtros-avanzados",
+        "pc:/filtros-fecha",
+        "pc:/forecast-basico",
+        "pc:/glosario",
+        "pc:/gobierno",
+        "pc:/incidencias-recepcion",
+        "pc:/integridad-barcodes",
+        "pc:/laboratorio-pc",
+        "pc:/laboratorio-pc/chart-lab",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/laboratorio-pc/referencia-visual",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "pc:/license-runtime",
+        "pc:/metricas-dia",
+        "pc:/movements",
+        "pc:/ordenes-compra",
+        "pc:/outbox-operativo",
+        "pc:/politica-precios",
+        "pc:/prisma-insights",
+        "pc:/prisma-insights/chart-lab",
+        "pc:/proveedores",
+        "pc:/purchasing",
+        "pc:/receiving",
+        "pc:/recepcion-proveedor",
+        "pc:/referencia-visual",
+        "pc:/referencia-visual/liquid-glass",
+        "pc:/referencia-visual/liquid-glass-capsules",
+        "pc:/replenishment",
+        "pc:/sales-control",
+        "pc:/salud-barcodes",
+        "pc:/scorecards-negocio",
+        "pc:/senal-reabasto",
+        "pc:/settings",
+        "pc:/settings/license",
+        "pc:/stock",
+        "pc:/sync",
+        "pc:/sync-operativo",
+        "pc:/tablas-operativas",
+        "pc:/tablero-kpi",
+        "pc:/tablet-communication",
+        "pc:/unknown",
+        "pc:/validacion-catalogo",
+        "pc:/vistas-ejecutivas",
+        "mobile:/",
+        "mobile:/prisma-app",
+        "mobile:/prisma-app/install",
+        "mobile:/prisma-app/offline",
+        "mobile:/prisma-command",
+        "chart-lab:/",
+        "chart-lab:/recipe-studio-v2"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaShellFrame.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "surface",
+        "content",
+        "navigation"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.shell-frame",
+        "surface": "surface slot controlled by prisma.shell-frame",
+        "content": "content slot controlled by prisma.shell-frame",
+        "navigation": "navigation slot controlled by prisma.shell-frame"
+      },
+      "variants": [
+        "prisma.shell-frame.tablet.default",
+        "prisma.shell-frame.pc.default",
+        "prisma.shell-frame.mobile.default",
+        "prisma.shell-frame.chart-lab.default",
+        "prisma.shell-frame.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.background-layer",
+      "canonicalName": "PrismaBackgroundLayer",
+      "family": "background",
+      "layer": "background",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "background-layer",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/",
+        "tablet:/catalog",
+        "tablet:/checkout",
+        "tablet:/events/outbox",
+        "tablet:/existencias",
+        "tablet:/inventory",
+        "tablet:/inventory/low-stock",
+        "tablet:/offline",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference",
+        "tablet:/prisma-pulse",
+        "tablet:/referencia-visual",
+        "tablet:/release-gate",
+        "tablet:/returns",
+        "tablet:/runtime-snapshot-preview",
+        "tablet:/sales",
+        "tablet:/sales/history",
+        "tablet:/sales/history/[saleId]",
+        "tablet:/sales/today",
+        "tablet:/sales/today/[saleId]",
+        "tablet:/sales/today/[saleId]/return",
+        "tablet:/screen-standard-preview",
+        "tablet:/settings/data",
+        "tablet:/settings/export",
+        "tablet:/settings/license",
+        "tablet:/shift",
+        "tablet:/stock",
+        "tablet:/sync",
+        "tablet:/visual-os",
+        "tablet:/visual-os/detached",
+        "tablet:/visual-os/materiality-catalog",
+        "tablet:/visual-os/pro",
+        "tablet:/visual-os/realtime",
+        "tablet:/visual-os/tablet-background-gallery",
+        "tablet:/visual-os/tablet-codex-gallery",
+        "pc:/",
+        "pc:/acciones-masivas",
+        "pc:/ajustes-inventario",
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/audit",
+        "pc:/auditoria-inventario",
+        "pc:/cash-sessions",
+        "pc:/catalog",
+        "pc:/catalogo-activo",
+        "pc:/conteos-operativos",
+        "pc:/contratos-reporte",
+        "pc:/counts",
+        "pc:/dashboard",
+        "pc:/data-quality",
+        "pc:/detalle-registros",
+        "pc:/devices",
+        "pc:/estados-operativos",
+        "pc:/existencias-criticas",
+        "pc:/exportables",
+        "pc:/filtros-avanzados",
+        "pc:/filtros-fecha",
+        "pc:/forecast-basico",
+        "pc:/glosario",
+        "pc:/gobierno",
+        "pc:/incidencias-recepcion",
+        "pc:/integridad-barcodes",
+        "pc:/laboratorio-pc",
+        "pc:/laboratorio-pc/chart-lab",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/laboratorio-pc/referencia-visual",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass",
+        "pc:/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "pc:/license-runtime",
+        "pc:/metricas-dia",
+        "pc:/movements",
+        "pc:/ordenes-compra",
+        "pc:/outbox-operativo",
+        "pc:/politica-precios",
+        "pc:/prisma-insights",
+        "pc:/prisma-insights/chart-lab",
+        "pc:/proveedores",
+        "pc:/purchasing",
+        "pc:/receiving",
+        "pc:/recepcion-proveedor",
+        "pc:/referencia-visual",
+        "pc:/referencia-visual/liquid-glass",
+        "pc:/referencia-visual/liquid-glass-capsules",
+        "pc:/replenishment",
+        "pc:/sales-control",
+        "pc:/salud-barcodes",
+        "pc:/scorecards-negocio",
+        "pc:/senal-reabasto",
+        "pc:/settings",
+        "pc:/settings/license",
+        "pc:/stock",
+        "pc:/sync",
+        "pc:/sync-operativo",
+        "pc:/tablas-operativas",
+        "pc:/tablero-kpi",
+        "pc:/tablet-communication",
+        "pc:/unknown",
+        "pc:/validacion-catalogo",
+        "pc:/vistas-ejecutivas",
+        "mobile:/",
+        "mobile:/prisma-app",
+        "mobile:/prisma-app/install",
+        "mobile:/prisma-app/offline",
+        "mobile:/prisma-command",
+        "chart-lab:/",
+        "chart-lab:/recipe-studio-v2"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaBackgroundLayer.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "media",
+        "overlay",
+        "fallback"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.background-layer",
+        "media": "media slot controlled by prisma.background-layer",
+        "overlay": "overlay slot controlled by prisma.background-layer",
+        "fallback": "fallback slot controlled by prisma.background-layer"
+      },
+      "variants": [
+        "prisma.background-layer.tablet.default",
+        "prisma.background-layer.pc.default",
+        "prisma.background-layer.mobile.default",
+        "prisma.background-layer.chart-lab.default",
+        "prisma.background-layer.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.product-card",
+      "canonicalName": "PrismaProductCard",
+      "family": "commerce",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "product-card",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/catalog",
+        "tablet:/inventory",
+        "tablet:/inventory/low-stock",
+        "tablet:/stock",
+        "tablet:/visual-os/materiality-catalog",
+        "pc:/catalog",
+        "pc:/catalogo-activo",
+        "pc:/stock",
+        "pc:/validacion-catalogo"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaProductCard.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.product-card",
+        "content": "content slot controlled by prisma.product-card",
+        "state": "state slot controlled by prisma.product-card"
+      },
+      "variants": [
+        "prisma.product-card.tablet.default",
+        "prisma.product-card.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.cart-panel",
+      "canonicalName": "PrismaCartPanel",
+      "family": "commerce",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "cart-panel",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/checkout",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaCartPanel.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "checkout state, cart and payment clarity",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.cart-panel",
+        "content": "content slot controlled by prisma.cart-panel",
+        "state": "state slot controlled by prisma.cart-panel"
+      },
+      "variants": [
+        "prisma.cart-panel.tablet.default",
+        "prisma.cart-panel.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.checkout-panel",
+      "canonicalName": "PrismaCheckoutPanel",
+      "family": "checkout",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "checkout-panel",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/checkout",
+        "tablet:/pos",
+        "tablet:/prisma-dark-pos-reference"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaCheckoutPanel.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "checkout",
+      "intent": "checkout state, cart and payment clarity",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.checkout-panel",
+        "content": "content slot controlled by prisma.checkout-panel",
+        "state": "state slot controlled by prisma.checkout-panel"
+      },
+      "variants": [
+        "prisma.checkout-panel.tablet.default",
+        "prisma.checkout-panel.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.data-panel",
+      "canonicalName": "PrismaDataPanel",
+      "family": "data-display",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "data-panel",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/catalog",
+        "tablet:/inventory",
+        "tablet:/inventory/low-stock",
+        "tablet:/stock",
+        "tablet:/visual-os/materiality-catalog",
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/catalog",
+        "pc:/catalogo-activo",
+        "pc:/contratos-reporte",
+        "pc:/dashboard",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/metricas-dia",
+        "pc:/stock",
+        "pc:/validacion-catalogo"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaDataPanel.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.data-panel",
+        "content": "content slot controlled by prisma.data-panel",
+        "state": "state slot controlled by prisma.data-panel"
+      },
+      "variants": [
+        "prisma.data-panel.pc.default",
+        "prisma.data-panel.chart-lab.default",
+        "prisma.data-panel.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.metric-card",
+      "canonicalName": "PrismaMetricCard",
+      "family": "data-display",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "metric-card",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "tablet:/prisma-visual-catalog",
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/contratos-reporte",
+        "pc:/dashboard",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/metricas-dia",
+        "mobile:/",
+        "mobile:/prisma-app",
+        "mobile:/prisma-app/install",
+        "mobile:/prisma-app/offline",
+        "mobile:/prisma-command"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaMetricCard.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.metric-card",
+        "content": "content slot controlled by prisma.metric-card",
+        "state": "state slot controlled by prisma.metric-card"
+      },
+      "variants": [
+        "prisma.metric-card.tablet.default",
+        "prisma.metric-card.pc.default",
+        "prisma.metric-card.mobile.default",
+        "prisma.metric-card.chart-lab.default",
+        "prisma.metric-card.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "prisma.command-panel",
+      "canonicalName": "PrismaCommandPanel",
+      "family": "command-ai",
+      "layer": "content",
+      "status": "live",
+      "surfaces": [
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "command-panel",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [
+        "pc:/alertas-ejecutivas",
+        "pc:/alertas-operativas",
+        "pc:/contratos-reporte",
+        "pc:/dashboard",
+        "pc:/laboratorio-pc/dashboard-governor",
+        "pc:/metricas-dia"
+      ],
+      "sourceFiles": [
+        "products/shared-ui/prisma/components/PrismaCommandPanel.tsx"
+      ],
+      "migrationNotes": "Componente canónico PRISMA shared-ui; migrar rutas con evidencia visual.",
+      "accessibilityNotes": "Debe respetar focus visible, contraste y densidad del adapter.",
+      "domain": "reports",
+      "intent": "command and assistive workflow control",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by prisma.command-panel",
+        "content": "content slot controlled by prisma.command-panel",
+        "state": "state slot controlled by prisma.command-panel"
+      },
+      "variants": [
+        "prisma.command-panel.pc.default",
+        "prisma.command-panel.mobile.default",
+        "prisma.command-panel.chart-lab.default",
+        "prisma.command-panel.shared-ui.default"
+      ],
+      "visualDebtSignals": [
+        "shared-ui-adopted",
+        "route-evidence-present"
+      ],
+      "adoptionSignals": [
+        "live-source-file",
+        "used-by-route"
+      ],
+      "replacement": null,
+      "risk": "low"
+    },
+    {
+      "id": "mapped-tablet-catalog-product-drawer",
+      "canonicalName": "catalog-product-drawer",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/catalog/catalog-product-drawer.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-catalog-product-drawer",
+        "content": "content slot controlled by mapped-tablet-catalog-product-drawer",
+        "state": "state slot controlled by mapped-tablet-catalog-product-drawer"
+      },
+      "variants": [
+        "mapped-tablet-catalog-product-drawer.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-catalog-product-form",
+      "canonicalName": "catalog-product-form",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/catalog/catalog-product-form.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-catalog-product-form",
+        "content": "content slot controlled by mapped-tablet-catalog-product-form",
+        "state": "state slot controlled by mapped-tablet-catalog-product-form"
+      },
+      "variants": [
+        "mapped-tablet-catalog-product-form.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-catalog-product-table",
+      "canonicalName": "catalog-product-table",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/catalog/catalog-product-table.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-catalog-product-table",
+        "content": "content slot controlled by mapped-tablet-catalog-product-table",
+        "state": "state slot controlled by mapped-tablet-catalog-product-table"
+      },
+      "variants": [
+        "mapped-tablet-catalog-product-table.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-checkout-summary-card",
+      "canonicalName": "checkout-summary-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/checkout/checkout-summary-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "checkout",
+      "intent": "checkout state, cart and payment clarity",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-checkout-summary-card",
+        "header": "header slot controlled by mapped-tablet-checkout-summary-card",
+        "content": "content slot controlled by mapped-tablet-checkout-summary-card",
+        "footer": "footer slot controlled by mapped-tablet-checkout-summary-card"
+      },
+      "variants": [
+        "mapped-tablet-checkout-summary-card.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-app-shell",
+      "canonicalName": "app-shell",
+      "family": "shell",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/layout/app-shell.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "surface",
+        "content",
+        "navigation"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-app-shell",
+        "surface": "surface slot controlled by mapped-tablet-app-shell",
+        "content": "content slot controlled by mapped-tablet-app-shell",
+        "navigation": "navigation slot controlled by mapped-tablet-app-shell"
+      },
+      "variants": [
+        "mapped-tablet-app-shell.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-license-blocked-card",
+      "canonicalName": "license-blocked-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/license/license-blocked-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-license-blocked-card",
+        "header": "header slot controlled by mapped-tablet-license-blocked-card",
+        "content": "content slot controlled by mapped-tablet-license-blocked-card",
+        "footer": "footer slot controlled by mapped-tablet-license-blocked-card"
+      },
+      "variants": [
+        "mapped-tablet-license-blocked-card.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-license-gate-banner",
+      "canonicalName": "license-gate-banner",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/license/license-gate-banner.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-license-gate-banner",
+        "content": "content slot controlled by mapped-tablet-license-gate-banner",
+        "state": "state slot controlled by mapped-tablet-license-gate-banner"
+      },
+      "variants": [
+        "mapped-tablet-license-gate-banner.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-license-refresh-panel",
+      "canonicalName": "license-refresh-panel",
+      "family": "panel",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/license/license-refresh-panel.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-license-refresh-panel",
+        "header": "header slot controlled by mapped-tablet-license-refresh-panel",
+        "body": "body slot controlled by mapped-tablet-license-refresh-panel",
+        "actions": "actions slot controlled by mapped-tablet-license-refresh-panel"
+      },
+      "variants": [
+        "mapped-tablet-license-refresh-panel.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-license-status-card",
+      "canonicalName": "license-status-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/license/license-status-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-license-status-card",
+        "header": "header slot controlled by mapped-tablet-license-status-card",
+        "content": "content slot controlled by mapped-tablet-license-status-card",
+        "footer": "footer slot controlled by mapped-tablet-license-status-card"
+      },
+      "variants": [
+        "mapped-tablet-license-status-card.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-pos-error-banner",
+      "canonicalName": "pos-error-banner",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/pos/pos-error-banner.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-pos-error-banner",
+        "content": "content slot controlled by mapped-tablet-pos-error-banner",
+        "state": "state slot controlled by mapped-tablet-pos-error-banner"
+      },
+      "variants": [
+        "mapped-tablet-pos-error-banner.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-pos-payment-panel",
+      "canonicalName": "pos-payment-panel",
+      "family": "panel",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "checkout",
+      "intent": "checkout state, cart and payment clarity",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-pos-payment-panel",
+        "header": "header slot controlled by mapped-tablet-pos-payment-panel",
+        "body": "body slot controlled by mapped-tablet-pos-payment-panel",
+        "actions": "actions slot controlled by mapped-tablet-pos-payment-panel"
+      },
+      "variants": [
+        "mapped-tablet-pos-payment-panel.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-pos-payment-risk-banner",
+      "canonicalName": "pos-payment-risk-banner",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/pos/pos-payment-risk-banner.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "checkout",
+      "intent": "checkout state, cart and payment clarity",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-pos-payment-risk-banner",
+        "content": "content slot controlled by mapped-tablet-pos-payment-risk-banner",
+        "state": "state slot controlled by mapped-tablet-pos-payment-risk-banner"
+      },
+      "variants": [
+        "mapped-tablet-pos-payment-risk-banner.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-tablet-pos-product-list",
+      "canonicalName": "pos-product-list",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/tablet/app/components/pos/pos-product-list.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-tablet-pos-product-list",
+        "content": "content slot controlled by mapped-tablet-pos-product-list",
+        "state": "state slot controlled by mapped-tablet-pos-product-list"
+      },
+      "variants": [
+        "mapped-tablet-pos-product-list.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-ingest-event-panel",
+      "canonicalName": "ingest-event-panel",
+      "family": "panel",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/backoffice/ingest-event-panel.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "sync",
+      "intent": "sync status, ingest and dispatch visibility",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-ingest-event-panel",
+        "header": "header slot controlled by mapped-pc-ingest-event-panel",
+        "body": "body slot controlled by mapped-pc-ingest-event-panel",
+        "actions": "actions slot controlled by mapped-pc-ingest-event-panel"
+      },
+      "variants": [
+        "mapped-pc-ingest-event-panel.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-kpi-card",
+      "canonicalName": "kpi-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/backoffice/kpi-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "analytics",
+      "intent": "metrics and analytical scanning",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-kpi-card",
+        "header": "header slot controlled by mapped-pc-kpi-card",
+        "content": "content slot controlled by mapped-pc-kpi-card",
+        "footer": "footer slot controlled by mapped-pc-kpi-card"
+      },
+      "variants": [
+        "mapped-pc-kpi-card.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-app-shell",
+      "canonicalName": "app-shell",
+      "family": "shell",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/layout/app-shell.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "admin",
+      "intent": "backoffice governance and operational control",
+      "anatomy": [
+        "root",
+        "surface",
+        "content",
+        "navigation"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-app-shell",
+        "surface": "surface slot controlled by mapped-pc-app-shell",
+        "content": "content slot controlled by mapped-pc-app-shell",
+        "navigation": "navigation slot controlled by mapped-pc-app-shell"
+      },
+      "variants": [
+        "mapped-pc-app-shell.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-license-blocked-card",
+      "canonicalName": "license-blocked-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/license/license-blocked-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-license-blocked-card",
+        "header": "header slot controlled by mapped-pc-license-blocked-card",
+        "content": "content slot controlled by mapped-pc-license-blocked-card",
+        "footer": "footer slot controlled by mapped-pc-license-blocked-card"
+      },
+      "variants": [
+        "mapped-pc-license-blocked-card.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-license-gate-banner",
+      "canonicalName": "license-gate-banner",
+      "family": "data-display",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/license/license-gate-banner.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-license-gate-banner",
+        "content": "content slot controlled by mapped-pc-license-gate-banner",
+        "state": "state slot controlled by mapped-pc-license-gate-banner"
+      },
+      "variants": [
+        "mapped-pc-license-gate-banner.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-license-refresh-panel",
+      "canonicalName": "license-refresh-panel",
+      "family": "panel",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/license/license-refresh-panel.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-license-refresh-panel",
+        "header": "header slot controlled by mapped-pc-license-refresh-panel",
+        "body": "body slot controlled by mapped-pc-license-refresh-panel",
+        "actions": "actions slot controlled by mapped-pc-license-refresh-panel"
+      },
+      "variants": [
+        "mapped-pc-license-refresh-panel.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-license-status-card",
+      "canonicalName": "license-status-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/license/license-status-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "license",
+      "intent": "license state and customer-safe recovery",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-license-status-card",
+        "header": "header slot controlled by mapped-pc-license-status-card",
+        "content": "content slot controlled by mapped-pc-license-status-card",
+        "footer": "footer slot controlled by mapped-pc-license-status-card"
+      },
+      "variants": [
+        "mapped-pc-license-status-card.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-pc-sync-chart-promotion-panel",
+      "canonicalName": "pc-sync-chart-promotion-panel",
+      "family": "panel",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "sync",
+      "intent": "sync status, ingest and dispatch visibility",
+      "anatomy": [
+        "root",
+        "header",
+        "body",
+        "actions"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-pc-sync-chart-promotion-panel",
+        "header": "header slot controlled by mapped-pc-pc-sync-chart-promotion-panel",
+        "body": "body slot controlled by mapped-pc-pc-sync-chart-promotion-panel",
+        "actions": "actions slot controlled by mapped-pc-pc-sync-chart-promotion-panel"
+      },
+      "variants": [
+        "mapped-pc-pc-sync-chart-promotion-panel.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "mapped-pc-tri-db-status-card",
+      "canonicalName": "tri-db-status-card",
+      "family": "card",
+      "layer": "mapped-local",
+      "status": "mapped",
+      "surfaces": [
+        "pc"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring",
+        "--prisma-bg-image-tablet",
+        "--prisma-bg-image-pc",
+        "--prisma-bg-image-mobile",
+        "--prisma-bg-image-chart-lab"
+      ],
+      "recipe": "surface-specific-mapped",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "global-css-hack",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [
+        "products/pc/app/components/sync/tri-db-status-card.tsx"
+      ],
+      "migrationNotes": "Identificado localmente; no universalizar sin review.",
+      "accessibilityNotes": "Revisar antes de promover.",
+      "domain": "admin",
+      "intent": "backoffice governance and operational control",
+      "anatomy": [
+        "root",
+        "header",
+        "content",
+        "footer"
+      ],
+      "slots": {
+        "root": "root slot controlled by mapped-pc-tri-db-status-card",
+        "header": "header slot controlled by mapped-pc-tri-db-status-card",
+        "content": "content slot controlled by mapped-pc-tri-db-status-card",
+        "footer": "footer slot controlled by mapped-pc-tri-db-status-card"
+      },
+      "variants": [
+        "mapped-pc-tri-db-status-card.pc.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.kiosk.shell",
+      "canonicalName": "PrismaKioskShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.kiosk.shell",
+        "content": "content slot controlled by reserved.kiosk.shell",
+        "state": "state slot controlled by reserved.kiosk.shell"
+      },
+      "variants": [
+        "reserved.kiosk.shell.kiosk.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.customer-display.shell",
+      "canonicalName": "PrismaCustomerDisplayShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "customer-display"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.customer-display.shell",
+        "content": "content slot controlled by reserved.customer-display.shell",
+        "state": "state slot controlled by reserved.customer-display.shell"
+      },
+      "variants": [
+        "reserved.customer-display.shell.customer-display.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.warehouse-scanner.shell",
+      "canonicalName": "PrismaWarehouseScannerShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "warehouse-scanner"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "inventory",
+      "intent": "inventory visibility and stock movement review",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.warehouse-scanner.shell",
+        "content": "content slot controlled by reserved.warehouse-scanner.shell",
+        "state": "state slot controlled by reserved.warehouse-scanner.shell"
+      },
+      "variants": [
+        "reserved.warehouse-scanner.shell.warehouse-scanner.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.manager-console.shell",
+      "canonicalName": "PrismaManagerConsoleShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "manager-console"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.manager-console.shell",
+        "content": "content slot controlled by reserved.manager-console.shell",
+        "state": "state slot controlled by reserved.manager-console.shell"
+      },
+      "variants": [
+        "reserved.manager-console.shell.manager-console.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.training-mode.shell",
+      "canonicalName": "PrismaTrainingModeShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "training-mode"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.training-mode.shell",
+        "content": "content slot controlled by reserved.training-mode.shell",
+        "state": "state slot controlled by reserved.training-mode.shell"
+      },
+      "variants": [
+        "reserved.training-mode.shell.training-mode.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.demo-mode.shell",
+      "canonicalName": "PrismaDemoModeShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "demo-mode"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.demo-mode.shell",
+        "content": "content slot controlled by reserved.demo-mode.shell",
+        "state": "state slot controlled by reserved.demo-mode.shell"
+      },
+      "variants": [
+        "reserved.demo-mode.shell.demo-mode.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "reserved.public-display.shell",
+      "canonicalName": "PrismaPublicDisplayShell",
+      "family": "future-surface",
+      "layer": "reserved",
+      "status": "reserved",
+      "surfaces": [
+        "public-display"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "reserved-future-surface",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion",
+        "hardcoded-runtime-background",
+        "products/0.backgrounds-runtime-url",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "migrationNotes": "Reservado hasta adapter/runtime/governance explícitos.",
+      "accessibilityNotes": "Definir antes de promoción.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "content",
+        "state"
+      ],
+      "slots": {
+        "root": "root slot controlled by reserved.public-display.shell",
+        "content": "content slot controlled by reserved.public-display.shell",
+        "state": "state slot controlled by reserved.public-display.shell"
+      },
+      "variants": [
+        "reserved.public-display.shell.public-display.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "replacement": null,
+      "risk": "review"
+    },
+    {
+      "id": "deprecated.legacy-fuji-background",
+      "canonicalName": "LegacyFujiBackgroundRuntime",
+      "family": "background",
+      "layer": "background",
+      "status": "deprecated",
+      "surfaces": [
+        "tablet"
+      ],
+      "allowedTokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "recipe": "tablet-cloudglass-light",
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "Fuji",
+        "products/0.backgrounds-runtime-url",
+        "hardcoded-runtime-background",
+        "fuji-active-runtime",
+        "soft-gray-clouds-active-runtime",
+        "final-important",
+        "global-css-hack"
+      ],
+      "usedByRoutes": [],
+      "sourceFiles": [],
+      "replacement": "prisma.background-layer + tablet-cloudglass-light",
+      "reason": "Fuji legacy bloqueado como runtime activo Tablet.",
+      "migrationNotes": "Sólo archivo histórico/archive.",
+      "accessibilityNotes": "N/A deprecated.",
+      "domain": "commerce",
+      "intent": "commerce presentation and operator action",
+      "anatomy": [
+        "root",
+        "media",
+        "overlay",
+        "fallback"
+      ],
+      "slots": {
+        "root": "root slot controlled by deprecated.legacy-fuji-background",
+        "media": "media slot controlled by deprecated.legacy-fuji-background",
+        "overlay": "overlay slot controlled by deprecated.legacy-fuji-background",
+        "fallback": "fallback slot controlled by deprecated.legacy-fuji-background"
+      },
+      "variants": [
+        "deprecated.legacy-fuji-background.tablet.default"
+      ],
+      "visualDebtSignals": [
+        "local-pattern-still-present",
+        "route-evidence-pending"
+      ],
+      "adoptionSignals": [
+        "mapped-for-migration",
+        "not-yet-bound"
+      ],
+      "risk": "blocked"
+    }
+  ],
+  "statusRules": [
+    "deprecated",
+    "live",
+    "mapped",
+    "planned",
+    "reserved",
+    "live requires real sourceFiles",
+    "mapped requires evidence sourceFiles",
+    "planned and reserved cannot be wired to production without promotion",
+    "deprecated requires replacement or reason",
+    "governed requires adapter, recipe, variant and validator coverage",
+    "blocked cannot be changed without explicit human approval"
+  ],
+  "v2Governance": {
+    "additive": true,
+    "sourceOfTruth": [
+      "config/prisma-visual-system/components.registry.json",
+      "products/shared-ui/prisma/components",
+      "config/prisma-visual/*-usage-map.json"
+    ],
+    "requiredFieldsAdded": [
+      "domain",
+      "intent",
+      "anatomy",
+      "slots",
+      "variants",
+      "visualDebtSignals",
+      "adoptionSignals",
+      "replacement",
+      "risk"
+    ]
+  }
+}

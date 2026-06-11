@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "surface": "tablet",
+  "generatedAt": "2026-06-11T09:49:15.088Z",
+  "routes": [
+    {
+      "route": "/prisma-visual-catalog",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/prisma-visual-catalog/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "new-safe-pilot-route",
+        "shared-ui-prisma-import"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.surface-panel",
+        "prisma.state-banner",
+        "prisma.metric-card",
+        "prisma.action-button"
+      ],
+      "migrationStatus": "pilot-live-new-route",
+      "layerRisk": "low",
+      "backgroundRisk": "none-detected",
+      "nextAction": "visual-evidence-next; then migrate existing low-risk route",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "low",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 10,
+        "signals": [
+          "shared-ui-or-low-local-css",
+          "layer-risk-low",
+          "background-risk-none-detected"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/catalog",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/catalog/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/checkout",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/checkout/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "route": "/events/outbox",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/events/outbox/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/existencias",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/existencias/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/inventory",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/inventory/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/inventory/low-stock",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/inventory/low-stock/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/offline",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/offline/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/pos",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/pos/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "route": "/prisma-dark-pos-reference",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/prisma-dark-pos-reference/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "prisma.action-button"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/prisma-pulse",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/prisma-pulse/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/referencia-visual",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/referencia-visual/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/release-gate",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/release-gate/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/returns",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/returns/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/runtime-snapshot-preview",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/runtime-snapshot-preview/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales/history",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/history/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales/history/[saleId]",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/history/[saleId]/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales/today",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/today/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales/today/[saleId]",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/today/[saleId]/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sales/today/[saleId]/return",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sales/today/[saleId]/return/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/screen-standard-preview",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/screen-standard-preview/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/settings/data",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/settings/data/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/settings/export",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/settings/export/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/settings/license",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/settings/license/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "noTouch": true,
+      "migrationTier": "blocked",
+      "migrationComplexity": "high",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 80,
+        "signals": [
+          "local-css-present",
+          "layer-risk-high",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "route": "/shift",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/shift/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/stock",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/stock/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/sync",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/sync/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/detached",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/detached/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/materiality-catalog",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/materiality-catalog/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.product-card",
+        "prisma.data-panel"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/pro",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/pro/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/realtime",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/realtime/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/tablet-background-gallery",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    },
+    {
+      "route": "/visual-os/tablet-codex-gallery",
+      "surface": "tablet",
+      "currentFiles": [
+        "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx"
+      ],
+      "currentLocalPatterns": [
+        "local-page",
+        "local-css-present"
+      ],
+      "canonicalComponents": [
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer"
+      ],
+      "migrationStatus": "mapped",
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "noTouch": false,
+      "migrationTier": "tier-1-wrapper",
+      "migrationComplexity": "medium",
+      "componentMatchConfidence": 0.72,
+      "visualDebt": {
+        "score": 60,
+        "signals": [
+          "local-css-present",
+          "layer-risk-medium",
+          "background-risk-review"
+        ]
+      },
+      "sharedUiAdoption": "partial",
+      "blockedReason": null
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "recipes": [
+    {
+      "name": "tablet-cloudglass-light",
+      "status": "finalize",
+      "surfaces": "tablet",
+      "source": "active Tablet background + layer map",
+      "intent": "light, tactile, luminous, background visible under governed panels",
+      "do": [
+        "use /visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+        "keep shell light",
+        "use layer budget"
+      ],
+      "dont": [
+        "reactivate Fuji",
+        "use soft-gray-clouds",
+        "opaque full-screen panel over background"
+      ]
+    },
+    {
+      "name": "pc-graphite-glass",
+      "status": "finalize",
+      "surfaces": "pc",
+      "source": "PC liquid/glass docs + active pc background",
+      "intent": "dense backoffice graphite, analytics-first",
+      "do": [
+        "use graphite/cloudglass sparingly",
+        "prefer dense panels and tables"
+      ],
+      "dont": [
+        "copy Tablet light aesthetic blindly",
+        "use OGL for layout"
+      ]
+    },
+    {
+      "name": "mobile-mist",
+      "status": "finalize",
+      "surfaces": "mobile",
+      "source": "mobile thin mist docs + Visual OS",
+      "intent": "compact companion, pulse/alerts",
+      "do": [
+        "thumb-friendly density",
+        "mist/light surface"
+      ],
+      "dont": [
+        "treat mobile as tiny tablet"
+      ]
+    },
+    {
+      "name": "glass-pill",
+      "status": "distill",
+      "surfaces": "shared",
+      "source": "liquid glass pill/capsule docs",
+      "intent": "capsule/pill interaction surface",
+      "do": [
+        "use for focused controls/status chips",
+        "validate contrast"
+      ],
+      "dont": [
+        "use as generic blur everywhere"
+      ]
+    },
+    {
+      "name": "liquid-panel",
+      "status": "distill",
+      "surfaces": "pc/shared",
+      "source": "liquid glass optical proof/fix docs",
+      "intent": "panel recipe with optical discipline",
+      "do": [
+        "tokenized blur/shadow/border",
+        "legibility first"
+      ],
+      "dont": [
+        "transparent everything",
+        "stack multiple glass panes"
+      ]
+    },
+    {
+      "name": "operational-card",
+      "status": "finalize",
+      "surfaces": "tablet/shared",
+      "source": "VisualCat card templates + shared UI",
+      "intent": "cards that preserve readability and background air",
+      "do": [
+        "surface tokens",
+        "route-level density"
+      ],
+      "dont": [
+        "solid 100vh cards",
+        "new local card language"
+      ]
+    }
+  ]
+}

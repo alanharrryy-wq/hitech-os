@@ -23,7 +23,8 @@
         "background",
         "default",
         "cloudglass"
-      ]
+      ],
+      "runtimeAuthority": "public-tablet-assets"
     },
     {
       "id": "02-prisma-fractures-light-overlay-alpha-e78c27fe",
@@ -1430,5 +1431,18 @@
     }
   ],
   "assetCount": 47,
-  "source": "products/0.backgrounds"
+  "source": "products/tablet/app/public/visual-backgrounds/tablet",
+  "runtimeAuthority": "public-tablet-assets",
+  "runtimeAssetUrl": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+  "premiumEffectPack": {
+    "id": "tablet-premium-layer-pack",
+    "root": "/visual-backgrounds/tablet/effects/premium-layer-pack",
+    "minBytesRequired": 3145728,
+    "assets": [
+      "/visual-backgrounds/tablet/effects/premium-layer-pack/prisma-premium-noise-2048.png",
+      "/visual-backgrounds/tablet/effects/premium-layer-pack/prisma-premium-caustics-1536.png",
+      "/visual-backgrounds/tablet/effects/premium-layer-pack/prisma-premium-glow-map-1536.png"
+    ],
+    "purpose": "visible governed premium effects: grain, caustics, specular glow, layer depth"
+  }
 }

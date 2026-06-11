@@ -1,3 +1,5 @@
+"use client";
+
 import type { Product } from "./prisma-dark-pos-data";
 import { PrismaIcon } from "./prisma-dark-pos-icons";
 import styles from "./prisma-dark-pos.module.css";
@@ -6,11 +8,18 @@ type PrismaProductCardProps = {
   product: Product;
 };
 
+function emitProductAction(action: string, product: Product) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("prisma:pos-product-action", {
+    detail: { action, productId: product.id, productName: product.name, source: "prisma-dark-pos-product-card", ts: new Date().toISOString() }
+  }));
+}
+
 export function PrismaProductCard({ product }: PrismaProductCardProps) {
   return (
-    <article className={styles.productCard}>
+    <article className={styles.productCard} data-prisma-hardening="product-actions-260611">
       <div className={styles.productCardTop}>
-        <button className={product.favorite ? styles.favoriteActive : styles.favoriteButton} type="button" aria-label="Favorito">
+        <button className={product.favorite ? styles.favoriteActive : styles.favoriteButton} type="button" aria-label={`Favorito ${product.name}`} aria-pressed={product.favorite} onClick={() => emitProductAction("toggle-favorite", product)}>
           <PrismaIcon name="star" size={17} />
         </button>
       </div>

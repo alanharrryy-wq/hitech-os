@@ -1,7 +1,10 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { clsx, type ClassValue } from "clsx";
+import { Loader2, RefreshCcw, ScanLine, Search, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
+import { twMerge } from "tailwind-merge";
 import type { UiState } from "@/lib/pos/cart-state";
 import { PosErrorBanner } from "./pos-error-banner";
 import styles from "./pos.module.css";
@@ -17,6 +20,10 @@ function stateCopy(state?: UiState) {
   if (state === "empty") return "Sin coincidencias";
   if (state === "ready") return "Catálogo listo";
   return "Búsqueda local";
+}
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(...inputs));
 }
 
 export function PosProductSearch({
@@ -50,9 +57,12 @@ export function PosProductSearch({
   const searchExpanded = Boolean(query.trim()) || loading || Boolean(error);
 
   return (
-    <form
-      className={styles.searchCard}
+    <motion.form
+      className={cn(styles.posPremiumSearchCard, Boolean(error) && styles.posPremiumSearchCardError)}
       onSubmit={submit}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
       data-prisma-component="SearchBar"
       data-prisma-zone="tablet-pos-search"
       data-prisma-role="search-command"
@@ -63,10 +73,10 @@ export function PosProductSearch({
       data-prisma-search-expanded={searchExpanded ? "true" : "false"}
       data-prisma-search-density="05C"
     >
-      <label className={styles.searchLabel}>
-        <span>Buscar o escanear</span>
-        <div className={styles.searchInputWrap} data-prisma-qa="tablet-qa-focus">
-          <PrismaIcon name="search" size={22} />
+      <label className={styles.posPremiumSearchLabel}>
+        <span><Sparkles aria-hidden="true" size={15} /> Buscar o escanear</span>
+        <div className={styles.posPremiumSearchInputWrap} data-prisma-qa="tablet-qa-focus">
+          {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={22} /> : <Search aria-hidden="true" size={22} />}
           <input
             autoFocus
             value={query}
@@ -77,21 +87,35 @@ export function PosProductSearch({
         </div>
       </label>
 
-      <div className={styles.catalogInsight} aria-live="polite">
+      <div className={styles.posPremiumCatalogInsight} aria-live="polite">
         <span>{stateCopy(state)}</span>
         <strong>{activeCount ?? 0} activos</strong>
         <small>{resultCount ?? 0} visibles</small>
       </div>
 
-      <div className={styles.searchActions}>
-        <button className={styles.primaryButton} type="submit" disabled={loading} data-prisma-component="IconButton" data-prisma-role="primary-action" data-prisma-priority="primary" data-prisma-state={loading ? "loading" : "ready"} data-prisma-motion="press-feedback">
+      <div className={styles.posPremiumSearchActions}>
+        <motion.button
+          className={styles.posPremiumPrimaryButton}
+          type="submit"
+          disabled={loading}
+          whileTap={loading ? undefined : { scale: 0.98 }}
+          whileHover={loading ? undefined : { y: -1 }}
+          data-prisma-component="IconButton"
+          data-prisma-role="primary-action"
+          data-prisma-priority="primary"
+          data-prisma-state={loading ? "loading" : "ready"}
+          data-prisma-motion="press-feedback"
+        >
+          {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={17} /> : <Search aria-hidden="true" size={17} />}
           Buscar
-        </button>
-        <button
-          className={styles.secondaryButton}
+        </motion.button>
+        <motion.button
+          className={styles.posPremiumSecondaryButton}
           type="button"
           onClick={onResolve}
           disabled={loading || !query.trim()}
+          whileTap={loading || !query.trim() ? undefined : { scale: 0.98 }}
+          whileHover={loading || !query.trim() ? undefined : { y: -1 }}
           data-prisma-component="ScanButton"
           data-prisma-zone="tablet-pos-scan-action"
           data-prisma-role="scan-command"
@@ -100,14 +124,23 @@ export function PosProductSearch({
           data-prisma-motion="press-feedback"
           data-prisma-qa={!query.trim() ? "tablet-qa-disabled" : undefined}
         >
-          <PrismaIcon name="scan" size={18} />
+          <ScanLine aria-hidden="true" size={18} />
           Resolver código
-        </button>
-        <button className={styles.ghostButton} type="button" onClick={onClear} disabled={loading} data-prisma-component="IconButton">
+        </motion.button>
+        <motion.button
+          className={styles.posPremiumGhostButton}
+          type="button"
+          onClick={onClear}
+          disabled={loading}
+          whileTap={loading ? undefined : { scale: 0.98 }}
+          whileHover={loading ? undefined : { y: -1 }}
+          data-prisma-component="IconButton"
+        >
+          <RefreshCcw aria-hidden="true" size={17} />
           Limpiar
-        </button>
+        </motion.button>
       </div>
       <PosErrorBanner error={error} />
-    </form>
+    </motion.form>
   );
 }

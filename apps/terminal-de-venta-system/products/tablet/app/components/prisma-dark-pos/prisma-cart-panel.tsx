@@ -1,19 +1,36 @@
+"use client";
+
 import { cartItems, products } from "./prisma-dark-pos-data";
 import { PrismaIcon } from "./prisma-dark-pos-icons";
 import { ProductFigure } from "./prisma-product-card";
 import styles from "./prisma-dark-pos.module.css";
 
+type PosCartActionDetail = {
+  action: "clear-cart" | "remove-line" | "decrement-line" | "increment-line" | "charge" | "quote" | "save-ticket" | "clear-current";
+  productId?: string;
+  productName?: string;
+  source: "prisma-dark-pos-cart";
+  ts: string;
+};
+
+function emitCartAction(action: PosCartActionDetail["action"], detail: Omit<Partial<PosCartActionDetail>, "action" | "source" | "ts"> = {}) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent<PosCartActionDetail>("prisma:pos-cart-action", {
+    detail: { action, source: "prisma-dark-pos-cart", ts: new Date().toISOString(), ...detail }
+  }));
+}
+
 export function PrismaCartPanel() {
   return (
-    <aside className={styles.cartPanel} aria-label="Carrito de venta">
+    <aside className={styles.cartPanel} aria-label="Carrito de venta" data-prisma-hardening="cart-actions-260611">
       <header className={styles.cartHeader}>
         <div>
           <h2>Carrito de venta</h2>
           <span>Ticket actual</span>
         </div>
         <div className={styles.cartHeaderActions}>
-          <span className={styles.itemCount}>4 artículos</span>
-          <button className={styles.trashButton} type="button" aria-label="Vaciar carrito">
+          <span className={styles.itemCount}>{cartItems.length} artículos</span>
+          <button className={styles.trashButton} type="button" aria-label="Vaciar carrito" onClick={() => emitCartAction("clear-cart")}>
             <PrismaIcon name="trash" size={18} />
           </button>
         </div>
@@ -34,18 +51,18 @@ export function PrismaCartPanel() {
               <div className={styles.cartItemMain}>
                 <div className={styles.cartItemTitle}>
                   <strong>{item.name}</strong>
-                  <button type="button" aria-label={`Quitar ${item.name}`}>
+                  <button type="button" aria-label={`Quitar ${item.name}`} onClick={() => emitCartAction("remove-line", { productId: item.productId, productName: item.name })}>
                     <PrismaIcon name="x" size={15} />
                   </button>
                 </div>
                 <span className={styles.unitPrice}>{item.unitPrice}</span>
                 <div className={styles.cartItemBottom}>
                   <div className={styles.quantityStepper} aria-label={`Cantidad ${item.quantity}`}>
-                    <button type="button" aria-label="Restar">
+                    <button type="button" aria-label={`Restar ${item.name}`} onClick={() => emitCartAction("decrement-line", { productId: item.productId, productName: item.name })}>
                       <PrismaIcon name="minus" size={13} />
                     </button>
                     <span>{item.quantity}</span>
-                    <button type="button" aria-label="Sumar">
+                    <button type="button" aria-label={`Sumar ${item.name}`} onClick={() => emitCartAction("increment-line", { productId: item.productId, productName: item.name })}>
                       <PrismaIcon name="plus" size={13} />
                     </button>
                   </div>
@@ -72,23 +89,23 @@ export function PrismaCartPanel() {
         </div>
       </section>
 
-      <button className={styles.chargeButton} type="button">
+      <button className={styles.chargeButton} type="button" onClick={() => emitCartAction("charge")}>
         <span>COBRAR</span>
         <strong>Tocar</strong>
       </button>
 
       <footer className={styles.secondaryActions}>
-        <button type="button">
+        <button type="button" onClick={() => emitCartAction("quote")}>
           <PrismaIcon name="receipt" size={20} />
           <span>COTIZACIÓN</span>
           <strong>Pronto</strong>
         </button>
-        <button type="button">
+        <button type="button" onClick={() => emitCartAction("save-ticket")}>
           <PrismaIcon name="save" size={20} />
           <span>GUARDAR</span>
           <strong>Ticket</strong>
         </button>
-        <button type="button">
+        <button type="button" onClick={() => emitCartAction("clear-current")}>
           <PrismaIcon name="trash" size={20} />
           <span>LIMPIAR</span>
           <strong>Actual</strong>

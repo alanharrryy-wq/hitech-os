@@ -60,3 +60,86 @@
 }
 
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
+
+/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_START
+   Módulos de pantalla: superficies transparentes premium con relleno legible.
+*/
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .screen,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .page,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .workspace,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutGrid,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .posShell {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .heroCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .mainPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .detailPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .summaryCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .successCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .catalogArea,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ticketPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .flowGuard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .varianceBox,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBreakdown {
+  color: var(--prisma-prem-ink) !important;
+  border-color: var(--prisma-prem-edge) !important;
+  background: var(--prisma-prem-panel-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow) !important;
+  backdrop-filter: blur(20px) saturate(1.20) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.20) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .kpiCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .statePanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .productCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .summaryLines article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .onlineStrip,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .offlineStrip {
+  color: var(--prisma-prem-ink) !important;
+  border-color: var(--prisma-prem-edge) !important;
+  background: var(--prisma-prem-card-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-card) !important;
+  backdrop-filter: blur(18px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchInputWrap,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBox,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .secondaryAction,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostAction,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .filterButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .filterActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .secondaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton {
+  color: var(--prisma-prem-ink) !important;
+  border-color: var(--prisma-prem-edge-strong) !important;
+  background: var(--prisma-prem-control-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-control) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryAction,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .rowAddButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .productMainButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .addButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutLink,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .confirmButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButtonActive {
+  color: #ffffff !important;
+  border-color: rgba(189, 222, 255, .78) !important;
+  background: var(--prisma-prem-blue-gradient) !important;
+  box-shadow: var(--prisma-prem-shadow-blue) !important;
+  text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
+}
+/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */

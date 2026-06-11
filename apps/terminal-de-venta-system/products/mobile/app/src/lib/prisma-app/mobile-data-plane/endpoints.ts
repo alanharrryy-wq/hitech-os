@@ -5,6 +5,10 @@ function join(origin: string | null, path: string): string | null {
   return `${origin.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 }
 
+function preferExternal(endpoint: string | null, localFallback: string): string {
+  return endpoint ?? localFallback;
+}
+
 export function tabletEndpoint(config: MobileDataPlaneConfig, path: string): string | null {
   return join(config.tabletOrigin, path);
 }
@@ -34,8 +38,8 @@ export function mobileDataPlaneEndpointRegistry(config: MobileDataPlaneConfig) {
     pcSyncStatus: pcEndpoint(config, "/api/backoffice/sync/status"),
     pcBranches: pcEndpoint(config, "/api/backoffice/branches"),
     controlHealth: controlEndpoint(config, "/api/health"),
-    controlIncidents: controlEndpoint(config, "/api/incidents"),
+    controlIncidents: preferExternal(controlEndpoint(config, "/api/incidents"), "/api/mobile/alerts"),
     blackBoxHealth: blackBoxEndpoint(config, "/api/health"),
-    blackBoxIncidents: blackBoxEndpoint(config, "/api/incidents")
+    blackBoxIncidents: preferExternal(blackBoxEndpoint(config, "/api/incidents"), "/api/mobile/alerts")
   };
 }

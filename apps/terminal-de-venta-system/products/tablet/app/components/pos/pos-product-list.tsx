@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { cva } from "class-variance-authority";
+import { clsx, type ClassValue } from "clsx";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, PackageSearch, Plus, Star } from "lucide-react";
+import { motion } from "motion/react";
+import { twMerge } from "tailwind-merge";
 import type { PosProduct, UiState } from "@/lib/pos/cart-state";
 import { formatMoney } from "@/lib/pos/cart-state";
 import { PosErrorBanner } from "./pos-error-banner";
@@ -14,9 +18,40 @@ import styles from "./pos.module.css";
  * packshot fallback and price hierarchy aligned with pos.module.css tokens.
  */
 
-function cx(...names: Array<string | false | null | undefined>) {
-  return names.filter(Boolean).join(" ");
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(...inputs));
 }
+
+const productCardChrome = cva(styles.posPremiumProductCard, {
+  variants: {
+    disabled: {
+      true: styles.posPremiumProductCardDisabled,
+      false: null
+    },
+    stock: {
+      ok: styles.posPremiumProductStockOk,
+      low: styles.posPremiumProductStockLow,
+      empty: styles.posPremiumProductStockEmpty,
+      inactive: styles.posPremiumProductStockEmpty
+    }
+  },
+  defaultVariants: {
+    disabled: false,
+    stock: "ok"
+  }
+});
+
+const addButtonChrome = cva(styles.posPremiumAddButton, {
+  variants: {
+    disabled: {
+      true: styles.posPremiumAddButtonDisabled,
+      false: null
+    }
+  },
+  defaultVariants: {
+    disabled: false
+  }
+});
 
 function productInitials(name: string) {
   return name
@@ -71,7 +106,7 @@ function ProductMedia({ product }: { product: PosProduct }) {
 
   return (
     <div
-      className={cx(styles.productImageStage, stageTone, packshot && styles.stageHasPackshot)}
+      className={cn(styles.posPremiumProductStage, stageTone, packshot && styles.stageHasPackshot)}
       data-prisma-component="ProductImageStage"
       data-prisma-packshot-host={packshot ? "true" : undefined}
       aria-hidden="true"
@@ -80,13 +115,13 @@ function ProductMedia({ product }: { product: PosProduct }) {
       <span className={styles.productPedestal} />
       {packshot ? (
         <>
-          <span className={cx(styles.productFigure, styles.productFigureFallback, visual.shape)} aria-hidden="true">
+          <span className={cn(styles.productFigure, styles.productFigureFallback, visual.shape)} aria-hidden="true">
             <span className={styles.figureStripe} />
             <strong>{visual.label}</strong>
             <small>{visual.detail}</small>
           </span>
           <img
-            className={cx(styles.productPackshot, styles[`productPackshot_${packshot.kind}`])}
+            className={cn(styles.productPackshot, styles[`productPackshot_${packshot.kind}`])}
             src={packshot.src}
             alt=""
             loading="lazy"
@@ -105,7 +140,7 @@ function ProductMedia({ product }: { product: PosProduct }) {
           />
         </>
       ) : (
-        <span className={cx(styles.productFigure, visual.shape)}>
+        <span className={cn(styles.productFigure, visual.shape)}>
           <span className={styles.figureStripe} />
           <strong>{visual.label}</strong>
           <small>{visual.detail}</small>
@@ -146,8 +181,8 @@ export function PosProductList({
   }, [products]);
   if (state === "loading") {
     return (
-      <div className={styles.statePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="loading" data-prisma-motion="reduced-motion-safe">
-        <PrismaIcon name="package" size={24} />
+      <div className={styles.posPremiumStatePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="loading" data-prisma-motion="reduced-motion-safe">
+        <PackageSearch aria-hidden="true" size={26} />
         <strong>Cargando catálogo local</strong>
         <span>Consultando productos de la Tablet.</span>
       </div>
@@ -156,7 +191,8 @@ export function PosProductList({
 
   if (state === "error") {
     return (
-      <div className={styles.statePanel} data-prisma-component="ErrorState" data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback">
+      <div className={styles.posPremiumStatePanel} data-prisma-component="ErrorState" data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback">
+        <AlertTriangle aria-hidden="true" size={24} />
         <PosErrorBanner error={error} />
       </div>
     );
@@ -164,8 +200,8 @@ export function PosProductList({
 
   if (!products.length) {
     return (
-      <div className={styles.statePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-motion="reduced-motion-safe">
-        <PrismaIcon name="package" size={24} />
+      <div className={styles.posPremiumStatePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-motion="reduced-motion-safe">
+        <PackageSearch aria-hidden="true" size={26} />
         <strong>No hay productos para mostrar</strong>
         <span>Busca por nombre, SKU o código de barras.</span>
       </div>
@@ -175,7 +211,7 @@ export function PosProductList({
   return (
     <>
       <section
-        className={styles.productGrid}
+        className={styles.posPremiumProductGrid}
         aria-label="Productos encontrados"
         data-prisma-component="ProductGrid"
         data-prisma-zone="tablet-pos-product-grid"
@@ -183,13 +219,17 @@ export function PosProductList({
         data-prisma-priority="primary"
         data-prisma-qa="tablet-qa-product-card"
       >
-        {pageProducts.map((product) => {
+        {pageProducts.map((product, index) => {
           const stockState = productStockState(product);
           const disabled = !canAddProduct || !product.isActive || product.stockOnHand <= 0;
           return (
-            <article
+            <motion.article
               key={product.id}
-              className={cx(styles.productCard, disabled && styles.productCardDisabled)}
+              className={productCardChrome({ disabled, stock: stockState })}
+              initial={{ opacity: 0, y: 12, scale: 0.988 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={disabled ? undefined : { y: -5, scale: 1.012 }}
+              transition={{ duration: 0.2, delay: Math.min(index * 0.026, 0.18), ease: [0.22, 1, 0.36, 1] }}
               data-prisma-component="ProductCard"
               data-prisma-zone="tablet-pos-product-card"
               data-prisma-role="product-card"
@@ -199,33 +239,38 @@ export function PosProductList({
               data-prisma-stock-state={stockState}
               data-prisma-state={disabled ? "disabled" : stockState}
             >
-              <div className={styles.productCardTop}>
-                <span className={cx(styles.productStatusPill, stockState === "ok" && styles.productStatusOk, stockState === "low" && styles.productStatusWarn, (stockState === "empty" || stockState === "inactive") && styles.productStatusDanger)}>
+              <div className={styles.posPremiumProductCardTop}>
+                <span className={cn(styles.posPremiumProductStatus, stockState === "ok" && styles.posPremiumProductStatusOk, stockState === "low" && styles.posPremiumProductStatusWarn, (stockState === "empty" || stockState === "inactive") && styles.posPremiumProductStatusDanger)}>
+                  {stockState === "ok" ? <CheckCircle2 aria-hidden="true" size={13} /> : null}
                   {stockCopy(product)}
                 </span>
-                <span className={styles.favoriteStar} data-prisma-component="FavoriteStar" aria-hidden="true">★</span>
+                <span className={styles.posPremiumFavoriteStar} data-prisma-component="FavoriteStar" aria-hidden="true">
+                  <Star size={16} fill="currentColor" />
+                </span>
               </div>
 
               <ProductMedia product={product} />
 
-              <div className={styles.productText}>
-                <strong className={styles.productName}>{product.name}</strong>
-                <div className={styles.productMetaRail}>
+              <div className={styles.posPremiumProductText}>
+                <strong className={styles.posPremiumProductName}>{product.name}</strong>
+                <div className={styles.posPremiumProductMetaRail}>
                   <span className={product.isActive ? styles.badgeOk : styles.badgeDanger}>{product.isActive ? "Activo" : "Inactivo"}</span>
                   {product.category ? <span className={styles.badgeNeutral}>{product.category}</span> : null}
                 </div>
               </div>
 
-              <div className={styles.productAside}>
-                <span className={cx(styles.productPriceStack, styles.productPrice)}>
-                  <strong className={styles.priceValue}>{formatMoney(product.priceCents)}</strong>
+              <div className={styles.posPremiumProductAside}>
+                <span className={styles.posPremiumProductPrice}>
+                  <strong>{formatMoney(product.priceCents)}</strong>
                   <small>MXN</small>
                 </span>
-                <button
-                  className={styles.addButton}
+                <motion.button
+                  className={addButtonChrome({ disabled })}
                   type="button"
                   onClick={() => onAdd(product)}
                   disabled={disabled}
+                  whileTap={disabled ? undefined : { scale: 0.972 }}
+                  whileHover={disabled ? undefined : { y: -1 }}
                   title={!canAddProduct ? blockedReason ?? "Abre turno antes de agregar productos." : undefined}
                   data-prisma-component="IconButton"
                   data-prisma-zone="tablet-pos-product-add"
@@ -235,19 +280,19 @@ export function PosProductList({
                   data-prisma-state={disabled ? "disabled" : "ready"}
                   data-prisma-qa={disabled ? "tablet-qa-disabled" : undefined}
                 >
-                  <PrismaIcon name="plus" size={18} />
+                  <Plus aria-hidden="true" size={18} />
                   {canAddProduct ? "Agregar" : "Caja cerrada"}
-                </button>
+                </motion.button>
               </div>
-            </article>
+            </motion.article>
           );
         })}
       </section>
 
-      <nav className={styles.pagination} aria-label="Paginación de productos" data-prisma-component="Pagination">
+      <nav className={styles.posPremiumPagination} aria-label="Paginación de productos" data-prisma-component="Pagination">
         <span className={styles.paginationSummary}>Mostrando {firstVisible}-{lastVisible} de {products.length}</span>
         <button type="button" disabled={currentPage <= 1} aria-label="Página anterior" onClick={() => setPage((value) => Math.max(1, value - 1))}>
-          <PrismaIcon name="arrow-left" size={18} />
+          <ChevronLeft aria-hidden="true" size={18} />
         </button>
         {Array.from({ length: pageCount }, (_, index) => index + 1).slice(0, 9).map((pageNumber) => (
           <button
@@ -262,7 +307,7 @@ export function PosProductList({
         ))}
         {pageCount > 9 ? <span className={styles.paginationMore}>… {pageCount}</span> : null}
         <button type="button" disabled={currentPage >= pageCount} aria-label="Página siguiente" onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>
-          <PrismaIcon name="arrow-right" size={18} />
+          <ChevronRight aria-hidden="true" size={18} />
         </button>
       </nav>
     </>

@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+const j=JSON.parse(fs.readFileSync('config/prisma-visual/archive-map.json','utf8'));
+const items=j.items||[]; const bad=items.filter(x=>!x.path||!x.reason);
+console.log(JSON.stringify({validator:'validate-archive',status:bad.length?'FAIL':'PASS',items:items.length,bad},null,2)); if(bad.length) process.exit(1);

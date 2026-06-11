@@ -1,0 +1,489 @@
+{
+  "schema_version": "1.0.0",
+  "name": "PRISMA Authority Mesh Rules",
+  "principle": "Single operational authority entrypoint; many live sources; mandatory readset lock before patches.",
+  "global_required": [
+    {
+      "id": "current_state_json",
+      "glob": "docs/PRISMA_CURRENT_STATE.json",
+      "critical": true
+    },
+    {
+      "id": "current_state_md",
+      "glob": "docs/PRISMA_CURRENT_STATE.md",
+      "critical": true
+    },
+    {
+      "id": "precedence_rules",
+      "glob": "docs/PRISMA_DOCUMENT_PRECEDENCE_RULES.md",
+      "critical": true
+    },
+    {
+      "id": "master_doc_index",
+      "glob": "docs/PRISMA_MASTER_DOC_INDEX.md",
+      "critical": true
+    },
+    {
+      "id": "operational_safety",
+      "glob": "docs/PRISMA_OPERATIONAL_SAFETY_RULES.md",
+      "critical": true
+    },
+    {
+      "id": "field_manual",
+      "glob": "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+      "critical": true
+    },
+    {
+      "id": "atlas_registry",
+      "glob": "docs/atlas/atlas.registry.json",
+      "critical": true
+    },
+    {
+      "id": "governor_atlas_map",
+      "glob": "docs/atlas/governor.atlas-map.json",
+      "critical": true
+    },
+    {
+      "id": "governor_atlas_location",
+      "glob": "docs/atlas/GOVERNOR_ATLAS_LOCATION.md",
+      "critical": true
+    },
+    {
+      "id": "quality_manifest",
+      "glob": "quality/prisma-quality.manifest.json",
+      "critical": true
+    },
+    {
+      "id": "no_fake_green",
+      "glob": "quality/contracts/no-fake-green.contract.json",
+      "critical": true
+    },
+    {
+      "id": "traceable_operation",
+      "glob": "quality/contracts/traceable-operation.contract.json",
+      "critical": true
+    },
+    {
+      "id": "release_evidence_required",
+      "glob": "quality/contracts/release-evidence-required.contract.json",
+      "critical": true
+    }
+  ],
+  "apps": {
+    "tablet": {
+      "keywords": [
+        "tablet",
+        "pos",
+        "carrito",
+        "checkout",
+        "venta",
+        "touch"
+      ],
+      "roots": [
+        "products/tablet/app"
+      ],
+      "authority": [
+        "products/tablet/app/docs/atlas/**",
+        "products/tablet/app/docs/architecture/**",
+        "products/tablet/app/docs/contracts/**",
+        "products/tablet/app/docs/ux/**",
+        "config/prisma-visual/tablet-usage-map.json",
+        "products/tablet/app/public/visual-backgrounds/tablet/**",
+        "quality/contracts/tablet-sovereignty.contract.json"
+      ]
+    },
+    "pc": {
+      "keywords": [
+        "pc",
+        "backoffice",
+        "desktop",
+        "catalogo",
+        "catálogo",
+        "admin"
+      ],
+      "roots": [
+        "products/pc/app"
+      ],
+      "authority": [
+        "products/pc/app/docs/atlas/**",
+        "products/pc/app/docs/governance/**",
+        "products/pc/app/docs/modules/**",
+        "products/pc/app/docs/release/**",
+        "config/prisma-visual/pc-usage-map.json",
+        "products/pc/app/public/visual-backgrounds/pc/**"
+      ]
+    },
+    "mobile": {
+      "keywords": [
+        "mobile",
+        "móvil",
+        "movil",
+        "app móvil",
+        "supervisor"
+      ],
+      "roots": [
+        "products/mobile/app"
+      ],
+      "authority": [
+        "products/mobile/app/docs/atlas/**",
+        "products/mobile/app/docs/prisma-app/**",
+        "products/mobile/app/docs/surface-visual-governor/**",
+        "config/prisma-visual/mobile-usage-map.json",
+        "products/mobile/app/public/visual-backgrounds/mobile/**",
+        "quality/contracts/mobile-truthfulness.contract.json"
+      ]
+    },
+    "chart-lab": {
+      "keywords": [
+        "chart",
+        "chart lab",
+        "charts",
+        "graficas",
+        "gráficas",
+        "visual lab"
+      ],
+      "roots": [
+        "products/chart-lab/app"
+      ],
+      "authority": [
+        "products/chart-lab/app/docs/**",
+        "config/prisma-visual/chart-lab-usage-map.json",
+        "products/chart-lab/app/public/visual-backgrounds/chart-lab/**",
+        "docs/prisma/PRISMA_CHART_ATLAS.md"
+      ]
+    },
+    "web": {
+      "keywords": [
+        "web",
+        "eit",
+        "public",
+        "portal",
+        "landing"
+      ],
+      "roots": [
+        "products/web/app"
+      ],
+      "authority": [
+        "products/web/app/docs/**",
+        "products/web/app/public/visual-backgrounds/web/**",
+        "products/0.backgrounds/manifests/web.backgrounds.json"
+      ]
+    },
+    "control-center": {
+      "keywords": [
+        "control center",
+        "centro",
+        "operador",
+        "launcher",
+        "prismo",
+        "codex",
+        "autogit"
+      ],
+      "roots": [
+        "prisma-control-center"
+      ],
+      "authority": [
+        "prisma-control-center/**/prismo_learning/**",
+        "prisma-control-center/README*.md",
+        "quality/contracts/control-audit-only.contract.json",
+        "quality/contracts/operational-drift.contract.json"
+      ]
+    },
+    "shared-ui": {
+      "keywords": [
+        "shared-ui",
+        "shared ui",
+        "component",
+        "components",
+        "tokens",
+        "recipe",
+        "recipes",
+        "visual os",
+        "visual-os",
+        "liquid",
+        "glass",
+        "pill",
+        "cloudglass",
+        "background"
+      ],
+      "roots": [
+        "products/shared-ui/prisma"
+      ],
+      "authority": [
+        "products/shared-ui/prisma/**",
+        "config/prisma-visual-system/**",
+        "config/prisma-visual-os/**",
+        "config/prisma-visual/component-catalog.json",
+        "config/prisma-visual/component-variants.json",
+        "config/prisma-visual/recipe-map.json",
+        "config/prisma-visual/surface-adapters.json",
+        "config/prisma-visual/layer-budget.json",
+        "config/prisma-visual/authority-map.json"
+      ]
+    },
+    "backgrounds": {
+      "keywords": [
+        "background",
+        "backgrounds",
+        "fondo",
+        "fondos",
+        "atmosphere",
+        "atmósfera",
+        "visual-backgrounds"
+      ],
+      "roots": [
+        "products/0.backgrounds"
+      ],
+      "authority": [
+        "products/0.backgrounds/**",
+        "products/*/app/public/visual-backgrounds/**",
+        "docs/visual-layer-map/**",
+        "config/prisma-visual/layer-budget.json",
+        "config/prisma-visual/recipe-map.json"
+      ]
+    },
+    "quality": {
+      "keywords": [
+        "quality",
+        "qa",
+        "gate",
+        "gates",
+        "contract",
+        "contracts",
+        "evidence",
+        "no fake green",
+        "validar",
+        "validacion",
+        "validación"
+      ],
+      "roots": [
+        "quality"
+      ],
+      "authority": [
+        "quality/**",
+        "tools/prisma-visual/**",
+        "tools/prisma-visual-system/**"
+      ]
+    },
+    "database-sync": {
+      "keywords": [
+        "prisma db",
+        "database",
+        "base de datos",
+        "schema",
+        "sync",
+        "sincronizacion",
+        "sincronización",
+        "tablet pc",
+        "pc tablet",
+        "catalog delta"
+      ],
+      "roots": [
+        "prisma",
+        "docs/sync"
+      ],
+      "authority": [
+        "docs/prisma/**",
+        "docs/sync/**",
+        "prisma/schema.prisma",
+        "prisma/migrations/**",
+        "prisma/seeds/**",
+        "quality/contracts/schema-migration-parity.contract.json",
+        "quality/contracts/no-destructive-testing-on-real-db.contract.json",
+        "quality/contracts/idempotent-sync.contract.json"
+      ]
+    },
+    "productization": {
+      "keywords": [
+        "license",
+        "licencia",
+        "plugin",
+        "plan",
+        "entitlements",
+        "customer",
+        "support",
+        "diagnostics",
+        "activation",
+        "remote update"
+      ],
+      "roots": [
+        "docs/productization",
+        "manifests"
+      ],
+      "authority": [
+        "docs/productization/**",
+        "manifests/**",
+        "quality/contracts/customer-assurance.contract.json",
+        "quality/contracts/support-pack-redaction.contract.json"
+      ]
+    },
+    "shared-kernel": {
+      "keywords": [
+        "shared-kernel",
+        "kernel",
+        "domain",
+        "events",
+        "verticals",
+        "core"
+      ],
+      "roots": [
+        "packages/shared-kernel",
+        "docs/architecture"
+      ],
+      "authority": [
+        "packages/shared-kernel/**",
+        "docs/architecture/**",
+        "docs/contracts/**",
+        "docs/atlas/ATLAS_SHARED_CORE*.md"
+      ]
+    }
+  },
+  "change_types": {
+    "visual": {
+      "keywords": [
+        "visual",
+        "ui",
+        "ux",
+        "css",
+        "premium",
+        "glass",
+        "liquid",
+        "pill",
+        "cloudglass",
+        "background",
+        "fondo",
+        "layout",
+        "interfaz",
+        "diseño",
+        "look",
+        "polish"
+      ],
+      "authority": [
+        "docs/design/**",
+        "config/prisma-visual/**",
+        "config/prisma-visual-system/**",
+        "config/prisma-visual-os/**",
+        "products/shared-ui/prisma/**",
+        "products/0.backgrounds/**",
+        "quality/contracts/no-fake-green.contract.json",
+        "quality/contracts/release-evidence-required.contract.json"
+      ],
+      "required_gates": [
+        "visual_manifest_required",
+        "visual_evidence_required",
+        "layer_budget_required",
+        "no_fake_green"
+      ]
+    },
+    "liquid_glass": {
+      "keywords": [
+        "liquid",
+        "glass",
+        "pill",
+        "cloudglass",
+        "capsule",
+        "capsules",
+        "crystal",
+        "prismaglasscard"
+      ],
+      "authority": [
+        "docs/prismo-ui1p-scaffold/**",
+        "products/shared-ui/prisma/components/PrismaGlassCard.tsx",
+        "products/shared-ui/prisma/**",
+        "config/prisma-visual/recipe-map.json",
+        "config/prisma-visual/authority-map.json"
+      ],
+      "runtime_scan": [
+        "**/*liquid*",
+        "**/*glass*",
+        "**/*pill*",
+        "**/*cloudglass*",
+        "**/*capsule*"
+      ],
+      "required_gates": [
+        "liquid_runtime_scan_required",
+        "surface_adapter_required",
+        "layer_budget_required"
+      ]
+    },
+    "ops_hot_injection": {
+      "keywords": [
+        "hot",
+        "inyectar",
+        "injection",
+        "live",
+        "servidor levantado",
+        "dev server",
+        "procesos vivos"
+      ],
+      "authority": [
+        "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+        "docs/PRISMA_OPERATIONAL_SAFETY_RULES.md",
+        "quality/contracts/traceable-operation.contract.json"
+      ],
+      "forbidden_actions": [
+        "kill processes",
+        "free ports",
+        "start dev server",
+        "regenerate prisma hot",
+        "pc:typecheck hot"
+      ]
+    },
+    "data_sync": {
+      "keywords": [
+        "sync",
+        "sincron",
+        "database",
+        "schema",
+        "prisma",
+        "migration",
+        "seed",
+        "tablet pc",
+        "pc tablet",
+        "catalog delta"
+      ],
+      "authority": [
+        "docs/prisma/**",
+        "docs/sync/**",
+        "prisma/**",
+        "quality/contracts/schema-migration-parity.contract.json",
+        "quality/contracts/idempotent-sync.contract.json",
+        "quality/contracts/no-destructive-testing-on-real-db.contract.json"
+      ],
+      "required_gates": [
+        "real_db_destructive_tests_forbidden",
+        "schema_parity_required",
+        "sync_fixture_required"
+      ]
+    }
+  },
+  "reserved_or_future_surfaces": [
+    "kiosk",
+    "customer-display",
+    "warehouse-scanner",
+    "manager-console",
+    "training-mode",
+    "demo-mode",
+    "public-display"
+  ],
+  "forbidden_default_actions": [
+    "kill dev processes",
+    "free occupied ports",
+    "start app/dev server",
+    "regenerate Prisma hot",
+    "delete files permanently",
+    "force push",
+    "global CSS blast without manifest"
+  ],
+  "runtime_scan_excludes": [
+    ".git",
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "coverage",
+    ".prisma_installer_backups",
+    "__pycache__"
+  ],
+  "max_runtime_matches_per_pattern": 200
+}
