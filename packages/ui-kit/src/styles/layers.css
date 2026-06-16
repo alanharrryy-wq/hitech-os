@@ -225,10 +225,10 @@
 [data-layer-motion-enabled="off"] *,
 [data-layer-motion-enabled="off"]::before,
 [data-layer-motion-enabled="off"]::after {
-  animation-duration: 0ms !important;
-  animation-delay: 0ms !important;
-  transition-duration: 0ms !important;
-  scroll-behavior: auto !important;
+  animation-duration: 0ms;
+  animation-delay: 0ms;
+  transition-duration: 0ms;
+  scroll-behavior: auto;
 }
 
 [data-layer-motion-enabled="on"] .noise {
@@ -266,6 +266,6 @@
 @media (prefers-reduced-motion: reduce) {
   .stage .noise,
   .stage .scanlines {
-    animation: none !important;
+    animation: none;
   }
 }

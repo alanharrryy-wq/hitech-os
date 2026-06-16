@@ -9,10 +9,10 @@ export const VIEWPORT_PRESETS: Readonly<Record<"desktop" | "mobile" | "tablet", 
 
 const DETERMINISTIC_STYLE = `
 *, *::before, *::after {
-  animation: none !important;
-  transition: none !important;
-  caret-color: transparent !important;
-  scroll-behavior: auto !important;
+  animation: none;
+  transition: none;
+  caret-color: transparent;
+  scroll-behavior: auto;
 }
 html {
   text-rendering: geometricPrecision;

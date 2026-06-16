@@ -326,7 +326,7 @@
 @media (prefers-reduced-motion: reduce) {
   .root,
   .actionButton,
-  .liquidSheen { animation: none !important; transition: none !important; }
+  .liquidSheen { animation: none; transition: none; }
 }
 
 @media (prefers-contrast: more) {
@@ -354,8 +354,8 @@
   --pgc-saturate: 1.02;
   --pgc-brightness: 1.02;
   --pgc-contrast: 1.04;
-  background: rgba(4, 6, 14, 0.34) !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,.10) !important;
+  background: rgba(4, 6, 14, 0.34);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,.10);
 }
 
 .root::before,
@@ -367,13 +367,13 @@
 .volumeFrame,
 .innerFrame,
 .specular {
-  opacity: 0.12 !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  opacity: 0.12;
+  filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .liquidSheen {
-  display: none !important;
+  display: none;
 }
 /* PRISMA_DELAYER_01_END */

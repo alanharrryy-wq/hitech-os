@@ -35,7 +35,7 @@ mustContain(component, 'buildSupplierOperatorBoardModel', 'view model desacoplad
 mustContain(viewModel, 'cleanVisibleText', 'limpieza de textos visibles');
 mustContain(labels, 'calendarKindLabel', 'labels calendario');
 mustContain(globals, 'PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 START', 'fix scroll real v06');
-mustContain(globals, 'overflow-y: auto !important', 'scroll vertical en sidebar');
+mustContain(globals, 'overflow-y: auto', 'scroll vertical en sidebar');
 mustContain(suppliersCss, 'PRISMA_PC_SUPPLIERS_OPERATOR_BOARD_SCROLL_ESMX_06 START', 'css proveedores v06');
 mustContain(shell, 'Gemelo', 'shell en español');
 mustContain(shell, 'Sincronización', 'footer sincronizacion en español');

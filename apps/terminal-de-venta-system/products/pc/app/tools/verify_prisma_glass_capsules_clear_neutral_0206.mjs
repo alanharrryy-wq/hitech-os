@@ -51,9 +51,9 @@ const forbiddenColorFragments = [
 
 const checks = [
   ['Test 01 proofStage no longer participates in card-shell selector', !routeCssText.includes('.messageCard,\n.proofStage,\n.lensLab')],
-  ['Test 01 proofStage is transparent', routeCssText.includes('.proofStage') && routeCssText.includes('background: transparent !important')],
-  ['Test 01 proofStage has no border', routeCssText.includes('border: 0 !important')],
-  ['Test 01 proofStage has no box shadow', routeCssText.includes('box-shadow: none !important')],
+  ['Test 01 proofStage is transparent', routeCssText.includes('.proofStage') && routeCssText.includes('background: transparent')],
+  ['Test 01 proofStage has no border', routeCssText.includes('border: 0')],
+  ['Test 01 proofStage has no box shadow', routeCssText.includes('box-shadow: none')],
   ['component css uses backdrop-filter', componentCssText.includes('backdrop-filter')],
   ['component css declares clear1 neutral material', componentCssText.includes('glasscaps clear1: material first, color later')],
   ['all declared tones are grouped into neutral override', componentCssText.includes('.root[data-tone="graphite"],') && componentCssText.includes('.root[data-tone="rose"],') && componentCssText.includes('.root[data-tone="violet"],') && componentCssText.includes('.root[data-tone="blue"],')],

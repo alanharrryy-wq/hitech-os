@@ -57,13 +57,13 @@ export function Hero() {
           50% { opacity: 0.5; transform: scale(1.1) rotate(5deg); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero { animation: none !important; }
-          .hero-card { animation: none !important; }
-          .hero-floating-card { animation: none !important; }
-          .pill-row span:last-child::after { animation: none !important; }
-          .hero-proof-card { animation: none !important; }
-          .button-primary:hover { animation: none !important; }
-          .hero-light-beam { animation: none !important; }
+          .hero { animation: none; }
+          .hero-card { animation: none; }
+          .hero-floating-card { animation: none; }
+          .pill-row span:last-child::after { animation: none; }
+          .hero-proof-card { animation: none; }
+          .button-primary:hover { animation: none; }
+          .hero-light-beam { animation: none; }
         }
       `}</style>
       <section className="hero" style={{ background: 'radial-gradient(ellipse at top right, rgba(173, 216, 230, 0.15) 0%, transparent 50%), linear-gradient(135deg, rgba(7, 16, 36, 0.98), rgba(5, 11, 24, 1))', padding: '4rem 1.75rem', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundSize: '200% 200%', animation: 'prismaHeroGlowDrift 20s ease-in-out infinite', position: 'relative' }}>

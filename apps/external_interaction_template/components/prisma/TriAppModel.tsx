@@ -219,7 +219,7 @@ export function TriAppModel() {
             height: calc(100% - 6rem);
           }
           .prisma-triapp-signal {
-            left: 1.6rem !important;
+            left: 1.6rem;
           }
           .prisma-triapp-signal:nth-of-type(2) { top: 45%; }
           .prisma-triapp-signal:nth-of-type(3) { top: 80%; }
@@ -245,7 +245,7 @@ export function TriAppModel() {
           .prisma-triapp-rail,
           .triapp-card,
           .prisma-triapp-signal {
-            animation: none !important;
+            animation: none;
           }
         }
       `}</style>

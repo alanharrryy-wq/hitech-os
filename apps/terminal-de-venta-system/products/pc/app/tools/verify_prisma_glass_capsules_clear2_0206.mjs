@@ -16,8 +16,8 @@ const compCss = path.join(pcApp, 'components', 'prisma-glass-capsule', 'prisma-g
 const routeText = read(routeCss);
 const compText = read(compCss);
 const checks = [
-  ['stageContent is transparent', routeText.includes('background: transparent !important;') && routeText.includes('backdrop-filter: none !important;')],
-  ['stageContent shell removed', routeText.includes('border: 0 !important;') && routeText.includes('box-shadow: none !important;')],
+  ['stageContent is transparent', routeText.includes('background: transparent;') && routeText.includes('backdrop-filter: none;')],
+  ['stageContent shell removed', routeText.includes('border: 0;') && routeText.includes('box-shadow: none;')],
   ['all tones neutralized', compText.includes('Every visible pill must stay translucent clear/smoke glass')],
   ['no colored variant boost remains', compText.includes('.root[data-variant="active"]') && compText.includes('--pgc-bg-a: rgba(255, 255, 255, 0.095);')],
   ['thinking sheen still exists', compText.includes('.root[data-variant="thinking"] .liquidSheen')],

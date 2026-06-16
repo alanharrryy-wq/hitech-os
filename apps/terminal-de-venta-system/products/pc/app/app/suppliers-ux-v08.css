@@ -1039,7 +1039,7 @@ html[data-theme] .supplier-readable-v07 .trust-card-v07 {
 }
 
 /* PRISMA PC Suppliers v09 - real action cockpit */
-.supplier-action-cockpit-v09{position:relative;overflow:hidden;margin-block:clamp(1rem,2vw,1.4rem);border-color:rgba(255,214,137,.28)!important;box-shadow:0 30px 90px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08)}
+.supplier-action-cockpit-v09{position:relative;overflow:hidden;margin-block:clamp(1rem,2vw,1.4rem);border-color:rgba(255,214,137,.28);box-shadow:0 30px 90px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08)}
 .supplier-action-cockpit-v09::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 18% 0%,rgba(255,213,133,.16),transparent 34%),radial-gradient(circle at 82% 12%,rgba(120,190,255,.12),transparent 38%)}
 .supplier-action-head-v09,.supplier-action-grid-v09,.supplier-action-result-v09{position:relative;z-index:1}.supplier-action-head-v09{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(1rem,2vw,1.5rem);align-items:start;margin-bottom:1.2rem}.supplier-action-head-v09 h2{margin:.18rem 0 .35rem;font-size:clamp(1.45rem,2.4vw,2.45rem);letter-spacing:-.045em}.supplier-action-head-v09 p{max-width:70ch;color:rgba(255,255,255,.76);line-height:1.55}.supplier-action-flow-v09{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.48rem;max-width:32rem}.supplier-action-flow-v09 span,.supplier-action-flow-v09 b{display:inline-flex;align-items:center;min-height:2.1rem;border-radius:999px}.supplier-action-flow-v09 span{padding:.45rem .7rem;border:1px solid rgba(255,214,137,.26);background:rgba(255,214,137,.08);color:#ffdc8f;font-weight:850;font-size:.82rem}.supplier-action-flow-v09 b{color:rgba(255,214,137,.7)}
 .supplier-action-grid-v09{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(16rem,.75fr);gap:clamp(1rem,2vw,1.35rem)}.supplier-action-form-v09{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.supplier-action-form-v09 label{display:grid;gap:.4rem;min-width:0}.supplier-action-form-v09 label>span{color:#ffdc8f;font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;font-weight:900}.supplier-action-form-v09 select,.supplier-action-form-v09 input,.supplier-action-form-v09 textarea{width:100%;min-width:0;border:1px solid rgba(255,255,255,.16);border-radius:1rem;color:rgba(255,255,255,.92);background:linear-gradient(180deg,rgba(10,24,36,.94),rgba(5,15,25,.94));padding:.82rem .9rem;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}.supplier-action-form-v09 textarea{resize:vertical}.supplier-action-form-v09 select:focus,.supplier-action-form-v09 input:focus,.supplier-action-form-v09 textarea:focus{border-color:rgba(255,214,137,.52);box-shadow:0 0 0 3px rgba(255,214,137,.1),inset 0 1px 0 rgba(255,255,255,.06)}.supplier-action-reason-v09{grid-column:1/-1}
@@ -1336,7 +1336,7 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .topbar .sear
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .sidebar {
-  padding: 14px !important;
+  padding: 14px;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .sidebar .search-shell {
@@ -1477,12 +1477,12 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .sidebar .sea
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .supplier-action-cockpit-v12,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .supplier-action-cockpit-v12 {
-  border-color: rgba(39, 103, 255, .17) !important;
+  border-color: rgba(39, 103, 255, .17);
   background:
     radial-gradient(circle at 12% 0%, rgba(39, 103, 255, .12), transparent 34%),
     radial-gradient(circle at 86% 8%, rgba(56, 189, 248, .12), transparent 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, .80), rgba(232, 244, 255, .56)) !important;
-  box-shadow: 0 24px 64px rgba(31, 72, 129, .13), inset 0 1px 0 rgba(255, 255, 255, .88) !important;
+    linear-gradient(180deg, rgba(255, 255, 255, .80), rgba(232, 244, 255, .56));
+  box-shadow: 0 24px 64px rgba(31, 72, 129, .13), inset 0 1px 0 rgba(255, 255, 255, .88);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .supplier-action-cockpit-v12::before,
@@ -1527,10 +1527,10 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .supplier-p
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .supplier-action-form-v09 :where(select, input, textarea),
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .supplier-action-form-v09 :where(select, input, textarea) {
-  color: #14213d !important;
-  border-color: rgba(39, 103, 255, .18) !important;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .90), rgba(239, 247, 255, .72)) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+  color: #14213d;
+  border-color: rgba(39, 103, 255, .18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .90), rgba(239, 247, 255, .72));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .supplier-action-form-v09 :where(select, input, textarea):disabled,
@@ -1648,7 +1648,7 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .supplier-a
   .supplier-action-form-v09,
   .supplier-action-detail-grid-v09,
   .supplier-persistence-metrics-v10 {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 /* PRISMA_PROVEEDORES_VISUAL_MOTOR_FIX_12_END */
@@ -1660,32 +1660,32 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .supplier-a
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-page,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-page * {
-  box-sizing: border-box !important;
-  writing-mode: horizontal-tb !important;
-  text-orientation: mixed !important;
+  box-sizing: border-box;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-page,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-readable-v07 {
-  inline-size: 100% !important;
-  width: 100% !important;
-  max-inline-size: 100% !important;
-  max-width: 100% !important;
-  min-inline-size: 0 !important;
-  min-width: 0 !important;
-  overflow-x: hidden !important;
+  inline-size: 100%;
+  width: 100%;
+  max-inline-size: 100%;
+  max-width: 100%;
+  min-inline-size: 0;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-page :where(
   section, article, div, header, footer, aside, form, label,
   p, small, span, strong, em, b, h1, h2, h3, h4, li, td, th, a, button
 ) {
-  min-inline-size: 0 !important;
-  max-inline-size: 100% !important;
-  word-break: normal !important;
-  overflow-wrap: normal !important;
-  hyphens: manual !important;
-  white-space: normal !important;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: manual;
+  white-space: normal;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-page :where(
@@ -1693,57 +1693,57 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-pag
   .trust-card-v07 p, .surface-signal-card-v07 p, .supplier-action-command-v12 strong,
   .supplier-persistence-metrics-v10 strong
 ) {
-  overflow-wrap: break-word !important;
-  word-break: normal !important;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 {
-  display: grid !important;
-  grid-auto-flow: row !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: clamp(12px, 1.2vw, 16px) !important;
-  align-items: stretch !important;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.2vw, 16px);
+  align-items: stretch;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 > .metric-card,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 > .metric-card-v07,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 > article.metric-card,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 > article.metric-card-v07 {
-  grid-column: auto !important;
-  inline-size: 100% !important;
-  width: 100% !important;
-  min-inline-size: 0 !important;
-  min-width: 0 !important;
-  max-inline-size: 100% !important;
-  max-width: 100% !important;
-  min-height: 136px !important;
-  overflow: hidden !important;
-  white-space: normal !important;
+  grid-column: auto;
+  inline-size: 100%;
+  width: 100%;
+  min-inline-size: 0;
+  min-width: 0;
+  max-inline-size: 100%;
+  max-width: 100%;
+  min-height: 136px;
+  overflow: hidden;
+  white-space: normal;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .kicker,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .card-title,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .metric,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .metric-note {
-  display: block !important;
-  writing-mode: horizontal-tb !important;
-  text-orientation: mixed !important;
-  white-space: normal !important;
-  word-break: normal !important;
-  overflow-wrap: normal !important;
-  hyphens: manual !important;
-  max-inline-size: 100% !important;
+  display: block;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: manual;
+  max-inline-size: 100%;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .metric {
-  white-space: nowrap !important;
-  font-size: clamp(30px, 3vw, 46px) !important;
-  line-height: 1 !important;
+  white-space: nowrap;
+  font-size: clamp(30px, 3vw, 46px);
+  line-height: 1;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .metric-card-v07 .metric-note {
-  overflow-wrap: break-word !important;
-  line-height: 1.42 !important;
+  overflow-wrap: break-word;
+  line-height: 1.42;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-decision-strip-v07,
@@ -1754,11 +1754,11 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .trust-checkl
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .reason-group-grid-v07,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .date-chip-grid-v07,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .audit-event-stack-v07 {
-  display: grid !important;
-  grid-auto-flow: row !important;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)) !important;
-  gap: clamp(12px, 1.2vw, 16px) !important;
-  align-items: stretch !important;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(12px, 1.2vw, 16px);
+  align-items: stretch;
 }
 
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-decision-strip-v07 > *,
@@ -1769,24 +1769,24 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .trust-checkl
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .reason-group-grid-v07 > *,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .date-chip-grid-v07 > *,
 html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .audit-event-stack-v07 > * {
-  grid-column: auto !important;
-  min-inline-size: 0 !important;
-  max-inline-size: 100% !important;
+  grid-column: auto;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 @media (min-width: 1181px) {
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .shell {
-    grid-template-columns: minmax(232px, 260px) minmax(0, 1fr) !important;
+    grid-template-columns: minmax(232px, 260px) minmax(0, 1fr);
   }
 
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .topbar {
-    grid-template-columns: auto minmax(260px, 1fr) auto !important;
+    grid-template-columns: auto minmax(260px, 1fr) auto;
   }
 }
 
 @media (max-width: 1180px) {
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-summary-grid-v07 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .shell,
@@ -1795,7 +1795,7 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .audit-event-
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-action-grid-v09,
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .supplier-action-head-v09,
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .inventory-bridge-head-v11 {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1809,7 +1809,7 @@ html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .audit-event-
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .reason-group-grid-v07,
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .date-chip-grid-v07,
   html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .audit-event-stack-v07 {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 /* PRISMA_PROVEEDORES_LETTERFALL_FIX_14_END */

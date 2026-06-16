@@ -778,13 +778,13 @@ h1 {
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    animation: none;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
   }
 
   .card:hover,
   .routes span:hover {
-    transform: none !important;
+    transform: none;
   }
 }

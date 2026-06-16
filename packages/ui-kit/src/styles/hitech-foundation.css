@@ -69,12 +69,12 @@
 @media (prefers-reduced-motion: reduce) {
   .ui-animate,
   .ui-fade-in {
-    transition-duration: 0ms !important;
-    transition-delay: 0ms !important;
+    transition-duration: 0ms;
+    transition-delay: 0ms;
   }
   .ui-lift:hover,
   .ui-press:active {
-    transform: none !important;
+    transform: none;
   }
 }
 
