@@ -86,4 +86,4 @@ body[data-v40-density="compact"] .v40QuickRailHeader{font-size:10px;}
 body[data-v40-density="compact"] .v40MiniButton,body[data-v40-density="compact"] .v40ThemeButton{min-height:36px;}
 @media (max-width:900px){.v40QuickRail{position:sticky; width:auto; right:auto; bottom:auto; margin:0 0 12px; grid-column:1/-1;} .v40ToastStack{bottom:84px;} .v40PaletteBox{border-radius:20px;} .commandGrid .opButton small{min-height:0;}}
 @media (max-width:640px){.v40ThemeButtons{grid-template-columns:repeat(2,1fr);} .v40RailActions{grid-template-columns:1fr;} .v40CommandPalette{padding-top:48px;} .v40PaletteItem{grid-template-columns:auto 1fr;} .v40PaletteMeta{display:none;}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important;} body{--v40-ease:linear;} }
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms; animation-iteration-count:1; scroll-behavior:auto; transition-duration:.001ms;} body{--v40-ease:linear;} }

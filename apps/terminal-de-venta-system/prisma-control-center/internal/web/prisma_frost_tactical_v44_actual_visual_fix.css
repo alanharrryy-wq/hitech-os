@@ -24,35 +24,35 @@
 
 /* 1) Background: one continuous field, no grid, no panels, no seams */
 html, body{
-  min-height:100% !important;
-  background-color:#172636 !important;
+  min-height:100%;
+  background-color:#172636;
 }
 body[data-theme="tactical"], body[data-frost-tactical], body[data-frost-tactical-v4]{
   background:
     radial-gradient(980px 620px at 12% 10%, rgba(188,220,255,.20), transparent 58%),
     radial-gradient(780px 520px at 84% 12%, rgba(98,172,225,.18), transparent 62%),
     linear-gradient(180deg, rgba(8,16,26,.08), rgba(8,15,24,.22) 42%, rgba(5,10,17,.42)),
-    url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg') center center / cover fixed no-repeat !important;
-  color:var(--cc44-text) !important;
-  --text:var(--cc44-text) !important;
-  --muted:var(--cc44-text-muted) !important;
-  --accent:var(--cc44-cyan) !important;
-  --accent2:var(--cc44-blue) !important;
-  --accent3:var(--cc44-violet) !important;
-  --panel:var(--cc44-fill) !important;
-  --glass:rgba(130,164,194,.16) !important;
-  --edge:var(--cc44-line-strong) !important;
-  --line:var(--cc44-line) !important;
-  --line-2:var(--cc44-line-strong) !important;
-  --blur:6px !important;
+    url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg') center center / cover fixed no-repeat;
+  color:var(--cc44-text);
+  --text:var(--cc44-text);
+  --muted:var(--cc44-text-muted);
+  --accent:var(--cc44-cyan);
+  --accent2:var(--cc44-blue);
+  --accent3:var(--cc44-violet);
+  --panel:var(--cc44-fill);
+  --glass:rgba(130,164,194,.16);
+  --edge:var(--cc44-line-strong);
+  --line:var(--cc44-line);
+  --line-2:var(--cc44-line-strong);
+  --blur:6px;
 }
 body::before, body::after, html::before, html::after{
-  background:none !important;
-  background-image:none !important;
-  content:none !important;
-  display:none !important;
-  opacity:0 !important;
-  animation:none !important;
+  background:none;
+  background-image:none;
+  content:none;
+  display:none;
+  opacity:0;
+  animation:none;
 }
 
 /* Kill old decorative seams/haze layers */
@@ -65,15 +65,15 @@ body::before, body::after, html::before, html::after{
 .gridLayer,
 [data-grid],
 [data-mesh]{
-  display:none !important;
-  opacity:0 !important;
-  background:none !important;
+  display:none;
+  opacity:0;
+  background:none;
 }
 
 /* 2) Type: blue-gray, visible, with thin elegant gaussian glow */
 body[data-theme="tactical"],
 body[data-theme="tactical"] *{
-  text-shadow:0 0 1px rgba(236,247,255,.34),0 0 9px rgba(125,199,255,.09) !important;
+  text-shadow:0 0 1px rgba(236,247,255,.34),0 0 9px rgba(125,199,255,.09);
 }
 body[data-theme="tactical"] p,
 body[data-theme="tactical"] li,
@@ -87,7 +87,7 @@ body[data-theme="tactical"] .statusLine,
 body[data-theme="tactical"] .muted,
 body[data-theme="tactical"] .nodeMeta,
 body[data-theme="tactical"] .timelineCard small{
-  color:var(--cc44-text) !important;
+  color:var(--cc44-text);
 }
 body[data-theme="tactical"] small,
 body[data-theme="tactical"] .muted,
@@ -95,7 +95,7 @@ body[data-theme="tactical"] .statusLine,
 body[data-theme="tactical"] .nodeMeta,
 body[data-theme="tactical"] .prismo-kicker,
 body[data-theme="tactical"] .cardTop small{
-  color:var(--cc44-text-muted) !important;
+  color:var(--cc44-text-muted);
 }
 body[data-theme="tactical"] h1,
 body[data-theme="tactical"] h2,
@@ -109,8 +109,8 @@ body[data-theme="tactical"] .qualityHeroTitle,
 body[data-theme="tactical"] .prismo-title,
 body[data-theme="tactical"] .metricValue,
 body[data-theme="tactical"] .node b{
-  color:var(--cc44-text-strong) !important;
-  text-shadow:0 0 1px rgba(255,255,255,.46),0 0 14px rgba(129,210,255,.16),0 0 24px rgba(185,156,255,.08) !important;
+  color:var(--cc44-text-strong);
+  text-shadow:0 0 1px rgba(255,255,255,.46),0 0 14px rgba(129,210,255,.16),0 0 24px rgba(185,156,255,.08);
 }
 
 /* 3) Base material: simpler, less leche, more mineral depth */
@@ -131,13 +131,13 @@ body[data-theme="tactical"] .lifecyclePanel{
   background:
     linear-gradient(180deg, rgba(255,255,255,.115), rgba(255,255,255,.040) 26%, rgba(255,255,255,.022) 100%),
     linear-gradient(135deg, rgba(123,220,255,.070), transparent 42%, rgba(185,156,255,.052)),
-    var(--cc44-fill) !important;
-  border:1px solid var(--cc44-line) !important;
-  box-shadow:var(--cc44-shadow), inset 0 1px 0 rgba(255,255,255,.15) !important;
-  backdrop-filter:blur(5px) saturate(166%) contrast(1.06) brightness(1.05) !important;
-  -webkit-backdrop-filter:blur(5px) saturate(166%) contrast(1.06) brightness(1.05) !important;
-  clip-path:none !important;
-  border-radius:24px !important;
+    var(--cc44-fill);
+  border:1px solid var(--cc44-line);
+  box-shadow:var(--cc44-shadow), inset 0 1px 0 rgba(255,255,255,.15);
+  backdrop-filter:blur(5px) saturate(166%) contrast(1.06) brightness(1.05);
+  -webkit-backdrop-filter:blur(5px) saturate(166%) contrast(1.06) brightness(1.05);
+  clip-path:none;
+  border-radius:24px;
 }
 body[data-theme="tactical"] .glass::before,
 body[data-theme="tactical"] .panel::before,
@@ -150,12 +150,12 @@ body[data-theme="tactical"] .signal::before,
 body[data-theme="tactical"] .dockBtn::before,
 body[data-theme="tactical"] .opButton::before,
 body[data-theme="tactical"] .miniChartWrap::before{
-  opacity:.34 !important;
+  opacity:.34;
   background:
     linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,0) 24%),
-    radial-gradient(360px 110px at 18% 0%, rgba(255,255,255,.11), transparent 70%) !important;
-  animation:none !important;
-  transform:none !important;
+    radial-gradient(360px 110px at 18% 0%, rgba(255,255,255,.11), transparent 70%);
+  animation:none;
+  transform:none;
 }
 body[data-theme="tactical"] .glass::after,
 body[data-theme="tactical"] .panel::after,
@@ -168,37 +168,37 @@ body[data-theme="tactical"] .signal::after,
 body[data-theme="tactical"] .dockBtn::after,
 body[data-theme="tactical"] .opButton::after,
 body[data-theme="tactical"] .miniChartWrap::after{
-  display:none !important;
-  content:none !important;
+  display:none;
+  content:none;
 }
 
 /* 4) Flatten the prismo composition: no rectangle-in-rectangle-in-oval */
 body[data-theme="tactical"][data-prisma-interface="prismo"] .prismoConsoleSurface,
 body[data-theme="tactical"] .prismoConsoleSurface,
 body[data-theme="tactical"] .prismo-shell{
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  outline:0 !important;
-  border-radius:0 !important;
-  clip-path:none !important;
-  overflow:visible !important;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  outline:0;
+  border-radius:0;
+  clip-path:none;
+  overflow:visible;
 }
 body[data-theme="tactical"] .prismo-grid{
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  gap:20px !important;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  gap:20px;
 }
 body[data-theme="tactical"] .prismo-status-strip{
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  display:flex !important;
-  gap:12px !important;
-  flex-wrap:wrap !important;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
 }
 body[data-theme="tactical"] .prismo-status-strip > *,
 body[data-theme="tactical"] .prismo-mode-row > *,
@@ -207,11 +207,11 @@ body[data-theme="tactical"] .prismo-actions-row > *,
 body[data-theme="tactical"] .pill,
 body[data-theme="tactical"] .chip,
 body[data-theme="tactical"] .tag{
-  background:linear-gradient(180deg, rgba(127,226,255,.17), rgba(127,226,255,.065)), rgba(77,100,124,.22) !important;
-  color:var(--cc44-text-strong) !important;
-  border:1px solid rgba(164,231,255,.34) !important;
-  border-radius:999px !important;
-  box-shadow:0 0 12px rgba(121,234,255,.14), inset 0 1px 0 rgba(255,255,255,.14) !important;
+  background:linear-gradient(180deg, rgba(127,226,255,.17), rgba(127,226,255,.065)), rgba(77,100,124,.22);
+  color:var(--cc44-text-strong);
+  border:1px solid rgba(164,231,255,.34);
+  border-radius:999px;
+  box-shadow:0 0 12px rgba(121,234,255,.14), inset 0 1px 0 rgba(255,255,255,.14);
 }
 body[data-theme="tactical"] .prismo-center-stage,
 body[data-theme="tactical"] .prismo-panel,
@@ -221,13 +221,13 @@ body[data-theme="tactical"] .prismo-render-grid > *{
   background:
     linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.032) 32%, rgba(255,255,255,.018)),
     linear-gradient(135deg, rgba(121,234,255,.065), transparent 44%, rgba(185,156,255,.05)),
-    rgba(43,60,78,.28) !important;
-  border:1px solid rgba(211,235,255,.27) !important;
-  border-radius:24px !important;
-  box-shadow:0 16px 42px rgba(1,7,14,.28),0 30px 86px rgba(1,8,16,.16), inset 0 1px 0 rgba(255,255,255,.14) !important;
-  backdrop-filter:blur(4px) saturate(168%) brightness(1.05) !important;
-  -webkit-backdrop-filter:blur(4px) saturate(168%) brightness(1.05) !important;
-  clip-path:none !important;
+    rgba(43,60,78,.28);
+  border:1px solid rgba(211,235,255,.27);
+  border-radius:24px;
+  box-shadow:0 16px 42px rgba(1,7,14,.28),0 30px 86px rgba(1,8,16,.16), inset 0 1px 0 rgba(255,255,255,.14);
+  backdrop-filter:blur(4px) saturate(168%) brightness(1.05);
+  -webkit-backdrop-filter:blur(4px) saturate(168%) brightness(1.05);
+  clip-path:none;
 }
 /* inner boxes become quiet content, not separate heavy cards */
 body[data-theme="tactical"] .prismo-authority-list,
@@ -237,15 +237,15 @@ body[data-theme="tactical"] .prismo-response-card,
 body[data-theme="tactical"] .prismo-response-meta,
 body[data-theme="tactical"] .prismo-file-row,
 body[data-theme="tactical"] .prismo-panel-head{
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  border-radius:0 !important;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  border-radius:0;
 }
 body[data-theme="tactical"] .prismo-response-card{
-  padding:0 !important;
+  padding:0;
 }
 
 /* 5) Operation/topology cleanup */
@@ -253,18 +253,18 @@ body[data-theme="tactical"] .topology,
 body[data-theme="tactical"] .topologyMap,
 body[data-theme="tactical"] .topologyShell,
 body[data-theme="tactical"] .opticalRoute{
-  background-color:transparent !important;
-  box-shadow:none !important;
+  background-color:transparent;
+  box-shadow:none;
 }
 body[data-theme="tactical"] .topologyShell,
 body[data-theme="tactical"] .opticalRoute{
-  border-color:rgba(206,234,255,.14) !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
+  border-color:rgba(206,234,255,.14);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 body[data-theme="tactical"] .node,
 body[data-theme="tactical"] .timelineCard{
-  box-shadow:0 12px 30px rgba(1,8,16,.24), var(--cc44-neon-cyan), inset 0 1px 0 rgba(255,255,255,.16) !important;
+  box-shadow:0 12px 30px rgba(1,8,16,.24), var(--cc44-neon-cyan), inset 0 1px 0 rgba(255,255,255,.16);
 }
 
 /* 6) Stronger but governed neon */
@@ -272,7 +272,7 @@ body[data-theme="tactical"] .dot,
 body[data-theme="tactical"] .liveDot,
 body[data-theme="tactical"] [class*="dot"],
 body[data-theme="tactical"] [class*="Dot"]{
-  filter:drop-shadow(0 0 6px rgba(115,255,212,.56)) drop-shadow(0 0 13px rgba(115,255,212,.22)) !important;
+  filter:drop-shadow(0 0 6px rgba(115,255,212,.56)) drop-shadow(0 0 13px rgba(115,255,212,.22));
 }
 body[data-theme="tactical"] button,
 body[data-theme="tactical"] .button,
@@ -281,20 +281,20 @@ body[data-theme="tactical"] .dockBtn,
 body[data-theme="tactical"] .prismo-actions-row button,
 body[data-theme="tactical"] .prismo-suggestion-row button,
 body[data-theme="tactical"] input[type="file"]::file-selector-button{
-  color:var(--cc44-text-strong) !important;
-  border-color:rgba(165,230,255,.34) !important;
-  background:linear-gradient(180deg, rgba(120,208,255,.16), rgba(100,136,168,.16)), rgba(55,76,96,.24) !important;
-  box-shadow:0 0 12px rgba(121,234,255,.12), inset 0 1px 0 rgba(255,255,255,.15) !important;
-  text-shadow:0 0 1px rgba(255,255,255,.45),0 0 10px rgba(121,234,255,.14) !important;
+  color:var(--cc44-text-strong);
+  border-color:rgba(165,230,255,.34);
+  background:linear-gradient(180deg, rgba(120,208,255,.16), rgba(100,136,168,.16)), rgba(55,76,96,.24);
+  box-shadow:0 0 12px rgba(121,234,255,.12), inset 0 1px 0 rgba(255,255,255,.15);
+  text-shadow:0 0 1px rgba(255,255,255,.45),0 0 10px rgba(121,234,255,.14);
 }
 body[data-theme="tactical"] button:hover,
 body[data-theme="tactical"] .button:hover,
 body[data-theme="tactical"] .opButton:hover,
 body[data-theme="tactical"] .dockBtn:hover{
-  transform:translateY(-1px) !important;
-  border-color:rgba(134,236,255,.62) !important;
-  box-shadow:0 0 0 1px rgba(216,238,255,.18), var(--cc44-neon-cyan), var(--cc44-neon-violet), inset 0 1px 0 rgba(255,255,255,.22) !important;
-  filter:brightness(1.08) saturate(1.14) !important;
+  transform:translateY(-1px);
+  border-color:rgba(134,236,255,.62);
+  box-shadow:0 0 0 1px rgba(216,238,255,.18), var(--cc44-neon-cyan), var(--cc44-neon-violet), inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.08) saturate(1.14);
 }
 body[data-theme="tactical"] button:focus-visible,
 body[data-theme="tactical"] .opButton:focus-visible,
@@ -302,33 +302,33 @@ body[data-theme="tactical"] textarea:focus-visible,
 body[data-theme="tactical"] input:focus-visible,
 body[data-theme="tactical"] select:focus-visible,
 body[data-theme="tactical"] a:focus-visible{
-  outline:none !important;
-  border-color:rgba(139,239,255,.76) !important;
-  box-shadow:0 0 0 1px rgba(222,241,255,.42),0 0 18px rgba(121,234,255,.34),0 0 32px rgba(185,156,255,.18) !important;
+  outline:none;
+  border-color:rgba(139,239,255,.76);
+  box-shadow:0 0 0 1px rgba(222,241,255,.42),0 0 18px rgba(121,234,255,.34),0 0 32px rgba(185,156,255,.18);
 }
 body[data-theme="tactical"] .active,
 body[data-theme="tactical"] .is-active,
 body[data-theme="tactical"] [aria-selected="true"],
 body[data-theme="tactical"] [aria-current="page"],
 body[data-theme="tactical"] [aria-current="true"]{
-  border-color:rgba(134,236,255,.66) !important;
-  box-shadow:0 0 0 1px rgba(230,245,255,.20),0 0 18px rgba(121,234,255,.28),0 0 38px rgba(185,156,255,.16),inset 0 1px 0 rgba(255,255,255,.20) !important;
+  border-color:rgba(134,236,255,.66);
+  box-shadow:0 0 0 1px rgba(230,245,255,.20),0 0 18px rgba(121,234,255,.28),0 0 38px rgba(185,156,255,.16),inset 0 1px 0 rgba(255,255,255,.20);
 }
 
 /* 7) Inputs: readable, not washed */
 body[data-theme="tactical"] textarea,
 body[data-theme="tactical"] input,
 body[data-theme="tactical"] select{
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.034)), rgba(38,55,73,.34) !important;
-  border:1px solid rgba(210,235,255,.26) !important;
-  color:var(--cc44-text-strong) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 12px rgba(121,234,255,.06) !important;
-  text-shadow:0 0 1px rgba(255,255,255,.30),0 0 8px rgba(121,234,255,.09) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.034)), rgba(38,55,73,.34);
+  border:1px solid rgba(210,235,255,.26);
+  color:var(--cc44-text-strong);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 12px rgba(121,234,255,.06);
+  text-shadow:0 0 1px rgba(255,255,255,.30),0 0 8px rgba(121,234,255,.09);
 }
 body[data-theme="tactical"] textarea::placeholder,
 body[data-theme="tactical"] input::placeholder{
-  color:#abc1d6 !important;
-  opacity:.90 !important;
+  color:#abc1d6;
+  opacity:.90;
 }
 
 /* 8) Reduce double borders from outer frames */
@@ -337,23 +337,23 @@ body[data-theme="tactical"] main > section.panel,
 body[data-theme="tactical"] .qualityHero,
 body[data-theme="tactical"] .licenseOpsHero,
 body[data-theme="tactical"] .lifecycleHero{
-  border-color:rgba(213,235,255,.26) !important;
+  border-color:rgba(213,235,255,.26);
 }
 body[data-theme="tactical"] .panel .panel,
 body[data-theme="tactical"] .panel .card,
 body[data-theme="tactical"] .card .card,
 body[data-theme="tactical"] .panel .metric,
 body[data-theme="tactical"] .panel .timelineCard{
-  background:rgba(54,76,97,.13) !important;
-  border-color:rgba(213,235,255,.12) !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
+  background:rgba(54,76,97,.13);
+  border-color:rgba(213,235,255,.12);
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 
 @media (prefers-reduced-motion: reduce){
   body[data-theme="tactical"] *, body[data-theme="tactical"] *::before, body[data-theme="tactical"] *::after{
-    animation:none !important;
-    transition:none !important;
+    animation:none;
+    transition:none;
   }
 }

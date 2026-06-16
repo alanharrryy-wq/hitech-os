@@ -277,7 +277,7 @@
 @media (prefers-reduced-motion: reduce) {
   .fixedGeometryField,
   .geoPair,
-  .backText { transition: none !important; animation: none !important; }
+  .backText { transition: none; animation: none; }
 }
 
 @media (prefers-contrast: more) {

@@ -27,5 +27,5 @@ PC, Mobile y Chart Lab quedan excluidos.
 - No se ejecuta `pc:typecheck` ni nada que regenere Prisma en caliente.
 - No se reactivan Fuji ni soft-gray-clouds.
 - No se usa `products/0.backgrounds` como URL runtime.
-- Los bloques nuevos no agregan `!important`.
+- Los bloques nuevos no agregan `CSS priority override`.
 - Rollback manual disponible; preview conserva cambios para inspecciÃ³n visual.

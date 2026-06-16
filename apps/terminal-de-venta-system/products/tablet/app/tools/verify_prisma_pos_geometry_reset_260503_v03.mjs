@@ -8,7 +8,7 @@ const files = [
 ];
 const required = [
   'PRISMA_POS_GEOMETRY_RESET_260503_V03_BEGIN',
-  'transform: none !important'
+  'transform: none'
 ];
 const forbidden = [
   'PRISMA_POS_VISUAL_DOM_BINDING_LOCK_260503_V02_BEGIN',

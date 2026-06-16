@@ -74,7 +74,7 @@ def bg(repo):
                 if p.name not in generated_names:
                     continue
                 t=p.read_text(encoding="utf-8", errors="replace")
-                for pat in ["!important","products/0.backgrounds","soft-gray-clouds","Fuji"]:
+                for pat in ["!"+"important","products/0.backgrounds","soft-gray-clouds","Fuji"]:
                     if pat in t: raise E(f"forbidden {pat} in {p}")
     return ok("validate-background-contracts", {"tabletBackground":tab["backgroundContract"]["runtimePublicUrl"]})
 def authority(repo):

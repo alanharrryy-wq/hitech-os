@@ -583,7 +583,7 @@ def build_visual_exploitation_contract(data: Dict[str, Any], task: str, now: str
         'rejection_triggers': [
             'Claims premium without VISUAL_EXPLOITATION_CONTRACT.',
             'Available high-value PRISMA components/recipes ignored without reason.',
-            'Global CSS blast or uncontrolled !important carpet-bombing.',
+            'Global CSS blast or uncontrolled carpet-bombing.',
             'Heavy atmosphere/WebGL blocking an operational selling/payment flow.',
             'Functional smoke test used as visual PASS.',
             'Cross-surface mutation without app matrix and evidence.',

@@ -277,7 +277,7 @@ git -C $Repo diff -- products/tablet/app/components/tablet-shell/prisma-tablet-s
 **Superficie:** Tablet / PC / Mobile / Chart Lab / Shared UI
 **Contexto:** El diff mostró demasiadas superficies tocadas para un objetivo visual específico.
 **Resultado observado:** 28 archivos cambiados, 823 inserciones, 76 eliminaciones.
-**Causa real:** El cambio fue amplio, con CSS overrides y `!important`; útil para probar dirección, pero no suficiente para gobernanza final.
+**Causa real:** El cambio fue amplio, con CSS overrides y `CSS priority override`; útil para probar dirección, pero no suficiente para gobernanza final.
 **Regla nueva:** Si se toca más de una superficie, el cambio debe traer manifest visual y matriz de cobertura.
 
 **Matriz mínima exigida:**
@@ -417,7 +417,7 @@ No matar estos procesos si el objetivo es hot-injection sin apagar. Este comando
 | Cambiar `DEFAULT_MAX_PART_KB` sin revisar `.bat` | PARTIAL | El wrapper puede sobreescribir el default. |
 | Smoke funcional como prueba visual | BAD | No mide percepción, layers ni saturación. |
 | Tocar PC, Tablet, Mobile, Chart Lab y Shared UI en un delayer pequeño | BAD para repo final | Requiere manifest y validación tri-superficie. |
-| CSS con `!important` masivo | TOLERABLE solo como experimento | No debe ser forma final si existen tokens/perillas Visual OS. |
+| CSS con `CSS priority override` masivo | TOLERABLE solo como experimento | No debe ser forma final si existen tokens/perillas Visual OS. |
 
 ## 8. Criterio para promover un aprendizaje a regla oficial
 

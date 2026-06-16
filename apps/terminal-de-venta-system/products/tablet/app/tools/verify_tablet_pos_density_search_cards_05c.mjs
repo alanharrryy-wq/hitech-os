@@ -23,11 +23,11 @@ check("product name still rendered", includes(list, "className={styles.productNa
 check("product category badges preserved", includes(list, "productMetaRail"));
 check("price and add button preserved", includes(list, "formatMoney(product.priceCents)") && includes(list, "onAdd(product)"));
 check("css has 05C marker", includes(css, "PRISMA_TABLET_POS_DENSITY_SEARCH_CARDS_05C::START"));
-check("css removes search outer panel", includes(css, "background: transparent !important") && includes(css, "box-shadow: none !important"));
-check("css hides actions by default", includes(css, "max-height: 0 !important") && includes(css, "pointer-events: none !important"));
+check("css removes search outer panel", includes(css, "background: transparent") && includes(css, "box-shadow: none"));
+check("css hides actions by default", includes(css, "max-height: 0") && includes(css, "pointer-events: none"));
 check("css reveals actions on focus", includes(css, ".searchCard:focus-within .searchActions"));
 check("css reveals actions on expanded state", includes(css, ".searchCard[data-prisma-search-expanded=\"true\"] .searchActions"));
-check("css compacts category chips", includes(css, ".categoryButtonActive") && includes(css, "min-height: 44px !important"));
+check("css compacts category chips", includes(css, ".categoryButtonActive") && includes(css, "min-height: 44px"));
 check("css keeps reduced motion", includes(css, "prefers-reduced-motion"));
 check("doc created", includes(doc, "PRISMA Tablet POS Density Search Cards 05C"));
 

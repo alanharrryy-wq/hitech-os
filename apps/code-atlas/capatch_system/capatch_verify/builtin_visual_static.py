@@ -16,7 +16,7 @@ from typing import Any
 
 from .base import VerifierResultRow, existing_target_files
 
-IMPORTANT_RE = re.compile(r"!important\b", re.IGNORECASE)
+IMPORTANT_RE = re.compile(r"\b", re.IGNORECASE)
 COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
 DECLARATION_RE = re.compile(r"(?P<prop>-{0,2}[A-Za-z_][\w-]*)\s*:\s*(?P<value>[^;{}]+)", re.DOTALL)
 DARK_TOKEN_RE = re.compile(r"(?i)(#000(?:000)?\b|#050505\b|#0b0b0b\b|#111\b|\bblack\b)")
@@ -196,15 +196,15 @@ def _analyze_file(path: Path, ctx: dict[str, Any]) -> dict[str, Any]:
 
     if before_text is not None:
         if before_imp and before_imp > absolute_limit:
-            warnings.append(f"legacy !important debt already existed: {before_imp}")
+            warnings.append(f"legacy debt already existed: {before_imp}")
         if important_delta is not None and important_delta > delta_limit:
-            issues.append(f"too many new !important declarations: +{important_delta} (limit {delta_limit})")
+            issues.append(f"too many new declarations: +{important_delta} (limit {delta_limit})")
     else:
         if after_imp > absolute_limit:
             if legacy:
-                warnings.append(f"legacy visual debt without baseline: {after_imp} !important declarations")
+                warnings.append(f"legacy visual debt without baseline: {after_imp} declarations")
             else:
-                issues.append(f"too many !important declarations without baseline: {after_imp}")
+                issues.append(f"too many declarations without baseline: {after_imp}")
 
     if _is_tablet_surface(path, ctx):
         if before_text is not None:

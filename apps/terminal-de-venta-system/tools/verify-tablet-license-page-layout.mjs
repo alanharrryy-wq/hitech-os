@@ -19,11 +19,11 @@ const checks = [
   },
   {
     name: "header no longer clips content",
-    status: shellCss.includes("overflow: visible !important") && shellCss.includes("white-space: normal !important") ? "PASS" : "FAIL",
+    status: shellCss.includes("overflow: visible") && shellCss.includes("white-space: normal") ? "PASS" : "FAIL",
   },
   {
     name: "header controls wrap on tablet horizontal",
-    status: shellCss.includes("flex-wrap: wrap !important") && shellCss.includes("@media (max-width: 1280px)") ? "PASS" : "FAIL",
+    status: shellCss.includes("flex-wrap: wrap") && shellCss.includes("@media (max-width: 1280px)") ? "PASS" : "FAIL",
   },
   {
     name: "customer missing license renders LICENSE_CUSTOMER_PENDING",

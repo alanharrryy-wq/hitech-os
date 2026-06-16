@@ -24,40 +24,40 @@ body[data-theme="tactical"]{
 /* Exact seam-killer retained: old tactical pseudo-layers were creating horizontal/vertical joins. */
 body[data-theme="tactical"]::before,
 body[data-theme="tactical"]::after{
-  content:none !important;
-  display:none !important;
-  opacity:0 !important;
-  visibility:hidden !important;
-  background:none !important;
-  background-image:none !important;
-  border:0 !important;
-  box-shadow:none !important;
-  mask-image:none !important;
-  -webkit-mask-image:none !important;
-  animation:none !important;
+  content:none;
+  display:none;
+  opacity:0;
+  visibility:hidden;
+  background:none;
+  background-image:none;
+  border:0;
+  box-shadow:none;
+  mask-image:none;
+  -webkit-mask-image:none;
+  animation:none;
 }
 
 body[data-theme="tactical"]{
-  background-color:#172635 !important;
+  background-color:#172635;
   background-image:
     radial-gradient(920px 560px at 12% 8%, rgba(190,224,255,.18), transparent 60%),
     radial-gradient(760px 520px at 86% 10%, rgba(112,182,235,.16), transparent 62%),
     linear-gradient(180deg, rgba(8,15,24,.10), rgba(8,15,24,.24) 48%, rgba(5,10,17,.34)),
-    url("/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg") !important;
-  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat !important;
-  background-size:cover, cover, cover, cover !important;
-  background-position:center center, center center, center center, center center !important;
-  background-attachment:fixed, fixed, fixed, fixed !important;
+    url("/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg");
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size:cover, cover, cover, cover;
+  background-position:center center, center center, center center, center center;
+  background-attachment:fixed, fixed, fixed, fixed;
 }
 
 #prisma-atmosphere-v5{
-  position:fixed !important;
-  inset:0 !important;
-  width:100vw !important;
-  height:100vh !important;
-  z-index:0 !important;
-  pointer-events:none !important;
-  opacity:var(--prisma-v5-atmo-opacity) !important;
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  z-index:0;
+  pointer-events:none;
+  opacity:var(--prisma-v5-atmo-opacity);
   mix-blend-mode:screen;
   contain:strict;
 }
@@ -99,13 +99,13 @@ body[data-theme="tactical"] .prismo-shell::before,
 body[data-theme="tactical"] .prismo-shell::after,
 body[data-theme="tactical"] .prismo-grid::before,
 body[data-theme="tactical"] .prismo-grid::after{
-  content:none !important;
-  display:none !important;
-  opacity:0 !important;
-  background:none !important;
-  background-image:none !important;
-  border:0 !important;
-  box-shadow:none !important;
+  content:none;
+  display:none;
+  opacity:0;
+  background:none;
+  background-image:none;
+  border:0;
+  box-shadow:none;
 }
 
 body[data-theme="tactical"] h1,
@@ -118,8 +118,8 @@ body[data-theme="tactical"] .topbarTitle,
 body[data-theme="tactical"] .heroTitle,
 body[data-theme="tactical"] .metricValue,
 body[data-theme="tactical"] .node b{
-  color:#e3eefb !important;
-  text-shadow:0 0 14px rgba(145, 213, 255, .16), 0 0 1px rgba(255,255,255,.36) !important;
+  color:#e3eefb;
+  text-shadow:0 0 14px rgba(145, 213, 255, .16), 0 0 1px rgba(255,255,255,.36);
 }
 
 body[data-theme="tactical"],
@@ -134,8 +134,8 @@ body[data-theme="tactical"] button,
 body[data-theme="tactical"] .muted,
 body[data-theme="tactical"] .statusLine,
 body[data-theme="tactical"] .nodeMeta{
-  color:#d2e3f4 !important;
-  text-shadow:var(--prisma-v5-text-glow) !important;
+  color:#d2e3f4;
+  text-shadow:var(--prisma-v5-text-glow);
 }
 
 body[data-theme="tactical"] .panel,
@@ -147,14 +147,14 @@ body[data-theme="tactical"] .metric,
 body[data-theme="tactical"] .picker,
 body[data-theme="tactical"] .miniChartWrap,
 body[data-theme="tactical"] .signal{
-  border-color:rgba(214,233,255,.24) !important;
+  border-color:rgba(214,233,255,.24);
   box-shadow:
     0 18px 48px rgba(3, 10, 18, .22),
     0 36px 96px rgba(5, 13, 23, .15),
     inset 0 1px 0 rgba(255,255,255,.16),
-    0 0 30px rgba(116,214,255,.045) !important;
-  backdrop-filter:blur(7px) saturate(162%) brightness(1.04) !important;
-  -webkit-backdrop-filter:blur(7px) saturate(162%) brightness(1.04) !important;
+    0 0 30px rgba(116,214,255,.045);
+  backdrop-filter:blur(7px) saturate(162%) brightness(1.04);
+  -webkit-backdrop-filter:blur(7px) saturate(162%) brightness(1.04);
 }
 
 body[data-theme="tactical"] .opButton,
@@ -175,12 +175,12 @@ body[data-theme="tactical"] .tab:hover,
 body[data-theme="tactical"] .pill:hover,
 body[data-theme="tactical"] .chip:hover,
 body[data-theme="tactical"] .tag:hover{
-  filter:brightness(1.08) saturate(1.12) !important;
+  filter:brightness(1.08) saturate(1.12);
   box-shadow:
     0 0 0 1px rgba(216,236,255,.24),
     0 0 20px var(--prisma-v5-neon-blue),
     0 0 34px var(--prisma-v5-neon-violet),
-    inset 0 1px 0 rgba(255,255,255,.18) !important;
+    inset 0 1px 0 rgba(255,255,255,.18);
 }
 
 body[data-theme="tactical"] .active,
@@ -188,20 +188,20 @@ body[data-theme="tactical"] .is-active,
 body[data-theme="tactical"] [aria-current="page"],
 body[data-theme="tactical"] [aria-current="true"],
 body[data-theme="tactical"] [aria-selected="true"]{
-  border-color:rgba(143,223,255,.56) !important;
+  border-color:rgba(143,223,255,.56);
   box-shadow:
     0 0 0 1px rgba(220,240,255,.26),
     0 0 22px rgba(86,214,255,.34),
     0 0 38px rgba(180,138,255,.22),
-    inset 0 1px 0 rgba(255,255,255,.20) !important;
+    inset 0 1px 0 rgba(255,255,255,.20);
 }
 
 body[data-theme="tactical"] :focus-visible{
-  outline:none !important;
+  outline:none;
   box-shadow:
     0 0 0 1px rgba(230,246,255,.70),
     0 0 20px rgba(86,214,255,.34),
-    0 0 32px rgba(180,138,255,.20) !important;
+    0 0 32px rgba(180,138,255,.20);
 }
 
 @keyframes prismaV5FallbackDrift{
@@ -212,11 +212,11 @@ body[data-theme="tactical"] :focus-visible{
 @media (prefers-reduced-motion: reduce){
   #prisma-atmosphere-v5,
   .prisma-atmosphere-fallback{
-    animation:none !important;
-    opacity:.34 !important;
+    animation:none;
+    opacity:.34;
   }
   body[data-theme="tactical"] *{
-    transition:none !important;
-    animation:none !important;
+    transition:none;
+    animation:none;
   }
 }

@@ -1180,10 +1180,10 @@
   background:
     radial-gradient(circle at 26% -8%, rgba(255,255,255,0.17), transparent 34%),
     radial-gradient(circle at 92% 2%, rgba(232,189,103,0.105), transparent 32%),
-    linear-gradient(180deg, rgba(29,43,56,0.30), rgba(5,12,20,0.33)) !important;
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 38%, var(--prisma-border-soft)) !important;
-  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate)) !important;
+    linear-gradient(180deg, rgba(29,43,56,0.30), rgba(5,12,20,0.33));
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 38%, var(--prisma-border-soft));
+  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
 }
 
 .productImageStage {
@@ -1191,7 +1191,7 @@
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.28), transparent 29%),
     radial-gradient(ellipse at 50% 92%, rgba(232,189,103,0.27), transparent 42%),
     radial-gradient(circle at 15% 26%, rgba(154,204,232,0.18), transparent 38%),
-    linear-gradient(180deg, rgba(56,72,88,0.32), rgba(7,14,23,0.32)) !important;
+    linear-gradient(180deg, rgba(56,72,88,0.32), rgba(7,14,23,0.32));
 }
 
 /* PRISMA_LAYER_DISCIPLINE_PASS_01C: Tablet POS layer discipline
@@ -1200,27 +1200,27 @@
 .ticketPanel,
 .searchCard,
 .successCard {
-  background: var(--prisma-layer-panel-surface) !important;
-  border-color: var(--prisma-layer-edge) !important;
-  box-shadow: var(--prisma-layer-soft-shadow) !important;
-  backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate)) !important;
+  background: var(--prisma-layer-panel-surface);
+  border-color: var(--prisma-layer-edge);
+  box-shadow: var(--prisma-layer-soft-shadow);
+  backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate));
 }
 
 .productCard {
-  background: var(--prisma-layer-card-surface) !important;
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 20%, var(--prisma-border-soft)) !important;
-  box-shadow: var(--prisma-layer-card-shadow) !important;
-  backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10) !important;
+  background: var(--prisma-layer-card-surface);
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 20%, var(--prisma-border-soft));
+  box-shadow: var(--prisma-layer-card-shadow);
+  backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10);
+  -webkit-backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10);
 }
 
 .productCard::before {
   background:
     linear-gradient(180deg, rgba(255,255,255,0.10), transparent 22%),
-    linear-gradient(130deg, transparent 0%, transparent 70%, color-mix(in srgb, var(--prisma-accent-gold) 7%, transparent)) !important;
-  opacity: 0.24 !important;
-  mix-blend-mode: normal !important;
+    linear-gradient(130deg, transparent 0%, transparent 70%, color-mix(in srgb, var(--prisma-accent-gold) 7%, transparent));
+  opacity: 0.24;
+  mix-blend-mode: normal;
 }
 
 .searchInputWrap,
@@ -1236,42 +1236,42 @@
 .addButton,
 .checkoutLink,
 .checkoutLinkDisabled {
-  background: var(--prisma-layer-control-surface) !important;
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 18%, var(--prisma-border-soft)) !important;
-  backdrop-filter: blur(var(--prisma-layer-control-blur)) saturate(1.08) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-layer-control-blur)) saturate(1.08) !important;
+  background: var(--prisma-layer-control-surface);
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 18%, var(--prisma-border-soft));
+  backdrop-filter: blur(var(--prisma-layer-control-blur)) saturate(1.08);
+  -webkit-backdrop-filter: blur(var(--prisma-layer-control-blur)) saturate(1.08);
 }
 
 .productImageStage {
-  background: var(--prisma-layer-stage-surface) !important;
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 24%, var(--prisma-border-soft)) !important;
+  background: var(--prisma-layer-stage-surface);
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 24%, var(--prisma-border-soft));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.14),
     inset 0 -14px 28px rgba(0,0,0,0.18),
-    0 14px 34px rgba(0,0,0,0.18) !important;
-  backdrop-filter: blur(12px) saturate(1.10) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.10) !important;
+    0 14px 34px rgba(0,0,0,0.18);
+  backdrop-filter: blur(12px) saturate(1.10);
+  -webkit-backdrop-filter: blur(12px) saturate(1.10);
 }
 
 .productAura {
-  opacity: 0.46 !important;
-  filter: blur(18px) !important;
+  opacity: 0.46;
+  filter: blur(18px);
 }
 
 .productPedestal {
-  opacity: 0.74 !important;
-  filter: blur(5px) !important;
+  opacity: 0.74;
+  filter: blur(5px);
 }
 
 .addButton {
-  color: var(--prisma-accent-gold-soft) !important;
+  color: var(--prisma-accent-gold-soft);
 }
 
 .checkoutLink:not(.checkoutLinkDisabled),
 .primaryButton:not(:disabled) {
-  background: var(--prisma-gold-gradient) !important;
-  color: var(--prisma-text-on-gold) !important;
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 58%, var(--prisma-border-gold)) !important;
+  background: var(--prisma-gold-gradient);
+  color: var(--prisma-text-on-gold);
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 58%, var(--prisma-border-gold));
 }
 
 /* PRISMA_BLACK_VISUAL_REFINEMENT_01G::START */
@@ -1386,15 +1386,15 @@
 }
 
 .productImageStage:has(.productPackshot) .productAura {
-  opacity: 0.42 !important;
-  filter: blur(16px) !important;
+  opacity: 0.42;
+  filter: blur(16px);
 }
 
 .productImageStage:has(.productPackshot) .productPedestal {
   width: 116px;
   height: 18px;
   bottom: 15px;
-  opacity: 0.82 !important;
+  opacity: 0.82;
 }
 
 .cartThumbPackshot {
@@ -1402,7 +1402,7 @@
   background:
     radial-gradient(ellipse at 50% 84%, rgba(232, 189, 103, 0.22), transparent 44%),
     linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015)),
-    var(--prisma-product-stage-gradient) !important;
+    var(--prisma-product-stage-gradient);
 }
 
 .cartThumbPackshot img {
@@ -1469,23 +1469,23 @@
 .productCard:hover,
 .productCard:focus-within {
   transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 34%, rgba(255,255,255,0.16)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 34%, rgba(255,255,255,0.16));
   box-shadow:
     0 26px 58px rgba(0, 0, 0, 0.38),
     0 0 34px color-mix(in srgb, var(--prisma-accent-gold) 12%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .productCard::before {
   z-index: 0;
-  opacity: 0.20 !important;
+  opacity: 0.20;
 }
 
 .productCard::after {
   z-index: 0;
   left: 16px;
   right: 16px;
-  opacity: 0.42 !important;
+  opacity: 0.42;
 }
 
 .productCardTop,
@@ -1510,22 +1510,22 @@
 
 .productCard:hover .productImageStage,
 .productCard:focus-within .productImageStage {
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 30%, var(--prisma-border-soft)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 30%, var(--prisma-border-soft));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.20),
     inset 0 -18px 34px rgba(0,0,0,0.24),
     0 20px 42px rgba(0,0,0,0.26),
-    0 0 26px color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent) !important;
+    0 0 26px color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent);
 }
 
 .productImageStage::before {
   z-index: 0;
-  opacity: 0.54 !important;
+  opacity: 0.54;
   background:
     radial-gradient(circle at 48% 12%, rgba(255,255,255,0.20), transparent 28%),
     radial-gradient(ellipse at 50% 96%, color-mix(in srgb, var(--prisma-accent-gold) 20%, transparent), transparent 42%),
-    linear-gradient(115deg, rgba(255,255,255,0.08), transparent 34%, rgba(255,255,255,0.025)) !important;
-  filter: none !important;
+    linear-gradient(115deg, rgba(255,255,255,0.08), transparent 34%, rgba(255,255,255,0.025));
+  filter: none;
 }
 
 .productImageStage::after {
@@ -1535,7 +1535,7 @@
   bottom: 12px;
   height: 17px;
   background:
-    radial-gradient(ellipse at center, rgba(255, 226, 160, 0.24), rgba(0,0,0,0.18) 58%, transparent 74%) !important;
+    radial-gradient(ellipse at center, rgba(255, 226, 160, 0.24), rgba(0,0,0,0.18) 58%, transparent 74%);
   filter: blur(7px);
   opacity: 0.84;
 }
@@ -1544,8 +1544,8 @@
   z-index: 1;
   width: 70%;
   height: 48%;
-  opacity: 0.42 !important;
-  filter: blur(18px) saturate(1.05) !important;
+  opacity: 0.42;
+  filter: blur(18px) saturate(1.05);
   transform: translateY(8px);
 }
 
@@ -1554,12 +1554,12 @@
   bottom: 16px;
   width: 118px;
   height: 17px;
-  opacity: 0.80 !important;
+  opacity: 0.80;
   background:
-    radial-gradient(ellipse at center, rgba(255, 234, 184, 0.34), rgba(232, 189, 103, 0.16) 52%, transparent 74%) !important;
+    radial-gradient(ellipse at center, rgba(255, 234, 184, 0.34), rgba(232, 189, 103, 0.16) 52%, transparent 74%);
   box-shadow:
     0 0 28px color-mix(in srgb, var(--prisma-accent-gold) 24%, transparent),
-    0 14px 22px rgba(0,0,0,0.20) !important;
+    0 14px 22px rgba(0,0,0,0.20);
 }
 
 .productPackshot,
@@ -1642,11 +1642,11 @@
 .addButton:not(:disabled):hover,
 .addButton:not(:disabled):focus-visible {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 42%, var(--prisma-border-gold)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 42%, var(--prisma-border-gold));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.18),
     0 12px 28px rgba(0,0,0,0.26),
-    0 0 22px color-mix(in srgb, var(--prisma-accent-gold) 14%, transparent) !important;
+    0 0 22px color-mix(in srgb, var(--prisma-accent-gold) 14%, transparent);
 }
 
 .favoriteStar {
@@ -1666,11 +1666,11 @@
 }
 
 .ticketTotal {
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 48%, var(--prisma-border-gold)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 48%, var(--prisma-border-gold));
   box-shadow:
     0 18px 40px rgba(0,0,0,0.28),
     0 0 26px color-mix(in srgb, var(--prisma-accent-gold) 13%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .checkoutLink:not(.checkoutLinkDisabled) {
@@ -1705,14 +1705,14 @@
   .productFigure,
   .addButton,
   .checkoutLink:not(.checkoutLinkDisabled)::before {
-    transition: none !important;
+    transition: none;
   }
 
   .productCard:hover,
   .productCard:focus-within,
   .addButton:not(:disabled):hover,
   .addButton:not(:disabled):focus-visible {
-    transform: none !important;
+    transform: none;
   }
 }
 /* PRISMA_POS_VISUAL_03_STAGE_CARD_DEPTH::END */
@@ -1726,15 +1726,15 @@
   gap: 14px;
   padding: 18px;
   border-radius: 24px;
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 22%, rgba(255,255,255,0.13)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 22%, rgba(255,255,255,0.13));
   background:
     radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent), transparent 34%),
     radial-gradient(circle at 8% 0%, rgba(255,255,255,0.08), transparent 24%),
-    linear-gradient(180deg, rgba(14, 26, 38, 0.82), rgba(5, 12, 20, 0.78)) !important;
+    linear-gradient(180deg, rgba(14, 26, 38, 0.82), rgba(5, 12, 20, 0.78));
   box-shadow:
     0 30px 76px rgba(0,0,0,0.42),
     0 0 44px color-mix(in srgb, var(--prisma-accent-gold) 8%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    inset 0 1px 0 rgba(255,255,255,0.12);
   isolation: isolate;
 }
 
@@ -1772,13 +1772,13 @@
   padding: 12px 10px 12px 12px;
   border-radius: 19px;
   overflow: hidden;
-  border-color: rgba(255,255,255,0.115) !important;
+  border-color: rgba(255,255,255,0.115);
   background:
     radial-gradient(circle at 10% 6%, rgba(255,255,255,0.09), transparent 32%),
-    linear-gradient(180deg, rgba(23, 38, 52, 0.58), rgba(7, 15, 25, 0.52)) !important;
+    linear-gradient(180deg, rgba(23, 38, 52, 0.58), rgba(7, 15, 25, 0.52));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.10),
-    0 14px 30px rgba(0,0,0,0.20) !important;
+    0 14px 30px rgba(0,0,0,0.20);
   transition:
     border-color var(--prisma-motion-base) ease,
     box-shadow var(--prisma-motion-base) ease,
@@ -1803,25 +1803,25 @@
 .ticketLine:hover,
 .ticketLine:focus-within {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 30%, rgba(255,255,255,0.12)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 30%, rgba(255,255,255,0.12));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.13),
     0 18px 36px rgba(0,0,0,0.24),
-    0 0 20px color-mix(in srgb, var(--prisma-accent-gold) 7%, transparent) !important;
+    0 0 20px color-mix(in srgb, var(--prisma-accent-gold) 7%, transparent);
 }
 
 .cartThumb {
   width: 60px;
   height: 62px;
   border-radius: 18px;
-  border-color: rgba(255,255,255,0.13) !important;
+  border-color: rgba(255,255,255,0.13);
   background:
     radial-gradient(ellipse at 50% 86%, rgba(232, 189, 103, 0.24), transparent 42%),
     linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.018)),
-    rgba(8, 18, 28, 0.60) !important;
+    rgba(8, 18, 28, 0.60);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.13),
-    0 13px 25px rgba(0,0,0,0.24) !important;
+    0 13px 25px rgba(0,0,0,0.24);
 }
 
 .cartThumbPackshot img {
@@ -1853,9 +1853,9 @@
   min-height: 38px;
   gap: 5px;
   padding: 4px;
-  border: 1px solid rgba(255,255,255,0.10) !important;
-  background: rgba(5, 12, 20, 0.34) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(5, 12, 20, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .stepper button,
@@ -1907,15 +1907,15 @@
   overflow: hidden;
   padding: 20px;
   border-radius: 22px;
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 58%, var(--prisma-border-gold)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 58%, var(--prisma-border-gold));
   background:
     radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--prisma-accent-gold) 26%, transparent), transparent 42%),
     radial-gradient(circle at 20% 0%, rgba(255,255,255,0.10), transparent 30%),
-    linear-gradient(180deg, rgba(20, 32, 43, 0.72), rgba(8, 16, 25, 0.66)) !important;
+    linear-gradient(180deg, rgba(20, 32, 43, 0.72), rgba(8, 16, 25, 0.66));
   box-shadow:
     0 22px 48px rgba(0,0,0,0.34),
     0 0 34px color-mix(in srgb, var(--prisma-accent-gold) 16%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.18) !important;
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .ticketTotal::before {
@@ -1951,13 +1951,13 @@
   min-height: 78px;
   border-radius: 22px;
   padding-inline: 22px;
-  border-color: rgba(255, 231, 170, 0.62) !important;
+  border-color: rgba(255, 231, 170, 0.62);
   background:
-    linear-gradient(180deg, rgba(255, 226, 157, 0.96), rgba(186, 127, 42, 0.82)) !important;
+    linear-gradient(180deg, rgba(255, 226, 157, 0.96), rgba(186, 127, 42, 0.82));
   box-shadow:
     0 22px 46px rgba(0,0,0,0.32),
     0 0 36px color-mix(in srgb, var(--prisma-accent-gold) 24%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.44) !important;
+    inset 0 1px 0 rgba(255,255,255,0.44);
   font-size: 1.22rem;
   font-weight: 940;
   letter-spacing: 0.025em;
@@ -1975,7 +1975,7 @@
   box-shadow:
     0 26px 54px rgba(0,0,0,0.38),
     0 0 46px color-mix(in srgb, var(--prisma-accent-gold) 32%, transparent),
-    inset 0 1px 0 rgba(255,255,255,0.50) !important;
+    inset 0 1px 0 rgba(255,255,255,0.50);
 }
 
 .checkoutLink strong,
@@ -2004,7 +2004,7 @@
   color: color-mix(in srgb, var(--prisma-text-primary) 84%, transparent);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)),
-    rgba(7, 15, 24, 0.44) !important;
+    rgba(7, 15, 24, 0.44);
   opacity: 0.84;
   transition:
     opacity var(--prisma-motion-fast) ease,
@@ -2028,10 +2028,10 @@
 .emptyTicket,
 .statePanel {
   min-height: 238px;
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 28%, rgba(255,255,255,0.10)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 28%, rgba(255,255,255,0.10));
   background:
     radial-gradient(circle at 50% 4%, color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent), transparent 42%),
-    linear-gradient(180deg, rgba(18, 31, 44, 0.52), rgba(5, 12, 20, 0.45)) !important;
+    linear-gradient(180deg, rgba(18, 31, 44, 0.52), rgba(5, 12, 20, 0.45));
 }
 
 @media (max-width: 1100px) {
@@ -2067,7 +2067,7 @@
   .checkoutLink:not(.checkoutLinkDisabled),
   .secondaryCheckoutActions button,
 .secondaryCheckoutActions a {
-    transition: none !important;
+    transition: none;
   }
 
   .ticketLine:hover,
@@ -2080,7 +2080,7 @@
   .checkoutLink:not(.checkoutLinkDisabled):focus-visible,
   .secondaryCheckoutActions button:hover,
   .secondaryCheckoutActions button:focus-visible {
-    transform: none !important;
+    transform: none;
   }
 }
 /* PRISMA_POS_VISUAL_04_CART_CHECKOUT_HIERARCHY::END */
@@ -2092,47 +2092,47 @@
    Do not use this block for shell, PC, Mobile, shared-ui or prisma-dark-pos-reference. */
 .productImageStage[data-prisma-packshot-host] {
   min-height: 170px;
-  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 20%, rgba(255,255,255,0.14)) !important;
+  border-color: color-mix(in srgb, var(--prisma-accent-gold-soft) 20%, rgba(255,255,255,0.14));
   background:
     radial-gradient(ellipse at 50% 86%, color-mix(in srgb, var(--prisma-accent-gold) 18%, transparent), transparent 43%),
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.16), transparent 28%),
-    linear-gradient(180deg, rgba(24, 40, 55, 0.72), rgba(5, 13, 22, 0.70)) !important;
+    linear-gradient(180deg, rgba(24, 40, 55, 0.72), rgba(5, 13, 22, 0.70));
 }
 
 .productImageStage[data-prisma-packshot-host]::before {
-  opacity: 0.44 !important;
+  opacity: 0.44;
   background:
     linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.09) 34%, transparent 56%),
-    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--prisma-accent-gold) 24%, transparent), transparent 45%) !important;
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--prisma-accent-gold) 24%, transparent), transparent 45%);
 }
 
 .productImageStage[data-prisma-packshot-host]::after {
   z-index: 2;
   bottom: 13px;
-  opacity: 0.92 !important;
+  opacity: 0.92;
   background:
-    radial-gradient(ellipse at center, rgba(255, 226, 160, 0.28), rgba(0,0,0,0.24) 58%, transparent 75%) !important;
+    radial-gradient(ellipse at center, rgba(255, 226, 160, 0.28), rgba(0,0,0,0.24) 58%, transparent 75%);
 }
 
 .productPackshot {
-  z-index: 5 !important;
-  background: transparent !important;
-  mix-blend-mode: normal !important;
-  object-fit: contain !important;
+  z-index: 5;
+  background: transparent;
+  mix-blend-mode: normal;
+  object-fit: contain;
   image-rendering: auto;
 }
 
 .productFigureFallback {
-  display: none !important;
-  z-index: 5 !important;
+  display: none;
+  z-index: 5;
 }
 
 .productImageStage[data-packshot-error="true"] .productPackshot {
-  display: none !important;
+  display: none;
 }
 
 .productImageStage[data-packshot-error="true"] .productFigureFallback {
-  display: grid !important;
+  display: grid;
 }
 
 .productImageStage[data-packshot-error="true"]::before {
@@ -2141,17 +2141,17 @@
 }
 
 .productImageStage:has(.productPackshot) .productPedestal {
-  bottom: 14px !important;
-  width: 132px !important;
-  height: 20px !important;
-  opacity: 0.90 !important;
+  bottom: 14px;
+  width: 132px;
+  height: 20px;
+  opacity: 0.90;
   background:
-    radial-gradient(ellipse at center, rgba(255, 236, 190, 0.38), rgba(232, 189, 103, 0.17) 55%, transparent 76%) !important;
+    radial-gradient(ellipse at center, rgba(255, 236, 190, 0.38), rgba(232, 189, 103, 0.17) 55%, transparent 76%);
 }
 
 .productImageStage:has(.productPackshot) .productAura {
-  opacity: 0.36 !important;
-  filter: blur(17px) saturate(1.08) !important;
+  opacity: 0.36;
+  filter: blur(17px) saturate(1.08);
 }
 
 .cartThumb[data-prisma-packshot-host] {
@@ -2160,23 +2160,23 @@
 }
 
 .cartThumbPackshot img {
-  z-index: 3 !important;
-  background: transparent !important;
-  object-fit: contain !important;
+  z-index: 3;
+  background: transparent;
+  object-fit: contain;
   image-rendering: auto;
 }
 
 .cartThumbFallback {
-  display: none !important;
-  z-index: 2 !important;
+  display: none;
+  z-index: 2;
 }
 
 .cartThumb[data-packshot-error="true"] img {
-  display: none !important;
+  display: none;
 }
 
 .cartThumb[data-packshot-error="true"] .cartThumbFallback {
-  display: block !important;
+  display: block;
 }
 
 .ticketLine:has(.cartThumbPackshot) .ticketLineText strong,
@@ -2665,13 +2665,13 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard {
-  border-color: var(--prisma-border-soft) !important;
+  border-color: var(--prisma-border-soft);
   background:
     radial-gradient(circle at 28% 0%, rgba(255,255,255,0.86), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.84), rgba(246,250,255,0.68)) !important;
-  box-shadow: var(--prisma-shadow-panel-lift) !important;
-  backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.84), rgba(246,250,255,0.68));
+  box-shadow: var(--prisma-shadow-panel-lift);
+  backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
@@ -2681,164 +2681,164 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartCard {
-  border-color: var(--prisma-border-soft) !important;
+  border-color: var(--prisma-border-soft);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.70)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 28px rgba(32,45,82,0.08) !important;
-  backdrop-filter: blur(var(--prisma-optical-control-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-optical-control-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.70));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 28px rgba(32,45,82,0.08);
+  backdrop-filter: blur(var(--prisma-optical-control-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-control-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within {
-  border-color: var(--prisma-action-primary) !important;
-  box-shadow: var(--prisma-optical-focus-ring), 0 16px 34px rgba(21,87,255,0.12) !important;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-optical-focus-ring), 0 16px 34px rgba(21,87,255,0.12);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap svg,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal span {
-  color: var(--prisma-action-primary) !important;
-  text-shadow: none !important;
+  color: var(--prisma-action-primary);
+  text-shadow: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:not(:disabled),
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:not(:disabled),
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:not(.checkoutLinkDisabled) {
-  color: var(--prisma-text-inverse) !important;
-  border-color: var(--prisma-action-primary) !important;
-  background: var(--prisma-action-primary-gradient) !important;
-  box-shadow: var(--prisma-shadow-primary-glow), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  color: var(--prisma-text-inverse);
+  border-color: var(--prisma-action-primary);
+  background: var(--prisma-action-primary-gradient);
+  box-shadow: var(--prisma-shadow-primary-glow), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a {
-  color: var(--prisma-text-primary) !important;
-  border-color: var(--prisma-border-soft) !important;
+  color: var(--prisma-text-primary);
+  border-color: var(--prisma-border-soft);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,250,255,0.72)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 12px 26px rgba(32,45,82,0.08) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,250,255,0.72));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 12px 26px rgba(32,45,82,0.08);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton[data-prisma-component="ScanButton"],
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton {
-  color: var(--prisma-action-primary) !important;
+  color: var(--prisma-action-primary);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton[data-prisma-component="ScanButton"] {
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   background:
     radial-gradient(circle at 22% 0%, rgba(21,87,255,0.12), transparent 44%),
-    linear-gradient(180deg, #ffffff, #f4f8ff) !important;
+    linear-gradient(180deg, #ffffff, #f4f8ff);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
-  border-color: var(--prisma-border-soft) !important;
-  color: var(--prisma-text-secondary) !important;
+  border-color: var(--prisma-border-soft);
+  color: var(--prisma-text-secondary);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.72)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 26px rgba(32,45,82,0.08) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.72));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 26px rgba(32,45,82,0.08);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
-  color: var(--prisma-action-primary) !important;
-  background: var(--prisma-action-primary-soft) !important;
+  color: var(--prisma-action-primary);
+  background: var(--prisma-action-primary-soft);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
-  color: var(--prisma-action-primary) !important;
-  border-color: var(--prisma-border-action) !important;
+  color: var(--prisma-action-primary);
+  border-color: var(--prisma-border-action);
   transform: translateY(-1px);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
-  color: #ffffff !important;
-  background: var(--prisma-action-primary-gradient) !important;
+  color: #ffffff;
+  background: var(--prisma-action-primary-gradient);
   box-shadow: 0 14px 30px rgba(21,87,255,0.22);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard {
-  border-color: var(--prisma-border-soft) !important;
+  border-color: var(--prisma-border-soft);
   background:
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.88), transparent 36%),
-    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,250,255,0.76)) !important;
-  box-shadow: var(--prisma-shadow-card-lift) !important;
-  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,250,255,0.76));
+  box-shadow: var(--prisma-shadow-card-lift);
+  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:hover,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:focus-within {
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   box-shadow:
     0 24px 56px rgba(32,45,82,0.16),
     0 0 32px rgba(21,87,255,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.94) !important;
+    inset 0 1px 0 rgba(255,255,255,0.94);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard::before {
   background:
     linear-gradient(180deg, rgba(255,255,255,0.76), transparent 30%),
-    linear-gradient(130deg, transparent 68%, rgba(21,87,255,0.07)) !important;
-  opacity: 0.72 !important;
+    linear-gradient(130deg, transparent 68%, rgba(21,87,255,0.07));
+  opacity: 0.72;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host] {
-  border-color: #e5ebf7 !important;
+  border-color: #e5ebf7;
   background:
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.98), transparent 34%),
     radial-gradient(ellipse at 50% 92%, rgba(21,87,255,0.13), transparent 42%),
-    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(235,242,255,0.52)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(235,242,255,0.52));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.94),
     inset 0 -18px 32px rgba(185,199,220,0.16),
-    0 14px 30px rgba(32,45,82,0.10) !important;
+    0 14px 30px rgba(32,45,82,0.10);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage::before,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host]::before {
   background:
     linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.54) 34%, transparent 56%),
-    radial-gradient(circle at 50% 100%, rgba(21,87,255,0.16), transparent 48%) !important;
-  opacity: 0.66 !important;
+    radial-gradient(circle at 50% 100%, rgba(21,87,255,0.16), transparent 48%);
+  opacity: 0.66;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage::after,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host]::after {
   background:
-    radial-gradient(ellipse at center, rgba(21,87,255,0.13), rgba(185,199,220,0.12) 58%, transparent 75%) !important;
+    radial-gradient(ellipse at center, rgba(21,87,255,0.13), rgba(185,199,220,0.12) 58%, transparent 75%);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAura {
-  opacity: var(--prisma-optical-product-glow-opacity) !important;
-  filter: blur(var(--prisma-optical-product-glow-blur)) saturate(1.02) !important;
+  opacity: var(--prisma-optical-product-glow-opacity);
+  filter: blur(var(--prisma-optical-product-glow-blur)) saturate(1.02);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPedestal,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage:has(.productPackshot) .productPedestal {
-  opacity: var(--prisma-optical-product-pedestal-opacity) !important;
+  opacity: var(--prisma-optical-product-pedestal-opacity);
   background:
-    radial-gradient(ellipse at center, rgba(21,87,255,0.16), rgba(185,199,220,0.16) 55%, transparent 76%) !important;
-  box-shadow: 0 16px 24px rgba(32,45,82,0.10) !important;
+    radial-gradient(ellipse at center, rgba(21,87,255,0.16), rgba(185,199,220,0.16) 55%, transparent 76%);
+  box-shadow: 0 16px 24px rgba(32,45,82,0.10);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot {
   filter:
     drop-shadow(0 28px 20px rgba(32,45,82,0.18))
-    drop-shadow(0 0 18px rgba(21,87,255,0.10)) !important;
+    drop-shadow(0 0 18px rgba(21,87,255,0.10));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productName,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLineText strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader h2 {
-  color: var(--prisma-text-primary) !important;
-  text-shadow: none !important;
+  color: var(--prisma-text-primary);
+  text-shadow: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > span,
@@ -2846,22 +2846,22 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productBarcode,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLineText span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotalsBreakdown {
-  color: var(--prisma-text-secondary) !important;
+  color: var(--prisma-text-secondary);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .priceValue,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAside strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .lineTotal,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal strong {
-  color: var(--prisma-action-primary) !important;
-  text-shadow: 0 0 18px rgba(21,87,255,0.14) !important;
+  color: var(--prisma-action-primary);
+  text-shadow: 0 0 18px rgba(21,87,255,0.14);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-  border-color: #dde6f6 !important;
+  border-color: #dde6f6;
   background:
     radial-gradient(circle at 88% 8%, rgba(21,87,255,0.07), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(246,250,255,0.78)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(246,250,255,0.78));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader {
@@ -2874,44 +2874,44 @@
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumb,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot {
-  border-color: #e5ebf7 !important;
+  border-color: #e5ebf7;
   background:
     radial-gradient(ellipse at 50% 84%, rgba(21,87,255,0.14), transparent 44%),
-    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(235,242,255,0.56)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 10px 22px rgba(32,45,82,0.10) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(235,242,255,0.56));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 10px 22px rgba(32,45,82,0.10);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot img {
-  filter: drop-shadow(0 12px 10px rgba(32,45,82,0.18)) !important;
+  filter: drop-shadow(0 12px 10px rgba(32,45,82,0.18));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton {
-  color: var(--prisma-action-primary) !important;
-  background: rgba(255,255,255,0.9) !important;
+  color: var(--prisma-action-primary);
+  background: rgba(255,255,255,0.9);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal {
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   background:
     radial-gradient(circle at 88% 12%, rgba(21,87,255,0.13), transparent 44%),
-    linear-gradient(180deg, #ffffff, #eef4ff) !important;
+    linear-gradient(180deg, #ffffff, #eef4ff);
   box-shadow:
     0 20px 44px rgba(32,45,82,0.13),
     0 0 32px rgba(21,87,255,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.94) !important;
+    inset 0 1px 0 rgba(255,255,255,0.94);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:not(.checkoutLinkDisabled) {
   min-height: 78px;
   box-shadow:
     0 22px 48px rgba(21,87,255,0.28),
-    inset 0 1px 0 rgba(255,255,255,0.32) !important;
+    inset 0 1px 0 rgba(255,255,255,0.32);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled strong {
-  color: #ffffff !important;
+  color: #ffffff;
   background: rgba(255,255,255,0.18);
 }
 
@@ -3249,7 +3249,7 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a:hover,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:not(:disabled):hover {
   transform: translateY(-2px);
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   box-shadow: var(--prisma-shadow-card-hover);
 }
 
@@ -3261,7 +3261,7 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton:not(:disabled):hover,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:hover {
   transform: translateY(-1px);
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   box-shadow: var(--prisma-shadow-card-hover);
 }
 
@@ -3292,7 +3292,7 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartActions button:focus-visible,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:focus-visible {
   outline: none;
-  border-color: var(--prisma-action-primary) !important;
+  border-color: var(--prisma-action-primary);
   box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
 }
 
@@ -3304,17 +3304,17 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button:disabled,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartActions button:disabled,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:disabled {
-  color: var(--prisma-disabled-text) !important;
-  background: var(--prisma-disabled-surface) !important;
-  border-color: var(--prisma-border-soft) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  color: var(--prisma-disabled-text);
+  background: var(--prisma-disabled-surface);
+  border-color: var(--prisma-border-soft);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
   cursor: not-allowed;
   opacity: 0.78;
-  transform: none !important;
+  transform: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCardDisabled {
-  background: linear-gradient(180deg, rgba(248,250,255,.76), rgba(238,243,251,.66)) !important;
+  background: linear-gradient(180deg, rgba(248,250,255,.76), rgba(238,243,251,.66));
   color: var(--prisma-disabled-text);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
 }
@@ -3360,13 +3360,13 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace[data-prisma-cart-state="active"] .ticketTotal {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    animation: none;
+    transition: none;
+    transform: none;
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
-    animation: none !important;
+    animation: none;
     opacity: 0.16;
     transform: none;
   }
@@ -3382,203 +3382,203 @@
  * Product cards hide SKU/CB lines to keep cards retail-clean without touching data or packshots.
  */
 :global(html[data-prisma-surface="tablet-pos"]) .searchCard {
-  grid-template-columns: minmax(280px, 1fr) max-content !important;
-  gap: 8px 10px !important;
-  align-items: center !important;
-  padding: 0 !important;
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  overflow: visible !important;
+  grid-template-columns: minmax(280px, 1fr) max-content;
+  gap: 8px 10px;
+  align-items: center;
+  padding: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchCard::before,
 :global(html[data-prisma-surface="tablet-pos"]) .searchCard::after {
-  display: none !important;
+  display: none;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchLabel {
-  min-width: 0 !important;
-  gap: 0 !important;
+  min-width: 0;
+  gap: 0;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchLabel > span {
-  width: 1px !important;
-  height: 1px !important;
-  position: absolute !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  white-space: nowrap !important;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchInputWrap {
-  min-height: 50px !important;
-  padding: 0 15px !important;
-  gap: 10px !important;
-  border-radius: 999px !important;
-  border-color: color-mix(in srgb, var(--prisma-border-soft) 82%, var(--prisma-accent-gold) 18%) !important;
+  min-height: 50px;
+  padding: 0 15px;
+  gap: 10px;
+  border-radius: 999px;
+  border-color: color-mix(in srgb, var(--prisma-border-soft) 82%, var(--prisma-accent-gold) 18%);
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--prisma-glass-surface) 76%, transparent), color-mix(in srgb, var(--prisma-app-background) 74%, transparent)) !important;
+    linear-gradient(180deg, color-mix(in srgb, var(--prisma-glass-surface) 76%, transparent), color-mix(in srgb, var(--prisma-app-background) 74%, transparent));
   box-shadow:
     inset 0 1px 0 var(--prisma-soft-highlight),
-    0 8px 20px color-mix(in srgb, #000 16%, transparent) !important;
+    0 8px 20px color-mix(in srgb, #000 16%, transparent);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
-  border-color: var(--prisma-border-action) !important;
+  border-color: var(--prisma-border-action);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(242,247,255,0.78)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(242,247,255,0.78));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.94),
-    0 8px 20px rgba(32,45,82,0.09) !important;
+    0 8px 20px rgba(32,45,82,0.09);
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchInputWrap input {
-  font-size: 1rem !important;
-  min-width: 0 !important;
+  font-size: 1rem;
+  min-width: 0;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight {
-  min-height: 44px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 5px !important;
-  padding: 0 12px !important;
-  border-radius: 999px !important;
-  border: 1px solid color-mix(in srgb, var(--prisma-border-soft) 76%, var(--prisma-accent-gold) 24%) !important;
-  background: color-mix(in srgb, var(--prisma-glass-surface) 62%, transparent) !important;
-  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight) !important;
-  white-space: nowrap !important;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--prisma-border-soft) 76%, var(--prisma-accent-gold) 24%);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 62%, transparent);
+  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
+  white-space: nowrap;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight {
-  border-color: var(--prisma-border-action) !important;
-  background: rgba(255,255,255,0.76) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 8px 18px rgba(32,45,82,0.07) !important;
+  border-color: var(--prisma-border-action);
+  background: rgba(255,255,255,0.76);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 8px 18px rgba(32,45,82,0.07);
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight span,
 :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight small {
-  color: var(--prisma-text-muted) !important;
-  font-size: 0.7rem !important;
-  font-weight: 830 !important;
-  letter-spacing: 0.035em !important;
-  text-transform: none !important;
+  color: var(--prisma-text-muted);
+  font-size: 0.7rem;
+  font-weight: 830;
+  letter-spacing: 0.035em;
+  text-transform: none;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight strong {
-  color: var(--prisma-accent-gold-soft) !important;
-  font-size: 0.84rem !important;
-  line-height: 1 !important;
+  color: var(--prisma-accent-gold-soft);
+  font-size: 0.84rem;
+  line-height: 1;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight strong {
-  color: var(--prisma-action-primary) !important;
+  color: var(--prisma-action-primary);
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchActions {
-  grid-column: 1 / -1 !important;
-  display: flex !important;
-  max-height: 0 !important;
-  margin: 0 !important;
-  opacity: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  transform: translateY(-4px) !important;
+  grid-column: 1 / -1;
+  display: flex;
+  max-height: 0;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
   transition:
     max-height var(--prisma-motion-base) var(--prisma-ease-premium),
     opacity var(--prisma-motion-fast) ease,
     transform var(--prisma-motion-base) var(--prisma-ease-premium),
-    margin var(--prisma-motion-fast) ease !important;
+    margin var(--prisma-motion-fast) ease;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchCard:focus-within .searchActions,
 :global(html[data-prisma-surface="tablet-pos"]) .searchCard[data-prisma-search-expanded="true"] .searchActions {
-  max-height: 58px !important;
-  margin-top: 4px !important;
-  opacity: 1 !important;
-  overflow: visible !important;
-  pointer-events: auto !important;
-  transform: translateY(0) !important;
+  max-height: 58px;
+  margin-top: 4px;
+  opacity: 1;
+  overflow: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
 :global(html[data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
 :global(html[data-prisma-surface="tablet-pos"]) .searchActions .ghostButton {
-  min-height: 44px !important;
-  padding-inline: 14px !important;
-  border-radius: 999px !important;
+  min-height: 44px;
+  padding-inline: 14px;
+  border-radius: 999px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .errorBanner {
-  grid-column: 1 / -1 !important;
+  grid-column: 1 / -1;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .categoryRail {
-  gap: 7px !important;
-  padding-bottom: 1px !important;
+  gap: 7px;
+  padding-bottom: 1px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButton,
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive {
-  min-height: 44px !important;
-  min-width: auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 7px !important;
-  padding: 7px 12px !important;
-  border-radius: 999px !important;
+  min-height: 44px;
+  min-width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 999px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButton span,
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
-  width: 28px !important;
-  height: 28px !important;
-  font-size: 0.62rem !important;
-  flex: 0 0 auto !important;
+  width: 28px;
+  height: 28px;
+  font-size: 0.62rem;
+  flex: 0 0 auto;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButton strong,
 :global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive strong {
-  max-width: 128px !important;
-  font-size: 0.76rem !important;
+  max-width: 128px;
+  font-size: 0.76rem;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .productCard {
-  grid-template-rows: auto 116px minmax(38px, auto) auto !important;
-  min-height: 222px !important;
+  grid-template-rows: auto 116px minmax(38px, auto) auto;
+  min-height: 222px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .productText {
-  gap: 5px !important;
+  gap: 5px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .productText > strong {
-  min-height: 24px !important;
+  min-height: 24px;
 }
 
 :global(html[data-prisma-surface="tablet-pos"]) .productMetaRail {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 @media (max-width: 1180px) {
   :global(html[data-prisma-surface="tablet-pos"]) .searchCard {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 
   :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight {
-    justify-self: start !important;
+    justify-self: start;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   :global(html[data-prisma-surface="tablet-pos"]) .searchActions {
-    transition: none !important;
+    transition: none;
   }
 }
 /* PRISMA_TABLET_POS_DENSITY_SEARCH_CARDS_05C::END */
@@ -3639,52 +3639,52 @@
  */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-  grid-template-columns: minmax(0, 1fr) minmax(330px, 368px) !important;
-  gap: clamp(10px, 1vw, 14px) !important;
-  align-items: start !important;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 368px);
+  gap: clamp(10px, 1vw, 14px);
+  align-items: start;
 }
 
 :global(#prisma-tablet-sidebar-toggle:checked + [data-prisma-component="AppShell"][data-prisma-visual-surface="tablet-pos"]) .posWorkspace {
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 356px) !important;
-  gap: 12px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 356px);
+  gap: 12px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .catalogArea,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-  gap: clamp(8px, 0.8vw, 12px) !important;
-  padding: clamp(10px, 0.95vw, 13px) !important;
-  border-radius: 22px !important;
+  gap: clamp(8px, 0.8vw, 12px);
+  padding: clamp(10px, 0.95vw, 13px);
+  border-radius: 22px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchCard {
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  gap: 10px !important;
-  padding: clamp(10px, 0.95vw, 13px) !important;
-  align-items: center !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: clamp(10px, 0.95vw, 13px);
+  align-items: center;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
-  min-height: 50px !important;
-  gap: 9px !important;
-  padding: 0 13px !important;
-  border-radius: 18px !important;
+  min-height: 50px;
+  gap: 9px;
+  padding: 0 13px;
+  border-radius: 18px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap input,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap input {
-  font-size: 1rem !important;
-  font-weight: 760 !important;
+  font-size: 1rem;
+  font-weight: 760;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .shortcuts {
-  gap: 7px !important;
+  gap: 7px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
@@ -3693,173 +3693,173 @@
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .ghostButton {
-  min-height: 42px !important;
-  padding: 0 13px !important;
-  border-radius: 14px !important;
-  font-size: 0.9rem !important;
+  min-height: 42px;
+  padding: 0 13px;
+  border-radius: 14px;
+  font-size: 0.9rem;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryRail,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryRail {
-  gap: 7px !important;
-  padding-bottom: 0 !important;
+  gap: 7px;
+  padding-bottom: 0;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
-  min-height: 52px !important;
-  min-width: 88px !important;
-  gap: 3px !important;
-  padding: 7px 9px !important;
-  border-radius: 16px !important;
+  min-height: 52px;
+  min-width: 88px;
+  gap: 3px;
+  padding: 7px 9px;
+  border-radius: 16px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton span,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
-  width: 28px !important;
-  height: 28px !important;
-  font-size: 0.62rem !important;
+  width: 28px;
+  height: 28px;
+  font-size: 0.62rem;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton strong,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive strong,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton strong,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive strong {
-  font-size: 0.72rem !important;
-  line-height: 1 !important;
+  font-size: 0.72rem;
+  line-height: 1;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productGrid {
-  gap: clamp(8px, 0.8vw, 11px) !important;
+  gap: clamp(8px, 0.8vw, 11px);
 }
 
 :global(#prisma-tablet-sidebar-toggle:checked + [data-prisma-component="AppShell"][data-prisma-visual-surface="tablet-pos"]) .productGrid {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productCard {
-  min-height: 246px !important;
-  grid-template-rows: auto 118px minmax(52px, auto) auto !important;
-  gap: 6px !important;
-  padding: 9px !important;
-  border-radius: 16px !important;
+  min-height: 246px;
+  grid-template-rows: auto 118px minmax(52px, auto) auto;
+  gap: 6px;
+  padding: 9px;
+  border-radius: 16px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productImageStage {
-  min-height: 118px !important;
-  border-radius: 13px !important;
+  min-height: 118px;
+  border-radius: 13px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .favoriteStar,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .favoriteStar {
-  width: 26px !important;
-  height: 26px !important;
+  width: 26px;
+  height: 26px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productPackshot {
-  max-height: 108px !important;
+  max-height: 108px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFigure,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productFigure {
-  width: 64px !important;
-  height: 96px !important;
-  transform: translateY(-1px) !important;
+  width: 64px;
+  height: 96px;
+  transform: translateY(-1px);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText {
-  gap: 4px !important;
+  gap: 4px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > strong,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText > strong {
-  font-size: 0.82rem !important;
-  line-height: 1.08 !important;
-  min-height: auto !important;
+  font-size: 0.82rem;
+  line-height: 1.08;
+  min-height: auto;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .priceValue,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .priceValue {
-  font-size: 1.02rem !important;
+  font-size: 1.02rem;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .addButton {
-  min-height: 44px !important;
-  border-radius: 14px !important;
-  font-size: 0.92rem !important;
+  min-height: 44px;
+  border-radius: 14px;
+  font-size: 0.92rem;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-  position: sticky !important;
-  top: 12px !important;
-  gap: 10px !important;
-  max-height: calc(100dvh - 116px) !important;
-  overflow: auto !important;
+  position: sticky;
+  top: 12px;
+  gap: 10px;
+  max-height: calc(100dvh - 116px);
+  overflow: auto;
   scrollbar-width: thin;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLines {
-  min-height: 120px !important;
-  gap: 6px !important;
+  min-height: 120px;
+  gap: 6px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLine {
-  grid-template-columns: 46px minmax(0, 1fr) auto auto auto !important;
-  gap: 6px !important;
-  padding: 7px !important;
-  border-radius: 14px !important;
+  grid-template-columns: 46px minmax(0, 1fr) auto auto auto;
+  gap: 6px;
+  padding: 7px;
+  border-radius: 14px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumb,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumb,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot {
-  width: 42px !important;
-  height: 44px !important;
-  border-radius: 12px !important;
+  width: 42px;
+  height: 44px;
+  border-radius: 12px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .stepper button,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .removeButton {
-  width: 30px !important;
-  min-width: 30px !important;
-  height: 30px !important;
-  min-height: 30px !important;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  min-height: 30px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal {
-  padding: 10px !important;
-  border-radius: 15px !important;
+  padding: 10px;
+  border-radius: 15px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal strong,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal strong {
-  font-size: clamp(1.55rem, 2.35vw, 2.15rem) !important;
+  font-size: clamp(1.55rem, 2.35vw, 2.15rem);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLink,
 :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled {
-  min-height: 56px !important;
-  border-radius: 16px !important;
-  font-size: 0.96rem !important;
+  min-height: 56px;
+  border-radius: 16px;
+  font-size: 0.96rem;
 }
 
 .paymentOverlay[data-prisma-payment-method="cash"],
@@ -3868,290 +3868,290 @@
   background:
     radial-gradient(circle at 50% 12%, rgba(21, 87, 255, 0.18), transparent 34%),
     radial-gradient(circle at 54% 84%, rgba(16, 185, 129, 0.12), transparent 38%),
-    rgba(5, 10, 18, 0.68) !important;
-  backdrop-filter: blur(18px) saturate(1.06) brightness(0.92) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.06) brightness(0.92) !important;
+    rgba(5, 10, 18, 0.68);
+  backdrop-filter: blur(18px) saturate(1.06) brightness(0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.06) brightness(0.92);
 }
 
 .paymentOverlay[data-prisma-payment-method="cash"] {
   background:
     radial-gradient(circle at 50% 12%, rgba(21, 87, 255, 0.15), transparent 34%),
     radial-gradient(circle at 54% 84%, rgba(16, 185, 129, 0.18), transparent 40%),
-    rgba(5, 10, 18, 0.70) !important;
+    rgba(5, 10, 18, 0.70);
 }
 
 .paymentPanelCard {
-  width: min(548px, calc(100vw - 24px)) !important;
-  max-height: calc(100dvh - 24px) !important;
-  gap: 10px !important;
-  padding: 14px !important;
-  border-radius: 24px !important;
-  overflow: auto !important;
-  overscroll-behavior: contain !important;
+  width: min(548px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  gap: 10px;
+  padding: 14px;
+  border-radius: 24px;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .paymentHeader {
-  gap: 10px !important;
+  gap: 10px;
 }
 
 .paymentHeader h2 {
-  margin: 2px 0 !important;
-  font-size: clamp(1.28rem, 2.25vw, 1.48rem) !important;
-  line-height: 1.05 !important;
+  margin: 2px 0;
+  font-size: clamp(1.28rem, 2.25vw, 1.48rem);
+  line-height: 1.05;
 }
 
 .paymentHeader p {
-  max-width: 360px !important;
-  font-size: 0.88rem !important;
-  line-height: 1.32 !important;
+  max-width: 360px;
+  font-size: 0.88rem;
+  line-height: 1.32;
 }
 
 .paymentHeader span,
 .paymentSummary span,
 .cashInputLabel span,
 .cashTenderLine span {
-  font-size: 0.68rem !important;
-  letter-spacing: 0.105em !important;
+  font-size: 0.68rem;
+  letter-spacing: 0.105em;
 }
 
 .paymentCloseButton,
 .paymentCancelButton,
 .paymentOkButton {
-  min-height: 40px !important;
-  border-radius: 14px !important;
-  padding: 0 13px !important;
-  font-size: 0.86rem !important;
+  min-height: 40px;
+  border-radius: 14px;
+  padding: 0 13px;
+  font-size: 0.86rem;
 }
 
 .paymentSummary {
-  gap: 2px !important;
-  padding: 12px 14px !important;
-  border-radius: 18px !important;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 18px;
 }
 
 .paymentSummary strong {
-  font-size: clamp(2rem, 4.8vw, 2.85rem) !important;
-  line-height: 0.95 !important;
+  font-size: clamp(2rem, 4.8vw, 2.85rem);
+  line-height: 0.95;
 }
 
 .paymentSummary small {
-  font-size: 0.78rem !important;
+  font-size: 0.78rem;
 }
 
 .paymentMethods {
-  gap: 8px !important;
+  gap: 8px;
 }
 
 .paymentMethods button {
-  min-height: 88px !important;
-  gap: 5px !important;
-  padding: 10px !important;
-  border-radius: 16px !important;
+  min-height: 88px;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 16px;
 }
 
 .paymentMethods button > span {
-  width: 28px !important;
-  height: 28px !important;
-  border-radius: 10px !important;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
 }
 
 .paymentMethods strong {
-  font-size: 0.84rem !important;
-  line-height: 1.08 !important;
+  font-size: 0.84rem;
+  line-height: 1.08;
 }
 
 .paymentMethods small {
-  font-size: 0.74rem !important;
-  line-height: 1.18 !important;
+  font-size: 0.74rem;
+  line-height: 1.18;
 }
 
 .paymentMethods button[data-active="true"] {
   box-shadow:
     0 0 0 2px rgba(21, 87, 255, 0.13),
-    0 12px 28px rgba(21, 87, 255, 0.14) !important;
+    0 12px 28px rgba(21, 87, 255, 0.14);
 }
 
 .paymentOverlay[data-prisma-payment-method="cash"] .paymentMethods button[data-active="true"] {
-  border-color: rgba(16, 185, 129, 0.58) !important;
+  border-color: rgba(16, 185, 129, 0.58);
   background:
     radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.72), transparent 34%),
-    linear-gradient(180deg, #ffffff, #eafff4) !important;
+    linear-gradient(180deg, #ffffff, #eafff4);
   box-shadow:
     0 0 0 2px rgba(16, 185, 129, 0.12),
-    0 12px 28px rgba(16, 185, 129, 0.12) !important;
+    0 12px 28px rgba(16, 185, 129, 0.12);
 }
 
 .cashBox {
-  gap: 8px !important;
-  padding: 10px !important;
-  border-radius: 18px !important;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 18px;
 }
 
 .cashInputLabel {
-  gap: 5px !important;
+  gap: 5px;
 }
 
 .cashInputLabel input {
-  min-height: 42px !important;
-  border-radius: 14px !important;
-  padding: 0 12px !important;
-  font-size: 1rem !important;
+  min-height: 42px;
+  border-radius: 14px;
+  padding: 0 12px;
+  font-size: 1rem;
 }
 
 .cashSuggestions {
-  gap: 6px !important;
+  gap: 6px;
 }
 
 .cashSuggestions button {
-  min-height: 34px !important;
-  padding: 0 11px !important;
-  font-size: 0.78rem !important;
+  min-height: 34px;
+  padding: 0 11px;
+  font-size: 0.78rem;
 }
 
 .cashTenderLine,
 .paymentNonCashNotice {
-  min-height: 38px !important;
-  padding: 9px 12px !important;
-  border-radius: 14px !important;
+  min-height: 38px;
+  padding: 9px 12px;
+  border-radius: 14px;
 }
 
 .paymentReview,
 .paymentReviewReady,
 .paymentBusyNote,
 .paymentError {
-  gap: 3px !important;
-  padding: 10px 12px !important;
-  border-radius: 16px !important;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 16px;
 }
 
 .paymentReview b,
 .paymentReviewReady b {
-  font-size: 1.08rem !important;
-  letter-spacing: -0.025em !important;
+  font-size: 1.08rem;
+  letter-spacing: -0.025em;
 }
 
 .paymentBusyNote span,
 .paymentError span,
 .paymentReview span,
 .paymentReviewReady span {
-  line-height: 1.25 !important;
+  line-height: 1.25;
 }
 
 .paymentFooter {
-  position: sticky !important;
-  bottom: -14px !important;
-  z-index: 2 !important;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr) !important;
-  gap: 8px !important;
-  padding-top: 4px !important;
+  position: sticky;
+  bottom: -14px;
+  z-index: 2;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 8px;
+  padding-top: 4px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(247, 250, 255, 0.92) 30%, rgba(247, 250, 255, 0.98)) !important;
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(247, 250, 255, 0.92) 30%, rgba(247, 250, 255, 0.98));
 }
 
 .paymentOkButton {
-  min-height: 48px !important;
-  box-shadow: 0 14px 32px rgba(21, 87, 255, 0.20) !important;
+  min-height: 48px;
+  box-shadow: 0 14px 32px rgba(21, 87, 255, 0.20);
 }
 
 .paymentOkButton[disabled] {
-  opacity: 0.64 !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 8px 18px rgba(21, 87, 255, 0.10) !important;
+  opacity: 0.64;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 8px 18px rgba(21, 87, 255, 0.10);
 }
 
 @media (max-height: 920px) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-    grid-template-columns: minmax(0, 1fr) minmax(316px, 348px) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(316px, 348px);
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productCard {
-    min-height: 228px !important;
-    grid-template-rows: auto 104px minmax(46px, auto) auto !important;
-    padding: 8px !important;
+    min-height: 228px;
+    grid-template-rows: auto 104px minmax(46px, auto) auto;
+    padding: 8px;
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productImageStage {
-    min-height: 104px !important;
+    min-height: 104px;
   }
 
   .paymentPanelCard {
-    width: min(520px, calc(100vw - 20px)) !important;
-    gap: 8px !important;
-    padding: 12px !important;
+    width: min(520px, calc(100vw - 20px));
+    gap: 8px;
+    padding: 12px;
   }
 
   .paymentMethods button {
-    min-height: 78px !important;
-    padding: 9px !important;
+    min-height: 78px;
+    padding: 9px;
   }
 
   .paymentSummary {
-    padding: 10px 12px !important;
+    padding: 10px 12px;
   }
 
   .paymentSummary strong {
-    font-size: clamp(1.82rem, 4.2vw, 2.48rem) !important;
+    font-size: clamp(1.82rem, 4.2vw, 2.48rem);
   }
 
   .cashBox {
-    padding: 9px !important;
+    padding: 9px;
   }
 
   .paymentReview,
   .paymentReviewReady,
   .paymentBusyNote,
   .paymentError {
-    padding: 9px 11px !important;
+    padding: 9px 11px;
   }
 }
 
 @media (max-height: 790px) {
   .paymentHeader p {
-    display: none !important;
+    display: none;
   }
 
   .paymentPanelCard {
-    gap: 7px !important;
+    gap: 7px;
   }
 
   .paymentMethods button {
-    min-height: 70px !important;
+    min-height: 70px;
   }
 
   .paymentMethods small {
-    display: none !important;
+    display: none;
   }
 
   .cashSuggestions button {
-    min-height: 31px !important;
-    padding: 0 9px !important;
+    min-height: 31px;
+    padding: 0 9px;
   }
 }
 
 @media (max-width: 1220px) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 330px) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 330px);
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 980px) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
   :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-    position: static !important;
-    max-height: none !important;
+    position: static;
+    max-height: none;
   }
 }
 /* PRISMA_TABLET_POS_VIEWPORT_FIT_AND_CHECKOUT_POLISH_08A::POS_END */
@@ -4160,16 +4160,16 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink {
-  color: #ffffff !important;
-  border-color: var(--prisma-cobalt-edge) !important;
+  color: #ffffff;
+  border-color: var(--prisma-cobalt-edge);
   background:
     radial-gradient(circle at 20% 0%, rgba(255,255,255,0.42), transparent 34%),
-    linear-gradient(180deg, var(--prisma-cobalt-hi), var(--prisma-cobalt-mid) 56%, var(--prisma-cobalt-low)) !important;
+    linear-gradient(180deg, var(--prisma-cobalt-hi), var(--prisma-cobalt-mid) 56%, var(--prisma-cobalt-low));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.48),
     inset 0 -10px 18px rgba(0,0,0,0.08),
-    var(--prisma-cobalt-shadow) !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.10) !important;
+    var(--prisma-cobalt-shadow);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.10);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
@@ -4181,19 +4181,19 @@
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.52),
     inset 0 -10px 18px rgba(0,0,0,0.08),
-    var(--prisma-cobalt-shadow-hover) !important;
-  transform: translateY(-1px) !important;
+    var(--prisma-cobalt-shadow-hover);
+  transform: translateY(-1px);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a {
-  color: var(--prisma-ink-strong) !important;
-  border-color: var(--prisma-frost-border) !important;
-  background: var(--prisma-frost-surface-strong) !important;
+  color: var(--prisma-ink-strong);
+  border-color: var(--prisma-frost-border);
+  background: var(--prisma-frost-surface-strong);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.86),
-    var(--prisma-frost-shadow) !important;
+    var(--prisma-frost-shadow);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover,
@@ -4204,8 +4204,8 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a:focus-visible {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.90),
-    var(--prisma-frost-shadow-hover) !important;
-  transform: translateY(-1px) !important;
+    var(--prisma-frost-shadow-hover);
+  transform: translateY(-1px);
 }
 /* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::POS_END */
 
@@ -4215,16 +4215,16 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton {
-  color: #ffffff !important;
-  border-color: var(--prisma-cobalt-edge, rgba(109,178,255,0.82)) !important;
+  color: #ffffff;
+  border-color: var(--prisma-cobalt-edge, rgba(109,178,255,0.82));
   background:
     radial-gradient(circle at 20% 0%, rgba(255,255,255,0.42), transparent 34%),
-    linear-gradient(180deg, var(--prisma-cobalt-hi, #72c3ff), var(--prisma-cobalt-mid, #2f88ff) 56%, var(--prisma-cobalt-low, #1658db)) !important;
+    linear-gradient(180deg, var(--prisma-cobalt-hi, #72c3ff), var(--prisma-cobalt-mid, #2f88ff) 56%, var(--prisma-cobalt-low, #1658db));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.48),
     inset 0 -10px 18px rgba(0,0,0,0.08),
-    0 16px 34px rgba(35,95,224,0.24) !important;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.10) !important;
+    0 16px 34px rgba(35,95,224,0.24);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.10);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
@@ -4235,11 +4235,11 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:focus-visible,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:focus-visible,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton:focus-visible {
-  transform: translateY(-1px) !important;
+  transform: translateY(-1px);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.52),
     inset 0 -10px 18px rgba(0,0,0,0.08),
-    0 20px 42px rgba(35,95,224,0.32) !important;
+    0 20px 42px rgba(35,95,224,0.32);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
@@ -4247,97 +4247,97 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCancelButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCloseButton {
-  color: var(--prisma-ink-strong, #243247) !important;
-  border-color: rgba(188, 213, 244, 0.82) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34)) !important;
+  color: var(--prisma-ink-strong, #243247);
+  border-color: rgba(188, 213, 244, 0.82);
+  background: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.86),
-    0 10px 22px rgba(96,126,171,0.08) !important;
+    0 10px 22px rgba(96,126,171,0.08);
 }
 /* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::POS_END */
 
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_START */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-  gap: 10px !important;
-  grid-template-columns: minmax(0, 1fr) minmax(308px, 352px) !important;
-  align-items: start !important;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(308px, 352px);
+  align-items: start;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-  padding: 10px !important;
-  border-color: rgba(217, 235, 252, 0.58) !important;
+  padding: 10px;
+  border-color: rgba(217, 235, 252, 0.58);
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(222, 241, 255, 0.24)) !important;
+    linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(222, 241, 255, 0.24));
   box-shadow:
     0 14px 32px rgba(31, 65, 105, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.70) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.70);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard {
-  gap: 8px !important;
-  padding: 6px !important;
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
+  gap: 8px;
+  padding: 6px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid {
-  gap: 8px !important;
-  grid-template-columns: repeat(auto-fit, minmax(154px, 1fr)) !important;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(154px, 1fr));
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard {
-  min-height: 210px !important;
-  padding: 8px !important;
-  grid-template-rows: auto 104px minmax(42px, auto) auto !important;
-  border-color: rgba(217, 235, 252, 0.54) !important;
-  background: rgba(255, 255, 255, 0.54) !important;
+  min-height: 210px;
+  padding: 8px;
+  grid-template-rows: auto 104px minmax(42px, auto) auto;
+  border-color: rgba(217, 235, 252, 0.54);
+  background: rgba(255, 255, 255, 0.54);
   box-shadow:
     0 10px 24px rgba(31, 65, 105, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.76) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage {
-  min-height: 104px !important;
+  min-height: 104px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-  max-height: calc(100dvh - 96px) !important;
+  max-height: calc(100dvh - 96px);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines {
-  min-height: 104px !important;
-  gap: 7px !important;
+  min-height: 104px;
+  gap: 7px;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine {
-  padding: 6px !important;
-  grid-template-columns: 42px minmax(0, 1fr) auto auto auto !important;
-  border-color: rgba(217, 235, 252, 0.52) !important;
-  background: rgba(255, 255, 255, 0.62) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+  padding: 6px;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto auto;
+  border-color: rgba(217, 235, 252, 0.52);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotalsBreakdown,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button {
-  min-height: 42px !important;
-  background: rgba(255, 255, 255, 0.58) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+  min-height: 42px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .paymentPanelCard {
-  width: min(920px, calc(100vw - 18px)) !important;
-  max-height: calc(100dvh - 16px) !important;
+  width: min(920px, calc(100vw - 18px));
+  max-height: calc(100dvh - 16px);
 }
 
 @media (min-width: 980px) and (min-height: 660px) {
   .paymentPanelCard {
-    grid-template-columns: minmax(260px, 0.88fr) minmax(320px, 1.12fr) !important;
-    align-items: start !important;
+    grid-template-columns: minmax(260px, 0.88fr) minmax(320px, 1.12fr);
+    align-items: start;
   }
 
   .paymentHeader,
@@ -4346,49 +4346,49 @@
   .paymentReviewReady,
   .paymentBusyNote,
   .paymentError {
-    grid-column: 1 !important;
+    grid-column: 1;
   }
 
   .paymentTenderList,
   .cashBox,
   .paymentTotalsGrid,
   .paymentFooter {
-    grid-column: 2 !important;
+    grid-column: 2;
   }
 
   .paymentFooter {
-    bottom: -8px !important;
+    bottom: -8px;
   }
 }
 
 @media (max-height: 760px) {
   .paymentTenderRow {
-    gap: 7px !important;
-    padding: 8px !important;
+    gap: 7px;
+    padding: 8px;
   }
 
   .paymentTotalsGrid {
-    gap: 6px !important;
+    gap: 6px;
   }
 
   .paymentFooter {
-    padding-top: 2px !important;
+    padding-top: 2px;
   }
 }
 
 @media (max-width: 1180px) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-    grid-template-columns: minmax(0, 1fr) minmax(292px, 326px) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(292px, 326px);
   }
 }
 
 @media (max-width: 980px) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
-    max-height: none !important;
+    max-height: none;
   }
 }
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_END */
@@ -4410,11 +4410,11 @@
   .paymentCard,
   .emptyState
 ) {
-  background: rgba(255, 255, 255, 0.56) !important;
-  border-color: rgba(75, 139, 218, 0.16) !important;
-  box-shadow: 0 6px 18px rgba(43, 96, 156, 0.07) !important;
-  backdrop-filter: blur(6px) saturate(1.02) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(1.02) !important;
+  background: rgba(255, 255, 255, 0.56);
+  border-color: rgba(75, 139, 218, 0.16);
+  box-shadow: 0 6px 18px rgba(43, 96, 156, 0.07);
+  backdrop-filter: blur(6px) saturate(1.02);
+  -webkit-backdrop-filter: blur(6px) saturate(1.02);
 }
 
 :where(
@@ -4445,11 +4445,11 @@
   .paymentCard,
   .emptyState
 )::after {
-  display: none !important;
+  display: none;
 }
 
 :where(.primaryButton, .addButton, .checkoutLink, .categoryButtonActive) {
-  box-shadow: 0 8px 18px rgba(22, 102, 226, 0.16) !important;
+  box-shadow: 0 8px 18px rgba(22, 102, 226, 0.16);
 }
 /* PRISMA_DELAYER_01_END */
 
@@ -9325,30 +9325,30 @@
   --cta-glass-ink: #5f6874;
   --cta-glass-gem-a: #8f65cf;
   --cta-glass-gem-b: #50bbc6;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  width: 100% !important;
-  min-height: clamp(66px, 5.8vw, 74px) !important;
-  display: flex !important;
-  align-items: stretch !important;
-  justify-content: stretch !important;
-  position: relative !important;
-  isolation: auto !important;
-  overflow: visible !important;
-  padding: clamp(5px, 0.52vw, 7px) clamp(12px, 1vw, 14px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.20) !important;
-  border-radius: 22px !important;
-  color: var(--cta-glass-ink) !important;
-  background: linear-gradient(118deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.030) 46%, rgba(212, 190, 244, 0.055) 100%) !important;
-  background-color: rgba(255, 255, 255, 0.025) !important;
-  backdrop-filter: blur(8px) saturate(1.04) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(1.04) !important;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: clamp(66px, 5.8vw, 74px);
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  position: relative;
+  isolation: auto;
+  overflow: visible;
+  padding: clamp(5px, 0.52vw, 7px) clamp(12px, 1vw, 14px);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  border-radius: 22px;
+  color: var(--cta-glass-ink);
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.030) 46%, rgba(212, 190, 244, 0.055) 100%);
+  background-color: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(8px) saturate(1.04);
+  -webkit-backdrop-filter: blur(8px) saturate(1.04);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 8px 18px rgba(48, 61, 80, 0.045) !important;
-  filter: none !important;
-  text-align: left !important;
-  text-shadow: none !important;
+    0 8px 18px rgba(48, 61, 80, 0.045);
+  filter: none;
+  text-align: left;
+  text-shadow: none;
   transform: none;
 }
 
@@ -9356,12 +9356,12 @@
 :global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::before,
 :global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton::after,
 :global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::after {
-  display: none !important;
-  content: none !important;
-  background: none !important;
-  box-shadow: none !important;
-  filter: none !important;
-  opacity: 0 !important;
+  display: none;
+  content: none;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 0;
 }
 
 .cobrarReferenceShell {
@@ -9379,66 +9379,66 @@
 
 .cobrarReferenceGem,
 .cobrarReferenceArrow {
-  width: auto !important;
-  height: auto !important;
-  min-width: 0 !important;
-  display: grid !important;
-  place-items: center !important;
-  justify-self: center !important;
-  align-self: center !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  align-self: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .cobrarReferenceGem {
-  justify-self: start !important;
-  color: var(--cta-glass-gem-a) !important;
-  opacity: 0.96 !important;
+  justify-self: start;
+  color: var(--cta-glass-gem-a);
+  opacity: 0.96;
 }
 
 .cobrarReferenceArrow {
-  justify-self: end !important;
-  color: rgba(95, 104, 116, 0.72) !important;
-  opacity: 0.78 !important;
+  justify-self: end;
+  color: rgba(95, 104, 116, 0.72);
+  opacity: 0.78;
 }
 
 .cobrarReferenceGem svg,
 .cobrarReferenceArrow svg {
-  width: 22px !important;
-  height: 22px !important;
-  stroke: currentColor !important;
-  color: currentColor !important;
-  filter: none !important;
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  color: currentColor;
+  filter: none;
 }
 
 .cobrarReferenceLabel {
-  min-width: 0 !important;
-  justify-self: start !important;
-  color: var(--cta-glass-ink) !important;
-  font-size: clamp(1.04rem, 1.26vw, 1.18rem) !important;
-  font-weight: 780 !important;
-  line-height: 1 !important;
-  letter-spacing: 0.075em !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border: 0 !important;
+  min-width: 0;
+  justify-self: start;
+  color: var(--cta-glass-ink);
+  font-size: clamp(1.04rem, 1.26vw, 1.18rem);
+  font-weight: 780;
+  line-height: 1;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
 }
 
 .cobrarReferenceAmount {
-  display: none !important;
+  display: none;
 }
 
 :global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover,
 :global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:focus-visible {
-  background: linear-gradient(118deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.040) 48%, rgba(212, 190, 244, 0.070) 100%) !important;
-  background-color: rgba(255, 255, 255, 0.035) !important;
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.040) 48%, rgba(212, 190, 244, 0.070) 100%);
+  background-color: rgba(255, 255, 255, 0.035);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 9px 18px rgba(48, 61, 80, 0.055) !important;
+    0 9px 18px rgba(48, 61, 80, 0.055);
 }
 
 :global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover .cobrarReferenceArrow,
@@ -9451,10 +9451,10 @@
 }
 
 :global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="disabled"]).cobrarReferenceButton {
-  opacity: 0.62 !important;
-  color: rgba(110, 120, 132, 0.72) !important;
-  background: linear-gradient(118deg, rgba(255, 255, 255, 0.055), rgba(245, 248, 249, 0.025)) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 7px 14px rgba(57, 74, 96, 0.035) !important;
+  opacity: 0.62;
+  color: rgba(110, 120, 132, 0.72);
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.055), rgba(245, 248, 249, 0.025));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 7px 14px rgba(57, 74, 96, 0.035);
 }
 
 @media (max-width: 840px) {
@@ -9464,7 +9464,7 @@
   }
 
   .cobrarReferenceLabel {
-    font-size: clamp(1.00rem, 2.8vw, 1.14rem) !important;
+    font-size: clamp(1.00rem, 2.8vw, 1.14rem);
   }
 }
 /* PRISMA_TABLET_POS_COBRAR_GLASS_1206X::END */
@@ -9475,46 +9475,46 @@
    Contract: preserve ticket layout, checkout stack, totals, CTA, action buttons and business logic.
 */
 .posPremiumTicketPanel {
-  border-color: rgba(255, 255, 255, 0.26) !important;
+  border-color: rgba(255, 255, 255, 0.26);
   background:
     radial-gradient(92% 62% at 14% 0%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.00) 58%),
     linear-gradient(118deg, rgba(255, 255, 255, 0.18), rgba(239, 248, 252, 0.10) 50%, rgba(210, 231, 242, 0.12) 100%),
-    rgba(255, 255, 255, 0.075) !important;
+    rgba(255, 255, 255, 0.075);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.26),
     inset 0 -1px 0 rgba(58, 92, 124, 0.035),
-    0 10px 24px rgba(35, 78, 120, 0.055) !important;
-  backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01) !important;
-  -webkit-backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01) !important;
+    0 10px 24px rgba(35, 78, 120, 0.055);
+  backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01);
+  -webkit-backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01);
 }
 
 .posPremiumTicketPanel::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  pointer-events: none !important;
-  border-radius: inherit !important;
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.00) 22%),
-    linear-gradient(118deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.00) 36%, rgba(154, 214, 235, 0.045) 62%, rgba(255, 255, 255, 0.00) 82%) !important;
-  opacity: 0.36 !important;
-  filter: none !important;
-  box-shadow: none !important;
+    linear-gradient(118deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.00) 36%, rgba(154, 214, 235, 0.045) 62%, rgba(255, 255, 255, 0.00) 82%);
+  opacity: 0.36;
+  filter: none;
+  box-shadow: none;
 }
 
 .posPremiumTicketPanel::after {
-  content: "" !important;
-  position: absolute !important;
-  right: 18px !important;
-  bottom: 12px !important;
-  left: 22% !important;
-  height: 38px !important;
-  pointer-events: none !important;
-  border-radius: 999px !important;
-  background: linear-gradient(92deg, rgba(255, 255, 255, 0.00), rgba(255, 255, 255, 0.14), rgba(180, 219, 236, 0.06), rgba(255, 255, 255, 0.00)) !important;
-  filter: blur(12px) !important;
-  opacity: 0.22 !important;
-  box-shadow: none !important;
+  content: "";
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  left: 22%;
+  height: 38px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(92deg, rgba(255, 255, 255, 0.00), rgba(255, 255, 255, 0.14), rgba(180, 219, 236, 0.06), rgba(255, 255, 255, 0.00));
+  filter: blur(12px);
+  opacity: 0.22;
+  box-shadow: none;
 }
 /* PRISMA_TABLET_POS_TICKET_RAIL_MATCH_LEFT_1206K::END */
 
@@ -9915,27 +9915,27 @@
    Authority: tablet msh1 1506 1804 result.zip + TABLET_DIRECT_260615_1750 layer map.
 */
 .posPremiumWorkspace {
-  padding-bottom: clamp(10px, 1.8dvh, 24px) !important;
+  padding-bottom: clamp(10px, 1.8dvh, 24px);
 }
 
 .posPremiumTicketPanel {
-  height: fit-content !important;
-  min-height: 0 !important;
-  align-self: start !important;
-  align-content: start !important;
-  overflow: visible !important;
-  isolation: isolate !important;
+  height: fit-content;
+  min-height: 0;
+  align-self: start;
+  align-content: start;
+  overflow: visible;
+  isolation: isolate;
 }
 
 .posPremiumTicketPanel::before,
 .posPremiumTicketPanel::after {
-  content: none !important;
-  display: none !important;
-  opacity: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
-  filter: none !important;
-  pointer-events: none !important;
+  content: none;
+  display: none;
+  opacity: 0;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  pointer-events: none;
 }
 
 .posPremiumTicketPanel > * {
@@ -9944,15 +9944,15 @@
 }
 
 .posPremiumTicketLines {
-  min-height: 0 !important;
-  max-height: clamp(108px, 24dvh, 252px) !important;
-  overflow-y: auto !important;
+  min-height: 0;
+  max-height: clamp(108px, 24dvh, 252px);
+  overflow-y: auto;
   overscroll-behavior: contain;
 }
 
 @media (max-height: 760px) and (min-width: 901px) {
   .posPremiumTicketLines {
-    max-height: clamp(88px, 20dvh, 208px) !important;
+    max-height: clamp(88px, 20dvh, 208px);
   }
 }
 /* PRISMA_TABLET_POS_TICKET_RAIL_GHOST_LAYER_REMOVAL_1506::END */

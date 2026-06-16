@@ -409,13 +409,13 @@
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton:disabled {
-  color: var(--prisma-disabled-text) !important;
-  background: var(--prisma-disabled-surface) !important;
-  border-color: var(--prisma-border-soft) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  color: var(--prisma-disabled-text);
+  background: var(--prisma-disabled-surface);
+  border-color: var(--prisma-border-soft);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
   cursor: not-allowed;
   opacity: .82;
-  transform: none !important;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -429,8 +429,8 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalHero,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink {
-    transition: none !important;
-    transform: none !important;
+    transition: none;
+    transform: none;
   }
 }
 
@@ -453,14 +453,14 @@
 .totalHero,
 .cashBox {
   background:
-    linear-gradient(145deg, rgba(255,255,255,.62), rgba(218,238,255,.34)) !important;
-  border-color: rgba(223,238,255,.62) !important;
+    linear-gradient(145deg, rgba(255,255,255,.62), rgba(218,238,255,.34));
+  border-color: rgba(223,238,255,.62);
   box-shadow:
     0 22px 54px rgba(12,47,77,.18),
     inset 0 1px rgba(255,255,255,.76),
-    inset 0 -1px rgba(255,255,255,.20) !important;
-  backdrop-filter: blur(22px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(1.18) !important;
+    inset 0 -1px rgba(255,255,255,.20);
+  backdrop-filter: blur(22px) saturate(1.18);
+  -webkit-backdrop-filter: blur(22px) saturate(1.18);
 }
 /* PRISMA_TABLET_STATIC_FUJI_ALL_END */
 
@@ -474,23 +474,23 @@
 .summaryCard,
 .summaryLines,
 .totalHero {
-  background: rgba(255,255,255,.36) !important;
-  border-color: rgba(86,125,170,.17) !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,.36);
+  border-color: rgba(86,125,170,.17);
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .backLink,
 .confirmButton,
 .paymentButton {
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
@@ -503,9 +503,9 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .workspace,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutGrid,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .posShell {
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .heroCard,
@@ -521,12 +521,12 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .flowGuard,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .varianceBox,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBreakdown {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  background: var(--prisma-prem-panel-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow) !important;
-  backdrop-filter: blur(20px) saturate(1.20) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.20) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge);
+  background: var(--prisma-prem-panel-gradient);
+  box-shadow: var(--prisma-prem-shadow);
+  backdrop-filter: blur(20px) saturate(1.20);
+  -webkit-backdrop-filter: blur(20px) saturate(1.20);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .metricCard,
@@ -537,12 +537,12 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .onlineStrip,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .offlineStrip {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  background: var(--prisma-prem-card-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-card) !important;
-  backdrop-filter: blur(18px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge);
+  background: var(--prisma-prem-card-gradient);
+  box-shadow: var(--prisma-prem-shadow-card);
+  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchInputWrap,
@@ -555,10 +555,10 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge-strong) !important;
-  background: var(--prisma-prem-control-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-control) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge-strong);
+  background: var(--prisma-prem-control-gradient);
+  box-shadow: var(--prisma-prem-shadow-control);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryAction,
@@ -570,10 +570,10 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentActive,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .confirmButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButtonActive {
-  color: #ffffff !important;
-  border-color: rgba(189, 222, 255, .78) !important;
-  background: var(--prisma-prem-blue-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-blue) !important;
-  text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
+  color: #ffffff;
+  border-color: rgba(189, 222, 255, .78);
+  background: var(--prisma-prem-blue-gradient);
+  box-shadow: var(--prisma-prem-shadow-blue);
+  text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */

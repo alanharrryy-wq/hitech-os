@@ -13,29 +13,29 @@
 }
 
 /* Kill grid / seam feeling */
-body::before{display:none !important; content:none !important; background:none !important; opacity:0 !important;}
+body::before{display:none; content:none; background:none; opacity:0;}
 body::after{
-  opacity:.46 !important;
-  inset:-6% !important;
+  opacity:.46;
+  inset:-6%;
   background:
     radial-gradient(440px 220px at 18% 18%, rgba(255,255,255,.12), transparent 66%),
     radial-gradient(540px 260px at 82% 20%, rgba(160,198,255,.11), transparent 68%),
     radial-gradient(380px 190px at 35% 78%, rgba(153,197,255,.12), transparent 70%),
-    linear-gradient(112deg, transparent 14%, rgba(255,255,255,.06) 25%, transparent 36%, transparent 58%, rgba(184,216,255,.05) 72%, transparent 82%) !important;
-  animation-duration:40s !important;
+    linear-gradient(112deg, transparent 14%, rgba(255,255,255,.06) 25%, transparent 36%, transparent 58%, rgba(184,216,255,.05) 72%, transparent 82%);
+  animation-duration:40s;
 }
 body{
-  color:var(--v43-text) !important;
+  color:var(--v43-text);
 }
 
 /* text recovery */
 body, p, li, small, label, input, textarea, select, option, .muted, .statusLine, .nodeMeta, .timelineCard small, .cardTop small{
-  color:var(--v43-text) !important;
+  color:var(--v43-text);
   text-shadow:0 0 10px rgba(168,208,255,.10), 0 0 1px rgba(230,242,255,.28);
 }
-small,.muted,.statusLine,.nodeMeta{color:var(--v43-text-soft) !important;}
+small,.muted,.statusLine,.nodeMeta{color:var(--v43-text-soft);}
 h1,h2,h3,h4,h5,h6,b,strong,.topbarTitle,.heroTitle,.metricValue,.qualitySealValue,.node b{
-  color:var(--v43-text-strong) !important;
+  color:var(--v43-text-strong);
   text-shadow:0 0 12px rgba(188,226,255,.14), 0 0 1px rgba(255,255,255,.34);
 }
 
@@ -44,34 +44,34 @@ h1,h2,h3,h4,h5,h6,b,strong,.topbarTitle,.heroTitle,.metricValue,.qualitySealValu
   background:
     linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05) 22%, rgba(255,255,255,.028) 82%, rgba(255,255,255,.06)),
     linear-gradient(130deg, rgba(130,201,255,.055), transparent 42%, rgba(185,160,255,.05)),
-    var(--v43-panel-fill) !important;
-  border:1px solid var(--v43-panel-edge-soft) !important;
-  box-shadow:var(--v43-panel-shadow), inset 0 1px 0 rgba(255,255,255,.18) !important;
-  backdrop-filter:blur(7px) saturate(155%) brightness(1.03) !important;
-  -webkit-backdrop-filter:blur(7px) saturate(155%) brightness(1.03) !important;
+    var(--v43-panel-fill);
+  border:1px solid var(--v43-panel-edge-soft);
+  box-shadow:var(--v43-panel-shadow), inset 0 1px 0 rgba(255,255,255,.18);
+  backdrop-filter:blur(7px) saturate(155%) brightness(1.03);
+  -webkit-backdrop-filter:blur(7px) saturate(155%) brightness(1.03);
 }
 .glass::before, .panel::before, .card::before, .timelineCard::before, .node::before, .metric::before, .picker::before, .dockBtn::before, .miniChartWrap::before, .signal::before{
-  opacity:.54 !important;
-  animation-duration:22s !important;
+  opacity:.54;
+  animation-duration:22s;
   background:
     radial-gradient(180px 92px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.10), transparent 50%),
-    linear-gradient(112deg, transparent 22%, rgba(255,255,255,.12) 32%, rgba(255,255,255,.028) 40%, transparent 50%, transparent 66%, rgba(179,214,255,.06) 74%, transparent 82%) !important;
+    linear-gradient(112deg, transparent 22%, rgba(255,255,255,.12) 32%, rgba(255,255,255,.028) 40%, transparent 50%, transparent 66%, rgba(179,214,255,.06) 74%, transparent 82%);
 }
 
 /* topbar a little less dominant */
 .topbar{
-  box-shadow:0 16px 40px rgba(0,0,0,.18),0 28px 80px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(255,255,255,.08) !important;
-  backdrop-filter:blur(9px) saturate(150%) brightness(1.05) !important;
-  -webkit-backdrop-filter:blur(9px) saturate(150%) brightness(1.05) !important;
+  box-shadow:0 16px 40px rgba(0,0,0,.18),0 28px 80px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(9px) saturate(150%) brightness(1.05);
+  -webkit-backdrop-filter:blur(9px) saturate(150%) brightness(1.05);
 }
 
 /* Remove container-inside-container feeling */
 .panel .panel, .panel .card, .card .card, .panel .timelineCard, .panel .node, .panel .metric{
   background:
     linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03) 28%, rgba(255,255,255,.018) 100%),
-    rgba(92,118,146,.12) !important;
-  border-color:rgba(214,231,252,.17) !important;
-  box-shadow:0 10px 26px rgba(2,8,15,.12), inset 0 1px 0 rgba(255,255,255,.10) !important;
+    rgba(92,118,146,.12);
+  border-color:rgba(214,231,252,.17);
+  box-shadow:0 10px 26px rgba(2,8,15,.12), inset 0 1px 0 rgba(255,255,255,.10);
 }
 .commandPanel .card,
 .topology .node,
@@ -80,40 +80,40 @@ textarea,
 input[type="text"],
 input[type="search"],
 select{
-  border-radius:18px !important;
+  border-radius:18px;
 }
 /* Flatten nested wrappers that are decorative */
 .cards, .commandGrid, .qualityHeroGrid, .qPanelHead{
-  background:none !important;
-  box-shadow:none !important;
-  border:none !important;
+  background:none;
+  box-shadow:none;
+  border:none;
 }
 
 /* Inputs and textareas clearer */
 textarea, input[type="text"], input[type="search"], select{
-  background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05) 100%), rgba(77,98,122,.16) !important;
-  border:1px solid rgba(214,231,252,.24) !important;
-  color:var(--v43-text-strong) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 1px rgba(116,212,255,.03) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05) 100%), rgba(77,98,122,.16);
+  border:1px solid rgba(214,231,252,.24);
+  color:var(--v43-text-strong);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 1px rgba(116,212,255,.03);
 }
-textarea::placeholder, input::placeholder{color:#aec3d8 !important; opacity:.92 !important;}
+textarea::placeholder, input::placeholder{color:#aec3d8; opacity:.92;}
 
 /* More vivid important accents */
 button, .opButton, .dockBtn, .signal, .picker button, .timelineCard, .cardTop .pill, .statusBadge{
   transition:box-shadow .22s ease, border-color .22s ease, transform .18s ease, filter .22s ease;
 }
 button:hover, .opButton:hover, .dockBtn:hover, .picker button:hover{
-  filter:brightness(1.06) saturate(1.08) !important;
+  filter:brightness(1.06) saturate(1.08);
 }
 button:focus-visible, .opButton:focus-visible, .dockBtn:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible{
-  outline:none !important;
-  box-shadow:0 0 0 1px rgba(212,234,255,.62), 0 0 18px rgba(116,212,255,.26), 0 0 24px rgba(180,145,255,.14) !important;
+  outline:none;
+  box-shadow:0 0 0 1px rgba(212,234,255,.62), 0 0 18px rgba(116,212,255,.26), 0 0 24px rgba(180,145,255,.14);
 }
 
 /* semantic pills / live dots / active things */
 .signal, .status, .pill, .tag, .chip, .tab.active, [aria-selected="true"], [aria-current="page"], [aria-current="true"], .is-active, .active{
-  border-color:rgba(140,220,255,.36) !important;
-  box-shadow:0 0 0 1px rgba(212,234,255,.18), 0 0 20px rgba(116,212,255,.18), 0 0 30px rgba(180,145,255,.10), inset 0 1px 0 rgba(255,255,255,.18) !important;
+  border-color:rgba(140,220,255,.36);
+  box-shadow:0 0 0 1px rgba(212,234,255,.18), 0 0 20px rgba(116,212,255,.18), 0 0 30px rgba(180,145,255,.10), inset 0 1px 0 rgba(255,255,255,.18);
 }
 .signal::after, .status::after, .pill::after, .tag::after, .chip::after{
   content:""; position:absolute; inset:auto auto 18% 10px; width:8px; height:8px; border-radius:999px;
@@ -126,10 +126,10 @@ button:focus-visible, .opButton:focus-visible, .dockBtn:focus-visible, a:focus-v
 
 /* important primary CTAs */
 button.primary, .opButton.primary, .cta, .heroCta, .actionPrimary, .btn-primary{
-  background:linear-gradient(180deg, rgba(124,213,255,.34), rgba(124,213,255,.18) 100%), rgba(100,165,220,.28) !important;
-  border-color:rgba(162,225,255,.62) !important;
-  color:#eaf6ff !important;
-  box-shadow:0 0 0 1px rgba(214,236,255,.22),0 0 22px rgba(116,212,255,.24),0 0 36px rgba(178,146,255,.12), var(--v43-panel-shadow) !important;
+  background:linear-gradient(180deg, rgba(124,213,255,.34), rgba(124,213,255,.18) 100%), rgba(100,165,220,.28);
+  border-color:rgba(162,225,255,.62);
+  color:#eaf6ff;
+  box-shadow:0 0 0 1px rgba(214,236,255,.22),0 0 22px rgba(116,212,255,.24),0 0 36px rgba(178,146,255,.12), var(--v43-panel-shadow);
 }
 
 /* subtle motion */

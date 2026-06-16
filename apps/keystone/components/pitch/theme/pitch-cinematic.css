@@ -5687,9 +5687,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pitch-shell-root *, .pitch-shell-root *::before, .pitch-shell-root *::after {
-    animation: none !important;
-    transition-duration: 0ms !important;
-    scroll-behavior: auto !important;
+    animation: none;
+    transition-duration: 0ms;
+    scroll-behavior: auto;
   }
 }
 
@@ -5799,8 +5799,8 @@ html:not([data-layer-card-blur]) .pitch-shell-root .pitch-glass-card,
 html:not([data-layer-card-blur]) .pitch-shell-root .pitch-collapsible-panel,
 .pitch-shell-root[data-layer-card-blur="off"] .pitch-glass-card,
 .pitch-shell-root[data-layer-card-blur="off"] .pitch-collapsible-panel {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .pitch-shell-root .pitch-glass-card::before,
@@ -5832,18 +5832,18 @@ html:not([data-layer-card-blur]) .pitch-shell-root .pitch-collapsible-panel,
 }
 
 .pitch-shell-root .pitch-neon-edge::after {
-  display: none !important;
+  display: none;
 }
 
 .pitch-shell-root [class^="pitch-halo-level-"],
 .pitch-shell-root [class*=" pitch-halo-level-"] {
-  box-shadow: none !important;
-  animation: none !important;
+  box-shadow: none;
+  animation: none;
 }
 
 .pitch-shell-root [class^="pitch-ring-anim-"],
 .pitch-shell-root [class*=" pitch-ring-anim-"] {
-  display: none !important;
+  display: none;
 }
 
 .pitch-shell-root .pitch-kpi-card,
@@ -6371,8 +6371,8 @@ html:not([data-layer-card-blur]) .pitch-shell-root .pitch-collapsible-panel,
 
 .pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,
 .pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .scanlines {
-  animation: none !important;
-  transform: none !important;
+  animation: none;
+  transform: none;
 }
 
 .pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,

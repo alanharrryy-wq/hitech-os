@@ -17,42 +17,42 @@
 }
 
 .prisma-v56-old-atmosphere-hidden {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #prisma-atmosphere-v56-root {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  overflow: hidden !important;
-  opacity: .40 !important;
-  mix-blend-mode: screen !important;
-  contain: layout paint size !important;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: .40;
+  mix-blend-mode: screen;
+  contain: layout paint size;
 }
 
 #prisma-atmosphere-v56-canvas {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  display: block !important;
-  opacity: .72 !important;
-  filter: saturate(1.02) brightness(1.02) contrast(1.01) !important;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  opacity: .72;
+  filter: saturate(1.02) brightness(1.02) contrast(1.01);
 }
 
 #prisma-atmosphere-v56-scrim {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 3 !important;
-  pointer-events: none !important;
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
   background:
     radial-gradient(780px 520px at 18% 8%, rgba(190, 226, 255, .040), transparent 68%),
     radial-gradient(760px 540px at 88% 10%, rgba(160, 136, 255, .028), transparent 70%),
-    linear-gradient(180deg, rgba(5, 12, 19, .018), rgba(5, 12, 19, .070) 58%, rgba(3, 8, 14, .12)) !important;
+    linear-gradient(180deg, rgba(5, 12, 19, .018), rgba(5, 12, 19, .070) 58%, rgba(3, 8, 14, .12));
 }
 
 body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .glass, .prismo-shell, .prismo-grid, .qualityHero, .commandPanel) {
@@ -61,100 +61,100 @@ body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .g
 }
 
 .prisma-v56-status-copy {
-  color: #d7e9f8 !important;
-  font-weight: 760 !important;
-  letter-spacing: .012em !important;
+  color: #d7e9f8;
+  font-weight: 760;
+  letter-spacing: .012em;
   text-shadow:
     0 0 8px rgba(108, 216, 255, .20),
-    0 0 18px rgba(164, 137, 255, .10) !important;
+    0 0 18px rgba(164, 137, 255, .10);
 }
 
 .prisma-v56-status-flat {
-  background: transparent !important;
-  background-image: none !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  padding: 2px 4px !important;
-  min-height: unset !important;
+  background: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 2px 4px;
+  min-height: unset;
 }
 
 .prisma-v56-status-surface {
-  max-width: min(720px, 92%) !important;
-  margin-inline: auto !important;
+  max-width: min(720px, 92%);
+  margin-inline: auto;
 }
 
 .prisma-v56-prompt-title {
-  color: #dcefff !important;
+  color: #dcefff;
   text-shadow:
     0 0 7px rgba(95, 209, 255, .34),
     0 0 18px rgba(95, 209, 255, .22),
-    0 0 34px rgba(150, 128, 255, .12) !important;
+    0 0 34px rgba(150, 128, 255, .12);
 }
 
 .prisma-v56-hidden-front-action {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .prisma-v56-composer {
-  position: relative !important;
+  position: relative;
 }
 
 .prisma-v56-action-bar {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 12px !important;
-  align-items: center !important;
-  margin-top: 14px !important;
-  position: relative !important;
-  z-index: 24 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+  position: relative;
+  z-index: 24;
 }
 
 .prisma-v56-action {
-  appearance: none !important;
-  border: 1px solid var(--prisma-v56-action-border) !important;
-  border-radius: 999px !important;
-  padding: 12px 22px !important;
-  min-height: 44px !important;
-  font: 800 13px/1 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif !important;
-  letter-spacing: .015em !important;
-  color: #dceeff !important;
+  appearance: none;
+  border: 1px solid var(--prisma-v56-action-border);
+  border-radius: 999px;
+  padding: 12px 22px;
+  min-height: 44px;
+  font: 800 13px/1 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  letter-spacing: .015em;
+  color: #dceeff;
   background:
     linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02) 42%, rgba(0,0,0,.08)),
-    var(--prisma-v56-action-bg) !important;
+    var(--prisma-v56-action-bg);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.18),
     0 0 0 1px rgba(255,255,255,.045),
     0 0 18px rgba(95, 214, 255, .16),
-    0 14px 34px rgba(4, 10, 18, .22) !important;
-  cursor: pointer !important;
-  transition: transform 160ms ease, box-shadow 220ms ease, background 220ms ease, border-color 220ms ease !important;
+    0 14px 34px rgba(4, 10, 18, .22);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 220ms ease, background 220ms ease, border-color 220ms ease;
 }
 
 .prisma-v56-action:hover {
-  transform: translateY(-1px) !important;
+  transform: translateY(-1px);
   background:
     linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.03) 42%, rgba(0,0,0,.06)),
-    var(--prisma-v56-action-bg-hover) !important;
-  border-color: rgba(177, 239, 255, .56) !important;
+    var(--prisma-v56-action-bg-hover);
+  border-color: rgba(177, 239, 255, .56);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.22),
     0 0 0 1px rgba(255,255,255,.06),
     0 0 24px rgba(95, 214, 255, .24),
-    0 18px 44px rgba(4, 10, 18, .28) !important;
+    0 18px 44px rgba(4, 10, 18, .28);
 }
 
 .prisma-v56-action:active {
-  transform: translateY(0) scale(.985) !important;
+  transform: translateY(0) scale(.985);
 }
 
 .prisma-v56-composer textarea,
 .prisma-v56-composer input[type="text"],
 .prisma-v56-composer [contenteditable="true"] {
-  transition: border-color 260ms ease, box-shadow 360ms ease, background 360ms ease, filter 360ms ease !important;
+  transition: border-color 260ms ease, box-shadow 360ms ease, background 360ms ease, filter 360ms ease;
 }
 
 .prisma-v56-composer textarea:focus,
@@ -163,13 +163,13 @@ body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .g
 .prisma-v56-composer.prisma-v56-typing textarea,
 .prisma-v56-composer.prisma-v56-typing input[type="text"],
 .prisma-v56-composer.prisma-v56-typing [contenteditable="true"] {
-  border-color: rgba(145, 225, 255, .55) !important;
+  border-color: rgba(145, 225, 255, .55);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.13),
     0 0 0 1px rgba(164, 232, 255, .18),
     0 0 18px rgba(90, 206, 255, .18),
-    0 0 36px rgba(138, 127, 255, .11) !important;
-  animation: prisma-v56-input-breathe 7.4s ease-in-out infinite !important;
+    0 0 36px rgba(138, 127, 255, .11);
+  animation: prisma-v56-input-breathe 7.4s ease-in-out infinite;
 }
 
 @keyframes prisma-v56-input-breathe {
@@ -178,37 +178,37 @@ body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .g
 }
 
 .prisma-v56-led-chip {
-  position: relative !important;
-  overflow: visible !important;
+  position: relative;
+  overflow: visible;
 }
 
 .prisma-v56-led-dot {
-  display: inline-block !important;
-  width: 8px !important;
-  height: 8px !important;
-  flex: 0 0 auto !important;
-  margin-right: 8px !important;
-  border-radius: 999px !important;
-  vertical-align: .06em !important;
-  animation: prisma-v56-led-pulse 6.8s ease-in-out infinite !important;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  margin-right: 8px;
+  border-radius: 999px;
+  vertical-align: .06em;
+  animation: prisma-v56-led-pulse 6.8s ease-in-out infinite;
 }
 
 .prisma-v56-led-dot.is-green {
-  background: radial-gradient(circle, rgba(242,255,250,1) 0 16%, rgba(83,255,196,.98) 17% 50%, rgba(20,148,110,.70) 51% 100%) !important;
+  background: radial-gradient(circle, rgba(242,255,250,1) 0 16%, rgba(83,255,196,.98) 17% 50%, rgba(20,148,110,.70) 51% 100%);
   box-shadow:
     0 0 0 1px rgba(230,255,247,.34),
     0 0 8px rgba(88,255,196,.90),
     0 0 20px rgba(88,255,196,.56),
-    0 0 42px rgba(88,255,196,.28) !important;
+    0 0 42px rgba(88,255,196,.28);
 }
 
 .prisma-v56-led-dot.is-blue {
-  background: radial-gradient(circle, rgba(238,252,255,1) 0 16%, rgba(99,221,255,.98) 17% 50%, rgba(38,122,184,.72) 51% 100%) !important;
+  background: radial-gradient(circle, rgba(238,252,255,1) 0 16%, rgba(99,221,255,.98) 17% 50%, rgba(38,122,184,.72) 51% 100%);
   box-shadow:
     0 0 0 1px rgba(230,250,255,.36),
     0 0 8px rgba(112,224,255,.94),
     0 0 20px rgba(112,224,255,.58),
-    0 0 44px rgba(112,224,255,.30) !important;
+    0 0 44px rgba(112,224,255,.30);
 }
 
 @keyframes prisma-v56-led-pulse {
@@ -217,54 +217,54 @@ body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .g
 }
 
 .prisma-v56-interface-selector {
-  position: relative !important;
-  z-index: 46 !important;
-  isolation: isolate !important;
-  overflow: visible !important;
-  background: transparent !important;
-  background-image: none !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  padding: 0 !important;
+  position: relative;
+  z-index: 46;
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
 }
 
 .prisma-v56-interface-selector::before,
 .prisma-v56-interface-selector::after {
-  display: none !important;
-  content: none !important;
+  display: none;
+  content: none;
 }
 
 .prisma-v56-interface-pill {
-  position: relative !important;
-  z-index: 48 !important;
-  border-radius: 999px !important;
-  border: 1px solid rgba(165, 226, 255, .24) !important;
+  position: relative;
+  z-index: 48;
+  border-radius: 999px;
+  border: 1px solid rgba(165, 226, 255, .24);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.14),
     0 0 0 1px rgba(255,255,255,.04),
-    0 10px 28px rgba(5, 12, 22, .16) !important;
+    0 10px 28px rgba(5, 12, 22, .16);
 }
 
 .prisma-v56-interface-pill[aria-selected="true"],
 .prisma-v56-interface-pill.is-active,
 .prisma-v56-interface-pill.active {
-  border-color: rgba(168, 231, 255, .46) !important;
+  border-color: rgba(168, 231, 255, .46);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.20),
     0 0 0 1px rgba(255,255,255,.06),
     0 0 22px rgba(104, 217, 255, .18),
-    0 12px 32px rgba(5, 12, 22, .20) !important;
+    0 12px 32px rgba(5, 12, 22, .20);
 }
 
 .prisma-v56-sidepanel,
 .prisma-v56-sidepanel *:not(.prisma-v56-led-dot) {
-  color: var(--prisma-v56-text-calm) !important;
+  color: var(--prisma-v56-text-calm);
 }
 
 .prisma-v56-sidepanel :where(h1,h2,h3,h4,strong,b,[class*="title"],[class*="Title"]) {
-  color: var(--prisma-v56-text-calm-strong) !important;
+  color: var(--prisma-v56-text-calm-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -273,6 +273,6 @@ body.prisma-v56-active :where(.page, main, aside, header, nav, .panel, .card, .g
   .prisma-v56-composer textarea,
   .prisma-v56-composer input[type="text"],
   .prisma-v56-composer [contenteditable="true"] {
-    animation: none !important;
+    animation: none;
   }
 }

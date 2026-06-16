@@ -43,7 +43,7 @@
 .contextBrand p { margin: 4px 0 0; color: var(--mcs-muted); }
 .themeRail { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .themeRail button, .searchRow button, .switchSheet footer button { border: 1px solid var(--mcs-line); color: var(--mcs-text); background: var(--mcs-shell); clip-path: var(--mcs-bevel); cursor: pointer; min-height: 48px; padding: 8px 12px; display: grid; gap: 2px; text-align: left; box-shadow: 0 16px 36px var(--mcs-shadow), inset 0 1px 0 rgba(255,255,255,.16); transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
-.themeRail button:hover, .themeActive, .searchRow button:hover, .switchSheet footer button:hover { transform: translateY(-2px); border-color: var(--mcs-line-strong) !important; box-shadow: 0 22px 44px var(--mcs-shadow), 0 0 24px color-mix(in srgb, var(--mcs-blue) 18%, transparent), inset 0 1px 0 rgba(255,255,255,.22); }
+.themeRail button:hover, .themeActive, .searchRow button:hover, .switchSheet footer button:hover { transform: translateY(-2px); border-color: var(--mcs-line-strong); box-shadow: 0 22px 44px var(--mcs-shadow), 0 0 24px color-mix(in srgb, var(--mcs-blue) 18%, transparent), inset 0 1px 0 rgba(255,255,255,.22); }
 .themeRail strong { font-size: .84rem; }
 .themeRail span { color: var(--mcs-muted); font-size: .62rem; }
 .contextDeck { display: grid; gap: 10px; }
@@ -136,14 +136,14 @@
    Multi-context switcher: low-noise controls, no stacked glow moat.
 */
 :where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard) {
-  background: rgba(255, 255, 255, 0.07) !important;
-  border-color: rgba(246, 240, 223, 0.12) !important;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18) !important;
-  backdrop-filter: blur(8px) saturate(1.02) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(246, 240, 223, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(8px) saturate(1.02);
+  -webkit-backdrop-filter: blur(8px) saturate(1.02);
 }
 :where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard)::before,
 :where(.shell, .surface, .panel, .card, .contextButton, .activeContext, .metricCard, .signalCard)::after {
-  display: none !important;
+  display: none;
 }
 /* PRISMA_DELAYER_01_END */

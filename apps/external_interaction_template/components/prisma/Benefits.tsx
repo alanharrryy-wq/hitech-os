@@ -197,7 +197,7 @@ export function Benefits() {
             height: calc(100% - 6rem);
           }
           .prisma-benefits-signal {
-            left: 2rem !important;
+            left: 2rem;
             top: 16%;
           }
           .prisma-benefits-signal:nth-child(2) { top: 50%; }
@@ -214,7 +214,7 @@ export function Benefits() {
           .prisma-benefits-rail,
           .benefit-card,
           .prisma-benefits-signal {
-            animation: none !important;
+            animation: none;
           }
         }
       `}</style>

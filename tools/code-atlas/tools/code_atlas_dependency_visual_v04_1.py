@@ -237,7 +237,7 @@ body:after{{content:"";position:fixed;inset:0;z-index:-2;opacity:.22;background-
 @keyframes floaty{{0%,100%{{transform:translate3d(0,0,0)}}50%{{transform:translate3d(0,-12px,0)}}}}
 @keyframes pulse{{0%,100%{{opacity:.65;filter:blur(0)}}50%{{opacity:1;filter:blur(.8px)}}}}
 @keyframes sweep{{0%{{transform:translateX(-110%)}}100%{{transform:translateX(110%)}}}}
-@media (prefers-reduced-motion:reduce){{*,*:before,*:after{{animation:none!important;transition:none!important;scroll-behavior:auto!important}}}}
+@media (prefers-reduced-motion:reduce){{*,*:before,*:after{{animation:none;transition:none;scroll-behavior:auto}}}}
 .shell{{width:min(100%,1580px);margin:0 auto;padding:24px}}
 .hero,.panel,.metric,.chip,.command-bar{{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.025)),var(--glass);box-shadow:0 30px 90px var(--shadow),inset 0 1px 0 rgba(255,255,255,.18);backdrop-filter:blur(18px)}}
 .hero{{position:relative;overflow:hidden;border-radius:30px;padding:28px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;min-height:260px}}

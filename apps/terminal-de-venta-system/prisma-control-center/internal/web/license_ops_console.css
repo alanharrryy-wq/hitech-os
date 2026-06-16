@@ -1,15 +1,15 @@
 /* PRISMA License Ops Console */
 body[data-prisma-interface="license"] main > section:not(#licenseOpsSurface) {
-  display: none !important;
+  display: none;
 }
 
 body[data-prisma-interface="license"] #licenseOpsSurface {
-  display: block !important;
+  display: block;
 }
 
 body[data-prisma-interface="operation"] #licenseOpsSurface,
 body[data-prisma-interface="quality"] #licenseOpsSurface {
-  display: none !important;
+  display: none;
 }
 
 #licenseOpsSurface {
@@ -303,7 +303,7 @@ body[data-theme="pearl"] .licenseOpsResult {
 
 /* lic fix1: license administration belongs in Control Center, never in client Tablet. */
 .licenseOpsCard[data-license-ops-action="start-tablet-runtime-config"] {
-  display: none !important;
+  display: none;
 }
 .licenseOpsHero::after {
   content: "Tablet cliente: sólo lectura · Administración: Control Center";

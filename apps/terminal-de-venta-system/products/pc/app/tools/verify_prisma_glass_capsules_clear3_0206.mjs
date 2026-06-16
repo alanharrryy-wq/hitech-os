@@ -15,8 +15,8 @@ const compCss = path.join(pcApp, 'components', 'prisma-glass-capsule', 'prisma-g
 const routeText = read(routeCss);
 const compText = read(compCss);
 const checks = [
-  ['stageBackdrop hidden', routeText.includes('.stageBackdrop {') && routeText.includes('display: none !important;')],
-  ['proofStage auto height', routeText.includes('min-height: auto !important;')],
+  ['stageBackdrop hidden', routeText.includes('.stageBackdrop {') && routeText.includes('display: none;')],
+  ['proofStage auto height', routeText.includes('min-height: auto;')],
   ['readTrack styled', routeText.includes('.readTrack {') && routeText.includes('max-width: 74ch;')],
   ['double frame inner ring', compText.includes('inset: var(--pgc-frame-gap);') && compText.includes('border: 1px solid rgba(255,255,255,.14);')],
   ['inner lens blur only', compText.includes('.refraction {') && compText.includes('inset: var(--pgc-lens-inset);') && compText.includes('backdrop-filter: blur(var(--pgc-blur))')],

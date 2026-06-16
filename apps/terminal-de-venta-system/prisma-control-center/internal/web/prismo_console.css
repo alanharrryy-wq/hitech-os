@@ -1,14 +1,14 @@
 /* PRISMO Gemini Command Nexus */
 body[data-prisma-interface="prismo"] main > section:not(#prismoConsoleSurface) {
-  display: none !important;
+  display: none;
 }
 
 body:not([data-prisma-interface="prismo"]) #prismoConsoleSurface {
-  display: none !important;
+  display: none;
 }
 
 body[data-prisma-interface="prismo"] #prismoConsoleSurface {
-  display: block !important;
+  display: block;
 }
 
 .topbar > .surfaceSwitch button[data-prisma-interface-target="prismo"] {
@@ -333,10 +333,10 @@ body[data-prisma-interface="prismo"] #prismoConsoleSurface {
 }
 
 .prismo-guidance-field {
-  margin: 0 !important;
-  display: grid !important;
+  margin: 0;
+  display: grid;
   gap: 6px;
-  font-size: 11px !important;
+  font-size: 11px;
 }
 
 .prismo-guidance-field span {
@@ -857,8 +857,8 @@ body[data-prismo-state="blocked"] .prismo-response-stream {
   .prismo-shell *,
   .prismo-shell *::before,
   .prismo-shell *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
   }
 }

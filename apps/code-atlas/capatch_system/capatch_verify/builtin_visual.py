@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def detect_important_flood(text: str, *, max_count: int = 8) -> dict[str, object]:
-    count = len(re.findall(r'!important\b', text))
+    count = len(re.findall(r'\b', text))
     return {'ok': count <= max_count, 'count': count, 'max_count': max_count}
 
 

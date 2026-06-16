@@ -832,35 +832,35 @@ export function VerticalPage({ slug }: { slug: string }) {
 
           @media (prefers-reduced-motion: reduce) {
             .industrial-v2-frame {
-              animation: none !important;
+              animation: none;
             }
 
             .industrial-v2-process-item {
-              transition: none !important;
+              transition: none;
             }
           }
   
         /* Industrial V2 final composition tuning */
         .industrial-v2-hero {
-          grid-template-columns: minmax(460px, 0.78fr) minmax(600px, 1.22fr) !important;
-          gap: clamp(3rem, 5vw, 5.75rem) !important;
+          grid-template-columns: minmax(460px, 0.78fr) minmax(600px, 1.22fr);
+          gap: clamp(3rem, 5vw, 5.75rem);
         }
 
         .industrial-v2-copy h1 {
-          max-width: 760px !important;
-          font-size: clamp(3.15rem, 4.65vw, 5.85rem) !important;
-          line-height: 0.94 !important;
-          letter-spacing: -0.058em !important;
+          max-width: 760px;
+          font-size: clamp(3.15rem, 4.65vw, 5.85rem);
+          line-height: 0.94;
+          letter-spacing: -0.058em;
           text-wrap: balance;
         }
 
         .industrial-v2-copy > p:not(.industrial-v2-eyebrow) {
-          max-width: 680px !important;
-          font-size: clamp(1.08rem, 1.25vw, 1.28rem) !important;
+          max-width: 680px;
+          font-size: clamp(1.08rem, 1.25vw, 1.28rem);
         }
 
         .industrial-v2-specs {
-          max-width: 680px !important;
+          max-width: 680px;
         }
 
         .industrial-v2-stage {
@@ -868,45 +868,45 @@ export function VerticalPage({ slug }: { slug: string }) {
         }
 
         .industrial-v2-frame {
-          width: min(104%, 960px) !important;
+          width: min(104%, 960px);
         }
 
         .industrial-v2-board-head {
-          grid-template-columns: minmax(0, 1fr) !important;
-          gap: 1rem !important;
-          margin-bottom: 2.4rem !important;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 1rem;
+          margin-bottom: 2.4rem;
         }
 
         .industrial-v2-board-head h2 {
-          max-width: 820px !important;
-          font-size: clamp(2.9rem, 4.35vw, 5.25rem) !important;
-          line-height: 0.94 !important;
+          max-width: 820px;
+          font-size: clamp(2.9rem, 4.35vw, 5.25rem);
+          line-height: 0.94;
         }
 
         .industrial-v2-board-head > p {
-          max-width: 760px !important;
-          margin: 0 !important;
-          font-size: 1.05rem !important;
+          max-width: 760px;
+          margin: 0;
+          font-size: 1.05rem;
         }
 
         .industrial-v2-process {
-          grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-          gap: 1rem !important;
-          padding: 1.25rem !important;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 1rem;
+          padding: 1.25rem;
         }
 
         .industrial-v2-process-item {
-          min-height: 16.5rem !important;
-          padding: 1.15rem !important;
+          min-height: 16.5rem;
+          padding: 1.15rem;
         }
 
         .industrial-v2-process-item h3 {
-          font-size: 1.12rem !important;
+          font-size: 1.12rem;
         }
 
         .industrial-v2-process-item p {
-          font-size: 0.94rem !important;
-          line-height: 1.68 !important;
+          font-size: 0.94rem;
+          line-height: 1.68;
         }
 
         .industrial-v2-process-item:last-child {
@@ -917,55 +917,55 @@ export function VerticalPage({ slug }: { slug: string }) {
         }
 
         .industrial-v2-proof-head {
-          grid-template-columns: minmax(0, 1fr) auto !important;
-          align-items: start !important;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
         }
 
         .industrial-v2-proof-head h2 {
-          max-width: 760px !important;
-          text-align: left !important;
-          font-size: clamp(2.65rem, 4vw, 4.7rem) !important;
-          line-height: 0.96 !important;
+          max-width: 760px;
+          text-align: left;
+          font-size: clamp(2.65rem, 4vw, 4.7rem);
+          line-height: 0.96;
         }
 
         .industrial-v2-log article {
-          padding: 1.1rem 1.2rem !important;
+          padding: 1.1rem 1.2rem;
         }
 
         @media (max-width: 1180px) {
           .industrial-v2-hero {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .industrial-v2-stage {
-            transform: none !important;
+            transform: none;
           }
 
           .industrial-v2-copy h1 {
-            max-width: 900px !important;
+            max-width: 900px;
           }
 
           .industrial-v2-process {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .industrial-v2-process-item {
-            min-height: auto !important;
+            min-height: auto;
           }
         }
 
         @media (max-width: 760px) {
           .industrial-v2-copy h1 {
-            font-size: clamp(2.75rem, 11vw, 4rem) !important;
+            font-size: clamp(2.75rem, 11vw, 4rem);
           }
 
           .industrial-v2-board-head h2,
           .industrial-v2-proof-head h2 {
-            font-size: clamp(2.35rem, 10vw, 3.5rem) !important;
+            font-size: clamp(2.35rem, 10vw, 3.5rem);
           }
 
           .industrial-v2-proof-head {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
         }
 
@@ -1928,63 +1928,63 @@ export function VerticalPage({ slug }: { slug: string }) {
 
         /* Proof console alignment fix: make it read like an evidence log, not a centered poster */
         .proof-heading {
-          display: grid !important;
-          grid-template-columns: minmax(0, 1fr) auto !important;
-          align-items: start !important;
-          justify-content: stretch !important;
-          gap: 1.5rem !important;
-          margin-bottom: 2.25rem !important;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
+          justify-content: stretch;
+          gap: 1.5rem;
+          margin-bottom: 2.25rem;
         }
 
         .proof-heading > div {
-          max-width: 720px !important;
-          justify-self: start !important;
+          max-width: 720px;
+          justify-self: start;
         }
 
         .proof-heading .eyebrow {
-          margin-bottom: 1rem !important;
+          margin-bottom: 1rem;
         }
 
         .proof-heading h2 {
-          max-width: 720px !important;
-          margin: 0 !important;
-          text-align: left !important;
-          font-size: clamp(2.6rem, 4.2vw, 4.65rem) !important;
-          line-height: 0.95 !important;
-          letter-spacing: -0.06em !important;
+          max-width: 720px;
+          margin: 0;
+          text-align: left;
+          font-size: clamp(2.6rem, 4.2vw, 4.65rem);
+          line-height: 0.95;
+          letter-spacing: -0.06em;
         }
 
         .proof-heading span {
-          justify-self: end !important;
-          align-self: start !important;
-          margin-top: 0.4rem !important;
+          justify-self: end;
+          align-self: start;
+          margin-top: 0.4rem;
         }
 
         .proof-log {
-          max-width: 100% !important;
-          margin-top: 0 !important;
+          max-width: 100%;
+          margin-top: 0;
         }
 
         .proof-row {
-          padding: 1.05rem 1.15rem !important;
+          padding: 1.05rem 1.15rem;
         }
 
         .proof-log::before {
-          left: 1.85rem !important;
+          left: 1.85rem;
         }
 
         @media (max-width: 760px) {
           .proof-heading {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .proof-heading h2 {
-            font-size: clamp(2.25rem, 10vw, 3.5rem) !important;
+            font-size: clamp(2.25rem, 10vw, 3.5rem);
           }
 
           .proof-heading span {
-            justify-self: start !important;
-            margin-top: 0 !important;
+            justify-self: start;
+            margin-top: 0;
           }
         }
 
@@ -1996,63 +1996,63 @@ export function VerticalPage({ slug }: { slug: string }) {
           .telemetry,
           .spine-signal,
           .proof-console {
-            animation: none !important;
+            animation: none;
           }
 
           .command-node,
           .proof-row {
-            transition: none !important;
+            transition: none;
           }
         }
 
         /* FINAL proof console override */
         .proof-section .proof-console .proof-heading {
-          display: grid !important;
-          grid-template-columns: minmax(0, 1fr) auto !important;
-          align-items: start !important;
-          gap: 1.5rem !important;
-          margin-bottom: 2.4rem !important;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
+          gap: 1.5rem;
+          margin-bottom: 2.4rem;
         }
 
         .proof-section .proof-console .proof-heading > div {
-          max-width: 760px !important;
-          justify-self: start !important;
-          text-align: left !important;
+          max-width: 760px;
+          justify-self: start;
+          text-align: left;
         }
 
         .proof-section .proof-console .proof-heading .eyebrow {
-          display: block !important;
-          margin: 0 0 1rem !important;
-          text-align: left !important;
+          display: block;
+          margin: 0 0 1rem;
+          text-align: left;
         }
 
         .proof-section .proof-console .proof-heading h2 {
-          max-width: 760px !important;
-          margin: 0 !important;
-          text-align: left !important;
-          font-size: clamp(2.55rem, 4vw, 4.55rem) !important;
-          line-height: 0.96 !important;
-          letter-spacing: -0.058em !important;
+          max-width: 760px;
+          margin: 0;
+          text-align: left;
+          font-size: clamp(2.55rem, 4vw, 4.55rem);
+          line-height: 0.96;
+          letter-spacing: -0.058em;
         }
 
         .proof-section .proof-console .proof-heading span {
-          justify-self: end !important;
-          align-self: start !important;
-          margin-top: 0.4rem !important;
+          justify-self: end;
+          align-self: start;
+          margin-top: 0.4rem;
         }
 
         .proof-section .proof-console .proof-log {
-          margin-top: 0 !important;
+          margin-top: 0;
         }
 
         @media (max-width: 760px) {
           .proof-section .proof-console .proof-heading {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .proof-section .proof-console .proof-heading span {
-            justify-self: start !important;
-            margin-top: 0 !important;
+            justify-self: start;
+            margin-top: 0;
           }
         }
 
@@ -2962,25 +2962,25 @@ export function VerticalPage({ slug }: { slug: string }) {
 
         /* Industrial V2 final composition tuning */
         .industrial-v2-hero {
-          grid-template-columns: minmax(460px, 0.78fr) minmax(600px, 1.22fr) !important;
-          gap: clamp(3rem, 5vw, 5.75rem) !important;
+          grid-template-columns: minmax(460px, 0.78fr) minmax(600px, 1.22fr);
+          gap: clamp(3rem, 5vw, 5.75rem);
         }
 
         .industrial-v2-copy h1 {
-          max-width: 760px !important;
-          font-size: clamp(3.15rem, 4.65vw, 5.85rem) !important;
-          line-height: 0.94 !important;
-          letter-spacing: -0.058em !important;
+          max-width: 760px;
+          font-size: clamp(3.15rem, 4.65vw, 5.85rem);
+          line-height: 0.94;
+          letter-spacing: -0.058em;
           text-wrap: balance;
         }
 
         .industrial-v2-copy > p:not(.industrial-v2-eyebrow) {
-          max-width: 680px !important;
-          font-size: clamp(1.08rem, 1.25vw, 1.28rem) !important;
+          max-width: 680px;
+          font-size: clamp(1.08rem, 1.25vw, 1.28rem);
         }
 
         .industrial-v2-specs {
-          max-width: 680px !important;
+          max-width: 680px;
         }
 
         .industrial-v2-stage {
@@ -2988,45 +2988,45 @@ export function VerticalPage({ slug }: { slug: string }) {
         }
 
         .industrial-v2-frame {
-          width: min(104%, 960px) !important;
+          width: min(104%, 960px);
         }
 
         .industrial-v2-board-head {
-          grid-template-columns: minmax(0, 1fr) !important;
-          gap: 1rem !important;
-          margin-bottom: 2.4rem !important;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 1rem;
+          margin-bottom: 2.4rem;
         }
 
         .industrial-v2-board-head h2 {
-          max-width: 820px !important;
-          font-size: clamp(2.9rem, 4.35vw, 5.25rem) !important;
-          line-height: 0.94 !important;
+          max-width: 820px;
+          font-size: clamp(2.9rem, 4.35vw, 5.25rem);
+          line-height: 0.94;
         }
 
         .industrial-v2-board-head > p {
-          max-width: 760px !important;
-          margin: 0 !important;
-          font-size: 1.05rem !important;
+          max-width: 760px;
+          margin: 0;
+          font-size: 1.05rem;
         }
 
         .industrial-v2-process {
-          grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-          gap: 1rem !important;
-          padding: 1.25rem !important;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 1rem;
+          padding: 1.25rem;
         }
 
         .industrial-v2-process-item {
-          min-height: 16.5rem !important;
-          padding: 1.15rem !important;
+          min-height: 16.5rem;
+          padding: 1.15rem;
         }
 
         .industrial-v2-process-item h3 {
-          font-size: 1.12rem !important;
+          font-size: 1.12rem;
         }
 
         .industrial-v2-process-item p {
-          font-size: 0.94rem !important;
-          line-height: 1.68 !important;
+          font-size: 0.94rem;
+          line-height: 1.68;
         }
 
         .industrial-v2-process-item:last-child {
@@ -3037,55 +3037,55 @@ export function VerticalPage({ slug }: { slug: string }) {
         }
 
         .industrial-v2-proof-head {
-          grid-template-columns: minmax(0, 1fr) auto !important;
-          align-items: start !important;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
         }
 
         .industrial-v2-proof-head h2 {
-          max-width: 760px !important;
-          text-align: left !important;
-          font-size: clamp(2.65rem, 4vw, 4.7rem) !important;
-          line-height: 0.96 !important;
+          max-width: 760px;
+          text-align: left;
+          font-size: clamp(2.65rem, 4vw, 4.7rem);
+          line-height: 0.96;
         }
 
         .industrial-v2-log article {
-          padding: 1.1rem 1.2rem !important;
+          padding: 1.1rem 1.2rem;
         }
 
         @media (max-width: 1180px) {
           .industrial-v2-hero {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .industrial-v2-stage {
-            transform: none !important;
+            transform: none;
           }
 
           .industrial-v2-copy h1 {
-            max-width: 900px !important;
+            max-width: 900px;
           }
 
           .industrial-v2-process {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
 
           .industrial-v2-process-item {
-            min-height: auto !important;
+            min-height: auto;
           }
         }
 
         @media (max-width: 760px) {
           .industrial-v2-copy h1 {
-            font-size: clamp(2.75rem, 11vw, 4rem) !important;
+            font-size: clamp(2.75rem, 11vw, 4rem);
           }
 
           .industrial-v2-board-head h2,
           .industrial-v2-proof-head h2 {
-            font-size: clamp(2.35rem, 10vw, 3.5rem) !important;
+            font-size: clamp(2.35rem, 10vw, 3.5rem);
           }
 
           .industrial-v2-proof-head {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 1fr;
           }
         }
 
@@ -3107,196 +3107,196 @@ export function VerticalPage({ slug }: { slug: string }) {
 */
 
 .industrial-v2-page {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 .industrial-v2-page .industrial-v2-hero {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  justify-items: center !important;
-  align-items: start !important;
-  width: 100% !important;
-  max-width: 1280px !important;
-  margin-inline: auto !important;
-  box-sizing: border-box !important;
-  padding: clamp(44px, 6vw, 78px) clamp(22px, 5vw, 72px) clamp(42px, 5vw, 68px) !important;
-  gap: clamp(28px, 4vw, 44px) !important;
-  text-align: center !important;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: start;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding: clamp(44px, 6vw, 78px) clamp(22px, 5vw, 72px) clamp(42px, 5vw, 68px);
+  gap: clamp(28px, 4vw, 44px);
+  text-align: center;
 }
 
 .industrial-v2-page .industrial-v2-copy {
-  width: 100% !important;
-  max-width: 980px !important;
-  min-width: 0 !important;
-  margin-inline: auto !important;
-  display: grid !important;
-  justify-items: center !important;
-  text-align: center !important;
-  position: relative !important;
-  z-index: 2 !important;
+  width: 100%;
+  max-width: 980px;
+  min-width: 0;
+  margin-inline: auto;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .industrial-v2-page .industrial-v2-copy h1 {
-  width: 100% !important;
-  max-width: 980px !important;
-  margin: 0 auto clamp(18px, 2.4vw, 28px) !important;
-  font-size: clamp(3.25rem, 6.2vw, 7.1rem) !important;
-  line-height: 0.9 !important;
-  letter-spacing: -0.075em !important;
-  text-align: center !important;
-  text-wrap: balance !important;
-  word-break: normal !important;
-  overflow-wrap: normal !important;
-  hyphens: none !important;
-  transform: none !important;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto clamp(18px, 2.4vw, 28px);
+  font-size: clamp(3.25rem, 6.2vw, 7.1rem);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+  text-align: center;
+  text-wrap: balance;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+  transform: none;
 }
 
 .industrial-v2-page .industrial-v2-copy p {
-  max-width: 720px !important;
-  margin-inline: auto !important;
-  margin-bottom: clamp(24px, 3vw, 34px) !important;
-  font-size: clamp(1.02rem, 1.35vw, 1.28rem) !important;
-  line-height: 1.58 !important;
-  text-align: center !important;
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: clamp(24px, 3vw, 34px);
+  font-size: clamp(1.02rem, 1.35vw, 1.28rem);
+  line-height: 1.58;
+  text-align: center;
 }
 
 .industrial-v2-page .industrial-v2-specs {
-  width: min(100%, 980px) !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 14px !important;
-  margin-inline: auto !important;
+  width: min(100%, 980px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-inline: auto;
 }
 
 .industrial-v2-page .industrial-v2-specs article {
-  text-align: left !important;
-  min-height: 0 !important;
-  padding: 16px 18px !important;
-  border-radius: 18px !important;
+  text-align: left;
+  min-height: 0;
+  padding: 16px 18px;
+  border-radius: 18px;
 }
 
 .industrial-v2-page .industrial-v2-specs article p {
-  text-align: left !important;
-  margin: 5px 0 0 !important;
-  font-size: 0.88rem !important;
-  line-height: 1.38 !important;
+  text-align: left;
+  margin: 5px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.38;
 }
 
 .industrial-v2-page .industrial-v2-stage {
-  width: min(100%, 520px) !important;
-  max-width: 520px !important;
-  justify-self: center !important;
-  align-self: start !important;
-  margin-inline: auto !important;
-  margin-top: 2px !important;
-  transform: none !important;
-  position: relative !important;
-  z-index: 1 !important;
+  width: min(100%, 520px);
+  max-width: 520px;
+  justify-self: center;
+  align-self: start;
+  margin-inline: auto;
+  margin-top: 2px;
+  transform: none;
+  position: relative;
+  z-index: 1;
 }
 
 .industrial-v2-page .industrial-v2-frame {
-  width: 100% !important;
-  max-width: 520px !important;
-  padding: 0.65rem !important;
-  border-radius: 1.8rem !important;
-  box-sizing: border-box !important;
+  width: 100%;
+  max-width: 520px;
+  padding: 0.65rem;
+  border-radius: 1.8rem;
+  box-sizing: border-box;
 }
 
 .industrial-v2-page .industrial-v2-frame img {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: 620px !important;
-  object-fit: contain !important;
-  border-radius: 1.15rem !important;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: contain;
+  border-radius: 1.15rem;
 }
 
 .industrial-v2-page .industrial-v2-tag {
-  font-size: 0.68rem !important;
-  padding: 0.42rem 0.72rem !important;
+  font-size: 0.68rem;
+  padding: 0.42rem 0.72rem;
 }
 
 .industrial-v2-page .industrial-v2-meters {
-  width: 100% !important;
-  max-width: 520px !important;
-  margin: 10px auto 0 !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 0.58rem !important;
-  padding: 0.6rem !important;
-  border-radius: 1.25rem !important;
-  box-sizing: border-box !important;
+  width: 100%;
+  max-width: 520px;
+  margin: 10px auto 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.58rem;
+  padding: 0.6rem;
+  border-radius: 1.25rem;
+  box-sizing: border-box;
 }
 
 .industrial-v2-page .industrial-v2-meters div {
-  padding: 0.68rem 0.72rem !important;
-  border-radius: 0.88rem !important;
-  text-align: left !important;
+  padding: 0.68rem 0.72rem;
+  border-radius: 0.88rem;
+  text-align: left;
 }
 
 .industrial-v2-page .industrial-v2-meters span {
-  font-size: clamp(1.45rem, 2.4vw, 2rem) !important;
-  line-height: 0.95 !important;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 0.95;
 }
 
 .industrial-v2-page .industrial-v2-meters small {
-  font-size: 0.56rem !important;
-  letter-spacing: 0.1em !important;
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
 }
 
 /* Laptop: sigue centrado, solo baja escala */
 @media (max-width: 1180px) {
   .industrial-v2-page .industrial-v2-copy h1 {
-    max-width: 860px !important;
-    font-size: clamp(3rem, 7vw, 5.8rem) !important;
+    max-width: 860px;
+    font-size: clamp(3rem, 7vw, 5.8rem);
   }
 
   .industrial-v2-page .industrial-v2-specs {
-    max-width: 860px !important;
+    max-width: 860px;
   }
 
   .industrial-v2-page .industrial-v2-stage,
   .industrial-v2-page .industrial-v2-frame,
   .industrial-v2-page .industrial-v2-meters {
-    max-width: 460px !important;
+    max-width: 460px;
   }
 
   .industrial-v2-page .industrial-v2-frame img {
-    max-height: 540px !important;
+    max-height: 540px;
   }
 }
 
 /* Tablet/móvil: cards apiladas y todo centrado */
 @media (max-width: 820px) {
   .industrial-v2-page .industrial-v2-hero {
-    padding-inline: clamp(18px, 6vw, 34px) !important;
-    padding-top: 40px !important;
+    padding-inline: clamp(18px, 6vw, 34px);
+    padding-top: 40px;
   }
 
   .industrial-v2-page .industrial-v2-copy h1 {
-    font-size: clamp(2.45rem, 11vw, 4rem) !important;
-    line-height: 0.94 !important;
-    letter-spacing: -0.06em !important;
+    font-size: clamp(2.45rem, 11vw, 4rem);
+    line-height: 0.94;
+    letter-spacing: -0.06em;
   }
 
   .industrial-v2-page .industrial-v2-copy p {
-    font-size: 1rem !important;
+    font-size: 1rem;
   }
 
   .industrial-v2-page .industrial-v2-specs {
-    grid-template-columns: 1fr !important;
-    max-width: 520px !important;
+    grid-template-columns: 1fr;
+    max-width: 520px;
   }
 
   .industrial-v2-page .industrial-v2-stage,
   .industrial-v2-page .industrial-v2-frame,
   .industrial-v2-page .industrial-v2-meters {
-    width: min(100%, 420px) !important;
-    max-width: 420px !important;
+    width: min(100%, 420px);
+    max-width: 420px;
   }
 
   .industrial-v2-page .industrial-v2-frame img {
-    max-height: 500px !important;
+    max-height: 500px;
   }
 }
 
@@ -3304,15 +3304,15 @@ export function VerticalPage({ slug }: { slug: string }) {
   .industrial-v2-page .industrial-v2-stage,
   .industrial-v2-page .industrial-v2-frame,
   .industrial-v2-page .industrial-v2-meters {
-    max-width: 360px !important;
+    max-width: 360px;
   }
 
   .industrial-v2-page .industrial-v2-frame img {
-    max-height: 430px !important;
+    max-height: 430px;
   }
 
   .industrial-v2-page .industrial-v2-meters {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3322,54 +3322,54 @@ export function VerticalPage({ slug }: { slug: string }) {
 /* Industrial V2 inline centered support BEGIN */
 
 .industrial-v2-page {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 .industrial-v2-page .industrial-v2-copy > p {
-  max-width: 720px !important;
-  margin-inline: auto !important;
-  text-align: center !important;
+  max-width: 720px;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .industrial-v2-page .industrial-v2-specs {
-  width: min(100%, 980px) !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 14px !important;
-  margin: 10px auto 0 !important;
+  width: min(100%, 980px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 10px auto 0;
 }
 
 .industrial-v2-page .industrial-v2-specs article {
-  text-align: left !important;
-  padding: 16px 18px !important;
-  border-radius: 18px !important;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 18px;
 }
 
 .industrial-v2-page .industrial-v2-specs article p {
-  text-align: left !important;
-  margin: 5px 0 0 !important;
-  font-size: 0.88rem !important;
-  line-height: 1.38 !important;
+  text-align: left;
+  margin: 5px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.38;
 }
 
 @media (max-width: 820px) {
   .industrial-v2-page .industrial-v2-hero {
-    padding: 42px 20px 52px !important;
+    padding: 42px 20px 52px;
   }
 
   .industrial-v2-page .industrial-v2-copy h1 {
-    font-size: clamp(2.45rem, 11vw, 4rem) !important;
+    font-size: clamp(2.45rem, 11vw, 4rem);
   }
 
   .industrial-v2-page .industrial-v2-specs {
-    grid-template-columns: 1fr !important;
-    max-width: 520px !important;
+    grid-template-columns: 1fr;
+    max-width: 520px;
   }
 
   .industrial-v2-page .industrial-v2-stage,
   .industrial-v2-page .industrial-v2-frame,
   .industrial-v2-page .industrial-v2-meters {
-    max-width: 420px !important;
+    max-width: 420px;
   }
 }
 
@@ -3377,11 +3377,11 @@ export function VerticalPage({ slug }: { slug: string }) {
   .industrial-v2-page .industrial-v2-stage,
   .industrial-v2-page .industrial-v2-frame,
   .industrial-v2-page .industrial-v2-meters {
-    max-width: 360px !important;
+    max-width: 360px;
   }
 
   .industrial-v2-page .industrial-v2-meters {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 

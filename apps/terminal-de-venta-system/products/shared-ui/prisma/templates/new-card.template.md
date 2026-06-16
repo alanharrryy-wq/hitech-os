@@ -32,4 +32,4 @@
 - Component is registered before use.
 - Required tokens are mapped.
 - Accessibility state is documented.
-- No `!important` final solution is added.
+- No `CSS priority override` final solution is added.

@@ -169,7 +169,7 @@ body{overflow:hidden}
 .liq-evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.liq-evidence-grid span{min-height:64px;border-radius:16px;padding:10px;border:1px solid rgba(236,248,252,.12);background:linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.015));color:var(--liq-faint);font-size:12px}.liq-evidence-grid b{display:block;margin-top:4px;color:var(--liq-ink)}
 
 @media (prefers-reduced-motion: reduce){
-  .liq-primary-cta,.liq-preset{transition:none!important}
+  .liq-primary-cta,.liq-preset{transition:none}
 }
 @media (max-width:980px){
   body{overflow:auto}.liq-stage{place-items:start;padding:12px}.liq-device-shell{grid-template-columns:1fr;min-height:calc(100dvh - 24px)}.liq-rail{display:none}.liq-workspace{padding:12px}.liq-header{flex-direction:column;align-items:flex-start}.liq-preset-nav{justify-content:flex-start}.liq-status-row,.liq-main-grid{grid-template-columns:1fr}.liq-header h1{font-size:48px}

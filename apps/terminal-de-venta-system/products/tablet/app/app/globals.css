@@ -451,21 +451,21 @@ th {
 body {
   background:
     var(--prisma-living-noise),
-    var(--prisma-living-scene-base) !important;
+    var(--prisma-living-scene-base);
 }
 
 /* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
 /* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
    Tablet globals: root scene delegates to shared tokens; no extra weather systems. */
 body {
-  background: var(--prisma-visual-scene-base) !important;
-  background-size: 132% 132% !important;
+  background: var(--prisma-visual-scene-base);
+  background-size: 132% 132%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
-    animation: none !important;
-    transform: none !important;
+    animation: none;
+    transform: none;
   }
 }
 /* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D END */
@@ -579,7 +579,7 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
 @media (prefers-reduced-motion: reduce) {
   html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
   html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-    animation: none !important;
+    animation: none;
   }
 }
 /* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_GLOBALS::END */
@@ -628,12 +628,12 @@ html[data-prisma-skin="light"] ::selection {
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before {
-  opacity: 0.72 !important;
-  filter: blur(64px) saturate(1.08) !important;
+  opacity: 0.72;
+  filter: blur(64px) saturate(1.08);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-  opacity: 0.38 !important;
+  opacity: 0.38;
 }
 /* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::GLOBALS_END */
 
@@ -917,10 +917,10 @@ html[data-prisma-skin="light"] {
   [data-prisma-surface="tablet"] *,
   .prisma-tablet-light-shell *,
   .tablet-light-shell * {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-    scroll-behavior: auto !important;
+    animation-duration: .001ms;
+    animation-iteration-count: 1;
+    transition-duration: .001ms;
+    scroll-behavior: auto;
   }
 }
 
@@ -946,11 +946,11 @@ body {
   background:
     var(--prisma-tablet-static-fuji-overlay),
     var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat fixed,
-    #eaf4ff !important;
+    #eaf4ff;
 }
 
 body {
-  background-attachment: fixed, fixed, scroll !important;
+  background-attachment: fixed, fixed, scroll;
 }
 
 body::before {
@@ -968,8 +968,8 @@ body::before {
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
   }
 }
 /* PRISMA_TABLET_STATIC_FUJI_ALL_END */
@@ -978,13 +978,13 @@ body::before {
    Fuente: layer map + VisualQA. Clases locales detectadas: 1.
 */
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] .referencia-visual-container {
-  background: transparent !important;
-  background-image: none !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: transparent;
+  background-image: none;
+  background-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 /* PRISMA_TABLET_LAYERMAP_TRANSPARENT_BG_1006_2138::MODULE_END */

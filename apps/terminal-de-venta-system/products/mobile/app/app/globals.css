@@ -32,4 +32,4 @@ input {
 /* PRISMA_MOBILE_PREMIUM_POLISH_GLOBALS */
 :root { --prisma-mobile-premium-ink: #102033; --prisma-mobile-premium-blue: #465bff; --prisma-mobile-premium-mint: #00d6b2; --prisma-mobile-premium-glow: 0 24px 70px rgba(20, 33, 61, 0.14); }
 ::selection { background: rgba(70, 91, 255, 0.18); color: var(--prisma-mobile-premium-ink); }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms; animation-iteration-count: 1; scroll-behavior: auto; } }

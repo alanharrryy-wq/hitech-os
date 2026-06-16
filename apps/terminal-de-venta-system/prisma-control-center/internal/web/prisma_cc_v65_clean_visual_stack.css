@@ -3,160 +3,160 @@
 
 /* ===== TOPBAR ALL SURFACES ===== */
 body[data-theme="tactical"] .topbarWrap{
-  width:min(1320px, calc(100vw - 48px)) !important;
-  left:50% !important;
-  right:auto !important;
-  transform:translateX(-50%) !important;
+  width:min(1320px, calc(100vw - 48px));
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
 }
 
 body[data-theme="tactical"] .topbar,
 body[data-theme="tactical"] .topbar.glass{
-  min-height:124px !important;
-  height:124px !important;
-  padding:16px 22px !important;
-  border-radius:30px !important;
-  overflow:hidden !important;
+  min-height:124px;
+  height:124px;
+  padding:16px 22px;
+  border-radius:30px;
+  overflow:hidden;
   background:
     radial-gradient(circle at 7% 50%, rgba(135,210,255,.105), transparent 31%),
     linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.026) 44%, rgba(255,255,255,.035)),
-    rgba(34,49,66,.285) !important;
-  border:1px solid rgba(214,231,252,.18) !important;
-  box-shadow:0 18px 48px rgba(3,8,16,.16), inset 0 1px 0 rgba(255,255,255,.12) !important;
-  backdrop-filter:blur(6px) saturate(124%) brightness(.99) !important;
-  -webkit-backdrop-filter:blur(6px) saturate(124%) brightness(.99) !important;
+    rgba(34,49,66,.285);
+  border:1px solid rgba(214,231,252,.18);
+  box-shadow:0 18px 48px rgba(3,8,16,.16), inset 0 1px 0 rgba(255,255,255,.12);
+  backdrop-filter:blur(6px) saturate(124%) brightness(.99);
+  -webkit-backdrop-filter:blur(6px) saturate(124%) brightness(.99);
 }
 
 body[data-theme="tactical"] .topbarGrid{
-  height:92px !important;
-  min-height:92px !important;
-  display:grid !important;
-  grid-template-columns:minmax(0, 1fr) !important;
-  align-items:center !important;
-  padding:0 500px 0 0 !important;
+  height:92px;
+  min-height:92px;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr);
+  align-items:center;
+  padding:0 500px 0 0;
 }
 
 body[data-theme="tactical"] .brandRow{
-  display:flex !important;
-  align-items:center !important;
-  gap:18px !important;
-  min-width:0 !important;
-  overflow:visible !important;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  min-width:0;
+  overflow:visible;
 }
 
 body[data-theme="tactical"] .heroIcon{
-  width:82px !important;
-  height:82px !important;
-  min-width:82px !important;
-  flex:0 0 82px !important;
-  display:grid !important;
-  place-items:center !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  filter:drop-shadow(0 0 16px rgba(130,215,255,.30)) !important;
+  width:82px;
+  height:82px;
+  min-width:82px;
+  flex:0 0 82px;
+  display:grid;
+  place-items:center;
+  opacity:1;
+  visibility:visible;
+  filter:drop-shadow(0 0 16px rgba(130,215,255,.30));
 }
 
 body[data-theme="tactical"] .heroLogo{
-  display:block !important;
-  width:78px !important;
-  height:78px !important;
-  object-fit:contain !important;
-  object-position:center !important;
-  opacity:1 !important;
-  visibility:visible !important;
+  display:block;
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+  visibility:visible;
 }
 
 body[data-theme="tactical"] .titles{
-  min-width:0 !important;
-  max-width:none !important;
-  overflow:visible !important;
+  min-width:0;
+  max-width:none;
+  overflow:visible;
 }
 
 body[data-theme="tactical"] .titles h1{
-  max-width:none !important;
-  white-space:normal !important;
-  overflow:visible !important;
-  text-overflow:clip !important;
-  overflow-wrap:normal !important;
-  word-break:normal !important;
-  font-size:clamp(28px, 2.65vw, 42px) !important;
-  line-height:.96 !important;
-  letter-spacing:.105em !important;
-  color:#eff7ff !important;
-  text-shadow:0 1px 0 rgba(0,0,0,.32), 0 0 18px rgba(160,220,255,.16) !important;
+  max-width:none;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  overflow-wrap:normal;
+  word-break:normal;
+  font-size:clamp(28px, 2.65vw, 42px);
+  line-height:.96;
+  letter-spacing:.105em;
+  color:#eff7ff;
+  text-shadow:0 1px 0 rgba(0,0,0,.32), 0 0 18px rgba(160,220,255,.16);
 }
 
 body[data-theme="tactical"] .titles p,
 body[data-theme="tactical"] #subtitle{
-  display:block !important;
-  margin-top:8px !important;
-  white-space:normal !important;
-  overflow:visible !important;
-  text-overflow:clip !important;
-  font-size:12px !important;
-  line-height:1.15 !important;
-  letter-spacing:.20em !important;
-  text-transform:uppercase !important;
-  color:rgba(226,240,252,.78) !important;
+  display:block;
+  margin-top:8px;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  font-size:12px;
+  line-height:1.15;
+  letter-spacing:.20em;
+  text-transform:uppercase;
+  color:rgba(226,240,252,.78);
 }
 
 body[data-theme="tactical"] .brandEyebrow,
 body[data-theme="tactical"] .chips{
-  display:none !important;
+  display:none;
 }
 
 body[data-theme="tactical"] .topbar > .surfaceSwitch{
-  position:absolute !important;
-  right:22px !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  width:470px !important;
-  max-width:470px !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
-  align-items:center !important;
-  justify-content:flex-end !important;
-  gap:8px !important;
+  position:absolute;
+  right:22px;
+  top:50%;
+  transform:translateY(-50%);
+  width:470px;
+  max-width:470px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
 }
 
 body[data-theme="tactical"] .topbar > .surfaceSwitch button{
-  height:38px !important;
-  min-width:134px !important;
-  max-width:172px !important;
-  padding:0 16px !important;
-  border-radius:999px !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
+  height:38px;
+  min-width:134px;
+  max-width:172px;
+  padding:0 16px;
+  border-radius:999px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 /* Operation title can be long. Give it a tighter size. */
 body[data-prisma-interface="operation"] .titles h1{
-  font-size:clamp(25px, 2.25vw, 35px) !important;
-  letter-spacing:.075em !important;
+  font-size:clamp(25px, 2.25vw, 35px);
+  letter-spacing:.075em;
 }
 
 /* ===== PRISMO: TRANSPARENT CENTER, NOT BLACK TILE ===== */
 body[data-prisma-interface="prismo"] main{
-  padding-top:132px !important;
+  padding-top:132px;
 }
 
 body[data-prisma-interface="prismo"] #prismoConsoleSurface{
-  margin-top:-92px !important;
-  background:rgba(13,25,39,.060) !important;
-  border:1px solid rgba(214,231,252,.080) !important;
-  box-shadow:0 18px 54px rgba(3,8,15,.10), inset 0 1px 0 rgba(255,255,255,.042) !important;
-  backdrop-filter:blur(2px) saturate(112%) !important;
-  -webkit-backdrop-filter:blur(2px) saturate(112%) !important;
+  margin-top:-92px;
+  background:rgba(13,25,39,.060);
+  border:1px solid rgba(214,231,252,.080);
+  box-shadow:0 18px 54px rgba(3,8,15,.10), inset 0 1px 0 rgba(255,255,255,.042);
+  backdrop-filter:blur(2px) saturate(112%);
+  -webkit-backdrop-filter:blur(2px) saturate(112%);
 }
 
 body[data-prisma-interface="prismo"] #prismo-console{
   background:
     linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.006) 52%, rgba(255,255,255,.010)),
-    rgba(14,28,44,.075) !important;
-  border:1px solid rgba(214,231,252,.105) !important;
-  box-shadow:0 18px 58px rgba(3,8,15,.11), inset 0 1px 0 rgba(255,255,255,.052) !important;
-  backdrop-filter:blur(2.5px) saturate(114%) !important;
-  -webkit-backdrop-filter:blur(2.5px) saturate(114%) !important;
+    rgba(14,28,44,.075);
+  border:1px solid rgba(214,231,252,.105);
+  box-shadow:0 18px 58px rgba(3,8,15,.11), inset 0 1px 0 rgba(255,255,255,.052);
+  backdrop-filter:blur(2.5px) saturate(114%);
+  -webkit-backdrop-filter:blur(2.5px) saturate(114%);
 }
 
 body[data-prisma-interface="prismo"] #prismo-console .prismo-panel,
@@ -165,11 +165,11 @@ body[data-prisma-interface="prismo"] #prismo-console .prismo-response-card,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card{
   background:
     linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.010)),
-    rgba(18,34,52,.115) !important;
-  border:1px solid rgba(214,231,252,.118) !important;
-  box-shadow:0 10px 30px rgba(3,8,15,.09), inset 0 1px 0 rgba(255,255,255,.058) !important;
-  backdrop-filter:blur(2.5px) saturate(115%) !important;
-  -webkit-backdrop-filter:blur(2.5px) saturate(115%) !important;
+    rgba(18,34,52,.115);
+  border:1px solid rgba(214,231,252,.118);
+  box-shadow:0 10px 30px rgba(3,8,15,.09), inset 0 1px 0 rgba(255,255,255,.058);
+  backdrop-filter:blur(2.5px) saturate(115%);
+  -webkit-backdrop-filter:blur(2.5px) saturate(115%);
 }
 
 body[data-prisma-interface="prismo"] #prismo-console .prismo-response-stream,
@@ -179,36 +179,36 @@ body[data-prisma-interface="prismo"] #prismo-console .prismo-evidence-list,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-ledger-list{
   background:
     linear-gradient(180deg, rgba(255,255,255,.026), rgba(255,255,255,.007)),
-    rgba(16,30,46,.090) !important;
-  border:1px solid rgba(214,231,252,.080) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.040) !important;
+    rgba(16,30,46,.090);
+  border:1px solid rgba(214,231,252,.080);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.040);
 }
 
 body[data-prisma-interface="prismo"] #prismo-console textarea,
 body[data-prisma-interface="prismo"] #prismo-console input{
-  background:rgba(9,22,36,.145) !important;
-  border:1px solid rgba(214,231,252,.115) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.045) !important;
+  background:rgba(9,22,36,.145);
+  border:1px solid rgba(214,231,252,.115);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
 }
 
 body[data-prisma-interface="prismo"] #prismo-console .prismo-empty{
-  background:transparent !important;
-  border:0 !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  color:rgba(229,242,255,.80) !important;
+  background:transparent;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  color:rgba(229,242,255,.80);
 }
 
 /* PRISMO logo fit */
 body[data-prisma-interface="prismo"] .heroIcon{
-  width:86px !important;
-  height:86px !important;
-  min-width:86px !important;
-  flex-basis:86px !important;
+  width:86px;
+  height:86px;
+  min-width:86px;
+  flex-basis:86px;
 }
 body[data-prisma-interface="prismo"] .heroLogo{
-  width:82px !important;
-  height:82px !important;
+  width:82px;
+  height:82px;
 }
 
 /* Operation: remove milkiness without collapsing content */
@@ -217,9 +217,9 @@ body[data-prisma-interface="operation"] .card,
 body[data-prisma-interface="operation"] .commandPanel{
   background:
     linear-gradient(180deg, rgba(255,255,255,.050), rgba(255,255,255,.012)),
-    rgba(22,38,56,.145) !important;
-  border:1px solid rgba(214,231,252,.12) !important;
-  box-shadow:0 10px 30px rgba(3,8,15,.10), inset 0 1px 0 rgba(255,255,255,.050) !important;
-  backdrop-filter:blur(3px) saturate(116%) !important;
-  -webkit-backdrop-filter:blur(3px) saturate(116%) !important;
+    rgba(22,38,56,.145);
+  border:1px solid rgba(214,231,252,.12);
+  box-shadow:0 10px 30px rgba(3,8,15,.10), inset 0 1px 0 rgba(255,255,255,.050);
+  backdrop-filter:blur(3px) saturate(116%);
+  -webkit-backdrop-filter:blur(3px) saturate(116%);
 }

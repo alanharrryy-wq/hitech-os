@@ -1290,7 +1290,7 @@ def build_premium_tree_html_virtualized(
       .status{grid-template-columns:1fr 1fr}
     }
     @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+      *,*::before,*::after{animation:none;transition:none;scroll-behavior:auto}
     }
   </style>
 </head>
@@ -2179,10 +2179,10 @@ def build_premium_tree_html(
 
     @media (prefers-reduced-motion: reduce) {{
       *, *::before, *::after {{
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition: none !important;
+        animation-duration: 0.001ms;
+        animation-iteration-count: 1;
+        scroll-behavior: auto;
+        transition: none;
       }}
     }}
 
@@ -16121,12 +16121,12 @@ def _ca_premium_style() -> str:
   }
 
   .nodeGroup.is-dim {
-    opacity: 0.22 !important;
+    opacity: 0.22;
   }
 
   .nodeGroup.is-hot,
   .nodeGroup.is-focused {
-    opacity: 1 !important;
+    opacity: 1;
   }
 
   .nodeGroup.is-focused .node-label,
@@ -16433,17 +16433,17 @@ def _ca_ultra_premium_style() -> str:
   }
 
   #edgesLayer > *.is-dim {
-    opacity: 0.06 !important;
+    opacity: 0.06;
     filter: saturate(0.55) blur(0.20px);
   }
 
   #edgesLayer > *.is-hidden {
-    opacity: 0 !important;
-    pointer-events: none !important;
+    opacity: 0;
+    pointer-events: none;
   }
 
   #edgesLayer > *.is-hot {
-    opacity: 1 !important;
+    opacity: 1;
     filter:
       brightness(1.18)
       saturate(1.24)
@@ -16462,8 +16462,8 @@ def _ca_ultra_premium_style() -> str:
 
   #edgesLayer > *.is-hot .ca-edge-path,
   #edgesLayer > path.is-hot {
-    stroke: rgba(168, 244, 255, 0.96) !important;
-    stroke-width: 2.55px !important;
+    stroke: rgba(168, 244, 255, 0.96);
+    stroke-width: 2.55px;
     stroke-linecap: round;
     stroke-dasharray: 12 10;
     animation: caEdgeFlow 1.45s linear infinite;
@@ -16477,29 +16477,29 @@ def _ca_ultra_premium_style() -> str:
   }
 
   #nodesLayer .nodeGroup.is-neighbor {
-    opacity: 0.90 !important;
+    opacity: 0.90;
     filter: brightness(1.04) saturate(1.06);
   }
 
   #nodesLayer .nodeGroup rect {
-    fill: rgba(8, 18, 28, 0.015) !important;
-    fill-opacity: 0.06 !important;
-    stroke-opacity: 0.56 !important;
+    fill: rgba(8, 18, 28, 0.015);
+    fill-opacity: 0.06;
+    stroke-opacity: 0.56;
   }
 
   #nodesLayer .nodeGroup > g[filter] > rect:first-child {
-    fill: rgba(8, 18, 28, 0.01) !important;
-    fill-opacity: 0.045 !important;
-    stroke: rgba(156, 242, 255, 0.78) !important;
-    stroke-width: 1.05px !important;
+    fill: rgba(8, 18, 28, 0.01);
+    fill-opacity: 0.045;
+    stroke: rgba(156, 242, 255, 0.78);
+    stroke-width: 1.05px;
     rx: 18;
     ry: 18;
   }
 
   #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
   #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
-    stroke: rgba(193, 249, 255, 0.98) !important;
-    stroke-width: 1.35px !important;
+    stroke: rgba(193, 249, 255, 0.98);
+    stroke-width: 1.35px;
     stroke-dasharray: 14 8;
     animation:
       caNodeFrameFlow 1.55s linear infinite,
@@ -16510,12 +16510,12 @@ def _ca_ultra_premium_style() -> str:
   }
 
   #nodesLayer .nodeGroup.is-dim rect {
-    stroke-opacity: 0.16 !important;
+    stroke-opacity: 0.16;
   }
 
   #nodesLayer .nodeGroup .node-label {
-    fill: #f2fbff !important;
-    font-weight: 700 !important;
+    fill: #f2fbff;
+    font-weight: 700;
     letter-spacing: 0.18px;
     filter:
       drop-shadow(0 0 4px rgba(143, 238, 255, 0.32))
@@ -16523,20 +16523,20 @@ def _ca_ultra_premium_style() -> str:
   }
 
   #nodesLayer .nodeGroup .node-subtitle {
-    fill: rgba(181, 229, 240, 0.92) !important;
+    fill: rgba(181, 229, 240, 0.92);
     filter: drop-shadow(0 0 3px rgba(143, 238, 255, 0.14));
   }
 
   #nodesLayer .nodeGroup .node-icon {
-    fill: rgba(148, 243, 255, 0.98) !important;
+    fill: rgba(148, 243, 255, 0.98);
     filter: drop-shadow(0 0 5px rgba(143, 238, 255, 0.20));
   }
 
   #nodesLayer .nodeGroup.is-dim .node-label,
   #nodesLayer .nodeGroup.is-dim .node-subtitle,
   #nodesLayer .nodeGroup.is-dim .node-icon {
-    opacity: 0.30 !important;
-    filter: none !important;
+    opacity: 0.30;
+    filter: none;
   }
 ]]></style>
 """.strip()
@@ -16731,34 +16731,34 @@ def _ca_spectral_relation_style() -> str:
   }
 
   #nodesLayer .nodeGroup > g[filter] > rect:first-child {
-    fill: rgba(8, 18, 28, 0.010) !important;
-    fill-opacity: 0.028 !important;
-    stroke: rgba(var(--ca-accent-rgb), 0.44) !important;
-    stroke-width: 0.96px !important;
+    fill: rgba(8, 18, 28, 0.010);
+    fill-opacity: 0.028;
+    stroke: rgba(var(--ca-accent-rgb), 0.44);
+    stroke-width: 0.96px;
   }
 
   #nodesLayer .nodeGroup .node-label {
-    fill: rgba(var(--ca-accent-soft-rgb), 0.98) !important;
+    fill: rgba(var(--ca-accent-soft-rgb), 0.98);
     filter:
       drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.24))
       drop-shadow(0 0 9px rgba(var(--ca-accent-rgb), 0.10));
   }
 
   #nodesLayer .nodeGroup .node-subtitle {
-    fill: rgba(var(--ca-accent-soft-rgb), 0.74) !important;
+    fill: rgba(var(--ca-accent-soft-rgb), 0.74);
     filter: drop-shadow(0 0 3px rgba(var(--ca-accent-rgb), 0.10));
   }
 
   #nodesLayer .nodeGroup .node-icon {
-    fill: rgba(var(--ca-accent-rgb), 0.98) !important;
+    fill: rgba(var(--ca-accent-rgb), 0.98);
     filter:
       drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.18))
       drop-shadow(0 0 8px rgba(var(--ca-accent-rgb), 0.08));
   }
 
   #nodesLayer .nodeGroup.is-neighbor > g[filter] > rect:first-child {
-    stroke: rgba(var(--ca-accent-rgb), 0.66) !important;
-    stroke-width: 1.10px !important;
+    stroke: rgba(var(--ca-accent-rgb), 0.66);
+    stroke-width: 1.10px;
     filter:
       drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.18))
       drop-shadow(0 0 8px rgba(var(--ca-accent-rgb), 0.08));
@@ -16766,8 +16766,8 @@ def _ca_spectral_relation_style() -> str:
 
   #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
   #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
-    stroke: rgba(var(--ca-accent-soft-rgb), 0.98) !important;
-    stroke-width: 1.38px !important;
+    stroke: rgba(var(--ca-accent-soft-rgb), 0.98);
+    stroke-width: 1.38px;
     stroke-dasharray: 14 8;
     animation:
       caNodeFrameFlow 1.55s linear infinite,
@@ -16778,14 +16778,14 @@ def _ca_spectral_relation_style() -> str:
   }
 
   #nodesLayer .nodeGroup.is-dim > g[filter] > rect:first-child {
-    stroke: rgba(var(--ca-accent-dim-rgb), 0.16) !important;
+    stroke: rgba(var(--ca-accent-dim-rgb), 0.16);
   }
 
   #nodesLayer .nodeGroup.is-dim .node-label,
   #nodesLayer .nodeGroup.is-dim .node-subtitle,
   #nodesLayer .nodeGroup.is-dim .node-icon {
-    opacity: 0.28 !important;
-    filter: none !important;
+    opacity: 0.28;
+    filter: none;
   }
 
   #edgesLayer > * {
@@ -16794,12 +16794,12 @@ def _ca_spectral_relation_style() -> str:
   }
 
   #edgesLayer > *.is-dim {
-    opacity: 0.025 !important;
+    opacity: 0.025;
     filter: saturate(0.42) blur(0.28px);
   }
 
   #edgesLayer > *.is-hot {
-    opacity: 1 !important;
+    opacity: 1;
     filter:
       brightness(1.05)
       saturate(1.10)
@@ -16818,8 +16818,8 @@ def _ca_spectral_relation_style() -> str:
 
   #edgesLayer > *.is-hot .ca-edge-path,
   #edgesLayer > path.is-hot {
-    stroke: rgba(var(--ca-edge-rgb), 0.92) !important;
-    stroke-width: 1.55px !important;
+    stroke: rgba(var(--ca-edge-rgb), 0.92);
+    stroke-width: 1.55px;
     stroke-linecap: round;
     stroke-dasharray: 8 12;
     animation: caEdgeFlow 2.05s linear infinite;
@@ -17164,25 +17164,25 @@ def _ca_glass_luxe_node_style() -> str:
   }
 
   #nodesLayer .nodeGroup rect {
-    fill: transparent !important;
-    fill-opacity: 0 !important;
+    fill: transparent;
+    fill-opacity: 0;
   }
 
   #nodesLayer .nodeGroup > g[filter] > rect:first-child {
-    fill: transparent !important;
-    fill-opacity: 0 !important;
-    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.42) !important;
-    stroke-width: 0.92px !important;
+    fill: transparent;
+    fill-opacity: 0;
+    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.42);
+    stroke-width: 0.92px;
     filter:
       drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.12))
       drop-shadow(0 0 8px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.05));
   }
 
   #nodesLayer .nodeGroup .ca-glass-inner-border {
-    fill: transparent !important;
-    fill-opacity: 0 !important;
-    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.24) !important;
-    stroke-width: 0.72px !important;
+    fill: transparent;
+    fill-opacity: 0;
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.24);
+    stroke-width: 0.72px;
     vector-effect: non-scaling-stroke;
     pointer-events: none;
     opacity: 0.84;
@@ -17192,24 +17192,24 @@ def _ca_glass_luxe_node_style() -> str:
 
   #nodesLayer .nodeGroup.is-dim > g[filter] > rect:first-child,
   #nodesLayer .nodeGroup.is-dim .ca-glass-inner-border {
-    stroke-opacity: 0.12 !important;
-    filter: none !important;
+    stroke-opacity: 0.12;
+    filter: none;
   }
 
   #nodesLayer .nodeGroup.is-neighbor > g[filter] > rect:first-child {
-    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.54) !important;
-    stroke-width: 0.98px !important;
+    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.54);
+    stroke-width: 0.98px;
   }
 
   #nodesLayer .nodeGroup.is-neighbor .ca-glass-inner-border {
-    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.30) !important;
-    stroke-width: 0.74px !important;
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.30);
+    stroke-width: 0.74px;
   }
 
   #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
   #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
-    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.92) !important;
-    stroke-width: 1.08px !important;
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.92);
+    stroke-width: 1.08px;
     stroke-dasharray: 10 12;
     animation:
       caNodeFrameFlow 2.35s linear infinite,
@@ -17221,8 +17221,8 @@ def _ca_glass_luxe_node_style() -> str:
 
   #nodesLayer .nodeGroup.is-hot .ca-glass-inner-border,
   #nodesLayer .nodeGroup.is-focused .ca-glass-inner-border {
-    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.48) !important;
-    stroke-width: 0.82px !important;
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.48);
+    stroke-width: 0.82px;
     stroke-dasharray: 8 14;
     animation:
       caNodeFrameFlow 3.0s linear infinite reverse,
@@ -17232,25 +17232,25 @@ def _ca_glass_luxe_node_style() -> str:
   }
 
   #nodesLayer .nodeGroup .node-label {
-    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.96) !important;
-    font-weight: 700 !important;
-    font-size: 17px !important;
-    letter-spacing: 0.10px !important;
+    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.96);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.10px;
     filter:
       drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.10))
       drop-shadow(0 0 5px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.05));
   }
 
   #nodesLayer .nodeGroup .node-subtitle {
-    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.58) !important;
-    font-size: 10.6px !important;
-    letter-spacing: 0.04px !important;
+    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.58);
+    font-size: 10.6px;
+    letter-spacing: 0.04px;
     filter:
       drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.04));
   }
 
   #nodesLayer .nodeGroup .node-icon {
-    fill: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.92) !important;
+    fill: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.92);
     filter:
       drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.10));
   }
@@ -17271,8 +17271,8 @@ def _ca_glass_luxe_node_style() -> str:
   #nodesLayer .nodeGroup.is-dim .node-label,
   #nodesLayer .nodeGroup.is-dim .node-subtitle,
   #nodesLayer .nodeGroup.is-dim .node-icon {
-    opacity: 0.24 !important;
-    filter: none !important;
+    opacity: 0.24;
+    filter: none;
   }
 ]]></style>
 """.strip()
@@ -17352,16 +17352,16 @@ def _ca_edge_cleanup_luxe_style() -> str:
   }
 
   .caViewportBackdrop {
-    fill: rgba(4, 10, 18, 0.92) !important;
+    fill: rgba(4, 10, 18, 0.92);
   }
 
   #edgesLayer {
-    opacity: 0.96 !important;
+    opacity: 0.96;
   }
 
   #edgesLayer > * {
     --ca-edge-rgb: 140, 239, 255;
-    opacity: 0.58 !important;
+    opacity: 0.58;
     transition:
       opacity 180ms ease,
       filter 180ms ease,
@@ -17369,12 +17369,12 @@ def _ca_edge_cleanup_luxe_style() -> str:
   }
 
   #edgesLayer > *.is-dim {
-    opacity: 0.06 !important;
+    opacity: 0.06;
     filter: blur(0.15px) saturate(0.62);
   }
 
   #edgesLayer > *.is-hot {
-    opacity: 1 !important;
+    opacity: 1;
     filter:
       brightness(1.08)
       saturate(1.16)
@@ -17384,9 +17384,9 @@ def _ca_edge_cleanup_luxe_style() -> str:
 
   #edgesLayer .ca-edge-path,
   #edgesLayer > path {
-    fill: none !important;
-    stroke: rgba(var(--ca-edge-rgb), 0.42) !important;
-    stroke-width: 1.16px !important;
+    fill: none;
+    stroke: rgba(var(--ca-edge-rgb), 0.42);
+    stroke-width: 1.16px;
     stroke-linecap: round;
     stroke-linejoin: round;
     filter:
@@ -17395,8 +17395,8 @@ def _ca_edge_cleanup_luxe_style() -> str:
 
   #edgesLayer > *.is-hot .ca-edge-path,
   #edgesLayer > path.is-hot {
-    stroke: rgba(var(--ca-edge-rgb), 0.96) !important;
-    stroke-width: 1.42px !important;
+    stroke: rgba(var(--ca-edge-rgb), 0.96);
+    stroke-width: 1.42px;
     stroke-dasharray: 7 13;
     animation: caEdgeFlow 2.35s linear infinite;
     filter:
@@ -17407,12 +17407,12 @@ def _ca_edge_cleanup_luxe_style() -> str:
   #nodesLayer .nodeGroup .node-label {
     filter:
       drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.08))
-      drop-shadow(0 0 5px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03)) !important;
+      drop-shadow(0 0 5px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03));
   }
 
   #nodesLayer .nodeGroup .node-subtitle {
     filter:
-      drop-shadow(0 0 1px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03)) !important;
+      drop-shadow(0 0 1px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03));
   }
 ]]></style>
 """.strip()
@@ -19609,7 +19609,7 @@ def build_db_black_glass_erd_html(model: dict[str, Any]) -> str:
       .side-panel, .detail-panel { display:none; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important; scroll-behavior:auto !important; }
+      *, *::before, *::after { animation-duration:.001ms; animation-iteration-count:1; transition:none; scroll-behavior:auto; }
     }
   </style>
 </head>

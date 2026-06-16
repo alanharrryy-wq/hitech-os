@@ -395,11 +395,11 @@
   background: rgba(255, 255, 255, 0.045);
 }
 
-.metricGold { border-color: rgba(245, 209, 131, 0.30) !important; background: rgba(245, 209, 131, 0.08) !important; }
-.metricGreen { border-color: rgba(84, 214, 148, 0.25) !important; background: rgba(84, 214, 148, 0.07) !important; }
-.metricBlue { border-color: rgba(111, 174, 255, 0.24) !important; background: rgba(111, 174, 255, 0.07) !important; }
-.metricRed { border-color: rgba(255, 105, 105, 0.26) !important; background: rgba(255, 105, 105, 0.07) !important; }
-.metricNeutral { border-color: var(--prisma-border-soft) !important; }
+.metricGold { border-color: rgba(245, 209, 131, 0.30); background: rgba(245, 209, 131, 0.08); }
+.metricGreen { border-color: rgba(84, 214, 148, 0.25); background: rgba(84, 214, 148, 0.07); }
+.metricBlue { border-color: rgba(111, 174, 255, 0.24); background: rgba(111, 174, 255, 0.07); }
+.metricRed { border-color: rgba(255, 105, 105, 0.26); background: rgba(255, 105, 105, 0.07); }
+.metricNeutral { border-color: var(--prisma-border-soft); }
 
 .taskPanel {
   display: grid;
@@ -505,10 +505,10 @@
   gap: 4px;
 }
 
-.inventoryCritical { color: #ffd0d0 !important; border-color: rgba(255, 105, 105, 0.28) !important; background: rgba(255, 105, 105, 0.1) !important; }
-.inventoryReorder { color: #ffe2a7 !important; border-color: rgba(245, 209, 131, 0.28) !important; background: rgba(245, 209, 131, 0.08) !important; }
-.inventoryNormal { color: #c7f8dc !important; border-color: rgba(84, 214, 148, 0.25) !important; background: rgba(84, 214, 148, 0.07) !important; }
-.inventoryOverstock { color: #dbeaff !important; border-color: rgba(111, 174, 255, 0.24) !important; background: rgba(111, 174, 255, 0.07) !important; }
+.inventoryCritical { color: #ffd0d0; border-color: rgba(255, 105, 105, 0.28); background: rgba(255, 105, 105, 0.1); }
+.inventoryReorder { color: #ffe2a7; border-color: rgba(245, 209, 131, 0.28); background: rgba(245, 209, 131, 0.08); }
+.inventoryNormal { color: #c7f8dc; border-color: rgba(84, 214, 148, 0.25); background: rgba(84, 214, 148, 0.07); }
+.inventoryOverstock { color: #dbeaff; border-color: rgba(111, 174, 255, 0.24); background: rgba(111, 174, 255, 0.07); }
 
 .alertCard {
   display: grid;
@@ -525,10 +525,10 @@
   gap: 8px;
 }
 
-.alertCritical { border-color: rgba(255, 105, 105, 0.34) !important; background: rgba(255, 105, 105, 0.08) !important; }
-.alertHigh { border-color: rgba(245, 209, 131, 0.34) !important; background: rgba(245, 209, 131, 0.08) !important; }
-.alertMedium { border-color: rgba(111, 174, 255, 0.26) !important; background: rgba(111, 174, 255, 0.07) !important; }
-.alertInfo { border-color: rgba(84, 214, 148, 0.22) !important; background: rgba(84, 214, 148, 0.06) !important; }
+.alertCritical { border-color: rgba(255, 105, 105, 0.34); background: rgba(255, 105, 105, 0.08); }
+.alertHigh { border-color: rgba(245, 209, 131, 0.34); background: rgba(245, 209, 131, 0.08); }
+.alertMedium { border-color: rgba(111, 174, 255, 0.26); background: rgba(111, 174, 255, 0.07); }
+.alertInfo { border-color: rgba(84, 214, 148, 0.22); background: rgba(84, 214, 148, 0.06); }
 
 .reportList article {
   gap: 6px;
@@ -544,10 +544,10 @@
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
 }
 
-.statusOk { color: #c7f8dc !important; border-color: rgba(84, 214, 148, 0.28) !important; background: rgba(84, 214, 148, 0.08) !important; }
-.statusReview { color: #ffe2a7 !important; border-color: rgba(245, 209, 131, 0.28) !important; background: rgba(245, 209, 131, 0.08) !important; }
-.statusUrgent { color: #ffd0d0 !important; border-color: rgba(255, 105, 105, 0.28) !important; background: rgba(255, 105, 105, 0.1) !important; }
-.statusOffline { color: #d5d8df !important; border-color: rgba(255, 255, 255, 0.18) !important; background: rgba(255, 255, 255, 0.06) !important; }
+.statusOk { color: #c7f8dc; border-color: rgba(84, 214, 148, 0.28); background: rgba(84, 214, 148, 0.08); }
+.statusReview { color: #ffe2a7; border-color: rgba(245, 209, 131, 0.28); background: rgba(245, 209, 131, 0.08); }
+.statusUrgent { color: #ffd0d0; border-color: rgba(255, 105, 105, 0.28); background: rgba(255, 105, 105, 0.1); }
+.statusOffline { color: #d5d8df; border-color: rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); }
 
 @media (max-width: 1180px) {
   .heroPanel,

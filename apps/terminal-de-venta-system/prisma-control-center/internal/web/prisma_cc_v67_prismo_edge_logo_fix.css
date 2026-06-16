@@ -1,51 +1,51 @@
 /* V67 · only PRISMO square edge + logo crop fix */
 
 body[data-prisma-interface="prismo"] #prismoConsoleSurface{
-  border-color:transparent !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  background:transparent !important;
+  border-color:transparent;
+  outline:0;
+  box-shadow:none;
+  background:transparent;
 }
 
 body[data-prisma-interface="prismo"] #prismoConsoleSurface::before,
 body[data-prisma-interface="prismo"] #prismoConsoleSurface::after{
-  content:none !important;
-  display:none !important;
+  content:none;
+  display:none;
 }
 
 body[data-prisma-interface="prismo"] #prismo-console{
-  border-radius:34px !important;
-  overflow:hidden !important;
+  border-radius:34px;
+  overflow:hidden;
 }
 
 body[data-prisma-interface="prismo"] .topbar{
-  overflow:visible !important;
+  overflow:visible;
 }
 
 body[data-prisma-interface="prismo"] .brandRow{
-  align-items:center !important;
+  align-items:center;
 }
 
 body[data-prisma-interface="prismo"] .heroIcon{
-  width:88px !important;
-  height:88px !important;
-  min-width:88px !important;
-  flex:0 0 88px !important;
-  overflow:visible !important;
-  display:grid !important;
-  place-items:center !important;
-  transform:translateY(2px) !important;
+  width:88px;
+  height:88px;
+  min-width:88px;
+  flex:0 0 88px;
+  overflow:visible;
+  display:grid;
+  place-items:center;
+  transform:translateY(2px);
 }
 
 body[data-prisma-interface="prismo"] .heroLogo{
-  width:78px !important;
-  height:78px !important;
-  max-width:78px !important;
-  max-height:78px !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  display:block !important;
-  transform:none !important;
-  clip-path:none !important;
-  overflow:visible !important;
+  width:78px;
+  height:78px;
+  max-width:78px;
+  max-height:78px;
+  object-fit:contain;
+  object-position:center center;
+  display:block;
+  transform:none;
+  clip-path:none;
+  overflow:visible;
 }
