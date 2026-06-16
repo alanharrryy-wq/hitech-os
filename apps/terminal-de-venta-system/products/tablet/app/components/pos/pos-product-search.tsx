@@ -26,6 +26,10 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(...inputs));
 }
 
+type FormBlurEvent = FormEvent<HTMLFormElement> & {
+  relatedTarget: EventTarget | null;
+};
+
 export function PosProductSearch({
   query,
   setQuery,
@@ -62,7 +66,7 @@ export function PosProductSearch({
       className={cn(styles.posPremiumSearchCard, Boolean(error) && styles.posPremiumSearchCardError)}
       onSubmit={submit}
       onFocusCapture={() => setSearchFocused(true)}
-      onBlurCapture={(event) => {
+      onBlurCapture={(event: FormBlurEvent) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
           setSearchFocused(false);
         }

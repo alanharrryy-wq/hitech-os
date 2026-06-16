@@ -248,12 +248,12 @@
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button:disabled {
-  color: var(--prisma-disabled-text) !important;
-  background: var(--prisma-disabled-surface) !important;
-  border-color: var(--prisma-border-soft) !important;
+  color: var(--prisma-disabled-text);
+  background: var(--prisma-disabled-surface);
+  border-color: var(--prisma-border-soft);
   cursor: not-allowed;
   opacity: .8;
-  transform: none !important;
+  transform: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
@@ -286,9 +286,9 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted::after {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    animation: none;
+    transition: none;
+    transform: none;
   }
 }
 

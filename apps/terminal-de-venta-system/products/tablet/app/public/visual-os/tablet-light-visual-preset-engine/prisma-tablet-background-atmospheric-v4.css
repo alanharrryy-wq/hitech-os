@@ -189,5 +189,5 @@ body{
 @keyframes atm-cloud-drift{from{transform:translate3d(-1.8%,-1%,0) scale(1)}to{transform:translate3d(1.6%,1.2%,0) scale(1.035)}}
 @keyframes atm-veil-sweep{from{transform:translateX(-10%) skewX(-2deg);opacity:calc(var(--atm-veil-opacity,.74) * .75)}to{transform:translateX(10%) skewX(2deg);opacity:var(--atm-veil-opacity,.74)}}
 @keyframes atm-preview-pan{from{transform:translate3d(-2%,-1%,0) scale(1.06)}to{transform:translate3d(2%,1%,0) scale(1.1)}}
-@media (prefers-reduced-motion: reduce){.atm-image,.atm-cloud,.atm-veil,.atm-preview::before{animation:none!important;transform:none!important}.atm-button{transition:none!important}}
+@media (prefers-reduced-motion: reduce){.atm-image,.atm-cloud,.atm-veil,.atm-preview::before{animation:none;transform:none}.atm-button{transition:none}}
 @media (max-width:980px){body{overflow:auto}.atm-grid{grid-template-columns:1fr}.atm-cards{grid-template-columns:1fr}.atm-topbar{align-items:flex-start}.atm-controls{justify-content:flex-start}.atm-stage{overflow:auto}}

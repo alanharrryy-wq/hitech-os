@@ -12,34 +12,34 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
     radial-gradient(circle at 50% 28%, rgba(255,255,255,.14), transparent 36%);
 
   /* Reducir glass/layers sin borrar el wallpaper atmosfÃ©rico. */
-  --prisma-panel-gradient: rgba(255,255,255,.34) !important;
-  --prisma-card-surface: rgba(255,255,255,.38) !important;
-  --prisma-glass-gradient: rgba(255,255,255,.32) !important;
-  --prisma-frosted-accent-gradient: rgba(255,255,255,.24) !important;
-  --prisma-glass-panel-governed: rgba(255,255,255,.30) !important;
-  --prisma-glass-card-governed: rgba(255,255,255,.28) !important;
-  --prisma-glass-control-governed: rgba(255,255,255,.58) !important;
-  --prisma-glass-stage-governed: rgba(255,255,255,.18) !important;
-  --prisma-disabled-surface: rgba(241,246,252,.70) !important;
+  --prisma-panel-gradient: rgba(255,255,255,.34);
+  --prisma-card-surface: rgba(255,255,255,.38);
+  --prisma-glass-gradient: rgba(255,255,255,.32);
+  --prisma-frosted-accent-gradient: rgba(255,255,255,.24);
+  --prisma-glass-panel-governed: rgba(255,255,255,.30);
+  --prisma-glass-card-governed: rgba(255,255,255,.28);
+  --prisma-glass-control-governed: rgba(255,255,255,.58);
+  --prisma-glass-stage-governed: rgba(255,255,255,.18);
+  --prisma-disabled-surface: rgba(241,246,252,.70);
 
-  --prisma-border-soft: rgba(89,130,178,.15) !important;
-  --prisma-border-action: rgba(31,112,229,.28) !important;
-  --prisma-border-gold: rgba(31,112,229,.26) !important;
-  --prisma-shadow-glass: none !important;
-  --prisma-shadow-card: none !important;
-  --prisma-shadow-card-hover: none !important;
-  --prisma-shadow-depth-governed: none !important;
-  --prisma-shadow-card-governed: none !important;
-  --prisma-tablet-shadow-soft: none !important;
-  --prisma-tablet-shadow-lift: none !important;
-  --prisma-shadow-gold: none !important;
-  --prisma-glow-gold-soft-governed: none !important;
-  --prisma-inner-stroke-governed: none !important;
-  --prisma-blur-panel-governed: 0px !important;
-  --prisma-blur-card-governed: 0px !important;
-  --prisma-blur-chip-governed: 0px !important;
-  --prisma-blur-stage-governed: 0px !important;
-  --prisma-optical-panel-saturate: 1 !important;
+  --prisma-border-soft: rgba(89,130,178,.15);
+  --prisma-border-action: rgba(31,112,229,.28);
+  --prisma-border-gold: rgba(31,112,229,.26);
+  --prisma-shadow-glass: none;
+  --prisma-shadow-card: none;
+  --prisma-shadow-card-hover: none;
+  --prisma-shadow-depth-governed: none;
+  --prisma-shadow-card-governed: none;
+  --prisma-tablet-shadow-soft: none;
+  --prisma-tablet-shadow-lift: none;
+  --prisma-shadow-gold: none;
+  --prisma-glow-gold-soft-governed: none;
+  --prisma-inner-stroke-governed: none;
+  --prisma-blur-panel-governed: 0px;
+  --prisma-blur-card-governed: 0px;
+  --prisma-blur-chip-governed: 0px;
+  --prisma-blur-stage-governed: 0px;
+  --prisma-optical-panel-saturate: 1;
 
   --prisma-bgwork-ink: #142033;
   --prisma-bgwork-muted: #66758b;
@@ -53,8 +53,8 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"],
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
-  color: var(--prisma-bgwork-ink) !important;
-  text-shadow: none !important;
+  color: var(--prisma-bgwork-ink);
+  text-shadow: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
@@ -62,40 +62,40 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   background:
     var(--prisma-bgwork-overlay),
     var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat fixed,
-    #eaf4ff !important;
-  background-attachment: fixed, fixed, scroll !important;
+    #eaf4ff;
+  background-attachment: fixed, fixed, scroll;
 }
 
 /* Fondo vivo preservado: se baja el ruido, no se apaga la lÃ¡mpara. */
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::before {
-  content: "" !important;
-  display: block !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: -2 !important;
-  pointer-events: none !important;
+  content: "";
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
   background:
     var(--prisma-bgwork-overlay),
-    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat !important;
-  opacity: .92 !important;
-  filter: saturate(.98) contrast(1.04) brightness(1.08) !important;
-  transform: translateZ(0) !important;
-  will-change: auto !important;
+    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat;
+  opacity: .92;
+  filter: saturate(.98) contrast(1.04) brightness(1.08);
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::after {
-  content: "" !important;
-  display: block !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
+  content: "";
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.12) 38%, rgba(223,242,255,.24) 70%, rgba(8,45,72,.10)),
-    radial-gradient(circle at 50% 34%, transparent 0%, rgba(72,101,130,.08) 100%) !important;
-  opacity: .78 !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
+    radial-gradient(circle at 50% 34%, transparent 0%, rgba(72,101,130,.08) 100%);
+  opacity: .78;
+  mix-blend-mode: normal;
+  filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body > * {
@@ -117,25 +117,25 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [data-prisma-layer="viewport"],
   [data-prisma-layer="page-surface"]
 ) {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background-color: transparent;
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
   [data-prisma-component="Sidebar"],
   [data-prisma-component="TopCommandBar"]
 ) {
-  background: rgba(255,255,255,.54) !important;
-  border-color: var(--prisma-bgwork-line) !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,.54);
+  border-color: var(--prisma-bgwork-line);
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
@@ -149,13 +149,13 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="panel"], [class*="Panel"], [class*="tile"], [class*="Tile"],
   [class*="row"], [class*="Row"], [class*="strip"], [class*="Strip"]
 ) {
-  background: var(--prisma-bgwork-card) !important;
-  border-color: var(--prisma-bgwork-line) !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: var(--prisma-bgwork-card);
+  border-color: var(--prisma-bgwork-line);
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
@@ -164,11 +164,11 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="list"], [class*="List"], [class*="rail"], [class*="Rail"],
   [class*="shell"], [class*="Shell"]
 ) {
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
@@ -177,28 +177,28 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="ghostAction"], [class*="secondaryAction"], [class*="chip"], [class*="Chip"],
   [class*="badge"], [class*="Badge"], [class*="pill"], [class*="Pill"]
 ) {
-  background: var(--prisma-bgwork-control) !important;
-  border-color: var(--prisma-bgwork-line) !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: var(--prisma-bgwork-control);
+  border-color: var(--prisma-bgwork-line);
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
   [class*="primaryAction"], [class*="PrimaryAction"], [class*="rowAddButton"], [class*="RowAddButton"],
   [class*="productMainButton"], [class*="ProductMainButton"], button:not(:disabled)[data-primary="true"]
 ) {
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(:hover, :focus, :focus-visible, :active) {
-  text-shadow: none !important;
+  text-shadow: none;
 }
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
 
@@ -236,77 +236,77 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   --prisma-prem-control-gradient: linear-gradient(180deg, rgba(255,255,255,.78), rgba(229,242,255,.56));
   --prisma-prem-blue-gradient: radial-gradient(circle at 20% 0%, rgba(255,255,255,.34), transparent 42%), linear-gradient(180deg, #4eabff 0%, #1677f3 48%, #0752cc 100%);
 
-  --prisma-panel-gradient: var(--prisma-prem-panel-gradient) !important;
-  --prisma-card-surface: var(--prisma-prem-card-gradient) !important;
-  --prisma-glass-gradient: var(--prisma-prem-card-gradient) !important;
-  --prisma-frosted-accent-gradient: var(--prisma-prem-control-gradient) !important;
-  --prisma-glass-panel-governed: var(--prisma-prem-panel-gradient) !important;
-  --prisma-glass-card-governed: var(--prisma-prem-card-gradient) !important;
-  --prisma-glass-control-governed: var(--prisma-prem-control-gradient) !important;
-  --prisma-glass-stage-governed: transparent !important;
-  --prisma-sidebar-surface: var(--prisma-prem-panel-gradient) !important;
-  --prisma-active-surface: var(--prisma-prem-blue-gradient) !important;
-  --prisma-border-soft: var(--prisma-prem-edge) !important;
-  --prisma-border-action: rgba(18, 110, 245, .52) !important;
-  --prisma-border-gold: rgba(18, 110, 245, .42) !important;
-  --prisma-shadow-glass: var(--prisma-prem-shadow) !important;
-  --prisma-shadow-card: var(--prisma-prem-shadow-card) !important;
-  --prisma-shadow-card-hover: 0 20px 48px rgba(7, 52, 108, .17), inset 0 1px 0 rgba(255,255,255,.78) !important;
-  --prisma-shadow-depth-governed: var(--prisma-prem-shadow) !important;
-  --prisma-shadow-card-governed: var(--prisma-prem-shadow-card) !important;
-  --prisma-tablet-shadow-soft: var(--prisma-prem-shadow-card) !important;
-  --prisma-tablet-shadow-lift: var(--prisma-prem-shadow) !important;
-  --prisma-shadow-gold: var(--prisma-prem-shadow-blue) !important;
-  --prisma-gold-gradient: var(--prisma-prem-blue-gradient) !important;
-  --prisma-action-primary-gradient: var(--prisma-prem-blue-gradient) !important;
-  --prisma-accent-gold: var(--prisma-prem-blue) !important;
-  --prisma-accent-gold-soft: #348fff !important;
-  --prisma-accent-gold-strong: var(--prisma-prem-blue-deep) !important;
-  --prisma-text-primary: var(--prisma-prem-ink) !important;
-  --prisma-text-secondary: var(--prisma-prem-muted) !important;
-  --prisma-text-muted: var(--prisma-prem-faint) !important;
-  --prisma-text-on-gold: #ffffff !important;
-  color: var(--prisma-prem-ink) !important;
+  --prisma-panel-gradient: var(--prisma-prem-panel-gradient);
+  --prisma-card-surface: var(--prisma-prem-card-gradient);
+  --prisma-glass-gradient: var(--prisma-prem-card-gradient);
+  --prisma-frosted-accent-gradient: var(--prisma-prem-control-gradient);
+  --prisma-glass-panel-governed: var(--prisma-prem-panel-gradient);
+  --prisma-glass-card-governed: var(--prisma-prem-card-gradient);
+  --prisma-glass-control-governed: var(--prisma-prem-control-gradient);
+  --prisma-glass-stage-governed: transparent;
+  --prisma-sidebar-surface: var(--prisma-prem-panel-gradient);
+  --prisma-active-surface: var(--prisma-prem-blue-gradient);
+  --prisma-border-soft: var(--prisma-prem-edge);
+  --prisma-border-action: rgba(18, 110, 245, .52);
+  --prisma-border-gold: rgba(18, 110, 245, .42);
+  --prisma-shadow-glass: var(--prisma-prem-shadow);
+  --prisma-shadow-card: var(--prisma-prem-shadow-card);
+  --prisma-shadow-card-hover: 0 20px 48px rgba(7, 52, 108, .17), inset 0 1px 0 rgba(255,255,255,.78);
+  --prisma-shadow-depth-governed: var(--prisma-prem-shadow);
+  --prisma-shadow-card-governed: var(--prisma-prem-shadow-card);
+  --prisma-tablet-shadow-soft: var(--prisma-prem-shadow-card);
+  --prisma-tablet-shadow-lift: var(--prisma-prem-shadow);
+  --prisma-shadow-gold: var(--prisma-prem-shadow-blue);
+  --prisma-gold-gradient: var(--prisma-prem-blue-gradient);
+  --prisma-action-primary-gradient: var(--prisma-prem-blue-gradient);
+  --prisma-accent-gold: var(--prisma-prem-blue);
+  --prisma-accent-gold-soft: #348fff;
+  --prisma-accent-gold-strong: var(--prisma-prem-blue-deep);
+  --prisma-text-primary: var(--prisma-prem-ink);
+  --prisma-text-secondary: var(--prisma-prem-muted);
+  --prisma-text-muted: var(--prisma-prem-faint);
+  --prisma-text-on-gold: #ffffff;
+  color: var(--prisma-prem-ink);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"],
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
   min-height: 100%;
-  color: var(--prisma-prem-ink) !important;
-  background-color: #d7efff !important;
+  color: var(--prisma-prem-ink);
+  background-color: #d7efff;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body {
   background:
     var(--prisma-prem-bg-dim),
     var(--tablet-active-background-image) center 45% / cover no-repeat fixed,
-    #d7efff !important;
-  background-attachment: fixed, fixed, scroll !important;
+    #d7efff;
+  background-attachment: fixed, fixed, scroll;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::before {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: -3 !important;
-  pointer-events: none !important;
-  background: var(--tablet-active-background-image) center 45% / cover no-repeat fixed !important;
-  opacity: 1 !important;
-  filter: saturate(1.05) contrast(1.08) brightness(.84) !important;
-  transform: translateZ(0) !important;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background: var(--tablet-active-background-image) center 45% / cover no-repeat fixed;
+  opacity: 1;
+  filter: saturate(1.05) contrast(1.08) brightness(.84);
+  transform: translateZ(0);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body::after {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: -2 !important;
-  pointer-events: none !important;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.045) 38%, rgba(5,28,50,.12) 100%),
-    radial-gradient(circle at 52% 28%, rgba(255,255,255,.16), transparent 36%) !important;
-  opacity: .72 !important;
-  mix-blend-mode: normal !important;
+    radial-gradient(circle at 52% 28%, rgba(255,255,255,.16), transparent 36%);
+  opacity: .72;
+  mix-blend-mode: normal;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] body > * {
@@ -339,9 +339,9 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="pageShell"], [class*="PageShell"],
   [class*="stage"], [class*="Stage"]
 ) {
-  background-color: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
 }
 
 /* Vidrio premium: no blanco sólido, no fantasma ilegible. */
@@ -369,12 +369,12 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="runtime"], [class*="Runtime"],
   [class*="terminal"], [class*="Terminal"]
 ) {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  background: var(--prisma-prem-card-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-card) !important;
-  backdrop-filter: blur(18px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge);
+  background: var(--prisma-prem-card-gradient);
+  box-shadow: var(--prisma-prem-shadow-card);
+  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
 }
 
 /* Contenedores grandes un poquito más transparentes para enseñar el fondo. */
@@ -387,11 +387,11 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="actionBand"], [class*="ActionBand"],
   [class*="runtimePanel"], [class*="RuntimePanel"]
 ) {
-  background: var(--prisma-prem-panel-gradient) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  box-shadow: var(--prisma-prem-shadow) !important;
-  backdrop-filter: blur(20px) saturate(1.20) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.20) !important;
+  background: var(--prisma-prem-panel-gradient);
+  border-color: var(--prisma-prem-edge);
+  box-shadow: var(--prisma-prem-shadow);
+  backdrop-filter: blur(20px) saturate(1.20);
+  -webkit-backdrop-filter: blur(20px) saturate(1.20);
 }
 
 /* Botones y controles: relleno premium, nada de letritas perdidas en la nube. */
@@ -407,12 +407,12 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="filter"], [class*="Filter"],
   [class*="input"], [class*="Input"]
 ) {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge-strong) !important;
-  background: var(--prisma-prem-control-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-control) !important;
-  backdrop-filter: blur(16px) saturate(1.14) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(1.14) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge-strong);
+  background: var(--prisma-prem-control-gradient);
+  box-shadow: var(--prisma-prem-shadow-control);
+  backdrop-filter: blur(16px) saturate(1.14);
+  -webkit-backdrop-filter: blur(16px) saturate(1.14);
 }
 
 /* Acciones primarias / activas: azul lleno con texto blanco. */
@@ -426,32 +426,32 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-vis
   [class*="addButton"], [class*="AddButton"],
   [class*="confirm"], [class*="Confirm"]
 ) {
-  color: #ffffff !important;
-  border-color: rgba(189, 222, 255, .78) !important;
-  background: var(--prisma-prem-blue-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-blue) !important;
-  text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
+  color: #ffffff;
+  border-color: rgba(189, 222, 255, .78);
+  background: var(--prisma-prem-blue-gradient);
+  box-shadow: var(--prisma-prem-shadow-blue);
+  text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
   [class*="danger"], [class*="Danger"]
 ) {
-  color: #ffffff !important;
-  border-color: rgba(255, 185, 190, .76) !important;
-  background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.28), transparent 42%), linear-gradient(180deg, #ff7d89, #d63d4b) !important;
+  color: #ffffff;
+  border-color: rgba(255, 185, 190, .76);
+  background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.28), transparent 42%), linear-gradient(180deg, #ff7d89, #d63d4b);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
   h1,h2,h3,h4,h5,h6,strong,b,label
 ) {
-  color: var(--prisma-prem-ink) !important;
-  text-shadow: 0 1px 0 rgba(255,255,255,.30) !important;
+  color: var(--prisma-prem-ink);
+  text-shadow: 0 1px 0 rgba(255,255,255,.30);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(
   p,span,small,li,dt,dd
 ) {
-  text-shadow: 0 1px 0 rgba(255,255,255,.20) !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.20);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] :where(svg) {

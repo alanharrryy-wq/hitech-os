@@ -82,22 +82,22 @@
 @media (prefers-reduced-motion: reduce) {
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .selector,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .selector select {
-    transition: none !important;
-    transform: none !important;
+    transition: none;
+    transform: none;
   }
 }
 
 
 /* PRISMA_TABLET_VISIONOS_GLASS_PASS_02_SELECTOR::START */
 .selector {
-  min-height: auto !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .selector span {
@@ -105,46 +105,46 @@
 }
 
 .selector select {
-  min-height: 38px !important;
-  border-radius: 13px !important;
-  border: 1px solid rgba(128, 186, 255, 0.42) !important;
+  min-height: 38px;
+  border-radius: 13px;
+  border: 1px solid rgba(128, 186, 255, 0.42);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.68), rgba(240,247,255,0.42)) !important;
+    linear-gradient(180deg, rgba(255,255,255,0.68), rgba(240,247,255,0.42));
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.8),
-    0 9px 20px rgba(58,112,196,0.08) !important;
+    0 9px 20px rgba(58,112,196,0.08);
   backdrop-filter: blur(18px) saturate(1.32);
   -webkit-backdrop-filter: blur(18px) saturate(1.32);
 }
 
 .selector select:focus-visible {
-  border-color: rgba(63, 144, 255, 0.62) !important;
+  border-color: rgba(63, 144, 255, 0.62);
   box-shadow:
     0 0 0 3px rgba(63, 144, 255, 0.14),
-    0 10px 22px rgba(58,112,196,0.1) !important;
+    0 10px 22px rgba(58,112,196,0.1);
 }
 /* PRISMA_TABLET_VISIONOS_GLASS_PASS_02_SELECTOR::END */
 
 
 /* PRISMA_TABLET_ICE_GLASS_CLEANUP_01_SELECTOR::START */
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) :global([data-prisma-component="SkinSelector"]) {
-  background: transparent !important;
+  background: transparent;
 }
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) :global([data-prisma-component="SkinSelector"]) select {
-  border-color: rgba(152, 199, 255, 0.52) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(240,247,255,0.48)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.84), 0 8px 18px rgba(62,116,194,0.06) !important;
+  border-color: rgba(152, 199, 255, 0.52);
+  background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(240,247,255,0.48));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.84), 0 8px 18px rgba(62,116,194,0.06);
 }
 /* PRISMA_TABLET_ICE_GLASS_CLEANUP_01_SELECTOR::END */
 
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
 /* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
 .selector {
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  box-shadow: none;
+  filter: none;
+  text-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
@@ -157,9 +157,9 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .workspace,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutGrid,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .posShell {
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .heroCard,
@@ -175,12 +175,12 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .flowGuard,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .varianceBox,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBreakdown {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  background: var(--prisma-prem-panel-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow) !important;
-  backdrop-filter: blur(20px) saturate(1.20) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.20) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge);
+  background: var(--prisma-prem-panel-gradient);
+  box-shadow: var(--prisma-prem-shadow);
+  backdrop-filter: blur(20px) saturate(1.20);
+  -webkit-backdrop-filter: blur(20px) saturate(1.20);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .metricCard,
@@ -191,12 +191,12 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .onlineStrip,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .offlineStrip {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge) !important;
-  background: var(--prisma-prem-card-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-card) !important;
-  backdrop-filter: blur(18px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge);
+  background: var(--prisma-prem-card-gradient);
+  box-shadow: var(--prisma-prem-shadow-card);
+  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchInputWrap,
@@ -209,10 +209,10 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton {
-  color: var(--prisma-prem-ink) !important;
-  border-color: var(--prisma-prem-edge-strong) !important;
-  background: var(--prisma-prem-control-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-control) !important;
+  color: var(--prisma-prem-ink);
+  border-color: var(--prisma-prem-edge-strong);
+  background: var(--prisma-prem-control-gradient);
+  box-shadow: var(--prisma-prem-shadow-control);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryAction,
@@ -224,10 +224,10 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentActive,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .confirmButton,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButtonActive {
-  color: #ffffff !important;
-  border-color: rgba(189, 222, 255, .78) !important;
-  background: var(--prisma-prem-blue-gradient) !important;
-  box-shadow: var(--prisma-prem-shadow-blue) !important;
-  text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
+  color: #ffffff;
+  border-color: rgba(189, 222, 255, .78);
+  background: var(--prisma-prem-blue-gradient);
+  box-shadow: var(--prisma-prem-shadow-blue);
+  text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */
