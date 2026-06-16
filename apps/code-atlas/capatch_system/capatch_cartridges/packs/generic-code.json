@@ -1,0 +1,22 @@
+{
+  "id": "generic-code",
+  "title": "Generic code cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "code",
+    "safe-default"
+  ],
+  "inherits": [
+    "external-output"
+  ],
+  "policy": {
+    "required_verifiers": [
+      "syntax-by-extension"
+    ],
+    "risk_gates": [
+      "binary-file-block",
+      "encoding-preserve",
+      "multi-file-conflict-check"
+    ]
+  }
+}

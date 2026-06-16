@@ -1,0 +1,28 @@
+{
+  "id": "visual-premium",
+  "title": "Visual Premium cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "visual",
+    "css",
+    "premium"
+  ],
+  "inherits": [
+    "react-ui"
+  ],
+  "policy": {
+    "required_verifiers": [
+      "visual-static-gates"
+    ],
+    "evidence_required": [
+      "visual_intent",
+      "surface_stack",
+      "before_after_files"
+    ],
+    "risk_gates": [
+      "no-global-important-flood",
+      "no-accidental-dark-theme",
+      "no-legacy-overlay-interference"
+    ]
+  }
+}

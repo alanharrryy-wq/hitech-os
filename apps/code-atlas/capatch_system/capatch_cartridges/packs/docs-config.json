@@ -1,0 +1,20 @@
+{
+  "id": "docs-config",
+  "title": "Docs and config cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "docs",
+    "config"
+  ],
+  "inherits": [
+    "external-output"
+  ],
+  "policy": {
+    "required_verifiers": [
+      "json-toml-yaml-md-basic"
+    ],
+    "risk_gates": [
+      "no-secret-leak-in-logs"
+    ]
+  }
+}

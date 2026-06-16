@@ -47,6 +47,14 @@ SEMANTIC_OPERATION_TYPES = (
     "DeletePythonImport",
     "SetPythonConstant",
     "InsertPythonFunctionArg",
+    "ReplaceCssRuleBlock",
+    "EnsureCssVariable",
+    "EnsureCssClass",
+    "RemoveCssRuleBlock",
+    "ReplaceJsxClassName",
+    "ReplaceJsxProp",
+    "InsertJsxChild",
+    "RemoveLegacyLayer",
 )
 
 READ_ONLY_OPERATION_TYPES = (
@@ -146,6 +154,14 @@ REQUIRED_FIELDS_BY_OPERATION = {
     "DeletePythonImport": ("module", "symbol"),
     "SetPythonConstant": ("name", "value"),
     "InsertPythonFunctionArg": ("function_name", "arg_name"),
+    "ReplaceCssRuleBlock": ("selector", "new_block"),
+    "EnsureCssVariable": ("variable", "value"),
+    "EnsureCssClass": ("selector", "declarations"),
+    "RemoveCssRuleBlock": ("selector",),
+    "ReplaceJsxClassName": ("old_class", "new_class"),
+    "ReplaceJsxProp": ("component", "prop", "new_value"),
+    "InsertJsxChild": ("anchor", "insert_text"),
+    "RemoveLegacyLayer": (),
 }
 
 SUPPORT_FIELDS_BY_OPERATION = {

@@ -33,13 +33,17 @@ def _safe_resolve(path_value: Path | str | None) -> str | None:
 
 
 def _read_registry_hash(base_dir: Path) -> str | None:
-    registry_path = base_dir / 'capatch_plugins' / '_plugin_registry.json'
-    if not registry_path.exists():
-        return None
     try:
-        return hashlib.sha256(registry_path.read_bytes()).hexdigest()
+        from capatch_plugins.fingerprint import compute_plugin_registry_fingerprint
+        return compute_plugin_registry_fingerprint(base_dir)
     except Exception:
-        return None
+        registry_path = base_dir / 'capatch_plugins' / '_plugin_registry.json'
+        if not registry_path.exists():
+            return None
+        try:
+            return hashlib.sha256(registry_path.read_bytes()).hexdigest()
+        except Exception:
+            return None
 
 
 def detect_workspace_markers(target_path: Path) -> dict[str, bool]:

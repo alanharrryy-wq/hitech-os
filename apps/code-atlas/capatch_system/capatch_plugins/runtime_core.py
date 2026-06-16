@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import time
 import traceback
@@ -65,6 +66,22 @@ CAPATCH_PLUGIN_LOGS_DIR_NAME = "_logs"
 
 CAPATCH_PLUGIN_RUNTIME_VERSION = _CONTRACT_PLUGIN_RUNTIME_VERSION
 CAPATCH_PLUGIN_DEFAULT_TAIL_LINES = 80
+
+def _capatch_default_external_root() -> Path:
+    override = os.environ.get('CAPATCH_RUNTIME_ROOT', '').strip()
+    if override:
+        return Path(override).expanduser()
+    if os.name == 'nt':
+        return Path(r'F:\descargasf') / 'capatch_runtime'
+    return Path.cwd() / '.capatch_runtime'
+
+
+def _capatch_plugin_state_dir(base_dir: Path) -> Path:
+    token_source = str(Path(base_dir).resolve())
+    digest = hashlib.sha256(token_source.encode('utf-8', errors='ignore')).hexdigest()[:12]
+    safe_name = ''.join(char if char.isalnum() or char in {'-', '_'} else '_' for char in Path(base_dir).name) or 'capatch'
+    return (_capatch_default_external_root() / 'plugin_state' / f'{safe_name}_{digest}').resolve()
+
 
 CAPATCH_PLUGIN_STATE: dict[str, Any] = {
     "initialized": False,
@@ -561,11 +578,12 @@ def initialize_plugin_runtime(base_dir: Path) -> None:
     disabled_dir = plugins_dir / CAPATCH_PLUGIN_DISABLED_DIR_NAME
     quarantine_dir = plugins_dir / CAPATCH_PLUGIN_QUARANTINE_DIR_NAME
     archive_dir = plugins_dir / CAPATCH_PLUGIN_ARCHIVE_DIR_NAME
-    logs_dir = plugins_dir / CAPATCH_PLUGIN_LOGS_DIR_NAME
-    registry_path = plugins_dir / CAPATCH_PLUGIN_REGISTRY_NAME
+    state_dir = _capatch_plugin_state_dir(base_dir)
+    logs_dir = state_dir / CAPATCH_PLUGIN_LOGS_DIR_NAME
+    registry_path = state_dir / CAPATCH_PLUGIN_REGISTRY_NAME
     disabled_path = plugins_dir / CAPATCH_PLUGIN_DISABLED_NAME
 
-    for path_value in [plugins_dir, active_dir, templates_dir, disabled_dir, quarantine_dir, archive_dir, logs_dir]:
+    for path_value in [plugins_dir, active_dir, templates_dir, disabled_dir, quarantine_dir, archive_dir, state_dir, logs_dir]:
         path_value.mkdir(parents=True, exist_ok=True)
 
     CAPATCH_PLUGIN_STATE["initialized"] = True

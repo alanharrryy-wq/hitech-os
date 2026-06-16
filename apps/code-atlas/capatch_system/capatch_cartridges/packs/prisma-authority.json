@@ -1,0 +1,22 @@
+{
+  "id": "prisma-authority",
+  "title": "PRISMA Authority Mesh cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "prisma",
+    "authority"
+  ],
+  "policy": {
+    "evidence_required": [
+      "AUTHORITY_READSET.lock.json",
+      "APP_IMPACT_MATRIX.md",
+      "CONTRACT_AND_GATE_MATRIX.json",
+      "MISSING_OR_UNMAPPED_RISK.md",
+      "AGENT_PROMPT_ENVELOPE.md",
+      "AUTHORITY_MESH_REPORT.md"
+    ],
+    "risk_gates": [
+      "no-authority-no-patch"
+    ]
+  }
+}

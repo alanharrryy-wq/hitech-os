@@ -1,0 +1,25 @@
+{
+  "id": "prisma-tablet",
+  "title": "PRISMA Tablet surface cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "prisma",
+    "tablet"
+  ],
+  "inherits": [
+    "visual-premium",
+    "prisma-authority"
+  ],
+  "policy": {
+    "allowed_paths": [
+      "products/tablet"
+    ],
+    "excluded_paths": [
+      "products/pc",
+      "products/mobile"
+    ],
+    "risk_gates": [
+      "no-dark-dominant-tablet-theme"
+    ]
+  }
+}

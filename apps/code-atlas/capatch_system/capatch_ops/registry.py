@@ -36,6 +36,7 @@ from .semantic_python import render_delete_python_import, render_ensure_python_i
 from .semantic_typescript import is_typescript_surface
 from .semantic_toml import render_set_toml_value
 from .semantic_yaml import render_delete_yaml_key, render_set_yaml_value
+from .semantic_visual import (render_ensure_css_class, render_ensure_css_variable, render_insert_jsx_child, render_remove_css_rule_block, render_remove_legacy_layer, render_replace_css_rule_block, render_replace_jsx_class_name, render_replace_jsx_prop)
 
 
 
@@ -81,6 +82,14 @@ _OPERATION_FAMILIES = {
     "InsertTsObjectKey": "structural-semantic",
     "WrapJsxTextLiteral": "structural-semantic",
     "ApplySet": "composite",
+    "ReplaceCssRuleBlock": "visual-semantic",
+    "EnsureCssVariable": "visual-semantic",
+    "EnsureCssClass": "visual-semantic",
+    "RemoveCssRuleBlock": "visual-semantic",
+    "ReplaceJsxClassName": "visual-semantic",
+    "ReplaceJsxProp": "visual-semantic",
+    "InsertJsxChild": "visual-semantic",
+    "RemoveLegacyLayer": "visual-semantic",
 }
 
 
@@ -100,9 +109,9 @@ def strategy_capabilities() -> dict[str, dict[str, object]]:
     return {
         'exact': {'advisory_only': False, 'families': ['exact-text', 'line-range', 'normalization']},
         'guarded': {'advisory_only': False, 'families': ['exact-text', 'regex-text', 'line-range', 'semantic']},
-        'transactional': {'advisory_only': False, 'families': ['exact-text', 'regex-text', 'line-range', 'semantic', 'composite']},
+        'transactional': {'advisory_only': False, 'families': ['exact-text', 'regex-text', 'line-range', 'semantic', 'visual-semantic', 'composite']},
         'probe-only': {'advisory_only': False, 'families': ['read-only']},
-        'structural': {'advisory_only': False, 'families': ['semantic', 'regex-text', 'structural-semantic']},
+        'structural': {'advisory_only': False, 'families': ['semantic', 'regex-text', 'structural-semantic', 'visual-semantic']},
     }
 
 def _content_required(target: Path, content: str | None, label: str) -> str:
@@ -227,4 +236,28 @@ def execute_operation(target: Path, content: str | None, operation: OperationSpe
     if op_type == "InsertPythonFunctionArg":
         final_text = render_insert_python_function_arg(target, text, str(payload["function_name"]), str(payload["arg_name"]), label, payload.get("default_value"))
         return OperationExecution(target, text, final_text, f"{target.name}: python function arg insertado", True)
+    if op_type == "ReplaceCssRuleBlock":
+        final_text = render_replace_css_rule_block(target, text, str(payload["selector"]), str(payload.get("new_block", "")), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: CSS rule block reemplazado", True)
+    if op_type == "EnsureCssVariable":
+        final_text = render_ensure_css_variable(target, text, str(payload["variable"]), str(payload["value"]), str(payload.get("selector", ":root")), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: CSS variable asegurada", True)
+    if op_type == "EnsureCssClass":
+        final_text = render_ensure_css_class(target, text, str(payload["selector"]), str(payload["declarations"]), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: CSS class asegurada", True)
+    if op_type == "RemoveCssRuleBlock":
+        final_text = render_remove_css_rule_block(target, text, str(payload["selector"]), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: CSS rule block removido", True)
+    if op_type == "ReplaceJsxClassName":
+        final_text = render_replace_jsx_class_name(target, text, str(payload["old_class"]), str(payload["new_class"]), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: JSX className reemplazado", True)
+    if op_type == "ReplaceJsxProp":
+        final_text = render_replace_jsx_prop(target, text, str(payload["component"]), str(payload["prop"]), str(payload["new_value"]), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: JSX prop reemplazada", True)
+    if op_type == "InsertJsxChild":
+        final_text = render_insert_jsx_child(target, text, str(payload["anchor"]), str(payload["insert_text"]), str(payload.get("position", "after")), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: JSX child insertado", True)
+    if op_type == "RemoveLegacyLayer":
+        final_text = render_remove_legacy_layer(target, text, payload.get("selector"), payload.get("old_text"), label)
+        return OperationExecution(target, text, final_text, f"{target.name}: legacy layer removido", True)
     fail(f"No se puede ejecutar la operacion: {op_type}")

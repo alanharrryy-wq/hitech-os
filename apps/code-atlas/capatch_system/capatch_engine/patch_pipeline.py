@@ -68,6 +68,8 @@ def _verification_ctx(ctx: Any, risk_summary: dict[str, Any], verification_ctx: 
         'run_id': getattr(ctx, 'run_id', None),
         'invocation_mode': getattr(ctx, 'invocation_mode', 'patch-run'),
         'risk_summary': dict(risk_summary or {}),
+        # CAPATCH_DELTA1_CHECKPOINT_CTX: allow delta-aware verifiers to compare final files against the pre-apply checkpoint.
+        'checkpoint_dir': str(Path(getattr(ctx, 'checkpoint_dir', '') or '').expanduser().resolve()) if str(getattr(ctx, 'checkpoint_dir', '') or '').strip() else None,
     }
     payload.update(dict(verification_ctx or {}))
     return payload
