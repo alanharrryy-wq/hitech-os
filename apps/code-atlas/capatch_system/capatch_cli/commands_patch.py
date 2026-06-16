@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sys
+import zipfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -31,6 +33,107 @@ def _default_external_export_dir(root_dir: Path) -> Path:
     if os.name == 'nt':
         return Path(r'F:\descargasf')
     return root_dir / '.capatch' / 'external_audit'
+
+
+def _safe_output_token(value: str) -> str:
+    raw = str(value or '').strip() or 'capatch'
+    safe = ''.join(char if char.isalnum() or char in {' ', '-', '_'} else ' ' for char in raw)
+    return ' '.join(safe.split())[:64] or 'capatch'
+
+
+def _default_run_label() -> str:
+    return _safe_output_token(os.environ.get('CAPATCH_RUN_LABEL', 'capatch run1'))
+
+
+def _capatch_timestamp() -> str:
+    return datetime.now().strftime('%d%m %H%M%S')
+
+
+def _ensure_unique_path(path_value: Path) -> Path:
+    if not path_value.exists():
+        return path_value
+    stem = path_value.stem
+    suffix = path_value.suffix
+    parent = path_value.parent
+    for index in range(2, 1000):
+        candidate = parent / f'{stem} {index:02d}{suffix}'
+        if not candidate.exists():
+            return candidate
+    return parent / f'{stem} {datetime.now().strftime("%H%M%S%f")}{suffix}'
+
+
+def _ensure_run_workspace(args: Any, root_dir: Path) -> Path:
+    existing = str(getattr(args, '_capatch_run_workspace', '') or '').strip()
+    if existing:
+        path_value = Path(existing).expanduser().resolve()
+        path_value.mkdir(parents=True, exist_ok=True)
+        return path_value
+    export_dir = _default_external_export_dir(root_dir).resolve()
+    export_dir.mkdir(parents=True, exist_ok=True)
+    run_name = f'{_default_run_label()} {_capatch_timestamp()}'
+    run_dir = _ensure_unique_path(export_dir / '_capatch_runtime' / run_name).resolve()
+    run_dir.mkdir(parents=True, exist_ok=False)
+    setattr(args, '_capatch_run_name', run_dir.name)
+    setattr(args, '_capatch_run_workspace', str(run_dir))
+    setattr(args, '_capatch_export_dir', str(export_dir))
+    return run_dir
+
+
+def _copy_file_best_effort(source: Path, destination: Path) -> dict[str, Any]:
+    row = {'source': str(source), 'destination': str(destination), 'ok': False, 'reason': ''}
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+        row['ok'] = True
+    except Exception as exc:
+        row['reason'] = f'{type(exc).__name__}: {exc}'
+    return row
+
+
+def _copy_target_file_snapshot(root_dir: Path, relative_path: str, destination_root: Path) -> dict[str, Any]:
+    normalized = _normalize_target_path(relative_path, root_dir=root_dir) or str(relative_path)
+    candidate = Path(normalized)
+    source = candidate if candidate.is_absolute() else (root_dir / candidate).resolve()
+    safe_relative = normalized.replace('\\', '/')
+    if Path(safe_relative).is_absolute() or safe_relative.startswith('..'):
+        safe_relative = safe_relative.replace(':', '').replace('/', '__')
+    destination = destination_root / safe_relative
+    row = {'relative_path': normalized, 'source': str(source), 'destination': str(destination), 'exists': source.exists(), 'copied': False}
+    try:
+        if source.exists() and source.is_file():
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+            row['copied'] = True
+        else:
+            marker = destination.with_suffix(destination.suffix + '.missing.txt') if destination.suffix else destination.with_name(destination.name + '.missing.txt')
+            marker.parent.mkdir(parents=True, exist_ok=True)
+            marker.write_text(f'{normalized} missing at export time\n', encoding='utf-8', newline='')
+            row['destination'] = str(marker)
+    except Exception as exc:
+        row['error'] = f'{type(exc).__name__}: {exc}'
+    return row
+
+
+def _zip_directory(source_dir: Path, zip_path: Path) -> Path:
+    zip_path = _ensure_unique_path(zip_path)
+    zip_path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+        for path_value in sorted(source_dir.rglob('*')):
+            if path_value.is_file():
+                zf.write(path_value, path_value.relative_to(source_dir).as_posix())
+    return zip_path
+
+
+def _cleanup_run_workspace(run_dir: Path) -> None:
+    if os.environ.get('CAPATCH_KEEP_RUN_DIR', '').strip() in {'1', 'true', 'TRUE', 'yes'}:
+        return
+    try:
+        shutil.rmtree(run_dir, ignore_errors=True)
+        parent = run_dir.parent
+        if parent.name == '_capatch_runtime' and parent.exists() and not any(parent.iterdir()):
+            parent.rmdir()
+    except Exception:
+        return
 
 
 def _normalize_target_path(path_value: Any, *, root_dir: Path) -> str | None:
@@ -216,50 +319,32 @@ def _export_attempt_artifacts(
     *,
     reason_override: str | None = None,
 ) -> dict[str, Any]:
+    # CAPATCH_READY1_ENRICHED_EXPORT
+    import zipfile
+    from capatch_runtime.run_dir_policy import keep_run_dir_default, keep_run_dir_reason
+    from capatch_plan.patch_plan import build_patch_plan, render_patch_plan_md
     root_dir = Path(_resolved_root_dir(args)).resolve()
     export_dir = _default_external_export_dir(root_dir).resolve()
-    timestamp = datetime.now().strftime('patch_%Y%m%d_%H%M%S')
-    suffix = 0
-    log_path: Path
-    sources_path: Path
+    outcome = str(getattr(pipeline, 'outcome', '') or '') if pipeline is not None else ''
+    status = 'result' if outcome in {'verified','applied-no-verifiers','dry-run'} or pipeline is None else 'fail'
+    run_dir = export_dir / '_capatch_runtime' / f"capatch patch {datetime.now().strftime('%d%m %H%M%S')} {status}"
     try:
-        export_dir.mkdir(parents=True, exist_ok=True)
-        while True:
-            token = timestamp if suffix == 0 else f'{timestamp}_{suffix:02d}'
-            log_path = export_dir / f'{token}_capatch_log.txt'
-            sources_path = export_dir / f'{token}_capatch_sources.txt'
-            if not log_path.exists() and not sources_path.exists():
-                break
-            suffix += 1
+        run_dir.mkdir(parents=True, exist_ok=False)
         targets = _collect_target_files(pipeline, operations, root_dir=root_dir)
-        log_text = _build_external_log_text(
-            args,
-            pipeline,
-            operations,
-            reason_override=reason_override,
-            target_files=targets,
-        )
-        sources_lines = ['capatch external audit sources snapshot', f'generated_at={datetime.now().isoformat(timespec="seconds")}', '']
-        if targets:
-            for relative_path in targets:
-                sources_lines.append(_render_target_snapshot(root_dir, relative_path))
-        else:
-            sources_lines.extend(['===== FILES =====', 'no target files detected for this run', ''])
-        log_path.write_text(log_text + '\n', encoding='utf-8', newline='')
-        sources_path.write_text('\n'.join(sources_lines).rstrip() + '\n', encoding='utf-8', newline='')
-        return {
-            'export_dir': str(export_dir),
-            'log_path': str(log_path),
-            'sources_path': str(sources_path),
-        }
+        (run_dir / 'capatch_log.txt').write_text(_build_external_log_text(args, pipeline, operations, reason_override=reason_override, target_files=targets) + '\n', encoding='utf-8', newline='')
+        (run_dir / 'capatch_sources.txt').write_text('\n'.join([_render_target_snapshot(root_dir, x) for x in targets]) + '\n', encoding='utf-8', newline='')
+        plan = build_patch_plan(root_dir=root_dir, target_files=targets, operations=operations, pipeline=pipeline)
+        (run_dir / 'PATCH_PLAN.md').write_text(render_patch_plan_md(plan), encoding='utf-8', newline='')
+        (run_dir / 'PATCH_PLAN.json').write_text(json.dumps(plan, indent=2, ensure_ascii=False) + '\n', encoding='utf-8', newline='')
+        (run_dir / 'RUN_SUMMARY.json').write_text(json.dumps({'status':status,'outcome':outcome,'root_dir':str(root_dir),'target_files':targets,'keep_run_dir':keep_run_dir_default(),'keep_run_dir_reason':keep_run_dir_reason()}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8', newline='')
+        zip_path = export_dir / f'{run_dir.name}.zip'
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+            for item in sorted(run_dir.rglob('*')):
+                if item.is_file(): zf.write(item, item.relative_to(run_dir).as_posix())
+        if not keep_run_dir_default(): shutil.rmtree(run_dir, ignore_errors=True)
+        return {'export_dir': str(export_dir), 'run_dir': str(run_dir), 'bundle_zip': str(zip_path), 'log_path': str(run_dir / 'capatch_log.txt'), 'sources_path': str(run_dir / 'capatch_sources.txt')}
     except Exception as exc:
-        return {
-            'export_dir': str(export_dir),
-            'log_path': None,
-            'sources_path': None,
-            'export_error': f'{type(exc).__name__}: {exc}',
-        }
-
+        return {'export_dir': str(export_dir), 'log_path': None, 'sources_path': None, 'export_error': f'{type(exc).__name__}: {exc}'}
 
 def _print_export_paths(paths: dict[str, Any]) -> None:
     error = str(paths.get('export_error') or '').strip()
@@ -269,6 +354,8 @@ def _print_export_paths(paths: dict[str, Any]) -> None:
     print(f"[AUDIT] export_dir={paths.get('export_dir')}")
     print(f"[AUDIT] log_path={paths.get('log_path')}")
     print(f"[AUDIT] sources_path={paths.get('sources_path')}")
+    if paths.get('zip_path'):
+        print(f"[AUDIT] zip_path={paths.get('zip_path')}")
 
 
 def _print_preflight_report(report: Any) -> None:
@@ -419,7 +506,8 @@ def handle(args: Any, parser: Any) -> int | None:
         return None
 
     root_dir = Path(args.root_dir).expanduser().resolve()
-    backup_dir = root_dir / BACKUP_DIR_NAME
+    run_workspace = _ensure_run_workspace(args, root_dir)
+    backup_dir = run_workspace / 'backups_before_changes'
     checkpoint_label = sanitize_checkpoint_label(args.checkpoint_label)
     checkpoint_dir = backup_dir / checkpoint_label
     strategy_hint = None if str(getattr(args, 'strategy', 'auto') or 'auto') == 'auto' else str(getattr(args, 'strategy'))
@@ -467,7 +555,7 @@ def handle(args: Any, parser: Any) -> int | None:
                 f"[RUN] run_id={pipeline.run_record.run_id} patch_status={pipeline.run_record.patch_status} system_status={pipeline.run_record.system_status}"
             )
         if pipeline.outcome == 'blocked' and strategy.get('selected_strategy') == 'probe-only':
-            emit_warn('Selector dejó el cambio en probe-only. Se requiere --dry-run o una estrategia explícita más segura.')
+            emit_warn('Selector dejÃ³ el cambio en probe-only. Se requiere --dry-run o una estrategia explÃ­cita mÃ¡s segura.')
         elif pipeline.outcome == 'dry-run':
             emit_ok('Preview listo. No se escribieron cambios.')
         elif pipeline.outcome == 'verified':
@@ -475,9 +563,9 @@ def handle(args: Any, parser: Any) -> int | None:
         elif pipeline.outcome == 'applied-no-verifiers':
             emit_warn('Patch aplicado, pero no hubo verifiers obligatorios para confirmar salud final.')
         elif pipeline.outcome == 'rolled-back':
-            emit_warn('Patch aplicado, verificación falló y se hizo auto rollback.')
+            emit_warn('Patch aplicado, verificaciÃ³n fallÃ³ y se hizo auto rollback.')
         elif pipeline.outcome == 'rollback-failed':
-            emit_warn('Patch aplicado, verificación falló y el auto rollback también falló.')
+            emit_warn('Patch aplicado, verificaciÃ³n fallÃ³ y el auto rollback tambiÃ©n fallÃ³.')
         returncode = _map_outcome_to_exit_code(pipeline.outcome)
         audit_refs = _export_attempt_artifacts(args, pipeline, operations)
         _print_export_paths(audit_refs)

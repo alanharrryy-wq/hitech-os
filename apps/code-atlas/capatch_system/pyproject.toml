@@ -1,0 +1,9 @@
+[project]
+name = "capatch-system"
+version = "1.0.0"
+description = "Conservative multi-file patch engine with cartridges and external evidence bundles."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

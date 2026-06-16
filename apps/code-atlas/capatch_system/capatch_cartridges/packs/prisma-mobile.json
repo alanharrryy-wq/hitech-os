@@ -1,0 +1,22 @@
+{
+  "id": "prisma-mobile",
+  "title": "PRISMA Mobile surface cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "prisma",
+    "mobile"
+  ],
+  "inherits": [
+    "visual-premium",
+    "prisma-authority"
+  ],
+  "policy": {
+    "allowed_paths": [
+      "products/mobile"
+    ],
+    "excluded_paths": [
+      "products/tablet",
+      "products/pc"
+    ]
+  }
+}

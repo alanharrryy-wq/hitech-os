@@ -1,3 +1,0 @@
-# BACKUP RESTORE
-
-Procedure.

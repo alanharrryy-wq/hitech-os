@@ -1,7 +1,7 @@
 # PRISMA Authority Mesh Report
 
 - Status: `PASS`
-- Task: `GIT FINALIZE GOVMESH3 ALL PHASES VISUAL EXPLOITATION AND DEV ROUTE WARMER: commit split by theme, push branch, fast-forward merge to main, push main, keep tree clean; validate Authority Mesh, visual capability resolver, visual exploitation contract outputs, control center route warmer; no force push, no destructive clean, no permanent delete, no process kill, no ports, no dev server, no Prisma hot regen`
+- Task: `PRISMA Tablet POS Sell premium visual continuation: audit and stabilize incomplete Codex visual changes for Tablet POS / Vender / Productos / Carrito / Checkout / Cobrar. Preserve real products, prices, SKUs, cart bindings, business logic and Mount Fuji/cloudy background. Scope is Tablet POS sell screen foreground only. Audit new !important usage and globals.css risk, separate useful visual changes from CSS contamination, then prepare authority for one definitive fix: product vitrines, premium cart column, stable iridescent Cobrar CTA, light tactile foreground. Exclude PC, Mobile, Chart Lab, database sync, schema changes, commits, push, merge, process kill, port cleanup, dev server start, Playwright loop and Prisma hot regeneration.`
 - Repo: `F:\repos\hitech-os\apps\terminal-de-venta-system`
 - Authority files found: `986`
 - Missing patterns: `0`

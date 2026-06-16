@@ -1,0 +1,22 @@
+{
+  "id": "prisma-pc",
+  "title": "PRISMA PC surface cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "prisma",
+    "pc"
+  ],
+  "inherits": [
+    "visual-premium",
+    "prisma-authority"
+  ],
+  "policy": {
+    "allowed_paths": [
+      "products/pc"
+    ],
+    "excluded_paths": [
+      "products/tablet",
+      "products/mobile"
+    ]
+  }
+}

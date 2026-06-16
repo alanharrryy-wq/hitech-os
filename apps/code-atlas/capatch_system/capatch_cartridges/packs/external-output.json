@@ -1,0 +1,22 @@
+{
+  "id": "external-output",
+  "title": "External output bundle",
+  "version": "1.0.0",
+  "tags": [
+    "output",
+    "evidence"
+  ],
+  "policy": {
+    "evidence_required": [
+      "manifest",
+      "logs",
+      "backups_before_changes",
+      "current_final",
+      "rollback_manifest",
+      "result_or_fail_zip"
+    ],
+    "risk_gates": [
+      "no-runtime-residue-in-target-repo"
+    ]
+  }
+}

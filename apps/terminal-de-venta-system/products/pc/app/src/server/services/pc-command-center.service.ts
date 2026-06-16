@@ -27,11 +27,20 @@ export type CommandMetric = {
   tone?: "ok" | "warn" | "danger";
 };
 
+export type CommandTableRow = Record<string, string | number | string[] | null | undefined> & {
+  __rowDetailTitle?: string;
+  __rowDetailTone?: "ok" | "warn" | "danger";
+  __rowDetailItems?: string[];
+  __rowDetailJson?: string;
+  __rowActionHref?: string;
+  __rowActionLabel?: string;
+};
+
 export type CommandTable = {
   title: string;
   caption: string;
   columns: string[];
-  rows: Array<Record<string, string | number>>;
+  rows: CommandTableRow[];
   emptyMessage: string;
 };
 
@@ -50,6 +59,67 @@ export type CommandAction = {
   successMessage?: string;
 };
 
+
+export type SalesControlTicketLine = {
+  sku: string;
+  productName: string;
+  qty: string;
+  price: string;
+  total: string;
+};
+
+export type SalesControlTicket = {
+  id: string;
+  folio: string;
+  date: string;
+  branchName: string;
+  tabletName: string;
+  terminalId: string;
+  cashier: string;
+  total: string;
+  status: string;
+  cashSessionId: string;
+  lines: SalesControlTicketLine[];
+  tenders: string[];
+};
+
+export type SalesControlTabletSummary = {
+  id: string;
+  name: string;
+  deviceId: string;
+  total: string;
+  tickets: number;
+  pendingSync: number;
+  lastSync: string;
+  status: string;
+};
+
+export type SalesControlBranchSummary = {
+  id: string;
+  code: string;
+  name: string;
+  total: string;
+  tickets: number;
+  tablets: SalesControlTabletSummary[];
+  lastSaleAt: string;
+  syncStatus: string;
+  ticketRows: SalesControlTicket[];
+};
+
+export type SalesControlViewModel = {
+  roleLabel: string;
+  syncHref: string;
+  addBranchHref: string;
+  totalLabel: string;
+  netLabel: string;
+  ticketsLabel: string;
+  averageLabel: string;
+  branchCountLabel: string;
+  tabletCountLabel: string;
+  updatedLabel: string;
+  branches: SalesControlBranchSummary[];
+};
+
 export type CommandCenterModel = {
   mode: PcCommandCenterMode;
   currentPath: string;
@@ -64,6 +134,7 @@ export type CommandCenterModel = {
   tables: CommandTable[];
   diagnostics: Record<string, unknown>;
   actions?: CommandAction[];
+  salesControl?: SalesControlViewModel;
 };
 
 function readParam(params: SearchLike, key: string) {
@@ -216,6 +287,317 @@ function lifecycleBuckets(events: any[]) {
   return Array.from(bucket.entries()).map(([key, value]) => ({ key, value }));
 }
 
+function safeLower(value: unknown) {
+  return String(value ?? "").toLowerCase();
+}
+
+function safeIso(value: unknown) {
+  if (!value) return "";
+  const date = value instanceof Date ? value : new Date(String(value));
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+}
+
+function compactText(parts: Array<unknown>) {
+  return parts.map((part) => String(part ?? "").trim()).filter(Boolean).join(" | ");
+}
+
+function jsonSummary(value: unknown, maxLength = 360) {
+  if (!value) return "";
+  const parsed = typeof value === "string" ? asJson(value) : value;
+  const text = Object.keys(parsed as Record<string, unknown>).length
+    ? JSON.stringify(parsed)
+    : String(value ?? "");
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+}
+
+function conflictText(conflict: any) {
+  return compactText([
+    conflict.id,
+    conflict.eventId,
+    conflict.outboxEventId,
+    conflict.idempotencyKey,
+    conflict.source,
+    conflict.deviceId,
+    conflict.terminalId,
+    conflict.topic,
+    conflict.aggregateId,
+    conflict.conflictCode,
+    conflict.label,
+    conflict.detail,
+    conflict.diagnosticsJson
+  ]).toLowerCase();
+}
+
+function isOpenConflictStatus(status: unknown) {
+  return !["resolved", "closed", "done"].includes(safeLower(status));
+}
+
+function isCashConflictCandidate(conflict: any, sessions: any[]) {
+  const code = safeLower(conflict.conflictCode);
+  const topic = safeLower(conflict.topic);
+  const text = conflictText(conflict);
+  if (code === "sale_outside_shift") return true;
+  if (/(cash|caja|session|shift|turno|sale|venta)/i.test(topic)) return true;
+  if (/(cashsession|cash session|caja|turno|shift|fuera de turno|outside shift|cashsessionid)/i.test(text)) return true;
+  return sessions.some((session: any) => conflictMatchesSession(conflict, session));
+}
+
+function conflictMatchesSession(conflict: any, session: any) {
+  const text = conflictText(conflict);
+  const sessionId = String(session.id ?? "");
+  const terminalId = String(session.terminalId ?? "");
+  if (sessionId && [conflict.aggregateId, conflict.eventId, conflict.outboxEventId, conflict.idempotencyKey].some((value) => String(value ?? "") === sessionId)) {
+    return true;
+  }
+  if (sessionId && text.includes(sessionId.toLowerCase())) return true;
+  if (terminalId && String(conflict.terminalId ?? "") === terminalId) {
+    const detectedAt = conflict.detectedAt ? new Date(conflict.detectedAt).getTime() : 0;
+    const openedAt = session.openedAt ? new Date(session.openedAt).getTime() : 0;
+    const closedAt = session.closedAt ? new Date(session.closedAt).getTime() : Date.now();
+    const graceMs = 24 * 60 * 60 * 1000;
+    if (!detectedAt || !openedAt || (detectedAt >= openedAt - graceMs && detectedAt <= closedAt + graceMs)) return true;
+  }
+  return false;
+}
+
+function conflictTone(conflict: any): "ok" | "warn" | "danger" {
+  const severity = safeLower(conflict.severity);
+  const status = safeLower(conflict.status);
+  if (severity === "rejected" || status === "rejected" || status === "failed") return "danger";
+  if (severity === "conflict" || status === "open") return "warn";
+  return "ok";
+}
+
+function getCashConflictAction(conflict: any) {
+  const code = safeLower(conflict.conflictCode);
+  if (code === "sale_outside_shift") {
+    return "Revisar si la venta llegó fuera de turno. No convertirla en venta PC hasta confirmar caja/terminal/cajero y resolver el SyncConflict.";
+  }
+  if (code === "terminal_not_registered") {
+    return "Registrar o mapear terminal/dispositivo antes de reprocesar eventos relacionados.";
+  }
+  if (code === "duplicate_event") {
+    return "Confirmar idempotencyKey/eventId. Si es duplicado real, marcar revisado y no reproyectar.";
+  }
+  if (code === "invalid_schema") {
+    return "Corregir contrato del evento de origen antes de reintentar ingest.";
+  }
+  return "Abrir /sync para revisar evento, idempotencyKey, diagnosticsJson y marcar revisión sólo cuando el operador confirme causa.";
+}
+
+function buildConflictDetailItems(conflict: any, session?: any) {
+  const diagnostics = jsonSummary(conflict.diagnosticsJson);
+  return [
+    `Qué pasó: ${conflict.label ?? conflict.conflictCode ?? "Conflicto de sync"}`,
+    `Detalle: ${conflict.detail ?? "Sin detalle registrado."}`,
+    `Código: ${conflict.conflictCode ?? "sin codigo"} / severidad: ${conflict.severity ?? "sin severidad"} / estado: ${conflict.status ?? "sin estado"}`,
+    `Terminal: ${conflict.terminalId ?? session?.terminalId ?? "sin terminal"} / dispositivo: ${conflict.deviceId ?? "sin device"}`,
+    `Evento: ${conflict.eventId ?? "sin eventId"} / Outbox: ${conflict.outboxEventId ?? "sin outboxEventId"} / Idempotency: ${conflict.idempotencyKey ?? "sin idempotencyKey"}`,
+    `Agregado: ${conflict.aggregateId ?? "sin aggregateId"} / topic: ${conflict.topic ?? "sin topic"} / fuente: ${conflict.source ?? "sin fuente"}`,
+    `Detectado: ${dateLabel(conflict.detectedAt)}${session ? ` / Sesión: ${session.id}` : ""}`,
+    diagnostics ? `Diagnóstico técnico: ${diagnostics}` : "Diagnóstico técnico: sin diagnosticsJson.",
+    `Acción sugerida: ${getCashConflictAction(conflict)}`
+  ];
+}
+
+function buildCashSessionFallbackConflictDetail(session: any) {
+  return [
+    `Qué pasó: CashSession tiene estado ${session.status ?? "conflict"} pero no se encontró SyncConflict relacionado en la muestra actual.`,
+    `Sesión: ${session.id}`,
+    `Terminal: ${session.terminal?.name ?? session.terminalId ?? "sin terminal"}`,
+    `Cajero: ${session.cashier ?? session.cashierId ?? "sin cajero"}`,
+    `Abierta: ${dateLabel(session.openedAt)} / Cerrada: ${dateLabel(session.closedAt)}`,
+    "Acción sugerida: revisar /sync con el id de caja, terminalId, eventId o idempotencyKey. El badge queda clicable para no dejar un foco rojo mudo."
+  ];
+}
+
+function serializeRowDetail(items: string[]) {
+  return JSON.stringify({ items }, null, 2);
+}
+
+
+
+function buildSalesControlView(input: {
+  sales: any[];
+  returns: any[];
+  terminals: any[];
+  stores: any[];
+  heartbeats: any[];
+  buckets: any[];
+  totalCents: number;
+  returnCents: number;
+}) {
+  const terminalById = new Map(input.terminals.map((terminal: any) => [String(terminal.id), terminal]));
+  const storeById = new Map(input.stores.map((store: any) => [String(store.id), store]));
+  const latestHeartbeatByDevice = new Map<string, any>();
+  for (const heartbeat of input.heartbeats) {
+    const key = String(heartbeat.deviceId ?? "");
+    if (key && !latestHeartbeatByDevice.has(key)) latestHeartbeatByDevice.set(key, heartbeat);
+  }
+
+  const pendingByDevice = new Map<string, number>();
+  const pendingByTerminal = new Map<string, number>();
+  for (const bucket of input.buckets) {
+    const status = String(bucket.status ?? "").toLowerCase();
+    if (!["pending", "queued", "sent", "received"].includes(status)) continue;
+    const count = Number(bucket.count ?? 0);
+    if (bucket.deviceId) pendingByDevice.set(String(bucket.deviceId), (pendingByDevice.get(String(bucket.deviceId)) ?? 0) + count);
+    if (bucket.terminalId) pendingByTerminal.set(String(bucket.terminalId), (pendingByTerminal.get(String(bucket.terminalId)) ?? 0) + count);
+  }
+
+  type MutableTablet = {
+    id: string;
+    name: string;
+    deviceId: string;
+    totalCents: number;
+    tickets: number;
+    pendingSync: number;
+    lastSync: string;
+    status: string;
+  };
+
+  type MutableBranch = {
+    id: string;
+    code: string;
+    name: string;
+    totalCents: number;
+    tickets: number;
+    tablets: Map<string, MutableTablet>;
+    ticketRows: SalesControlTicket[];
+    lastSaleTime: number;
+    syncWarnings: number;
+  };
+
+  const branchMap = new Map<string, MutableBranch>();
+
+  function ensureBranch(storeId: string, store?: any) {
+    const id = storeId || "sin-sucursal";
+    const existing = branchMap.get(id);
+    if (existing) return existing;
+    const branch: MutableBranch = {
+      id,
+      code: String(store?.code ?? (id === "sin-sucursal" ? "SIN-SUCURSAL" : id)),
+      name: String(store?.name ?? (id === "sin-sucursal" ? "Sucursal sin asignar" : `Sucursal ${id}`)),
+      totalCents: 0,
+      tickets: 0,
+      tablets: new Map(),
+      ticketRows: [],
+      lastSaleTime: 0,
+      syncWarnings: 0
+    };
+    branchMap.set(id, branch);
+    return branch;
+  }
+
+  for (const store of input.stores) {
+    ensureBranch(String(store.id), store);
+  }
+
+  for (const sale of input.sales) {
+    const terminal = sale.terminal ?? terminalById.get(String(sale.terminalId ?? ""));
+    const storeId = String(terminal?.storeId ?? sale.cashSession?.storeId ?? "sin-sucursal");
+    const store = terminal?.store ?? storeById.get(storeId);
+    const branch = ensureBranch(storeId, store);
+    const saleTotal = Number(sale.totalCents ?? 0);
+    const terminalId = String(sale.terminalId ?? terminal?.id ?? "sin-terminal");
+    const tabletName = String(terminal?.name ?? terminal?.code ?? terminalId);
+    const heartbeat = latestHeartbeatByDevice.get(terminalId) ?? latestHeartbeatByDevice.get(String(terminal?.code ?? ""));
+    const pendingSync = (pendingByTerminal.get(terminalId) ?? 0) + (pendingByDevice.get(terminalId) ?? 0) + (terminal?.code ? (pendingByDevice.get(String(terminal.code)) ?? 0) : 0);
+    const tablet = branch.tablets.get(terminalId) ?? {
+      id: terminalId,
+      name: tabletName,
+      deviceId: String(heartbeat?.deviceId ?? terminal?.code ?? terminalId),
+      totalCents: 0,
+      tickets: 0,
+      pendingSync,
+      lastSync: heartbeat ? relativeLabel(heartbeat.lastSeenAt ?? heartbeat.observedAt) : "sin registro",
+      status: heartbeat ? normalizeStatus(heartbeat.health || heartbeat.status || heartbeat.syncStatus) : "sin heartbeat"
+    };
+    tablet.totalCents += saleTotal;
+    tablet.tickets += 1;
+    tablet.pendingSync = Math.max(tablet.pendingSync, pendingSync);
+    branch.tablets.set(terminalId, tablet);
+
+    const saleTime = sale.createdAt ? new Date(sale.createdAt).getTime() : 0;
+    if (Number.isFinite(saleTime)) branch.lastSaleTime = Math.max(branch.lastSaleTime, saleTime);
+    branch.totalCents += saleTotal;
+    branch.tickets += 1;
+    if (pendingSync || ["advertencia", "fallido", "sin heartbeat"].includes(tablet.status)) branch.syncWarnings += 1;
+
+    branch.ticketRows.push({
+      id: String(sale.id ?? sale.folio ?? ""),
+      folio: String(sale.folio ?? sale.id ?? "sin folio"),
+      date: dateLabel(sale.createdAt),
+      branchName: branch.name,
+      tabletName,
+      terminalId,
+      cashier: String(sale.cashier ?? "sin cajero"),
+      total: money(saleTotal),
+      status: normalizeStatus(sale.status),
+      cashSessionId: String(sale.cashSessionId ?? "sin caja"),
+      lines: (sale.lines ?? []).map((line: any) => ({
+        sku: String(line.sku ?? line.productId ?? "sin sku"),
+        productName: String(line.productName ?? "Producto"),
+        qty: numberLabel(Number(line.qty ?? 0)),
+        price: money(Number(line.priceCents ?? 0)),
+        total: money(Number(line.totalCents ?? 0))
+      })),
+      tenders: (sale.paymentTenders ?? []).map((tender: any) => `${tender.tenderType ?? "metodo"}: ${money(Number(tender.amountCents ?? 0))}`)
+    });
+  }
+
+  const branches = Array.from(branchMap.values())
+    .map((branch) => ({
+      id: branch.id,
+      code: branch.code,
+      name: branch.name,
+      total: money(branch.totalCents),
+      tickets: branch.tickets,
+      tablets: Array.from(branch.tablets.values())
+        .sort((a, b) => b.totalCents - a.totalCents)
+        .map((tablet) => ({
+          id: tablet.id,
+          name: tablet.name,
+          deviceId: tablet.deviceId,
+          total: money(tablet.totalCents),
+          tickets: tablet.tickets,
+          pendingSync: tablet.pendingSync,
+          lastSync: tablet.lastSync,
+          status: tablet.status
+        })),
+      lastSaleAt: branch.lastSaleTime ? dateLabel(new Date(branch.lastSaleTime)) : "sin venta en rango",
+      syncStatus: branch.syncWarnings ? "revisar sync" : "ok",
+      ticketRows: branch.ticketRows.sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 80)
+    }))
+    .sort((a, b) => {
+      const left = Number(String(a.total).replace(/[^\d.-]/g, ""));
+      const right = Number(String(b.total).replace(/[^\d.-]/g, ""));
+      return right - left;
+    });
+
+  const tabletIds = new Set<string>();
+  for (const branch of branches) {
+    for (const tablet of branch.tablets) tabletIds.add(tablet.id);
+  }
+
+  const totalCents = input.totalCents;
+  const netCents = input.totalCents - input.returnCents;
+  return {
+    roleLabel: "Administrador",
+    syncHref: "/sync?from=sales-control&focus=tablet-pc-sales",
+    addBranchHref: "/sync?from=sales-control&focus=link-new-tablet",
+    totalLabel: money(totalCents),
+    netLabel: money(netCents),
+    ticketsLabel: numberLabel(input.sales.length),
+    averageLabel: money(input.sales.length ? Math.round(totalCents / input.sales.length) : 0),
+    branchCountLabel: numberLabel(branches.filter((branch) => branch.tickets > 0).length || branches.length),
+    tabletCountLabel: numberLabel(tabletIds.size),
+    updatedLabel: dateLabel(new Date()),
+    branches
+  } satisfies SalesControlViewModel;
+}
+
+
 export async function getPcSalesControl(params?: SearchLike): Promise<CommandCenterModel> {
   const db = prisma as any;
   const businessId = await resolveBusinessId();
@@ -227,10 +609,10 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     ? { businessId, id: "__blocked__" }
     : { businessId, createdAt: { gte: range.from, lt: range.toExclusive } };
 
-  const [salesRaw, returns, triDb, terminalsRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
+  const [salesRaw, returns, triDb, terminalsRaw, storesRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
     safe(() => db.sale.findMany({
       where,
-      include: { lines: true, paymentTenders: true, cashSession: true, terminal: true },
+      include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } },
       orderBy: { createdAt: "desc" },
       take: limit
     }), [] as any[]),
@@ -241,13 +623,15 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
       take: limit
     }), [] as any[]),
     getTriDbStatusCard(),
-    safe(() => db.terminal.findMany({ where: { businessId, isActive: true }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
+    safe(() => db.terminal.findMany({ where: { businessId, isActive: true }, include: { store: true }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
+    safe(() => db.store.findMany({ where: { businessId }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
     safe(() => db.cashSession.findMany({ where: { businessId }, include: { terminal: true, sales: true }, orderBy: { openedAt: "desc" }, take: 160 }), [] as any[]),
     safe(() => db.deviceHeartbeat.findMany({ where: { businessId }, orderBy: { lastSeenAt: "desc" }, take: 120 }), [] as any[]),
     safe(() => db.syncOutboxStatusBucket.findMany({ where: { businessId }, orderBy: { bucketStartAt: "desc" }, take: 160 }), [] as any[])
   ]);
   const sales = filterByQuery(salesRaw, query);
   const terminals = terminalsRaw;
+  const stores = storesRaw;
   const sessions = sessionsRaw;
   const heartbeats = heartbeatsRaw.map((heartbeat: any) => ({ ...heartbeat, metadata: asJson(heartbeat.metadataJson) }));
   const buckets = bucketsRaw;
@@ -330,6 +714,17 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
       "Último sync": heartbeat ? relativeLabel(heartbeat.lastSeenAt ?? heartbeat.observedAt) : "sin registro",
       "Alertas": alertParts.join("; ") || "sin alertas"
     };
+  });
+
+  const salesControlView = buildSalesControlView({
+    sales,
+    returns,
+    terminals,
+    stores,
+    heartbeats,
+    buckets,
+    totalCents,
+    returnCents
   });
 
   const panels: CommandPanel[] = [
@@ -443,7 +838,8 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     actions: [
       { label: "Exportar JSON", href: "/api/backoffice/sales-control?format=json" },
       { label: "Exportar CSV", href: "/api/backoffice/sales-control?format=csv" }
-    ]
+    ],
+    salesControl: salesControlView
   };
 }
 
@@ -451,15 +847,34 @@ export async function getPcCashSessions(params?: SearchLike): Promise<CommandCen
   const db = prisma as any;
   const businessId = await resolveBusinessId();
   const range = resolveDateRange(params);
-  const sessions = await safe(() => db.cashSession.findMany({
-    where: range.blocked ? { businessId, id: "__blocked__" } : { businessId, openedAt: { lt: range.toExclusive }, OR: [{ closedAt: null }, { closedAt: { gte: range.from } }] },
-    include: { cashMovements: true, cashAdjustments: true, sales: true, terminal: true, store: true },
-    orderBy: { openedAt: "desc" },
-    take: clampLimit(readParam(params, "limit"), 80)
-  }), [] as any[]);
+  const limit = clampLimit(readParam(params, "limit"), 80);
+  const [sessionsRaw, conflictsRaw] = await Promise.all([
+    safe(() => db.cashSession.findMany({
+      where: range.blocked ? { businessId, id: "__blocked__" } : { businessId, openedAt: { lt: range.toExclusive }, OR: [{ closedAt: null }, { closedAt: { gte: range.from } }] },
+      include: { cashMovements: true, cashAdjustments: true, sales: true, terminal: true, store: true },
+      orderBy: { openedAt: "desc" },
+      take: limit
+    }), [] as any[]),
+    safe(() => db.syncConflict.findMany({
+      where: { businessId },
+      orderBy: { detectedAt: "desc" },
+      take: 200
+    }), [] as any[])
+  ]);
+  const sessions = sessionsRaw;
+  const activeConflicts = conflictsRaw.filter((conflict: any) => isOpenConflictStatus(conflict.status));
+  const cashConflicts = activeConflicts.filter((conflict: any) => isCashConflictCandidate(conflict, sessions));
+  const conflictsBySessionId = new Map<string, any[]>();
+  for (const session of sessions) {
+    const related = cashConflicts.filter((conflict: any) => conflictMatchesSession(conflict, session));
+    if (related.length) conflictsBySessionId.set(session.id, related);
+  }
+  const sessionFallbackConflicts = sessions.filter((session: any) => normalizeStatus(session.status) === "conflicto" && !(conflictsBySessionId.get(session.id)?.length));
   const open = sessions.filter((session: any) => String(session.status).toLowerCase() !== "closed").length;
   const variance = sum(sessions.map((session: any) => Number(session.varianceCents ?? 0)));
   const movements = sessions.flatMap((session: any) => (session.cashMovements ?? []).map((movement: any) => ({ ...movement, session })));
+  const conflictSessionCount = conflictsBySessionId.size + sessionFallbackConflicts.length;
+  const primaryCashConflict = cashConflicts[0] ?? null;
 
   return {
     mode: "cash",
@@ -468,35 +883,101 @@ export async function getPcCashSessions(params?: SearchLike): Promise<CommandCen
     title: "Caja y cierres",
     description: "Gobierno de turnos, movimientos, esperado, contado y variaciones.",
     periodLabel: range.label,
-    sourceLine: `Fuente: CashSession/CashMovement canonicos. Rango: ${range.label}.`,
+    sourceLine: `Fuente: CashSession/CashMovement + SyncConflict canonicos. Rango: ${range.label}.`,
     independenceLine: "PC gobierna cierres consolidados; Tablet puede abrir, vender y cerrar localmente.",
     metrics: [
       { label: "Sesiones", value: numberLabel(sessions.length), note: "CashSession en rango" },
       { label: "Abiertas", value: numberLabel(open), note: "Requieren seguimiento", tone: open ? "warn" : "ok" },
       { label: "Variacion neta", value: money(variance), note: "Suma varianceCents", tone: Math.abs(variance) > 5000 ? "danger" : variance ? "warn" : "ok" },
+      { label: "Conflictos caja", value: numberLabel(cashConflicts.length + sessionFallbackConflicts.length), note: "SyncConflict + CashSession conflict", tone: cashConflicts.length || sessionFallbackConflicts.length ? "warn" : "ok" },
       { label: "Movimientos", value: numberLabel(movements.length), note: "Entradas/salidas/ajustes" }
     ],
     panels: [
       range.blocked ? { title: "Rango bloqueado", body: range.blocked, tone: "warn" } : null,
-      { title: "Conflictos de caja", body: "Las ventas fuera de turno se revisan contra SyncConflict cuando existen; no se convierten en venta PC.", tone: "ok" }
+      cashConflicts.length
+        ? {
+            title: "Conflictos de caja detectados",
+            body: `Hay ${cashConflicts.length} SyncConflict relacionado con caja. El badge Estado en la tabla es clicable y explica código, detalle, terminal, evento, idempotencyKey y acción sugerida.`,
+            tone: "warn"
+          }
+        : {
+            title: "Conflictos de caja",
+            body: "No hay SyncConflict activo relacionado con caja en la muestra actual. Si una CashSession llega con estado conflicto sin SyncConflict enlazado, el renglón muestra diagnóstico fallback.",
+            tone: sessionFallbackConflicts.length ? "warn" : "ok"
+          },
+      primaryCashConflict
+        ? {
+            title: "Primer conflicto a revisar",
+            body: `${primaryCashConflict.label ?? primaryCashConflict.conflictCode}: ${primaryCashConflict.detail ?? "sin detalle"} (${primaryCashConflict.terminalId ?? "sin terminal"})`,
+            tone: conflictTone(primaryCashConflict)
+          }
+        : null
     ].filter(Boolean) as CommandPanel[],
     tables: [
       {
         title: "Sesiones de caja",
-        caption: "Abiertas/cerradas por terminal.",
+        caption: "Abiertas/cerradas por terminal. Si Estado marca conflicto, el badge se puede abrir para ver el diagnóstico.",
         columns: ["Caja", "Terminal", "Cajero", "Abierta", "Cerrada", "Esperado", "Contado", "Variacion", "Estado"],
-        rows: sessions.map((session: any) => ({
-          Caja: session.id,
-          Terminal: session.terminal?.name ?? session.terminalId,
-          Cajero: session.cashier ?? session.cashierId,
-          Abierta: dateLabel(session.openedAt),
-          Cerrada: dateLabel(session.closedAt),
-          Esperado: money(session.expectedCashCents),
-          Contado: money(session.cashEndCents),
-          Variacion: money(session.varianceCents),
-          Estado: normalizeStatus(session.status)
-        })),
+        rows: sessions.map((session: any) => {
+          const relatedConflicts = conflictsBySessionId.get(session.id) ?? [];
+          const primary = relatedConflicts[0] ?? null;
+          const fallbackConflict = !primary && normalizeStatus(session.status) === "conflicto";
+          const detailItems = primary ? buildConflictDetailItems(primary, session) : fallbackConflict ? buildCashSessionFallbackConflictDetail(session) : [];
+          return {
+            Caja: session.id,
+            Terminal: session.terminal?.name ?? session.terminalId,
+            Cajero: session.cashier ?? session.cashierId,
+            Abierta: dateLabel(session.openedAt),
+            Cerrada: dateLabel(session.closedAt),
+            Esperado: money(session.expectedCashCents),
+            Contado: money(session.cashEndCents),
+            Variacion: money(session.varianceCents),
+            Estado: relatedConflicts.length || fallbackConflict ? "conflicto" : normalizeStatus(session.status),
+            __rowDetailTitle: detailItems.length ? `Qué pedo con caja ${session.id}` : undefined,
+            __rowDetailTone: primary ? conflictTone(primary) : fallbackConflict ? "warn" : undefined,
+            __rowDetailItems: detailItems.length ? detailItems : undefined,
+            __rowDetailJson: detailItems.length ? serializeRowDetail(detailItems) : undefined,
+            __rowActionHref: detailItems.length ? "/sync" : undefined,
+            __rowActionLabel: detailItems.length ? "Abrir tablero Sync" : undefined
+          };
+        }),
         emptyMessage: "No hay sesiones de caja consolidadas en PC."
+      },
+      {
+        title: "Conflictos de sync relacionados con caja",
+        caption: "Diagnóstico accionable desde SyncConflict: código, detalle, evento, terminal e idempotencyKey.",
+        columns: ["Detectado", "Código", "Severidad", "Terminal", "Evento", "Agregado", "Detalle", "Estado"],
+        rows: cashConflicts.slice(0, 80).map((conflict: any) => {
+          const detailItems = buildConflictDetailItems(conflict);
+          return {
+            Detectado: dateLabel(conflict.detectedAt),
+            Código: conflict.conflictCode ?? "sin codigo",
+            Severidad: conflict.severity ?? "sin severidad",
+            Terminal: conflict.terminalId ?? conflict.deviceId ?? "sin terminal",
+            Evento: conflict.eventId ?? conflict.outboxEventId ?? conflict.idempotencyKey ?? "sin evento",
+            Agregado: conflict.aggregateId ?? "sin agregado",
+            Detalle: conflict.detail ?? conflict.label ?? "sin detalle",
+            Estado: normalizeStatus(conflict.status),
+            __rowDetailTitle: `Qué pedo con ${conflict.conflictCode ?? "conflicto"}`,
+            __rowDetailTone: conflictTone(conflict),
+            __rowDetailItems: detailItems,
+            __rowDetailJson: JSON.stringify({
+              id: conflict.id,
+              eventId: conflict.eventId,
+              outboxEventId: conflict.outboxEventId,
+              idempotencyKey: conflict.idempotencyKey,
+              source: conflict.source,
+              deviceId: conflict.deviceId,
+              terminalId: conflict.terminalId,
+              topic: conflict.topic,
+              aggregateId: conflict.aggregateId,
+              diagnostics: asJson(conflict.diagnosticsJson)
+            }, null, 2),
+            __rowActionHref: "/sync",
+            __rowActionLabel: "Abrir tablero Sync"
+          };
+        }),
+        emptyMessage: "Sin SyncConflict activo relacionado con caja."
       },
       {
         title: "Movimientos de caja",
@@ -512,7 +993,24 @@ export async function getPcCashSessions(params?: SearchLike): Promise<CommandCen
         emptyMessage: "Sin movimientos de caja en el rango."
       }
     ],
-    diagnostics: { businessId, range, varianceThresholdCents: 5000 }
+    diagnostics: {
+      businessId,
+      range,
+      varianceThresholdCents: 5000,
+      syncConflictSample: activeConflicts.length,
+      cashConflictSample: cashConflicts.length,
+      conflictSessionCount,
+      matchingRules: [
+        "aggregateId/eventId/outboxEventId/idempotencyKey igual al CashSession.id",
+        "detalle/diagnosticsJson menciona CashSession.id",
+        "terminalId coincide y detectedAt cae dentro de la ventana de caja con 24h de gracia",
+        "conflictCode sale_outside_shift o topic/detail relacionado con cash/caja/session/turno/sale"
+      ]
+    },
+    actions: [
+      { label: "Abrir tablero Sync", href: "/sync" },
+      { label: "API sesiones caja", href: "/api/backoffice/cash-sessions" }
+    ]
   };
 }
 

@@ -1,0 +1,25 @@
+{
+  "id": "react-ui",
+  "title": "React UI cartridge",
+  "version": "1.0.0",
+  "tags": [
+    "react",
+    "tsx",
+    "jsx",
+    "ui"
+  ],
+  "inherits": [
+    "generic-code"
+  ],
+  "policy": {
+    "required_verifiers": [
+      "typescript-parse",
+      "jsx-structure"
+    ],
+    "risk_gates": [
+      "no-duplicate-react-imports",
+      "no-unbalanced-jsx",
+      "css-module-awareness"
+    ]
+  }
+}

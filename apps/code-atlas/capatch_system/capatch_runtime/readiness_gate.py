@@ -67,8 +67,8 @@ def run_readiness_gate(base_dir: Path, output_dir: Path | None = None) -> dict[s
         _check(
             "baseline_inventory",
             "passed" if baselines else "degraded",
-            f"baselines={len(baselines)}",
-            {"count": len(baselines), "latest": baselines[0] if baselines else None},
+            f"baselines={len(baselines)}" if baselines else "baselines=0; formalization available via tooling/bootstrap_readiness_baseline.py",
+            {"count": len(baselines), "latest": baselines[0] if baselines else None, "formalization_action": "python tooling/bootstrap_readiness_baseline.py"},
         ),
     ]
     verdict = _aggregate_verdict(checks)

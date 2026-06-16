@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { Loader2, RefreshCcw, ScanLine, Search, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
@@ -54,12 +54,19 @@ export function PosProductSearch({
     onSearch();
   }
 
-  const searchExpanded = Boolean(query.trim()) || loading || Boolean(error);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchExpanded = searchFocused || Boolean(query.trim()) || loading || Boolean(error);
 
   return (
     <motion.form
       className={cn(styles.posPremiumSearchCard, Boolean(error) && styles.posPremiumSearchCardError)}
       onSubmit={submit}
+      onFocusCapture={() => setSearchFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setSearchFocused(false);
+        }
+      }}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
@@ -78,7 +85,6 @@ export function PosProductSearch({
         <div className={styles.posPremiumSearchInputWrap} data-prisma-qa="tablet-qa-focus">
           {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={22} /> : <Search aria-hidden="true" size={22} />}
           <input
-            autoFocus
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Nombre, SKU o código de barras"

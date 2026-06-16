@@ -5,3 +5,17 @@ __pycache__/
 .capatch/tmp/
 tmp/
 reports/cache/
+# === Capatch external-output policy ===
+.capatch/
+reports/
+tmp/
+_chatgpt_fix_backups/
+_chatgpt_fix_logs/
+_chatgpt_patch_backups/
+_dependency_graphs/
+capatch_plugins/_logs/
+capatch_plugins/_plugin_registry.json
+*.result.zip
+*.fail.zip
+*.diagnostic.zip
+# === End Capatch external-output policy ===

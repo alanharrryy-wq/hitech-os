@@ -1,0 +1,352 @@
+- generic [ref=e1]:
+  - generic [ref=e2]: Visual OS
+  - generic [ref=e4]:
+    - checkbox "Contraer o expandir navegación de PRISMA Tablet"
+    - generic [ref=e5]:
+      - link "Saltar al contenido" [ref=e6] [cursor=pointer]:
+        - /url: "#contenido-principal"
+      - main [ref=e7]:
+        - generic [ref=e8]:
+          - generic:
+            - generic: Sucursal Matriz
+            - heading "Vender" [level=1]
+            - paragraph: Tablet Caja 2 · tablet-cashier
+          - region "Estado operativo de la Tablet" [ref=e9]:
+            - generic [ref=e10]:
+              - generic [ref=e11]: Venta autonoma
+              - strong [ref=e12]: Sucursal Matriz · 0 tickets · $0
+              - generic [ref=e13]: tablet-cashier · Tablet Caja 2
+            - generic:
+              - link "Turno abierto":
+                - /url: /shift
+                - generic:
+                  - strong: Turno abierto
+              - link "En linea":
+                - /url: /sync
+                - generic:
+                  - strong: En linea
+              - link "Sin pendientes":
+                - /url: /sync
+                - generic:
+                  - strong: Sin pendientes
+              - link "100 productos activos":
+                - /url: /catalog
+                - generic:
+                  - strong: 100 productos activos
+          - generic [ref=e18]:
+            - link "Ver turno" [ref=e19] [cursor=pointer]:
+              - /url: /shift
+              - img [ref=e20]
+            - link "Ver pendientes" [ref=e23] [cursor=pointer]:
+              - /url: /sync
+              - img [ref=e24]
+            - generic [ref=e27]: Venta local activa
+        - generic [ref=e29]:
+          - 'generic "PRISMA 00T Live POS Binding: idle"':
+            - strong: PRISMA Tablet POS
+            - generic: Realtime en espera
+            - generic: Receta no recibida
+          - generic:
+            - region "Estado de venta" [ref=e30]:
+              - generic [ref=e31]:
+                - generic [ref=e32]:
+                  - img [ref=e33]
+                  - text: Vender
+                - strong [ref=e36]: Sucursal Matriz
+                - generic [ref=e37]: Agrega productos antes de cobrar.
+              - generic "Resumen rápido de venta":
+                - generic [ref=e38]:
+                  - img [ref=e39]
+                  - generic [ref=e43]: Ticket
+                  - strong [ref=e44]: 0 líneas
+                - generic [ref=e45]:
+                  - img [ref=e46]
+                  - generic [ref=e56]: Piezas
+                  - strong [ref=e57]: "0"
+                - generic [ref=e58]:
+                  - img [ref=e59]
+                  - generic [ref=e62]: Total
+                  - strong [ref=e63]: $0.00
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - generic [ref=e66]:
+                  - img [ref=e67]
+                  - text: Buscar o escanear
+                - generic [ref=e70]:
+                  - img [ref=e71]
+                  - searchbox "Buscar o escanear" [active] [ref=e74]
+              - generic [ref=e75]:
+                - generic [ref=e76]: Catálogo listo
+                - strong [ref=e77]: 100 activos
+                - generic [ref=e78]: 100 visibles
+              - generic [ref=e79]:
+                - button "Buscar" [ref=e80] [cursor=pointer]:
+                  - img [ref=e81]
+                  - text: Buscar
+                - button "Resolver código" [disabled] [ref=e84]:
+                  - img [ref=e85]
+                  - text: Resolver código
+                - button "Limpiar" [ref=e90] [cursor=pointer]:
+                  - img [ref=e91]
+                  - text: Limpiar
+            - navigation [ref=e96]:
+              - button "Más vendidos" [ref=e97]:
+                - img [ref=e99]
+                - strong [ref=e104]: Más vendidos
+              - button "AB Abarrotes" [ref=e105]:
+                - generic [ref=e106]: AB
+                - strong [ref=e107]: Abarrotes
+              - button "BE Bebidas" [ref=e108]:
+                - generic [ref=e109]: BE
+                - strong [ref=e110]: Bebidas
+              - button "BO Botanas" [ref=e111]:
+                - generic [ref=e112]: BO
+                - strong [ref=e113]: Botanas
+              - button "DU Dulces" [ref=e114]:
+                - generic [ref=e115]: DU
+                - strong [ref=e116]: Dulces
+              - button "LÁ Lácteos" [ref=e117]:
+                - generic [ref=e118]: LÁ
+                - strong [ref=e119]: Lácteos
+              - button "LI Limpieza" [ref=e120]:
+                - generic [ref=e121]: LI
+                - strong [ref=e122]: Limpieza
+              - button "PA Panadería" [ref=e123]:
+                - generic [ref=e124]: PA
+                - strong [ref=e125]: Panadería
+            - region "Productos encontrados" [ref=e126]:
+              - article [ref=e127]:
+                - generic [ref=e128]:
+                  - generic [ref=e129]:
+                    - img [ref=e130]
+                    - text: 205 disp.
+                  - img [ref=e134]
+                - generic [ref=e139]:
+                  - strong [ref=e140]: Frijol Negro 900 g
+                  - generic [ref=e141]:
+                    - generic [ref=e142]: Activo
+                    - generic [ref=e143]: Abarrotes
+                - generic [ref=e144]:
+                  - generic [ref=e145]:
+                    - strong [ref=e146]: $39.00
+                    - generic [ref=e147]: MXN
+                  - button "Agregar" [ref=e148] [cursor=pointer]:
+                    - img [ref=e149]
+                    - text: Agregar
+              - article [ref=e150]:
+                - generic [ref=e151]:
+                  - generic [ref=e152]:
+                    - img [ref=e153]
+                    - text: 232 disp.
+                  - img [ref=e157]
+                - generic [ref=e162]:
+                  - strong [ref=e163]: Red Cola 2 L
+                  - generic [ref=e164]:
+                    - generic [ref=e165]: Activo
+                    - generic [ref=e166]: Bebidas
+                - generic [ref=e167]:
+                  - generic [ref=e168]:
+                    - strong [ref=e169]: $107.00
+                    - generic [ref=e170]: MXN
+                  - button "Agregar" [ref=e171] [cursor=pointer]:
+                    - img [ref=e172]
+                    - text: Agregar
+              - article [ref=e173]:
+                - generic [ref=e174]:
+                  - generic [ref=e175]:
+                    - img [ref=e176]
+                    - text: 202 disp.
+                  - img [ref=e180]
+                - generic [ref=e185]:
+                  - strong [ref=e186]: Leche Santa Clara 1 L
+                  - generic [ref=e187]:
+                    - generic [ref=e188]: Activo
+                    - generic [ref=e189]: Lácteos
+                - generic [ref=e190]:
+                  - generic [ref=e191]:
+                    - strong [ref=e192]: $31.00
+                    - generic [ref=e193]: MXN
+                  - button "Agregar" [ref=e194] [cursor=pointer]:
+                    - img [ref=e195]
+                    - text: Agregar
+              - article [ref=e196]:
+                - generic [ref=e197]:
+                  - generic [ref=e198]:
+                    - img [ref=e199]
+                    - text: 233 disp.
+                  - img [ref=e203]
+                - generic [ref=e208]:
+                  - strong [ref=e209]: Tortillinas Tía Rosa
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: Activo
+                    - generic [ref=e212]: Panadería
+                - generic [ref=e213]:
+                  - generic [ref=e214]:
+                    - strong [ref=e215]: $129.00
+                    - generic [ref=e216]: MXN
+                  - button "Agregar" [ref=e217] [cursor=pointer]:
+                    - img [ref=e218]
+                    - text: Agregar
+              - article [ref=e219]:
+                - generic [ref=e220]:
+                  - generic [ref=e221]:
+                    - img [ref=e222]
+                    - text: 235 disp.
+                  - img [ref=e226]
+                - generic [ref=e231]:
+                  - strong [ref=e232]: Takis Fuego 56 g · Pack 2
+                  - generic [ref=e233]:
+                    - generic [ref=e234]: Activo
+                    - generic [ref=e235]: Botanas
+                - generic [ref=e236]:
+                  - generic [ref=e237]:
+                    - strong [ref=e238]: $80.00
+                    - generic [ref=e239]: MXN
+                  - button "Agregar" [ref=e240] [cursor=pointer]:
+                    - img [ref=e241]
+                    - text: Agregar
+              - article [ref=e242]:
+                - generic [ref=e243]:
+                  - generic [ref=e244]:
+                    - img [ref=e245]
+                    - text: 215 disp.
+                  - img [ref=e249]
+                - generic [ref=e254]:
+                  - strong [ref=e255]: Gomitas Enchiladas · Pack 2
+                  - generic [ref=e256]:
+                    - generic [ref=e257]: Activo
+                    - generic [ref=e258]: Dulces
+                - generic [ref=e259]:
+                  - generic [ref=e260]:
+                    - strong [ref=e261]: $68.50
+                    - generic [ref=e262]: MXN
+                  - button "Agregar" [ref=e263] [cursor=pointer]:
+                    - img [ref=e264]
+                    - text: Agregar
+              - article [ref=e265]:
+                - generic [ref=e266]:
+                  - generic [ref=e267]:
+                    - img [ref=e268]
+                    - text: 139 disp.
+                  - img [ref=e272]
+                - generic [ref=e277]:
+                  - strong [ref=e278]: Arroz Verde Valle 1 kg
+                  - generic [ref=e279]:
+                    - generic [ref=e280]: Activo
+                    - generic [ref=e281]: Abarrotes
+                - generic [ref=e282]:
+                  - generic [ref=e283]:
+                    - strong [ref=e284]: $173.50
+                    - generic [ref=e285]: MXN
+                  - button "Agregar" [ref=e286] [cursor=pointer]:
+                    - img [ref=e287]
+                    - text: Agregar
+              - article [ref=e288]:
+                - generic [ref=e289]:
+                  - generic [ref=e290]:
+                    - img [ref=e291]
+                    - text: 237 disp.
+                  - img [ref=e295]
+                - generic [ref=e300]:
+                  - strong [ref=e301]: Fabuloso Lavanda 1 L · Pack 2
+                  - generic [ref=e302]:
+                    - generic [ref=e303]: Activo
+                    - generic [ref=e304]: Limpieza
+                - generic [ref=e305]:
+                  - generic [ref=e306]:
+                    - strong [ref=e307]: $177.50
+                    - generic [ref=e308]: MXN
+                  - button "Agregar" [ref=e309] [cursor=pointer]:
+                    - img [ref=e310]
+                    - text: Agregar
+            - navigation "Paginación de productos" [ref=e311]:
+              - generic [ref=e312]: Mostrando 1-8 de 100
+              - button "Página anterior" [disabled] [ref=e313]:
+                - img [ref=e314]
+              - button "1" [ref=e316]
+              - button "2" [ref=e317]
+              - button "3" [ref=e318]
+              - button "4" [ref=e319]
+              - button "5" [ref=e320]
+              - button "6" [ref=e321]
+              - button "7" [ref=e322]
+              - button "8" [ref=e323]
+              - button "9" [ref=e324]
+              - generic [ref=e325]: … 13
+              - button "Página siguiente" [ref=e326]:
+                - img [ref=e327]
+          - complementary "Ticket actual" [ref=e329]:
+            - generic [ref=e330]:
+              - generic [ref=e331]:
+                - generic [ref=e332]:
+                  - img [ref=e333]
+                  - text: Ticket activo
+                - heading "0 piezas" [level=2] [ref=e335]
+              - button "Cancelar venta" [disabled] [ref=e336]:
+                - img [ref=e337]
+                - text: Cancelar venta
+            - generic [ref=e341]:
+              - img [ref=e342]
+              - strong [ref=e346]: Agrega productos para cobrar
+              - generic [ref=e347]: El total y el botón de cobro se activan cuando el ticket tiene productos.
+            - generic [ref=e348]:
+              - strong [ref=e349]:
+                - img [ref=e350]
+                - text: Prepara el cobro
+              - generic [ref=e353]: Agrega productos antes de cobrar.
+            - generic "Resumen del ticket" [ref=e354]:
+              - generic [ref=e355]: Subtotal
+              - strong [ref=e356]: $0.00
+              - generic [ref=e357]: Impuestos
+              - strong [ref=e358]: Incluidos
+            - generic [ref=e359]:
+              - generic [ref=e360]: Total a cobrar
+              - strong [ref=e361]: $0.00
+            - button "Abrir cobro COBRAR Sin ticket" [disabled] [ref=e362]:
+              - generic [ref=e363]: Abrir cobro
+              - generic [ref=e364]:
+                - img [ref=e366]
+                - generic [ref=e370]: COBRAR
+              - strong [ref=e371]: Sin ticket
+              - img [ref=e372]
+            - generic "Acciones secundarias" [ref=e374]:
+              - button "Reembolso Pronto" [disabled] [ref=e375]:
+                - img [ref=e376]
+                - generic [ref=e378]: Reembolso
+                - generic [ref=e379]: Pronto
+              - button "Guardar Guardar" [disabled] [ref=e380]:
+                - img [ref=e381]
+                - generic [ref=e385]: Guardar
+                - generic [ref=e386]: Guardar
+              - button "Cancelar venta Limpiar" [disabled] [ref=e387]:
+                - img [ref=e388]
+                - generic [ref=e391]: Cancelar venta
+                - generic [ref=e392]: Limpiar
+      - navigation "Navegación principal de venta Tablet" [ref=e393]:
+        - link "Inicio. Mapa de trabajo y pulso operativo de la terminal." [ref=e394] [cursor=pointer]:
+          - /url: /
+          - img [ref=e395]
+          - generic [ref=e400]: Inicio
+        - link "Turno y caja. Apertura, corte y cierre operativo." [ref=e401] [cursor=pointer]:
+          - /url: /shift
+          - img [ref=e402]
+          - generic [ref=e405]: Turno
+        - 'link "Vender. Cobro rápido: busca, escanea, arma el ticket y cobra." [ref=e406] [cursor=pointer]':
+          - /url: /pos
+          - img [ref=e407]
+          - generic [ref=e411]: Vender
+        - link "Catálogo. Productos locales disponibles para venta." [ref=e412] [cursor=pointer]:
+          - /url: /catalog
+          - img [ref=e413]
+          - generic [ref=e416]: Catálogo
+        - link "Existencias. Stock operativo local, quiebres y señales de reabasto." [ref=e417] [cursor=pointer]:
+          - /url: /stock
+          - img [ref=e418]
+          - generic [ref=e421]: Stock
+        - link "Ventas de hoy. Resumen de tickets y productos vendidos." [ref=e422] [cursor=pointer]:
+          - /url: /sales/today
+          - img [ref=e423]
+          - generic [ref=e426]: Ventas
+  - button "Open Next.js Dev Tools" [ref=e432] [cursor=pointer]:
+    - img [ref=e433]
+  - alert [ref=e436]

@@ -9,6 +9,10 @@ from typing import Any, Callable
 
 from .builtin_build import run_build
 from .builtin_command import run_command_exit_zero
+from .builtin_css import run_css_sanity
+from .builtin_css_module import run_css_module_sanity
+from .builtin_react_css import run_react_css_link
+from .builtin_visual_static import run_visual_static_gates
 from .builtin_git import run_git_clean
 from .builtin_json import run_json_parse
 from .builtin_python import (
@@ -79,6 +83,10 @@ def register_builtin_verifiers(registry: Any) -> None:
     target.register('json-parse', run_json_parse)
     target.register('yaml-parse', run_yaml_parse)
     target.register('toml-parse', run_toml_parse)
+    target.register('css-sanity', run_css_sanity)
+    target.register('visual-static-gates', run_visual_static_gates)
+    target.register('react-css-link', run_react_css_link)
+    target.register('css-module-sanity', run_css_module_sanity)
     target.register('typescript-parse', run_typescript_parse)
     target.register('command-exit-zero', run_command_exit_zero)
     target.register('git-clean', run_git_clean)

@@ -352,6 +352,8 @@ def staged_apply(root_dir: Path | str, proposal: Any, *, dry_run: bool = False, 
             'proposal_id': _proposal_id(proposal),
             'family': str(_proposal_get(proposal, 'family', 'general') or 'general'),
             'verification_recipe': list(_proposal_get(proposal, 'verification_recipe', []) or []),
+            # CAPATCH_DELTA1_FIXER_CHECKPOINT_CTX: expose command/ops checkpoint to delta-aware verifiers when available.
+            'checkpoint_dir': str(Path(getattr(ctx, 'checkpoint_dir', '') or '').expanduser().resolve()) if str(getattr(ctx, 'checkpoint_dir', '') or '').strip() else None,
         }
     )
     verifier_ctx.update(dict(verification_ctx or {}))

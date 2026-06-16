@@ -102,6 +102,7 @@ def _surface_flags(files: list[str], risk_summary: dict[str, Any]) -> dict[str, 
         'touches_packaging': False,
         'touches_structured_config': False,
         'touches_gui': bool((risk_summary or {}).get('touches_ui', False)),
+        'touches_css': False,
         'touches_runtime_core': False,
         'touches_safe_text_only': False,
     }
@@ -122,6 +123,8 @@ def _surface_flags(files: list[str], risk_summary: dict[str, Any]) -> dict[str, 
             flags['touches_packaging'] = True
         if suffix in {'.json', '.yaml', '.yml', '.toml'}:
             flags['touches_structured_config'] = True
+        if suffix == '.css':
+            flags['touches_css'] = True
         if any(token in lowered for token in _GUI_HINTS):
             flags['touches_gui'] = True
         if any(token in lowered for token in _RUNTIME_HINTS):
@@ -174,12 +177,29 @@ def compute_verification_policy(risk_summary: dict[str, Any], target_files: list
                 packs.append('packaging')
                 floor = _raise_floor(floor, 'runtime')
                 reason_codes.append(f'packaging:{path.as_posix()}')
+        elif suffix == '.css':
+            required.append('css-sanity')
+            required.append('visual-static-gates')
+            packs.append('css-syntax')
+            packs.append('visual-static')
+            floor = _raise_floor(floor, 'syntax')
+            if name.endswith('.module.css'):
+                required.append('css-module-sanity')
+                packs.append('css-module')
+                reason_codes.append(f'css_module_surface:{path.as_posix()}')
+            if name.endswith('.module.css') or any(token in path.as_posix().lower() for token in _GUI_HINTS):
+                packs.append('visual-surface')
+                reason_codes.append(f'css_visual_surface:{path.as_posix()}')
         elif suffix in {'.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'}:
             required.append('typescript-parse')
             floor = _raise_floor(floor, 'syntax')
-            if any(token in path.as_posix().lower() for token in _GUI_HINTS):
+            if suffix in {'.tsx', '.jsx'} or any(token in path.as_posix().lower() for token in _GUI_HINTS):
+                required.append('react-css-link')
+                required.append('visual-static-gates')
                 packs.append('gui-smoke')
+                packs.append('react-css-link')
                 reason_codes.append(f'gui_surface:{path.as_posix()}')
+
 
     risk_level = str((risk_summary or {}).get('risk_level') or 'low').lower()
     if risk_level in {'medium', 'high', 'critical'} and flags['touches_safe_text_only']:

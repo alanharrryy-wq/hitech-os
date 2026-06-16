@@ -100,7 +100,8 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
   };
 }
 
-export function getVisibleTabletNavItems(_currentPath: string, snapshot: TabletNavSnapshot) {
-  const canShowSellNavigation = snapshot.shift.state === "open";
-  return TABLET_NAV_ITEMS.filter((item) => item.href !== "/pos" || canShowSellNavigation);
+export function getVisibleTabletNavItems(_currentPath: string, _snapshot: TabletNavSnapshot) {
+  // La navegación de venta debe seguir visible aun con turno cerrado:
+  // la pantalla /pos ya decide si permite cobrar, abrir turno o mostrar bloqueo operativo.
+  return TABLET_NAV_ITEMS;
 }

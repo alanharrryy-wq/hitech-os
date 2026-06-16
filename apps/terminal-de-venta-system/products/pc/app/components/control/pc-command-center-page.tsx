@@ -4,6 +4,7 @@ import { EmptyState } from "@components/backoffice/empty-state";
 import { PcSyncChartPromotionPanel } from "@components/sync/pc-sync-chart-promotion-panel";
 import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/services/pc-command-center.service";
 import { PcCommandActions } from "./pc-command-actions";
+import { SalesControlBranchView } from "./sales-control-branch-view";
 
 function toneClass(tone?: CommandMetric["tone"]) {
   if (tone === "danger") return "tone-danger";
@@ -32,6 +33,10 @@ function Panel({ panel }: { panel: CommandPanel }) {
 }
 
 export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
+  if (model.currentPath === "/sales-control" && model.salesControl) {
+    return <SalesControlBranchView model={model} />;
+  }
+
   return (
     <AppShell currentPath={model.currentPath}>
       <section className="hero">

@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('discovery','quick','full','critical','visualqa','screenshots','screenshotsqa')]
+  [ValidateSet('discovery','quick','full','critical','visualqa','screenshots','screenshotsqa','point-probe')]
   [string]$Mode = 'quick',
 
   [ValidateSet('all','7','todo','todos','all-surfaces','all_surfaces','chart-lab','chart_lab','3000','web','eit-web','eit_web','3110','tablet','tablet-pos','tablet_pos','pos','3120','pc','backoffice','pc-backoffice','pc_backoffice','3130','mobile','app','app-mobile','app_mobile','3140','control-center','control_center','prisma-control-center','prisma_control_center','3150')]
@@ -26,13 +26,20 @@ param(
   [int]$MaxContainerTiles = 120,
   [int]$TileOverlapPx = 80,
   [string]$ArtifactRoot = '',
-  [switch]$NoZip
+  [switch]$NoZip,
+  [string]$Route = '',
+  [int]$PointX = -1,
+  [int]$PointY = -1,
+  [int]$ViewportWidth = 1365,
+  [int]$ViewportHeight = 768,
+  [int]$SettleMs = 700
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CoreRunner = Join-Path $Here 'core\run-surf8-capture.ps1'
 if (!(Test-Path -LiteralPath $CoreRunner)) { throw "No encontre core runner: $CoreRunner" }
+$PointProbeRunner = Join-Path $Here 'core\run-point-probe.ps1'
 
 function Normalize-MamSurface {
   param([string]$Value)
@@ -92,6 +99,16 @@ function Get-MamSurfaceCatalog {
     [pscustomobject]@{ Surface='mobile'; Label='App / Mobile'; Port=3140 },
     [pscustomobject]@{ Surface='control-center'; Label='Prisma Control Center'; Port=3150 }
   )
+}
+
+function ConvertTo-MamPlainRecord {
+  param([object]$Record)
+  if ($Record -is [System.Collections.IDictionary]) {
+    return [pscustomobject]@{
+      surface=[string]$Record['surface']; label=[string]$Record['label']; port=$Record['port']; mode=[string]$Record['mode']; status=[string]$Record['status']; exitCode=[int]$Record['exitCode']; artifactRoot=[string]$Record['artifactRoot']; stdout=[string]$Record['stdout']; stderr=[string]$Record['stderr']; lastEvent=[string]$Record['lastEvent']; finishedAt=[string]$Record['finishedAt']
+    }
+  }
+  return $Record
 }
 
 function Get-LastUsefulLine {
@@ -223,16 +240,17 @@ function Invoke-MamAllSurfacesParallel {
     $running = @($still)
   }
 
-  $manifest = [ordered]@{ status='DONE'; mode=$Mode; surface='all'; maxFinalZips=6; startedAt=$startedAt.ToString('o'); finishedAt=(Get-Date).ToString('o'); runDir=$runDir; records=@($records) }
+  $recordsArray = @($records | ForEach-Object { ConvertTo-MamPlainRecord $_ })
+  $manifest = [ordered]@{ status='DONE'; mode=$Mode; surface='all'; maxFinalZips=6; startedAt=$startedAt.ToString('o'); finishedAt=(Get-Date).ToString('o'); runDir=$runDir; records=$recordsArray }
   $manifest | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath (Join-Path $reportsDir 'all-surfaces-manifest.json') -Encoding UTF8
 
-  $failures = @($records | Where-Object { [int]$_['exitCode'] -ne 0 -or [string]$_['status'] -eq 'FAIL' }).Count
+  $failures = @($recordsArray | Where-Object { [int]$_.exitCode -ne 0 -or [string]$_.status -eq 'FAIL' }).Count
   if (-not $NoZip) {
     foreach ($s in $surfaces) {
       $appRoot = Join-Path $runDir ("apps\$($s.Surface)")
       if (-not (Test-Path -LiteralPath $appRoot)) { continue }
-      $appRecords = @($records | Where-Object { [string]$_['surface'] -eq $s.Surface })
-      $appFail = @($appRecords | Where-Object { [int]$_['exitCode'] -ne 0 -or [string]$_['status'] -eq 'FAIL' }).Count -gt 0
+      $appRecords = @($recordsArray | Where-Object { [string]$_.surface -eq $s.Surface })
+      $appFail = @($appRecords | Where-Object { [int]$_.exitCode -ne 0 -or [string]$_.status -eq 'FAIL' }).Count -gt 0
       $appStatus = if ($appFail) { 'fail' } else { 'result' }
       $appSummary = [ordered]@{ app=$s.Surface; label=$s.Label; mode=$Mode; status=($appStatus.ToUpperInvariant()); records=$appRecords; note='One final ZIP per app. Phase artifacts live under phases/<mode>.' }
       $appSummary | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath (Join-Path $appRoot 'APP_SUMMARY.json') -Encoding UTF8
@@ -261,6 +279,18 @@ Write-Host "SurfaceParallel: $SurfaceParallel | MaxSurfaceWorkers: $SurfaceParal
 Write-Host "DeepScroll: $DeepScroll | FullPageSwitch: $([bool]$FullPage) | MaxPageTiles: $MaxPageTiles | MaxContainers: $MaxScrollContainers | MaxContainerTiles: $MaxContainerTiles" -ForegroundColor DarkCyan
 Write-Host "ArtifactRoot: $ArtifactRoot | NoZip: $([bool]$NoZip)" -ForegroundColor DarkCyan
 Write-Host "Policy: no start, no kill, no DB, no deploy" -ForegroundColor DarkCyan
+
+
+if ($Mode -eq 'point-probe') {
+  if (!(Test-Path -LiteralPath $PointProbeRunner)) { throw "No encontre point-probe runner: $PointProbeRunner" }
+  $ppArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$PointProbeRunner,'-Surface',$surfaceKey,'-Route',$Route,'-PointX',[string]$PointX,'-PointY',[string]$PointY,'-ViewportWidth',[string]$ViewportWidth,'-ViewportHeight',[string]$ViewportHeight,'-GotoTimeoutMs',[string]$GotoTimeoutMs,'-GotoRetries',[string]$GotoRetries,'-ScreenshotTimeoutMs',[string]$ScreenshotTimeoutMs,'-ProbeTimeoutMs',[string]$ProbeTimeoutMs,'-SettleMs',[string]$SettleMs)
+  if ($NoScreenshots) { $ppArgs += '-NoScreenshots' }
+  if ($AllowPartial) { $ppArgs += '-AllowPartial' }
+  if (-not [string]::IsNullOrWhiteSpace($ArtifactRoot)) { $ppArgs += @('-ArtifactRoot', $ArtifactRoot) }
+  if ($NoZip) { $ppArgs += '-NoZip' }
+  & powershell @ppArgs
+  exit $LASTEXITCODE
+}
 
 if ($surfaceKey -eq 'all') { Invoke-MamAllSurfacesParallel }
 Invoke-SingleSurfaceCore
