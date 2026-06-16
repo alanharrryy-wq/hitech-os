@@ -1,0 +1,412 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 24px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(138, 175, 220, 0.26);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(224,244,255,0.72));
+  box-shadow: 0 20px 60px rgba(42, 94, 140, 0.14);
+}
+
+.hero h1 {
+  margin: 4px 0 6px;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+}
+
+.hero p,
+.hero small {
+  display: block;
+  margin: 0;
+  color: var(--prisma-text-muted);
+}
+
+.kicker {
+  display: inline-flex;
+  color: var(--prisma-accent-blue);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.syncButton {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border-radius: 18px;
+  color: #ffffff;
+  font-weight: 900;
+  background: linear-gradient(135deg, #0448ff, #00a2ff);
+  box-shadow: 0 18px 40px rgba(0, 92, 255, 0.28);
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.metricTile {
+  min-height: 132px;
+  padding: 16px;
+  border: 1px solid rgba(138, 175, 220, 0.24);
+  border-radius: 22px;
+  background: linear-gradient(150deg, rgba(255,255,255,0.94), rgba(242,249,255,0.72));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82), 0 16px 42px rgba(42,94,140,0.12);
+}
+
+.metricTile span {
+  display: block;
+  color: var(--prisma-accent-blue);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.metricTile strong {
+  display: block;
+  margin: 14px 0 8px;
+  color: #073ea7;
+  font-size: clamp(26px, 2.7vw, 42px);
+  line-height: 0.95;
+}
+
+.metricTile small {
+  color: var(--prisma-text-muted);
+}
+
+.branchList {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 86px;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: end;
+  padding: 18px 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(138,175,220,0.22);
+  background: rgba(255,255,255,0.72);
+}
+
+.sectionHead h2 {
+  margin: 2px 0;
+  font-size: 25px;
+}
+
+.sectionHead p,
+.sectionHead small {
+  margin: 0;
+  color: var(--prisma-text-muted);
+}
+
+.branchCard {
+  border: 1px solid rgba(138,175,220,0.28);
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.82);
+  box-shadow: 0 18px 48px rgba(42,94,140,0.12);
+}
+
+.branchSummary {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px;
+  list-style: none;
+}
+
+.branchSummary::-webkit-details-marker {
+  display: none;
+}
+
+.branchSummary strong {
+  display: block;
+  font-size: 24px;
+}
+
+.branchSummary small {
+  color: var(--prisma-text-muted);
+}
+
+.branchStats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: right;
+}
+
+.branchStats span {
+  min-width: 86px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: rgba(231,244,255,0.86);
+  font-weight: 900;
+}
+
+.branchStats small {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.okPill,
+.warnPill,
+.statusPill {
+  display: inline-flex;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.okPill,
+.statusPill {
+  color: #057a4c;
+  background: rgba(202, 247, 226, 0.9);
+}
+
+.warnPill {
+  color: #985400;
+  background: rgba(255, 235, 190, 0.95);
+}
+
+.branchBody {
+  display: grid;
+  gap: 16px;
+  padding: 0 20px 20px;
+}
+
+.tabletRail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.tabletCard {
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(138,175,220,0.22);
+  background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(236,248,255,0.72));
+}
+
+.tabletCard strong,
+.tabletCard span,
+.tabletCard small,
+.tabletCard em {
+  display: block;
+}
+
+.tabletCard span {
+  margin: 8px 0 4px;
+  color: #073ea7;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.tabletCard small {
+  color: var(--prisma-text-muted);
+}
+
+.tabletCard em {
+  margin-top: 8px;
+  color: #315a82;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.ticketTableWrap {
+  overflow-x: auto;
+  border: 1px solid rgba(138,175,220,0.22);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.ticketTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+}
+
+.ticketTable th,
+.ticketTable td {
+  padding: 13px 14px;
+  border-bottom: 1px solid rgba(138,175,220,0.20);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ticketTable th {
+  color: #073ea7;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: rgba(231,244,255,0.82);
+}
+
+.ticketDisclosure summary {
+  cursor: pointer;
+  color: #073ea7;
+  font-weight: 900;
+}
+
+.ticketDetail {
+  min-width: 620px;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(236, 248, 255, 0.82);
+}
+
+.ticketDetailGrid {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 7px 12px;
+  margin-bottom: 14px;
+}
+
+.ticketDetailGrid span {
+  color: var(--prisma-text-muted);
+  font-size: 12px;
+}
+
+.ticketSplit {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+}
+
+.ticketSplit h4 {
+  margin: 0 0 8px;
+}
+
+.ticketSplit ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.ticketSplit li {
+  margin: 6px 0;
+}
+
+.ticketSplit li span,
+.ticketSplit li small,
+.ticketSplit li strong {
+  margin-right: 10px;
+}
+
+.addBranchDock {
+  position: sticky;
+  left: 0;
+  bottom: 18px;
+  width: min(480px, calc(100vw - 52px));
+  z-index: 6;
+  border: 1px solid rgba(4,72,255,0.22);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.94);
+  box-shadow: 0 24px 70px rgba(4,72,255,0.18);
+  overflow: hidden;
+}
+
+.addBranchDock > summary {
+  cursor: pointer;
+  padding: 15px 18px;
+  color: #073ea7;
+  font-weight: 950;
+  list-style: none;
+}
+
+.addBranchDock > summary::-webkit-details-marker {
+  display: none;
+}
+
+.addBranchForm {
+  display: grid;
+  gap: 12px;
+  padding: 0 18px 18px;
+}
+
+.addBranchForm label {
+  display: grid;
+  gap: 5px;
+  color: var(--prisma-text-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.addBranchForm input,
+.addBranchForm textarea {
+  width: 100%;
+  border: 1px solid rgba(138,175,220,0.38);
+  border-radius: 13px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--prisma-text-primary);
+}
+
+.addBranchForm textarea {
+  min-height: 78px;
+  resize: vertical;
+}
+
+.addBranchForm button {
+  border: 0;
+  border-radius: 16px;
+  padding: 13px 16px;
+  color: #fff;
+  font-weight: 950;
+  background: linear-gradient(135deg, #0448ff, #00a2ff);
+  cursor: pointer;
+}
+
+.emptyState {
+  padding: 26px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.78);
+  color: var(--prisma-text-muted);
+}
+
+@media (max-width: 1180px) {
+  .metricsGrid {
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+  }
+
+  .hero,
+  .branchSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .branchStats {
+    flex-wrap: wrap;
+    text-align: left;
+  }
+}
+
+@media (max-width: 760px) {
+  .metricsGrid,
+  .ticketSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .branchStats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

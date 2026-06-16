@@ -15,6 +15,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
   const groupedNavigation = primaryNav;
   const secondaryNav = getSecondaryNavigationForPath(currentPath).filter((item) => item.href !== current.primaryHref && item.status !== "internal" && item.status !== "lab");
   const routeActions = getPrimaryRouteActions(currentPath);
+  const hideRouteIntentStrip = currentPath === "/sales-control";
 
   return (
     <div className="shell" data-prisma-component="AppShell" data-prisma-product="pc" data-uiux-gate="human-first-nav" data-route-intent={current.primaryQuestion}>
@@ -119,7 +120,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </div>
         </header>
 
-        <section className="card" data-prisma-component="RouteIntentStrip" aria-label="Pregunta de esta pantalla">
+        {!hideRouteIntentStrip ? <section className="card" data-prisma-component="RouteIntentStrip" aria-label="Pregunta de esta pantalla">
           <div className="section-head">
             <div>
               <div className="kicker">pregunta de la pantalla</div>
@@ -128,7 +129,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             </div>
           </div>
           <PcSubnav currentPath={currentPath} />
-        </section>
+        </section> : null}
 
         {children}
       </main>
