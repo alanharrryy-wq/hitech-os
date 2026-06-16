@@ -16,8 +16,8 @@ export type PaymentMethodDefinition = {
 };
 
 export const PAYMENT_METHODS: readonly PaymentMethodDefinition[] = [
-  { id: "transfer", label: "Transferencia interbancaria", requiresCashReceived: false, visibleConfirmation: "Confirma comprobante o referencia antes de generar ticket." },
-  { id: "card", label: "Tarjeta bancaria", requiresCashReceived: false, visibleConfirmation: "Confirma aprobación en terminal bancaria antes de generar ticket." },
+  { id: "transfer", label: "Transferencia interbancaria", requiresCashReceived: false, visibleConfirmation: "Referencia opcional: puedes generar ticket sólo con importe confirmado." },
+  { id: "card", label: "Tarjeta bancaria", requiresCashReceived: false, visibleConfirmation: "Autorización opcional: captura importe y confirma la terminal." },
   { id: "cash", label: "Efectivo", requiresCashReceived: true, visibleConfirmation: "Indica con qué billete o monedas paga el cliente para calcular cambio." }
 ] as const;
 

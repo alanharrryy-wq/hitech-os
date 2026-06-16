@@ -538,3 +538,85 @@
   text-shadow: 0 1px 1px rgba(3, 30, 72, .24) !important;
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */
+
+/* PRISMA_TABLET_SHIFT_KPI_NUMERIC_ALIGNMENT_1206::START
+   Align Caja inicial / Ventas del turno / Efectivo esperado as stable money tiles.
+*/
+.kpiGrid {
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+  align-items: stretch;
+}
+
+.kpiCard {
+  min-height: 104px;
+  display: grid;
+  grid-template-rows: auto minmax(34px, auto) auto;
+  align-content: center;
+  gap: 4px;
+  padding: 12px 13px;
+}
+
+.kpiCard span {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #4f6178;
+  line-height: 1.12;
+}
+
+.kpiCard strong {
+  width: 100%;
+  margin-top: 0;
+  overflow: hidden;
+  color: #10223a;
+  font-size: clamp(18px, 2.05vw, 28px);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpiCard small {
+  margin-top: 0;
+  min-height: 30px;
+  color: #5f7084;
+  line-height: 1.18;
+}
+
+.cashBreakdown {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cashBreakdown div {
+  min-width: 0;
+}
+
+.cashBreakdown strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 1120px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cashBreakdown {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .kpiGrid,
+  .cashBreakdown {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_TABLET_SHIFT_KPI_NUMERIC_ALIGNMENT_1206::END */

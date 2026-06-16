@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import {
@@ -66,8 +67,21 @@ function PaymentIcon({ method }: { method: PaymentMethod }) {
   return <Banknote aria-hidden="true" size={18} strokeWidth={2.5} />;
 }
 
-function tenderAmountValue(cents: number) {
-  return cents > 0 ? String(cents / 100) : "";
+function decimalTenderValue(cents: number) {
+  return (Math.max(0, cents) / 100).toFixed(2);
+}
+
+function sanitizeManualMoneyInput(value: string) {
+  const compact = value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
+  const [whole = "", ...decimalParts] = compact.split(".");
+  const decimals = decimalParts.join("").slice(0, 2);
+  if (compact.startsWith(".")) return `0.${decimals}`;
+  if (decimalParts.length > 0) return `${whole || "0"}.${decimals}`;
+  return whole;
+}
+
+function manualMoneyDraftToCents(value: string) {
+  return centsFromDecimalString(value);
 }
 
 function tenderDefinition(method: PaymentMethod) {
@@ -95,10 +109,33 @@ export function PosPaymentPanel({
   onClose: () => void;
   onConfirm: () => void;
 }) {
-  if (!open) return null;
   const busy = isCheckoutBusy(state);
   const view = buildPaymentReviewViewModel({ lines, paymentTenders });
   const visibleError = error ? friendlyPosError(error) : view.blockReason;
+  const [focusedTender, setFocusedTender] = useState<PaymentMethod | null>(null);
+  const [amountDrafts, setAmountDrafts] = useState<Record<PaymentMethod, string>>({
+    cash: decimalTenderValue(paymentTenders.find((tender) => tender.method === "cash")?.amountCents ?? 0),
+    card: decimalTenderValue(paymentTenders.find((tender) => tender.method === "card")?.amountCents ?? 0),
+    transfer: decimalTenderValue(paymentTenders.find((tender) => tender.method === "transfer")?.amountCents ?? 0)
+  });
+
+  useEffect(() => {
+    setAmountDrafts((current) => {
+      let changed = false;
+      const next = { ...current };
+      for (const tender of paymentTenders) {
+        if (focusedTender === tender.method) continue;
+        const formatted = decimalTenderValue(tender.amountCents);
+        if (manualMoneyDraftToCents(next[tender.method] ?? "") !== tender.amountCents || !next[tender.method]) {
+          next[tender.method] = formatted;
+          changed = true;
+        }
+      }
+      return changed ? next : current;
+    });
+  }, [paymentTenders, focusedTender]);
+
+  if (!open) return null;
 
   return (
     <motion.section
@@ -137,7 +174,7 @@ export function PosPaymentPanel({
             <div className={styles.paymentPremiumTitleBlock}>
               <span><ShieldCheck aria-hidden="true" size={15} /> Paso final de venta</span>
               <h2>Método de pago</h2>
-              <p>Combina efectivo, tarjeta y transferencia. El cambio se calcula sólo desde efectivo.</p>
+              <p>Captura importes con punto decimal manual. El símbolo $ queda fijo afuera; referencia, autorización o folio son opcionales.</p>
             </div>
             <PrismaActionButton
               className={cn(checkoutAction({ intent: "ghostGlass" }), styles.paymentPremiumCloseButton)}
@@ -193,21 +230,47 @@ export function PosPaymentPanel({
                     </div>
                     <label className={styles.paymentPremiumTenderAmount}>
                       <span>Importe</span>
-                      <input
-                        inputMode="decimal"
-                        placeholder="0.00"
-                        aria-label={`Importe ${definition.label}`}
-                        value={tenderAmountValue(tender.amountCents)}
-                        disabled={busy}
-                        onChange={(event) => onPaymentTenderChange(tender.method, { amountCents: centsFromDecimalString(event.target.value) })}
-                      />
+                      <div className={styles.paymentPremiumAmountField} data-prisma-currency="MXN" data-prisma-entry-mode="manual-decimal">
+                        <span className={styles.paymentPremiumCurrencyPrefix} aria-hidden="true">$</span>
+                        <input
+                          type="text"
+                          inputMode="decimal"
+                          enterKeyHint="done"
+                          autoComplete="off"
+                          spellCheck={false}
+                          pattern="[0-9]*[.,]?[0-9]{0,2}"
+                          placeholder="0.00"
+                          aria-label={`Importe ${definition.label} en pesos. Escribe el punto decimal manualmente.`}
+                          value={amountDrafts[tender.method] ?? "0.00"}
+                          disabled={busy}
+                          onFocus={(event) => {
+                            setFocusedTender(tender.method);
+                            event.currentTarget.select();
+                          }}
+                          onBlur={() => {
+                            setFocusedTender(null);
+                            setAmountDrafts((current) => ({
+                              ...current,
+                              [tender.method]: decimalTenderValue(manualMoneyDraftToCents(current[tender.method] ?? "0"))
+                            }));
+                          }}
+                          onChange={(event) => {
+                            const draft = sanitizeManualMoneyInput(event.target.value);
+                            setAmountDrafts((current) => ({ ...current, [tender.method]: draft }));
+                            onPaymentTenderChange(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
+                          }}
+                        />
+                      </div>
                     </label>
                     {tender.method !== "cash" ? (
-                      <label className={styles.paymentPremiumTenderReference}>
-                        <span>Referencia</span>
+                      <label className={styles.paymentPremiumTenderReference} data-optional="true">
+                        <span className={styles.paymentPremiumTenderReferenceLabel}>
+                          Referencia
+                          <small>Opcional</small>
+                        </span>
                         <input
-                          placeholder="Autorización o folio"
-                          aria-label={`Referencia ${definition.label}`}
+                          placeholder="Opcional: autorización o folio"
+                          aria-label={`Referencia opcional ${definition.label}`}
                           value={tender.reference}
                           disabled={busy}
                           onChange={(event) => onPaymentTenderChange(tender.method, { reference: event.target.value })}
@@ -280,7 +343,7 @@ export function PosPaymentPanel({
               onClick={onConfirm}
               disabled={!view.canConfirm || busy}
               whileTap={!view.canConfirm || busy ? undefined : { scale: 0.982 }}
-              whileHover={!view.canConfirm || busy ? undefined : { y: -1, boxShadow: "0 26px 62px rgba(22, 91, 238, 0.34)" }}
+              whileHover={!view.canConfirm || busy ? undefined : { y: -1, boxShadow: "0 26px 62px rgba(78, 94, 118, 0.20), 0 0 34px rgba(255, 255, 255, 0.40)" }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               data-prisma-checkout-finalize="31"
               data-prisma-zone="tablet-checkout-confirm-action"

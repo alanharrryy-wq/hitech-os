@@ -4538,12 +4538,14 @@
   isolation: isolate;
   overflow: hidden;
   background:
-    linear-gradient(120deg, rgba(247, 252, 255, 0.56), rgba(238, 247, 255, 0.28) 48%, rgba(255, 255, 255, 0.48)),
-    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.92), transparent 31%),
-    radial-gradient(circle at 82% 18%, rgba(92, 177, 255, 0.28), transparent 38%),
-    radial-gradient(circle at 50% 94%, rgba(30, 192, 132, 0.16), transparent 42%),
+    linear-gradient(135deg, rgba(2, 8, 23, 0.82), rgba(8, 23, 52, 0.76) 42%, rgba(1, 5, 16, 0.88)),
+    radial-gradient(circle at 18% 8%, rgba(44, 143, 255, 0.32), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(36, 214, 168, 0.18), transparent 38%),
+    radial-gradient(circle at 50% 96%, rgba(10, 38, 92, 0.58), transparent 44%),
     url("/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg") center / cover no-repeat;
   color: var(--prisma-text-primary, #172033);
+  backdrop-filter: blur(8px) saturate(1.18) brightness(0.72);
+  -webkit-backdrop-filter: blur(8px) saturate(1.18) brightness(0.72);
 }
 
 .paymentPremiumAtmosphere {
@@ -4552,11 +4554,12 @@
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.58)),
-    radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.68), transparent 34%),
-    radial-gradient(ellipse at 72% 78%, rgba(21, 111, 255, 0.16), transparent 42%);
-  backdrop-filter: blur(3px) saturate(1.08);
-  -webkit-backdrop-filter: blur(3px) saturate(1.08);
+    linear-gradient(180deg, rgba(1, 5, 18, 0.18), rgba(1, 7, 24, 0.52)),
+    radial-gradient(ellipse at 48% 10%, rgba(78, 171, 255, 0.20), transparent 34%),
+    radial-gradient(ellipse at 72% 78%, rgba(15, 185, 145, 0.14), transparent 42%),
+    radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.34) 100%);
+  backdrop-filter: blur(10px) saturate(1.14) brightness(0.74);
+  -webkit-backdrop-filter: blur(10px) saturate(1.14) brightness(0.74);
 }
 
 .paymentPremiumShell {
@@ -4571,7 +4574,7 @@
   --prisma-density-gap: 14px;
   --prisma-radius-panel: 34px;
   --prisma-surface-panel-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(240, 249, 255, 0.66));
-  --prisma-shadow-soft: 0 34px 96px rgba(47, 92, 145, 0.24), 0 8px 26px rgba(42, 88, 140, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  --prisma-shadow-soft: 0 40px 120px rgba(1, 8, 24, 0.46), 0 16px 42px rgba(19, 65, 135, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.88);
   max-height: calc(100dvh - 24px);
   overflow: auto;
   display: grid;
@@ -4801,6 +4804,41 @@
   gap: 6px;
 }
 
+ .paymentPremiumAmountField {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(172, 205, 240, 0.78);
+  border-radius: 16px;
+  padding: 0 11px 0 10px;
+  color: #14243a;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(235, 245, 255, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.paymentPremiumCurrencyPrefix {
+  position: static;
+  transform: none;
+  width: 28px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #1557ff;
+  background: rgba(225, 240, 255, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 8px 18px rgba(43, 111, 218, 0.12);
+  font-size: 0.94rem;
+  font-weight: 940;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .paymentPremiumTenderAmount input,
 .paymentPremiumTenderReference input {
   width: 100%;
@@ -4816,7 +4854,32 @@
   font-weight: 880;
 }
 
-.paymentPremiumTenderAmount input:focus,
+.paymentPremiumAmountField input {
+  min-height: 46px;
+  border: 0;
+  border-radius: 0;
+  padding: 0 2px 0 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  letter-spacing: 0.01em;
+}
+
+.paymentPremiumAmountField:focus-within {
+  border-color: rgba(35, 110, 240, 0.70);
+  box-shadow:
+    0 0 0 4px rgba(35, 110, 240, 0.14),
+    0 14px 30px rgba(18, 73, 160, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.paymentPremiumAmountField input:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
 .paymentPremiumTenderReference input:focus {
   border-color: rgba(35, 110, 240, 0.66);
   box-shadow:
@@ -6058,17 +6121,17 @@
 }
 
 .posPremiumCheckoutCtaReady {
-  color: #ffffff;
-  border-color: rgba(205, 255, 225, 0.82);
+  color: var(--pay2-ink);
+  border-color: rgba(214, 187, 128, 0.54);
   background:
     radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.54), transparent 30%),
-    linear-gradient(145deg, rgba(91, 238, 159, 0.98), var(--pay2-mint) 48%, var(--pay2-mint-deep));
+    linear-gradient(118deg, rgba(255, 255, 255, 0.92), rgba(250, 248, 241, 0.70) 48%, rgba(235, 247, 249, 0.58));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.62),
-    inset 0 -1px 0 rgba(2, 92, 48, 0.28),
-    0 24px 54px rgba(6, 130, 72, 0.30),
-    0 0 36px rgba(19, 184, 106, 0.26);
-  text-shadow: 0 1px 12px rgba(0, 72, 34, 0.28);
+    inset 0 -1px 0 rgba(128, 106, 72, 0.14),
+    0 24px 54px rgba(57, 74, 96, 0.16),
+    0 0 32px rgba(214, 187, 128, 0.16);
+  text-shadow: none;
 }
 
 .posPremiumCheckoutCta strong {
@@ -6208,3 +6271,3688 @@
   }
 }
 /* PRISMA_TABLET_PAY2_ULTRA_PREMIUM_1106::END */
+
+/* PRISMA_TABLET_POS_SELL_GOLDEN_1106::START
+   Foreground-only premium pass. Preserves active Fuji/cloud background URL,
+   position and framing while lifting POS controls into porcelain optical glass.
+*/
+.posPremiumWorkspace {
+  --sell-ink: #122033;
+  --sell-ink-soft: #33485f;
+  --sell-muted: #627184;
+  --sell-edge: rgba(154, 176, 202, 0.34);
+  --sell-edge-bright: rgba(255, 255, 255, 0.86);
+  --sell-rim: rgba(203, 215, 228, 0.72);
+  --sell-prism: rgba(151, 199, 230, 0.30);
+  --sell-champagne: rgba(218, 190, 132, 0.34);
+  --sell-porcelain: rgba(249, 252, 252, 0.78);
+  --sell-porcelain-strong: rgba(252, 253, 252, 0.88);
+  --sell-mineral: rgba(228, 236, 242, 0.54);
+  --sell-caustic: rgba(255, 255, 255, 0.58);
+  --sell-shadow: 0 20px 48px rgba(67, 86, 108, 0.14), inset 0 1px 0 var(--sell-edge-bright);
+  color: var(--sell-ink);
+}
+
+.posPremiumHero,
+.posPremiumSearchCard,
+.posPremiumProductCard,
+.posPremiumTicketPanel,
+.posPremiumStatePanel,
+.posPremiumPagination {
+  border-color: var(--sell-edge);
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.74), rgba(243, 248, 249, 0.56) 48%, rgba(236, 244, 247, 0.42)),
+    linear-gradient(180deg, var(--sell-porcelain), rgba(244, 249, 250, 0.62));
+  box-shadow: var(--sell-shadow);
+  backdrop-filter: blur(1px) saturate(1.08) contrast(1.01);
+  -webkit-backdrop-filter: blur(1px) saturate(1.08) contrast(1.01);
+}
+
+.posPremiumHero,
+.posPremiumSearchCard,
+.posPremiumProductCard,
+.posPremiumTicketPanel,
+.posPremiumStatePanel,
+.posPremiumPagination,
+.paymentPremiumPanel,
+.paymentPremiumTenderRow,
+.paymentPremiumCashBox,
+.paymentPremiumReview,
+.paymentPremiumReviewReady {
+  position: relative;
+  overflow: hidden;
+}
+
+.posPremiumHero::before,
+.posPremiumSearchCard::before,
+.posPremiumProductCard::before,
+.posPremiumTicketPanel::before,
+.paymentPremiumPanel::before,
+.paymentPremiumTenderRow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), transparent 17%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.42), transparent 33%, rgba(154, 214, 235, 0.12) 62%, transparent 78%);
+  opacity: 0.78;
+}
+
+.posPremiumHero::after,
+.posPremiumProductCard::after,
+.posPremiumTicketPanel::after,
+.posPremiumCheckoutCta::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(92deg, transparent, rgba(255, 255, 255, 0.66), rgba(180, 219, 236, 0.26), transparent);
+  opacity: 0.48;
+}
+
+.posPremiumHero > *,
+.posPremiumSearchCard > *,
+.posPremiumProductCard > *,
+.posPremiumTicketPanel > *,
+.paymentPremiumPanel > *,
+.paymentPremiumTenderRow > * {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumHero {
+  border-radius: 30px;
+  padding: clamp(18px, 1.7vw, 24px);
+  background:
+    radial-gradient(ellipse at 4% 0%, rgba(255, 255, 255, 0.72), transparent 34%),
+    linear-gradient(126deg, rgba(255, 255, 255, 0.82), rgba(244, 249, 250, 0.58) 56%, rgba(234, 243, 247, 0.46));
+}
+
+.posPremiumHero::after {
+  inset: auto 10% -22px 42%;
+  height: 42px;
+  filter: blur(11px);
+}
+
+.posPremiumHeroCopy span,
+.posPremiumSearchLabel > span,
+.posPremiumTicketHeader span,
+.paymentPremiumTitleBlock span,
+.paymentPremiumHeroTotal span,
+.paymentPremiumSectionLabel {
+  color: var(--sell-ink-soft);
+  letter-spacing: 0.08em;
+}
+
+.posPremiumHeroCopy h2 {
+  color: var(--sell-ink);
+  font-size: clamp(1.62rem, 2.45vw, 2.55rem);
+  line-height: 1.03;
+}
+
+.posPremiumHeroCopy p,
+.posPremiumCatalogInsight,
+.posPremiumProductPrice small,
+.posPremiumTicketLineText span,
+.posPremiumDiagnosticOk span,
+.posPremiumDiagnosticWarn span,
+.paymentPremiumTitleBlock p,
+.paymentPremiumTenderMeta small,
+.paymentPremiumReview span,
+.paymentPremiumReviewReady span,
+.paymentPremiumReview small,
+.paymentPremiumReviewReady small {
+  color: var(--sell-muted);
+}
+
+.posPremiumHeroMetrics span,
+.posPremiumCatalogInsight,
+.posPremiumSearchInputWrap,
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive,
+.posPremiumProductStatus,
+.posPremiumFavoriteStar,
+.posPremiumTicketLine,
+.posPremiumEmptyTicket,
+.posPremiumDiagnosticOk,
+.posPremiumDiagnosticWarn,
+.posPremiumTicketTotal,
+.paymentPremiumHeroTotal,
+.paymentPremiumStatusPill,
+.paymentPremiumTotalsGrid span {
+  border-color: rgba(172, 190, 210, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(245, 249, 250, 0.54)),
+    rgba(255, 255, 255, 0.40);
+  box-shadow: inset 0 1px 0 var(--sell-edge-bright), 0 12px 28px rgba(78, 94, 118, 0.09);
+}
+
+.posPremiumHeroMetrics svg,
+.posPremiumSearchInputWrap svg,
+.posPremiumStatePanel svg,
+.posPremiumEmptyTicket svg,
+.posPremiumFavoriteStar,
+.posPremiumLineTotal,
+.posPremiumProductPrice strong,
+.paymentPremiumTenderMeta > span,
+.paymentPremiumCashSuggestions button {
+  color: var(--sell-ink-soft);
+}
+
+.posPremiumHeroMetrics span[data-emphasis="true"],
+.posPremiumCategoryButtonActive {
+  color: var(--sell-ink);
+  border-color: rgba(214, 190, 132, 0.56);
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.88), rgba(249, 248, 241, 0.62) 48%, rgba(236, 247, 250, 0.50)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34),
+    0 18px 38px rgba(128, 107, 72, 0.13),
+    0 0 32px rgba(218, 190, 132, 0.16);
+}
+
+.posPremiumHeroMetrics span[data-emphasis="true"] svg,
+.posPremiumHeroMetrics span[data-emphasis="true"] small,
+.posPremiumHeroMetrics span[data-emphasis="true"] strong,
+.posPremiumCategoryButtonActive span {
+  color: var(--sell-ink);
+}
+
+.posPremiumSearchCard {
+  border-radius: 28px;
+  padding: 16px;
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 68px;
+  border-radius: 24px;
+}
+
+.posPremiumSearchInputWrap:focus-within {
+  border-color: rgba(218, 190, 132, 0.62);
+  box-shadow:
+    0 0 0 4px rgba(218, 190, 132, 0.14),
+    0 18px 38px rgba(78, 94, 118, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.posPremiumSearchInputWrap input,
+.posPremiumProductName,
+.posPremiumTicketHeader h2,
+.posPremiumTicketLineText strong,
+.posPremiumTicketTotal strong,
+.paymentPremiumTitleBlock h2,
+.paymentPremiumTenderMeta strong,
+.paymentPremiumTotalsGrid strong,
+.paymentPremiumReview strong,
+.paymentPremiumReviewReady strong {
+  color: var(--sell-ink);
+}
+
+.posPremiumPrimaryButton,
+.posPremiumSecondaryButton,
+.posPremiumGhostButton,
+.posPremiumAddButton,
+.posPremiumTicketUtilityButton,
+.posPremiumSecondaryCheckoutActions button,
+.paymentPremiumAction {
+  border-color: rgba(172, 190, 210, 0.48);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 249, 250, 0.56)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 12px 26px rgba(78, 94, 118, 0.10);
+}
+
+.posPremiumPrimaryButton:hover,
+.posPremiumSecondaryButton:hover,
+.posPremiumGhostButton:hover,
+.posPremiumAddButton:not(:disabled):hover,
+.posPremiumTicketUtilityButton:not(:disabled):hover,
+.posPremiumSecondaryCheckoutActions button:not(:disabled):hover {
+  border-color: rgba(218, 190, 132, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 16px 32px rgba(78, 94, 118, 0.12),
+    0 0 22px rgba(218, 190, 132, 0.12);
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: 56px;
+  min-width: 132px;
+  border-radius: 20px;
+}
+
+.posPremiumCategoryButton span,
+.posPremiumCategoryButtonActive span {
+  color: var(--sell-ink-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(237, 245, 247, 0.58));
+}
+
+.posPremiumProductGrid {
+  grid-template-columns: repeat(auto-fit, minmax(198px, 1fr));
+  gap: clamp(14px, 1.4vw, 20px);
+}
+
+.posPremiumProductCard {
+  min-height: 336px;
+  border-radius: 28px;
+  padding: 15px;
+}
+
+.posPremiumProductCard::before {
+  background:
+    linear-gradient(128deg, rgba(255, 255, 255, 0.74), transparent 28%, rgba(183, 216, 229, 0.12) 58%, transparent 77%),
+    radial-gradient(ellipse at 50% -6%, rgba(255, 255, 255, 0.78), transparent 42%);
+}
+
+.posPremiumProductCard::after {
+  inset: auto 22px 11px;
+  height: 30px;
+  background: rgba(76, 101, 126, 0.10);
+  filter: blur(16px);
+}
+
+.posPremiumProductCard:not(.posPremiumProductCardDisabled):hover {
+  border-color: rgba(218, 190, 132, 0.42);
+  box-shadow:
+    0 24px 54px rgba(67, 86, 108, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 0 28px rgba(214, 190, 132, 0.12);
+}
+
+.posPremiumProductStage {
+  min-height: 166px;
+  border-color: rgba(185, 198, 213, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(246, 249, 249, 0.42) 52%, rgba(232, 239, 242, 0.32)),
+    radial-gradient(ellipse at 50% 94%, rgba(218, 190, 132, 0.18), transparent 44%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 14px 26px rgba(78, 94, 118, 0.08);
+}
+
+.posPremiumProductStage::before {
+  background:
+    linear-gradient(108deg, transparent 0%, rgba(255, 255, 255, 0.58) 31%, transparent 48%),
+    linear-gradient(25deg, transparent 0%, rgba(178, 219, 234, 0.12) 65%, transparent 81%);
+  opacity: 0.62;
+}
+
+.posPremiumProductStage .productAura {
+  opacity: 0.44;
+  filter: blur(18px) saturate(1.02);
+}
+
+.posPremiumProductStage .productPackshot {
+  filter: drop-shadow(0 24px 20px rgba(54, 70, 88, 0.18)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.20));
+}
+
+.posPremiumProductCard:hover .productPackshot,
+.posPremiumProductCard:focus-within .productPackshot {
+  filter: drop-shadow(0 28px 22px rgba(54, 70, 88, 0.22)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.28));
+}
+
+.posPremiumAddButton {
+  min-height: 54px;
+  border-radius: 18px;
+}
+
+.posPremiumAddButton svg {
+  color: var(--sell-ink-soft);
+}
+
+.posPremiumTicketPanel {
+  border-radius: 34px;
+  background:
+    linear-gradient(132deg, rgba(255, 255, 255, 0.82), rgba(244, 249, 250, 0.62) 52%, rgba(235, 244, 247, 0.48)),
+    rgba(255, 255, 255, 0.46);
+}
+
+.posPremiumTicketPanel::after {
+  inset: auto 14px 8px;
+  height: 46px;
+  background: linear-gradient(92deg, transparent, rgba(218, 190, 132, 0.20), rgba(255, 255, 255, 0.52), transparent);
+  filter: blur(14px);
+}
+
+.posPremiumTicketReady {
+  border-color: rgba(218, 190, 132, 0.44);
+  box-shadow:
+    0 26px 64px rgba(67, 86, 108, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    0 0 28px rgba(218, 190, 132, 0.12);
+}
+
+.posPremiumTicketLine {
+  min-height: 84px;
+  border-radius: 24px;
+  padding: 11px;
+}
+
+.posPremiumCartThumb {
+  width: 58px;
+  height: 62px;
+  border-color: rgba(172, 190, 210, 0.48);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(242, 248, 249, 0.50)),
+    radial-gradient(ellipse at 50% 82%, rgba(218, 190, 132, 0.18), transparent 44%);
+}
+
+.posPremiumStepper {
+  min-height: 48px;
+  gap: 8px;
+  border: 1px solid rgba(172, 190, 210, 0.38);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.posPremiumStepper button,
+.posPremiumRemoveButton {
+  width: 42px;
+  height: 42px;
+  color: var(--sell-ink-soft);
+  border: 1px solid rgba(172, 190, 210, 0.36);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.posPremiumRemoveButton {
+  color: #9f2f2f;
+}
+
+.posPremiumTotalsBreakdown {
+  color: var(--sell-muted);
+}
+
+.posPremiumTicketTotal {
+  border-color: rgba(218, 190, 132, 0.48);
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.86), rgba(249, 248, 241, 0.62) 48%, rgba(237, 247, 249, 0.50)),
+    rgba(255, 255, 255, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 18px 42px rgba(67, 86, 108, 0.12),
+    0 0 30px rgba(218, 190, 132, 0.12);
+}
+
+.posPremiumTicketTotal span {
+  color: var(--sell-ink-soft);
+}
+
+.posPremiumTicketTotal strong {
+  font-size: clamp(2.45rem, 4.8vw, 4.15rem);
+}
+
+.posPremiumCheckoutCta {
+  min-height: 88px;
+  grid-template-columns: minmax(0, 1fr) auto 32px;
+  overflow: hidden;
+  border-radius: 28px;
+  border-color: rgba(218, 190, 132, 0.58);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.92), rgba(249, 248, 241, 0.70) 42%, rgba(232, 245, 249, 0.62)),
+    rgba(255, 255, 255, 0.56);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -1px 0 rgba(154, 126, 82, 0.12),
+    0 26px 62px rgba(67, 86, 108, 0.18),
+    0 0 34px rgba(218, 190, 132, 0.18);
+  text-shadow: none;
+}
+
+.posPremiumCheckoutCta::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), transparent 32%),
+    linear-gradient(100deg, transparent 0%, rgba(180, 219, 236, 0.18) 36%, rgba(255, 255, 255, 0.34) 50%, transparent 64%);
+  opacity: 0.86;
+}
+
+.posPremiumCheckoutCta::after {
+  inset: auto 14px 8px;
+  height: 18px;
+  filter: blur(10px);
+}
+
+.posPremiumCheckoutCtaReady:hover .posPremiumCheckoutCtaArrow,
+.posPremiumCheckoutCtaReady:focus-visible .posPremiumCheckoutCtaArrow {
+  transform: translateX(3px);
+}
+
+.posPremiumCheckoutCtaLabel {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sell-ink);
+  font-size: clamp(1.2rem, 2.05vw, 1.55rem);
+  letter-spacing: 0.02em;
+}
+
+.posPremiumCheckoutCtaGlyph {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  border: 1px solid rgba(218, 190, 132, 0.44);
+  color: var(--sell-ink-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(246, 249, 249, 0.52));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 10px 22px rgba(78, 94, 118, 0.10);
+}
+
+.posPremiumCheckoutCtaAmount {
+  min-width: 112px;
+  max-width: 220px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 0 16px;
+  color: var(--sell-ink);
+  background: rgba(255, 255, 255, 0.50);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  font-size: clamp(0.9rem, 1.42vw, 1.08rem);
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.posPremiumCheckoutCtaArrow {
+  justify-self: end;
+  color: var(--sell-ink-soft);
+  transition: transform 180ms ease;
+}
+
+.posPremiumCheckoutCtaDisabled {
+  color: var(--sell-muted);
+  border-color: rgba(172, 190, 210, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(244, 249, 250, 0.44));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 20px rgba(70, 103, 150, 0.08);
+}
+
+.posPremiumCheckoutCtaBusy::before {
+  background:
+    linear-gradient(102deg, transparent 0%, rgba(255, 255, 255, 0.22) 38%, rgba(218, 190, 132, 0.22) 50%, transparent 64%);
+}
+
+.paymentPremiumOverlay {
+  background:
+    linear-gradient(120deg, rgba(247, 252, 255, 0.24), rgba(255, 255, 255, 0.18) 48%, rgba(244, 249, 250, 0.24)),
+    url("/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg") center / cover no-repeat;
+}
+
+.paymentPremiumAtmosphere {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.32)),
+    linear-gradient(118deg, transparent, rgba(255, 255, 255, 0.28) 44%, transparent 70%);
+  backdrop-filter: blur(1px) saturate(1.04);
+  -webkit-backdrop-filter: blur(1px) saturate(1.04);
+}
+
+.paymentPremiumPanel {
+  border-color: rgba(172, 190, 210, 0.42);
+  background:
+    linear-gradient(128deg, rgba(255, 255, 255, 0.88), rgba(246, 249, 249, 0.66) 54%, rgba(236, 245, 248, 0.52)),
+    rgba(255, 255, 255, 0.50);
+  box-shadow:
+    0 38px 96px rgba(67, 86, 108, 0.22),
+    0 10px 28px rgba(78, 94, 118, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(1px) saturate(1.08);
+  -webkit-backdrop-filter: blur(1px) saturate(1.08);
+}
+
+.paymentPremiumPanelTitle,
+.paymentPremiumStatusPill,
+.paymentPremiumCashSuggestions button {
+  color: var(--sell-ink-soft);
+  border-color: rgba(172, 190, 210, 0.46);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.paymentPremiumHeroTotal {
+  border-color: rgba(218, 190, 132, 0.46);
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.88), rgba(249, 248, 241, 0.62) 46%, rgba(236, 246, 248, 0.54));
+}
+
+.paymentPremiumHeroTotal::after {
+  background: rgba(218, 190, 132, 0.16);
+  filter: blur(20px);
+}
+
+.paymentPremiumHeroTotal strong {
+  color: var(--sell-ink);
+  text-shadow: 0 14px 32px rgba(67, 86, 108, 0.14);
+}
+
+.paymentPremiumTenderRow {
+  min-height: 82px;
+  border-color: rgba(172, 190, 210, 0.42);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.82), rgba(245, 249, 250, 0.58)),
+    rgba(255, 255, 255, 0.46);
+}
+
+.paymentPremiumTenderActive {
+  border-color: rgba(218, 190, 132, 0.50);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.88), rgba(249, 248, 241, 0.64)),
+    rgba(255, 255, 255, 0.50);
+  box-shadow:
+    0 0 0 3px rgba(218, 190, 132, 0.10),
+    0 18px 44px rgba(67, 86, 108, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+.paymentPremiumTenderMeta > span {
+  color: var(--sell-ink-soft);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(239, 246, 248, 0.62));
+}
+
+.paymentPremiumTenderAmount input,
+.paymentPremiumTenderReference input {
+  min-height: 50px;
+  border-color: rgba(172, 190, 210, 0.48);
+  color: var(--sell-ink);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.paymentPremiumTenderAmount input:focus,
+.paymentPremiumTenderReference input:focus {
+  border-color: rgba(218, 190, 132, 0.58);
+  box-shadow:
+    0 0 0 4px rgba(218, 190, 132, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+.paymentPremiumReviewReady,
+.posPremiumDiagnosticOk {
+  border-color: rgba(54, 150, 106, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(238, 249, 244, 0.58));
+}
+
+.paymentPremiumReviewReady strong,
+.posPremiumDiagnosticOk strong {
+  color: #226143;
+}
+
+.paymentPremiumActionPrimary {
+  min-height: 74px;
+  color: var(--sell-ink);
+  border-color: rgba(218, 190, 132, 0.58);
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.92), rgba(249, 248, 241, 0.70) 42%, rgba(232, 245, 249, 0.62)),
+    rgba(255, 255, 255, 0.56);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -1px 0 rgba(154, 126, 82, 0.12),
+    0 24px 58px rgba(67, 86, 108, 0.16),
+    0 0 30px rgba(218, 190, 132, 0.16);
+  text-shadow: none;
+}
+
+.paymentPremiumActionPrimary:disabled {
+  color: var(--sell-muted);
+  border-color: rgba(172, 190, 210, 0.34);
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 20px rgba(70, 103, 150, 0.08);
+}
+
+@media (max-width: 860px) {
+  .posPremiumCheckoutCta {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    gap: 8px;
+    padding: 14px 18px;
+  }
+
+  .posPremiumCheckoutCtaAmount {
+    max-width: none;
+    width: 100%;
+  }
+
+  .posPremiumCheckoutCtaArrow {
+    display: none;
+  }
+}
+/* PRISMA_TABLET_POS_SELL_GOLDEN_1106::END */
+
+/* PRISMA_TABLET_POS_SELL_GOLDEN_LAYOUT_1106B::START
+   Second-pass POS-only layout/material pass. Collapses the marketing hero into
+   a compact selling header and keeps the Fuji/cloud background untouched.
+*/
+.posPremiumWorkspace {
+  --sell-ink: #111c2c;
+  --sell-ink-soft: #2f4056;
+  --sell-muted: #657486;
+  --sell-line: rgba(142, 160, 184, 0.32);
+  --sell-rim-strong: rgba(255, 255, 255, 0.92);
+  --sell-porcelain-body: rgba(250, 252, 250, 0.88);
+  --sell-porcelain-deep: rgba(232, 239, 241, 0.70);
+  --sell-caustic-line: rgba(255, 255, 255, 0.68);
+  --sell-crystal-gold: rgba(214, 187, 128, 0.34);
+  --sell-crystal-cyan: rgba(158, 207, 224, 0.20);
+  grid-template-columns: minmax(0, 1fr) clamp(382px, 30vw, 452px);
+  gap: clamp(12px, 1.15vw, 18px);
+  align-items: start;
+  min-height: calc(100dvh - 146px);
+  padding-bottom: 10px;
+}
+
+.posPremiumWorkspace::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.16) 44%, rgba(246, 251, 252, 0.34)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(246, 249, 247, 0.08) 52%, rgba(222, 232, 235, 0.22)),
+    radial-gradient(ellipse at 72% 14%, rgba(255, 255, 255, 0.28), transparent 34%);
+  opacity: 0.86;
+}
+
+.posPremiumCatalogArea {
+  gap: clamp(9px, 0.95vw, 14px);
+}
+
+.posPremiumSellHeader,
+.posPremiumSearchCard,
+.posPremiumProductCard,
+.posPremiumTicketPanel,
+.posPremiumPagination {
+  border: 1px solid var(--sell-line);
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, 0.86), rgba(247, 249, 247, 0.68) 46%, rgba(236, 244, 246, 0.58)),
+    linear-gradient(180deg, var(--sell-porcelain-body), var(--sell-porcelain-deep));
+  box-shadow:
+    inset 0 1px 0 var(--sell-rim-strong),
+    inset 0 -1px 0 rgba(124, 142, 166, 0.08),
+    0 18px 42px rgba(57, 74, 96, 0.13);
+  backdrop-filter: blur(0.5px) saturate(1.06) contrast(1.02);
+  -webkit-backdrop-filter: blur(0.5px) saturate(1.06) contrast(1.02);
+}
+
+.posPremiumSellHeader {
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.62fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  overflow: hidden;
+  border-radius: 24px;
+  position: relative;
+}
+
+.posPremiumSellHeader::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(102deg, var(--sell-caustic-line), transparent 18%, transparent 62%, rgba(176, 217, 229, 0.20)),
+    linear-gradient(18deg, transparent 0%, rgba(214, 187, 128, 0.12) 42%, transparent 58%);
+  opacity: 0.54;
+}
+
+.posPremiumSellHeader > * {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumSellStatus {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.posPremiumSellStatus span {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--sell-ink-soft);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.posPremiumSellStatus strong {
+  color: var(--sell-ink);
+  font-size: clamp(1.22rem, 1.8vw, 1.74rem);
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.posPremiumSellStatus small {
+  color: var(--sell-muted);
+  font-size: 0.82rem;
+  font-weight: 760;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.posPremiumHeroMetrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.posPremiumHeroMetrics span {
+  min-height: 58px;
+  border-color: rgba(160, 176, 198, 0.38);
+  border-radius: 18px;
+  padding: 8px 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(245, 249, 249, 0.52)),
+    rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 10px 22px rgba(57, 74, 96, 0.08);
+}
+
+.posPremiumHeroMetrics small {
+  color: var(--sell-muted);
+  font-size: 0.68rem;
+}
+
+.posPremiumHeroMetrics strong {
+  color: var(--sell-ink);
+  font-size: clamp(1rem, 1.4vw, 1.34rem);
+}
+
+.posPremiumHeroMetrics span[data-emphasis="true"] {
+  border-color: rgba(214, 187, 128, 0.50);
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0.90), rgba(250, 248, 240, 0.66) 52%, rgba(239, 247, 249, 0.54)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 14px 30px rgba(111, 95, 66, 0.12),
+    0 0 22px rgba(214, 187, 128, 0.14);
+}
+
+.posPremiumSearchCard {
+  grid-template-columns: minmax(340px, 1fr) minmax(128px, 0.22fr) auto;
+  align-items: end;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 24px;
+}
+
+.posPremiumSearchLabel {
+  gap: 6px;
+}
+
+.posPremiumSearchLabel > span {
+  color: var(--sell-ink-soft);
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 64px;
+  border-radius: 20px;
+  border-color: rgba(149, 168, 190, 0.46);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(246, 249, 249, 0.66)),
+    rgba(255, 255, 255, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(112, 132, 156, 0.07),
+    0 12px 26px rgba(57, 74, 96, 0.08);
+}
+
+.posPremiumSearchInputWrap input {
+  color: var(--sell-ink);
+  font-size: clamp(1.02rem, 1.28vw, 1.18rem);
+}
+
+.posPremiumCatalogInsight {
+  min-height: 64px;
+  border-radius: 20px;
+  align-content: center;
+}
+
+.posPremiumSearchActions {
+  grid-column: auto;
+  flex-wrap: nowrap;
+  align-items: end;
+}
+
+.posPremiumPrimaryButton,
+.posPremiumSecondaryButton,
+.posPremiumGhostButton,
+.posPremiumAddButton,
+.posPremiumTicketUtilityButton,
+.posPremiumSecondaryCheckoutActions button,
+.paymentPremiumAction {
+  min-height: 48px;
+  border-color: rgba(150, 168, 190, 0.44);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(245, 249, 249, 0.58)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 10px 22px rgba(57, 74, 96, 0.09);
+}
+
+.posPremiumPrimaryButton,
+.posPremiumAddButton {
+  border-color: rgba(214, 187, 128, 0.50);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.92), rgba(250, 248, 241, 0.66) 46%, rgba(235, 247, 249, 0.54)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 14px 28px rgba(111, 95, 66, 0.12),
+    0 0 18px rgba(214, 187, 128, 0.13);
+}
+
+.posPremiumCategoryRail {
+  gap: 8px;
+  padding: 0 2px 2px;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: 44px;
+  min-width: 124px;
+  border-radius: 17px;
+}
+
+.posPremiumProductGrid {
+  grid-template-columns: repeat(auto-fit, minmax(188px, 1fr));
+  gap: clamp(12px, 1.1vw, 16px);
+}
+
+.posPremiumProductCard {
+  min-height: 312px;
+  grid-template-rows: auto minmax(142px, 1fr) minmax(58px, auto) auto;
+  gap: 9px;
+  padding: 13px;
+  border-radius: 26px;
+  border-color: rgba(145, 164, 186, 0.36);
+  background:
+    linear-gradient(126deg, rgba(255, 255, 255, 0.88), rgba(248, 250, 248, 0.70) 42%, rgba(234, 244, 246, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(236, 242, 243, 0.56));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(120, 136, 158, 0.08),
+    0 18px 38px rgba(57, 74, 96, 0.12);
+}
+
+.posPremiumProductCard::before {
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.78), transparent 18%, rgba(170, 211, 225, 0.13) 47%, transparent 63%),
+    linear-gradient(22deg, transparent 7%, rgba(214, 187, 128, 0.10) 46%, transparent 61%),
+    radial-gradient(ellipse at 50% -8%, rgba(255, 255, 255, 0.78), transparent 40%);
+  opacity: 0.78;
+}
+
+.posPremiumProductCard::after {
+  inset: auto 18px 8px;
+  height: 28px;
+  background: linear-gradient(92deg, transparent, rgba(214, 187, 128, 0.16), rgba(255, 255, 255, 0.40), transparent);
+  filter: blur(11px);
+}
+
+.posPremiumProductCard:not(.posPremiumProductCardDisabled):hover,
+.posPremiumProductCard:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(214, 187, 128, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 24px 46px rgba(57, 74, 96, 0.16),
+    0 0 24px rgba(214, 187, 128, 0.13);
+}
+
+.posPremiumProductStage {
+  min-height: 148px;
+  border-radius: 23px;
+  border-color: rgba(145, 164, 186, 0.36);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(247, 249, 248, 0.50) 52%, rgba(226, 235, 238, 0.42)),
+    radial-gradient(ellipse at 50% 92%, rgba(214, 187, 128, 0.20), transparent 46%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -1px 0 rgba(122, 139, 160, 0.10),
+    0 12px 24px rgba(57, 74, 96, 0.08);
+}
+
+.posPremiumProductStage::before {
+  background:
+    linear-gradient(103deg, transparent 3%, rgba(255, 255, 255, 0.60) 31%, transparent 47%),
+    linear-gradient(25deg, transparent 0%, rgba(166, 210, 225, 0.13) 63%, transparent 79%);
+  opacity: 0.70;
+}
+
+.posPremiumProductStage .productPedestal {
+  width: 128px;
+  height: 20px;
+  bottom: 13px;
+  opacity: 0.86;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 244, 214, 0.42), rgba(214, 187, 128, 0.16) 54%, transparent 78%);
+  box-shadow: 0 12px 22px rgba(76, 86, 102, 0.12);
+}
+
+.posPremiumProductName {
+  color: var(--sell-ink);
+  font-size: clamp(0.98rem, 1.18vw, 1.14rem);
+  line-height: 1.08;
+}
+
+.posPremiumProductPrice {
+  align-items: center;
+}
+
+.posPremiumProductPrice strong {
+  color: var(--sell-ink);
+  font-size: clamp(1.26rem, 1.9vw, 1.58rem);
+}
+
+.posPremiumProductPrice small {
+  color: var(--sell-muted);
+}
+
+.posPremiumAddButton {
+  min-height: 48px;
+  border-radius: 17px;
+}
+
+.posPremiumTicketPanel {
+  top: 8px;
+  gap: 11px;
+  max-height: calc(100dvh - 132px);
+  padding: 14px;
+  border-radius: 28px;
+  border-color: rgba(145, 164, 186, 0.40);
+  background:
+    linear-gradient(132deg, rgba(255, 255, 255, 0.90), rgba(247, 249, 248, 0.74) 44%, rgba(235, 243, 245, 0.62)),
+    rgba(255, 255, 255, 0.56);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(112, 132, 156, 0.08),
+    0 24px 54px rgba(57, 74, 96, 0.16);
+}
+
+.posPremiumTicketPanel::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 18%),
+    linear-gradient(112deg, rgba(255, 255, 255, 0.40), transparent 28%, rgba(166, 210, 225, 0.13) 61%, transparent 76%);
+}
+
+.posPremiumTicketLines {
+  gap: 9px;
+  min-height: 184px;
+  max-height: min(34dvh, 380px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.posPremiumTicketLine {
+  min-height: 92px;
+  grid-template-columns: 58px minmax(0, 1fr) auto auto 46px;
+  gap: 9px;
+  padding: 10px;
+  border-radius: 22px;
+  border-color: rgba(145, 164, 186, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(246, 249, 249, 0.58)),
+    rgba(255, 255, 255, 0.48);
+}
+
+.posPremiumStepper {
+  min-height: 48px;
+  border-radius: 999px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.posPremiumStepper button,
+.posPremiumRemoveButton {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.posPremiumTicketTotal {
+  border-radius: 24px;
+  border-color: rgba(214, 187, 128, 0.52);
+}
+
+.posPremiumTicketTotal strong {
+  color: var(--sell-ink);
+  font-size: clamp(2.4rem, 4.15vw, 3.72rem);
+  text-shadow: 0 14px 28px rgba(57, 74, 96, 0.12);
+}
+
+.posPremiumCheckoutCta,
+.paymentPremiumActionPrimary {
+  min-height: 96px;
+  border-radius: 30px;
+  border: 1px solid rgba(214, 187, 128, 0.56);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.96), rgba(250, 248, 241, 0.80) 38%, rgba(235, 248, 250, 0.68)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(231, 238, 239, 0.62));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(128, 106, 72, 0.15),
+    0 28px 62px rgba(57, 74, 96, 0.18),
+    0 0 36px rgba(214, 187, 128, 0.18);
+  text-shadow: none;
+}
+
+.posPremiumCheckoutCta::before {
+  inset: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), transparent 30%),
+    linear-gradient(103deg, transparent 0%, rgba(173, 214, 226, 0.18) 32%, rgba(255, 255, 255, 0.40) 48%, transparent 64%),
+    linear-gradient(22deg, transparent 8%, rgba(214, 187, 128, 0.16) 44%, transparent 58%);
+  opacity: 0.92;
+}
+
+.posPremiumCheckoutCta::after {
+  inset: auto 18px 9px;
+  height: 22px;
+  background: linear-gradient(92deg, transparent, rgba(214, 187, 128, 0.28), rgba(255, 255, 255, 0.54), rgba(166, 210, 225, 0.20), transparent);
+  filter: blur(9px);
+  opacity: 0.74;
+}
+
+.posPremiumCheckoutCtaReady:hover,
+.paymentPremiumActionPrimary:not(:disabled):hover {
+  border-color: rgba(230, 204, 147, 0.70);
+  filter: saturate(1.04) contrast(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(128, 106, 72, 0.14),
+    0 32px 70px rgba(57, 74, 96, 0.21),
+    0 0 44px rgba(214, 187, 128, 0.22);
+}
+
+.posPremiumCheckoutCtaReady:active,
+.paymentPremiumActionPrimary:not(:disabled):active {
+  transform: translateY(1px) scale(0.992);
+}
+
+.posPremiumCheckoutCtaReady:focus-visible,
+.paymentPremiumActionPrimary:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(214, 187, 128, 0.16),
+    0 0 0 1px rgba(129, 106, 67, 0.52),
+    0 26px 62px rgba(57, 74, 96, 0.19),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.posPremiumCheckoutCtaGlyph {
+  width: 54px;
+  height: 54px;
+  border-radius: 20px;
+  border-color: rgba(214, 187, 128, 0.44);
+  color: var(--sell-ink-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 248, 248, 0.60));
+}
+
+.posPremiumCheckoutCtaLabel {
+  gap: 13px;
+  color: var(--sell-ink);
+  font-size: clamp(1.22rem, 1.92vw, 1.52rem);
+}
+
+.posPremiumCheckoutCtaAmount {
+  min-width: 128px;
+  height: 48px;
+  border: 1px solid rgba(145, 164, 186, 0.30);
+  color: var(--sell-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 249, 249, 0.54));
+}
+
+.posPremiumCheckoutCtaArrow {
+  color: var(--sell-ink-soft);
+}
+
+.posPremiumCheckoutCtaDisabled,
+.paymentPremiumActionPrimary:disabled {
+  opacity: 0.64;
+  color: var(--sell-muted);
+  border-color: rgba(145, 164, 186, 0.30);
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 8px 18px rgba(57, 74, 96, 0.08);
+}
+
+@media (max-width: 1240px) {
+  .posPremiumWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumTicketPanel {
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+
+  .posPremiumTicketLines {
+    max-height: none;
+  }
+}
+
+@media (max-width: 920px) {
+  .posPremiumSellHeader,
+  .posPremiumSearchCard,
+  .posPremiumTicketLine {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumSearchActions {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
+
+  .posPremiumHeroMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumProductGrid {
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  }
+}
+/* PRISMA_TABLET_POS_SELL_GOLDEN_LAYOUT_1106B::END */
+
+/* PRISMA_TABLET_POS_COBRAR_HERO_STACK_1106C::START
+   Permanent checkout hero stack refinement: total + COBRAR as one tactile
+   porcelain/cloudglass object. Logic and payment flow remain untouched.
+*/
+.posPremiumCheckoutStack {
+  display: grid;
+  gap: clamp(8px, 0.85vw, 10px);
+  min-height: auto;
+  position: relative;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.posPremiumCheckoutStack::before {
+  display: none;
+  content: none;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 0;
+}
+
+.posPremiumCheckoutStack::after {
+  display: none;
+  content: none;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 0;
+}
+
+.posPremiumCheckoutStack > * {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumCheckoutStack .posPremiumTotalsBreakdown {
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal {
+  min-height: 100px;
+  padding: 15px 16px;
+  border-radius: 25px;
+  border-color: rgba(214, 187, 128, 0.48);
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, 0.90), rgba(250, 248, 241, 0.66) 46%, rgba(238, 247, 249, 0.56)),
+    rgba(255, 255, 255, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(128, 106, 72, 0.10),
+    0 15px 32px rgba(57, 74, 96, 0.11);
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal span {
+  color: var(--sell-ink-soft);
+  font-size: 0.76rem;
+  letter-spacing: 0.10em;
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal strong {
+  color: #101927;
+  font-size: clamp(2.55rem, 4.3vw, 3.9rem);
+  line-height: 0.93;
+}
+
+.posPremiumCheckoutCta {
+  min-height: 96px;
+  display: grid;
+  grid-template-columns: minmax(148px, 1fr) minmax(58px, auto) 48px;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 12px;
+  border-radius: 26px;
+  border: 1px solid rgba(214, 187, 128, 0.56);
+  color: #111c2c;
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.97), rgba(251, 249, 244, 0.82) 38%, rgba(238, 249, 251, 0.70)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(230, 238, 239, 0.62));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(128, 106, 72, 0.16),
+    inset 0 -18px 32px rgba(94, 111, 130, 0.055),
+    0 28px 62px rgba(57, 74, 96, 0.18),
+    0 0 36px rgba(214, 187, 128, 0.18);
+  text-align: left;
+  text-shadow: none;
+}
+
+.posPremiumCheckoutCta::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.70), transparent 28%),
+    linear-gradient(103deg, transparent 0%, rgba(174, 214, 226, 0.18) 32%, rgba(255, 255, 255, 0.44) 48%, transparent 65%),
+    linear-gradient(23deg, transparent 7%, rgba(214, 187, 128, 0.16) 43%, transparent 59%);
+  opacity: 0.92;
+}
+
+.posPremiumCheckoutCta::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  left: 18px;
+  z-index: 0;
+  height: 20px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(92deg, transparent, rgba(214, 187, 128, 0.26), rgba(255, 255, 255, 0.56), rgba(166, 210, 225, 0.18), transparent);
+  filter: blur(8px);
+  opacity: 0.78;
+}
+
+.posPremiumCheckoutCta > * {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumCheckoutCtaLead {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.posPremiumCheckoutCtaGlyph {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  border: 1px solid rgba(214, 187, 128, 0.42);
+  color: #2f4056;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(246, 248, 247, 0.58)),
+    rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 11px 22px rgba(57, 74, 96, 0.10);
+}
+
+.posPremiumCheckoutCtaText {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.posPremiumCheckoutCtaText small {
+  color: #5f6f82;
+  font-size: 0.70rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.posPremiumCheckoutCtaText span {
+  color: #101927;
+  font-size: clamp(1.28rem, 2.05vw, 1.62rem);
+  font-weight: 980;
+  line-height: 0.95;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.posPremiumCheckoutCtaAmount {
+  min-width: 0;
+  height: auto;
+  max-width: none;
+  justify-self: end;
+  display: block;
+  padding: 0 2px 0 12px;
+  border-left: 1px solid rgba(145, 164, 186, 0.28);
+  border-radius: 0;
+  color: #101927;
+  background: transparent;
+  box-shadow: none;
+  font-size: clamp(1rem, 1.58vw, 1.28rem);
+  font-weight: 980;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.posPremiumCheckoutCtaArrow {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(145, 164, 186, 0.34);
+  border-radius: 18px;
+  color: #2f4056;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.80), rgba(246, 249, 249, 0.56)),
+    rgba(255, 255, 255, 0.44);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 9px 20px rgba(57, 74, 96, 0.09);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.posPremiumCheckoutCtaReady:hover {
+  border-color: rgba(230, 204, 147, 0.72);
+  filter: saturate(1.04) contrast(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(128, 106, 72, 0.14),
+    inset 0 -18px 32px rgba(94, 111, 130, 0.05),
+    0 34px 76px rgba(57, 74, 96, 0.22),
+    0 0 46px rgba(214, 187, 128, 0.20);
+}
+
+.posPremiumCheckoutCtaReady:hover .posPremiumCheckoutCtaArrow,
+.posPremiumCheckoutCtaReady:focus-visible .posPremiumCheckoutCtaArrow {
+  transform: translateX(3px);
+  border-color: rgba(214, 187, 128, 0.44);
+}
+
+.posPremiumCheckoutCtaReady:active {
+  transform: translateY(1px) scale(0.992);
+}
+
+.posPremiumCheckoutCtaReady:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(214, 187, 128, 0.16),
+    0 0 0 1px rgba(129, 106, 67, 0.54),
+    0 30px 66px rgba(57, 74, 96, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.posPremiumCheckoutCtaDisabled {
+  opacity: 0.68;
+  color: #6b798b;
+  border-color: rgba(145, 164, 186, 0.30);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(242, 247, 247, 0.50)),
+    rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84), 0 8px 18px rgba(57, 74, 96, 0.08);
+}
+
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaArrow {
+  color: #7b8797;
+  border-color: rgba(145, 164, 186, 0.24);
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaText span,
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaAmount {
+  color: #4f5e70;
+}
+
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaAmount {
+  font-size: 0.92rem;
+  font-weight: 900;
+  opacity: 0.82;
+}
+
+.posPremiumCheckoutCtaBusy::before {
+  background:
+    linear-gradient(103deg, transparent 0%, rgba(255, 255, 255, 0.26) 36%, rgba(214, 187, 128, 0.22) 50%, transparent 66%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), transparent 28%);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posPremiumCheckoutCta {
+  min-height: 96px;
+  grid-template-columns: minmax(148px, 1fr) minmax(58px, auto) 48px;
+  padding: 12px;
+}
+
+.posPremiumTicketEmpty .posPremiumTicketLines {
+  min-height: 108px;
+}
+
+.posPremiumTicketEmpty .posPremiumEmptyTicket {
+  min-height: 108px;
+  padding: 12px 14px;
+  gap: 6px;
+}
+
+.posPremiumTicketEmpty .posPremiumEmptyTicket svg {
+  width: 24px;
+  height: 24px;
+}
+
+.posPremiumTicketEmpty .posPremiumEmptyTicket strong {
+  font-size: 0.96rem;
+}
+
+.posPremiumTicketEmpty .posPremiumEmptyTicket span {
+  font-size: 0.82rem;
+  line-height: 1.28;
+}
+
+.posPremiumTicketEmpty .posPremiumDiagnosticWarn,
+.posPremiumTicketEmpty .posPremiumDiagnosticOk {
+  min-height: 54px;
+  padding: 10px 12px;
+  gap: 4px;
+}
+
+.posPremiumTicketEmpty .posPremiumCheckoutStack .posPremiumTicketTotal {
+  min-height: 88px;
+}
+
+.posPremiumTicketEmpty .posPremiumCheckoutStack .posPremiumTicketTotal strong {
+  font-size: clamp(2.32rem, 3.9vw, 3.42rem);
+}
+
+@media (max-width: 540px) {
+  .posPremiumCheckoutCta {
+    grid-template-columns: 1fr;
+    min-height: 118px;
+    justify-items: stretch;
+  }
+
+  .posPremiumCheckoutCtaAmount {
+    justify-self: stretch;
+    padding-left: 0;
+    border-left: 0;
+    text-align: left;
+  }
+
+  .posPremiumCheckoutCtaArrow {
+    display: none;
+  }
+}
+/* PRISMA_TABLET_POS_COBRAR_HERO_STACK_1106C::END */
+
+/* PRISMA_TABLET_POS_COBRAR_IRIDESCENT_FILM_1106D::START
+   Local-only material pass for the COBRAR hero. Keeps button structure,
+   payment logic, products and the Fuji/cloud background untouched.
+*/
+.posPremiumCheckoutCta {
+  --cta-pearl: rgba(255, 255, 252, 0.94);
+  --cta-cyan: rgba(164, 232, 244, 0.42);
+  --cta-lavender: rgba(205, 184, 248, 0.34);
+  --cta-rose: rgba(255, 198, 219, 0.30);
+  --cta-champagne: rgba(236, 210, 146, 0.40);
+  --cta-rim-white: rgba(255, 255, 255, 0.96);
+  --cta-glint: rgba(255, 255, 255, 0.72);
+  --cta-film-opacity: 0.82;
+  --cta-rim-opacity: 0.94;
+  background:
+    radial-gradient(120% 92% at 18% 0%, rgba(255, 255, 255, 0.98), transparent 39%),
+    radial-gradient(88% 120% at 88% 100%, rgba(206, 239, 243, 0.38), transparent 56%),
+    linear-gradient(128deg, rgba(255, 255, 255, 0.96), rgba(248, 249, 245, 0.76) 43%, rgba(235, 244, 244, 0.68));
+}
+
+.posPremiumCheckoutCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1.5px;
+  pointer-events: none;
+  border: 0;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 218deg at 50% 50%,
+      var(--cta-rim-white) 0deg,
+      var(--cta-cyan) 34deg,
+      var(--cta-lavender) 74deg,
+      var(--cta-rose) 118deg,
+      var(--cta-champagne) 166deg,
+      rgba(255, 255, 255, 0.88) 214deg,
+      rgba(168, 229, 244, 0.36) 254deg,
+      rgba(222, 199, 250, 0.30) 300deg,
+      var(--cta-rim-white) 360deg
+    );
+  opacity: var(--cta-rim-opacity);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.posPremiumCheckoutCta::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  z-index: 0;
+  height: auto;
+  pointer-events: none;
+  border-radius: 23px;
+  background:
+    radial-gradient(44px 24px at 9% 82%, rgba(255, 255, 255, 0.64), rgba(178, 232, 244, 0.22) 42%, transparent 72%),
+    radial-gradient(74px 32px at 91% 16%, rgba(255, 255, 255, 0.70), rgba(226, 195, 251, 0.24) 39%, transparent 70%),
+    conic-gradient(
+      from 126deg at 61% 44%,
+      transparent 0deg,
+      rgba(255, 255, 255, 0.34) 24deg,
+      rgba(164, 232, 244, 0.22) 54deg,
+      rgba(205, 184, 248, 0.20) 88deg,
+      rgba(255, 198, 219, 0.18) 126deg,
+      rgba(236, 210, 146, 0.22) 158deg,
+      transparent 206deg,
+      transparent 360deg
+    ),
+    linear-gradient(132deg, transparent 14%, rgba(255, 255, 255, 0.26) 29%, rgba(180, 231, 242, 0.16) 42%, transparent 57%, rgba(232, 198, 250, 0.14) 72%, transparent 87%);
+  opacity: var(--cta-film-opacity);
+  filter: blur(0.15px) saturate(1.12);
+  mix-blend-mode: soft-light;
+}
+
+@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+  .posPremiumCheckoutCta::before {
+    inset: 1px;
+    padding: 0;
+    border: 1px solid rgba(206, 221, 232, 0.70);
+    background:
+      linear-gradient(118deg, rgba(255, 255, 255, 0.76), transparent 23%, rgba(164, 232, 244, 0.18) 43%, rgba(205, 184, 248, 0.16) 61%, rgba(236, 210, 146, 0.18) 78%, transparent),
+      transparent;
+  }
+}
+
+.posPremiumCheckoutCtaLead,
+.posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutCtaAmount,
+.posPremiumCheckoutCtaArrow {
+  position: relative;
+  isolation: isolate;
+}
+
+.posPremiumCheckoutCtaLead::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  bottom: -14px;
+  z-index: -1;
+  width: 86px;
+  height: 34px;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 20% 64%, rgba(255, 255, 255, 0.60), transparent 62%),
+    linear-gradient(102deg, rgba(255, 198, 219, 0.22), rgba(164, 232, 244, 0.24), transparent 70%);
+  filter: blur(5px);
+  opacity: 0.78;
+}
+
+.posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutCtaArrow {
+  overflow: hidden;
+  border-color: rgba(190, 205, 221, 0.48);
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.92), transparent 38%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.84), rgba(244, 249, 249, 0.54)),
+    rgba(255, 255, 255, 0.38);
+}
+
+.posPremiumCheckoutCtaGlyph::before,
+.posPremiumCheckoutCtaArrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 230deg,
+      rgba(255, 255, 255, 0.90),
+      rgba(164, 232, 244, 0.38),
+      rgba(205, 184, 248, 0.30),
+      rgba(255, 198, 219, 0.22),
+      rgba(236, 210, 146, 0.30),
+      rgba(255, 255, 255, 0.88)
+    );
+  opacity: 0.76;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.posPremiumCheckoutCtaGlyph::after,
+.posPremiumCheckoutCtaArrow::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 22px;
+  height: 18px;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 34%, rgba(255, 255, 255, 0.92), transparent 34%),
+    linear-gradient(104deg, rgba(164, 232, 244, 0.26), rgba(255, 198, 219, 0.18), transparent);
+  filter: blur(1.5px);
+  opacity: 0.64;
+}
+
+.posPremiumCheckoutCtaGlyph::after {
+  left: 5px;
+  top: 5px;
+}
+
+.posPremiumCheckoutCtaArrow::after {
+  right: 3px;
+  top: 6px;
+}
+
+.posPremiumCheckoutCtaGlyph svg,
+.posPremiumCheckoutCtaArrow svg {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.78));
+}
+
+.posPremiumCheckoutCtaAmount {
+  position: relative;
+  isolation: isolate;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.posPremiumCheckoutCtaAmount::before {
+  content: "";
+  position: absolute;
+  inset: -18px -18px -15px -12px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 78% 20%, rgba(255, 255, 255, 0.64), transparent 52%),
+    linear-gradient(126deg, transparent, rgba(164, 232, 244, 0.16), rgba(236, 210, 146, 0.18), transparent);
+  filter: blur(5px);
+  opacity: 0.72;
+}
+
+.posPremiumCheckoutCtaText span {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.82), 0 8px 18px rgba(36, 48, 66, 0.08);
+}
+
+.posPremiumCheckoutCtaReady:hover {
+  --cta-film-opacity: 0.92;
+  --cta-rim-opacity: 1;
+}
+
+.posPremiumCheckoutCtaReady:hover::after,
+.posPremiumCheckoutCtaReady:focus-visible::after {
+  filter: blur(0.05px) saturate(1.22);
+  mix-blend-mode: screen;
+}
+
+.posPremiumCheckoutCtaReady:active::after {
+  opacity: 0.66;
+  filter: blur(0.4px) saturate(0.98);
+}
+
+.posPremiumCheckoutCtaDisabled {
+  --cta-film-opacity: 0.42;
+  --cta-rim-opacity: 0.50;
+}
+
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaAmount {
+  position: absolute;
+  top: 15px;
+  right: 70px;
+  max-width: 76px;
+  padding: 0;
+  border-left: 0;
+  color: #6a7585;
+  font-size: 0.68rem;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.posPremiumCheckoutCtaDisabled .posPremiumCheckoutCtaAmount::before {
+  display: none;
+}
+
+.posPremiumCheckoutCtaBusy {
+  --cta-film-opacity: 0.76;
+  --cta-rim-opacity: 0.86;
+}
+/* PRISMA_TABLET_POS_COBRAR_IRIDESCENT_FILM_1106D::END */
+
+/* PRISMA_TABLET_POS_COBRAR_CHECKOUT_CONTAINMENT_1106D::START
+   Immediate checkout containment: reserve enough height for total + hero CTA
+   inside the cart column, while keeping overflow on the panel itself.
+*/
+.posPremiumTicketPanel {
+  align-content: start;
+  max-height: calc(100dvh - 26px);
+  overflow: auto;
+}
+
+.posPremiumCheckoutStack {
+  display: grid;
+  gap: clamp(8px, 0.85vw, 10px);
+  min-height: auto;
+  position: relative;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.posPremiumCheckoutStack::before,
+.posPremiumCheckoutStack::after {
+  display: none;
+  content: none;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 0;
+}
+
+.posPremiumCheckoutStack > * {
+  z-index: 1;
+}
+
+.posPremiumTicketEmpty .posPremiumCheckoutStack {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+/* PRISMA_TABLET_POS_COBRAR_CHECKOUT_CONTAINMENT_1106D::END */
+
+/* PRISMA_TABLET_POS_COBRAR_STRUCTURAL_FINAL_1106E::START
+   Deterministic final structure: icon + COBRAR + arrow. No internal amount,
+   no microcopy, no chips. Material layers stay below crisp content.
+*/
+.posPremiumCheckoutStack {
+  display: grid;
+  gap: clamp(8px, 0.85vw, 10px);
+  min-height: auto;
+  position: relative;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.posPremiumTicketPanel {
+  gap: 10px;
+  max-height: calc(100dvh - 112px);
+}
+
+.posPremiumTicketLines {
+  min-height: 96px;
+  max-height: min(24dvh, 250px);
+}
+
+.posPremiumDiagnosticWarn,
+.posPremiumDiagnosticOk {
+  min-height: 56px;
+  padding: 10px 12px;
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal {
+  min-height: 92px;
+  padding: 14px 16px;
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal strong {
+  font-size: clamp(2.34rem, 3.95vw, 3.48rem);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta {
+  width: 100%;
+  min-height: 76px;
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(196, 213, 229, 0.58);
+  color: #0f1725;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(130% 105% at 15% -18%, rgba(255, 255, 255, 0.96), transparent 45%),
+    radial-gradient(95% 115% at 88% 118%, rgba(174, 232, 242, 0.34), transparent 58%),
+    linear-gradient(130deg, rgba(255, 255, 252, 0.92), rgba(246, 248, 246, 0.76) 45%, rgba(232, 241, 242, 0.68));
+  background-blend-mode: screen, soft-light, normal;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(118, 133, 154, 0.16),
+    inset 0 -16px 28px rgba(88, 104, 124, 0.055),
+    0 18px 38px rgba(55, 70, 92, 0.16),
+    0 0 22px rgba(190, 218, 231, 0.16);
+  transform-origin: center;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta.posPremiumCheckoutCta {
+  min-height: 76px;
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1.5px;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 224deg at 50% 50%,
+      rgba(255, 255, 255, 0.96) 0deg,
+      rgba(162, 229, 244, 0.48) 34deg,
+      rgba(206, 187, 250, 0.38) 76deg,
+      rgba(255, 199, 221, 0.28) 116deg,
+      rgba(236, 211, 150, 0.42) 162deg,
+      rgba(255, 255, 255, 0.90) 214deg,
+      rgba(178, 232, 243, 0.40) 260deg,
+      rgba(222, 203, 252, 0.30) 308deg,
+      rgba(255, 255, 255, 0.96) 360deg
+    );
+  opacity: 0.94;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 21px;
+  background:
+    radial-gradient(44px 22px at 9% 88%, rgba(255, 255, 255, 0.68), rgba(166, 232, 244, 0.24) 44%, transparent 74%),
+    radial-gradient(68px 26px at 93% 13%, rgba(255, 255, 255, 0.70), rgba(226, 198, 252, 0.22) 42%, transparent 72%),
+    conic-gradient(
+      from 130deg at 62% 46%,
+      transparent 0deg,
+      rgba(255, 255, 255, 0.30) 24deg,
+      rgba(164, 232, 244, 0.20) 54deg,
+      rgba(205, 184, 248, 0.18) 88deg,
+      rgba(255, 198, 219, 0.16) 124deg,
+      rgba(236, 210, 146, 0.20) 160deg,
+      transparent 212deg,
+      transparent 360deg
+    ),
+    linear-gradient(128deg, transparent 15%, rgba(255, 255, 255, 0.26) 28%, rgba(180, 231, 242, 0.14) 41%, transparent 56%, rgba(232, 198, 250, 0.12) 73%, transparent 88%);
+  filter: saturate(1.14);
+  mix-blend-mode: soft-light;
+  opacity: 0.84;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta > * {
+  position: relative;
+  z-index: 2;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaLead {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  flex: 0 0 48px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(190, 207, 224, 0.54);
+  color: #25344a;
+  background:
+    radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.94), transparent 39%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.82), rgba(244, 249, 249, 0.52)),
+    rgba(255, 255, 255, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(91, 112, 134, 0.10),
+    0 8px 17px rgba(57, 74, 96, 0.09);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph::before,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 232deg,
+      rgba(255, 255, 255, 0.90),
+      rgba(164, 232, 244, 0.38),
+      rgba(205, 184, 248, 0.30),
+      rgba(255, 198, 219, 0.20),
+      rgba(236, 210, 146, 0.30),
+      rgba(255, 255, 255, 0.90)
+    );
+  opacity: 0.74;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph::after,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  z-index: 1;
+  width: 22px;
+  height: 16px;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 34%, rgba(255, 255, 255, 0.90), transparent 34%),
+    linear-gradient(104deg, rgba(164, 232, 244, 0.24), rgba(255, 198, 219, 0.16), transparent);
+  filter: blur(1.3px);
+  opacity: 0.62;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph::after {
+  left: 5px;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow::after {
+  right: 4px;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph svg,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow svg {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.80));
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText small {
+  display: none;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText span {
+  color: #0d1524;
+  font-size: clamp(1.42rem, 2vw, 1.72rem);
+  font-weight: 980;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.84),
+    0 8px 18px rgba(36, 48, 66, 0.08);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow {
+  justify-self: end;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:hover {
+  border-color: rgba(199, 219, 235, 0.76);
+  filter: saturate(1.06) contrast(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(118, 133, 154, 0.14),
+    inset 0 -16px 28px rgba(88, 104, 124, 0.05),
+    0 22px 44px rgba(55, 70, 92, 0.18),
+    0 0 28px rgba(187, 218, 233, 0.20);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:hover::before,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:focus-visible::before {
+  opacity: 1;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:hover::after,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:focus-visible::after {
+  opacity: 0.92;
+  filter: saturate(1.22);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:hover .posPremiumCheckoutCtaArrow,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:focus-visible .posPremiumCheckoutCtaArrow {
+  transform: translateX(3px);
+  border-color: rgba(203, 218, 234, 0.72);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:active {
+  transform: translateY(1px) scale(0.992);
+  box-shadow:
+    inset 0 2px 8px rgba(71, 84, 104, 0.10),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.76),
+    0 12px 28px rgba(55, 70, 92, 0.14);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:active::after {
+  opacity: 0.66;
+  filter: saturate(0.98);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(168, 211, 236, 0.24),
+    0 0 0 1px rgba(105, 128, 154, 0.56),
+    0 22px 44px rgba(55, 70, 92, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaDisabled {
+  opacity: 0.74;
+  cursor: not-allowed;
+  filter: saturate(0.78) contrast(0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    inset 0 -1px 0 rgba(118, 133, 154, 0.08),
+    0 8px 18px rgba(57, 74, 96, 0.08);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaDisabled::before {
+  opacity: 0.46;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaDisabled::after {
+  opacity: 0.34;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaBusy::after {
+  opacity: 0.86;
+  background:
+    linear-gradient(116deg, transparent 12%, rgba(255, 255, 255, 0.34) 34%, rgba(174, 232, 242, 0.16) 49%, rgba(236, 210, 146, 0.16) 63%, transparent 82%),
+    radial-gradient(60px 26px at 88% 18%, rgba(255, 255, 255, 0.62), transparent 72%);
+}
+
+.posPremiumSecondaryCheckoutActions {
+  gap: 8px;
+}
+
+.posPremiumSecondaryCheckoutActions button {
+  min-height: 74px;
+}
+
+.posPremiumTicketEmpty .posPremiumCheckoutStack {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.posPremiumTicketEmpty .posPremiumTicketLines {
+  min-height: 108px;
+}
+
+@media (max-width: 540px) {
+  .posPremiumCheckoutStack .posPremiumCheckoutCta {
+    min-height: 76px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .posPremiumCheckoutStack .posPremiumCheckoutCtaArrow {
+    display: grid;
+  }
+}
+/* PRISMA_TABLET_POS_COBRAR_STRUCTURAL_FINAL_1106E::END */
+
+/* PRISMA_TABLET_POS_SELL_DEFINITIVE_1106F::START
+   One definitive local POS visual pass. Authority: posmesh2 exact Tablet POS Sell Mesh.
+   Scope: Tablet POS foreground only. Keeps real products/data, cart/payment logic and
+   Mount Fuji/cloudy background untouched. No new priority overrides in this block.
+*/
+.posPremiumWorkspace {
+  --sell-ink: #0f1725;
+  --sell-ink-soft: #2c3d55;
+  --sell-muted: #68778b;
+  --sell-line: rgba(152, 169, 190, 0.30);
+  --sell-line-strong: rgba(192, 210, 226, 0.58);
+  --sell-pearl: rgba(255, 255, 252, 0.91);
+  --sell-pearl-soft: rgba(249, 250, 247, 0.78);
+  --sell-porcelain: rgba(244, 248, 248, 0.68);
+  --sell-champagne: rgba(236, 211, 150, 0.36);
+  --sell-cyan: rgba(164, 229, 244, 0.24);
+  --sell-lavender: rgba(213, 197, 250, 0.20);
+  --sell-rose: rgba(255, 206, 225, 0.16);
+  grid-template-columns: minmax(0, 1fr) clamp(360px, 28.5vw, 424px);
+  gap: clamp(13px, 1.22vw, 19px);
+  align-items: start;
+  min-height: calc(100dvh - 138px);
+  padding-bottom: 92px;
+}
+
+.posPremiumWorkspace::before {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.12) 44%, rgba(247, 251, 251, 0.26)),
+    radial-gradient(ellipse at 18% 9%, rgba(255, 255, 255, 0.24), transparent 36%),
+    radial-gradient(ellipse at 80% 18%, rgba(236, 211, 150, 0.08), transparent 31%);
+  opacity: 0.74;
+}
+
+.posPremiumCatalogArea {
+  gap: clamp(10px, 0.95vw, 14px);
+  min-width: 0;
+}
+
+.posPremiumSellHeader,
+.posPremiumSearchCard,
+.posPremiumProductCard,
+.posPremiumTicketPanel,
+.posPremiumPagination {
+  border-color: var(--sell-line);
+  background:
+    linear-gradient(126deg, var(--sell-pearl), var(--sell-pearl-soft) 46%, var(--sell-porcelain)),
+    rgba(255, 255, 255, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(112, 130, 152, 0.07),
+    0 18px 42px rgba(48, 63, 83, 0.115);
+  backdrop-filter: blur(0.35px) saturate(1.03) contrast(1.015);
+  -webkit-backdrop-filter: blur(0.35px) saturate(1.03) contrast(1.015);
+}
+
+.posPremiumSellHeader {
+  min-height: 68px;
+  grid-template-columns: minmax(220px, 0.54fr) minmax(0, 1fr);
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 24px;
+}
+
+.posPremiumSellStatus span {
+  color: var(--sell-ink-soft);
+  letter-spacing: 0.09em;
+}
+
+.posPremiumSellStatus strong {
+  color: var(--sell-ink);
+  font-size: clamp(1.12rem, 1.55vw, 1.48rem);
+}
+
+.posPremiumSellStatus small {
+  color: var(--sell-muted);
+}
+
+.posPremiumHeroMetrics {
+  gap: 8px;
+}
+
+.posPremiumHeroMetrics span {
+  min-height: 52px;
+  border-color: rgba(163, 180, 201, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 249, 248, 0.54)),
+    rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), 0 8px 18px rgba(48,63,83,0.07);
+}
+
+.posPremiumHeroMetrics span[data-emphasis="true"] {
+  border-color: rgba(236, 211, 150, 0.50);
+  background:
+    linear-gradient(124deg, rgba(255,255,255,0.92), rgba(251,248,239,0.66) 50%, rgba(237,248,249,0.52)),
+    rgba(255,255,255,0.46);
+}
+
+.posPremiumSearchCard {
+  grid-template-columns: minmax(320px, 1fr) minmax(118px, 0.18fr) auto;
+  gap: 10px;
+  padding: 9px;
+  border-radius: 24px;
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 60px;
+  border-color: rgba(158, 176, 197, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(248,250,249,0.64)),
+    rgba(255,255,255,0.52);
+}
+
+.posPremiumCategoryRail {
+  gap: 8px;
+  padding: 0 2px 2px;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: 44px;
+  min-width: 118px;
+  border-radius: 17px;
+  border-color: rgba(158, 176, 197, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.78), rgba(247,249,248,0.52)),
+    rgba(255,255,255,0.36);
+}
+
+.posPremiumCategoryButtonActive {
+  border-color: rgba(236, 211, 150, 0.56);
+  background:
+    linear-gradient(118deg, rgba(255,255,255,0.94), rgba(251,248,239,0.72) 48%, rgba(235,247,249,0.58)),
+    rgba(255,255,255,0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.96),
+    0 12px 28px rgba(108, 92, 62, 0.11),
+    0 0 20px rgba(214, 187, 128, 0.14);
+}
+
+.posPremiumProductGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.05vw, 16px);
+}
+
+.posPremiumProductCard {
+  min-height: 294px;
+  grid-template-rows: auto minmax(138px, 1fr) minmax(58px, auto) auto;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 26px;
+  border-color: rgba(160, 177, 198, 0.34);
+  background:
+    radial-gradient(86% 58% at 18% 0%, rgba(255,255,255,0.98), transparent 50%),
+    linear-gradient(128deg, rgba(255,255,255,0.91), rgba(249,250,247,0.70) 43%, rgba(233,243,245,0.58)),
+    rgba(255,255,255,0.50);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.97),
+    inset 0 -1px 0 rgba(114,131,152,0.08),
+    0 17px 34px rgba(48,63,83,0.11);
+}
+
+.posPremiumProductCard::before {
+  background:
+    linear-gradient(107deg, rgba(255,255,255,0.82), transparent 18%, rgba(164,229,244,0.11) 43%, transparent 63%),
+    linear-gradient(24deg, transparent 8%, rgba(236,211,150,0.11) 46%, transparent 62%),
+    radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.76), transparent 41%);
+  opacity: 0.80;
+}
+
+.posPremiumProductCard::after {
+  inset: auto 16px 7px;
+  height: 26px;
+  background: linear-gradient(92deg, transparent, rgba(236,211,150,0.15), rgba(255,255,255,0.42), rgba(164,229,244,0.10), transparent);
+  filter: blur(10px);
+  opacity: 0.72;
+}
+
+.posPremiumProductCard:not(.posPremiumProductCardDisabled):hover,
+.posPremiumProductCard:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(214, 187, 128, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.98),
+    0 23px 44px rgba(48,63,83,0.145),
+    0 0 24px rgba(214,187,128,0.13);
+}
+
+.posPremiumProductStage {
+  min-height: 148px;
+  border-radius: 23px;
+  border-color: rgba(166, 184, 205, 0.34);
+  background:
+    radial-gradient(ellipse at 50% 82%, rgba(236, 211, 150, 0.20), transparent 48%),
+    radial-gradient(ellipse at 72% 18%, rgba(255,255,255,0.66), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,0.86), rgba(248,250,249,0.50) 54%, rgba(228,238,240,0.42));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(112,130,152,0.10),
+    0 11px 22px rgba(48,63,83,0.075);
+}
+
+.posPremiumProductStage .productPedestal {
+  width: 132px;
+  height: 22px;
+  bottom: 12px;
+  opacity: 0.88;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 246, 220, 0.46), rgba(214,187,128,0.16) 55%, transparent 80%);
+  box-shadow: 0 12px 22px rgba(76,86,102,0.12);
+}
+
+.posPremiumFavoriteStar {
+  opacity: 0.36;
+}
+
+.posPremiumProductName {
+  color: var(--sell-ink);
+  font-size: clamp(0.96rem, 1.10vw, 1.08rem);
+}
+
+.posPremiumProductPrice strong {
+  color: var(--sell-ink);
+  font-size: clamp(1.18rem, 1.65vw, 1.44rem);
+}
+
+.posPremiumAddButton {
+  min-height: 46px;
+  border-radius: 17px;
+  border-color: rgba(214,187,128,0.48);
+  background:
+    linear-gradient(116deg, rgba(255,255,255,0.92), rgba(251,248,240,0.68) 48%, rgba(237,248,249,0.52)),
+    rgba(255,255,255,0.48);
+}
+
+.posPremiumTicketPanel {
+  top: 6px;
+  gap: 10px;
+  max-height: calc(100dvh - 118px);
+  padding: 13px;
+  border-radius: 28px;
+  border-color: rgba(160, 177, 198, 0.38);
+  background:
+    radial-gradient(95% 64% at 18% 0%, rgba(255,255,255,0.98), transparent 50%),
+    linear-gradient(132deg, rgba(255,255,255,0.92), rgba(249,250,248,0.76) 44%, rgba(235,244,246,0.62)),
+    rgba(255,255,255,0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.97),
+    inset 0 -1px 0 rgba(112,130,152,0.08),
+    0 24px 54px rgba(48,63,83,0.15);
+}
+
+.posPremiumTicketHeader h2 {
+  color: var(--sell-ink);
+}
+
+.posPremiumTicketLines {
+  gap: 8px;
+  min-height: 104px;
+  max-height: min(24dvh, 258px);
+  padding-right: 2px;
+}
+
+.posPremiumTicketLine {
+  min-height: 86px;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto 44px;
+  gap: 8px;
+  padding: 9px;
+  border-radius: 21px;
+  border-color: rgba(160, 177, 198, 0.30);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.84), rgba(248,250,249,0.56)),
+    rgba(255,255,255,0.45);
+}
+
+.posPremiumStepper {
+  min-height: 44px;
+  background: rgba(255,255,255,0.66);
+}
+
+.posPremiumStepper button,
+.posPremiumRemoveButton {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+}
+
+.posPremiumCheckoutStack {
+  display: grid;
+  gap: clamp(8px, 0.85vw, 10px);
+  min-height: auto;
+  position: relative;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal {
+  min-height: 86px;
+  padding: 13px 15px;
+  border-radius: 24px;
+  border-color: rgba(214,187,128,0.47);
+  background:
+    linear-gradient(116deg, rgba(255,255,255,0.92), rgba(251,248,240,0.66) 46%, rgba(238,247,249,0.54)),
+    rgba(255,255,255,0.50);
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal strong {
+  color: #0f1725;
+  font-size: clamp(2.22rem, 3.55vw, 3.22rem);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta {
+  width: 100%;
+  min-height: 74px;
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 17px;
+  border-radius: 24px;
+  border: 1px solid rgba(196, 213, 229, 0.62);
+  color: #0d1524;
+  background:
+    radial-gradient(126% 104% at 14% -20%, rgba(255,255,255,0.98), transparent 45%),
+    radial-gradient(92% 116% at 90% 118%, rgba(174,232,242,0.36), transparent 58%),
+    linear-gradient(130deg, rgba(255,255,252,0.93), rgba(247,248,246,0.77) 45%, rgba(233,241,242,0.68));
+  background-blend-mode: screen, soft-light, normal;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.99),
+    inset 0 -1px 0 rgba(118,133,154,0.15),
+    inset 0 -15px 28px rgba(88,104,124,0.052),
+    0 18px 38px rgba(55,70,92,0.15),
+    0 0 24px rgba(190,218,231,0.16);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1.5px;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    conic-gradient(from 224deg at 50% 50%, rgba(255,255,255,0.97) 0deg, rgba(162,229,244,0.50) 34deg, rgba(206,187,250,0.38) 76deg, rgba(255,199,221,0.28) 116deg, rgba(236,211,150,0.42) 162deg, rgba(255,255,255,0.90) 214deg, rgba(178,232,243,0.40) 260deg, rgba(222,203,252,0.30) 308deg, rgba(255,255,255,0.97) 360deg);
+  opacity: 0.94;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 21px;
+  background:
+    radial-gradient(44px 22px at 9% 88%, rgba(255,255,255,0.70), rgba(166,232,244,0.24) 44%, transparent 74%),
+    radial-gradient(68px 26px at 93% 13%, rgba(255,255,255,0.72), rgba(226,198,252,0.22) 42%, transparent 72%),
+    conic-gradient(from 130deg at 62% 46%, transparent 0deg, rgba(255,255,255,0.30) 24deg, rgba(164,232,244,0.20) 54deg, rgba(205,184,248,0.18) 88deg, rgba(255,198,219,0.16) 124deg, rgba(236,210,146,0.20) 160deg, transparent 212deg, transparent 360deg),
+    linear-gradient(128deg, transparent 15%, rgba(255,255,255,0.27) 28%, rgba(180,231,242,0.14) 41%, transparent 56%, rgba(232,198,250,0.12) 73%, transparent 88%);
+  filter: saturate(1.14);
+  mix-blend-mode: soft-light;
+  opacity: 0.84;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaLead {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  flex: 0 0 48px;
+  align-self: center;
+  border-radius: 18px;
+  border-color: rgba(190,207,224,0.54);
+  color: #25344a;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText span {
+  color: #0d1524;
+  font-size: clamp(1.42rem, 1.95vw, 1.68rem);
+  font-weight: 980;
+  line-height: 1;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaReady:hover {
+  border-color: rgba(199, 219, 235, 0.78);
+  filter: saturate(1.06) contrast(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(118,133,154,0.14),
+    0 22px 44px rgba(55,70,92,0.18),
+    0 0 30px rgba(187,218,233,0.22);
+}
+
+.posPremiumSecondaryCheckoutActions button {
+  min-height: 70px;
+}
+
+@media (max-width: 1320px) {
+  .posPremiumProductGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1240px) {
+  .posPremiumWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumTicketPanel {
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+
+  .posPremiumTicketLines {
+    max-height: none;
+  }
+}
+
+@media (max-width: 920px) {
+  .posPremiumSellHeader,
+  .posPremiumSearchCard,
+  .posPremiumTicketLine {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumProductGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .posPremiumProductGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumCheckoutStack .posPremiumCheckoutCta {
+    min-height: 74px;
+    flex-direction: row;
+  }
+}
+/* PRISMA_TABLET_POS_SELL_DEFINITIVE_1106F::END */
+
+/* PRISMA_TABLET_POS_BLUE_EXORCISM_1106G::START
+   User visual review: remove the blue police-car paint job, collapse search by default,
+   remove POS sell header, show category text only, preserve Mount Fuji and all product data.
+   Scope: Tablet POS foreground only. No process/dev/Prisma/Playwright action.
+*/
+.posPremiumWorkspace {
+  --posui-ink: #101928;
+  --posui-muted: #66758a;
+  --posui-line: rgba(158, 173, 194, 0.34);
+  --posui-line-strong: rgba(198, 211, 225, 0.62);
+  --posui-pearl: rgba(255, 255, 252, 0.92);
+  --posui-porcelain: rgba(247, 249, 247, 0.74);
+  --posui-milk: rgba(255, 255, 255, 0.64);
+  --posui-champagne: rgba(235, 214, 164, 0.34);
+  --posui-cyan: rgba(190, 235, 242, 0.18);
+  --posui-lavender: rgba(220, 207, 247, 0.16);
+  --posui-rose: rgba(255, 213, 226, 0.12);
+  --posui-shadow: 0 18px 42px rgba(53, 68, 88, 0.12), inset 0 1px 0 rgba(255,255,255,0.94);
+  grid-template-columns: minmax(0, 1fr) clamp(360px, 28vw, 420px);
+  gap: clamp(13px, 1.2vw, 18px);
+  padding-bottom: 90px;
+}
+
+.posPremiumSellHeader {
+  display: none;
+}
+
+.posPremiumCatalogArea {
+  gap: clamp(12px, 1vw, 16px);
+  padding-top: 0;
+}
+
+.posPremiumSearchCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 26px;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+}
+
+.posPremiumSearchCard::before,
+.posPremiumSearchCard::after {
+  display: none;
+}
+
+.posPremiumSearchCard[data-prisma-search-expanded="true"] {
+  grid-template-columns: minmax(0, 1fr) minmax(112px, max-content) auto;
+  gap: 9px;
+  padding: 8px;
+  border: 1px solid var(--posui-line);
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.76), rgba(248,250,249,0.50) 52%, rgba(238,246,247,0.42)),
+    rgba(255,255,255,0.38);
+  box-shadow: var(--posui-shadow);
+  backdrop-filter: blur(0.45px) saturate(1.02) contrast(1.01);
+  -webkit-backdrop-filter: blur(0.45px) saturate(1.02) contrast(1.01);
+}
+
+.posPremiumSearchLabel {
+  min-width: 0;
+  gap: 0;
+}
+
+.posPremiumSearchLabel > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 58px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 210, 226, 0.62);
+  color: var(--posui-ink);
+  background:
+    radial-gradient(120% 100% at 16% 0%, rgba(255,255,255,0.96), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(248,250,249,0.58)),
+    rgba(255,255,255,0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.96),
+    inset 0 -1px 0 rgba(122, 137, 158, 0.08),
+    0 12px 28px rgba(54, 70, 92, 0.11);
+}
+
+.posPremiumSearchInputWrap:focus-within {
+  border-color: rgba(232, 213, 170, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.98),
+    0 0 0 4px rgba(235, 214, 164, 0.15),
+    0 16px 34px rgba(54, 70, 92, 0.13);
+}
+
+.posPremiumSearchInputWrap svg,
+.posPremiumPrimaryButton svg,
+.posPremiumSecondaryButton svg,
+.posPremiumGhostButton svg,
+.posPremiumAddButton svg,
+.posPremiumCheckoutCta svg,
+.posPremiumTicketUtilityButton svg,
+.posPremiumSecondaryCheckoutActions svg {
+  color: #304258;
+  stroke: currentColor;
+}
+
+.posPremiumSearchInputWrap input {
+  color: var(--posui-ink);
+  font-weight: 760;
+}
+
+.posPremiumSearchInputWrap input::placeholder {
+  color: rgba(99, 113, 132, 0.76);
+}
+
+.posPremiumCatalogInsight,
+.posPremiumSearchActions,
+.posPremiumInlineError {
+  max-height: 0;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease, max-height 180ms ease;
+}
+
+.posPremiumSearchCard[data-prisma-search-expanded="true"] .posPremiumCatalogInsight,
+.posPremiumSearchCard[data-prisma-search-expanded="true"] .posPremiumSearchActions,
+.posPremiumSearchCard[data-prisma-search-expanded="true"] .posPremiumInlineError {
+  max-height: 92px;
+  opacity: 1;
+  overflow: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+.posPremiumCatalogInsight {
+  min-height: 54px;
+  border: 1px solid var(--posui-line);
+  border-radius: 22px;
+  color: var(--posui-ink);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(248,250,249,0.50)),
+    rgba(255,255,255,0.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), 0 9px 20px rgba(57,74,96,0.07);
+}
+
+.posPremiumPrimaryButton,
+.posPremiumSecondaryButton,
+.posPremiumGhostButton,
+.posPremiumAddButton,
+.posPremiumTicketUtilityButton,
+.posPremiumSecondaryCheckoutActions button,
+.posPremiumSecondaryCheckoutActions a,
+.posPremiumCheckoutCta {
+  border-color: rgba(184, 199, 218, 0.48);
+  color: var(--posui-ink);
+  background:
+    radial-gradient(120% 120% at 18% -10%, rgba(255,255,255,0.92), transparent 44%),
+    linear-gradient(120deg, rgba(255,255,255,0.86), rgba(249,250,248,0.64) 52%, rgba(237,246,247,0.46)),
+    rgba(255,255,255,0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.94),
+    inset 0 -1px 0 rgba(112,130,152,0.08),
+    0 11px 24px rgba(57,74,96,0.10);
+}
+
+.posPremiumPrimaryButton:not(:disabled):hover,
+.posPremiumSecondaryButton:not(:disabled):hover,
+.posPremiumGhostButton:not(:disabled):hover,
+.posPremiumAddButton:not(:disabled):hover,
+.posPremiumTicketUtilityButton:not(:disabled):hover,
+.posPremiumSecondaryCheckoutActions button:not(:disabled):hover,
+.posPremiumCheckoutCtaReady:hover {
+  border-color: rgba(230, 210, 160, 0.56);
+  filter: saturate(1.03) contrast(1.01);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.97),
+    0 14px 30px rgba(57,74,96,0.12),
+    0 0 20px rgba(229,210,160,0.12);
+}
+
+.posPremiumCategoryRail {
+  gap: clamp(8px, 0.8vw, 12px);
+  padding: 0 0 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.posPremiumCategoryRail::-webkit-scrollbar {
+  display: none;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-width: max-content;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex: 0 0 auto;
+  padding: 0 clamp(18px, 1.35vw, 24px);
+  border: 1px solid rgba(181, 196, 214, 0.44);
+  border-radius: 999px;
+  color: var(--posui-ink);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.78), rgba(248,250,249,0.56)),
+    rgba(255,255,255,0.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), 0 10px 22px rgba(57,74,96,0.08);
+}
+
+.posPremiumCategoryButton span,
+.posPremiumCategoryButtonActive span {
+  display: none;
+}
+
+.posPremiumCategoryButton strong,
+.posPremiumCategoryButtonActive strong {
+  max-width: none;
+  overflow: visible;
+  color: inherit;
+  font-size: clamp(0.88rem, 0.92vw, 1rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.posPremiumCategoryButtonActive {
+  border-color: rgba(230, 210, 160, 0.62);
+  background:
+    linear-gradient(116deg, rgba(255,255,255,0.94), rgba(252,249,241,0.74) 48%, rgba(239,247,248,0.58)),
+    rgba(255,255,255,0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.96),
+    0 14px 30px rgba(109, 96, 70, 0.11),
+    0 0 21px rgba(230,210,160,0.14);
+}
+
+.posPremiumProductCard {
+  border-color: rgba(174, 190, 208, 0.36);
+  background:
+    radial-gradient(96% 68% at 20% 0%, rgba(255,255,255,0.96), transparent 51%),
+    linear-gradient(132deg, rgba(255,255,255,0.88), rgba(250,250,247,0.66) 47%, rgba(238,246,246,0.48)),
+    rgba(255,255,255,0.48);
+}
+
+.posPremiumProductStage {
+  border-color: rgba(177, 193, 212, 0.36);
+  background:
+    radial-gradient(ellipse at 50% 84%, rgba(235,214,164,0.24), transparent 45%),
+    radial-gradient(ellipse at 72% 18%, rgba(255,255,255,0.68), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,0.86), rgba(250,250,247,0.56) 56%, rgba(238,245,245,0.42));
+}
+
+.posPremiumProductStage .productAura {
+  opacity: 0.34;
+  background: radial-gradient(ellipse at center, rgba(235,214,164,0.22), rgba(255,255,255,0.20) 46%, transparent 72%);
+}
+
+.posPremiumProductStage .productPedestal {
+  opacity: 0.86;
+  background: radial-gradient(ellipse at center, rgba(255,248,224,0.54), rgba(235,214,164,0.22) 54%, transparent 78%);
+  box-shadow: 0 13px 24px rgba(74, 84, 100, 0.12), 0 0 30px rgba(235,214,164,0.12);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta {
+  color: var(--posui-ink);
+  border-color: rgba(198, 213, 228, 0.62);
+  background:
+    radial-gradient(120% 100% at 14% -20%, rgba(255,255,255,0.98), transparent 45%),
+    radial-gradient(90% 118% at 90% 118%, rgba(190,235,242,0.28), transparent 58%),
+    linear-gradient(130deg, rgba(255,255,252,0.94), rgba(249,249,246,0.78) 46%, rgba(239,246,246,0.66));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.99),
+    inset 0 -1px 0 rgba(118,133,154,0.14),
+    inset 0 -14px 28px rgba(88,104,124,0.045),
+    0 18px 38px rgba(55,70,92,0.14),
+    0 0 26px rgba(229,210,160,0.14);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText span,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaLabel,
+.posPremiumCheckoutStack .posPremiumCheckoutCta strong {
+  color: var(--posui-ink);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaGlyph,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaArrow {
+  color: #2f4056;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.90), rgba(248,250,249,0.62)),
+    rgba(255,255,255,0.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), 0 10px 22px rgba(57,74,96,0.10);
+}
+
+.posPremiumTicketPanel {
+  border-color: rgba(174, 190, 208, 0.38);
+  background:
+    radial-gradient(94% 64% at 18% 0%, rgba(255,255,255,0.98), transparent 50%),
+    linear-gradient(132deg, rgba(255,255,255,0.90), rgba(250,250,247,0.76) 45%, rgba(239,246,246,0.58)),
+    rgba(255,255,255,0.52);
+}
+
+@media (max-width: 920px) {
+  .posPremiumSearchCard[data-prisma-search-expanded="true"] {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_TABLET_POS_BLUE_EXORCISM_1106G::END */
+
+
+
+/* PRISMA_TABLET_POS_CHECKOUT_STACK_TRUE_TRANSPARENT_1206X::APPLIED */
+/* PRISMA_TABLET_POS_COBRAR_GLASS_1206X::START
+   Scope: ONLY Tablet POS Cobrar CTA.
+   Intent: true translucent glass, no amount, no white icon wells, no new CTA pseudo-layer stack.
+   Layer-map source: posPremiumCheckoutStack[data-prisma-zone="tablet-pos-checkout-stack"] + button[data-prisma-zone="tablet-pos-cobrar-cta"].
+*/
+.posPremiumCheckoutCtaReference {
+  color: #5f6874;
+  background: transparent;
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton,
+:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"]) {
+  --cta-glass-ink: #5f6874;
+  --cta-glass-gem-a: #8f65cf;
+  --cta-glass-gem-b: #50bbc6;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 100% !important;
+  min-height: clamp(66px, 5.8vw, 74px) !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  position: relative !important;
+  isolation: auto !important;
+  overflow: visible !important;
+  padding: clamp(5px, 0.52vw, 7px) clamp(12px, 1vw, 14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  border-radius: 22px !important;
+  color: var(--cta-glass-ink) !important;
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.030) 46%, rgba(212, 190, 244, 0.055) 100%) !important;
+  background-color: rgba(255, 255, 255, 0.025) !important;
+  backdrop-filter: blur(8px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.04) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 18px rgba(48, 61, 80, 0.045) !important;
+  filter: none !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  transform: none;
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton::before,
+:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::before,
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton::after,
+:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 0 !important;
+}
+
+.cobrarReferenceShell {
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(52px, 4.8vw, 58px);
+  display: grid;
+  grid-template-columns: clamp(22px, 2.2vw, 27px) minmax(0, 1fr) clamp(26px, 2.5vw, 32px);
+  align-items: center;
+  column-gap: clamp(10px, 1vw, 14px);
+  position: relative;
+  z-index: 1;
+  padding: 0;
+}
+
+.cobrarReferenceGem,
+.cobrarReferenceArrow {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  justify-self: center !important;
+  align-self: center !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cobrarReferenceGem {
+  justify-self: start !important;
+  color: var(--cta-glass-gem-a) !important;
+  opacity: 0.96 !important;
+}
+
+.cobrarReferenceArrow {
+  justify-self: end !important;
+  color: rgba(95, 104, 116, 0.72) !important;
+  opacity: 0.78 !important;
+}
+
+.cobrarReferenceGem svg,
+.cobrarReferenceArrow svg {
+  width: 22px !important;
+  height: 22px !important;
+  stroke: currentColor !important;
+  color: currentColor !important;
+  filter: none !important;
+}
+
+.cobrarReferenceLabel {
+  min-width: 0 !important;
+  justify-self: start !important;
+  color: var(--cta-glass-ink) !important;
+  font-size: clamp(1.04rem, 1.26vw, 1.18rem) !important;
+  font-weight: 780 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.075em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+.cobrarReferenceAmount {
+  display: none !important;
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover,
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:focus-visible {
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.040) 48%, rgba(212, 190, 244, 0.070) 100%) !important;
+  background-color: rgba(255, 255, 255, 0.035) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 9px 18px rgba(48, 61, 80, 0.055) !important;
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover .cobrarReferenceArrow,
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:focus-visible .cobrarReferenceArrow {
+  transform: translateX(1px);
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:active {
+  transform: translateY(1px) scale(0.998);
+}
+
+:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="disabled"]).cobrarReferenceButton {
+  opacity: 0.62 !important;
+  color: rgba(110, 120, 132, 0.72) !important;
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.055), rgba(245, 248, 249, 0.025)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 7px 14px rgba(57, 74, 96, 0.035) !important;
+}
+
+@media (max-width: 840px) {
+  .cobrarReferenceShell {
+    grid-template-columns: 22px minmax(0, 1fr) 28px;
+    column-gap: 10px;
+  }
+
+  .cobrarReferenceLabel {
+    font-size: clamp(1.00rem, 2.8vw, 1.14rem) !important;
+  }
+}
+/* PRISMA_TABLET_POS_COBRAR_GLASS_1206X::END */
+
+/* PRISMA_TABLET_POS_TICKET_RAIL_MATCH_LEFT_1206K::START
+   Scope: Tablet POS right ticket rail only.
+   Intent: match the left catalog glass panel density: soft translucent sheet, clouds visible, no heavy blue slab.
+   Contract: preserve ticket layout, checkout stack, totals, CTA, action buttons and business logic.
+*/
+.posPremiumTicketPanel {
+  border-color: rgba(255, 255, 255, 0.26) !important;
+  background:
+    radial-gradient(92% 62% at 14% 0%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.00) 58%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.18), rgba(239, 248, 252, 0.10) 50%, rgba(210, 231, 242, 0.12) 100%),
+    rgba(255, 255, 255, 0.075) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -1px 0 rgba(58, 92, 124, 0.035),
+    0 10px 24px rgba(35, 78, 120, 0.055) !important;
+  backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01) !important;
+  -webkit-backdrop-filter: blur(1.2px) saturate(1.05) contrast(1.01) !important;
+}
+
+.posPremiumTicketPanel::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.00) 22%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.00) 36%, rgba(154, 214, 235, 0.045) 62%, rgba(255, 255, 255, 0.00) 82%) !important;
+  opacity: 0.36 !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+.posPremiumTicketPanel::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 18px !important;
+  bottom: 12px !important;
+  left: 22% !important;
+  height: 38px !important;
+  pointer-events: none !important;
+  border-radius: 999px !important;
+  background: linear-gradient(92deg, rgba(255, 255, 255, 0.00), rgba(255, 255, 255, 0.14), rgba(180, 219, 236, 0.06), rgba(255, 255, 255, 0.00)) !important;
+  filter: blur(12px) !important;
+  opacity: 0.22 !important;
+  box-shadow: none !important;
+}
+/* PRISMA_TABLET_POS_TICKET_RAIL_MATCH_LEFT_1206K::END */
+
+
+.posPremiumCheckoutCtaReference {
+  color: #101926;
+  background: transparent;
+}
+
+/* PRISMA_TABLET_CHECKOUT_MODAL_COMPACT_MXN_1206::START
+   Focused checkout hot-injection: readable modal, optional references, MXN input display.
+*/
+.paymentPremiumOverlay {
+  padding: clamp(8px, 1.35vw, 18px);
+  overflow: hidden;
+  background:
+    linear-gradient(120deg, rgba(248, 252, 255, 0.78), rgba(238, 246, 252, 0.62) 46%, rgba(255, 255, 255, 0.76)),
+    radial-gradient(ellipse at 18% 8%, rgba(255, 255, 255, 0.78), transparent 34%),
+    radial-gradient(ellipse at 84% 16%, rgba(82, 168, 255, 0.18), transparent 38%),
+    url("/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg") center / cover no-repeat;
+}
+
+.paymentPremiumAtmosphere {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(245, 249, 252, 0.76)),
+    linear-gradient(110deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18) 54%, rgba(235, 244, 249, 0.38));
+  backdrop-filter: blur(8px) saturate(1.08);
+  -webkit-backdrop-filter: blur(8px) saturate(1.08);
+}
+
+.paymentPremiumShell {
+  width: min(960px, calc(100vw - 16px));
+  max-height: calc(100dvh - 16px);
+}
+
+.paymentPremiumPanel {
+  max-height: calc(100dvh - 16px);
+  gap: 9px;
+  padding: clamp(12px, 1.45vw, 18px);
+  border-radius: 28px;
+  background:
+    linear-gradient(128deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 250, 0.88) 54%, rgba(237, 246, 249, 0.82)),
+    rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px) saturate(1.10);
+  -webkit-backdrop-filter: blur(10px) saturate(1.10);
+}
+
+.paymentPremiumHeader {
+  gap: 10px;
+  align-items: center;
+}
+
+.paymentPremiumTitleBlock {
+  gap: 3px;
+}
+
+.paymentPremiumTitleBlock h2 {
+  font-size: clamp(1.36rem, 2.08vw, 2rem);
+  line-height: 1;
+}
+
+.paymentPremiumTitleBlock p {
+  max-width: 650px;
+  font-size: 0.86rem;
+  line-height: 1.26;
+}
+
+.paymentPremiumHeroTotal {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: clamp(10px, 1.2vw, 15px);
+  border-radius: 22px;
+}
+
+.paymentPremiumHeroTotal strong {
+  margin-top: 4px;
+  font-size: clamp(2.05rem, 4.8vw, 4rem);
+  line-height: 0.92;
+}
+
+.paymentPremiumHeroTotal small {
+  margin-top: 4px;
+}
+
+.paymentPremiumStatusPill {
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+.paymentPremiumBodyGrid {
+  grid-template-columns: minmax(430px, 1.04fr) minmax(280px, 0.96fr);
+  gap: 10px;
+}
+
+.paymentPremiumTenderList,
+.paymentPremiumRightRail {
+  gap: 8px;
+}
+
+.paymentPremiumTenderRow {
+  min-height: 0;
+  grid-template-columns: minmax(156px, 1fr) minmax(128px, 150px) minmax(156px, 184px);
+  gap: 8px;
+  align-items: end;
+  padding: 9px;
+  border-radius: 20px;
+}
+
+.paymentPremiumTenderMeta {
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 3px 8px;
+}
+
+.paymentPremiumTenderMeta > span {
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+}
+
+.paymentPremiumTenderMeta strong {
+  font-size: 0.92rem;
+}
+
+.paymentPremiumTenderMeta small {
+  font-size: 0.70rem;
+  line-height: 1.14;
+}
+
+.paymentPremiumTenderAmount,
+.paymentPremiumTenderReference {
+  gap: 4px;
+}
+
+.paymentPremiumTenderReferenceLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.paymentPremiumTenderReferenceLabel small {
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: #48627d;
+  background: rgba(255, 255, 255, 0.70);
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.paymentPremiumTenderReference[data-optional="true"] input {
+  border-style: dashed;
+  font-weight: 780;
+}
+
+.paymentPremiumTenderAmount input,
+.paymentPremiumTenderReference input {
+  min-height: 42px;
+  border-radius: 14px;
+  padding: 0 10px;
+}
+
+.paymentPremiumTenderAmount input {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.paymentPremiumCashBox,
+.paymentPremiumReview,
+.paymentPremiumReviewReady,
+.paymentPremiumBusyNote,
+.paymentPremiumError {
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.paymentPremiumCashBox {
+  gap: 8px;
+}
+
+.paymentPremiumCashSuggestions {
+  gap: 6px;
+}
+
+.paymentPremiumCashSuggestions button {
+  min-height: 36px;
+  padding: 0 11px;
+}
+
+.paymentPremiumTotalsGrid {
+  gap: 6px;
+}
+
+.paymentPremiumTotalsGrid span {
+  min-height: 58px;
+  padding: 8px 10px;
+  border-radius: 17px;
+}
+
+.paymentPremiumTotalsGrid strong {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.paymentPremiumFooter {
+  bottom: -6px;
+  gap: 8px;
+  padding-top: 7px;
+}
+
+.paymentPremiumAction,
+.paymentPremiumActionPrimary {
+  min-height: 50px;
+  border-radius: 20px;
+}
+
+@media (max-height: 760px) and (min-width: 901px) {
+  .paymentPremiumPanel {
+    gap: 7px;
+    padding: 10px;
+  }
+
+  .paymentPremiumPanelTitle,
+  .paymentPremiumTitleBlock p,
+  .paymentPremiumHeroTotal small {
+    display: none;
+  }
+
+  .paymentPremiumHeroTotal {
+    padding: 9px 12px;
+  }
+
+  .paymentPremiumHeroTotal strong {
+    font-size: clamp(1.86rem, 4.2vw, 3.25rem);
+  }
+
+  .paymentPremiumTenderRow {
+    padding: 8px;
+  }
+
+  .paymentPremiumTenderMeta small {
+    display: none;
+  }
+
+  .paymentPremiumActionPrimary {
+    min-height: 52px;
+  }
+}
+
+@media (max-width: 900px) {
+  .paymentPremiumBodyGrid,
+  .paymentPremiumTenderRow,
+  .paymentPremiumFooter,
+  .paymentPremiumHeader,
+  .paymentPremiumHeroTotal {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_TABLET_CHECKOUT_MODAL_COMPACT_MXN_1206::END */
+
+/* PRISMA_PAYUX_POLISH_1206::START */
+.paymentPremiumOverlay {
+  background:
+    linear-gradient(135deg, rgba(0, 6, 18, 0.91), rgba(3, 18, 48, 0.88) 42%, rgba(0, 2, 10, 0.94)),
+    radial-gradient(circle at 16% 8%, rgba(43, 132, 255, 0.34), transparent 30%),
+    radial-gradient(circle at 84% 16%, rgba(39, 207, 177, 0.22), transparent 36%),
+    radial-gradient(circle at 50% 102%, rgba(8, 36, 96, 0.70), transparent 46%),
+    url("/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg") center / cover no-repeat;
+  backdrop-filter: blur(18px) saturate(1.22) brightness(0.58);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22) brightness(0.58);
+}
+
+.paymentPremiumOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(34, 118, 226, 0.16) 0%, rgba(5, 18, 48, 0.40) 45%, rgba(0, 3, 12, 0.80) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.30), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.36));
+  mix-blend-mode: multiply;
+}
+
+.paymentPremiumOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.24;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.20) 0 1px, transparent 1px 100%),
+    radial-gradient(circle at 68% 72%, rgba(91, 181, 255, 0.16) 0 1px, transparent 1px 100%);
+  background-size: 34px 34px, 46px 46px;
+}
+
+.paymentPremiumAtmosphere {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(0, 8, 24, 0.32), rgba(0, 7, 22, 0.66)),
+    radial-gradient(ellipse at 48% 10%, rgba(73, 164, 255, 0.22), transparent 35%),
+    radial-gradient(ellipse at 74% 78%, rgba(9, 176, 143, 0.16), transparent 43%),
+    radial-gradient(ellipse at 50% 50%, transparent 36%, rgba(0, 0, 0, 0.48) 100%);
+  backdrop-filter: blur(16px) saturate(1.18) brightness(0.64);
+  -webkit-backdrop-filter: blur(16px) saturate(1.18) brightness(0.64);
+}
+
+.paymentPremiumShell {
+  z-index: 2;
+  width: min(1000px, calc(100vw - 28px));
+}
+
+.paymentPremiumPanel {
+  --prisma-surface-panel-bg: linear-gradient(145deg, rgba(252, 254, 255, 0.94), rgba(232, 244, 255, 0.89));
+  --prisma-shadow-soft: 0 48px 140px rgba(0, 5, 18, 0.62), 0 18px 56px rgba(10, 42, 98, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  border-color: rgba(205, 231, 255, 0.84);
+  background:
+    linear-gradient(145deg, rgba(252, 254, 255, 0.94), rgba(232, 244, 255, 0.89)),
+    rgba(247, 252, 255, 0.84);
+  box-shadow: var(--prisma-shadow-soft);
+  backdrop-filter: blur(30px) saturate(1.18);
+  -webkit-backdrop-filter: blur(30px) saturate(1.18);
+}
+
+.paymentPremiumHeader,
+.paymentPremiumHeroTotal,
+.paymentPremiumTenderRow,
+.paymentPremiumRightRail > *,
+.paymentPremiumBottomBar {
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+}
+
+.paymentPremiumHeroTotal {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.94), transparent 36%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(232, 244, 255, 0.82));
+}
+
+.paymentPremiumTenderRow {
+  grid-template-columns: minmax(166px, 1fr) minmax(138px, 168px) minmax(136px, 168px);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.90), rgba(239, 248, 255, 0.78)),
+    rgba(255, 255, 255, 0.76);
+}
+
+.paymentPremiumTenderActive {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255, 255, 255, 0.92), transparent 34%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.92), rgba(219, 238, 255, 0.78));
+}
+
+.paymentPremiumAmountField {
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 6px;
+  min-height: 46px;
+  padding: 0 10px 0 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(236, 247, 255, 0.90));
+}
+
+.paymentPremiumCurrencyPrefix {
+  width: 22px;
+  height: 24px;
+  border-radius: 9px;
+  color: #1a5edb;
+  background: linear-gradient(180deg, rgba(244, 250, 255, 0.94), rgba(217, 236, 255, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  font-size: 0.76rem;
+  font-weight: 940;
+}
+
+.paymentPremiumAmountField input {
+  min-height: 44px;
+  padding: 0;
+  font-size: 1.08rem;
+  font-weight: 920;
+  letter-spacing: 0;
+  text-align: right;
+}
+
+.paymentPremiumAmountField:focus-within {
+  border-color: rgba(28, 105, 238, 0.76);
+  box-shadow:
+    0 0 0 3px rgba(35, 110, 240, 0.14),
+    0 12px 26px rgba(18, 73, 160, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+/* PRISMA_PAYUX_POLISH_1206::END */
+
+/* PRISMA_TABLET_POS_TICKET_RAIL_GHOST_LAYER_REMOVAL_1506::START
+   Scope: Tablet POS right ticket rail only.
+   Intent: remove the stray lower translucent slab/container indicated in visual QA,
+   while preserving cart rows, checkout stack, totals, CTA, secondary actions, logic,
+   cloudy background, and all non-Tablet surfaces.
+   Authority: tablet msh1 1506 1804 result.zip + TABLET_DIRECT_260615_1750 layer map.
+*/
+.posPremiumWorkspace {
+  padding-bottom: clamp(10px, 1.8dvh, 24px) !important;
+}
+
+.posPremiumTicketPanel {
+  height: fit-content !important;
+  min-height: 0 !important;
+  align-self: start !important;
+  align-content: start !important;
+  overflow: visible !important;
+  isolation: isolate !important;
+}
+
+.posPremiumTicketPanel::before,
+.posPremiumTicketPanel::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  pointer-events: none !important;
+}
+
+.posPremiumTicketPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.posPremiumTicketLines {
+  min-height: 0 !important;
+  max-height: clamp(108px, 24dvh, 252px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+@media (max-height: 760px) and (min-width: 901px) {
+  .posPremiumTicketLines {
+    max-height: clamp(88px, 20dvh, 208px) !important;
+  }
+}
+/* PRISMA_TABLET_POS_TICKET_RAIL_GHOST_LAYER_REMOVAL_1506::END */

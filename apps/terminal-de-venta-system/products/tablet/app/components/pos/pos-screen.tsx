@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
-import { BadgeDollarSign, Boxes, ScanLine, ShoppingCart, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import type { CartLine, CompletedSaleReceipt, PosProduct, UiState } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, clearCartStorage, formatMoney, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
@@ -376,7 +375,8 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     <PrismaTabletShellUnified
       currentPath="/pos"
       title="Vender"
-      subtitle="Busca, escanea, arma el ticket y cobra aquí mismo."
+      kicker={runtimeSnapshot.identity.storeName}
+      subtitle={`${runtimeSnapshot.identity.terminalName} · ${runtimeSnapshot.identity.operatorName}`}
       status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
       visualSurface="tablet-pos"
       runtimeSnapshot={runtimeSnapshot}
@@ -413,30 +413,6 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
-          <section className={styles.posPremiumHero} aria-label="Estado de venta" data-prisma-zone="tablet-pos-hero" data-prisma-layer="2-cloudglass-hero">
-            <div className={styles.posPremiumHeroCopy}>
-              <span><Sparkles aria-hidden="true" size={16} /> Venta touch PRISMA</span>
-              <h2>Carrito, productos y cobro en una sola vista.</h2>
-              <p>{checkoutReady.ready ? "Ticket preparado para abrir cobro." : checkoutReady.reason || "Escanea o busca productos para activar el cobro."}</p>
-            </div>
-            <div className={styles.posPremiumHeroMetrics} aria-label="Resumen rápido de venta">
-              <span>
-                <ShoppingCart aria-hidden="true" size={18} />
-                <small>Ticket</small>
-                <strong>{cart.length} líneas</strong>
-              </span>
-              <span>
-                <Boxes aria-hidden="true" size={18} />
-                <small>Piezas</small>
-                <strong>{cartQty}</strong>
-              </span>
-              <span data-emphasis="true">
-                <BadgeDollarSign aria-hidden="true" size={18} />
-                <small>Total</small>
-                <strong>{formatMoney(cartTotal)}</strong>
-              </span>
-            </div>
-          </section>
           <PosProductSearch
             query={query}
             setQuery={setQuery}
@@ -476,7 +452,6 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                 data-prisma-state={category === selectedCategory ? "selected" : undefined}
                 data-prisma-motion="press-feedback"
               >
-                <span>{category === FEATURED_CATEGORY ? <ScanLine aria-hidden="true" size={16} /> : category.slice(0, 2).toUpperCase()}</span>
                 <strong>{category}</strong>
               </motion.button>
             ))}

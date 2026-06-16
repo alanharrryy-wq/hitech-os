@@ -74,6 +74,9 @@ export function PrismaTabletShellUnified({
   const headerClassName = premiumPosSurface ? `${styles.header} ${styles.posPremiumHeader}` : styles.header;
   const mainClassName = premiumPosSurface ? `${styles.main} ${styles.posPremiumMain}` : styles.main;
   const contentClassName = premiumPosSurface ? `${styles.content} ${styles.posPremiumContent}` : styles.content;
+  const bottomNavItems = premiumPosSurface
+    ? visibleNavItems.filter((item) => ["/", "/shift", "/pos", "/catalog", "/stock", "/sales/today", "/sync"].includes(item.href)).slice(0, 6)
+    : [];
   const groupedNavItems = NAV_GROUP_ORDER.map((group) => ({
     group,
     label: TABLET_NAV_GROUP_LABELS[group],
@@ -191,7 +194,7 @@ export function PrismaTabletShellUnified({
               <h1>{title}</h1>
               <p>{subtitle}</p>
             </div>
-            <TabletRuntimeStatusStrip snapshot={runtimeSnapshot} variant="compact" />
+            <TabletRuntimeStatusStrip snapshot={runtimeSnapshot} variant="compact" currentPath={currentPath} />
             <div className={styles.headerControls} data-prisma-component="UserMenu" data-prisma-role="status-surface">
               <PrismaDarkSelector />
               <a className={styles.headerTextButton} href="/shift" aria-label="Ver turno">
@@ -218,6 +221,31 @@ export function PrismaTabletShellUnified({
             {children}
           </div>
         </main>
+        {premiumPosSurface ? (
+          <nav className={styles.posPremiumBottomNav} aria-label="Navegación principal de venta Tablet" data-prisma-component="TabletBottomNav">
+            {bottomNavItems.map((item) => {
+              const active = isTabletNavActive(currentPath, item.href);
+              const showPendingBadge = item.href === "/sync" && pendingCount > 0;
+              return (
+                <a
+                  key={`bottom-${item.href}`}
+                  className={active ? styles.posPremiumBottomNavActive : styles.posPremiumBottomNavItem}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  aria-label={`${item.label}. ${item.description}`}
+                  data-prisma-component="BottomNavItem"
+                  data-active={active ? "true" : undefined}
+                  data-primary={item.primary ? "true" : undefined}
+                  data-attention={showPendingBadge ? "true" : undefined}
+                >
+                  <PrismaIcon name={item.icon} size={20} />
+                  <span>{item.shortLabel}</span>
+                  {showPendingBadge ? <strong aria-label={`${pendingCount} pendientes`}>{pendingCount}</strong> : null}
+                </a>
+              );
+            })}
+          </nav>
+        ) : null}
       </div>
     </>
   );

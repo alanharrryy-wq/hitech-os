@@ -61,17 +61,30 @@ function dispatchTone(result: DispatchResult | null) {
   return "danger";
 }
 
+function visibleSyncError(message: string | null | undefined) {
+  const raw = (message ?? "").trim();
+  if (!raw) return "La cola local quedó protegida. Puedes reintentar cuando la PC esté disponible.";
+  const lower = raw.toLowerCase();
+  if (lower.includes("operation was aborted") || lower.includes("aborterror") || lower.includes("aborted")) {
+    return "El envío se interrumpió antes de terminar. La cola local quedó guardada y puedes reintentar sin perder ventas.";
+  }
+  if (lower.includes("failed to fetch") || lower.includes("networkerror")) {
+    return "No se alcanzó la PC en este intento. La venta local sigue disponible y los pendientes quedan guardados.";
+  }
+  return raw;
+}
+
 function dispatchMessage(result: DispatchResult | null) {
   if (!result) return "Sin intento de envío todavía.";
   const targetUrl = result.health?.url ? ` Destino: ${result.health.url}.` : "";
-  const lastError = result.health?.error ? ` Último error: ${result.health.error}.` : result.error ? ` Último error: ${result.error}.` : "";
+  const lastError = result.health?.error ? ` ${visibleSyncError(result.health.error)}` : result.error ? ` ${visibleSyncError(result.error)}` : "";
   if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} evento(s) mandado(s) a PC.`;
   if (result.ok && result.reason === "empty") return "La cola no tenía eventos listos para enviar.";
   if (result.reason === "pc_sync_disabled") return `Sync PC apagado por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
-  if (result.reason === "missing_pc_origin") return "Falta PRISMA_TABLET_PC_ORIGIN. Hay cola local, pero no hay destino PC configurado.";
-  if (result.reason === "pc_unavailable") return `PC unavailable. La cola queda guardada localmente.${targetUrl}${lastError} Para iniciar PC usa prisma-control-center/01_LEVANTAR_TODO_LOCAL.cmd.`;
+  if (result.reason === "missing_pc_origin") return "Falta configurar el destino PC. Hay cola local, pero no hay destino configurado para enviar.";
+  if (result.reason === "pc_unavailable") return `PC no disponible. La cola queda guardada localmente.${targetUrl}${lastError}`;
   if (result.reason === "dispatcher_in_flight") return "Ya hay un envío en curso. No se duplicó la operación.";
-  if (result.reason === "dispatch_failed") return result.error ? `Falló el envío: ${result.error}` : "Falló el envío. La cola quedó protegida para reintento.";
+  if (result.reason === "dispatch_failed") return `No se pudo completar el envío.${lastError || " La cola quedó protegida para reintento."}`;
   return `Resultado de sync: ${result.reason}.`;
 }
 
@@ -277,10 +290,10 @@ export function PendingOfflineSyncPanelScreen() {
 }
 
 function readError(error: unknown) {
-  if (error instanceof Error) return error.message;
+  if (error instanceof Error) return visibleSyncError(error.message);
   if (typeof error === "object" && error && "message" in error) {
     const message = (error as { message?: unknown }).message;
-    if (typeof message === "string" && message.trim()) return message;
+    if (typeof message === "string" && message.trim()) return visibleSyncError(message);
   }
-  return "No se pudo revisar pendientes.";
+  return "No se pudo revisar pendientes. La cola local queda protegida.";
 }

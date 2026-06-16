@@ -9,7 +9,14 @@ export type CashTenderReview = {
 };
 
 export function centsFromDecimalString(value: string) {
-  const normalized = value.replace(/,/g, "").trim();
+  const raw = value.replace(/[^0-9.,-]/g, "").trim();
+  const decimalNormalized = raw.includes(".")
+    ? raw.replace(/,/g, "")
+    : raw.replace(/,/g, ".");
+  const parts = decimalNormalized.split(".");
+  const normalized = parts.length > 1
+    ? `${parts.shift() ?? "0"}.${parts.join("").slice(0, 2)}`
+    : decimalNormalized;
   const parsed = Number(normalized);
   if (!Number.isFinite(parsed) || parsed <= 0) return 0;
   return Math.round(parsed * 100);

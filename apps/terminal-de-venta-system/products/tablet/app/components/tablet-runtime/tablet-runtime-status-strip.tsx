@@ -5,6 +5,7 @@ import styles from "@components/tablet-shell/prisma-tablet-shell.module.css";
 type Props = {
   snapshot: TabletRuntimeSnapshot;
   variant?: "full" | "compact";
+  currentPath?: string;
 };
 
 function Chip({ label, value, tone, href }: { label: string; value: string; tone: string; href: string }) {
@@ -19,8 +20,24 @@ function Chip({ label, value, tone, href }: { label: string; value: string; tone
   );
 }
 
-export function TabletRuntimeStatusStrip({ snapshot, variant = "full" }: Props) {
+function isSupportStatusContext(currentPath?: string) {
+  if (!currentPath) return false;
+  return currentPath === "/sync"
+    || currentPath === "/events/outbox"
+    || currentPath === "/offline"
+    || currentPath === "/release-gate"
+    || currentPath === "/settings/export"
+    || currentPath === "/settings/license"
+    || currentPath === "/settings"
+    || currentPath.startsWith("/support")
+    || currentPath.startsWith("/diagnostics")
+    || currentPath.startsWith("/license")
+    || currentPath.startsWith("/settings/");
+}
+
+export function TabletRuntimeStatusStrip({ snapshot, variant = "full", currentPath }: Props) {
   const compact = variant === "compact";
+  const supportStatusContext = isSupportStatusContext(currentPath);
   const syncState =
     snapshot.connection.failedEvents > 0 || snapshot.connection.conflictEvents > 0
       ? "sync_failed"
@@ -45,11 +62,21 @@ export function TabletRuntimeStatusStrip({ snapshot, variant = "full" }: Props) 
         <strong>{getRuntimeHeaderLine(snapshot)}</strong>
         <small>{getRuntimeOperatorLine(snapshot)}</small>
       </div>
-      <div className={styles.runtimeChips}>
-        <Chip label="Turno" value={snapshot.shift.label} tone={snapshot.shift.tone} href={snapshot.shift.actionHref} />
-        <Chip label="Conexion" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
-        <Chip label="Pendientes" value={getPendingEventsLabel(snapshot)} tone={snapshot.connection.tone} href="/sync" />
-        <Chip label="Catalogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
+      <div className={styles.runtimeChips} data-prisma-support-context={supportStatusContext ? "true" : undefined}>
+        {supportStatusContext ? (
+          <>
+            <Chip label="Soporte" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
+            <Chip label="Pendientes" value={getPendingEventsLabel(snapshot)} tone={snapshot.connection.tone} href="/sync" />
+            <Chip label="Catalogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
+          </>
+        ) : (
+          <>
+            <Chip label="Turno" value={snapshot.shift.label} tone={snapshot.shift.tone} href={snapshot.shift.actionHref} />
+            <Chip label="Conexion" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
+            <Chip label="Pendientes" value={getPendingEventsLabel(snapshot)} tone={snapshot.connection.tone} href="/sync" />
+            <Chip label="Catalogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
+          </>
+        )}
       </div>
     </section>
   );

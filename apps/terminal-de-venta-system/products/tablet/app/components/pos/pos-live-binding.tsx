@@ -50,7 +50,7 @@ function visibleRealtimeStatus(status: string): string {
     case "payload_error":
       return "Payload visual invalido";
     case "error":
-      return "Realtime sin conexion";
+      return "Visual realtime pendiente";
     default:
       return status.replace(/_/g, " ");
   }
@@ -84,8 +84,9 @@ function applyPayload(payload: PrismaPayload) {
 
 export function PosLiveBinding() {
   const [status, setStatus] = useState("idle");
-  const [recipe, setRecipe] = useState("Receta no recibida");
+  const [recipe, setRecipe] = useState("Venta local disponible");
   const [score, setScore] = useState("");
+  const [showDebugBadge, setShowDebugBadge] = useState(false);
   const hasRecipeRef = useRef(false);
 
   useEffect(() => {
@@ -103,7 +104,7 @@ export function PosLiveBinding() {
       applyPayload(payload);
       hasRecipeRef.current = true;
       markStatus("connected");
-      setRecipe(payload.recipeName || payload.recipe || "Receta no recibida");
+      setRecipe(payload.recipeName || payload.recipe || "Venta local disponible");
       setScore(scoreValue(payload.score));
       return true;
     }
@@ -118,6 +119,11 @@ export function PosLiveBinding() {
         console.warn("[PRISMA 00T] state hydration skipped", error);
       }
     }
+
+    setShowDebugBadge(
+      new URLSearchParams(window.location.search).has("prismaLiveDebug") ||
+      window.localStorage.getItem("prisma:live-debug") === "1"
+    );
 
     document.documentElement.dataset.prismaLive = "true";
     document.documentElement.dataset.prismaPosLiveBinding = "00T";
@@ -167,6 +173,8 @@ export function PosLiveBinding() {
       if (source) source.close();
     };
   }, []);
+
+  if (!showDebugBadge) return null;
 
   return (
     <div
