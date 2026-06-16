@@ -344,7 +344,7 @@ function runValidation(mode, args) {
     if (!existsSync(fullPath) || !statSync(fullPath).isFile() || !fileLooksText(fullPath)) continue;
     const ext = path.extname(fullPath).toLowerCase();
     const text = readFileSync(fullPath, 'utf8');
-    if (['.css', '.scss', '.sass'].includes(ext) && text.includes('!important')) {
+    if (['.css', '.scss', '.sass'].includes(ext) && /!\s*important/i.test(text)) {
       forbiddenHits.push(`${file}: final-important`);
     }
     if (fileLooksRuntime(fullPath) && !file.includes('/tools/prisma-visual-system/') && text.includes('products/0.backgrounds')) {

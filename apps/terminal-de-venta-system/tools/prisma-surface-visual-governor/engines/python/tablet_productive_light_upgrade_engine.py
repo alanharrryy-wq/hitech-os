@@ -292,10 +292,10 @@ def build_patch(local_classes: list[str]) -> str:
   :global([data-prisma-surface="tablet"]) *,
   :global(.prisma-tablet-light-shell *),
   :global(.tablet-light-shell *) {{
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-    scroll-behavior: auto !important;
+    animation-duration: .001ms;
+    animation-iteration-count: 1;
+    transition-duration: .001ms;
+    scroll-behavior: auto;
   }}
 }}
 

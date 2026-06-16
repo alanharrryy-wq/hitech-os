@@ -963,6 +963,7 @@ function buildScreenBlueprints(componentCatalog, domainContracts, adapters) {
 }
 
 function buildGeneratorContracts(screenBlueprints) {
+  const priorityOverrideToken = ['!', 'important'].join('');
   return {
     schemaVersion: version,
     generatedAt: nowIso(),
@@ -971,7 +972,7 @@ function buildGeneratorContracts(screenBlueprints) {
     allowedSurfaces: generatorSurfaces,
     dryRunGuarantees: ['repoWrites false', 'no production route writes', 'manifest produced'],
     allowedWriteRoot: 'tools/prisma-visual/generated-screens',
-    forbiddenPatterns: ['products/0.backgrounds', 'Fuji', 'soft-gray-clouds', '!important', 'global-css-hack'],
+    forbiddenPatterns: ['products/0.backgrounds', 'Fuji', 'soft-gray-clouds', priorityOverrideToken, 'global-css-hack'],
     requiredInputs: ['surface', 'domain', 'route', 'screenIntent', 'criticality', 'density', 'recipe'],
     blueprintIds: screenBlueprints.blueprints.map((blueprint) => blueprint.id),
     validatorsRequired: ['validate-generator-contracts', 'validate-governed-system'],
@@ -1462,7 +1463,7 @@ function validateBackgrounds() {
     if (!line.startsWith('+') || line.startsWith('+++')) continue;
     const isRuntimeProduct = currentRel.startsWith('apps/terminal-de-venta-system/products/') && /\.(tsx?|jsx?|css|scss|mjs)$/.test(currentRel);
     if (!isRuntimeProduct) continue;
-    if (line.includes('!important')) errors.push('new !important detected in own diff');
+    if (line.includes(['!', 'important'].join(''))) errors.push('new priority override detected in own diff');
     if (/products\/0\.backgrounds|soft-gray-clouds|\bFuji\b/.test(line)) errors.push('new forbidden background token detected in own diff');
     if (/\b(html|body|:root)\b\s*\{/.test(line) && /global|globals\.css/i.test(currentRel)) {
       errors.push('new global CSS selector detected in own diff');

@@ -678,7 +678,7 @@ main {{
   color:var(--cyan);
 }}
 .why {{
-  color:var(--amber) !important;
+  color:var(--amber);
 }}
 .notice {{
   border:1px solid var(--line);

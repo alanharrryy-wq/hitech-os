@@ -249,7 +249,7 @@ body:after{{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opa
 @keyframes drawLine{{from{{stroke-dashoffset:120}}to{{stroke-dashoffset:0}}}}
 @keyframes glowPulse{{0%,100%{{opacity:.6}}50%{{opacity:1}}}}
 @keyframes sweep{{0%{{transform:translateX(-120%)}}100%{{transform:translateX(120%)}}}}
-@media (prefers-reduced-motion:reduce){{*,*:before,*:after{{animation:none!important;transition:none!important}}}}
+@media (prefers-reduced-motion:reduce){{*,*:before,*:after{{animation:none;transition:none}}}}
 
 .shell{{width:min(100%,1640px);margin:0 auto;padding:24px 24px 40px;animation:reveal .9s ease both}}
 .glass{{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),var(--glass);border:1px solid var(--line);box-shadow:0 32px 84px var(--shadow), inset 0 1px 0 var(--white-glow);backdrop-filter:blur(14px)}}

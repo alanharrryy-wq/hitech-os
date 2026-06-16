@@ -2717,17 +2717,17 @@ input[type="range"]::-webkit-slider-thumb {
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
   }
 
   .chart-lab::before,
   .chart-lab::after,
   .chart-lab__background::before,
   .chart-lab__background::after {
-    transform: none !important;
+    transform: none;
   }
 }
 
@@ -2736,8 +2736,8 @@ input[type="range"]::-webkit-slider-thumb {
   body,
   .chart-lab,
   .chart-lab__background {
-    color: #111827 !important;
-    background: #ffffff !important;
+    color: #111827;
+    background: #ffffff;
   }
 
   .chart-lab__header,
@@ -2749,12 +2749,12 @@ input[type="range"]::-webkit-slider-thumb {
   .mini-stack,
   .tab-panel,
   .control-deck {
-    color: #111827 !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
-    border-color: #d0d7e2 !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    color: #111827;
+    background: #ffffff;
+    box-shadow: none;
+    border-color: #d0d7e2;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   h1,
@@ -2766,8 +2766,8 @@ input[type="range"]::-webkit-slider-thumb {
   dd,
   dt,
   code {
-    color: #111827 !important;
-    text-shadow: none !important;
+    color: #111827;
+    text-shadow: none;
   }
 }
 
@@ -4305,8 +4305,8 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 }
 
 .chart-lab-shell {
-  background: var(--prisma-chart-shell-bg) !important;
-  color: var(--prisma-chart-text-1) !important;
+  background: var(--prisma-chart-shell-bg);
+  color: var(--prisma-chart-text-1);
   transition: background 240ms ease, color 180ms ease;
 }
 
@@ -4317,55 +4317,55 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .intent-card,
 .passport-card,
 .source-card {
-  background: var(--prisma-chart-panel-bg) !important;
-  border-color: var(--prisma-chart-border) !important;
-  color: var(--prisma-chart-text-1) !important;
-  box-shadow: 0 24px 76px color-mix(in srgb, var(--prisma-chart-glow) 38%, transparent), inset 0 1px 0 rgba(255,255,255,0.10) !important;
+  background: var(--prisma-chart-panel-bg);
+  border-color: var(--prisma-chart-border);
+  color: var(--prisma-chart-text-1);
+  box-shadow: 0 24px 76px color-mix(in srgb, var(--prisma-chart-glow) 38%, transparent), inset 0 1px 0 rgba(255,255,255,0.10);
   transition: background 220ms ease, border-color 180ms ease, box-shadow 220ms ease, border-radius 220ms ease;
 }
 
 .chart-frame {
-  border-radius: var(--prisma-chart-radius-lg) !important;
-  background: var(--prisma-chart-frame-bg) !important;
+  border-radius: var(--prisma-chart-radius-lg);
+  background: var(--prisma-chart-frame-bg);
 }
 
 .chart-frame .lab-echart,
 .lab-echart,
 .echarts-for-react,
 .echarts-container {
-  border-radius: calc(var(--prisma-chart-radius-lg) - 4px) !important;
+  border-radius: calc(var(--prisma-chart-radius-lg) - 4px);
   background:
     linear-gradient(180deg, var(--prisma-chart-chart-bg), color-mix(in srgb, var(--prisma-chart-chart-bg) 72%, transparent)),
     linear-gradient(90deg, color-mix(in srgb, var(--prisma-chart-accent) 8%, transparent) 1px, transparent 1px),
-    linear-gradient(color-mix(in srgb, var(--prisma-chart-accent-2) 7%, transparent) 1px, transparent 1px) !important;
-  background-size: auto, 38px 38px, 38px 38px !important;
+    linear-gradient(color-mix(in srgb, var(--prisma-chart-accent-2) 7%, transparent) 1px, transparent 1px);
+  background-size: auto, 38px 38px, 38px 38px;
 }
 
 .control-deck {
-  border-radius: var(--prisma-chart-radius-lg) !important;
+  border-radius: var(--prisma-chart-radius-lg);
   background:
     radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--prisma-chart-accent-2) 16%, transparent), transparent 34%),
-    var(--prisma-chart-panel-bg) !important;
+    var(--prisma-chart-panel-bg);
 }
 
 .control-deck__grid {
-  grid-template-columns: repeat(3, minmax(170px, 1fr)) !important;
-  gap: var(--prisma-chart-control-gap) !important;
+  grid-template-columns: repeat(3, minmax(170px, 1fr));
+  gap: var(--prisma-chart-control-gap);
 }
 
 .runtime-control,
 .control-card {
-  border-color: color-mix(in srgb, var(--prisma-chart-border) 68%, transparent) !important;
-  border-radius: var(--prisma-chart-radius-md) !important;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--prisma-chart-panel-bg) 92%, white), var(--prisma-chart-panel-bg)) !important;
-  color: var(--prisma-chart-text-1) !important;
-  padding: var(--prisma-chart-control-pad) !important;
+  border-color: color-mix(in srgb, var(--prisma-chart-border) 68%, transparent);
+  border-radius: var(--prisma-chart-radius-md);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--prisma-chart-panel-bg) 92%, white), var(--prisma-chart-panel-bg));
+  color: var(--prisma-chart-text-1);
+  padding: var(--prisma-chart-control-pad);
 }
 
 .control-deck__toolbar .eyebrow,
 .runtime-control > span:first-child,
 .control-card .eyebrow {
-  color: var(--prisma-chart-accent-2) !important;
+  color: var(--prisma-chart-accent-2);
   letter-spacing: 0.16em;
 }
 
@@ -4373,7 +4373,7 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .control-card h3,
 .chart-frame h2,
 .chart-frame h3 {
-  color: var(--prisma-chart-text-1) !important;
+  color: var(--prisma-chart-text-1);
 }
 
 .runtime-control small,
@@ -4381,7 +4381,7 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .status-card p,
 .intent-card p,
 .source-card p {
-  color: var(--prisma-chart-muted) !important;
+  color: var(--prisma-chart-muted);
 }
 
 .toolbar-actions button,
@@ -4391,12 +4391,12 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .size-controls button,
 .control-deck button,
 .chart-frame button {
-  border: 1px solid color-mix(in srgb, var(--prisma-chart-border) 72%, transparent) !important;
-  border-radius: var(--prisma-chart-radius-md) !important;
-  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 84%, var(--prisma-chart-shell-bg)) !important;
-  color: var(--prisma-chart-text-1) !important;
-  box-shadow: none !important;
-  font-weight: 850 !important;
+  border: 1px solid color-mix(in srgb, var(--prisma-chart-border) 72%, transparent);
+  border-radius: var(--prisma-chart-radius-md);
+  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 84%, var(--prisma-chart-shell-bg));
+  color: var(--prisma-chart-text-1);
+  box-shadow: none;
+  font-weight: 850;
   transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease, color 150ms ease;
 }
 
@@ -4408,8 +4408,8 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .control-deck button:hover,
 .chart-frame button:hover {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--prisma-chart-accent) 52%, transparent) !important;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--prisma-chart-glow) 52%, transparent) !important;
+  border-color: color-mix(in srgb, var(--prisma-chart-accent) 52%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--prisma-chart-glow) 52%, transparent);
 }
 
 .tab-strip button.is-active,
@@ -4422,36 +4422,36 @@ body:has(button[data-value="executive-dense"][aria-pressed="true"]) .chart-lab-s
 .chip-group button[aria-pressed="true"],
 .segmented-controls button[aria-pressed="true"],
 .size-controls button[aria-pressed="true"] {
-  border-color: color-mix(in srgb, var(--prisma-chart-accent-2) 62%, transparent) !important;
-  background: linear-gradient(180deg, var(--prisma-chart-accent), color-mix(in srgb, var(--prisma-chart-accent) 46%, black)) !important;
-  color: white !important;
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--prisma-chart-glow) 68%, transparent) !important;
+  border-color: color-mix(in srgb, var(--prisma-chart-accent-2) 62%, transparent);
+  background: linear-gradient(180deg, var(--prisma-chart-accent), color-mix(in srgb, var(--prisma-chart-accent) 46%, black));
+  color: white;
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--prisma-chart-glow) 68%, transparent);
 }
 
 .runtime-control output {
-  border-color: color-mix(in srgb, var(--prisma-chart-accent) 26%, transparent) !important;
-  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 82%, transparent) !important;
-  color: var(--prisma-chart-accent-2) !important;
+  border-color: color-mix(in srgb, var(--prisma-chart-accent) 26%, transparent);
+  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 82%, transparent);
+  color: var(--prisma-chart-accent-2);
 }
 
 .control-card select,
 .control-card input[type="search"],
 .runtime-control select,
 .runtime-control input[type="search"] {
-  border-color: color-mix(in srgb, var(--prisma-chart-border) 80%, transparent) !important;
-  border-radius: var(--prisma-chart-radius-md) !important;
-  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 86%, transparent) !important;
-  color: var(--prisma-chart-text-1) !important;
+  border-color: color-mix(in srgb, var(--prisma-chart-border) 80%, transparent);
+  border-radius: var(--prisma-chart-radius-md);
+  background: color-mix(in srgb, var(--prisma-chart-panel-bg) 86%, transparent);
+  color: var(--prisma-chart-text-1);
 }
 
 .runtime-control input[type="range"] {
-  accent-color: var(--prisma-chart-accent) !important;
+  accent-color: var(--prisma-chart-accent);
 }
 
 body:has(button[data-value="paper"].is-active) .lab-echart,
 .chart-lab-shell[data-theme-preset="paper"] .lab-echart,
 .chart-frame[data-theme-preset="paper"] .lab-echart {
-  background-size: auto, 64px 64px, 64px 64px !important;
+  background-size: auto, 64px 64px, 64px 64px;
   filter: saturate(0.92) contrast(0.98);
 }
 
@@ -4462,19 +4462,19 @@ body:has(button[data-value="executive-dense"].is-active) .lab-echart,
 .chart-frame[data-theme-preset="dense-noir"] .lab-echart,
 .chart-lab-shell[data-theme-preset="dense"] .lab-echart,
 .chart-frame[data-theme-preset="dense"] .lab-echart {
-  background-size: auto, 24px 24px, 24px 24px !important;
+  background-size: auto, 24px 24px, 24px 24px;
   filter: saturate(1.18) contrast(1.08);
 }
 
 @media (max-width: 1260px) {
   .control-deck__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 860px) {
   .control-deck__grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -4523,70 +4523,70 @@ html:has(.chart-lab[data-luxury-ui="pearl-executive"]) {
     radial-gradient(circle at 12% -8%, rgba(32, 215, 255, 0.18), transparent 38rem),
     radial-gradient(circle at 82% 2%, rgba(139, 92, 246, 0.13), transparent 34rem),
     radial-gradient(circle at 60% 105%, rgba(200, 169, 106, 0.13), transparent 36rem),
-    linear-gradient(180deg, #fbfdff 0%, #f1f6fb 48%, #e9eff6 100%) !important;
+    linear-gradient(180deg, #fbfdff 0%, #f1f6fb 48%, #e9eff6 100%);
 }
 
 body:has(.chart-lab[data-luxury-ui="pearl-executive"])::before {
-  opacity: .38 !important;
+  opacity: .38;
   background:
     linear-gradient(90deg, rgba(37, 99, 235, 0.035) 1px, transparent 1px),
     linear-gradient(rgba(37, 99, 235, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.78), transparent 32rem) !important;
-  background-size: 56px 56px, 56px 56px, auto !important;
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.78), transparent 32rem);
+  background-size: 56px 56px, 56px 56px, auto;
   mix-blend-mode: multiply;
 }
 
 body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
-  opacity: .11 !important;
-  mix-blend-mode: multiply !important;
+  opacity: .11;
+  mix-blend-mode: multiply;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] {
-  color: var(--ink) !important;
+  color: var(--ink);
   background:
     radial-gradient(circle at 16% 6%, rgba(32, 215, 255, .16), transparent 34rem),
     radial-gradient(circle at 92% 10%, rgba(139, 92, 246, .12), transparent 34rem),
-    linear-gradient(180deg, rgba(251,253,255,.96), rgba(239,245,252,.92)) !important;
+    linear-gradient(180deg, rgba(251,253,255,.96), rgba(239,245,252,.92));
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__background {
   background:
     linear-gradient(120deg, transparent, rgba(255,255,255,.60), transparent),
     radial-gradient(circle at 18% 4%, rgba(32, 215, 255, .20), transparent 36rem),
-    radial-gradient(circle at 78% 0%, rgba(139, 92, 246, .14), transparent 34rem) !important;
-  opacity: 1 !important;
-  filter: none !important;
+    radial-gradient(circle at 78% 0%, rgba(139, 92, 246, .14), transparent 34rem);
+  opacity: 1;
+  filter: none;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__chrome {
-  color: var(--ink) !important;
+  color: var(--ink);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__header {
   overflow: hidden;
   min-height: 236px;
-  border: 1px solid var(--platinum-soft) !important;
-  border-radius: 34px !important;
+  border: 1px solid var(--platinum-soft);
+  border-radius: 34px;
   background:
     linear-gradient(135deg, rgba(255,255,255,.92), rgba(246,250,255,.66) 48%, rgba(238,244,252,.76)),
     radial-gradient(circle at 18% 14%, rgba(32, 215, 255, .18), transparent 28rem),
-    radial-gradient(circle at 94% 24%, rgba(139, 92, 246, .13), transparent 28rem) !important;
-  box-shadow: var(--pearl-shadow), var(--pearl-inset) !important;
+    radial-gradient(circle at 94% 24%, rgba(139, 92, 246, .13), transparent 28rem);
+  box-shadow: var(--pearl-shadow), var(--pearl-inset);
   backdrop-filter: blur(24px) saturate(1.06);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__header::before {
-  opacity: .85 !important;
+  opacity: .85;
   background:
     linear-gradient(115deg, transparent 0%, rgba(255,255,255,.78) 26%, transparent 46%),
-    radial-gradient(circle at 18% 50%, rgba(255,255,255,.78), transparent 22rem) !important;
-  animation: pearlExecutiveSweep 9s var(--luxury-ease) infinite !important;
+    radial-gradient(circle at 18% 50%, rgba(255,255,255,.78), transparent 22rem);
+  animation: pearlExecutiveSweep 9s var(--luxury-ease) infinite;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__header::after {
-  opacity: .72 !important;
-  border-color: rgba(255,255,255,.72) !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.66), inset 0 -24px 70px rgba(37,99,235,.035) !important;
+  opacity: .72;
+  border-color: rgba(255,255,255,.72);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.66), inset 0 -24px 70px rgba(37,99,235,.035);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .prisma-brand-lockup {
@@ -4595,38 +4595,38 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .prisma-brand-lockup__mark {
-  width: 96px !important;
-  height: 96px !important;
+  width: 96px;
+  height: 96px;
   padding: 16px;
   border: 1px solid rgba(196, 211, 229, .78);
   border-radius: 28px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.86), rgba(239,247,255,.62)),
-    radial-gradient(circle at 32% 12%, rgba(32,215,255,.20), transparent 58%) !important;
-  box-shadow: 0 22px 54px rgba(31,49,78,.13), inset 0 1px 0 rgba(255,255,255,.92) !important;
+    radial-gradient(circle at 32% 12%, rgba(32,215,255,.20), transparent 58%);
+  box-shadow: 0 22px 54px rgba(31,49,78,.13), inset 0 1px 0 rgba(255,255,255,.92);
   filter: drop-shadow(0 12px 18px rgba(37,99,235,.14));
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .prisma-brand-lockup__copy .eyebrow,
 .chart-lab[data-luxury-ui="pearl-executive"] .eyebrow {
-  color: var(--sapphire) !important;
-  font-weight: 900 !important;
-  letter-spacing: .18em !important;
+  color: var(--sapphire);
+  font-weight: 900;
+  letter-spacing: .18em;
   text-transform: uppercase;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] h1 {
   max-width: 820px;
   margin: 8px 0 0;
-  color: var(--ink) !important;
-  font-size: clamp(4rem, 8.5vw, 8.5rem) !important;
-  line-height: .82 !important;
-  letter-spacing: -.085em !important;
-  font-weight: 950 !important;
-  background: linear-gradient(115deg, #102033 0%, #1d4ed8 42%, #20d7ff 64%, #8b5cf6 94%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
+  color: var(--ink);
+  font-size: clamp(4rem, 8.5vw, 8.5rem);
+  line-height: .82;
+  letter-spacing: -.085em;
+  font-weight: 950;
+  background: linear-gradient(115deg, #102033 0%, #1d4ed8 42%, #20d7ff 64%, #8b5cf6 94%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   text-wrap: balance;
 }
 
@@ -4649,22 +4649,22 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 .chart-lab[data-luxury-ui="pearl-executive"] .control-deck button,
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-frame button {
   min-height: 34px;
-  border: 1px solid rgba(188, 202, 220, .76) !important;
-  border-radius: 999px !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,248,253,.74)) !important;
-  color: var(--ink-2) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 8px 20px rgba(31,49,78,.055) !important;
-  font-weight: 880 !important;
-  letter-spacing: -.01em !important;
-  text-transform: none !important;
+  border: 1px solid rgba(188, 202, 220, .76);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,248,253,.74));
+  color: var(--ink-2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 8px 20px rgba(31,49,78,.055);
+  font-weight: 880;
+  letter-spacing: -.01em;
+  text-transform: none;
   transition: transform var(--luxury-fast) var(--luxury-ease-soft), border-color var(--luxury-fast), box-shadow var(--luxury-fast), background var(--luxury-fast), color var(--luxury-fast);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .header-actions span:hover,
 .chart-lab[data-luxury-ui="pearl-executive"] button:hover {
   transform: translateY(-1px);
-  border-color: rgba(37, 99, 235, .34) !important;
-  box-shadow: 0 14px 30px rgba(37,99,235,.11), inset 0 1px 0 rgba(255,255,255,.94) !important;
+  border-color: rgba(37, 99, 235, .34);
+  box-shadow: 0 14px 30px rgba(37,99,235,.11), inset 0 1px 0 rgba(255,255,255,.94);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] button.is-active,
@@ -4673,45 +4673,45 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 .chart-lab[data-luxury-ui="pearl-executive"] .size-controls button.is-active,
 .chart-lab[data-luxury-ui="pearl-executive"] .tab-strip button.is-active,
 .chart-lab[data-luxury-ui="pearl-executive"] .chip-group button.is-active {
-  border-color: rgba(16, 32, 51, .78) !important;
-  background: linear-gradient(180deg, #17263a, #0f1d2d) !important;
-  color: #ffffff !important;
-  box-shadow: 0 16px 34px rgba(16,32,51,.18), inset 0 1px 0 rgba(255,255,255,.12), var(--pearl-glow-cyan) !important;
+  border-color: rgba(16, 32, 51, .78);
+  background: linear-gradient(180deg, #17263a, #0f1d2d);
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgba(16,32,51,.18), inset 0 1px 0 rgba(255,255,255,.12), var(--pearl-glow-cyan);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .status-strip {
-  border: 1px solid var(--platinum-soft) !important;
-  border-radius: 26px !important;
+  border: 1px solid var(--platinum-soft);
+  border-radius: 26px;
   overflow: hidden;
-  background: rgba(255,255,255,.58) !important;
-  box-shadow: var(--pearl-shadow-soft), var(--pearl-inset) !important;
+  background: rgba(255,255,255,.58);
+  box-shadow: var(--pearl-shadow-soft), var(--pearl-inset);
   backdrop-filter: blur(18px) saturate(1.04);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .status-strip article {
-  border-color: rgba(198, 211, 226, .72) !important;
+  border-color: rgba(198, 211, 226, .72);
   background:
     linear-gradient(180deg, rgba(255,255,255,.62), rgba(246,250,255,.48)),
-    radial-gradient(circle at 20% 0%, rgba(32,215,255,.08), transparent 70%) !important;
-  box-shadow: none !important;
+    radial-gradient(circle at 20% 0%, rgba(32,215,255,.08), transparent 70%);
+  box-shadow: none;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .status-strip span,
 .chart-lab[data-luxury-ui="pearl-executive"] .inspector .eyebrow {
-  color: #58677c !important;
+  color: #58677c;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .status-strip strong,
 .chart-lab[data-luxury-ui="pearl-executive"] .snapshot-row strong,
 .chart-lab[data-luxury-ui="pearl-executive"] .inspector strong {
-  color: var(--ink) !important;
+  color: var(--ink);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .status-strip small,
 .chart-lab[data-luxury-ui="pearl-executive"] .inspector p,
 .chart-lab[data-luxury-ui="pearl-executive"] .mini-stack,
 .chart-lab[data-luxury-ui="pearl-executive"] small {
-  color: var(--slate) !important;
+  color: var(--slate);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .lab-workbench {
@@ -4727,81 +4727,81 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 .chart-lab[data-luxury-ui="pearl-executive"] .map-stack article,
 .chart-lab[data-luxury-ui="pearl-executive"] .inspector section,
 .chart-lab[data-luxury-ui="pearl-executive"] .control-deck {
-  border-color: var(--platinum-soft) !important;
+  border-color: var(--platinum-soft);
   background:
     linear-gradient(180deg, rgba(255,255,255,.82), rgba(248,251,255,.66)),
-    radial-gradient(circle at 12% 0%, rgba(32,215,255,.08), transparent 32rem) !important;
-  color: var(--ink) !important;
-  box-shadow: var(--pearl-shadow-soft), var(--pearl-inset) !important;
+    radial-gradient(circle at 12% 0%, rgba(32,215,255,.08), transparent 32rem);
+  color: var(--ink);
+  box-shadow: var(--pearl-shadow-soft), var(--pearl-inset);
   backdrop-filter: blur(20px) saturate(1.04);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .control-card,
 .chart-lab[data-luxury-ui="pearl-executive"] .runtime-control {
-  border-radius: 20px !important;
+  border-radius: 20px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.88), rgba(246,250,255,.62)),
-    radial-gradient(circle at 8% 0%, rgba(200,169,106,.10), transparent 56%) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 12px 28px rgba(31,49,78,.055) !important;
+    radial-gradient(circle at 8% 0%, rgba(200,169,106,.10), transparent 56%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 12px 28px rgba(31,49,78,.055);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] input,
 .chart-lab[data-luxury-ui="pearl-executive"] select,
 .chart-lab[data-luxury-ui="pearl-executive"] textarea {
-  border-color: rgba(185, 201, 220, .78) !important;
-  background: rgba(255,255,255,.82) !important;
-  color: var(--ink) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.86) !important;
+  border-color: rgba(185, 201, 220, .78);
+  background: rgba(255,255,255,.82);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.86);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] input[type="range"] {
-  accent-color: var(--sapphire) !important;
+  accent-color: var(--sapphire);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .runtime-control output {
-  border-color: rgba(37,99,235,.18) !important;
-  background: rgba(255,255,255,.74) !important;
-  color: var(--sapphire) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.90) !important;
+  border-color: rgba(37,99,235,.18);
+  background: rgba(255,255,255,.74);
+  color: var(--sapphire);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.90);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-list__item {
-  border-color: rgba(196, 211, 229, .62) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(246,250,255,.50)) !important;
-  color: var(--ink-2) !important;
-  box-shadow: none !important;
+  border-color: rgba(196, 211, 229, .62);
+  background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(246,250,255,.50));
+  color: var(--ink-2);
+  box-shadow: none;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-list__item:hover,
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-list__item.is-active {
-  border-color: rgba(37, 99, 235, .36) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(239,247,255,.76)) !important;
-  box-shadow: 0 14px 34px rgba(37,99,235,.10), inset 3px 0 0 var(--sapphire) !important;
+  border-color: rgba(37, 99, 235, .36);
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(239,247,255,.76));
+  box-shadow: 0 14px 34px rgba(37,99,235,.10), inset 3px 0 0 var(--sapphire);
   transform: translateY(-1px);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .readiness-dot {
-  box-shadow: 0 0 0 5px rgba(24,185,129,.08), 0 0 20px rgba(24,185,129,.22) !important;
+  box-shadow: 0 0 0 5px rgba(24,185,129,.08), 0 0 20px rgba(24,185,129,.22);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .preview-toolbar h2,
 .chart-lab[data-luxury-ui="pearl-executive"] .preview-toolbar h3,
 .chart-lab[data-luxury-ui="pearl-executive"] h2,
 .chart-lab[data-luxury-ui="pearl-executive"] h3 {
-  color: var(--ink) !important;
+  color: var(--ink);
   letter-spacing: -.035em;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .chart-frame {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(190, 204, 222, .78) !important;
-  border-radius: 30px !important;
+  border: 1px solid rgba(190, 204, 222, .78);
+  border-radius: 30px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,249,254,.72)),
     radial-gradient(circle at 16% 0%, rgba(32,215,255,.13), transparent 36rem),
-    radial-gradient(circle at 96% 4%, rgba(139,92,246,.10), transparent 32rem) !important;
-  box-shadow: 0 30px 82px rgba(31,49,78,.12), 0 12px 32px rgba(37,99,235,.06), inset 0 1px 0 rgba(255,255,255,.96) !important;
+    radial-gradient(circle at 96% 4%, rgba(139,92,246,.10), transparent 32rem);
+  box-shadow: 0 30px 82px rgba(31,49,78,.12), 0 12px 32px rgba(37,99,235,.06), inset 0 1px 0 rgba(255,255,255,.96);
   backdrop-filter: blur(22px) saturate(1.04);
 }
 
@@ -4830,38 +4830,38 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 .chart-lab[data-luxury-ui="pearl-executive"] .lab-echart,
 .chart-lab[data-luxury-ui="pearl-executive"] .echarts-for-react,
 .chart-lab[data-luxury-ui="pearl-executive"] .echarts-container {
-  border-radius: 24px !important;
+  border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.88), rgba(247,250,254,.70)),
     linear-gradient(90deg, rgba(37,99,235,.032) 1px, transparent 1px),
-    linear-gradient(rgba(37,99,235,.026) 1px, transparent 1px) !important;
-  background-size: auto, 40px 40px, 40px 40px !important;
+    linear-gradient(rgba(37,99,235,.026) 1px, transparent 1px);
+  background-size: auto, 40px 40px, 40px 40px;
   filter: saturate(.98) contrast(1.01);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .inspector section {
-  border-radius: 24px !important;
+  border-radius: 24px;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .snapshot-row {
-  border-color: rgba(196,211,229,.62) !important;
+  border-color: rgba(196,211,229,.62);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .files-list code,
 .chart-lab[data-luxury-ui="pearl-executive"] code {
-  border: 1px solid rgba(196,211,229,.70) !important;
-  background: rgba(255,255,255,.74) !important;
-  color: var(--ink) !important;
+  border: 1px solid rgba(196,211,229,.70);
+  background: rgba(255,255,255,.74);
+  color: var(--ink);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"] .causal-hero-strip,
 .chart-lab[data-luxury-ui="pearl-executive"] .density-hero-strip {
-  border-color: rgba(190,204,222,.72) !important;
+  border-color: rgba(190,204,222,.72);
   background:
     linear-gradient(180deg, rgba(255,255,255,.86), rgba(246,250,255,.64)),
-    radial-gradient(circle at 8% 0%, rgba(32,215,255,.12), transparent 60%) !important;
-  color: var(--ink) !important;
-  box-shadow: var(--pearl-shadow-soft), inset 0 1px 0 rgba(255,255,255,.94) !important;
+    radial-gradient(circle at 8% 0%, rgba(32,215,255,.12), transparent 60%);
+  color: var(--ink);
+  box-shadow: var(--pearl-shadow-soft), inset 0 1px 0 rgba(255,255,255,.94);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-density="dense"] {
@@ -4873,13 +4873,13 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-density="dense"] h1 {
-  font-size: clamp(3.2rem, 7vw, 6.4rem) !important;
+  font-size: clamp(3.2rem, 7vw, 6.4rem);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] {
   background:
     radial-gradient(circle at 14% 6%, rgba(200,169,106,.13), transparent 34rem),
-    linear-gradient(180deg, #fbfaf6 0%, #f2eee7 100%) !important;
+    linear-gradient(180deg, #fbfaf6 0%, #f2eee7 100%);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .chart-lab__header,
@@ -4887,21 +4887,21 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .control-deck,
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .control-card,
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .inspector section {
-  border-color: rgba(174, 146, 96, .24) !important;
+  border-color: rgba(174, 146, 96, .24);
   background:
     linear-gradient(180deg, rgba(255,252,247,.92), rgba(247,241,232,.76)),
-    radial-gradient(circle at 12% 0%, rgba(200,169,106,.11), transparent 28rem) !important;
+    radial-gradient(circle at 12% 0%, rgba(200,169,106,.11), transparent 28rem);
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .eyebrow,
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] .prisma-brand-lockup__copy .eyebrow {
-  color: #8f6a32 !important;
+  color: #8f6a32;
 }
 
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] button.is-active,
 .chart-lab[data-luxury-ui="pearl-executive"][data-theme="precision-paper"] button[aria-pressed="true"] {
-  background: linear-gradient(180deg, #4d3924, #2d2116) !important;
-  box-shadow: 0 16px 34px rgba(77,57,36,.18), 0 0 36px rgba(200,169,106,.14) !important;
+  background: linear-gradient(180deg, #4d3924, #2d2116);
+  box-shadow: 0 16px 34px rgba(77,57,36,.18), 0 0 36px rgba(200,169,106,.14);
 }
 
 @keyframes pearlExecutiveSweep {
@@ -4914,20 +4914,20 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
   .chart-lab[data-luxury-ui="pearl-executive"] *,
   .chart-lab[data-luxury-ui="pearl-executive"] *::before,
   .chart-lab[data-luxury-ui="pearl-executive"] *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 1ms !important;
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
+    transition-duration: 1ms;
   }
 }
 
 @media (max-width: 920px) {
   .chart-lab[data-luxury-ui="pearl-executive"] .chart-lab__header {
     min-height: auto;
-    padding: 28px !important;
+    padding: 28px;
   }
   .chart-lab[data-luxury-ui="pearl-executive"] h1 {
-    font-size: clamp(3rem, 15vw, 5rem) !important;
+    font-size: clamp(3rem, 15vw, 5rem);
   }
   .chart-lab[data-luxury-ui="pearl-executive"] .prisma-brand-lockup {
     align-items: flex-start;
@@ -5003,35 +5003,35 @@ body:has(.chart-lab[data-luxury-ui="pearl-executive"])::after {
 
 html,
 body {
-  color: var(--lab-ink) !important;
-  background: var(--prisma-chart-shell-bg) !important;
+  color: var(--lab-ink);
+  background: var(--prisma-chart-shell-bg);
 }
 
 body::before {
-  opacity: .16 !important;
-  animation: none !important;
-  background-size: 80px 80px, 80px 80px, auto !important;
+  opacity: .16;
+  animation: none;
+  background-size: 80px 80px, 80px 80px, auto;
 }
 
 body::after {
-  opacity: .08 !important;
-  mix-blend-mode: normal !important;
-  animation: none !important;
+  opacity: .08;
+  mix-blend-mode: normal;
+  animation: none;
 }
 
 h1 {
-  color: var(--lab-ink-strong) !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  filter: none !important;
+  color: var(--lab-ink-strong);
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  filter: none;
   letter-spacing: -.06em;
 }
 
 .chart-lab-shell,
 .chart-lab,
 main {
-  color: var(--lab-ink) !important;
+  color: var(--lab-ink);
 }
 
 .chart-frame,
@@ -5042,32 +5042,32 @@ main {
 .passport-card,
 .source-card,
 .panel-grid article {
-  color: var(--lab-ink) !important;
-  background: var(--prisma-chart-panel-bg) !important;
-  border: 1px solid var(--prisma-chart-border) !important;
-  box-shadow: var(--lab-shadow-card) !important;
+  color: var(--lab-ink);
+  background: var(--prisma-chart-panel-bg);
+  border: 1px solid var(--prisma-chart-border);
+  box-shadow: var(--lab-shadow-card);
 }
 
 .chart-frame {
   position: relative;
-  background: var(--prisma-chart-frame-bg) !important;
-  border-radius: 28px !important;
-  box-shadow: var(--lab-shadow-hard) !important;
+  background: var(--prisma-chart-frame-bg);
+  border-radius: 28px;
+  box-shadow: var(--lab-shadow-hard);
 }
 
 .chart-frame::before {
-  opacity: .16 !important;
-  animation: none !important;
-  mix-blend-mode: normal !important;
+  opacity: .16;
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 .chart-frame::after {
-  opacity: .18 !important;
-  animation: none !important;
-  background: linear-gradient(90deg, transparent, rgba(99,223,255,.18), transparent) !important;
-  height: 1px !important;
-  top: auto !important;
-  bottom: 12px !important;
+  opacity: .18;
+  animation: none;
+  background: linear-gradient(90deg, transparent, rgba(99,223,255,.18), transparent);
+  height: 1px;
+  top: auto;
+  bottom: 12px;
 }
 
 .chart-frame .lab-echart,
@@ -5077,31 +5077,31 @@ main {
 .echarts-container {
   position: relative;
   overflow: hidden;
-  border-radius: 22px !important;
+  border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.010)),
     linear-gradient(90deg, rgba(157,177,204,.045) 1px, transparent 1px),
     linear-gradient(rgba(157,177,204,.035) 1px, transparent 1px),
-    rgba(5, 10, 20, .58) !important;
-  background-size: auto, 56px 56px, 56px 56px, auto !important;
-  border: 1px solid rgba(157,177,204,.12) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), inset 0 0 0 1px rgba(99,223,255,.030), 0 20px 56px rgba(0,0,0,.18) !important;
-  filter: none !important;
+    rgba(5, 10, 20, .58);
+  background-size: auto, 56px 56px, 56px 56px, auto;
+  border: 1px solid rgba(157,177,204,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), inset 0 0 0 1px rgba(99,223,255,.030), 0 20px 56px rgba(0,0,0,.18);
+  filter: none;
   outline: none;
 }
 
 .chart-frame .lab-echart::before,
 .lab-echart::before,
 .prisma-echart::before {
-  content: "" !important;
+  content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background: radial-gradient(circle at 18% 0%, rgba(99,223,255,.075), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.035), transparent 18%, transparent 82%, rgba(0,0,0,.12));
-  opacity: .62 !important;
-  mix-blend-mode: normal !important;
-  animation: none !important;
+  opacity: .62;
+  mix-blend-mode: normal;
+  animation: none;
 }
 
 .chart-frame .lab-echart::after,
@@ -5110,10 +5110,10 @@ main {
 .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after,
 .chart-frame[data-heat-motion="sweep"] .lab-echart::after,
 .chart-frame[data-heat-motion="pulse"] .lab-echart::before {
-  content: none !important;
-  display: none !important;
-  animation: none !important;
-  opacity: 0 !important;
+  content: none;
+  display: none;
+  animation: none;
+  opacity: 0;
 }
 
 .lab-echart canvas,
@@ -5122,33 +5122,33 @@ main {
 .prisma-echart svg {
   position: relative;
   z-index: 1;
-  filter: none !important;
+  filter: none;
 }
 
 .lab-echart:focus-visible,
 .prisma-echart:focus-visible {
   outline: 2px solid rgba(99,223,255,.58);
   outline-offset: 4px;
-  box-shadow: var(--lab-shadow-card), 0 0 0 6px rgba(99,223,255,.10) !important;
+  box-shadow: var(--lab-shadow-card), 0 0 0 6px rgba(99,223,255,.10);
 }
 
 .lab-echart__state {
   position: relative;
   z-index: 2;
-  color: var(--lab-muted) !important;
+  color: var(--lab-muted);
   letter-spacing: .02em;
 }
 
 .lab-echart[data-render-state="loading"]::before {
-  opacity: .38 !important;
+  opacity: .38;
 }
 
 .lab-empty-chart--executive-observatory,
 .lab-empty-chart {
-  border: 1px solid rgba(157,177,204,.14) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.012)), rgba(5,10,20,.62) !important;
-  color: var(--lab-muted) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.055) !important;
+  border: 1px solid rgba(157,177,204,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.012)), rgba(5,10,20,.62);
+  color: var(--lab-muted);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
 }
 
 .toolbar-actions button,
@@ -5158,10 +5158,10 @@ main {
 .size-controls button,
 .control-deck button,
 .chart-frame button {
-  border-color: rgba(157,177,204,.16) !important;
-  background: rgba(9,16,30,.72) !important;
-  color: var(--lab-ink) !important;
-  box-shadow: none !important;
+  border-color: rgba(157,177,204,.16);
+  background: rgba(9,16,30,.72);
+  color: var(--lab-ink);
+  box-shadow: none;
 }
 
 .toolbar-actions button:hover,
@@ -5171,8 +5171,8 @@ main {
 .size-controls button:hover,
 .control-deck button:hover,
 .chart-frame button:hover {
-  border-color: rgba(99,223,255,.34) !important;
-  box-shadow: 0 12px 32px rgba(0,0,0,.22), 0 0 0 1px rgba(99,223,255,.08) !important;
+  border-color: rgba(99,223,255,.34);
+  box-shadow: 0 12px 32px rgba(0,0,0,.22), 0 0 0 1px rgba(99,223,255,.08);
 }
 
 .tab-strip button.is-active,
@@ -5185,19 +5185,19 @@ main {
 .chip-group button[aria-pressed="true"],
 .segmented-controls button[aria-pressed="true"],
 .size-controls button[aria-pressed="true"] {
-  border-color: rgba(99,223,255,.38) !important;
-  background: linear-gradient(180deg, rgba(79,140,255,.36), rgba(79,140,255,.16)) !important;
-  color: #f8fbff !important;
-  box-shadow: 0 14px 34px rgba(0,0,0,.28), 0 0 0 1px rgba(99,223,255,.10) !important;
+  border-color: rgba(99,223,255,.38);
+  background: linear-gradient(180deg, rgba(79,140,255,.36), rgba(79,140,255,.16));
+  color: #f8fbff;
+  box-shadow: 0 14px 34px rgba(0,0,0,.28), 0 0 0 1px rgba(99,223,255,.10);
 }
 
 .control-card select,
 .control-card input[type="search"],
 .runtime-control select,
 .runtime-control input[type="search"] {
-  background: rgba(5,10,20,.68) !important;
-  color: var(--lab-ink) !important;
-  border-color: rgba(157,177,204,.18) !important;
+  background: rgba(5,10,20,.68);
+  color: var(--lab-ink);
+  border-color: rgba(157,177,204,.18);
 }
 
 /* Fase 1 deliberately disables chart-specific atmospheres by default. */
@@ -5212,9 +5212,9 @@ main {
     linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.010)),
     linear-gradient(90deg, rgba(157,177,204,.045) 1px, transparent 1px),
     linear-gradient(rgba(157,177,204,.035) 1px, transparent 1px),
-    rgba(5, 10, 20, .58) !important;
-  background-size: auto, 56px 56px, 56px 56px, auto !important;
-  filter: none !important;
+    rgba(5, 10, 20, .58);
+  background-size: auto, 56px 56px, 56px 56px, auto;
+  filter: none;
 }
 
 .chart-frame[data-chart-id] .lab-echart::before,
@@ -5228,18 +5228,18 @@ main {
 .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .lab-echart::after,
 .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::before,
 .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after {
-  animation: none !important;
-  mix-blend-mode: normal !important;
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
+    scroll-behavior: auto;
+    animation-duration: .001ms;
+    animation-iteration-count: 1;
+    transition-duration: .001ms;
   }
 }
 
@@ -5260,21 +5260,21 @@ main {
 .inspector-panel,
 .option-studio,
 .control-card {
-  border-color: var(--lab-premium-hairline) !important;
-  box-shadow: 0 24px 80px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  border-color: var(--lab-premium-hairline);
+  box-shadow: 0 24px 80px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.035);
 }
 
 .chart-frame:hover .lab-echart,
 .lab-echart:hover,
 .prisma-echart:hover {
-  border-color: rgba(99,223,255,.24) !important;
-  box-shadow: var(--lab-premium-hover) !important;
+  border-color: rgba(99,223,255,.24);
+  box-shadow: var(--lab-premium-hover);
   transform: translateY(-1px);
 }
 
 .lab-echart,
 .prisma-echart {
-  transition: border-color .24s ease, box-shadow .24s ease, transform .24s ease, background .24s ease !important;
+  transition: border-color .24s ease, box-shadow .24s ease, transform .24s ease, background .24s ease;
   isolation: isolate;
 }
 
@@ -5308,12 +5308,12 @@ main {
 
 .lab-echart[data-chart-size="focus"],
 .chart-frame[data-preview-size="focus"] .lab-echart {
-  box-shadow: 0 34px 120px rgba(0,0,0,.54), 0 0 82px rgba(99,223,255,.10) !important;
+  box-shadow: 0 34px 120px rgba(0,0,0,.54), 0 0 82px rgba(99,223,255,.10);
 }
 
 .lab-echart[data-render-state="loading"] .lab-echart__state,
 .prisma-echart[data-render-state="loading"] .lab-echart__state {
-  color: rgba(232,238,247,.72) !important;
+  color: rgba(232,238,247,.72);
 }
 
 .lab-echart[data-render-state="loading"] .lab-echart__state::before,
@@ -5336,12 +5336,12 @@ main {
 @media (prefers-reduced-motion: reduce) {
   .lab-echart:hover,
   .prisma-echart:hover {
-    transform: none !important;
+    transform: none;
   }
 
   .lab-echart[data-render-state="loading"] .lab-echart__state::before,
   .prisma-echart[data-render-state="loading"] .lab-echart__state::before {
-    animation: none !important;
+    animation: none;
   }
 }
 
@@ -5471,12 +5471,12 @@ main {
   .prisma-echart__command-hints,
   .lab-echart__luxury-rail,
   .prisma-echart__luxury-rail {
-    display: none !important;
+    display: none;
   }
 
   .lab-echart,
   .prisma-echart {
-    box-shadow: none !important;
+    box-shadow: none;
     break-inside: avoid;
   }
 }
@@ -5779,8 +5779,8 @@ main {
   .command-center-pro__modes button,
   .command-center-pro__priority button,
   .preview-stage {
-    transition: none !important;
-    transform: none !important;
+    transition: none;
+    transform: none;
   }
 }
 
@@ -5812,7 +5812,7 @@ main {
 }
 
 .chart-lab[data-focus-mode="true"] .workspace {
-  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .chart-lab[data-focus-mode="true"] .chart-frame {
@@ -5967,9 +5967,9 @@ main {
 .executive-command-palette__scrim {
   position: absolute;
   inset: 0;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: rgba(1, 5, 12, 0.68) !important;
+  border: 0;
+  border-radius: 0;
+  background: rgba(1, 5, 12, 0.68);
   backdrop-filter: blur(16px);
 }
 
@@ -6105,7 +6105,7 @@ main {
   .executive-experience-panel,
   .executive-readiness-panel {
     backdrop-filter: none;
-    transition: none !important;
+    transition: none;
   }
 }
 
@@ -6359,10 +6359,10 @@ main {
   background: rgba(255, 255, 255, 0.72);
 }
 
-.tone-ready, .tone-excellent { color: #057a56 !important; }
-.tone-draft, .tone-watch { color: #9a5e00 !important; }
-.tone-blocked, .tone-risk { color: #a81e3a !important; }
-.tone-stable { color: #075ca8 !important; }
+.tone-ready, .tone-excellent { color: #057a56; }
+.tone-draft, .tone-watch { color: #9a5e00; }
+.tone-blocked, .tone-risk { color: #a81e3a; }
+.tone-stable { color: #075ca8; }
 
 .accordion-title {
   width: 100%;
@@ -7231,7 +7231,7 @@ body,
    Chart Lab de-layer pass: keep charts/data panes; remove decorative micro-layers and hover glow pileups.
 */
 .chart-lab {
-  --lab-panel-glass: rgba(255, 255, 255, 0.045) !important;
+  --lab-panel-glass: rgba(255, 255, 255, 0.045);
 }
 
 .chart-lab :is(
@@ -7256,11 +7256,11 @@ body,
   .passport-card,
   .source-card
 ) {
-  background: rgba(7, 13, 24, 0.58) !important;
-  border-color: rgba(157, 177, 204, 0.14) !important;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22) !important;
-  backdrop-filter: blur(8px) saturate(1.02) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(1.02) !important;
+  background: rgba(7, 13, 24, 0.58);
+  border-color: rgba(157, 177, 204, 0.14);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px) saturate(1.02);
+  -webkit-backdrop-filter: blur(8px) saturate(1.02);
 }
 
 .chart-lab :is(
@@ -7307,22 +7307,22 @@ body,
   .passport-card,
   .source-card
 )::after {
-  display: none !important;
+  display: none;
 }
 
 .chart-lab .chart-list__item,
 .chart-lab .chart-list__item:hover,
 .chart-lab button,
 .chart-lab button:hover {
-  box-shadow: none !important;
-  transition-delay: 0ms !important;
+  box-shadow: none;
+  transition-delay: 0ms;
 }
 
 .chart-lab [class*="luxury"],
 .chart-lab [data-polish="luxury-observatory-v1"]::after,
 .lab-echart__luxury-rail,
 .prisma-echart__luxury-rail {
-  opacity: 0.38 !important;
-  animation: none !important;
+  opacity: 0.38;
+  animation: none;
 }
 /* PRISMA_DELAYER_01_END */

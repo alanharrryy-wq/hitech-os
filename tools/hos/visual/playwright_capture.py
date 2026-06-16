@@ -53,7 +53,7 @@ async function run() {
         const page = await context.newPage();
         await page.addInitScript(() => {
           const style = document.createElement("style");
-          style.innerHTML = `*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; }`;
+          style.innerHTML = `*, *::before, *::after { animation: none; transition: none; caret-color: transparent; }`;
           document.head.appendChild(style);
           const fixed = Date.parse("2026-01-01T00:00:00.000Z");
           // eslint-disable-next-line no-global-assign

@@ -277,10 +277,10 @@ select:-webkit-autofill:focus {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
   }
 
   .loading-sheen::after {
@@ -313,10 +313,10 @@ select:-webkit-autofill:focus {
 [data-ui-motion="none"] *,
 [data-ui-motion="none"] *::before,
 [data-ui-motion="none"] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
+  animation-duration: 0.01ms;
+  animation-iteration-count: 1;
+  transition-duration: 0.01ms;
+  scroll-behavior: auto;
 }
 
 [data-ui-role="external_user"] .surface-shell {
