@@ -1,6 +1,6 @@
 # PRISMA Premium Acceptance Bar
 
-- Task: `GIT FINALIZE GOVMESH3 ALL PHASES VISUAL EXPLOITATION AND DEV ROUTE WARMER: commit split by theme, push branch, fast-forward merge to main, push main, keep tree clean; validate Authority Mesh, visual capability resolver, visual exploitation contract outputs, control center route warmer; no force push, no destructive clean, no permanent delete, no process kill, no ports, no dev server, no Prisma hot regen`
+- Task: `PRISMA Tablet POS Sell premium visual continuation: audit and stabilize incomplete Codex visual changes for Tablet POS / Vender / Productos / Carrito / Checkout / Cobrar. Preserve real products, prices, SKUs, cart bindings, business logic and Mount Fuji/cloudy background. Scope is Tablet POS sell screen foreground only. Audit new !important usage and globals.css risk, separate useful visual changes from CSS contamination, then prepare authority for one definitive fix: product vitrines, premium cart column, stable iridescent Cobrar CTA, light tactile foreground. Exclude PC, Mobile, Chart Lab, database sync, schema changes, commits, push, merge, process kill, port cleanup, dev server start, Playwright loop and Prisma hot regeneration.`
 
 ## Minimum bar
 
@@ -9,6 +9,13 @@
 - Must protect operational clarity, touch flow and performance for the target app/screen.
 - Must include used/rejected capability rationale for every available visual capability relevant to the app.
 - Must include visual evidence or explicitly mark visual PASS as pending user/browser verification.
+
+## tablet_specific
+
+- Light, luminous, tactile, high-contrast-soft UI; no dark/obsidian dominant shell.
+- Exploit PRISMA components/recipes/tokens first; raw libs must support the governed design, not replace it.
+- Motion is for bounded tactile feedback and payment/cart state transitions, not spectacle.
+- Atmospheric/background treatment must not compete with product/cart/checkout readability.
 
 ## Rejection triggers
 

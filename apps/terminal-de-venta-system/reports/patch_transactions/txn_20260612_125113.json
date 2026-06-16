@@ -1,0 +1,172 @@
+{
+  "attempts": 1,
+  "checkpoint_dir": "F:\\descargasf\\_capatch_runtime\\capatch run1 1206 125113\\backups_before_changes\\session_20260612_125113",
+  "error": null,
+  "execution_mode": "patch-run",
+  "final_state": null,
+  "finished_at": null,
+  "invocation_mode": "patch-run",
+  "journal_path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\reports\\patch_transactions\\txn_20260612_125113.json",
+  "last_exception_class": null,
+  "metadata": {
+    "batch_profile": {
+      "advisory_only": false,
+      "guardrails": [
+        "anchor-review"
+      ],
+      "selected_strategy": "exact",
+      "target_count": 1,
+      "targets": [
+        "products/tablet/app/components/pos/pos.module.css"
+      ]
+    },
+    "phase": "phase5",
+    "strategy_decision": {
+      "advisory_only": false,
+      "anchor_confidence": 0.79,
+      "batch_risk": 0.26,
+      "candidate_ranking": [
+        {
+          "score": 0.68,
+          "strategy": "exact"
+        },
+        {
+          "score": 0.54,
+          "strategy": "guarded"
+        },
+        {
+          "score": 0.31,
+          "strategy": "structural"
+        },
+        {
+          "score": 0.22,
+          "strategy": "transactional"
+        },
+        {
+          "score": 0.12,
+          "strategy": "probe-only"
+        }
+      ],
+      "executor_capabilities": {
+        "advisory_only": false,
+        "families": [
+          "exact-text",
+          "line-range",
+          "normalization"
+        ]
+      },
+      "operation_families": {
+        "exact-text": 1,
+        "read-only": 1,
+        "regex-text": 1
+      },
+      "overall_confidence": 0.724,
+      "planner_decision": {
+        "confidence_delta": {},
+        "enabled": false,
+        "notes": [
+          "planner disabled"
+        ],
+        "planner_input": {
+          "blocked_reasons": [],
+          "exact_anchor_count": 1,
+          "fragile_anchor_count": 1,
+          "operation_types": [
+            "AssertFileExists",
+            "DeleteRegexMany",
+            "EnsureInsertAfterExact"
+          ],
+          "risk_level": "medium",
+          "structural_candidate_files": [],
+          "target_file_count": 1,
+          "target_files": [
+            "products/tablet/app/components/pos/pos.module.css"
+          ]
+        },
+        "planner_mode": "off",
+        "preferred_strategy": null,
+        "source_of_decision": "planner:off"
+      },
+      "planner_mode": "off",
+      "planner_stub": {
+        "enabled": false,
+        "hint": null,
+        "source": null
+      },
+      "reasons": [
+        "single-file anchor-driven patch remains stable enough for literal execution"
+      ],
+      "recommended_guardrails": [
+        "anchor-review"
+      ],
+      "requires_future_executor": false,
+      "rollback_readiness": 0.82,
+      "selected_score": 0.68,
+      "selected_strategy": "exact",
+      "semantic_confidence": 0.58,
+      "source_of_decision": "planner:off",
+      "syntax_confidence": 0.69
+    }
+  },
+  "operation_count": 3,
+  "operation_results": [],
+  "phase": "committed",
+  "phase_history": [
+    {
+      "extra": {},
+      "note": "transaction created",
+      "phase": "planned",
+      "status": "active",
+      "timestamp": "2026-06-12T12:51:13-06:00"
+    },
+    {
+      "extra": {
+        "required_verifiers": [
+          "css-sanity",
+          "visual-static-gates",
+          "css-module-sanity"
+        ],
+        "selected_strategy": "exact",
+        "target_files": [
+          "products/tablet/app/components/pos/pos.module.css"
+        ]
+      },
+      "note": "preflight complete",
+      "phase": "preflight_ok",
+      "status": "active",
+      "timestamp": "2026-06-12T12:51:13-06:00"
+    },
+    {
+      "extra": {},
+      "note": "dry-run preview only",
+      "phase": "checkpoint_created",
+      "status": "active",
+      "timestamp": "2026-06-12T12:51:13-06:00"
+    },
+    {
+      "extra": {
+        "dry_run": true
+      },
+      "note": "dry-run completed",
+      "phase": "committed",
+      "status": "committed",
+      "timestamp": "2026-06-12T12:51:13-06:00"
+    }
+  ],
+  "recovery_hint": null,
+  "rollback_event": null,
+  "root_dir": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "run_id": "None",
+  "schema_version": "2.0.0",
+  "started_at": "2026-06-12T12:51:13-06:00",
+  "target_files": [
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/pos/pos.module.css"
+  ],
+  "transaction_id": "txn_20260612_125113",
+  "transaction_status": "committed",
+  "updated_at": "2026-06-12T12:51:13-06:00",
+  "verification_outcome": null,
+  "verifier_results": []
+}

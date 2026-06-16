@@ -1,0 +1,619 @@
+{
+  "attempts": 1,
+  "checkpoint_dir": "F:\\descargasf\\_capatch_runtime\\capatch run1 1206 122451\\backups_before_changes\\session_20260612_122451",
+  "error": null,
+  "execution_mode": "patch-run",
+  "final_state": "verified",
+  "finished_at": "2026-06-12T12:24:52-06:00",
+  "invocation_mode": "patch-run",
+  "journal_path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\reports\\patch_transactions\\txn_20260612_122451.json",
+  "last_exception_class": null,
+  "metadata": {
+    "batch_profile": {
+      "advisory_only": false,
+      "guardrails": [
+        "anchor-review"
+      ],
+      "selected_strategy": "exact",
+      "target_count": 1,
+      "targets": [
+        "products/tablet/app/components/pos/pos.module.css"
+      ]
+    },
+    "phase": "phase5",
+    "strategy_decision": {
+      "advisory_only": false,
+      "anchor_confidence": 0.79,
+      "batch_risk": 0.26,
+      "candidate_ranking": [
+        {
+          "score": 0.68,
+          "strategy": "exact"
+        },
+        {
+          "score": 0.54,
+          "strategy": "guarded"
+        },
+        {
+          "score": 0.31,
+          "strategy": "structural"
+        },
+        {
+          "score": 0.22,
+          "strategy": "transactional"
+        },
+        {
+          "score": 0.12,
+          "strategy": "probe-only"
+        }
+      ],
+      "executor_capabilities": {
+        "advisory_only": false,
+        "families": [
+          "exact-text",
+          "line-range",
+          "normalization"
+        ]
+      },
+      "operation_families": {
+        "exact-text": 1,
+        "read-only": 1,
+        "regex-text": 1
+      },
+      "overall_confidence": 0.724,
+      "planner_decision": {
+        "confidence_delta": {},
+        "enabled": false,
+        "notes": [
+          "planner disabled"
+        ],
+        "planner_input": {
+          "blocked_reasons": [],
+          "exact_anchor_count": 1,
+          "fragile_anchor_count": 1,
+          "operation_types": [
+            "AssertFileExists",
+            "DeleteRegexMany",
+            "EnsureInsertAfterExact"
+          ],
+          "risk_level": "medium",
+          "structural_candidate_files": [],
+          "target_file_count": 1,
+          "target_files": [
+            "products/tablet/app/components/pos/pos.module.css"
+          ]
+        },
+        "planner_mode": "off",
+        "preferred_strategy": null,
+        "source_of_decision": "planner:off"
+      },
+      "planner_mode": "off",
+      "planner_stub": {
+        "enabled": false,
+        "hint": null,
+        "source": null
+      },
+      "reasons": [
+        "single-file anchor-driven patch remains stable enough for literal execution"
+      ],
+      "recommended_guardrails": [
+        "anchor-review"
+      ],
+      "requires_future_executor": false,
+      "rollback_readiness": 0.82,
+      "selected_score": 0.68,
+      "selected_strategy": "exact",
+      "semantic_confidence": 0.58,
+      "source_of_decision": "planner:off",
+      "syntax_confidence": 0.69
+    }
+  },
+  "operation_count": 3,
+  "operation_results": [
+    {
+      "after_hash": null,
+      "before_hash": null,
+      "bytes_after": null,
+      "bytes_before": null,
+      "changed_line_count": 0,
+      "message": "pos.module.css: assert file exists OK",
+      "operation_label": "target-css-exists",
+      "operation_type": "AssertFileExists",
+      "patch_status": "noop",
+      "preview_hash": null,
+      "support_notes": [],
+      "target_path": "F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "after_hash": "54c9e66ca05fcf7ed42b3d495e13cacd3eb07a028bfc4702934df47715aaefbc",
+      "before_hash": "b0ea109729c4f3edd3b41ada0ceaf71560c6e3b7fd823457a3474f3917085ac9",
+      "bytes_after": 299293,
+      "bytes_before": 301665,
+      "changed_line_count": 296,
+      "message": "pos.module.css: delete regex aplicado (1 coincidencia(s))",
+      "operation_label": "remove-old-PRISMA_TABLET_POS_TICKET_DEBOX_1106Q",
+      "operation_type": "DeleteRegexMany",
+      "patch_status": "applied",
+      "preview_hash": "54c9e66ca05fcf7ed42b3d495e13cacd3eb07a028bfc4702934df47715aaefbc",
+      "support_notes": [],
+      "target_path": "F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "after_hash": "b34b9ee65639b3032c27fa8c7a91a1523e530d89c1ade61fd81af148be6d2b62",
+      "before_hash": "54c9e66ca05fcf7ed42b3d495e13cacd3eb07a028bfc4702934df47715aaefbc",
+      "bytes_after": 300795,
+      "bytes_before": 299293,
+      "changed_line_count": 286,
+      "message": "pos.module.css: insercion ensure-after aplicada",
+      "operation_label": "insert-checkout-stack-debox-after-cta-prism",
+      "operation_type": "EnsureInsertAfterExact",
+      "patch_status": "applied",
+      "preview_hash": "b34b9ee65639b3032c27fa8c7a91a1523e530d89c1ade61fd81af148be6d2b62",
+      "support_notes": [],
+      "target_path": "F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    }
+  ],
+  "phase": "committed",
+  "phase_history": [
+    {
+      "extra": {},
+      "note": "transaction created",
+      "phase": "planned",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:51-06:00"
+    },
+    {
+      "extra": {
+        "required_verifiers": [
+          "css-sanity",
+          "visual-static-gates",
+          "css-module-sanity"
+        ],
+        "selected_strategy": "exact",
+        "target_files": [
+          "products/tablet/app/components/pos/pos.module.css"
+        ]
+      },
+      "note": "preflight complete",
+      "phase": "preflight_ok",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:51-06:00"
+    },
+    {
+      "extra": {},
+      "note": "checkpoint materialization delegated to executor",
+      "phase": "checkpoint_created",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:51-06:00"
+    },
+    {
+      "extra": {},
+      "note": "apply started",
+      "phase": "apply_started",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:52-06:00"
+    },
+    {
+      "extra": {},
+      "note": "apply succeeded",
+      "phase": "apply_succeeded",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:52-06:00"
+    },
+    {
+      "extra": {},
+      "note": "verifier execution started",
+      "phase": "verify_started",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:52-06:00"
+    },
+    {
+      "extra": {
+        "assessment": {
+          "allow_applied_no_verifiers": false,
+          "failed_required_verifiers": [],
+          "missing_required_verifiers": [],
+          "passed": true,
+          "passed_required_verifiers": [
+            "css-sanity",
+            "visual-static-gates",
+            "css-module-sanity"
+          ],
+          "policy": {
+            "allow_applied_no_verifiers": false,
+            "packs": [
+              "css-syntax",
+              "visual-static",
+              "css-module",
+              "visual-surface"
+            ],
+            "reason_codes": [
+              "css_module_surface:products/tablet/app/components/pos/pos.module.css",
+              "css_visual_surface:products/tablet/app/components/pos/pos.module.css"
+            ],
+            "required_verifiers": [
+              "css-sanity",
+              "visual-static-gates",
+              "css-module-sanity"
+            ],
+            "surface_flags": {
+              "touches_css": true,
+              "touches_entrypoints": false,
+              "touches_gui": false,
+              "touches_packaging": false,
+              "touches_public_api": false,
+              "touches_python": false,
+              "touches_runtime_core": false,
+              "touches_safe_text_only": false,
+              "touches_structured_config": false
+            },
+            "verification_floor": "syntax"
+          },
+          "provided_verifiers": [
+            "css-module-sanity",
+            "css-sanity",
+            "visual-static-gates"
+          ],
+          "recommended_outcome": "verified",
+          "required_verifiers": [
+            "css-sanity",
+            "visual-static-gates",
+            "css-module-sanity"
+          ],
+          "verification_floor": "syntax"
+        }
+      },
+      "note": "verification passed",
+      "phase": "verification_passed",
+      "status": "active",
+      "timestamp": "2026-06-12T12:24:52-06:00"
+    },
+    {
+      "extra": {},
+      "note": "pipeline committed cleanly",
+      "phase": "committed",
+      "status": "committed",
+      "timestamp": "2026-06-12T12:24:52-06:00"
+    }
+  ],
+  "recovery_hint": null,
+  "rollback_event": null,
+  "root_dir": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "run_id": "None",
+  "schema_version": "2.0.0",
+  "started_at": "2026-06-12T12:24:51-06:00",
+  "target_files": [
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/pos/pos.module.css"
+  ],
+  "transaction_id": "txn_20260612_122451",
+  "transaction_status": "committed",
+  "updated_at": "2026-06-12T12:24:52-06:00",
+  "verification_outcome": "passed",
+  "verifier_results": [
+    {
+      "checked_at": "2026-06-12T12:24:52-06:00",
+      "detail": "CSS sanity checks passed",
+      "evidence_refs": [],
+      "metrics": {
+        "brace_close_count": 1252,
+        "brace_open_count": 1252,
+        "bytes": 300795,
+        "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\components\\pos\\pos.module.css",
+        "lines": 9825
+      },
+      "ok": true,
+      "severity_if_failed": "error",
+      "source_plugin": "capatch_verify",
+      "title": "CSS sanity OK: pos.module.css",
+      "verification_class": "builtin",
+      "verifier_id": "css-sanity"
+    },
+    {
+      "checked_at": "2026-06-12T12:24:52-06:00",
+      "detail": "warnings: legacy !important debt already existed: 681; legacy risky dark Tablet tokens already existed: box-shadow:#000, color:black; ignored mask-only dark tokens: 10",
+      "evidence_refs": [],
+      "metrics": {
+        "baseline_available": true,
+        "baseline_important_count": 681,
+        "dark_hits": [
+          "box-shadow:#000",
+          "color:black"
+        ],
+        "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\components\\pos\\pos.module.css",
+        "important_count": 659,
+        "important_delta": -22,
+        "important_delta_limit": 2,
+        "issues": [],
+        "legacy_debt": true,
+        "line_count": 9825,
+        "mask_dark_hits_ignored": [
+          "-webkit-mask:#000"
+        ],
+        "mode": "delta",
+        "new_dark_hits": [],
+        "warnings": [
+          "legacy !important debt already existed: 681",
+          "legacy risky dark Tablet tokens already existed: box-shadow:#000, color:black",
+          "ignored mask-only dark tokens: 10"
+        ]
+      },
+      "ok": true,
+      "severity_if_failed": "error",
+      "source_plugin": "capatch_verify",
+      "title": "Visual static gates OK: pos.module.css",
+      "verification_class": "builtin",
+      "verifier_id": "visual-static-gates"
+    },
+    {
+      "checked_at": "2026-06-12T12:24:52-06:00",
+      "detail": "CSS module sanity passed; duplicate top-level selectors for review: .addButton, .badgeOk, .badgeWarn, .badgeDanger, .badgeNeutral, .cartThumb, .cartThumbPackshot img, .cashBox, .cashInputLabel, .cashInputLabel input, .cashSuggestions",
+      "evidence_refs": [],
+      "metrics": {
+        "class_count": 266,
+        "classes": [
+          "addButton",
+          "badgeDanger",
+          "badgeNeutral",
+          "badgeOk",
+          "badgeWarn",
+          "cartThumb",
+          "cartThumbBag",
+          "cartThumbBlue",
+          "cartThumbBottle",
+          "cartThumbBread",
+          "cartThumbCarton",
+          "cartThumbFallback",
+          "cartThumbGeneric",
+          "cartThumbJar",
+          "cartThumbPackshot",
+          "cartThumbPackshot_bag",
+          "cartThumbPackshot_bottle",
+          "cartThumbPackshot_box",
+          "cartThumbPackshot_bread",
+          "cartThumbPackshot_carton",
+          "cartThumbPackshot_jar",
+          "cartThumbPackshot_water",
+          "cashBox",
+          "cashInputLabel",
+          "cashSuggestions",
+          "cashTenderLine",
+          "catalogArea",
+          "catalogInsight",
+          "categoryButton",
+          "categoryButtonActive",
+          "categoryRail",
+          "checkoutDiagnosticOk",
+          "checkoutDiagnosticWarn",
+          "checkoutGrid",
+          "checkoutLink",
+          "checkoutLinkDisabled",
+          "checkoutSummary",
+          "cobrarReferenceAmount",
+          "cobrarReferenceArrow",
+          "cobrarReferenceButton",
+          "cobrarReferenceGem",
+          "cobrarReferenceLabel",
+          "cobrarReferenceShell",
+          "confirmButton",
+          "detailPanel",
+          "emptyState",
+          "emptyTicket",
+          "errorBanner",
+          "favoriteStar",
+          "figureBag",
+          "figureBottle",
+          "figureBottleBlue",
+          "figureBox",
+          "figureBoxBlue",
+          "figureBread",
+          "figureCarton",
+          "figureGeneric",
+          "figureJar",
+          "figureStripe",
+          "filterButton",
+          "ghostButton",
+          "heldCartActions",
+          "heldCartCard",
+          "kpiCard",
+          "lineTotal",
+          "mainPanel",
+          "metricCard",
+          "pageActive",
+          "pagination",
+          "paymentBusyNote",
+          "paymentCancelButton",
+          "paymentCard",
+          "paymentCloseButton",
+          "paymentError",
+          "paymentFooter",
+          "paymentHeader",
+          "paymentMethods",
+          "paymentNonCashNotice",
+          "paymentOkButton",
+          "paymentOverlay",
+          "paymentPanelCard",
+          "paymentPremiumAction",
+          "paymentPremiumActionDanger",
+          "paymentPremiumActionGhost",
+          "paymentPremiumActionPrimary",
+          "paymentPremiumActionSecondary",
+          "paymentPremiumAmountField",
+          "paymentPremiumAtmosphere",
+          "paymentPremiumBodyGrid",
+          "paymentPremiumBusyNote",
+          "paymentPremiumCashBox",
+          "paymentPremiumCashSuggestions",
+          "paymentPremiumCloseButton",
+          "paymentPremiumCurrencyPrefix",
+          "paymentPremiumError",
+          "paymentPremiumFooter",
+          "paymentPremiumHeader",
+          "paymentPremiumHeroTotal",
+          "paymentPremiumOverlay",
+          "paymentPremiumPanel",
+          "paymentPremiumPanelTitle",
+          "paymentPremiumReview",
+          "paymentPremiumReviewReady",
+          "paymentPremiumRightRail",
+          "paymentPremiumSectionLabel",
+          "paymentPremiumShell",
+          "paymentPremiumSpinner",
+          "paymentPremiumStatusPill",
+          "paymentPremiumTenderActive",
+          "paymentPremiumTenderAmount",
+          "paymentPremiumTenderIdle",
+          "paymentPremiumTenderList",
+          "paymentPremiumTenderMeta",
+          "paymentPremiumTenderReference",
+          "paymentPremiumTenderReferenceLabel",
+          "paymentPremiumTenderRow",
+          "paymentPremiumTitleBlock",
+          "paymentPremiumTotalsGrid",
+          "paymentReview",
+          "paymentReviewReady",
+          "paymentSummary",
+          "paymentTenderAmount",
+          "paymentTenderList",
+          "paymentTenderReference",
+          "paymentTenderRow",
+          "paymentTotalsGrid",
+          "posPremiumAddButton",
+          "posPremiumAddButtonDisabled",
+          "posPremiumBlockedGateAction",
+          "posPremiumCartThumb",
+          "posPremiumCartThumbBag",
+          "posPremiumCartThumbBlue",
+          "posPremiumCartThumbBottle",
+          "posPremiumCartThumbBread",
+          "posPremiumCartThumbCarton",
+          "posPremiumCartThumbFallback",
+          "posPremiumCartThumbGeneric",
+          "posPremiumCartThumbJar",
+          "posPremiumCartThumbPackshot",
+          "posPremiumCatalogArea",
+          "posPremiumCatalogInsight",
+          "posPremiumCategoryButton",
+          "posPremiumCategoryButtonActive",
+          "posPremiumCategoryRail",
+          "posPremiumCheckoutCta",
+          "posPremiumCheckoutCtaAmount",
+          "posPremiumCheckoutCtaArrow",
+          "posPremiumCheckoutCtaBusy",
+          "posPremiumCheckoutCtaDisabled",
+          "posPremiumCheckoutCtaGlyph",
+          "posPremiumCheckoutCtaLabel",
+          "posPremiumCheckoutCtaLead",
+          "posPremiumCheckoutCtaReady",
+          "posPremiumCheckoutCtaReference",
+          "posPremiumCheckoutCtaText",
+          "posPremiumCheckoutStack",
+          "posPremiumDiagnosticOk",
+          "posPremiumDiagnosticWarn",
+          "posPremiumEmptyTicket",
+          "posPremiumFavoriteStar",
+          "posPremiumGhostButton",
+          "posPremiumHero",
+          "posPremiumHeroCopy",
+          "posPremiumHeroMetrics",
+          "posPremiumInlineError",
+          "posPremiumLineTotal",
+          "posPremiumPagination",
+          "posPremiumPrimaryButton",
+          "posPremiumProductAside",
+          "posPremiumProductCard",
+          "posPremiumProductCardDisabled",
+          "posPremiumProductCardTop",
+          "posPremiumProductGrid",
+          "posPremiumProductMetaRail",
+          "posPremiumProductName",
+          "posPremiumProductPrice",
+          "posPremiumProductStage",
+          "posPremiumProductStatus",
+          "posPremiumProductStatusDanger",
+          "posPremiumProductStatusOk",
+          "posPremiumProductStatusWarn",
+          "posPremiumProductStockEmpty",
+          "posPremiumProductStockLow",
+          "posPremiumProductStockOk",
+          "posPremiumProductText",
+          "posPremiumRemoveButton",
+          "posPremiumSceneGlow",
+          "posPremiumSearchActions",
+          "posPremiumSearchCard",
+          "posPremiumSearchCardError",
+          "posPremiumSearchInputWrap",
+          "posPremiumSearchLabel",
+          "posPremiumSecondaryButton",
+          "posPremiumSecondaryCheckoutActions",
+          "posPremiumSellHeader",
+          "posPremiumSellStatus",
+          "posPremiumStatePanel",
+          "posPremiumStepper",
+          "posPremiumTicketEmpty",
+          "posPremiumTicketError"
+        ],
+        "duplicate_selectors": [
+          ".addButton",
+          ".badgeOk, .badgeWarn, .badgeDanger, .badgeNeutral",
+          ".cartThumb",
+          ".cartThumbPackshot img",
+          ".cashBox",
+          ".cashInputLabel",
+          ".cashInputLabel input",
+          ".cashSuggestions",
+          ".cashSuggestions button",
+          ".catalogArea, .ticketPanel, .searchCard, .successCard",
+          ".checkoutLink strong, .checkoutLinkDisabled strong",
+          ".checkoutLink:not(.checkoutLinkDisabled)",
+          ".checkoutLinkDisabled",
+          ".cobrarReferenceAmount",
+          ".cobrarReferenceLabel",
+          ".cobrarReferenceShell",
+          ".emptyTicket, .statePanel",
+          ".favoriteStar",
+          ".lineTotal",
+          ".paymentFooter",
+          ".paymentHeader",
+          ".paymentHeader h2",
+          ".paymentHeader p",
+          ".paymentMethods",
+          ".paymentMethods button",
+          ".paymentMethods button[data-active=\"true\"]",
+          ".paymentMethods small",
+          ".paymentMethods strong",
+          ".paymentOkButton",
+          ".paymentOkButton[disabled]",
+          ".paymentPanelCard",
+          ".paymentPremiumActionPrimary",
+          ".paymentPremiumActionPrimary:disabled",
+          ".paymentPremiumAtmosphere",
+          ".paymentPremiumBodyGrid",
+          ".paymentPremiumBodyGrid, .paymentPremiumTenderRow, .paymentPremiumFooter, .paymentPremiumHeader, .paymentPremiumHeroTotal",
+          ".paymentPremiumCashBox",
+          ".paymentPremiumCashBox, .paymentPremiumReview, .paymentPremiumReviewReady, .paymentPremiumBusyNote, .paymentPremiumError",
+          ".paymentPremiumCashSuggestions",
+          ".paymentPremiumCashSuggestions button",
+          ".paymentPremiumFooter",
+          ".paymentPremiumHeader",
+          ".paymentPremiumHeroTotal",
+          ".paymentPremiumHeroTotal small",
+          ".paymentPremiumHeroTotal strong",
+          ".paymentPremiumHeroTotal::after",
+          ".paymentPremiumOverlay",
+          ".paymentPremiumPanel",
+          ".paymentPremiumShell",
+          ".paymentPremiumStatusPill"
+        ],
+        "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\components\\pos\\pos.module.css"
+      },
+      "ok": true,
+      "severity_if_failed": "error",
+      "source_plugin": "capatch_verify",
+      "title": "CSS module OK: pos.module.css",
+      "verification_class": "builtin",
+      "verifier_id": "css-module-sanity"
+    }
+  ]
+}
