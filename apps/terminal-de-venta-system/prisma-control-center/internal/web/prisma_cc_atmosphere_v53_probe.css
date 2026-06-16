@@ -2,51 +2,51 @@
    Capa visible de prueba. No toca texto, tablas ni cards. */
 
 body[data-theme="tactical"] {
-  isolation: isolate !important;
+  isolation: isolate;
 }
 
 #prisma-atmosphere-v53-root {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  overflow: hidden !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-  mix-blend-mode: screen !important;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  mix-blend-mode: screen;
 }
 
 #prisma-atmosphere-v53-canvas {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  display: block !important;
-  opacity: .95 !important;
-  visibility: visible !important;
-  filter: saturate(1.45) brightness(1.22) contrast(1.08) !important;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  opacity: .95;
+  visibility: visible;
+  filter: saturate(1.45) brightness(1.22) contrast(1.08);
 }
 
 #prisma-atmosphere-v53-badge {
-  position: fixed !important;
-  left: 14px !important;
-  bottom: 14px !important;
-  z-index: 9999 !important;
-  pointer-events: none !important;
-  padding: 8px 11px !important;
-  border-radius: 999px !important;
-  font: 700 11px/1.1 ui-sans-serif, system-ui, Segoe UI, sans-serif !important;
-  letter-spacing: .08em !important;
-  text-transform: uppercase !important;
-  color: #d9ecff !important;
-  background: rgba(14, 31, 48, .72) !important;
-  border: 1px solid rgba(164, 225, 255, .38) !important;
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  padding: 8px 11px;
+  border-radius: 999px;
+  font: 700 11px/1.1 ui-sans-serif, system-ui, Segoe UI, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #d9ecff;
+  background: rgba(14, 31, 48, .72);
+  border: 1px solid rgba(164, 225, 255, .38);
   box-shadow:
     0 0 0 1px rgba(255,255,255,.06),
     0 0 18px rgba(103, 212, 255, .22),
-    0 0 30px rgba(178, 132, 255, .13) !important;
-  backdrop-filter: blur(8px) saturate(150%) !important;
+    0 0 30px rgba(178, 132, 255, .13);
+  backdrop-filter: blur(8px) saturate(150%);
 }
 
 .page,
@@ -61,6 +61,6 @@ main,
 .commandPanel,
 .topology,
 .timelineCard {
-  position: relative !important;
-  z-index: 10 !important;
+  position: relative;
+  z-index: 10;
 }

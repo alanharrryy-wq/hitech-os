@@ -23,51 +23,51 @@ body[data-theme="tactical"]{
   --frost-v42-violet:rgba(174,153,255,.105);
   --frost-v42-shadow-exec:0 22px 64px rgba(0,0,0,.30),0 6px 20px rgba(2,8,15,.20);
   --frost-v42-shadow-float:0 14px 36px rgba(0,0,0,.24),0 2px 8px rgba(6,16,26,.22);
-  --topbar-height:unset !important;
+  --topbar-height:unset;
   background:
     linear-gradient(180deg,rgba(246,251,255,.035),rgba(36,55,72,.14) 34%,rgba(9,20,33,.34) 100%),
     radial-gradient(1100px 610px at 46% -8%,rgba(255,255,255,.24),transparent 62%),
     radial-gradient(760px 520px at 86% 17%,rgba(168,221,255,.18),transparent 68%),
     radial-gradient(880px 600px at 5% 76%,rgba(119,156,188,.17),transparent 72%),
     var(--frost-v42-bg-asset) center 48% / cover fixed no-repeat,
-    #1a2a39 !important;
-  color:var(--frost-v42-text) !important;
-  overflow-x:hidden !important;
+    #1a2a39;
+  color:var(--frost-v42-text);
+  overflow-x:hidden;
 }
 
 /* Fondo: claro, continuo, sin grid, sin banda negra, sin máscaras que maten la foto. */
 body[data-theme="tactical"]::before{
-  content:"" !important;
-  position:fixed !important;
-  inset:0 !important;
-  z-index:-2 !important;
-  pointer-events:none !important;
-  opacity:1 !important;
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:1;
   background:
     radial-gradient(980px 560px at 52% -12%,rgba(255,255,255,.22),transparent 62%),
     radial-gradient(720px 470px at 92% 18%,rgba(169,238,255,.16),transparent 70%),
     linear-gradient(90deg,rgba(9,18,28,.34),rgba(22,39,55,.045) 44%,rgba(4,13,24,.40)),
-    linear-gradient(180deg,rgba(255,255,255,.02),rgba(8,19,32,.15) 58%,rgba(4,11,21,.32)) !important;
-  background-size:auto !important;
-  background-repeat:no-repeat !important;
-  mask-image:none !important;
-  -webkit-mask-image:none !important;
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(8,19,32,.15) 58%,rgba(4,11,21,.32));
+  background-size:auto;
+  background-repeat:no-repeat;
+  mask-image:none;
+  -webkit-mask-image:none;
 }
 
 body[data-theme="tactical"]::after{
-  content:"" !important;
-  position:fixed !important;
-  inset:-6% !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-  opacity:.48 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:fixed;
+  inset:-6%;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.48;
+  mix-blend-mode:screen;
   background:
     radial-gradient(620px 260px at 24% 7%,rgba(255,255,255,.13),transparent 74%),
     radial-gradient(520px 250px at 78% 20%,rgba(169,238,255,.115),transparent 74%),
     radial-gradient(760px 330px at 50% 92%,rgba(174,153,255,.052),transparent 80%),
-    linear-gradient(116deg,transparent 8%,rgba(255,255,255,.035) 24%,transparent 43%,transparent 72%,rgba(169,238,255,.034) 86%,transparent 96%) !important;
-  animation:frostV42Glacier 140s cubic-bezier(.38,0,.2,1) infinite !important;
+    linear-gradient(116deg,transparent 8%,rgba(255,255,255,.035) 24%,transparent 43%,transparent 72%,rgba(169,238,255,.034) 86%,transparent 96%);
+  animation:frostV42Glacier 140s cubic-bezier(.38,0,.2,1) infinite;
 }
 
 @keyframes frostV42Glacier{
@@ -78,90 +78,90 @@ body[data-theme="tactical"]::after{
 
 /* Layout repair: el header deja de pisar Cabina/PRISMO. */
 body[data-theme="tactical"] .page{
-  position:relative !important;
-  z-index:1 !important;
-  width:min(1340px,100%) !important;
-  margin-inline:auto !important;
-  padding-top:18px !important;
+  position:relative;
+  z-index:1;
+  width:min(1340px,100%);
+  margin-inline:auto;
+  padding-top:18px;
 }
 
 body[data-theme="tactical"] .topbarWrap{
-  position:relative !important;
-  top:auto !important;
-  left:auto !important;
-  right:auto !important;
-  transform:none !important;
-  width:min(1138px,calc(100vw - 108px)) !important;
-  margin:0 auto 22px auto !important;
-  z-index:30 !important;
+  position:relative;
+  top:auto;
+  left:auto;
+  right:auto;
+  transform:none;
+  width:min(1138px,calc(100vw - 108px));
+  margin:0 auto 22px auto;
+  z-index:30;
 }
 
 body[data-theme="tactical"] main{
-  padding-top:0 !important;
-  margin-top:0 !important;
-  gap:18px !important;
-  position:relative !important;
-  z-index:2 !important;
+  padding-top:0;
+  margin-top:0;
+  gap:18px;
+  position:relative;
+  z-index:2;
 }
 
 body[data-theme="tactical"] .topbar{
-  min-height:100px !important;
-  height:auto !important;
-  padding:15px 20px !important;
-  border-radius:32px !important;
-  clip-path:none !important;
-  overflow:hidden !important;
+  min-height:100px;
+  height:auto;
+  padding:15px 20px;
+  border-radius:32px;
+  clip-path:none;
+  overflow:hidden;
 }
 
 body[data-theme="tactical"] .topbarGrid{
-  display:grid !important;
-  grid-template-columns:minmax(360px,1fr) minmax(420px,540px) !important;
-  gap:18px !important;
-  align-items:center !important;
-  min-width:0 !important;
+  display:grid;
+  grid-template-columns:minmax(360px,1fr) minmax(420px,540px);
+  gap:18px;
+  align-items:center;
+  min-width:0;
 }
 
 body[data-theme="tactical"] .brandRow,
-body[data-theme="tactical"] .titles{min-width:0 !important;}
+body[data-theme="tactical"] .titles{min-width:0;}
 
 body[data-theme="tactical"] .titles h1{
-  font-size:clamp(32px,3.15vw,48px) !important;
-  letter-spacing:.075em !important;
-  line-height:.94 !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  max-width:100% !important;
+  font-size:clamp(32px,3.15vw,48px);
+  letter-spacing:.075em;
+  line-height:.94;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
 }
 
-body[data-theme="tactical"] .titles p{display:none !important;}
-body[data-theme="tactical"] .brandEyebrow{opacity:.72 !important;}
+body[data-theme="tactical"] .titles p{display:none;}
+body[data-theme="tactical"] .brandEyebrow{opacity:.72;}
 
 body[data-theme="tactical"] .surfaceSwitch{
-  position:relative !important;
-  transform:none !important;
-  inset:auto !important;
-  width:auto !important;
-  min-width:0 !important;
-  max-width:540px !important;
-  justify-self:end !important;
-  z-index:3 !important;
+  position:relative;
+  transform:none;
+  inset:auto;
+  width:auto;
+  min-width:0;
+  max-width:540px;
+  justify-self:end;
+  z-index:3;
 }
 
 body[data-theme="tactical"] .surfaceSwitch button,
 body[data-theme="tactical"] .surfaceSwitch .active{
-  min-height:38px !important;
-  border-radius:999px !important;
+  min-height:38px;
+  border-radius:999px;
 }
 
 /* Sigue oculto el selector feo de temas, sin tocar rutas ni estado. */
 body[data-theme="tactical"] .v40QuickRail,
 body[data-theme="tactical"] [class*="QuickRail"],
 body[data-theme="tactical"] [aria-label="PRISMA quick controls"]{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-  pointer-events:none !important;
+  display:none;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
 }
 
 /* Superficies: más claras, menos bloque negro, menos leche. */
@@ -185,33 +185,33 @@ body[data-theme="tactical"] .prismo-panel,
 body[data-theme="tactical"] .prismo-center-stage,
 body[data-theme="tactical"] .prismo-response-stream,
 body[data-theme="tactical"] .prismo-bottom-card{
-  clip-path:none !important;
-  border-radius:27px !important;
-  overflow:hidden !important;
-  isolation:isolate !important;
+  clip-path:none;
+  border-radius:27px;
+  overflow:hidden;
+  isolation:isolate;
   background:
     linear-gradient(180deg,rgba(255,255,255,.185),rgba(255,255,255,.062) 24%,rgba(16,31,45,.105) 100%),
     radial-gradient(160% 130% at 9% 0%,rgba(255,255,255,.120),transparent 34%),
     radial-gradient(130% 120% at 94% 1%,rgba(169,238,255,.070),transparent 38%),
     linear-gradient(145deg,rgba(255,255,255,.030),rgba(174,153,255,.020) 46%,rgba(169,238,255,.024)),
-    var(--frost-v42-panel-fill) !important;
-  border:1px solid var(--frost-v42-edge) !important;
+    var(--frost-v42-panel-fill);
+  border:1px solid var(--frost-v42-edge);
   box-shadow:
     var(--frost-v42-shadow-exec),
     0 0 34px rgba(174,153,255,.090),
     0 0 18px rgba(169,238,255,.040),
     inset 0 1px 0 rgba(255,255,255,.36),
     inset 0 0 0 1px rgba(255,255,255,.048),
-    inset 0 -1px 0 rgba(169,238,255,.11) !important;
-  backdrop-filter:blur(1.1px) saturate(118%) contrast(1.012) !important;
-  -webkit-backdrop-filter:blur(1.1px) saturate(118%) contrast(1.012) !important;
+    inset 0 -1px 0 rgba(169,238,255,.11);
+  backdrop-filter:blur(1.1px) saturate(118%) contrast(1.012);
+  -webkit-backdrop-filter:blur(1.1px) saturate(118%) contrast(1.012);
 }
 
 body[data-theme="tactical"] .topbar,
 body[data-theme="tactical"] .qualityHero,
 body[data-theme="tactical"] .lifecycleHero,
 body[data-theme="tactical"] .licenseOpsHero{
-  border-color:rgba(248,253,255,.56) !important;
+  border-color:rgba(248,253,255,.56);
   box-shadow:
     0 24px 72px rgba(0,0,0,.32),
     0 7px 22px rgba(1,6,13,.22),
@@ -219,7 +219,7 @@ body[data-theme="tactical"] .licenseOpsHero{
     0 0 22px rgba(169,238,255,.065),
     inset 0 1px 0 rgba(255,255,255,.48),
     inset 0 0 0 1px rgba(255,255,255,.070),
-    inset 0 -1px 0 rgba(169,238,255,.15) !important;
+    inset 0 -1px 0 rgba(169,238,255,.15);
 }
 
 body[data-theme="tactical"] .card,
@@ -252,22 +252,22 @@ body[data-theme="tactical"] .prismo-panel,
 body[data-theme="tactical"] .prismo-response-card,
 body[data-theme="tactical"] .prismo-empty,
 body[data-theme="tactical"] .prismo-bottom-card{
-  clip-path:none !important;
-  border-radius:19px !important;
-  overflow:hidden !important;
-  isolation:isolate !important;
+  clip-path:none;
+  border-radius:19px;
+  overflow:hidden;
+  isolation:isolate;
   background:
     linear-gradient(180deg,rgba(255,255,255,.128),rgba(255,255,255,.040) 26%,rgba(11,24,37,.070) 100%),
     radial-gradient(120% 110% at 12% 0%,rgba(255,255,255,.075),transparent 38%),
-    rgba(136,160,182,.115) !important;
-  border:1px solid var(--frost-v42-edge-soft) !important;
+    rgba(136,160,182,.115);
+  border:1px solid var(--frost-v42-edge-soft);
   box-shadow:
     var(--frost-v42-shadow-float),
     inset 0 1px 0 rgba(255,255,255,.22),
     inset 0 0 0 1px rgba(255,255,255,.035),
-    inset 0 -1px 0 rgba(169,238,255,.070) !important;
-  backdrop-filter:blur(.45px) saturate(112%) contrast(1.006) !important;
-  -webkit-backdrop-filter:blur(.45px) saturate(112%) contrast(1.006) !important;
+    inset 0 -1px 0 rgba(169,238,255,.070);
+  backdrop-filter:blur(.45px) saturate(112%) contrast(1.006);
+  -webkit-backdrop-filter:blur(.45px) saturate(112%) contrast(1.006);
 }
 
 /* No tapes lechosos sobre diagramas; restaura radar/reactor y topología. */
@@ -278,31 +278,31 @@ body[data-theme="tactical"] .reactorValue,
 body[data-theme="tactical"] .topologyMap,
 body[data-theme="tactical"] .topologyShell,
 body[data-theme="tactical"] .timeline{
-  display:revert !important;
-  visibility:visible !important;
-  opacity:1 !important;
+  display:revert;
+  visibility:visible;
+  opacity:1;
 }
 
 body[data-theme="tactical"] .reactorGrid{
-  display:grid !important;
-  grid-template-columns:minmax(360px,.95fr) minmax(420px,1.35fr) !important;
-  gap:24px !important;
-  align-items:center !important;
+  display:grid;
+  grid-template-columns:minmax(360px,.95fr) minmax(420px,1.35fr);
+  gap:24px;
+  align-items:center;
 }
 
 body[data-theme="tactical"] .reactorVisual{
-  min-height:320px !important;
-  filter:none !important;
+  min-height:320px;
+  filter:none;
 }
 
 body[data-theme="tactical"] .topologyMap,
 body[data-theme="tactical"] .topologyShell{
   background:
     linear-gradient(180deg,rgba(255,255,255,.060),rgba(255,255,255,.018) 42%,rgba(8,20,32,.060)),
-    rgba(112,136,158,.070) !important;
-  backdrop-filter:blur(.12px) saturate(104%) !important;
-  -webkit-backdrop-filter:blur(.12px) saturate(104%) !important;
-  border-color:rgba(232,247,255,.24) !important;
+    rgba(112,136,158,.070);
+  backdrop-filter:blur(.12px) saturate(104%);
+  -webkit-backdrop-filter:blur(.12px) saturate(104%);
+  border-color:rgba(232,247,255,.24);
 }
 
 /* PRISMO specifically: no más cueva. */
@@ -310,11 +310,11 @@ body[data-theme="tactical"] .prismoConsoleSurface,
 body[data-theme="tactical"] .prismo-shell{
   background:
     linear-gradient(180deg,rgba(255,255,255,.080),rgba(255,255,255,.026) 36%,rgba(9,22,35,.080)),
-    rgba(95,122,146,.080) !important;
+    rgba(95,122,146,.080);
 }
 
-body[data-theme="tactical"] .prismo-atmosphere{opacity:.36 !important; mix-blend-mode:screen !important;}
-body[data-theme="tactical"] .prismo-status-strip{background:transparent !important;}
+body[data-theme="tactical"] .prismo-atmosphere{opacity:.36; mix-blend-mode:screen;}
+body[data-theme="tactical"] .prismo-status-strip{background:transparent;}
 
 /* Prevent glass pseudo-layers from swallowing content. */
 body[data-theme="tactical"] .panel::before,
@@ -331,11 +331,11 @@ body[data-theme="tactical"] .release-panel::before,
 body[data-theme="tactical"] .prismo-shell::before,
 body[data-theme="tactical"] .prismo-center-stage::before,
 body[data-theme="tactical"] .prismo-panel::before{
-  opacity:.42 !important;
-  mix-blend-mode:screen !important;
+  opacity:.42;
+  mix-blend-mode:screen;
   background:
     linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,0) 28%),
-    radial-gradient(340px 130px at 12% -3%,rgba(255,255,255,.125),transparent 64%) !important;
+    radial-gradient(340px 130px at 12% -3%,rgba(255,255,255,.125),transparent 64%);
 }
 
 body[data-theme="tactical"] .panel::after,
@@ -352,30 +352,30 @@ body[data-theme="tactical"] .release-panel::after,
 body[data-theme="tactical"] .prismo-shell::after,
 body[data-theme="tactical"] .prismo-center-stage::after,
 body[data-theme="tactical"] .prismo-panel::after{
-  opacity:.28 !important;
-  pointer-events:none !important;
+  opacity:.28;
+  pointer-events:none;
 }
 
 body[data-theme="tactical"] .sectionText,
 body[data-theme="tactical"] .muted,
 body[data-theme="tactical"] .statusLine,
-body[data-theme="tactical"] p{color:var(--frost-v42-muted) !important;}
+body[data-theme="tactical"] p{color:var(--frost-v42-muted);}
 body[data-theme="tactical"] .sectionTitle,
 body[data-theme="tactical"] h1,
 body[data-theme="tactical"] h2,
-body[data-theme="tactical"] h3{color:#f8fbff !important; text-shadow:0 1px 18px rgba(169,238,255,.08) !important;}
+body[data-theme="tactical"] h3{color:#f8fbff; text-shadow:0 1px 18px rgba(169,238,255,.08);}
 
 @media (max-width: 980px){
-  body[data-theme="tactical"] .topbarWrap{width:calc(100vw - 28px) !important; margin-bottom:18px !important;}
-  body[data-theme="tactical"] .topbarGrid{grid-template-columns:1fr !important; gap:12px !important;}
-  body[data-theme="tactical"] .surfaceSwitch{justify-self:stretch !important; max-width:none !important;}
-  body[data-theme="tactical"] .titles h1{font-size:clamp(26px,8vw,38px) !important;}
-  body[data-theme="tactical"] .reactorGrid{grid-template-columns:1fr !important;}
+  body[data-theme="tactical"] .topbarWrap{width:calc(100vw - 28px); margin-bottom:18px;}
+  body[data-theme="tactical"] .topbarGrid{grid-template-columns:1fr; gap:12px;}
+  body[data-theme="tactical"] .surfaceSwitch{justify-self:stretch; max-width:none;}
+  body[data-theme="tactical"] .titles h1{font-size:clamp(26px,8vw,38px);}
+  body[data-theme="tactical"] .reactorGrid{grid-template-columns:1fr;}
 }
 
 @media (prefers-reduced-motion: reduce){
-  body[data-theme="tactical"]::after{animation:none !important;}
+  body[data-theme="tactical"]::after{animation:none;}
   body[data-theme="tactical"] *,
   body[data-theme="tactical"] *::before,
-  body[data-theme="tactical"] *::after{transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important;}
+  body[data-theme="tactical"] *::after{transition-duration:.01ms; animation-duration:.01ms; animation-iteration-count:1;}
 }

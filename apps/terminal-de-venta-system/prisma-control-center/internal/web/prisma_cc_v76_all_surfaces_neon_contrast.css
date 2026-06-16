@@ -14,153 +14,153 @@ body[data-theme="tactical"]:not([data-prisma-interface="prismo"]){
 
 /* header: que vuelva logo + título completo */
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbarWrap{
-  width:min(1360px, calc(100vw - 48px)) !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
+  width:min(1360px, calc(100vw - 48px));
+  left:50%;
+  transform:translateX(-50%);
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbar,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbar.glass{
-  min-height:134px !important;
-  height:134px !important;
-  padding:18px 24px !important;
-  overflow:visible !important;
-  border-radius:32px !important;
+  min-height:134px;
+  height:134px;
+  padding:18px 24px;
+  overflow:visible;
+  border-radius:32px;
   background:
     radial-gradient(circle at 8% 48%, rgba(120,235,255,.13), transparent 30%),
     radial-gradient(circle at 76% 20%, rgba(174,122,255,.10), transparent 24%),
     linear-gradient(180deg, rgba(255,255,255,.080), rgba(255,255,255,.020) 48%, rgba(255,255,255,.030)),
-    rgba(9,17,29,.36) !important;
-  border:1px solid rgba(205,234,255,.20) !important;
+    rgba(9,17,29,.36);
+  border:1px solid rgba(205,234,255,.20);
   box-shadow:
     0 18px 54px rgba(0,0,0,.22),
     0 0 28px rgba(120,235,255,.055),
-    inset 0 1px 0 rgba(255,255,255,.13) !important;
-  backdrop-filter:blur(7px) saturate(136%) contrast(108%) !important;
-  -webkit-backdrop-filter:blur(7px) saturate(136%) contrast(108%) !important;
+    inset 0 1px 0 rgba(255,255,255,.13);
+  backdrop-filter:blur(7px) saturate(136%) contrast(108%);
+  -webkit-backdrop-filter:blur(7px) saturate(136%) contrast(108%);
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbarGrid{
-  height:96px !important;
-  min-height:96px !important;
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) !important;
-  align-items:center !important;
-  padding:0 520px 0 0 !important;
+  height:96px;
+  min-height:96px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+  padding:0 520px 0 0;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .brandRow{
-  display:flex !important;
-  align-items:center !important;
-  gap:18px !important;
-  min-width:0 !important;
-  overflow:visible !important;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  min-width:0;
+  overflow:visible;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .heroIcon{
-  width:86px !important;
-  height:86px !important;
-  min-width:86px !important;
-  flex:0 0 86px !important;
-  display:grid !important;
-  place-items:center !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  overflow:visible !important;
+  width:86px;
+  height:86px;
+  min-width:86px;
+  flex:0 0 86px;
+  display:grid;
+  place-items:center;
+  opacity:1;
+  visibility:visible;
+  overflow:visible;
   filter:
     drop-shadow(0 0 9px rgba(120,235,255,.45))
-    drop-shadow(0 0 18px rgba(174,122,255,.26)) !important;
+    drop-shadow(0 0 18px rgba(174,122,255,.26));
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .heroLogo{
-  display:block !important;
-  width:80px !important;
-  height:80px !important;
-  object-fit:contain !important;
-  object-position:center !important;
-  opacity:1 !important;
-  visibility:visible !important;
+  display:block;
+  width:80px;
+  height:80px;
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+  visibility:visible;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .titles{
-  min-width:0 !important;
-  max-width:none !important;
-  overflow:visible !important;
+  min-width:0;
+  max-width:none;
+  overflow:visible;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .titles h1{
-  max-width:none !important;
-  white-space:normal !important;
-  overflow:visible !important;
-  text-overflow:clip !important;
-  font-size:clamp(30px,2.55vw,42px) !important;
-  line-height:.98 !important;
-  letter-spacing:.095em !important;
-  color:#f3f9ff !important;
+  max-width:none;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  font-size:clamp(30px,2.55vw,42px);
+  line-height:.98;
+  letter-spacing:.095em;
+  color:#f3f9ff;
   text-shadow:
     0 1px 0 rgba(0,0,0,.34),
     0 0 5px rgba(255,255,255,.34),
     0 0 16px rgba(120,235,255,.22),
-    0 0 28px rgba(174,122,255,.12) !important;
+    0 0 28px rgba(174,122,255,.12);
 }
 
 body[data-prisma-interface="operation"] .titles h1{
-  font-size:clamp(27px,2.20vw,36px) !important;
-  letter-spacing:.075em !important;
+  font-size:clamp(27px,2.20vw,36px);
+  letter-spacing:.075em;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .titles p,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) #subtitle{
-  display:block !important;
-  margin-top:8px !important;
-  color:rgba(232,244,255,.82) !important;
-  font-size:12px !important;
-  line-height:1.18 !important;
-  letter-spacing:.18em !important;
-  text-transform:uppercase !important;
-  text-shadow:0 0 10px rgba(120,235,255,.18) !important;
+  display:block;
+  margin-top:8px;
+  color:rgba(232,244,255,.82);
+  font-size:12px;
+  line-height:1.18;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  text-shadow:0 0 10px rgba(120,235,255,.18);
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .brandEyebrow,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .chips{
-  display:none !important;
+  display:none;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbar > .surfaceSwitch{
-  position:absolute !important;
-  right:22px !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  width:500px !important;
-  max-width:500px !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
-  justify-content:flex-end !important;
-  align-items:center !important;
-  gap:9px !important;
+  position:absolute;
+  right:22px;
+  top:50%;
+  transform:translateY(-50%);
+  width:500px;
+  max-width:500px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  align-items:center;
+  gap:9px;
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbar > .surfaceSwitch button{
-  height:38px !important;
-  min-width:138px !important;
-  max-width:178px !important;
-  border-radius:999px !important;
-  color:rgba(238,247,255,.90) !important;
+  height:38px;
+  min-width:138px;
+  max-width:178px;
+  border-radius:999px;
+  color:rgba(238,247,255,.90);
   background:
     linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018)),
-    rgba(11,22,36,.38) !important;
-  border:1px solid rgba(204,235,255,.20) !important;
+    rgba(11,22,36,.38);
+  border:1px solid rgba(204,235,255,.20);
   box-shadow:
     0 0 14px rgba(120,235,255,.08),
-    inset 0 1px 0 rgba(255,255,255,.10) !important;
+    inset 0 1px 0 rgba(255,255,255,.10);
 }
 
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .topbar > .surfaceSwitch button.active{
-  border-color:rgba(139,238,255,.52) !important;
+  border-color:rgba(139,238,255,.52);
   box-shadow:
     0 0 16px rgba(120,235,255,.24),
     0 0 22px rgba(174,122,255,.10),
-    inset 0 1px 0 rgba(255,255,255,.16) !important;
+    inset 0 1px 0 rgba(255,255,255,.16);
 }
 
 /* paneles: menos leche, más contraste, misma transparencia */
@@ -185,14 +185,14 @@ body[data-prisma-interface="lifecycle"] .lifecycleSealCard{
     radial-gradient(circle at 12% 0%, rgba(120,235,255,.055), transparent 32%),
     radial-gradient(circle at 96% 22%, rgba(255,105,205,.040), transparent 26%),
     linear-gradient(180deg, rgba(255,255,255,.050), rgba(255,255,255,.012)),
-    rgba(7,16,29,.36) !important;
-  border:1px solid rgba(205,234,255,.17) !important;
+    rgba(7,16,29,.36);
+  border:1px solid rgba(205,234,255,.17);
   box-shadow:
     0 16px 46px rgba(0,0,0,.18),
     0 0 22px rgba(120,235,255,.045),
-    inset 0 1px 0 rgba(255,255,255,.09) !important;
-  backdrop-filter:blur(6px) saturate(130%) contrast(110%) !important;
-  -webkit-backdrop-filter:blur(6px) saturate(130%) contrast(110%) !important;
+    inset 0 1px 0 rgba(255,255,255,.09);
+  backdrop-filter:blur(6px) saturate(130%) contrast(110%);
+  -webkit-backdrop-filter:blur(6px) saturate(130%) contrast(110%);
 }
 
 /* acentos gaussianos por superficie */
@@ -225,8 +225,8 @@ body[data-prisma-interface="license"] .licenseOpsHero::before,
 body[data-prisma-interface="license"] .licenseOpsPanel::before,
 body[data-prisma-interface="lifecycle"] .lifecycleHero::before,
 body[data-prisma-interface="lifecycle"] .lifecyclePanel::before{
-  opacity:.30 !important;
-  filter:blur(10px) saturate(130%) !important;
+  opacity:.30;
+  filter:blur(10px) saturate(130%);
 }
 
 /* texto: más legible sin hacerlo chillón */
@@ -238,11 +238,11 @@ body[data-prisma-interface="license"] h2,
 body[data-prisma-interface="license"] h3,
 body[data-prisma-interface="lifecycle"] h2,
 body[data-prisma-interface="lifecycle"] h3{
-  color:#f4fbff !important;
+  color:#f4fbff;
   text-shadow:
     0 1px 0 rgba(0,0,0,.36),
     0 0 6px rgba(255,255,255,.20),
-    0 0 18px var(--surface-a) !important;
+    0 0 18px var(--surface-a);
 }
 
 body[data-prisma-interface="operation"] p,
@@ -253,8 +253,8 @@ body[data-prisma-interface="operation"] small,
 body[data-prisma-interface="quality"] small,
 body[data-prisma-interface="license"] small,
 body[data-prisma-interface="lifecycle"] small{
-  color:rgba(231,243,255,.82) !important;
-  text-shadow:0 1px 0 rgba(0,0,0,.28), 0 0 8px rgba(120,235,255,.10) !important;
+  color:rgba(231,243,255,.82);
+  text-shadow:0 1px 0 rgba(0,0,0,.28), 0 0 8px rgba(120,235,255,.10);
 }
 
 /* chips/badges/botones con multicolor fino */
@@ -263,23 +263,23 @@ body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) .chip,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) [class*="Tag"],
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) [class*="Badge"],
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) [class*="Pill"]{
-  border-color:rgba(205,234,255,.22) !important;
+  border-color:rgba(205,234,255,.22);
   box-shadow:
     0 0 12px rgba(120,235,255,.10),
     0 0 18px rgba(255,105,205,.055),
-    inset 0 1px 0 rgba(255,255,255,.10) !important;
+    inset 0 1px 0 rgba(255,255,255,.10);
 }
 
 /* inputs: más oscuro, no sólido */
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) input,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) textarea,
 body[data-theme="tactical"]:not([data-prisma-interface="prismo"]) select{
-  background:rgba(6,15,28,.34) !important;
-  border:1px solid rgba(205,234,255,.17) !important;
-  color:#f3faff !important;
+  background:rgba(6,15,28,.34);
+  border:1px solid rgba(205,234,255,.17);
+  color:#f3faff;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.06),
-    0 0 12px rgba(120,235,255,.055) !important;
+    0 0 12px rgba(120,235,255,.055);
 }
 
 /* fondos grandes: oscurecer velo sin tapar imagen */
@@ -289,5 +289,5 @@ body[data-prisma-interface="lifecycle"] .lifecycleSurface{
   background:
     radial-gradient(circle at 18% 10%, rgba(120,235,255,.055), transparent 36%),
     radial-gradient(circle at 86% 22%, rgba(174,122,255,.050), transparent 32%),
-    linear-gradient(180deg, rgba(3,9,18,.08), rgba(3,9,18,.18)) !important;
+    linear-gradient(180deg, rgba(3,9,18,.08), rgba(3,9,18,.18));
 }

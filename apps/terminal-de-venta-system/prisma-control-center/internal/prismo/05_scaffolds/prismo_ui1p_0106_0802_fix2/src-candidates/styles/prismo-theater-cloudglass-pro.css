@@ -45,7 +45,7 @@
 .prismo-ui1p-drawer pre { white-space: pre-wrap; background: rgba(0,0,0,.28); border-radius: 18px; padding: 16px; border:1px solid rgba(255,255,255,.08); }
 .prismo-ui1p-loading .orb { width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 30% 20%, white, rgba(var(--prismo-coolant-rgb),.7) 22%, rgba(var(--prismo-coolant-rgb),.08) 65%); box-shadow: 0 0 80px rgba(var(--prismo-coolant-rgb), .45); animation: prismoPulse 1.9s ease-in-out infinite; }
 @keyframes prismoPulse { 0%,100%{ transform:scale(.96); opacity:.8 } 50%{ transform:scale(1.05); opacity:1 } }
-@media (prefers-reduced-motion: reduce) { .prismo-ui1p-loading .orb { animation: none; } * { scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: reduce) { .prismo-ui1p-loading .orb { animation: none; } * { scroll-behavior: auto; } }
 @media (max-width: 1050px) { .prismo-ui1p-shell { grid-template-columns: 1fr; } }
 
 

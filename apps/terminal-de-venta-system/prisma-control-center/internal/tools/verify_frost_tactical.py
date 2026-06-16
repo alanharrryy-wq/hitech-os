@@ -26,7 +26,7 @@ def main():
     add('css-targets-tactical-only', 'body[data-theme="tactical"]' in css_text)
     add('css-uses-local-background', "url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg')" in css_text)
     add('v4-marker-present', 'PRISMA FROST TACTICAL V4' in css_text and 'BACKGROUND REPAIR + PREMIUM PANEL SYSTEM' in css_text)
-    add('background-no-grid-v4', 'display:none !important; visibility:hidden !important' in css_text and 'v40QuickRail' in css_text and 'background-size:auto !important' in css_text)
+    add('background-no-grid-v4', 'display:none; visibility:hidden' in css_text and 'v40QuickRail' in css_text and 'background-size:auto' in css_text)
     add('background-glacier-motion', '@keyframes frostV4Glacier' in css_text and '118s' in css_text)
     add('double-glass-panels', 'double glass' in css_text.lower() and 'inset 0 0 0 1px rgba(255,255,255,.055)' in css_text)
     add('optical-rim-hero', '--frost-v4-edge-hero' in css_text and 'drop-shadow(0 0 1px rgba(239,250,255,.34))' in css_text)

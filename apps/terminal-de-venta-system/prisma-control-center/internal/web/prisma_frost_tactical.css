@@ -9,29 +9,29 @@
 :root{ --prisma-frost-v3-loaded: 1; }
 
 body[data-theme="tactical"]{
-  --bg:#07101b !important;
-  --bg2:#0a1521 !important;
-  --text:#f4f8fc !important;
-  --muted:#c4d1dc !important;
-  --panel:rgba(133,158,179,.245) !important;
-  --glass:rgba(184,207,224,.16) !important;
-  --edge:rgba(232,247,255,.34) !important;
-  --line:rgba(226,241,251,.20) !important;
-  --line-2:rgba(232,247,255,.30) !important;
-  --accent:#a9eeff !important;
-  --accent2:#c4d6ff !important;
-  --accent3:#d7c6ff !important;
-  --ok:#8ff7d1 !important;
-  --warn:#ffd38c !important;
-  --shape-panel:inset(0 round 24px) !important;
-  --shape-card:inset(0 round 18px) !important;
-  --shape-topbar:inset(0 round 30px) !important;
-  --radius-xl:24px !important;
-  --radius-lg:18px !important;
-  --radius-md:14px !important;
-  --radius-sm:12px !important;
-  --blur:.65px !important;
-  --shadow:0 18px 52px rgba(0,0,0,.30), 0 2px 10px rgba(8,17,27,.20) !important;
+  --bg:#07101b;
+  --bg2:#0a1521;
+  --text:#f4f8fc;
+  --muted:#c4d1dc;
+  --panel:rgba(133,158,179,.245);
+  --glass:rgba(184,207,224,.16);
+  --edge:rgba(232,247,255,.34);
+  --line:rgba(226,241,251,.20);
+  --line-2:rgba(232,247,255,.30);
+  --accent:#a9eeff;
+  --accent2:#c4d6ff;
+  --accent3:#d7c6ff;
+  --ok:#8ff7d1;
+  --warn:#ffd38c;
+  --shape-panel:inset(0 round 24px);
+  --shape-card:inset(0 round 18px);
+  --shape-topbar:inset(0 round 30px);
+  --radius-xl:24px;
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:12px;
+  --blur:.65px;
+  --shadow:0 18px 52px rgba(0,0,0,.30), 0 2px 10px rgba(8,17,27,.20);
   --prisma-frost-panel-fill:rgba(138,164,185,.265);
   --prisma-frost-card-fill:rgba(128,153,174,.215);
   --prisma-frost-rail-fill:rgba(150,176,196,.235);
@@ -46,42 +46,42 @@ body[data-theme="tactical"]{
     radial-gradient(760px 460px at 22% 12%,rgba(232,246,255,.11),transparent 64%),
     radial-gradient(620px 420px at 78% 4%,rgba(169,221,255,.075),transparent 67%),
     url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg') center center / cover fixed no-repeat,
-    #07101b !important;
-  color:var(--text) !important;
+    #07101b;
+  color:var(--text);
 }
 
 /* A la chingada la cuadricula: ninguna layer global puede dibujar mesh/grid. */
 body[data-theme="tactical"]::before{
-  content:"" !important;
-  position:fixed !important;
-  inset:0 !important;
-  z-index:0 !important;
-  pointer-events:none !important;
-  opacity:1 !important;
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:1;
   background:
     linear-gradient(90deg,rgba(4,10,18,.62),rgba(6,13,22,.22) 38%,rgba(2,8,15,.76)),
     radial-gradient(900px 560px at 50% -6%,rgba(255,255,255,.13),transparent 60%),
     radial-gradient(760px 420px at 88% 18%,rgba(110,156,202,.12),transparent 64%),
-    linear-gradient(180deg,rgba(5,11,19,.05),rgba(4,10,17,.54) 50%,rgba(1,5,10,.82)) !important;
-  background-size:auto !important;
-  mask-image:none !important;
-  -webkit-mask-image:none !important;
+    linear-gradient(180deg,rgba(5,11,19,.05),rgba(4,10,17,.54) 50%,rgba(1,5,10,.82));
+  background-size:auto;
+  mask-image:none;
+  -webkit-mask-image:none;
 }
 
 body[data-theme="tactical"]::after{
-  content:"" !important;
-  position:fixed !important;
-  inset:-8% !important;
-  z-index:0 !important;
-  pointer-events:none !important;
-  opacity:.42 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:fixed;
+  inset:-8%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.42;
+  mix-blend-mode:screen;
   background:
     radial-gradient(380px 170px at 18% 12%,rgba(255,255,255,.12),transparent 70%),
     radial-gradient(420px 210px at 76% 15%,rgba(169,238,255,.10),transparent 72%),
     radial-gradient(560px 240px at 46% 84%,rgba(199,220,255,.06),transparent 74%),
-    linear-gradient(108deg,transparent 7%,rgba(255,255,255,.040) 23%,transparent 40%,transparent 70%,rgba(169,238,255,.035) 83%,transparent 94%) !important;
-  animation:frostV3Atmosphere 92s cubic-bezier(.42,0,.22,1) infinite !important;
+    linear-gradient(108deg,transparent 7%,rgba(255,255,255,.040) 23%,transparent 40%,transparent 70%,rgba(169,238,255,.035) 83%,transparent 94%);
+  animation:frostV3Atmosphere 92s cubic-bezier(.42,0,.22,1) infinite;
 }
 
 @keyframes frostV3Atmosphere{
@@ -140,21 +140,21 @@ body[data-theme="tactical"] .commandPanel,
 body[data-theme="tactical"] .commandCard,
 body[data-theme="tactical"] .commandStatus,
 body[data-theme="tactical"] .topologyMap{
-  clip-path:var(--shape-card) !important;
-  color:var(--text) !important;
+  clip-path:var(--shape-card);
+  color:var(--text);
   background:
     linear-gradient(180deg,rgba(255,255,255,.205),rgba(255,255,255,.070) 21%,rgba(12,24,38,.155) 100%),
     radial-gradient(140% 130% at 10% 0%,rgba(255,255,255,.105),transparent 32%),
     radial-gradient(120% 130% at 96% 0%,rgba(169,238,255,.070),transparent 34%),
-    var(--prisma-frost-panel-fill) !important;
-  border:1px solid var(--prisma-frost-hairline) !important;
+    var(--prisma-frost-panel-fill);
+  border:1px solid var(--prisma-frost-hairline);
   box-shadow:
     0 18px 46px rgba(0,0,0,.285),
     0 0 0 1px rgba(255,255,255,.028),
     inset 0 1px 0 var(--prisma-frost-highlight),
-    inset 0 -1px 0 rgba(169,238,255,.080) !important;
-  backdrop-filter:blur(.65px) saturate(112%) contrast(1.015) !important;
-  -webkit-backdrop-filter:blur(.65px) saturate(112%) contrast(1.015) !important;
+    inset 0 -1px 0 rgba(169,238,255,.080);
+  backdrop-filter:blur(.65px) saturate(112%) contrast(1.015);
+  -webkit-backdrop-filter:blur(.65px) saturate(112%) contrast(1.015);
 }
 
 body[data-theme="tactical"] .card,
@@ -170,26 +170,26 @@ body[data-theme="tactical"] .commandCard{
   background:
     linear-gradient(180deg,rgba(255,255,255,.185),rgba(255,255,255,.052) 26%,rgba(5,16,28,.10) 100%),
     radial-gradient(120% 110% at 12% 0%,rgba(255,255,255,.075),transparent 33%),
-    var(--prisma-frost-card-fill) !important;
-  backdrop-filter:blur(.45px) saturate(110%) !important;
-  -webkit-backdrop-filter:blur(.45px) saturate(110%) !important;
+    var(--prisma-frost-card-fill);
+  backdrop-filter:blur(.45px) saturate(110%);
+  -webkit-backdrop-filter:blur(.45px) saturate(110%);
 }
 
 body[data-theme="tactical"] .topbar{
-  clip-path:var(--shape-topbar) !important;
+  clip-path:var(--shape-topbar);
   background:
     linear-gradient(180deg,rgba(255,255,255,.230),rgba(255,255,255,.080) 28%,rgba(10,22,35,.145) 100%),
     radial-gradient(120% 160% at 9% 0%,rgba(255,255,255,.145),transparent 42%),
     radial-gradient(110% 140% at 91% 0%,rgba(169,238,255,.115),transparent 45%),
-    rgba(118,146,169,.235) !important;
-  border-color:rgba(239,250,255,.36) !important;
+    rgba(118,146,169,.235);
+  border-color:rgba(239,250,255,.36);
   box-shadow:
     0 24px 70px rgba(0,0,0,.34),
     0 0 26px rgba(169,238,255,.080),
     inset 0 1px 0 rgba(255,255,255,.30),
-    inset 0 -1px 0 rgba(169,238,255,.10) !important;
-  backdrop-filter:blur(.9px) saturate(116%) contrast(1.02) !important;
-  -webkit-backdrop-filter:blur(.9px) saturate(116%) contrast(1.02) !important;
+    inset 0 -1px 0 rgba(169,238,255,.10);
+  backdrop-filter:blur(.9px) saturate(116%) contrast(1.02);
+  -webkit-backdrop-filter:blur(.9px) saturate(116%) contrast(1.02);
 }
 
 /* Kill heavy sweep animations on surfaces. Keep only a lazy specular whisper. */
@@ -208,17 +208,17 @@ body[data-theme="tactical"] .qPanel::before,
 body[data-theme="tactical"] .qualityHero::before,
 body[data-theme="tactical"] .licenseOpsPanel::before,
 body[data-theme="tactical"] .lifecyclePanel::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-  opacity:.52 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.52;
+  mix-blend-mode:screen;
   background:
     linear-gradient(180deg,rgba(255,255,255,.120),rgba(255,255,255,0) 32%),
-    radial-gradient(240px 105px at 14% 0%,rgba(255,255,255,.105),transparent 62%) !important;
-  animation:none !important;
-  transform:none !important;
+    radial-gradient(240px 105px at 14% 0%,rgba(255,255,255,.105),transparent 62%);
+  animation:none;
+  transform:none;
 }
 
 body[data-theme="tactical"] .topbar::after,
@@ -228,32 +228,32 @@ body[data-theme="tactical"] .metric::after,
 body[data-theme="tactical"] .signal::after,
 body[data-theme="tactical"] .timelineCard::after,
 body[data-theme="tactical"] .picker::after{
-  opacity:.18 !important;
-  animation:none !important;
-  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.055) 42%,transparent 78%) !important;
+  opacity:.18;
+  animation:none;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.055) 42%,transparent 78%);
 }
 
 body[data-theme="tactical"] .sectionText,
 body[data-theme="tactical"] .muted,
 body[data-theme="tactical"] .statusLine,
-body[data-theme="tactical"] p{ color:rgba(224,234,242,.84) !important; }
+body[data-theme="tactical"] p{ color:rgba(224,234,242,.84); }
 body[data-theme="tactical"] .sectionTitle,
 body[data-theme="tactical"] h1,
 body[data-theme="tactical"] h2,
-body[data-theme="tactical"] h3{ color:#f7fbff !important; text-shadow:0 1px 14px rgba(169,238,255,.08); }
+body[data-theme="tactical"] h3{ color:#f7fbff; text-shadow:0 1px 14px rgba(169,238,255,.08); }
 
 body[data-theme="tactical"] .themeSelect,
 body[data-theme="tactical"] input,
 body[data-theme="tactical"] select,
 body[data-theme="tactical"] textarea,
 body[data-theme="tactical"] button{
-  color:var(--text) !important;
+  color:var(--text);
   background:
     linear-gradient(180deg,rgba(255,255,255,.135),rgba(255,255,255,.040)),
-    rgba(122,150,172,.20) !important;
-  border-color:rgba(232,247,255,.24) !important;
-  backdrop-filter:blur(.35px) saturate(108%) !important;
-  -webkit-backdrop-filter:blur(.35px) saturate(108%) !important;
+    rgba(122,150,172,.20);
+  border-color:rgba(232,247,255,.24);
+  backdrop-filter:blur(.35px) saturate(108%);
+  -webkit-backdrop-filter:blur(.35px) saturate(108%);
 }
 
 /* Selective gaussian neon: only semantic/interactive states, not every card. */
@@ -266,12 +266,12 @@ body[data-theme="tactical"] .licenseOpsCard:hover,
 body[data-theme="tactical"] .ops-action:hover,
 body[data-theme="tactical"] .release-tile:hover,
 body[data-theme="tactical"] .commandCard:hover{
-  transform:translateY(-1px) !important;
-  border-color:rgba(189,242,255,.46) !important;
+  transform:translateY(-1px);
+  border-color:rgba(189,242,255,.46);
   box-shadow:
     0 22px 56px rgba(0,0,0,.30),
     0 0 24px var(--prisma-frost-neon-soft),
-    inset 0 1px 0 rgba(255,255,255,.265) !important;
+    inset 0 1px 0 rgba(255,255,255,.265);
 }
 
 body[data-theme="tactical"] .dockBtn:focus-visible,
@@ -280,12 +280,12 @@ body[data-theme="tactical"] button:focus-visible,
 body[data-theme="tactical"] input:focus-visible,
 body[data-theme="tactical"] select:focus-visible,
 body[data-theme="tactical"] textarea:focus-visible{
-  outline:0 !important;
-  border-color:rgba(190,246,255,.62) !important;
+  outline:0;
+  border-color:rgba(190,246,255,.62);
   box-shadow:
     0 0 0 3px rgba(169,238,255,.16),
     0 0 28px rgba(169,238,255,.18),
-    inset 0 1px 0 rgba(255,255,255,.26) !important;
+    inset 0 1px 0 rgba(255,255,255,.26);
 }
 
 body[data-theme="tactical"] .tag,
@@ -301,11 +301,11 @@ body[data-theme="tactical"] .routeBadge,
 body[data-theme="tactical"] .ops-mini,
 body[data-theme="tactical"] .bb-mini,
 body[data-theme="tactical"] .materialBadge{
-  border-radius:999px !important;
-  background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.040)),rgba(125,151,172,.215) !important;
-  border-color:rgba(232,247,255,.23) !important;
-  color:#ecf7ff !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18) !important;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.040)),rgba(125,151,172,.215);
+  border-color:rgba(232,247,255,.23);
+  color:#ecf7ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
 }
 
 body[data-theme="tactical"] .tag.ok,
@@ -313,20 +313,20 @@ body[data-theme="tactical"] .qTag.ok,
 body[data-theme="tactical"] .lifecycleTag.ok,
 body[data-theme="tactical"] .licenseOpsTag.ok,
 body[data-theme="tactical"] .state-chip.ok{
-  color:#eafff8 !important;
-  border-color:rgba(143,247,209,.38) !important;
-  background:linear-gradient(180deg,rgba(143,247,209,.18),rgba(255,255,255,.035)),rgba(111,151,151,.18) !important;
-  box-shadow:0 0 22px rgba(143,247,209,.12), inset 0 1px 0 rgba(255,255,255,.20) !important;
+  color:#eafff8;
+  border-color:rgba(143,247,209,.38);
+  background:linear-gradient(180deg,rgba(143,247,209,.18),rgba(255,255,255,.035)),rgba(111,151,151,.18);
+  box-shadow:0 0 22px rgba(143,247,209,.12), inset 0 1px 0 rgba(255,255,255,.20);
 }
 body[data-theme="tactical"] .tag.warn,
 body[data-theme="tactical"] .qTag.warn,
 body[data-theme="tactical"] .lifecycleTag.warn,
 body[data-theme="tactical"] .licenseOpsTag.warn,
 body[data-theme="tactical"] .state-chip.warn{
-  color:#fff5df !important;
-  border-color:rgba(255,211,140,.40) !important;
-  background:linear-gradient(180deg,rgba(255,211,140,.18),rgba(255,255,255,.035)),rgba(152,130,87,.16) !important;
-  box-shadow:0 0 22px rgba(255,211,140,.12), inset 0 1px 0 rgba(255,255,255,.20) !important;
+  color:#fff5df;
+  border-color:rgba(255,211,140,.40);
+  background:linear-gradient(180deg,rgba(255,211,140,.18),rgba(255,255,255,.035)),rgba(152,130,87,.16);
+  box-shadow:0 0 22px rgba(255,211,140,.12), inset 0 1px 0 rgba(255,255,255,.20);
 }
 
 body[data-theme="tactical"] .progressFill,
@@ -336,47 +336,47 @@ body[data-theme="tactical"] .lifecycleBarFill,
 body[data-theme="tactical"] .qProgressFill,
 body[data-theme="tactical"] [class*="barFill"],
 body[data-theme="tactical"] [class*="BarFill"]{
-  background:linear-gradient(90deg,#a9eeff,#c4d6ff 58%,#d7c6ff) !important;
-  box-shadow:0 0 18px rgba(169,238,255,.28), 0 0 30px rgba(196,214,255,.13) !important;
+  background:linear-gradient(90deg,#a9eeff,#c4d6ff 58%,#d7c6ff);
+  box-shadow:0 0 18px rgba(169,238,255,.28), 0 0 30px rgba(196,214,255,.13);
 }
 
 body[data-theme="tactical"] .swatches i,
 body[data-theme="tactical"] .liveDot,
 body[data-theme="tactical"] .statusDot,
 body[data-theme="tactical"] .pulseDot{
-  background:#a9eeff !important;
-  box-shadow:0 0 16px rgba(169,238,255,.42),0 0 30px rgba(169,238,255,.18) !important;
+  background:#a9eeff;
+  box-shadow:0 0 16px rgba(169,238,255,.42),0 0 30px rgba(169,238,255,.18);
 }
 
 body[data-theme="tactical"] .heroIcon,
 body[data-theme="tactical"] .iconBox,
 body[data-theme="tactical"] .nodeIcon,
 body[data-theme="tactical"] .qMonogram{
-  border-radius:18px !important;
-  background:linear-gradient(135deg,rgba(237,250,255,.82),rgba(169,238,255,.34) 44%,rgba(70,100,132,.25)) !important;
-  box-shadow:0 0 26px rgba(169,238,255,.16), inset 0 1px 0 rgba(255,255,255,.32) !important;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(237,250,255,.82),rgba(169,238,255,.34) 44%,rgba(70,100,132,.25));
+  box-shadow:0 0 26px rgba(169,238,255,.16), inset 0 1px 0 rgba(255,255,255,.32);
 }
 
 /* Existing topology/chart traces keep a restrained neon gaussian. */
 body[data-theme="tactical"] .channelPulse,
 body[data-theme="tactical"] .routeSweep,
 body[data-theme="tactical"] .routeSweepAlt{
-  opacity:.28 !important;
-  filter:drop-shadow(0 0 8px rgba(169,238,255,.24)) !important;
+  opacity:.28;
+  filter:drop-shadow(0 0 8px rgba(169,238,255,.24));
 }
 body[data-theme="tactical"] .channelCore,
 body[data-theme="tactical"] .routeCore,
 body[data-theme="tactical"] .routeCoreAlt,
 body[data-theme="tactical"] .chartStroke,
 body[data-theme="tactical"] .chartStroke2{
-  filter:drop-shadow(0 0 7px rgba(169,238,255,.20)) !important;
+  filter:drop-shadow(0 0 7px rgba(169,238,255,.20));
 }
 
 /* Tactical should not look disabled. Old contrast sometimes dimmed cards too much. */
 body[data-theme="tactical"] [disabled],
 body[data-theme="tactical"] .disabled{
-  opacity:.62 !important;
-  filter:saturate(.82) !important;
+  opacity:.62;
+  filter:saturate(.82);
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -384,8 +384,8 @@ body[data-theme="tactical"] .disabled{
   body[data-theme="tactical"] *,
   body[data-theme="tactical"] *::before,
   body[data-theme="tactical"] *::after{
-    animation:none !important;
-    transition:none !important;
+    animation:none;
+    transition:none;
   }
 }
 
@@ -416,53 +416,53 @@ body[data-theme="tactical"]{
   --frost-v4-shadow-executive:0 30px 86px rgba(0,0,0,.43),0 8px 24px rgba(1,6,13,.30);
   --frost-v4-shadow-floating:0 18px 44px rgba(0,0,0,.30),0 2px 9px rgba(7,18,30,.30);
   --frost-v4-glow-insight:0 0 44px rgba(174,153,255,.14),0 0 24px rgba(169,238,255,.075);
-  --topbar-height:116px !important;
-  --content-gap:14px !important;
-  --side-pad:20px !important;
-  --shape-panel:inset(0 round 27px) !important;
-  --shape-card:inset(0 round 19px) !important;
-  --shape-topbar:inset(0 round 34px) !important;
+  --topbar-height:116px;
+  --content-gap:14px;
+  --side-pad:20px;
+  --shape-panel:inset(0 round 27px);
+  --shape-card:inset(0 round 19px);
+  --shape-topbar:inset(0 round 34px);
   background:
     linear-gradient(180deg,rgba(3,7,13,.54),rgba(3,8,15,.74) 48%,rgba(1,5,10,.93)),
     var(--frost-v4-bg-asset) center center / cover fixed no-repeat,
-    #050b13 !important;
-  color:var(--frost-v4-text) !important;
-  overflow-x:hidden !important;
+    #050b13;
+  color:var(--frost-v4-text);
+  overflow-x:hidden;
 }
 
 /* TAREA 1 · Background corrections. No grid. No black scroll band. Fondo vive fijo y continuo. */
 body[data-theme="tactical"]::before{
-  content:"" !important;
-  position:fixed !important;
-  inset:0 !important;
-  z-index:-2 !important;
-  pointer-events:none !important;
-  opacity:1 !important;
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:1;
   background:
     radial-gradient(1050px 620px at 50% -10%,rgba(242,250,255,.13),transparent 58%),
     radial-gradient(700px 470px at 88% 21%,rgba(130,183,223,.14),transparent 66%),
     radial-gradient(760px 520px at 4% 72%,rgba(52,78,105,.20),transparent 70%),
     linear-gradient(90deg,rgba(0,5,12,.76),rgba(6,16,26,.30) 43%,rgba(0,5,12,.82)),
-    linear-gradient(180deg,rgba(4,10,18,.12),rgba(2,7,13,.56) 54%,rgba(1,4,8,.86)) !important;
-  background-size:auto !important;
-  background-repeat:no-repeat !important;
-  mask-image:none !important;
-  -webkit-mask-image:none !important;
+    linear-gradient(180deg,rgba(4,10,18,.12),rgba(2,7,13,.56) 54%,rgba(1,4,8,.86));
+  background-size:auto;
+  background-repeat:no-repeat;
+  mask-image:none;
+  -webkit-mask-image:none;
 }
 body[data-theme="tactical"]::after{
-  content:"" !important;
-  position:fixed !important;
-  inset:-7% !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-  opacity:.46 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:fixed;
+  inset:-7%;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.46;
+  mix-blend-mode:screen;
   background:
     radial-gradient(520px 230px at 22% 8%,rgba(255,255,255,.12),transparent 72%),
     radial-gradient(460px 230px at 76% 20%,rgba(169,238,255,.10),transparent 74%),
     radial-gradient(680px 300px at 50% 92%,rgba(174,153,255,.055),transparent 78%),
-    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.032) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.03) 86%,transparent 96%) !important;
-  animation:frostV4Glacier 118s cubic-bezier(.38,0,.2,1) infinite !important;
+    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.032) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.03) 86%,transparent 96%);
+  animation:frostV4Glacier 118s cubic-bezier(.38,0,.2,1) infinite;
   will-change:transform;
 }
 @keyframes frostV4Glacier{
@@ -470,59 +470,59 @@ body[data-theme="tactical"]::after{
   50%{transform:translate3d(.35%,.30%,0) scale(1.014)}
   100%{transform:translate3d(-.20%,.06%,0) scale(1.010)}
 }
-body[data-theme="tactical"] .page{position:relative !important; z-index:1 !important; width:min(1340px,100%) !important; padding-top:calc(env(safe-area-inset-top) + 10px) !important;}
-body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 20px) !important; gap:14px !important;}
-body[data-theme="tactical"] .v40QuickRail{display:none !important; visibility:hidden !important; opacity:0 !important; pointer-events:none !important;}
+body[data-theme="tactical"] .page{position:relative; z-index:1; width:min(1340px,100%); padding-top:calc(env(safe-area-inset-top) + 10px);}
+body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 20px); gap:14px;}
+body[data-theme="tactical"] .v40QuickRail{display:none; visibility:hidden; opacity:0; pointer-events:none;}
 body[data-theme="tactical"] [class*="QuickRail"],
-body[data-theme="tactical"] [aria-label="PRISMA quick controls"]{display:none !important;}
+body[data-theme="tactical"] [aria-label="PRISMA quick controls"]{display:none;}
 
 /* Header constitution: no title collision, no theme box overlap. */
 body[data-theme="tactical"] .topbarWrap{
-  position:fixed !important;
-  left:50% !important;
-  right:auto !important;
-  top:calc(env(safe-area-inset-top) + 14px) !important;
-  transform:translateX(-50%) !important;
-  width:min(1130px,calc(100vw - 104px)) !important;
-  z-index:40 !important;
+  position:fixed;
+  left:50%;
+  right:auto;
+  top:calc(env(safe-area-inset-top) + 14px);
+  transform:translateX(-50%);
+  width:min(1130px,calc(100vw - 104px));
+  z-index:40;
 }
 body[data-theme="tactical"] .topbar{
-  min-height:108px !important;
-  height:auto !important;
-  padding:15px 20px !important;
-  border-radius:34px !important;
-  clip-path:none !important;
-  overflow:hidden !important;
+  min-height:108px;
+  height:auto;
+  padding:15px 20px;
+  border-radius:34px;
+  clip-path:none;
+  overflow:hidden;
 }
 body[data-theme="tactical"] .topbarGrid{
-  display:grid !important;
-  grid-template-columns:minmax(420px,1fr) auto !important;
-  gap:18px !important;
-  align-items:center !important;
-  min-width:0 !important;
+  display:grid;
+  grid-template-columns:minmax(420px,1fr) auto;
+  gap:18px;
+  align-items:center;
+  min-width:0;
 }
 body[data-theme="tactical"] .brandRow,
-body[data-theme="tactical"] .titles{min-width:0 !important;}
+body[data-theme="tactical"] .titles{min-width:0;}
 body[data-theme="tactical"] .titles h1{
-  font-size:clamp(31px,3.2vw,47px) !important;
-  letter-spacing:.075em !important;
-  line-height:.92 !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  max-width:100% !important;
+  font-size:clamp(31px,3.2vw,47px);
+  letter-spacing:.075em;
+  line-height:.92;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
 }
-body[data-theme="tactical"] .titles p{display:none !important;}
-body[data-theme="tactical"] .brandEyebrow{opacity:.62 !important;}
+body[data-theme="tactical"] .titles p{display:none;}
+body[data-theme="tactical"] .brandEyebrow{opacity:.62;}
 body[data-theme="tactical"] .surfaceSwitch{
-  position:relative !important;
-  transform:none !important;
-  inset:auto !important;
-  width:auto !important;
-  min-width:min(520px,42vw) !important;
-  max-width:560px !important;
-  justify-self:end !important;
-  z-index:2 !important;
+  position:relative;
+  transform:none;
+  inset:auto;
+  width:auto;
+  min-width:min(520px,42vw);
+  max-width:560px;
+  justify-self:end;
+  z-index:2;
 }
 
 /* TAREA 2 · Paneles chingones: G3/G4 double glass, optical rim, executive + floating shadow. */
@@ -541,32 +541,32 @@ body[data-theme="tactical"] .release-panel,
 body[data-theme="tactical"] .commandPanel,
 body[data-theme="tactical"] .opCommandPanel,
 body[data-theme="tactical"] .glass-card{
-  clip-path:none !important;
-  border-radius:27px !important;
-  overflow:hidden !important;
-  isolation:isolate !important;
+  clip-path:none;
+  border-radius:27px;
+  overflow:hidden;
+  isolation:isolate;
   background:
     linear-gradient(180deg,rgba(255,255,255,.235),rgba(255,255,255,.082) 20%,rgba(8,19,31,.155) 100%),
     radial-gradient(160% 130% at 9% 0%,rgba(255,255,255,.145),transparent 33%),
     radial-gradient(130% 120% at 94% 1%,rgba(169,238,255,.090),transparent 36%),
     linear-gradient(145deg,rgba(255,255,255,.040),rgba(174,153,255,.025) 46%,rgba(169,238,255,.030)),
-    var(--frost-v4-panel-fill) !important;
-  border:1px solid var(--frost-v4-edge) !important;
+    var(--frost-v4-panel-fill);
+  border:1px solid var(--frost-v4-edge);
   box-shadow:
     var(--frost-v4-shadow-executive),
     var(--frost-v4-glow-insight),
     inset 0 1px 0 rgba(255,255,255,.38),
     inset 0 0 0 1px rgba(255,255,255,.055),
-    inset 0 -1px 0 rgba(169,238,255,.13) !important;
-  backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025) !important;
-  -webkit-backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025) !important;
-  transition:transform .34s cubic-bezier(.2,.8,.2,1), border-color .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s cubic-bezier(.2,.8,.2,1), background .34s cubic-bezier(.2,.8,.2,1) !important;
+    inset 0 -1px 0 rgba(169,238,255,.13);
+  backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025);
+  -webkit-backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025);
+  transition:transform .34s cubic-bezier(.2,.8,.2,1), border-color .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s cubic-bezier(.2,.8,.2,1), background .34s cubic-bezier(.2,.8,.2,1);
 }
 body[data-theme="tactical"] .topbar,
 body[data-theme="tactical"] .qualityHero,
 body[data-theme="tactical"] .lifecycleHero,
 body[data-theme="tactical"] .licenseOpsHero{
-  border-color:var(--frost-v4-edge-hero) !important;
+  border-color:var(--frost-v4-edge-hero);
   box-shadow:
     0 34px 96px rgba(0,0,0,.46),
     0 10px 34px rgba(1,6,13,.34),
@@ -574,7 +574,7 @@ body[data-theme="tactical"] .licenseOpsHero{
     0 0 28px rgba(169,238,255,.10),
     inset 0 1px 0 rgba(255,255,255,.52),
     inset 0 0 0 1px rgba(255,255,255,.080),
-    inset 0 -1px 0 rgba(169,238,255,.18) !important;
+    inset 0 -1px 0 rgba(169,238,255,.18);
 }
 body[data-theme="tactical"] .panel::before,
 body[data-theme="tactical"] .picker::before,
@@ -587,19 +587,19 @@ body[data-theme="tactical"] .commandPanel::before,
 body[data-theme="tactical"] .ops-action-panel::before,
 body[data-theme="tactical"] .blackbox-command::before,
 body[data-theme="tactical"] .release-panel::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  border-radius:inherit !important;
-  pointer-events:none !important;
-  opacity:.78 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:.78;
+  mix-blend-mode:screen;
   background:
     linear-gradient(180deg,rgba(255,255,255,.165),rgba(255,255,255,0) 29%),
     radial-gradient(380px 148px at 11% -3%,rgba(255,255,255,.18),transparent 62%),
-    radial-gradient(260px 120px at 82% -2%,rgba(169,238,255,.12),transparent 65%) !important;
-  animation:none !important;
-  transform:none !important;
+    radial-gradient(260px 120px at 82% -2%,rgba(169,238,255,.12),transparent 65%);
+  animation:none;
+  transform:none;
 }
 body[data-theme="tactical"] .panel::after,
 body[data-theme="tactical"] .picker::after,
@@ -612,18 +612,18 @@ body[data-theme="tactical"] .commandPanel::after,
 body[data-theme="tactical"] .ops-action-panel::after,
 body[data-theme="tactical"] .blackbox-command::after,
 body[data-theme="tactical"] .release-panel::after{
-  content:"" !important;
-  position:absolute !important;
-  inset:1px !important;
-  border-radius:calc(27px - 1px) !important;
-  pointer-events:none !important;
-  opacity:.68 !important;
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:calc(27px - 1px);
+  pointer-events:none;
+  opacity:.68;
   background:
     linear-gradient(135deg,rgba(255,255,255,.11),transparent 25%,transparent 66%,rgba(169,238,255,.060)),
-    linear-gradient(180deg,rgba(255,255,255,.050),rgba(0,0,0,.045)) !important;
-  border:1px solid rgba(255,255,255,.075) !important;
-  box-shadow:inset 0 0 42px rgba(255,255,255,.030), inset 0 0 28px rgba(169,238,255,.032) !important;
-  mix-blend-mode:screen !important;
+    linear-gradient(180deg,rgba(255,255,255,.050),rgba(0,0,0,.045));
+  border:1px solid rgba(255,255,255,.075);
+  box-shadow:inset 0 0 42px rgba(255,255,255,.030), inset 0 0 28px rgba(169,238,255,.032);
+  mix-blend-mode:screen;
 }
 
 /* Cards/rows: lower budget G2, still premium but not hero. */
@@ -653,24 +653,24 @@ body[data-theme="tactical"] .commandStatus,
 body[data-theme="tactical"] .node,
 body[data-theme="tactical"] .miniChartWrap,
 body[data-theme="tactical"] .topologyMap{
-  clip-path:none !important;
-  border-radius:19px !important;
-  overflow:hidden !important;
-  isolation:isolate !important;
+  clip-path:none;
+  border-radius:19px;
+  overflow:hidden;
+  isolation:isolate;
   background:
     linear-gradient(180deg,rgba(255,255,255,.155),rgba(255,255,255,.055) 24%,rgba(7,18,30,.110) 100%),
     radial-gradient(120% 110% at 12% 0%,rgba(255,255,255,.095),transparent 36%),
     radial-gradient(110% 120% at 96% 0%,rgba(169,238,255,.060),transparent 38%),
-    var(--frost-v4-card-fill) !important;
-  border:1px solid rgba(232,247,255,.25) !important;
+    var(--frost-v4-card-fill);
+  border:1px solid rgba(232,247,255,.25);
   box-shadow:
     var(--frost-v4-shadow-floating),
     inset 0 1px 0 rgba(255,255,255,.25),
     inset 0 0 0 1px rgba(255,255,255,.042),
-    inset 0 -1px 0 rgba(169,238,255,.090) !important;
-  backdrop-filter:blur(.85px) saturate(116%) contrast(1.018) !important;
-  -webkit-backdrop-filter:blur(.85px) saturate(116%) contrast(1.018) !important;
-  transition:transform .26s cubic-bezier(.2,.8,.2,1), border-color .26s cubic-bezier(.2,.8,.2,1), box-shadow .26s cubic-bezier(.2,.8,.2,1) !important;
+    inset 0 -1px 0 rgba(169,238,255,.090);
+  backdrop-filter:blur(.85px) saturate(116%) contrast(1.018);
+  -webkit-backdrop-filter:blur(.85px) saturate(116%) contrast(1.018);
+  transition:transform .26s cubic-bezier(.2,.8,.2,1), border-color .26s cubic-bezier(.2,.8,.2,1), box-shadow .26s cubic-bezier(.2,.8,.2,1);
 }
 body[data-theme="tactical"] .card::before,
 body[data-theme="tactical"] .metric::before,
@@ -684,16 +684,16 @@ body[data-theme="tactical"] .ops-action::before,
 body[data-theme="tactical"] .opButton::before,
 body[data-theme="tactical"] .commandCard::before,
 body[data-theme="tactical"] .node::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  border-radius:inherit !important;
-  pointer-events:none !important;
-  opacity:.58 !important;
-  mix-blend-mode:screen !important;
-  background:linear-gradient(180deg,rgba(255,255,255,.120),rgba(255,255,255,0) 34%),radial-gradient(220px 100px at 13% 0%,rgba(255,255,255,.105),transparent 65%) !important;
-  animation:none !important;
-  transform:none !important;
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:.58;
+  mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(255,255,255,.120),rgba(255,255,255,0) 34%),radial-gradient(220px 100px at 13% 0%,rgba(255,255,255,.105),transparent 65%);
+  animation:none;
+  transform:none;
 }
 body[data-theme="tactical"] .card::after,
 body[data-theme="tactical"] .metric::after,
@@ -705,16 +705,16 @@ body[data-theme="tactical"] .qualityAction::after,
 body[data-theme="tactical"] .ops-action::after,
 body[data-theme="tactical"] .opButton::after,
 body[data-theme="tactical"] .commandCard::after{
-  content:"" !important;
-  position:absolute !important;
-  inset:1px !important;
-  border-radius:calc(19px - 1px) !important;
-  pointer-events:none !important;
-  opacity:.40 !important;
-  background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.045) 32%,transparent 72%) !important;
-  mix-blend-mode:screen !important;
-  transform:none !important;
-  animation:none !important;
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:calc(19px - 1px);
+  pointer-events:none;
+  opacity:.40;
+  background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.045) 32%,transparent 72%);
+  mix-blend-mode:screen;
+  transform:none;
+  animation:none;
 }
 
 /* Hero rim / refraction only where it matters. */
@@ -724,7 +724,7 @@ body[data-theme="tactical"] .picker:hover,
 body[data-theme="tactical"] .qualityHero,
 body[data-theme="tactical"] .licenseOpsHero,
 body[data-theme="tactical"] .lifecycleHero{
-  filter:drop-shadow(0 0 1px rgba(239,250,255,.34)) !important;
+  filter:drop-shadow(0 0 1px rgba(239,250,255,.34));
 }
 body[data-theme="tactical"] .panel:hover,
 body[data-theme="tactical"] .picker:hover,
@@ -736,15 +736,15 @@ body[data-theme="tactical"] .ops-action:hover,
 body[data-theme="tactical"] .release-tile:hover,
 body[data-theme="tactical"] .commandCard:hover,
 body[data-theme="tactical"] .opButton:hover{
-  transform:translate3d(0,-2px,0) !important;
-  border-color:rgba(241,252,255,.44) !important;
+  transform:translate3d(0,-2px,0);
+  border-color:rgba(241,252,255,.44);
   box-shadow:
     0 30px 78px rgba(0,0,0,.40),
     0 0 46px rgba(174,153,255,.13),
     0 0 28px rgba(169,238,255,.10),
     inset 0 1px 0 rgba(255,255,255,.36),
     inset 0 0 0 1px rgba(255,255,255,.065),
-    inset 0 -1px 0 rgba(169,238,255,.14) !important;
+    inset 0 -1px 0 rgba(169,238,255,.14);
 }
 
 /* Rectangulo fantasma del pill: recorta todo dentro de su propia cápsula. */
@@ -761,37 +761,37 @@ body[data-theme="tactical"] .routeBadge,
 body[data-theme="tactical"] .ops-mini,
 body[data-theme="tactical"] .bb-mini,
 body[data-theme="tactical"] .materialBadge{
-  clip-path:none !important;
-  border-radius:999px !important;
-  overflow:hidden !important;
-  position:relative !important;
-  background:linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,.036)),rgba(140,166,188,.135) !important;
-  border:1px solid rgba(232,247,255,.25) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), inset 0 -1px 0 rgba(169,238,255,.08) !important;
+  clip-path:none;
+  border-radius:999px;
+  overflow:hidden;
+  position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,.036)),rgba(140,166,188,.135);
+  border:1px solid rgba(232,247,255,.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), inset 0 -1px 0 rgba(169,238,255,.08);
 }
 body[data-theme="tactical"] .tag::before,
 body[data-theme="tactical"] .tag::after,
 body[data-theme="tactical"] .pill::before,
 body[data-theme="tactical"] .pill::after,
 body[data-theme="tactical"] .chip::before,
-body[data-theme="tactical"] .chip::after{border-radius:inherit !important; inset:0 !important;}
+body[data-theme="tactical"] .chip::after{border-radius:inherit; inset:0;}
 body[data-theme="tactical"] .tag.ok,
 body[data-theme="tactical"] .qTag.ok,
 body[data-theme="tactical"] .lifecycleTag.ok,
 body[data-theme="tactical"] .licenseOpsTag.ok,
 body[data-theme="tactical"] .state-chip.ok{
-  color:#b9ffe7 !important;
-  border-color:rgba(133,255,218,.42) !important;
-  box-shadow:0 0 24px rgba(133,255,218,.12), inset 0 1px 0 rgba(255,255,255,.32) !important;
+  color:#b9ffe7;
+  border-color:rgba(133,255,218,.42);
+  box-shadow:0 0 24px rgba(133,255,218,.12), inset 0 1px 0 rgba(255,255,255,.32);
 }
 body[data-theme="tactical"] .tag.warn,
 body[data-theme="tactical"] .qTag.warn,
 body[data-theme="tactical"] .lifecycleTag.warn,
 body[data-theme="tactical"] .licenseOpsTag.warn,
 body[data-theme="tactical"] .state-chip.warn{
-  color:#ffe2a8 !important;
-  border-color:rgba(255,211,140,.38) !important;
-  box-shadow:0 0 24px rgba(255,211,140,.10), inset 0 1px 0 rgba(255,255,255,.30) !important;
+  color:#ffe2a8;
+  border-color:rgba(255,211,140,.38);
+  box-shadow:0 0 24px rgba(255,211,140,.10), inset 0 1px 0 rgba(255,255,255,.30);
 }
 
 /* Topology: no milk glass, more readable canvas. */
@@ -799,36 +799,36 @@ body[data-theme="tactical"] .topologyMap,
 body[data-theme="tactical"] .topologyShell{
   background:
     linear-gradient(180deg,rgba(255,255,255,.088),rgba(255,255,255,.026) 38%,rgba(8,20,32,.10)),
-    rgba(109,134,156,.105) !important;
-  backdrop-filter:blur(.25px) saturate(108%) !important;
-  -webkit-backdrop-filter:blur(.25px) saturate(108%) !important;
-  border-color:rgba(232,247,255,.28) !important;
+    rgba(109,134,156,.105);
+  backdrop-filter:blur(.25px) saturate(108%);
+  -webkit-backdrop-filter:blur(.25px) saturate(108%);
+  border-color:rgba(232,247,255,.28);
 }
-body[data-theme="tactical"] .node{background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.045)),rgba(120,146,168,.15) !important;}
+body[data-theme="tactical"] .node{background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.045)),rgba(120,146,168,.15);}
 body[data-theme="tactical"] .channelCore,
 body[data-theme="tactical"] .routeCore,
 body[data-theme="tactical"] .routeCoreAlt,
 body[data-theme="tactical"] .chartStroke,
-body[data-theme="tactical"] .chartStroke2{opacity:.72 !important; filter:drop-shadow(0 0 8px rgba(169,238,255,.16)) !important;}
+body[data-theme="tactical"] .chartStroke2{opacity:.72; filter:drop-shadow(0 0 8px rgba(169,238,255,.16));}
 body[data-theme="tactical"] .channelPulse,
 body[data-theme="tactical"] .routeSweep,
-body[data-theme="tactical"] .routeSweepAlt{opacity:.28 !important;}
+body[data-theme="tactical"] .routeSweepAlt{opacity:.28;}
 
 /* Custom select visual, replacing native dropdown for theme picker. */
-body[data-theme="tactical"] .themeSelect{position:absolute !important; inline-size:1px !important; block-size:1px !important; opacity:0 !important; pointer-events:none !important;}
-body[data-theme="tactical"] .selectWrap{position:relative !important; overflow:visible !important; z-index:45 !important;}
-body[data-theme="tactical"] .prisma-theme-combo{position:relative !important; width:100% !important; min-width:280px !important; z-index:70 !important;}
+body[data-theme="tactical"] .themeSelect{position:absolute; inline-size:1px; block-size:1px; opacity:0; pointer-events:none;}
+body[data-theme="tactical"] .selectWrap{position:relative; overflow:visible; z-index:45;}
+body[data-theme="tactical"] .prisma-theme-combo{position:relative; width:100%; min-width:280px; z-index:70;}
 body[data-theme="tactical"] .prisma-theme-trigger{
-  width:100% !important; min-height:58px !important; padding:0 46px 0 18px !important; text-align:left !important;
-  border-radius:18px !important; border:1px solid rgba(232,247,255,.34) !important; color:#f7fbff !important;
-  background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.052)),rgba(140,166,188,.18) !important;
-  box-shadow:var(--frost-v4-shadow-floating),inset 0 1px 0 rgba(255,255,255,.27) !important;
-  backdrop-filter:blur(.7px) saturate(116%) !important; -webkit-backdrop-filter:blur(.7px) saturate(116%) !important;
-  cursor:pointer !important; font:inherit !important; font-weight:800 !important;
+  width:100%; min-height:58px; padding:0 46px 0 18px; text-align:left;
+  border-radius:18px; border:1px solid rgba(232,247,255,.34); color:#f7fbff;
+  background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.052)),rgba(140,166,188,.18);
+  box-shadow:var(--frost-v4-shadow-floating),inset 0 1px 0 rgba(255,255,255,.27);
+  backdrop-filter:blur(.7px) saturate(116%); -webkit-backdrop-filter:blur(.7px) saturate(116%);
+  cursor:pointer; font:inherit; font-weight:800;
 }
 body[data-theme="tactical"] .prisma-theme-trigger::after{content:"⌄"; position:absolute; right:17px; top:50%; transform:translateY(-50%); opacity:.86;}
 body[data-theme="tactical"] .prisma-theme-list{
-  display:none; position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:90 !important; padding:8px;
+  display:none; position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:90; padding:8px;
   border-radius:18px; border:1px solid rgba(232,247,255,.34); background:linear-gradient(180deg,rgba(116,143,165,.96),rgba(70,92,112,.96));
   box-shadow:0 26px 80px rgba(0,0,0,.46),0 0 38px rgba(174,153,255,.12),inset 0 1px 0 rgba(255,255,255,.28);
   backdrop-filter:blur(6px) saturate(132%); -webkit-backdrop-filter:blur(6px) saturate(132%);
@@ -842,12 +842,12 @@ body[data-theme="tactical"] .prisma-theme-option:hover,
 body[data-theme="tactical"] .prisma-theme-option[aria-selected="true"]{background:rgba(169,238,255,.14); border-color:rgba(232,247,255,.28); box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 0 24px rgba(169,238,255,.08);}
 
 /* Native controls fallback: no Windows-white dropdown panel when possible. */
-body[data-theme="tactical"] option{background:#607286 !important; color:#f7fbff !important;}
+body[data-theme="tactical"] option{background:#607286; color:#f7fbff;}
 body[data-theme="tactical"] input,
 body[data-theme="tactical"] textarea,
 body[data-theme="tactical"] button,
 body[data-theme="tactical"] select{
-  border-radius:16px !important;
+  border-radius:16px;
 }
 
 /* Motion-silk and motion-glacier: not dead, not feria. */
@@ -858,49 +858,49 @@ body[data-theme="tactical"] .opButton,
 body[data-theme="tactical"] .dockBtn,
 body[data-theme="tactical"] .card,
 body[data-theme="tactical"] .panel,
-body[data-theme="tactical"] .picker{transition:transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1), border-color .24s cubic-bezier(.2,.8,.2,1), background .24s cubic-bezier(.2,.8,.2,1) !important;}
+body[data-theme="tactical"] .picker{transition:transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1), border-color .24s cubic-bezier(.2,.8,.2,1), background .24s cubic-bezier(.2,.8,.2,1);}
 body[data-theme="tactical"] .surfaceSwitch button:hover,
-body[data-theme="tactical"] .prisma-theme-trigger:hover{transform:translateY(-1px) !important; border-color:rgba(241,252,255,.46) !important; box-shadow:0 18px 54px rgba(0,0,0,.34),0 0 28px rgba(174,153,255,.12),inset 0 1px 0 rgba(255,255,255,.34) !important;}
+body[data-theme="tactical"] .prisma-theme-trigger:hover{transform:translateY(-1px); border-color:rgba(241,252,255,.46); box-shadow:0 18px 54px rgba(0,0,0,.34),0 0 28px rgba(174,153,255,.12),inset 0 1px 0 rgba(255,255,255,.34);}
 body[data-theme="tactical"] .progressFill,
 body[data-theme="tactical"] .meterFill,
 body[data-theme="tactical"] .licenseOpsBarFill,
 body[data-theme="tactical"] .lifecycleBarFill,
 body[data-theme="tactical"] .qProgressFill,
 body[data-theme="tactical"] [class*="barFill"],
-body[data-theme="tactical"] [class*="BarFill"]{box-shadow:0 0 24px rgba(169,238,255,.18),0 0 36px rgba(174,153,255,.10) !important;}
+body[data-theme="tactical"] [class*="BarFill"]{box-shadow:0 0 24px rgba(169,238,255,.18),0 0 36px rgba(174,153,255,.10);}
 body[data-theme="tactical"] .liveDot,
 body[data-theme="tactical"] .statusDot,
 body[data-theme="tactical"] .pulseDot,
-body[data-theme="tactical"] .swatches i{box-shadow:0 0 20px rgba(169,238,255,.30),0 0 34px rgba(174,153,255,.12) !important;}
+body[data-theme="tactical"] .swatches i{box-shadow:0 0 20px rgba(169,238,255,.30),0 0 34px rgba(174,153,255,.12);}
 
 /* Reduce old hard artifacts from inline/V40 styles. */
 body[data-theme="tactical"] .glass::before,
-body[data-theme="tactical"] .glass::after{animation:none !important;}
-body[data-theme="tactical"] .commandStatus{padding:0 !important; background:transparent !important; box-shadow:none !important; border-color:transparent !important; overflow:visible !important;}
-body[data-theme="tactical"] .commandStatus .tag{min-width:max-content !important;}
-body[data-theme="tactical"] .materialBadge{grid-column:1/-1 !important;}
-body[data-theme="tactical"] .pickerGrid{align-items:center !important;}
+body[data-theme="tactical"] .glass::after{animation:none;}
+body[data-theme="tactical"] .commandStatus{padding:0; background:transparent; box-shadow:none; border-color:transparent; overflow:visible;}
+body[data-theme="tactical"] .commandStatus .tag{min-width:max-content;}
+body[data-theme="tactical"] .materialBadge{grid-column:1/-1;}
+body[data-theme="tactical"] .pickerGrid{align-items:center;}
 body[data-theme="tactical"] .sectionText,
 body[data-theme="tactical"] .muted,
 body[data-theme="tactical"] .statusLine,
-body[data-theme="tactical"] p{color:var(--frost-v4-muted) !important;}
+body[data-theme="tactical"] p{color:var(--frost-v4-muted);}
 body[data-theme="tactical"] .sectionTitle,
 body[data-theme="tactical"] h1,
 body[data-theme="tactical"] h2,
-body[data-theme="tactical"] h3{color:#f8fbff !important; text-shadow:0 1px 18px rgba(169,238,255,.09) !important;}
+body[data-theme="tactical"] h3{color:#f8fbff; text-shadow:0 1px 18px rgba(169,238,255,.09);}
 
 @media (max-width: 980px){
-  body[data-theme="tactical"]{--topbar-height:148px !important;}
-  body[data-theme="tactical"] .topbarWrap{width:calc(100vw - 28px) !important;}
-  body[data-theme="tactical"] .topbarGrid{grid-template-columns:1fr !important;}
-  body[data-theme="tactical"] .surfaceSwitch{justify-self:stretch !important; min-width:0 !important; max-width:none !important;}
-  body[data-theme="tactical"] .titles h1{font-size:clamp(26px,8vw,38px) !important;}
-  body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 18px) !important;}
+  body[data-theme="tactical"]{--topbar-height:148px;}
+  body[data-theme="tactical"] .topbarWrap{width:calc(100vw - 28px);}
+  body[data-theme="tactical"] .topbarGrid{grid-template-columns:1fr;}
+  body[data-theme="tactical"] .surfaceSwitch{justify-self:stretch; min-width:0; max-width:none;}
+  body[data-theme="tactical"] .titles h1{font-size:clamp(26px,8vw,38px);}
+  body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 18px);}
 }
 @media (prefers-reduced-motion: reduce){
-  body[data-theme="tactical"]::after{animation:none !important;}
+  body[data-theme="tactical"]::after{animation:none;}
   body[data-theme="tactical"] *,
   body[data-theme="tactical"] *::before,
-  body[data-theme="tactical"] *::after{transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important;}
+  body[data-theme="tactical"] *::after{transition-duration:.01ms; animation-duration:.01ms; animation-iteration-count:1;}
 }
 /* === PRISMA FROST TACTICAL V4 END === */

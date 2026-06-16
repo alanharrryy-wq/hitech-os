@@ -3,14 +3,14 @@
 
 body[data-prisma-interface="prismo"] #prismoPrompt,
 body[data-prisma-interface="prismo"] #prismoComposer textarea#prismoPrompt{
-  color:rgba(255,255,255,.98) !important;
-  caret-color:rgba(225,250,255,1) !important;
+  color:rgba(255,255,255,.98);
+  caret-color:rgba(225,250,255,1);
   text-shadow:
     0 0 1px rgba(255,255,255,1),
     0 0 3px rgba(255,255,255,.82),
     0 0 7px rgba(235,250,255,.55),
     0 0 13px rgba(180,230,255,.32),
-    0 0 20px rgba(120,210,255,.18) !important;
+    0 0 20px rgba(120,210,255,.18);
 }
 
 body[data-prisma-interface="prismo"] #prismoPrompt:focus{
@@ -19,9 +19,9 @@ body[data-prisma-interface="prismo"] #prismoPrompt:focus{
     0 0 4px rgba(255,255,255,.95),
     0 0 9px rgba(235,250,255,.68),
     0 0 16px rgba(180,230,255,.40),
-    0 0 25px rgba(120,210,255,.24) !important;
+    0 0 25px rgba(120,210,255,.24);
 }
 
 body[data-prisma-interface="prismo"] #prismoPrompt::placeholder{
-  text-shadow:none !important;
+  text-shadow:none;
 }

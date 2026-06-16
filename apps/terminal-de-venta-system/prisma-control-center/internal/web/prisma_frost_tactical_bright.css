@@ -21,43 +21,43 @@ body[data-theme="tactical"]{
     radial-gradient(760px 520px at 86% 17%,rgba(153,208,246,.125),transparent 67%),
     radial-gradient(850px 580px at 8% 76%,rgba(96,132,164,.135),transparent 72%),
     var(--frost-v41-bg-asset) center 55% / cover fixed no-repeat,
-    var(--frost-v41-bg-base) !important;
+    var(--frost-v41-bg-base);
 }
 
 /* Override V4 dark masks. El fondo ahora respira, no se queda en sótano. */
 body[data-theme="tactical"]::before{
-  content:"" !important;
-  position:fixed !important;
-  inset:0 !important;
-  z-index:-2 !important;
-  pointer-events:none !important;
-  opacity:1 !important;
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:1;
   background:
     radial-gradient(1100px 640px at 50% -10%,var(--frost-v41-mist-pearl),transparent 60%),
     radial-gradient(760px 500px at 88% 24%,var(--frost-v41-mist-cyan),transparent 68%),
     radial-gradient(820px 560px at 3% 72%,rgba(79,115,149,.18),transparent 72%),
     linear-gradient(90deg,var(--frost-v41-vignette-side),rgba(9,21,34,.12) 45%,rgba(1,7,14,.48)),
-    linear-gradient(180deg,rgba(11,24,38,.02),rgba(8,18,31,.25) 56%,rgba(3,9,17,.55)) !important;
-  background-size:auto !important;
-  background-repeat:no-repeat !important;
-  mask-image:none !important;
-  -webkit-mask-image:none !important;
+    linear-gradient(180deg,rgba(11,24,38,.02),rgba(8,18,31,.25) 56%,rgba(3,9,17,.55));
+  background-size:auto;
+  background-repeat:no-repeat;
+  mask-image:none;
+  -webkit-mask-image:none;
 }
 
 body[data-theme="tactical"]::after{
-  content:"" !important;
-  position:fixed !important;
-  inset:-7% !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-  opacity:.62 !important;
-  mix-blend-mode:screen !important;
+  content:"";
+  position:fixed;
+  inset:-7%;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.62;
+  mix-blend-mode:screen;
   background:
     radial-gradient(640px 270px at 24% 8%,rgba(255,255,255,.145),transparent 73%),
     radial-gradient(520px 250px at 76% 20%,rgba(169,238,255,.13),transparent 75%),
     radial-gradient(760px 330px at 50% 92%,rgba(174,153,255,.07),transparent 79%),
-    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.048) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.044) 86%,transparent 96%) !important;
-  animation:frostV41BrightGlacier 118s cubic-bezier(.38,0,.2,1) infinite !important;
+    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.048) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.044) 86%,transparent 96%);
+  animation:frostV41BrightGlacier 118s cubic-bezier(.38,0,.2,1) infinite;
   will-change:transform;
 }
 
@@ -90,7 +90,7 @@ body[data-theme="tactical"] .glass-card{
     0 0 22px rgba(169,238,255,.060),
     inset 0 1px 0 rgba(255,255,255,.40),
     inset 0 0 0 1px rgba(255,255,255,.060),
-    inset 0 -1px 0 rgba(169,238,255,.13) !important;
+    inset 0 -1px 0 rgba(169,238,255,.13);
 }
 
 body[data-theme="tactical"] .topbar,
@@ -104,9 +104,9 @@ body[data-theme="tactical"] .licenseOpsHero{
     0 0 26px rgba(169,238,255,.085),
     inset 0 1px 0 rgba(255,255,255,.52),
     inset 0 0 0 1px rgba(255,255,255,.080),
-    inset 0 -1px 0 rgba(169,238,255,.18) !important;
+    inset 0 -1px 0 rgba(169,238,255,.18);
 }
 
 @media (prefers-reduced-motion: reduce){
-  body[data-theme="tactical"]::after{animation:none !important;}
+  body[data-theme="tactical"]::after{animation:none;}
 }

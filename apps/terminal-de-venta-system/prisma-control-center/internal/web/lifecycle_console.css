@@ -1,16 +1,16 @@
 /* PRISMA Data Lifecycle Console */
 body[data-prisma-interface="lifecycle"] main > section:not(#lifecycleSurface) {
-  display: none !important;
+  display: none;
 }
 
 body[data-prisma-interface="lifecycle"] #lifecycleSurface {
-  display: block !important;
+  display: block;
 }
 
 body[data-prisma-interface="operation"] #lifecycleSurface,
 body[data-prisma-interface="quality"] #lifecycleSurface,
 body[data-prisma-interface="license"] #lifecycleSurface {
-  display: none !important;
+  display: none;
 }
 
 #lifecycleSurface {
@@ -239,58 +239,58 @@ body:not([data-prisma-interface="lifecycle"]) #lifecycleSurface{ display:none; }
    The original topbar was tuned for 3 tabs. Lifecycle is the 4th tab.
    ========================================================================== */
 .topbar > .surfaceSwitch{
-  width:clamp(440px, 42vw, 610px) !important;
-  min-width:440px !important;
-  max-width:calc(100% - 32px) !important;
-  display:grid !important;
-  grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
-  gap:6px !important;
-  overflow:visible !important;
+  width:clamp(440px, 42vw, 610px);
+  min-width:440px;
+  max-width:calc(100% - 32px);
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:6px;
+  overflow:visible;
 }
 .topbarGrid{
-  padding-right:clamp(480px, 46vw, 650px) !important;
+  padding-right:clamp(480px, 46vw, 650px);
 }
 .topbar > .surfaceSwitch button{
-  min-width:0 !important;
-  padding-inline:8px !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  font-size:clamp(10px, .75vw, 12px) !important;
+  min-width:0;
+  padding-inline:8px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:clamp(10px, .75vw, 12px);
 }
 .topbar > .surfaceSwitch button.lifecycleSwitchButton,
 .topbar > .surfaceSwitch button[data-prisma-interface-target="lifecycle"]{
-  color:var(--text, #eef6ff) !important;
+  color:var(--text, #eef6ff);
 }
 body[data-prisma-interface="lifecycle"] main,
 body[data-prisma-interface="lifecycle"] #main{
-  padding-top:calc(var(--topbar-height, 156px) + 20px) !important;
+  padding-top:calc(var(--topbar-height, 156px) + 20px);
 }
 body[data-prisma-interface="lifecycle"] #main > section:not(#lifecycleSurface){
-  display:none !important;
+  display:none;
 }
 body[data-prisma-interface="lifecycle"] #lifecycleSurface{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
+  display:block;
+  visibility:visible;
+  opacity:1;
 }
 @media (max-width: 1180px){
-  .topbarGrid{ padding-right:0 !important; }
+  .topbarGrid{ padding-right:0; }
   .topbar > .surfaceSwitch{
-    position:relative !important;
-    right:auto !important;
-    top:auto !important;
-    transform:none !important;
-    width:100% !important;
-    min-width:0 !important;
-    margin-top:8px !important;
+    position:relative;
+    right:auto;
+    top:auto;
+    transform:none;
+    width:100%;
+    min-width:0;
+    margin-top:8px;
   }
   .topbar,
-  .topbar.glass{ height:auto !important; min-height:var(--topbar-height, 156px) !important; }
+  .topbar.glass{ height:auto; min-height:var(--topbar-height, 156px); }
 }
 @media (max-width: 720px){
   .topbar > .surfaceSwitch{
-    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
-    width:auto !important;
-    min-width:0 !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    width:auto;
+    min-width:0;
   }
 }

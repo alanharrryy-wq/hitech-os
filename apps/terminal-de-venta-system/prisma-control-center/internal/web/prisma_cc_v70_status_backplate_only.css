@@ -13,30 +13,30 @@ body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail::after,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row::before,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row::after{
-  background:transparent !important;
-  border:0 !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
+  background:transparent;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 
 /* Si los chips viven dentro de una bottom-card, sólo se desnuda la card que contiene status */
 body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prismo-status-chip),
 body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prismo-tag[data-state]),
 body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prisma-v56-status-copy){
-  background:transparent !important;
-  border:0 !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  min-height:0 !important;
+  background:transparent;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  min-height:0;
 }
 
 /* Los óvalos se quedan como estaban */
 body[data-prisma-interface="prismo"] #prismo-console .prismo-status-chip,
 body[data-prisma-interface="prismo"] #prismo-console .prismo-tag[data-state],
 body[data-prisma-interface="prismo"] #prismo-console .prisma-v56-status-copy{
-  border-radius:999px !important;
+  border-radius:999px;
 }

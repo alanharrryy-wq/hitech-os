@@ -32,22 +32,22 @@ body[data-status="fail"],body[data-status="blocked"],body[data-status="error"]{
   --dock-state-rgb:223,61,47;
 }
 .release-dock{
-  z-index:120 !important;
-  padding:8px !important;
-  gap:10px !important;
-  border-radius:999px !important;
-  border:1px solid rgba(255,255,255,.38) !important;
+  z-index:120;
+  padding:8px;
+  gap:10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.38);
   background:
     radial-gradient(circle at 12% 10%,rgba(255,255,255,.54),transparent 32%),
     radial-gradient(circle at 86% 110%,rgba(var(--dock-state-rgb),.105),transparent 38%),
-    linear-gradient(145deg,rgba(255,255,255,.48),rgba(255,255,255,.20)) !important;
+    linear-gradient(145deg,rgba(255,255,255,.48),rgba(255,255,255,.20));
   box-shadow:
     0 22px 62px rgba(var(--dock-state-rgb),.13),
     0 10px 30px rgba(8,54,124,.10),
     inset 0 1px 0 rgba(255,255,255,.78),
-    inset 0 -12px 22px rgba(3,24,61,.045) !important;
-  backdrop-filter:blur(22px) saturate(1.42) contrast(1.08) !important;
-  -webkit-backdrop-filter:blur(22px) saturate(1.42) contrast(1.08) !important;
+    inset 0 -12px 22px rgba(3,24,61,.045);
+  backdrop-filter:blur(22px) saturate(1.42) contrast(1.08);
+  -webkit-backdrop-filter:blur(22px) saturate(1.42) contrast(1.08);
 }
 .release-dock::after{
   content:"";
@@ -64,37 +64,37 @@ body[data-status="fail"],body[data-status="blocked"],body[data-status="error"]{
 }
 .release-dock button,
 .release-dock a{
-  min-height:42px !important;
-  padding:9px 17px !important;
-  border-radius:999px !important;
-  border:1px solid rgba(var(--dock-state-rgb),.22) !important;
-  color:var(--dock-state) !important;
-  font-weight:900 !important;
-  text-decoration:none !important;
+  min-height:42px;
+  padding:9px 17px;
+  border-radius:999px;
+  border:1px solid rgba(var(--dock-state-rgb),.22);
+  color:var(--dock-state);
+  font-weight:900;
+  text-decoration:none;
   background:
     radial-gradient(circle at 24% 12%,rgba(255,255,255,.58),transparent 34%),
-    linear-gradient(145deg,rgba(255,255,255,.42),rgba(255,255,255,.18)) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 10px 26px rgba(var(--dock-state-rgb),.08) !important;
+    linear-gradient(145deg,rgba(255,255,255,.42),rgba(255,255,255,.18));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 10px 26px rgba(var(--dock-state-rgb),.08);
 }
 .release-dock button:hover,
 .release-dock a:hover{
   transform:translateY(-1px);
-  border-color:rgba(var(--dock-state-rgb),.36) !important;
-  box-shadow:0 16px 36px rgba(var(--dock-state-rgb),.14),inset 0 1px 0 rgba(255,255,255,.78) !important;
+  border-color:rgba(var(--dock-state-rgb),.36);
+  box-shadow:0 16px 36px rgba(var(--dock-state-rgb),.14),inset 0 1px 0 rgba(255,255,255,.78);
 }
 .release-dot{
-  background:var(--dock-state) !important;
-  box-shadow:0 0 0 7px rgba(var(--dock-state-rgb),.11),0 0 24px rgba(var(--dock-state-rgb),.42) !important;
+  background:var(--dock-state);
+  box-shadow:0 0 0 7px rgba(var(--dock-state-rgb),.11),0 0 24px rgba(var(--dock-state-rgb),.42);
 }
 .release-dot.warn{
-  background:#e59b2a !important;
-  box-shadow:0 0 0 7px rgba(229,155,42,.11),0 0 24px rgba(229,155,42,.42) !important;
+  background:#e59b2a;
+  box-shadow:0 0 0 7px rgba(229,155,42,.11),0 0 24px rgba(229,155,42,.42);
 }
 .release-dot.fail{
-  background:#df3d2f !important;
-  box-shadow:0 0 0 7px rgba(223,61,47,.11),0 0 24px rgba(223,61,47,.42) !important;
+  background:#df3d2f;
+  box-shadow:0 0 0 7px rgba(223,61,47,.11),0 0 24px rgba(223,61,47,.42);
 }
 @media(max-width:1100px){
-  .release-dock{border-radius:26px !important;bottom:12px !important}
+  .release-dock{border-radius:26px;bottom:12px}
 }
 /* === PRISMA RELEASE DOCK LIQUID STATUS END === */
