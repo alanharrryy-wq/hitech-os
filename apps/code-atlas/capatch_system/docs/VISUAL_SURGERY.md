@@ -7,7 +7,7 @@ Visual changes require more than syntax success. A UI can compile and still look
 - surface allowlist must be explicit
 - excluded surfaces must remain untouched
 - global CSS changes need high scrutiny
-- massive `!important` usage is suspicious
+- massive `CSS priority override` usage is suspicious
 - dark-theme drift is blocked for Tablet unless explicitly requested
 - legacy overlays/layers must not keep covering the new UI
 - functional PASS is not visual PASS

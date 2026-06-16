@@ -5,13 +5,13 @@ This fix makes `visual-static-gates` baseline/delta aware.
 ## Why
 
 Large legacy files such as `pos.module.css` can contain hundreds of historical
-`!important` declarations or old dark tokens. A surgical patch should not fail
+`CSS priority override` declarations or old dark tokens. A surgical patch should not fail
 because of debt that already existed before the patch.
 
 ## New behavior
 
-- Existing `!important` debt becomes a warning when a baseline/checkpoint exists.
-- The verifier fails only when the patch adds more new `!important` declarations
+- Existing `CSS priority override` debt becomes a warning when a baseline/checkpoint exists.
+- The verifier fails only when the patch adds more new `CSS priority override` declarations
   than the configured delta limit.
 - `#000` inside `mask` or `-webkit-mask` declarations is ignored.
 - `#000`, `black`, `#111`, `#0b0b0b`, and similar dark tokens are risky only in

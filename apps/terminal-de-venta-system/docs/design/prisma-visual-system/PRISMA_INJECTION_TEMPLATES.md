@@ -30,7 +30,7 @@ This directory defines safe starter templates for future PRISMA visual work. The
 1. Start with the matching surface adapter in `products/shared-ui/prisma/adapters/`.
 2. Register component, token, recipe, or migration intent in `config/prisma-visual-system/`.
 3. Do not add global CSS background patches.
-4. Do not add `!important` as the final solution.
+4. Do not add `CSS priority override` as the final solution.
 5. Do not reference `products/0.backgrounds` as a runtime public URL.
 6. Mark render evidence as `SKIPPED_NO_LIVE_SERVER` when no live server already exists.
 

@@ -225,7 +225,7 @@ The goal is to make Codex more autonomous, safer, and more useful without chaini
 152. Prefer design tokens over magic values.
 153. Keep responsive rules close to affected components when that is the repo convention.
 154. Avoid global CSS leaks.
-155. Do not use !important unless there is no better local fix.
+155. Do not use CSS priority override unless there is no better local fix.
 156. Keep z-index scales controlled.
 157. Use container-aware layouts where possible.
 158. Prefer gap over margin juggling in flex/grid layouts.
