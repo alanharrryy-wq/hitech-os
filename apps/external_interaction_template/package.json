@@ -10,7 +10,13 @@
     "start": "next start -p 3110",
     "lint": "node -e \"console.log('prisma-web lint: no project-specific lint configured yet')\"",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"console.log('prisma-web tests: smoke via build/typecheck for v01')\""
+    "test": "node -e \"console.log('prisma-web tests: smoke via build/typecheck for v01')\"",
+    "verify:zero-important": "node ../../tools/quality/verify-zero-important.mjs",
+    "prebuild": "pnpm run verify:zero-important",
+    "pretypecheck": "pnpm run verify:zero-important",
+    "pretest": "pnpm run verify:zero-important",
+    "prelint": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "clsx": "2.1.1",

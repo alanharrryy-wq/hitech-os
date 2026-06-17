@@ -52,7 +52,11 @@
     "verify:crystal-intelligence": "node tools/verify_prisma_app_mobile_40_crystal_intelligence.mjs",
     "verify:mobile-snapshot-quality": "node tools/verify_mobile_snapshot_quality.mjs",
     "verify:mobile-sync-visibility": "node tools/verify_mobile_sync_visibility_01.mjs",
-    "verify:multi-context-switcher": "node tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs"
+    "verify:multi-context-switcher": "node tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs",
+    "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
+    "prebuild": "pnpm run verify:zero-important",
+    "pretypecheck": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "next": "16.1.6",
