@@ -1,0 +1,22 @@
+name: Zero Priority Gate
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  zero-priority-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install root dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Run zero priority gate
+        run: pnpm run verify:zero-important
