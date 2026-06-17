@@ -20,7 +20,13 @@
     "keystone:scene:visual:update": "node ./scripts/scene-studio-runner.mjs --full --update-baseline --server-mode=dev",
     "keystone:scene:report": "node ./scripts/scene-studio-report.mjs",
     "keystone:scene:proof:gate": "node ./scripts/scene-proof-gate.mjs",
-    "keystone:scene:proof:ci": "node ./scripts/scene-proof-ci.mjs"
+    "keystone:scene:proof:ci": "node ./scripts/scene-proof-ci.mjs",
+    "verify:zero-important": "node ../../tools/quality/verify-zero-important.mjs",
+    "prebuild": "pnpm run verify:zero-important",
+    "pretypecheck": "pnpm run verify:zero-important",
+    "pretest": "pnpm run verify:zero-important",
+    "prelint": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@hitech/contracts": "workspace:*",

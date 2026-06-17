@@ -54,7 +54,11 @@
     "verify:tablet-sales-history-reset": "node tools/verify_tablet_sales_history_reset_01.mjs",
     "verify:tablet-local-admin-security": "node tools/verify_tablet_local_admin_security_01.mjs",
     "verify:tablet-returns-contextual": "node tools/verify_tablet_returns_contextual_0506.mjs",
-    "verify:tablet-catalog-pull-target-business": "node tools/verify_tablet_catalog_pull_target_business_0506.mjs"
+    "verify:tablet-catalog-pull-target-business": "node tools/verify_tablet_catalog_pull_target_business_0506.mjs",
+    "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
+    "prebuild": "pnpm run verify:zero-important",
+    "pretypecheck": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

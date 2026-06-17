@@ -35,7 +35,11 @@
     "promote": "node scripts/promote-chart.mjs",
     "handoff:pack": "node scripts/export-chart-lab-handoff-pack.mjs",
     "scaffold:chart": "node scripts/create-chart-lab-entry.mjs",
-    "visual-baseline-readiness": "node scripts/visual-baseline-readiness.mjs"
+    "visual-baseline-readiness": "node scripts/visual-baseline-readiness.mjs",
+    "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
+    "prebuild": "pnpm run verify:zero-important",
+    "pretypecheck": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
