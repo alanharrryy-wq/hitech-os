@@ -1,0 +1,59 @@
+{
+  "schema": "prisma.ui.panel.contract.v1",
+  "panel_id": "pc.settings",
+  "status": "SEED_UNCERTIFIED",
+  "surface": "pc",
+  "route": "/settings",
+  "title": "PC settings",
+  "certification_rule": "Do not treat this seed contract as CERTIFIED until anchors, owners and selectors validate on the local repo.",
+  "owner_component": null,
+  "owner_css_module": null,
+  "canonical_selectors": [
+    "[data-prisma-panel=\"pc.settings\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "pc.settings"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "pc"
+    }
+  ],
+  "allowed_files": [
+    "products/pc/**",
+    "apps/terminal-de-venta-system/products/pc/**",
+    "apps/terminal-de-venta-system/app/**",
+    "apps/terminal-de-venta-system/src/**"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "Settings",
+    "settings"
+  ],
+  "default_probe": {
+    "surface": "pc",
+    "route": "/settings",
+    "point": {
+      "x": 1160,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "pnpm run ui:certainty:self-test",
+    "pnpm run ui:certify -- --panel pc.settings",
+    "pnpm run ui:scope",
+    "pnpm run ui:zero-important"
+  ],
+  "visual_evidence": {
+    "preferred": "Mamastrophic point-probe + screenshot/diff when server is online",
+    "fallback": "fresh posctx/surface context + ownership report"
+  }
+}

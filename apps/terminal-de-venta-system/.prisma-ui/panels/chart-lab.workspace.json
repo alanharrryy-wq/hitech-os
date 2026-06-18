@@ -1,0 +1,61 @@
+{
+  "schema": "prisma.ui.panel.contract.v1",
+  "panel_id": "chart-lab.workspace",
+  "status": "SEED_UNCERTIFIED",
+  "surface": "chart-lab",
+  "route": "/",
+  "title": "Chart Lab workspace",
+  "certification_rule": "Do not treat this seed contract as CERTIFIED until anchors, owners and selectors validate on the local repo.",
+  "owner_component": null,
+  "owner_css_module": null,
+  "canonical_selectors": [
+    "[data-prisma-panel=\"chart-lab.workspace\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "chart-lab.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "chart-lab"
+    }
+  ],
+  "allowed_files": [
+    "products/chart-lab/**",
+    "apps/terminal-de-venta-system/products/chart-lab/**",
+    "apps/terminal-de-venta-system/app/**",
+    "apps/terminal-de-venta-system/src/**"
+  ],
+  "forbidden_surfaces": [
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "Chart Lab",
+    "chart-lab",
+    "ChartLab",
+    "data-prisma-surface=\"chart-lab\""
+  ],
+  "default_probe": {
+    "surface": "chart-lab",
+    "route": "/",
+    "point": {
+      "x": 640,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "pnpm run ui:certainty:self-test",
+    "pnpm run ui:certify -- --panel chart-lab.workspace",
+    "pnpm run ui:scope",
+    "pnpm run ui:zero-important"
+  ],
+  "visual_evidence": {
+    "preferred": "Mamastrophic point-probe + screenshot/diff when server is online",
+    "fallback": "fresh posctx/surface context + ownership report"
+  }
+}

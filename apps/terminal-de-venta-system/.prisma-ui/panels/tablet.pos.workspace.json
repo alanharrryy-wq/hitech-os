@@ -1,0 +1,60 @@
+{
+  "schema": "prisma.ui.panel.contract.v1",
+  "panel_id": "tablet.pos.workspace",
+  "status": "SEED_UNCERTIFIED",
+  "surface": "tablet",
+  "route": "/pos",
+  "title": "Tablet POS workspace",
+  "certification_rule": "Do not treat this seed contract as CERTIFIED until anchors, owners and selectors validate on the local repo.",
+  "owner_component": null,
+  "owner_css_module": null,
+  "canonical_selectors": [
+    ".posPremiumWorkspace",
+    ".posPremiumShell",
+    ".posWorkspace"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "tablet.pos.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "tablet"
+    }
+  ],
+  "allowed_files": [
+    "products/tablet/**",
+    "apps/terminal-de-venta-system/products/tablet/**"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "web",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "PointOfSaleWorkspace",
+    "posPremiumWorkspace",
+    "data-prisma-component=\"PointOfSaleWorkspace\""
+  ],
+  "default_probe": {
+    "surface": "tablet",
+    "route": "/pos",
+    "point": {
+      "x": 1160,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "pnpm run ui:certainty:self-test",
+    "pnpm run ui:certify -- --panel tablet.pos.workspace",
+    "pnpm run ui:scope",
+    "pnpm run ui:zero-important"
+  ],
+  "visual_evidence": {
+    "preferred": "Mamastrophic point-probe + screenshot/diff when server is online",
+    "fallback": "fresh posctx/surface context + ownership report"
+  }
+}

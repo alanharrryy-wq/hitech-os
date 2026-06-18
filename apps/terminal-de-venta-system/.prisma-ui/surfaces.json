@@ -1,0 +1,71 @@
+{
+  "schema": "prisma.ui.surfaces.v1",
+  "surfaces": [
+    {
+      "id": "chart-lab",
+      "label": "Chart Lab",
+      "port": 3000,
+      "defaultRoute": "/",
+      "defaultPoint": {
+        "x": 640,
+        "y": 420
+      },
+      "kind": "visual-lab"
+    },
+    {
+      "id": "web",
+      "label": "EIT / Web",
+      "port": 3110,
+      "defaultRoute": "/",
+      "defaultPoint": {
+        "x": 640,
+        "y": 420
+      },
+      "kind": "web"
+    },
+    {
+      "id": "tablet",
+      "label": "Tablet / POS",
+      "port": 3120,
+      "defaultRoute": "/pos",
+      "defaultPoint": {
+        "x": 1160,
+        "y": 420
+      },
+      "kind": "tablet-pos"
+    },
+    {
+      "id": "pc",
+      "label": "PC Backoffice",
+      "port": 3130,
+      "defaultRoute": "/catalog",
+      "defaultPoint": {
+        "x": 1160,
+        "y": 420
+      },
+      "kind": "pc-backoffice"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile / App",
+      "port": 3140,
+      "defaultRoute": "/",
+      "defaultPoint": {
+        "x": 390,
+        "y": 420
+      },
+      "kind": "mobile"
+    },
+    {
+      "id": "control-center",
+      "label": "Prisma Control Center",
+      "port": 3150,
+      "defaultRoute": "/",
+      "defaultPoint": {
+        "x": 960,
+        "y": 420
+      },
+      "kind": "control-center"
+    }
+  ]
+}

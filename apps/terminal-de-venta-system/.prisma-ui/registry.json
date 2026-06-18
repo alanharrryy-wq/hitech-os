@@ -1,0 +1,42 @@
+{
+  "schema": "prisma.ui.certainty.registry.v1",
+  "created_by": "uisup all1 installer",
+  "policy": "Seeds are not certified until local anchors, selectors and scope checks pass.",
+  "surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "panels": [
+    "tablet.pos.workspace",
+    "tablet.pos.cart-panel",
+    "tablet.pos.checkout-diagnostic",
+    "tablet.pos.product-grid",
+    "tablet.pos.search-card",
+    "tablet.pos.category-rail",
+    "tablet.pos.payment-overlay",
+    "chart-lab.workspace",
+    "web.workspace",
+    "pc.workspace",
+    "pc.catalog",
+    "pc.dashboard",
+    "pc.stock",
+    "pc.settings",
+    "pc.liquid-glass-reference",
+    "mobile.workspace",
+    "control-center.workspace"
+  ],
+  "default_gates": [
+    "authority_mesh",
+    "posctx_or_surface_context",
+    "mamastrophic_point_probe_when_online",
+    "layers_map",
+    "zero_important",
+    "scope_guard",
+    "manual_opsclose_rules",
+    "visual_evidence"
+  ]
+}
