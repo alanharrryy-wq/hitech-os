@@ -147,6 +147,9 @@ export function PosPaymentPanel({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+      data-prisma-panel="tablet.pos.payment-overlay"
+      data-prisma-surface="tablet"
+      data-prisma-route="/pos"
       data-prisma-zone="tablet-checkout-root"
       data-prisma-role="operational-summary"
       data-prisma-priority="primary"

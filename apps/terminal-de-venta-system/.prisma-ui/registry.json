@@ -1,8 +1,14 @@
 {
-  "schema": "prisma.ui.certainty.registry.v1",
-  "created_by": "uisup all1 installer",
-  "policy": "Seeds are not certified until local anchors, selectors and scope checks pass.",
-  "surfaces": [
+  "schema": "prisma.ui.certainty.registry.v4",
+  "created_by": "uisup4-final",
+  "policy": "Sin CERTIFIED no hay cambio visual final. Las superficies objetivo terminan solamente en CERTIFIED.",
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "targetApps": [
     "chart-lab",
     "web",
     "tablet",
@@ -10,33 +16,64 @@
     "mobile",
     "control-center"
   ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center",
+    "shared-ui"
+  ],
   "panels": [
-    "tablet.pos.workspace",
-    "tablet.pos.cart-panel",
-    "tablet.pos.checkout-diagnostic",
-    "tablet.pos.product-grid",
-    "tablet.pos.search-card",
-    "tablet.pos.category-rail",
-    "tablet.pos.payment-overlay",
     "chart-lab.workspace",
-    "web.workspace",
-    "pc.workspace",
+    "control-center.workspace",
+    "mobile.workspace",
     "pc.catalog",
     "pc.dashboard",
-    "pc.stock",
-    "pc.settings",
     "pc.liquid-glass-reference",
-    "mobile.workspace",
-    "control-center.workspace"
+    "pc.settings",
+    "pc.stock",
+    "pc.workspace",
+    "tablet.pos.cart-panel",
+    "tablet.pos.category-rail",
+    "tablet.pos.checkout-diagnostic",
+    "tablet.pos.payment-overlay",
+    "tablet.pos.product-grid",
+    "tablet.pos.search-card",
+    "tablet.pos.workspace",
+    "web.workspace"
+  ],
+  "global_allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    ".prisma-ui/panels/**",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json"
   ],
   "default_gates": [
-    "authority_mesh",
-    "posctx_or_surface_context",
-    "mamastrophic_point_probe_when_online",
-    "layers_map",
-    "zero_important",
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
     "scope_guard",
-    "manual_opsclose_rules",
-    "visual_evidence"
-  ]
+    "zero_important",
+    "inventory",
+    "doctor",
+    "report",
+    "certify_all_surfaces"
+  ],
+  "baseline_policy": "Dirty files from the UI Certainty front are authorized baseline; local generatedAt-only runtime blockers are resolved surgically with backup."
 }

@@ -92,6 +92,9 @@ export default function LiquidGlassReferenceRoomPage() {
     <main
       className={styles.surface}
       style={surfaceStyle}
+      data-prisma-panel="pc.liquid-glass-reference"
+      data-prisma-surface="pc"
+      data-prisma-route="/laboratorio-pc/referencia-visual/liquid-glass"
       data-prisma-liquid-glass-pilot="20"
       data-prisma-liquid-glass-director="radix-vanilla-ogl-fix8"
       data-family-pack="unsplash-governed-4"

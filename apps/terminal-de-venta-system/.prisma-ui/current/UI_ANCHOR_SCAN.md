@@ -1,8 +1,8 @@
-# UI CERT REPORT
+# UI ANCHOR SCAN
 
-- schema: `prisma.ui.cert.report.v4`
+- schema: `prisma.ui.anchor.scan.v4`
 - status: `CERTIFIED`
-- command: `certify`
+- command: `anchors`
 - repoHead: `0bc74e1490afff84850187f2bacde2fd003891c5`
 - branch: `feat/ui-certainty-all-surfaces-final`
 - certified count: `1`

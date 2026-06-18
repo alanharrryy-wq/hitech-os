@@ -122,6 +122,9 @@ export function PosTicketPanel({
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.28, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
       data-prisma-component="CartPanel"
+      data-prisma-panel="tablet.pos.cart-panel"
+      data-prisma-surface="tablet"
+      data-prisma-route="/pos"
       data-prisma-zone="tablet-pos-ticket-panel"
       data-prisma-role="sale-ticket"
       data-prisma-priority="primary"
@@ -233,7 +236,7 @@ export function PosTicketPanel({
         )}
       </div>
 
-      <div className={checkoutReady ? styles.posPremiumDiagnosticOk : styles.posPremiumDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-role="status-surface" data-prisma-state={checkoutReady ? "ready" : "disabled"}>
+      <div className={checkoutReady ? styles.posPremiumDiagnosticOk : styles.posPremiumDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-panel="tablet.pos.checkout-diagnostic" data-prisma-surface="tablet" data-prisma-route="/pos" data-prisma-role="status-surface" data-prisma-state={checkoutReady ? "ready" : "disabled"}>
         <strong>{checkoutReady ? <CheckCircle2 aria-hidden="true" size={16} /> : <Clock3 aria-hidden="true" size={16} />} {checkoutReady ? "Listo para cobrar" : "Prepara el cobro"}</strong>
         <span>{diagnosticCopy}</span>
       </div>

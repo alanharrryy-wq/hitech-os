@@ -913,6 +913,9 @@ export function PrismaChartLabShell() {
   return (
     <main
       className="chart-lab chart-lab--single-workbench"
+      data-prisma-panel="chart-lab.workspace"
+      data-prisma-surface="chart-lab"
+      data-prisma-route="/"
       data-power-studio="true"
       data-hydration-safe="true"
       data-hydrated={hydrated}
