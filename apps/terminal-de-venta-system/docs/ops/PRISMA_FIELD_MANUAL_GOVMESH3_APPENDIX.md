@@ -11,3 +11,15 @@ Operational rule:
 - It must not use `forbidden_for_scope` capabilities.
 
 Do not accept fake premium work that only adds blur, shadow or radius without the used/rejected matrix and visual evidence.
+
+## Addendum 2026-06-18: cierre preflight Tablet POS `/pos`
+
+Para un patch premium de Tablet POS `/pos`, GovMesh3 sólo autoriza implementación cuando:
+
+- `.governance/current` está limpio;
+- `posctx.py` fresco confirma route owners y CSS owners;
+- Authority Mesh se generó para el task exacto después del estado Git actual;
+- el Mesh incluye `LAYERS_MAP.md` y `LAYERS_MAP.json`;
+- el scope incluye Tablet y excluye PC, Mobile, Chart Lab y Shared UI salvo autoridad explícita.
+
+No reutilizar un Mesh viejo después de cambios en `main`, limpieza de governance o cambios de HEAD.
