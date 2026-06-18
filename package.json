@@ -90,7 +90,10 @@
     "pretypecheck": "pnpm run verify:zero-important",
     "pretest": "pnpm run verify:zero-important",
     "prelint": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important"
+    "predev": "pnpm run verify:zero-important",
+    "panel:locate": "node tools/quality/panel-locator.mjs --out-dir F:/descargasf/panel-locator-result",
+    "panel:locate:tablet": "node tools/quality/panel-locator.mjs --surface tablet-pos --out-dir F:/descargasf/panel-locator-tablet-pos-result",
+    "panel:locate:self-test": "node tools/quality/panel-locator.mjs --self-test"
   },
   "devDependencies": {
     "@commitlint/cli": "19.8.1",

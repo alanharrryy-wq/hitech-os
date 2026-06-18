@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "workers": 18,
+  "maxFileBytes": 2500000,
+  "safety": {
+    "readOnly": true,
+    "noProcessTouch": true,
+    "noPrismaGenerate": true,
+    "noGitWrite": true
+  },
+  "manualPaths": [
+    "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "apps/terminal-de-venta-system/docs/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+  ]
+}
