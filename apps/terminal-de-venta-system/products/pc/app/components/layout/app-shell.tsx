@@ -18,7 +18,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
   const hideRouteIntentStrip = currentPath === "/sales-control";
 
   return (
-    <div className="shell" data-prisma-component="AppShell" data-prisma-product="pc" data-uiux-gate="human-first-nav" data-route-intent={current.primaryQuestion}>
+    <div className="shell" data-prisma-panel="pc.workspace" data-prisma-surface="pc" data-prisma-route="*" data-prisma-component="AppShell" data-prisma-product="pc" data-uiux-gate="human-first-nav" data-route-intent={current.primaryQuestion}>
       <a className="skip-link" href="#prisma-main-content">Saltar al contenido</a>
       <aside className="sidebar" data-prisma-component="Sidebar" aria-label="Navegación principal PC">
         <div className="brand-block prisma-brand-image-card" data-prisma-component="BrandBlock">

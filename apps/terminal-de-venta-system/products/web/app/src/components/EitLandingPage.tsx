@@ -3,7 +3,7 @@ import type { EitSiteModel } from "@/lib/eit-site-model";
 
 export function EitLandingPage({ model }: { model: EitSiteModel }) {
   return (
-    <main className="shell">
+    <main className="shell" data-prisma-panel="web.workspace" data-prisma-surface="web" data-prisma-route="/">
       <header className="brandbar" aria-label="PRISMA EIT brand">
         <a className="brandmark" href="/" aria-label="PRISMA EIT inicio">
           <img src="/prisma-mark.png" alt="" aria-hidden="true" />

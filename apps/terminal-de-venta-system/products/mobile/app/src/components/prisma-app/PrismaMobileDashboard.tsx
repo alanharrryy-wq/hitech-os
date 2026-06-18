@@ -146,8 +146,10 @@ export function PrismaMobileDashboard() {
   return (
     <main
       className={styles.mobileRoot}
+      data-prisma-panel="mobile.workspace"
       data-prisma-product="mobile"
-      data-prisma-surface="prisma.mobile.app"
+      data-prisma-surface="mobile"
+      data-prisma-route="/"
       data-prisma-readiness={snapshot.summary.dataReadiness.level}
       data-prisma-source={clientSnapshot.source}
       data-prisma-stale={clientSnapshot.stale ? "true" : "false"}

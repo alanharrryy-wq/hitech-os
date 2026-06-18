@@ -1,6 +1,530 @@
 {
-  "status": "PASS",
-  "problems": [],
+  "schema": "prisma.ui.selftest.v4",
+  "createdAt": "2026-06-18T23:04:04.738Z",
+  "command": "self-test",
+  "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "repoHead": "0bc74e1490afff84850187f2bacde2fd003891c5",
+  "branch": "feat/ui-certainty-all-surfaces-final",
+  "status": "CERTIFIED",
+  "hardStates": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "targetApps": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "surfaceSummary": [
+    {
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/pos"
+      ],
+      "panelCount": 7,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "panelCount": 6,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "app": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    }
+  ],
+  "routeSummary": [
+    {
+      "surface": "chart-lab",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/catalog",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/dashboard",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/settings",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/stock",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "*",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "route": "/pos",
+      "panelCount": 7,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    }
+  ],
+  "panelSummary": [
+    {
+      "panel_id": "chart-lab.workspace",
+      "surface": "chart-lab",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "control-center.workspace",
+      "surface": "control-center",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "prisma-control-center/internal/web/index.html",
+      "cssModule": "prisma-control-center/internal/web/styles.css"
+    },
+    {
+      "panel_id": "mobile.workspace",
+      "surface": "mobile",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "cssModule": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    },
+    {
+      "panel_id": "pc.catalog",
+      "surface": "pc",
+      "route": "/catalog",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.dashboard",
+      "surface": "pc",
+      "route": "/dashboard",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.liquid-glass-reference",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "cssModule": "products/pc/app/app/prisma-liquid-glass.module.css"
+    },
+    {
+      "panel_id": "pc.settings",
+      "surface": "pc",
+      "route": "/settings",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.stock",
+      "surface": "pc",
+      "route": "/stock",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.workspace",
+      "surface": "pc",
+      "route": "*",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/layout/app-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "tablet.pos.cart-panel",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.category-rail",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-screen.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.checkout-diagnostic",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.payment-overlay",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.product-grid",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-product-list.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.search-card",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-product-search.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.workspace",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-screen.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "web.workspace",
+      "surface": "web",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/web/app/src/components/EitLandingPage.tsx",
+      "cssModule": null
+    }
+  ],
+  "certifiedCount": 17,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "exactBlockers": [],
+  "exactDrifts": [],
+  "exactConflicts": [],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "runtimeProbeSummary": [
+    {
+      "surface": "chart-lab",
+      "port": 3000,
+      "url": "http://localhost:3000",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "web",
+      "port": 3110,
+      "url": "http://localhost:3110",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "tablet",
+      "port": 3120,
+      "url": "http://localhost:3120/pos",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "pc",
+      "port": 3130,
+      "url": "http://localhost:3130/dashboard",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "mobile",
+      "port": 3140,
+      "url": "http://localhost:3140",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "control-center",
+      "port": 3150,
+      "url": "http://localhost:3150",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "shared-ui",
+      "port": null,
+      "url": null,
+      "optional": true,
+      "status": "NOT_APPLICABLE"
+    }
+  ],
+  "resolvedBlockers": [],
+  "nextRecommendedCommand": "git diff --check",
+  "exitCodeExpectation": 0,
+  "registryExists": true,
+  "surfacesExists": true,
   "panelCount": 17,
-  "createdAt": "2026-06-18T18:20:54.723Z"
+  "cases": [
+    {
+      "name": "certified_contract_anchor_selector_scope",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "blocked_when_anchor_missing",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "drift_when_selector_missing",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "drift_when_owner_missing",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "conflict_when_panel_id_repeats",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "conflict_when_panel_anchor_repeats",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "scope_blocks_outside_allowlist",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "zero_important_detects_important",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "final_report_uses_hard_states_only",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "strict_all_surfaces_fails_on_noncertified_target",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "strict_all_surfaces_passes_when_targets_certified",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "package_scripts_keep_final_gates",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "authorized_ui_certainty_baseline_is_scoped",
+      "status": "CERTIFIED",
+      "detail": null
+    },
+    {
+      "name": "generated_at_only_runtime_blocker_can_be_resolved_with_backup",
+      "status": "CERTIFIED",
+      "detail": "operational rule verified by preflight evidence"
+    },
+    {
+      "name": "functional_foreign_runtime_dirty_blocks_without_resolution",
+      "status": "CERTIFIED",
+      "detail": "operational rule retained by scope guard"
+    },
+    {
+      "name": "current_target_surfaces_evaluate_certified",
+      "status": "CERTIFIED",
+      "detail": [
+        {
+          "surface": "chart-lab",
+          "app": "Chart Lab",
+          "port": 3000,
+          "routes": [
+            "/"
+          ],
+          "panelCount": 1,
+          "status": "CERTIFIED"
+        },
+        {
+          "surface": "web",
+          "app": "PRISMA Web/Edit",
+          "port": 3110,
+          "routes": [
+            "/"
+          ],
+          "panelCount": 1,
+          "status": "CERTIFIED"
+        },
+        {
+          "surface": "tablet",
+          "app": "PRISMA Tablet Core",
+          "port": 3120,
+          "routes": [
+            "/pos"
+          ],
+          "panelCount": 7,
+          "status": "CERTIFIED"
+        },
+        {
+          "surface": "pc",
+          "app": "PRISMA PC Backoffice",
+          "port": 3130,
+          "routes": [
+            "*",
+            "/catalog",
+            "/dashboard",
+            "/stock",
+            "/settings",
+            "/laboratorio-pc/referencia-visual/liquid-glass"
+          ],
+          "panelCount": 6,
+          "status": "CERTIFIED"
+        },
+        {
+          "surface": "mobile",
+          "app": "PRISMA Mobile Adder",
+          "port": 3140,
+          "routes": [
+            "/"
+          ],
+          "panelCount": 1,
+          "status": "CERTIFIED"
+        },
+        {
+          "surface": "control-center",
+          "app": "Control Center",
+          "port": 3150,
+          "routes": [
+            "/"
+          ],
+          "panelCount": 1,
+          "status": "CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "problems": []
 }

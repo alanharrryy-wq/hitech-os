@@ -1,0 +1,191 @@
+{
+  "schema": "prisma.ui.drift.report.v4",
+  "createdAt": "2026-06-18T23:04:34.332Z",
+  "command": "drift",
+  "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "repoHead": "0bc74e1490afff84850187f2bacde2fd003891c5",
+  "branch": "feat/ui-certainty-all-surfaces-final",
+  "status": "CERTIFIED",
+  "hardStates": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "targetApps": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "surfaceSummary": [
+    {
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/pos"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "app": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    }
+  ],
+  "routeSummary": [
+    {
+      "surface": "control-center",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    }
+  ],
+  "panelSummary": [
+    {
+      "panel_id": "control-center.workspace",
+      "surface": "control-center",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "prisma-control-center/internal/web/index.html",
+      "cssModule": "prisma-control-center/internal/web/styles.css"
+    }
+  ],
+  "certifiedCount": 1,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "exactBlockers": [],
+  "exactDrifts": [],
+  "exactConflicts": [],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "runtimeProbeSummary": [
+    {
+      "surface": "chart-lab",
+      "port": 3000,
+      "url": "http://localhost:3000",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "web",
+      "port": 3110,
+      "url": "http://localhost:3110",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "tablet",
+      "port": 3120,
+      "url": "http://localhost:3120/pos",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "pc",
+      "port": 3130,
+      "url": "http://localhost:3130/dashboard",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "mobile",
+      "port": 3140,
+      "url": "http://localhost:3140",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "control-center",
+      "port": 3150,
+      "url": "http://localhost:3150",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "shared-ui",
+      "port": null,
+      "url": null,
+      "optional": true,
+      "status": "NOT_APPLICABLE"
+    }
+  ],
+  "resolvedBlockers": [],
+  "nextRecommendedCommand": "git diff --check",
+  "exitCodeExpectation": 0,
+  "panelCount": 1
+}

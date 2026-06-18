@@ -1,71 +1,215 @@
 {
-  "schema": "prisma.ui.surfaces.v1",
+  "schema": "prisma.ui.surfaces.v4",
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
   "surfaces": [
     {
       "id": "chart-lab",
+      "surface": "chart-lab",
+      "app": "Chart Lab",
       "label": "Chart Lab",
       "port": 3000,
+      "routes": [
+        "/"
+      ],
       "defaultRoute": "/",
-      "defaultPoint": {
-        "x": 640,
-        "y": 420
-      },
-      "kind": "visual-lab"
+      "root": "products/chart-lab/app",
+      "owners": [
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "panels": [
+        "chart-lab.workspace"
+      ],
+      "allowedScope": [
+        "products/chart-lab/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3000"
+      }
     },
     {
       "id": "web",
-      "label": "EIT / Web",
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "label": "PRISMA Web/Edit",
       "port": 3110,
+      "routes": [
+        "/"
+      ],
       "defaultRoute": "/",
-      "defaultPoint": {
-        "x": 640,
-        "y": 420
-      },
-      "kind": "web"
+      "root": "products/web/app",
+      "owners": [
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "panels": [
+        "web.workspace"
+      ],
+      "allowedScope": [
+        "products/web/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3110"
+      }
     },
     {
       "id": "tablet",
-      "label": "Tablet / POS",
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "label": "PRISMA Tablet Core",
       "port": 3120,
+      "routes": [
+        "/pos"
+      ],
       "defaultRoute": "/pos",
-      "defaultPoint": {
-        "x": 1160,
-        "y": 420
-      },
-      "kind": "tablet-pos"
+      "root": "products/tablet/app",
+      "owners": [
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "panels": [
+        "tablet.pos.workspace",
+        "tablet.pos.search-card",
+        "tablet.pos.category-rail",
+        "tablet.pos.product-grid",
+        "tablet.pos.cart-panel",
+        "tablet.pos.checkout-diagnostic",
+        "tablet.pos.payment-overlay"
+      ],
+      "allowedScope": [
+        "products/tablet/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3120/pos"
+      }
     },
     {
       "id": "pc",
-      "label": "PC Backoffice",
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "label": "PRISMA PC Backoffice",
       "port": 3130,
-      "defaultRoute": "/catalog",
-      "defaultPoint": {
-        "x": 1160,
-        "y": 420
-      },
-      "kind": "pc-backoffice"
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "defaultRoute": "/dashboard",
+      "root": "products/pc/app",
+      "owners": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "panels": [
+        "pc.workspace",
+        "pc.catalog",
+        "pc.dashboard",
+        "pc.stock",
+        "pc.settings",
+        "pc.liquid-glass-reference"
+      ],
+      "allowedScope": [
+        "products/pc/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3130/dashboard"
+      }
     },
     {
       "id": "mobile",
-      "label": "Mobile / App",
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "label": "PRISMA Mobile Adder",
       "port": 3140,
+      "routes": [
+        "/"
+      ],
       "defaultRoute": "/",
-      "defaultPoint": {
-        "x": 390,
-        "y": 420
-      },
-      "kind": "mobile"
+      "root": "products/mobile/app",
+      "owners": [
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "panels": [
+        "mobile.workspace"
+      ],
+      "allowedScope": [
+        "products/mobile/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3140"
+      }
     },
     {
       "id": "control-center",
-      "label": "Prisma Control Center",
+      "surface": "control-center",
+      "app": "Control Center",
+      "label": "Control Center",
       "port": 3150,
+      "routes": [
+        "/"
+      ],
       "defaultRoute": "/",
-      "defaultPoint": {
-        "x": 960,
-        "y": 420
-      },
-      "kind": "control-center"
+      "root": "prisma-control-center",
+      "owners": [
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "panels": [
+        "control-center.workspace"
+      ],
+      "allowedScope": [
+        "prisma-control-center/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3150"
+      }
+    },
+    {
+      "id": "shared-ui",
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "label": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "defaultRoute": "tooling",
+      "root": "products/shared-ui",
+      "owners": [
+        "tools/quality/ui-certainty.mjs"
+      ],
+      "panels": [],
+      "allowedScope": [
+        "products/shared-ui/**",
+        "tools/quality/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": null
+      }
     }
   ]
 }

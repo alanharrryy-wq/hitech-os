@@ -1,8 +1,8 @@
-# UI CERT REPORT
+# UI SELECTOR REPORT
 
-- schema: `prisma.ui.cert.report.v4`
+- schema: `prisma.ui.selector.report.v4`
 - status: `CERTIFIED`
-- command: `certify`
+- command: `selectors`
 - repoHead: `0bc74e1490afff84850187f2bacde2fd003891c5`
 - branch: `feat/ui-certainty-all-surfaces-final`
 - certified count: `1`
@@ -23,4 +23,4 @@
 - CERTIFIED - control-center / - panels: 1
 
 ## Panels
-- CERTIFIED - control-center.workspace - control-center / - anchors: 2 - blockers: none - drifts: none
+- CERTIFIED - control-center.workspace - control-center / - anchors: 0 - blockers: none - drifts: none

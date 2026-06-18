@@ -75,6 +75,9 @@ export function PosProductSearch({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
       data-prisma-component="SearchBar"
+      data-prisma-panel="tablet.pos.search-card"
+      data-prisma-surface="tablet"
+      data-prisma-route="/pos"
       data-prisma-zone="tablet-pos-search"
       data-prisma-role="search-command"
       data-prisma-priority="primary"

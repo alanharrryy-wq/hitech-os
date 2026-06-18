@@ -1,8 +1,8 @@
-# UI CERT REPORT
+# UI CONTRACT VALIDATION
 
-- schema: `prisma.ui.cert.report.v4`
+- schema: `prisma.ui.contract.validation.v4`
 - status: `CERTIFIED`
-- command: `certify`
+- command: `contracts`
 - repoHead: `0bc74e1490afff84850187f2bacde2fd003891c5`
 - branch: `feat/ui-certainty-all-surfaces-final`
 - certified count: `1`

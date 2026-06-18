@@ -214,6 +214,9 @@ export function PosProductList({
         className={styles.posPremiumProductGrid}
         aria-label="Productos encontrados"
         data-prisma-component="ProductGrid"
+        data-prisma-panel="tablet.pos.product-grid"
+        data-prisma-surface="tablet"
+        data-prisma-route="/pos"
         data-prisma-zone="tablet-pos-product-grid"
         data-prisma-role="operational-summary"
         data-prisma-priority="primary"

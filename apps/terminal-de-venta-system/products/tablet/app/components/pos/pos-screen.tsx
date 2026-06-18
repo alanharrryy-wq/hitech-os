@@ -385,6 +385,9 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       <div
         className={styles.posPremiumWorkspace}
         data-prisma-component="PointOfSaleWorkspace"
+        data-prisma-panel="tablet.pos.workspace"
+        data-prisma-surface="tablet"
+        data-prisma-route="/pos"
         data-prisma-vos-note="PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"
         data-prisma-zone="tablet-pos-root"
         data-prisma-role="operational-summary"
@@ -430,6 +433,9 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
           />
           <nav
             className={styles.posPremiumCategoryRail}
+            data-prisma-panel="tablet.pos.category-rail"
+            data-prisma-surface="tablet"
+            data-prisma-route="/pos"
             data-prisma-zone="tablet-pos-category-chips"
             data-prisma-role="secondary-action"
             data-prisma-priority="support"

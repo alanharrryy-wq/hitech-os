@@ -1,0 +1,1947 @@
+{
+  "schema": "prisma.ui.inventory.report.v4",
+  "createdAt": "2026-06-18T23:04:17.938Z",
+  "command": "inventory",
+  "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "repoHead": "0bc74e1490afff84850187f2bacde2fd003891c5",
+  "branch": "feat/ui-certainty-all-surfaces-final",
+  "status": "CERTIFIED",
+  "hardStates": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "targetApps": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "surfaceSummary": [
+    {
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/pos"
+      ],
+      "panelCount": 7,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "panelCount": 6,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "app": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "panelCount": 0,
+      "status": "CERTIFIED"
+    }
+  ],
+  "routeSummary": [
+    {
+      "surface": "chart-lab",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/catalog",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/dashboard",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/settings",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "/stock",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "route": "*",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "route": "/pos",
+      "panelCount": 7,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "route": "/",
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    }
+  ],
+  "panelSummary": [
+    {
+      "panel_id": "chart-lab.workspace",
+      "surface": "chart-lab",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "control-center.workspace",
+      "surface": "control-center",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "prisma-control-center/internal/web/index.html",
+      "cssModule": "prisma-control-center/internal/web/styles.css"
+    },
+    {
+      "panel_id": "mobile.workspace",
+      "surface": "mobile",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "cssModule": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    },
+    {
+      "panel_id": "pc.catalog",
+      "surface": "pc",
+      "route": "/catalog",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.dashboard",
+      "surface": "pc",
+      "route": "/dashboard",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.liquid-glass-reference",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "cssModule": "products/pc/app/app/prisma-liquid-glass.module.css"
+    },
+    {
+      "panel_id": "pc.settings",
+      "surface": "pc",
+      "route": "/settings",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.stock",
+      "surface": "pc",
+      "route": "/stock",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "pc.workspace",
+      "surface": "pc",
+      "route": "*",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/pc/app/components/layout/app-shell.tsx",
+      "cssModule": null
+    },
+    {
+      "panel_id": "tablet.pos.cart-panel",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.category-rail",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-screen.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.checkout-diagnostic",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.payment-overlay",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.product-grid",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-product-list.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.search-card",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-product-search.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "tablet.pos.workspace",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/tablet/app/components/pos/pos-screen.tsx",
+      "cssModule": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "panel_id": "web.workspace",
+      "surface": "web",
+      "route": "/",
+      "status": "CERTIFIED",
+      "ownerComponent": "products/web/app/src/components/EitLandingPage.tsx",
+      "cssModule": null
+    }
+  ],
+  "certifiedCount": 17,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "exactBlockers": [],
+  "exactDrifts": [],
+  "exactConflicts": [],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "runtimeProbeSummary": [
+    {
+      "surface": "chart-lab",
+      "port": 3000,
+      "url": "http://localhost:3000",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "web",
+      "port": 3110,
+      "url": "http://localhost:3110",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "tablet",
+      "port": 3120,
+      "url": "http://localhost:3120/pos",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "pc",
+      "port": 3130,
+      "url": "http://localhost:3130/dashboard",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "mobile",
+      "port": 3140,
+      "url": "http://localhost:3140",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "control-center",
+      "port": 3150,
+      "url": "http://localhost:3150",
+      "optional": true,
+      "status": "OPTIONAL_NOT_PROBED"
+    },
+    {
+      "surface": "shared-ui",
+      "port": null,
+      "url": null,
+      "optional": true,
+      "status": "NOT_APPLICABLE"
+    }
+  ],
+  "resolvedBlockers": [],
+  "nextRecommendedCommand": "git diff --check",
+  "exitCodeExpectation": 0,
+  "surfaces": [
+    {
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/"
+      ],
+      "root": "products/chart-lab/app",
+      "owners": [
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "panels": [
+        "chart-lab.workspace"
+      ],
+      "allowedScope": [
+        "products/chart-lab/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3000"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/"
+      ],
+      "root": "products/web/app",
+      "owners": [
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "panels": [
+        "web.workspace"
+      ],
+      "allowedScope": [
+        "products/web/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3110"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/pos"
+      ],
+      "root": "products/tablet/app",
+      "owners": [
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "panels": [
+        "tablet.pos.workspace",
+        "tablet.pos.search-card",
+        "tablet.pos.category-rail",
+        "tablet.pos.product-grid",
+        "tablet.pos.cart-panel",
+        "tablet.pos.checkout-diagnostic",
+        "tablet.pos.payment-overlay"
+      ],
+      "allowedScope": [
+        "products/tablet/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3120/pos"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "root": "products/pc/app",
+      "owners": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "panels": [
+        "pc.workspace",
+        "pc.catalog",
+        "pc.dashboard",
+        "pc.stock",
+        "pc.settings",
+        "pc.liquid-glass-reference"
+      ],
+      "allowedScope": [
+        "products/pc/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3130/dashboard"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/"
+      ],
+      "root": "products/mobile/app",
+      "owners": [
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "panels": [
+        "mobile.workspace"
+      ],
+      "allowedScope": [
+        "products/mobile/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3140"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "app": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "root": "prisma-control-center",
+      "owners": [
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "panels": [
+        "control-center.workspace"
+      ],
+      "allowedScope": [
+        "prisma-control-center/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3150"
+      },
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "root": "products/shared-ui",
+      "owners": [
+        "tools/quality/ui-certainty.mjs"
+      ],
+      "panels": [],
+      "allowedScope": [
+        "products/shared-ui/**",
+        "tools/quality/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": null
+      },
+      "status": "CERTIFIED"
+    }
+  ],
+  "filesScannedCount": 2754,
+  "scanRoots": [
+    "products",
+    "app",
+    "src",
+    "components",
+    "styles",
+    "prisma-control-center/internal/web",
+    "tools/quality",
+    "docs/quality",
+    ".prisma-ui/panels"
+  ],
+  "anchors": [
+    {
+      "panel_id": "chart-lab.workspace",
+      "file": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "line": 916,
+      "index": 38000,
+      "surface": "chart-lab",
+      "route": "/"
+    },
+    {
+      "panel_id": "mobile.workspace",
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "line": 149,
+      "index": 6225,
+      "surface": "mobile",
+      "route": "/"
+    },
+    {
+      "panel_id": "pc.liquid-glass-reference",
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 95,
+      "index": 3108,
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass"
+    },
+    {
+      "panel_id": "pc.workspace",
+      "file": "products/pc/app/components/layout/app-shell.tsx",
+      "line": 21,
+      "index": 1079,
+      "surface": "pc",
+      "route": "*"
+    },
+    {
+      "panel_id": "tablet.pos.payment-overlay",
+      "file": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "line": 150,
+      "index": 5124,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.product-grid",
+      "file": "products/tablet/app/components/pos/pos-product-list.tsx",
+      "line": 217,
+      "index": 8594,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.search-card",
+      "file": "products/tablet/app/components/pos/pos-product-search.tsx",
+      "line": 78,
+      "index": 2372,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.workspace",
+      "file": "products/tablet/app/components/pos/pos-screen.tsx",
+      "line": 388,
+      "index": 15804,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.category-rail",
+      "file": "products/tablet/app/components/pos/pos-screen.tsx",
+      "line": 436,
+      "index": 17900,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.cart-panel",
+      "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "line": 125,
+      "index": 4519,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "tablet.pos.checkout-diagnostic",
+      "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "line": 239,
+      "index": 10544,
+      "surface": "tablet",
+      "route": "/pos"
+    },
+    {
+      "panel_id": "web.workspace",
+      "file": "products/web/app/src/components/EitLandingPage.tsx",
+      "line": 6,
+      "index": 202,
+      "surface": "web",
+      "route": "/"
+    },
+    {
+      "panel_id": "control-center.workspace",
+      "file": "prisma-control-center/internal/web/index.html",
+      "line": 3091,
+      "index": 190958,
+      "surface": "control-center",
+      "route": "/"
+    }
+  ],
+  "panels": [
+    {
+      "panel_id": "chart-lab.workspace",
+      "surface": "chart-lab",
+      "route": "/",
+      "status": "CERTIFIED",
+      "owner_component": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "chart-lab.workspace",
+          "file": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+          "line": 916,
+          "index": 38000,
+          "surface": "chart-lab",
+          "route": "/"
+        },
+        {
+          "panel_id": "chart-lab.workspace",
+          "file": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "chart-lab.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "chart-lab",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"chart-lab.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+            "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/chart-lab.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/chart-lab.workspace.json"
+    },
+    {
+      "panel_id": "control-center.workspace",
+      "surface": "control-center",
+      "route": "/",
+      "status": "CERTIFIED",
+      "owner_component": "prisma-control-center/internal/web/index.html",
+      "owner_component_exists": true,
+      "owner_css_module": "prisma-control-center/internal/web/styles.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "control-center.workspace",
+          "file": "prisma-control-center/internal/web/index.html",
+          "line": 3091,
+          "index": 190958,
+          "surface": "control-center",
+          "route": "/"
+        },
+        {
+          "panel_id": "control-center.workspace",
+          "file": "prisma-control-center/internal/web/index.html",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "control-center.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "control-center",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"control-center.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "prisma-control-center/internal/web/index.html",
+            "prisma-control-center/internal/web/index.html"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/control-center.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "prisma-control-center/internal/web/index.html",
+        "prisma-control-center/internal/web/styles.css"
+      ],
+      "source_contract": ".prisma-ui/panels/control-center.workspace.json"
+    },
+    {
+      "panel_id": "mobile.workspace",
+      "surface": "mobile",
+      "route": "/",
+      "status": "CERTIFIED",
+      "owner_component": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "mobile.workspace",
+          "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+          "line": 149,
+          "index": 6225,
+          "surface": "mobile",
+          "route": "/"
+        },
+        {
+          "panel_id": "mobile.workspace",
+          "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "mobile.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "mobile",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+            "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/mobile.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+        "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/mobile.workspace.json"
+    },
+    {
+      "panel_id": "pc.catalog",
+      "surface": "pc",
+      "route": "/catalog",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "pc.catalog",
+          "file": "products/pc/app/components/uiux/pc-module-shell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 1,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.catalog",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/catalog",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.catalog\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/components/uiux/pc-module-shell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.catalog.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/components/uiux/pc-module-shell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.catalog.json"
+    },
+    {
+      "panel_id": "pc.dashboard",
+      "surface": "pc",
+      "route": "/dashboard",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "pc.dashboard",
+          "file": "products/pc/app/components/uiux/pc-module-shell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 1,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.dashboard",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/dashboard",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.dashboard\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/components/uiux/pc-module-shell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.dashboard.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/components/uiux/pc-module-shell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.dashboard.json"
+    },
+    {
+      "panel_id": "pc.liquid-glass-reference",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/pc/app/app/prisma-liquid-glass.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "pc.liquid-glass-reference",
+          "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+          "line": 95,
+          "index": 3108,
+          "surface": "pc",
+          "route": "/laboratorio-pc/referencia-visual/liquid-glass"
+        },
+        {
+          "panel_id": "pc.liquid-glass-reference",
+          "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.liquid-glass-reference",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/laboratorio-pc/referencia-visual/liquid-glass",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.liquid-glass-reference\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+            "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.liquid-glass-reference.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+        "products/pc/app/app/prisma-liquid-glass.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.liquid-glass-reference.json"
+    },
+    {
+      "panel_id": "pc.settings",
+      "surface": "pc",
+      "route": "/settings",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "pc.settings",
+          "file": "products/pc/app/components/uiux/pc-module-shell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 1,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.settings",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/settings",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.settings\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/components/uiux/pc-module-shell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.settings.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/components/uiux/pc-module-shell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.settings.json"
+    },
+    {
+      "panel_id": "pc.stock",
+      "surface": "pc",
+      "route": "/stock",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "pc.stock",
+          "file": "products/pc/app/components/uiux/pc-module-shell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 1,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.stock",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/stock",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.stock\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/components/uiux/pc-module-shell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.stock.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/components/uiux/pc-module-shell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.stock.json"
+    },
+    {
+      "panel_id": "pc.workspace",
+      "surface": "pc",
+      "route": "*",
+      "status": "CERTIFIED",
+      "owner_component": "products/pc/app/components/layout/app-shell.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "pc.workspace",
+          "file": "products/pc/app/components/layout/app-shell.tsx",
+          "line": 21,
+          "index": 1079,
+          "surface": "pc",
+          "route": "*"
+        },
+        {
+          "panel_id": "pc.workspace",
+          "file": "products/pc/app/components/layout/app-shell.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "pc.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "pc",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "*",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/pc/app/components/layout/app-shell.tsx",
+            "products/pc/app/components/layout/app-shell.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/pc.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/pc/app/components/layout/app-shell.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/pc.workspace.json"
+    },
+    {
+      "panel_id": "tablet.pos.cart-panel",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.cart-panel",
+          "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+          "line": 125,
+          "index": 4519,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.cart-panel",
+          "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.cart-panel",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.cart-panel\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+            "products/tablet/app/components/pos/pos-ticket-panel.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.cart-panel.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.cart-panel.json"
+    },
+    {
+      "panel_id": "tablet.pos.category-rail",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-screen.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.category-rail",
+          "file": "products/tablet/app/components/pos/pos-screen.tsx",
+          "line": 436,
+          "index": 17900,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.category-rail",
+          "file": "products/tablet/app/components/pos/pos-screen.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.category-rail",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.category-rail\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-screen.tsx",
+            "products/tablet/app/components/pos/pos-screen.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.category-rail.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.category-rail.json"
+    },
+    {
+      "panel_id": "tablet.pos.checkout-diagnostic",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.checkout-diagnostic",
+          "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+          "line": 239,
+          "index": 10544,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.checkout-diagnostic",
+          "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.checkout-diagnostic",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.checkout-diagnostic\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+            "products/tablet/app/components/pos/pos-ticket-panel.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.checkout-diagnostic.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.checkout-diagnostic.json"
+    },
+    {
+      "panel_id": "tablet.pos.payment-overlay",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.payment-overlay",
+          "file": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+          "line": 150,
+          "index": 5124,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.payment-overlay",
+          "file": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.payment-overlay",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.payment-overlay\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-payment-panel.tsx",
+            "products/tablet/app/components/pos/pos-payment-panel.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.payment-overlay.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.payment-overlay.json"
+    },
+    {
+      "panel_id": "tablet.pos.product-grid",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-product-list.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.product-grid",
+          "file": "products/tablet/app/components/pos/pos-product-list.tsx",
+          "line": 217,
+          "index": 8594,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.product-grid",
+          "file": "products/tablet/app/components/pos/pos-product-list.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.product-grid",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.product-grid\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-product-list.tsx",
+            "products/tablet/app/components/pos/pos-product-list.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.product-grid.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.product-grid.json"
+    },
+    {
+      "panel_id": "tablet.pos.search-card",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-product-search.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.search-card",
+          "file": "products/tablet/app/components/pos/pos-product-search.tsx",
+          "line": 78,
+          "index": 2372,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.search-card",
+          "file": "products/tablet/app/components/pos/pos-product-search.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.search-card",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.search-card\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-product-search.tsx",
+            "products/tablet/app/components/pos/pos-product-search.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.search-card.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.search-card.json"
+    },
+    {
+      "panel_id": "tablet.pos.workspace",
+      "surface": "tablet",
+      "route": "/pos",
+      "status": "CERTIFIED",
+      "owner_component": "products/tablet/app/components/pos/pos-screen.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+      "owner_css_exists": true,
+      "anchors": [
+        {
+          "panel_id": "tablet.pos.workspace",
+          "file": "products/tablet/app/components/pos/pos-screen.tsx",
+          "line": 388,
+          "index": 15804,
+          "surface": "tablet",
+          "route": "/pos"
+        },
+        {
+          "panel_id": "tablet.pos.workspace",
+          "file": "products/tablet/app/components/pos/pos-screen.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "tablet.pos.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "tablet",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/pos",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"tablet.pos.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/tablet/app/components/pos/pos-screen.tsx",
+            "products/tablet/app/components/pos/pos-screen.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/tablet.pos.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos.module.css"
+      ],
+      "source_contract": ".prisma-ui/panels/tablet.pos.workspace.json"
+    },
+    {
+      "panel_id": "web.workspace",
+      "surface": "web",
+      "route": "/",
+      "status": "CERTIFIED",
+      "owner_component": "products/web/app/src/components/EitLandingPage.tsx",
+      "owner_component_exists": true,
+      "owner_css_module": null,
+      "owner_css_exists": null,
+      "anchors": [
+        {
+          "panel_id": "web.workspace",
+          "file": "products/web/app/src/components/EitLandingPage.tsx",
+          "line": 6,
+          "index": 202,
+          "surface": "web",
+          "route": "/"
+        },
+        {
+          "panel_id": "web.workspace",
+          "file": "products/web/app/src/components/EitLandingPage.tsx",
+          "line": null,
+          "index": null,
+          "synthetic": true
+        }
+      ],
+      "anchor_count": 2,
+      "required_anchor_checks": [
+        {
+          "attribute": "data-prisma-panel",
+          "value": "web.workspace",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-surface",
+          "value": "web",
+          "foundInOwner": true
+        },
+        {
+          "attribute": "data-prisma-route",
+          "value": "/",
+          "foundInOwner": true
+        }
+      ],
+      "selector_checks": [
+        {
+          "selector": "[data-prisma-panel=\"web.workspace\"]",
+          "status": "CERTIFIED",
+          "found": true,
+          "foundIn": [
+            "products/web/app/src/components/EitLandingPage.tsx",
+            "products/web/app/src/components/EitLandingPage.tsx"
+          ]
+        }
+      ],
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/panels/**",
+        ".prisma-ui/panels/web.workspace.json",
+        ".prisma-ui/registry.json",
+        ".prisma-ui/surfaces.json",
+        "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+        "package.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-certainty/**",
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "source_contract": ".prisma-ui/panels/web.workspace.json"
+    }
+  ],
+  "targetSurfaceMatrix": [
+    {
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/pos"
+      ],
+      "panelCount": 7,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "*",
+        "/catalog",
+        "/dashboard",
+        "/stock",
+        "/settings",
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "panelCount": 6,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    },
+    {
+      "surface": "control-center",
+      "app": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "panelCount": 1,
+      "status": "CERTIFIED"
+    }
+  ]
+}
