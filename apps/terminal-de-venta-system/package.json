@@ -90,7 +90,15 @@
     "verify:supplier-product-supplier-sync": "node tools/verify_supplier_product_supplier_sync_closure_01.mjs",
     "verify:pc-to-tablet-catalog-sync": "node tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs",
     "verify:pc-sync-chart-promotion": "node tools/verify_pc_sync_chart_promotion_01.mjs",
-    "verify:zero-important": "node ../../tools/quality/verify-zero-important.mjs"
+    "verify:zero-important": "node ../../tools/quality/verify-zero-important.mjs",
+    "ui:certainty:self-test": "node tools/quality/ui-certainty.mjs self-test",
+    "ui:certify": "node tools/quality/ui-certainty.mjs certify",
+    "ui:certify:all": "node tools/quality/ui-certainty.mjs certify --surface all",
+    "ui:scope": "node tools/quality/ui-certainty.mjs scope",
+    "ui:work": "node tools/quality/ui-certainty.mjs work",
+    "ui:zero-important": "node tools/quality/ui-certainty.mjs zero-important",
+    "ui:supreme": "node tools/quality/ui-certainty.mjs supreme",
+    "ui:supreme:self-test": "node tools/quality/ui-certainty.mjs self-test"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",

@@ -1,0 +1,60 @@
+{
+  "schema": "prisma.ui.panel.contract.v1",
+  "panel_id": "web.workspace",
+  "status": "SEED_UNCERTIFIED",
+  "surface": "web",
+  "route": "/",
+  "title": "Web/EIT workspace",
+  "certification_rule": "Do not treat this seed contract as CERTIFIED until anchors, owners and selectors validate on the local repo.",
+  "owner_component": null,
+  "owner_css_module": null,
+  "canonical_selectors": [
+    "[data-prisma-panel=\"web.workspace\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "web.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "web"
+    }
+  ],
+  "allowed_files": [
+    "products/web/**",
+    "apps/terminal-de-venta-system/products/web/**",
+    "apps/terminal-de-venta-system/app/**",
+    "apps/terminal-de-venta-system/src/**"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "EIT",
+    "web",
+    "data-prisma-surface=\"web\""
+  ],
+  "default_probe": {
+    "surface": "web",
+    "route": "/",
+    "point": {
+      "x": 640,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "pnpm run ui:certainty:self-test",
+    "pnpm run ui:certify -- --panel web.workspace",
+    "pnpm run ui:scope",
+    "pnpm run ui:zero-important"
+  ],
+  "visual_evidence": {
+    "preferred": "Mamastrophic point-probe + screenshot/diff when server is online",
+    "fallback": "fresh posctx/surface context + ownership report"
+  }
+}
