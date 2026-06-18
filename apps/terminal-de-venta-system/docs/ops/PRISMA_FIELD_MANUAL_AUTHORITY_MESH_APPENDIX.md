@@ -21,3 +21,23 @@ If critical authority is missing, the work may still install tooling, but no pat
 ## Live-process rule
 
 Authority Mesh must not kill dev processes, free ports, start servers, or regenerate Prisma during hot work.
+
+## Addendum 2026-06-18: app-root manual y Layer Map visual
+
+AutoMesh debe buscar el manual operativo en estas dos rutas válidas:
+
+```text
+docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+```
+
+Si la ruta root falta pero la ruta app-root existe, no debe reportarse como autoridad crítica faltante. Debe registrarse como manual resuelto desde app-root.
+
+Para tareas visuales o premium, el Mesh debe incluir siempre:
+
+```text
+LAYERS_MAP.md
+LAYERS_MAP.json
+```
+
+Sin Layer Map, el Mesh es incompleto y no autoriza patch visual.

@@ -477,4 +477,24 @@ Un hotfix visual puede entrar al repo final si trae:
 
 | Fecha | Cambio |
 |---|---|
+| 2026-06-18 | Cierre operativo POS /pos: governance limpio con govclean2, posctx limpio, AutoMesh PASS, Layer Map obligatorio y ruta app-root del manual corregida. |
 | 2026-06-10 | Creación del manual vivo con primeras entradas de TodoALV, hot-injection, Prisma EPERM, smoke funcional, delayer visual y gobernanza tri-superficie. |
+
+### 2026-06-18 00:45 - POS `/pos` preflight cerrado y AutoMesh path corregido
+
+**Tipo:** GOVERNANCE_LEARNING / COMMAND_WORKS / GOTCHA / VISUAL_LEARNING
+**Superficie:** Tablet POS `/pos` / Tooling / Governance
+**Contexto:** Antes del primer patch visual premium de PRISMA Tablet POS `/pos`, se bloqueó correctamente el cambio porque `.governance/current` estaba sucio. Se diagnosticó y limpió governance, se volvió a correr contexto POS y se generó Authority Mesh task-scoped con Layers Map.
+**Precondiciones:** Repo `F:\repos\hitech-os`, app `apps/terminal-de-venta-system`, sin matar procesos vivos, sin puertos, sin dev server start, sin Prisma generate caliente.
+**Comando exacto:**
+
+```powershell
+& "F:\PRISMA_CTX\MOTORES\run_automesh.ps1" -Task "PRISMA Tablet POS /pos primer patch visual premium claro: mejorar layout, header busqueda, category rail, product grid, ticket side panel, action dock y quitar bloque legacy Reembolso Guardar Cancelar Venta si pertenece al owner canonical; no tocar PC Mobile Chart Lab Shared UI; no important; no overrides sucios" -Surface tablet -Repo "F:\repos\hitech-os" -Workers 18 -Shards 54 -MaxFiles 120 -MaxMB 40
+```
+
+**Resultado observado:** PASS para preflight. `govclean2 up1 1806 0013 result.zip` dejó governance limpio; `posctx 1806 0014 result.zip` confirmó contexto fresco limpio; `automesh mesh1 1806 0025 result.zip` generó Mesh con 18 workers, 54 sharders, scope Tablet, 120 selected files y 120 Layer entries.
+**Evidencia:** `F:\descargasf\govclean2 up1 1806 0013 result.zip`; `F:\descargasf\posctx 1806 0014 result.zip`; `F:\descargasf\automesh mesh1 1806 0025 result.zip`; `F:\descargasf\opsclose1 1806 0037 fail.zip`.
+**Causa real:** El bloqueo de governance no debía taparse con otro Mesh. Primero se corrigió el dirty state. Después, AutoMesh mostró un warning falso porque buscaba el manual operativo en `docs/ops/...` desde la raíz del repo, pero el manual vivo está en `apps/terminal-de-venta-system/docs/ops/...`. `opsclose1` falló por bug del empaquetador Python: `newline="\\n"` literal, no por contenido ni por Git; el rollback se ejecutó.
+**Rollback probado:** Sí para `govclean2`; `opsclose1` reportó `rollback_executed: true`.
+**Regla nueva:** Para visual/premium de `/pos`, el orden es: governance limpio, `posctx.py` fresco, Authority Mesh exacto con `LAYERS_MAP.md/json`, manual operativo consultado desde app-root, y sólo después patch. AutoMesh debe reconocer el manual tanto en raíz como en app-root. No usar smoke funcional como green visual.
+**Notas:** No tocar PC, Mobile, Chart Lab ni Shared UI salvo que matrices Authority Mesh lo autoricen explícitamente. No usar `!important`, priority override tokens ni hacks globales.
