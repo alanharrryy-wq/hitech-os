@@ -1,0 +1,262 @@
+{
+  "schema": "prisma.ui.premium-mise-en-place.recipe-prep.v1",
+  "status": "CERTIFIED",
+  "recipes": [
+    {
+      "surface": "tablet",
+      "priority": 1,
+      "recipe": "Tablet tactile premium station",
+      "use": [
+        "prisma-tokens",
+        "prisma-recipes",
+        "prisma-visual-os",
+        "prisma-components",
+        "layer-budget",
+        "authority-map"
+      ],
+      "consider": [
+        "background-catalog",
+        "radix-dialog",
+        "radix-select",
+        "radix-scroll-area",
+        "lucide-react",
+        "motion"
+      ],
+      "rejectByDefault": [
+        "ogl",
+        "three",
+        "gsap"
+      ],
+      "readyFor": [
+        "POS shell density",
+        "closed cash gate presentation",
+        "cart and payment state clarity"
+      ],
+      "ownerSamples": [
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify --surface tablet --route /pos --strict",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "mobile",
+      "priority": 2,
+      "recipe": "Mobile compact command station",
+      "use": [
+        "prisma-tokens",
+        "prisma-recipes",
+        "radix-slot",
+        "lucide-react",
+        "clsx"
+      ],
+      "consider": [
+        "framer-motion",
+        "motion",
+        "class-variance-authority"
+      ],
+      "rejectByDefault": [
+        "heavy backgrounds",
+        "webgl atmosphere"
+      ],
+      "readyFor": [
+        "install/onboarding",
+        "mobile command dashboard",
+        "small action cards"
+      ],
+      "ownerSamples": [
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "pc",
+      "priority": 3,
+      "recipe": "PC dense governance station",
+      "use": [
+        "prisma-components",
+        "prisma-visual-os",
+        "radix-tabs",
+        "radix-tooltip",
+        "radix-dialog",
+        "layer-budget"
+      ],
+      "consider": [
+        "background-catalog",
+        "cloudglass-assets",
+        "motion"
+      ],
+      "rejectByDefault": [
+        "Tablet-only selling affordances",
+        "unbounded WebGL"
+      ],
+      "readyFor": [
+        "dashboard",
+        "catalog governance",
+        "sync/communication panels"
+      ],
+      "ownerSamples": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "web",
+      "priority": 4,
+      "recipe": "Web/Edit lightweight brand station",
+      "use": [
+        "prisma-tokens",
+        "prisma-recipes",
+        "background-catalog",
+        "lucide-react"
+      ],
+      "consider": [
+        "motion",
+        "cloudglass-assets"
+      ],
+      "rejectByDefault": [
+        "POS flows",
+        "heavy operational density"
+      ],
+      "readyFor": [
+        "public-safe landing",
+        "surface governor pages"
+      ],
+      "ownerSamples": [
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "control-center",
+      "priority": 5,
+      "recipe": "Control Center operator station",
+      "use": [
+        "prisma-tokens",
+        "prisma-recipes",
+        "authority-map",
+        "layer-budget"
+      ],
+      "consider": [
+        "lucide-react",
+        "radix-dialog",
+        "radix-tooltip"
+      ],
+      "rejectByDefault": [
+        "unredacted public evidence",
+        "non-operator decorative density"
+      ],
+      "readyFor": [
+        "status panels",
+        "release control",
+        "public-safe diagnostics"
+      ],
+      "ownerSamples": [
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "chart-lab",
+      "priority": 6,
+      "recipe": "Chart Lab experimental station",
+      "use": [
+        "prisma-visual-os",
+        "prisma-recipes",
+        "background-catalog",
+        "motion",
+        "ogl",
+        "three"
+      ],
+      "consider": [
+        "gsap",
+        "cloudglass-assets"
+      ],
+      "rejectByDefault": [
+        "production promotion without governor evidence"
+      ],
+      "readyFor": [
+        "recipe studio",
+        "chart reference pilots",
+        "promotion evidence"
+      ],
+      "ownerSamples": [
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    },
+    {
+      "surface": "shared-ui",
+      "priority": 7,
+      "recipe": "Shared UI primitive station",
+      "use": [
+        "prisma-tokens",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
+        "radix-slot"
+      ],
+      "consider": [
+        "framer-motion",
+        "motion",
+        "vanilla-extract"
+      ],
+      "rejectByDefault": [
+        "breaking primitive API changes without tri-surface proof"
+      ],
+      "readyFor": [
+        "component variants",
+        "token bridges",
+        "cross-surface recipes"
+      ],
+      "ownerSamples": [
+        "tools/quality/ui-certainty.mjs"
+      ],
+      "gates": [
+        "node tools/quality/ui-certainty.mjs scope --all",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    }
+  ],
+  "preExistingTabletVisualWork": [
+    {
+      "path": "apps/terminal-de-venta-system/products/tablet/app/app/pos/prisma-pos-light-safe-shell.module.css",
+      "presentInStatus": true,
+      "provenance": "captured before this branch in external evidence; treated as Tablet-only visual foundation work, not reverted"
+    },
+    {
+      "path": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-screen.tsx",
+      "presentInStatus": true,
+      "provenance": "captured before this branch in external evidence; treated as Tablet-only visual foundation work, not reverted"
+    },
+    {
+      "path": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css",
+      "presentInStatus": true,
+      "provenance": "captured before this branch in external evidence; treated as Tablet-only visual foundation work, not reverted"
+    }
+  ]
+}

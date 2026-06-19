@@ -2,7 +2,7 @@
 
 - status: `CERTIFIED`
 - active CSS files: `131`
-- layer count: `8582`
+- layer count: `8649`
 - asset count: `127`
 
 ## Layer Samples

@@ -55,6 +55,11 @@ profiles, samples, and lookup indexes needed to plan future visual edits.
 Fully expanded slot/layer detail belongs in the external result evidence zip
 when a certification run needs that forensic payload.
 
+The compact repo indexes intentionally cap expanded slot, owner, layer and
+asset detail. If a future certification needs full forensic payloads, generate
+that payload into the task evidence folder under `F:\descargasf\...result.zip`
+instead of committing multi-megabyte JSON dumps.
+
 ## Commands
 
 Use the package scripts from `apps/terminal-de-venta-system`:

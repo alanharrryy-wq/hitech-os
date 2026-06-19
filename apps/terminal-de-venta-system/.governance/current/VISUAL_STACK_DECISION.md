@@ -1,6 +1,6 @@
 # PRISMA Visual Stack Decision
 
-- Task: `Build PRISMA Visual Control System v1 across all governed PRISMA surfaces and apps: Tablet POS checkout cart flows, PC Backoffice routes, Mobile Adder, Web Edit, Chart Lab, Control Center, Shared UI, visual control registry tooling owners editable slots layers certification reports`
+- Task: `Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.`
 - Visual required: `True`
 
 ## Principle
@@ -28,46 +28,46 @@ Exploit the maximum safe/governed visual stack per app/surface, not every librar
 
 ## Candidate target files
 
-- score=200 `products/tablet/app/docs/pos/PRISMA_POS_VISUAL_04_CART_CHECKOUT_HIERARCHY.md`
-- score=180 `products/tablet/app/components/prisma-dark-pos/prisma-cart-panel.tsx`
 - score=160 `products/pc/app/app/api/charts/pc/tablet-catalog-freshness-grid/route.ts`
-- score=160 `products/tablet/app/app/api/pos/sync/health/pc/route.ts`
-- score=160 `products/tablet/app/src/lib/pos/cart-engine.ts`
-- score=160 `products/tablet/app/src/lib/pos/cart-state.ts`
-- score=160 `products/tablet/app/src/lib/pos/cart-view-model.ts`
-- score=160 `products/tablet/app/src/lib/pos/held-carts.ts`
-- score=150 `products/tablet/app/docs/pos/PRISMA_TABLET_CHECKOUT_FINALIZATION_FIX_31.md`
-- score=150 `products/tablet/app/docs/pos/PRISMA_TABLET_SELL_CHECKOUT_PAYMENT_FLOW_04A.md`
-- score=150 `products/tablet/app/docs/qa/PRISMA_TABLET_POS_GOLDEN_FLOW_HOLD_CARTS_04G_ACCEPTANCE.md`
-- score=150 `products/tablet/app/docs/qa/pos-checkout-02/acceptance.md`
-- score=150 `products/tablet/app/docs/qa/pos-checkout-02/smoke-tests.md`
-- score=150 `products/tablet/app/docs/ux/PRISMA_TABLET_POS_GOLDEN_FLOW_HOLD_CARTS_04G.md`
 - score=130 `products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx`
 - score=130 `products/pc/app/components/uiux/chart-insight-card.tsx`
-- score=130 `products/tablet/app/components/checkout/checkout-cash-calculator.tsx`
-- score=130 `products/tablet/app/components/checkout/checkout-payment-methods.tsx`
-- score=130 `products/tablet/app/components/checkout/checkout-screen.tsx`
-- score=130 `products/tablet/app/components/checkout/checkout-summary-card.tsx`
-- score=130 `products/tablet/app/components/checkout/checkout-summary.tsx`
-- score=130 `products/tablet/app/components/checkout/payment-method-selector.tsx`
-- score=130 `products/tablet/app/components/checkout/ticket-confirmation.tsx`
-- score=130 `products/tablet/app/components/pos/pos-error-banner.tsx`
-- score=130 `products/tablet/app/components/pos/pos-live-binding.tsx`
-- score=130 `products/tablet/app/components/pos/pos-packshots.ts`
-- score=130 `products/tablet/app/components/pos/pos-payment-panel.tsx`
-- score=130 `products/tablet/app/components/pos/pos-payment-risk-banner.tsx`
-- score=130 `products/tablet/app/components/pos/pos-product-list.tsx`
-- score=130 `products/tablet/app/components/pos/pos-product-search.tsx`
-- score=130 `products/tablet/app/components/pos/pos-sale-success.tsx`
-- score=130 `products/tablet/app/components/pos/pos-screen.tsx`
-- score=130 `products/tablet/app/components/pos/pos-shortcuts.tsx`
-- score=130 `products/tablet/app/components/pos/pos-ticket-panel.tsx`
-- score=130 `products/tablet/app/components/pos/use-prisma-packshot-skin.ts`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-category-rail.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-data.ts`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx`
+- score=120 `products/pc/app/components/sync/pc-sync-chart-promotion-panel.module.css`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileActionInboxPriorityStack.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileChartCard.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileConfidenceMeterBands.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileFreshnessRings.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileHealthRadarCompact.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileIncidentSparkCards.tsx`
+- score=110 `products/mobile/app/app/prisma-command/charts/MobileOwnerPulseTimeline.tsx`
+- score=110 `products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts`
+- score=110 `products/mobile/app/src/lib/prisma-app/mobile-intelligence/chart-series-engine.ts`
+- score=110 `products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts`
+- score=110 `products/pc/app/app/api/backoffice/sync/project-tablet-to-pc/route.ts`
+- score=110 `products/pc/app/app/api/backoffice/tablet-communication/governance-command/route.ts`
+- score=110 `products/pc/app/app/api/backoffice/tablet-communication/route.ts`
+- score=110 `products/pc/app/app/api/charts/pc/sync-command-lifecycle-timeline/route.ts`
+- score=110 `products/pc/app/app/laboratorio-pc/chart-lab/page.tsx`
+- score=110 `products/pc/app/app/prisma-insights/chart-lab/page.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcCausalFlowRibbon.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcChartCard.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcDecisionLedgerTimeline.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcFinancialOperationalWaterfall.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcInventoryRiskTreemap.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcOperationalDensityField.tsx`
+- score=110 `products/pc/app/app/prisma-insights/charts/PcServiceDependencyGraph.tsx`
+- score=110 `products/pc/app/app/tablet-communication/error.tsx`
+- score=110 `products/pc/app/app/tablet-communication/loading.tsx`
+- score=110 `products/pc/app/app/tablet-communication/page.tsx`
+- score=110 `products/pc/app/src/prisma-visual-os/interface-constitution/InsightChartFrame.tsx`
+- score=110 `products/pc/app/src/server/services/pc-sync-chart-data.service.ts`
+- score=110 `products/tablet/app/app/api/pos/sync/health/pc/route.ts`
+- score=110 `products/tablet/app/app/prisma-pulse/charts/TabletChartCard.tsx`
+- score=110 `products/tablet/app/app/prisma-pulse/charts/TabletShiftPulseStrip.tsx`
+- score=110 `products/tablet/app/app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx`
+- score=110 `products/tablet/app/src/server/sync/pc-origin.ts`
+- score=100 `products/pc/app/docs/PC_TABLET_CATALOG_MIRROR_04D.md`
+- score=100 `products/pc/app/docs/PC_TABLET_COMMUNICATION_NOTES.md`
+- score=100 `products/pc/app/public/surface-visual-governor/dashboard/latest/recipe-export/chart.recipe.json`
 
 ## GovMesh3 escalation
 

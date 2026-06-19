@@ -1237,13 +1237,13 @@
       {
         "capability": "background-catalog",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "medium",
         "family": "backgrounds",
         "default_decision": "review",
         "visual_contribution": "Governed atmospheric/background assets per surface.",
         "evidence_count": 40,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "class-variance-authority",
@@ -1259,13 +1259,13 @@
       {
         "capability": "cloudglass-assets",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "medium",
         "family": "liquid-glass",
         "default_decision": "review",
         "visual_contribution": "Liquid/Pill/Cloudglass references, assets, docs, runtime implementations and candidates.",
         "evidence_count": 40,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "clsx",
@@ -1292,13 +1292,13 @@
       {
         "capability": "gsap",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "high",
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
         "evidence_count": 3,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "layer-budget",
@@ -1336,13 +1336,13 @@
       {
         "capability": "ogl",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "high",
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
         "evidence_count": 2,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "prisma-components",
@@ -1468,13 +1468,13 @@
       {
         "capability": "react-spring",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "medium",
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Spring microinteractions if target surface already uses it.",
         "evidence_count": 1,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "react-spring-web",
@@ -1501,13 +1501,13 @@
       {
         "capability": "three",
         "available": true,
-        "level": "forbidden_for_scope",
+        "level": "bounded_optional",
         "risk": "high",
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
         "evidence_count": 2,
-        "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
+        "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
         "capability": "vanilla-extract",

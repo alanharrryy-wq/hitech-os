@@ -1,7 +1,7 @@
 # PRISMA Authority Mesh Report
 
 - Status: `PASS`
-- Task: `Build PRISMA Visual Control System v1 across all governed PRISMA surfaces and apps: Tablet POS checkout cart flows, PC Backoffice routes, Mobile Adder, Web Edit, Chart Lab, Control Center, Shared UI, visual control registry tooling owners editable slots layers certification reports`
+- Task: `Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.`
 - Repo: `F:\repos\hitech-os\apps\terminal-de-venta-system`
 - Authority files found: `979`
 - Missing patterns: `0`

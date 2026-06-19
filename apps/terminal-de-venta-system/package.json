@@ -119,7 +119,10 @@
     "ui:visual-control:slots": "node tools/quality/ui-certainty.mjs visual-control:slots --strict",
     "ui:visual-control:layers": "node tools/quality/ui-certainty.mjs visual-control:layers --strict",
     "ui:visual-control:report": "node tools/quality/ui-certainty.mjs visual-control:report --strict",
-    "ui:visual-control:certify": "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+    "ui:visual-control:certify": "node tools/quality/ui-certainty.mjs visual-control:certify --strict",
+    "ui:premium-mise:self-test": "node tools/quality/ui-premium-mise-en-place.mjs self-test --strict",
+    "ui:premium-mise:report": "node tools/quality/ui-premium-mise-en-place.mjs report --strict",
+    "ui:premium-mise:certify": "node tools/quality/ui-premium-mise-en-place.mjs certify --strict"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
