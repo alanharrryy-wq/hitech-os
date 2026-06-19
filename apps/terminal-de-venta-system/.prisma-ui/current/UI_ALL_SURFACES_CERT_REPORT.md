@@ -2,9 +2,9 @@
 
 - schema: `prisma.ui.all-surfaces.cert.report.v4`
 - status: `CERTIFIED`
-- command: `certify-all-surfaces`
-- repoHead: `0bc74e1490afff84850187f2bacde2fd003891c5`
-- branch: `feat/ui-certainty-all-surfaces-final`
+- command: `report`
+- repoHead: `d487b167fdb9cf6adef0a218a651e1f4b0601022`
+- branch: `feat/ui-runtime-page-certification`
 - certified count: `17`
 - blocked count: `0`
 - drift count: `0`
@@ -40,7 +40,7 @@
 - CERTIFIED - pc.liquid-glass-reference - pc /laboratorio-pc/referencia-visual/liquid-glass - anchors: 2 - blockers: none - drifts: none
 - CERTIFIED - pc.settings - pc /settings - anchors: 1 - blockers: none - drifts: none
 - CERTIFIED - pc.stock - pc /stock - anchors: 1 - blockers: none - drifts: none
-- CERTIFIED - pc.workspace - pc * - anchors: 2 - blockers: none - drifts: none
+- CERTIFIED - pc.workspace - pc * - anchors: 3 - blockers: none - drifts: none
 - CERTIFIED - tablet.pos.cart-panel - tablet /pos - anchors: 2 - blockers: none - drifts: none
 - CERTIFIED - tablet.pos.category-rail - tablet /pos - anchors: 2 - blockers: none - drifts: none
 - CERTIFIED - tablet.pos.checkout-diagnostic - tablet /pos - anchors: 2 - blockers: none - drifts: none

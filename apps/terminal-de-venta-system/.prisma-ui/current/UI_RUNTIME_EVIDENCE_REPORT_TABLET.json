@@ -1,0 +1,2381 @@
+{
+  "schema": "prisma.ui.runtime.evidence.report.v1",
+  "status": "RUNTIME_CERTIFIED",
+  "command": "runtime-probe",
+  "generated_at": "2026-06-19T05:17:41.286Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 35,
+  "runtimeCertifiedCount": 29,
+  "sourceCertifiedCount": 6,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "timeoutMs": 15000,
+  "portStates": {
+    "3120": {
+      "port": 3120,
+      "url": "http://127.0.0.1:3120/",
+      "reachable": true,
+      "status": 200,
+      "error": null,
+      "transport": "tcp",
+      "finalUrl": "http://127.0.0.1:3120/"
+    }
+  },
+  "screenshotPolicy": "capture if Playwright/Chromium is available without installation; no local browser package was invoked by this fetch probe",
+  "countsBySurface": {
+    "tablet": {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routeCount": 35,
+      "runtimeRoutes": 29,
+      "sourceOnlyDynamicRoutes": 3,
+      "sourceOnlyRedirectRoutes": 3,
+      "runtimeCertifiedCount": 29,
+      "sourceCertifiedCount": 6,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "tablet.root.route",
+      "panel_id": "tablet.root.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/",
+      "pageFile": "products/tablet/app/app/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.root.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.root.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet",
+        "tablet-light-shell"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_root.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:38.556Z",
+      "finishedAt": "2026-06-19T05:17:38.641Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.catalog.route",
+      "panel_id": "tablet.catalog.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/catalog",
+      "pageFile": "products/tablet/app/app/catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/catalog/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/catalog",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/catalog"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.catalog.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/catalog/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Catálogo - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.catalog.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_catalog.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:38.641Z",
+      "finishedAt": "2026-06-19T05:17:38.737Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.checkout.route",
+      "panel_id": "tablet.checkout.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/checkout",
+      "pageFile": "products/tablet/app/app/checkout/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/checkout/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/checkout/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/checkout",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.checkout.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/checkout"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.checkout.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/checkout/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/checkout/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/checkout",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Cobro unificado - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.checkout.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/checkout"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_checkout.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:38.737Z",
+      "finishedAt": "2026-06-19T05:17:38.831Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.events.outbox.route",
+      "panel_id": "tablet.events.outbox.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/events/outbox",
+      "pageFile": "products/tablet/app/app/events/outbox/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/events/outbox/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/events/outbox",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.events.outbox.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/events/outbox"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.events.outbox.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/events/outbox/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/events/outbox",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.events.outbox.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/events/outbox"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_events_outbox.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:38.831Z",
+      "finishedAt": "2026-06-19T05:17:38.912Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.existencias.route",
+      "panel_id": "tablet.existencias.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/existencias",
+      "pageFile": "products/tablet/app/app/existencias/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/existencias/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/existencias",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.existencias.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/existencias"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.existencias.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/existencias/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/existencias",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Existencias - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.existencias.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/existencias"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_existencias.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:38.912Z",
+      "finishedAt": "2026-06-19T05:17:39.008Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.inventory.route",
+      "panel_id": "tablet.inventory.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/inventory",
+      "pageFile": "products/tablet/app/app/inventory/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/inventory/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /stock; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/stock",
+      "anchors": {
+        "data-prisma-panel": "tablet.inventory.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/inventory"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.inventory.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/inventory/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:39.008Z",
+      "finishedAt": "2026-06-19T05:17:39.008Z",
+      "reason": "This page is a source-level redirect alias to /stock; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "route_id": "tablet.inventory.low.stock.route",
+      "panel_id": "tablet.inventory.low.stock.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/inventory/low-stock",
+      "pageFile": "products/tablet/app/app/inventory/low-stock/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/inventory/low-stock/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/inventory/low-stock",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.inventory.low.stock.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/inventory/low-stock"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.inventory.low.stock.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/inventory/low-stock/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/inventory/low-stock",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Stock bajo - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.inventory.low.stock.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/inventory/low-stock"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_inventory_low_stock.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.008Z",
+      "finishedAt": "2026-06-19T05:17:39.078Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.offline.route",
+      "panel_id": "tablet.offline.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/offline",
+      "pageFile": "products/tablet/app/app/offline/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/offline/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/offline",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.offline.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/offline"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.offline.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/offline/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/offline",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Offline y export - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.offline.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/offline"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_offline.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.078Z",
+      "finishedAt": "2026-06-19T05:17:39.143Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.pos.route",
+      "panel_id": "tablet.pos.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/pos",
+      "pageFile": "products/tablet/app/app/pos/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/pos/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/pos/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": [
+        "tablet.pos.cart-panel",
+        "tablet.pos.category-rail",
+        "tablet.pos.checkout-diagnostic",
+        "tablet.pos.payment-overlay",
+        "tablet.pos.product-grid",
+        "tablet.pos.search-card",
+        "tablet.pos.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3120/pos",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.pos.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/pos"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.pos.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/pos/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/pos/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/pos",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Vender - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.pos.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/pos"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_pos.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.143Z",
+      "finishedAt": "2026-06-19T05:17:39.229Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.prisma.dark.pos.reference.route",
+      "panel_id": "tablet.prisma.dark.pos.reference.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/prisma-dark-pos-reference",
+      "pageFile": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.dark.pos.reference.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-dark-pos-reference"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.prisma.dark.pos.reference.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Dark POS Reference - Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.prisma.dark.pos.reference.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/prisma-dark-pos-reference"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_dark_pos_reference.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.229Z",
+      "finishedAt": "2026-06-19T05:17:39.329Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.prisma.pulse.route",
+      "panel_id": "tablet.prisma.pulse.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/prisma-pulse",
+      "pageFile": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-pulse",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.pulse.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-pulse"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.prisma.pulse.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/prisma-pulse/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-pulse",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Pulse - Tablet Operations",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.prisma.pulse.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/prisma-pulse"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.329Z",
+      "finishedAt": "2026-06-19T05:17:39.422Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.prisma.visual.catalog.route",
+      "panel_id": "tablet.prisma.visual.catalog.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/prisma-visual-catalog",
+      "pageFile": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.visual.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-visual-catalog"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.prisma.visual.catalog.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.prisma.visual.catalog.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/prisma-visual-catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_visual_catalog.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.422Z",
+      "finishedAt": "2026-06-19T05:17:39.479Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.referencia.visual.route",
+      "panel_id": "tablet.referencia.visual.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/referencia-visual",
+      "pageFile": "products/tablet/app/app/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/referencia-visual/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/referencia-visual",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.referencia.visual.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/referencia-visual"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.referencia.visual.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/referencia-visual/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/referencia-visual",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Referencia Visual - Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.referencia.visual.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/referencia-visual"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_referencia_visual.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.479Z",
+      "finishedAt": "2026-06-19T05:17:39.529Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.release.gate.route",
+      "panel_id": "tablet.release.gate.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/release-gate",
+      "pageFile": "products/tablet/app/app/release-gate/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/release-gate/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/release-gate",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.release.gate.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/release-gate"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.release.gate.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/release-gate/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/release-gate",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.release.gate.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/release-gate"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_release_gate.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.529Z",
+      "finishedAt": "2026-06-19T05:17:39.684Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.returns.route",
+      "panel_id": "tablet.returns.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/returns",
+      "pageFile": "products/tablet/app/app/returns/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/returns/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/returns",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.returns.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/returns"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.returns.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/returns/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/returns",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Devoluciones - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.returns.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/returns"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_returns.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.684Z",
+      "finishedAt": "2026-06-19T05:17:39.773Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.sales.route",
+      "panel_id": "tablet.sales.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales",
+      "pageFile": "products/tablet/app/app/sales/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /sales/today; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/sales/today",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:39.773Z",
+      "finishedAt": "2026-06-19T05:17:39.773Z",
+      "reason": "This page is a source-level redirect alias to /sales/today; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "route_id": "tablet.sales.history.route",
+      "panel_id": "tablet.sales.history.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales/history",
+      "pageFile": "products/tablet/app/app/sales/history/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/history/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sales/history",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.history.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/history"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.history.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/history/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sales/history",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.sales.history.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/sales/history"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.773Z",
+      "finishedAt": "2026-06-19T05:17:39.864Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.sales.history.saleId.route",
+      "panel_id": "tablet.sales.history.saleId.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales/history/:saleId",
+      "pageFile": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "sourceJustification": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation.",
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.history.saleId.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/history/:saleId"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.history.saleId.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/history/[saleId]/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:39.864Z",
+      "finishedAt": "2026-06-19T05:17:39.864Z",
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "route_id": "tablet.sales.today.route",
+      "panel_id": "tablet.sales.today.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales/today",
+      "pageFile": "products/tablet/app/app/sales/today/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sales/today",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.today.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/today/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sales/today",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.sales.today.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/sales/today"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.864Z",
+      "finishedAt": "2026-06-19T05:17:39.953Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.sales.today.saleId.route",
+      "panel_id": "tablet.sales.today.saleId.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales/today/:saleId",
+      "pageFile": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "sourceJustification": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation.",
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.saleId.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today/:saleId"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.today.saleId.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/today/[saleId]/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:39.953Z",
+      "finishedAt": "2026-06-19T05:17:39.953Z",
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "route_id": "tablet.sales.today.saleId.return.route",
+      "panel_id": "tablet.sales.today.saleId.return.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sales/today/:saleId/return",
+      "pageFile": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "sourceJustification": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation.",
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.saleId.return.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today/:saleId/return"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sales.today.saleId.return.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:39.953Z",
+      "finishedAt": "2026-06-19T05:17:39.953Z",
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "route_id": "tablet.screen.standard.preview.route",
+      "panel_id": "tablet.screen.standard.preview.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/screen-standard-preview",
+      "pageFile": "products/tablet/app/app/screen-standard-preview/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/screen-standard-preview/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/screen-standard-preview",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.screen.standard.preview.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/screen-standard-preview"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.screen.standard.preview.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/screen-standard-preview/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/screen-standard-preview",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.screen.standard.preview.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/screen-standard-preview"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_screen_standard_preview.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:39.953Z",
+      "finishedAt": "2026-06-19T05:17:40.143Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.settings.data.route",
+      "panel_id": "tablet.settings.data.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/settings/data",
+      "pageFile": "products/tablet/app/app/settings/data/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/data/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /settings/license; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/settings/license",
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.data.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/data"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.settings.data.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/settings/data/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "hasPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "screenshotReason": "source-only dynamic route",
+      "startedAt": "2026-06-19T05:17:40.143Z",
+      "finishedAt": "2026-06-19T05:17:40.143Z",
+      "reason": "This page is a source-level redirect alias to /settings/license; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "route_id": "tablet.settings.export.route",
+      "panel_id": "tablet.settings.export.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/settings/export",
+      "pageFile": "products/tablet/app/app/settings/export/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/export/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/settings/export",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.export.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/export"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.settings.export.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/settings/export/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/settings/export",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Exportaciones - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.settings.export.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/settings/export"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_settings_export.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.143Z",
+      "finishedAt": "2026-06-19T05:17:40.231Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.settings.license.route",
+      "panel_id": "tablet.settings.license.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/settings/license",
+      "pageFile": "products/tablet/app/app/settings/license/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/license/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/settings/license",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.license.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/license"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.settings.license.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/settings/license/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/settings/license",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.settings.license.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/settings/license"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_settings_license.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.231Z",
+      "finishedAt": "2026-06-19T05:17:40.441Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.shift.route",
+      "panel_id": "tablet.shift.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/shift",
+      "pageFile": "products/tablet/app/app/shift/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/shift/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/shift",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.shift.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/shift"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.shift.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/shift/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/shift",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Turno y caja - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.shift.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/shift",
+        "shift"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_shift.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.441Z",
+      "finishedAt": "2026-06-19T05:17:40.562Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.stock.route",
+      "panel_id": "tablet.stock.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/stock",
+      "pageFile": "products/tablet/app/app/stock/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/stock/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/stock",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.stock.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/stock"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.stock.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/stock/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/stock",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Existencias para vender - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.stock.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/stock"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_stock.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.562Z",
+      "finishedAt": "2026-06-19T05:17:40.661Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.sync.route",
+      "panel_id": "tablet.sync.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/sync",
+      "pageFile": "products/tablet/app/app/sync/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sync/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sync",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.sync.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sync"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.sync.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/sync/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sync",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Pendientes y conexión - PRISMA Tablet",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.sync.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/sync"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sync.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.661Z",
+      "finishedAt": "2026-06-19T05:17:40.745Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.route",
+      "panel_id": "tablet.visual.os.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os",
+      "pageFile": "products/tablet/app/app/visual-os/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro QA",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.745Z",
+      "finishedAt": "2026-06-19T05:17:40.816Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.detached.route",
+      "panel_id": "tablet.visual.os.detached.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/detached",
+      "pageFile": "products/tablet/app/app/visual-os/detached/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/detached/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/detached",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.detached.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/detached"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.detached.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/detached/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/detached",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Detached",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.detached.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/detached"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_detached.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.816Z",
+      "finishedAt": "2026-06-19T05:17:40.892Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.materiality.catalog.route",
+      "panel_id": "tablet.visual.os.materiality.catalog.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/materiality-catalog",
+      "pageFile": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.materiality.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/materiality-catalog"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.materiality.catalog.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Materiality Catalog · Visual OS Pilot 01",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.materiality.catalog.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/materiality-catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_materiality_catalog.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.892Z",
+      "finishedAt": "2026-06-19T05:17:40.981Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.pro.route",
+      "panel_id": "tablet.visual.os.pro.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/pro",
+      "pageFile": "products/tablet/app/app/visual-os/pro/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/pro/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/pro",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.pro.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/pro"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.pro.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/pro/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/pro",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Isolated",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.pro.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/pro"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_pro.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:40.981Z",
+      "finishedAt": "2026-06-19T05:17:41.054Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.realtime.route",
+      "panel_id": "tablet.visual.os.realtime.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/realtime",
+      "pageFile": "products/tablet/app/app/visual-os/realtime/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/realtime/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/realtime",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.realtime.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/realtime"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.realtime.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/realtime/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/realtime",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Bridge",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.realtime.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/realtime"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_realtime.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:41.054Z",
+      "finishedAt": "2026-06-19T05:17:41.119Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.tablet.background.gallery.route",
+      "panel_id": "tablet.visual.os.tablet.background.gallery.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/tablet-background-gallery",
+      "pageFile": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.tablet.background.gallery.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/tablet-background-gallery"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.tablet.background.gallery.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Tablet Storm Vapor Background Gallery",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.tablet.background.gallery.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/tablet-background-gallery"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_background_gallery.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:41.119Z",
+      "finishedAt": "2026-06-19T05:17:41.212Z",
+      "reason": null
+    },
+    {
+      "route_id": "tablet.visual.os.tablet.codex.gallery.route",
+      "panel_id": "tablet.visual.os.tablet.codex.gallery.route",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "port": 3120,
+      "route": "/visual-os/tablet-codex-gallery",
+      "pageFile": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "anchorOwnerComponent": "products/tablet/app/app/layout.tsx",
+      "middleware": "products/tablet/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.tablet.codex.gallery.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/tablet-codex-gallery"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"tablet.visual.os.tablet.codex.gallery.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Tablet Codex Gallery",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "tablet.visual.os.tablet.codex.gallery.route"
+      ],
+      "actualSurfaces": [
+        "tablet-pos",
+        "tablet"
+      ],
+      "actualRoutes": [
+        "/visual-os/tablet-codex-gallery"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_codex_gallery.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:41.212Z",
+      "finishedAt": "2026-06-19T05:17:41.285Z",
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

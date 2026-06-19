@@ -1,12 +1,18 @@
 {
-  "schema": "prisma.ui.certainty.registry.v4",
-  "created_by": "uisup4-final",
-  "policy": "Sin CERTIFIED no hay cambio visual final. Las superficies objetivo terminan solamente en CERTIFIED.",
+  "schema": "prisma.ui.certainty.registry.v5",
+  "created_by": "uirun1",
+  "policy": "Sin ALL_RUNTIME_PAGES_CERTIFIED no hay cambio visual final de rutas runtime.",
   "hard_states": [
     "CERTIFIED",
     "BLOCKED",
     "DRIFT",
-    "CONFLICT"
+    "CONFLICT",
+    "RUNTIME_CERTIFIED",
+    "SOURCE_CERTIFIED",
+    "RUNTIME_BLOCKED",
+    "ROUTE_UNMAPPED",
+    "ANCHOR_MISSING",
+    "SELECTOR_MISSING"
   ],
   "targetApps": [
     "chart-lab",
@@ -60,7 +66,8 @@
     "tools/quality/ui-certainty.mjs",
     "tools/quality/ui-certainty/**",
     "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
-    "package.json"
+    "package.json",
+    ".prisma-ui/routes.json"
   ],
   "default_gates": [
     "contract_validator",
@@ -73,7 +80,13 @@
     "inventory",
     "doctor",
     "report",
-    "certify_all_surfaces"
+    "certify_all_surfaces",
+    "routes",
+    "route_coverage",
+    "runtime_probe",
+    "certify_runtime_pages"
   ],
-  "baseline_policy": "Dirty files from the UI Certainty front are authorized baseline; local generatedAt-only runtime blockers are resolved surgically with backup."
+  "baseline_policy": "Dirty files from the UI Certainty front are authorized baseline; local generatedAt-only runtime blockers are resolved surgically with backup.",
+  "route_contracts": ".prisma-ui/routes.json",
+  "routeCount": 108
 }

@@ -1,0 +1,135 @@
+{
+  "schema": "prisma.ui.route.coverage.report.v1",
+  "status": "CERTIFIED",
+  "command": "route-coverage",
+  "generated_at": "2026-06-19T05:17:37.448Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 2,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "web": {
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 0,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "web.root.route",
+      "panel_id": "web.root.route",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "port": 3110,
+      "route": "/",
+      "pageFile": "products/web/app/app/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/page.tsx",
+      "anchorOwnerComponent": "products/web/app/app/layout.tsx",
+      "middleware": "products/web/app/middleware.ts",
+      "currentPanelContract": "web.workspace",
+      "runtimeUrl": "http://127.0.0.1:3110/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "web.root.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"web.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/web/app/app/page.tsx",
+        "products/web/app/app/layout.tsx",
+        "products/web/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"web.root.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "web.surface.governor.public.sober.route",
+      "panel_id": "web.surface.governor.public.sober.route",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "port": 3110,
+      "route": "/surface-governor-public-sober",
+      "pageFile": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "anchorOwnerComponent": "products/web/app/app/layout.tsx",
+      "middleware": "products/web/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "web.surface.governor.public.sober.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/surface-governor-public-sober"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"web.surface.governor.public.sober.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/web/app/app/surface-governor-public-sober/page.tsx",
+        "products/web/app/app/layout.tsx",
+        "products/web/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"web.surface.governor.public.sober.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "exitCodeExpectation": 0
+}

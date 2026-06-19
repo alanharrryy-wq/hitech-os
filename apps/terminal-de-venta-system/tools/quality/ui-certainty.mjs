@@ -3,8 +3,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { isUiRuntimeSuccess, runUiRuntimeCommand } from './ui-runtime-certainty.mjs';
 
 const HARD_STATES = ['CERTIFIED', 'BLOCKED', 'DRIFT', 'CONFLICT'];
+const UI_RUNTIME_COMMANDS = new Set(['routes', 'route-coverage', 'runtime-probe', 'certify-runtime-pages']);
 const cwd = process.cwd();
 const appRoot = cwd;
 
@@ -942,9 +944,322 @@ function reportCommand(flags = {}) {
   return report;
 }
 
+function loadRouteContracts(state = loadState()) {
+  const routePath = path.join(state.root, 'routes.json');
+  if (!exists(routePath)) return { schema: 'prisma.ui.route.contracts.missing', routes: [] };
+  const payload = readJson(routePath);
+  return { ...payload, routes: Array.isArray(payload.routes) ? payload.routes : [] };
+}
+
+function routeContracts(flags = {}) {
+  const state = loadState();
+  const payload = loadRouteContracts(state);
+  return payload.routes.filter((route) => {
+    if (flags.surface && flags.surface !== 'all' && route.surface !== flags.surface) return false;
+    if (flags.route && route.route !== flags.route) return false;
+    return true;
+  });
+}
+
+function routeCounts(routes) {
+  const bySurface = {};
+  for (const route of routes) {
+    bySurface[route.surface] ||= {
+      app: route.app,
+      port: route.port,
+      discoveredRoutes: 0,
+      runtimeRoutes: 0,
+      sourceCertifiedRoutes: 0,
+      runtimeCertifiedRoutes: 0,
+      runtimeBlockedRoutes: 0
+    };
+    bySurface[route.surface].discoveredRoutes += 1;
+    if (route.runtimeMode === 'runtime') bySurface[route.surface].runtimeRoutes += 1;
+  }
+  return bySurface;
+}
+
+function routeInventory(flags = {}) {
+  const state = loadState();
+  const routes = routeContracts(flags);
+  const countsBySurface = routeCounts(routes);
+  const report = {
+    ...baseReport('prisma.ui.route.inventory.report.v1', 'routes', emptyEvaluation(state), 'CERTIFIED'),
+    routeCount: routes.length,
+    countsBySurface,
+    entries: routes.map((route) => ({
+      app: route.app,
+      port: route.port,
+      surface: route.surface,
+      route: route.route,
+      pageFile: route.pageFile,
+      layoutFiles: route.layoutFiles || [],
+      ownerComponent: route.ownerComponent,
+      currentPanelContract: route.currentPanelContract || null,
+      requiredContract: route.route_id,
+      runtimeUrl: route.runtimeUrl,
+      runtimeMode: route.runtimeMode,
+      status: route.runtimeMode === 'runtime' ? 'RUNTIME_CERTIFIED_CANDIDATE' : 'SOURCE_CERTIFIED'
+    }))
+  };
+  writeReports('UI_ROUTE_INVENTORY_REPORT', report);
+  return report;
+}
+
+function routeCoverage(flags = {}) {
+  const state = loadState();
+  const routes = routeContracts(flags);
+  const surfaceIds = new Set(surfaceDefinitions(state).map((surface) => surface.id));
+  const routeIds = new Set();
+  const rows = routes.map((route) => {
+    const blockers = [];
+    const drifts = [];
+    const conflicts = [];
+    if (!route.route_id) blockers.push('missing route_id');
+    if (route.route_id && routeIds.has(route.route_id)) conflicts.push('duplicate route_id');
+    if (route.route_id) routeIds.add(route.route_id);
+    if (!surfaceIds.has(route.surface)) blockers.push(`surface is not registered: ${route.surface}`);
+    if (!route.ownerComponent) blockers.push('ownerComponent missing');
+    else if (!exists(absApp(route.ownerComponent))) drifts.push(`ownerComponent missing: ${route.ownerComponent}`);
+    if (!route.pageFile) blockers.push('pageFile missing');
+    else if (!exists(absApp(route.pageFile))) drifts.push(`pageFile missing: ${route.pageFile}`);
+    const anchorOwner = route.anchorOwnerComponent || route.ownerComponent;
+    const anchorText = anchorOwner && exists(absApp(anchorOwner)) ? safeRead(absApp(anchorOwner)) : '';
+    const middlewareText = route.middleware && exists(absApp(route.middleware)) ? safeRead(absApp(route.middleware)) : '';
+    const anchorProviderFound = route.surface === 'control-center'
+      ? attributeExistsInText(anchorText, 'data-prisma-panel', route.anchors?.['data-prisma-panel'])
+        && attributeExistsInText(anchorText, 'data-prisma-surface', route.anchors?.['data-prisma-surface'])
+        && attributeExistsInText(anchorText, 'data-prisma-route', route.anchors?.['data-prisma-route'])
+      : anchorText.includes('data-prisma-panel')
+        && anchorText.includes('data-prisma-surface')
+        && anchorText.includes('data-prisma-route')
+        && anchorText.includes('prismaRoutePanelId')
+        && middlewareText.includes('x-prisma-route');
+    if (!anchorProviderFound) blockers.push(`anchor provider missing for route ${route.route}`);
+    const selectorFound = (route.canonical_selectors || []).some((selector) => selector.startsWith('[data-prisma-panel='));
+    if (!selectorFound) blockers.push(`selector missing for route ${route.route}`);
+    let status = 'SOURCE_CERTIFIED';
+    if (conflicts.length) status = 'CONFLICT';
+    else if (drifts.length) status = 'DRIFT';
+    else if (blockers.length) status = blockers.some((item) => item.includes('anchor')) ? 'ANCHOR_MISSING' : 'ROUTE_UNMAPPED';
+    return {
+      ...route,
+      status,
+      blockers,
+      drifts,
+      conflicts,
+      anchorProvider: anchorOwner,
+      selectorChecks: (route.canonical_selectors || []).map((selector) => ({ selector, status: selector.startsWith('[data-prisma-panel=') ? 'SOURCE_CERTIFIED' : 'SELECTOR_MISSING' }))
+    };
+  });
+  const routeUnmappedCount = rows.filter((row) => row.status === 'ROUTE_UNMAPPED').length;
+  const anchorMissingCount = rows.filter((row) => row.status === 'ANCHOR_MISSING').length;
+  const selectorMissingCount = rows.reduce((count, row) => count + row.selectorChecks.filter((check) => check.status === 'SELECTOR_MISSING').length, 0);
+  const driftCount = rows.filter((row) => row.status === 'DRIFT').length;
+  const conflictCount = rows.filter((row) => row.status === 'CONFLICT').length;
+  const blockedCount = routeUnmappedCount + anchorMissingCount + selectorMissingCount;
+  const status = blockedCount || driftCount || conflictCount ? 'BLOCKED' : 'CERTIFIED';
+  const report = {
+    ...baseReport('prisma.ui.route.coverage.report.v1', 'route-coverage', emptyEvaluation(state), status),
+    routeCount: rows.length,
+    routeUnmappedCount,
+    runtimeBlockedCount: 0,
+    anchorMissingCount,
+    selectorMissingCount,
+    blockedCount,
+    driftCount,
+    conflictCount,
+    routes: rows,
+    blockers: rows.flatMap((row) => row.blockers.map((reason) => ({ route: row.route, surface: row.surface, reason }))),
+    drifts: rows.flatMap((row) => row.drifts.map((reason) => ({ route: row.route, surface: row.surface, reason }))),
+    conflicts: rows.flatMap((row) => row.conflicts.map((reason) => ({ route: row.route, surface: row.surface, reason }))),
+    exitCodeExpectation: status === 'CERTIFIED' ? 0 : 1
+  };
+  writeReports('UI_ROUTE_COVERAGE_REPORT', report);
+  return report;
+}
+
+async function fetchWithTimeout(url, timeoutMs = 60000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { redirect: 'follow', signal: controller.signal });
+    const text = await response.text();
+    return { response, text };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function mapLimit(items, limit, worker) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function run() {
+    while (next < items.length) {
+      const index = next;
+      next += 1;
+      results[index] = await worker(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
+  return results;
+}
+
+async function runtimeProbe(flags = {}) {
+  const state = loadState();
+  const routes = routeContracts(flags);
+  const outDir = path.join(state.current, 'runtime-html');
+  fs.mkdirSync(outDir, { recursive: true });
+  const rows = await mapLimit(routes, 6, async (route) => {
+    if (route.runtimeMode !== 'runtime') {
+      return {
+        ...route,
+        status: 'SOURCE_CERTIFIED',
+        httpStatus: null,
+        finalUrl: null,
+        contentType: null,
+        title: null,
+        hasPanel: true,
+        hasSurface: true,
+        hasRoute: true,
+        htmlSnapshot: null,
+        reason: route.sourceJustification || 'Source-certified route'
+      };
+    }
+    const startedAt = nowIso();
+    try {
+      const { response, text } = await fetchWithTimeout(route.runtimeUrl);
+      const title = text.match(/<title[^>]*>(.*?)<\/title>/i)?.[1] || null;
+      const expectedPanel = route.anchors?.['data-prisma-panel'];
+      const expectedSurface = route.anchors?.['data-prisma-surface'];
+      const expectedRoute = route.anchors?.['data-prisma-route'];
+      const hasPanel = text.includes(`data-prisma-panel="${expectedPanel}"`) || text.includes(`data-prisma-panel='${expectedPanel}'`);
+      const hasSurface = text.includes(`data-prisma-surface="${expectedSurface}"`) || text.includes(`data-prisma-surface='${expectedSurface}'`);
+      const hasRoute = text.includes(`data-prisma-route="${expectedRoute}"`) || text.includes(`data-prisma-route='${expectedRoute}'`);
+      const safeName = `${route.surface}_${route.route === '/' ? 'root' : route.route.slice(1).replace(/[^A-Za-z0-9]+/g, '_')}.html`;
+      const snapshot = path.join(outDir, safeName);
+      writeText(snapshot, text.length > 200000 ? text.slice(0, 200000) : text);
+      const ok = response.ok && hasPanel && hasSurface && hasRoute;
+      return {
+        ...route,
+        status: ok ? 'RUNTIME_CERTIFIED' : (!response.ok ? 'RUNTIME_BLOCKED' : (!hasPanel ? 'ANCHOR_MISSING' : (!hasSurface || !hasRoute ? 'ANCHOR_MISSING' : 'SELECTOR_MISSING'))),
+        httpStatus: response.status,
+        finalUrl: response.url,
+        redirected: response.redirected,
+        contentType: response.headers.get('content-type'),
+        title,
+        hasPanel,
+        hasSurface,
+        hasRoute,
+        htmlSnapshot: relApp(snapshot),
+        startedAt,
+        finishedAt: nowIso()
+      };
+    } catch (error) {
+      return {
+        ...route,
+        status: 'RUNTIME_BLOCKED',
+        httpStatus: null,
+        finalUrl: route.runtimeUrl,
+        contentType: null,
+        title: null,
+        hasPanel: false,
+        hasSurface: false,
+        hasRoute: false,
+        htmlSnapshot: null,
+        startedAt,
+        finishedAt: nowIso(),
+        error: String(error?.message || error)
+      };
+    }
+  });
+  const runtimeBlockedCount = rows.filter((row) => row.status === 'RUNTIME_BLOCKED').length;
+  const anchorMissingCount = rows.filter((row) => row.status === 'ANCHOR_MISSING').length;
+  const selectorMissingCount = rows.filter((row) => row.status === 'SELECTOR_MISSING').length;
+  const status = runtimeBlockedCount || anchorMissingCount || selectorMissingCount ? 'RUNTIME_BLOCKED' : 'RUNTIME_CERTIFIED';
+  const countsBySurface = {};
+  for (const row of rows) {
+    countsBySurface[row.surface] ||= { app: row.app, port: row.port, routeCount: 0, runtimeCertifiedCount: 0, sourceCertifiedCount: 0, runtimeBlockedCount: 0 };
+    countsBySurface[row.surface].routeCount += 1;
+    if (row.status === 'RUNTIME_CERTIFIED') countsBySurface[row.surface].runtimeCertifiedCount += 1;
+    if (row.status === 'SOURCE_CERTIFIED') countsBySurface[row.surface].sourceCertifiedCount += 1;
+    if (row.status === 'RUNTIME_BLOCKED') countsBySurface[row.surface].runtimeBlockedCount += 1;
+  }
+  const report = {
+    ...baseReport('prisma.ui.runtime.evidence.report.v1', 'runtime-probe', emptyEvaluation(state), status),
+    routeCount: rows.length,
+    runtimeCertifiedCount: rows.filter((row) => row.status === 'RUNTIME_CERTIFIED').length,
+    sourceCertifiedCount: rows.filter((row) => row.status === 'SOURCE_CERTIFIED').length,
+    runtimeBlockedCount,
+    anchorMissingCount,
+    selectorMissingCount,
+    blockedCount: runtimeBlockedCount + anchorMissingCount + selectorMissingCount,
+    driftCount: 0,
+    conflictCount: 0,
+    countsBySurface,
+    routes: rows,
+    exitCodeExpectation: status === 'RUNTIME_CERTIFIED' ? 0 : 1
+  };
+  writeReports('UI_RUNTIME_EVIDENCE_REPORT', report);
+  return report;
+}
+
+async function certifyRuntimePages(flags = {}) {
+  const coverage = routeCoverage(flags);
+  const runtime = await runtimeProbe(flags);
+  const routeUnmappedCount = coverage.routeUnmappedCount;
+  const runtimeBlockedCount = runtime.runtimeBlockedCount;
+  const anchorMissingCount = coverage.anchorMissingCount + runtime.anchorMissingCount;
+  const selectorMissingCount = coverage.selectorMissingCount + runtime.selectorMissingCount;
+  const blockedCount = coverage.blockedCount + runtime.blockedCount;
+  const driftCount = coverage.driftCount + runtime.driftCount;
+  const conflictCount = coverage.conflictCount + runtime.conflictCount;
+  const status = routeUnmappedCount || runtimeBlockedCount || anchorMissingCount || selectorMissingCount || blockedCount || driftCount || conflictCount
+    ? 'RUNTIME_BLOCKED'
+    : 'ALL_RUNTIME_PAGES_CERTIFIED';
+  const report = {
+    ...baseReport('prisma.ui.runtime.page.cert.report.v1', 'certify-runtime-pages', emptyEvaluation(loadState()), status),
+    routeCount: runtime.routeCount,
+    runtimeCertifiedCount: runtime.runtimeCertifiedCount,
+    sourceCertifiedCount: runtime.sourceCertifiedCount,
+    routeUnmappedCount,
+    runtimeBlockedCount,
+    anchorMissingCount,
+    selectorMissingCount,
+    blockedCount,
+    driftCount,
+    conflictCount,
+    countsBySurface: runtime.countsBySurface,
+    coverageReport: 'UI_ROUTE_COVERAGE_REPORT.json',
+    runtimeEvidenceReport: 'UI_RUNTIME_EVIDENCE_REPORT.json',
+    routes: runtime.routes.map((route) => ({
+      app: route.app,
+      port: route.port,
+      surface: route.surface,
+      route: route.route,
+      panel: route.panel_id,
+      status: route.status,
+      runtimeUrl: route.runtimeUrl,
+      httpStatus: route.httpStatus,
+      finalUrl: route.finalUrl,
+      htmlSnapshot: route.htmlSnapshot
+    })),
+    exitCodeExpectation: status === 'ALL_RUNTIME_PAGES_CERTIFIED' ? 0 : 1
+  };
+  writeReports('UI_RUNTIME_PAGE_CERT_REPORT', report);
+  return report;
+}
+
 function printReport(report) {
   const compact = {
     status: report.status,
+    routeCount: report.routeCount,
+    runtimeCertifiedCount: report.runtimeCertifiedCount,
+    sourceCertifiedCount: report.sourceCertifiedCount,
+    routeUnmappedCount: report.routeUnmappedCount,
+    runtimeBlockedCount: report.runtimeBlockedCount,
+    anchorMissingCount: report.anchorMissingCount,
+    selectorMissingCount: report.selectorMissingCount,
     panelCount: report.panelCount,
     anchorCount: report.anchorCount,
     conflictCount: report.conflictCount,
@@ -963,6 +1278,7 @@ let result;
 if (cmd === 'self-test') result = selfTest(flags);
 else if (cmd === 'certify' || cmd === 'supreme' || cmd === 'work') result = certify(flags);
 else if (cmd === 'certify-all-surfaces') result = certifyAllSurfaces(flags);
+else if (UI_RUNTIME_COMMANDS.has(cmd)) result = await runUiRuntimeCommand(cmd, flags);
 else if (cmd === 'contracts') result = contracts(flags);
 else if (cmd === 'anchors') result = anchorsCommand(flags);
 else if (cmd === 'selectors') result = selectorsCommand(flags);
@@ -978,5 +1294,5 @@ else {
   process.exit(2);
 }
 printReport(result);
-if (flags.strict && result.status !== 'CERTIFIED') process.exit(1);
+if (flags.strict && result.status !== 'CERTIFIED' && !isUiRuntimeSuccess(result.status)) process.exit(1);
 if (['scope', 'drift', 'conflicts', 'zero-important', 'doctor'].includes(cmd) && result.status !== 'CERTIFIED') process.exit(1);

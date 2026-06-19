@@ -1,10 +1,10 @@
 {
   "schema": "prisma.ui.inventory.report.v4",
-  "createdAt": "2026-06-18T23:04:17.938Z",
+  "createdAt": "2026-06-19T05:17:34.160Z",
   "command": "inventory",
   "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-  "repoHead": "0bc74e1490afff84850187f2bacde2fd003891c5",
-  "branch": "feat/ui-certainty-all-surfaces-final",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
   "status": "CERTIFIED",
   "hardStates": [
     "CERTIFIED",
@@ -34,7 +34,8 @@
       "app": "Chart Lab",
       "port": 3000,
       "routes": [
-        "/"
+        "/",
+        "/recipe-studio-v2"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"
@@ -44,7 +45,8 @@
       "app": "PRISMA Web/Edit",
       "port": 3110,
       "routes": [
-        "/"
+        "/",
+        "/surface-governor-public-sober"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"
@@ -54,7 +56,41 @@
       "app": "PRISMA Tablet Core",
       "port": 3120,
       "routes": [
-        "/pos"
+        "/",
+        "/catalog",
+        "/checkout",
+        "/events/outbox",
+        "/existencias",
+        "/inventory",
+        "/inventory/low-stock",
+        "/offline",
+        "/pos",
+        "/prisma-dark-pos-reference",
+        "/prisma-pulse",
+        "/prisma-visual-catalog",
+        "/referencia-visual",
+        "/release-gate",
+        "/returns",
+        "/sales",
+        "/sales/history",
+        "/sales/history/:saleId",
+        "/sales/today",
+        "/sales/today/:saleId",
+        "/sales/today/:saleId/return",
+        "/screen-standard-preview",
+        "/settings/data",
+        "/settings/export",
+        "/settings/license",
+        "/shift",
+        "/stock",
+        "/sync",
+        "/visual-os",
+        "/visual-os/detached",
+        "/visual-os/materiality-catalog",
+        "/visual-os/pro",
+        "/visual-os/realtime",
+        "/visual-os/tablet-background-gallery",
+        "/visual-os/tablet-codex-gallery"
       ],
       "panelCount": 7,
       "status": "CERTIFIED"
@@ -64,12 +100,69 @@
       "app": "PRISMA PC Backoffice",
       "port": 3130,
       "routes": [
-        "*",
+        "/",
+        "/acciones-masivas",
+        "/ajustes-inventario",
+        "/alertas-ejecutivas",
+        "/alertas-operativas",
+        "/audit",
+        "/auditoria-inventario",
+        "/cash-sessions",
         "/catalog",
+        "/catalogo-activo",
+        "/conteos-operativos",
+        "/contratos-reporte",
+        "/counts",
         "/dashboard",
-        "/stock",
+        "/data-quality",
+        "/detalle-registros",
+        "/devices",
+        "/estados-operativos",
+        "/existencias-criticas",
+        "/exportables",
+        "/filtros-avanzados",
+        "/filtros-fecha",
+        "/forecast-basico",
+        "/glosario",
+        "/gobierno",
+        "/incidencias-recepcion",
+        "/integridad-barcodes",
+        "/laboratorio-pc",
+        "/laboratorio-pc/chart-lab",
+        "/laboratorio-pc/dashboard-governor",
+        "/laboratorio-pc/referencia-visual",
+        "/laboratorio-pc/referencia-visual/liquid-glass",
+        "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "/license-runtime",
+        "/metricas-dia",
+        "/movements",
+        "/ordenes-compra",
+        "/outbox-operativo",
+        "/politica-precios",
+        "/prisma-insights",
+        "/prisma-insights/chart-lab",
+        "/proveedores",
+        "/purchasing",
+        "/receiving",
+        "/recepcion-proveedor",
+        "/referencia-visual",
+        "/referencia-visual/liquid-glass",
+        "/referencia-visual/liquid-glass-capsules",
+        "/replenishment",
+        "/sales-control",
+        "/salud-barcodes",
+        "/scorecards-negocio",
+        "/senal-reabasto",
         "/settings",
-        "/laboratorio-pc/referencia-visual/liquid-glass"
+        "/settings/license",
+        "/stock",
+        "/sync",
+        "/sync-operativo",
+        "/tablas-operativas",
+        "/tablero-kpi",
+        "/tablet-communication",
+        "/validacion-catalogo",
+        "/vistas-ejecutivas"
       ],
       "panelCount": 6,
       "status": "CERTIFIED"
@@ -79,7 +172,11 @@
       "app": "PRISMA Mobile Adder",
       "port": 3140,
       "routes": [
-        "/"
+        "/",
+        "/prisma-app",
+        "/prisma-app/install",
+        "/prisma-app/offline",
+        "/prisma-command"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"
@@ -381,7 +478,8 @@
       "app": "Chart Lab",
       "port": 3000,
       "routes": [
-        "/"
+        "/",
+        "/recipe-studio-v2"
       ],
       "root": "products/chart-lab/app",
       "owners": [
@@ -404,7 +502,8 @@
       "app": "PRISMA Web/Edit",
       "port": 3110,
       "routes": [
-        "/"
+        "/",
+        "/surface-governor-public-sober"
       ],
       "root": "products/web/app",
       "owners": [
@@ -427,7 +526,41 @@
       "app": "PRISMA Tablet Core",
       "port": 3120,
       "routes": [
-        "/pos"
+        "/",
+        "/catalog",
+        "/checkout",
+        "/events/outbox",
+        "/existencias",
+        "/inventory",
+        "/inventory/low-stock",
+        "/offline",
+        "/pos",
+        "/prisma-dark-pos-reference",
+        "/prisma-pulse",
+        "/prisma-visual-catalog",
+        "/referencia-visual",
+        "/release-gate",
+        "/returns",
+        "/sales",
+        "/sales/history",
+        "/sales/history/:saleId",
+        "/sales/today",
+        "/sales/today/:saleId",
+        "/sales/today/:saleId/return",
+        "/screen-standard-preview",
+        "/settings/data",
+        "/settings/export",
+        "/settings/license",
+        "/shift",
+        "/stock",
+        "/sync",
+        "/visual-os",
+        "/visual-os/detached",
+        "/visual-os/materiality-catalog",
+        "/visual-os/pro",
+        "/visual-os/realtime",
+        "/visual-os/tablet-background-gallery",
+        "/visual-os/tablet-codex-gallery"
       ],
       "root": "products/tablet/app",
       "owners": [
@@ -460,12 +593,69 @@
       "app": "PRISMA PC Backoffice",
       "port": 3130,
       "routes": [
-        "*",
+        "/",
+        "/acciones-masivas",
+        "/ajustes-inventario",
+        "/alertas-ejecutivas",
+        "/alertas-operativas",
+        "/audit",
+        "/auditoria-inventario",
+        "/cash-sessions",
         "/catalog",
+        "/catalogo-activo",
+        "/conteos-operativos",
+        "/contratos-reporte",
+        "/counts",
         "/dashboard",
-        "/stock",
+        "/data-quality",
+        "/detalle-registros",
+        "/devices",
+        "/estados-operativos",
+        "/existencias-criticas",
+        "/exportables",
+        "/filtros-avanzados",
+        "/filtros-fecha",
+        "/forecast-basico",
+        "/glosario",
+        "/gobierno",
+        "/incidencias-recepcion",
+        "/integridad-barcodes",
+        "/laboratorio-pc",
+        "/laboratorio-pc/chart-lab",
+        "/laboratorio-pc/dashboard-governor",
+        "/laboratorio-pc/referencia-visual",
+        "/laboratorio-pc/referencia-visual/liquid-glass",
+        "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "/license-runtime",
+        "/metricas-dia",
+        "/movements",
+        "/ordenes-compra",
+        "/outbox-operativo",
+        "/politica-precios",
+        "/prisma-insights",
+        "/prisma-insights/chart-lab",
+        "/proveedores",
+        "/purchasing",
+        "/receiving",
+        "/recepcion-proveedor",
+        "/referencia-visual",
+        "/referencia-visual/liquid-glass",
+        "/referencia-visual/liquid-glass-capsules",
+        "/replenishment",
+        "/sales-control",
+        "/salud-barcodes",
+        "/scorecards-negocio",
+        "/senal-reabasto",
         "/settings",
-        "/laboratorio-pc/referencia-visual/liquid-glass"
+        "/settings/license",
+        "/stock",
+        "/sync",
+        "/sync-operativo",
+        "/tablas-operativas",
+        "/tablero-kpi",
+        "/tablet-communication",
+        "/validacion-catalogo",
+        "/vistas-ejecutivas"
       ],
       "root": "products/pc/app",
       "owners": [
@@ -495,7 +685,11 @@
       "app": "PRISMA Mobile Adder",
       "port": 3140,
       "routes": [
-        "/"
+        "/",
+        "/prisma-app",
+        "/prisma-app/install",
+        "/prisma-app/offline",
+        "/prisma-command"
       ],
       "root": "products/mobile/app",
       "owners": [
@@ -559,7 +753,7 @@
       "status": "CERTIFIED"
     }
   ],
-  "filesScannedCount": 2754,
+  "filesScannedCount": 2761,
   "scanRoots": [
     "products",
     "app",
@@ -572,6 +766,14 @@
     ".prisma-ui/panels"
   ],
   "anchors": [
+    {
+      "panel_id": "chart-lab.recipe.studio.v2.route",
+      "file": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "line": 136,
+      "index": 5079,
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2"
+    },
     {
       "panel_id": "chart-lab.workspace",
       "file": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
@@ -589,12 +791,44 @@
       "route": "/"
     },
     {
+      "panel_id": "pc.alertas.ejecutivas.route",
+      "file": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "line": 18,
+      "index": 439,
+      "surface": "pc",
+      "route": "/alertas-ejecutivas"
+    },
+    {
+      "panel_id": "pc.laboratorio.pc.dashboard.governor.route",
+      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "line": 27,
+      "index": 1259,
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor"
+    },
+    {
+      "panel_id": "pc.laboratorio.pc.route",
+      "file": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "line": 35,
+      "index": 1167,
+      "surface": "pc",
+      "route": "/laboratorio-pc"
+    },
+    {
       "panel_id": "pc.liquid-glass-reference",
       "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
       "line": 95,
       "index": 3108,
       "surface": "pc",
       "route": "/laboratorio-pc/referencia-visual/liquid-glass"
+    },
+    {
+      "panel_id": "pc.laboratorio.pc.referencia.visual.route",
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 56,
+      "index": 2894,
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual"
     },
     {
       "panel_id": "pc.workspace",
@@ -605,10 +839,18 @@
       "route": "*"
     },
     {
+      "panel_id": "pc.workspace",
+      "file": "products/pc/app/components/layout/app-shell.tsx",
+      "line": 22,
+      "index": 1343,
+      "surface": "pc",
+      "route": "*"
+    },
+    {
       "panel_id": "tablet.pos.payment-overlay",
       "file": "products/tablet/app/components/pos/pos-payment-panel.tsx",
       "line": 150,
-      "index": 5124,
+      "index": 4975,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -616,7 +858,7 @@
       "panel_id": "tablet.pos.product-grid",
       "file": "products/tablet/app/components/pos/pos-product-list.tsx",
       "line": 217,
-      "index": 8594,
+      "index": 8378,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -624,7 +866,7 @@
       "panel_id": "tablet.pos.search-card",
       "file": "products/tablet/app/components/pos/pos-product-search.tsx",
       "line": 78,
-      "index": 2372,
+      "index": 2295,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -632,7 +874,7 @@
       "panel_id": "tablet.pos.workspace",
       "file": "products/tablet/app/components/pos/pos-screen.tsx",
       "line": 388,
-      "index": 15804,
+      "index": 15417,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -640,7 +882,7 @@
       "panel_id": "tablet.pos.category-rail",
       "file": "products/tablet/app/components/pos/pos-screen.tsx",
       "line": 436,
-      "index": 17900,
+      "index": 17465,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -648,7 +890,7 @@
       "panel_id": "tablet.pos.cart-panel",
       "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
       "line": 125,
-      "index": 4519,
+      "index": 4395,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -656,7 +898,7 @@
       "panel_id": "tablet.pos.checkout-diagnostic",
       "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
       "line": 239,
-      "index": 10544,
+      "index": 10306,
       "surface": "tablet",
       "route": "/pos"
     },
@@ -1242,12 +1484,20 @@
         {
           "panel_id": "pc.workspace",
           "file": "products/pc/app/components/layout/app-shell.tsx",
+          "line": 22,
+          "index": 1343,
+          "surface": "pc",
+          "route": "*"
+        },
+        {
+          "panel_id": "pc.workspace",
+          "file": "products/pc/app/components/layout/app-shell.tsx",
           "line": null,
           "index": null,
           "synthetic": true
         }
       ],
-      "anchor_count": 2,
+      "anchor_count": 3,
       "required_anchor_checks": [
         {
           "attribute": "data-prisma-panel",
@@ -1271,6 +1521,7 @@
           "status": "CERTIFIED",
           "found": true,
           "foundIn": [
+            "products/pc/app/components/layout/app-shell.tsx",
             "products/pc/app/components/layout/app-shell.tsx",
             "products/pc/app/components/layout/app-shell.tsx"
           ]
@@ -1307,7 +1558,7 @@
           "panel_id": "tablet.pos.cart-panel",
           "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
           "line": 125,
-          "index": 4519,
+          "index": 4395,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1380,7 +1631,7 @@
           "panel_id": "tablet.pos.category-rail",
           "file": "products/tablet/app/components/pos/pos-screen.tsx",
           "line": 436,
-          "index": 17900,
+          "index": 17465,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1453,7 +1704,7 @@
           "panel_id": "tablet.pos.checkout-diagnostic",
           "file": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
           "line": 239,
-          "index": 10544,
+          "index": 10306,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1526,7 +1777,7 @@
           "panel_id": "tablet.pos.payment-overlay",
           "file": "products/tablet/app/components/pos/pos-payment-panel.tsx",
           "line": 150,
-          "index": 5124,
+          "index": 4975,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1599,7 +1850,7 @@
           "panel_id": "tablet.pos.product-grid",
           "file": "products/tablet/app/components/pos/pos-product-list.tsx",
           "line": 217,
-          "index": 8594,
+          "index": 8378,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1672,7 +1923,7 @@
           "panel_id": "tablet.pos.search-card",
           "file": "products/tablet/app/components/pos/pos-product-search.tsx",
           "line": 78,
-          "index": 2372,
+          "index": 2295,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1745,7 +1996,7 @@
           "panel_id": "tablet.pos.workspace",
           "file": "products/tablet/app/components/pos/pos-screen.tsx",
           "line": 388,
-          "index": 15804,
+          "index": 15417,
           "surface": "tablet",
           "route": "/pos"
         },
@@ -1883,7 +2134,8 @@
       "app": "Chart Lab",
       "port": 3000,
       "routes": [
-        "/"
+        "/",
+        "/recipe-studio-v2"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"
@@ -1893,7 +2145,8 @@
       "app": "PRISMA Web/Edit",
       "port": 3110,
       "routes": [
-        "/"
+        "/",
+        "/surface-governor-public-sober"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"
@@ -1903,7 +2156,41 @@
       "app": "PRISMA Tablet Core",
       "port": 3120,
       "routes": [
-        "/pos"
+        "/",
+        "/catalog",
+        "/checkout",
+        "/events/outbox",
+        "/existencias",
+        "/inventory",
+        "/inventory/low-stock",
+        "/offline",
+        "/pos",
+        "/prisma-dark-pos-reference",
+        "/prisma-pulse",
+        "/prisma-visual-catalog",
+        "/referencia-visual",
+        "/release-gate",
+        "/returns",
+        "/sales",
+        "/sales/history",
+        "/sales/history/:saleId",
+        "/sales/today",
+        "/sales/today/:saleId",
+        "/sales/today/:saleId/return",
+        "/screen-standard-preview",
+        "/settings/data",
+        "/settings/export",
+        "/settings/license",
+        "/shift",
+        "/stock",
+        "/sync",
+        "/visual-os",
+        "/visual-os/detached",
+        "/visual-os/materiality-catalog",
+        "/visual-os/pro",
+        "/visual-os/realtime",
+        "/visual-os/tablet-background-gallery",
+        "/visual-os/tablet-codex-gallery"
       ],
       "panelCount": 7,
       "status": "CERTIFIED"
@@ -1913,12 +2200,69 @@
       "app": "PRISMA PC Backoffice",
       "port": 3130,
       "routes": [
-        "*",
+        "/",
+        "/acciones-masivas",
+        "/ajustes-inventario",
+        "/alertas-ejecutivas",
+        "/alertas-operativas",
+        "/audit",
+        "/auditoria-inventario",
+        "/cash-sessions",
         "/catalog",
+        "/catalogo-activo",
+        "/conteos-operativos",
+        "/contratos-reporte",
+        "/counts",
         "/dashboard",
-        "/stock",
+        "/data-quality",
+        "/detalle-registros",
+        "/devices",
+        "/estados-operativos",
+        "/existencias-criticas",
+        "/exportables",
+        "/filtros-avanzados",
+        "/filtros-fecha",
+        "/forecast-basico",
+        "/glosario",
+        "/gobierno",
+        "/incidencias-recepcion",
+        "/integridad-barcodes",
+        "/laboratorio-pc",
+        "/laboratorio-pc/chart-lab",
+        "/laboratorio-pc/dashboard-governor",
+        "/laboratorio-pc/referencia-visual",
+        "/laboratorio-pc/referencia-visual/liquid-glass",
+        "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "/license-runtime",
+        "/metricas-dia",
+        "/movements",
+        "/ordenes-compra",
+        "/outbox-operativo",
+        "/politica-precios",
+        "/prisma-insights",
+        "/prisma-insights/chart-lab",
+        "/proveedores",
+        "/purchasing",
+        "/receiving",
+        "/recepcion-proveedor",
+        "/referencia-visual",
+        "/referencia-visual/liquid-glass",
+        "/referencia-visual/liquid-glass-capsules",
+        "/replenishment",
+        "/sales-control",
+        "/salud-barcodes",
+        "/scorecards-negocio",
+        "/senal-reabasto",
         "/settings",
-        "/laboratorio-pc/referencia-visual/liquid-glass"
+        "/settings/license",
+        "/stock",
+        "/sync",
+        "/sync-operativo",
+        "/tablas-operativas",
+        "/tablero-kpi",
+        "/tablet-communication",
+        "/validacion-catalogo",
+        "/vistas-ejecutivas"
       ],
       "panelCount": 6,
       "status": "CERTIFIED"
@@ -1928,7 +2272,11 @@
       "app": "PRISMA Mobile Adder",
       "port": 3140,
       "routes": [
-        "/"
+        "/",
+        "/prisma-app",
+        "/prisma-app/install",
+        "/prisma-app/offline",
+        "/prisma-command"
       ],
       "panelCount": 1,
       "status": "CERTIFIED"

@@ -1,0 +1,290 @@
+{
+  "schema": "prisma.ui.route.coverage.report.v1",
+  "status": "CERTIFIED",
+  "command": "route-coverage",
+  "generated_at": "2026-06-19T05:17:50.555Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 5,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "mobile": {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routeCount": 5,
+      "runtimeRoutes": 5,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 0,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "mobile.root.route",
+      "panel_id": "mobile.root.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/",
+      "pageFile": "products/mobile/app/app/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": "mobile.workspace",
+      "runtimeUrl": "http://127.0.0.1:3140/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.root.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.root.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "mobile.prisma.app.route",
+      "panel_id": "mobile.prisma.app.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app",
+      "pageFile": "products/mobile/app/app/prisma-app/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.prisma.app.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "mobile.prisma.app.install.route",
+      "panel_id": "mobile.prisma.app.install.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app/install",
+      "pageFile": "products/mobile/app/app/prisma-app/install/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/install/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/install",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.install.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app/install"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.install.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/install/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.prisma.app.install.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "mobile.prisma.app.offline.route",
+      "panel_id": "mobile.prisma.app.offline.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app/offline",
+      "pageFile": "products/mobile/app/app/prisma-app/offline/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/offline/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/offline",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.offline.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app/offline"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.offline.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/offline/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.prisma.app.offline.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "mobile.prisma.command.route",
+      "panel_id": "mobile.prisma.command.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-command",
+      "pageFile": "products/mobile/app/app/prisma-command/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-command/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-command/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-command",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.command.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-command"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.command.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-command/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-command/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"mobile.prisma.command.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "exitCodeExpectation": 0
+}

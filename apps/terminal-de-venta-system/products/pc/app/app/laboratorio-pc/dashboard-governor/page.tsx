@@ -21,7 +21,14 @@ export const dynamic = "force-static";
 
 export default function DashboardGovernorPage() {
   return (
-    <main className={styles.dashboardSurface} data-prisma-surface-governor="pilot-04" data-prisma-surface="pc-dashboard-lab" data-pos-protected="true">
+    <main
+      className={styles.dashboardSurface}
+      data-prisma-surface-governor="pilot-04"
+      data-prisma-panel="pc.laboratorio.pc.dashboard.governor.route"
+      data-prisma-surface="pc"
+      data-prisma-route="/laboratorio-pc/dashboard-governor"
+      data-pos-protected="true"
+    >
       <section className={styles.backgroundField} aria-hidden="true" />
       <section className={styles.scrimField} aria-hidden="true" />
       <div className={styles.shell}>

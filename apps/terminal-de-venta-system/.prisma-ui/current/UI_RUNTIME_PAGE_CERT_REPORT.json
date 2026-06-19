@@ -1,0 +1,3085 @@
+{
+  "schema": "prisma.ui.runtime.page.cert.report.v1",
+  "status": "ALL_RUNTIME_PAGES_CERTIFIED",
+  "command": "certify-runtime-pages",
+  "generated_at": "2026-06-19T05:17:33.031Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 108,
+  "runtimeCertifiedCount": 97,
+  "sourceCertifiedCount": 11,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "chart-lab": {
+      "app": "Chart Lab",
+      "port": 3000,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 2,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    },
+    "web": {
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 2,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    },
+    "tablet": {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "routeCount": 35,
+      "runtimeRoutes": 29,
+      "sourceOnlyDynamicRoutes": 3,
+      "sourceOnlyRedirectRoutes": 3,
+      "runtimeCertifiedCount": 29,
+      "sourceCertifiedCount": 6,
+      "runtimeBlockedCount": 0
+    },
+    "pc": {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routeCount": 63,
+      "runtimeRoutes": 58,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 5,
+      "runtimeCertifiedCount": 58,
+      "sourceCertifiedCount": 5,
+      "runtimeBlockedCount": 0
+    },
+    "mobile": {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routeCount": 5,
+      "runtimeRoutes": 5,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 5,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    },
+    "control-center": {
+      "app": "Control Center",
+      "port": 3150,
+      "routeCount": 1,
+      "runtimeRoutes": 1,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 1,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "coverageReport": "UI_ROUTE_COVERAGE_REPORT.json",
+  "runtimeEvidenceReport": "UI_RUNTIME_EVIDENCE_REPORT.json",
+  "gapsReport": "UI_RUNTIME_GAPS_REPORT.json",
+  "executiveSummaryReport": "UI_RUNTIME_EXECUTIVE_SUMMARY.json",
+  "routes": [
+    {
+      "app": "Chart Lab",
+      "port": 3000,
+      "surface": "chart-lab",
+      "route": "/",
+      "panel": "chart-lab.root.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3000/",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3000/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Chart Lab",
+      "actualPanels": [
+        "chart-lab.root.route",
+        "chart-lab.workspace"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/chart-lab_root.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "Chart Lab",
+      "port": 3000,
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "panel": "chart-lab.recipe.studio.v2.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Chart Lab",
+      "actualPanels": [
+        "chart-lab.recipe.studio.v2.route"
+      ],
+      "actualRoutes": [
+        "/recipe-studio-v2"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/chart-lab_recipe_studio_v2.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "surface": "web",
+      "route": "/",
+      "panel": "web.root.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3110/",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3110/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA EIT",
+      "actualPanels": [
+        "web.root.route",
+        "web.workspace"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/web_root.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "surface": "web",
+      "route": "/surface-governor-public-sober",
+      "panel": "web.surface.governor.public.sober.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA EIT",
+      "actualPanels": [
+        "web.surface.governor.public.sober.route"
+      ],
+      "actualRoutes": [
+        "/surface-governor-public-sober"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/web_surface_governor_public_sober.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/",
+      "panel": "tablet.root.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.root.route"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_root.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/catalog",
+      "panel": "tablet.catalog.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/catalog",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Catálogo - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.catalog.route"
+      ],
+      "actualRoutes": [
+        "/catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_catalog.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/checkout",
+      "panel": "tablet.checkout.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/checkout",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/checkout",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Cobro unificado - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.checkout.route"
+      ],
+      "actualRoutes": [
+        "/checkout"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_checkout.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/events/outbox",
+      "panel": "tablet.events.outbox.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/events/outbox",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/events/outbox",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.events.outbox.route"
+      ],
+      "actualRoutes": [
+        "/events/outbox"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_events_outbox.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/existencias",
+      "panel": "tablet.existencias.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/existencias",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/existencias",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Existencias - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.existencias.route"
+      ],
+      "actualRoutes": [
+        "/existencias"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_existencias.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/inventory",
+      "panel": "tablet.inventory.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /stock; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/inventory/low-stock",
+      "panel": "tablet.inventory.low.stock.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/inventory/low-stock",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/inventory/low-stock",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Stock bajo - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.inventory.low.stock.route"
+      ],
+      "actualRoutes": [
+        "/inventory/low-stock"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_inventory_low_stock.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/offline",
+      "panel": "tablet.offline.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/offline",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/offline",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Offline y export - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.offline.route"
+      ],
+      "actualRoutes": [
+        "/offline"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_offline.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/pos",
+      "panel": "tablet.pos.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/pos",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/pos",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Vender - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.pos.route"
+      ],
+      "actualRoutes": [
+        "/pos"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_pos.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/prisma-dark-pos-reference",
+      "panel": "tablet.prisma.dark.pos.reference.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Dark POS Reference - Tablet",
+      "actualPanels": [
+        "tablet.prisma.dark.pos.reference.route"
+      ],
+      "actualRoutes": [
+        "/prisma-dark-pos-reference"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_dark_pos_reference.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/prisma-pulse",
+      "panel": "tablet.prisma.pulse.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-pulse",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-pulse",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Pulse - Tablet Operations",
+      "actualPanels": [
+        "tablet.prisma.pulse.route"
+      ],
+      "actualRoutes": [
+        "/prisma-pulse"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/prisma-visual-catalog",
+      "panel": "tablet.prisma.visual.catalog.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.prisma.visual.catalog.route"
+      ],
+      "actualRoutes": [
+        "/prisma-visual-catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_prisma_visual_catalog.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/referencia-visual",
+      "panel": "tablet.referencia.visual.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/referencia-visual",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/referencia-visual",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Referencia Visual - Tablet",
+      "actualPanels": [
+        "tablet.referencia.visual.route"
+      ],
+      "actualRoutes": [
+        "/referencia-visual"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_referencia_visual.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/release-gate",
+      "panel": "tablet.release.gate.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/release-gate",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/release-gate",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.release.gate.route"
+      ],
+      "actualRoutes": [
+        "/release-gate"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_release_gate.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/returns",
+      "panel": "tablet.returns.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/returns",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/returns",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Devoluciones - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.returns.route"
+      ],
+      "actualRoutes": [
+        "/returns"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_returns.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales",
+      "panel": "tablet.sales.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /sales/today; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales/history",
+      "panel": "tablet.sales.history.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/sales/history",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sales/history",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.sales.history.route"
+      ],
+      "actualRoutes": [
+        "/sales/history"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales/history/:saleId",
+      "panel": "tablet.sales.history.saleId.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales/today",
+      "panel": "tablet.sales.today.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/sales/today",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sales/today",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.sales.today.route"
+      ],
+      "actualRoutes": [
+        "/sales/today"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales/today/:saleId",
+      "panel": "tablet.sales.today.saleId.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sales/today/:saleId/return",
+      "panel": "tablet.sales.today.saleId.return.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/screen-standard-preview",
+      "panel": "tablet.screen.standard.preview.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/screen-standard-preview",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/screen-standard-preview",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.screen.standard.preview.route"
+      ],
+      "actualRoutes": [
+        "/screen-standard-preview"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_screen_standard_preview.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/settings/data",
+      "panel": "tablet.settings.data.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /settings/license; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/settings/export",
+      "panel": "tablet.settings.export.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/settings/export",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/settings/export",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Exportaciones - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.settings.export.route"
+      ],
+      "actualRoutes": [
+        "/settings/export"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_settings_export.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/settings/license",
+      "panel": "tablet.settings.license.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/settings/license",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/settings/license",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Terminal de venta 6.1.1",
+      "actualPanels": [
+        "tablet.settings.license.route"
+      ],
+      "actualRoutes": [
+        "/settings/license"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_settings_license.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/shift",
+      "panel": "tablet.shift.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/shift",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/shift",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Turno y caja - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.shift.route"
+      ],
+      "actualRoutes": [
+        "/shift",
+        "shift"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_shift.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/stock",
+      "panel": "tablet.stock.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/stock",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/stock",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Existencias para vender - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.stock.route"
+      ],
+      "actualRoutes": [
+        "/stock"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_stock.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/sync",
+      "panel": "tablet.sync.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/sync",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/sync",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Pendientes y conexión - PRISMA Tablet",
+      "actualPanels": [
+        "tablet.sync.route"
+      ],
+      "actualRoutes": [
+        "/sync"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_sync.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os",
+      "panel": "tablet.visual.os.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro QA",
+      "actualPanels": [
+        "tablet.visual.os.route"
+      ],
+      "actualRoutes": [
+        "/visual-os"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/detached",
+      "panel": "tablet.visual.os.detached.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/detached",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/detached",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Detached",
+      "actualPanels": [
+        "tablet.visual.os.detached.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/detached"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_detached.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/materiality-catalog",
+      "panel": "tablet.visual.os.materiality.catalog.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Materiality Catalog · Visual OS Pilot 01",
+      "actualPanels": [
+        "tablet.visual.os.materiality.catalog.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/materiality-catalog"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_materiality_catalog.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/pro",
+      "panel": "tablet.visual.os.pro.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/pro",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/pro",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Isolated",
+      "actualPanels": [
+        "tablet.visual.os.pro.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/pro"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_pro.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/realtime",
+      "panel": "tablet.visual.os.realtime.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/realtime",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/realtime",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Studio Pro Bridge",
+      "actualPanels": [
+        "tablet.visual.os.realtime.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/realtime"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_realtime.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/tablet-background-gallery",
+      "panel": "tablet.visual.os.tablet.background.gallery.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Tablet Storm Vapor Background Gallery",
+      "actualPanels": [
+        "tablet.visual.os.tablet.background.gallery.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/tablet-background-gallery"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_background_gallery.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Tablet Core",
+      "port": 3120,
+      "surface": "tablet",
+      "route": "/visual-os/tablet-codex-gallery",
+      "panel": "tablet.visual.os.tablet.codex.gallery.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Tablet Codex Gallery",
+      "actualPanels": [
+        "tablet.visual.os.tablet.codex.gallery.route"
+      ],
+      "actualRoutes": [
+        "/visual-os/tablet-codex-gallery"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_codex_gallery.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/",
+      "panel": "pc.root.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /dashboard; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "panel": "pc.acciones.masivas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/acciones-masivas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/acciones-masivas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.acciones.masivas.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/acciones-masivas",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_acciones_masivas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "panel": "pc.ajustes.inventario.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/ajustes-inventario",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/ajustes-inventario",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.ajustes.inventario.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/ajustes-inventario",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_ajustes_inventario.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "panel": "pc.alertas.ejecutivas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-ejecutivas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/alertas-ejecutivas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.alertas.ejecutivas.route"
+      ],
+      "actualRoutes": [
+        "/alertas-ejecutivas"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_alertas_ejecutivas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "panel": "pc.alertas.operativas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-operativas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/alertas-operativas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.alertas.operativas.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/alertas-operativas",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_alertas_operativas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/audit",
+      "panel": "pc.audit.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/audit",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/audit",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.audit.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/audit",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_audit.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "panel": "pc.auditoria.inventario.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/auditoria-inventario",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/auditoria-inventario",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.auditoria.inventario.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/auditoria-inventario",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_auditoria_inventario.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "panel": "pc.cash.sessions.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/cash-sessions",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/cash-sessions",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.cash.sessions.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/cash-sessions",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_cash_sessions.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/catalog",
+      "panel": "pc.catalog.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/catalog",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/catalog",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.catalog.route",
+        "pc.workspace",
+        "pc.catalog"
+      ],
+      "actualRoutes": [
+        "/catalog",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_catalog.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "panel": "pc.catalogo.activo.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/catalogo-activo",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/catalogo-activo",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.catalogo.activo.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/catalogo-activo",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_catalogo_activo.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "panel": "pc.conteos.operativos.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/conteos-operativos",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/conteos-operativos",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.conteos.operativos.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/conteos-operativos",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_conteos_operativos.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "panel": "pc.contratos.reporte.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/contratos-reporte",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/contratos-reporte",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.contratos.reporte.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/contratos-reporte",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_contratos_reporte.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/counts",
+      "panel": "pc.counts.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/counts",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/counts",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.counts.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/counts",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_counts.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/dashboard",
+      "panel": "pc.dashboard.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/dashboard",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/dashboard",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.dashboard.route",
+        "pc.workspace",
+        "pc.dashboard"
+      ],
+      "actualRoutes": [
+        "/dashboard",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_dashboard.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/data-quality",
+      "panel": "pc.data.quality.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/data-quality",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/data-quality",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.data.quality.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/data-quality",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_data_quality.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "panel": "pc.detalle.registros.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/detalle-registros",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/detalle-registros",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.detalle.registros.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/detalle-registros",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_detalle_registros.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/devices",
+      "panel": "pc.devices.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/devices",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/devices",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.devices.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/devices",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_devices.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "panel": "pc.estados.operativos.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/estados-operativos",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/estados-operativos",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.estados.operativos.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/estados-operativos",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_estados_operativos.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "panel": "pc.existencias.criticas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/existencias-criticas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/existencias-criticas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.existencias.criticas.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/existencias-criticas",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_existencias_criticas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/exportables",
+      "panel": "pc.exportables.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/exportables",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/exportables",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.exportables.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/exportables",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_exportables.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "panel": "pc.filtros.avanzados.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-avanzados",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/filtros-avanzados",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.filtros.avanzados.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/filtros-avanzados",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_filtros_avanzados.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "panel": "pc.filtros.fecha.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-fecha",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/filtros-fecha",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.filtros.fecha.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/filtros-fecha",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_filtros_fecha.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "panel": "pc.forecast.basico.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/forecast-basico",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/forecast-basico",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.forecast.basico.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/forecast-basico",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_forecast_basico.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/glosario",
+      "panel": "pc.glosario.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/glosario",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/glosario",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.glosario.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/glosario",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_glosario.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/gobierno",
+      "panel": "pc.gobierno.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/gobierno",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/gobierno",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.gobierno.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/gobierno",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_gobierno.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "panel": "pc.incidencias.recepcion.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/incidencias-recepcion",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/incidencias-recepcion",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.incidencias.recepcion.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/incidencias-recepcion",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_incidencias_recepcion.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "panel": "pc.integridad.barcodes.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/integridad-barcodes",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/integridad-barcodes",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.integridad.barcodes.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/integridad-barcodes",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_integridad_barcodes.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "panel": "pc.laboratorio.pc.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.root.route",
+        "pc.laboratorio.pc.route"
+      ],
+      "actualRoutes": [
+        "/",
+        "/laboratorio-pc"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "panel": "pc.laboratorio.pc.chart.lab.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/chart-lab",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc/chart-lab",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Chart Lab",
+      "actualPanels": [
+        "pc.laboratorio.pc.chart.lab.route"
+      ],
+      "actualRoutes": [
+        "/laboratorio-pc/chart-lab"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_chart_lab.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "panel": "pc.laboratorio.pc.dashboard.governor.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/dashboard-governor",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc/dashboard-governor",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.root.route",
+        "pc.laboratorio.pc.dashboard.governor.route"
+      ],
+      "actualRoutes": [
+        "/",
+        "/laboratorio-pc/dashboard-governor"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_dashboard_governor.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "panel": "pc.laboratorio.pc.referencia.visual.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.root.route",
+        "pc.laboratorio.pc.referencia.visual.route"
+      ],
+      "actualRoutes": [
+        "/",
+        "/laboratorio-pc/referencia-visual"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+        "pc.liquid-glass-reference"
+      ],
+      "actualRoutes": [
+        "/laboratorio-pc/referencia-visual/liquid-glass"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual_liquid_glass.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route"
+      ],
+      "actualRoutes": [
+        "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual_liquid_glass_capsules.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/license-runtime",
+      "panel": "pc.license.runtime.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/license-runtime",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/license-runtime",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.license.runtime.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/license-runtime",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_license_runtime.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "panel": "pc.metricas.dia.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/metricas-dia",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/metricas-dia",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.root.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/",
+        "/metricas-dia",
+        "*"
+      ],
+      "anchorAcceptance": "current-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_metricas_dia.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/movements",
+      "panel": "pc.movements.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/movements",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/movements",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.movements.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/movements",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_movements.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "panel": "pc.ordenes.compra.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/ordenes-compra",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/ordenes-compra",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.ordenes.compra.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/ordenes-compra",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_ordenes_compra.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "panel": "pc.outbox.operativo.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/outbox-operativo",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/outbox-operativo",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.root.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/",
+        "/outbox-operativo",
+        "*"
+      ],
+      "anchorAcceptance": "current-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_outbox_operativo.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/politica-precios",
+      "panel": "pc.politica.precios.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/politica-precios",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/politica-precios",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.politica.precios.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/politica-precios",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_politica_precios.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "panel": "pc.prisma.insights.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/prisma-insights",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/prisma-insights",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.prisma.insights.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/prisma-insights",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_prisma_insights.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "panel": "pc.prisma.insights.chart.lab.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /laboratorio-pc/chart-lab?preview=charts; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/proveedores",
+      "panel": "pc.proveedores.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/proveedores",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/proveedores",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.proveedores.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/proveedores",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_proveedores.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/purchasing",
+      "panel": "pc.purchasing.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/purchasing",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/purchasing",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.purchasing.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/purchasing",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_purchasing.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/receiving",
+      "panel": "pc.receiving.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/receiving",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/receiving",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.receiving.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/receiving",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_receiving.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "panel": "pc.recepcion.proveedor.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/recepcion-proveedor",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/recepcion-proveedor",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.recepcion.proveedor.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/recepcion-proveedor",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_recepcion_proveedor.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "panel": "pc.referencia.visual.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "panel": "pc.referencia.visual.liquid.glass.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "panel": "pc.referencia.visual.liquid.glass.capsules.route",
+      "status": "SOURCE_CERTIFIED",
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": null,
+      "httpStatus": null,
+      "finalUrl": null,
+      "redirected": false,
+      "contentType": null,
+      "title": null,
+      "actualPanels": [],
+      "actualRoutes": [],
+      "anchorAcceptance": null,
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": null,
+      "screenshot": null,
+      "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass-capsules; the canonical target route carries runtime UI anchors."
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/replenishment",
+      "panel": "pc.replenishment.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/replenishment",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/replenishment",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.replenishment.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/replenishment",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_replenishment.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/sales-control",
+      "panel": "pc.sales.control.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/sales-control",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/sales-control",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.sales.control.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/sales-control",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_sales_control.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "panel": "pc.salud.barcodes.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/salud-barcodes",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/salud-barcodes",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.salud.barcodes.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/salud-barcodes",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_salud_barcodes.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "panel": "pc.scorecards.negocio.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/scorecards-negocio",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/scorecards-negocio",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.scorecards.negocio.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/scorecards-negocio",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_scorecards_negocio.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "panel": "pc.senal.reabasto.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/senal-reabasto",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/senal-reabasto",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.senal.reabasto.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/senal-reabasto",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_senal_reabasto.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/settings",
+      "panel": "pc.settings.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/settings",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/settings",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.settings.route",
+        "pc.workspace",
+        "pc.settings"
+      ],
+      "actualRoutes": [
+        "/settings",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_settings.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/settings/license",
+      "panel": "pc.settings.license.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/settings/license",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/settings/license",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.settings.license.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/settings/license",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_settings_license.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/stock",
+      "panel": "pc.stock.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/stock",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/stock",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.stock.route",
+        "pc.workspace",
+        "pc.stock"
+      ],
+      "actualRoutes": [
+        "/stock",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_stock.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/sync",
+      "panel": "pc.sync.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/sync",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/sync",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.sync.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/sync",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_sync.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "panel": "pc.sync.operativo.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/sync-operativo",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/sync-operativo",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.sync.operativo.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/sync-operativo",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_sync_operativo.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "panel": "pc.tablas.operativas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/tablas-operativas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/tablas-operativas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.tablas.operativas.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/tablas-operativas",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_tablas_operativas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "panel": "pc.tablero.kpi.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/tablero-kpi",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/tablero-kpi",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.tablero.kpi.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/tablero-kpi",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_tablero_kpi.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "panel": "pc.tablet.communication.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/tablet-communication",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/tablet-communication",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.tablet.communication.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/tablet-communication",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_tablet_communication.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "panel": "pc.validacion.catalogo.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/validacion-catalogo",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/validacion-catalogo",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.validacion.catalogo.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/validacion-catalogo",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_validacion_catalogo.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "panel": "pc.vistas.ejecutivas.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3130/vistas-ejecutivas",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3130/vistas-ejecutivas",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Panel administrativo de inventario 6.1.1",
+      "actualPanels": [
+        "pc.vistas.ejecutivas.route",
+        "pc.workspace"
+      ],
+      "actualRoutes": [
+        "/vistas-ejecutivas",
+        "*"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/pc_vistas_ejecutivas.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "surface": "mobile",
+      "route": "/",
+      "panel": "mobile.root.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3140/",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App",
+      "actualPanels": [
+        "mobile.root.route"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_root.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "surface": "mobile",
+      "route": "/prisma-app",
+      "panel": "mobile.prisma.app.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App | PWA instalable | PRISMA App",
+      "actualPanels": [
+        "mobile.prisma.app.route"
+      ],
+      "actualRoutes": [
+        "/prisma-app"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "surface": "mobile",
+      "route": "/prisma-app/install",
+      "panel": "mobile.prisma.app.install.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/install",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app/install",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Instala PRISMA | Android o iPhone desde WhatsApp | PRISMA App",
+      "actualPanels": [
+        "mobile.prisma.app.install.route"
+      ],
+      "actualRoutes": [
+        "/prisma-app/install"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app_install.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "surface": "mobile",
+      "route": "/prisma-app/offline",
+      "panel": "mobile.prisma.app.offline.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/offline",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app/offline",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App offline | PWA | PRISMA App",
+      "actualPanels": [
+        "mobile.prisma.app.offline.route"
+      ],
+      "actualRoutes": [
+        "/prisma-app/offline"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app_offline.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "surface": "mobile",
+      "route": "/prisma-command",
+      "panel": "mobile.prisma.command.route",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-command",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-command",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Command - Mobile Owner | PRISMA App",
+      "actualPanels": [
+        "mobile.prisma.command.route"
+      ],
+      "actualRoutes": [
+        "/prisma-command"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_command.html",
+      "screenshot": null,
+      "reason": null
+    },
+    {
+      "app": "Control Center",
+      "port": 3150,
+      "surface": "control-center",
+      "route": "/",
+      "panel": "control-center.workspace",
+      "status": "RUNTIME_CERTIFIED",
+      "runtimeMode": "runtime",
+      "runtimeUrl": "http://127.0.0.1:3150/",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3150/",
+      "redirected": false,
+      "contentType": "text/html",
+      "title": "CONTROL CENTER PRISMA",
+      "actualPanels": [
+        "control-center.workspace"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/control-center_root.html",
+      "screenshot": null,
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

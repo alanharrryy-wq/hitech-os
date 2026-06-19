@@ -1,0 +1,403 @@
+{
+  "schema": "prisma.ui.runtime.evidence.report.v1",
+  "status": "RUNTIME_CERTIFIED",
+  "command": "runtime-probe",
+  "generated_at": "2026-06-19T05:17:51.211Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 5,
+  "runtimeCertifiedCount": 5,
+  "sourceCertifiedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "timeoutMs": 15000,
+  "portStates": {
+    "3140": {
+      "port": 3140,
+      "url": "http://127.0.0.1:3140/",
+      "reachable": true,
+      "status": 200,
+      "error": null,
+      "transport": "tcp",
+      "finalUrl": "http://127.0.0.1:3140/"
+    }
+  },
+  "screenshotPolicy": "capture if Playwright/Chromium is available without installation; no local browser package was invoked by this fetch probe",
+  "countsBySurface": {
+    "mobile": {
+      "app": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routeCount": 5,
+      "runtimeRoutes": 5,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 5,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "mobile.root.route",
+      "panel_id": "mobile.root.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/",
+      "pageFile": "products/mobile/app/app/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": "mobile.workspace",
+      "runtimeUrl": "http://127.0.0.1:3140/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.root.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "mobile.root.route"
+      ],
+      "actualSurfaces": [
+        "mobile-pulse",
+        "mobile"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_root.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:50.884Z",
+      "finishedAt": "2026-06-19T05:17:50.927Z",
+      "reason": null
+    },
+    {
+      "route_id": "mobile.prisma.app.route",
+      "panel_id": "mobile.prisma.app.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app",
+      "pageFile": "products/mobile/app/app/prisma-app/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App | PWA instalable | PRISMA App",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "mobile.prisma.app.route"
+      ],
+      "actualSurfaces": [
+        "mobile-pulse",
+        "mobile"
+      ],
+      "actualRoutes": [
+        "/prisma-app"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:50.927Z",
+      "finishedAt": "2026-06-19T05:17:50.974Z",
+      "reason": null
+    },
+    {
+      "route_id": "mobile.prisma.app.install.route",
+      "panel_id": "mobile.prisma.app.install.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app/install",
+      "pageFile": "products/mobile/app/app/prisma-app/install/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/install/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/install",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.install.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app/install"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.install.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/install/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app/install",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Instala PRISMA | Android o iPhone desde WhatsApp | PRISMA App",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "mobile.prisma.app.install.route"
+      ],
+      "actualSurfaces": [
+        "mobile-pulse",
+        "mobile",
+        "prisma.mobile.pwa.install.whatsapp.black.landing"
+      ],
+      "actualRoutes": [
+        "/prisma-app/install"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app_install.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:50.974Z",
+      "finishedAt": "2026-06-19T05:17:51.028Z",
+      "reason": null
+    },
+    {
+      "route_id": "mobile.prisma.app.offline.route",
+      "panel_id": "mobile.prisma.app.offline.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-app/offline",
+      "pageFile": "products/mobile/app/app/prisma-app/offline/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-app/offline/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-app/offline",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.app.offline.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-app/offline"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.app.offline.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-app/offline/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-app/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-app/offline",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA App offline | PWA | PRISMA App",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "mobile.prisma.app.offline.route"
+      ],
+      "actualSurfaces": [
+        "mobile-pulse",
+        "mobile",
+        "prisma.mobile.pwa.install.whatsapp.black.landing"
+      ],
+      "actualRoutes": [
+        "/prisma-app/offline"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_app_offline.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:51.028Z",
+      "finishedAt": "2026-06-19T05:17:51.078Z",
+      "reason": null
+    },
+    {
+      "route_id": "mobile.prisma.command.route",
+      "panel_id": "mobile.prisma.command.route",
+      "app": "PRISMA Mobile Adder",
+      "surface": "mobile",
+      "port": 3140,
+      "route": "/prisma-command",
+      "pageFile": "products/mobile/app/app/prisma-command/page.tsx",
+      "layoutFiles": [
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-command/layout.tsx"
+      ],
+      "ownerComponent": "products/mobile/app/app/prisma-command/page.tsx",
+      "anchorOwnerComponent": "products/mobile/app/app/layout.tsx",
+      "middleware": "products/mobile/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3140/prisma-command",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "mobile.prisma.command.route",
+        "data-prisma-surface": "mobile",
+        "data-prisma-route": "/prisma-command"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"mobile.prisma.command.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/mobile/app/app/prisma-command/page.tsx",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/prisma-command/layout.tsx",
+        "products/mobile/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3140/prisma-command",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Command - Mobile Owner | PRISMA App",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "mobile.prisma.command.route"
+      ],
+      "actualSurfaces": [
+        "mobile-pulse",
+        "mobile"
+      ],
+      "actualRoutes": [
+        "/prisma-command"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/mobile_prisma_command.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:51.078Z",
+      "finishedAt": "2026-06-19T05:17:51.211Z",
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

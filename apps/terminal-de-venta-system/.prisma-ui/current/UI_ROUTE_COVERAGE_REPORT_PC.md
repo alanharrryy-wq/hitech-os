@@ -1,0 +1,81 @@
+# UI ROUTE COVERAGE REPORT PC
+
+- schema: `prisma.ui.route.coverage.report.v1`
+- status: `CERTIFIED`
+- command: `route-coverage`
+- routeCount: `63`
+- routeUnmappedCount: `0`
+- runtimeBlockedCount: `0`
+- anchorMissingCount: `0`
+- selectorMissingCount: `0`
+- blockedCount: `0`
+- driftCount: `0`
+- conflictCount: `0`
+
+## Surfaces
+- pc: routes 63, runtime 0, source 0, blocked 0
+
+## Routes
+- SOURCE_CERTIFIED - pc / - products/pc/app/app/page.tsx
+- SOURCE_CERTIFIED - pc /acciones-masivas - http://127.0.0.1:3130/acciones-masivas
+- SOURCE_CERTIFIED - pc /ajustes-inventario - http://127.0.0.1:3130/ajustes-inventario
+- SOURCE_CERTIFIED - pc /alertas-ejecutivas - http://127.0.0.1:3130/alertas-ejecutivas
+- SOURCE_CERTIFIED - pc /alertas-operativas - http://127.0.0.1:3130/alertas-operativas
+- SOURCE_CERTIFIED - pc /audit - http://127.0.0.1:3130/audit
+- SOURCE_CERTIFIED - pc /auditoria-inventario - http://127.0.0.1:3130/auditoria-inventario
+- SOURCE_CERTIFIED - pc /cash-sessions - http://127.0.0.1:3130/cash-sessions
+- SOURCE_CERTIFIED - pc /catalog - http://127.0.0.1:3130/catalog
+- SOURCE_CERTIFIED - pc /catalogo-activo - http://127.0.0.1:3130/catalogo-activo
+- SOURCE_CERTIFIED - pc /conteos-operativos - http://127.0.0.1:3130/conteos-operativos
+- SOURCE_CERTIFIED - pc /contratos-reporte - http://127.0.0.1:3130/contratos-reporte
+- SOURCE_CERTIFIED - pc /counts - http://127.0.0.1:3130/counts
+- SOURCE_CERTIFIED - pc /dashboard - http://127.0.0.1:3130/dashboard
+- SOURCE_CERTIFIED - pc /data-quality - http://127.0.0.1:3130/data-quality
+- SOURCE_CERTIFIED - pc /detalle-registros - http://127.0.0.1:3130/detalle-registros
+- SOURCE_CERTIFIED - pc /devices - http://127.0.0.1:3130/devices
+- SOURCE_CERTIFIED - pc /estados-operativos - http://127.0.0.1:3130/estados-operativos
+- SOURCE_CERTIFIED - pc /existencias-criticas - http://127.0.0.1:3130/existencias-criticas
+- SOURCE_CERTIFIED - pc /exportables - http://127.0.0.1:3130/exportables
+- SOURCE_CERTIFIED - pc /filtros-avanzados - http://127.0.0.1:3130/filtros-avanzados
+- SOURCE_CERTIFIED - pc /filtros-fecha - http://127.0.0.1:3130/filtros-fecha
+- SOURCE_CERTIFIED - pc /forecast-basico - http://127.0.0.1:3130/forecast-basico
+- SOURCE_CERTIFIED - pc /glosario - http://127.0.0.1:3130/glosario
+- SOURCE_CERTIFIED - pc /gobierno - http://127.0.0.1:3130/gobierno
+- SOURCE_CERTIFIED - pc /incidencias-recepcion - http://127.0.0.1:3130/incidencias-recepcion
+- SOURCE_CERTIFIED - pc /integridad-barcodes - http://127.0.0.1:3130/integridad-barcodes
+- SOURCE_CERTIFIED - pc /laboratorio-pc - http://127.0.0.1:3130/laboratorio-pc
+- SOURCE_CERTIFIED - pc /laboratorio-pc/chart-lab - http://127.0.0.1:3130/laboratorio-pc/chart-lab
+- SOURCE_CERTIFIED - pc /laboratorio-pc/dashboard-governor - http://127.0.0.1:3130/laboratorio-pc/dashboard-governor
+- SOURCE_CERTIFIED - pc /laboratorio-pc/referencia-visual - http://127.0.0.1:3130/laboratorio-pc/referencia-visual
+- SOURCE_CERTIFIED - pc /laboratorio-pc/referencia-visual/liquid-glass - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass
+- SOURCE_CERTIFIED - pc /laboratorio-pc/referencia-visual/liquid-glass-capsules - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules
+- SOURCE_CERTIFIED - pc /license-runtime - http://127.0.0.1:3130/license-runtime
+- SOURCE_CERTIFIED - pc /metricas-dia - http://127.0.0.1:3130/metricas-dia
+- SOURCE_CERTIFIED - pc /movements - http://127.0.0.1:3130/movements
+- SOURCE_CERTIFIED - pc /ordenes-compra - http://127.0.0.1:3130/ordenes-compra
+- SOURCE_CERTIFIED - pc /outbox-operativo - http://127.0.0.1:3130/outbox-operativo
+- SOURCE_CERTIFIED - pc /politica-precios - http://127.0.0.1:3130/politica-precios
+- SOURCE_CERTIFIED - pc /prisma-insights - http://127.0.0.1:3130/prisma-insights
+- SOURCE_CERTIFIED - pc /prisma-insights/chart-lab - products/pc/app/app/prisma-insights/chart-lab/page.tsx
+- SOURCE_CERTIFIED - pc /proveedores - http://127.0.0.1:3130/proveedores
+- SOURCE_CERTIFIED - pc /purchasing - http://127.0.0.1:3130/purchasing
+- SOURCE_CERTIFIED - pc /receiving - http://127.0.0.1:3130/receiving
+- SOURCE_CERTIFIED - pc /recepcion-proveedor - http://127.0.0.1:3130/recepcion-proveedor
+- SOURCE_CERTIFIED - pc /referencia-visual - products/pc/app/app/referencia-visual/page.tsx
+- SOURCE_CERTIFIED - pc /referencia-visual/liquid-glass - products/pc/app/app/referencia-visual/liquid-glass/page.tsx
+- SOURCE_CERTIFIED - pc /referencia-visual/liquid-glass-capsules - products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx
+- SOURCE_CERTIFIED - pc /replenishment - http://127.0.0.1:3130/replenishment
+- SOURCE_CERTIFIED - pc /sales-control - http://127.0.0.1:3130/sales-control
+- SOURCE_CERTIFIED - pc /salud-barcodes - http://127.0.0.1:3130/salud-barcodes
+- SOURCE_CERTIFIED - pc /scorecards-negocio - http://127.0.0.1:3130/scorecards-negocio
+- SOURCE_CERTIFIED - pc /senal-reabasto - http://127.0.0.1:3130/senal-reabasto
+- SOURCE_CERTIFIED - pc /settings - http://127.0.0.1:3130/settings
+- SOURCE_CERTIFIED - pc /settings/license - http://127.0.0.1:3130/settings/license
+- SOURCE_CERTIFIED - pc /stock - http://127.0.0.1:3130/stock
+- SOURCE_CERTIFIED - pc /sync - http://127.0.0.1:3130/sync
+- SOURCE_CERTIFIED - pc /sync-operativo - http://127.0.0.1:3130/sync-operativo
+- SOURCE_CERTIFIED - pc /tablas-operativas - http://127.0.0.1:3130/tablas-operativas
+- SOURCE_CERTIFIED - pc /tablero-kpi - http://127.0.0.1:3130/tablero-kpi
+- SOURCE_CERTIFIED - pc /tablet-communication - http://127.0.0.1:3130/tablet-communication
+- SOURCE_CERTIFIED - pc /validacion-catalogo - http://127.0.0.1:3130/validacion-catalogo
+- SOURCE_CERTIFIED - pc /vistas-ejecutivas - http://127.0.0.1:3130/vistas-ejecutivas

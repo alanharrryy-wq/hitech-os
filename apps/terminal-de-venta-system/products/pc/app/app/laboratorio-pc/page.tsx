@@ -30,7 +30,12 @@ const labLinks = [
 
 export default function PcLabHubPage() {
   return (
-    <main style={{ minHeight: "100vh", padding: "52px", color: "#eef6ff", background: "linear-gradient(135deg, #06101d, #111827 56%, #030712)" }}>
+    <main
+      style={{ minHeight: "100vh", padding: "52px", color: "#eef6ff", background: "linear-gradient(135deg, #06101d, #111827 56%, #030712)" }}
+      data-prisma-panel="pc.laboratorio.pc.route"
+      data-prisma-surface="pc"
+      data-prisma-route="/laboratorio-pc"
+    >
       <section style={{ maxWidth: 1120, margin: "0 auto", display: "grid", gap: 22 }}>
         <a href="/dashboard" style={{ color: "#9cc3ff", textDecoration: "none", fontWeight: 900 }}>← Volver a PC cliente</a>
         <div style={{ border: "1px solid rgba(255,255,255,.16)", borderRadius: 28, padding: 28, background: "rgba(255,255,255,.07)", boxShadow: "0 24px 80px rgba(0,0,0,.30)" }}>
