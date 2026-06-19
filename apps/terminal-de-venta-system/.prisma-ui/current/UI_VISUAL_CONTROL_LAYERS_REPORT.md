@@ -1,0 +1,129 @@
+# UI VISUAL CONTROL LAYERS REPORT
+
+- status: `CERTIFIED`
+- active CSS files: `131`
+- layer count: `8582`
+- asset count: `127`
+
+## Layer Samples
+
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - ::selection
+- safeVisualOnly - chart-lab - main-content - products/chart-lab/app/app/globals.css - :focus-visible
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .accordion-title
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .accordion-title strong
+- visualWithFunctionalRisk - chart-lab - table - products/chart-lab/app/app/globals.css - .blueprint-grid label
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .canvas-toolbar
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .canvas-toolbar__chips, .canvas-toolbar__toggles, .power-studio-header__actions
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .causal-hero-strip
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .causal-hero-strip strong
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .causal-hero-strip__chips
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame
+- safeVisualOnly - chart-lab - main-content - products/chart-lab/app/app/globals.css - .chart-frame
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart, .lab-echart, .echarts-for-react, .echarts-container
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart, .lab-echart, .prisma-echart, .echarts-for-react, .echarts-container
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart::after, .lab-echart::after, .prisma-echart::after, .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after, .chart-frame[data-heat-motion="sweep"] .lab-echart::after, .chart-frame[data-heat-motion="pulse"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame .lab-echart::before, .lab-echart::before, .prisma-echart::before
+- visualWithFunctionalRisk - chart-lab - main-content - products/chart-lab/app/app/globals.css - .chart-frame > *
+- safeVisualOnly - chart-lab - card - products/chart-lab/app/app/globals.css - .chart-frame, .chart-card, .lab-chart-card, .inspector-panel, .option-studio, .control-card
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame, .control-deck, .sidebar-card, .status-card, .intent-card, .passport-card, .source-card
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame, .control-deck, .sidebar-card, .status-card, .intent-card, .passport-card, .source-card, .panel-grid article
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame::before
+- safeVisualOnly - chart-lab - main-content - products/chart-lab/app/app/globals.css - .chart-frame:hover .lab-echart, .lab-echart:hover, .prisma-echart:hover
+- visualWithFunctionalRisk - chart-lab - main-content - products/chart-lab/app/app/globals.css - .chart-frame[data-briefing-open="false"] .executive-briefing-rail
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id] .lab-echart, .chart-frame[data-chart-id*="flow"] .lab-echart, .chart-frame[data-chart-id="pc.causal-flow-ribbon"] .lab-echart, .chart-frame[data-chart-id="pc.operational-density-field"] .lab-echart, .chart-frame[data-chart-id="tablet.sync-outbox-status-matrix"] .lab-echart, .chart-frame[data-chart-id="mobile.freshness-beacon-grid"] .lab-echart, .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="example.future-chart"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.action-inbox-priority-stack"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.confidence-meter-bands"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.freshness-beacon-grid"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.health-radar-compact"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.incident-spark-cards"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="mobile.owner-pulse-timeline"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip .eyebrow
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip strong
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip__chips
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-hero-strip::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .density-matrix-legend i
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart
+- safeVisualOnly - chart-lab - main-content - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::before, .chart-frame[data-chart-id="ops.operational-density-heatmap"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"][data-heat-motion="sweep"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"][data-heat-zone="gateway-noon"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"][data-heat-zone="payments-night"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="ops.operational-density-heatmap"][data-heat-zone="stress-demo"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.causal-flow-ribbon"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .lab-echart::after, .chart-frame[data-chart-id="mobile.owner-pulse-timeline"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"] .lab-echart::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.decision-ledger-timeline"]::before
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.financial-operational-waterfall"]
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.financial-operational-waterfall"] .causal-hero-strip__chips span
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.financial-operational-waterfall"] .lab-echart
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.financial-operational-waterfall"] .lab-echart::after
+- visualWithFunctionalRisk - chart-lab - background - products/chart-lab/app/app/globals.css - .chart-frame[data-chart-id="pc.financial-operational-waterfall"] .lab-echart::before

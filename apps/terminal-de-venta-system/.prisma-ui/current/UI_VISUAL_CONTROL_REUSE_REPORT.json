@@ -1,0 +1,67 @@
+{
+  "schema": "prisma.ui.visual-control.reuse-report.v1",
+  "status": "CERTIFIED",
+  "reusedSystems": [
+    {
+      "system": ".prisma-ui/registry.json",
+      "use": "target apps, gates, global UI scope, hard states",
+      "status": "reused"
+    },
+    {
+      "system": ".prisma-ui/surfaces.json",
+      "use": "surface roots, ports, owners, scope, runtime probe hints",
+      "status": "reused"
+    },
+    {
+      "system": ".prisma-ui/routes.json",
+      "use": "108 route contracts and runtime/source route ownership",
+      "status": "reused"
+    },
+    {
+      "system": ".prisma-ui/panels/*.json",
+      "use": "panel owner contracts and safe panel scopes",
+      "status": "reused"
+    },
+    {
+      "system": "tools/quality/ui-certainty.mjs",
+      "use": "delegating CLI and existing certification surface",
+      "status": "extended"
+    },
+    {
+      "system": ".governance/current/AUTHORITY_READSET.lock.json",
+      "use": "fresh authority mesh readset for this task",
+      "status": "reused"
+    },
+    {
+      "system": "docs/visual-layer-map/layer-map.json",
+      "use": "baseline layer-map evidence, not live owner truth by itself",
+      "status": "reused"
+    },
+    {
+      "system": "config/prisma-visual* and config/prisma-visual-os",
+      "use": "token, recipe, layer-budget and visual recipe ownership",
+      "status": "reused"
+    }
+  ],
+  "extendedSystems": [
+    "tools/quality/ui-certainty.mjs",
+    "package.json",
+    ".prisma-ui/registry.json"
+  ],
+  "leftUntouched": [
+    "Active product UI visuals and CSS aesthetics",
+    "Prisma schema, migrations, auth, sync and business logic",
+    "Runtime servers and process state"
+  ],
+  "newFilesNecessary": [
+    "tools/quality/ui-visual-control.mjs",
+    "docs/quality/PRISMA_VISUAL_CONTROL_SYSTEM_V1.md",
+    ".prisma-ui/visual-control/*.json"
+  ],
+  "authoritativePaths": [
+    ".prisma-ui/visual-control/registry.json",
+    ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
+    ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json"
+  ],
+  "deprecatedPaths": []
+}

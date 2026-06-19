@@ -138,9 +138,26 @@ El CLI genera JSON y Markdown en `.prisma-ui/current/`:
 - `UI_INVENTORY_REPORT`
 - `UI_DOCTOR_REPORT`
 - `UI_SCOPE_REPORT`
+- `UI_VISUAL_CONTROL_REPORT`
+- `UI_EDITABLE_SLOTS_REPORT`
 - reportes auxiliares de anchors, contratos, drift, conflictos y cero `!important`
 
 `UI_ALL_SURFACES_CERT_REPORT.json` es el reporte de cierre. Para producto, `status` debe ser `CERTIFIED`, `blockedCount` debe ser `0`, `driftCount` debe ser `0` y `conflictCount` debe ser `0`.
+
+## Visual Control System v1
+
+PRISMA Visual Control System v1 extiende esta compuerta sin cambiar UI visible. Produce el registro de rutas, regiones visuales, owners, CSS, assets, capas, riesgos y slots editables para que una solicitud futura se pueda convertir en un patch seguro y owner-aware.
+
+```bash
+node tools/quality/ui-certainty.mjs visual-control:inventory --strict
+node tools/quality/ui-certainty.mjs visual-control:owners --strict
+node tools/quality/ui-certainty.mjs visual-control:slots --strict
+node tools/quality/ui-certainty.mjs visual-control:layers --strict
+node tools/quality/ui-certainty.mjs visual-control:report --strict
+node tools/quality/ui-certainty.mjs visual-control:certify --strict
+```
+
+Los artefactos autoritativos viven en `.prisma-ui/visual-control/`; los reportes de cierre viven en `.prisma-ui/current/`. La guia operativa esta en `docs/quality/PRISMA_VISUAL_CONTROL_SYSTEM_V1.md`.
 
 ## Scope
 

@@ -1,0 +1,2371 @@
+{
+  "schema": "prisma.ui.visual-control.report.v1",
+  "createdAt": "2026-06-19T07:50:59.542Z",
+  "command": "visual-control",
+  "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "repoHead": "23bd6bf595e2e5369c0f12fc1d80487c493a7577",
+  "branch": "feat/prisma-visual-control-system-v1",
+  "status": "CERTIFIED",
+  "surfaceCount": 7,
+  "targetSurfaceCount": 6,
+  "routeCount": 108,
+  "visualRegionCount": 4132,
+  "componentOwnerCount": 227,
+  "cssOwnerCount": 106,
+  "assetOwnerCount": 127,
+  "editableSlotCount": 21570,
+  "layerCount": 8582,
+  "activeCssFileCount": 131,
+  "blockerCount": 0,
+  "warningCount": 0,
+  "activeImportantCount": 0,
+  "ambiguousActiveLayerOwnerCount": 0,
+  "runtimeCertificationBaseline": {
+    "status": "ALL_RUNTIME_PAGES_CERTIFIED",
+    "routeCount": 108,
+    "runtimeCertifiedCount": 97,
+    "sourceCertifiedCount": 11,
+    "routeUnmappedCount": 0,
+    "runtimeBlockedCount": 0,
+    "anchorMissingCount": 0,
+    "selectorMissingCount": 0
+  },
+  "authorityMesh": {
+    "status": "PASS",
+    "generatedAt": "2026-06-19T00:57:32-06:00",
+    "authorityFileCount": 979,
+    "missingCount": 0
+  },
+  "risks": [],
+  "warnings": [],
+  "reuseReport": [
+    ".prisma-ui/visual-control/registry.json",
+    ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
+    ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json"
+  ],
+  "futureUsageExamples": {
+    "tabletPaymentPanelTaller": {
+      "surface": "tablet",
+      "route": "/pos",
+      "visualUnit": "tablet.pos.payment-overlay",
+      "ownerComponent": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "ownerCss": [
+        "products/tablet/app/components/pos/pos.module.css",
+        "products/tablet/app/components/pos/pos.visual.tokens.css",
+        "products/tablet/app/components/pos/pos.visual.tokens.generated.css"
+      ],
+      "editableSlot": "height",
+      "risk": "visualWithFunctionalRisk",
+      "gates": [
+        "node tools/quality/ui-certainty.mjs self-test --strict",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs certify --surface tablet --strict",
+        "node tools/quality/ui-certainty.mjs zero-important",
+        "node tools/quality/ui-certainty.mjs scope --all",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "excludedSurfaces": [
+        "pc",
+        "mobile",
+        "chart-lab",
+        "web",
+        "control-center"
+      ]
+    },
+    "pcDashboardBackground": {
+      "surface": "pc",
+      "screen": "/dashboard",
+      "backgroundLayerOwner": "products/pc/app/app/dashboard/hoy-premium.module.css",
+      "assetOwner": [],
+      "layerLevel": "background",
+      "risk": "visualWithFunctionalRisk",
+      "gates": [
+        "node tools/quality/ui-certainty.mjs certify --surface pc --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:layers --strict"
+      ]
+    },
+    "mobileRemoveButton": {
+      "surface": "mobile",
+      "ownerComponent": "products/mobile/app/app/prisma-command/PrismaMobileCommandDeck.tsx",
+      "ownerCss": [
+        "products/mobile/app/app/prisma-command/prisma-mobile-command.module.css"
+      ],
+      "safety": "functionalControl",
+      "removalGuidance": "removal unsafe; prefer hide/disable/reposition only with owner review",
+      "gates": [
+        "node tools/quality/ui-certainty.mjs self-test --strict",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs certify --surface mobile --strict",
+        "node tools/quality/ui-certainty.mjs zero-important",
+        "node tools/quality/ui-certainty.mjs scope --all",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ]
+    }
+  },
+  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
+  "indexFiles": {
+    "surfaces": ".prisma-ui/visual-control/surfaces.json",
+    "routes": ".prisma-ui/visual-control/routes.json",
+    "components": ".prisma-ui/visual-control/components.json",
+    "editableSlots": ".prisma-ui/visual-control/editable-slots.json",
+    "owners": ".prisma-ui/visual-control/owners.json",
+    "layers": ".prisma-ui/visual-control/layers.json"
+  },
+  "routeSamples": [
+    {
+      "route_id": "chart-lab.root.route",
+      "human_id": "Chart Lab /",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "route": "/",
+      "routePath": "/",
+      "pageFile": "products/chart-lab/app/app/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/page.tsx",
+      "ownerCss": [
+        "products/chart-lab/app/app/globals.css"
+      ],
+      "currentPanelContract": "chart-lab.workspace",
+      "runtimeUrl": "http://127.0.0.1:3000/",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/chart-lab_root.html",
+      "anchors": {
+        "data-prisma-panel": "chart-lab.root.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/"
+      },
+      "excludedSurfaces": [
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "chart-lab.recipe.studio.v2.route",
+      "human_id": "Chart Lab /recipe-studio-v2",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "routePath": "/recipe-studio-v2",
+      "pageFile": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "ownerCss": [
+        "products/chart-lab/app/app/recipe-studio-v2/prisma-recipe-studio-v2.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/chart-lab_recipe_studio_v2.html",
+      "anchors": {
+        "data-prisma-panel": "chart-lab.recipe.studio.v2.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/recipe-studio-v2"
+      },
+      "excludedSurfaces": [
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "web.root.route",
+      "human_id": "PRISMA Web/Edit /",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "route": "/",
+      "routePath": "/",
+      "pageFile": "products/web/app/app/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/page.tsx",
+      "ownerCss": [
+        "products/web/app/app/globals.css"
+      ],
+      "currentPanelContract": "web.workspace",
+      "runtimeUrl": "http://127.0.0.1:3110/",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/web_root.html",
+      "anchors": {
+        "data-prisma-panel": "web.root.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "web.surface.governor.public.sober.route",
+      "human_id": "PRISMA Web/Edit /surface-governor-public-sober",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "route": "/surface-governor-public-sober",
+      "routePath": "/surface-governor-public-sober",
+      "pageFile": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "ownerCss": [
+        "products/web/app/app/surface-governor-public-sober/prisma-eit-public-sober-shell.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/web_surface_governor_public_sober.html",
+      "anchors": {
+        "data-prisma-panel": "web.surface.governor.public.sober.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/surface-governor-public-sober"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.root.route",
+      "human_id": "PRISMA Tablet Core /",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/",
+      "routePath": "/",
+      "pageFile": "products/tablet/app/app/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/prisma-tablet-light-shell.module.css",
+        "products/tablet/app/app/globals.css",
+        "products/tablet/app/app/prisma-tablet-background-workbench.css",
+        "products/tablet/app/app/prisma-tablet-light-premium-final.css",
+        "products/tablet/app/app/prisma-tablet-premium-governed.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_root.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.root.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.catalog.route",
+      "human_id": "PRISMA Tablet Core /catalog",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/catalog",
+      "routePath": "/catalog",
+      "pageFile": "products/tablet/app/app/catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/catalog/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/catalog",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_catalog.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/catalog"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.checkout.route",
+      "human_id": "PRISMA Tablet Core /checkout",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/checkout",
+      "routePath": "/checkout",
+      "pageFile": "products/tablet/app/app/checkout/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/checkout/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/checkout/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/checkout/prisma-checkout-light-safe-shell.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/checkout",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_checkout.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.checkout.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/checkout"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.events.outbox.route",
+      "human_id": "PRISMA Tablet Core /events/outbox",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/events/outbox",
+      "routePath": "/events/outbox",
+      "pageFile": "products/tablet/app/app/events/outbox/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/events/outbox/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/events/outbox",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_events_outbox.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.events.outbox.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/events/outbox"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.existencias.route",
+      "human_id": "PRISMA Tablet Core /existencias",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/existencias",
+      "routePath": "/existencias",
+      "pageFile": "products/tablet/app/app/existencias/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/existencias/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/existencias",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_existencias.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.existencias.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/existencias"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.inventory.route",
+      "human_id": "PRISMA Tablet Core /inventory",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/inventory",
+      "routePath": "/inventory",
+      "pageFile": "products/tablet/app/app/inventory/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/inventory/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.inventory.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/inventory"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.inventory.low.stock.route",
+      "human_id": "PRISMA Tablet Core /inventory/low-stock",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/inventory/low-stock",
+      "routePath": "/inventory/low-stock",
+      "pageFile": "products/tablet/app/app/inventory/low-stock/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/inventory/low-stock/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/inventory/low-stock",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_inventory_low_stock.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.inventory.low.stock.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/inventory/low-stock"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.offline.route",
+      "human_id": "PRISMA Tablet Core /offline",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/offline",
+      "routePath": "/offline",
+      "pageFile": "products/tablet/app/app/offline/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/offline/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/offline",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_offline.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.offline.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/offline"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.pos.route",
+      "human_id": "PRISMA Tablet Core /pos",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/pos",
+      "routePath": "/pos",
+      "pageFile": "products/tablet/app/app/pos/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/app/pos/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/pos/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/pos/prisma-pos-light-safe-shell.module.css"
+      ],
+      "currentPanelContract": [
+        "tablet.pos.cart-panel",
+        "tablet.pos.category-rail",
+        "tablet.pos.checkout-diagnostic",
+        "tablet.pos.payment-overlay",
+        "tablet.pos.product-grid",
+        "tablet.pos.search-card",
+        "tablet.pos.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3120/pos",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_pos.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.pos.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/pos"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.prisma.dark.pos.reference.route",
+      "human_id": "PRISMA Tablet Core /prisma-dark-pos-reference",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/prisma-dark-pos-reference",
+      "routePath": "/prisma-dark-pos-reference",
+      "pageFile": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_dark_pos_reference.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.dark.pos.reference.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-dark-pos-reference"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.prisma.pulse.route",
+      "human_id": "PRISMA Tablet Core /prisma-pulse",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/prisma-pulse",
+      "routePath": "/prisma-pulse",
+      "pageFile": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/prisma-pulse/prisma-tablet-pulse.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-pulse",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.pulse.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-pulse"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.prisma.visual.catalog.route",
+      "human_id": "PRISMA Tablet Core /prisma-visual-catalog",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/prisma-visual-catalog",
+      "routePath": "/prisma-visual-catalog",
+      "pageFile": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_visual_catalog.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.prisma.visual.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/prisma-visual-catalog"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.referencia.visual.route",
+      "human_id": "PRISMA Tablet Core /referencia-visual",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/referencia-visual",
+      "routePath": "/referencia-visual",
+      "pageFile": "products/tablet/app/app/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/referencia-visual/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/referencia-visual",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_referencia_visual.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.referencia.visual.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/referencia-visual"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.release.gate.route",
+      "human_id": "PRISMA Tablet Core /release-gate",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/release-gate",
+      "routePath": "/release-gate",
+      "pageFile": "products/tablet/app/app/release-gate/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/release-gate/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/release-gate",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_release_gate.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.release.gate.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/release-gate"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.returns.route",
+      "human_id": "PRISMA Tablet Core /returns",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/returns",
+      "routePath": "/returns",
+      "pageFile": "products/tablet/app/app/returns/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/returns/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/returns",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_returns.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.returns.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/returns"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.route",
+      "human_id": "PRISMA Tablet Core /sales",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales",
+      "routePath": "/sales",
+      "pageFile": "products/tablet/app/app/sales/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.history.route",
+      "human_id": "PRISMA Tablet Core /sales/history",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales/history",
+      "routePath": "/sales/history",
+      "pageFile": "products/tablet/app/app/sales/history/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/history/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sales/history",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.history.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/history"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.history.saleId.route",
+      "human_id": "PRISMA Tablet Core /sales/history/:saleId",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales/history/:saleId",
+      "routePath": "/sales/history/:saleId",
+      "pageFile": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.history.saleId.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/history/:saleId"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.today.route",
+      "human_id": "PRISMA Tablet Core /sales/today",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales/today",
+      "routePath": "/sales/today",
+      "pageFile": "products/tablet/app/app/sales/today/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sales/today",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.today.saleId.route",
+      "human_id": "PRISMA Tablet Core /sales/today/:saleId",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales/today/:saleId",
+      "routePath": "/sales/today/:saleId",
+      "pageFile": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.saleId.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today/:saleId"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sales.today.saleId.return.route",
+      "human_id": "PRISMA Tablet Core /sales/today/:saleId/return",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sales/today/:saleId/return",
+      "routePath": "/sales/today/:saleId/return",
+      "pageFile": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-dynamic-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.sales.today.saleId.return.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sales/today/:saleId/return"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.screen.standard.preview.route",
+      "human_id": "PRISMA Tablet Core /screen-standard-preview",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/screen-standard-preview",
+      "routePath": "/screen-standard-preview",
+      "pageFile": "products/tablet/app/app/screen-standard-preview/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/screen-standard-preview/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/screen-standard-preview",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_screen_standard_preview.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.screen.standard.preview.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/screen-standard-preview"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.settings.data.route",
+      "human_id": "PRISMA Tablet Core /settings/data",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/settings/data",
+      "routePath": "/settings/data",
+      "pageFile": "products/tablet/app/app/settings/data/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/data/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.data.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/data"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.settings.export.route",
+      "human_id": "PRISMA Tablet Core /settings/export",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/settings/export",
+      "routePath": "/settings/export",
+      "pageFile": "products/tablet/app/app/settings/export/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/export/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/settings/export",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_settings_export.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.export.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/export"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.settings.license.route",
+      "human_id": "PRISMA Tablet Core /settings/license",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/settings/license",
+      "routePath": "/settings/license",
+      "pageFile": "products/tablet/app/app/settings/license/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/settings/license/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/settings/license",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_settings_license.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.settings.license.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/settings/license"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.shift.route",
+      "human_id": "PRISMA Tablet Core /shift",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/shift",
+      "routePath": "/shift",
+      "pageFile": "products/tablet/app/app/shift/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/shift/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/shift",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_shift.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.shift.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/shift"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.stock.route",
+      "human_id": "PRISMA Tablet Core /stock",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/stock",
+      "routePath": "/stock",
+      "pageFile": "products/tablet/app/app/stock/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/stock/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/stock",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_stock.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.stock.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/stock"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.sync.route",
+      "human_id": "PRISMA Tablet Core /sync",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/sync",
+      "routePath": "/sync",
+      "pageFile": "products/tablet/app/app/sync/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/sync/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/sync",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sync.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.sync.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/sync"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.route",
+      "human_id": "PRISMA Tablet Core /visual-os",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os",
+      "routePath": "/visual-os",
+      "pageFile": "products/tablet/app/app/visual-os/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.detached.route",
+      "human_id": "PRISMA Tablet Core /visual-os/detached",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/detached",
+      "routePath": "/visual-os/detached",
+      "pageFile": "products/tablet/app/app/visual-os/detached/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/detached/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/detached",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_detached.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.detached.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/detached"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.materiality.catalog.route",
+      "human_id": "PRISMA Tablet Core /visual-os/materiality-catalog",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/materiality-catalog",
+      "routePath": "/visual-os/materiality-catalog",
+      "pageFile": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_materiality_catalog.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.materiality.catalog.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/materiality-catalog"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.pro.route",
+      "human_id": "PRISMA Tablet Core /visual-os/pro",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/pro",
+      "routePath": "/visual-os/pro",
+      "pageFile": "products/tablet/app/app/visual-os/pro/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/pro/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/pro",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_pro.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.pro.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/pro"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.realtime.route",
+      "human_id": "PRISMA Tablet Core /visual-os/realtime",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/realtime",
+      "routePath": "/visual-os/realtime",
+      "pageFile": "products/tablet/app/app/visual-os/realtime/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/realtime/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/realtime",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_realtime.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.realtime.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/realtime"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.tablet.background.gallery.route",
+      "human_id": "PRISMA Tablet Core /visual-os/tablet-background-gallery",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/tablet-background-gallery",
+      "routePath": "/visual-os/tablet-background-gallery",
+      "pageFile": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_background_gallery.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.tablet.background.gallery.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/tablet-background-gallery"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "tablet.visual.os.tablet.codex.gallery.route",
+      "human_id": "PRISMA Tablet Core /visual-os/tablet-codex-gallery",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/visual-os/tablet-codex-gallery",
+      "routePath": "/visual-os/tablet-codex-gallery",
+      "pageFile": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_codex_gallery.html",
+      "anchors": {
+        "data-prisma-panel": "tablet.visual.os.tablet.codex.gallery.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/visual-os/tablet-codex-gallery"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.root.route",
+      "human_id": "PRISMA PC Backoffice /",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/",
+      "routePath": "/",
+      "pageFile": "products/pc/app/app/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/globals.css",
+        "products/pc/app/app/prisma-atmospheric-background.css",
+        "products/pc/app/app/prisma-liquid-glass.module.css",
+        "products/pc/app/app/prisma-visual-os-pc-binding.css",
+        "products/pc/app/app/suppliers-ux-v08.css",
+        "products/pc/app/app/suppliers.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.root.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    }
+  ],
+  "visualRegionSamples": [
+    {
+      "region_id": "chart-lab.root.route.main-content",
+      "surface": "chart-lab",
+      "route": "/",
+      "human_id": "Chart Lab / main content",
+      "visualRegion": "main-content",
+      "ownerComponent": "products/chart-lab/app/app/page.tsx",
+      "ownerCssProfile": "ownerCss.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "chart-lab.root.route.shell",
+      "surface": "chart-lab",
+      "route": "/",
+      "human_id": "Chart Lab / shell",
+      "visualRegion": "shell",
+      "ownerComponent": "products/chart-lab/app/app/page.tsx",
+      "ownerCssProfile": "ownerCss.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "chart-lab.workspace",
+      "surface": "chart-lab",
+      "route": "/",
+      "human_id": "Chart Lab workspace",
+      "visualRegion": "panel",
+      "ownerComponent": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.src.components.prismachartlabshell.tsx.unknown.buttons",
+      "surface": "chart-lab",
+      "route": "/",
+      "human_id": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx button/action zone",
+      "visualRegion": "buttons/action-zones",
+      "ownerComponent": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "chart-lab.recipe.studio.v2.route.main-content",
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "human_id": "Chart Lab /recipe-studio-v2 main content",
+      "visualRegion": "main-content",
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "chart-lab.recipe.studio.v2.route.shell",
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "human_id": "Chart Lab /recipe-studio-v2 shell",
+      "visualRegion": "shell",
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.recipe.studio.v2.page.tsx.recipe.studio.v2.buttons",
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "human_id": "products/chart-lab/app/app/recipe-studio-v2/page.tsx button/action zone",
+      "visualRegion": "buttons/action-zones",
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.0.100.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.0.100.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.0.100.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.0.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.100.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.50.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.50.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.50.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.50.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab main-content layer",
+      "visualRegion": "main-content",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.accordion.title.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.accordion.title.strong.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.before.body.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.has.button.data.value.dense.is.active.lab.echart.body.has.button.data.value.dense.noir.is.active.lab.echart.body.has.button.data.value.e.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.has.button.data.value.paper.is.active.lab.echart.chart.lab.shell.data.theme.preset.paper.lab.echart.chart.frame.data.theme.preset.paper..layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.has.chart.lab.data.luxury.ui.pearl.executive.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.body.has.chart.lab.data.luxury.ui.pearl.executive.html.has.chart.lab.data.luxury.ui.pearl.executive.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.canvas.toolbar.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.causal.hero.strip.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.control.deck.sidebar.card.status.card.intent.card.passport.card.source.card.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.control.deck.sidebar.card.status.card.intent.card.passport.card.source.card.panel.grid.article.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.example.future.chart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.lab.echart.chart.frame.data.chart.id.flow.lab.echart.chart.frame.data.chart.id.pc.causal.flow.ribbon.lab.echart.cha.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.action.inbox.priority.stack.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.confidence.meter.bands.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.freshness.beacon.grid.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.health.radar.compact.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.incident.spark.cards.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.causal.hero.strip.chips.span.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.lab.echart.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.mobile.owner.pulse.timeline.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.data.heat.motion.sweep.lab.echart.after.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    },
+    {
+      "region_id": "products.chart.lab.app.app.globals.css.chart.frame.data.chart.id.ops.operational.density.heatmap.data.heat.zone.gateway.noon.lab.echart.before.layer",
+      "surface": "chart-lab",
+      "human_id": "chart-lab background layer",
+      "visualRegion": "background",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "excludedSurfacesProfile": "excludedSurface.001"
+    }
+  ]
+}

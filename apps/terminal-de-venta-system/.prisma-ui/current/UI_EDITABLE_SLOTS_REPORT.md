@@ -1,0 +1,91 @@
+# UI EDITABLE SLOTS REPORT
+
+- status: `CERTIFIED`
+- slot count: `21570`
+- safeVisualOnly: `2725`
+- visualWithFunctionalRisk: `18367`
+- functionalControl: `111`
+- sharedGlobalRisk: `367`
+
+## Sample Slots
+
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.main-content - alignment
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.main-content - density
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.main-content - gap
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.main-content - maxWidth
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.main-content - padding
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - alignment
+- visualWithFunctionalRisk - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - background
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - density
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - foreground
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - gap
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - maxWidth
+- safeVisualOnly - chart-lab /recipe-studio-v2 - chart-lab.recipe.studio.v2.route.shell - padding
+- safeVisualOnly - chart-lab / - chart-lab.root.route.main-content - alignment
+- safeVisualOnly - chart-lab / - chart-lab.root.route.main-content - density
+- safeVisualOnly - chart-lab / - chart-lab.root.route.main-content - gap
+- safeVisualOnly - chart-lab / - chart-lab.root.route.main-content - maxWidth
+- safeVisualOnly - chart-lab / - chart-lab.root.route.main-content - padding
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - alignment
+- visualWithFunctionalRisk - chart-lab / - chart-lab.root.route.shell - background
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - density
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - foreground
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - gap
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - maxWidth
+- safeVisualOnly - chart-lab / - chart-lab.root.route.shell - padding
+- visualWithFunctionalRisk - chart-lab / - chart-lab.workspace - background
+- safeVisualOnly - chart-lab / - chart-lab.workspace - density
+- safeVisualOnly - chart-lab / - chart-lab.workspace - foreground
+- safeVisualOnly - chart-lab / - chart-lab.workspace - gap
+- visualWithFunctionalRisk - chart-lab / - chart-lab.workspace - height
+- safeVisualOnly - chart-lab / - chart-lab.workspace - maxWidth
+- visualWithFunctionalRisk - chart-lab / - chart-lab.workspace - minHeight
+- safeVisualOnly - chart-lab / - chart-lab.workspace - padding
+- safeVisualOnly - chart-lab / - chart-lab.workspace - radius
+- safeVisualOnly - chart-lab / - chart-lab.workspace - shadow
+- safeVisualOnly - chart-lab / - chart-lab.workspace - width
+- visualWithFunctionalRisk - control-center / - control-center.workspace - background
+- safeVisualOnly - control-center / - control-center.workspace - density
+- safeVisualOnly - control-center / - control-center.workspace - foreground
+- safeVisualOnly - control-center / - control-center.workspace - gap
+- visualWithFunctionalRisk - control-center / - control-center.workspace - height
+- safeVisualOnly - control-center / - control-center.workspace.main-content - alignment
+- safeVisualOnly - control-center / - control-center.workspace.main-content - density
+- safeVisualOnly - control-center / - control-center.workspace.main-content - gap
+- safeVisualOnly - control-center / - control-center.workspace.main-content - maxWidth
+- safeVisualOnly - control-center / - control-center.workspace.main-content - padding
+- safeVisualOnly - control-center / - control-center.workspace - maxWidth
+- visualWithFunctionalRisk - control-center / - control-center.workspace - minHeight
+- safeVisualOnly - control-center / - control-center.workspace - padding
+- safeVisualOnly - control-center / - control-center.workspace - radius
+- safeVisualOnly - control-center / - control-center.workspace - shadow
+- safeVisualOnly - control-center / - control-center.workspace.shell - alignment
+- visualWithFunctionalRisk - control-center / - control-center.workspace.shell - background
+- safeVisualOnly - control-center / - control-center.workspace.shell - density
+- safeVisualOnly - control-center / - control-center.workspace.shell - foreground
+- safeVisualOnly - control-center / - control-center.workspace.shell - gap
+- safeVisualOnly - control-center / - control-center.workspace.shell - maxWidth
+- safeVisualOnly - control-center / - control-center.workspace.shell - padding
+- safeVisualOnly - control-center / - control-center.workspace - width
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.main-content - alignment
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.main-content - density
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.main-content - gap
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.main-content - maxWidth
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.main-content - padding
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - alignment
+- visualWithFunctionalRisk - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - background
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - density
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - foreground
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - gap
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - maxWidth
+- safeVisualOnly - mobile /prisma-app/install - mobile.prisma.app.install.route.shell - padding
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.main-content - alignment
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.main-content - density
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.main-content - gap
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.main-content - maxWidth
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.main-content - padding
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.shell - alignment
+- visualWithFunctionalRisk - mobile /prisma-app/offline - mobile.prisma.app.offline.route.shell - background
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.shell - density
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.shell - foreground
+- safeVisualOnly - mobile /prisma-app/offline - mobile.prisma.app.offline.route.shell - gap

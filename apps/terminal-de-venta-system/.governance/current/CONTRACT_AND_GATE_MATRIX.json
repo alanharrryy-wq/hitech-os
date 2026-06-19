@@ -1,5 +1,5 @@
 {
-  "task": "PRISMA Tablet POS Sell premium visual continuation: audit and stabilize incomplete Codex visual changes for Tablet POS / Vender / Productos / Carrito / Checkout / Cobrar. Preserve real products, prices, SKUs, cart bindings, business logic and Mount Fuji/cloudy background. Scope is Tablet POS sell screen foreground only. Audit new usage and globals.css risk, separate useful visual changes from CSS contamination, then prepare authority for one definitive fix: product vitrines, premium cart column, stable iridescent Cobrar CTA, light tactile foreground. Exclude PC, Mobile, Chart Lab, database sync, schema changes, commits, push, merge, process kill, port cleanup, dev server start, Playwright loop and Prisma hot regeneration.",
+  "task": "Build PRISMA Visual Control System v1 across all governed PRISMA surfaces and apps: Tablet POS checkout cart flows, PC Backoffice routes, Mobile Adder, Web Edit, Chart Lab, Control Center, Shared UI, visual control registry tooling owners editable slots layers certification reports",
   "apps": [
     "backgrounds",
     "chart-lab",
@@ -16,7 +16,6 @@
   ],
   "change_types": [
     "data_sync",
-    "ops_hot_injection",
     "visual"
   ],
   "required_gates": [
@@ -52,12 +51,7 @@
     "regenerate Prisma hot",
     "delete files permanently",
     "force push",
-    "global CSS blast without manifest",
-    "kill processes",
-    "free ports",
-    "start dev server",
-    "regenerate prisma hot",
-    "pc:typecheck hot"
+    "global CSS blast without manifest"
   ],
   "contracts_found": [
     {
@@ -200,14 +194,6 @@
       "path": "quality/contracts/support-pack-redaction.contract.json",
       "bytes": 568,
       "sha256": "96e47caa115a54a6333f38e379c75854df182539f14c479d6131721697ae8099",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/upgrade-rollback-customer.contract.json",
-      "bytes": 604,
-      "sha256": "584da0e622535c947326ada14f072a2b42e94d849d9eff0d9418d35c170ae44c",
       "extension": ".json",
       "source_id": "app:quality",
       "reason": "quality_authority"

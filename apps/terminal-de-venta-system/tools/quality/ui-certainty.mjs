@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { isUiRuntimeSuccess, runUiRuntimeCommand } from './ui-runtime-certainty.mjs';
+import { VISUAL_CONTROL_COMMANDS, runVisualControlCommand } from './ui-visual-control.mjs';
 
 const HARD_STATES = ['CERTIFIED', 'BLOCKED', 'DRIFT', 'CONFLICT'];
 const UI_RUNTIME_COMMANDS = new Set(['routes', 'route-coverage', 'runtime-probe', 'certify-runtime-pages']);
@@ -1262,8 +1263,18 @@ function printReport(report) {
     selectorMissingCount: report.selectorMissingCount,
     panelCount: report.panelCount,
     anchorCount: report.anchorCount,
+    surfaceCount: report.surfaceCount,
+    visualRegionCount: report.visualRegionCount,
+    editableSlotCount: report.editableSlotCount,
+    componentOwnerCount: report.componentOwnerCount,
+    cssOwnerCount: report.cssOwnerCount,
+    layerCount: report.layerCount,
     conflictCount: report.conflictCount,
     changedCount: report.changedCount,
+    blockerCount: report.blockerCount,
+    warningCount: report.warningCount,
+    activeImportantCount: report.activeImportantCount,
+    ambiguousActiveLayerOwnerCount: report.ambiguousActiveLayerOwnerCount,
     problems: report.problems,
     blocked: report.blocked,
     drifts: report.drifts,
@@ -1279,6 +1290,7 @@ if (cmd === 'self-test') result = selfTest(flags);
 else if (cmd === 'certify' || cmd === 'supreme' || cmd === 'work') result = certify(flags);
 else if (cmd === 'certify-all-surfaces') result = certifyAllSurfaces(flags);
 else if (UI_RUNTIME_COMMANDS.has(cmd)) result = await runUiRuntimeCommand(cmd, flags);
+else if (VISUAL_CONTROL_COMMANDS.has(cmd)) result = await runVisualControlCommand(cmd, flags);
 else if (cmd === 'contracts') result = contracts(flags);
 else if (cmd === 'anchors') result = anchorsCommand(flags);
 else if (cmd === 'selectors') result = selectorsCommand(flags);
