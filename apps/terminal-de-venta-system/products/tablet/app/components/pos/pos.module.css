@@ -9956,3 +9956,526 @@
   }
 }
 /* PRISMA_TABLET_POS_TICKET_RAIL_GHOST_LAYER_REMOVAL_1506::END */
+
+/* PRISMA_TABLET_POS_COMMAND_DECK_1906::START
+   Scope: Tablet POS owned foreground only.
+   Intent: first premium visual pass for sales interface and closed-cash state.
+   Owners: products/tablet/app/components/pos/pos-screen.tsx + pos.module.css.
+   Contract: no business logic changes, no non-Tablet surfaces, no priority overrides.
+*/
+.posPremiumWorkspace {
+  --deck-ink: #0b1628;
+  --deck-ink-soft: #213652;
+  --deck-muted: #607087;
+  --deck-line: rgba(139, 160, 186, 0.28);
+  --deck-line-strong: rgba(182, 201, 221, 0.54);
+  --deck-glass: rgba(255, 255, 255, 0.68);
+  --deck-glass-strong: rgba(255, 255, 255, 0.86);
+  --deck-mist: rgba(239, 248, 252, 0.62);
+  --deck-aqua: rgba(142, 220, 238, 0.20);
+  --deck-gold: rgba(237, 206, 139, 0.27);
+  --deck-blue: #0878ee;
+  --deck-blue-deep: #075fd0;
+  --deck-shadow: 0 20px 48px rgba(37, 60, 88, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --deck-shadow-soft: 0 14px 32px rgba(37, 60, 88, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  grid-template-columns: minmax(0, 1fr) clamp(368px, 29vw, 430px);
+  gap: clamp(16px, 1.45vw, 22px);
+  align-items: start;
+  min-height: calc(100dvh - 128px);
+  padding: clamp(12px, 1.1vw, 18px) clamp(10px, 1vw, 16px) clamp(92px, 10dvh, 112px);
+}
+
+.posPremiumWorkspace::before {
+  border-radius: clamp(30px, 3.2vw, 42px);
+  background:
+    radial-gradient(ellipse at 16% 7%, rgba(255, 255, 255, 0.34), transparent 38%),
+    radial-gradient(ellipse at 86% 18%, rgba(142, 220, 238, 0.14), transparent 42%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.20), rgba(245, 250, 252, 0.08) 48%, rgba(255, 255, 255, 0.17));
+  opacity: 0.88;
+}
+
+.posPremiumCatalogArea {
+  gap: clamp(14px, 1.2vw, 18px);
+}
+
+.posPremiumSearchCard {
+  min-height: 76px;
+  padding: clamp(9px, 0.82vw, 12px);
+  border: 1px solid var(--deck-line);
+  border-radius: clamp(26px, 2.2vw, 32px);
+  background:
+    radial-gradient(88% 96% at 8% 0%, rgba(255, 255, 255, 0.96), transparent 52%),
+    linear-gradient(122deg, rgba(255, 255, 255, 0.76), rgba(243, 249, 251, 0.56) 54%, rgba(225, 242, 248, 0.38)),
+    var(--deck-glass);
+  box-shadow: var(--deck-shadow-soft);
+  backdrop-filter: blur(12px) saturate(1.08);
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+}
+
+.posPremiumSearchInputWrap {
+  min-height: clamp(60px, 5.8vw, 70px);
+  border-radius: 24px;
+  border-color: rgba(160, 181, 204, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 251, 252, 0.72)),
+    rgba(255, 255, 255, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 10px 24px rgba(44, 69, 98, 0.09);
+}
+
+.posPremiumSearchInputWrap input {
+  color: var(--deck-ink);
+  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  font-weight: 860;
+}
+
+.posPremiumCategoryRail {
+  gap: clamp(9px, 0.9vw, 13px);
+  padding: 2px 2px 4px;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: clamp(48px, 4.4vw, 56px);
+  min-width: clamp(124px, 10vw, 158px);
+  padding-inline: clamp(18px, 1.3vw, 24px);
+  border-radius: 19px;
+  border-color: rgba(155, 176, 200, 0.34);
+  color: var(--deck-ink-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 250, 251, 0.58)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.93),
+    0 10px 24px rgba(45, 68, 95, 0.08);
+}
+
+.posPremiumCategoryButtonActive {
+  border-color: rgba(36, 128, 234, 0.32);
+  color: #082345;
+  background:
+    radial-gradient(90% 120% at 14% 0%, rgba(255, 255, 255, 0.98), transparent 46%),
+    linear-gradient(124deg, rgba(255, 255, 255, 0.96), rgba(231, 246, 255, 0.72) 46%, rgba(216, 241, 249, 0.66)),
+    rgba(255, 255, 255, 0.66);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 14px 30px rgba(32, 98, 168, 0.13),
+    0 0 22px rgba(128, 211, 237, 0.17);
+}
+
+.posPremiumProductGrid {
+  gap: clamp(13px, 1.12vw, 18px);
+}
+
+.posPremiumProductCard {
+  min-height: clamp(286px, 25vw, 318px);
+  padding: clamp(12px, 1.05vw, 16px);
+  border-radius: clamp(26px, 2.4vw, 32px);
+  border-color: rgba(151, 173, 199, 0.34);
+  color: var(--deck-ink);
+  background:
+    radial-gradient(88% 58% at 18% 0%, rgba(255, 255, 255, 0.98), transparent 48%),
+    linear-gradient(132deg, rgba(255, 255, 255, 0.90), rgba(248, 252, 252, 0.68) 46%, rgba(228, 242, 246, 0.56)),
+    rgba(255, 255, 255, 0.58);
+  box-shadow: var(--deck-shadow-soft);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+}
+
+.posPremiumProductCard:not(.posPremiumProductCardDisabled):hover,
+.posPremiumProductCard:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(50, 140, 231, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 22px 46px rgba(41, 66, 96, 0.16),
+    0 0 26px rgba(126, 214, 238, 0.14);
+}
+
+.posPremiumProductStage {
+  min-height: clamp(138px, 12vw, 162px);
+  border-radius: 24px;
+  border-color: rgba(160, 181, 204, 0.32);
+  background:
+    radial-gradient(ellipse at 50% 82%, rgba(237, 206, 139, 0.22), transparent 50%),
+    radial-gradient(ellipse at 74% 18%, rgba(255, 255, 255, 0.72), transparent 40%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(246, 250, 251, 0.58) 55%, rgba(225, 239, 243, 0.46));
+}
+
+.posPremiumProductName {
+  color: var(--deck-ink);
+  font-size: clamp(1rem, 1.12vw, 1.12rem);
+  line-height: 1.16;
+}
+
+.posPremiumProductPrice strong {
+  color: var(--deck-ink);
+  font-size: clamp(1.24rem, 1.7vw, 1.52rem);
+}
+
+.posPremiumAddButton {
+  min-height: 48px;
+  border-radius: 18px;
+  border-color: rgba(31, 126, 232, 0.26);
+  background:
+    radial-gradient(100% 120% at 12% 0%, rgba(255, 255, 255, 0.96), transparent 48%),
+    linear-gradient(124deg, rgba(255, 255, 255, 0.90), rgba(229, 246, 255, 0.64) 48%, rgba(219, 241, 248, 0.58)),
+    rgba(255, 255, 255, 0.52);
+}
+
+.posPremiumTicketPanel {
+  top: 4px;
+  gap: clamp(10px, 1vw, 14px);
+  max-height: calc(100dvh - 122px);
+  padding: clamp(14px, 1.18vw, 18px);
+  border-radius: clamp(28px, 2.6vw, 34px);
+  border-color: rgba(150, 173, 199, 0.38);
+  background:
+    radial-gradient(96% 64% at 16% 0%, rgba(255, 255, 255, 0.98), transparent 50%),
+    linear-gradient(132deg, rgba(255, 255, 255, 0.90), rgba(246, 251, 252, 0.74) 46%, rgba(226, 241, 247, 0.62)),
+    rgba(255, 255, 255, 0.60);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(112, 130, 152, 0.08),
+    0 24px 56px rgba(36, 62, 93, 0.16);
+  backdrop-filter: blur(10px) saturate(1.07);
+  -webkit-backdrop-filter: blur(10px) saturate(1.07);
+}
+
+.posPremiumTicketLines {
+  max-height: min(27dvh, 282px);
+}
+
+.posPremiumTicketLine {
+  border-color: rgba(151, 173, 199, 0.30);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 251, 252, 0.60)),
+    rgba(255, 255, 255, 0.54);
+}
+
+.posPremiumCheckoutStack .posPremiumTicketTotal {
+  min-height: 90px;
+  border-color: rgba(31, 126, 232, 0.22);
+  background:
+    radial-gradient(88% 110% at 14% 0%, rgba(255, 255, 255, 0.98), transparent 46%),
+    linear-gradient(126deg, rgba(255, 255, 255, 0.92), rgba(230, 247, 255, 0.66) 46%, rgba(220, 242, 249, 0.62)),
+    rgba(255, 255, 255, 0.60);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCta,
+.posPremiumBlockedGateAction {
+  color: #ffffff;
+  border-color: rgba(121, 190, 255, 0.62);
+  background:
+    radial-gradient(112% 120% at 18% 0%, rgba(255, 255, 255, 0.24), transparent 42%),
+    linear-gradient(135deg, #1596ff, var(--deck-blue) 46%, var(--deck-blue-deep));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(3, 43, 110, 0.32),
+    0 18px 36px rgba(9, 102, 214, 0.26),
+    0 0 28px rgba(84, 188, 255, 0.20);
+}
+
+.posPremiumCheckoutStack .posPremiumCheckoutCtaText span,
+.posPremiumCheckoutStack .posPremiumCheckoutCtaLabel,
+.posPremiumCheckoutStack .posPremiumCheckoutCta strong,
+.posPremiumBlockedGateAction span {
+  color: #ffffff;
+}
+
+.statePanel.posGateDeck {
+  width: min(760px, calc(100% - 56px));
+  min-height: clamp(392px, 48dvh, 470px);
+  margin: clamp(28px, 7dvh, 78px) auto clamp(24px, 4dvh, 44px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: center;
+  gap: clamp(18px, 2vw, 26px);
+  padding: clamp(28px, 3.4vw, 46px);
+  border: 1px solid rgba(169, 196, 221, 0.45);
+  border-radius: clamp(32px, 4vw, 46px);
+  color: var(--deck-ink);
+  text-align: center;
+  background:
+    radial-gradient(94% 90% at 18% 0%, rgba(255, 255, 255, 0.98), transparent 52%),
+    radial-gradient(90% 86% at 88% 100%, rgba(145, 219, 239, 0.16), transparent 56%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(243, 250, 252, 0.72) 52%, rgba(225, 241, 247, 0.60)),
+    rgba(255, 255, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -1px 0 rgba(92, 121, 151, 0.09),
+    0 28px 72px rgba(29, 61, 98, 0.18),
+    0 0 44px rgba(145, 219, 239, 0.12);
+  backdrop-filter: blur(14px) saturate(1.12);
+  -webkit-backdrop-filter: blur(14px) saturate(1.12);
+}
+
+.posGateHero {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.posGateIcon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(145, 181, 214, 0.42);
+  border-radius: 23px;
+  color: #0f4e95;
+  background:
+    radial-gradient(80% 80% at 20% 0%, rgba(255, 255, 255, 0.98), transparent 54%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.88), rgba(223, 242, 251, 0.66));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 14px 28px rgba(44, 79, 118, 0.12);
+}
+
+.posGateEyebrow {
+  color: #0d72db;
+  font-size: clamp(0.76rem, 0.9vw, 0.86rem);
+  font-weight: 950;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.posGateTitle {
+  color: var(--deck-ink);
+  font-size: clamp(2.12rem, 4.1vw, 3.42rem);
+  font-weight: 980;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.posGateDetail {
+  max-width: 620px;
+  color: var(--deck-ink-soft);
+  font-size: clamp(1rem, 1.18vw, 1.18rem);
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.posGateMetaGrid {
+  width: min(100%, 620px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(10px, 1vw, 14px);
+}
+
+.posGateMeta {
+  min-height: 76px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1px solid rgba(154, 180, 207, 0.34);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(242, 249, 251, 0.58)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 10px 22px rgba(41, 66, 96, 0.08);
+}
+
+.posGateMeta small {
+  color: var(--deck-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.posGateMeta strong {
+  color: var(--deck-ink);
+  overflow: hidden;
+  font-size: clamp(0.88rem, 1vw, 1rem);
+  font-weight: 880;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.posGateActions {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.posGateActions .posPremiumBlockedGateAction {
+  min-height: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 26px;
+  border-radius: 22px;
+  font-size: clamp(1rem, 1.14vw, 1.12rem);
+  font-weight: 940;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.posGateActions small {
+  color: var(--deck-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@media (max-width: 1240px) {
+  .posPremiumWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .posPremiumTicketPanel {
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .posGateMetaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statePanel.posGateDeck {
+    width: min(100%, calc(100% - 28px));
+    min-height: 0;
+  }
+}
+/* PRISMA_TABLET_POS_COMMAND_DECK_1906::END */
+
+/* PRISMA_TABLET_POS_CLOSED_COMMAND_DECK_1906B::START
+   Pass 2: closed cash state becomes a real premium opening mode.
+   Scope: Tablet POS closed gate only. No non-Tablet surfaces, no functional changes.
+*/
+.statePanel.posGateDeck {
+  width: min(706px, calc(100% - 72px));
+  min-height: clamp(326px, 41dvh, 382px);
+  margin: clamp(10px, 2.4dvh, 24px) auto clamp(18px, 2.8dvh, 30px);
+  padding: clamp(24px, 2.9vw, 34px) clamp(28px, 3.4vw, 42px);
+  gap: clamp(14px, 1.55vw, 20px);
+  align-content: center;
+  border-radius: clamp(28px, 3.3vw, 40px);
+  background:
+    radial-gradient(86% 88% at 16% 0%, rgba(255, 255, 255, 0.96), transparent 52%),
+    radial-gradient(92% 82% at 88% 104%, rgba(109, 198, 235, 0.13), transparent 58%),
+    linear-gradient(138deg, rgba(255, 255, 255, 0.82), rgba(245, 251, 253, 0.70) 50%, rgba(226, 243, 250, 0.54)),
+    rgba(255, 255, 255, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(92, 121, 151, 0.08),
+    0 22px 58px rgba(23, 62, 99, 0.16),
+    0 0 36px rgba(118, 205, 239, 0.10);
+}
+
+.statePanel.posGateDeck::after {
+  content: none;
+}
+
+.statePanel.posGateDeck .posGateHero {
+  max-width: 590px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.statePanel.posGateDeck .posGateIcon {
+  width: 58px;
+  height: 58px;
+  border-radius: 21px;
+}
+
+.statePanel.posGateDeck .posGateEyebrow {
+  color: #1469c7;
+  font-size: clamp(0.72rem, 0.82vw, 0.8rem);
+  letter-spacing: 0.18em;
+}
+
+.statePanel.posGateDeck .posGateTitle {
+  font-size: clamp(2.25rem, 3.7vw, 3.15rem);
+  letter-spacing: -0.06em;
+}
+
+.statePanel.posGateDeck .posGateDetail {
+  max-width: 560px;
+  color: #29496a;
+  font-size: clamp(0.94rem, 1.02vw, 1.08rem);
+  line-height: 1.36;
+}
+
+.statePanel.posGateDeck .posGateMetaGrid {
+  width: min(100%, 584px);
+  gap: clamp(10px, 1.05vw, 14px);
+}
+
+.statePanel.posGateDeck .posGateMeta {
+  min-height: 70px;
+  border-radius: 20px;
+  padding: 11px 13px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 251, 253, 0.62)),
+    rgba(255, 255, 255, 0.44);
+}
+
+.statePanel.posGateDeck .posGateActions {
+  gap: 8px;
+}
+
+.statePanel.posGateDeck .posGateActions .posPremiumBlockedGateAction {
+  min-height: 58px;
+  min-width: 164px;
+  padding: 0 24px;
+  border-color: rgba(120, 192, 255, 0.70);
+  border-radius: 21px;
+  color: #ffffff;
+  background:
+    radial-gradient(112% 120% at 18% 0%, rgba(255, 255, 255, 0.30), transparent 42%),
+    linear-gradient(135deg, #19a0ff, #1279ee 48%, #0d4fca);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.44),
+    inset 0 -1px 0 rgba(4, 47, 112, 0.32),
+    0 16px 34px rgba(13, 93, 211, 0.26),
+    0 0 26px rgba(86, 190, 255, 0.20);
+}
+
+.statePanel.posGateDeck .posGateActions .posPremiumBlockedGateAction span,
+.statePanel.posGateDeck .posGateActions .posPremiumBlockedGateAction svg {
+  color: #ffffff;
+}
+
+.statePanel.posGateDeck .posGateActions small {
+  color: rgba(36, 64, 94, 0.72);
+  font-size: 0.78rem;
+}
+
+@media (max-height: 840px) and (min-width: 900px) {
+  .statePanel.posGateDeck {
+    width: min(690px, calc(100% - 96px));
+    min-height: 328px;
+    margin-top: clamp(4px, 1.5dvh, 16px);
+    margin-bottom: clamp(12px, 2dvh, 22px);
+    padding: 24px 36px;
+    gap: 14px;
+  }
+
+  .statePanel.posGateDeck .posGateIcon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .statePanel.posGateDeck .posGateTitle {
+    font-size: clamp(2.18rem, 3.2vw, 2.85rem);
+  }
+
+  .statePanel.posGateDeck .posGateMeta {
+    min-height: 66px;
+  }
+
+  .statePanel.posGateDeck .posGateActions .posPremiumBlockedGateAction {
+    min-height: 56px;
+  }
+}
+/* PRISMA_TABLET_POS_CLOSED_COMMAND_DECK_1906B::END */

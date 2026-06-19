@@ -1265,6 +1265,44 @@ function compactModelForRepo(model) {
   };
 }
 
+function countBy(items, keyOrFn) {
+  const getKey = typeof keyOrFn === 'function' ? keyOrFn : (item) => item?.[keyOrFn];
+  const counts = {};
+  for (const item of Array.isArray(items) ? items : []) {
+    const raw = getKey(item) || 'unknown';
+    const key = String(raw);
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return Object.fromEntries(Object.entries(counts).sort((a, b) => a[0].localeCompare(b[0])));
+}
+
+function sampleItems(items, limit = 80) {
+  return (Array.isArray(items) ? items : []).slice(0, limit);
+}
+
+function summarizeProfiles(profiles, groupLimit = 16, valueLimit = 10) {
+  const out = {};
+  for (const [group, entries] of Object.entries(profiles || {})) {
+    const keys = Object.keys(entries || {}).sort();
+    out[group] = {
+      profileCount: keys.length,
+      samples: keys.slice(0, groupLimit).map((key) => ({
+        id: key,
+        values: sampleItems(entries[key], valueLimit)
+      }))
+    };
+  }
+  return out;
+}
+
+function compactIndexPolicy(kind, expandedCount) {
+  return {
+    kind,
+    policy: 'repo keeps counts, grouped indexes and bounded samples; expanded detail belongs in external evidence/result.zip when a run needs forensic payload',
+    expandedCount
+  };
+}
+
 function writeArtifacts(model) {
   const root = model.state.visualRoot;
   const compact = compactModelForRepo(model);
@@ -1310,9 +1348,55 @@ function writeArtifacts(model) {
   writeJson(path.join(root, 'surfaces.json'), { schema: 'prisma.ui.visual-control.surfaces.v1', status: model.risks.status, surfaces: model.surfaces });
   writeJson(path.join(root, 'routes.json'), { schema: 'prisma.ui.visual-control.routes.v1', status: model.risks.status, routeCount: model.routes.length, routes: model.routes });
   writeJson(path.join(root, 'components.json'), { schema: 'prisma.ui.visual-control.components.v1', status: model.risks.status, componentCount: model.components.length, components: model.components });
-  writeJson(path.join(root, 'editable-slots.json'), { schema: 'prisma.ui.visual-control.editable-slots.v1', status: model.risks.status, detailPolicy: compact.detailPolicy, editableSlotCount: model.slots.length, slotUnitCount: compact.slotUnits.length, profiles: compact.profiles, slotUnits: compact.slotUnits });
-  writeJson(path.join(root, 'owners.json'), { schema: 'prisma.ui.visual-control.owners.v1', status: model.risks.status, detailPolicy: compact.detailPolicy, profiles: compact.profiles, ...compact.owners });
-  writeJson(path.join(root, 'layers.json'), { schema: 'prisma.ui.visual-control.layers.v1', status: model.risks.status, detailPolicy: compact.detailPolicy, layerCount: model.layers.length, assetCount: model.assets.length, layers: compact.layers, assets: model.assets });
+  writeJson(path.join(root, 'editable-slots.json'), {
+    schema: 'prisma.ui.visual-control.editable-slots.v1',
+    status: model.risks.status,
+    detailPolicy: compact.detailPolicy,
+    compactIndex: compactIndexPolicy('editable-slots', model.slots.length),
+    editableSlotCount: model.slots.length,
+    slotUnitCount: compact.slotUnits.length,
+    countsBySurface: countBy(compact.slotUnits, 'surface'),
+    countsBySafetyClassification: countBy(model.slots, 'safetyClassification'),
+    countsByRegion: countBy(compact.slotUnits, 'visualRegion'),
+    profileSummary: summarizeProfiles(compact.profiles),
+    slotUnitSamples: sampleItems(compact.slotUnits, 180)
+  });
+  writeJson(path.join(root, 'owners.json'), {
+    schema: 'prisma.ui.visual-control.owners.v1',
+    status: model.risks.status,
+    detailPolicy: compact.detailPolicy,
+    compactIndex: compactIndexPolicy('owners', model.owners.componentOwners.length + model.owners.cssOwners.length + model.owners.regionOwners.length),
+    componentOwnerCount: compact.owners.componentOwners.length,
+    cssOwnerCount: compact.owners.cssOwners.length,
+    assetOwnerCount: compact.owners.assetOwners.length,
+    tokenThemeOwnerCount: compact.owners.tokenThemeOwners.length,
+    routeOwnerCount: compact.owners.routeOwners.length,
+    regionOwnerCount: compact.owners.regionOwners.length,
+    countsBySurface: countBy(compact.owners.regionOwners, 'surface'),
+    countsBySafetyClassification: countBy(compact.owners.regionOwners, 'safetyClassification'),
+    profileSummary: summarizeProfiles(compact.profiles),
+    componentOwnerSamples: sampleItems(compact.owners.componentOwners, 100),
+    cssOwnerSamples: sampleItems(compact.owners.cssOwners, 100),
+    assetOwnerSamples: sampleItems(compact.owners.assetOwners, 80),
+    tokenThemeOwnerSamples: sampleItems(compact.owners.tokenThemeOwners, 80),
+    routeOwnerSamples: sampleItems(compact.owners.routeOwners, 100),
+    regionOwnerSamples: sampleItems(compact.owners.regionOwners, 140)
+  });
+  writeJson(path.join(root, 'layers.json'), {
+    schema: 'prisma.ui.visual-control.layers.v1',
+    status: model.risks.status,
+    detailPolicy: compact.detailPolicy,
+    compactIndex: compactIndexPolicy('layers', model.layers.length),
+    layerCount: model.layers.length,
+    assetCount: model.assets.length,
+    countsBySurface: countBy(compact.layers, 'surface'),
+    countsByLayer: countBy(compact.layers, 'layer'),
+    countsByVisualRegion: countBy(compact.layers, 'visualRegion'),
+    countsByEvidenceClass: countBy(compact.layers, 'evidenceClass'),
+    countsBySafetyClassification: countBy(compact.layers, 'safetyClassification'),
+    layerSamples: sampleItems(compact.layers, 220),
+    assetSamples: sampleItems(model.assets, 120)
+  });
   writeJson(path.join(root, 'risks.json'), { schema: 'prisma.ui.visual-control.risks.v1', ...model.risks });
   writeJson(path.join(root, 'reuse-report.json'), model.reuseReport);
 

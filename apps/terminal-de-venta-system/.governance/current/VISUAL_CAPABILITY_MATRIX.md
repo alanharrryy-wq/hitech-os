@@ -1,8 +1,8 @@
 # PRISMA Visual Capability Matrix
 
-- Task: `Build PRISMA Visual Control System v1 across all governed PRISMA surfaces and apps: Tablet POS checkout cart flows, PC Backoffice routes, Mobile Adder, Web Edit, Chart Lab, Control Center, Shared UI, visual control registry tooling owners editable slots layers certification reports`
+- Task: `Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.`
 - Status: `PASS`
-- Generated: `2026-06-19T00:57:32-06:00`
+- Generated: `2026-06-19T03:52:56-06:00`
 - Visual required: `True`
 
 | Capability | Kind | Available | Risk | Default decision | Evidence count | Contribution |

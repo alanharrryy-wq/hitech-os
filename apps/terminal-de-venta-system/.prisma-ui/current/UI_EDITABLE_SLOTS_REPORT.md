@@ -1,9 +1,9 @@
 # UI EDITABLE SLOTS REPORT
 
 - status: `CERTIFIED`
-- slot count: `21570`
+- slot count: `21690`
 - safeVisualOnly: `2725`
-- visualWithFunctionalRisk: `18367`
+- visualWithFunctionalRisk: `18487`
 - functionalControl: `111`
 - sharedGlobalRisk: `367`
 

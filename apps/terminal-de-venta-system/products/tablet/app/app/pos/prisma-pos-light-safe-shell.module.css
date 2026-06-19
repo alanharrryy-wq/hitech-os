@@ -266,3 +266,119 @@
   text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */
+
+/* PRISMA_TABLET_POS_COMMAND_DECK_SHELL_1906::START
+   Scope: /pos safe shell only.
+   Intent: calmer premium tablet canvas, better 1180x820 command deck rhythm.
+   Contract: no route, logic, server, or non-Tablet change.
+*/
+.shell {
+  --command-shell-ink: #0b1628;
+  --command-shell-mist: rgba(244, 250, 253, 0.76);
+  --command-shell-line: rgba(164, 190, 216, 0.30);
+  color: var(--command-shell-ink);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.95), transparent 38%),
+    radial-gradient(ellipse at 86% 8%, rgba(190, 230, 246, 0.38), transparent 36%),
+    linear-gradient(180deg, #f8fbff 0%, #eef7fc 48%, #d9eef8 100%);
+}
+
+.shell::before {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(242, 249, 253, 0.42) 42%, rgba(22, 83, 125, 0.12)),
+    url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
+  background-position: center 42%;
+  opacity: 0.54;
+  filter: saturate(0.88) contrast(1.02) brightness(1.18);
+}
+
+.shell::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.46) 36%, rgba(226, 242, 251, 0.54) 74%, rgba(27, 91, 133, 0.10)),
+    radial-gradient(ellipse at 50% 34%, rgba(255, 255, 255, 0.06), rgba(77, 124, 164, 0.12) 100%);
+}
+
+.content {
+  width: min(1180px, calc(100vw - 48px));
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(14px, 1.6vw, 22px) 0 clamp(14px, 1.6vw, 22px);
+}
+
+.shell :global(header) {
+  min-height: clamp(104px, 12dvh, 132px);
+  border-radius: clamp(26px, 2.4vw, 34px);
+}
+
+.shell :global(header h1) {
+  color: var(--command-shell-ink);
+  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.shell :global(nav a[href]) {
+  min-height: clamp(54px, 5.8vw, 66px);
+  border-radius: 22px;
+}
+
+@media (max-width: 760px) {
+  .content {
+    width: min(100%, calc(100vw - 24px));
+  }
+}
+/* PRISMA_TABLET_POS_COMMAND_DECK_SHELL_1906::END */
+
+/* PRISMA_TABLET_POS_CLOSED_MODE_SHELL_1906B::START
+   Pass 2: hide legacy top shell only when /pos is blocked by closed cash gate.
+   Uses existing gate marker from POS Visual Control. Keeps bottom nav visible.
+*/
+.content:has([data-prisma-operational-gate="closed-cash"]) {
+  width: min(1180px, calc(100vw - 56px));
+  height: 100dvh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 1.8dvh, 20px);
+  padding: clamp(12px, 1.5vw, 18px) 0 clamp(14px, 1.6vw, 20px);
+  overflow: hidden;
+}
+
+.content:has([data-prisma-operational-gate="closed-cash"]) :global(header) {
+  display: none;
+}
+
+.content:has([data-prisma-operational-gate="closed-cash"]) :global(nav) {
+  align-self: end;
+  margin-top: 0;
+}
+
+.content:has([data-prisma-operational-gate="closed-cash"]) :global(nav a[href]) {
+  min-height: clamp(52px, 5.4vw, 62px);
+}
+
+.shell:has([data-prisma-operational-gate="closed-cash"]) {
+  overflow: hidden;
+}
+
+.shell:has([data-prisma-operational-gate="closed-cash"])::before {
+  opacity: 0.48;
+  filter: saturate(0.86) contrast(1.01) brightness(1.20);
+}
+
+.shell:has([data-prisma-operational-gate="closed-cash"])::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.56) 35%, rgba(225, 243, 252, 0.50) 76%, rgba(21, 86, 128, 0.10)),
+    radial-gradient(ellipse at 50% 38%, rgba(255, 255, 255, 0.12), rgba(57, 109, 151, 0.10) 100%);
+}
+
+@media (max-width: 760px) {
+  .content:has([data-prisma-operational-gate="closed-cash"]) {
+    width: min(100%, calc(100vw - 24px));
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+}
+/* PRISMA_TABLET_POS_CLOSED_MODE_SHELL_1906B::END */

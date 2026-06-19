@@ -3,9 +3,9 @@
 - status: `CERTIFIED`
 - surfaces: `7`
 - routes: `108`
-- visual regions: `4132`
-- editable slots: `21570`
-- layers: `8582`
+- visual regions: `4156`
+- editable slots: `21690`
+- layers: `8649`
 - blockers: `0`
 - warnings: `0`
 

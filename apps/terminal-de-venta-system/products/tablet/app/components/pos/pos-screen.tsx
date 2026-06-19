@@ -361,11 +361,46 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         visualSurface="tablet-pos"
         visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
       >
-        <section className={styles.statePanel} data-prisma-operational-gate="closed-cash" data-prisma-state="blocked" role="status">
-          <PrismaIcon name="terminal" size={28} />
-          <strong>Caja cerrada / Abrir turno</strong>
-          <span>{gate.detail}</span>
-          <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>{gate.actionLabel}</a>
+        <section
+          className={`${styles.statePanel} ${styles.posGateDeck}`}
+          data-prisma-operational-gate="closed-cash"
+          data-prisma-state="blocked"
+          data-prisma-panel="tablet.pos.closed-gate"
+          data-prisma-visual-unit="tablet.pos.turn-opening-card"
+          data-prisma-editable-slot="state-panel.layout,state-panel.spacing,state-panel.surface,state-panel.cta"
+          role="status"
+        >
+          <div className={styles.posGateHero}>
+            <span className={styles.posGateIcon} aria-hidden="true">
+              <PrismaIcon name="terminal" size={30} />
+            </span>
+            <span className={styles.posGateEyebrow}>Tablet vende sola</span>
+            <strong className={styles.posGateTitle}>Caja cerrada</strong>
+            <span className={styles.posGateDetail}>{gate.detail}</span>
+          </div>
+
+          <div className={styles.posGateMetaGrid} aria-label="Resumen operativo de caja">
+            <span className={styles.posGateMeta}>
+              <small>Sucursal</small>
+              <strong>{runtimeSnapshot.identity.storeName}</strong>
+            </span>
+            <span className={styles.posGateMeta}>
+              <small>Terminal</small>
+              <strong>{runtimeSnapshot.identity.terminalName}</strong>
+            </span>
+            <span className={styles.posGateMeta}>
+              <small>Operador</small>
+              <strong>{runtimeSnapshot.identity.operatorName}</strong>
+            </span>
+          </div>
+
+          <div className={styles.posGateActions}>
+            <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>
+              <PrismaIcon name="terminal" size={18} />
+              <span>{gate.actionLabel}</span>
+            </a>
+            <small>Abre el turno para activar venta, catálogo y cobro.</small>
+          </div>
         </section>
       </PrismaTabletShellUnified>
     );
