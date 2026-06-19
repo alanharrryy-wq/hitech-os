@@ -50,7 +50,13 @@ const atmosphereAssets = [
 
 export default function ReferenciaVisualPage() {
   return (
-    <main className="prismaReferenceVisual" data-pilot="03_pc_referencia_visual">
+    <main
+      className="prismaReferenceVisual"
+      data-pilot="03_pc_referencia_visual"
+      data-prisma-panel="pc.laboratorio.pc.referencia.visual.route"
+      data-prisma-surface="pc"
+      data-prisma-route="/laboratorio-pc/referencia-visual"
+    >
       <link rel="stylesheet" href="/surface-visual-governor/reference-visual/pilot-03/prisma-pc-reference-visual.css" />
       <section className="prvHero prvGlass prvRim" aria-labelledby="prv-title">
         <div className="prvHeroCopy">

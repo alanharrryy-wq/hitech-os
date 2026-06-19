@@ -130,7 +130,13 @@ export default function RecipeStudioV2Page() {
   }
 
   return (
-    <main className={styles.shell} data-governor="recipe-studio-v2 route-budget-enforcer chart-lab">
+    <main
+      className={styles.shell}
+      data-governor="recipe-studio-v2 route-budget-enforcer chart-lab"
+      data-prisma-panel="chart-lab.recipe.studio.v2.route"
+      data-prisma-surface="chart-lab"
+      data-prisma-route="/recipe-studio-v2"
+    >
       <section className={styles.hero}>
         <div>
           <p className={styles.eyebrow}>PRISMA Surface Visual Governor · Chart Lab</p>

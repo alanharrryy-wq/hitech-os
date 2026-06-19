@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./prisma-mobile-pulse-binding.css";
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import { PrismaMobilePwaRuntime } from "@/components/prisma-app";
 
@@ -45,15 +46,26 @@ export const viewport: Viewport = {
   themeColor: "#eef3f8",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+function normalizePrismaRoute(value: string | null) {
+  const route = value && value.startsWith("/") ? value : "/";
+  return route.length > 1 ? route.replace(/\/+$/, "") : route;
+}
+
+function prismaRoutePanelId(route: string) {
+  if (route === "/") return "mobile.root.route";
+  return `mobile.${route.slice(1).replace(/[^A-Za-z0-9]+/g, ".").replace(/^\.|\.$/g, "")}.route`;
+}
+
+export default async function RootLayout({ children }: { children: ReactNode }) {
   const prismaTheme =
     process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-dark"
       ? "prisma-dark"
       : "prisma-light";
+  const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
 
   return (
     <html lang="es-MX" data-theme={prismaTheme} data-prisma-surface="mobile-pulse" data-prisma-visual-os="MOBILE_PULSE" data-prisma-vos-binding="00K">
-      <body>
+      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="mobile" data-prisma-route={route}>
         {children}
         <PrismaMobilePwaRuntime />
       </body>

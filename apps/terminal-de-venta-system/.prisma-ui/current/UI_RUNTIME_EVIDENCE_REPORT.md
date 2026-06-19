@@ -1,0 +1,131 @@
+# UI RUNTIME EVIDENCE REPORT
+
+- schema: `prisma.ui.runtime.evidence.report.v1`
+- status: `RUNTIME_CERTIFIED`
+- command: `runtime-probe`
+- routeCount: `108`
+- routeUnmappedCount: `0`
+- runtimeBlockedCount: `0`
+- anchorMissingCount: `0`
+- selectorMissingCount: `0`
+- blockedCount: `0`
+- driftCount: `0`
+- conflictCount: `0`
+
+## Surfaces
+- chart-lab: routes 2, runtime 2, source 0, blocked 0
+- web: routes 2, runtime 2, source 0, blocked 0
+- tablet: routes 35, runtime 29, source 6, blocked 0
+- pc: routes 63, runtime 58, source 5, blocked 0
+- mobile: routes 5, runtime 5, source 0, blocked 0
+- control-center: routes 1, runtime 1, source 0, blocked 0
+
+## Routes
+- RUNTIME_CERTIFIED - chart-lab / - http://127.0.0.1:3000/
+- RUNTIME_CERTIFIED - chart-lab /recipe-studio-v2 - http://127.0.0.1:3000/recipe-studio-v2
+- RUNTIME_CERTIFIED - web / - http://127.0.0.1:3110/
+- RUNTIME_CERTIFIED - web /surface-governor-public-sober - http://127.0.0.1:3110/surface-governor-public-sober
+- RUNTIME_CERTIFIED - tablet / - http://127.0.0.1:3120/
+- RUNTIME_CERTIFIED - tablet /catalog - http://127.0.0.1:3120/catalog
+- RUNTIME_CERTIFIED - tablet /checkout - http://127.0.0.1:3120/checkout
+- RUNTIME_CERTIFIED - tablet /events/outbox - http://127.0.0.1:3120/events/outbox
+- RUNTIME_CERTIFIED - tablet /existencias - http://127.0.0.1:3120/existencias
+- SOURCE_CERTIFIED - tablet /inventory - products/tablet/app/app/inventory/page.tsx
+- RUNTIME_CERTIFIED - tablet /inventory/low-stock - http://127.0.0.1:3120/inventory/low-stock
+- RUNTIME_CERTIFIED - tablet /offline - http://127.0.0.1:3120/offline
+- RUNTIME_CERTIFIED - tablet /pos - http://127.0.0.1:3120/pos
+- RUNTIME_CERTIFIED - tablet /prisma-dark-pos-reference - http://127.0.0.1:3120/prisma-dark-pos-reference
+- RUNTIME_CERTIFIED - tablet /prisma-pulse - http://127.0.0.1:3120/prisma-pulse
+- RUNTIME_CERTIFIED - tablet /prisma-visual-catalog - http://127.0.0.1:3120/prisma-visual-catalog
+- RUNTIME_CERTIFIED - tablet /referencia-visual - http://127.0.0.1:3120/referencia-visual
+- RUNTIME_CERTIFIED - tablet /release-gate - http://127.0.0.1:3120/release-gate
+- RUNTIME_CERTIFIED - tablet /returns - http://127.0.0.1:3120/returns
+- SOURCE_CERTIFIED - tablet /sales - products/tablet/app/app/sales/page.tsx
+- RUNTIME_CERTIFIED - tablet /sales/history - http://127.0.0.1:3120/sales/history
+- SOURCE_CERTIFIED - tablet /sales/history/:saleId - products/tablet/app/app/sales/history/[saleId]/page.tsx
+- RUNTIME_CERTIFIED - tablet /sales/today - http://127.0.0.1:3120/sales/today
+- SOURCE_CERTIFIED - tablet /sales/today/:saleId - products/tablet/app/app/sales/today/[saleId]/page.tsx
+- SOURCE_CERTIFIED - tablet /sales/today/:saleId/return - products/tablet/app/app/sales/today/[saleId]/return/page.tsx
+- RUNTIME_CERTIFIED - tablet /screen-standard-preview - http://127.0.0.1:3120/screen-standard-preview
+- SOURCE_CERTIFIED - tablet /settings/data - products/tablet/app/app/settings/data/page.tsx
+- RUNTIME_CERTIFIED - tablet /settings/export - http://127.0.0.1:3120/settings/export
+- RUNTIME_CERTIFIED - tablet /settings/license - http://127.0.0.1:3120/settings/license
+- RUNTIME_CERTIFIED - tablet /shift - http://127.0.0.1:3120/shift
+- RUNTIME_CERTIFIED - tablet /stock - http://127.0.0.1:3120/stock
+- RUNTIME_CERTIFIED - tablet /sync - http://127.0.0.1:3120/sync
+- RUNTIME_CERTIFIED - tablet /visual-os - http://127.0.0.1:3120/visual-os
+- RUNTIME_CERTIFIED - tablet /visual-os/detached - http://127.0.0.1:3120/visual-os/detached
+- RUNTIME_CERTIFIED - tablet /visual-os/materiality-catalog - http://127.0.0.1:3120/visual-os/materiality-catalog
+- RUNTIME_CERTIFIED - tablet /visual-os/pro - http://127.0.0.1:3120/visual-os/pro
+- RUNTIME_CERTIFIED - tablet /visual-os/realtime - http://127.0.0.1:3120/visual-os/realtime
+- RUNTIME_CERTIFIED - tablet /visual-os/tablet-background-gallery - http://127.0.0.1:3120/visual-os/tablet-background-gallery
+- RUNTIME_CERTIFIED - tablet /visual-os/tablet-codex-gallery - http://127.0.0.1:3120/visual-os/tablet-codex-gallery
+- SOURCE_CERTIFIED - pc / - products/pc/app/app/page.tsx
+- RUNTIME_CERTIFIED - pc /acciones-masivas - http://127.0.0.1:3130/acciones-masivas
+- RUNTIME_CERTIFIED - pc /ajustes-inventario - http://127.0.0.1:3130/ajustes-inventario
+- RUNTIME_CERTIFIED - pc /alertas-ejecutivas - http://127.0.0.1:3130/alertas-ejecutivas
+- RUNTIME_CERTIFIED - pc /alertas-operativas - http://127.0.0.1:3130/alertas-operativas
+- RUNTIME_CERTIFIED - pc /audit - http://127.0.0.1:3130/audit
+- RUNTIME_CERTIFIED - pc /auditoria-inventario - http://127.0.0.1:3130/auditoria-inventario
+- RUNTIME_CERTIFIED - pc /cash-sessions - http://127.0.0.1:3130/cash-sessions
+- RUNTIME_CERTIFIED - pc /catalog - http://127.0.0.1:3130/catalog
+- RUNTIME_CERTIFIED - pc /catalogo-activo - http://127.0.0.1:3130/catalogo-activo
+- RUNTIME_CERTIFIED - pc /conteos-operativos - http://127.0.0.1:3130/conteos-operativos
+- RUNTIME_CERTIFIED - pc /contratos-reporte - http://127.0.0.1:3130/contratos-reporte
+- RUNTIME_CERTIFIED - pc /counts - http://127.0.0.1:3130/counts
+- RUNTIME_CERTIFIED - pc /dashboard - http://127.0.0.1:3130/dashboard
+- RUNTIME_CERTIFIED - pc /data-quality - http://127.0.0.1:3130/data-quality
+- RUNTIME_CERTIFIED - pc /detalle-registros - http://127.0.0.1:3130/detalle-registros
+- RUNTIME_CERTIFIED - pc /devices - http://127.0.0.1:3130/devices
+- RUNTIME_CERTIFIED - pc /estados-operativos - http://127.0.0.1:3130/estados-operativos
+- RUNTIME_CERTIFIED - pc /existencias-criticas - http://127.0.0.1:3130/existencias-criticas
+- RUNTIME_CERTIFIED - pc /exportables - http://127.0.0.1:3130/exportables
+- RUNTIME_CERTIFIED - pc /filtros-avanzados - http://127.0.0.1:3130/filtros-avanzados
+- RUNTIME_CERTIFIED - pc /filtros-fecha - http://127.0.0.1:3130/filtros-fecha
+- RUNTIME_CERTIFIED - pc /forecast-basico - http://127.0.0.1:3130/forecast-basico
+- RUNTIME_CERTIFIED - pc /glosario - http://127.0.0.1:3130/glosario
+- RUNTIME_CERTIFIED - pc /gobierno - http://127.0.0.1:3130/gobierno
+- RUNTIME_CERTIFIED - pc /incidencias-recepcion - http://127.0.0.1:3130/incidencias-recepcion
+- RUNTIME_CERTIFIED - pc /integridad-barcodes - http://127.0.0.1:3130/integridad-barcodes
+- RUNTIME_CERTIFIED - pc /laboratorio-pc - http://127.0.0.1:3130/laboratorio-pc
+- RUNTIME_CERTIFIED - pc /laboratorio-pc/chart-lab - http://127.0.0.1:3130/laboratorio-pc/chart-lab
+- RUNTIME_CERTIFIED - pc /laboratorio-pc/dashboard-governor - http://127.0.0.1:3130/laboratorio-pc/dashboard-governor
+- RUNTIME_CERTIFIED - pc /laboratorio-pc/referencia-visual - http://127.0.0.1:3130/laboratorio-pc/referencia-visual
+- RUNTIME_CERTIFIED - pc /laboratorio-pc/referencia-visual/liquid-glass - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass
+- RUNTIME_CERTIFIED - pc /laboratorio-pc/referencia-visual/liquid-glass-capsules - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules
+- RUNTIME_CERTIFIED - pc /license-runtime - http://127.0.0.1:3130/license-runtime
+- RUNTIME_CERTIFIED - pc /metricas-dia - http://127.0.0.1:3130/metricas-dia
+- RUNTIME_CERTIFIED - pc /movements - http://127.0.0.1:3130/movements
+- RUNTIME_CERTIFIED - pc /ordenes-compra - http://127.0.0.1:3130/ordenes-compra
+- RUNTIME_CERTIFIED - pc /outbox-operativo - http://127.0.0.1:3130/outbox-operativo
+- RUNTIME_CERTIFIED - pc /politica-precios - http://127.0.0.1:3130/politica-precios
+- RUNTIME_CERTIFIED - pc /prisma-insights - http://127.0.0.1:3130/prisma-insights
+- SOURCE_CERTIFIED - pc /prisma-insights/chart-lab - products/pc/app/app/prisma-insights/chart-lab/page.tsx
+- RUNTIME_CERTIFIED - pc /proveedores - http://127.0.0.1:3130/proveedores
+- RUNTIME_CERTIFIED - pc /purchasing - http://127.0.0.1:3130/purchasing
+- RUNTIME_CERTIFIED - pc /receiving - http://127.0.0.1:3130/receiving
+- RUNTIME_CERTIFIED - pc /recepcion-proveedor - http://127.0.0.1:3130/recepcion-proveedor
+- SOURCE_CERTIFIED - pc /referencia-visual - products/pc/app/app/referencia-visual/page.tsx
+- SOURCE_CERTIFIED - pc /referencia-visual/liquid-glass - products/pc/app/app/referencia-visual/liquid-glass/page.tsx
+- SOURCE_CERTIFIED - pc /referencia-visual/liquid-glass-capsules - products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx
+- RUNTIME_CERTIFIED - pc /replenishment - http://127.0.0.1:3130/replenishment
+- RUNTIME_CERTIFIED - pc /sales-control - http://127.0.0.1:3130/sales-control
+- RUNTIME_CERTIFIED - pc /salud-barcodes - http://127.0.0.1:3130/salud-barcodes
+- RUNTIME_CERTIFIED - pc /scorecards-negocio - http://127.0.0.1:3130/scorecards-negocio
+- RUNTIME_CERTIFIED - pc /senal-reabasto - http://127.0.0.1:3130/senal-reabasto
+- RUNTIME_CERTIFIED - pc /settings - http://127.0.0.1:3130/settings
+- RUNTIME_CERTIFIED - pc /settings/license - http://127.0.0.1:3130/settings/license
+- RUNTIME_CERTIFIED - pc /stock - http://127.0.0.1:3130/stock
+- RUNTIME_CERTIFIED - pc /sync - http://127.0.0.1:3130/sync
+- RUNTIME_CERTIFIED - pc /sync-operativo - http://127.0.0.1:3130/sync-operativo
+- RUNTIME_CERTIFIED - pc /tablas-operativas - http://127.0.0.1:3130/tablas-operativas
+- RUNTIME_CERTIFIED - pc /tablero-kpi - http://127.0.0.1:3130/tablero-kpi
+- RUNTIME_CERTIFIED - pc /tablet-communication - http://127.0.0.1:3130/tablet-communication
+- RUNTIME_CERTIFIED - pc /validacion-catalogo - http://127.0.0.1:3130/validacion-catalogo
+- RUNTIME_CERTIFIED - pc /vistas-ejecutivas - http://127.0.0.1:3130/vistas-ejecutivas
+- RUNTIME_CERTIFIED - mobile / - http://127.0.0.1:3140/
+- RUNTIME_CERTIFIED - mobile /prisma-app - http://127.0.0.1:3140/prisma-app
+- RUNTIME_CERTIFIED - mobile /prisma-app/install - http://127.0.0.1:3140/prisma-app/install
+- RUNTIME_CERTIFIED - mobile /prisma-app/offline - http://127.0.0.1:3140/prisma-app/offline
+- RUNTIME_CERTIFIED - mobile /prisma-command - http://127.0.0.1:3140/prisma-command
+- RUNTIME_CERTIFIED - control-center / - http://127.0.0.1:3150/

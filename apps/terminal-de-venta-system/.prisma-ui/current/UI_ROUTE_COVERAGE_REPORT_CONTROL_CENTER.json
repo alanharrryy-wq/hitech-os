@@ -1,0 +1,81 @@
+{
+  "schema": "prisma.ui.route.coverage.report.v1",
+  "status": "CERTIFIED",
+  "command": "route-coverage",
+  "generated_at": "2026-06-19T05:17:51.456Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 1,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "control-center": {
+      "app": "Control Center",
+      "port": 3150,
+      "routeCount": 1,
+      "runtimeRoutes": 1,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 0,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "control-center.workspace",
+      "panel_id": "control-center.workspace",
+      "app": "Control Center",
+      "surface": "control-center",
+      "port": 3150,
+      "route": "/",
+      "pageFile": "prisma-control-center/internal/web/index.html",
+      "layoutFiles": [],
+      "ownerComponent": "prisma-control-center/internal/web/index.html",
+      "anchorOwnerComponent": "prisma-control-center/internal/web/index.html",
+      "middleware": null,
+      "currentPanelContract": "control-center.workspace",
+      "runtimeUrl": "http://127.0.0.1:3150/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "anchors": {
+        "data-prisma-panel": "control-center.workspace",
+        "data-prisma-surface": "control-center",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"control-center.workspace\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "static-html-anchor",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"control-center.workspace\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "exitCodeExpectation": 0
+}

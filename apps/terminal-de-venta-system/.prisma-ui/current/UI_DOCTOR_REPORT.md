@@ -3,8 +3,8 @@
 - schema: `prisma.ui.doctor.report.v4`
 - status: `CERTIFIED`
 - command: `doctor`
-- repoHead: `0bc74e1490afff84850187f2bacde2fd003891c5`
-- branch: `feat/ui-certainty-all-surfaces-final`
+- repoHead: `d487b167fdb9cf6adef0a218a651e1f4b0601022`
+- branch: `feat/ui-runtime-page-certification`
 - certified count: `17`
 - blocked count: `0`
 - drift count: `0`

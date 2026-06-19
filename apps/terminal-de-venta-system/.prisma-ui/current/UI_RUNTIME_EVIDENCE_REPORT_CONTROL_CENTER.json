@@ -1,0 +1,111 @@
+{
+  "schema": "prisma.ui.runtime.evidence.report.v1",
+  "status": "RUNTIME_CERTIFIED",
+  "command": "runtime-probe",
+  "generated_at": "2026-06-19T05:17:51.760Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 1,
+  "runtimeCertifiedCount": 1,
+  "sourceCertifiedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "timeoutMs": 15000,
+  "portStates": {
+    "3150": {
+      "port": 3150,
+      "url": "http://127.0.0.1:3150/",
+      "reachable": true,
+      "status": 200,
+      "error": null,
+      "transport": "tcp",
+      "finalUrl": "http://127.0.0.1:3150/"
+    }
+  },
+  "screenshotPolicy": "capture if Playwright/Chromium is available without installation; no local browser package was invoked by this fetch probe",
+  "countsBySurface": {
+    "control-center": {
+      "app": "Control Center",
+      "port": 3150,
+      "routeCount": 1,
+      "runtimeRoutes": 1,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 1,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "control-center.workspace",
+      "panel_id": "control-center.workspace",
+      "app": "Control Center",
+      "surface": "control-center",
+      "port": 3150,
+      "route": "/",
+      "pageFile": "prisma-control-center/internal/web/index.html",
+      "layoutFiles": [],
+      "ownerComponent": "prisma-control-center/internal/web/index.html",
+      "anchorOwnerComponent": "prisma-control-center/internal/web/index.html",
+      "middleware": null,
+      "currentPanelContract": "control-center.workspace",
+      "runtimeUrl": "http://127.0.0.1:3150/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "anchors": {
+        "data-prisma-panel": "control-center.workspace",
+        "data-prisma-surface": "control-center",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"control-center.workspace\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3150/",
+      "redirected": false,
+      "contentType": "text/html",
+      "title": "CONTROL CENTER PRISMA",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "control-center.workspace"
+      ],
+      "actualSurfaces": [
+        "control-center"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/control-center_root.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:51.751Z",
+      "finishedAt": "2026-06-19T05:17:51.760Z",
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

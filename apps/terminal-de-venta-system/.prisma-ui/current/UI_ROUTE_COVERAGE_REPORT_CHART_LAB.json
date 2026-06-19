@@ -1,0 +1,135 @@
+{
+  "schema": "prisma.ui.route.coverage.report.v1",
+  "status": "CERTIFIED",
+  "command": "route-coverage",
+  "generated_at": "2026-06-19T05:17:36.700Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 2,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "chart-lab": {
+      "app": "Chart Lab",
+      "port": 3000,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 0,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "chart-lab.root.route",
+      "panel_id": "chart-lab.root.route",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "port": 3000,
+      "route": "/",
+      "pageFile": "products/chart-lab/app/app/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/page.tsx",
+      "anchorOwnerComponent": "products/chart-lab/app/app/layout.tsx",
+      "middleware": "products/chart-lab/app/middleware.ts",
+      "currentPanelContract": "chart-lab.workspace",
+      "runtimeUrl": "http://127.0.0.1:3000/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "chart-lab.root.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"chart-lab.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/chart-lab/app/app/page.tsx",
+        "products/chart-lab/app/app/layout.tsx",
+        "products/chart-lab/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"chart-lab.root.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "chart-lab.recipe.studio.v2.route",
+      "panel_id": "chart-lab.recipe.studio.v2.route",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "port": 3000,
+      "route": "/recipe-studio-v2",
+      "pageFile": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "anchorOwnerComponent": "products/chart-lab/app/app/layout.tsx",
+      "middleware": "products/chart-lab/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "chart-lab.recipe.studio.v2.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/recipe-studio-v2"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"chart-lab.recipe.studio.v2.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+        "products/chart-lab/app/app/layout.tsx",
+        "products/chart-lab/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"chart-lab.recipe.studio.v2.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "exitCodeExpectation": 0
+}

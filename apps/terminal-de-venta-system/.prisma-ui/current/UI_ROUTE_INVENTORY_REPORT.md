@@ -1,0 +1,131 @@
+# UI ROUTE INVENTORY REPORT
+
+- schema: `prisma.ui.route.inventory.report.v1`
+- status: `CERTIFIED`
+- command: `routes`
+- routeCount: `108`
+- routeUnmappedCount: `0`
+- runtimeBlockedCount: `0`
+- anchorMissingCount: `0`
+- selectorMissingCount: `0`
+- blockedCount: `0`
+- driftCount: `0`
+- conflictCount: `0`
+
+## Surfaces
+- chart-lab: routes 2, runtime 0, source 0, blocked 0
+- web: routes 2, runtime 0, source 0, blocked 0
+- tablet: routes 35, runtime 0, source 0, blocked 0
+- pc: routes 63, runtime 0, source 0, blocked 0
+- mobile: routes 5, runtime 0, source 0, blocked 0
+- control-center: routes 1, runtime 0, source 0, blocked 0
+
+## Routes
+- runtime - chart-lab / - http://127.0.0.1:3000/
+- runtime - chart-lab /recipe-studio-v2 - http://127.0.0.1:3000/recipe-studio-v2
+- runtime - web / - http://127.0.0.1:3110/
+- runtime - web /surface-governor-public-sober - http://127.0.0.1:3110/surface-governor-public-sober
+- runtime - tablet / - http://127.0.0.1:3120/
+- runtime - tablet /catalog - http://127.0.0.1:3120/catalog
+- runtime - tablet /checkout - http://127.0.0.1:3120/checkout
+- runtime - tablet /events/outbox - http://127.0.0.1:3120/events/outbox
+- runtime - tablet /existencias - http://127.0.0.1:3120/existencias
+- source-only-redirect-route - tablet /inventory - products/tablet/app/app/inventory/page.tsx
+- runtime - tablet /inventory/low-stock - http://127.0.0.1:3120/inventory/low-stock
+- runtime - tablet /offline - http://127.0.0.1:3120/offline
+- runtime - tablet /pos - http://127.0.0.1:3120/pos
+- runtime - tablet /prisma-dark-pos-reference - http://127.0.0.1:3120/prisma-dark-pos-reference
+- runtime - tablet /prisma-pulse - http://127.0.0.1:3120/prisma-pulse
+- runtime - tablet /prisma-visual-catalog - http://127.0.0.1:3120/prisma-visual-catalog
+- runtime - tablet /referencia-visual - http://127.0.0.1:3120/referencia-visual
+- runtime - tablet /release-gate - http://127.0.0.1:3120/release-gate
+- runtime - tablet /returns - http://127.0.0.1:3120/returns
+- source-only-redirect-route - tablet /sales - products/tablet/app/app/sales/page.tsx
+- runtime - tablet /sales/history - http://127.0.0.1:3120/sales/history
+- source-only-dynamic-route - tablet /sales/history/:saleId - products/tablet/app/app/sales/history/[saleId]/page.tsx
+- runtime - tablet /sales/today - http://127.0.0.1:3120/sales/today
+- source-only-dynamic-route - tablet /sales/today/:saleId - products/tablet/app/app/sales/today/[saleId]/page.tsx
+- source-only-dynamic-route - tablet /sales/today/:saleId/return - products/tablet/app/app/sales/today/[saleId]/return/page.tsx
+- runtime - tablet /screen-standard-preview - http://127.0.0.1:3120/screen-standard-preview
+- source-only-redirect-route - tablet /settings/data - products/tablet/app/app/settings/data/page.tsx
+- runtime - tablet /settings/export - http://127.0.0.1:3120/settings/export
+- runtime - tablet /settings/license - http://127.0.0.1:3120/settings/license
+- runtime - tablet /shift - http://127.0.0.1:3120/shift
+- runtime - tablet /stock - http://127.0.0.1:3120/stock
+- runtime - tablet /sync - http://127.0.0.1:3120/sync
+- runtime - tablet /visual-os - http://127.0.0.1:3120/visual-os
+- runtime - tablet /visual-os/detached - http://127.0.0.1:3120/visual-os/detached
+- runtime - tablet /visual-os/materiality-catalog - http://127.0.0.1:3120/visual-os/materiality-catalog
+- runtime - tablet /visual-os/pro - http://127.0.0.1:3120/visual-os/pro
+- runtime - tablet /visual-os/realtime - http://127.0.0.1:3120/visual-os/realtime
+- runtime - tablet /visual-os/tablet-background-gallery - http://127.0.0.1:3120/visual-os/tablet-background-gallery
+- runtime - tablet /visual-os/tablet-codex-gallery - http://127.0.0.1:3120/visual-os/tablet-codex-gallery
+- source-only-redirect-route - pc / - products/pc/app/app/page.tsx
+- runtime - pc /acciones-masivas - http://127.0.0.1:3130/acciones-masivas
+- runtime - pc /ajustes-inventario - http://127.0.0.1:3130/ajustes-inventario
+- runtime - pc /alertas-ejecutivas - http://127.0.0.1:3130/alertas-ejecutivas
+- runtime - pc /alertas-operativas - http://127.0.0.1:3130/alertas-operativas
+- runtime - pc /audit - http://127.0.0.1:3130/audit
+- runtime - pc /auditoria-inventario - http://127.0.0.1:3130/auditoria-inventario
+- runtime - pc /cash-sessions - http://127.0.0.1:3130/cash-sessions
+- runtime - pc /catalog - http://127.0.0.1:3130/catalog
+- runtime - pc /catalogo-activo - http://127.0.0.1:3130/catalogo-activo
+- runtime - pc /conteos-operativos - http://127.0.0.1:3130/conteos-operativos
+- runtime - pc /contratos-reporte - http://127.0.0.1:3130/contratos-reporte
+- runtime - pc /counts - http://127.0.0.1:3130/counts
+- runtime - pc /dashboard - http://127.0.0.1:3130/dashboard
+- runtime - pc /data-quality - http://127.0.0.1:3130/data-quality
+- runtime - pc /detalle-registros - http://127.0.0.1:3130/detalle-registros
+- runtime - pc /devices - http://127.0.0.1:3130/devices
+- runtime - pc /estados-operativos - http://127.0.0.1:3130/estados-operativos
+- runtime - pc /existencias-criticas - http://127.0.0.1:3130/existencias-criticas
+- runtime - pc /exportables - http://127.0.0.1:3130/exportables
+- runtime - pc /filtros-avanzados - http://127.0.0.1:3130/filtros-avanzados
+- runtime - pc /filtros-fecha - http://127.0.0.1:3130/filtros-fecha
+- runtime - pc /forecast-basico - http://127.0.0.1:3130/forecast-basico
+- runtime - pc /glosario - http://127.0.0.1:3130/glosario
+- runtime - pc /gobierno - http://127.0.0.1:3130/gobierno
+- runtime - pc /incidencias-recepcion - http://127.0.0.1:3130/incidencias-recepcion
+- runtime - pc /integridad-barcodes - http://127.0.0.1:3130/integridad-barcodes
+- runtime - pc /laboratorio-pc - http://127.0.0.1:3130/laboratorio-pc
+- runtime - pc /laboratorio-pc/chart-lab - http://127.0.0.1:3130/laboratorio-pc/chart-lab
+- runtime - pc /laboratorio-pc/dashboard-governor - http://127.0.0.1:3130/laboratorio-pc/dashboard-governor
+- runtime - pc /laboratorio-pc/referencia-visual - http://127.0.0.1:3130/laboratorio-pc/referencia-visual
+- runtime - pc /laboratorio-pc/referencia-visual/liquid-glass - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass
+- runtime - pc /laboratorio-pc/referencia-visual/liquid-glass-capsules - http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules
+- runtime - pc /license-runtime - http://127.0.0.1:3130/license-runtime
+- runtime - pc /metricas-dia - http://127.0.0.1:3130/metricas-dia
+- runtime - pc /movements - http://127.0.0.1:3130/movements
+- runtime - pc /ordenes-compra - http://127.0.0.1:3130/ordenes-compra
+- runtime - pc /outbox-operativo - http://127.0.0.1:3130/outbox-operativo
+- runtime - pc /politica-precios - http://127.0.0.1:3130/politica-precios
+- runtime - pc /prisma-insights - http://127.0.0.1:3130/prisma-insights
+- source-only-redirect-route - pc /prisma-insights/chart-lab - products/pc/app/app/prisma-insights/chart-lab/page.tsx
+- runtime - pc /proveedores - http://127.0.0.1:3130/proveedores
+- runtime - pc /purchasing - http://127.0.0.1:3130/purchasing
+- runtime - pc /receiving - http://127.0.0.1:3130/receiving
+- runtime - pc /recepcion-proveedor - http://127.0.0.1:3130/recepcion-proveedor
+- source-only-redirect-route - pc /referencia-visual - products/pc/app/app/referencia-visual/page.tsx
+- source-only-redirect-route - pc /referencia-visual/liquid-glass - products/pc/app/app/referencia-visual/liquid-glass/page.tsx
+- source-only-redirect-route - pc /referencia-visual/liquid-glass-capsules - products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx
+- runtime - pc /replenishment - http://127.0.0.1:3130/replenishment
+- runtime - pc /sales-control - http://127.0.0.1:3130/sales-control
+- runtime - pc /salud-barcodes - http://127.0.0.1:3130/salud-barcodes
+- runtime - pc /scorecards-negocio - http://127.0.0.1:3130/scorecards-negocio
+- runtime - pc /senal-reabasto - http://127.0.0.1:3130/senal-reabasto
+- runtime - pc /settings - http://127.0.0.1:3130/settings
+- runtime - pc /settings/license - http://127.0.0.1:3130/settings/license
+- runtime - pc /stock - http://127.0.0.1:3130/stock
+- runtime - pc /sync - http://127.0.0.1:3130/sync
+- runtime - pc /sync-operativo - http://127.0.0.1:3130/sync-operativo
+- runtime - pc /tablas-operativas - http://127.0.0.1:3130/tablas-operativas
+- runtime - pc /tablero-kpi - http://127.0.0.1:3130/tablero-kpi
+- runtime - pc /tablet-communication - http://127.0.0.1:3130/tablet-communication
+- runtime - pc /validacion-catalogo - http://127.0.0.1:3130/validacion-catalogo
+- runtime - pc /vistas-ejecutivas - http://127.0.0.1:3130/vistas-ejecutivas
+- runtime - mobile / - http://127.0.0.1:3140/
+- runtime - mobile /prisma-app - http://127.0.0.1:3140/prisma-app
+- runtime - mobile /prisma-app/install - http://127.0.0.1:3140/prisma-app/install
+- runtime - mobile /prisma-app/offline - http://127.0.0.1:3140/prisma-app/offline
+- runtime - mobile /prisma-command - http://127.0.0.1:3140/prisma-command
+- runtime - control-center / - http://127.0.0.1:3150/

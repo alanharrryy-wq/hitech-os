@@ -109,7 +109,11 @@
     "ui:contracts": "node tools/quality/ui-certainty.mjs contracts",
     "ui:anchors": "node tools/quality/ui-certainty.mjs anchors",
     "ui:drift": "node tools/quality/ui-certainty.mjs drift",
-    "ui:conflicts": "node tools/quality/ui-certainty.mjs conflicts"
+    "ui:conflicts": "node tools/quality/ui-certainty.mjs conflicts",
+    "ui:routes": "node tools/quality/ui-certainty.mjs routes --all",
+    "ui:route-coverage": "node tools/quality/ui-certainty.mjs route-coverage --all --strict",
+    "ui:runtime-probe": "node tools/quality/ui-certainty.mjs runtime-probe --all --strict",
+    "ui:certify:runtime": "node tools/quality/ui-certainty.mjs certify-runtime-pages --strict"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",

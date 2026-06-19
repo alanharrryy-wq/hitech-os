@@ -1,0 +1,186 @@
+{
+  "schema": "prisma.ui.runtime.evidence.report.v1",
+  "status": "RUNTIME_CERTIFIED",
+  "command": "runtime-probe",
+  "generated_at": "2026-06-19T05:17:37.885Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 2,
+  "runtimeCertifiedCount": 2,
+  "sourceCertifiedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "timeoutMs": 15000,
+  "portStates": {
+    "3110": {
+      "port": 3110,
+      "url": "http://127.0.0.1:3110/",
+      "reachable": true,
+      "status": 200,
+      "error": null,
+      "transport": "tcp",
+      "finalUrl": "http://127.0.0.1:3110/"
+    }
+  },
+  "screenshotPolicy": "capture if Playwright/Chromium is available without installation; no local browser package was invoked by this fetch probe",
+  "countsBySurface": {
+    "web": {
+      "app": "PRISMA Web/Edit",
+      "port": 3110,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 2,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "web.root.route",
+      "panel_id": "web.root.route",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "port": 3110,
+      "route": "/",
+      "pageFile": "products/web/app/app/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/page.tsx",
+      "anchorOwnerComponent": "products/web/app/app/layout.tsx",
+      "middleware": "products/web/app/middleware.ts",
+      "currentPanelContract": "web.workspace",
+      "runtimeUrl": "http://127.0.0.1:3110/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "web.root.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"web.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/web/app/app/page.tsx",
+        "products/web/app/app/layout.tsx",
+        "products/web/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3110/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA EIT",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "web.root.route",
+        "web.workspace"
+      ],
+      "actualSurfaces": [
+        "web"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/web_root.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:37.785Z",
+      "finishedAt": "2026-06-19T05:17:37.838Z",
+      "reason": null
+    },
+    {
+      "route_id": "web.surface.governor.public.sober.route",
+      "panel_id": "web.surface.governor.public.sober.route",
+      "app": "PRISMA Web/Edit",
+      "surface": "web",
+      "port": 3110,
+      "route": "/surface-governor-public-sober",
+      "pageFile": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "layoutFiles": [
+        "products/web/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/web/app/app/surface-governor-public-sober/page.tsx",
+      "anchorOwnerComponent": "products/web/app/app/layout.tsx",
+      "middleware": "products/web/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "web.surface.governor.public.sober.route",
+        "data-prisma-surface": "web",
+        "data-prisma-route": "/surface-governor-public-sober"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"web.surface.governor.public.sober.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/web/app/app/surface-governor-public-sober/page.tsx",
+        "products/web/app/app/layout.tsx",
+        "products/web/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3110/surface-governor-public-sober",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA EIT",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "web.surface.governor.public.sober.route"
+      ],
+      "actualSurfaces": [
+        "web",
+        "eit-web"
+      ],
+      "actualRoutes": [
+        "/surface-governor-public-sober"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/web_surface_governor_public_sober.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:37.838Z",
+      "finishedAt": "2026-06-19T05:17:37.885Z",
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

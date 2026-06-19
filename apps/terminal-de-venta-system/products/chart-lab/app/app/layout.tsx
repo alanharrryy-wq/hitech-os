@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,10 +14,22 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+function normalizePrismaRoute(value: string | null) {
+  const route = value && value.startsWith("/") ? value : "/";
+  return route.length > 1 ? route.replace(/\/+$/, "") : route;
+}
+
+function prismaRoutePanelId(route: string) {
+  if (route === "/") return "chart-lab.root.route";
+  return `chart-lab.${route.slice(1).replace(/[^A-Za-z0-9]+/g, ".").replace(/^\.|\.$/g, "")}.route`;
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
+
   return (
     <html lang="es-MX">
-      <body>{children}</body>
+      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="chart-lab" data-prisma-route={route}>{children}</body>
     </html>
   );
 }

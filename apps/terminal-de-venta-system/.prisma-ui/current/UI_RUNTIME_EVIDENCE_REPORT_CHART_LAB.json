@@ -1,0 +1,185 @@
+{
+  "schema": "prisma.ui.runtime.evidence.report.v1",
+  "status": "RUNTIME_CERTIFIED",
+  "command": "runtime-probe",
+  "generated_at": "2026-06-19T05:17:37.185Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 2,
+  "runtimeCertifiedCount": 2,
+  "sourceCertifiedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "timeoutMs": 15000,
+  "portStates": {
+    "3000": {
+      "port": 3000,
+      "url": "http://127.0.0.1:3000/",
+      "reachable": true,
+      "status": 200,
+      "error": null,
+      "transport": "tcp",
+      "finalUrl": "http://127.0.0.1:3000/"
+    }
+  },
+  "screenshotPolicy": "capture if Playwright/Chromium is available without installation; no local browser package was invoked by this fetch probe",
+  "countsBySurface": {
+    "chart-lab": {
+      "app": "Chart Lab",
+      "port": 3000,
+      "routeCount": 2,
+      "runtimeRoutes": 2,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 0,
+      "runtimeCertifiedCount": 2,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "chart-lab.root.route",
+      "panel_id": "chart-lab.root.route",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "port": 3000,
+      "route": "/",
+      "pageFile": "products/chart-lab/app/app/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/page.tsx",
+      "anchorOwnerComponent": "products/chart-lab/app/app/layout.tsx",
+      "middleware": "products/chart-lab/app/middleware.ts",
+      "currentPanelContract": "chart-lab.workspace",
+      "runtimeUrl": "http://127.0.0.1:3000/",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "chart-lab.root.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"chart-lab.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/chart-lab/app/app/page.tsx",
+        "products/chart-lab/app/app/layout.tsx",
+        "products/chart-lab/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3000/",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Chart Lab",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "chart-lab.root.route",
+        "chart-lab.workspace"
+      ],
+      "actualSurfaces": [
+        "chart-lab"
+      ],
+      "actualRoutes": [
+        "/"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/chart-lab_root.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:37.074Z",
+      "finishedAt": "2026-06-19T05:17:37.144Z",
+      "reason": null
+    },
+    {
+      "route_id": "chart-lab.recipe.studio.v2.route",
+      "panel_id": "chart-lab.recipe.studio.v2.route",
+      "app": "Chart Lab",
+      "surface": "chart-lab",
+      "port": 3000,
+      "route": "/recipe-studio-v2",
+      "pageFile": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "layoutFiles": [
+        "products/chart-lab/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "anchorOwnerComponent": "products/chart-lab/app/app/layout.tsx",
+      "middleware": "products/chart-lab/app/middleware.ts",
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "chart-lab.recipe.studio.v2.route",
+        "data-prisma-surface": "chart-lab",
+        "data-prisma-route": "/recipe-studio-v2"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"chart-lab.recipe.studio.v2.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+        "products/chart-lab/app/app/layout.tsx",
+        "products/chart-lab/app/middleware.ts"
+      ],
+      "status": "RUNTIME_CERTIFIED",
+      "httpStatus": 200,
+      "finalUrl": "http://127.0.0.1:3000/recipe-studio-v2",
+      "redirected": false,
+      "contentType": "text/html; charset=utf-8",
+      "title": "PRISMA Chart Lab",
+      "hasPanel": true,
+      "hasAnyPanel": true,
+      "hasSurface": true,
+      "hasRoute": true,
+      "actualPanels": [
+        "chart-lab.recipe.studio.v2.route"
+      ],
+      "actualSurfaces": [
+        "chart-lab"
+      ],
+      "actualRoutes": [
+        "/recipe-studio-v2"
+      ],
+      "anchorAcceptance": "exact-panel-route-anchor",
+      "redirectCertified": false,
+      "redirectTargetRoute": null,
+      "htmlSnapshot": ".prisma-ui/current/runtime-html/chart-lab_recipe_studio_v2.html",
+      "screenshot": null,
+      "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
+      "portReachable": true,
+      "attempts": 1,
+      "startedAt": "2026-06-19T05:17:37.144Z",
+      "finishedAt": "2026-06-19T05:17:37.185Z",
+      "reason": null
+    }
+  ],
+  "exitCodeExpectation": 0
+}

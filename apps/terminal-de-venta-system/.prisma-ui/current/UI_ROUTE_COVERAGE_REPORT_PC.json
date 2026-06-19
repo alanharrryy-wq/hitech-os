@@ -1,0 +1,3139 @@
+{
+  "schema": "prisma.ui.route.coverage.report.v1",
+  "status": "CERTIFIED",
+  "command": "route-coverage",
+  "generated_at": "2026-06-19T05:17:41.597Z",
+  "repoRoot": "F:/repos/hitech-os",
+  "appRoot": "",
+  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
+  "branch": "feat/ui-runtime-page-certification",
+  "routeCount": 63,
+  "routeUnmappedCount": 0,
+  "runtimeBlockedCount": 0,
+  "anchorMissingCount": 0,
+  "selectorMissingCount": 0,
+  "blockedCount": 0,
+  "driftCount": 0,
+  "conflictCount": 0,
+  "countsBySurface": {
+    "pc": {
+      "app": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routeCount": 63,
+      "runtimeRoutes": 58,
+      "sourceOnlyDynamicRoutes": 0,
+      "sourceOnlyRedirectRoutes": 5,
+      "runtimeCertifiedCount": 0,
+      "sourceCertifiedCount": 0,
+      "runtimeBlockedCount": 0
+    }
+  },
+  "routes": [
+    {
+      "route_id": "pc.root.route",
+      "panel_id": "pc.root.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/",
+      "pageFile": "products/pc/app/app/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /dashboard; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/dashboard",
+      "anchors": {
+        "data-prisma-panel": "pc.root.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.root.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.root.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.acciones.masivas.route",
+      "panel_id": "pc.acciones.masivas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/acciones-masivas",
+      "pageFile": "products/pc/app/app/acciones-masivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/acciones-masivas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/acciones-masivas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.acciones.masivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/acciones-masivas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.acciones.masivas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/acciones-masivas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.acciones.masivas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.ajustes.inventario.route",
+      "panel_id": "pc.ajustes.inventario.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/ajustes-inventario",
+      "pageFile": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/ajustes-inventario",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.ajustes.inventario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/ajustes-inventario"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.ajustes.inventario.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/ajustes-inventario/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.ajustes.inventario.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.alertas.ejecutivas.route",
+      "panel_id": "pc.alertas.ejecutivas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/alertas-ejecutivas",
+      "pageFile": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-ejecutivas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.alertas.ejecutivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/alertas-ejecutivas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.alertas.ejecutivas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/alertas-ejecutivas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.alertas.ejecutivas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.alertas.operativas.route",
+      "panel_id": "pc.alertas.operativas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/alertas-operativas",
+      "pageFile": "products/pc/app/app/alertas-operativas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/alertas-operativas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-operativas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.alertas.operativas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/alertas-operativas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.alertas.operativas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/alertas-operativas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.alertas.operativas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.audit.route",
+      "panel_id": "pc.audit.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/audit",
+      "pageFile": "products/pc/app/app/audit/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/audit/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/audit",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.audit.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/audit"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.audit.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/audit/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.audit.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.auditoria.inventario.route",
+      "panel_id": "pc.auditoria.inventario.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/auditoria-inventario",
+      "pageFile": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/auditoria-inventario",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.auditoria.inventario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/auditoria-inventario"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.auditoria.inventario.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/auditoria-inventario/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.auditoria.inventario.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.cash.sessions.route",
+      "panel_id": "pc.cash.sessions.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/cash-sessions",
+      "pageFile": "products/pc/app/app/cash-sessions/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/cash-sessions/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/cash-sessions",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.cash.sessions.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/cash-sessions"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.cash.sessions.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/cash-sessions/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.cash.sessions.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.catalog.route",
+      "panel_id": "pc.catalog.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/catalog",
+      "pageFile": "products/pc/app/app/catalog/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/catalog/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": [
+        "pc.catalog",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/catalog",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.catalog.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/catalog"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.catalog.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/catalog/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.catalog.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.catalogo.activo.route",
+      "panel_id": "pc.catalogo.activo.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/catalogo-activo",
+      "pageFile": "products/pc/app/app/catalogo-activo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/catalogo-activo/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/catalogo-activo",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.catalogo.activo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/catalogo-activo"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.catalogo.activo.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/catalogo-activo/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.catalogo.activo.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.conteos.operativos.route",
+      "panel_id": "pc.conteos.operativos.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/conteos-operativos",
+      "pageFile": "products/pc/app/app/conteos-operativos/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/conteos-operativos/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/conteos-operativos",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.conteos.operativos.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/conteos-operativos"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.conteos.operativos.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/conteos-operativos/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.conteos.operativos.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.contratos.reporte.route",
+      "panel_id": "pc.contratos.reporte.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/contratos-reporte",
+      "pageFile": "products/pc/app/app/contratos-reporte/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/contratos-reporte/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/contratos-reporte",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.contratos.reporte.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/contratos-reporte"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.contratos.reporte.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/contratos-reporte/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.contratos.reporte.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.counts.route",
+      "panel_id": "pc.counts.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/counts",
+      "pageFile": "products/pc/app/app/counts/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/counts/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/counts",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.counts.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/counts"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.counts.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/counts/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.counts.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.dashboard.route",
+      "panel_id": "pc.dashboard.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/dashboard",
+      "pageFile": "products/pc/app/app/dashboard/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/dashboard/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": [
+        "pc.dashboard",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/dashboard",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.dashboard.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/dashboard"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.dashboard.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/dashboard/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.dashboard.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.data.quality.route",
+      "panel_id": "pc.data.quality.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/data-quality",
+      "pageFile": "products/pc/app/app/data-quality/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/data-quality/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/data-quality",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.data.quality.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/data-quality"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.data.quality.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/data-quality/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.data.quality.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.detalle.registros.route",
+      "panel_id": "pc.detalle.registros.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/detalle-registros",
+      "pageFile": "products/pc/app/app/detalle-registros/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/detalle-registros/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/detalle-registros",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.detalle.registros.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/detalle-registros"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.detalle.registros.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/detalle-registros/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.detalle.registros.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.devices.route",
+      "panel_id": "pc.devices.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/devices",
+      "pageFile": "products/pc/app/app/devices/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/devices/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/devices",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.devices.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/devices"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.devices.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/devices/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.devices.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.estados.operativos.route",
+      "panel_id": "pc.estados.operativos.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/estados-operativos",
+      "pageFile": "products/pc/app/app/estados-operativos/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/estados-operativos/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/estados-operativos",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.estados.operativos.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/estados-operativos"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.estados.operativos.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/estados-operativos/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.estados.operativos.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.existencias.criticas.route",
+      "panel_id": "pc.existencias.criticas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/existencias-criticas",
+      "pageFile": "products/pc/app/app/existencias-criticas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/existencias-criticas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/existencias-criticas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.existencias.criticas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/existencias-criticas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.existencias.criticas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/existencias-criticas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.existencias.criticas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.exportables.route",
+      "panel_id": "pc.exportables.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/exportables",
+      "pageFile": "products/pc/app/app/exportables/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/exportables/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/exportables",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.exportables.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/exportables"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.exportables.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/exportables/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.exportables.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.filtros.avanzados.route",
+      "panel_id": "pc.filtros.avanzados.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/filtros-avanzados",
+      "pageFile": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-avanzados",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.filtros.avanzados.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/filtros-avanzados"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.filtros.avanzados.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/filtros-avanzados/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.filtros.avanzados.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.filtros.fecha.route",
+      "panel_id": "pc.filtros.fecha.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/filtros-fecha",
+      "pageFile": "products/pc/app/app/filtros-fecha/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/filtros-fecha/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-fecha",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.filtros.fecha.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/filtros-fecha"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.filtros.fecha.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/filtros-fecha/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.filtros.fecha.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.forecast.basico.route",
+      "panel_id": "pc.forecast.basico.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/forecast-basico",
+      "pageFile": "products/pc/app/app/forecast-basico/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/forecast-basico/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/forecast-basico",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.forecast.basico.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/forecast-basico"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.forecast.basico.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/forecast-basico/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.forecast.basico.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.glosario.route",
+      "panel_id": "pc.glosario.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/glosario",
+      "pageFile": "products/pc/app/app/glosario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/glosario/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/glosario",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.glosario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/glosario"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.glosario.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/glosario/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.glosario.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.gobierno.route",
+      "panel_id": "pc.gobierno.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/gobierno",
+      "pageFile": "products/pc/app/app/gobierno/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/gobierno/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/gobierno",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.gobierno.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/gobierno"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.gobierno.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/gobierno/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.gobierno.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.incidencias.recepcion.route",
+      "panel_id": "pc.incidencias.recepcion.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/incidencias-recepcion",
+      "pageFile": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/incidencias-recepcion",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.incidencias.recepcion.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/incidencias-recepcion"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.incidencias.recepcion.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/incidencias-recepcion/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.incidencias.recepcion.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.integridad.barcodes.route",
+      "panel_id": "pc.integridad.barcodes.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/integridad-barcodes",
+      "pageFile": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/integridad-barcodes",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.integridad.barcodes.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/integridad-barcodes"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.integridad.barcodes.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/integridad-barcodes/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.integridad.barcodes.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.route",
+      "panel_id": "pc.laboratorio.pc.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc",
+      "pageFile": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.chart.lab.route",
+      "panel_id": "pc.laboratorio.pc.chart.lab.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc/chart-lab",
+      "pageFile": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/chart-lab",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.chart.lab.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/chart-lab"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.chart.lab.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.chart.lab.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.dashboard.governor.route",
+      "panel_id": "pc.laboratorio.pc.dashboard.governor.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc/dashboard-governor",
+      "pageFile": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/dashboard-governor",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.dashboard.governor.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/dashboard-governor"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.dashboard.governor.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.dashboard.governor.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.route",
+      "panel_id": "pc.laboratorio.pc.referencia.visual.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc/referencia-visual",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+      "panel_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": [
+        "pc.liquid-glass-reference",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual/liquid-glass"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.liquid.glass.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.liquid.glass.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+      "panel_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.license.runtime.route",
+      "panel_id": "pc.license.runtime.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/license-runtime",
+      "pageFile": "products/pc/app/app/license-runtime/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/license-runtime/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/license-runtime",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.license.runtime.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/license-runtime"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.license.runtime.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/license-runtime/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.license.runtime.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.metricas.dia.route",
+      "panel_id": "pc.metricas.dia.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/metricas-dia",
+      "pageFile": "products/pc/app/app/metricas-dia/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/metricas-dia/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/metricas-dia",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.metricas.dia.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/metricas-dia"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.metricas.dia.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/metricas-dia/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.metricas.dia.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.movements.route",
+      "panel_id": "pc.movements.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/movements",
+      "pageFile": "products/pc/app/app/movements/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/movements/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/movements",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.movements.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/movements"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.movements.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/movements/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.movements.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.ordenes.compra.route",
+      "panel_id": "pc.ordenes.compra.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/ordenes-compra",
+      "pageFile": "products/pc/app/app/ordenes-compra/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/ordenes-compra/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/ordenes-compra",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.ordenes.compra.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/ordenes-compra"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.ordenes.compra.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/ordenes-compra/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.ordenes.compra.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.outbox.operativo.route",
+      "panel_id": "pc.outbox.operativo.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/outbox-operativo",
+      "pageFile": "products/pc/app/app/outbox-operativo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/outbox-operativo/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/outbox-operativo",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.outbox.operativo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/outbox-operativo"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.outbox.operativo.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/outbox-operativo/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.outbox.operativo.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.politica.precios.route",
+      "panel_id": "pc.politica.precios.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/politica-precios",
+      "pageFile": "products/pc/app/app/politica-precios/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/politica-precios/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/politica-precios",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.politica.precios.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/politica-precios"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.politica.precios.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/politica-precios/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.politica.precios.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.prisma.insights.route",
+      "panel_id": "pc.prisma.insights.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/prisma-insights",
+      "pageFile": "products/pc/app/app/prisma-insights/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/prisma-insights/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/prisma-insights",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.prisma.insights.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/prisma-insights"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.prisma.insights.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/prisma-insights/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.prisma.insights.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.prisma.insights.chart.lab.route",
+      "panel_id": "pc.prisma.insights.chart.lab.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/prisma-insights/chart-lab",
+      "pageFile": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /laboratorio-pc/chart-lab?preview=charts; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/laboratorio-pc/chart-lab?preview=charts",
+      "anchors": {
+        "data-prisma-panel": "pc.prisma.insights.chart.lab.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/prisma-insights/chart-lab"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.prisma.insights.chart.lab.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.prisma.insights.chart.lab.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.proveedores.route",
+      "panel_id": "pc.proveedores.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/proveedores",
+      "pageFile": "products/pc/app/app/proveedores/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/proveedores/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/proveedores",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.proveedores.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/proveedores"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.proveedores.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/proveedores/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.proveedores.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.purchasing.route",
+      "panel_id": "pc.purchasing.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/purchasing",
+      "pageFile": "products/pc/app/app/purchasing/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/purchasing/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/purchasing",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.purchasing.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/purchasing"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.purchasing.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/purchasing/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.purchasing.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.receiving.route",
+      "panel_id": "pc.receiving.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/receiving",
+      "pageFile": "products/pc/app/app/receiving/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/receiving/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/receiving",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.receiving.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/receiving"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.receiving.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/receiving/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.receiving.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.recepcion.proveedor.route",
+      "panel_id": "pc.recepcion.proveedor.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/recepcion-proveedor",
+      "pageFile": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/recepcion-proveedor",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.recepcion.proveedor.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/recepcion-proveedor"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.recepcion.proveedor.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/recepcion-proveedor/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.recepcion.proveedor.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.referencia.visual.route",
+      "panel_id": "pc.referencia.visual.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/referencia-visual",
+      "pageFile": "products/pc/app/app/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/laboratorio-pc/referencia-visual",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.referencia.visual.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/referencia-visual/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.referencia.visual.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.route",
+      "panel_id": "pc.referencia.visual.liquid.glass.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/referencia-visual/liquid-glass",
+      "pageFile": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.liquid.glass.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual/liquid-glass"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.referencia.visual.liquid.glass.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.referencia.visual.liquid.glass.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.capsules.route",
+      "panel_id": "pc.referencia.visual.liquid.glass.capsules.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "pageFile": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "sourceJustification": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass-capsules; the canonical target route carries runtime UI anchors.",
+      "redirectTarget": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.liquid.glass.capsules.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual/liquid-glass-capsules"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.referencia.visual.liquid.glass.capsules.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.referencia.visual.liquid.glass.capsules.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.replenishment.route",
+      "panel_id": "pc.replenishment.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/replenishment",
+      "pageFile": "products/pc/app/app/replenishment/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/replenishment/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/replenishment",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.replenishment.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/replenishment"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.replenishment.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/replenishment/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.replenishment.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.sales.control.route",
+      "panel_id": "pc.sales.control.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/sales-control",
+      "pageFile": "products/pc/app/app/sales-control/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sales-control/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sales-control",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.sales.control.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sales-control"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.sales.control.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/sales-control/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.sales.control.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.salud.barcodes.route",
+      "panel_id": "pc.salud.barcodes.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/salud-barcodes",
+      "pageFile": "products/pc/app/app/salud-barcodes/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/salud-barcodes/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/salud-barcodes",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.salud.barcodes.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/salud-barcodes"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.salud.barcodes.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/salud-barcodes/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.salud.barcodes.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.scorecards.negocio.route",
+      "panel_id": "pc.scorecards.negocio.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/scorecards-negocio",
+      "pageFile": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/scorecards-negocio",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.scorecards.negocio.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/scorecards-negocio"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.scorecards.negocio.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/scorecards-negocio/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.scorecards.negocio.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.senal.reabasto.route",
+      "panel_id": "pc.senal.reabasto.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/senal-reabasto",
+      "pageFile": "products/pc/app/app/senal-reabasto/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/senal-reabasto/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/senal-reabasto",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.senal.reabasto.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/senal-reabasto"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.senal.reabasto.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/senal-reabasto/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.senal.reabasto.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.settings.route",
+      "panel_id": "pc.settings.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/settings",
+      "pageFile": "products/pc/app/app/settings/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/settings/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": [
+        "pc.settings",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/settings",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.settings.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/settings"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.settings.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/settings/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.settings.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.settings.license.route",
+      "panel_id": "pc.settings.license.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/settings/license",
+      "pageFile": "products/pc/app/app/settings/license/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/settings/license/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/settings/license",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.settings.license.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/settings/license"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.settings.license.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/settings/license/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.settings.license.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.stock.route",
+      "panel_id": "pc.stock.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/stock",
+      "pageFile": "products/pc/app/app/stock/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/stock/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": [
+        "pc.stock",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/stock",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.stock.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/stock"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.stock.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/stock/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.stock.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.sync.route",
+      "panel_id": "pc.sync.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/sync",
+      "pageFile": "products/pc/app/app/sync/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sync/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sync",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.sync.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sync"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.sync.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/sync/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.sync.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.sync.operativo.route",
+      "panel_id": "pc.sync.operativo.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/sync-operativo",
+      "pageFile": "products/pc/app/app/sync-operativo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sync-operativo/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sync-operativo",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.sync.operativo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sync-operativo"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.sync.operativo.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/sync-operativo/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.sync.operativo.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.tablas.operativas.route",
+      "panel_id": "pc.tablas.operativas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/tablas-operativas",
+      "pageFile": "products/pc/app/app/tablas-operativas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablas-operativas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablas-operativas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.tablas.operativas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablas-operativas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.tablas.operativas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/tablas-operativas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.tablas.operativas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.tablero.kpi.route",
+      "panel_id": "pc.tablero.kpi.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/tablero-kpi",
+      "pageFile": "products/pc/app/app/tablero-kpi/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablero-kpi/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablero-kpi",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.tablero.kpi.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablero-kpi"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.tablero.kpi.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/tablero-kpi/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.tablero.kpi.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.tablet.communication.route",
+      "panel_id": "pc.tablet.communication.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/tablet-communication",
+      "pageFile": "products/pc/app/app/tablet-communication/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablet-communication/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablet-communication",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.tablet.communication.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablet-communication"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.tablet.communication.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/tablet-communication/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.tablet.communication.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.validacion.catalogo.route",
+      "panel_id": "pc.validacion.catalogo.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/validacion-catalogo",
+      "pageFile": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/validacion-catalogo",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.validacion.catalogo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/validacion-catalogo"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.validacion.catalogo.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/validacion-catalogo/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.validacion.catalogo.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    },
+    {
+      "route_id": "pc.vistas.ejecutivas.route",
+      "panel_id": "pc.vistas.ejecutivas.route",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "port": 3130,
+      "route": "/vistas-ejecutivas",
+      "pageFile": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
+      "middleware": "products/pc/app/middleware.ts",
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/vistas-ejecutivas",
+      "runtimeMode": "runtime",
+      "sourceJustification": null,
+      "redirectTarget": null,
+      "anchors": {
+        "data-prisma-panel": "pc.vistas.ejecutivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/vistas-ejecutivas"
+      },
+      "canonical_selectors": [
+        "[data-prisma-panel=\"pc.vistas.ejecutivas.route\"]"
+      ],
+      "allowed_files": [
+        ".prisma-ui/current/**",
+        ".prisma-ui/routes.json",
+        "tools/quality/ui-certainty.mjs",
+        "tools/quality/ui-runtime-certainty.mjs",
+        "package.json",
+        "products/pc/app/app/vistas-ejecutivas/page.tsx",
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/middleware.ts"
+      ],
+      "status": "SOURCE_CERTIFIED",
+      "blockers": [],
+      "drifts": [],
+      "conflicts": [],
+      "anchorStrategy": "root-layout-plus-middleware-path-header",
+      "selectorChecks": [
+        {
+          "selector": "[data-prisma-panel=\"pc.vistas.ejecutivas.route\"]",
+          "status": "SOURCE_CERTIFIED"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "drifts": [],
+  "conflicts": [],
+  "exitCodeExpectation": 0
+}

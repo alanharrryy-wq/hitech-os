@@ -13,7 +13,12 @@ export default function AlertasEjecutivasPage() {
   ]);
 
   return (
-    <main className="space-y-6">
+    <main
+      className="space-y-6"
+      data-prisma-panel="pc.alertas.ejecutivas.route"
+      data-prisma-surface="pc"
+      data-prisma-route="/alertas-ejecutivas"
+    >
       <section>
         <h1 className="text-2xl font-semibold text-white">Alertas ejecutivas</h1>
         <p className="mt-2 max-w-3xl text-sm text-white/70">

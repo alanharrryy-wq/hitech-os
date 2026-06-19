@@ -2,6 +2,7 @@ import "./globals.css";
 import "./prisma-tablet-light-premium-final.css";
 import "./prisma-tablet-background-workbench.css";
 import "./prisma-tablet-premium-governed.css";
+import { headers } from "next/headers";
 import { TabletPremiumRuntimeEffects } from "../components/premium-visual";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
@@ -10,9 +11,20 @@ export const metadata = {
   description: tabletMessages.metadata.description
 };
 
-export default function RootLayout({ children }: { children: any }) {
+function normalizePrismaRoute(value: string | null) {
+  const route = value && value.startsWith("/") ? value : "/";
+  return route.length > 1 ? route.replace(/\/+$/, "") : route;
+}
+
+function prismaRoutePanelId(route: string) {
+  if (route === "/") return "tablet.root.route";
+  return `tablet.${route.slice(1).replace(/[^A-Za-z0-9]+/g, ".").replace(/^\.|\.$/g, "")}.route`;
+}
+
+export default async function RootLayout({ children }: { children: any }) {
   const prismaSkin = process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-dark" ? "dark" : "light";
   const prismaTheme = prismaSkin === "dark" ? "prisma-dark" : "prisma-light";
+  const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
 
   return (
     <html lang="es-MX" data-prisma-skin={prismaSkin} data-prisma-surface="tablet-pos" data-theme={prismaTheme} data-prisma-visual-mode="background-workbench" suppressHydrationWarning>
@@ -23,7 +35,7 @@ export default function RootLayout({ children }: { children: any }) {
           }}
         />
       </head>
-      <body><TabletPremiumRuntimeEffects />{children}</body>
+      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="tablet" data-prisma-route={route}><TabletPremiumRuntimeEffects />{children}</body>
     </html>
   );
 }
