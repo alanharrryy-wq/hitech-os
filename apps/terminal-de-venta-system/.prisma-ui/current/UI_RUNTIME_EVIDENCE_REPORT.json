@@ -2,11 +2,11 @@
   "schema": "prisma.ui.runtime.evidence.report.v1",
   "status": "RUNTIME_CERTIFIED",
   "command": "runtime-probe",
-  "generated_at": "2026-06-19T05:44:21.189Z",
+  "generated_at": "2026-06-19T07:50:27.912Z",
   "repoRoot": "F:/repos/hitech-os",
   "appRoot": "",
-  "repoHead": "32b0363844b8f95931ce708eddac9480a377f377",
-  "branch": "main",
+  "repoHead": "23bd6bf595e2e5369c0f12fc1d80487c493a7577",
+  "branch": "feat/prisma-visual-control-system-v1",
   "routeCount": 108,
   "runtimeCertifiedCount": 97,
   "sourceCertifiedCount": 11,
@@ -40,10 +40,10 @@
       "port": 3120,
       "url": "http://127.0.0.1:3120/",
       "reachable": true,
-      "status": 200,
+      "status": null,
       "error": null,
       "transport": "tcp",
-      "finalUrl": "http://127.0.0.1:3120/"
+      "httpProbeError": "timeout after 3000ms"
     },
     "3130": {
       "port": 3130,
@@ -208,8 +208,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:09.883Z",
-      "finishedAt": "2026-06-19T05:44:09.939Z",
+      "startedAt": "2026-06-19T07:49:23.440Z",
+      "finishedAt": "2026-06-19T07:49:23.546Z",
       "reason": null
     },
     {
@@ -276,8 +276,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:09.939Z",
-      "finishedAt": "2026-06-19T05:44:09.980Z",
+      "startedAt": "2026-06-19T07:49:23.546Z",
+      "finishedAt": "2026-06-19T07:49:23.661Z",
       "reason": null
     },
     {
@@ -345,8 +345,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:09.980Z",
-      "finishedAt": "2026-06-19T05:44:10.021Z",
+      "startedAt": "2026-06-19T07:49:23.661Z",
+      "finishedAt": "2026-06-19T07:49:23.740Z",
       "reason": null
     },
     {
@@ -414,8 +414,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.021Z",
-      "finishedAt": "2026-06-19T05:44:10.076Z",
+      "startedAt": "2026-06-19T07:49:23.740Z",
+      "finishedAt": "2026-06-19T07:49:23.883Z",
       "reason": null
     },
     {
@@ -484,8 +484,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.076Z",
-      "finishedAt": "2026-06-19T05:44:10.159Z",
+      "startedAt": "2026-06-19T07:49:23.883Z",
+      "finishedAt": "2026-06-19T07:49:24.564Z",
       "reason": null
     },
     {
@@ -553,8 +553,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.159Z",
-      "finishedAt": "2026-06-19T05:44:10.251Z",
+      "startedAt": "2026-06-19T07:49:24.564Z",
+      "finishedAt": "2026-06-19T07:49:25.393Z",
       "reason": null
     },
     {
@@ -624,8 +624,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.251Z",
-      "finishedAt": "2026-06-19T05:44:10.348Z",
+      "startedAt": "2026-06-19T07:49:25.393Z",
+      "finishedAt": "2026-06-19T07:49:26.262Z",
       "reason": null
     },
     {
@@ -693,8 +693,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.348Z",
-      "finishedAt": "2026-06-19T05:44:10.411Z",
+      "startedAt": "2026-06-19T07:49:26.262Z",
+      "finishedAt": "2026-06-19T07:49:26.995Z",
       "reason": null
     },
     {
@@ -762,8 +762,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.411Z",
-      "finishedAt": "2026-06-19T05:44:10.510Z",
+      "startedAt": "2026-06-19T07:49:26.995Z",
+      "finishedAt": "2026-06-19T07:49:27.513Z",
       "reason": null
     },
     {
@@ -815,8 +815,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:10.510Z",
-      "finishedAt": "2026-06-19T05:44:10.510Z",
+      "startedAt": "2026-06-19T07:49:27.513Z",
+      "finishedAt": "2026-06-19T07:49:27.513Z",
       "reason": "This page is a source-level redirect alias to /stock; the canonical target route carries runtime UI anchors."
     },
     {
@@ -884,8 +884,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.510Z",
-      "finishedAt": "2026-06-19T05:44:10.578Z",
+      "startedAt": "2026-06-19T07:49:27.513Z",
+      "finishedAt": "2026-06-19T07:49:28.593Z",
       "reason": null
     },
     {
@@ -953,8 +953,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.578Z",
-      "finishedAt": "2026-06-19T05:44:10.644Z",
+      "startedAt": "2026-06-19T07:49:28.593Z",
+      "finishedAt": "2026-06-19T07:49:29.183Z",
       "reason": null
     },
     {
@@ -1032,8 +1032,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.644Z",
-      "finishedAt": "2026-06-19T05:44:10.733Z",
+      "startedAt": "2026-06-19T07:49:29.183Z",
+      "finishedAt": "2026-06-19T07:49:29.932Z",
       "reason": null
     },
     {
@@ -1101,8 +1101,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.733Z",
-      "finishedAt": "2026-06-19T05:44:10.806Z",
+      "startedAt": "2026-06-19T07:49:29.932Z",
+      "finishedAt": "2026-06-19T07:49:30.847Z",
       "reason": null
     },
     {
@@ -1170,8 +1170,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.806Z",
-      "finishedAt": "2026-06-19T05:44:10.889Z",
+      "startedAt": "2026-06-19T07:49:30.847Z",
+      "finishedAt": "2026-06-19T07:49:31.469Z",
       "reason": null
     },
     {
@@ -1239,8 +1239,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.889Z",
-      "finishedAt": "2026-06-19T05:44:10.942Z",
+      "startedAt": "2026-06-19T07:49:31.469Z",
+      "finishedAt": "2026-06-19T07:49:32.194Z",
       "reason": null
     },
     {
@@ -1308,8 +1308,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.942Z",
-      "finishedAt": "2026-06-19T05:44:10.991Z",
+      "startedAt": "2026-06-19T07:49:32.194Z",
+      "finishedAt": "2026-06-19T07:49:32.667Z",
       "reason": null
     },
     {
@@ -1377,8 +1377,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:10.991Z",
-      "finishedAt": "2026-06-19T05:44:11.135Z",
+      "startedAt": "2026-06-19T07:49:32.667Z",
+      "finishedAt": "2026-06-19T07:49:33.206Z",
       "reason": null
     },
     {
@@ -1446,8 +1446,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.135Z",
-      "finishedAt": "2026-06-19T05:44:11.227Z",
+      "startedAt": "2026-06-19T07:49:33.206Z",
+      "finishedAt": "2026-06-19T07:49:34.015Z",
       "reason": null
     },
     {
@@ -1499,8 +1499,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:11.227Z",
-      "finishedAt": "2026-06-19T05:44:11.227Z",
+      "startedAt": "2026-06-19T07:49:34.015Z",
+      "finishedAt": "2026-06-19T07:49:34.015Z",
       "reason": "This page is a source-level redirect alias to /sales/today; the canonical target route carries runtime UI anchors."
     },
     {
@@ -1568,8 +1568,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.227Z",
-      "finishedAt": "2026-06-19T05:44:11.344Z",
+      "startedAt": "2026-06-19T07:49:34.015Z",
+      "finishedAt": "2026-06-19T07:49:34.972Z",
       "reason": null
     },
     {
@@ -1621,8 +1621,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:11.344Z",
-      "finishedAt": "2026-06-19T05:44:11.344Z",
+      "startedAt": "2026-06-19T07:49:34.972Z",
+      "finishedAt": "2026-06-19T07:49:34.972Z",
       "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
     },
     {
@@ -1690,8 +1690,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.344Z",
-      "finishedAt": "2026-06-19T05:44:11.436Z",
+      "startedAt": "2026-06-19T07:49:34.972Z",
+      "finishedAt": "2026-06-19T07:49:35.544Z",
       "reason": null
     },
     {
@@ -1743,8 +1743,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:11.436Z",
-      "finishedAt": "2026-06-19T05:44:11.436Z",
+      "startedAt": "2026-06-19T07:49:35.544Z",
+      "finishedAt": "2026-06-19T07:49:35.544Z",
       "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
     },
     {
@@ -1796,8 +1796,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:11.436Z",
-      "finishedAt": "2026-06-19T05:44:11.436Z",
+      "startedAt": "2026-06-19T07:49:35.544Z",
+      "finishedAt": "2026-06-19T07:49:35.544Z",
       "reason": "Next.js dynamic segment requires a domain instance value; source-certified by page file, root layout data-prisma anchor provider, and middleware x-prisma-route propagation."
     },
     {
@@ -1865,8 +1865,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.436Z",
-      "finishedAt": "2026-06-19T05:44:11.583Z",
+      "startedAt": "2026-06-19T07:49:35.544Z",
+      "finishedAt": "2026-06-19T07:49:37.072Z",
       "reason": null
     },
     {
@@ -1918,8 +1918,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:11.584Z",
-      "finishedAt": "2026-06-19T05:44:11.584Z",
+      "startedAt": "2026-06-19T07:49:37.072Z",
+      "finishedAt": "2026-06-19T07:49:37.072Z",
       "reason": "This page is a source-level redirect alias to /settings/license; the canonical target route carries runtime UI anchors."
     },
     {
@@ -1986,9 +1986,9 @@
       "screenshot": null,
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
-      "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.584Z",
-      "finishedAt": "2026-06-19T05:44:11.644Z",
+      "attempts": 2,
+      "startedAt": "2026-06-19T07:49:37.072Z",
+      "finishedAt": "2026-06-19T07:49:56.129Z",
       "reason": null
     },
     {
@@ -2056,8 +2056,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.644Z",
-      "finishedAt": "2026-06-19T05:44:11.894Z",
+      "startedAt": "2026-06-19T07:49:56.129Z",
+      "finishedAt": "2026-06-19T07:49:57.780Z",
       "reason": null
     },
     {
@@ -2126,8 +2126,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:11.894Z",
-      "finishedAt": "2026-06-19T05:44:12.121Z",
+      "startedAt": "2026-06-19T07:49:57.780Z",
+      "finishedAt": "2026-06-19T07:49:58.782Z",
       "reason": null
     },
     {
@@ -2195,8 +2195,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.121Z",
-      "finishedAt": "2026-06-19T05:44:12.196Z",
+      "startedAt": "2026-06-19T07:49:58.782Z",
+      "finishedAt": "2026-06-19T07:49:59.926Z",
       "reason": null
     },
     {
@@ -2264,8 +2264,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.196Z",
-      "finishedAt": "2026-06-19T05:44:12.259Z",
+      "startedAt": "2026-06-19T07:49:59.926Z",
+      "finishedAt": "2026-06-19T07:50:00.683Z",
       "reason": null
     },
     {
@@ -2333,8 +2333,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.259Z",
-      "finishedAt": "2026-06-19T05:44:12.336Z",
+      "startedAt": "2026-06-19T07:50:00.683Z",
+      "finishedAt": "2026-06-19T07:50:01.309Z",
       "reason": null
     },
     {
@@ -2402,8 +2402,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.336Z",
-      "finishedAt": "2026-06-19T05:44:12.419Z",
+      "startedAt": "2026-06-19T07:50:01.309Z",
+      "finishedAt": "2026-06-19T07:50:02.346Z",
       "reason": null
     },
     {
@@ -2471,8 +2471,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.419Z",
-      "finishedAt": "2026-06-19T05:44:12.491Z",
+      "startedAt": "2026-06-19T07:50:02.346Z",
+      "finishedAt": "2026-06-19T07:50:02.680Z",
       "reason": null
     },
     {
@@ -2540,8 +2540,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.491Z",
-      "finishedAt": "2026-06-19T05:44:12.566Z",
+      "startedAt": "2026-06-19T07:50:02.680Z",
+      "finishedAt": "2026-06-19T07:50:03.880Z",
       "reason": null
     },
     {
@@ -2609,8 +2609,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.566Z",
-      "finishedAt": "2026-06-19T05:44:12.630Z",
+      "startedAt": "2026-06-19T07:50:03.880Z",
+      "finishedAt": "2026-06-19T07:50:04.713Z",
       "reason": null
     },
     {
@@ -2678,8 +2678,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.630Z",
-      "finishedAt": "2026-06-19T05:44:12.700Z",
+      "startedAt": "2026-06-19T07:50:04.713Z",
+      "finishedAt": "2026-06-19T07:50:05.379Z",
       "reason": null
     },
     {
@@ -2747,8 +2747,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.700Z",
-      "finishedAt": "2026-06-19T05:44:12.774Z",
+      "startedAt": "2026-06-19T07:50:05.379Z",
+      "finishedAt": "2026-06-19T07:50:06.133Z",
       "reason": null
     },
     {
@@ -2800,8 +2800,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:12.774Z",
-      "finishedAt": "2026-06-19T05:44:12.774Z",
+      "startedAt": "2026-06-19T07:50:06.133Z",
+      "finishedAt": "2026-06-19T07:50:06.133Z",
       "reason": "This page is a source-level redirect alias to /dashboard; the canonical target route carries runtime UI anchors."
     },
     {
@@ -2871,8 +2871,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.774Z",
-      "finishedAt": "2026-06-19T05:44:12.908Z",
+      "startedAt": "2026-06-19T07:50:06.133Z",
+      "finishedAt": "2026-06-19T07:50:06.548Z",
       "reason": null
     },
     {
@@ -2942,8 +2942,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.908Z",
-      "finishedAt": "2026-06-19T05:44:12.995Z",
+      "startedAt": "2026-06-19T07:50:06.548Z",
+      "finishedAt": "2026-06-19T07:50:06.820Z",
       "reason": null
     },
     {
@@ -3011,8 +3011,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:12.995Z",
-      "finishedAt": "2026-06-19T05:44:13.131Z",
+      "startedAt": "2026-06-19T07:50:06.820Z",
+      "finishedAt": "2026-06-19T07:50:07.068Z",
       "reason": null
     },
     {
@@ -3082,8 +3082,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.131Z",
-      "finishedAt": "2026-06-19T05:44:13.213Z",
+      "startedAt": "2026-06-19T07:50:07.068Z",
+      "finishedAt": "2026-06-19T07:50:07.265Z",
       "reason": null
     },
     {
@@ -3153,8 +3153,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.213Z",
-      "finishedAt": "2026-06-19T05:44:13.349Z",
+      "startedAt": "2026-06-19T07:50:07.265Z",
+      "finishedAt": "2026-06-19T07:50:07.504Z",
       "reason": null
     },
     {
@@ -3224,8 +3224,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.349Z",
-      "finishedAt": "2026-06-19T05:44:13.448Z",
+      "startedAt": "2026-06-19T07:50:07.504Z",
+      "finishedAt": "2026-06-19T07:50:07.683Z",
       "reason": null
     },
     {
@@ -3295,8 +3295,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.448Z",
-      "finishedAt": "2026-06-19T05:44:13.679Z",
+      "startedAt": "2026-06-19T07:50:07.683Z",
+      "finishedAt": "2026-06-19T07:50:08.002Z",
       "reason": null
     },
     {
@@ -3370,8 +3370,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.679Z",
-      "finishedAt": "2026-06-19T05:44:13.840Z",
+      "startedAt": "2026-06-19T07:50:08.002Z",
+      "finishedAt": "2026-06-19T07:50:08.241Z",
       "reason": null
     },
     {
@@ -3441,8 +3441,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.840Z",
-      "finishedAt": "2026-06-19T05:44:13.935Z",
+      "startedAt": "2026-06-19T07:50:08.241Z",
+      "finishedAt": "2026-06-19T07:50:08.433Z",
       "reason": null
     },
     {
@@ -3512,8 +3512,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:13.935Z",
-      "finishedAt": "2026-06-19T05:44:14.018Z",
+      "startedAt": "2026-06-19T07:50:08.433Z",
+      "finishedAt": "2026-06-19T07:50:08.622Z",
       "reason": null
     },
     {
@@ -3583,8 +3583,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.018Z",
-      "finishedAt": "2026-06-19T05:44:14.153Z",
+      "startedAt": "2026-06-19T07:50:08.622Z",
+      "finishedAt": "2026-06-19T07:50:08.909Z",
       "reason": null
     },
     {
@@ -3654,8 +3654,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.153Z",
-      "finishedAt": "2026-06-19T05:44:14.293Z",
+      "startedAt": "2026-06-19T07:50:08.909Z",
+      "finishedAt": "2026-06-19T07:50:09.234Z",
       "reason": null
     },
     {
@@ -3729,8 +3729,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.293Z",
-      "finishedAt": "2026-06-19T05:44:14.439Z",
+      "startedAt": "2026-06-19T07:50:09.234Z",
+      "finishedAt": "2026-06-19T07:50:09.844Z",
       "reason": null
     },
     {
@@ -3800,8 +3800,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.439Z",
-      "finishedAt": "2026-06-19T05:44:14.582Z",
+      "startedAt": "2026-06-19T07:50:09.844Z",
+      "finishedAt": "2026-06-19T07:50:10.272Z",
       "reason": null
     },
     {
@@ -3871,8 +3871,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.582Z",
-      "finishedAt": "2026-06-19T05:44:14.718Z",
+      "startedAt": "2026-06-19T07:50:10.272Z",
+      "finishedAt": "2026-06-19T07:50:10.657Z",
       "reason": null
     },
     {
@@ -3942,8 +3942,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.718Z",
-      "finishedAt": "2026-06-19T05:44:14.887Z",
+      "startedAt": "2026-06-19T07:50:10.657Z",
+      "finishedAt": "2026-06-19T07:50:11.093Z",
       "reason": null
     },
     {
@@ -4013,8 +4013,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:14.887Z",
-      "finishedAt": "2026-06-19T05:44:15.014Z",
+      "startedAt": "2026-06-19T07:50:11.093Z",
+      "finishedAt": "2026-06-19T07:50:11.398Z",
       "reason": null
     },
     {
@@ -4084,8 +4084,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.014Z",
-      "finishedAt": "2026-06-19T05:44:15.094Z",
+      "startedAt": "2026-06-19T07:50:11.398Z",
+      "finishedAt": "2026-06-19T07:50:11.730Z",
       "reason": null
     },
     {
@@ -4155,8 +4155,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.094Z",
-      "finishedAt": "2026-06-19T05:44:15.231Z",
+      "startedAt": "2026-06-19T07:50:11.730Z",
+      "finishedAt": "2026-06-19T07:50:12.728Z",
       "reason": null
     },
     {
@@ -4226,8 +4226,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.231Z",
-      "finishedAt": "2026-06-19T05:44:15.356Z",
+      "startedAt": "2026-06-19T07:50:12.728Z",
+      "finishedAt": "2026-06-19T07:50:12.970Z",
       "reason": null
     },
     {
@@ -4297,8 +4297,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.356Z",
-      "finishedAt": "2026-06-19T05:44:15.514Z",
+      "startedAt": "2026-06-19T07:50:12.970Z",
+      "finishedAt": "2026-06-19T07:50:13.255Z",
       "reason": null
     },
     {
@@ -4368,8 +4368,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.514Z",
-      "finishedAt": "2026-06-19T05:44:15.707Z",
+      "startedAt": "2026-06-19T07:50:13.255Z",
+      "finishedAt": "2026-06-19T07:50:13.493Z",
       "reason": null
     },
     {
@@ -4439,8 +4439,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.707Z",
-      "finishedAt": "2026-06-19T05:44:15.855Z",
+      "startedAt": "2026-06-19T07:50:13.493Z",
+      "finishedAt": "2026-06-19T07:50:13.857Z",
       "reason": null
     },
     {
@@ -4510,8 +4510,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:15.855Z",
-      "finishedAt": "2026-06-19T05:44:16.273Z",
+      "startedAt": "2026-06-19T07:50:13.857Z",
+      "finishedAt": "2026-06-19T07:50:14.164Z",
       "reason": null
     },
     {
@@ -4581,8 +4581,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.273Z",
-      "finishedAt": "2026-06-19T05:44:16.402Z",
+      "startedAt": "2026-06-19T07:50:14.164Z",
+      "finishedAt": "2026-06-19T07:50:14.433Z",
       "reason": null
     },
     {
@@ -4652,8 +4652,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.402Z",
-      "finishedAt": "2026-06-19T05:44:16.496Z",
+      "startedAt": "2026-06-19T07:50:14.433Z",
+      "finishedAt": "2026-06-19T07:50:14.615Z",
       "reason": null
     },
     {
@@ -4723,8 +4723,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.496Z",
-      "finishedAt": "2026-06-19T05:44:16.557Z",
+      "startedAt": "2026-06-19T07:50:14.615Z",
+      "finishedAt": "2026-06-19T07:50:14.711Z",
       "reason": null
     },
     {
@@ -4792,8 +4792,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.557Z",
-      "finishedAt": "2026-06-19T05:44:16.602Z",
+      "startedAt": "2026-06-19T07:50:14.711Z",
+      "finishedAt": "2026-06-19T07:50:14.812Z",
       "reason": null
     },
     {
@@ -4863,8 +4863,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.602Z",
-      "finishedAt": "2026-06-19T05:44:16.674Z",
+      "startedAt": "2026-06-19T07:50:14.812Z",
+      "finishedAt": "2026-06-19T07:50:14.956Z",
       "reason": null
     },
     {
@@ -4934,8 +4934,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.674Z",
-      "finishedAt": "2026-06-19T05:44:16.764Z",
+      "startedAt": "2026-06-19T07:50:14.956Z",
+      "finishedAt": "2026-06-19T07:50:15.098Z",
       "reason": null
     },
     {
@@ -5007,8 +5007,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.764Z",
-      "finishedAt": "2026-06-19T05:44:16.833Z",
+      "startedAt": "2026-06-19T07:50:15.098Z",
+      "finishedAt": "2026-06-19T07:50:15.226Z",
       "reason": null
     },
     {
@@ -5076,8 +5076,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.833Z",
-      "finishedAt": "2026-06-19T05:44:16.933Z",
+      "startedAt": "2026-06-19T07:50:15.226Z",
+      "finishedAt": "2026-06-19T07:50:15.417Z",
       "reason": null
     },
     {
@@ -5147,8 +5147,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:16.933Z",
-      "finishedAt": "2026-06-19T05:44:17.110Z",
+      "startedAt": "2026-06-19T07:50:15.417Z",
+      "finishedAt": "2026-06-19T07:50:15.706Z",
       "reason": null
     },
     {
@@ -5219,8 +5219,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.110Z",
-      "finishedAt": "2026-06-19T05:44:17.214Z",
+      "startedAt": "2026-06-19T07:50:15.706Z",
+      "finishedAt": "2026-06-19T07:50:15.952Z",
       "reason": null
     },
     {
@@ -5290,8 +5290,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.214Z",
-      "finishedAt": "2026-06-19T05:44:17.335Z",
+      "startedAt": "2026-06-19T07:50:15.952Z",
+      "finishedAt": "2026-06-19T07:50:16.190Z",
       "reason": null
     },
     {
@@ -5361,8 +5361,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.335Z",
-      "finishedAt": "2026-06-19T05:44:17.485Z",
+      "startedAt": "2026-06-19T07:50:16.190Z",
+      "finishedAt": "2026-06-19T07:50:16.391Z",
       "reason": null
     },
     {
@@ -5433,8 +5433,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.485Z",
-      "finishedAt": "2026-06-19T05:44:17.617Z",
+      "startedAt": "2026-06-19T07:50:16.391Z",
+      "finishedAt": "2026-06-19T07:50:16.634Z",
       "reason": null
     },
     {
@@ -5504,8 +5504,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.617Z",
-      "finishedAt": "2026-06-19T05:44:17.699Z",
+      "startedAt": "2026-06-19T07:50:16.634Z",
+      "finishedAt": "2026-06-19T07:50:16.798Z",
       "reason": null
     },
     {
@@ -5575,8 +5575,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.699Z",
-      "finishedAt": "2026-06-19T05:44:17.836Z",
+      "startedAt": "2026-06-19T07:50:16.798Z",
+      "finishedAt": "2026-06-19T07:50:17.006Z",
       "reason": null
     },
     {
@@ -5628,8 +5628,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:17.836Z",
-      "finishedAt": "2026-06-19T05:44:17.836Z",
+      "startedAt": "2026-06-19T07:50:17.006Z",
+      "finishedAt": "2026-06-19T07:50:17.006Z",
       "reason": "This page is a source-level redirect alias to /laboratorio-pc/chart-lab?preview=charts; the canonical target route carries runtime UI anchors."
     },
     {
@@ -5699,8 +5699,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:17.836Z",
-      "finishedAt": "2026-06-19T05:44:18.209Z",
+      "startedAt": "2026-06-19T07:50:17.006Z",
+      "finishedAt": "2026-06-19T07:50:17.684Z",
       "reason": null
     },
     {
@@ -5770,8 +5770,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.209Z",
-      "finishedAt": "2026-06-19T05:44:18.341Z",
+      "startedAt": "2026-06-19T07:50:17.684Z",
+      "finishedAt": "2026-06-19T07:50:17.921Z",
       "reason": null
     },
     {
@@ -5841,8 +5841,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.341Z",
-      "finishedAt": "2026-06-19T05:44:18.476Z",
+      "startedAt": "2026-06-19T07:50:17.921Z",
+      "finishedAt": "2026-06-19T07:50:18.146Z",
       "reason": null
     },
     {
@@ -5912,8 +5912,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.476Z",
-      "finishedAt": "2026-06-19T05:44:18.643Z",
+      "startedAt": "2026-06-19T07:50:18.146Z",
+      "finishedAt": "2026-06-19T07:50:18.409Z",
       "reason": null
     },
     {
@@ -5965,8 +5965,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:18.643Z",
-      "finishedAt": "2026-06-19T05:44:18.643Z",
+      "startedAt": "2026-06-19T07:50:18.409Z",
+      "finishedAt": "2026-06-19T07:50:18.409Z",
       "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual; the canonical target route carries runtime UI anchors."
     },
     {
@@ -6018,8 +6018,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:18.643Z",
-      "finishedAt": "2026-06-19T05:44:18.643Z",
+      "startedAt": "2026-06-19T07:50:18.409Z",
+      "finishedAt": "2026-06-19T07:50:18.409Z",
       "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass; the canonical target route carries runtime UI anchors."
     },
     {
@@ -6071,8 +6071,8 @@
       "htmlSnapshot": null,
       "screenshot": null,
       "screenshotReason": "source-only dynamic route",
-      "startedAt": "2026-06-19T05:44:18.643Z",
-      "finishedAt": "2026-06-19T05:44:18.643Z",
+      "startedAt": "2026-06-19T07:50:18.409Z",
+      "finishedAt": "2026-06-19T07:50:18.409Z",
       "reason": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass-capsules; the canonical target route carries runtime UI anchors."
     },
     {
@@ -6142,8 +6142,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.643Z",
-      "finishedAt": "2026-06-19T05:44:18.777Z",
+      "startedAt": "2026-06-19T07:50:18.409Z",
+      "finishedAt": "2026-06-19T07:50:18.675Z",
       "reason": null
     },
     {
@@ -6213,8 +6213,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.777Z",
-      "finishedAt": "2026-06-19T05:44:18.898Z",
+      "startedAt": "2026-06-19T07:50:18.675Z",
+      "finishedAt": "2026-06-19T07:50:18.866Z",
       "reason": null
     },
     {
@@ -6284,8 +6284,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:18.898Z",
-      "finishedAt": "2026-06-19T05:44:19.010Z",
+      "startedAt": "2026-06-19T07:50:18.866Z",
+      "finishedAt": "2026-06-19T07:50:19.051Z",
       "reason": null
     },
     {
@@ -6355,8 +6355,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.010Z",
-      "finishedAt": "2026-06-19T05:44:19.143Z",
+      "startedAt": "2026-06-19T07:50:19.051Z",
+      "finishedAt": "2026-06-19T07:50:19.308Z",
       "reason": null
     },
     {
@@ -6426,8 +6426,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.143Z",
-      "finishedAt": "2026-06-19T05:44:19.277Z",
+      "startedAt": "2026-06-19T07:50:19.308Z",
+      "finishedAt": "2026-06-19T07:50:19.583Z",
       "reason": null
     },
     {
@@ -6501,8 +6501,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.277Z",
-      "finishedAt": "2026-06-19T05:44:19.424Z",
+      "startedAt": "2026-06-19T07:50:19.583Z",
+      "finishedAt": "2026-06-19T07:50:19.826Z",
       "reason": null
     },
     {
@@ -6572,8 +6572,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.424Z",
-      "finishedAt": "2026-06-19T05:44:19.647Z",
+      "startedAt": "2026-06-19T07:50:19.826Z",
+      "finishedAt": "2026-06-19T07:50:20.192Z",
       "reason": null
     },
     {
@@ -6647,8 +6647,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.647Z",
-      "finishedAt": "2026-06-19T05:44:19.808Z",
+      "startedAt": "2026-06-19T07:50:20.192Z",
+      "finishedAt": "2026-06-19T07:50:20.412Z",
       "reason": null
     },
     {
@@ -6718,8 +6718,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.808Z",
-      "finishedAt": "2026-06-19T05:44:19.958Z",
+      "startedAt": "2026-06-19T07:50:20.412Z",
+      "finishedAt": "2026-06-19T07:50:20.715Z",
       "reason": null
     },
     {
@@ -6789,8 +6789,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:19.958Z",
-      "finishedAt": "2026-06-19T05:44:20.098Z",
+      "startedAt": "2026-06-19T07:50:20.715Z",
+      "finishedAt": "2026-06-19T07:50:20.947Z",
       "reason": null
     },
     {
@@ -6860,8 +6860,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.098Z",
-      "finishedAt": "2026-06-19T05:44:20.230Z",
+      "startedAt": "2026-06-19T07:50:20.947Z",
+      "finishedAt": "2026-06-19T07:50:21.154Z",
       "reason": null
     },
     {
@@ -6931,8 +6931,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.230Z",
-      "finishedAt": "2026-06-19T05:44:20.356Z",
+      "startedAt": "2026-06-19T07:50:21.154Z",
+      "finishedAt": "2026-06-19T07:50:21.394Z",
       "reason": null
     },
     {
@@ -7002,8 +7002,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.356Z",
-      "finishedAt": "2026-06-19T05:44:20.655Z",
+      "startedAt": "2026-06-19T07:50:21.394Z",
+      "finishedAt": "2026-06-19T07:50:21.885Z",
       "reason": null
     },
     {
@@ -7073,8 +7073,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.655Z",
-      "finishedAt": "2026-06-19T05:44:20.758Z",
+      "startedAt": "2026-06-19T07:50:21.885Z",
+      "finishedAt": "2026-06-19T07:50:22.041Z",
       "reason": null
     },
     {
@@ -7144,8 +7144,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.758Z",
-      "finishedAt": "2026-06-19T05:44:20.883Z",
+      "startedAt": "2026-06-19T07:50:22.041Z",
+      "finishedAt": "2026-06-19T07:50:22.254Z",
       "reason": null
     },
     {
@@ -7213,8 +7213,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.883Z",
-      "finishedAt": "2026-06-19T05:44:20.920Z",
+      "startedAt": "2026-06-19T07:50:22.254Z",
+      "finishedAt": "2026-06-19T07:50:22.352Z",
       "reason": null
     },
     {
@@ -7284,8 +7284,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.920Z",
-      "finishedAt": "2026-06-19T05:44:20.962Z",
+      "startedAt": "2026-06-19T07:50:22.352Z",
+      "finishedAt": "2026-06-19T07:50:22.485Z",
       "reason": null
     },
     {
@@ -7356,8 +7356,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:20.962Z",
-      "finishedAt": "2026-06-19T05:44:21.010Z",
+      "startedAt": "2026-06-19T07:50:22.485Z",
+      "finishedAt": "2026-06-19T07:50:22.625Z",
       "reason": null
     },
     {
@@ -7428,8 +7428,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:21.010Z",
-      "finishedAt": "2026-06-19T05:44:21.058Z",
+      "startedAt": "2026-06-19T07:50:22.625Z",
+      "finishedAt": "2026-06-19T07:50:22.756Z",
       "reason": null
     },
     {
@@ -7499,8 +7499,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:21.058Z",
-      "finishedAt": "2026-06-19T05:44:21.182Z",
+      "startedAt": "2026-06-19T07:50:22.756Z",
+      "finishedAt": "2026-06-19T07:50:27.904Z",
       "reason": null
     },
     {
@@ -7562,8 +7562,8 @@
       "screenshotReason": "Playwright/Chromium screenshot capture was unavailable without installing browsers",
       "portReachable": true,
       "attempts": 1,
-      "startedAt": "2026-06-19T05:44:21.182Z",
-      "finishedAt": "2026-06-19T05:44:21.189Z",
+      "startedAt": "2026-06-19T07:50:27.904Z",
+      "finishedAt": "2026-06-19T07:50:27.912Z",
       "reason": null
     }
   ],

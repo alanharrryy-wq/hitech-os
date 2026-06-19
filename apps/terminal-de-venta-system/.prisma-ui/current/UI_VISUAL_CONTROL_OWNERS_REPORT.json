@@ -1,0 +1,1910 @@
+{
+  "schema": "prisma.ui.visual-control.owners.report.v1",
+  "createdAt": "2026-06-19T07:51:00.116Z",
+  "status": "CERTIFIED",
+  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
+  "indexFile": ".prisma-ui/visual-control/owners.json",
+  "componentOwnerCount": 227,
+  "cssOwnerCount": 106,
+  "assetOwnerCount": 127,
+  "tokenThemeOwnerCount": 6,
+  "routeOwnerCount": 108,
+  "regionOwnerCount": 4132,
+  "componentOwnerSamples": [
+    {
+      "component_id": "prisma.control.center.internal.web.index.html",
+      "path": "prisma-control-center/internal/web/index.html",
+      "fileClass": "activeRuntime",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "cssOwnersProfile": "ownerCss.003",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.app.layout.tsx",
+      "path": "products/chart-lab/app/app/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.002",
+      "cssOwnersProfile": "ownerCss.001",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.chart.lab.app.app.page.tsx",
+      "path": "products/chart-lab/app/app/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.003",
+      "cssOwnersProfile": "ownerCss.001",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.chart.lab.app.app.recipe.studio.v2.page.tsx",
+      "path": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.004",
+      "cssOwnersProfile": "ownerCss.002",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.src.components.chartcontroldeck.tsx",
+      "path": "products/chart-lab/app/src/components/ChartControlDeck.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.src.components.executivecommandpalette.tsx",
+      "path": "products/chart-lab/app/src/components/ExecutiveCommandPalette.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.src.components.executiveexperiencepanel.tsx",
+      "path": "products/chart-lab/app/src/components/ExecutiveExperiencePanel.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.src.components.optionstudiopanel.tsx",
+      "path": "products/chart-lab/app/src/components/OptionStudioPanel.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.chart.lab.app.src.components.prismachartlabshell.tsx",
+      "path": "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "chart-lab",
+      "routesProfile": "route.006",
+      "panelsProfile": "panel.002",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.app.layout.tsx",
+      "path": "products/mobile/app/app/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.007",
+      "cssOwnersProfile": "ownerCss.045",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.page.tsx",
+      "path": "products/mobile/app/app/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.008",
+      "cssOwnersProfile": "ownerCss.045",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.app.install.page.tsx",
+      "path": "products/mobile/app/app/prisma-app/install/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.009",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.app.layout.tsx",
+      "path": "products/mobile/app/app/prisma-app/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.010",
+      "cssOwnersProfile": "ownerCss.129",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.app.offline.page.tsx",
+      "path": "products/mobile/app/app/prisma-app/offline/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.011",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.app.page.tsx",
+      "path": "products/mobile/app/app/prisma-app/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.012",
+      "cssOwnersProfile": "ownerCss.047",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.command.layout.tsx",
+      "path": "products/mobile/app/app/prisma-command/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.013",
+      "cssOwnersProfile": "ownerCss.130",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.command.page.tsx",
+      "path": "products/mobile/app/app/prisma-command/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.013",
+      "cssOwnersProfile": "ownerCss.048",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.app.prisma.command.prismamobilecommanddeck.tsx",
+      "path": "products/mobile/app/app/prisma-command/PrismaMobileCommandDeck.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.013",
+      "cssOwnersProfile": "ownerCss.048",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.public.prisma.offline.html",
+      "path": "products/mobile/app/public/prisma-offline.html",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.014",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.mobile.app.src.components.prisma.app.prismamobilecrystalcommand.tsx",
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileCrystalCommand.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.012",
+      "cssOwnersProfile": "ownerCss.046",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.src.components.prisma.app.prismamobiledashboard.tsx",
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.015",
+      "panelsProfile": "panel.003",
+      "cssOwnersProfile": "ownerCss.046",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.src.components.prisma.app.prismamobilemulticontextswitcher.tsx",
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.012",
+      "cssOwnersProfile": "ownerCss.046",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.src.components.prisma.app.prismamobilepremiumnavigator.tsx",
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.012",
+      "cssOwnersProfile": "ownerCss.046",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.mobile.app.src.components.prisma.app.prismamobilepwainstallcard.tsx",
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "mobile",
+      "routesProfile": "route.012",
+      "cssOwnersProfile": "ownerCss.046",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.acciones.masivas.error.tsx",
+      "path": "products/pc/app/app/acciones-masivas/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.acciones.masivas.page.tsx",
+      "path": "products/pc/app/app/acciones-masivas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.017",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.ajustes.inventario.page.tsx",
+      "path": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.018",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.alertas.ejecutivas.page.tsx",
+      "path": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.019",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.alertas.operativas.page.tsx",
+      "path": "products/pc/app/app/alertas-operativas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.020",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.audit.error.tsx",
+      "path": "products/pc/app/app/audit/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.audit.page.tsx",
+      "path": "products/pc/app/app/audit/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.021",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.auditoria.inventario.page.tsx",
+      "path": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.022",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.cash.sessions.error.tsx",
+      "path": "products/pc/app/app/cash-sessions/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.cash.sessions.page.tsx",
+      "path": "products/pc/app/app/cash-sessions/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.023",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.catalog.error.tsx",
+      "path": "products/pc/app/app/catalog/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.catalog.page.tsx",
+      "path": "products/pc/app/app/catalog/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.024",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.catalogo.activo.page.tsx",
+      "path": "products/pc/app/app/catalogo-activo/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.025",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.conteos.operativos.page.tsx",
+      "path": "products/pc/app/app/conteos-operativos/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.026",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.contratos.reporte.error.tsx",
+      "path": "products/pc/app/app/contratos-reporte/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.contratos.reporte.page.tsx",
+      "path": "products/pc/app/app/contratos-reporte/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.027",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.counts.error.tsx",
+      "path": "products/pc/app/app/counts/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.counts.page.tsx",
+      "path": "products/pc/app/app/counts/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.028",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.dashboard.error.tsx",
+      "path": "products/pc/app/app/dashboard/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "cssOwnersProfile": "ownerCss.059",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.dashboard.page.tsx",
+      "path": "products/pc/app/app/dashboard/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.029",
+      "cssOwnersProfile": "ownerCss.059",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.data.quality.error.tsx",
+      "path": "products/pc/app/app/data-quality/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.data.quality.page.tsx",
+      "path": "products/pc/app/app/data-quality/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.030",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.detalle.registros.error.tsx",
+      "path": "products/pc/app/app/detalle-registros/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.detalle.registros.page.tsx",
+      "path": "products/pc/app/app/detalle-registros/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.031",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.devices.error.tsx",
+      "path": "products/pc/app/app/devices/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.devices.page.tsx",
+      "path": "products/pc/app/app/devices/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.032",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.error.tsx",
+      "path": "products/pc/app/app/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "cssOwnersProfile": "ownerCss.058",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.estados.operativos.error.tsx",
+      "path": "products/pc/app/app/estados-operativos/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.estados.operativos.page.tsx",
+      "path": "products/pc/app/app/estados-operativos/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.033",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.existencias.criticas.page.tsx",
+      "path": "products/pc/app/app/existencias-criticas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.034",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.exportables.error.tsx",
+      "path": "products/pc/app/app/exportables/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.exportables.page.tsx",
+      "path": "products/pc/app/app/exportables/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.035",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.avanzados.error.tsx",
+      "path": "products/pc/app/app/filtros-avanzados/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.avanzados.page.tsx",
+      "path": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.036",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.fecha.error.tsx",
+      "path": "products/pc/app/app/filtros-fecha/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.fecha.page.tsx",
+      "path": "products/pc/app/app/filtros-fecha/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.037",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.forecast.basico.error.tsx",
+      "path": "products/pc/app/app/forecast-basico/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.forecast.basico.page.tsx",
+      "path": "products/pc/app/app/forecast-basico/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.038",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.glosario.error.tsx",
+      "path": "products/pc/app/app/glosario/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.glosario.page.tsx",
+      "path": "products/pc/app/app/glosario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.039",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.gobierno.error.tsx",
+      "path": "products/pc/app/app/gobierno/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.gobierno.page.tsx",
+      "path": "products/pc/app/app/gobierno/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.040",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.incidencias.recepcion.error.tsx",
+      "path": "products/pc/app/app/incidencias-recepcion/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.incidencias.recepcion.page.tsx",
+      "path": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.041",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.integridad.barcodes.page.tsx",
+      "path": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.042",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.chart.lab.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.043",
+      "cssOwnersProfile": "ownerCss.060",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "cssOwnersProfile": "ownerCss.061",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.044",
+      "cssOwnersProfile": "ownerCss.061",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.045",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.capsules.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.046",
+      "cssOwnersProfile": "ownerCss.062",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.047",
+      "panelsProfile": "panel.004",
+      "cssOwnersProfile": "ownerCss.063",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.048",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.layout.tsx",
+      "path": "products/pc/app/app/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.049",
+      "cssOwnersProfile": "ownerCss.058",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.license.runtime.error.tsx",
+      "path": "products/pc/app/app/license-runtime/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.license.runtime.page.tsx",
+      "path": "products/pc/app/app/license-runtime/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.050",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.metricas.dia.error.tsx",
+      "path": "products/pc/app/app/metricas-dia/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.metricas.dia.page.tsx",
+      "path": "products/pc/app/app/metricas-dia/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.051",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.movements.error.tsx",
+      "path": "products/pc/app/app/movements/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.movements.page.tsx",
+      "path": "products/pc/app/app/movements/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.052",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.ordenes.compra.error.tsx",
+      "path": "products/pc/app/app/ordenes-compra/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.ordenes.compra.page.tsx",
+      "path": "products/pc/app/app/ordenes-compra/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.053",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.outbox.operativo.error.tsx",
+      "path": "products/pc/app/app/outbox-operativo/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.outbox.operativo.page.tsx",
+      "path": "products/pc/app/app/outbox-operativo/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.054",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.page.tsx",
+      "path": "products/pc/app/app/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.055",
+      "cssOwnersProfile": "ownerCss.058",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.politica.precios.page.tsx",
+      "path": "products/pc/app/app/politica-precios/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.056",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.chart.lab.page.tsx",
+      "path": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.057",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.error.tsx",
+      "path": "products/pc/app/app/prisma-insights/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "cssOwnersProfile": "ownerCss.060",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.page.tsx",
+      "path": "products/pc/app/app/prisma-insights/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.058",
+      "cssOwnersProfile": "ownerCss.060",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.prismapcinsightsgrid.tsx",
+      "path": "products/pc/app/app/prisma-insights/PrismaPcInsightsGrid.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "cssOwnersProfile": "ownerCss.060",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.proveedores.error.tsx",
+      "path": "products/pc/app/app/proveedores/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.proveedores.page.tsx",
+      "path": "products/pc/app/app/proveedores/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.059",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.purchasing.error.tsx",
+      "path": "products/pc/app/app/purchasing/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.purchasing.page.tsx",
+      "path": "products/pc/app/app/purchasing/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.060",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.receiving.error.tsx",
+      "path": "products/pc/app/app/receiving/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.receiving.page.tsx",
+      "path": "products/pc/app/app/receiving/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.061",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.recepcion.proveedor.error.tsx",
+      "path": "products/pc/app/app/recepcion-proveedor/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.recepcion.proveedor.page.tsx",
+      "path": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.062",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.error.tsx",
+      "path": "products/pc/app/app/referencia-visual/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.liquid.glass.capsules.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.063",
+      "cssOwnersProfile": "ownerCss.064",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.liquid.glass.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.064",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.065",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.replenishment.error.tsx",
+      "path": "products/pc/app/app/replenishment/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.replenishment.page.tsx",
+      "path": "products/pc/app/app/replenishment/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.066",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.sales.control.error.tsx",
+      "path": "products/pc/app/app/sales-control/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.sales.control.page.tsx",
+      "path": "products/pc/app/app/sales-control/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.067",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.salud.barcodes.page.tsx",
+      "path": "products/pc/app/app/salud-barcodes/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.068",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.scorecards.negocio.error.tsx",
+      "path": "products/pc/app/app/scorecards-negocio/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.scorecards.negocio.page.tsx",
+      "path": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.069",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.senal.reabasto.error.tsx",
+      "path": "products/pc/app/app/senal-reabasto/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.senal.reabasto.page.tsx",
+      "path": "products/pc/app/app/senal-reabasto/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.070",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.error.tsx",
+      "path": "products/pc/app/app/settings/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.license.error.tsx",
+      "path": "products/pc/app/app/settings/license/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.license.page.tsx",
+      "path": "products/pc/app/app/settings/license/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.071",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.page.tsx",
+      "path": "products/pc/app/app/settings/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.072",
+      "riskClass": "safeVisualOnly"
+    }
+  ],
+  "cssOwnerSamples": [
+    {
+      "owner_id": "prisma.control.center.internal.web.blackbox.command.css",
+      "file": "prisma-control-center/internal/web/blackbox_command.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.license.ops.console.css",
+      "file": "prisma-control-center/internal/web/license_ops_console.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.lifecycle.console.css",
+      "file": "prisma-control-center/internal/web/lifecycle_console.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.ops.command.css",
+      "file": "prisma-control-center/internal/web/ops_command.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.atmosphere.v5.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_atmosphere_v5.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.atmosphere.v52.layer.fix.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_atmosphere_v52_layer_fix.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.atmosphere.v53.probe.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_atmosphere_v53_probe.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.atmosphere.v54.true.mist.glacier.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_atmosphere_v54_true_mist_glacier.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.atmosphere.v54.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_atmosphere_v54.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.seam.killer.v45.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_seam_killer_v45.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v56.prismo.safe.retune.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v56_prismo_safe_retune.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v57.panel.text.clarity.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v57_panel_text_clarity.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v59.prismo.selector.safe.frost.evidence.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v59_prismo_selector_safe_frost_evidence.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v60.prismo.topbar.fix.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v60_prismo_topbar_fix.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v61.prismo.compact.premium.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v61_prismo_compact_premium.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v62.remove.ghost.rects.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v62_remove_ghost_rects.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v63.all.surfaces.glass.repair.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v63_all_surfaces_glass_repair.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v64.undo.v63.prismo.glass.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v64_undo_v63_prismo_glass.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v65.clean.visual.stack.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v65_clean_visual_stack.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v66.prismo.container.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v66_prismo_container_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v67.prismo.edge.logo.fix.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v67_prismo_edge_logo_fix.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v68.floating.status.pills.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v68_floating_status_pills.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v69.upload.panel.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v69_upload_panel_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v70.status.backplate.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v70_status_backplate_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v71.float.response.status.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v71_float_response_status_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v72.chip.backplate.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v72_chip_backplate_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v73.prompt.text.glow.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v73_prompt_text_glow.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v75.prompt.glow.only.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v75_prompt_glow_only.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v76.all.surfaces.neon.contrast.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v76_all_surfaces_neon_contrast.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.cc.v77.origin.state.lock.css",
+      "file": "prisma-control-center/internal/web/prisma_cc_v77_origin_state_lock.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.bright.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical_bright.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.repair.v42.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical_repair_v42.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.v43.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical_v43.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.v44.actual.visual.fix.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical_v44_actual_visual_fix.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.v44.hotfix.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical_v44_hotfix.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.frost.tactical.css",
+      "file": "prisma-control-center/internal/web/prisma_frost_tactical.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prisma.v40.uiux.css",
+      "file": "prisma-control-center/internal/web/prisma_v40_uiux.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prismo.ai.theater.css",
+      "file": "prisma-control-center/internal/web/prismo_ai_theater.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prismo.console.css",
+      "file": "prisma-control-center/internal/web/prismo_console.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.prismo.visual.legacy.bridge.css",
+      "file": "prisma-control-center/internal/web/prismo_visual_legacy_bridge.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.quality.bay.css",
+      "file": "prisma-control-center/internal/web/quality_bay.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.release.polish.css",
+      "file": "prisma-control-center/internal/web/release_polish.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "prisma.control.center.internal.web.styles.css",
+      "file": "prisma-control-center/internal/web/styles.css",
+      "surface": "control-center",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.chart.lab.app.app.globals.css",
+      "file": "products/chart-lab/app/app/globals.css",
+      "surface": "chart-lab",
+      "routesProfile": "route.002",
+      "componentsProfile": "component.002",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.chart.lab.app.app.recipe.studio.v2.prisma.recipe.studio.v2.module.css",
+      "file": "products/chart-lab/app/app/recipe-studio-v2/prisma-recipe-studio-v2.module.css",
+      "surface": "chart-lab",
+      "routesProfile": "route.004",
+      "componentsProfile": "component.003",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.globals.css",
+      "file": "products/mobile/app/app/globals.css",
+      "surface": "mobile",
+      "routesProfile": "route.007",
+      "componentsProfile": "component.004",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.prisma.app.prisma.app.module.css",
+      "file": "products/mobile/app/app/prisma-app/prisma-app.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.010",
+      "componentsProfile": "component.005",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.prisma.app.prisma.mobile.visual.workbench.css",
+      "file": "products/mobile/app/app/prisma-app/prisma-mobile-visual-workbench.css",
+      "surface": "mobile",
+      "routesProfile": "route.010",
+      "componentsProfile": "component.005",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.prisma.command.prisma.mobile.command.module.css",
+      "file": "products/mobile/app/app/prisma-command/prisma-mobile-command.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.013",
+      "componentsProfile": "component.006",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.prisma.mobile.pulse.binding.css",
+      "file": "products/mobile/app/app/prisma-mobile-pulse-binding.css",
+      "surface": "mobile",
+      "routesProfile": "route.007",
+      "componentsProfile": "component.004",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.app.prisma.mobile.thin.mist.shell.module.css",
+      "file": "products/mobile/app/app/prisma-mobile-thin-mist-shell.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.007",
+      "componentsProfile": "component.007",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.src.components.prisma.app.prisma.crystal.command.module.css",
+      "file": "products/mobile/app/src/components/prisma-app/prisma-crystal-command.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.015",
+      "panelsProfile": "panel.003",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.src.components.prisma.app.prisma.mobile.dashboard.module.css",
+      "file": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.015",
+      "panelsProfile": "panel.003",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.src.components.prisma.app.prisma.mobile.multi.context.switcher.module.css",
+      "file": "products/mobile/app/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.015",
+      "panelsProfile": "panel.003",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.mobile.app.src.components.prisma.app.prisma.mobile.pwa.module.css",
+      "file": "products/mobile/app/src/components/prisma-app/prisma-mobile-pwa.module.css",
+      "surface": "mobile",
+      "routesProfile": "route.015",
+      "panelsProfile": "panel.003",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.dashboard.hoy.premium.module.css",
+      "file": "products/pc/app/app/dashboard/hoy-premium.module.css",
+      "surface": "pc",
+      "routesProfile": "route.123",
+      "componentsProfile": "component.009",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.dashboard.prisma.surface.dashboard.module.css",
+      "file": "products/pc/app/app/dashboard/prisma-surface-dashboard.module.css",
+      "surface": "pc",
+      "routesProfile": "route.123",
+      "componentsProfile": "component.009",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.globals.css",
+      "file": "products/pc/app/app/globals.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.prisma.surface.dashboard.module.css",
+      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/prisma-surface-dashboard.module.css",
+      "surface": "pc",
+      "routesProfile": "route.125",
+      "componentsProfile": "component.011",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.capsules.liquid.glass.capsules.module.css",
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css",
+      "surface": "pc",
+      "routesProfile": "route.046",
+      "componentsProfile": "component.012",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.atmospheric.background.css",
+      "file": "products/pc/app/app/prisma-atmospheric-background.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.insights.prisma.pc.insights.module.css",
+      "file": "products/pc/app/app/prisma-insights/prisma-pc-insights.module.css",
+      "surface": "pc",
+      "routesProfile": "route.126",
+      "componentsProfile": "component.013",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.liquid.glass.module.css",
+      "file": "products/pc/app/app/prisma-liquid-glass.module.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "panelsProfile": "panel.004",
+      "componentsProfile": "component.014",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.visual.os.pc.binding.css",
+      "file": "products/pc/app/app/prisma-visual-os-pc-binding.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.referencia.visual.liquid.glass.capsules.liquid.glass.capsules.module.css",
+      "file": "products/pc/app/app/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css",
+      "surface": "pc",
+      "routesProfile": "route.063",
+      "componentsProfile": "component.015",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.suppliers.ux.v08.css",
+      "file": "products/pc/app/app/suppliers-ux-v08.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.suppliers.css",
+      "file": "products/pc/app/app/suppliers.css",
+      "surface": "pc",
+      "routesProfile": "route.124",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.control.sales.control.branch.view.module.css",
+      "file": "products/pc/app/components/control/sales-control-branch-view.module.css",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "componentsProfile": "component.016",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.prisma.glass.capsule.prisma.glass.capsule.module.css",
+      "file": "products/pc/app/components/prisma-glass-capsule/prisma-glass-capsule.module.css",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "componentsProfile": "component.017",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.sync.pc.sync.chart.promotion.panel.module.css",
+      "file": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.module.css",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "componentsProfile": "component.018",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.shared.ui.prisma.components.prisma.components.css",
+      "file": "products/shared-ui/prisma/components/prisma-components.css",
+      "surface": "shared-ui",
+      "routesProfile": "route.082",
+      "componentsProfile": "component.019",
+      "safetyClassification": "sharedGlobalRisk"
+    },
+    {
+      "owner_id": "products.shared.ui.prisma.components.prismacomponents.module.css",
+      "file": "products/shared-ui/prisma/components/PrismaComponents.module.css",
+      "surface": "shared-ui",
+      "routesProfile": "route.082",
+      "componentsProfile": "component.019",
+      "safetyClassification": "sharedGlobalRisk"
+    },
+    {
+      "owner_id": "products.tablet.app.app.checkout.prisma.checkout.light.safe.shell.module.css",
+      "file": "products/tablet/app/app/checkout/prisma-checkout-light-safe-shell.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.084",
+      "componentsProfile": "component.020",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.globals.css",
+      "file": "products/tablet/app/app/globals.css",
+      "surface": "tablet",
+      "routesProfile": "route.127",
+      "componentsProfile": "component.021",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.pos.prisma.pos.light.safe.shell.module.css",
+      "file": "products/tablet/app/app/pos/prisma-pos-light-safe-shell.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.093",
+      "componentsProfile": "component.022",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.prisma.pulse.prisma.tablet.pulse.module.css",
+      "file": "products/tablet/app/app/prisma-pulse/prisma-tablet-pulse.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.128",
+      "componentsProfile": "component.023",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.prisma.tablet.background.workbench.css",
+      "file": "products/tablet/app/app/prisma-tablet-background-workbench.css",
+      "surface": "tablet",
+      "routesProfile": "route.127",
+      "componentsProfile": "component.021",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.prisma.tablet.light.premium.final.css",
+      "file": "products/tablet/app/app/prisma-tablet-light-premium-final.css",
+      "surface": "tablet",
+      "routesProfile": "route.127",
+      "componentsProfile": "component.021",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.prisma.tablet.light.shell.module.css",
+      "file": "products/tablet/app/app/prisma-tablet-light-shell.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.127",
+      "componentsProfile": "component.021",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.prisma.tablet.premium.governed.css",
+      "file": "products/tablet/app/app/prisma-tablet-premium-governed.css",
+      "surface": "tablet",
+      "routesProfile": "route.127",
+      "componentsProfile": "component.021",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.app.visual.os.prisma.studio.pro.qa.module.css",
+      "file": "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.129",
+      "componentsProfile": "component.024",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.catalog.stock.selling.assist.catalog.stock.selling.assist.module.css",
+      "file": "products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.025",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.catalog.catalog.module.css",
+      "file": "products/tablet/app/components/catalog/catalog.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.026",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.checkout.checkout.module.css",
+      "file": "products/tablet/app/components/checkout/checkout.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.027",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.offline.offline.export.audit.module.css",
+      "file": "products/tablet/app/components/offline/offline-export-audit.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.028",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.operational.screen.prisma.operational.screen.module.css",
+      "file": "products/tablet/app/components/operational-screen/prisma-operational-screen.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.029",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.pos.pos.module.css",
+      "file": "products/tablet/app/components/pos/pos.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.093",
+      "panelsProfile": "panel.013",
+      "componentsProfile": "component.030",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.pos.pos.visual.tokens.css",
+      "file": "products/tablet/app/components/pos/pos.visual.tokens.css",
+      "surface": "tablet",
+      "routesProfile": "route.093",
+      "panelsProfile": "panel.013",
+      "componentsProfile": "component.030",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.pos.pos.visual.tokens.generated.css",
+      "file": "products/tablet/app/components/pos/pos.visual.tokens.generated.css",
+      "surface": "tablet",
+      "routesProfile": "route.093",
+      "panelsProfile": "panel.013",
+      "componentsProfile": "component.030",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.prisma.dark.pos.prisma.dark.pos.module.css",
+      "file": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.031",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.returns.returns.module.css",
+      "file": "products/tablet/app/components/returns/returns.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.032",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.sales.sales.module.css",
+      "file": "products/tablet/app/components/sales/sales.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.033",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.shift.shift.cash.closure.module.css",
+      "file": "products/tablet/app/components/shift/shift-cash-closure.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.034",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.sync.pending.offline.sync.panel.module.css",
+      "file": "products/tablet/app/components/sync/pending-offline-sync-panel.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.035",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.components.tablet.pos.touch.pos.module.css",
+      "file": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.036",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.atmospheric.v4.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-atmospheric-v4.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.atmospheric.v5.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-atmospheric-v5.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.liquid.operations.v6.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-liquid-operations-v6.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.storm.glass.v13.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-storm-glass-v13.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.storm.glass.v14.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-storm-glass-v14.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.background.storm.glass.v8.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-background-storm-glass-v8.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.codex.background.gallery.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-codex-background-gallery.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.codex.glass.gallery.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-codex-glass-gallery.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.tablet.app.public.visual.os.tablet.light.visual.preset.engine.prisma.tablet.pearl.grey.mist.v2.css",
+      "file": "products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/prisma-tablet-pearl-grey-mist-v2.css",
+      "surface": "tablet",
+      "routesProfile": "route.085",
+      "componentsProfile": "component.037",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.web.app.app.globals.css",
+      "file": "products/web/app/app/globals.css",
+      "surface": "web",
+      "routesProfile": "route.120",
+      "componentsProfile": "component.038",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.web.app.app.surface.governor.public.sober.prisma.eit.public.sober.shell.module.css",
+      "file": "products/web/app/app/surface-governor-public-sober/prisma-eit-public-sober-shell.module.css",
+      "surface": "web",
+      "routesProfile": "route.122",
+      "componentsProfile": "component.039",
+      "safetyClassification": "safeVisualOnly"
+    }
+  ]
+}

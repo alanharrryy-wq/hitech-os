@@ -1,10 +1,10 @@
 {
   "schema": "prisma.ui.scope.report.v4",
-  "createdAt": "2026-06-19T05:17:04.121Z",
+  "createdAt": "2026-06-19T07:50:34.606Z",
   "command": "scope",
   "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-  "repoHead": "d487b167fdb9cf6adef0a218a651e1f4b0601022",
-  "branch": "feat/ui-runtime-page-certification",
+  "repoHead": "23bd6bf595e2e5369c0f12fc1d80487c493a7577",
+  "branch": "feat/prisma-visual-control-system-v1",
   "status": "CERTIFIED",
   "hardStates": [
     "CERTIFIED",
@@ -475,7 +475,7 @@
   "surface": "all",
   "route": null,
   "panel": null,
-  "changedCount": 52,
+  "changedCount": 40,
   "preexistingChangedCount": 0,
   "baselineApplied": false,
   "preexisting": [],
@@ -508,56 +508,6 @@
     {
       "file": ".prisma-ui/current/UI_ALL_SURFACES_CERT_REPORT.md",
       "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_ALL_SURFACES_CERT_REPORT.md",
-      "allowedBy": [
-        "global:.prisma-ui/current/**",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": ".prisma-ui/current/UI_CERT_REPORT.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_CERT_REPORT.json",
-      "allowedBy": [
-        "global:.prisma-ui/current/**",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": ".prisma-ui/current/UI_CERT_REPORT.md",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_CERT_REPORT.md",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -631,8 +581,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_DOCTOR_REPORT.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_DOCTOR_REPORT.json",
+      "file": ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -656,8 +606,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_DOCTOR_REPORT.md",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_DOCTOR_REPORT.md",
+      "file": ".prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -681,8 +631,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_INVENTORY_REPORT.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_INVENTORY_REPORT.json",
+      "file": ".prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -706,8 +656,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_INVENTORY_REPORT.md",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_INVENTORY_REPORT.md",
+      "file": ".prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -731,8 +681,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_SCOPE_REPORT.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_SCOPE_REPORT.json",
+      "file": ".prisma-ui/current/UI_RUNTIME_GAPS_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_GAPS_REPORT.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -756,8 +706,108 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_SCOPE_REPORT.md",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_SCOPE_REPORT.md",
+      "file": ".prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.json",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/UI_VISUAL_CONTROL_CERT_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_CERT_REPORT.json",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/UI_VISUAL_CONTROL_LAYERS_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_LAYERS_REPORT.json",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/UI_VISUAL_CONTROL_OWNERS_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_OWNERS_REPORT.json",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -831,215 +881,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/registry.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/registry.json",
-      "allowedBy": [
-        "global:.prisma-ui/registry.json",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": ".prisma-ui/surfaces.json",
-      "raw": " M apps/terminal-de-venta-system/.prisma-ui/surfaces.json",
-      "allowedBy": [
-        "global:.prisma-ui/surfaces.json",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "package.json",
-      "raw": " M apps/terminal-de-venta-system/package.json",
-      "allowedBy": [
-        "global:package.json",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/chart-lab/app/app/layout.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/chart-lab/app/app/layout.tsx",
-      "allowedBy": [
-        "surface:chart-lab"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/chart-lab/app/app/recipe-studio-v2/page.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/chart-lab/app/app/recipe-studio-v2/page.tsx",
-      "allowedBy": [
-        "surface:chart-lab"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/mobile/app/app/layout.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx",
-      "allowedBy": [
-        "surface:mobile"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/app/alertas-ejecutivas/page.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/app/alertas-ejecutivas/page.tsx",
-      "allowedBy": [
-        "surface:pc"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
-      "allowedBy": [
-        "surface:pc"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/app/laboratorio-pc/page.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/app/laboratorio-pc/page.tsx",
-      "allowedBy": [
-        "surface:pc"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
-      "allowedBy": [
-        "surface:pc"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/app/layout.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/app/layout.tsx",
-      "allowedBy": [
-        "surface:pc"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/pc/app/components/layout/app-shell.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/pc/app/components/layout/app-shell.tsx",
-      "allowedBy": [
-        "surface:pc",
-        "panel:pc.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/tablet/app/app/layout.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/tablet/app/app/layout.tsx",
-      "allowedBy": [
-        "surface:tablet"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/web/app/app/layout.tsx",
-      "raw": " M apps/terminal-de-venta-system/products/web/app/app/layout.tsx",
-      "allowedBy": [
-        "surface:web"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/web/app/next-env.d.ts",
-      "raw": " M apps/terminal-de-venta-system/products/web/app/next-env.d.ts",
-      "allowedBy": [
-        "surface:web"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "products/web/app/tsconfig.json",
-      "raw": " M apps/terminal-de-venta-system/products/web/app/tsconfig.json",
-      "allowedBy": [
-        "surface:web"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "tools/quality/ui-certainty.mjs",
-      "raw": " M apps/terminal-de-venta-system/tools/quality/ui-certainty.mjs",
-      "allowedBy": [
-        "global:tools/quality/ui-certainty.mjs",
-        "global:tools/quality/ui-certainty/**",
-        "surface:shared-ui",
-        "panel:chart-lab.workspace",
-        "panel:control-center.workspace",
-        "panel:mobile.workspace",
-        "panel:pc.catalog",
-        "panel:pc.dashboard",
-        "panel:pc.liquid-glass-reference",
-        "panel:pc.settings",
-        "panel:pc.stock",
-        "panel:pc.workspace",
-        "panel:tablet.pos.cart-panel",
-        "panel:tablet.pos.category-rail",
-        "panel:tablet.pos.checkout-diagnostic",
-        "panel:tablet.pos.payment-overlay",
-        "panel:tablet.pos.product-grid",
-        "panel:tablet.pos.search-card",
-        "panel:tablet.pos.workspace",
-        "panel:web.workspace"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": ".prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.json",
+      "file": ".prisma-ui/current/runtime-html/mobile_prisma_command.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/mobile_prisma_command.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1063,8 +906,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_ROUTE_COVERAGE_REPORT.md",
+      "file": ".prisma-ui/current/runtime-html/pc_cash_sessions.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_cash_sessions.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1088,8 +931,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_ROUTE_INVENTORY_REPORT.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_ROUTE_INVENTORY_REPORT.json",
+      "file": ".prisma-ui/current/runtime-html/pc_counts.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_counts.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1113,8 +956,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_ROUTE_INVENTORY_REPORT.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_ROUTE_INVENTORY_REPORT.md",
+      "file": ".prisma-ui/current/runtime-html/pc_data_quality.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_data_quality.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1138,8 +981,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.json",
+      "file": ".prisma-ui/current/runtime-html/pc_proveedores.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_proveedores.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1163,8 +1006,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EVIDENCE_REPORT.md",
+      "file": ".prisma-ui/current/runtime-html/pc_sales_control.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_sales_control.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1188,8 +1031,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.json",
+      "file": ".prisma-ui/current/runtime-html/pc_tablet_communication.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/pc_tablet_communication.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1213,8 +1056,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_EXECUTIVE_SUMMARY.md",
+      "file": ".prisma-ui/current/runtime-html/tablet_catalog.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_catalog.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1238,8 +1081,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_GAPS_REPORT.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_GAPS_REPORT.json",
+      "file": ".prisma-ui/current/runtime-html/tablet_checkout.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_checkout.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1263,8 +1106,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_GAPS_REPORT.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_GAPS_REPORT.md",
+      "file": ".prisma-ui/current/runtime-html/tablet_existencias.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_existencias.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1288,8 +1131,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.json",
+      "file": ".prisma-ui/current/runtime-html/tablet_pos.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_pos.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1313,8 +1156,8 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.md",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/UI_RUNTIME_PAGE_CERT_REPORT.md",
+      "file": ".prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1338,8 +1181,108 @@
       "status": "CERTIFIED"
     },
     {
-      "file": ".prisma-ui/current/runtime-html/",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/",
+      "file": ".prisma-ui/current/runtime-html/tablet_returns.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_returns.html",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/runtime-html/tablet_shift.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_shift.html",
+      "allowedBy": [
+        "global:.prisma-ui/current/**",
+        "panel:chart-lab.workspace",
+        "panel:control-center.workspace",
+        "panel:mobile.workspace",
+        "panel:pc.catalog",
+        "panel:pc.dashboard",
+        "panel:pc.liquid-glass-reference",
+        "panel:pc.settings",
+        "panel:pc.stock",
+        "panel:pc.workspace",
+        "panel:tablet.pos.cart-panel",
+        "panel:tablet.pos.category-rail",
+        "panel:tablet.pos.checkout-diagnostic",
+        "panel:tablet.pos.payment-overlay",
+        "panel:tablet.pos.product-grid",
+        "panel:tablet.pos.search-card",
+        "panel:tablet.pos.workspace",
+        "panel:web.workspace"
+      ],
+      "status": "CERTIFIED"
+    },
+    {
+      "file": ".prisma-ui/current/runtime-html/tablet_stock.html",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/current/runtime-html/tablet_stock.html",
       "allowedBy": [
         "global:.prisma-ui/current/**",
         "panel:chart-lab.workspace",
@@ -1364,64 +1307,57 @@
     },
     {
       "file": ".prisma-ui/routes.json",
-      "raw": "?? apps/terminal-de-venta-system/.prisma-ui/routes.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/routes.json",
       "allowedBy": [
         "global:.prisma-ui/routes.json"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/chart-lab/app/middleware.ts",
-      "raw": "?? apps/terminal-de-venta-system/products/chart-lab/app/middleware.ts",
+      "file": ".prisma-ui/visual-control/editable-slots.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/visual-control/editable-slots.json",
       "allowedBy": [
-        "surface:chart-lab"
+        "global:.prisma-ui/visual-control/**"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
-      "raw": "?? apps/terminal-de-venta-system/products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "file": ".prisma-ui/visual-control/layers.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json",
       "allowedBy": [
-        "surface:chart-lab"
+        "global:.prisma-ui/visual-control/**"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/mobile/app/middleware.ts",
-      "raw": "?? apps/terminal-de-venta-system/products/mobile/app/middleware.ts",
+      "file": ".prisma-ui/visual-control/owners.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/visual-control/owners.json",
       "allowedBy": [
-        "surface:mobile"
+        "global:.prisma-ui/visual-control/**"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/pc/app/middleware.ts",
-      "raw": "?? apps/terminal-de-venta-system/products/pc/app/middleware.ts",
+      "file": ".prisma-ui/visual-control/registry.json",
+      "raw": " M apps/terminal-de-venta-system/.prisma-ui/visual-control/registry.json",
       "allowedBy": [
-        "surface:pc"
+        "global:.prisma-ui/visual-control/**"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/tablet/app/middleware.ts",
-      "raw": "?? apps/terminal-de-venta-system/products/tablet/app/middleware.ts",
+      "file": "docs/quality/PRISMA_VISUAL_CONTROL_SYSTEM_V1.md",
+      "raw": " M apps/terminal-de-venta-system/docs/quality/PRISMA_VISUAL_CONTROL_SYSTEM_V1.md",
       "allowedBy": [
-        "surface:tablet"
+        "global:docs/quality/PRISMA_VISUAL_CONTROL_SYSTEM_V1.md"
       ],
       "status": "CERTIFIED"
     },
     {
-      "file": "products/web/app/middleware.ts",
-      "raw": "?? apps/terminal-de-venta-system/products/web/app/middleware.ts",
+      "file": "tools/quality/ui-visual-control.mjs",
+      "raw": " M apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs",
       "allowedBy": [
-        "surface:web"
-      ],
-      "status": "CERTIFIED"
-    },
-    {
-      "file": "tools/quality/ui-runtime-certainty.mjs",
-      "raw": "?? apps/terminal-de-venta-system/tools/quality/ui-runtime-certainty.mjs",
-      "allowedBy": [
+        "global:tools/quality/ui-visual-control.mjs",
         "surface:shared-ui"
       ],
       "status": "CERTIFIED"

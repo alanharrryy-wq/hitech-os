@@ -113,7 +113,13 @@
     "ui:routes": "node tools/quality/ui-certainty.mjs routes --all",
     "ui:route-coverage": "node tools/quality/ui-certainty.mjs route-coverage --all --strict",
     "ui:runtime-probe": "node tools/quality/ui-certainty.mjs runtime-probe --all --strict",
-    "ui:certify:runtime": "node tools/quality/ui-certainty.mjs certify-runtime-pages --strict"
+    "ui:certify:runtime": "node tools/quality/ui-certainty.mjs certify-runtime-pages --strict",
+    "ui:visual-control:inventory": "node tools/quality/ui-certainty.mjs visual-control:inventory --strict",
+    "ui:visual-control:owners": "node tools/quality/ui-certainty.mjs visual-control:owners --strict",
+    "ui:visual-control:slots": "node tools/quality/ui-certainty.mjs visual-control:slots --strict",
+    "ui:visual-control:layers": "node tools/quality/ui-certainty.mjs visual-control:layers --strict",
+    "ui:visual-control:report": "node tools/quality/ui-certainty.mjs visual-control:report --strict",
+    "ui:visual-control:certify": "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
