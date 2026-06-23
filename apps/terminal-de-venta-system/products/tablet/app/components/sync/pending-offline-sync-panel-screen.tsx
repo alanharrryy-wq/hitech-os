@@ -117,7 +117,7 @@ export function PendingOfflineSyncPanelScreen() {
     }
   }
 
-  async function dispatchNow(force = true) {
+  async function dispatchNow(force = false) {
     setBusy(true);
     setError(null);
     try {
@@ -171,15 +171,6 @@ export function PendingOfflineSyncPanelScreen() {
       setBusy(true);
       setError(null);
       try {
-        const result = await plainJson<DispatchResult>("/api/pos/sync/dispatch", {
-          method: "POST",
-          body: JSON.stringify({ force: false, source: "sync-panel-open" })
-        });
-        if (!cancelled) setDispatchResult(result);
-      } catch (e) {
-        if (!cancelled) setError(readError(e));
-      }
-      try {
         await loadPanelOnly();
       } catch (e) {
         if (!cancelled) setError(readError(e));
@@ -214,7 +205,7 @@ export function PendingOfflineSyncPanelScreen() {
             <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar con datos reales de la cola local.</p>
           </div>
           <div className={styles.heroActions}>
-            <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(true)} disabled={busy || sendableCount === 0}>
+            <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0}>
               {busy ? "Trabajando" : "Enviar pendientes"}
             </button>
             <button className={styles.secondaryAction} type="button" onClick={() => void load()} disabled={busy}>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { classifySyncIngestPayload } from "@/server/validators/sync-event-contract";
-import { persistSyncIngestPayload } from "@/server/services/sync-ingest.service";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 function statusFrom(result: { summary: { rejected: number; conflict: number; duplicate: number } }) {
   if (result.summary.rejected > 0) return 207;
@@ -29,7 +30,9 @@ export async function POST(request: Request) {
   const dryRun = url.searchParams.get("dryRun") === "1" || url.searchParams.get("dryRun") === "true";
 
   try {
-    const result = dryRun ? classifySyncIngestPayload(body) : await persistSyncIngestPayload(body);
+    const result = dryRun
+      ? (await import("@/server/validators/sync-event-contract")).classifySyncIngestPayload(body)
+      : await (await import("@/server/services/sync-ingest.service")).persistSyncIngestPayload(body);
     return NextResponse.json({ ok: result.summary.rejected === 0, dryRun, data: result }, { status: statusFrom(result) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error desconocido en sync ingest.";

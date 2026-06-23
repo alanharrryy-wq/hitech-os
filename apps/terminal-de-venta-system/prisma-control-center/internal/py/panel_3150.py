@@ -56,6 +56,12 @@ try:
 except Exception:
     _prisma_lifecycle_payload = None
 # PRISMA_DATA_LIFECYCLE_IMPORT_END
+# PRISMA_LIFEBOOM2_FAST_HEALTH_IMPORT_BEGIN
+try:
+    from lifecycle_fast_health import lifecycle_fast_health_payload as _prisma_lifecycle_fast_health_payload
+except Exception:
+    _prisma_lifecycle_fast_health_payload = None
+# PRISMA_LIFEBOOM2_FAST_HEALTH_IMPORT_END
 # PRISMO_AI_BRIDGE_IMPORT_BEGIN
 try:
     from prismo_ai_bridge import (
@@ -552,6 +558,18 @@ class PanelHandler(SimpleHTTPRequestHandler):
         # PRISMA_ULTRA_POLISH_RELEASE_ITER5_ROUTE_BEGIN
 
 
+        # PRISMA_LIFEBOOM2_FAST_HEALTH_ROUTE_BEGIN
+        _prisma_lifeboom2_path = self.path.split("?", 1)[0]
+        if _prisma_lifeboom2_path in {"/api/lifecycle/health", "/api/lifecycle/health/"}:
+            try:
+                if _prisma_lifecycle_fast_health_payload is None:
+                    self._send_json({"ok": False, "status": "LIFECYCLE_FAST_HEALTH_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prisma_lifecycle_fast_health_payload(self.path, public=not self._is_local_request()))
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "LIFECYCLE_FAST_HEALTH_ERROR", "error": str(exc)}, status=500)
+            return
+        # PRISMA_LIFEBOOM2_FAST_HEALTH_ROUTE_END
         # PRISMA_DATA_LIFECYCLE_ROUTE_BEGIN
         if self.path.startswith("/api/lifecycle"):
             try:

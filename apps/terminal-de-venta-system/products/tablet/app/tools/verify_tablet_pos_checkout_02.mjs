@@ -42,7 +42,7 @@ if (!failures.length) {
   if (!checkoutPage.includes("PosScreen")) failures.push("/checkout no usa el flujo unificado PosScreen");
   if (posPage.includes("TouchPosApp")) failures.push("/pos todavía depende de TouchPosApp");
   if (checkoutPage.includes("TouchPosApp")) failures.push("/checkout todavía depende de TouchPosApp");
-  if (!posTicketPanel.includes("COBRAR")) failures.push("POS no tiene CTA COBRAR");
+  if (!/["'`]Cobrar["'`]|COBRAR/.test(posTicketPanel)) failures.push("POS no tiene CTA Cobrar");
   if (!posTicketPanel.includes('data-prisma-zone="tablet-pos-cobrar-cta"')) failures.push("COBRAR no tiene marcador gobernado");
   if (!posPaymentPanel.includes('data-prisma-zone="tablet-checkout-root"')) failures.push("Checkout modal no tiene marcador de raíz");
   if (!posPaymentPanel.includes('data-prisma-zone="tablet-checkout-confirm-action"')) failures.push("Checkout no marca la acción final");

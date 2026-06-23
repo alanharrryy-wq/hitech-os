@@ -9320,8 +9320,8 @@
   background: transparent;
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton,
-:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"]) {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"],
+.cobrarReferenceButton#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"] {
   --cta-glass-ink: #5f6874;
   --cta-glass-gem-a: #8f65cf;
   --cta-glass-gem-b: #50bbc6;
@@ -9352,10 +9352,10 @@
   transform: none;
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton::before,
-:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::before,
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"]).cobrarReferenceButton::after,
-:global(button#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"])::after {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"]::before,
+.cobrarReferenceButton#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"]::before,
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"]::after,
+.cobrarReferenceButton#prisma-cobrar-prismplate-button[data-prisma-zone="tablet-pos-cobrar-cta"]::after {
   display: none;
   content: none;
   background: none;
@@ -9432,8 +9432,8 @@
   display: none;
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover,
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:focus-visible {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]:hover,
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]:focus-visible {
   background: linear-gradient(118deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.040) 48%, rgba(212, 190, 244, 0.070) 100%);
   background-color: rgba(255, 255, 255, 0.035);
   box-shadow:
@@ -9441,16 +9441,16 @@
     0 9px 18px rgba(48, 61, 80, 0.055);
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:hover .cobrarReferenceArrow,
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:focus-visible .cobrarReferenceArrow {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]:hover .cobrarReferenceArrow,
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]:focus-visible .cobrarReferenceArrow {
   transform: translateX(1px);
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]).cobrarReferenceButton:active {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="ready"]:active {
   transform: translateY(1px) scale(0.998);
 }
 
-:global(button[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="disabled"]).cobrarReferenceButton {
+.cobrarReferenceButton[data-prisma-zone="tablet-pos-cobrar-cta"][data-prisma-state="disabled"] {
   opacity: 0.62;
   color: rgba(110, 120, 132, 0.72);
   background: linear-gradient(118deg, rgba(255, 255, 255, 0.055), rgba(245, 248, 249, 0.025));

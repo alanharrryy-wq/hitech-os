@@ -59,6 +59,20 @@ function backoffDate(attempts: number) {
 }
 
 const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "PENDING", "FAILED"];
+const OUTBOX_DISPATCH_SELECT = {
+  id: true,
+  topic: true,
+  idempotencyKey: true,
+  businessId: true,
+  terminalId: true,
+  aggregateId: true,
+  source: true,
+  schemaVersion: true,
+  payloadJson: true,
+  attempts: true,
+  sentAt: true,
+  createdAt: true
+} as const;
 
 async function loadPendingEvents(limit: number, force = false) {
   const where: any = force
@@ -70,7 +84,8 @@ async function loadPendingEvents(limit: number, force = false) {
   return prisma.outboxEvent.findMany({
     where,
     orderBy: [{ createdAt: "asc" }],
-    take: limit
+    take: limit,
+    select: OUTBOX_DISPATCH_SELECT
   });
 }
 

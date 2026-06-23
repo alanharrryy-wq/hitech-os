@@ -119,6 +119,18 @@ def http_probe_stable(url: str, probe: dict[str, Any] | None = None, public: boo
     return base
 
 
+def _probe_url(base_url: str, path: str) -> str:
+    base = base_url.rstrip("/")
+    probe_path = path.strip() or "/"
+    if probe_path == "/":
+        return base + "/"
+    return base + "/" + probe_path.lstrip("/")
+
+
+def _service_probe_url(service: ServiceDef, path: str | None = None) -> str:
+    return _probe_url(service.local_url, path if path is not None else service.health_path)
+
+
 def http_probe_with_headers(url: str, headers: dict[str, str], probe: dict[str, Any] | None = None, timeout: float | None = None) -> dict[str, Any]:
     profile = active_health_profile()
     timeout = timeout if timeout is not None else float(profile.get("httpTimeoutSeconds", 8))
@@ -162,19 +174,22 @@ def check_service(service: ServiceDef, action: str = "health", include_lan: bool
     profile = active_health_profile()
     port_report = inspect_port(service.port)
     owners = classify_owners(port_report, action=action, service_id=service.id)
-    local = http_probe(service.local_url, service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8)))
+    local = http_probe(_service_probe_url(service), service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8)))
     alternates = []
     if not local["ok"]:
-        base = service.local_url.rstrip("/")
         for path in service.alternate_health_paths:
-            alternates.append(http_probe(base + "/" + path.lstrip("/"), service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8))))
+            alternates.append(http_probe(_service_probe_url(service, path), service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8))))
             if alternates[-1]["ok"]:
                 local = alternates[-1]
                 break
+    if not local["ok"] and service.health_path != "/":
+        alternates.append(http_probe(_service_probe_url(service, "/"), service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8))))
+        if alternates[-1]["ok"]:
+            local = alternates[-1]
     lan_probe = None
     lan_ip = detect_lan_ip()
     if include_lan and service.lan_url and lan_ip != "127.0.0.1" and bool(profile.get("lanCheckEnabled", True)):
-        lan_probe = http_probe(service.lan_url, service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8)))
+        lan_probe = http_probe(_probe_url(service.lan_url, service.health_path), service.content_probe, timeout=float(profile.get("httpTimeoutSeconds", 8)))
     service_status = "PASS" if local["ok"] else ("BLOCKED" if any(not o["classification"].get("recognized") for o in owners) else "FAIL")
     return {
         "id": service.id,

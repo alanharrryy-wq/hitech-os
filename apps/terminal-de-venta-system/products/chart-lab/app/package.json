@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1 -p 3000",
+    "dev": "next dev --webpack --hostname 127.0.0.1 -p 3000",
+    "dev:turbopack": "next dev --hostname 127.0.0.1 -p 3000",
     "dev:public-safe": "node scripts/run-chart-lab-public-safe-dev.mjs",
     "build": "next build --webpack",
     "start": "next start --hostname 127.0.0.1 -p 3000",
@@ -39,7 +40,8 @@
     "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
     "prebuild": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important"
+    "predev": "pnpm run verify:zero-important",
+    "predev:turbopack": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

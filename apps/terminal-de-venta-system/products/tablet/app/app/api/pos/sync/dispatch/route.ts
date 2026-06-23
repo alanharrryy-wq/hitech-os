@@ -3,6 +3,7 @@ import { dispatchTabletOutboxOnce } from "@/server/sync/dispatcher";
 import { loadPrismaTabletPcOriginConfig } from "@/server/sync/pc-origin";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const config = loadPrismaTabletPcOriginConfig();

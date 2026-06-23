@@ -9,8 +9,16 @@ declare namespace JSX {
 declare const process: { env: Record<string, string | undefined>; cwd(): string };
 
 declare module "next/server" {
+  export type NextRequest = {
+    headers: HeadersInit;
+    nextUrl: {
+      pathname: string;
+    };
+  };
+
   export class NextResponse {
     static json(body: any, init?: any): any;
+    static next(init?: any): any;
   }
 }
 

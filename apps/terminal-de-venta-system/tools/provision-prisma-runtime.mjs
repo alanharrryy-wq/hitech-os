@@ -72,8 +72,8 @@ function parseArgs() {
   const rootBase = explicitRoot || path.join(defaultProgramDataRoot(), "PRISMA", titleCase(vertical));
   const licenseSource = argValue(args, "--license-file");
   const pcOrigin = argValue(args, "--pc-origin", packageType === "TABLET_PC_MANAGED" ? "http://127.0.0.1:3130" : null);
-  const pcIngestPath = argValue(args, "--pc-ingest-path", "/api/sync/ingest");
-  const pcHealthPath = argValue(args, "--pc-health-path", "/api/sync/ingest");
+  const pcIngestPath = argValue(args, "--pc-ingest-path", "/api/backoffice/sync/ingest");
+  const pcHealthPath = argValue(args, "--pc-health-path", "/api/health");
   const apply = hasFlag(args, "--apply");
   const dryRun = hasFlag(args, "--dry-run") || !apply;
 
@@ -162,7 +162,7 @@ function main() {
       healthPath: options.packageType === "TABLET_PC_MANAGED" ? options.pcHealthPath : undefined,
       automaticDispatch: false,
       ackStrict: true,
-      batchSize: 25,
+      batchSize: 10,
       maxAttempts: 8
     },
     features: {},

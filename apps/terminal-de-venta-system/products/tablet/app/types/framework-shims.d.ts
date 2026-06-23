@@ -63,7 +63,15 @@ declare module "react" {
 }
 
 declare module "next/server" {
+  export type NextRequest = {
+    headers: HeadersInit;
+    nextUrl: {
+      pathname: string;
+    };
+  };
+
   export class NextResponse {
     static json(body: any, init?: any): any;
+    static next(init?: any): any;
   }
 }
