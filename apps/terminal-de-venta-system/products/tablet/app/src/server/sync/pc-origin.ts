@@ -2,6 +2,9 @@ import { resolveRuntimeContext } from "../../../../../../shared/runtime";
 
 const DEFAULT_CONNECT_TIMEOUT_MS = 2500;
 const DEFAULT_PC_ORIGIN = "http://127.0.0.1:3130";
+const DEFAULT_PC_INGEST_PATH = "/api/backoffice/sync/ingest";
+const DEFAULT_PC_HEALTH_PATH = "/api/health";
+const DEFAULT_SYNC_BATCH_SIZE = 10;
 
 export type PrismaTabletPcOriginConfig = {
   enabled: boolean;
@@ -31,6 +34,18 @@ function asString(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
+function normalizePcIngestPath(value: string | null): string {
+  const path = value?.trim();
+  if (!path || path === "/api/sync/ingest") return DEFAULT_PC_INGEST_PATH;
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function normalizePcHealthPath(value: string | null): string {
+  const path = value?.trim();
+  if (!path || path === "/api/sync/ingest" || path === DEFAULT_PC_INGEST_PATH) return DEFAULT_PC_HEALTH_PATH;
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
 function readInt(name: string, fallback: number, min: number, max: number): number {
   const raw = process.env[name];
   if (!raw) return fallback;
@@ -50,12 +65,12 @@ export function loadPrismaTabletPcOriginConfig(): PrismaTabletPcOriginConfig {
   return {
     enabled,
     origin,
-    ingestPath: process.env.PRISMA_TABLET_PC_INGEST_PATH || asString(sync.ingestPath) || "/api/sync/ingest",
-    healthPath: process.env.PRISMA_TABLET_PC_HEALTH_PATH || asString(sync.healthPath) || "/api/sync/ingest",
+    ingestPath: normalizePcIngestPath(process.env.PRISMA_TABLET_PC_INGEST_PATH || asString(sync.ingestPath)),
+    healthPath: normalizePcHealthPath(process.env.PRISMA_TABLET_PC_HEALTH_PATH || asString(sync.healthPath)),
     timeoutMs: readInt("PRISMA_TABLET_PC_TIMEOUT_MS", Number(sync.timeoutMs) || DEFAULT_CONNECT_TIMEOUT_MS, 250, 15000),
     automaticDispatch: enabled && readFlag("PRISMA_TABLET_SYNC_AUTODISPATCH", asBoolean(sync.automaticDispatch, false)),
     ackStrict: readFlag("PRISMA_TABLET_SYNC_ACK_STRICT", asBoolean(sync.ackStrict, true)),
-    batchSize: readInt("PRISMA_TABLET_SYNC_BATCH_SIZE", Number(sync.batchSize) || 25, 1, 100),
+    batchSize: readInt("PRISMA_TABLET_SYNC_BATCH_SIZE", Number(sync.batchSize) || DEFAULT_SYNC_BATCH_SIZE, 1, 100),
     maxAttempts: readInt("PRISMA_TABLET_SYNC_MAX_ATTEMPTS", Number(sync.maxAttempts) || 8, 1, 30)
   };
 }
