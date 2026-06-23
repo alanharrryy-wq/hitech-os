@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
+    system: "PRISMA",
     app: "tablet",
     status: "ok",
     version: "6.1.1",

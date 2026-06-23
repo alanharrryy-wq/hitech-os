@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3140",
+    "dev": "next dev --webpack -p 3140",
+    "dev:turbopack": "next dev -p 3140",
     "build": "next build --webpack",
     "start": "next start -p 3140",
     "typecheck": "tsc --noEmit",
@@ -56,7 +57,8 @@
     "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
     "prebuild": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important"
+    "predev": "pnpm run verify:zero-important",
+    "predev:turbopack": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "next": "16.1.6",

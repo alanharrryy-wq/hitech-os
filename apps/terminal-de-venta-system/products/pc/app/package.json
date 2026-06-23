@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "prisma:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py pc",
-    "dev": "pnpm run prisma:generate && next dev -p 3130",
+    "dev": "pnpm run prisma:generate && next dev --webpack -p 3130",
+    "dev:turbopack": "pnpm run prisma:generate && next dev -p 3130",
     "build": "pnpm run prisma:generate && node ../../../tools/run-next-build.mjs",
     "start": "next start -p 3130",
     "typecheck": "pnpm run prisma:generate && tsc --noEmit",
@@ -33,7 +34,8 @@
     "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
     "prebuild": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important"
+    "predev": "pnpm run verify:zero-important",
+    "predev:turbopack": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

@@ -75,6 +75,9 @@ def action_local_up() -> int:
     paths = write_reports("local-up", services, cloudflare, run_log, assumptions=ASSUMPTIONS)
     _print_report(paths, paths["json"])
     payload = json.loads(Path(paths["json"]).read_text(encoding="utf-8"))
+    local_ok = all(not service.get("requiredForLocal") or service.get("status") == "PASS" for service in services)
+    if local_ok:
+        return 0
     return _exit_for_status(str(payload.get("overallStatus", "FAIL")))
 
 

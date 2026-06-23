@@ -10,11 +10,11 @@
       "port": 3110,
       "localUrl": "http://127.0.0.1:3110/",
       "lanUrl": "http://{lanIp}:3110/",
-      "healthPath": "/",
+      "healthPath": "/api/health",
       "alternateHealthPaths": [],
       "contentProbe": {
         "mode": "any",
-        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+        "needles": ["PRISMA", "ok", "prisma-web"]
       },
       "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\external_interaction_template\" run dev",
       "cwd": "F:\\repos\\hitech-os\\apps\\external_interaction_template",
@@ -31,11 +31,11 @@
       "port": 3120,
       "localUrl": "http://127.0.0.1:3120/",
       "lanUrl": "http://{lanIp}:3120/",
-      "healthPath": "/",
+      "healthPath": "/api/health",
       "alternateHealthPaths": ["/pos"],
       "contentProbe": {
         "mode": "any",
-        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+        "needles": ["PRISMA", "ok", "tablet"]
       },
       "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\" run dev",
       "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app",
@@ -51,11 +51,11 @@
       "port": 3130,
       "localUrl": "http://127.0.0.1:3130/",
       "lanUrl": "http://{lanIp}:3130/",
-      "healthPath": "/",
+      "healthPath": "/api/health",
       "alternateHealthPaths": [],
       "contentProbe": {
         "mode": "any",
-        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+        "needles": ["PRISMA", "ok", "pc-backoffice"]
       },
       "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\" run dev",
       "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app",
@@ -71,11 +71,11 @@
       "port": 3140,
       "localUrl": "http://127.0.0.1:3140/",
       "lanUrl": "http://{lanIp}:3140/",
-      "healthPath": "/",
+      "healthPath": "/api/health",
       "alternateHealthPaths": ["/prisma-app"],
       "contentProbe": {
         "mode": "any",
-        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+        "needles": ["PRISMA", "ok", "mobile-adder"]
       },
       "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\" run dev",
       "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app",

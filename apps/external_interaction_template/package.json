@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3110",
+    "dev": "next dev --webpack -p 3110",
+    "dev:turbopack": "next dev -p 3110",
     "dev:multi": "pnpm run dev",
     "build": "next build",
     "start": "next start -p 3110",
@@ -16,7 +17,8 @@
     "pretypecheck": "pnpm run verify:zero-important",
     "pretest": "pnpm run verify:zero-important",
     "prelint": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important"
+    "predev": "pnpm run verify:zero-important",
+    "predev:turbopack": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "clsx": "2.1.1",

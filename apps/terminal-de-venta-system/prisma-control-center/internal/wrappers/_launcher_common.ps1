@@ -448,6 +448,7 @@ function Start-DetachedPowerShell {
 }
 
 function Start-ChartLab {
+  param([switch]$OpenBrowser)
   $resetExit = Reset-Ports -Ports @(3000) -Reason "Chart Lab reset 3000"
   if ($resetExit -ne 0) { return $resetExit }
 
@@ -456,7 +457,9 @@ function Start-ChartLab {
 
   $script:ChartLog = Start-DetachedPowerShell -Name "chart-lab-3000" -WorkingDirectory $RepoRoot -Command "pnpm chart-lab:dev"
   if (-not (Wait-Port -Port 3000 -TimeoutSeconds 80 -Name "Chart Lab")) { return 2 }
-  Start-Process "http://127.0.0.1:3000"
+  if ($OpenBrowser) {
+    Start-Process "http://127.0.0.1:3000"
+  }
   return 0
 }
 
@@ -817,7 +820,7 @@ try {
     }
 
     "chart-lab-local" {
-      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-ChartLab) -Default 1
+      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-ChartLab -OpenBrowser) -Default 1
       break
     }
 
