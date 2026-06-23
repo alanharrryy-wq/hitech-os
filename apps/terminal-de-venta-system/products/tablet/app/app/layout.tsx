@@ -1,9 +1,7 @@
 import "./globals.css";
 import "./prisma-tablet-light-premium-final.css";
 import "./prisma-tablet-background-workbench.css";
-import "./prisma-tablet-premium-governed.css";
 import { headers } from "next/headers";
-import { TabletPremiumRuntimeEffects } from "../components/premium-visual";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {
@@ -35,7 +33,7 @@ export default async function RootLayout({ children }: { children: any }) {
           }}
         />
       </head>
-      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="tablet" data-prisma-route={route}><TabletPremiumRuntimeEffects />{children}</body>
+      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="tablet" data-prisma-route={route}>{children}</body>
     </html>
   );
 }
