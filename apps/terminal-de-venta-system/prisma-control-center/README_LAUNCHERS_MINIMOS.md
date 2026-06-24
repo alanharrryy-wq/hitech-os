@@ -1,6 +1,6 @@
 # PRISMA Control Center - Launchers mínimos v2
 
-Esta versión deja la raíz con solo 6 botones operativos:
+Esta versión deja la raíz con botones operativos mínimos:
 
 ```txt
 00_KILL_ALL_LOCAL.cmd
@@ -9,6 +9,7 @@ Esta versión deja la raíz con solo 6 botones operativos:
 03_LEVANTAR_SOLO_UN_MODULO.cmd
 04_ABRIR_ATLAS_DEPENDENCIAS.cmd
 09_KILL_EVERYTHING_PRISMA.cmd
+12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd
 ```
 
 ## Contrato operativo
@@ -20,6 +21,7 @@ Esta versión deja la raíz con solo 6 botones operativos:
 - `03_LEVANTAR_SOLO_UN_MODULO.cmd` abre un menú para levantar solo un módulo + Cloudflare.
 - `04_ABRIR_ATLAS_DEPENDENCIAS.cmd` abre el atlas de dependencias.
 - `09_KILL_EVERYTHING_PRISMA.cmd` ejecuta kill completo de puertos PRISMA.
+- `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd` abre el cockpit privado PRISMA Cloud Command Center en `http://127.0.0.1:3160/unified-shell.html` sin tocar 3150 ni levantar el stack completo.
 
 ## Puertos tratados como PRISMA
 
@@ -31,6 +33,7 @@ Esta versión deja la raíz con solo 6 botones operativos:
 3130  PC
 3140  Mobile
 3150  Control Center
+3160  PRISMA Cloud Command Center
 3200  reservado/legacy local
 ```
 

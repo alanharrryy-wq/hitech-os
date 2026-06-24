@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""PRISMA Unified Shell Lab v3.
+"""PRISMA Cloud Command Center.
 
-SAFE LAB server for PRISMA. It runs side-by-side on 127.0.0.1:3160,
-protects the current Control Center on 3150, and provides a module
-embed contract, health, logs, diagnostics export, native previews, and
-local proxy support.
+Private cockpit server for PRISMA Cloud on 127.0.0.1:3160. It keeps the
+current Control Center on 3150 protected and exposes cloud, licensing,
+runtime and diagnostic APIs through a local-only command surface.
 """
 
 from __future__ import annotations
@@ -30,7 +29,10 @@ from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-APP_VERSION = "3.0.0-safe-lab"
+import cloud_saas_api
+import license_ops_api
+
+APP_VERSION = "4.0.0-cloud-command-center"
 DEFAULT_PORT = 3160
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PROTECTED_CURRENT = r"F:\repos\hitech-os\apps\terminal-de-venta-system\prisma-control-center"
@@ -39,18 +41,37 @@ DEFAULT_OUT_DIR = r"F:\descargasf"
 MODULE_CONTRACT: Dict[str, Any] = {
     "contractVersion": 1,
     "lab": {
-        "name": "PRISMA Unified Shell Lab v3",
-        "mode": "SAFE_LAB_V3",
+        "name": "PRISMA Cloud Command Center",
+        "mode": "PRIVATE_CLOUD_COMMAND_CENTER",
         "host": "127.0.0.1",
         "port": 3160,
-        "themeInheritance": True,
+        "themeInheritance": False,
         "noTouchPolicy": "Never modifies protected current Control Center",
     },
     "themeTokens": {
-        "supportedThemes": ["obsidian", "liquid", "pearl", "rose", "tactical"],
-        "defaultTheme": "obsidian",
+        "supportedThemes": ["prisma-frost-command"],
+        "defaultTheme": "prisma-frost-command",
     },
     "modules": [
+        {
+            "id": "cloud-saas",
+            "name": "PRISMA Cloud",
+            "role": "Private Cockpit Cloud Semilla + licencias",
+            "port": 3160,
+            "portLabel": "app.hitechrts.com",
+            "directUrl": "https://app.hitechrts.com",
+            "embedUrl": "native://cloud-saas",
+            "healthUrl": "https://app.hitechrts.com/health",
+            "fallbackUrl": "https://app.hitechrts.com/health",
+            "embedMode": "nativeCloud",
+            "viewportMode": "desktop",
+            "themeMode": "inherits",
+            "protected": False,
+            "actions": ["nativeCloud", "refresh", "adminNote", "receiptSmoke", "deviceSmoke", "licenseOps"],
+            "statusLabel": "CLOUD_READONLY",
+            "qualityScope": ["cloud", "adminTokenLocal", "licenseOpsReadOnly"],
+            "healthKind": "cloud",
+        },
         {
             "id": "control",
             "name": "Control Center bueno",
@@ -311,6 +332,38 @@ def health_snapshot() -> Dict[str, Any]:
     blockers = 0
     warnings = 0
     for module in MODULE_CONTRACT["modules"]:
+        if module.get("healthKind") == "cloud":
+            cloud = cloud_saas_api.quick_status()
+            status = cloud.get("status", "CLOUD_UNKNOWN")
+            if status != "CLOUD_LIVE":
+                warnings += 1
+            snapshot.append({
+                "id": module["id"],
+                "name": module["name"],
+                "role": module["role"],
+                "port": int(module["port"]),
+                "portLabel": module.get("portLabel"),
+                "embedMode": module["embedMode"],
+                "viewportMode": module["viewportMode"],
+                "themeMode": module["themeMode"],
+                "protected": bool(module.get("protected")),
+                "socketOk": True,
+                "http": {
+                    "ok": bool(cloud.get("ok")),
+                    "statusCode": cloud.get("healthStatusCode"),
+                    "latencyMs": cloud.get("latencyMs"),
+                    "service": cloud.get("service"),
+                    "version": cloud.get("version"),
+                },
+                "status": status,
+                "owners": [],
+                "directUrl": module["directUrl"],
+                "embedUrl": module["embedUrl"],
+                "liveEmbedUrl": module.get("liveEmbedUrl"),
+                "actions": module.get("actions", []),
+                "qualityScope": module.get("qualityScope", []),
+            })
+            continue
         port = int(module["port"])
         owners = port_owners(port)
         owner_infos = [process_info(pid) for pid in owners[:8]]
@@ -389,12 +442,14 @@ def export_diagnostics(out_dir: Path) -> Dict[str, Any]:
         "runtimeState": RUNTIME_STATE,
         "events": events,
         "contract": MODULE_CONTRACT,
+        "cloudSaas": cloud_saas_api.summary_payload(allow_admin=False),
+        "licenseOps": license_ops_api.license_ops_payload("/api/license-ops/latest", public=True),
     }
-    json_path = out_dir / f"PRISMA_UNIFIED_SHELL_LAB_V3_DIAGNOSTICS_{ts}.json"
-    txt_path = out_dir / f"PRISMA_UNIFIED_SHELL_LAB_V3_DIAGNOSTICS_{ts}.txt"
+    json_path = out_dir / f"PRISMA_CLOUD_COMMAND_CENTER_DIAGNOSTICS_{ts}.json"
+    txt_path = out_dir / f"PRISMA_CLOUD_COMMAND_CENTER_DIAGNOSTICS_{ts}.txt"
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     lines = [
-        "PRISMA Unified Shell Lab v3 diagnostics",
+        "PRISMA Cloud Command Center diagnostics",
         f"Generated: {payload['generatedAt']}",
         f"Overall: {snapshot['overall']}",
         f"Warnings: {snapshot['warnings']}",
@@ -406,6 +461,15 @@ def export_diagnostics(out_dir: Path) -> Dict[str, Any]:
     txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     add_event(f"Diagnostics exported: {json_path}")
     return {"json": str(json_path), "txt": str(txt_path), "payload": payload}
+
+
+def command_center_html(lab_root: Path) -> str:
+    html_path = lab_root / "internal" / "web" / "cloud_command_center.html"
+    try:
+        return html_path.read_text(encoding="utf-8")
+    except Exception as exc:
+        add_event(f"Command Center HTML fallback: {exc}", "warn")
+        return """<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>PRISMA Cloud Command Center</title><body style=\"font-family:Segoe UI;background:#07101b;color:#f4f8fc;padding:32px\"><h1>PRISMA Cloud Command Center</h1><p>Shell assets are not available. Check internal/web/cloud_command_center.html.</p></body></html>"""
 
 
 def replace_absolute_refs(html: str, port: int) -> str:
@@ -425,6 +489,8 @@ UI_HTML = r'''<!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PRISMA Unified Shell Lab v3</title>
+<link rel="stylesheet" href="/internal/web/cloud_saas_console.css" />
+<link rel="stylesheet" href="/internal/web/license_ops_console.css" />
 <style>
 :root {
   --bg:#07111e; --panel:rgba(255,255,255,.075); --panel2:rgba(255,255,255,.11); --panel3:rgba(255,255,255,.15);
@@ -509,11 +575,15 @@ pre { white-space:pre-wrap; word-break:break-word; color:var(--muted); backgroun
     </select>
     <div class="tabs">
       <button class="tabbtn active" data-panel="modules">Módulos</button>
+      <button class="tabbtn" data-panel="cloudPanel">Cloud SaaS</button>
+      <button class="tabbtn" data-panel="licensePanel">Licencias</button>
       <button class="tabbtn" data-panel="quality">Quality</button>
       <button class="tabbtn" data-panel="logs">Logs</button>
       <button class="tabbtn" data-panel="contract">Contrato</button>
     </div>
     <div id="modules" class="panel active"></div>
+    <div id="cloudPanel" class="panel"></div>
+    <div id="licensePanel" class="panel"></div>
     <div id="quality" class="panel"></div>
     <div id="logs" class="panel"></div>
     <div id="contract" class="panel"></div>
@@ -548,6 +618,8 @@ pre { white-space:pre-wrap; word-break:break-word; color:var(--muted); backgroun
     <footer class="bottom"><span id="footLeft">Tablet opera sola. PC gobierna si existe. Mobile supervisa.</span><span id="footRight">Core registra · Control audita</span></footer>
   </main>
 </div>
+<script src="/internal/web/license_ops_console.js"></script>
+<script src="/internal/web/cloud_saas_console.js"></script>
 <script>
 let contract = null;
 let health = null;
@@ -556,7 +628,7 @@ let forcedMode = null;
 const $ = (id) => document.getElementById(id);
 
 async function api(path, opts) { const r = await fetch(path, opts); if(!r.ok) throw new Error(path + ' -> ' + r.status); return r.json(); }
-function statusClass(s) { return ['LIVE','SLOT_READY','PROTECTED_LINKED'].includes(s) ? 'live' : (['PARTIAL','PREVIEW_ONLY','PROTECTED_OFFLINE'].includes(s) ? 'warn' : 'bad'); }
+function statusClass(s) { const raw = String(s || '').toUpperCase(); return (raw.includes('LIVE') || raw.includes('READY') || raw.includes('LINKED') || raw.includes('FULL')) ? 'live' : (raw.includes('PARTIAL') || raw.includes('PREVIEW') || raw.includes('READONLY') || raw.includes('READ_ONLY') || raw.includes('MISSING') || raw.includes('OFFLINE')) ? 'warn' : 'bad'; }
 function moduleHealth(id) { return health?.modules?.find(m => m.id === id); }
 
 function setPanel(id) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active', b.dataset.panel===id)); $(id).classList.add('active'); }
@@ -569,12 +641,23 @@ function renderModules() {
   const wrap = $('modules'); wrap.innerHTML = '';
   contract.modules.forEach(m => {
     const h = moduleHealth(m.id) || {};
+    const portText = m.portLabel || ('puerto ' + m.port);
     const div = document.createElement('div');
     div.className = 'motor' + (current?.id === m.id ? ' active' : '');
-    div.innerHTML = `<div class="statusRow"><strong>${m.name}</strong><span class="pill ${statusClass(h.status || m.statusLabel)}">${h.status || m.statusLabel}</span></div><span>${m.role} · puerto ${m.port} · ${m.embedMode}</span>`;
+    div.innerHTML = `<div class="statusRow"><strong>${m.name}</strong><span class="pill ${statusClass(h.status || m.statusLabel)}">${h.status || m.statusLabel}</span></div><span>${m.role} · ${portText} · ${m.embedMode}</span>`;
     div.onclick = () => selectModule(m.id);
     wrap.appendChild(div);
   });
+}
+
+function openCloudView(view) {
+  selectModule('cloud-saas');
+  setTimeout(() => window.PRISMA_CLOUD_SAAS?.setView(view), 0);
+}
+
+function renderSidePanels() {
+  $('cloudPanel').innerHTML = `<div class="drawer"><h3>Cloud SaaS</h3><p>PRISMA Cloud Semilla, tenant demo-prisma, snapshots, notes, receipts y status.</p><button onclick="openCloudView('overview')">Abrir Cloud SaaS</button><button class="secondary" onclick="openCloudView('health')">Health</button><button class="secondary" onclick="openCloudView('commercial')">Commercial</button></div>`;
+  $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro del lab 3160.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
 }
 
 function renderQuality() {
@@ -597,13 +680,14 @@ function renderContract() {
 }
 
 function nativeHtml(m) {
+  if (m.id === 'cloud-saas') return `<div id="cloudSaasConsole" class="cloudSaasMount"></div>`;
   if (m.id === 'mobile') return `<div class="device"><div class="screen"><span class="pill live">MOBILE SUPERVISA</span><h2>Mobile Intelligence Layer</h2><p>Snapshot, freshness, alertas, action inbox y evidencia. No vende; supervisa.</p><div class="fakeCard"></div><div class="fakeCard"></div><div class="fakeCard"></div><button onclick="setViewMode('direct')">Ver app viva en 3140</button></div></div>`;
   if (m.id === 'tablet') return `<div class="device tabletDevice"><div class="screen"><span class="pill live">TABLET OPERA SOLA</span><h2>Tablet Operations Preview</h2><p>La tablet no depende de PC, Mobile, cloud ni Lab para operar.</p><div class="fakeCard"></div><div class="fakeCard"></div><button onclick="setViewMode('direct')">Ver tablet viva en 3120</button></div></div>`;
   if (m.id === 'addon') return `<div class="addonBox"><span class="pill live">SLOT READY · 3165</span><h2>Nuevo Añadido</h2><p>Contrato listo para conectar módulo real sin duplicar bays. Hereda temas, health, logs y fallback.</p><div class="addonGrid"><div class="kpi"><label>embedMode</label><strong>nativePreview</strong></div><div class="kpi"><label>Puerto</label><strong>3165</strong></div><div class="kpi"><label>Estado</label><strong>SLOT_READY</strong></div></div><br><button onclick="setViewMode('direct')">Probar live embed 3165</button></div>`;
   return `<div class="addonBox"><span class="pill warn">PREVIEW</span><h2>${m.name}</h2><p>Este módulo usa ${m.embedMode}. Puedes cambiar a live embed o abrir externo.</p><button onclick="setViewMode('direct')">Ver live embed</button></div>`;
 }
 
-function showNative(m) { $('frame').style.display = 'none'; $('fallback').classList.remove('show'); $('native').classList.add('show'); $('native').innerHTML = nativeHtml(m); }
+function showNative(m) { $('frame').style.display = 'none'; $('fallback').classList.remove('show'); $('native').classList.add('show'); $('native').classList.toggle('cloudSaasNative', m.id === 'cloud-saas'); $('native').innerHTML = nativeHtml(m); if (m.id === 'cloud-saas') window.PRISMA_CLOUD_SAAS?.mount('cloudSaasConsole'); }
 function showFrame(src) { $('native').classList.remove('show'); $('native').innerHTML = ''; $('frame').style.display = 'block'; $('fallback').classList.remove('show'); $('frame').src = src + (src.includes('?') ? '&' : '?') + '_=' + Date.now(); }
 
 function selectModule(id) {
@@ -616,16 +700,16 @@ function setViewMode(mode) { forcedMode = mode; renderCurrent(); }
 function renderCurrent() {
   const h = moduleHealth(current.id) || {};
   $('title').textContent = current.name; $('subtitle').textContent = current.role;
-  $('status').textContent = h.status || current.statusLabel; $('port').textContent = current.port;
+  $('status').textContent = h.status || current.statusLabel; $('port').textContent = current.portLabel || h.portLabel || current.port;
   $('embedMode').textContent = forcedMode || current.embedMode; $('viewportMode').textContent = current.viewportMode; $('themeMode').textContent = current.themeMode;
   $('openExternal').href = current.directUrl; $('fallbackOpen').href = current.fallbackUrl || current.directUrl;
   const mode = forcedMode || current.embedMode;
-  if (mode === 'nativePreview') showNative(current); else if (mode === 'direct') showFrame(current.liveEmbedUrl || current.directUrl); else showFrame(current.embedUrl);
+  if (mode === 'nativePreview' || mode === 'nativeCloud') showNative(current); else if (mode === 'direct') showFrame(current.liveEmbedUrl || current.directUrl); else showFrame(current.embedUrl);
 }
 function reloadFrame() { renderCurrent(); }
 async function refreshHealth() { health = await api('/api/health'); health.events = (await api('/api/runtime')).events; renderModules(); renderQuality(); renderLogs(); if(current) renderCurrent(); }
 async function exportDiagnostics() { const r = await api('/api/export-diagnostics', {method:'POST'}); alert('Diagnóstico exportado:\n' + r.json + '\n' + r.txt); await refreshHealth(); }
-async function boot() { contract = await api('/api/contract'); applyTheme(); await refreshHealth(); renderContract(); const last = localStorage.getItem('prisma.lab.v3.lastModule') || 'control'; selectModule(last); setInterval(refreshHealth, 10000); }
+async function boot() { contract = await api('/api/contract'); applyTheme(); renderSidePanels(); await refreshHealth(); renderContract(); const last = localStorage.getItem('prisma.lab.v3.lastModule') || 'cloud-saas'; selectModule(last); setInterval(refreshHealth, 10000); }
 boot().catch(e => { document.body.innerHTML = '<pre style="color:white;padding:20px">' + e.stack + '</pre>'; });
 </script>
 </body>
@@ -660,18 +744,53 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def is_local_operator_request(self) -> bool:
+        client = str(self.client_address[0] or "").lower()
+        host_header = str(self.headers.get("Host", "")).lower()
+        if host_header.startswith("[") and "]" in host_header:
+            host = host_header.split("]", 1)[0].strip("[]")
+        else:
+            host = host_header.split(":", 1)[0].strip("[]")
+        local_values = {"", "127.0.0.1", "localhost", "::1"}
+        return client in {"127.0.0.1", "::1", "::ffff:127.0.0.1"} and host in local_values
+
+    def read_json_body(self) -> Dict[str, Any]:
+        try:
+            length = int(self.headers.get("Content-Length") or "0")
+        except ValueError:
+            length = 0
+        if length <= 0:
+            return {}
+        if length > 65536:
+            raise RuntimeError("JSON body too large")
+        raw = self.rfile.read(length)
+        payload = json.loads(raw.decode("utf-8", errors="replace"))
+        return payload if isinstance(payload, dict) else {}
+
     def do_POST(self) -> None:
         path = self.path.split("?", 1)[0]
         if path == "/api/export-diagnostics":
             result = export_diagnostics(self.out_dir)
             self.json_response({"ok": True, "json": result["json"], "txt": result["txt"]})
             return
+        if path.startswith("/api/cloud-saas"):
+            try:
+                body = self.read_json_body()
+                payload = cloud_saas_api.cloud_saas_payload(self.path, method="POST", body=body, allow_admin=self.is_local_operator_request())
+                self.json_response(payload, code=200 if payload.get("ok") or payload.get("skipped") else 409)
+            except Exception as exc:
+                self.json_response({"ok": False, "error": str(exc)}, code=400)
+            return
+        if path.startswith("/api/license-ops"):
+            payload = license_ops_api.license_ops_payload(self.path, public=not self.is_local_operator_request())
+            self.json_response(payload, code=200 if payload.get("ok") else 409)
+            return
         self.json_response({"ok": False, "error": "Unknown POST"}, code=404)
 
     def do_GET(self) -> None:
         path = self.path.split("?", 1)[0].split("#", 1)[0]
         if path in ("", "/", "/unified-shell.html", "/index.html"):
-            self.html_response(UI_HTML)
+            self.html_response(command_center_html(self.lab_root))
             return
         if path == "/api/contract":
             self.json_response(MODULE_CONTRACT)
@@ -683,6 +802,14 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             with RUNTIME_LOCK:
                 payload = dict(RUNTIME_STATE)
             self.json_response(payload)
+            return
+        if path.startswith("/api/cloud-saas"):
+            payload = cloud_saas_api.cloud_saas_payload(self.path, method="GET", allow_admin=self.is_local_operator_request())
+            self.json_response(payload, code=200 if payload.get("ok") else 409)
+            return
+        if path.startswith("/api/license-ops"):
+            payload = license_ops_api.license_ops_payload(self.path, public=not self.is_local_operator_request())
+            self.json_response(payload, code=200 if payload.get("ok") else 409)
             return
         if path.startswith("/__proxy__/"):
             self.proxy_request()
@@ -766,14 +893,13 @@ def serve(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
     lab_root.mkdir(parents=True, exist_ok=True)
     handler = partial(PrismaLabHandler, directory=str(lab_root), lab_root=lab_root, protected_current=protected_current, out_dir=out_dir)
     httpd = ThreadingHTTPServer((host, port), handler)
-    add_event(f"PRISMA Unified Shell Lab v3 listening on http://{host}:{port}/unified-shell.html")
+    add_event(f"PRISMA Cloud Command Center listening on http://{host}:{port}/unified-shell.html")
     httpd.serve_forever()
 
 
 def start(lab_root: Path, protected_current: Path, out_dir: Path, host: str, port: int, open_browser: bool) -> None:
     lab_root.mkdir(parents=True, exist_ok=True)
     write_contract_files(lab_root, protected_current, out_dir)
-    kill_lab_port_only(port, protected_current)
     if not port_owners(port):
         env = os.environ.copy()
         env["PRISMA_LAB_ROOT"] = str(lab_root)
@@ -790,12 +916,14 @@ def start(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
             stderr=subprocess.DEVNULL,
         )
         time.sleep(1.5)
+    else:
+        print(f"Puerto {port} ya tiene un proceso escuchando; no se mata ni se reemplaza. Reabre manualmente si necesitas recargar el patch.")
     url = f"http://{host}:{port}/unified-shell.html?v={int(time.time())}"
     print("=" * 64)
-    print("PRISMA Unified Shell Lab v3")
-    print(f"SAFE LAB: {url}")
+    print("PRISMA Cloud Command Center")
+    print(f"Local cockpit: {url}")
     print(f"Protected current Control Center: {protected_current}")
-    print("No toca 3150. Lab corre en 3160. Nuevo Añadido reservado en 3165.")
+    print("No toca 3150. Command Center corre en 3160. Cloud SaaS y licencias viven dentro del shell.")
     print("=" * 64)
     if open_browser:
         webbrowser.open(url)
@@ -808,6 +936,16 @@ def self_test(lab_root: Path, protected_current: Path, out_dir: Path) -> int:
         lab_root / "01_SELF_TEST_LAB_V3.cmd",
         lab_root / "02_EXPORT_DIAGNOSTICS_LAB_V3.cmd",
         lab_root / "internal" / "py" / "prisma_unified_lab_v3.py",
+        lab_root / "internal" / "py" / "cloud_saas_api.py",
+        lab_root / "internal" / "py" / "license_ops_api.py",
+        lab_root / "internal" / "web" / "cloud_command_center.html",
+        lab_root / "internal" / "web" / "cloud_command_center.js",
+        lab_root / "internal" / "web" / "cloud_command_center.css",
+        lab_root / "internal" / "web" / "assets" / "simon-spring-zmMrlEHsFQY-unsplash.jpg",
+        lab_root / "internal" / "web" / "assets" / "prisma-logo-mark.png",
+        lab_root / "internal" / "web" / "license_ops_console.js",
+        lab_root / "internal" / "web" / "license_ops_console.css",
+        lab_root / "internal" / "config" / "cloud_saas.json",
         lab_root / "internal" / "runtime" / "prisma-module-contract.json",
     ]
     write_contract_files(lab_root, protected_current, out_dir)

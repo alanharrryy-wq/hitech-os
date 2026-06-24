@@ -1,0 +1,19 @@
+/* PRISMA License Ops Lab Adapter. Scoped to the Cloud SaaS cockpit. */
+.cloudSaasCockpit .licenseOpsMiniGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr);
+  gap: 12px;
+}
+
+.cloudSaasCockpit .licenseOpsResult {
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 960px) {
+  .cloudSaasCockpit .licenseOpsMiniGrid {
+    grid-template-columns: 1fr;
+  }
+}
