@@ -36,12 +36,22 @@ const checks = [
     id: "local_admin_ui",
     file: "components/settings/local-users-roles-panel.tsx",
     must: [
-      "Administración local operativa",
+      "data-prisma-client-final=\"users-readonly\"",
+      "Consulta de acceso",
+      "Sólo lectura",
+      "Permisos por rol",
+      "Sin edición en Tablet final"
+    ],
+    mustNot: [
+      "requestJson",
+      "method: \"POST\"",
       "PIN de 6 dígitos",
       "Crear usuario",
+      "Guardar cambios",
       "Editar",
-      "Baja suave",
-      "Permisos por rol"
+      "Desactivar",
+      "Reactivar",
+      "Baja suave"
     ]
   },
     {
@@ -55,7 +65,8 @@ const results = checks.map((check) => {
   const abs = path.join(root, check.file);
   const text = fs.existsSync(abs) ? fs.readFileSync(abs, "utf8") : "";
   const missing = check.must.filter((needle) => !text.includes(needle));
-  return { ...check, abs, exists: Boolean(text), missing, ok: text.length > 0 && missing.length === 0 };
+  const forbidden = (check.mustNot ?? []).filter((needle) => text.includes(needle));
+  return { ...check, abs, exists: Boolean(text), missing, forbidden, ok: text.length > 0 && missing.length === 0 && forbidden.length === 0 };
 });
 
 const ok = results.every((item) => item.ok);

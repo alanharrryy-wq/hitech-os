@@ -39,6 +39,10 @@ check("ticket detail reads real tender rows", detail.includes("paymentTenders: t
 check("client posts paymentTenders", paymentFlow.includes("paymentTenders: payloadTenders"));
 check("client computes cash-only change", viewModel.includes("nonCashOverpayCents") && viewModel.includes("changeCents = nonCashOverpayCents > 0 ? 0"));
 check("payment panel exposes reference inputs", panel.includes("Referencia") && panel.includes("onPaymentTenderChange"));
+check("payment panel lets partial payment attempt open recovery dialog", panel.includes("handleConfirmClick") && panel.includes("canExplainIncompletePayment"));
+check("payment panel renders insufficient payment alertdialog", panel.includes("role=\"alertdialog\"") && panel.includes("paymentPremiumInsufficientDialog"));
+check("payment panel offers incomplete payment recovery actions", panel.includes("Agregar otro método") && panel.includes("Ajustar importe") && panel.includes("Cancelar cobro"));
+check("payment copy tells operator how to complete balance", viewModel.includes("El pago todavía no cubre el total") && panel.includes("El pago todavía no cubre el total"));
 
 const failed = checks.filter((item) => !item.ok);
 if (failed.length) {

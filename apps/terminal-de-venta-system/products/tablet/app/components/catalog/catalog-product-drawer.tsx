@@ -7,6 +7,8 @@ type Props = {
   saving: boolean;
   onChange: (next: CatalogProductFormState) => void;
   onSubmit: () => void;
+  onSaveAndSell: () => void;
+  onSaveAndCreateAnother: () => void;
   onCancelEdit: () => void;
 };
 

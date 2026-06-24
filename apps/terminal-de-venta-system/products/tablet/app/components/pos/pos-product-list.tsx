@@ -154,16 +154,24 @@ export function PosProductList({
   products,
   state,
   error,
+  query,
+  newProductHref,
   canAddProduct = true,
   blockedReason,
-  onAdd
+  onAdd,
+  onSearchAgain,
+  onCancelSearch
 }: {
   products: PosProduct[];
   state: UiState;
   error: unknown;
+  query: string;
+  newProductHref: string;
   canAddProduct?: boolean;
   blockedReason?: string;
   onAdd: (product: PosProduct) => void;
+  onSearchAgain: () => void;
+  onCancelSearch: () => void;
 }) {
   const pageSize = 8;
   const [page, setPage] = useState(1);
@@ -199,11 +207,23 @@ export function PosProductList({
   }
 
   if (!products.length) {
+    const searched = query.trim();
     return (
       <div className={styles.posPremiumStatePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-motion="reduced-motion-safe">
         <PackageSearch aria-hidden="true" size={26} />
-        <strong>No hay productos para mostrar</strong>
-        <span>Busca por nombre, SKU o código de barras.</span>
+        <strong>{searched ? "Producto no encontrado." : "No hay productos para mostrar"}</strong>
+        <span>
+          {searched
+            ? `No encontramos "${searched}" en el catálogo local. Puedes registrarlo ahora, buscar de nuevo o cancelar esta búsqueda.`
+            : "Busca por nombre, SKU o código de barras."}
+        </span>
+        {searched ? (
+          <div className={styles.posPremiumEmptyActions}>
+            <a className={styles.posPremiumPrimaryButton} href={newProductHref}>Registrar producto nuevo</a>
+            <button className={styles.posPremiumSecondaryButton} type="button" onClick={onSearchAgain}>Buscar de nuevo</button>
+            <button className={styles.posPremiumGhostButton} type="button" onClick={onCancelSearch}>Cancelar</button>
+          </div>
+        ) : null}
       </div>
     );
   }

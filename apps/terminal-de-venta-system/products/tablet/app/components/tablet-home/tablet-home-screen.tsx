@@ -22,15 +22,16 @@ export function TabletHomeScreen({ snapshot }: Props) {
     { step: "1", title: shiftOpen ? "Turno abierto" : "Abrir turno", description: shiftOpen ? "Caja lista para operar con corte trazable." : "Prepara caja antes de vender para que tickets y corte salgan limpios.", href: "/shift", label: shiftOpen ? "Ver turno" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
     { step: "2", title: shiftOpen ? "Vender" : "Caja cerrada", description: shiftOpen ? "Busca, escanea, arma el ticket y cobra sin salir del flujo POS." : gate.detail, href: shiftOpen ? "/pos" : "/shift", label: shiftOpen ? "Ir a vender" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
     { step: "3", title: "Revisar tickets", description: "Consulta ventas cerradas, detalle y devoluciones cuando aplique.", href: "/sales/today", label: "Ventas de hoy", tone: "neutral" },
-    { step: "4", title: "Cerrar o exportar", description: "Cierra turno, revisa pendientes y exporta evidencia si hace falta.", href: "/offline", label: "Soporte", tone: pending > 0 ? "warn" : "neutral" }
+    { step: "4", title: "Respaldar y sincronizar", description: "Revisa pendientes, respaldo local y continuidad antes de cerrar operación.", href: "/offline", label: "Respaldo", tone: pending > 0 ? "warn" : "neutral" }
   ];
 
   const toolCards = [
+    { href: "/catalog?new=1", title: "Registrar producto nuevo", description: "Alta rápida para venderlo desde esta Tablet.", label: "Registrar" },
     { href: "/catalog", title: "Catálogo", description: "Productos disponibles para venta local.", label: "Abrir" },
-    { href: "/stock", title: "Existencias", description: "Stock operativo, quiebres y señales de reabasto.", label: "Revisar" },
+    { href: "/stock", title: "Existencias", description: "Disponibilidad operativa, quiebres y señales de reabasto.", label: "Revisar" },
+    { href: "/inventory/low-stock", title: "Existencias bajas", description: "Productos que necesitan revisión o reabasto.", label: "Ver bajos" },
     { href: "/sync", title: "Pendientes", description: pending > 0 ? `${pending} eventos por revisar.` : "Sin pendientes visibles.", label: pending > 0 ? "Atender" : "Ver" },
-    { href: "/offline", title: "Sin conexión / Exportar", description: "Auditoría local, exportación y respaldo operativo.", label: "Abrir" },
-    { href: "/release-gate", title: "Estado del sistema", description: "Revisión de flujos críticos antes de liberar.", label: "Ver" },
+    { href: "/offline", title: "Sin conexión / Respaldo", description: "Movimientos guardados, exportación y respaldo operativo.", label: "Abrir" },
     { href: "/settings/license", title: "Licencia", description: "Estado de permisos y activación de la Tablet.", label: "Revisar" }
   ];
 
@@ -67,7 +68,7 @@ export function TabletHomeScreen({ snapshot }: Props) {
             <span>Flujo de trabajo</span>
             <h3>Todo lo importante queda a la vista</h3>
           </div>
-          <p>Tablet sigue enfocada en vender, pero ya no esconde las pantallas como truco de feria.</p>
+          <p>Tablet mantiene la venta al frente y deja cada consulta crítica a un toque.</p>
         </div>
         <div className={styles.workflowSteps}>
           {workflowSteps.map((step) => (
@@ -131,7 +132,7 @@ export function TabletHomeScreen({ snapshot }: Props) {
                 ))}
               </div>
             ) : (
-              <div className={styles.emptyAlert}>Sin alertas críticas. A vender, que el sistema no se paga solo.</div>
+              <div className={styles.emptyAlert}>Sin alertas críticas. Puedes continuar vendiendo con el respaldo local disponible.</div>
             )}
           </aside>
         </div>

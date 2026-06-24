@@ -16,6 +16,8 @@ import { CheckoutCashCalculator } from "./checkout-cash-calculator";
 import { CheckoutSummary } from "./checkout-summary";
 import styles from "./checkout.module.css";
 
+const PAYMENT_INSUFFICIENT_COPY = "El pago todavía no cubre el total. Agrega otro método de pago, ajusta el importe o completa el saldo pendiente.";
+
 export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
@@ -23,6 +25,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
   const [state, setState] = useState<UiState>("idle");
   const [error, setError] = useState<unknown>(null);
   const [lastSale, setLastSale] = useState<CompletedSale | null>(null);
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
   const totalCents = useMemo(() => cartTotalCents(lines), [lines]);
   const cashIsShort = paymentMethod === "cash" && receivedCents > 0 && receivedCents < totalCents;
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
@@ -37,7 +40,8 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
       return;
     }
     if (cashIsShort) {
-      setError("El efectivo recibido no alcanza para cubrir el total.");
+      setError(PAYMENT_INSUFFICIENT_COPY);
+      setShowInsufficientDialog(true);
       return;
     }
     if (!gate.canCheckout) {
@@ -83,11 +87,11 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
             <strong>{formatMoney(totalCents)}</strong>
             <small>{paymentMethodLabel(paymentMethod)}</small>
           </div>
-          <CheckoutPaymentMethods value={paymentMethod} onChange={setPaymentMethod} />
-          {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={setReceivedCents} /> : null}
+          <CheckoutPaymentMethods value={paymentMethod} onChange={(value) => { setPaymentMethod(value); setShowInsufficientDialog(false); setError(null); }} />
+          {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={(value) => { setReceivedCents(value); setShowInsufficientDialog(false); }} /> : null}
           <PosErrorBanner error={error} />
           {!gate.canSell ? <PosErrorBanner error="Caja cerrada. Abre turno antes de cobrar." /> : null}
-          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || cashIsShort || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
+          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
             <span className={styles.visuallyHidden}>Confirmar cobro</span>
             <span>{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
             <PrismaIcon name="receipt" size={20} />
@@ -95,6 +99,22 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
           {!lines.length ? <a className={styles.backLink} href={gate.actionHref}>{gate.canShowSellNavigation ? "Agregar productos para cobrar" : "Abrir turno para cobrar"}</a> : null}
         </section>
       </div>
+      {showInsufficientDialog && cashIsShort ? (
+        <section className={styles.insufficientOverlay} role="dialog" aria-modal="true" aria-labelledby="checkout-insufficient-title">
+          <div className={styles.insufficientDialog}>
+            <span>Pago incompleto</span>
+            <h2 id="checkout-insufficient-title">Saldo pendiente: {formatMoney(Math.max(0, totalCents - receivedCents))}</h2>
+            <p>{PAYMENT_INSUFFICIENT_COPY}</p>
+            <div className={styles.insufficientActions}>
+              <button type="button" onClick={() => { setPaymentMethod("card"); setShowInsufficientDialog(false); setError(null); }}>Agregar otro método</button>
+              <button type="button" onClick={() => { setShowInsufficientDialog(false); setError(null); }}>Ajustar importe</button>
+              <button type="button" onClick={() => { setPaymentMethod(paymentMethod === "cash" ? "card" : "cash"); setShowInsufficientDialog(false); setError(null); }}>Cambiar método</button>
+              <a href="/pos">Volver al ticket</a>
+              <button type="button" onClick={() => { setReceivedCents(0); setShowInsufficientDialog(false); setError(null); }}>Cancelar cobro</button>
+            </div>
+          </div>
+        </section>
+      ) : null}
       <PosSaleSuccess sale={lastSale} onNewSale={() => { setLastSale(null); setReceivedCents(0); }} />
     </PrismaTabletShellUnified>
   );

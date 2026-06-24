@@ -145,6 +145,11 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
   const cartQty = cartTotalQty(cart);
   const cartTotal = cartTotalCents(cart);
+  const newProductHref = useMemo(() => {
+    const scanned = query.trim();
+    if (!scanned) return "/catalog?new=1";
+    return `/catalog?new=1&sku=${encodeURIComponent(scanned)}`;
+  }, [query]);
 
   function setHeldCartShelf(next: HeldCart[]) {
     setHeldCarts(next);
@@ -497,7 +502,21 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
               </motion.button>
             ))}
           </nav>
-          <PosProductList products={visibleProducts} state={productState} error={productError} canAddProduct={gate.canAddProduct} blockedReason={gate.detail} onAdd={addProduct} />
+          <PosProductList
+            products={visibleProducts}
+            state={productState}
+            error={productError}
+            query={query}
+            newProductHref={newProductHref}
+            canAddProduct={gate.canAddProduct}
+            blockedReason={gate.detail}
+            onAdd={addProduct}
+            onSearchAgain={() => void runPrimaryLookup(query)}
+            onCancelSearch={() => {
+              setQuery("");
+              void loadProducts("");
+            }}
+          />
         </motion.section>
 
         <PosTicketPanel

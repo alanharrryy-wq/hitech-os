@@ -9,10 +9,15 @@ type Props = {
   saving: boolean;
   onChange: (next: CatalogProductFormState) => void;
   onSubmit: () => void;
+  onSaveAndSell: () => void;
+  onSaveAndCreateAnother: () => void;
   onCancelEdit: () => void;
 };
 
-export function CatalogProductForm({ form, saving, onChange, onSubmit, onCancelEdit }: Props) {
+export function CatalogProductForm({ form, saving, onChange, onSubmit, onSaveAndSell, onSaveAndCreateAnother, onCancelEdit }: Props) {
+  const canSave = Boolean(form.name.trim() && form.sku.trim() && form.price.trim());
+  const saveDisabled = saving || !canSave;
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onSubmit();
@@ -66,9 +71,20 @@ export function CatalogProductForm({ form, saving, onChange, onSubmit, onCancelE
         <span>Producto activo para venta</span>
       </label>
 
-      <button type="submit" className={styles.saveButton} disabled={saving}>
-        {saving ? "Guardando..." : form.id ? "Guardar cambios" : "Crear producto"}
-      </button>
+      <div className={styles.formActions}>
+        <button type="submit" className={styles.saveButton} disabled={saving}>
+          {saving ? "Guardando..." : form.id ? "Guardar producto" : "Guardar producto"}
+        </button>
+        <button type="button" className={styles.secondarySaveButton} disabled={saveDisabled} onClick={onSaveAndSell}>
+          Guardar y vender
+        </button>
+        <button type="button" className={styles.ghostSaveButton} disabled={saveDisabled} onClick={onSaveAndCreateAnother}>
+          Guardar y crear otro
+        </button>
+        <button type="button" className={styles.cancelButton} disabled={saving} onClick={onCancelEdit}>
+          Cancelar
+        </button>
+      </div>
     </form>
   );
 }
