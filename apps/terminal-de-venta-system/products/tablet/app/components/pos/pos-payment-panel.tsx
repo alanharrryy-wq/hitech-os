@@ -113,11 +113,42 @@ export function PosPaymentPanel({
   const view = buildPaymentReviewViewModel({ lines, paymentTenders });
   const visibleError = error ? friendlyPosError(error) : view.blockReason;
   const [focusedTender, setFocusedTender] = useState<PaymentMethod | null>(null);
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
   const [amountDrafts, setAmountDrafts] = useState<Record<PaymentMethod, string>>({
     cash: decimalTenderValue(paymentTenders.find((tender) => tender.method === "cash")?.amountCents ?? 0),
     card: decimalTenderValue(paymentTenders.find((tender) => tender.method === "card")?.amountCents ?? 0),
     transfer: decimalTenderValue(paymentTenders.find((tender) => tender.method === "transfer")?.amountCents ?? 0)
   });
+  const canExplainIncompletePayment = view.paidCents > 0 && view.paidCents < view.totalCents;
+  const confirmDisabled = busy || (!view.canConfirm && !canExplainIncompletePayment);
+
+  function updateTender(method: PaymentMethod, patch: Partial<Pick<PaymentTenderInput, "amountCents" | "reference">>) {
+    setShowInsufficientDialog(false);
+    onPaymentTenderChange(method, patch);
+  }
+
+  function addRemainingTo(method: PaymentMethod) {
+    const current = paymentTenders.find((tender) => tender.method === method)?.amountCents ?? 0;
+    updateTender(method, { amountCents: current + view.remainingCents });
+    setFocusedTender(method);
+  }
+
+  function clearTenderAmounts() {
+    for (const tender of paymentTenders) {
+      onPaymentTenderChange(tender.method, { amountCents: 0 });
+    }
+    setShowInsufficientDialog(false);
+  }
+
+  function handleConfirmClick() {
+    if (view.canConfirm) {
+      onConfirm();
+      return;
+    }
+    if (canExplainIncompletePayment) {
+      setShowInsufficientDialog(true);
+    }
+  }
 
   useEffect(() => {
     setAmountDrafts((current) => {
@@ -260,7 +291,7 @@ export function PosPaymentPanel({
                           onChange={(event) => {
                             const draft = sanitizeManualMoneyInput(event.target.value);
                             setAmountDrafts((current) => ({ ...current, [tender.method]: draft }));
-                            onPaymentTenderChange(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
+                            updateTender(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
                           }}
                         />
                       </div>
@@ -276,7 +307,7 @@ export function PosPaymentPanel({
                           aria-label={`Referencia opcional ${definition.label}`}
                           value={tender.reference}
                           disabled={busy}
-                          onChange={(event) => onPaymentTenderChange(tender.method, { reference: event.target.value })}
+                          onChange={(event) => updateTender(tender.method, { reference: event.target.value })}
                         />
                       </label>
                     ) : null}
@@ -293,7 +324,7 @@ export function PosPaymentPanel({
                     <motion.button
                       key={value}
                       type="button"
-                      onClick={() => onPaymentTenderChange("cash", { amountCents: value })}
+                      onClick={() => updateTender("cash", { amountCents: value })}
                       disabled={busy}
                       whileTap={{ scale: 0.982 }}
                       transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
@@ -319,7 +350,7 @@ export function PosPaymentPanel({
               <div className={view.canConfirm ? styles.paymentPremiumReviewReady : styles.paymentPremiumReview} data-prisma-state={view.canConfirm ? "success" : "pending"} data-prisma-motion={view.canConfirm ? "success-feedback" : "reduced-motion-safe"}>
                 <strong>{view.tenderLabel}</strong>
                 <span>{view.tenderDetail}</span>
-                {clientRequestId ? <small>Folio técnico: {clientRequestId.slice(0, 8)}</small> : null}
+                {clientRequestId ? <small>Referencia de venta: {clientRequestId.slice(0, 8)}</small> : null}
               </div>
             </div>
           </div>
@@ -334,6 +365,22 @@ export function PosPaymentPanel({
               <span><AlertTriangle aria-hidden="true" size={16} /> {visibleError}</span>
             </PrismaStateBanner>
           ) : null}
+          {showInsufficientDialog && canExplainIncompletePayment ? (
+            <section className={styles.paymentPremiumInsufficientLayer} role="alertdialog" aria-modal="true" aria-labelledby="pos-insufficient-title" aria-describedby="pos-insufficient-copy">
+              <div className={styles.paymentPremiumInsufficientDialog}>
+                <span>Pago incompleto</span>
+                <h3 id="pos-insufficient-title">Saldo pendiente: {formatMoney(view.remainingCents)}</h3>
+                <p id="pos-insufficient-copy">El pago todavía no cubre el total. Agrega otro método de pago, ajusta el importe o completa el saldo pendiente.</p>
+                <div className={styles.paymentPremiumInsufficientActions}>
+                  <button type="button" onClick={() => addRemainingTo("card")}>Agregar otro método</button>
+                  <button type="button" onClick={() => { setShowInsufficientDialog(false); setFocusedTender("cash"); }}>Ajustar importe</button>
+                  <button type="button" onClick={() => addRemainingTo("transfer")}>Cambiar método</button>
+                  <button type="button" onClick={onClose}>Volver al ticket</button>
+                  <button type="button" onClick={clearTenderAmounts}>Cancelar cobro</button>
+                </div>
+              </div>
+            </section>
+          ) : null}
 
           <footer className={styles.paymentPremiumFooter} data-prisma-layer="4-primary-checkout-cta">
             <PrismaActionButton className={checkoutAction({ intent: "secondaryAction" })} type="button" onClick={onClose} disabled={busy} surface="tablet" tone="default">
@@ -343,21 +390,27 @@ export function PosPaymentPanel({
             <motion.button
               className={checkoutAction({ intent: "primaryCheckout" })}
               type="button"
-              onClick={onConfirm}
-              disabled={!view.canConfirm || busy}
-              whileTap={!view.canConfirm || busy ? undefined : { scale: 0.982 }}
-              whileHover={!view.canConfirm || busy ? undefined : { y: -1, boxShadow: "0 26px 62px rgba(78, 94, 118, 0.20), 0 0 34px rgba(255, 255, 255, 0.40)" }}
+              onClick={handleConfirmClick}
+              disabled={confirmDisabled}
+              whileTap={confirmDisabled ? undefined : { scale: 0.982 }}
+              whileHover={confirmDisabled ? undefined : { y: -1, boxShadow: "0 26px 62px rgba(78, 94, 118, 0.20), 0 0 34px rgba(255, 255, 255, 0.40)" }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               data-prisma-checkout-finalize="31"
               data-prisma-zone="tablet-checkout-confirm-action"
               data-prisma-role="primary-action"
               data-prisma-priority={view.canConfirm ? "primary" : "passive"}
-              data-prisma-state={!view.canConfirm || busy ? "disabled" : "ready"}
+              data-prisma-state={confirmDisabled ? "disabled" : view.canConfirm ? "ready" : "review"}
               data-prisma-motion="press-feedback"
-              data-prisma-qa={!view.canConfirm || busy ? "tablet-qa-disabled" : "tablet-qa-cobrar"}
+              data-prisma-qa={confirmDisabled ? "tablet-qa-disabled" : view.canConfirm ? "tablet-qa-cobrar" : "tablet-qa-incomplete-payment"}
             >
-              {busy ? <Loader2 className={styles.paymentPremiumSpinner} aria-hidden="true" size={21} /> : <CheckCircle2 aria-hidden="true" size={22} />}
-              <span>{busy ? "Generando ticket..." : "OK, generar ticket"}</span>
+              {busy ? (
+                <Loader2 className={styles.paymentPremiumSpinner} aria-hidden="true" size={21} />
+              ) : canExplainIncompletePayment && !view.canConfirm ? (
+                <AlertTriangle aria-hidden="true" size={22} />
+              ) : (
+                <CheckCircle2 aria-hidden="true" size={22} />
+              )}
+              <span>{busy ? "Generando ticket..." : canExplainIncompletePayment && !view.canConfirm ? "Revisar saldo pendiente" : "OK, generar ticket"}</span>
             </motion.button>
           </footer>
         </PrismaCheckoutPanel>

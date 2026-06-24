@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { catalogVisibleError } from "@/lib/catalog/product-visible-errors";
 import type { CatalogProduct, CatalogProductFormState } from "@/lib/catalog/product-form-state";
@@ -10,10 +11,11 @@ import { CatalogProductDrawer } from "./catalog-product-drawer";
 import styles from "./catalog.module.css";
 
 export function CatalogScreen() {
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [includeInactive, setIncludeInactive] = useState(true);
   const [products, setProducts] = useState<CatalogProduct[]>([]);
-  const [form, setForm] = useState<CatalogProductFormState>(emptyProductForm);
+  const [form, setForm] = useState<CatalogProductFormState>({ ...emptyProductForm });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -50,7 +52,7 @@ export function CatalogScreen() {
     }
   }
 
-  async function saveProduct() {
+  async function saveProduct(nextAction: "stay" | "sell" | "another" = "stay") {
     setSaving(true);
     setError(null);
     setNotice("");
@@ -61,8 +63,15 @@ export function CatalogScreen() {
         body: JSON.stringify(formToPayload(form))
       });
       setNotice(form.id ? "Producto actualizado." : "Producto creado y listo para venta.");
-      setForm(productToForm(response.data.product));
+      if (nextAction === "another") {
+        setForm({ ...emptyProductForm });
+      } else {
+        setForm(productToForm(response.data.product));
+      }
       await loadProducts(query);
+      if (nextAction === "sell") {
+        window.location.href = "/pos";
+      }
     } catch (caught) {
       setError(caught);
     } finally {
@@ -73,6 +82,17 @@ export function CatalogScreen() {
   useEffect(() => {
     void loadProducts("");
   }, [includeInactive]);
+
+  useEffect(() => {
+    const sku = searchParams.get("sku")?.trim() || searchParams.get("code")?.trim() || "";
+    if (!sku) return;
+    setForm((current) => {
+      if (current.id || current.sku || current.barcode) return current;
+      return { ...current, sku, barcode: sku };
+    });
+    setQuery(sku);
+    setNotice("Código precargado desde POS. Completa nombre, precio y existencia para venderlo.");
+  }, [searchParams]);
 
   return (
     <PrismaTabletShellUnified
@@ -109,8 +129,10 @@ export function CatalogScreen() {
             form={form}
             saving={saving}
             onChange={setForm}
-            onSubmit={() => void saveProduct()}
-            onCancelEdit={() => { setForm(emptyProductForm); setNotice(""); setError(null); }}
+            onSubmit={() => void saveProduct("stay")}
+            onSaveAndSell={() => void saveProduct("sell")}
+            onSaveAndCreateAnother={() => void saveProduct("another")}
+            onCancelEdit={() => { setForm({ ...emptyProductForm }); setNotice(""); setError(null); }}
           />
         </div>
       </div>

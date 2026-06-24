@@ -25,7 +25,6 @@ function isSupportStatusContext(currentPath?: string) {
   return currentPath === "/sync"
     || currentPath === "/events/outbox"
     || currentPath === "/offline"
-    || currentPath === "/release-gate"
     || currentPath === "/settings/export"
     || currentPath === "/settings/license"
     || currentPath === "/settings"
@@ -67,14 +66,14 @@ export function TabletRuntimeStatusStrip({ snapshot, variant = "full", currentPa
           <>
             <Chip label="Soporte" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
             <Chip label="Pendientes" value={getPendingEventsLabel(snapshot)} tone={snapshot.connection.tone} href="/sync" />
-            <Chip label="Catalogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
+            <Chip label="Catálogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
           </>
         ) : (
           <>
             <Chip label="Turno" value={snapshot.shift.label} tone={snapshot.shift.tone} href={snapshot.shift.actionHref} />
-            <Chip label="Conexion" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
+            <Chip label="Conexión" value={snapshot.connection.label} tone={snapshot.connection.tone} href={snapshot.connection.actionHref} />
             <Chip label="Pendientes" value={getPendingEventsLabel(snapshot)} tone={snapshot.connection.tone} href="/sync" />
-            <Chip label="Catalogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
+            <Chip label="Catálogo" value={getCatalogPressureLabel(snapshot)} tone={snapshot.catalog.tone} href={snapshot.catalog.actionHref} />
           </>
         )}
       </div>

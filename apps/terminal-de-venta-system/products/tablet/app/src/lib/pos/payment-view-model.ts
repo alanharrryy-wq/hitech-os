@@ -38,7 +38,7 @@ export function buildPaymentReviewViewModel(input: { lines: CartLine[]; paymentT
       : nonCashOverpayCents > 0
         ? "Tarjeta o transferencia no deben exceder el total pendiente; el cambio solo sale de efectivo."
         : paidCents < totalCents
-          ? "Todavía falta dinero para cubrir el total."
+          ? "El pago todavía no cubre el total. Agrega otro método de pago, ajusta el importe o completa el saldo pendiente."
           : changeCents > 0
             ? "Entrega el cambio calculado desde efectivo y toca OK para generar ticket."
             : "Confirma comprobante o efectivo exacto y toca OK para generar ticket.";

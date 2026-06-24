@@ -16,6 +16,10 @@ type TicketLine = {
   qty: number;
   priceCents: number;
   totalCents: number;
+  returnedQty?: number;
+  returnAvailableQty?: number;
+  returnedCents?: number;
+  returnStatus?: "available" | "partial_returned" | "fully_returned";
 };
 
 type TicketDetail = {
@@ -130,6 +134,39 @@ function formatDateTime(value: string) {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
+}
+
+function ticketStatusCopy(status: string) {
+  const value = status.toLowerCase();
+  if (value.includes("closed") || value.includes("complete")) return "Cerrado";
+  if (value.includes("cancel")) return "Cancelado";
+  if (value.includes("pending")) return "Pendiente";
+  return "Registrado";
+}
+
+function syncStatusCopy(status: string) {
+  const value = status.toLowerCase();
+  if (value.includes("sent") || value.includes("acked") || value.includes("sync") || value.includes("confirmed")) {
+    return "Confirmado";
+  }
+  if (value.includes("failed") || value.includes("conflict") || value.includes("error")) return "Requiere revisión";
+  return "Pendiente de enviar a PC";
+}
+
+function ticketSyncSummary(ticket: TicketDetail) {
+  const events = ticket.evidence?.outboxEvents ?? [];
+  if (!events.length) return "Guardado en esta Tablet";
+  if (events.some((event) => syncStatusCopy(event.status) === "Requiere revisión")) return "Requiere revisión";
+  if (events.every((event) => syncStatusCopy(event.status) === "Confirmado")) return "Confirmado";
+  return "Pendiente de enviar a PC";
+}
+
+function returnedLineCopy(line: TicketLine) {
+  const returnedQty = Number(line.returnedQty ?? 0);
+  if (!Number.isFinite(returnedQty) || returnedQty <= 0) return null;
+  const availableQty = Number(line.returnAvailableQty ?? Math.max(0, line.qty - returnedQty));
+  if (availableQty > 0) return `Devolución parcial: ${returnedQty} de ${line.qty} pzas. Disponible: ${availableQty}.`;
+  return `Devolución registrada: ${returnedQty} de ${line.qty} pzas.`;
 }
 
 function DetailStateCard({ title, message, canSell, backHref, onRetry }: { title: string; message: string; canSell: boolean; backHref: string; onRetry?: () => void }) {
@@ -265,28 +302,32 @@ export function SalesTicketDetailScreen({
                 <p>{formatDateTime(state.ticket.completedAt || state.ticket.createdAt)}</p>
               </div>
               <div className={styles.metaGrid}>
-                <span>Venta local: {state.ticket.saleId}</span>
-                <span>Contrato: {state.ticket.evidence?.contract ?? "SALE_AS_TICKET_EVIDENCE_V1"}</span>
-                {state.ticket.clientRequestId ? <span>Solicitud: {state.ticket.clientRequestId}</span> : null}
-                {state.ticket.lookupAliases?.length ? <span>Alias: {state.ticket.lookupAliases.join(" / ")}</span> : null}
+                <span>Folio: {state.ticket.folio}</span>
+                <span>Estado: {ticketStatusCopy(state.ticket.status)}</span>
+                <span>Guardado en esta Tablet</span>
+                <span>Sincronización: {ticketSyncSummary(state.ticket)}</span>
               </div>
 
               {state.ticket.lines.length ? (
                 <div className={styles.linesList}>
-                  {state.ticket.lines.map((line) => (
-                    <div className={styles.line} key={line.id}>
-                      <div>
-                        <strong>{line.productName}</strong>
-                        <span>
-                          {line.sku || "SKU sin registrar"} · {line.qty} pzas · {formatMoney(line.priceCents)} c/u
-                        </span>
+                  {state.ticket.lines.map((line) => {
+                    const returnedCopy = returnedLineCopy(line);
+                    return (
+                      <div className={styles.line} key={line.id}>
+                        <div>
+                          <strong>{line.productName}</strong>
+                          <span>
+                            {line.sku || "SKU sin registrar"} · {line.qty} pzas · {formatMoney(line.priceCents)} c/u
+                          </span>
+                          {returnedCopy ? <span>{returnedCopy}</span> : null}
+                        </div>
+                        <strong>{formatMoney(line.totalCents)}</strong>
                       </div>
-                      <strong>{formatMoney(line.totalCents)}</strong>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
-                <div className={styles.empty}>Este ticket no trae líneas visibles. Revisa la venta o el smoke de datos durables.</div>
+                <div className={styles.empty}>Este ticket no trae líneas visibles. Revisa la venta antes de continuar.</div>
               )}
             </article>
 
@@ -294,10 +335,10 @@ export function SalesTicketDetailScreen({
               <span className={styles.panelEyebrow}>Total cobrado</span>
               <h2>{formatMoney(state.ticket.totalCents)}</h2>
               <p>Operador: {state.ticket.cashier}</p>
-              <p>Negocio: {state.ticket.businessName ?? state.ticket.businessId ?? "Negocio local"}</p>
-              {state.ticket.storeId ? <p>Tienda: {state.ticket.storeName ?? state.ticket.storeId}</p> : null}
-              <p>Terminal: {state.ticket.terminalName ?? state.ticket.terminalId}</p>
-              {state.ticket.cashSessionId ? <p>Turno/caja: {state.ticket.cashSession?.cashier ?? state.ticket.cashSessionId}</p> : null}
+              <p>Negocio: {state.ticket.businessName ?? "Negocio local"}</p>
+              {state.ticket.storeId || state.ticket.storeName ? <p>Tienda: {state.ticket.storeName ?? "Tienda local"}</p> : null}
+              <p>Terminal: {state.ticket.terminalName ?? "Terminal local"}</p>
+              {state.ticket.cashSessionId ? <p>Turno/caja: {state.ticket.cashSession?.cashier ? `Caja de ${state.ticket.cashSession.cashier}` : "Turno de venta"}</p> : null}
               <p>Pago: {paymentMethodLabel(state.ticket.paymentMethod)} · {formatMoney(state.ticket.totalCents)}</p>
               {typeof state.ticket.cashReceivedCents === "number" ? <p>Recibido: {formatMoney(state.ticket.cashReceivedCents)}</p> : null}
               {typeof state.ticket.changeCents === "number" && state.ticket.changeCents > 0 ? <p>Cambio: {formatMoney(state.ticket.changeCents)}</p> : null}
@@ -317,7 +358,7 @@ export function SalesTicketDetailScreen({
                 <div className={styles.auditList}>
                   <strong>Evidencia local</strong>
                   {state.ticket.evidence.outboxEvents.slice(0, 4).map((event) => (
-                    <span key={event.id}>{event.topic} · {event.status}</span>
+                    <span key={event.id}>Movimiento de venta · {syncStatusCopy(event.status)}</span>
                   ))}
                 </div>
               ) : null}

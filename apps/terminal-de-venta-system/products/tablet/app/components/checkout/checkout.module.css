@@ -270,6 +270,76 @@
   justify-content: center;
 }
 
+.insufficientOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 44px);
+  background: rgba(4, 12, 28, 0.58);
+  backdrop-filter: blur(14px) saturate(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
+}
+
+.insufficientDialog {
+  width: min(620px, 100%);
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(209, 228, 255, 0.78);
+  border-radius: 28px;
+  padding: clamp(20px, 3vw, 30px);
+  color: #101827;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.94), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(235, 246, 255, 0.92));
+  box-shadow: 0 38px 110px rgba(0, 8, 30, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.insufficientDialog span {
+  color: #0f63d8;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.insufficientDialog h2,
+.insufficientDialog p {
+  margin: 0;
+}
+
+.insufficientDialog h2 {
+  font-size: clamp(1.55rem, 4vw, 2.35rem);
+  letter-spacing: -0.04em;
+}
+
+.insufficientDialog p {
+  color: rgba(34, 51, 75, 0.82);
+  line-height: 1.5;
+}
+
+.insufficientActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.insufficientActions button,
+.insufficientActions a {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(82, 125, 180, 0.24);
+  border-radius: 16px;
+  padding: 0 14px;
+  color: #10315f;
+  background: rgba(255, 255, 255, 0.72);
+  font-weight: 900;
+  text-decoration: none;
+}
+
 @media (max-width: 980px) {
   .checkoutGrid {
     grid-template-columns: 1fr;

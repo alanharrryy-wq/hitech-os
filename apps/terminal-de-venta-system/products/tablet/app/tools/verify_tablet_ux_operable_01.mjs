@@ -57,7 +57,7 @@ for (const rel of visibleFiles) {
   }
 }
 const navSource = read("components/tablet-shell/tablet-nav.ts");
-for (const label of ["Vender", "Cobro", "Catálogo", "Ventas de hoy", "Existencias", "Devoluciones", "Turno", "Sincronización", "Exportar"]) {
+for (const label of ["Vender", "Cobro", "Catálogo", "Ventas de hoy", "Existencias", "Devoluciones", "Turno", "Sincronización", "Respaldo"]) {
   if (!navSource.includes(label)) failures.push(`Falta label de navegación: ${label}`);
 }
 if (failures.length) {

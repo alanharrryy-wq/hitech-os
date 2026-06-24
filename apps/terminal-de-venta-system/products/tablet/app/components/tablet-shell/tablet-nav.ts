@@ -30,18 +30,17 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
   { href: "/shift", label: "Turno y caja", shortLabel: "Turno", description: "Apertura, corte y cierre operativo.", icon: "terminal", group: "operacion" },
   { href: "/pos", label: "Vender", shortLabel: "Vender", description: "Cobro rápido: busca, escanea, arma el ticket y cobra.", icon: "cart", group: "operacion", primary: true },
   { href: "/catalog", label: "Catálogo", shortLabel: "Catálogo", description: "Productos locales disponibles para venta.", icon: "tag", group: "consulta" },
-  { href: "/stock", label: "Existencias", shortLabel: "Stock", description: "Stock operativo local, quiebres y señales de reabasto.", icon: "package", group: "consulta" },
+  { href: "/stock", label: "Existencias", shortLabel: "Exist.", description: "Disponibilidad local, quiebres y señales de reabasto.", icon: "package", group: "consulta" },
   { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets y productos vendidos.", icon: "receipt", group: "consulta" },
   { href: "/sales/history", label: "Historial ventas", shortLabel: "Historial", description: "Consulta local acotada de tickets anteriores.", icon: "receipt", group: "consulta" },
   { href: "/returns", label: "Devoluciones", shortLabel: "Dev.", description: "Revisión y creación de devoluciones desde tickets existentes.", icon: "receipt", group: "consulta" },
   { href: "/sync", label: "Sincronización", shortLabel: "Sinc.", description: "Envíos pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
-  { href: "/offline", label: "Sin conexión / Exportar", shortLabel: "Exportar", description: "Auditoría local, exportación y evidencia operativa.", icon: "receipt", group: "soporte" },
-  { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revisión operativa de flujos críticos antes de liberar.", icon: "settings", group: "soporte" },
+  { href: "/offline", label: "Sin conexión / Respaldo", shortLabel: "Respaldo", description: "Movimientos guardados, respaldo y exportación operativa.", icon: "receipt", group: "soporte" },
   { href: "/settings/license", label: "Licencia", shortLabel: "Lic.", description: "Estado de licencia y permisos de uso de Tablet.", icon: "settings", group: "soporte" }
 ];
 
 const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock", "/sales", "/sales/today", "/sales/history", "/returns"]);
-const SOPORTE_PATHS = new Set(["/sync", "/offline", "/settings/export", "/settings/license", "/release-gate"]);
+const SOPORTE_PATHS = new Set(["/sync", "/offline", "/settings/export", "/settings/license"]);
 const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/shift"]);
 
 export function isTabletNavActive(currentPath: string, href: string) {
@@ -91,7 +90,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
   if (stage === "soporte") {
     return {
       label: "Soporte operativo",
-      helper: "Pendientes, offline, estado y licencia viven juntos para no esconder puertas."
+      helper: "Pendientes, respaldo y licencia explican continuidad sin mostrar herramientas internas."
     };
   }
   return {
