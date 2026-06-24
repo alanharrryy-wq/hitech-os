@@ -14,6 +14,7 @@ No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
 - `3130`: PC Backoffice
 - `3140`: Mobile
 - `3150`: Control Center
+- `3160`: PRISMA Cloud Command Center
 
 `3100` y `3200` solo se incluyen en los launchers de kill como limpieza legacy/discutida.
 
@@ -42,6 +43,10 @@ No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
    - Libera `3000,3100,3110,3120,3130,3140,3150,3200`.
    - No levanta servicios.
    - Deja `latest_KILL_EVERYTHING.zip`.
+
+7. `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd`
+   - Abre el cockpit privado `PRISMA Cloud Command Center` en `http://127.0.0.1:3160/unified-shell.html`.
+   - No toca Control Center 3150 ni levanta el stack completo.
 
 ## ZIP generado
 

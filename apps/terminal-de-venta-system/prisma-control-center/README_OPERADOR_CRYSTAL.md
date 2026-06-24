@@ -8,6 +8,7 @@
 - PC Backoffice: http://127.0.0.1:3130
 - Mobile: http://127.0.0.1:3140
 - Control Center: http://127.0.0.1:3150
+- PRISMA Cloud Command Center: http://127.0.0.1:3160/unified-shell.html
 
 ## Logs ZIP obligatorios
 
@@ -39,3 +40,7 @@ Limpieza total de puertos PRISMA:
 
 - `00_KILL_ALL_LOCAL.cmd`
 - `09_KILL_EVERYTHING_PRISMA.cmd`
+
+Para abrir el cockpit privado PRISMA Cloud:
+
+- `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd`

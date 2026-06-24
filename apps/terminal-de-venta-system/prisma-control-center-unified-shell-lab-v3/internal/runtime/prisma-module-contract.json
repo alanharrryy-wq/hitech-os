@@ -1,26 +1,52 @@
 {
   "contractVersion": 1,
   "lab": {
-    "name": "PRISMA Unified Shell Lab v3",
-    "mode": "SAFE_LAB_V3",
+    "name": "PRISMA Cloud Command Center",
+    "mode": "PRIVATE_CLOUD_COMMAND_CENTER",
     "host": "127.0.0.1",
     "port": 3160,
-    "themeInheritance": true,
+    "themeInheritance": false,
     "noTouchPolicy": "Never modifies protected current Control Center",
     "protectedCurrentPath": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
     "outDir": "F:\\descargasf"
   },
   "themeTokens": {
     "supportedThemes": [
-      "obsidian",
-      "liquid",
-      "pearl",
-      "rose",
-      "tactical"
+      "prisma-frost-command"
     ],
-    "defaultTheme": "obsidian"
+    "defaultTheme": "prisma-frost-command"
   },
   "modules": [
+    {
+      "id": "cloud-saas",
+      "name": "PRISMA Cloud",
+      "role": "Private Cockpit Cloud Semilla + licencias",
+      "port": 3160,
+      "portLabel": "app.hitechrts.com",
+      "directUrl": "https://app.hitechrts.com",
+      "embedUrl": "native://cloud-saas",
+      "healthUrl": "https://app.hitechrts.com/health",
+      "fallbackUrl": "https://app.hitechrts.com/health",
+      "embedMode": "nativeCloud",
+      "viewportMode": "desktop",
+      "themeMode": "inherits",
+      "protected": false,
+      "actions": [
+        "nativeCloud",
+        "refresh",
+        "adminNote",
+        "receiptSmoke",
+        "deviceSmoke",
+        "licenseOps"
+      ],
+      "statusLabel": "CLOUD_READONLY",
+      "qualityScope": [
+        "cloud",
+        "adminTokenLocal",
+        "licenseOpsReadOnly"
+      ],
+      "healthKind": "cloud"
+    },
     {
       "id": "control",
       "name": "Control Center bueno",
