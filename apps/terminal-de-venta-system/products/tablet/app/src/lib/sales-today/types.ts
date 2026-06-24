@@ -27,6 +27,13 @@ export type SalesTodayTicket = {
   completedAt: string | null;
   paymentMethod: string;
   totalCents: number;
+  returnSummary?: {
+    count: number;
+    returnedCents: number;
+    status: "partial_returned" | "fully_returned";
+    latestReason?: string | null;
+    latestReturnId?: string | null;
+  } | null;
   lineCount: number;
   unitsSold: number;
   lines: SalesTodayLine[];

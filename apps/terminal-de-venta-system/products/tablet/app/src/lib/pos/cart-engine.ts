@@ -143,11 +143,11 @@ export function getCartLineStockSignal(line: CartLine): CartLineStockSignal {
     return { label: "Sin existencia", tone: "danger", blocksCheckout: true };
   }
   if (qty > product.stockOnHand) {
-    return { label: `Stock insuficiente (${product.stockOnHand} disp.)`, tone: "danger", blocksCheckout: true };
+    return { label: `Existencia insuficiente (${product.stockOnHand} disp.)`, tone: "danger", blocksCheckout: true };
   }
   const threshold = product.lowStockThreshold ?? 0;
   if (threshold > 0 && product.stockOnHand <= threshold) {
-    return { label: `Stock bajo (${product.stockOnHand} disp.)`, tone: "warn", blocksCheckout: false };
+    return { label: `Existencias bajas (${product.stockOnHand} disp.)`, tone: "warn", blocksCheckout: false };
   }
   return { label: `${product.stockOnHand} disponible(s)`, tone: "ok", blocksCheckout: false };
 }

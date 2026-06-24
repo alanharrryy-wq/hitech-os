@@ -33,7 +33,8 @@ if (!failures.length) {
   mustInclude("src/lib/operational-gate/can-sell.ts", "canCheckout");
   mustInclude("src/lib/operational-gate/can-sell.ts", "SHIFT_NOT_OPEN");
   mustInclude("components/tablet-shell/tablet-nav.ts", "Devoluciones");
-  mustInclude("components/tablet-shell/tablet-nav.ts", "decision.canShowSellNavigation");
+  mustInclude("components/tablet-shell/tablet-nav.ts", "la pantalla /pos ya decide si permite cobrar");
+  mustInclude("components/tablet-shell/tablet-nav.ts", "return TABLET_NAV_ITEMS");
   mustInclude("src/lib/tablet-home/home-view-model.ts", "gate.canShowSellNavigation");
   mustInclude("components/tablet-home/tablet-home-screen.tsx", `shiftOpen ? "/pos" : "/shift"`);
   mustInclude("app/pos/page.tsx", "getTabletRuntimeSnapshot");
@@ -69,4 +70,4 @@ if (failures.length) {
 }
 
 console.log("PASS PRISMA_TABLET_OPERATIONAL_GATE_01");
-console.log("Closed cash hides/blocks POS, product add, checkout, and SHIFT_NOT_OPEN no longer auto-opens a shift.");
+console.log("Closed cash keeps navigation understandable while POS blocks product add, checkout, and SHIFT_NOT_OPEN no longer auto-opens a shift.");

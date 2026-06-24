@@ -41,8 +41,8 @@ export function getCatalogStockTone(signal: CatalogStockSignal): CatalogStockTon
 
 export function getCatalogStockLabel(signal: CatalogStockSignal) {
   if (signal === "available") return "Disponible";
-  if (signal === "low_stock") return "Stock bajo";
-  if (signal === "out_of_stock") return "Sin stock";
+  if (signal === "low_stock") return "Existencias bajas";
+  if (signal === "out_of_stock") return "Sin existencia";
   return "Inactivo";
 }
 
@@ -54,7 +54,7 @@ export function canSendProductToSale(product: CatalogStockSellingAssistProduct) 
 export function getBlockedSaleReason(product: CatalogStockSellingAssistProduct) {
   const signal = getCatalogStockSignal(product);
   if (signal === "inactive") return "Producto inactivo: no se manda a venta hasta reactivarlo.";
-  if (signal === "out_of_stock") return "Sin stock: evita vender aire premium, eso ni el marketing lo salva.";
+  if (signal === "out_of_stock") return "Sin existencia local: registra entrada, cambia producto o revisa si hubo venta reciente pendiente.";
   return "";
 }
 
@@ -137,7 +137,7 @@ export function buildCatalogStockMetrics(products: CatalogStockSellingAssistProd
     },
     {
       id: "low_stock",
-      label: "Stock bajo",
+      label: "Existencias bajas",
       value: String(lowStock.length),
       note: "vendibles, pero requieren vigilancia",
       tone: lowStock.length ? "warn" : "ok"
@@ -146,7 +146,7 @@ export function buildCatalogStockMetrics(products: CatalogStockSellingAssistProd
       id: "blocked",
       label: "Bloqueados",
       value: String(outOfStock.length + inactive.length),
-      note: "sin stock o inactivos",
+      note: "sin existencia o inactivos",
       tone: outOfStock.length + inactive.length ? "danger" : "ok"
     }
   ];
@@ -171,8 +171,8 @@ export function buildStockRiskSummary(products: CatalogStockSellingAssistProduct
   if (!products.length) return "Sin productos cargados todavía.";
   if (!low.length && !zero.length && !inactive.length) return "Catálogo operativo sin bloqueos visibles para venta.";
   const parts = [];
-  if (low.length) parts.push(`${low.length} con stock bajo`);
-  if (zero.length) parts.push(`${zero.length} sin stock`);
+  if (low.length) parts.push(`${low.length} con existencias bajas`);
+  if (zero.length) parts.push(`${zero.length} sin existencia`);
   if (inactive.length) parts.push(`${inactive.length} inactivos`);
   return `Atención: ${parts.join(", ")}.`;
 }

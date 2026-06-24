@@ -79,12 +79,12 @@ export const CATALOG_STOCK_SCREEN_COPY: Record<CatalogStockSellingAssistMode, Ca
   stock: {
     currentPath: "/stock",
     title: "Existencias para vender",
-    subtitle: "Revisa bajo stock, sin stock e inactivos, y manda productos vendibles al carrito local de /pos.",
-    kicker: "Stock operativo + venta asistida",
+    subtitle: "Revisa existencias bajas, productos sin existencia e inactivos, y manda productos vendibles al carrito local de venta.",
+    kicker: "Existencias + venta asistida",
     searchPlaceholder: "Buscar existencias por producto, SKU o código",
     primaryAction: "Mandar a venta",
     emptyTitle: "Sin existencias que mostrar",
-    emptyDescription: "El filtro actual no encontró productos. Ajusta la búsqueda antes de culpar al inventario, pobre condenado."
+    emptyDescription: "El filtro actual no encontró productos. Ajusta la búsqueda o registra un producto nuevo si falta en la Tablet."
   }
 };
 

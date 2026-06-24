@@ -39,15 +39,17 @@ for (const rel of requiredFiles) {
   read(rel);
   checks.push(`OK exists ${rel}`);
 }
-expect("app/catalog/page.tsx", "mode=\"catalog\"", "catalog mode");
+expect("app/catalog/page.tsx", "CatalogScreen", "catalog product creation screen");
 expect("app/stock/page.tsx", "mode=\"stock\"", "stock mode");
 expect("app/existencias/page.tsx", "mode=\"stock\"", "existencias stock mode");
 expect("components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx", "buildProductSearchUrl", "product search integration");
 expect("components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx", "resolveCode", "barcode/SKU resolve flow");
 expect("components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx", "OfflineStrip", "offline visible strip");
 expect("components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx", "addSellingAssistProductToCart", "cart handoff");
+expect("components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx", "Existencias bajas", "human low existence filter");
 expect("src/lib/catalog-stock-selling-assist/catalog-stock-cart-handoff.ts", "POS_CART_STORAGE_KEY", "existing POS cart key");
 expect("src/lib/catalog-stock-selling-assist/catalog-stock-cart-handoff.ts", "addProductToCart", "existing cart engine");
+expect("src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-view-model.ts", "Existencias bajas", "human low existence copy");
 for (const state of ["available", "low_stock", "out_of_stock", "inactive"]) {
   expect("src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-view-model.ts", state, `state ${state}`);
 }

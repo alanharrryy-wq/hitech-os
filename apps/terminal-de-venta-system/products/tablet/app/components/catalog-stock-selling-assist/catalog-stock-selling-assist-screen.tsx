@@ -44,8 +44,8 @@ type Props = {
 const FILTERS: Array<{ id: CatalogStockFilter; label: string; description: string }> = [
   { id: "all", label: "Todos", description: "ver catálogo completo" },
   { id: "available", label: "Vendibles", description: "listos para mandar al carrito" },
-  { id: "low_stock", label: "Stock bajo", description: "vender con ojo de halcón" },
-  { id: "out_of_stock", label: "Sin stock", description: "bloqueados para venta" },
+  { id: "low_stock", label: "Existencias bajas", description: "vigilar antes de que falte" },
+  { id: "out_of_stock", label: "Sin existencia", description: "requieren entrada antes de vender" },
   { id: "inactive", label: "Inactivos", description: "no se mandan al carrito" }
 ];
 
@@ -375,7 +375,7 @@ export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAUL
               </div>
             </form>
 
-            <nav className={styles.filterRail} aria-label="Filtros de catálogo y stock">
+            <nav className={styles.filterRail} aria-label="Filtros de catálogo y existencias">
               {FILTERS.map((item) => (
                 <button
                   key={item.id}

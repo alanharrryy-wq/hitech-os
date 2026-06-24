@@ -52,14 +52,14 @@ if (exists(files.auditRoute)) {
   check("T04-002 audit route uses outbox", text.includes("getOutboxEvents"), files.auditRoute);
   check("T04-003 audit route uses movements", text.includes("getRecentInventoryMovements"), files.auditRoute);
   check("T04-004 audit route exposes CSV exports", text.includes("salesCsv") && text.includes("eventsCsv") && text.includes("inventoryMovementsCsv"), files.auditRoute);
-  check("T04-005 audit route says no PC dependency", text.includes("no depende de PC"), files.auditRoute);
+  check("T04-005 audit route says no PC dependency", text.includes("PC no es requerido"), files.auditRoute);
 }
 
 if (exists(files.offlineScreen)) {
   const text = read(files.offlineScreen);
   check("T04-006 screen calls offline audit endpoint", text.includes("/api/pos/offline/audit"), files.offlineScreen);
-  check("T04-007 screen renders exports", text.includes("Ventas CSV") && text.includes("Eventos JSON") && text.includes("Movimientos CSV"), files.offlineScreen);
-  check("T04-008 screen renders outbox", text.includes("Outbox reciente"), files.offlineScreen);
+  check("T04-007 screen renders exports", text.includes("Ventas CSV") && text.includes("Pendientes JSON") && text.includes("Movimientos CSV"), files.offlineScreen);
+  check("T04-008 screen renders human pending movements", text.includes("Pendientes recientes") && text.includes("Pendiente por enviar"), files.offlineScreen);
   check("T04-009 screen renders movements", text.includes("Movimientos recientes"), files.offlineScreen);
 }
 
@@ -109,7 +109,7 @@ const report = {
   appRoot,
   checks,
   verdict: ok ? "PASS" : "FAIL",
-  note: "T04 verifies offline audit, outbox visibility, exports, report wiring, and durable engine persistence markers."
+  note: "T04 verifies offline audit, human pending movement visibility, exports, report wiring, and durable engine persistence markers."
 };
 fs.writeFileSync(path.join(evidenceDir, "verify_tablet_04_offline_export.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
 console.log(JSON.stringify(report, null, 2));

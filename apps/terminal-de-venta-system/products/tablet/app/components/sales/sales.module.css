@@ -31,7 +31,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
   align-items: center;
   gap: 14px;
   color: white;
@@ -68,6 +68,22 @@
   padding: 8px 12px;
   color: #facc15;
   font-weight: 900;
+  white-space: nowrap;
+}
+
+.ticketReturnHint {
+  color: rgba(134, 239, 172, 0.88);
+  font-weight: 850;
+}
+
+.returnBadge {
+  border-radius: 999px;
+  border: 1px solid rgba(134, 239, 172, 0.32);
+  padding: 8px 10px;
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.10);
+  font-size: 0.78rem;
+  font-weight: 950;
   white-space: nowrap;
 }
 
@@ -162,6 +178,55 @@
 
 .line:last-child {
   border-bottom: 0;
+}
+
+.returnSummary {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(134, 239, 172, 0.22);
+  background: rgba(34, 197, 94, 0.08);
+  padding: 14px;
+}
+
+.returnSummaryHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.returnSummaryHeader span {
+  color: #86efac;
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.returnCard {
+  display: grid;
+  gap: 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 12px;
+}
+
+.returnCard div {
+  display: grid;
+  gap: 5px;
+}
+
+.returnCard span,
+.returnCard small,
+.returnLines span {
+  color: rgba(248, 250, 252, 0.76);
+}
+
+.returnLines {
+  display: grid;
+  gap: 6px;
 }
 
 .primary,
@@ -319,7 +384,8 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard {
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnSummary {
   border-color: var(--prisma-border-soft);
   color: var(--prisma-text-primary);
   background:
@@ -339,7 +405,11 @@
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketMain span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketReturnHint,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .line span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnCard span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnCard small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnLines span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailHeader p,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel p,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard p,
@@ -351,8 +421,19 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailHeader span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panelEyebrow,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta {
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnSummaryHeader span {
   color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnBadge {
+  border-color: rgba(26, 168, 98, 0.28);
+  color: #117a43;
+  background: rgba(34, 197, 94, 0.10);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .returnCard {
+  background: rgba(255, 255, 255, 0.72);
 }
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow > strong,

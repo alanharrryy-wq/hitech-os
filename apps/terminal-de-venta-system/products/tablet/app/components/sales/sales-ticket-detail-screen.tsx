@@ -62,6 +62,28 @@ type TicketDetail = {
     recordedAt: string;
     source?: string;
   }>;
+  returns?: Array<{
+    id: string;
+    saleFolio: string;
+    reason: string;
+    amountCents: number;
+    status: string;
+    cashier: string;
+    createdAt: string;
+    lines: Array<{
+      id: string;
+      saleLineId?: string | null;
+      productId: string;
+      sku: string;
+      productName: string;
+      qty: number;
+      amountCents: number;
+      restoreStock: boolean;
+      beforeQty?: number | null;
+      afterQty?: number | null;
+      stockMovedAt?: string | null;
+    }>;
+  }>;
   evidence?: {
     contract: string;
     local: boolean;
@@ -167,6 +189,21 @@ function returnedLineCopy(line: TicketLine) {
   const availableQty = Number(line.returnAvailableQty ?? Math.max(0, line.qty - returnedQty));
   if (availableQty > 0) return `Devolución parcial: ${returnedQty} de ${line.qty} pzas. Disponible: ${availableQty}.`;
   return `Devolución registrada: ${returnedQty} de ${line.qty} pzas.`;
+}
+
+function returnStatusCopy(status: string) {
+  const value = status.toLowerCase();
+  if (value.includes("cancel")) return "Cancelada";
+  if (value.includes("closed") || value.includes("complete")) return "Confirmada";
+  return "Registrada";
+}
+
+function returnStockCopy(line: NonNullable<TicketDetail["returns"]>[number]["lines"][number]) {
+  if (!line.restoreStock) return "No movió existencias.";
+  if (typeof line.beforeQty === "number" && typeof line.afterQty === "number") {
+    return `Existencia: ${line.beforeQty} -> ${line.afterQty}.`;
+  }
+  return "Regresó a existencias locales.";
 }
 
 function DetailStateCard({ title, message, canSell, backHref, onRetry }: { title: string; message: string; canSell: boolean; backHref: string; onRetry?: () => void }) {
@@ -329,6 +366,31 @@ export function SalesTicketDetailScreen({
               ) : (
                 <div className={styles.empty}>Este ticket no trae líneas visibles. Revisa la venta antes de continuar.</div>
               )}
+
+              {state.ticket.returns?.length ? (
+                <section className={styles.returnSummary} aria-label="Devoluciones relacionadas">
+                  <div className={styles.returnSummaryHeader}>
+                    <span>Devolución relacionada</span>
+                    <strong>{formatMoney(state.ticket.returns.reduce((sum, item) => sum + item.amountCents, 0))}</strong>
+                  </div>
+                  {state.ticket.returns.map((saleReturn) => (
+                    <article className={styles.returnCard} key={saleReturn.id}>
+                      <div>
+                        <strong>{returnStatusCopy(saleReturn.status)} · {formatMoney(saleReturn.amountCents)}</strong>
+                        <span>Motivo: {saleReturn.reason}. Referencia: {saleReturn.id.slice(0, 12)}. Registró: {saleReturn.cashier}.</span>
+                        <small>{formatDateTime(saleReturn.createdAt)}</small>
+                      </div>
+                      <div className={styles.returnLines}>
+                        {saleReturn.lines.map((line) => (
+                          <span key={line.id}>
+                            {line.productName} · {line.qty} pzas · {formatMoney(line.amountCents)} · {returnStockCopy(line)}
+                          </span>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </section>
+              ) : null}
             </article>
 
             <aside className={styles.panel}>

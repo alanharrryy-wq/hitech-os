@@ -119,6 +119,73 @@ async function returnedRowsForSale(sale: any) {
   );
 }
 
+async function returnsForSale(sale: any) {
+  if (!sale?.businessId || !sale?.id) return [];
+  const rows = await rawRows(
+    `SELECT
+       sr.id AS returnId,
+       sr.saleFolio,
+       sr.reason,
+       sr.amountCents,
+       sr.status,
+       sr.cashier,
+       sr.createdAt,
+       srl.id AS lineId,
+       srl.saleLineId,
+       srl.productId,
+       srl.sku,
+       srl.productName,
+       srl.qty,
+       srl.amountCents AS lineAmountCents,
+       srl.restoreStock,
+       sm.beforeQty,
+       sm.afterQty,
+       sm.createdAt AS stockMovedAt
+     FROM SaleReturn sr
+     LEFT JOIN SaleReturnLine srl ON srl.saleReturnId = sr.id AND srl.businessId = sr.businessId
+     LEFT JOIN StockMovement sm ON sm.id = srl.stockMovementId AND sm.businessId = srl.businessId
+     WHERE sr.businessId = ?
+       AND COALESCE(sr.status, 'CREATED') <> 'CANCELLED'
+       AND (srl.saleId = ? OR sr.saleFolio = ?)
+     ORDER BY sr.createdAt DESC, srl.rowid ASC`,
+    [sale.businessId, sale.id, sale.folio]
+  );
+
+  const byReturn = new Map<string, any>();
+  for (const row of rows) {
+    const returnId = asString(row.returnId);
+    if (!returnId) continue;
+    const current = byReturn.get(returnId) ?? {
+      id: returnId,
+      saleFolio: asString(row.saleFolio, sale.folio),
+      reason: asString(row.reason, "Devolución"),
+      amountCents: asNumber(row.amountCents),
+      status: asString(row.status, "CREATED"),
+      cashier: asString(row.cashier, sale.cashier),
+      createdAt: toIso(row.createdAt),
+      lines: []
+    };
+    const lineId = asNullableString(row.lineId);
+    if (lineId) {
+      current.lines.push({
+        id: lineId,
+        saleLineId: asNullableString(row.saleLineId),
+        productId: asString(row.productId),
+        sku: asString(row.sku),
+        productName: asString(row.productName),
+        qty: asNumber(row.qty),
+        amountCents: asNumber(row.lineAmountCents),
+        restoreStock: row.restoreStock === true || row.restoreStock === 1 || String(row.restoreStock).toLowerCase() === "true",
+        beforeQty: row.beforeQty == null ? null : asNumber(row.beforeQty),
+        afterQty: row.afterQty == null ? null : asNumber(row.afterQty),
+        stockMovedAt: row.stockMovedAt ? toIso(row.stockMovedAt) : null
+      });
+    }
+    byReturn.set(returnId, current);
+  }
+  return [...byReturn.values()];
+}
+
 function syntheticPaymentTender(sale: any) {
   return {
     id: `sale-payment-${sale.id}`,
@@ -200,6 +267,7 @@ async function outboxEvidenceForSale(sale: any) {
 
 async function mapSaleDetail(sale: any, resolvedBy: SaleDetailResolvedBy) {
   const outboxEvents = await outboxEvidenceForSale(sale);
+  const returns = await returnsForSale(sale);
   const store = sale.terminal?.store ?? sale.cashSession?.store ?? null;
   const business = sale.terminal?.business ?? sale.business ?? null;
   const paymentTenders = mapPaymentTenders(sale);
@@ -240,6 +308,7 @@ async function mapSaleDetail(sale: any, resolvedBy: SaleDetailResolvedBy) {
     cashReceivedCents: sale.cashReceivedCents ?? null,
     changeCents: sale.changeCents ?? 0,
     paymentTenders,
+    returns,
     evidence: {
       contract: "SALE_AS_TICKET_EVIDENCE_V1",
       local: true,
