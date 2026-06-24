@@ -73,7 +73,20 @@ function historyRange(input: SalesHistoryInput) {
   return { from, to: toExclusive, days, label, maxDays: MAX_HISTORY_DAYS };
 }
 
-function ticketRows(sales: any[]) {
+function returnSummaryForSale(sale: any, returns: any[]) {
+  const related = returns.filter((row) => row.saleFolio === sale.folio);
+  if (!related.length) return null;
+  const returnedCents = related.reduce((sum, row) => sum + row.amountCents, 0);
+  return {
+    count: related.length,
+    returnedCents,
+    status: returnedCents >= sale.totalCents ? "fully_returned" : "partial_returned",
+    latestReason: related[0]?.reason ?? "Devolución",
+    latestReturnId: related[0]?.id ?? null
+  };
+}
+
+function ticketRows(sales: any[], returns: any[] = []) {
   return sales.map((sale: any) => ({
     saleId: sale.id,
     folio: sale.folio,
@@ -87,6 +100,7 @@ function ticketRows(sales: any[]) {
     completedAt: sale.completedAt ? toIso(sale.completedAt) : null,
     paymentMethod: sale.paymentMethod ?? "cash",
     totalCents: sale.totalCents,
+    returnSummary: returnSummaryForSale(sale, returns),
     lineCount: sale.lines.length,
     unitsSold: sale.lines.reduce((sum: number, line: any) => sum + line.qty, 0),
     lines: sale.lines.map((line: any) => ({
@@ -159,7 +173,7 @@ export async function getTodaySalesSummary(input: SalesTodayInput) {
     averageTicket: sales.length ? Math.round(grossTotalCents / sales.length) / 100 : 0,
     unitsSold,
     topProducts,
-    tickets: ticketRows(sales)
+    tickets: ticketRows(sales, returns)
   };
 }
 
@@ -193,8 +207,6 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
         return haystack.includes(query);
       })
     : sales;
-  const tickets = ticketRows(filtered).filter((ticket) => ticket.saleId && ticket.saleId !== "undefined");
-  const totalCents = tickets.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
   const returns = await prisma.saleReturn.findMany({
     where: {
       businessId: input.businessId,
@@ -202,6 +214,8 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
       createdAt: { gte: range.from, lt: range.to }
     }
   });
+  const tickets = ticketRows(filtered, returns).filter((ticket) => ticket.saleId && ticket.saleId !== "undefined");
+  const totalCents = tickets.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
   const returnsTotalCents = returns.reduce((sum: number, row: any) => sum + row.amountCents, 0);
   const netTotalCents = totalCents - returnsTotalCents;
   const unitsSold = tickets.reduce((sum: number, sale: any) => sum + sale.unitsSold, 0);

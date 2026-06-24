@@ -66,6 +66,7 @@ if (exists(detailRepo)) {
   check("I03A-009E detail repo includes local context", text.includes("storeId") && text.includes("cashSession") && text.includes("terminalName"), detailRepo);
   check("I03A-009F detail repo exposes payment evidence", text.includes("paymentMethod") && text.includes("paymentTenders"), detailRepo);
   check("I03A-009G detail repo exposes outbox evidence", text.includes("outboxEvidenceForSale") && text.includes("evidenceTopics"), detailRepo);
+  check("I03A-009K detail repo exposes return relationship", text.includes("returnsForSale") && text.includes("SaleReturnLine") && text.includes("StockMovement"), detailRepo);
 }
 
 if (exists(summaryRepo)) {
@@ -88,6 +89,7 @@ if (exists(screen)) {
   check("I03A-014 screen renders ticket lines", text.includes("state.ticket.lines.map"), screen);
   check("I03A-014A screen offers retry", text.includes("Reintentar lectura") && text.includes("setReloadToken"), screen);
   check("I03A-014B screen renders payment and context", text.includes("paymentTenders") && text.includes("cashSessionId") && text.includes("businessName"), screen);
+  check("I03A-014C screen renders return details", text.includes("Devoluciones relacionadas") && text.includes("returnStockCopy") && text.includes("Motivo:"));
 }
 
 if (exists(list)) {
@@ -95,6 +97,7 @@ if (exists(list)) {
   check("I03A-015 list uses Next Link", text.includes("next/link") && text.includes("<Link"), list);
   check("I03A-016 list links to canonical saleId", text.includes("encodeURIComponent(ticket.saleId)") && text.includes("businessId"), list);
   check("I03A-017 list has aria label", text.includes("aria-label"), list);
+  check("I03A-017A list marks returned tickets", text.includes("ticket.returnSummary") && text.includes("Devolución parcial"), list);
 }
 
 if (exists(css)) {

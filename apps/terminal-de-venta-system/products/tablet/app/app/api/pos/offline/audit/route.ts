@@ -68,9 +68,9 @@ export async function GET(request: Request) {
       },
       diagnostics: [
         "Tablet opera con datos locales.",
-        "Outbox conserva eventos pendientes para sincronización posterior.",
-        "Los exports salen desde endpoints locales de Tablet.",
-        "Este endpoint no depende de PC para consultar el estado operativo local."
+        "Tus movimientos pendientes quedan guardados para enviarse cuando vuelva la conexión.",
+        "Los respaldos se descargan desde esta Tablet.",
+        "PC no es requerido para revisar ventas, pendientes ni existencias locales."
       ]
     };
 

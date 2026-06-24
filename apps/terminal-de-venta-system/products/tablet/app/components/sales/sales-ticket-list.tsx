@@ -22,6 +22,11 @@ export function SalesTicketList({
     <section className={styles.ticketList} aria-label="Tickets cerrados del día">
       {validTickets.map((ticket) => {
         const detailHref = `${basePath}/${encodeURIComponent(ticket.saleId)}?businessId=${encodeURIComponent(ticket.businessId)}`;
+        const returnLabel = ticket.returnSummary
+          ? ticket.returnSummary.status === "fully_returned"
+            ? "Devuelto"
+            : "Devolución parcial"
+          : null;
         return (
           <Link
             className={styles.ticketRow}
@@ -35,8 +40,14 @@ export function SalesTicketList({
               <span>
                 {formatTicketTime(ticket.createdAt)} · {ticket.cashier} · {ticket.lineCount} líneas
               </span>
+              {ticket.returnSummary ? (
+                <small className={styles.ticketReturnHint}>
+                  {returnLabel}: {formatMoney(ticket.returnSummary.returnedCents)} · {ticket.returnSummary.latestReason ?? "Devolución registrada"}
+                </small>
+              ) : null}
             </div>
             <strong>{formatMoney(ticket.totalCents)}</strong>
+            {returnLabel ? <span className={styles.returnBadge}>{returnLabel}</span> : null}
             <span className={styles.detailCta}>Ver detalle</span>
           </Link>
         );
