@@ -21,7 +21,7 @@ jobs:
     env:
       PYTHONPYCACHEPREFIX: /tmp/hitech_orchestrator_pycache
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Setup Python
         uses: actions/setup-python@v6

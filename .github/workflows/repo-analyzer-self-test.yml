@@ -20,7 +20,7 @@ jobs:
       HITECH_QT_FAILURE_INJECTION_MODE: "off"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -84,7 +84,7 @@ jobs:
       HITECH_QT_INCLUDE_DEV_TOOLS: "1"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Python
         uses: actions/setup-python@v6
