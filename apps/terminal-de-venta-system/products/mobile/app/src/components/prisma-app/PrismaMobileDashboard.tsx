@@ -157,6 +157,7 @@ export function PrismaMobileDashboard() {
 
   const snapshot = clientSnapshot.snapshot;
   const readiness = snapshot.summary.dataReadiness;
+  const account = snapshot.summary.account;
   const commandMetrics = [
     { label: "Tickets", value: snapshot.salesToday.tickets.toString(), detail: snapshot.salesToday.averageTicketLabel },
     { label: "Alertas", value: hero.urgentAlerts.toString(), detail: snapshot.alerts.counts.total > 0 ? `${snapshot.alerts.counts.total} activas` : "sin alertas activas" },
@@ -171,7 +172,7 @@ export function PrismaMobileDashboard() {
   const topAlert = snapshot.alerts.alerts[0] ?? null;
   const cashDeltaLabel = formatSignedMxnFromCents(snapshot.cashCurrent.differenceCents);
   const cashNeedsReview = snapshot.cashCurrent.countedLabel.toLowerCase().includes("sin conteo") || Math.abs(snapshot.cashCurrent.differenceCents) > 0;
-  const firstViewportSummary = `PRISMA Mobile · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label} · Caja: ${snapshot.cashCurrent.status} ${cashDeltaLabel} · Alertas: ${snapshot.alerts.counts.total}`;
+  const firstViewportSummary = `PRISMA Mobile · ${account.customerName} · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label} · Caja: ${snapshot.cashCurrent.status} ${cashDeltaLabel} · Alertas: ${snapshot.alerts.counts.total}`;
 
   return (
     <main
@@ -200,6 +201,7 @@ export function PrismaMobileDashboard() {
           </div>
           <div className={styles.brandMeta}>
             <span className={`${styles.statusChip} ${healthToneClass[hero.health]}`} data-prisma-zone="mobile-status-chip">{bridgeLabel}</span>
+            <span>{account.customerName}</span>
             <span>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}</span>
             <span>{snapshot.alerts.counts.total} alertas</span>
           </div>
@@ -250,7 +252,7 @@ export function PrismaMobileDashboard() {
               <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("prisma:open-alerts"))}>Abrir alertas</button>
               <button
                 type="button"
-                onClick={() => copyMobileText(`PRISMA Mobile · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label}`)}
+                onClick={() => copyMobileText(`PRISMA Mobile · ${account.customerName} · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label}`)}
               >
                 Copiar resumen
               </button>
@@ -258,6 +260,12 @@ export function PrismaMobileDashboard() {
           </div>
 
           <section className={styles.crystalOperationalDock} aria-label="Acciones verificables del Bloque 1" data-prisma-zone="mobile-block1-visual-priority">
+            <article>
+              <span>Cuenta</span>
+              <strong>{account.customerName}</strong>
+              <p>{account.authorizationLabel} · {account.licenseStateLabel}</p>
+              <small>{account.planLabel} · {account.mobileDeviceLabel} con {account.tabletDeviceLabel} y {account.pcDeviceLabel}</small>
+            </article>
             <article>
               <span>Confianza del dato</span>
               <strong>{readiness.label}</strong>

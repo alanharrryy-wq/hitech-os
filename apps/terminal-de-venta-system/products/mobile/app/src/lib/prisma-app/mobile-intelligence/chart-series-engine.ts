@@ -25,7 +25,7 @@ export function buildSyncStatus(state: MobileDataPlaneState, report: DataQuality
     failedCount: tablet?.status === "ok" ? state.outbox.failed : null,
     oldestPendingAt: state.outbox.oldestPendingAt,
     freshnessSeconds: tablet?.freshnessSeconds ?? null,
-    evidence: [evidence("sync-outbox", "Outbox", "Tablet POS", `${state.outbox.pending} pendientes, ${state.outbox.failed} fallidos`)]
+    evidence: [evidence("sync-pending-local", "Pendientes locales", "Tablet POS", `${state.outbox.pending} pendientes, ${state.outbox.failed} fallidos`)]
   };
 }
 
@@ -167,12 +167,12 @@ export function buildChartViewModels(state: MobileDataPlaneState, report: DataQu
     }),
     chart({
       chartKey: "sync-freshness-outbox",
-      title: "Frescura de sync",
+      title: "Estado de actualización",
       rangeKey: "today",
       points: syncPoints,
       unit: "count",
-      summary: `Sync ${sync.status}; ${sync.pendingCount ?? "?"} pendientes y ${sync.failedCount ?? "?"} fallidos.`,
-      emptyState: "Sync no disponible.",
+      summary: `Actualizacion ${sync.status}; ${sync.pendingCount ?? "?"} pendientes y ${sync.failedCount ?? "?"} fallidos.`,
+      emptyState: "Estado de actualizacion no disponible.",
       source: "Tablet POS",
       confidence: report.confidence,
       evidence: sync.evidence

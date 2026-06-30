@@ -1,4 +1,5 @@
 import type { MobileDataPlaneConfig } from "./types";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../../shared/customer/prisma-original-customer";
 
 function readInt(name: string, fallback: number, min = 0, max = Number.MAX_SAFE_INTEGER): number {
   const raw = process.env[name];
@@ -30,9 +31,18 @@ function readOrigin(name: string, fallback: string | null): string | null {
 
 export function getMobileDataPlaneConfig(): MobileDataPlaneConfig {
   return {
-    businessId: readString("PRISMA_MOBILE_BUSINESS_ID", "biz_tablet_standalone"),
-    terminalId: readString("PRISMA_MOBILE_TERMINAL_ID", "terminal_tablet_local_01"),
-    businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", "PRISMA Operación"),
+    businessId: readString("PRISMA_MOBILE_BUSINESS_ID", PRISMA_ORIGINAL_CUSTOMER.businessId),
+    terminalId: readString("PRISMA_MOBILE_TERMINAL_ID", PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId),
+    businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", PRISMA_ORIGINAL_CUSTOMER.displayName),
+    customerId: readString("PRISMA_MOBILE_CUSTOMER_ID", PRISMA_ORIGINAL_CUSTOMER.customerId),
+    tenantId: readString("PRISMA_MOBILE_TENANT_ID", PRISMA_ORIGINAL_CUSTOMER.tenantId),
+    licenseId: readString("PRISMA_MOBILE_LICENSE_ID", PRISMA_ORIGINAL_CUSTOMER.licenseId),
+    planLabel: readString("PRISMA_MOBILE_PLAN_LABEL", PRISMA_ORIGINAL_CUSTOMER.planLabel),
+    licenseStateLabel: readString("PRISMA_MOBILE_LICENSE_STATE_LABEL", "Licencia local pendiente de confirmacion"),
+    authorizationLabel: readString("PRISMA_MOBILE_AUTHORIZATION_LABEL", "Mobile vinculado a la cuenta"),
+    pcDeviceId: readString("PRISMA_MOBILE_PC_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.pcDeviceId),
+    tabletDeviceId: readString("PRISMA_MOBILE_TABLET_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId),
+    mobileDeviceId: readString("PRISMA_MOBILE_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId),
     tabletOrigin: readOrigin("PRISMA_MOBILE_TABLET_ORIGIN", "http://127.0.0.1:3120"),
     pcOrigin: readOrigin("PRISMA_MOBILE_PC_ORIGIN", "http://127.0.0.1:3130"),
     controlOrigin: readOrigin("PRISMA_MOBILE_CONTROL_ORIGIN", null),

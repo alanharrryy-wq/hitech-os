@@ -80,6 +80,19 @@ export const PrismaMobileDataReadinessSchema = z.object({
   actions: z.array(PrismaMobileDataReadinessActionSchema).default([])
 });
 
+export const PrismaMobileAccountSummarySchema = z.object({
+  customerName: z.string().min(1),
+  customerId: z.string().min(1),
+  tenantId: z.string().min(1),
+  licenseId: z.string().min(1),
+  planLabel: z.string().min(1),
+  licenseStateLabel: z.string().min(1),
+  authorizationLabel: z.string().min(1),
+  mobileDeviceLabel: z.string().min(1),
+  tabletDeviceLabel: z.string().min(1),
+  pcDeviceLabel: z.string().min(1)
+});
+
 export const PrismaMobileSalesPointSchema = z.object({
   hour: z.string().min(1),
   label: z.string().min(1),
@@ -169,6 +182,18 @@ export const PrismaMobileSummaryPayloadSchema = z.object({
     facts: [],
     actions: []
   }),
+  account: PrismaMobileAccountSummarySchema.default({
+    customerName: "Prisma Original Customer",
+    customerId: "cust_prisma_original_customer",
+    tenantId: "tenant_prisma_original_customer",
+    licenseId: "lic_prisma_original_customer_001",
+    planLabel: "Business",
+    licenseStateLabel: "Licencia local pendiente de confirmacion",
+    authorizationLabel: "Mobile vinculado a la cuenta",
+    mobileDeviceLabel: "Mobile vinculado",
+    tabletDeviceLabel: "Tablet vinculada",
+    pcDeviceLabel: "PC vinculada"
+  }),
   kpis: z.array(PrismaMobileKpiSchema).min(1),
   quickActions: z.array(PrismaMobileActionSchema)
 });
@@ -246,6 +271,7 @@ export type PrismaMobileKpi = z.infer<typeof PrismaMobileKpiSchema>;
 export type PrismaMobileAction = z.infer<typeof PrismaMobileActionSchema>;
 export type PrismaMobileDataReadiness = z.infer<typeof PrismaMobileDataReadinessSchema>;
 export type PrismaMobileDataReadinessAction = z.infer<typeof PrismaMobileDataReadinessActionSchema>;
+export type PrismaMobileAccountSummary = z.infer<typeof PrismaMobileAccountSummarySchema>;
 export type PrismaMobileSalesPoint = z.infer<typeof PrismaMobileSalesPointSchema>;
 export type PrismaMobileCashMovement = z.infer<typeof PrismaMobileCashMovementSchema>;
 export type PrismaMobileInventoryItem = z.infer<typeof PrismaMobileInventoryItemSchema>;
