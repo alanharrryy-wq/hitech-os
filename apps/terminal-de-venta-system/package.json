@@ -79,6 +79,7 @@
     "verify:ack-required": "node tools/verify-ack-required.mjs",
     "verify:pc-ingest-idempotency": "pnpm -C products/pc/app verify:pc-ingest-idempotency",
     "verify:mobile-sync-visibility": "pnpm -C products/mobile/app verify:mobile-sync-visibility",
+    "verify:prisma-original-customer-sync-e2e": "pnpm -C products/pc/app verify:prisma-original-customer-sync-e2e",
     "quality:list": "node quality/bin/prisma-quality.mjs --list-profiles --repo-root .",
     "quality:self-test": "node quality/bin/prisma-quality.mjs --self-test --repo-root .",
     "quality:client-readiness": "node quality/bin/prisma-quality.mjs --profile client-readiness --repo-root . --out-dir F:/descargasf",

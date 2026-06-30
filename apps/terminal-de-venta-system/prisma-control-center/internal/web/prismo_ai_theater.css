@@ -370,3 +370,199 @@ body[data-prisma-interface="license"] #subtitle {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* PRISMO UI1 Chat Operational Layout: clean theater, right history, drawers. */
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout {
+  grid-template-columns: minmax(260px, .72fr) minmax(520px, 1.52fr) minmax(300px, .82fr);
+  align-items: start;
+}
+
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-signal-intake,
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-center-stage,
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-chat-history-panel {
+  min-height: 0;
+}
+
+#prismo-console .prismo-advanced-options {
+  margin-top: 12px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 18px;
+  padding: 10px;
+  background: rgba(255,255,255,.035);
+}
+
+#prismo-console .prismo-advanced-options summary {
+  cursor: pointer;
+  color: var(--prismo-info);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+#prismo-console .prismo-advanced-options[open] summary {
+  margin-bottom: 10px;
+}
+
+#prismo-console .prismo-chat-answer-card .prismo-safe-step,
+#prismo-console .prismo-chat-answer-card .prismo-risk-summary {
+  margin-top: 2px;
+}
+
+#prismo-console .prismo-render-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+#prismo-console .prismo-render-grid .prismo-render-card:first-child {
+  grid-column: 1 / -1;
+}
+
+#prismo-console .prismo-feedback-dock {
+  position: sticky;
+  bottom: 10px;
+  margin-top: 4px;
+  padding: 8px;
+  border-radius: 999px;
+  justify-content: flex-start;
+}
+
+#prismo-console .prismo-feedback-dock button {
+  min-height: 30px;
+  padding: 0 10px;
+}
+
+#prismo-console .prismo-feedback-dock span {
+  margin-left: auto;
+}
+
+#prismo-console .prismo-bottom-rail,
+#prismo-console .prismo-decision-pipeline {
+  display: none;
+}
+
+#prismo-console .prismo-history-shell,
+#prismo-console .prismo-live-context-card {
+  min-height: auto;
+}
+
+#prismo-console .prismo-history-list,
+#prismo-console .prismo-live-context-grid {
+  display: grid;
+  gap: 10px;
+  max-height: 520px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+#prismo-console .prismo-history-item {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 16px;
+  padding: 12px;
+  color: var(--prismo-text);
+  text-align: left;
+  background: rgba(255,255,255,.045);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+#prismo-console .prismo-history-item:hover,
+#prismo-console .prismo-history-item:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--prismo-line-hot);
+  outline: none;
+}
+
+#prismo-console .prismo-history-item span {
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+#prismo-console .prismo-history-item small,
+#prismo-console .prismo-history-item em,
+#prismo-console .prismo-live-app small {
+  color: var(--prismo-muted);
+  font-style: normal;
+  line-height: 1.35;
+}
+
+#prismo-console .prismo-history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#prismo-console .prismo-live-app {
+  border: 1px solid var(--prismo-line);
+  border-radius: 16px;
+  padding: 11px;
+  background: rgba(255,255,255,.045);
+}
+
+#prismo-console .prismo-live-app[data-status="ready"] {
+  border-color: rgba(115,242,195,.28);
+}
+
+#prismo-console .prismo-drawer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+#prismo-console .prismo-drawer-tabs button {
+  min-height: 34px;
+  border: 1px solid var(--prismo-line);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--prismo-muted);
+  background: rgba(255,255,255,.052);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+#prismo-console .prismo-drawer-tabs button[aria-pressed="true"] {
+  color: var(--prismo-text);
+  border-color: rgba(115,242,195,.38);
+  background: rgba(115,242,195,.12);
+}
+
+#prismo-console .prismo-drawer-section[hidden] {
+  display: none;
+}
+
+#prismo-console .prismo-drawer-section {
+  min-height: 0;
+}
+
+#prismo-console #prismoMemoryTrace {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--prismo-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 1320px) {
+  #prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout {
+    grid-template-columns: minmax(260px, .78fr) minmax(440px, 1.22fr);
+  }
+  #prismo-console .prismo-chat-history-panel {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  #prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout,
+  #prismo-console .prismo-chat-history-panel,
+  #prismo-console .prismo-render-grid {
+    grid-template-columns: 1fr;
+  }
+}

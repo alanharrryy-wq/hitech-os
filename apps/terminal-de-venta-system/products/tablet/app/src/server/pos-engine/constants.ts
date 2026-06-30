@@ -1,7 +1,9 @@
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
+
 export const POS_ENGINE_VERSION = "01A_ENGINE";
 
-export const DEFAULT_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || "biz_tablet_standalone";
-export const DEFAULT_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
+export const DEFAULT_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.businessId;
+export const DEFAULT_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId;
 export const DEFAULT_LOCATION = "tablet-floor";
 export const DEFAULT_CASHIER = process.env.PRISMA_TABLET_CASHIER?.trim() || "tablet-cashier";
 

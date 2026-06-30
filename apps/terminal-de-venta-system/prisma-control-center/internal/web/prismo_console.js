@@ -2,6 +2,8 @@
   "use strict";
 
   const STORE_INTERFACE = "prisma-control-center-interface-v1";
+  const STORE_HISTORY = "prismo-chat-history-v1";
+  const MAX_HISTORY_ITEMS = 28;
   const FILE_PREVIEW_LIMIT = 180000;
   const SUGGESTIONS = [
     "¿Qué evidencia reciente explica el estado de PRISMO?",
@@ -55,7 +57,9 @@
     evidenceFiles: [],
     lastResponse: null,
     bridge: null,
-    feedbackState: "pending"
+    feedbackState: "pending",
+    history: [],
+    appLiveContext: null
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -350,6 +354,103 @@
     };
   }
 
+
+
+  function clampText(value, max = 460) {
+    const text = String(value ?? "");
+    return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+  }
+
+  function loadHistory() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORE_HISTORY) || "[]");
+      STATE.history = Array.isArray(parsed) ? parsed.slice(0, MAX_HISTORY_ITEMS) : [];
+    } catch (_err) {
+      STATE.history = [];
+    }
+  }
+
+  function saveHistory() {
+    try { localStorage.setItem(STORE_HISTORY, JSON.stringify(STATE.history.slice(0, MAX_HISTORY_ITEMS))); } catch (_err) {}
+  }
+
+  function compactResponseForHistory(response) {
+    const payload = response || {};
+    return {
+      ok: payload.ok !== false,
+      status: payload.status || "success",
+      request_id: payload.request_id || "",
+      mode: payload.mode || STATE.mode,
+      demo_mode: Boolean(payload.demo_mode),
+      direct_answer: clampText(payload.direct_answer || "", 1600),
+      certainty_level: payload.certainty_level || "contextual",
+      risk: payload.risk || {},
+      safe_next_step: payload.safe_next_step || "",
+      interpretation: payload.interpretation || {},
+      authority: payload.authority || {},
+      evidence: Array.isArray(payload.evidence) ? payload.evidence.slice(0, 8) : [],
+      render_plan: payload.render_plan || {},
+      render_blocks: selectDisplayBlocks(payload.render_blocks || payload.blocks || [], payload).slice(0, 3),
+      blocks: selectDisplayBlocks(payload.render_blocks || payload.blocks || [], payload).slice(0, 3),
+      response_memory_chain: payload.response_memory_chain || {},
+      memory_used: Array.isArray(payload.memory_used) ? payload.memory_used.slice(0, 8) : [],
+      technical_trace: payload.technical_trace ? { adapter_path: payload.technical_trace.adapter_path, missing_sources: payload.technical_trace.missing_sources || [] } : {},
+      meta: payload.meta || {}
+    };
+  }
+
+  function renderHistory() {
+    const root = $("#prismoHistoryList");
+    const count = $("#prismoHistoryCount");
+    if (count) count.textContent = String(STATE.history.length);
+    if (!root) return;
+    if (!STATE.history.length) {
+      root.innerHTML = `<div class="prismo-empty">Haz una consulta y PRISMO la guardará aquí como conversación recuperable.</div>`;
+      return;
+    }
+    root.innerHTML = STATE.history.map((item, index) => `
+      <button type="button" class="prismo-history-item" data-prismo-history-index="${index}">
+        <span>${esc(item.query || "Consulta PRISMO")}</span>
+        <small>${esc(item.renderType || item.status || "respuesta")} · ${esc(item.timeLabel || "reciente")}</small>
+        <em>${esc(item.summary || "")}</em>
+      </button>`).join("");
+  }
+
+  function addHistoryEntry(requestPayload, response) {
+    const query = (requestPayload && (requestPayload.message || requestPayload.query)) || (response && (response.query || response.message)) || "";
+    if (!query.trim()) return;
+    const compact = compactResponseForHistory(response);
+    const firstBlock = (compact.render_blocks || compact.blocks || [])[0] || {};
+    const entry = {
+      id: compact.request_id || `local_${Date.now()}`,
+      ts: new Date().toISOString(),
+      timeLabel: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      query: clampText(query, 260),
+      summary: clampText(compact.direct_answer || compact.safe_next_step || "", 160),
+      status: compact.status || "success",
+      renderType: firstBlock.type || compact.certainty_level || "respuesta",
+      response: compact
+    };
+    STATE.history = [entry, ...STATE.history.filter((item) => item.id !== entry.id)].slice(0, MAX_HISTORY_ITEMS);
+    saveHistory();
+    renderHistory();
+  }
+
+  function restoreHistoryEntry(index) {
+    const entry = STATE.history[Number(index)];
+    if (!entry || !entry.response) return;
+    const prompt = $("#prismoPrompt");
+    if (prompt) prompt.value = entry.query || "";
+    renderResponse(entry.response, null, { fromHistory: true });
+    if (prompt) prompt.focus();
+  }
+
+  function clearHistory() {
+    STATE.history = [];
+    saveHistory();
+    renderHistory();
+  }
+
   function renderLoading() {
     const stream = $("#prismoResponseStream");
     if (!stream) return;
@@ -364,30 +465,33 @@
       </div>`;
   }
 
-  function renderResponse(payload) {
+  function renderResponse(payload, requestPayload, options = {}) {
     STATE.lastResponse = payload;
     setState(payload.status === "blocked" ? "blocked" : payload.status === "error" ? "error" : payload.status === "partial" ? "partial" : "success");
     const stream = $("#prismoResponseStream");
     if (stream) {
       const certainty = payload.certainty_level || "NO_CONFIRMADO";
       const risk = payload.risk || {};
+      const showRisk = ["high", "critical"].includes(String(risk.level || "").toLowerCase()) || payload.status === "blocked";
+      const primaryType = (payload.render_plan && payload.render_plan.selection && payload.render_plan.selection.primary_block_type) || "visual";
       stream.innerHTML = `
-        <div class="prismo-response-card">
+        <div class="prismo-response-card prismo-chat-answer-card">
           <div class="prismo-response-meta">
             <span class="prismo-tag" data-state="${payload.status === "blocked" ? "bad" : "ok"}">${esc(payload.status || "success")}</span>
             <span class="prismo-tag">${esc((payload.interpretation && payload.interpretation.intent) || payload.mode || STATE.mode)}</span>
             <span class="prismo-tag" data-state="${payload.demo_mode ? "warn" : "ok"}">${payload.demo_mode ? "deterministic adapter" : "live bridge"}</span>
+            <span class="prismo-tag">${esc(primaryType)}</span>
             <span class="prismo-tag">${esc(certainty)}</span>
           </div>
           <p class="prismo-answer">${esc(payload.direct_answer || "")}</p>
-          <div class="prismo-risk-summary"><strong>Riesgo</strong><br>${esc(risk.summary || risk.level || "sin riesgo reportado")}</div>
-          <div class="prismo-safe-step"><strong>Siguiente paso seguro</strong><br>${esc(payload.safe_next_step || "Reunir evidencia current.")}</div>
+          <div class="prismo-safe-step"><strong>Siguiente paso</strong><br>${esc(payload.safe_next_step || "Reunir evidencia current.")}</div>
+          ${showRisk ? `<div class="prismo-risk-summary"><strong>Riesgo visible</strong><br>${esc(risk.summary || risk.level || "sin riesgo reportado")}</div>` : ""}
         </div>`;
     }
     if (payload.interpretation) renderInterpretationChips(payload.interpretation.chips || []);
     renderAuthority(payload.authority || {});
     renderEvidence(payload.evidence || []);
-    renderBlocks(payload.blocks || payload.render_blocks || []);
+    renderBlocks(payload.blocks || payload.render_blocks || [], payload);
     renderBottomRail(payload);
     renderTechnicalDrawer(payload);
     renderFeedbackDock(payload);
@@ -416,7 +520,48 @@
       <div class="prismo-evidence-row"><strong>Gobernanza</strong><small>Reglas, permisos y límites de mutación visibles.</small></div>`;
   }
 
-  function renderBlocks(blocks) {
+
+  function inferPreferredRenderType(payload, blocks) {
+    const query = String((payload && (payload.query || payload.message)) || "").toLowerCase();
+    const interpretation = (payload && payload.interpretation) || {};
+    const intent = String(interpretation.intent || "").toLowerCase();
+    const lens = String(interpretation.lens || "").toLowerCase();
+    const area = String(interpretation.area || "").toLowerCase();
+    const has = (type) => blocks.some((block) => block && block.type === type);
+    const pick = (types) => types.find((type) => has(type));
+    if (/gr[aá]fic|chart|m[eé]tric|n[uú]mero|score|porcentaje/.test(query)) return pick(["chart_spec", "runtime_map", "impact_map"]);
+    if (/graph|grafo|flujo|conect|depend|mapa|ruta|apps|app live|tiempo real|runtime/.test(query) || lens === "runtime_state") return pick(["runtime_map", "impact_map", "flow_diagram"]);
+    if (/compar|diff|versus| vs /.test(query) || intent === "compare") return pick(["diff_view", "comparison_board"]);
+    if (/timeline|l[ií]nea|cambi[oó]|hist[oó]rico|evoluci/.test(query)) return pick(["timeline"]);
+    if (/riesgo|risk|bloque|blocker/.test(query) || intent === "audit") return pick(["risk_matrix", "checklist"]);
+    if (/autoridad|govern|gobern|canon|preceden/.test(query) || area === "governance") return pick(["authority_map", "authority_strip"]);
+    if (/evidencia|evidence|vault|logs?/.test(query) || lens === "recent_evidence") return pick(["evidence_board", "evidence_cards", "context_pack_explorer"]);
+    if (/paso|siguiente|qu[eé] hago|accion|acci[oó]n|check/.test(query) || intent === "recommend" || intent === "prepare_action") return pick(["checklist", "next_best_action", "protocol_ladder"]);
+    return pick(["flow_diagram", "runtime_map", "executive_brief", "checklist", "risk_matrix"]);
+  }
+
+  function selectDisplayBlocks(blocks, payload) {
+    const source = Array.isArray(blocks) ? blocks.filter(Boolean) : [];
+    if (!source.length) return [];
+    const hiddenTypes = new Set(["technical_drawer", "action_bar", "feedback_dock", "memory_trace", "insight_chips"]);
+    const visual = source.filter((block) => block && !hiddenTypes.has(block.type));
+    if (visual.length <= 3) {
+      return visual.map((block, index) => ({ ...block, layout: index === 0 ? "full" : (block.layout || "half") }));
+    }
+    const preferredType = (payload && payload.render_plan && payload.render_plan.selection && payload.render_plan.selection.primary_block_type) || inferPreferredRenderType(payload || {}, visual);
+    const selected = [];
+    const take = (predicate) => {
+      const item = visual.find((block) => predicate(block) && !selected.some((picked) => picked.id === block.id));
+      if (item) selected.push(item);
+    };
+    if (preferredType) take((block) => block.type === preferredType);
+    take((block) => ["runtime_map", "impact_map", "flow_diagram", "chart_spec", "diff_view", "timeline", "risk_matrix", "checklist", "evidence_board", "authority_map"].includes(block.type));
+    take((block) => ["next_best_action", "protocol_ladder", "executive_brief"].includes(block.type));
+    visual.forEach((block) => { if (selected.length < 3 && !selected.some((picked) => picked.id === block.id)) selected.push(block); });
+    return selected.slice(0, 3).map((block, index) => ({ ...block, layout: index === 0 ? "full" : (block.layout || "half") }));
+  }
+
+  function renderBlocks(blocks, payload) {
     const root = $("#prismoRenderGrid");
     if (!root) return;
     root.innerHTML = "";
@@ -424,7 +569,7 @@
       root.innerHTML = `<div class="prismo-empty">Renderer PRISMO no disponible.</div>`;
       return;
     }
-    blocks.forEach((block) => root.appendChild(window.PRISMO_RENDERERS.renderBlock(block)));
+    selectDisplayBlocks(blocks, payload || STATE.lastResponse || {}).forEach((block) => root.appendChild(window.PRISMO_RENDERERS.renderBlock(block)));
   }
 
   function renderBottomRail(payload) {
@@ -462,15 +607,30 @@
       errors: payload.errors || []
     };
     trace.textContent = JSON.stringify(view, null, 2);
+    const memory = $("#prismoMemoryTrace");
+    if (memory) memory.textContent = JSON.stringify({ memory_used: payload.memory_used || [], response_memory_chain: payload.response_memory_chain || {} }, null, 2);
   }
 
-  function openTechnicalDrawer() {
+
+
+  function selectDrawerTab(name) {
+    const next = name || "trace";
+    $$("[data-prismo-drawer-tab]").forEach((button) => {
+      button.setAttribute("aria-pressed", button.dataset.prismoDrawerTab === next ? "true" : "false");
+    });
+    $$("[data-prismo-drawer-section]").forEach((section) => {
+      section.hidden = section.dataset.prismoDrawerSection !== next;
+    });
+  }
+
+  function openTechnicalDrawer(tab = "trace") {
     const drawer = $("#prismoTechnicalDrawer");
     const button = $("#prismoCommandButton");
     if (!drawer) return;
     drawer.hidden = false;
     drawer.dataset.open = "true";
     if (button) button.setAttribute("aria-expanded", "true");
+    selectDrawerTab(tab);
   }
 
   function closeTechnicalDrawer() {
@@ -544,12 +704,86 @@
       });
     });
     $("#prismoTechnicalClose")?.addEventListener("click", closeTechnicalDrawer);
+    $("#prismoOpenTechnical")?.addEventListener("click", () => openTechnicalDrawer("trace"));
+    $$("[data-prismo-drawer-tab]").forEach((button) => button.addEventListener("click", () => selectDrawerTab(button.dataset.prismoDrawerTab || "trace")));
   }
 
   function wireFeedback() {
     $$("#prismoFeedbackDock [data-prismo-feedback]").forEach((button) => {
       button.addEventListener("click", () => sendFeedback(button.dataset.prismoFeedback || "pending"));
     });
+  }
+
+
+
+  function renderAppLiveContext(payload) {
+    const root = $("#prismoAppLiveContext");
+    const state = $("#prismoAppLiveState");
+    if (!root) return;
+    const data = payload && payload.ok ? payload : null;
+    if (!data) {
+      if (state) { state.textContent = "offline"; state.dataset.state = "warn"; }
+      root.innerHTML = `<div class="prismo-mini-card"><strong>Índice no disponible</strong><small>El endpoint estará activo tras recargar el backend de PRISMO.</small></div>`;
+      return;
+    }
+    STATE.appLiveContext = data;
+    const apps = Array.isArray(data.apps) ? data.apps : [];
+    const summary = data.summary || {};
+    const evidence = data.evidence_library || {};
+    const delta = data.delta_scanner || {};
+    const memoryLayers = data.memory_layers || {};
+    if (state) { state.textContent = data.cache_written ? "brain indexed" : "read-only"; state.dataset.state = "ok"; }
+    const head = `
+      <div class="prismo-mini-card">
+        <strong>Project Brain</strong>
+        <small>${esc(summary.file_count || 0)} files · ${esc(summary.route_count || 0)} routes · ${esc(summary.memory_layer_count || Object.keys(memoryLayers).length || 0)} memorias</small>
+      </div>
+      <div class="prismo-mini-card">
+        <strong>Evidence Librarian</strong>
+        <small>${esc(evidence.zip_count || 0)} ZIPs · fail=${esc(Boolean(evidence.latest_fail))} · result=${esc(Boolean(evidence.latest_result))}</small>
+      </div>
+      <div class="prismo-mini-card">
+        <strong>Delta Scanner</strong>
+        <small>${esc(delta.available ? "activo" : "primer índice")} · ${esc(delta.changed_count_sampled || 0)} changed · ${esc(delta.added_count_sampled || 0)} added</small>
+      </div>`;
+    const body = apps.slice(0, 5).map((app) => `
+      <div class="prismo-live-app" data-status="${esc(app.exists ? "ready" : "missing")}">
+        <strong>${esc(app.label || app.id)}</strong>
+        <small>${esc(app.file_count || 0)} files · ${esc(app.route_count || 0)} routes · ${esc(app.component_count || 0)} comps · ${esc(app.css_count || 0)} css</small>
+      </div>`).join("");
+    root.innerHTML = head + (body || `<div class="prismo-mini-card"><strong>Sin apps detectadas</strong><small>Read-only scan completado sin superficies.</small></div>`);
+  }
+
+  async function refreshAppLiveContext(query = "") {
+    try {
+      const suffix = query ? `?q=${encodeURIComponent(query.slice(0, 280))}` : "";
+      const payload = await fetchJson(`/api/prismo/app-live-context${suffix}`);
+      renderAppLiveContext(payload);
+      return payload;
+    } catch (_error) {
+      renderAppLiveContext(null);
+      return null;
+    }
+  }
+
+  function resetComposerAfterSuccess() {
+    const prompt = $("#prismoPrompt");
+    const evidence = $("#prismoEvidenceText");
+    const context = $("#prismoContextText");
+    const file = $("#prismoEvidenceFile");
+    if (prompt) prompt.value = "";
+    if (evidence) evidence.value = "";
+    if (context) context.value = "";
+    if (file) file.value = "";
+    STATE.evidenceFiles = [];
+    const note = $("#prismoFileNote");
+    if (note) note.textContent = "Panel limpio. Puedes preguntar otra cosa.";
+    renderInterpretationChips();
+    if (prompt) window.setTimeout(() => prompt.focus(), 20);
+  }
+
+  function responseClearsComposer(response) {
+    return response && response.ok !== false && !["error", "blocked"].includes(String(response.status || "success").toLowerCase());
   }
 
   async function submit(event) {
@@ -567,16 +801,20 @@
     renderLoading();
     try {
       setState("thinking");
+      const liveContext = await refreshAppLiveContext(payload.message || payload.evidenceText || "");
+      if (liveContext) payload.client_context.app_live_context = { generated_at: liveContext.generated_at, apps: (liveContext.apps || []).map((app) => ({ id: app.id, file_count: app.file_count, route_count: app.route_count, css_count: app.css_count })) };
       const response = await fetchJson("/api/prismo/theater/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
       setState("rendering");
-      renderResponse(response);
+      renderResponse(response, payload);
+      addHistoryEntry(payload, response);
+      if (responseClearsComposer(response)) resetComposerAfterSuccess();
     } catch (error) {
       setState("error");
-      renderResponse(error.payload || {
+      const errorResponse = error.payload || {
         ok: false,
         status: "error",
         mode: STATE.mode,
@@ -588,7 +826,11 @@
         evidence: [],
         render_blocks: [],
         meta: { provider: "demo" }
-      });
+      };
+      renderResponse(errorResponse, payload);
+      addHistoryEntry(payload, errorResponse);
+      const prompt = $("#prismoPrompt");
+      if (prompt) prompt.focus();
     } finally {
       STATE.busy = false;
       if (send) send.disabled = false;
@@ -617,13 +859,26 @@
 
   function boot() {
     bindSurfaceCapture();
+    loadHistory();
+    renderHistory();
     wireModes();
     wireGuidance();
     wireCommandPalette();
     wireFeedback();
     renderSuggestions();
     $("#prismoComposer")?.addEventListener("submit", submit);
+    $("#prismoPrompt")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+        event.preventDefault();
+        $("#prismoComposer")?.requestSubmit();
+      }
+    });
     $("#prismoClearButton")?.addEventListener("click", clearComposer);
+    $("#prismoHistoryClear")?.addEventListener("click", clearHistory);
+    $("#prismoHistoryList")?.addEventListener("click", (event) => {
+      const item = event.target && event.target.closest ? event.target.closest("[data-prismo-history-index]") : null;
+      if (item) restoreHistoryEntry(item.dataset.prismoHistoryIndex);
+    });
     $("#prismoEvidenceFile")?.addEventListener("change", (event) => readEvidenceFiles(event.currentTarget));
     const initial = (location.hash || "").toLowerCase();
     const pathName = (location.pathname || "").toLowerCase().replace(/\/+$/, "");
@@ -633,6 +888,7 @@
       window.setTimeout(() => setSurface("prismo"), 40);
     }
     refreshStatus();
+    refreshAppLiveContext();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -642,6 +898,8 @@
     state: STATE,
     setSurface,
     refreshStatus,
-    submit: () => $("#prismoComposer")?.requestSubmit()
+    submit: () => $("#prismoComposer")?.requestSubmit(),
+    history: { render: renderHistory, clear: clearHistory },
+    appLiveContext: () => STATE.appLiveContext
   };
 })();

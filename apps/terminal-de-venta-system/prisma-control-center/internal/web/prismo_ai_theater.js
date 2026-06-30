@@ -257,6 +257,7 @@
 
   function boot() {
     renderSafeQuestions();
+    // PRISMO UI1: bottom rail was retired; preservePipeline no-ops when absent.
     preservePipeline();
     wrapRefreshStatus();
     wrapRenderers();

@@ -62,12 +62,12 @@ function parseArgs() {
   const mode = argValue(args, "--runtime-mode", "customer");
   const vertical = argValue(args, "--vertical", "commerce");
   const role = argValue(args, "--role", "tablet");
-  const businessId = argValue(args, "--business-id", "demo-prisma-store");
-  const storeId = argValue(args, "--store-id", "matriz-001");
-  const terminalId = argValue(args, "--terminal-id", `${role}-terminal-001`);
-  const deviceId = argValue(args, "--device-id", `${role}-001`);
+  const businessId = argValue(args, "--business-id", "biz_78b3c840796a4a4dad");
+  const storeId = argValue(args, "--store-id", "store_00728649f3804a9e82");
+  const terminalId = argValue(args, "--terminal-id", role === "tablet" ? "term_49103c7382d84663a3" : `${role}_prisma_original_customer_terminal_001`);
+  const deviceId = argValue(args, "--device-id", `${role}_prisma_original_customer_001`);
   const packageType = argValue(args, "--package-type", role === "pc" ? "PC_BACKOFFICE" : "TABLET_SOLO");
-  const clientId = argValue(args, "--client-id", "pilot-001");
+  const clientId = argValue(args, "--client-id", "cust_prisma_original_customer");
   const explicitRoot = argValue(args, "--runtime-root");
   const rootBase = explicitRoot || path.join(defaultProgramDataRoot(), "PRISMA", titleCase(vertical));
   const licenseSource = argValue(args, "--license-file");

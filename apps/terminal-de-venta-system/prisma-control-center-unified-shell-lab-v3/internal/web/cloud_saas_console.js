@@ -12,6 +12,8 @@
     ["health", "Health"],
     ["commercial", "Commercial"]
   ];
+  const FIRST_CUSTOMER_NAME = "Prisma Original Customer";
+  const FIRST_TENANT_SLUG = "prisma-original-customer";
 
   let state = { root: null, data: null, license: null, view: "overview", busy: false };
 
@@ -110,9 +112,9 @@
     const derived = state.data?.derived || {};
     const counts = derived.counts || {};
     return `<div class="cloudSaasGrid">
-      ${card("Cloud", derived.service || "PRISMA Cloud Semilla", rows([["Version", derived.version || "-"], ["Tenant", derived.tenant?.slug || "demo-prisma"], ["DB", derived.dbHealth ? JSON.stringify(derived.dbHealth).slice(0, 90) : "-"]]), state.data?.mode)}
+      ${card("Cloud", derived.service || "PRISMA Cloud Semilla", rows([["Version", derived.version || "-"], ["Tenant", derived.tenant?.slug || FIRST_TENANT_SLUG], ["DB", derived.dbHealth ? JSON.stringify(derived.dbHealth).slice(0, 90) : "-"]]), state.data?.mode)}
       ${card("Counts", "Resumen vivo", rows([["Tenants", counts.tenants ?? "-"], ["Devices", counts.devices ?? "-"], ["Licencias activas", counts.activeLicenses ?? "-"], ["Activation codes", counts.activeActivationCodes ?? "-"]]), "LIVE")}
-      ${card("Tenant", derived.tenant?.displayName || derived.tenant?.slug || "demo-prisma", rows([["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"], ["License", derived.license?.status || "-"]]), derived.tenant?.status || "REVIEW")}
+      ${card("Tenant", derived.tenant?.displayName || derived.tenant?.slug || FIRST_CUSTOMER_NAME, rows([["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"], ["License", derived.license?.status || "-"]]), derived.tenant?.status || "REVIEW")}
       ${endpointCard("health", "Health")}
       ${endpointCard("capabilities", "Capabilities")}
       ${endpointCard("tenantStatus", "Tenant Status")}
@@ -131,7 +133,7 @@
   function tenants() {
     const derived = state.data?.derived || {};
     return `<div class="cloudSaasGrid two">
-      ${card("Tenant demo-prisma", derived.tenant?.displayName || derived.tenant?.slug || "demo-prisma", rows([["Slug", derived.tenant?.slug || "demo-prisma"], ["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"]]), derived.tenant?.status || "REVIEW")}
+      ${card(`Tenant ${FIRST_CUSTOMER_NAME}`, derived.tenant?.displayName || derived.tenant?.slug || FIRST_CUSTOMER_NAME, rows([["Slug", derived.tenant?.slug || FIRST_TENANT_SLUG], ["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"]]), derived.tenant?.status || "REVIEW")}
       ${card("Public contract", "Contrato cliente", `<pre class="cloudSaasJson">${json(derived.publicContract)}</pre>`, "READ")}
     </div>`;
   }
@@ -151,7 +153,7 @@
   function snapshots() {
     return `<div class="cloudSaasGrid two">
       ${endpointCard("tenantSnapshot", "Tenant Snapshot")}
-      ${card("Snapshot JSON", "demo-prisma", `<pre class="cloudSaasJson">${json(state.data?.derived?.snapshot)}</pre>`, "READ")}
+      ${card("Snapshot JSON", FIRST_CUSTOMER_NAME, `<pre class="cloudSaasJson">${json(state.data?.derived?.snapshot)}</pre>`, "READ")}
     </div>`;
   }
 
@@ -160,8 +162,8 @@
     return `<div class="cloudSaasGrid two">
       ${card("Notes", "Ultimas notas", listRows(state.data?.derived?.notes, "Sin notas o snapshot admin no disponible"), "SNAPSHOT")}
       <section class="cloudSaasAction">
-        <div class="cloudSaasCardHead"><div><span>ADMIN</span><h3>Crear nota demo-prisma</h3></div><b class="${enabled ? "cloudSaasOk" : "cloudSaasWarn"}">${enabled ? "LOCAL_FULL" : "READ_ONLY"}</b></div>
-        <textarea id="cloudNoteText" ${enabled ? "" : "disabled"} placeholder="Nota interna para demo-prisma"></textarea>
+        <div class="cloudSaasCardHead"><div><span>ADMIN</span><h3>Crear nota ${FIRST_CUSTOMER_NAME}</h3></div><b class="${enabled ? "cloudSaasOk" : "cloudSaasWarn"}">${enabled ? "LOCAL_FULL" : "READ_ONLY"}</b></div>
+        <textarea id="cloudNoteText" ${enabled ? "" : "disabled"} placeholder="Nota interna para ${FIRST_CUSTOMER_NAME}"></textarea>
         <button type="button" data-cloud-action="notes" ${enabled ? "" : "disabled"}>Crear nota</button>
         <pre class="cloudSaasJson" id="cloudActionResult">-</pre>
       </section>

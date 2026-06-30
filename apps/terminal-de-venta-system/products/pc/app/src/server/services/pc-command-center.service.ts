@@ -4,9 +4,10 @@ import { getTriDbStatusCard } from "@/server/services/tri-db-status.service";
 import { getPcCatalogDeltaStatus } from "@/server/services/catalog-delta-export.service";
 import { getPcFeatureList, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
 import { getPcLicenseRefreshStatus } from "@/server/licensing/pc-license-refresh";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
 
 const MAX_CUSTOM_RANGE_DAYS = 60;
-const DEFAULT_BUSINESS_ID = "biz_hitech_default";
+const DEFAULT_BUSINESS_ID = PRISMA_ORIGINAL_CUSTOMER.businessId;
 const DEFAULT_LIMIT = 80;
 
 type SearchLike = URLSearchParams | Record<string, string | string[] | undefined> | undefined;
@@ -249,6 +250,89 @@ function normalizeStatus(value: string | null | undefined) {
   return normalized;
 }
 
+function featureLabel(key: string) {
+  const labels: Record<string, string> = {
+    "pc.open": "Abrir PC",
+    "pc.dashboard.view": "Ver tablero PC",
+    "pc.dashboard.executive": "Resumen ejecutivo",
+    "catalog.write": "Editar catalogo",
+    "stock.adjust": "Ajustar stock",
+    "inventory.counts": "Conteos de inventario",
+    "purchase.write": "Compras",
+    "receiving.write": "Recepcion",
+    "replenishment.view": "Reabasto",
+    "audit.view": "Auditoria",
+    "sync.managed": "Sincronizacion administrada",
+    "sync.conflict.resolve": "Resolver revisiones",
+    "multi.branch": "Multi sucursal",
+    "multi.terminal": "Multi terminal",
+    "multi.user.permissions": "Permisos de usuario",
+    "forecast.replenishment": "Pronostico de reabasto",
+    "advanced.analytics": "Analitica avanzada"
+  };
+  return labels[key] ?? key.replace(/[._:-]+/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
+function readableStream(value: unknown) {
+  const raw = String(value ?? "").toLowerCase();
+  if (raw.includes("sale")) return "Ventas";
+  if (raw.includes("catalog") || raw.includes("product")) return "Catalogo";
+  if (raw.includes("stock") || raw.includes("inventory")) return "Inventario";
+  if (raw.includes("cash") || raw.includes("shift")) return "Caja y turnos";
+  if (raw.includes("supplier")) return "Proveedores";
+  return raw ? "Operacion" : "General";
+}
+
+function readableLifecycle(value: unknown) {
+  const raw = String(value ?? "").toLowerCase();
+  if (["projected", "reconciled", "acked", "accepted"].includes(raw)) return "Confirmado";
+  if (["pending", "received", "sent", "validated"].includes(raw)) return "En proceso";
+  if (raw === "conflict") return "Requiere revision";
+  if (["failed", "rejected", "dead_letter", "invalid_schema"].includes(raw)) return "No completado";
+  if (raw === "recognized_not_projected") return "Recibido sin aplicar";
+  return raw ? normalizeStatus(raw) : "Sin estado";
+}
+
+function readableEntity(value: unknown) {
+  const labels: Record<string, string> = {
+    Product: "Productos",
+    Barcode: "Codigos",
+    Brand: "Marcas",
+    TaxRate: "Impuestos",
+    Supplier: "Proveedores",
+    ProductSupplier: "Proveedor por producto",
+    PriceList: "Listas de precio",
+    PriceListItem: "Precios",
+    DropdownCatalog: "Opciones",
+    DropdownOption: "Valores",
+    Sale: "Ventas",
+    SaleLine: "Lineas de venta",
+    OutboxEvent: "Movimientos",
+    SyncAttempt: "Revisiones",
+    SyncConflict: "Conflictos",
+    DeviceHeartbeat: "Dispositivos",
+    DataSourceFreshness: "Datos recientes"
+  };
+  const raw = String(value ?? "");
+  return labels[raw] ?? raw.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+function readableConflict(value: unknown) {
+  const raw = String(value ?? "").toLowerCase();
+  const labels: Record<string, string> = {
+    duplicate_event: "Movimiento duplicado",
+    negative_stock: "Stock negativo",
+    terminal_not_registered: "Terminal no registrada",
+    sale_outside_shift: "Venta fuera de turno",
+    inconsistent_sequence: "Secuencia por revisar",
+    invalid_schema: "Formato no valido",
+    unknown_topic: "Categoria no reconocida",
+    product_discontinued: "Producto no disponible",
+    old_local_price: "Precio local anterior"
+  };
+  return labels[raw] ?? (raw ? "Revision operativa" : "Sin codigo");
+}
+
 function asJson(value: string | null | undefined) {
   if (!value) return {};
   try {
@@ -268,7 +352,9 @@ async function safe<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
 
 async function resolveBusinessId() {
   const db = prisma as any;
-  const business = await safe<any | null>(() => db.business.findFirst({ select: { id: true }, orderBy: { createdAt: "asc" } }), null);
+  const preferred = await safe<any | null>(() => db.business.findUnique({ where: { id: PRISMA_ORIGINAL_CUSTOMER.businessId }, select: { id: true } }), null);
+  if (preferred?.id) return preferred.id;
+  const business = await safe<any | null>(() => db.business.findFirst({ where: { terminals: { some: {} } }, select: { id: true }, orderBy: { createdAt: "asc" } }), null);
   return business?.id ?? DEFAULT_BUSINESS_ID;
 }
 
@@ -1037,20 +1123,20 @@ export async function getPcDeviceFleet(params?: SearchLike): Promise<CommandCent
     mode: "devices",
     currentPath: "/devices",
     kicker: "dispositivos",
-    title: "Fleet de Tablets",
-    description: "Pulso multi-Tablet: heartbeat, frescura, outbox, licencia y estado operativo.",
-    sourceLine: "Fuente: DeviceHeartbeat, DataSourceFreshness, SyncCheckpoint y SyncOutboxStatusBucket.",
+    title: `Dispositivos de ${PRISMA_ORIGINAL_CUSTOMER.displayName}`,
+    description: "PC, Tablet y Mobile vistos como una sola cuenta operativa, con conexion, licencia y pendientes accionables.",
+    sourceLine: "Vista de operacion: equipos, datos recientes y pendientes.",
     independenceLine: "Una Tablet offline no bloquea ventas locales de otras Tablets.",
     metrics: [
-      { label: "Tablets vistas", value: numberLabel(enriched.length), note: "DeviceHeartbeat" },
-      { label: "Atencion", value: numberLabel(attention.length), note: "Stale/offline/warning", tone: attention.length ? "warn" : "ok" },
-      { label: "Outbox total", value: numberLabel(sum(enriched.map((row: any) => Number(row.outboxCount ?? 0)))), note: "Pendientes reportados" },
-      { label: "Freshness rows", value: numberLabel(freshness.length), note: "DataSourceFreshness" }
+      { label: "Equipos vistos", value: numberLabel(enriched.length), note: "Pulso reciente" },
+      { label: "Por atender", value: numberLabel(attention.length), note: "Sin pulso reciente o con aviso", tone: attention.length ? "warn" : "ok" },
+      { label: "Pendientes", value: numberLabel(sum(enriched.map((row: any) => Number(row.outboxCount ?? 0)))), note: "Trabajo local reportado" },
+      { label: "Fuentes recientes", value: numberLabel(freshness.length), note: "Lecturas operativas" }
     ],
     panels: [
       {
-        title: "Sin heartbeat aun",
-        body: enriched.length ? "Hay dispositivos reportados." : "No hay heartbeat consolidado; la pantalla queda lista sin inventar Tablets.",
+        title: "Sin equipos reportados aun",
+        body: enriched.length ? "Hay equipos reportados." : "No hay pulso consolidado; la pantalla queda lista sin inventar dispositivos.",
         tone: enriched.length ? "ok" : "warn"
       },
       {
@@ -1061,54 +1147,54 @@ export async function getPcDeviceFleet(params?: SearchLike): Promise<CommandCent
     ],
     tables: [
       {
-        title: "Dispositivos",
-        caption: "Estado operacional y licencia por deviceId.",
-        columns: ["Device", "Fuente", "Modo", "Version", "Licencia", "Sync", "Outbox", "Ultima venta", "Ultimo pulso", "Estado"],
+        title: "Dispositivos autorizados o pendientes",
+        caption: "Estado operativo y licencia por equipo.",
+        columns: ["Dispositivo", "Superficie", "Modo", "Version", "Licencia", "Conexion", "Pendientes", "Ultima venta", "Ultimo pulso", "Estado"],
         rows: enriched.map((row: any) => ({
-          Device: row.deviceId,
-          Fuente: row.source,
+          Dispositivo: row.deviceId,
+          Superficie: row.surface ?? row.source,
           Modo: row.runtimeMode,
           Version: row.appVersion,
           Licencia: normalizeStatus(row.licenseStatus),
-          Sync: normalizeStatus(row.syncStatus),
-          Outbox: Number(row.outboxCount ?? 0),
+          Conexion: normalizeStatus(row.syncStatus),
+          Pendientes: Number(row.outboxCount ?? 0),
           "Ultima venta": dateLabel(row.lastSaleAt),
           "Ultimo pulso": relativeLabel(row.lastSeenAt),
           Estado: normalizeStatus(row.computedHealth)
         })),
-        emptyMessage: "No hay heartbeats de Tablet todavia."
+        emptyMessage: "No hay equipos reportados todavia."
       },
       {
-        title: "Checkpoints",
-        caption: "Ultimos cursores por stream.",
-        columns: ["Fuente", "Device", "Stream", "Checkpoint", "Lifecycle", "Estado"],
+        title: "Datos recientes por categoria",
+        caption: "Ultimas marcas de avance por fuente operativa.",
+        columns: ["Fuente", "Dispositivo", "Categoria", "Ultima revision", "Resultado", "Estado"],
         rows: checkpoints.slice(0, 80).map((row: any) => ({
           Fuente: row.source,
-          Device: row.deviceId ?? "general",
-          Stream: row.stream,
-          Checkpoint: dateLabel(row.checkpointAt),
-          Lifecycle: row.lifecycleStatus ?? "sin lifecycle",
+          Dispositivo: row.deviceId ?? "general",
+          Categoria: readableStream(row.stream),
+          "Ultima revision": dateLabel(row.checkpointAt),
+          Resultado: readableLifecycle(row.lifecycleStatus),
           Estado: normalizeStatus(row.status)
         })),
-        emptyMessage: "Sin checkpoints de sincronizacion registrados."
+        emptyMessage: "Sin marcas de avance registradas."
       },
       {
-        title: "Buckets de outbox",
-        caption: "Pendientes por fuente/status/topic.",
-        columns: ["Fuente", "Device", "Topic", "Lifecycle", "Conteo", "Mas viejo", "Estado"],
+        title: "Pendientes por categoria",
+        caption: "Trabajo local agrupado para revision.",
+        columns: ["Fuente", "Dispositivo", "Categoria", "Resultado", "Conteo", "Mas viejo", "Estado"],
         rows: buckets.slice(0, 80).map((row: any) => ({
           Fuente: row.source,
-          Device: row.deviceId ?? "general",
-          Topic: row.topic ?? "todos",
-          Lifecycle: row.lifecycleStatus ?? "sin lifecycle",
+          Dispositivo: row.deviceId ?? "general",
+          Categoria: readableStream(row.topic),
+          Resultado: readableLifecycle(row.lifecycleStatus),
           Conteo: row.count,
           "Mas viejo": dateLabel(row.oldestEventAt),
           Estado: normalizeStatus(row.status)
         })),
-        emptyMessage: "Sin buckets de outbox registrados."
+        emptyMessage: "Sin pendientes agrupados registrados."
       }
     ],
-    diagnostics: { businessId, query, staleAfterSeconds: 600, offlineAfterSeconds: 3600 }
+    diagnostics: { businessId, query, customer: PRISMA_ORIGINAL_CUSTOMER, technicalSources: ["DeviceHeartbeat", "DataSourceFreshness", "SyncCheckpoint", "SyncOutboxStatusBucket"], staleAfterSeconds: 600, offlineAfterSeconds: 3600 }
   };
 }
 
@@ -1135,81 +1221,81 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
     mode: "sync",
     currentPath: "/sync",
     kicker: "sync",
-    title: "Sincronizacion y conflictos",
-    description: "Ledger de ingest, ciclo de vida, duplicados, conflictos y estado tri-db.",
-    sourceLine: "Fuente: OutboxEvent, SyncAttempt, SyncConflict y shared/tri-db/status.latest.json.",
+    title: `Sincronizacion de ${PRISMA_ORIGINAL_CUSTOMER.displayName}`,
+    description: "Estado de envios, datos para Tablet, duplicados protegidos, conflictos y cobertura entre equipos.",
+    sourceLine: "Vista de operacion: ventas, inventario, catalogo y revisiones.",
     independenceLine: "PC puede atrasarse o marcar conflicto sin detener venta local de Tablet.",
     metrics: [
-      { label: "Eventos", value: numberLabel(events.length), note: "OutboxEvent acotado" },
-      { label: "Delta catalogo", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? `Ultimo ${catalogStatus.latestExport.mode}` : "sin export generado", tone: catalogStatus.latestExport ? "ok" : "warn" },
-      { label: "Conflictos", value: numberLabel(conflicts.filter((row: any) => row.status !== "resolved").length), note: "SyncConflict abierto", tone: conflicts.length ? "warn" : "ok" },
-      { label: "Intentos", value: numberLabel(attempts.length), note: "SyncAttempt" },
-      { label: "Duracion prom.", value: `${numberLabel(avgDuration)} ms`, note: "Intentos recientes" },
+      { label: "Movimientos", value: numberLabel(events.length), note: "Registros recientes" },
+      { label: "Datos para Tablet", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? "Ultima preparacion disponible" : "sin paquete generado", tone: catalogStatus.latestExport ? "ok" : "warn" },
+      { label: "Conflictos", value: numberLabel(conflicts.filter((row: any) => row.status !== "resolved").length), note: "Abiertos o por revisar", tone: conflicts.length ? "warn" : "ok" },
+      { label: "Revisiones", value: numberLabel(attempts.length), note: "Intentos recientes" },
+      { label: "Duracion prom.", value: `${numberLabel(avgDuration)} ms`, note: "Tiempo de revision" },
       { label: "Pendiente mas viejo", value: oldestPending ? relativeLabel(oldestPending.createdAt) : "sin pendiente", note: "Proteccion de backlog" }
     ],
     panels: [
       {
-        title: "Tri-db bridge",
-        body: `Estado ${triDb.status}. Tablet rows ${triDb.tablet.saleCount}; PC rows ${triDb.pc.saleCount}; pcCoversTablet=${triDb.parityOk ? "si" : "no"}.`,
+        title: "Cobertura entre equipos",
+        body: `Estado ${normalizeStatus(triDb.status)}. Tablet ventas ${triDb.tablet.saleCount}; PC ventas ${triDb.pc.saleCount}; cobertura=${triDb.parityOk ? "si" : "no"}.`,
         tone: triDb.parityOk ? "ok" : "warn"
       },
       {
         title: "Duplicados",
-        body: "El ingest usa idempotencyKey/eventId; duplicados quedan visibles sin proyectar dos veces.",
+        body: "PC reconoce movimientos repetidos y evita aplicarlos dos veces.",
         tone: "ok"
       },
       {
-        title: "PC a Tablet catalogo",
-        body: "El delta de catalogo usa contrato compartido, cursor determinista y no bloquea ventas locales de Tablet.",
+        title: "PC a Tablet",
+        body: "Los datos de catalogo se preparan para Tablet sin bloquear ventas locales.",
         tone: "ok"
       }
     ],
     tables: [
       {
-        title: "Lifecycle",
-        caption: "Conteos recibidos, validados, aceptados, proyectados, reconciliados, conflicto, fallido o dead_letter.",
-        columns: ["Lifecycle", "Conteo"],
-        rows: buckets.map((bucket) => ({ Lifecycle: bucket.key, Conteo: bucket.value })),
-        emptyMessage: "Sin eventos de sync en ledger."
+        title: "Estado de envios",
+        caption: "Conteos por resultado operativo.",
+        columns: ["Resultado", "Conteo"],
+        rows: buckets.map((bucket) => ({ Resultado: readableLifecycle(bucket.key), Conteo: bucket.value })),
+        emptyMessage: "Sin movimientos de sincronizacion registrados."
       },
       {
-        title: "Intentos",
-        caption: "Duracion, fuente, device, topic y estado.",
-        columns: ["Fecha", "Fuente", "Device", "Topic", "Duracion", "Lifecycle", "Estado"],
+        title: "Revisiones recientes",
+        caption: "Duracion, fuente, dispositivo, categoria y estado.",
+        columns: ["Fecha", "Fuente", "Dispositivo", "Categoria", "Duracion", "Resultado", "Estado"],
         rows: attempts.map((attempt: any) => ({
           Fecha: dateLabel(attempt.createdAt),
           Fuente: attempt.source,
-          Device: attempt.deviceId ?? "sin device",
-          Topic: attempt.topic ?? "sin topic",
+          Dispositivo: attempt.deviceId ?? "sin dispositivo",
+          Categoria: readableStream(attempt.topic),
           Duracion: `${attempt.durationMs ?? 0} ms`,
-          Lifecycle: attempt.lifecycleStatus ?? "sin lifecycle",
+          Resultado: readableLifecycle(attempt.lifecycleStatus),
           Estado: normalizeStatus(attempt.status)
         })),
-        emptyMessage: "No hay intentos de sync registrados."
+        emptyMessage: "No hay revisiones registradas."
       },
       {
-        title: "Ledger OutboxEvent",
-        caption: "Evento, agregado, idempotencia visible sin payload crudo.",
-        columns: ["Fecha", "Topic", "Aggregate", "Lifecycle", "Intentos", "Estado"],
+        title: "Movimientos recibidos",
+        caption: "Categoria, entidad operativa, resultado e intentos sin mostrar payload crudo.",
+        columns: ["Fecha", "Categoria", "Entidad", "Resultado", "Intentos", "Estado"],
         rows: events.map((event: any) => ({
           Fecha: dateLabel(event.createdAt),
-          Topic: event.topic,
-          Aggregate: event.aggregateId,
-          Lifecycle: event.lifecycleStatus ?? "sin lifecycle",
+          Categoria: readableStream(event.topic),
+          Entidad: event.aggregateId,
+          Resultado: readableLifecycle(event.lifecycleStatus),
           Intentos: event.attempts ?? 0,
           Estado: normalizeStatus(event.status)
         })),
-        emptyMessage: "Sin eventos de sync en PC."
+        emptyMessage: "Sin movimientos de sincronizacion en PC."
       },
       {
         title: "Conflictos",
-        caption: "Cola accionable por severidad/codigo.",
-        columns: ["Detectado", "Codigo", "Severidad", "Device", "Entidad", "Recomendacion", "Estado"],
+        caption: "Cola accionable por severidad y recomendacion.",
+        columns: ["Detectado", "Motivo", "Severidad", "Dispositivo", "Entidad", "Recomendacion", "Estado"],
         rows: conflicts.map((conflict: any) => ({
           Detectado: dateLabel(conflict.detectedAt),
-          Codigo: conflict.conflictCode,
+          Motivo: readableConflict(conflict.conflictCode),
           Severidad: conflict.severity,
-          Device: conflict.deviceId ?? "sin device",
+          Dispositivo: conflict.deviceId ?? "sin dispositivo",
           Entidad: conflict.aggregateId ?? "sin entidad",
           Recomendacion: conflict.resolution ?? "Revisar evento origen, entidad afectada y reprocesar solo si el contrato lo permite.",
           Estado: normalizeStatus(conflict.status)
@@ -1217,36 +1303,36 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
         emptyMessage: "Sin conflictos abiertos."
       },
       {
-        title: "Catalogo PC a Tablet",
-        caption: "Estado del export master-data disponible para pull Tablet.",
-        columns: ["Entidad", "Filas PC", "Ultimo delta", "Cursor"],
+        title: "Datos PC a Tablet",
+        caption: "Estado de datos maestros disponibles para actualizar Tablet.",
+        columns: ["Categoria", "Filas PC", "Ultima preparacion", "Estado"],
         rows: Object.entries(catalogStatus.tableCounts).map(([Entidad, Filas]) => ({
-          Entidad,
+          Categoria: readableEntity(Entidad),
           "Filas PC": Filas,
-          "Ultimo delta": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
-          Cursor: catalogStatus.latestExport?.cursor ?? "sin cursor"
+          "Ultima preparacion": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
+          Estado: catalogStatus.latestExport ? "preparado" : "pendiente"
         })),
-        emptyMessage: "Sin entidades de catalogo soportadas."
+        emptyMessage: "Sin datos de catalogo soportados."
       },
       {
-        title: "Paridad tri-db",
-        caption: "Tablet rows, PC rows, delta y cobertura.",
-        columns: ["Tabla", "Tablet", "PC", "Delta", "Cubre"],
+        title: "Cobertura PC y Tablet",
+        caption: "Comparacion resumida entre equipos.",
+        columns: ["Dato", "Tablet", "PC", "Diferencia", "Cubre"],
         rows: triDb.parityTables.map((row) => ({
-          Tabla: row.table,
+          Dato: readableEntity(row.table),
           Tablet: row.tabletRows,
           PC: row.pcRows,
-          Delta: row.deltaPcMinusTablet,
+          Diferencia: row.deltaPcMinusTablet,
           Cubre: row.pcCoversTablet ? "si" : "no"
         })),
-        emptyMessage: "Tri-db status no trae tabla de paridad."
+        emptyMessage: "Sin comparacion de cobertura disponible."
       }
     ],
-    diagnostics: { businessId, topic, source, newestReceivedAt: newestReceived?.receivedAt ?? null, triDbSource: triDb.sourcePath, catalogDelta: catalogStatus },
+    diagnostics: { businessId, topic, source, newestReceivedAt: newestReceived?.receivedAt ?? null, triDbSource: triDb.sourcePath, catalogDelta: catalogStatus, technicalSources: ["OutboxEvent", "SyncAttempt", "SyncConflict", "shared/tri-db/status.latest.json"] },
     actions: [
-      { label: "Generar delta catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: "tablet" }, successMessage: "Delta incremental generado desde PC." },
-      { label: "Generar bootstrap catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: "tablet" }, successMessage: "Bootstrap de catalogo generado desde PC." },
-      { label: "Forzar resync catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: "tablet" }, successMessage: "Resync de catalogo generado desde PC." }
+      { label: "Actualizar datos para Tablet", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: "tablet" }, successMessage: "Datos actualizados desde PC." },
+      { label: "Preparar primera carga", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: "tablet" }, successMessage: "Primera carga preparada desde PC." },
+      { label: "Reparar datos de Tablet", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: "tablet" }, successMessage: "Reparacion de datos preparada desde PC." }
     ]
   };
 }
@@ -1343,16 +1429,17 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     mode: "licenseRuntime",
     currentPath: "/license-runtime",
     kicker: "licencias y runtime",
-    title: "Licencias y Runtime",
-    description: "Estado local PC, refresh remoto opcional, funciones permitidas y salud de Tablets.",
-    sourceLine: "Fuente: shared/licensing + DeviceHeartbeat + canonical DB.",
+    title: `Licencia de ${PRISMA_ORIGINAL_CUSTOMER.displayName}`,
+    description: "Estado local PC, vigencia, plan, funciones permitidas y equipos asociados.",
+    sourceLine: "Vista de operacion: licencia local, plan, funciones y equipos.",
     independenceLine: "La licencia local de Tablet sigue siendo fuente valida para operacion offline.",
     metrics: [
+      { label: "Cliente", value: PRISMA_ORIGINAL_CUSTOMER.displayName, note: `Cuenta ${PRISMA_ORIGINAL_CUSTOMER.tenantId}` },
       { label: "Estado PC", value: normalizeStatus(license.state), note: `Plan ${license.plan}`, tone: license.state === "active" || license.state === "development" ? "ok" : "warn" },
       { label: "Dias restantes", value: license.daysRemaining === null ? "n/d" : String(license.daysRemaining), note: "Umbral visible" },
       { label: "Refresh remoto", value: refresh.enabled ? "configurado" : "no configurado", note: refresh.state, tone: refresh.enabled ? "ok" : "warn" },
-      { label: "Funciones bloqueadas", value: numberLabel(blockedFeatures.length), note: "Feature gates PC", tone: blockedFeatures.length ? "warn" : "ok" },
-      { label: "Tablets con licencia", value: numberLabel(heartbeats.length), note: "Desde heartbeat" }
+      { label: "Funciones bloqueadas", value: numberLabel(blockedFeatures.length), note: "Permisos PC", tone: blockedFeatures.length ? "warn" : "ok" },
+      { label: "Tablets con licencia", value: numberLabel(heartbeats.length), note: "Reportadas por equipos" }
     ],
     panels: [
       {
@@ -1371,31 +1458,31 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     tables: [
       {
         title: "Funciones por modulo",
-        caption: "Feature gates resueltos por licencia local.",
-        columns: ["Feature", "Permitida", "Motivo"],
+        caption: "Permisos resueltos por licencia local.",
+        columns: ["Funcion", "Permitida", "Motivo"],
         rows: features.map((feature: any) => ({
-          Feature: feature.key,
+          Funcion: featureLabel(feature.key),
           Permitida: feature.allowed ? "si" : "no",
           Motivo: feature.reason
         })),
-        emptyMessage: "No hay feature gates PC resueltos."
+        emptyMessage: "No hay permisos PC resueltos."
       },
       {
         title: "Licencia Tablets",
-        caption: "Estado reportado por DeviceHeartbeat.",
+        caption: "Estado reportado por los equipos.",
         columns: ["Estado", "Dispositivos"],
         rows: Array.from(tabletLicenses.entries()).map(([Estado, Dispositivos]) => ({ Estado, Dispositivos })),
-        emptyMessage: "No hay estados de licencia Tablet por heartbeat."
+        emptyMessage: "No hay estados de licencia Tablet reportados por equipos."
       },
       {
-        title: "Runtime readiness",
+        title: "Preparacion operativa",
         caption: "Chequeo operativo de PC.",
         columns: ["Componente", "Estado", "Detalle"],
         rows: [
-          { Componente: "DB canonica", Estado: "activo", Detalle: "Prisma client configurado" },
-          { Componente: "Licencia PC", Estado: normalizeStatus(license.state), Detalle: `Fuente ${license.source}` },
-          { Componente: "Sync", Estado: "activo", Detalle: "Backoffice sync endpoints disponibles" },
-          { Componente: "Devices", Estado: heartbeats.length ? "activo" : "pendiente", Detalle: `${heartbeats.length} heartbeats` },
+          { Componente: "Base local", Estado: "activo", Detalle: "Lectura operativa configurada" },
+          { Componente: "Licencia PC", Estado: normalizeStatus(license.state), Detalle: `Plan ${license.plan}` },
+          { Componente: "Sincronizacion", Estado: "activo", Detalle: "Rutas de backoffice disponibles" },
+          { Componente: "Equipos", Estado: heartbeats.length ? "activo" : "pendiente", Detalle: `${heartbeats.length} reportado(s)` },
           { Componente: "Rutas", Estado: "activo", Detalle: "Shell PC expone modulos principales" }
         ],
         emptyMessage: "Runtime no disponible."
@@ -1403,6 +1490,7 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     ],
     diagnostics: {
       businessId,
+      customer: PRISMA_ORIGINAL_CUSTOMER,
       customerId: license.customerId ?? null,
       lastRefreshAt: refresh.lastRefreshAt,
       lastSuccessAt: refresh.lastSuccessAt,
@@ -1411,7 +1499,7 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     },
     actions: [
       refresh.enabled
-        ? { label: "Actualizar licencia", href: "/api/license/refresh", method: "POST", successMessage: "Refresh de licencia solicitado." }
+        ? { label: "Actualizar licencia", href: "/api/license/refresh", method: "POST", successMessage: "Actualizacion de licencia solicitada." }
         : { label: "Actualizar licencia", href: "/license-runtime", disabledReason: "No hay endpoint remoto configurado." }
     ]
   };
@@ -1436,32 +1524,32 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
     mode: "communication",
     currentPath: "/tablet-communication",
     kicker: "pc a tablet",
-    title: "Comunicacion y gobernanza",
-    description: "Eventos inbound, comandos de gobierno, releases pendientes y acknowledgments observables.",
-    sourceLine: "Fuente: OutboxEvent inbound, DeviceHeartbeat y AuditEvent para comandos repo-locales.",
+    title: `Comunicacion con Tablets de ${PRISMA_ORIGINAL_CUSTOMER.displayName}`,
+    description: "Entradas desde Tablet, acciones preparadas por PC, datos para Tablet y conflictos observables.",
+    sourceLine: "Vista de operacion: entradas Tablet, acciones PC y datos preparados.",
     independenceLine: "Los comandos PC quedan pendientes/observables; Tablet nunca espera un comando para vender.",
     metrics: [
-      { label: "Tablets objetivo", value: numberLabel(filteredHeartbeats.length), note: "DeviceHeartbeat" },
-      { label: "Inbound", value: numberLabel(inbound.length), note: "Tablet a PC" },
-      { label: "Gobierno outbound", value: numberLabel(commands.length), note: "AuditEvent command ledger" },
-      { label: "Catalogo exportado", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? relativeLabel(catalogStatus.latestExport.createdAt) : "sin delta", tone: catalogStatus.latestExport ? "ok" : "warn" },
-      { label: "Ultimo inbound", value: lastInbound ? relativeLabel(lastInbound) : "sin evento", note: "Tablet to PC" },
-      { label: "Ultimo outbound", value: lastOutbound ? relativeLabel(lastOutbound) : "sin comando", note: "PC to Tablet" }
+      { label: "Tablets objetivo", value: numberLabel(filteredHeartbeats.length), note: "Equipos reportados" },
+      { label: "Entradas", value: numberLabel(inbound.length), note: "Tablet a PC" },
+      { label: "Acciones PC", value: numberLabel(commands.length), note: "Preparadas para Tablet" },
+      { label: "Datos preparados", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? relativeLabel(catalogStatus.latestExport.createdAt) : "sin paquete", tone: catalogStatus.latestExport ? "ok" : "warn" },
+      { label: "Ultima entrada", value: lastInbound ? relativeLabel(lastInbound) : "sin movimiento", note: "Tablet a PC" },
+      { label: "Ultima accion", value: lastOutbound ? relativeLabel(lastOutbound) : "sin accion", note: "PC a Tablet" }
     ],
     panels: [
       {
-        title: "Contrato repo-local",
-        body: "Cuando no existe canal externo de entrega, PC registra comandos idempotentes en AuditEvent con estado queued_for_pickup. No se finge envio ni ack.",
+        title: "Entrega observable",
+        body: "Cuando no existe canal externo de entrega, PC deja acciones preparadas y visibles. No se finge envio confirmado.",
         tone: "ok"
       },
       {
-        title: "Safe to continue selling",
+        title: "Venta local protegida",
         body: "Catalogo, precio, licencia o runtime pendientes no bloquean ventas locales ya permitidas por Tablet.",
         tone: "ok"
       },
       {
-        title: "Pull catalogo entrante",
-        body: "Tablet solicita el delta a PC y guarda su propio checkpoint local. Esta pantalla no usa Chart Lab ni toasts fake para cerrar sync.",
+        title: "Datos entrantes a Tablet",
+        body: "Tablet solicita datos a PC y conserva su avance local. Esta pantalla no usa mensajes de exito sin evidencia.",
         tone: "ok"
       }
     ],
@@ -1469,68 +1557,68 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
       {
         title: "Tablets objetivo",
         caption: "Dispositivos y compatibilidad visible.",
-        columns: ["Device", "Version", "Schema", "Licencia", "Sync", "Ultimo pulso", "Compatibilidad"],
+        columns: ["Dispositivo", "Version", "Contrato", "Licencia", "Conexion", "Ultimo pulso", "Compatibilidad"],
         rows: filteredHeartbeats.map((row: any) => ({
-          Device: row.deviceId,
+          Dispositivo: row.deviceId,
           Version: row.appVersion,
-          Schema: row.schemaVersion ?? "sin schema",
+          Contrato: row.schemaVersion ? "reportado" : "pendiente",
           Licencia: normalizeStatus(row.licenseStatus),
-          Sync: normalizeStatus(row.syncStatus),
+          Conexion: normalizeStatus(row.syncStatus),
           "Ultimo pulso": relativeLabel(row.lastSeenAt),
-          Compatibilidad: row.schemaVersion ? "revisable" : "sin schema reportado"
+          Compatibilidad: row.schemaVersion ? "revisable" : "pendiente"
         })),
-        emptyMessage: "No hay Tablets objetivo por heartbeat."
+        emptyMessage: "No hay Tablets objetivo reportadas."
       },
       {
-        title: "Inbound Tablet a PC",
-        caption: "Eventos recibidos con lifecycle e idempotencia sin payload crudo.",
-        columns: ["Fecha", "Device", "Topic", "Aggregate", "Lifecycle", "Estado"],
+        title: "Entradas Tablet a PC",
+        caption: "Movimientos recibidos sin payload crudo.",
+        columns: ["Fecha", "Dispositivo", "Categoria", "Entidad", "Resultado", "Estado"],
         rows: inbound.map((event: any) => ({
           Fecha: dateLabel(event.receivedAt ?? event.createdAt),
-          Device: event.terminalId ?? event.source ?? "sin device",
-          Topic: event.topic,
-          Aggregate: event.aggregateId,
-          Lifecycle: event.lifecycleStatus ?? "sin lifecycle",
+          Dispositivo: event.terminalId ?? event.source ?? "sin dispositivo",
+          Categoria: readableStream(event.topic),
+          Entidad: event.aggregateId,
+          Resultado: readableLifecycle(event.lifecycleStatus),
           Estado: normalizeStatus(event.status)
         })),
-        emptyMessage: "Sin eventos inbound desde Tablet."
+        emptyMessage: "Sin movimientos recibidos desde Tablet."
       },
       {
         title: "Gobierno PC a Tablet",
-        caption: "Comandos registrados, pendientes de entrega externa/Tablet pickup.",
-        columns: ["Fecha", "Comando", "Destino", "Idempotencia", "Estado"],
+        caption: "Acciones registradas y pendientes de entrega.",
+        columns: ["Fecha", "Accion", "Destino", "Referencia", "Estado"],
         rows: commands.map((command: any) => {
           const payload = asJson(command.afterJson ?? command.metadataJson);
           return {
             Fecha: dateLabel(command.createdAt),
-            Comando: payload.commandType ?? command.entityType,
+            Accion: payload.commandType ?? command.entityType,
             Destino: payload.target ?? command.entityId ?? "all",
-            Idempotencia: payload.idempotencyKey ?? command.id,
-            Estado: payload.status ?? "queued_for_pickup"
+            Referencia: command.id,
+            Estado: normalizeStatus(payload.status ?? "queued")
           };
         }),
         emptyMessage: "No hay comandos de gobierno registrados."
       },
       {
         title: "Catalogo disponible para Tablet",
-        caption: "Master-data PC exportable por entidad y ultimo cursor generado.",
-        columns: ["Entidad", "Filas PC", "Ultimo export", "Cursor"],
+        caption: "Datos PC disponibles por categoria.",
+        columns: ["Categoria", "Filas PC", "Ultima preparacion", "Estado"],
         rows: Object.entries(catalogStatus.tableCounts).map(([Entidad, Filas]) => ({
-          Entidad,
+          Categoria: readableEntity(Entidad),
           "Filas PC": Filas,
-          "Ultimo export": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
-          Cursor: catalogStatus.latestExport?.cursor ?? "sin cursor"
+          "Ultima preparacion": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
+          Estado: catalogStatus.latestExport ? "preparado" : "pendiente"
         })),
         emptyMessage: "Sin catalogo PC disponible para distribuir."
       },
       {
         title: "Conflictos relacionados",
-        caption: "Version/schema/conflictos que afectan comunicacion.",
-        columns: ["Detectado", "Device", "Codigo", "Severidad", "Estado"],
+        caption: "Revisiones que afectan comunicacion.",
+        columns: ["Detectado", "Dispositivo", "Motivo", "Severidad", "Estado"],
         rows: conflicts.map((conflict: any) => ({
           Detectado: dateLabel(conflict.detectedAt),
-          Device: conflict.deviceId ?? "sin device",
-          Codigo: conflict.conflictCode,
+          Dispositivo: conflict.deviceId ?? "sin dispositivo",
+          Motivo: readableConflict(conflict.conflictCode),
           Severidad: conflict.severity,
           Estado: normalizeStatus(conflict.status)
         })),
@@ -1539,10 +1627,10 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
     ],
     diagnostics: { businessId, target, commandContract: "pc-tablet-governance-command.v1", outboundDelivery: "audit-ledger-no-fake-ack", catalogDelta: catalogStatus },
     actions: [
-      { label: "Generar delta catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: target || "all" }, successMessage: "Delta de catalogo generado para Tablet." },
-      { label: "Bootstrap catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: target || "all" }, successMessage: "Bootstrap de catalogo generado para Tablet." },
-      { label: "Resync catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: target || "all" }, successMessage: "Resync de catalogo generado para Tablet." },
-      { label: "Registrar refresh runtime", href: "/api/backoffice/tablet-communication/governance-command", method: "POST", body: { commandType: "runtime.refresh", target: target || "all", requestedBy: "pc-operator" }, successMessage: "Comando runtime.refresh registrado sin ack falso." }
+      { label: "Actualizar datos", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: target || "all" }, successMessage: "Datos preparados para Tablet." },
+      { label: "Preparar primera carga", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: target || "all" }, successMessage: "Primera carga preparada para Tablet." },
+      { label: "Reparar datos", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: target || "all" }, successMessage: "Reparacion preparada para Tablet." },
+      { label: "Registrar actualizacion de equipo", href: "/api/backoffice/tablet-communication/governance-command", method: "POST", body: { commandType: "runtime.refresh", target: target || "all", requestedBy: "pc-operator" }, successMessage: "Accion registrada sin confirmacion inventada." }
     ]
   };
 }

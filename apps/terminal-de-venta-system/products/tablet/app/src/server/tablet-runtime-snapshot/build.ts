@@ -1,6 +1,7 @@
 import { getTabletRuntimeInfo } from "@/server/pos-runtime";
 import type { TabletCatalogState, TabletConnectionState, TabletRuntimeSnapshot, TabletRuntimeTone } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { TABLET_RUNTIME_VISIBLE_COPY } from "@/lib/tablet-runtime-snapshot/visible-copy";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
 import type { RuntimeSnapshotInput, RuntimeSnapshotQueryResult } from "./types";
 import { getRuntimeConnectionOverride } from "./env";
 
@@ -52,10 +53,10 @@ export function buildTabletRuntimeSnapshot(input: RuntimeSnapshotInput, result: 
     pcRequiredForBasicSale: false,
     identity: {
       businessId: input.businessId,
-      businessName: result.businessName || "PRISMA Local",
-      storeName: result.storeName || "Tienda principal",
+      businessName: PRISMA_ORIGINAL_CUSTOMER.displayName,
+      storeName: result.storeName || PRISMA_ORIGINAL_CUSTOMER.storeName,
       terminalId: input.terminalId,
-      terminalName: result.terminalName || "Terminal local",
+      terminalName: result.terminalName || PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName,
       operatorId: input.operatorId,
       operatorName: result.openShift?.cashier || input.operatorName || "Operador"
     },

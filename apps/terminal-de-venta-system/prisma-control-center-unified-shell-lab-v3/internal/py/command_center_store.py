@@ -14,15 +14,27 @@ DATA_DIR = LAB_ROOT / "internal" / "data"
 DB_PATH = DATA_DIR / "prisma-command-center.db"
 
 PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","item":"ID"}
+FIRST_CUSTOMER = {
+    "displayName": "Prisma Original Customer",
+    "tenantSlug": "prisma-original-customer",
+    "customerId": "cust_prisma_original_customer",
+    "licenseId": "lic_prisma_original_customer_001",
+    "businessId": "biz_78b3c840796a4a4dad",
+    "storeId": "store_00728649f3804a9e82",
+    "tabletTerminalId": "term_49103c7382d84663a3",
+    "pcDeviceId": "pc_prisma_original_customer_001",
+    "tabletDeviceId": "tablet_prisma_original_customer_001",
+    "mobileDeviceId": "mobile_prisma_original_customer_001",
+}
 
 CATALOGS = {
  "vertical": ("Giro / vertical", True, [("retail","Retail",{"suggestedPlan":"starter","modules":["pos","inventory","tickets","cash_cuts"]}),("abarrotes","Abarrotes / minisuper",{"suggestedPlan":"starter","modules":["pos","inventory","tickets","cash_cuts"]}),("restaurant","Restaurante / food service",{"suggestedPlan":"business","modules":["pos","tables","tickets","cash_cuts"]}),("bar","Bar",{"suggestedPlan":"business","modules":["pos","tables","tickets","cash_cuts"]}),("pharmacy","Farmacia",{"suggestedPlan":"business","modules":["pos","inventory","batch_tracking","tickets"]}),("hardware","Ferretería",{"suggestedPlan":"business","modules":["pos","inventory","quotes","tickets"]}),("fashion","Moda / boutique",{"suggestedPlan":"starter","modules":["pos","inventory","tickets"]}),("butcher","Carnicería",{"suggestedPlan":"business","modules":["pos","scale_support","inventory","tickets"]}),("tortilla","Tortillería",{"suggestedPlan":"starter","modules":["pos","tickets","cash_cuts"]}),("services","Servicios",{"suggestedPlan":"starter","modules":["pos","tickets","appointments"]}),("multi_branch","Multi-sucursal",{"suggestedPlan":"enterprise","modules":["pos","inventory","multi_branch","reports"]}),("other","Otro",{"requiresManualText":True})]),
  "subvertical": ("Subvertical", True, [("minisuper","Minisuper",{}),("specialty_store","Tienda especializada",{}),("restaurant_tables","Restaurante con mesas",{}),("quick_service","Comida rápida",{}),("coffee_shop","Cafetería",{}),("workshop","Taller",{}),("clinic","Consultorio",{}),("rental","Renta / servicios",{}),("other","Otro",{"requiresManualText":True})]),
  "business_size": ("Tamaño", False, [("small","Pequeño",{}),("medium","Mediano",{}),("multi_branch","Multi-sucursal",{}),("enterprise","Enterprise",{})]),
  "operation_mode": ("Tipo de operación", True, [("counter","Mostrador",{}),("tables","Mesas",{}),("inventory","Inventario fuerte",{}),("services","Servicios/citas",{}),("mixed","Mixto",{}),("other","Otro",{"requiresManualText":True})]),
- "license_plan": ("Tipo de licencia", False, [("demo","Demo",{"maxDevices":1,"maxBranches":1,"modules":["pos","tickets"]}),("starter","Starter",{"maxDevices":1,"maxBranches":1,"modules":["pos","inventory","tickets","cash_cuts"]}),("business","Business",{"maxDevices":5,"maxBranches":1,"modules":["pos","inventory","reports","tickets","cash_cuts"]}),("pro","Pro",{"maxDevices":10,"maxBranches":3,"modules":["pos","inventory","reports","multiuser","integrations"]}),("enterprise","Enterprise",{"maxDevices":99,"maxBranches":99,"modules":["pos","inventory","reports","multi_branch","integrations","support_premium"]})]),
+ "license_plan": ("Tipo de licencia", False, [("demo","Piloto",{"maxDevices":1,"maxBranches":1,"modules":["pos","tickets"]}),("starter","Starter",{"maxDevices":1,"maxBranches":1,"modules":["pos","inventory","tickets","cash_cuts"]}),("business","Business",{"maxDevices":5,"maxBranches":1,"modules":["pos","inventory","reports","tickets","cash_cuts"]}),("pro","Pro",{"maxDevices":10,"maxBranches":3,"modules":["pos","inventory","reports","multiuser","integrations"]}),("enterprise","Enterprise",{"maxDevices":99,"maxBranches":99,"modules":["pos","inventory","reports","multi_branch","integrations","support_premium"]})]),
  "device_type": ("Tipo de dispositivo", True, [("tablet_pos","Tablet POS",{"prefix":"TAB"}),("pc_register","Caja PC",{"prefix":"PC"}),("mobile","Terminal móvil",{"prefix":"MOB"}),("backoffice","Backoffice",{"prefix":"BO"}),("kiosk","Kiosko",{"prefix":"KSK"}),("peripheral","Periférico",{"prefix":"PER"}),("other","Otro",{"requiresManualText":True,"prefix":"OTH"})]),
- "deactivation_reason": ("Motivo de baja", True, [("cancellation","Cancelación",{}),("non_payment","Falta de pago",{}),("demo_ended","Fin de demo",{}),("device_replacement","Cambio de dispositivo",{}),("duplicate_client","Cliente duplicado",{}),("migration","Migración",{}),("fraud_abuse","Fraude / abuso",{}),("support","Soporte técnico",{}),("other","Otro",{"requiresManualText":True})]),
+ "deactivation_reason": ("Motivo de baja", True, [("cancellation","Cancelación",{}),("non_payment","Falta de pago",{}),("demo_ended","Fin de piloto",{}),("device_replacement","Cambio de dispositivo",{}),("duplicate_client","Cliente duplicado",{}),("migration","Migración",{}),("fraud_abuse","Fraude / abuso",{}),("support","Soporte técnico",{}),("other","Otro",{"requiresManualText":True})]),
  "city_zone": ("Ciudad / zona", True, [("mexico_city","CDMX",{}),("edomex","Estado de México",{}),("guadalajara","Guadalajara",{}),("monterrey","Monterrey",{}),("queretaro","Querétaro",{}),("other","Otro",{"requiresManualText":True})])
 }
 
@@ -79,6 +91,122 @@ def _exec_schema(con):
     for sql in statements:
         con.execute(sql)
 
+def _seed_first_customer(con):
+    payload = {
+        "customer": FIRST_CUSTOMER,
+        "license": {
+            "plan": "business",
+            "status": "pending_cloud_activation",
+            "source": "shell_lab_prepared_not_canonical_override",
+        },
+        "devices": [
+            {"surface": "pc", "deviceId": FIRST_CUSTOMER["pcDeviceId"], "status": "pending_registration"},
+            {"surface": "tablet", "deviceId": FIRST_CUSTOMER["tabletDeviceId"], "status": "pending_registration", "terminalId": FIRST_CUSTOMER["tabletTerminalId"]},
+            {"surface": "mobile", "deviceId": FIRST_CUSTOMER["mobileDeviceId"], "status": "pending_registration"},
+        ],
+    }
+    con.execute(
+        "INSERT OR IGNORE INTO CommandClient(id,internalId,humanCode,displayName,legalName,status,verticalCode,subverticalCode,sizeCode,operationCode,cityZoneCode,catalogOther,cloudTenantId) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (
+            "client_prisma_original_customer",
+            "client_prisma_original_customer",
+            "CLI-PRISMA-ORIGINAL",
+            FIRST_CUSTOMER["displayName"],
+            FIRST_CUSTOMER["displayName"],
+            "pending_cloud_activation",
+            "abarrotes",
+            "minisuper",
+            "small",
+            "counter",
+            "mexico_city",
+            jd({"businessId": FIRST_CUSTOMER["businessId"], "storeId": FIRST_CUSTOMER["storeId"]}),
+            FIRST_CUSTOMER["tenantSlug"],
+        ),
+    )
+    con.execute(
+        "UPDATE CommandClient SET displayName=?, legalName=?, status=?, verticalCode=?, subverticalCode=?, sizeCode=?, operationCode=?, cityZoneCode=?, catalogOther=?, cloudTenantId=?, updatedAt=CURRENT_TIMESTAMP WHERE id=?",
+        (
+            FIRST_CUSTOMER["displayName"],
+            FIRST_CUSTOMER["displayName"],
+            "pending_cloud_activation",
+            "abarrotes",
+            "minisuper",
+            "small",
+            "counter",
+            "mexico_city",
+            jd({"businessId": FIRST_CUSTOMER["businessId"], "storeId": FIRST_CUSTOMER["storeId"]}),
+            FIRST_CUSTOMER["tenantSlug"],
+            "client_prisma_original_customer",
+        ),
+    )
+    con.execute(
+        "INSERT OR IGNORE INTO LicenseAssignment(id,internalId,humanCode,clientId,planId,status,modules,limits,cloudLicenseId) VALUES(?,?,?,?,?,?,?,?,?)",
+        (
+            "license_prisma_original_customer",
+            "license_prisma_original_customer",
+            "LIC-PRISMA-ORIGINAL",
+            "client_prisma_original_customer",
+            "plan_business",
+            "pending_cloud_activation",
+            jd(["pos", "inventory", "reports", "tickets", "cash_cuts"]),
+            jd({"maxDevices": 5, "maxBranches": 1}),
+            FIRST_CUSTOMER["licenseId"],
+        ),
+    )
+    con.execute(
+        "UPDATE LicenseAssignment SET planId=?, status=?, modules=?, limits=?, cloudLicenseId=?, updatedAt=CURRENT_TIMESTAMP WHERE id=?",
+        (
+            "plan_business",
+            "pending_cloud_activation",
+            jd(["pos", "inventory", "reports", "tickets", "cash_cuts"]),
+            jd({"maxDevices": 5, "maxBranches": 1}),
+            FIRST_CUSTOMER["licenseId"],
+            "license_prisma_original_customer",
+        ),
+    )
+    for row in [
+        ("managed_pc_prisma_original_customer_001", "DEV-PRISMA-PC-001", "pc_register", "pc_backoffice", "REG-PRISMA-PC-001", FIRST_CUSTOMER["pcDeviceId"]),
+        ("managed_tablet_prisma_original_customer_001", "DEV-PRISMA-TAB-001", "tablet_pos", "tablet_pos", "REG-PRISMA-TAB-001", FIRST_CUSTOMER["tabletDeviceId"]),
+        ("managed_mobile_prisma_original_customer_001", "DEV-PRISMA-MOB-001", "mobile", "mobile_supervisor", "REG-PRISMA-MOB-001", FIRST_CUSTOMER["mobileDeviceId"]),
+    ]:
+        device_id, human_code, device_type, role_code, register_code, cloud_device_id = row
+        con.execute(
+            "INSERT OR IGNORE INTO ManagedDevice(id,internalId,humanCode,clientId,deviceType,roleCode,status,registerCode,cloudDeviceId) VALUES(?,?,?,?,?,?,?,?,?)",
+            (device_id, device_id, human_code, "client_prisma_original_customer", device_type, role_code, "pending_registration", register_code, cloud_device_id),
+        )
+        con.execute(
+            "UPDATE ManagedDevice SET clientId=?, deviceType=?, roleCode=?, status=?, registerCode=?, cloudDeviceId=?, updatedAt=CURRENT_TIMESTAMP WHERE id=?",
+            ("client_prisma_original_customer", device_type, role_code, "pending_registration", register_code, cloud_device_id, device_id),
+        )
+    con.execute(
+        "INSERT OR IGNORE INTO ProvisioningDraft(id,internalId,humanCode,clientId,kind,status,payload) VALUES(?,?,?,?,?,?,?)",
+        (
+            "draft_prisma_original_customer_registration",
+            "draft_prisma_original_customer_registration",
+            "ALT-PRISMA-ORIGINAL",
+            "client_prisma_original_customer",
+            "first_customer_registration",
+            "prepared",
+            jd(payload),
+        ),
+    )
+    con.execute(
+        "UPDATE ProvisioningDraft SET status=?, payload=?, updatedAt=CURRENT_TIMESTAMP WHERE id=?",
+        ("prepared", jd(payload), "draft_prisma_original_customer_registration"),
+    )
+    con.execute(
+        "INSERT OR IGNORE INTO CommandAuditEvent(id,eventType,actor,entityKind,entityCode,summary,payload) VALUES(?,?,?,?,?,?,?)",
+        (
+            "audit_prisma_original_customer_seed",
+            "first_customer_prepared",
+            "local_operator",
+            "client",
+            "CLI-PRISMA-ORIGINAL",
+            f"Primer cliente preparado: {FIRST_CUSTOMER['displayName']}",
+            jd(payload),
+        ),
+    )
+
 def ensure_initialized():
     with db() as con:
         _exec_schema(con)
@@ -128,6 +256,7 @@ def ensure_initialized():
             "INSERT OR IGNORE INTO CloudBridgeStatus(id,mode,cloudOrigin,tokenState,lastCheckedAt,payload) VALUES(?,?,?,?,?,?)",
             ("bridge_local", "local_prepared", "https://app.hitechrts.com", "server_side_or_absent", now_iso(), jd({"note":"Command Center local workflow DB"})),
         )
+        _seed_first_customer(con)
         con.commit()
 
 def catalogs(con):

@@ -108,6 +108,18 @@ export function buildSummaryPayload(state: MobileDataPlaneState): PrismaMobileSu
     urgentAlerts: alerts.counts.critical + alerts.counts.high,
     branchesToReview: branches.counts.review + branches.counts.urgent + branches.counts.offline,
     dataReadiness,
+    account: {
+      customerName: state.config.businessName,
+      customerId: state.config.customerId,
+      tenantId: state.config.tenantId,
+      licenseId: state.config.licenseId,
+      planLabel: state.config.planLabel,
+      licenseStateLabel: state.config.licenseStateLabel,
+      authorizationLabel: state.config.authorizationLabel,
+      mobileDeviceLabel: "Mobile vinculado",
+      tabletDeviceLabel: "Tablet vinculada",
+      pcDeviceLabel: "PC vinculada"
+    },
     kpis: [
       { key: "ventas", label: "Ventas hoy", value: moneyLabel(state.salesToday.totalSalesCents), note: salesNote, tone: "gold" as const, numericValue: state.salesToday.totalSalesCents, unit: "MXN" },
       { key: "ticket_promedio", label: "Ticket promedio", value: moneyLabel(state.salesToday.averageTicketCents), note: ticketNote, tone: "green" as const, numericValue: state.salesToday.averageTicketCents, unit: "MXN" },

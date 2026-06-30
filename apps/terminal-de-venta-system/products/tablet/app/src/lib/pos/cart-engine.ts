@@ -1,4 +1,5 @@
 import type { CartLine, PosProduct } from "./cart-state";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
 
 export const CART_LIMITS = {
   maxLines: 120,
@@ -233,7 +234,7 @@ export type CheckoutPayload = {
 };
 
 function defaultCheckoutTerminalId() {
-  return process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
+  return process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId;
 }
 
 function normalizeCheckoutPayloadInput(input: CartLine[] | CheckoutPayloadInput): CheckoutPayloadInput {

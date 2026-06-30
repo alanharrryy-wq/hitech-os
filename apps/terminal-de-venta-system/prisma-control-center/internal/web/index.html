@@ -3065,27 +3065,46 @@ body[data-prisma-interface="quality"] main{
 <link rel="stylesheet" href="/prisma_cc_v76_all_surfaces_neon_contrast.css?v=20260527_024854">
 <link rel="stylesheet" href="/prismo_ai_theater.css?v=20260601_theater_task2">
 <link rel="stylesheet" href="/prismo_visual_legacy_bridge.css?v=20260601_visual_fix2">
+
 <script src="/vendor/pixi.min.js?v=20260526_190904" defer></script>
+
 <script src="/vendor/gsap.min.js?v=20260526_190904" defer></script>
+
 <script src="/prisma_cc_atmosphere_v5.js?v=20260526_190904" defer></script>
 <script defer src="/prisma_cc_atmosphere_v54.js?v=20260526_192605"></script>
 <script defer src="/prisma_cc_atmosphere_v54_true_mist_glacier.js?v=20260526_192743"></script>
 <script defer src="/prisma_cc_v56_prismo_safe_retune.js?v=20260526_200506"></script>
+
   <script src="/prisma_control_center_api_bridge.js?v=20260601_motores_fix2"></script>
+
 <script src="/v24_cockpit.js?v=43_topbar_chart_life_quality_bay_position"></script>
+
 <script src="/quality_bay.js?v=quality-bay-v1"></script>
+
 <script src="/lifecycle_console.js?v=data-lifecycle-v5-3-visibility"></script>
+
 <script src="/license_ops_console.js?v=license-ops-v1"></script>
+
 <script src="/prisma_v40_uiux.js?v=v40-uiux-theme-hardening"></script>
+
 <script src="/prisma_frost_tactical.js?v=frost-tactical-v4-background-panel-system"></script>
+
 <script src="/prisma_frost_tactical.js?v=frost-tactical-v3-codex-lowblur-base"></script>
+
 <script src="/prismo_demo_payloads.js?v=prismo-command-nexus-v1"></script>
+
 <script src="/prismo_renderers.js?v=20260601_theater_task2" defer></script>
+
 <script src="/prismo_console.js?v=20260601_theater_task2" defer></script>
+
 <script src="/prismo_ai_theater.js?v=20260601_theater_task2" defer></script>
+
 <script src="/prismo_visual_legacy_bridge.js?v=20260601_visual_fix2" defer></script>
+
 <script src="/prisma_cc_v59_prismo_selector_safe_frost_evidence.js?v=20260526_235636" defer></script>
+
 <script src="/prisma_cc_v60_prismo_topbar_fix.js?v=20260527_000901" defer></script>
+
 <script src="/prisma_cc_v76_all_surfaces_neon_contrast.js?v=20260527_024854" defer></script>
 </head>
 <body data-theme="tactical" data-prisma="v44-frost-tactical-background-panel-system" data-prismo-visual-presets="legacy-atmosphere-v76" data-prisma-panel="control-center.workspace" data-prisma-surface="control-center" data-prisma-route="/">
@@ -3268,6 +3287,8 @@ body[data-prisma-interface="quality"] main{
               </div>
               <label for="prismoPrompt">¿Qué quieres entender, revisar o mejorar?</label>
               <textarea id="prismoPrompt" class="prismo-textarea" rows="5" placeholder="Ej: ¿por qué la consola PRISMO se siente saturada y qué debería corregirse primero?"></textarea>
+              <details class="prismo-advanced-options" id="prismoAdvancedOptions">
+                <summary>Opciones avanzadas, evidencia y sugerencias</summary>
 
               <section class="prismo-guidance-panel" aria-label="Guía opcional PRISMO">
                 <div class="prismo-guidance-grid">
@@ -3327,6 +3348,7 @@ body[data-prisma-interface="quality"] main{
                 <input id="prismoEvidenceFile" class="prismo-file-input" type="file" multiple accept=".txt,.md,.json,.jsonc,.log,.csv,.html,.xml,.yaml,.yml,.zip" />
                 <span class="prismo-file-note" id="prismoFileNote">Evidencia temporal preparada para lectura segura.</span>
               </div>
+              </details>
 
               <div class="prismo-actions-row">
                 <button type="submit" id="prismoSendButton" class="prismo-primary-action">Consultar PRISMO</button>
@@ -3398,61 +3420,69 @@ body[data-prisma-interface="quality"] main{
               <span id="prismoFeedbackState">pending</span>
             </section>
           </section>
-
-          <aside class="prismo-side-stack" aria-label="Authority Brain y Evidence Vault">
-            <section class="prismo-panel prismo-authority-brain" aria-label="Authority Brain">
+          <aside class="prismo-side-stack prismo-chat-history-panel" aria-label="Historial conversacional PRISMO">
+            <section class="prismo-panel prismo-history-shell" aria-label="Historial PRISMO">
               <div class="prismo-panel-head">
                 <div>
-                  <h3>Authority Brain</h3>
-                  <p>Jerarquía de decisión con seguridad y fuente dominante visibles.</p>
+                  <h3>Historial</h3>
+                  <p>Preguntas recientes, respuesta visual y contexto vivo sin saturar el teatro.</p>
                 </div>
-                <span class="prismo-tag" data-state="ok">Gobierno seguro</span>
+                <span class="prismo-tag" id="prismoHistoryCount">0</span>
               </div>
-              <div class="prismo-authority-list" id="prismoAuthorityList">
-                <div class="prismo-authority-row"><strong>Fuente principal: PRISMA local</strong><small>Contexto local y evidencia segura como autoridad de lectura.</small></div>
-                <div class="prismo-authority-row"><strong>IA: Gemini server-side</strong><small>El navegador no expone llaves ni secretos.</small></div>
-                <div class="prismo-authority-row"><strong>Gobernanza de acción</strong><small>Las acciones se preparan para revisión antes de cualquier operación.</small></div>
-                <div class="prismo-authority-row"><strong>Confianza: contextual</strong><small>La fuente dominante se decide por consulta y evidencia disponible.</small></div>
+              <div class="prismo-history-list" id="prismoHistoryList" aria-live="polite">
+                <div class="prismo-empty">Haz una consulta y PRISMO la guardará aquí como conversación recuperable.</div>
+              </div>
+              <div class="prismo-history-actions">
+                <button type="button" class="prismo-secondary-action" id="prismoHistoryClear">Limpiar historial</button>
+                <button type="button" class="prismo-secondary-action" id="prismoOpenTechnical">Detalle técnico</button>
               </div>
             </section>
 
-            <section class="prismo-panel prismo-evidence-vault" aria-label="Evidence Vault">
+            <section class="prismo-panel prismo-live-context-card" aria-label="Contexto vivo read-only">
               <div class="prismo-panel-head">
                 <div>
-                  <h3>Evidence Vault</h3>
-                  <p>Categorías preparadas para clasificar evidencia sin ejecutar acciones.</p>
+                  <h3>App Live Context</h3>
+                  <p>Project Brain read-only: apps, rutas, componentes, CSS, evidencias, memorias y deltas. No modifica nada.</p>
                 </div>
-                <span class="prismo-tag">Trazabilidad inteligente</span>
+                <span class="prismo-tag" id="prismoAppLiveState" data-state="warn">read-only</span>
               </div>
-              <div class="prismo-evidence-list" id="prismoEvidenceList">
-                <div class="prismo-evidence-row"><strong>Evidencia local</strong><small>Lectura segura · preparada para clasificar · alta prioridad</small></div>
-                <div class="prismo-evidence-row"><strong>Estado visual</strong><small>Rutas, capturas y regresiones integrables.</small></div>
-                <div class="prismo-evidence-row"><strong>Gobernanza</strong><small>Reglas, permisos y límites de mutación visibles.</small></div>
-                <div class="prismo-evidence-row"><strong>Herramientas</strong><small>Verificadores y reportes conectables por evidencia.</small></div>
-                <div class="prismo-evidence-row"><strong>Contexto técnico</strong><small>Fuente integrable con trazabilidad.</small></div>
+              <div class="prismo-live-context-grid" id="prismoAppLiveContext">
+                <div class="prismo-mini-card"><strong>Esperando Project Brain</strong><small>Se actualiza al abrir PRISMO o al consultar. Memorias y evidencia quedan en F:\descargasf\PRISMO_LEARNING_STORE.</small></div>
               </div>
             </section>
           </aside>
         </div>
-
-        <footer class="prismo-bottom-rail prismo-decision-pipeline" id="prismoBottomRail" aria-label="PRISMO Decision Pipeline">
-          <div class="prismo-pipeline-card" data-stage="question"><small>Question</small><strong>Pregunta capturada</strong><span>free text first</span></div>
-          <div class="prismo-pipeline-card" data-stage="interpretation"><small>Interpretation</small><strong>Interpretación editable</strong><span>intent + area + lens</span></div>
-          <div class="prismo-pipeline-card" data-stage="protocol"><small>Protocol</small><strong>Protocolo rankeado</strong><span>memoria procedural</span></div>
-          <div class="prismo-pipeline-card" data-stage="evidence"><small>Evidence</small><strong>Evidencia preparada</strong><span>fuentes clasificables</span></div>
-          <div class="prismo-pipeline-card" data-stage="result"><small>Result</small><strong>Resultado renderizado</strong><span>Auto Render Ensemble</span></div>
-          <div class="prismo-pipeline-card" data-stage="feedback"><small>Feedback</small><strong>Aprendizaje de respuesta</strong><span>adapter seguro</span></div>
-        </footer>
         <aside class="prismo-technical-drawer" id="prismoTechnicalDrawer" aria-label="Detalle técnico PRISMO" hidden>
           <div class="prismo-panel-head">
             <div>
-              <p class="prismo-label">Technical Detail</p>
-              <h3>Trace</h3>
-              <p>Interpretación, render plan, memoria, evidencia, protocolos, seguridad y feedback chain.</p>
+              <p class="prismo-label">Technical Drawer</p>
+              <h3>Detalle, autoridad y evidencia</h3>
+              <p>La tripa técnica vive aquí: visible bajo demanda, fuera del escenario principal.</p>
             </div>
             <button type="button" class="prismo-secondary-action" id="prismoTechnicalClose">Cerrar</button>
           </div>
-          <pre id="prismoTechnicalTrace"></pre>
+          <nav class="prismo-drawer-tabs" aria-label="Secciones técnicas PRISMO">
+            <button type="button" data-prismo-drawer-tab="trace" aria-pressed="true">Trace</button>
+            <button type="button" data-prismo-drawer-tab="authority">Authority</button>
+            <button type="button" data-prismo-drawer-tab="evidence">Evidence</button>
+            <button type="button" data-prismo-drawer-tab="memory">Memory</button>
+          </nav>
+          <section class="prismo-drawer-section" data-prismo-drawer-section="trace">
+            <pre id="prismoTechnicalTrace"></pre>
+          </section>
+          <section class="prismo-drawer-section" data-prismo-drawer-section="authority" hidden>
+            <div class="prismo-authority-list" id="prismoAuthorityList">
+              <div class="prismo-authority-row"><strong>Fuente principal: PRISMA local</strong><small>Contexto local y evidencia segura como autoridad de lectura.</small></div>
+            </div>
+          </section>
+          <section class="prismo-drawer-section" data-prismo-drawer-section="evidence" hidden>
+            <div class="prismo-evidence-list" id="prismoEvidenceList">
+              <div class="prismo-evidence-row"><strong>Evidencia local</strong><small>Lectura segura · preparada para clasificar · alta prioridad</small></div>
+            </div>
+          </section>
+          <section class="prismo-drawer-section" data-prismo-drawer-section="memory" hidden>
+            <pre id="prismoMemoryTrace"></pre>
+          </section>
         </aside>
       </div>
     </section>
@@ -3695,6 +3725,7 @@ body[data-prisma-interface="quality"] main{
     </section>
 </main>
 </div>
+
 
 <script src="/prisma_cc_public_tail_bundle_fix4.js?v=20260530_fix4_asset_choke"></script>
 
@@ -4000,10 +4031,11 @@ body[data-prisma-interface="quality"] main{
 /* === PRISMA V39 TRUTHFUL REACTOR JS END === */
 </script>
 
+
   <script src="/prisma_cc_public_after_bundle_fix4.js?v=20260530_fix4_asset_choke" defer></script>
-  <script src="/prismo_renderers.js?v=20260601_theater_task2" defer></script>
-  <script src="/prismo_console.js?v=20260601_theater_task2" defer></script>
-  <script src="/prismo_ai_theater.js?v=20260601_theater_task2" defer></script>
+
+
+
 
 
 </body>

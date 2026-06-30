@@ -20,6 +20,15 @@ export type MobileDataPlaneConfig = {
   businessId: string;
   terminalId: string;
   businessName: string;
+  customerId: string;
+  tenantId: string;
+  licenseId: string;
+  planLabel: string;
+  licenseStateLabel: string;
+  authorizationLabel: string;
+  pcDeviceId: string;
+  tabletDeviceId: string;
+  mobileDeviceId: string;
   tabletOrigin: string | null;
   pcOrigin: string | null;
   controlOrigin: string | null;

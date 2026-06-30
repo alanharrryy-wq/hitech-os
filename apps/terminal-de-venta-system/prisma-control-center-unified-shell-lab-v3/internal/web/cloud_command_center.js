@@ -13,6 +13,8 @@
     ["security", "Bajas", "Baja segura", "Suspender, desactivar o preparar baja con motivo homologado, impacto visible y folio automático."],
     ["system", "System", "Cuarto de máquinas", "Runtime, endpoint matrix, selftest, diagnostics y evidencia técnica encerrada aquí."]
   ];
+  const FIRST_CUSTOMER_NAME = "Prisma Original Customer";
+  const FIRST_TENANT_SLUG = "prisma-original-customer";
 
   const ADVANCED_SURFACES = new Set(["system"]);
   const state = {
@@ -217,7 +219,7 @@
     if (!data.ok) found.push({ level: "warn", title: "Cloud requiere revisión", detail: data.error || data.status || "No hay PASS completo en resumen." });
     if (!admin.enabled) found.push({ level: "warn", title: "Modo lectura segura", detail: "El token admin local no está activo, así que las acciones de escritura se bloquean." });
     if (!endpointState("health").ok) found.push({ level: "bad", title: "Salud cloud no confirmó OK", detail: "Revisar System para detalle técnico." });
-    if (!endpointState("tenantStatus").ok) found.push({ level: "warn", title: "Estado público del cliente incompleto", detail: "No se pudo confirmar status público demo-prisma." });
+    if (!endpointState("tenantStatus").ok) found.push({ level: "warn", title: "Estado público del cliente incompleto", detail: `No se pudo confirmar status público de ${FIRST_CUSTOMER_NAME}.` });
     if (!d.license && !state.license?.runtime?.license) found.push({ level: "warn", title: "Licencia sin ficha clara", detail: "Falta estado de licencia legible para operación." });
     if (!safeCount(d.devices)) found.push({ level: "warn", title: "Sin dispositivos visibles", detail: "El snapshot no devolvió dispositivos." });
     return found;
@@ -237,7 +239,7 @@
       "PRISMA Cloud Command Center",
       `Estado general: ${mainStatus()}`,
       `Cloud: ${state.data?.ok ? "en línea" : "revisar"}`,
-      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || state.data?.cloud?.tenantSlug || "demo-prisma"}`,
+      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || state.data?.cloud?.tenantSlug || FIRST_CUSTOMER_NAME}`,
       `Licencia: ${license.status || d.license?.status || state.license?.status || "revisar"}`,
       `Plan: ${license.plan || d.license?.plan || "-"}`,
       `Dispositivos: ${safeCount(d.devices)}`,
@@ -252,7 +254,7 @@
     const d = derived();
     const commercial = d.commercialSummary || {};
     return [
-      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || "demo-prisma"}`,
+      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || FIRST_CUSTOMER_NAME}`,
       `Estado: ${d.tenant?.status || "revisar"}`,
       `Plan: ${d.tenant?.plan || d.license?.plan || "-"}`,
       `Licencia: ${d.license?.status || state.license?.runtime?.license?.status || "revisar"}`,
@@ -270,7 +272,7 @@
     const problems = collectProblems();
     return [
       "PAQUETE DE SOPORTE PRISMA",
-      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || "demo-prisma"}`,
+      `Cliente: ${d.tenant?.displayName || d.tenant?.slug || FIRST_CUSTOMER_NAME}`,
       `Estado cliente: ${d.tenant?.status || "revisar"}`,
       `Licencia: ${license.status || "revisar"}`,
       `Plan: ${license.plan || d.license?.plan || "-"}`,
@@ -318,7 +320,7 @@
     $("ccAdmin").textContent = admin.enabled ? "Acciones activas" : "Sólo lectura";
     $("ccAdmin").className = `cc-chip ${admin.enabled ? "ok" : "warn"}`;
     $("metricHealth").textContent = endpointState("health").code || data.status || (data.ok ? "OK" : "CHECK");
-    $("metricTenant").textContent = d.tenant?.slug || d.tenant?.id || data.cloud?.tenantSlug || "demo-prisma";
+    $("metricTenant").textContent = d.tenant?.slug || d.tenant?.id || data.cloud?.tenantSlug || FIRST_TENANT_SLUG;
     $("metricLicense").textContent = d.license?.status || state.license?.runtime?.license?.status || state.license?.status || "Revisar";
     $("metricEvidence").textContent = `${safeCount(d.notes)} notas / ${safeCount(d.receipts)} receipts`;
   }
@@ -328,7 +330,7 @@
     $("surfaceKicker").textContent = spec[1];
     $("surfaceTitle").textContent = spec[2];
     $("surfaceSummary").textContent = spec[3];
-    $("surfacePrimary").textContent = derived().tenant?.slug || state.data?.cloud?.tenantSlug || "demo-prisma";
+    $("surfacePrimary").textContent = derived().tenant?.slug || state.data?.cloud?.tenantSlug || FIRST_TENANT_SLUG;
     $("surfaceScore").textContent = mainStatus();
     $$(".cc-nav button").forEach((button) => button.classList.toggle("active", button.dataset.surface === state.surface));
   }
@@ -375,7 +377,7 @@
       { code: "other", label: "Otro", metadata: { requiresManualText: true } }
     ] },
     license_plan: { code: "license_plan", label: "Tipo de licencia", allowOther: false, options: [
-      { code: "demo", label: "Demo", metadata: { maxDevices: 1, maxBranches: 1, modules: ["pos","tickets"] } },
+      { code: "demo", label: "Piloto", metadata: { maxDevices: 1, maxBranches: 1, modules: ["pos","tickets"] } },
       { code: "starter", label: "Starter", metadata: { maxDevices: 1, maxBranches: 1, modules: ["pos","tickets","cash_cuts"] } },
       { code: "business", label: "Business", metadata: { maxDevices: 5, maxBranches: 3, modules: ["pos","inventory","tickets","cash_cuts","reports"] } },
       { code: "pro", label: "Pro", metadata: { maxDevices: 12, maxBranches: 5, modules: ["pos","inventory","reports","multi_user","integrations"] } },
@@ -393,7 +395,7 @@
     deactivation_reason: { code: "deactivation_reason", label: "Motivo de baja", allowOther: true, options: [
       { code: "cancelation", label: "Cancelación", metadata: {} },
       { code: "non_payment", label: "Falta de pago", metadata: {} },
-      { code: "demo_finished", label: "Fin de demo", metadata: {} },
+      { code: "demo_finished", label: "Fin de piloto", metadata: {} },
       { code: "device_replacement", label: "Cambio de dispositivo", metadata: {} },
       { code: "duplicate_client", label: "Cliente duplicado", metadata: {} },
       { code: "migration", label: "Migración", metadata: {} },
@@ -663,14 +665,14 @@
     return [
       panel("Acciones principales","Elige la tarea. La cabina genera IDs y usa catálogos; tú no escribes folios.",actions([surfaceButton("provisioning","+ Nuevo cliente"),surfaceButton("entitlements","Asignar licencia"),surfaceButton("fleet","Agregar dispositivo"),surfaceButton("security","Dar de baja"),surfaceButton("operations","Ver escritorio local"),surfaceButton("support","Resolver soporte")]),{span:7,tag:"TAREAS"}),
       panel("Escritorio local","Lo que ya existe en la DB del cockpit: clientes, licencias, dispositivos, bajas, otros y auditoría.",localDashboard(),{span:5,tag:`${c.preparedDrafts||0} drafts`}),
-      panel("Resumen actual","Lo que está pasando sin endpointés.",kvGrid([["Cloud",state.data?.ok?"En línea":"Revisar"],["Cliente demo",d.tenant?.displayName||d.tenant?.slug||"demo-prisma"],["Licencia",d.license?.status||state.license?.runtime?.license?.status||"Revisar"],["Problemas",p.length?`${p.length} por revisar`:"Sin bloqueadores"]]),{span:5,tag:mainStatus()}),
+      panel("Resumen actual","Lo que está pasando sin endpointés.",kvGrid([["Cloud",state.data?.ok?"En línea":"Revisar"],["Cliente",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["Licencia",d.license?.status||state.license?.runtime?.license?.status||"Revisar"],["Problemas",p.length?`${p.length} por revisar`:"Sin bloqueadores"]]),{span:5,tag:mainStatus()}),
       panel("Operar escritorio","Copiar digest, abrir clientes o ir a System sin mirar raw técnico.",actions([actionButton("refresh","Actualizar todo","primary"),actionButton("copy-local-desk","Copiar escritorio local"),surfaceButton("customers","Clientes"),surfaceButton("operations","Reportes"),surfaceButton("system","System")]),{span:7,tag:"DESK"}),
       panel("Problemas detectados","Si algo bloquea, aparece aquí en humano.",problemsHtml(),{span:12,tag:p.length?"REVIEW":"OK"}),
       resultPanel()
     ].join("");
   }
   function renderCustomers() { const d=derived(); const c=localCounts(); return [
-    panel("Clientes activos","Clientes preparados localmente + cliente demo observado en cloud.",kvGrid([["Clientes preparados",c.clients||0],["Activos/preparados",c.activeClients||0],["Cliente cloud",d.tenant?.displayName||d.tenant?.slug||"demo-prisma"],["Otros por revisar",c.othersPending||0]]),{span:5,tag:"CLIENTES"}),
+    panel("Clientes activos","Clientes preparados localmente + cliente observado en cloud.",kvGrid([["Clientes preparados",c.clients||0],["Activos/preparados",c.activeClients||0],["Cliente cloud",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["Otros por revisar",c.othersPending||0]]),{span:5,tag:"CLIENTES"}),
     panel("Acciones","Operación centrada en cliente, no en módulos técnicos.",actions([surfaceButton("provisioning","+ Nuevo cliente"),actionButton("copy-clients-local","Copiar clientes locales"),surfaceButton("entitlements","Asignar licencia"),surfaceButton("fleet","Agregar dispositivo"),surfaceButton("security","Dar baja")]),{span:7,tag:"ACCIONES"}),
     panel("Mesa de clientes","Abrir filas, revisar vertical/estado y decidir siguiente acción.",localDesk("clients","Todavía no hay clientes preparados."),{span:12,tag:`${c.clients||0} local`}),
     panel("Auditoría del cliente","Últimos eventos del motor de catálogos/IDs.",localDesk("events","Todavía no hay eventos locales."),{span:12,tag:"AUDIT"}),
@@ -712,7 +714,7 @@
       panel("Contrato actual", "Estado contractual resumido para operar.", kvGrid([
         ["Estado", contract.status || endpointState("clientContract").code],
         ["Plan", contract.plan || derived().license?.plan || "-"],
-        ["Cliente", contract.tenant || contract.tenantSlug || d.tenant?.slug || "demo-prisma"],
+        ["Cliente", contract.tenant || contract.tenantSlug || d.tenant?.slug || FIRST_CUSTOMER_NAME],
         ["Capacidades", endpointState("capabilities").code]
       ]), { span: 5, tag: endpointState("clientContract").ok ? "CONTRATO" : "REVISAR" }),
       panel("Acciones de configuración", "Comparar, copiar y saltar a licencias sin ver endpoints.", actions([
@@ -731,7 +733,7 @@
     panel("Escritorio operativo","Clientes, licencias, dispositivos, bajas e identidades del cockpit local.",localDashboard(),{span:12,tag:"DESK"}),
     panel("Borradores locales","Alta/licencia/dispositivo/baja preparados para activación futura.",localDesk("drafts","Todavía no hay borradores preparados."),{span:6,tag:`${c.preparedDrafts||0} drafts`}),
     panel("Otros pendientes","Valores manuales capturados como pending_catalog_review.",localDesk("othersPending","No hay valores Otro pendientes."),{span:6,tag:`${c.othersPending||0} review`}),
-    panel("Cloud observado","Lo que existe hoy en app.hitechrts.com sin tocar semilla.",list([["Cliente demo",d.tenant?.slug||"demo-prisma"],["Dispositivos cloud",safeCount(d.devices)],["Receipts",safeCount(d.receipts)],["Notas",safeCount(d.notes)]]),{span:6,tag:"CLOUD"}),
+    panel("Cloud observado","Lo que existe hoy en app.hitechrts.com sin tocar semilla.",list([["Cliente",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["Dispositivos cloud",safeCount(d.devices)],["Receipts",safeCount(d.receipts)],["Notas",safeCount(d.notes)]]),{span:6,tag:"CLOUD"}),
     panel("Acciones","Reportes y auditoría listos para copiar.",actions([actionButton("refresh","Actualizar","primary"),actionButton("copy-local-desk","Copiar escritorio"),actionButton("copy-ops","Copiar digest operativo"),surfaceButton("customers","Ver clientes"),surfaceButton("system","System")]),{span:6,tag:"REPORTES"}),
     panel("Auditoría local","Eventos recientes del motor local.",localDesk("events","Sin eventos locales."),{span:12,tag:`${c.auditEvents||0} audit`}),
     resultPanel()
@@ -741,7 +743,7 @@
     const notes = d.notes || [];
     return [
       panel("Diagnóstico humano", "Lo necesario para entender el caso sin leer JSON.", list([
-        ["Cliente", d.tenant?.displayName || d.tenant?.slug || "demo-prisma"],
+        ["Cliente", d.tenant?.displayName || d.tenant?.slug || FIRST_CUSTOMER_NAME],
         ["Estado", d.tenant?.status || "Revisar"],
         ["Licencia", d.license?.status || state.license?.runtime?.license?.status || "Revisar"],
         ["Problemas", collectProblems().length]
@@ -859,13 +861,13 @@
         await copyText(customerSummary(), "Resumen del cliente");
       } else if (action === "copy-license") {
         const license = state.license?.runtime?.license || derived().license || {};
-        await copyText(["FICHA DE LICENCIA", `Estado: ${license.status || state.license?.status || "revisar"}`, `Plan: ${license.plan || "-"}`, `Vigencia: ${license.validUntil || "-"}`, `Cliente: ${license.assignment?.clientId || "demo-prisma"}`].join("\n"), "Ficha de licencia");
+        await copyText(["FICHA DE LICENCIA", `Estado: ${license.status || state.license?.status || "revisar"}`, `Plan: ${license.plan || "-"}`, `Vigencia: ${license.validUntil || "-"}`, `Cliente: ${license.assignment?.clientId || FIRST_CUSTOMER_NAME}`].join("\n"), "Ficha de licencia");
       } else if (action === "copy-fleet") {
-        await copyText(`Fleet demo-prisma\nDispositivos: ${safeCount(derived().devices)}\nReceipts: ${safeCount(derived().receipts)}\nEventos: ${safeCount(derived().events)}\nEstado: ${mainStatus()}`, "Estado de fleet");
+        await copyText(`Fleet ${FIRST_CUSTOMER_NAME}\nDispositivos: ${safeCount(derived().devices)}\nReceipts: ${safeCount(derived().receipts)}\nEventos: ${safeCount(derived().events)}\nEstado: ${mainStatus()}`, "Estado de fleet");
       } else if (action === "copy-provisioning") {
         await copyText(provisioningChecklist().map(([label, ok]) => `${ok ? "[x]" : "[ ]"} ${label}`).join("\n"), "Checklist de alta");
       } else if (action === "copy-contract") {
-        await copyText(`Contrato demo-prisma\nEstado: ${derived().publicContract?.status || endpointState("clientContract").code}\nCapacidades: ${endpointState("capabilities").code}\nLicencia: ${state.license?.runtime?.license?.status || derived().license?.status || "revisar"}`, "Resumen de contrato");
+        await copyText(`Contrato ${FIRST_CUSTOMER_NAME}\nEstado: ${derived().publicContract?.status || endpointState("clientContract").code}\nCapacidades: ${endpointState("capabilities").code}\nLicencia: ${state.license?.runtime?.license?.status || derived().license?.status || "revisar"}`, "Resumen de contrato");
       } else if (action === "copy-ops") {
         await copyText(executiveSummary(), "Digest operativo");
       } else if (action === "copy-support") {
@@ -899,7 +901,7 @@
       } else if (action === "create-note") {
         const text = $("supportNoteText")?.value || "Nota interna desde PRISMA Cloud Command Center.";
         result = await postAction("/api/cloud-saas/notes", { text });
-        setResult("Nota interna", result.ok ? "Nota creada en demo-prisma." : "La nota no se confirmó; revisar evidencia.", result, { kind: result.ok ? "ok" : "warn" });
+        setResult("Nota interna", result.ok ? `Nota creada en ${FIRST_CUSTOMER_NAME}.` : "La nota no se confirmó; revisar evidencia.", result, { kind: result.ok ? "ok" : "warn" });
         toast(result.ok ? "Nota creada" : "Nota a revisar");
         await loadAll();
       } else if (action === "receipt-smoke") {
