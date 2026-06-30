@@ -1,62 +1,61 @@
-import { fail, ok, toBackofficeError } from "@/lib/backoffice/api-response";
-import { RECOGNIZED_EVENT_TOPICS, REQUIRED_EVENT_FIELDS, SUPPORTED_SCHEMA_VERSIONS } from "@/lib/backoffice/event-contract";
-import { backofficeAuditMeta, readBackofficeAuditActor } from "@/lib/backoffice/security-audit";
-import { persistIngestPayload } from "@/lib/backoffice/sync-ingest-store";
-
+import { NextResponse } from "next/server";
+import { RECOGNIZED_SYNC_TOPICS, REQUIRED_SYNC_EVENT_FIELDS, SUPPORTED_SYNC_SCHEMA_VERSIONS } from "@/server/validators/sync-event-contract";
+import { persistSyncIngestPayload } from "@/server/services/sync-ingest.service";
 import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api"; // PRISMA_LICENSE_02AB_PC_IMPORT
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function statusFrom(result: { summary: { rejected: number; conflict: number; duplicate: number } }) {
+  if (result.summary.rejected > 0) return 207;
+  if (result.summary.conflict > 0 || result.summary.duplicate > 0) return 202;
+  return 200;
+}
+
+function safeErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error);
+}
+
 export async function GET() {
-  
   // PRISMA_LICENSE_02AB_BEGIN:sync.managed
   const prismaLicenseGate = await guardPcFeatureForApi("sync.managed");
   if (prismaLicenseGate) return prismaLicenseGate;
   // PRISMA_LICENSE_02AB_END:sync.managed
-return ok(
-    {
-      requiredFields: REQUIRED_EVENT_FIELDS,
-      recognizedTopics: RECOGNIZED_EVENT_TOPICS,
-      supportedSchemaVersions: SUPPORTED_SCHEMA_VERSIONS,
-      statuses: ["accepted", "rejected", "duplicate", "conflict"],
-      lifecycleStatuses: ["received", "validated", "accepted", "projected", "reconciled", "conflict", "failed", "dead_letter"],
-      persistence: "outbox_event",
-      storageModel: "OutboxEvent",
-      idempotencyKey: "idempotencyKey/eventId"
-    },
-    {
-      endpoint: "GET /api/backoffice/sync/ingest",
-      permission: "sync.ingest.write",
-      note: "Use POST con un evento, un arreglo de eventos o export JSON con events."
-    }
-  );
+  return NextResponse.json({
+    ok: true,
+    requiredFields: REQUIRED_SYNC_EVENT_FIELDS,
+    recognizedTopics: RECOGNIZED_SYNC_TOPICS,
+    supportedSchemaVersions: SUPPORTED_SYNC_SCHEMA_VERSIONS,
+    statuses: ["accepted", "rejected", "duplicate", "conflict"],
+    lifecycleStatuses: ["received", "validated", "accepted", "projected", "reconciled", "conflict", "failed", "dead_letter"],
+    persistence: "outbox_event",
+    storageModel: "OutboxEvent",
+    idempotencyKey: "idempotencyKey/eventId",
+    endpoint: "GET /api/backoffice/sync/ingest",
+    note: "Use POST con un evento, un arreglo de eventos o export JSON con events."
+  });
 }
 
 export async function POST(request: Request) {
-  try {
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch {
-      return fail("INVALID_JSON", "El cuerpo de la solicitud debe ser JSON válido.", 400);
-    }
+  const body = await request.json().catch(() => null);
+  if (!body) {
+    return NextResponse.json({ ok: false, code: "INVALID_JSON", message: "El cuerpo de la solicitud debe ser JSON válido." }, { status: 400 });
+  }
 
-    const result = await persistIngestPayload(body);
-    const actor = readBackofficeAuditActor(request);
-    const audit = backofficeAuditMeta("sync.ingest.persist", {
-      ...actor,
-      entityType: "OutboxEvent",
-      entityId: result.results.map((item) => item.eventId).filter(Boolean).join(",") || "ingest-batch",
-      after: {
-        status: result.status,
-        summary: result.summary,
-        persistence: result.meta.persistence,
-        storageModel: result.meta.storageModel
-      }
-    });
-    const status = result.status === "rejected" ? 422 : 200;
-    return ok(result, { endpoint: "POST /api/backoffice/sync/ingest", persistence: result.meta.persistence, audit }, { status });
+  try {
+    const result = await persistSyncIngestPayload(body);
+    return NextResponse.json({
+      ok: result.summary.rejected === 0,
+      data: result,
+      endpoint: "POST /api/backoffice/sync/ingest",
+      persistence: result.meta.persistence
+    }, { status: statusFrom(result) });
   } catch (error) {
-    return toBackofficeError(error);
+    return NextResponse.json({
+      ok: false,
+      code: "SYNC_INGEST_FAILED",
+      message: safeErrorMessage(error),
+      endpoint: "POST /api/backoffice/sync/ingest"
+    }, { status: 500 });
   }
 }

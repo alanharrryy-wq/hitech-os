@@ -1,24 +1,27 @@
-import { AppShell } from "@components/layout/app-shell";
-import { SectionCard } from "@components/ui/section-card";
-import { varianzaPorUsuario } from "@/lib/i03/audit-data";
+import { InventoryWorkspaceView } from "@components/inventory/inventory-workspace";
+import { getInventoryWorkspace } from "@/server/services/inventory-ledger.service";
 
-export default function Page() {
-  return (
-    <AppShell currentPath="/auditoria-inventario">
-      <section className="hero">
-        <div className="kicker">inyección i03</div>
-        <h1 style={{ margin: 0 }}>Auditoría de inventario</h1>
-        <div className="subtle">Quién concentra más conteos sensibles y dónde conviene revisar primero.</div>
-      </section>
-      <SectionCard title="Varianza por usuario" subtitle="Corte resumido de conteos sensibles y promedio de desviación absoluta.">
-        <div className="list">
-          {varianzaPorUsuario.map((row) => (
-            <div key={row.countedBy} className="list-item">
-              <strong>{row.countedBy}</strong> · sensibles {row.conteosSensibles} · abiertos {row.abiertos} · var abs prom {row.variacionAbsProm}
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-    </AppShell>
-  );
+export const dynamic = "force-dynamic";
+
+type SearchParams = Record<string, string | string[] | undefined>;
+
+type AuditInventoryPageProps = {
+  searchParams?: SearchParams | Promise<SearchParams>;
+};
+
+function single(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function AuditoriaInventarioPage({ searchParams }: AuditInventoryPageProps) {
+  const resolved = searchParams ? await searchParams : {};
+  const workspace = await getInventoryWorkspace({
+    q: single(resolved.q) ?? "",
+    location: single(resolved.location) ?? "all",
+    state: "all",
+    countStatus: "all",
+    auditSeverity: single(resolved.severity) ?? single(resolved.auditSeverity) ?? "all"
+  });
+
+  return <InventoryWorkspaceView view="audit" workspace={workspace} currentPath="/auditoria-inventario" />;
 }

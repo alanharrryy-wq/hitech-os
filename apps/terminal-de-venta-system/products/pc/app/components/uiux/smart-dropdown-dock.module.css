@@ -1,0 +1,207 @@
+.dock {
+  display: grid;
+  gap: 18px;
+  margin: 18px 0;
+  padding: 20px;
+  border: 1px solid rgba(97, 141, 197, 0.25);
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(234, 247, 255, 0.82)),
+    radial-gradient(circle at 12% 0%, rgba(0, 153, 255, 0.14), transparent 36%);
+  box-shadow: 0 22px 70px rgba(41, 90, 138, 0.13);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.header h2 {
+  margin: 4px 0 6px;
+  font-size: clamp(22px, 2.4vw, 34px);
+  letter-spacing: -0.04em;
+}
+
+.header p {
+  max-width: 920px;
+  margin: 0;
+  color: var(--prisma-text-muted);
+}
+
+.kicker {
+  color: var(--prisma-accent-blue);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.healthPill {
+  min-width: 116px;
+  padding: 12px 14px;
+  border: 1px solid rgba(3, 93, 199, 0.2);
+  border-radius: 18px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.healthPill strong,
+.healthPill span {
+  display: block;
+}
+
+.healthPill strong {
+  color: #073ea7;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.healthPill span {
+  margin-top: 4px;
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.searchBox,
+.selectCard {
+  display: grid;
+  gap: 8px;
+}
+
+.searchBox span,
+.labelRow strong {
+  color: #17375f;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.searchBox input,
+.selectCard select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(97, 141, 197, 0.32);
+  border-radius: 15px;
+  padding: 10px 12px;
+  color: var(--prisma-text-primary);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.searchBox input:focus,
+.selectCard select:focus {
+  outline: 3px solid rgba(4, 72, 255, 0.16);
+  border-color: rgba(4, 72, 255, 0.48);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.selectCard {
+  min-height: 132px;
+  padding: 14px;
+  border: 1px solid rgba(97, 141, 197, 0.22);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.labelRow em {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #064899;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  text-transform: uppercase;
+  background: rgba(218, 238, 255, 0.92);
+}
+
+.selectCard small {
+  min-height: 28px;
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.quickCreateLink {
+  width: max-content;
+  color: #064899;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.actions button,
+.actions a,
+.actions summary {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 14px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.actions button {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #0448ff, #00a2ff);
+  cursor: pointer;
+}
+
+.actions a,
+.actions summary {
+  border: 1px solid rgba(97, 141, 197, 0.28);
+  color: #073ea7;
+  background: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+}
+
+.actions details {
+  color: var(--prisma-text-muted);
+}
+
+.actions ul {
+  width: min(760px, 100%);
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 820px) {
+  .header {
+    grid-template-columns: 1fr;
+  }
+
+  .healthPill {
+    width: max-content;
+  }
+}

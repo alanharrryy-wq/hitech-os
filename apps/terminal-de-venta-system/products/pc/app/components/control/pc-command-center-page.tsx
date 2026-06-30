@@ -5,6 +5,8 @@ import { PcSyncChartPromotionPanel } from "@components/sync/pc-sync-chart-promot
 import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/services/pc-command-center.service";
 import { PcCommandActions } from "./pc-command-actions";
 import { SalesControlBranchView } from "./sales-control-branch-view";
+import { CashSessionsOperationalView } from "./cash-sessions-operational-view";
+import { SmartDropdownDock } from "@components/uiux/smart-dropdown-dock";
 
 function toneClass(tone?: CommandMetric["tone"]) {
   if (tone === "danger") return "tone-danger";
@@ -37,6 +39,10 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
     return <SalesControlBranchView model={model} />;
   }
 
+  if (model.currentPath === "/cash-sessions" || model.mode === "cash") {
+    return <CashSessionsOperationalView model={model} />;
+  }
+
   return (
     <AppShell currentPath={model.currentPath}>
       <section className="hero">
@@ -57,6 +63,8 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
           <span className="alert-chip">{model.independenceLine}</span>
         </div>
       </section>
+
+      <SmartDropdownDock currentPath={model.currentPath} />
 
       {model.actions?.length ? (
         <section className="card">

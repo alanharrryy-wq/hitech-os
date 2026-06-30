@@ -1,0 +1,513 @@
+/* PRISMA PC Inventory Premium SYS1
+   Control mínimo útil + POS-style language: claro, táctil, fino y operable. */
+
+.inventoryShell {
+  display: grid;
+  gap: 18px;
+  color: #142039;
+}
+
+.inventoryHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.heroPanel,
+.controlPanel,
+.productLedger,
+.productFicha,
+.auditPanel,
+.priorityPanel,
+.workflowPanel,
+.qualityPanel,
+.qualityPanelCompact {
+  position: relative;
+  min-width: 0;
+  border: 1px solid rgba(92, 115, 150, 0.16);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(73, 212, 255, 0.13), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 249, 255, 0.74));
+  box-shadow: 0 22px 58px rgba(37, 57, 91, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  padding: 20px;
+  backdrop-filter: blur(22px) saturate(1.12);
+}
+
+.heroPanel {
+  min-height: 168px;
+  display: grid;
+  align-content: space-between;
+}
+
+.heroPanel h1,
+.slimHeader h1 {
+  margin: 0;
+  max-width: 880px;
+  font-size: clamp(2rem, 4vw, 4.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  color: #071226;
+}
+
+.heroPanel p,
+.slimHeader p {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: #66748c;
+}
+
+.controlPanel {
+  display: grid;
+  gap: 14px;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: #1f6cf0;
+  font-weight: 850;
+}
+
+.inventoryStrip {
+  display: grid;
+  grid-template-columns: 1.3fr repeat(3, minmax(130px, 0.7fr));
+  gap: 12px;
+}
+
+.stripPrimary,
+.stripFact,
+.filterCell,
+.actionCard,
+.fichaRow,
+.tabCard,
+.queueRow,
+.workflowStep {
+  border: 1px solid rgba(92, 115, 150, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+  padding: 12px;
+}
+
+.stripPrimary strong,
+.stripFact strong {
+  display: block;
+  font-size: clamp(1.7rem, 3vw, 3rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: #071226;
+}
+
+.stripFact small,
+.stripPrimary small,
+.filterCell span,
+.actionCard span,
+.fichaRow span,
+.queueRow span,
+.workflowStep span {
+  display: block;
+  color: #66748c;
+  margin-top: 6px;
+}
+
+.masterDetail,
+.masterDetailTight {
+  display: grid;
+  grid-template-columns: minmax(0, 1.42fr) minmax(320px, 0.68fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ledgerHeader,
+.fichaHeader,
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.ledgerHeader h2,
+.fichaHeader h2,
+.panelHeader h2 {
+  margin: 4px 0 0;
+  letter-spacing: -0.035em;
+  color: #071226;
+}
+
+.compactFilters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.filterCell select,
+.filterCell input,
+.actionCard select,
+.actionCard input {
+  width: 100%;
+}
+
+.tableFrame {
+  overflow: auto;
+  border-radius: 22px;
+  border: 1px solid rgba(92, 115, 150, 0.14);
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+.tableFrame table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.tableFrame th,
+.tableFrame td {
+  text-align: left;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(92, 115, 150, 0.10);
+  vertical-align: top;
+}
+
+.tableFrame th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #5c6e86;
+  background: rgba(246, 250, 255, 0.76);
+}
+
+.tableFrame td {
+  color: #1e2d44;
+}
+
+.tableFrame tr:hover td {
+  background: rgba(238, 247, 255, 0.66);
+}
+
+.skuRail,
+.actionRail,
+.internalTabs,
+.badgeRow,
+.chipStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.actionRail a,
+.actionRail span,
+.skuRail a,
+.badgeRow span,
+.internalTabs a,
+.internalTabs span,
+.chipStack a,
+.priorityHeroItem a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 115, 150, 0.16);
+  background: rgba(255, 255, 255, 0.68);
+  color: #142039;
+  text-decoration: none;
+  font-size: 0.82rem;
+  box-shadow: 0 8px 18px rgba(37, 57, 91, 0.06);
+}
+
+.actionRail a:first-child,
+.internalTabs a:first-child,
+.chipStack a:first-child {
+  border-color: rgba(36, 107, 255, 0.26);
+  background: linear-gradient(135deg, rgba(36, 107, 255, 0.12), rgba(73, 212, 255, 0.14));
+  color: #12429b;
+}
+
+.actionRail span[aria-disabled="true"] {
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.fichaStack,
+.queueStack,
+.workflowStack,
+.qualityStack {
+  display: grid;
+  gap: 10px;
+}
+
+.fichaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.fichaRow strong {
+  color: #071226;
+  text-align: right;
+}
+
+.tabCard strong,
+.queueRow strong,
+.workflowStep strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #071226;
+}
+
+.inventorySplitThree {
+  display: grid;
+  grid-template-columns: 0.8fr 1.1fr 1.1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.queueRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.workflowStep {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.stepIndex {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(36, 107, 255, 0.16), rgba(73, 212, 255, 0.22));
+  color: #1557cc;
+  font-weight: 900;
+}
+
+.honestBlock {
+  border-left: 4px solid rgba(227, 160, 24, 0.70);
+  border-radius: 18px;
+  background: rgba(255, 247, 219, 0.78);
+  padding: 14px;
+  color: #6b4b08;
+}
+
+.slimHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 18px;
+  align-items: end;
+  border: 1px solid rgba(92, 115, 150, 0.16);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(167, 139, 250, 0.16), transparent 28%),
+    radial-gradient(circle at 12% 14%, rgba(73, 212, 255, 0.20), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,0.94), rgba(241,248,255,0.78));
+  box-shadow: 0 24px 70px rgba(37, 57, 91, 0.12);
+  padding: 22px;
+}
+
+.miniStats {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.miniStats span {
+  min-width: 104px;
+  border: 1px solid rgba(92, 115, 150, 0.14);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.64);
+  padding: 11px 12px;
+  color: #66748c;
+  font-size: 0.8rem;
+}
+
+.miniStats strong {
+  display: block;
+  color: #071226;
+  font-size: 1.7rem;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.intentBar {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(240px, auto);
+  gap: 12px;
+  align-items: end;
+  border: 1px solid rgba(92, 115, 150, 0.12);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.64);
+  padding: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.searchBox,
+.inlineBudget {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.searchBox label,
+.inlineBudget label {
+  grid-column: 1 / -1;
+  color: #5c6e86;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+}
+
+.searchBox input,
+.inlineBudget input {
+  min-height: 44px;
+  border-radius: 18px;
+  border: 1px solid rgba(92, 115, 150, 0.18);
+  background: rgba(255, 255, 255, 0.74);
+  color: #071226;
+  padding: 0 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.searchBox button,
+.inlineBudget button {
+  min-height: 44px;
+  border-radius: 18px;
+  border: 1px solid rgba(36, 107, 255, 0.28);
+  background: linear-gradient(135deg, #2f76ff, #72dcff);
+  color: #ffffff;
+  padding: 0 14px;
+  font-weight: 850;
+  box-shadow: 0 12px 26px rgba(36, 107, 255, 0.18);
+}
+
+.masterDetailTight .workflowPanel {
+  grid-column: 1 / -1;
+}
+
+.priorityQueueLayout,
+.barcodeWorkbench,
+.validationConsole,
+.auditTimeline {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.countConsole {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.priorityHeroItem {
+  border: 1px solid rgba(227, 160, 24, 0.18);
+  border-radius: 24px;
+  background: rgba(255, 248, 224, 0.74);
+  padding: 16px;
+  margin-bottom: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.priorityHeroItem strong {
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  color: #071226;
+}
+
+.priorityHeroItem span {
+  color: #7a5b12;
+}
+
+.timelineStack {
+  display: grid;
+  gap: 10px;
+}
+
+.timelineEvent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  border: 1px solid rgba(92, 115, 150, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.66);
+  padding: 12px;
+}
+
+.timelineEvent strong,
+.timelineEvent span,
+.timelineEvent p {
+  display: block;
+}
+
+.timelineEvent span {
+  color: #66748c;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.timelineEvent p {
+  color: #43536a;
+  margin: 8px 0 0;
+}
+
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  border-radius: 999px;
+  background: #2f76ff;
+  box-shadow: 0 0 0 6px rgba(47, 118, 255, 0.12);
+}
+
+@media (max-width: 1180px) {
+  .inventoryHero,
+  .masterDetail,
+  .inventorySplitThree,
+  .inventoryStrip,
+  .slimHeader,
+  .intentBar,
+  .masterDetailTight,
+  .priorityQueueLayout,
+  .barcodeWorkbench,
+  .validationConsole,
+  .auditTimeline,
+  .countConsole {
+    grid-template-columns: 1fr;
+  }
+
+  .compactFilters {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+
+  .miniStats,
+  .chipStack {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .compactFilters,
+  .searchBox,
+  .inlineBudget,
+  .queueRow {
+    grid-template-columns: 1fr;
+  }
+}

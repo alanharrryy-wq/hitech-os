@@ -75,20 +75,22 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           ) : null}
         </div>
 
-        <div className="footer-stack">
-          <div className="footer-pill" data-prisma-component="TerminalStatusCard">
-            <span className="subtle">Gemelo</span>
-            <strong>{pcMessages.shell.twinStatus}</strong>
-            <small>Tablet opera independiente</small>
-          </div>
-          <div className="footer-pill" data-prisma-component="TerminalStatusCard">
-            <span className="subtle">Última sincronización</span>
-            <strong>{pcMessages.shell.lastSync}</strong>
-          </div>
-          <div className="footer-actions">
+        <div className="footer-stack pc-premium-footer-stack" data-prisma-component="SidebarStatusDock">
+          <section className="pc-premium-sidebar-status" data-prisma-component="TerminalStatusCard" aria-label="Estado operativo PC y Tablet">
+            <div className="pc-premium-status-line">
+              <span>Gemelo Tablet</span>
+              <strong>{pcMessages.shell.twinStatus}</strong>
+            </div>
+            <div className="pc-premium-status-line">
+              <span>Última sync</span>
+              <strong>{pcMessages.shell.lastSync}</strong>
+            </div>
+            <small>PC ligero, Tablet independiente. Sin ruido visual abajo.</small>
+          </section>
+          <nav className="footer-actions pc-premium-footer-actions" aria-label="Atajos de soporte PC">
             <a className="footer-chip" href="/glosario">Ayuda</a>
-            <a className="footer-chip" href="/sync">Sincronización</a>
-          </div>
+            <a className="footer-chip" href="/sync">Sync</a>
+          </nav>
         </div>
       </aside>
 
