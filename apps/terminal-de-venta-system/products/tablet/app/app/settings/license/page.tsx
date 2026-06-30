@@ -1,6 +1,7 @@
 import { FeatureList, LicenseStatusCard } from "@components/license/license-status-card";
 import { LicenseRefreshPanel } from "@components/license/license-refresh-panel";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletSettingsSurfaceV2 } from "@components/tablet-visual-v2";
 import { getTabletLicenseGovernor } from "@/server/licensing/tablet-license-service";
 import { getTabletLicenseRefreshStatus } from "@/server/licensing/tablet-license-refresh";
 import styles from "@components/license/license-ui.module.css";
@@ -41,11 +42,13 @@ export default async function TabletLicensePage() {
       kicker="Configuración Tablet"
       status={<TabletShellStatusPill tone={statusTone(status.state)}>{statusLabel(status.state)}</TabletShellStatusPill>}
     >
-      <main className={styles.pageStack} data-prisma-license-client-view="readonly">
-        <LicenseStatusCard status={status} runtimeContext={governor.runtimeContext} />
-        <LicenseRefreshPanel initialStatus={refreshStatus} />
-        <FeatureList features={features} />
-      </main>
+      <TabletSettingsSurfaceV2 routeId="/settings/license" title="Licencia y equipo" description="Autorización visible, continuidad de operación y capacidades disponibles en esta Tablet." statusLabel={statusLabel(status.state)}>
+        <main className={styles.pageStack} data-prisma-license-client-view="readonly">
+          <LicenseStatusCard status={status} runtimeContext={governor.runtimeContext} />
+          <LicenseRefreshPanel initialStatus={refreshStatus} />
+          <FeatureList features={features} />
+        </main>
+      </TabletSettingsSurfaceV2>
     </PrismaTabletShellUnified>
   );
 }

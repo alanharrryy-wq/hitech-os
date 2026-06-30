@@ -1,0 +1,180 @@
+.action {
+  min-height: var(--prisma-v2-touch-target, 48px);
+  min-width: min(100%, 11rem);
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1vw, 12px);
+  padding: clamp(10px, 1.2vw, 14px) clamp(16px, 1.8vw, 24px);
+  border: 1px solid var(--prisma-v2-border-strong, rgba(67, 112, 164, 0.28));
+  border-radius: 999px;
+  color: var(--prisma-v2-graphite, #142033);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(239, 248, 255, 0.66)),
+    radial-gradient(circle at 18% 16%, rgba(52, 214, 255, 0.34), transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(155, 140, 255, 0.24), transparent 42%);
+  box-shadow:
+    0 18px 42px rgba(47, 130, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -18px 36px rgba(66, 153, 225, 0.10);
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  transition:
+    transform 160ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.action::before,
+.action::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.action::before {
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.58), transparent 26%),
+    radial-gradient(circle at var(--prisma-v2-press-x, 28%) var(--prisma-v2-press-y, 20%), rgba(255, 255, 255, 0.72), transparent 22%);
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.action::after {
+  inset: auto 15% 6px;
+  height: 13px;
+  background: linear-gradient(90deg, transparent, rgba(52, 214, 255, 0.40), rgba(155, 140, 255, 0.28), transparent);
+  filter: blur(11px);
+  opacity: 0.78;
+  transform-origin: center;
+}
+
+.action:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(47, 130, 255, 0.34);
+  box-shadow:
+    0 22px 48px rgba(47, 130, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -18px 36px rgba(66, 153, 225, 0.12);
+}
+
+.action:active:not(:disabled) {
+  transform: translateY(1px) scale(0.992);
+  box-shadow:
+    0 12px 26px rgba(47, 130, 255, 0.16),
+    inset 0 3px 10px rgba(29, 78, 216, 0.12);
+}
+
+.action:focus-visible {
+  outline: 3px solid var(--prisma-v2-focus, rgba(47, 130, 255, 0.28));
+  outline-offset: 3px;
+}
+
+.action:disabled,
+.action[data-status="disabled"] {
+  cursor: not-allowed;
+  color: rgba(20, 32, 51, 0.52);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(232, 238, 246, 0.54)),
+    rgba(255, 255, 255, 0.36);
+  box-shadow:
+    0 8px 22px rgba(50, 84, 128, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.action[data-variant="primary"] {
+  color: #082033;
+  background:
+    linear-gradient(135deg, rgba(52, 214, 255, 0.96), rgba(47, 130, 255, 0.84)),
+    radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.56), transparent 28%);
+  box-shadow:
+    0 24px 58px rgba(47, 130, 255, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -22px 34px rgba(18, 58, 122, 0.18);
+}
+
+.action[data-variant="secondary"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(247, 251, 255, 0.66)),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.74), transparent 32%);
+}
+
+.action[data-variant="success"] {
+  background:
+    linear-gradient(135deg, rgba(52, 211, 153, 0.88), rgba(52, 214, 255, 0.74)),
+    radial-gradient(circle at 80% 22%, rgba(255, 255, 255, 0.56), transparent 30%);
+}
+
+.action[data-full-width="true"] {
+  width: 100%;
+}
+
+.icon {
+  width: clamp(34px, 3.7vw, 42px);
+  height: clamp(34px, 3.7vw, 42px);
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.label {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  text-align: left;
+}
+
+.label strong,
+.amount {
+  white-space: nowrap;
+}
+
+.label strong {
+  font-size: clamp(0.95rem, 1.35vw, 1.12rem);
+  line-height: 1.05;
+}
+
+.label small,
+.amount {
+  color: rgba(20, 32, 51, 0.66);
+  font-size: clamp(0.74rem, 0.9vw, 0.86rem);
+  font-weight: 850;
+  line-height: 1.1;
+}
+
+.amount {
+  justify-self: end;
+  min-width: max-content;
+}
+
+@media (max-width: 680px) {
+  .action {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .amount {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action,
+  .action::after {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}

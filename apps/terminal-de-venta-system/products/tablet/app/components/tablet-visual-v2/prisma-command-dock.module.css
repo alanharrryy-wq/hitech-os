@@ -1,0 +1,35 @@
+.dock {
+  min-height: calc(var(--prisma-v2-touch-target, 48px) + 10px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: clamp(7px, 1vw, 11px);
+  align-items: center;
+  padding: clamp(7px, 1vw, 11px);
+  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
+  border-radius: clamp(18px, 2vw, 28px);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(247, 251, 255, 0.58)),
+    radial-gradient(circle at 50% 0%, rgba(52, 214, 255, 0.14), transparent 60%);
+  box-shadow:
+    0 20px 52px rgba(31, 64, 104, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
+  -webkit-backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
+  z-index: var(--prisma-v2-layer-dock, 80);
+}
+
+.dock :where(a, button) {
+  min-height: var(--prisma-v2-touch-target, 48px);
+  border-radius: clamp(14px, 1.4vw, 20px);
+}
+
+.dock :where(a, button):focus-visible {
+  outline: 3px solid var(--prisma-v2-focus, rgba(47, 130, 255, 0.28));
+  outline-offset: 2px;
+}
+
+.dock :where([data-active="true"]) {
+  box-shadow:
+    0 14px 28px rgba(47, 130, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}

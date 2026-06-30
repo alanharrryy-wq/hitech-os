@@ -1,4 +1,6 @@
 import { GalleryChrome, loadTabletGallerySource } from "../_tablet-gallery-runtime";
+import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletReportSurfaceV2 } from "@components/tablet-visual-v2";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -22,5 +24,16 @@ export default function PrismaMaterialityCatalogPage() {
     ]
   });
 
-  return <GalleryChrome gallery={gallery} />;
+  return (
+    <PrismaTabletShellUnified
+      currentPath="/visual-os/materiality-catalog"
+      title="Materiality Catalog"
+      subtitle="Galería de materialidad, fondos reales, double glass, hydro rim y budgets."
+      kicker="Visual OS"
+    >
+      <TabletReportSurfaceV2 routeId="/visual-os/materiality-catalog" title="Materiality Catalog" description="Galería de materialidad, fondos reales, double glass, hydro rim y budgets." statusLabel="Gallery">
+        <GalleryChrome gallery={gallery} />
+      </TabletReportSurfaceV2>
+    </PrismaTabletShellUnified>
+  );
 }

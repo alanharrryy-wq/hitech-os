@@ -9,6 +9,7 @@ param(
     "web-control-local-cloudflare",
     "panel",
     "chart-lab-local",
+    "cloud-command-center-3160",
     "kill-everything",
     "module-cloudflare"
   )]
@@ -215,6 +216,14 @@ function Get-JsonObject {
   return Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
 }
 
+function Get-CloudCommandCenterLabRoot {
+  $candidate = Join-Path (Split-Path -Parent $ControlRoot) "prisma-control-center-unified-shell-lab-v3"
+  if (Test-Path -LiteralPath $candidate) {
+    return (Resolve-Path -LiteralPath $candidate).Path
+  }
+  return $candidate
+}
+
 function Get-ServiceDefinitions {
   $cfg = Get-JsonObject -Path $ServicesConfigPath
   $items = @()
@@ -241,6 +250,17 @@ function Get-ServiceDefinitions {
     PublicHost = "control.hitechrts.com"
     Kind = "control-center"
     BrowserPath = "/"
+  }
+  $items += [pscustomobject]@{
+    Id = "cloud-command-center-3160"
+    Name = "PRISMA Cloud Command Center"
+    Port = 3160
+    Url = "http://127.0.0.1:3160/unified-shell.html"
+    StartCommand = ""
+    Cwd = (Get-CloudCommandCenterLabRoot)
+    PublicHost = ""
+    Kind = "cloud-command-center"
+    BrowserPath = "/unified-shell.html"
   }
   $items += [pscustomobject]@{
     Id = "chart-lab-3000"
@@ -272,7 +292,8 @@ function Get-LauncherPorts {
     "web-control-local" { return @(3110,3150) }
     "web-control-local-cloudflare" { return @(3110,3150) }
     "chart-lab-local" { return @(3000) }
-    "kill-everything" { return @(3000,3100,3110,3120,3130,3140,3150,3200) }
+    "cloud-command-center-3160" { return @(3160) }
+    "kill-everything" { return @(3000,3100,3110,3120,3130,3140,3150,3160,3200) }
     "module-cloudflare" {
       if ($ServiceId) { return @((Get-ServiceById -Id $ServiceId).Port) }
       return @()
@@ -472,6 +493,36 @@ function Start-ControlCenterDetached {
   return 0
 }
 
+function Start-CloudCommandCenter3160 {
+  param([switch]$OpenBrowser)
+  $labRoot = Get-CloudCommandCenterLabRoot
+  $labScript = Join-Path $labRoot "internal\py\prisma_unified_lab_v3.py"
+
+  if (-not (Test-Path -LiteralPath $labScript)) {
+    throw "No encontre PRISMA Cloud Command Center en $labScript"
+  }
+
+  $resetExit = Reset-Ports -Ports @(3160) -Reason "Cloud Command Center reset 3160"
+  if ($resetExit -ne 0) { return $resetExit }
+
+  Write-Host ""
+  Write-Host "[PRISMA] Levantando PRISMA Cloud Command Center en http://127.0.0.1:3160/unified-shell.html" -ForegroundColor Cyan
+  Write-Host "[PRISMA] No toca Control Center 3150 ni levanta el stack completo." -ForegroundColor DarkCyan
+
+  $safeLabScript = $labScript.Replace("'", "''")
+  $safeLabRoot = $labRoot.Replace("'", "''")
+  $safeControlRoot = $ControlRoot.Replace("'", "''")
+  $safeOutputDir = $BaseLogRoot.Replace("'", "''")
+  $cmd = "py -3 '$safeLabScript' --lab-root '$safeLabRoot' --protected-current '$safeControlRoot' --out-dir '$safeOutputDir' --port 3160 --no-open"
+  [void](Start-DetachedPowerShell -Name "cloud-command-center-3160" -WorkingDirectory $labRoot -Command $cmd)
+
+  if (-not (Wait-Port -Port 3160 -TimeoutSeconds 60 -Name "PRISMA Cloud Command Center")) { return 2 }
+  if ($OpenBrowser) {
+    Start-Process "http://127.0.0.1:3160/unified-shell.html"
+  }
+  return 0
+}
+
 function Start-NodeLikeService {
   param([Parameter(Mandatory = $true)]$Service)
   if (Test-HttpReady -Url $Service.Url) {
@@ -493,6 +544,9 @@ function Start-OneServiceLocal {
     $resetExit = Reset-Ports -Ports @([int]$Service.Port) -Reason "Modulo reset $($Service.Name) puerto $($Service.Port)"
     if ($resetExit -ne 0) { return $resetExit }
     return Start-ControlCenterDetached -OpenBrowser
+  }
+  if ($Service.Kind -eq "cloud-command-center") {
+    return Start-CloudCommandCenter3160 -OpenBrowser
   }
   return Start-NodeLikeService -Service $Service
 }
@@ -710,6 +764,14 @@ function Start-ModuleCloudflare {
   $localExit = ConvertTo-ScalarExitCode -Code (Start-OneServiceLocal -Service $selected) -Default 1
   if ($localExit -ne 0) { return $localExit }
 
+  if ($selected.Kind -eq "cloud-command-center") {
+    Write-Host ""
+    Write-Host "PRISMA MODULO LOCAL: READY" -ForegroundColor Green
+    Write-Host ("Local : {0}" -f $selected.Url) -ForegroundColor White
+    Write-Host "Public: privado local, sin Cloudflare" -ForegroundColor Yellow
+    return 0
+  }
+
   Stop-CloudflareLocal
   & $Invoke -Action "cloudflare-up" @ForwardArgs
   $cfExit = ConvertTo-ScalarExitCode -Code $LASTEXITCODE -Default 1
@@ -824,9 +886,14 @@ try {
       break
     }
 
+    "cloud-command-center-3160" {
+      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-CloudCommandCenter3160 -OpenBrowser) -Default 1
+      break
+    }
+
     "kill-everything" {
       Stop-CloudflareLocal
-      $ExitCode = ConvertTo-ScalarExitCode -Code (Reset-Ports -Ports @(3000,3100,3110,3120,3130,3140,3150,3200) -Reason "Kill all local PRISMA reset 3000,3100,3110,3120,3130,3140,3150,3200") -Default 1
+      $ExitCode = ConvertTo-ScalarExitCode -Code (Reset-Ports -Ports @(3000,3100,3110,3120,3130,3140,3150,3160,3200) -Reason "Kill all local PRISMA reset 3000,3100,3110,3120,3130,3140,3150,3160,3200") -Default 1
       [void](Stop-PrismaRuntimeProcesses -Reason "Kill all local")
       break
     }

@@ -32,6 +32,9 @@
     "verify:visual-os-core-00d-00e": "node ../../../tools/prisma-visual-os/verify_prisma_visual_os_core_00d_00e.mjs",
     "generate:visual-os-controls-00e": "node ../../../tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs",
     "verify:visual-os-tablet-00f-00i": "node tools/verify_prisma_tablet_visual_controlled_00f_00i.mjs",
+    "verify:tablet-visual-surface-v2": "node tools/verify_prisma_tablet_visual_surface_v2_2406.mjs",
+    "verify:tablet-visual-surface-v2-real-migration": "node tools/verify_prisma_tablet_visual_surface_v2_real_migration_2406.mjs",
+    "verify:tablet-visual-layer-cleanup": "node tools/verify_tablet_visual_layer_cleanup_2406.mjs",
     "tablet:i01:runtime": "node scripts/tablet-runtime-gates.mjs --mode=verify",
     "verify:i01-runtime": "node tools/verify_tablet_i01_runtime.mjs",
     "db:tablet:init:safe": "node scripts/tablet-runtime-gates.mjs --mode=db-init",
@@ -63,7 +66,8 @@
     "predev:webpack": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
     "predev": "pnpm run verify:zero-important",
-    "verify:tablet-pos-page-hammer": "node tools/verify_tablet_pos_page_hammer_01.mjs"
+    "verify:tablet-pos-page-hammer": "node tools/verify_tablet_pos_page_hammer_01.mjs",
+    "verify:tablet-softglass-canonical": "node tools/verify_tablet_softglass_canonical_2606.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

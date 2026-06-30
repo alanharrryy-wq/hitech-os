@@ -32,7 +32,7 @@ function normalizeTabletDatabaseUrl(databaseUrl: string) {
     return toPrismaFileUrl(filePath);
   }
 
-  const absolutePath = path.resolve(resolveTabletAppRoot(), filePath);
+  const absolutePath = path.resolve(resolveTabletAppRoot(), "prisma", filePath);
   mkdirSync(path.dirname(absolutePath), { recursive: true });
   return toPrismaFileUrl(absolutePath);
 }

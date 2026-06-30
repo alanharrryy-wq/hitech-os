@@ -1,3 +1,5 @@
+"use client";
+
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { buildPrismaMobileActionInbox } from "@/lib/prisma-app/prisma-mobile-action-inbox";
 import type { PrismaMobileCommandTone } from "@/lib/prisma-app/prisma-mobile-command-center";
@@ -18,6 +20,15 @@ const areaLabel = {
   datos: "Datos",
   alertas: "Alertas"
 } as const;
+
+function copyMobileText(text: string) {
+  if (typeof navigator === "undefined" || !navigator.clipboard) return;
+  void navigator.clipboard.writeText(text).catch(() => {});
+}
+
+function shareMobileText(text: string) {
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+}
 
 export function PrismaMobileActionInbox({ clientSnapshot }: { clientSnapshot: PrismaMobileClientSnapshot }) {
   const inbox = buildPrismaMobileActionInbox(clientSnapshot);
@@ -74,6 +85,23 @@ export function PrismaMobileActionInbox({ clientSnapshot }: { clientSnapshot: Pr
                     <em>{action.owner}</em>
                     <span>{action.dueLabel}</span>
                   </footer>
+                  <div className={styles.actionButtonRow} aria-label={`Acciones para ${action.title}`}>
+                    <button
+                      type="button"
+                      onClick={() => copyMobileText(`PRISMA · ${areaLabel[action.area]} · ${action.title} · ${action.summary} · Acción: ${action.recommendedAction} · Responsable: ${action.owner}`)}
+                    >
+                      Copiar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => shareMobileText(`PRISMA · ${areaLabel[action.area]} · ${action.title}. ${action.summary}. Acción: ${action.recommendedAction}. Responsable: ${action.owner}.`)}
+                    >
+                      WhatsApp
+                    </button>
+                    <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("prisma:open-alerts"))}>
+                      Ver alertas
+                    </button>
+                  </div>
                   <small>{action.recommendedAction}</small>
                 </article>
               ))}

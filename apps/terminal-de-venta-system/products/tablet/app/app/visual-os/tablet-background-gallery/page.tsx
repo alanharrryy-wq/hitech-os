@@ -1,4 +1,6 @@
 import { GalleryChrome, loadTabletGallerySource } from "../_tablet-gallery-runtime";
+import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletReportSurfaceV2 } from "@components/tablet-visual-v2";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -25,5 +27,16 @@ export default function TabletBackgroundGalleryPage() {
     ]
   });
 
-  return <GalleryChrome gallery={gallery} />;
+  return (
+    <PrismaTabletShellUnified
+      currentPath="/visual-os/tablet-background-gallery"
+      title="Background Gallery"
+      subtitle="Galería de fondos Tablet y presets gobernados para calibración visual."
+      kicker="Visual OS"
+    >
+      <TabletReportSurfaceV2 routeId="/visual-os/tablet-background-gallery" title="Background Gallery" description="Galería de fondos Tablet y presets gobernados para calibración visual." statusLabel="Gallery">
+        <GalleryChrome gallery={gallery} />
+      </TabletReportSurfaceV2>
+    </PrismaTabletShellUnified>
+  );
 }

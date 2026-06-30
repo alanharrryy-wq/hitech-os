@@ -2657,14 +2657,14 @@
  * Final light-skin binding for the functional Tablet POS. It intentionally
  * rides above the older dark/gold passes and is scoped by html runtime attrs.
  */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+.posWorkspace {
   color: var(--prisma-text-primary);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard {
+.catalogArea,
+.ticketPanel,
+.searchCard,
+.successCard {
   border-color: var(--prisma-border-soft);
   background:
     radial-gradient(circle at 28% 0%, rgba(255,255,255,0.86), transparent 34%),
@@ -2674,13 +2674,13 @@
   -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyTicket,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartCard {
+.searchInputWrap,
+.catalogInsight,
+.ticketLine,
+.emptyTicket,
+.statePanel,
+.stepper,
+.heldCartCard {
   border-color: var(--prisma-border-soft);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.70));
@@ -2689,32 +2689,32 @@
   -webkit-backdrop-filter: blur(var(--prisma-optical-control-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within {
+.searchInputWrap:focus-within {
   border-color: var(--prisma-action-primary);
   box-shadow: var(--prisma-optical-focus-ring), 0 16px 34px rgba(21,87,255,0.12);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap svg,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal span {
+.searchInputWrap svg,
+.catalogInsight strong,
+.ticketHeader span,
+.ticketTotal span {
   color: var(--prisma-action-primary);
   text-shadow: none;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:not(:disabled),
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:not(:disabled),
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:not(.checkoutLinkDisabled) {
+.primaryButton:not(:disabled),
+.addButton:not(:disabled),
+.checkoutLink:not(.checkoutLinkDisabled) {
   color: var(--prisma-text-inverse);
   border-color: var(--prisma-action-primary);
   background: var(--prisma-action-primary-gradient);
   box-shadow: var(--prisma-shadow-primary-glow), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a {
+.secondaryButton,
+.ghostButton,
+.secondaryCheckoutActions button,
+.secondaryCheckoutActions a {
   color: var(--prisma-text-primary);
   border-color: var(--prisma-border-soft);
   background:
@@ -2722,20 +2722,20 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 12px 26px rgba(32,45,82,0.08);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton[data-prisma-component="ScanButton"],
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton {
+.secondaryButton[data-prisma-component="ScanButton"],
+.addButton {
   color: var(--prisma-action-primary);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton[data-prisma-component="ScanButton"] {
+.secondaryButton[data-prisma-component="ScanButton"] {
   border-color: var(--prisma-border-action);
   background:
     radial-gradient(circle at 22% 0%, rgba(21,87,255,0.12), transparent 44%),
     linear-gradient(180deg, #ffffff, #f4f8ff);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
+.categoryButton,
+.categoryButtonActive {
   border-color: var(--prisma-border-soft);
   color: var(--prisma-text-secondary);
   background:
@@ -2743,25 +2743,25 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 26px rgba(32,45,82,0.08);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
+.categoryButton span,
+.categoryButtonActive span {
   color: var(--prisma-action-primary);
   background: var(--prisma-action-primary-soft);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
+.categoryButtonActive {
   color: var(--prisma-action-primary);
   border-color: var(--prisma-border-action);
   transform: translateY(-1px);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
+.categoryButtonActive span {
   color: #ffffff;
   background: var(--prisma-action-primary-gradient);
   box-shadow: 0 14px 30px rgba(21,87,255,0.22);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard {
+.productCard {
   border-color: var(--prisma-border-soft);
   background:
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.88), transparent 36%),
@@ -2771,8 +2771,8 @@
   -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:focus-within {
+.productCard:hover,
+.productCard:focus-within {
   border-color: var(--prisma-border-action);
   box-shadow:
     0 24px 56px rgba(32,45,82,0.16),
@@ -2780,15 +2780,15 @@
     inset 0 1px 0 rgba(255,255,255,0.94);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard::before {
+.productCard::before {
   background:
     linear-gradient(180deg, rgba(255,255,255,0.76), transparent 30%),
     linear-gradient(130deg, transparent 68%, rgba(21,87,255,0.07));
   opacity: 0.72;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host] {
+.productImageStage,
+.productImageStage[data-prisma-packshot-host] {
   border-color: #e5ebf7;
   background:
     radial-gradient(circle at 50% 12%, rgba(255,255,255,0.98), transparent 34%),
@@ -2800,80 +2800,80 @@
     0 14px 30px rgba(32,45,82,0.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage::before,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host]::before {
+.productImageStage::before,
+.productImageStage[data-prisma-packshot-host]::before {
   background:
     linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.54) 34%, transparent 56%),
     radial-gradient(circle at 50% 100%, rgba(21,87,255,0.16), transparent 48%);
   opacity: 0.66;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage::after,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage[data-prisma-packshot-host]::after {
+.productImageStage::after,
+.productImageStage[data-prisma-packshot-host]::after {
   background:
     radial-gradient(ellipse at center, rgba(21,87,255,0.13), rgba(185,199,220,0.12) 58%, transparent 75%);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAura {
+.productAura {
   opacity: var(--prisma-optical-product-glow-opacity);
   filter: blur(var(--prisma-optical-product-glow-blur)) saturate(1.02);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPedestal,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage:has(.productPackshot) .productPedestal {
+.productPedestal,
+.productImageStage:has(.productPackshot) .productPedestal {
   opacity: var(--prisma-optical-product-pedestal-opacity);
   background:
     radial-gradient(ellipse at center, rgba(21,87,255,0.16), rgba(185,199,220,0.16) 55%, transparent 76%);
   box-shadow: 0 16px 24px rgba(32,45,82,0.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot {
+.productPackshot {
   filter:
     drop-shadow(0 28px 20px rgba(32,45,82,0.18))
     drop-shadow(0 0 18px rgba(21,87,255,0.10));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productName,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLineText strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader h2 {
+.productText > strong,
+.productName,
+.ticketLineText strong,
+.ticketHeader h2 {
   color: var(--prisma-text-primary);
   text-shadow: none;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productSku,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productBarcode,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLineText span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotalsBreakdown {
+.productText > span,
+.productSku,
+.productBarcode,
+.ticketLineText span,
+.ticketTotalsBreakdown {
   color: var(--prisma-text-secondary);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .priceValue,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAside strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .lineTotal,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal strong {
+.priceValue,
+.productAside strong,
+.lineTotal,
+.ticketTotal strong {
   color: var(--prisma-action-primary);
   text-shadow: 0 0 18px rgba(21,87,255,0.14);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.ticketPanel {
   border-color: #dde6f6;
   background:
     radial-gradient(circle at 88% 8%, rgba(21,87,255,0.07), transparent 34%),
     linear-gradient(180deg, rgba(255,255,255,0.90), rgba(246,250,255,0.78));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader {
+.ticketHeader {
   border-bottom-color: #e5ebf7;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine::before {
+.ticketLine::before {
   background: linear-gradient(180deg, transparent, rgba(21,87,255,0.54), transparent);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumb,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot {
+.cartThumb,
+.cartThumbPackshot {
   border-color: #e5ebf7;
   background:
     radial-gradient(ellipse at 50% 84%, rgba(21,87,255,0.14), transparent 44%),
@@ -2881,17 +2881,17 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 10px 22px rgba(32,45,82,0.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot img {
+.cartThumbPackshot img {
   filter: drop-shadow(0 12px 10px rgba(32,45,82,0.18));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton {
+.stepper button,
+.removeButton {
   color: var(--prisma-action-primary);
   background: rgba(255,255,255,0.9);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal {
+.ticketTotal {
   border-color: var(--prisma-border-action);
   background:
     radial-gradient(circle at 88% 12%, rgba(21,87,255,0.13), transparent 44%),
@@ -2902,30 +2902,30 @@
     inset 0 1px 0 rgba(255,255,255,0.94);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:not(.checkoutLinkDisabled) {
+.checkoutLink:not(.checkoutLinkDisabled) {
   min-height: 78px;
   box-shadow:
     0 22px 48px rgba(21,87,255,0.28),
     inset 0 1px 0 rgba(255,255,255,0.32);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled strong {
+.checkoutLink strong,
+.checkoutLinkDisabled strong {
   color: #ffffff;
   background: rgba(255,255,255,0.18);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk {
+.checkoutDiagnosticOk {
   border-color: color-mix(in srgb, var(--prisma-state-success) 34%, var(--prisma-border-soft));
   background: color-mix(in srgb, var(--prisma-state-success) 10%, white 90%);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn {
+.checkoutDiagnosticWarn {
   border-color: color-mix(in srgb, var(--prisma-state-warning) 34%, var(--prisma-border-soft));
   background: color-mix(in srgb, var(--prisma-state-warning) 9%, white 91%);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentPanelCard {
+.paymentPanelCard {
   border-color: var(--prisma-border-action);
   color: var(--prisma-text-primary);
 }
@@ -2936,93 +2936,93 @@
  * This reduces oversized cards, search controls, product art, ticket totals and secondary actions
  * while preserving 44px+ touch targets for real tablet operation.
  */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+.posWorkspace,
+.posWorkspace {
   grid-template-columns: minmax(0, 1fr) minmax(360px, 394px);
   gap: 14px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .catalogArea {
+.catalogArea,
+.catalogArea {
   gap: 12px;
   padding: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchCard {
+.searchCard,
+.searchCard {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   padding: 12px;
   align-items: end;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchLabel,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchLabel {
+.searchLabel,
+.searchLabel {
   gap: 6px;
   font-size: 0.72rem;
   letter-spacing: 0.09em;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
+.searchInputWrap,
+.searchInputWrap {
   min-height: 54px;
   padding: 0 14px;
   gap: 9px;
   border-radius: 16px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap input,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap input {
+.searchInputWrap input,
+.searchInputWrap input {
   font-size: 1rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions {
+.searchActions,
+.searchActions {
   gap: 8px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .ghostButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .ghostButton {
+.searchActions .primaryButton,
+.searchActions .secondaryButton,
+.searchActions .ghostButton,
+.searchActions .primaryButton,
+.searchActions .secondaryButton,
+.searchActions .ghostButton {
   min-height: 54px;
   padding-inline: 13px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryRail,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryRail {
+.categoryRail,
+.categoryRail {
   gap: 8px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
+.categoryButton,
+.categoryButtonActive,
+.categoryButton,
+.categoryButtonActive {
   min-height: 58px;
   min-width: 92px;
   padding: 8px 10px;
   border-radius: 15px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
+.categoryButton span,
+.categoryButtonActive span,
+.categoryButton span,
+.categoryButtonActive span {
   width: 34px;
   height: 34px;
   font-size: 0.66rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productGrid {
+.productGrid,
+.productGrid {
   grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
   gap: 10px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productCard {
+.productCard,
+.productCard {
   min-height: 242px;
   grid-template-rows: auto 116px minmax(48px, auto) auto;
   gap: 7px;
@@ -3030,179 +3030,179 @@
   border-radius: 15px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productImageStage {
+.productImageStage,
+.productImageStage {
   min-height: 116px;
   border-radius: 13px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productPackshot {
+.productPackshot,
+.productPackshot {
   max-height: 108px;
   max-width: 76%;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot_bottle,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot_water,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productPackshot_bottle,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productPackshot_water {
+.productPackshot_bottle,
+.productPackshot_water,
+.productPackshot_bottle,
+.productPackshot_water {
   max-height: 112px;
   max-width: 52%;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText {
+.productText,
+.productText {
   gap: 4px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText > strong {
+.productText > strong,
+.productText > strong {
   min-height: 26px;
   font-size: 0.9rem;
   line-height: 1.15;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .badgeOk,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .badgeWarn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .badgeDanger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .badgeNeutral,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .badgeOk,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .badgeWarn,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .badgeDanger,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .badgeNeutral {
+.badgeOk,
+.badgeWarn,
+.badgeDanger,
+.badgeNeutral,
+.badgeOk,
+.badgeWarn,
+.badgeDanger,
+.badgeNeutral {
   padding: 3px 7px;
   font-size: 0.66rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAside,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productAside {
+.productAside,
+.productAside {
   gap: 7px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productAside strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productAside strong {
+.productAside strong,
+.productAside strong {
   font-size: 1.08rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .addButton {
+.addButton,
+.addButton {
   min-height: 44px;
   padding-inline: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.ticketPanel,
+.ticketPanel {
   top: 12px;
   gap: 10px;
   padding: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketHeader {
+.ticketHeader,
+.ticketHeader {
   gap: 8px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader span,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketHeader span {
+.ticketHeader span,
+.ticketHeader span {
   font-size: 0.68rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketHeader h2,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketHeader h2 {
+.ticketHeader h2,
+.ticketHeader h2 {
   font-size: 1.15rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLines {
+.ticketLines,
+.ticketLines {
   min-height: 178px;
   gap: 8px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyTicket,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .emptyTicket,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .statePanel {
+.emptyTicket,
+.statePanel,
+.emptyTicket,
+.statePanel {
   min-height: 170px;
   padding: 16px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLine {
+.ticketLine,
+.ticketLine {
   grid-template-columns: 54px minmax(0, 1fr) auto auto auto;
   gap: 8px;
   padding: 9px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumb,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumb,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot {
+.cartThumb,
+.cartThumbPackshot,
+.cartThumb,
+.cartThumbPackshot {
   width: 48px;
   height: 50px;
   border-radius: 13px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .stepper {
+.stepper,
+.stepper {
   gap: 6px;
   padding: 4px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .stepper button,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .removeButton {
+.stepper button,
+.removeButton,
+.stepper button,
+.removeButton {
   width: 34px;
   min-width: 34px;
   height: 34px;
   min-height: 34px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal {
+.ticketTotal,
+.ticketTotal {
   padding: 13px;
   border-radius: 16px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal strong {
+.ticketTotal strong,
+.ticketTotal strong {
   font-size: clamp(1.75rem, 3vw, 2.45rem);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLink,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled {
+.checkoutLink,
+.checkoutLinkDisabled,
+.checkoutLink,
+.checkoutLinkDisabled {
   min-height: 60px;
   font-size: 1rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions {
+.secondaryCheckoutActions,
+.secondaryCheckoutActions {
   gap: 7px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a {
+.secondaryCheckoutActions button,
+.secondaryCheckoutActions a,
+.secondaryCheckoutActions button,
+.secondaryCheckoutActions a {
   min-height: 72px;
   gap: 4px;
   border-radius: 14px;
 }
 
 @media (max-width: 1220px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace,
+  .posWorkspace {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 760px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLine {
+  .searchCard,
+  .searchCard,
+  .ticketLine,
+  .ticketLine {
     grid-template-columns: 1fr;
   }
 }
@@ -3220,20 +3220,20 @@
   to { transform: translateX(110%); }
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyTicket,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button {
+.searchCard,
+.categoryButton,
+.categoryButtonActive,
+.productCard,
+.ticketPanel,
+.ticketLine,
+.emptyTicket,
+.statePanel,
+.checkoutDiagnosticOk,
+.checkoutDiagnosticWarn,
+.heldCartCard,
+.secondaryCheckoutActions button,
+.secondaryCheckoutActions a,
+.pagination button {
   transition:
     transform var(--prisma-motion-base) var(--prisma-ease-premium),
     box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
@@ -3242,68 +3242,68 @@
     opacity var(--prisma-motion-fast) ease;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:not(.productCardDisabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartCard:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:not(:disabled):hover {
+.productCard:not(.productCardDisabled):hover,
+.ticketLine:hover,
+.heldCartCard:hover,
+.secondaryCheckoutActions button:not(:disabled):hover,
+.secondaryCheckoutActions a:hover,
+.pagination button:not(:disabled):hover {
   transform: translateY(-2px);
   border-color: var(--prisma-border-action);
   box-shadow: var(--prisma-shadow-card-hover);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:hover {
+.categoryButton:hover,
+.categoryButtonActive:hover,
+.addButton:not(:disabled):hover,
+.ghostButton:not(:disabled):hover,
+.stepper button:not(:disabled):hover,
+.removeButton:not(:disabled):hover,
+.checkoutLink:hover {
   transform: translateY(-1px);
   border-color: var(--prisma-border-action);
   box-shadow: var(--prisma-shadow-card-hover);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartActions button:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:active {
+.addButton:active,
+.ghostButton:active,
+.categoryButton:active,
+.categoryButtonActive:active,
+.checkoutLink:active,
+.stepper button:active,
+.removeButton:active,
+.secondaryCheckoutActions button:active,
+.heldCartActions button:active,
+.pagination button:active {
   transform: translateY(1px) scale(0.99);
   box-shadow: var(--prisma-light-shadow-card);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartActions button:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:focus-visible {
+.searchInputWrap:focus-within,
+.categoryButton:focus-visible,
+.categoryButtonActive:focus-visible,
+.addButton:focus-visible,
+.ghostButton:focus-visible,
+.stepper button:focus-visible,
+.removeButton:focus-visible,
+.checkoutLink:focus-visible,
+.secondaryCheckoutActions button:focus-visible,
+.secondaryCheckoutActions a:focus-visible,
+.heldCartActions button:focus-visible,
+.pagination button:focus-visible {
   outline: none;
   border-color: var(--prisma-action-primary);
   box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartActions button:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button:disabled {
+.addButton:disabled,
+.ghostButton:disabled,
+.stepper button:disabled,
+.removeButton:disabled,
+.checkoutLinkDisabled,
+.secondaryCheckoutActions button:disabled,
+.heldCartActions button:disabled,
+.pagination button:disabled {
   color: var(--prisma-disabled-text);
   background: var(--prisma-disabled-surface);
   border-color: var(--prisma-border-soft);
@@ -3313,27 +3313,27 @@
   transform: none;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCardDisabled {
+.productCardDisabled {
   background: linear-gradient(180deg, rgba(248,250,255,.76), rgba(238,243,251,.66));
   color: var(--prisma-disabled-text);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace[data-prisma-cart-state="active"] .ticketTotal {
+.posWorkspace[data-prisma-cart-state="active"] .ticketTotal {
   animation: prismaLightSoftPulse var(--prisma-motion-pulse) var(--prisma-ease-premium) 1;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace[data-prisma-cart-state="active"] .ticketPanel {
+.posWorkspace[data-prisma-cart-state="active"] .ticketPanel {
   border-color: color-mix(in srgb, var(--prisma-action-primary) 18%, var(--prisma-border-soft));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyTicket {
+.statePanel,
+.emptyTicket {
   position: relative;
   overflow: hidden;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+.statePanel::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -3345,27 +3345,27 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyTicket,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heldCartCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions a,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .pagination button,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace[data-prisma-cart-state="active"] .ticketTotal {
+  .searchCard,
+  .categoryButton,
+  .categoryButtonActive,
+  .productCard,
+  .ticketPanel,
+  .ticketLine,
+  .emptyTicket,
+  .statePanel,
+  .checkoutDiagnosticOk,
+  .checkoutDiagnosticWarn,
+  .heldCartCard,
+  .secondaryCheckoutActions button,
+  .secondaryCheckoutActions a,
+  .pagination button,
+  .posWorkspace[data-prisma-cart-state="active"] .ticketTotal {
     animation: none;
     transition: none;
     transform: none;
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+  .statePanel::after {
     animation: none;
     opacity: 0.16;
     transform: none;
@@ -3381,7 +3381,7 @@
  * Actions expand on focus/query/error/loading and push categories/products down naturally.
  * Product cards hide SKU/CB lines to keep cards retail-clean without touching data or packshots.
  */
-:global(html[data-prisma-surface="tablet-pos"]) .searchCard {
+.searchCard {
   grid-template-columns: minmax(280px, 1fr) max-content;
   gap: 8px 10px;
   align-items: center;
@@ -3395,17 +3395,17 @@
   overflow: visible;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchCard::before,
-:global(html[data-prisma-surface="tablet-pos"]) .searchCard::after {
+.searchCard::before,
+.searchCard::after {
   display: none;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchLabel {
+.searchLabel {
   min-width: 0;
   gap: 0;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchLabel > span {
+.searchLabel > span {
   width: 1px;
   height: 1px;
   position: absolute;
@@ -3414,7 +3414,7 @@
   white-space: nowrap;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchInputWrap {
+.searchInputWrap {
   min-height: 50px;
   padding: 0 15px;
   gap: 10px;
@@ -3427,7 +3427,7 @@
     0 8px 20px color-mix(in srgb, #000 16%, transparent);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
+.searchInputWrap {
   border-color: var(--prisma-border-action);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.95), rgba(242,247,255,0.78));
@@ -3436,12 +3436,12 @@
     0 8px 20px rgba(32,45,82,0.09);
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchInputWrap input {
+.searchInputWrap input {
   font-size: 1rem;
   min-width: 0;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .catalogInsight {
+.catalogInsight {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -3455,14 +3455,14 @@
   white-space: nowrap;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight {
+.catalogInsight {
   border-color: var(--prisma-border-action);
   background: rgba(255,255,255,0.76);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 8px 18px rgba(32,45,82,0.07);
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .catalogInsight span,
-:global(html[data-prisma-surface="tablet-pos"]) .catalogInsight small {
+.catalogInsight span,
+.catalogInsight small {
   color: var(--prisma-text-muted);
   font-size: 0.7rem;
   font-weight: 830;
@@ -3470,17 +3470,17 @@
   text-transform: none;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .catalogInsight strong {
+.catalogInsight strong {
   color: var(--prisma-accent-gold-soft);
   font-size: 0.84rem;
   line-height: 1;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogInsight strong {
+.catalogInsight strong {
   color: var(--prisma-action-primary);
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchActions {
+.searchActions {
   grid-column: 1 / -1;
   display: flex;
   max-height: 0;
@@ -3496,8 +3496,8 @@
     margin var(--prisma-motion-fast) ease;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchCard:focus-within .searchActions,
-:global(html[data-prisma-surface="tablet-pos"]) .searchCard[data-prisma-search-expanded="true"] .searchActions {
+.searchCard:focus-within .searchActions,
+.searchCard[data-prisma-search-expanded="true"] .searchActions {
   max-height: 58px;
   margin-top: 4px;
   opacity: 1;
@@ -3506,25 +3506,25 @@
   transform: translateY(0);
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
-:global(html[data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
-:global(html[data-prisma-surface="tablet-pos"]) .searchActions .ghostButton {
+.searchActions .primaryButton,
+.searchActions .secondaryButton,
+.searchActions .ghostButton {
   min-height: 44px;
   padding-inline: 14px;
   border-radius: 999px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .errorBanner {
+.errorBanner {
   grid-column: 1 / -1;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .categoryRail {
+.categoryRail {
   gap: 7px;
   padding-bottom: 1px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive {
+.categoryButton,
+.categoryButtonActive {
   min-height: 44px;
   min-width: auto;
   display: inline-flex;
@@ -3535,49 +3535,49 @@
   border-radius: 999px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
+.categoryButton span,
+.categoryButtonActive span {
   width: 28px;
   height: 28px;
   font-size: 0.62rem;
   flex: 0 0 auto;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButton strong,
-:global(html[data-prisma-surface="tablet-pos"]) .categoryButtonActive strong {
+.categoryButton strong,
+.categoryButtonActive strong {
   max-width: 128px;
   font-size: 0.76rem;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .productCard {
+.productCard {
   grid-template-rows: auto 116px minmax(38px, auto) auto;
   min-height: 222px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .productText {
+.productText {
   gap: 5px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .productText > strong {
+.productText > strong {
   min-height: 24px;
 }
 
-:global(html[data-prisma-surface="tablet-pos"]) .productMetaRail {
+.productMetaRail {
   margin-top: 0;
 }
 
 @media (max-width: 1180px) {
-  :global(html[data-prisma-surface="tablet-pos"]) .searchCard {
+  .searchCard {
     grid-template-columns: 1fr;
   }
 
-  :global(html[data-prisma-surface="tablet-pos"]) .catalogInsight {
+  .catalogInsight {
     justify-self: start;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :global(html[data-prisma-surface="tablet-pos"]) .searchActions {
+  .searchActions {
     transition: none;
   }
 }
@@ -3637,78 +3637,78 @@
  * - Make cash payment trigger the same checkout-focus backdrop as card/transfer.
  * Scope: CSS density and one visual data marker in TSX.
  */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+.posWorkspace,
+.posWorkspace {
   grid-template-columns: minmax(0, 1fr) minmax(330px, 368px);
   gap: clamp(10px, 1vw, 14px);
   align-items: start;
 }
 
-:global(#prisma-tablet-sidebar-toggle:checked + [data-prisma-component="AppShell"][data-prisma-visual-surface="tablet-pos"]) .posWorkspace {
+.posWorkspace {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 356px);
   gap: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.catalogArea,
+.catalogArea,
+.ticketPanel,
+.ticketPanel {
   gap: clamp(8px, 0.8vw, 12px);
   padding: clamp(10px, 0.95vw, 13px);
   border-radius: 22px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchCard {
+.searchCard,
+.searchCard {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   padding: clamp(10px, 0.95vw, 13px);
   align-items: center;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
+.searchInputWrap,
+.searchInputWrap {
   min-height: 50px;
   gap: 9px;
   padding: 0 13px;
   border-radius: 18px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap input,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchInputWrap input {
+.searchInputWrap input,
+.searchInputWrap input {
   font-size: 1rem;
   font-weight: 760;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .shortcuts {
+.searchActions,
+.searchActions,
+.shortcuts,
+.shortcuts {
   gap: 7px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchActions .ghostButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .primaryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .secondaryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .searchActions .ghostButton {
+.searchActions .primaryButton,
+.searchActions .secondaryButton,
+.searchActions .ghostButton,
+.searchActions .primaryButton,
+.searchActions .secondaryButton,
+.searchActions .ghostButton {
   min-height: 42px;
   padding: 0 13px;
   border-radius: 14px;
   font-size: 0.9rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryRail,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryRail {
+.categoryRail,
+.categoryRail {
   gap: 7px;
   padding-bottom: 0;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive {
+.categoryButton,
+.categoryButtonActive,
+.categoryButton,
+.categoryButtonActive {
   min-height: 52px;
   min-width: 88px;
   gap: 3px;
@@ -3716,34 +3716,34 @@
   border-radius: 16px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton span,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive span {
+.categoryButton span,
+.categoryButtonActive span,
+.categoryButton span,
+.categoryButtonActive span {
   width: 28px;
   height: 28px;
   font-size: 0.62rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton strong,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButtonActive strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButton strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .categoryButtonActive strong {
+.categoryButton strong,
+.categoryButtonActive strong,
+.categoryButton strong,
+.categoryButtonActive strong {
   font-size: 0.72rem;
   line-height: 1;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productGrid {
+.productGrid,
+.productGrid {
   gap: clamp(8px, 0.8vw, 11px);
 }
 
-:global(#prisma-tablet-sidebar-toggle:checked + [data-prisma-component="AppShell"][data-prisma-visual-surface="tablet-pos"]) .productGrid {
+.productGrid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productCard {
+.productCard,
+.productCard {
   min-height: 246px;
   grid-template-rows: auto 118px minmax(52px, auto) auto;
   gap: 6px;
@@ -3751,56 +3751,56 @@
   border-radius: 16px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productImageStage {
+.productImageStage,
+.productImageStage {
   min-height: 118px;
   border-radius: 13px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .favoriteStar,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .favoriteStar {
+.favoriteStar,
+.favoriteStar {
   width: 26px;
   height: 26px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productPackshot,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productPackshot {
+.productPackshot,
+.productPackshot {
   max-height: 108px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFigure,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productFigure {
+.productFigure,
+.productFigure {
   width: 64px;
   height: 96px;
   transform: translateY(-1px);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText {
+.productText,
+.productText {
   gap: 4px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productText > strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productText > strong {
+.productText > strong,
+.productText > strong {
   font-size: 0.82rem;
   line-height: 1.08;
   min-height: auto;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .priceValue,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .priceValue {
+.priceValue,
+.priceValue {
   font-size: 1.02rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .addButton {
+.addButton,
+.addButton {
   min-height: 44px;
   border-radius: 14px;
   font-size: 0.92rem;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.ticketPanel,
+.ticketPanel {
   position: sticky;
   top: 12px;
   gap: 10px;
@@ -3809,54 +3809,54 @@
   scrollbar-width: thin;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLines {
+.ticketLines,
+.ticketLines {
   min-height: 120px;
   gap: 6px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketLine {
+.ticketLine,
+.ticketLine {
   grid-template-columns: 46px minmax(0, 1fr) auto auto auto;
   gap: 6px;
   padding: 7px;
   border-radius: 14px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumb,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumb,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .cartThumbPackshot {
+.cartThumb,
+.cartThumbPackshot,
+.cartThumb,
+.cartThumbPackshot {
   width: 42px;
   height: 44px;
   border-radius: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stepper button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .removeButton,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .stepper button,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .removeButton {
+.stepper button,
+.removeButton,
+.stepper button,
+.removeButton {
   width: 30px;
   min-width: 30px;
   height: 30px;
   min-height: 30px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal {
+.ticketTotal,
+.ticketTotal {
   padding: 10px;
   border-radius: 15px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal strong,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketTotal strong {
+.ticketTotal strong,
+.ticketTotal strong {
   font-size: clamp(1.55rem, 2.35vw, 2.15rem);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLink,
-:global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .checkoutLinkDisabled {
+.checkoutLink,
+.checkoutLinkDisabled,
+.checkoutLink,
+.checkoutLinkDisabled {
   min-height: 56px;
   border-radius: 16px;
   font-size: 0.96rem;
@@ -4059,20 +4059,20 @@
 }
 
 @media (max-height: 920px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace,
+  .posWorkspace {
     grid-template-columns: minmax(0, 1fr) minmax(316px, 348px);
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productCard {
+  .productCard,
+  .productCard {
     min-height: 228px;
     grid-template-rows: auto 104px minmax(46px, auto) auto;
     padding: 8px;
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productImageStage {
+  .productImageStage,
+  .productImageStage {
     min-height: 104px;
   }
 
@@ -4131,25 +4131,25 @@
 }
 
 @media (max-width: 1220px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace,
+  .posWorkspace {
     grid-template-columns: minmax(0, 1fr) minmax(300px, 330px);
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .productGrid {
+  .productGrid,
+  .productGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 980px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace,
+  .posWorkspace {
     grid-template-columns: 1fr;
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-  :global(html[data-prisma-skin="dark"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+  .ticketPanel,
+  .ticketPanel {
     position: static;
     max-height: none;
   }
@@ -4157,9 +4157,9 @@
 /* PRISMA_TABLET_POS_VIEWPORT_FIT_AND_CHECKOUT_POLISH_08A::POS_END */
 
 /* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::POS_START */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink {
+.primaryButton,
+.addButton,
+.checkoutLink {
   color: #ffffff;
   border-color: var(--prisma-cobalt-edge);
   background:
@@ -4172,12 +4172,12 @@
   text-shadow: 0 1px 0 rgba(0,0,0,0.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:focus-visible {
+.primaryButton:hover,
+.addButton:hover,
+.checkoutLink:hover,
+.primaryButton:focus-visible,
+.addButton:focus-visible,
+.checkoutLink:focus-visible {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.52),
     inset 0 -10px 18px rgba(0,0,0,0.08),
@@ -4185,9 +4185,9 @@
   transform: translateY(-1px);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a {
+.secondaryButton,
+.ghostButton,
+.shortcuts a {
   color: var(--prisma-ink-strong);
   border-color: var(--prisma-frost-border);
   background: var(--prisma-frost-surface-strong);
@@ -4196,12 +4196,12 @@
     var(--prisma-frost-shadow);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a:focus-visible {
+.secondaryButton:hover,
+.ghostButton:hover,
+.shortcuts a:hover,
+.secondaryButton:focus-visible,
+.ghostButton:focus-visible,
+.shortcuts a:focus-visible {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.90),
     var(--prisma-frost-shadow-hover);
@@ -4211,10 +4211,10 @@
 
 /* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::POS_START */
 /* POS buttons: liquid cobalt primary, frosted quiet secondary. */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton {
+.primaryButton,
+.addButton,
+.checkoutLink,
+.paymentOkButton {
   color: #ffffff;
   border-color: var(--prisma-cobalt-edge, rgba(109,178,255,0.82));
   background:
@@ -4227,14 +4227,14 @@
   text-shadow: 0 1px 0 rgba(0,0,0,0.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton:focus-visible {
+.primaryButton:hover,
+.addButton:hover,
+.checkoutLink:hover,
+.paymentOkButton:hover,
+.primaryButton:focus-visible,
+.addButton:focus-visible,
+.checkoutLink:focus-visible,
+.paymentOkButton:focus-visible {
   transform: translateY(-1px);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.52),
@@ -4242,11 +4242,11 @@
     0 20px 42px rgba(35,95,224,0.32);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shortcuts a,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCancelButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCloseButton {
+.secondaryButton,
+.ghostButton,
+.shortcuts a,
+.paymentCancelButton,
+.paymentCloseButton {
   color: var(--prisma-ink-strong, #243247);
   border-color: rgba(188, 213, 244, 0.82);
   background: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34));
@@ -4257,14 +4257,14 @@
 /* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::POS_END */
 
 /* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::POS_START */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+.posWorkspace {
   gap: 10px;
   grid-template-columns: minmax(0, 1fr) minmax(308px, 352px);
   align-items: start;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.catalogArea,
+.ticketPanel {
   padding: 10px;
   border-color: rgba(217, 235, 252, 0.58);
   background:
@@ -4274,8 +4274,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.70);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard {
+.searchCard,
+.successCard {
   gap: 8px;
   padding: 6px;
   background: transparent;
@@ -4283,12 +4283,12 @@
   box-shadow: none;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productGrid {
+.productGrid {
   gap: 8px;
   grid-template-columns: repeat(auto-fit, minmax(154px, 1fr));
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard {
+.productCard {
   min-height: 210px;
   padding: 8px;
   grid-template-rows: auto 104px minmax(42px, auto) auto;
@@ -4299,20 +4299,20 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.76);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productImageStage {
+.productImageStage {
   min-height: 104px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+.ticketPanel {
   max-height: calc(100dvh - 96px);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLines {
+.ticketLines {
   min-height: 104px;
   gap: 7px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine {
+.ticketLine {
   padding: 6px;
   grid-template-columns: 42px minmax(0, 1fr) auto auto auto;
   border-color: rgba(217, 235, 252, 0.52);
@@ -4320,10 +4320,10 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticOk,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutDiagnosticWarn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotalsBreakdown,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryCheckoutActions button {
+.checkoutDiagnosticOk,
+.checkoutDiagnosticWarn,
+.ticketTotalsBreakdown,
+.secondaryCheckoutActions button {
   min-height: 42px;
   background: rgba(255, 255, 255, 0.58);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -4377,17 +4377,17 @@
 }
 
 @media (max-width: 1180px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace {
     grid-template-columns: minmax(0, 1fr) minmax(292px, 326px);
   }
 }
 
 @media (max-width: 980px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace {
+  .posWorkspace {
     grid-template-columns: 1fr;
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel {
+  .ticketPanel {
     max-height: none;
   }
 }
@@ -4456,22 +4456,22 @@
 /* PRISMA_TABLET_PREMIUM_VISUAL_1006::START
    POS/Checkout final: surfaces menos chonchas, ticket/producto legibles, background visible.
 */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posWorkspace,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutGrid {
+.posWorkspace,
+.workspace,
+.checkoutGrid {
   gap: 12px;
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogArea,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentPanelCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard {
+.catalogArea,
+.ticketPanel,
+.searchCard,
+.successCard,
+.paymentPanelCard,
+.statePanel,
+.mainPanel,
+.detailPanel,
+.paymentCard,
+.summaryCard {
   border: 1px solid var(--prisma-tablet-border);
   background: var(--prisma-tablet-liquid-panel);
   box-shadow: var(--prisma-tablet-shadow-panel);
@@ -4479,14 +4479,14 @@
   -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-panel)) saturate(1.14);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketLine,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketTotal,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentSummary,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentReview,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentReviewReady,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpiCard {
+.productCard,
+.ticketLine,
+.ticketTotal,
+.paymentSummary,
+.paymentReview,
+.paymentReviewReady,
+.metricCard,
+.kpiCard {
   border: 1px solid var(--prisma-tablet-border);
   background: var(--prisma-tablet-glass-card);
   box-shadow: var(--prisma-tablet-shadow-card);
@@ -4494,34 +4494,34 @@
   -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-card)) saturate(1.10);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutLink:not(.checkoutLinkDisabled),
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentOkButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton {
+.primaryButton,
+.primaryAction,
+.checkoutLink:not(.checkoutLinkDisabled),
+.paymentOkButton,
+.confirmButton {
   border-color: rgba(93, 169, 255, 0.72);
   background: var(--prisma-tablet-action);
   box-shadow: 0 14px 28px rgba(31, 110, 255, 0.24), inset 0 1px 0 rgba(255,255,255,0.44);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentMethods button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashSuggestions button {
+.secondaryButton,
+.ghostButton,
+.categoryButton,
+.filterButton,
+.rowAddButton,
+.paymentMethods button,
+.cashSuggestions button {
   border-color: var(--prisma-tablet-border);
   background: var(--prisma-tablet-glass-pill);
   box-shadow: var(--prisma-tablet-shadow-card);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .categoryButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:hover {
+.secondaryButton:hover,
+.ghostButton:hover,
+.categoryButton:hover,
+.filterButton:hover,
+.rowAddButton:hover,
+.productCard:hover {
   transform: translateY(-1px);
   box-shadow: var(--prisma-tablet-shadow-hover);
 }
@@ -7793,7 +7793,7 @@
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), transparent 28%);
 }
 
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .posPremiumCheckoutCta {
+.posPremiumCheckoutCta {
   min-height: 96px;
   grid-template-columns: minmax(148px, 1fr) minmax(58px, auto) 48px;
   padding: 12px;
@@ -10585,3 +10585,340 @@
   }
 }
 /* PRISMA_TABLET_POS_CLOSED_COMMAND_DECK_1906B::END */
+
+/* PRISMA_TABLET_POS_COBRAR_PORTAL_CANONICAL_2406::START
+   Scope: Tablet POS only. Cobrar stays in document.body as a real modal overlay.
+*/
+.posPremiumWorkspace {
+  min-height: calc(100dvh - 96px);
+  gap: clamp(10px, 1vw, 14px);
+  padding-bottom: 88px;
+}
+
+.posPremiumCatalogArea {
+  gap: clamp(8px, 0.85vw, 12px);
+}
+
+.posPremiumHero,
+.posPremiumSellHeader {
+  display: none;
+}
+
+.posPremiumSearchCard {
+  margin-top: 0;
+}
+
+.paymentPremiumOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding: clamp(10px, 1.4vw, 20px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  isolation: isolate;
+  pointer-events: auto;
+  touch-action: none;
+  background:
+    linear-gradient(135deg, rgba(5, 14, 30, 0.76), rgba(7, 28, 56, 0.64) 46%, rgba(3, 11, 24, 0.80)),
+    radial-gradient(circle at 16% 8%, rgba(99, 177, 255, 0.26), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(191, 226, 255, 0.16), transparent 32%);
+  backdrop-filter: blur(14px) saturate(1.14) brightness(0.74);
+  -webkit-backdrop-filter: blur(14px) saturate(1.14) brightness(0.74);
+}
+
+.paymentPremiumOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.16), transparent 42%);
+}
+
+.paymentPremiumAtmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.paymentPremiumShell {
+  position: relative;
+  z-index: 2;
+  width: min(1040px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  display: grid;
+  overflow: hidden;
+  pointer-events: auto;
+  touch-action: auto;
+  border-radius: clamp(22px, 2.2vw, 34px);
+}
+
+.paymentPremiumPanel {
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scroll-padding: 18px;
+  border-color: rgba(186, 220, 250, 0.48);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.70), rgba(240, 249, 255, 0.45)),
+    rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 34px 96px rgba(2, 8, 26, 0.42),
+    0 12px 34px rgba(34, 92, 160, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(26px) saturate(1.18);
+  -webkit-backdrop-filter: blur(26px) saturate(1.18);
+}
+
+.paymentPremiumHeader {
+  align-items: start;
+}
+
+.paymentPremiumTitleBlock h2 {
+  letter-spacing: -0.02em;
+}
+
+.paymentPremiumTenderList > .paymentPremiumSectionLabel {
+  margin: 0 2px 2px;
+}
+
+.paymentPremiumFooter {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin-inline: -2px;
+  padding: 10px 0 0;
+  background:
+    linear-gradient(180deg, rgba(245, 251, 255, 0), rgba(245, 251, 255, 0.74) 34%, rgba(245, 251, 255, 0.92));
+  backdrop-filter: blur(10px) saturate(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.08);
+}
+
+@media (max-width: 900px), (max-height: 760px) {
+  .paymentPremiumOverlay {
+    align-items: stretch;
+    padding: 8px;
+  }
+
+  .paymentPremiumShell,
+  .paymentPremiumPanel {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+    border-radius: 22px;
+  }
+
+  .paymentPremiumBodyGrid,
+  .paymentPremiumTenderRow,
+  .paymentPremiumFooter,
+  .paymentPremiumHeader,
+  .paymentPremiumHeroTotal {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRISMA_TABLET_POS_COBRAR_PORTAL_CANONICAL_2406::END */
+
+/* PRISMA_SOFTGLASS_CANONICAL_2606_START */
+.posPremiumCatalogArea {
+  gap: 12px;
+}
+
+.posPremiumSearchCard,
+.posPremiumProductCard,
+.posPremiumTicketPanel,
+.posPremiumStatePanel,
+.posPremiumPagination,
+.posPremiumTicketLine,
+.posPremiumEmptyTicket {
+  border-color: var(--prisma-soft-line, rgba(139, 152, 174, 0.22));
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.82), rgba(249,251,255,0.58)),
+    radial-gradient(circle at 14% 0%, rgba(111, 214, 255, 0.12), transparent 42%);
+  box-shadow: var(--prisma-soft-shadow-small, 0 12px 32px rgba(36,54,87,.1)), inset 0 1px 0 rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px) saturate(1.12);
+  -webkit-backdrop-filter: blur(20px) saturate(1.12);
+}
+
+.posPremiumSearchCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  border-radius: 24px;
+  padding: 12px;
+}
+
+.posPremiumSearchLabel {
+  gap: 7px;
+}
+
+.posPremiumSearchLabel > span,
+.posPremiumTicketHeader span {
+  color: var(--prisma-soft-muted, #667085);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 54px;
+  border-color: rgba(157, 173, 196, 0.26);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.68);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+.posPremiumSearchInputWrap input {
+  color: var(--prisma-soft-ink, #151922);
+}
+
+.posPremiumSearchActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.posPremiumPrimaryButton,
+.posPremiumSecondaryButton,
+.posPremiumGhostButton,
+.posPremiumAddButton,
+.posPremiumTicketUtilityButton,
+.posPremiumSecondaryCheckoutActions button {
+  min-height: 44px;
+  border-radius: 999px;
+  border-color: rgba(151, 196, 244, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 10px 22px rgba(58, 105, 175, 0.10);
+}
+
+.posPremiumPrimaryButton,
+.posPremiumAddButton {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.42), transparent 36%),
+    linear-gradient(135deg, #58c7ff 0%, #377dff 54%, #9674ff 100%);
+  box-shadow: 0 16px 34px rgba(55, 125, 255, 0.24), inset 0 1px 0 rgba(255,255,255,0.42);
+}
+
+.posPremiumProductGrid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.posPremiumProductCard {
+  min-height: 230px;
+  grid-template-rows: auto minmax(104px, 1fr) auto auto;
+  gap: 8px;
+  border-radius: 22px;
+  padding: 12px;
+}
+
+.posPremiumProductStage {
+  min-height: 118px;
+  border-color: rgba(172, 188, 211, 0.30);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 50% 8%, rgba(255,255,255,0.94), transparent 38%),
+    radial-gradient(ellipse at 50% 92%, rgba(55, 125, 255, 0.12), transparent 48%),
+    rgba(255, 255, 255, 0.54);
+}
+
+.posPremiumProductName {
+  color: var(--prisma-soft-ink, #151922);
+  font-size: 0.94rem;
+  letter-spacing: -0.03em;
+}
+
+.posPremiumProductPrice {
+  color: var(--prisma-soft-ink, #151922);
+  font-size: 1.02rem;
+}
+
+.posPremiumCategoryRail {
+  gap: 8px;
+  padding: 2px 2px 4px;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: 40px;
+  min-width: auto;
+  border-radius: 999px;
+  padding: 0 14px;
+}
+
+.posPremiumCategoryButtonActive {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.42), transparent 36%),
+    linear-gradient(135deg, #58c7ff 0%, #377dff 54%, #9674ff 100%);
+}
+
+.posPremiumTicketPanel {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  border-radius: 24px;
+  padding: 12px;
+}
+
+.posPremiumTicketHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.posPremiumTicketLines {
+  min-height: 180px;
+  max-height: min(46dvh, 420px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.posPremiumTicketLine {
+  grid-template-columns: 50px minmax(0, 1fr) auto;
+  border-radius: 18px;
+  padding: 8px;
+}
+
+.posPremiumLineTotal,
+.posPremiumTicketTotal strong {
+  color: var(--prisma-soft-ink, #151922);
+}
+
+.posPremiumCheckoutStack {
+  gap: 10px;
+}
+
+.posPremiumTicketTotal {
+  border-radius: 22px;
+  border: 1px solid rgba(151, 196, 244, 0.50);
+  background: rgba(255,255,255,0.62);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.84);
+}
+
+.cobrarReferenceButton {
+  min-height: 58px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255,255,255,0.52), transparent 36%),
+    linear-gradient(135deg, rgba(100, 219, 255, 0.86), rgba(108, 151, 255, 0.72) 55%, rgba(171, 132, 255, 0.74));
+  box-shadow:
+    0 0 0 1px rgba(157, 230, 255, 0.68),
+    0 18px 38px rgba(75, 139, 255, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.52);
+}
+
+.posPremiumBlockedGateAction {
+  min-height: 52px;
+  border-radius: 999px;
+}
+/* PRISMA_SOFTGLASS_CANONICAL_2606_END */

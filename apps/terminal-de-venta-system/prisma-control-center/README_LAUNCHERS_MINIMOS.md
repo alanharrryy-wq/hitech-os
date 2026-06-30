@@ -21,7 +21,7 @@ Esta versión deja la raíz con botones operativos mínimos:
 - `03_LEVANTAR_SOLO_UN_MODULO.cmd` abre un menú para levantar solo un módulo + Cloudflare.
 - `04_ABRIR_ATLAS_DEPENDENCIAS.cmd` abre el atlas de dependencias.
 - `09_KILL_EVERYTHING_PRISMA.cmd` ejecuta kill completo de puertos PRISMA.
-- `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd` abre el cockpit privado PRISMA Cloud Command Center en `http://127.0.0.1:3160/unified-shell.html` sin tocar 3150 ni levantar el stack completo.
+- `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd` abre el cockpit privado PRISMA Cloud Command Center en `http://127.0.0.1:3160/unified-shell.html` sin tocar 3150 ni levantar el stack completo; deja `latest_CLOUD_COMMAND_CENTER_3160.zip`.
 
 ## Puertos tratados como PRISMA
 
@@ -48,9 +48,10 @@ Tablet
 PC
 Mobile
 Control Center
+PRISMA Cloud Command Center
 ```
 
-Cada opción libera su puerto, levanta ese módulo y después reinicia/valida Cloudflare.
+Cada opción libera su puerto y levanta ese módulo. Los módulos con hostname público reinician/validan Cloudflare; `PRISMA Cloud Command Center` queda privado local en 3160.
 
 ## Evidencia
 

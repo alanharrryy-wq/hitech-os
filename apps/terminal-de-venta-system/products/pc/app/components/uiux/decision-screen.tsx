@@ -7,6 +7,7 @@ import { ChartInsightCard } from "./chart-insight-card";
 import { DecisionHeader } from "./decision-header";
 import { EvidenceDrawer } from "./evidence-drawer";
 import { NextBestAction } from "./next-best-action";
+import { SmartDropdownDock } from "./smart-dropdown-dock";
 import { PcModuleShell } from "./pc-module-shell";
 import type { ChartInsight, EvidenceItem, RecommendedAction, SummaryCard } from "./decision-types";
 
@@ -72,6 +73,7 @@ export function DecisionScreen({
         currentPath={currentPath}
         actions={actions}
       />
+      <SmartDropdownDock currentPath={currentPath} />
       <PcModuleShell currentPath={currentPath}>
         <AttentionSummary cards={resolvedSummary} />
         <NextBestAction action={resolvedAction} />

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { TabletOperableReleaseGateScreen } from "@components/release-gate/tablet-operable-release-gate-screen";
+import { TabletSettingsSurfaceV2 } from "@components/tablet-visual-v2";
 import { buildReleaseGateSnapshot } from "@/server/operable-release-gate";
 import { buildReleaseGateViewModel } from "@/lib/operable-release-gate/release-gate-view-model";
 
@@ -18,7 +19,9 @@ export default function ReleaseGatePage() {
       kicker="Tooling interno Tablet"
       status={<TabletShellStatusPill tone={model.status === "ready" ? "ok" : model.status === "attention" ? "warn" : "danger"}>{model.statusLabel}</TabletShellStatusPill>}
     >
-      <TabletOperableReleaseGateScreen model={model} />
+      <TabletSettingsSurfaceV2 routeId="/release-gate" title="Release Gate" description="Herramienta interna protegida para cierre operativo y revisión de evidencia." statusLabel={model.statusLabel}>
+        <TabletOperableReleaseGateScreen model={model} />
+      </TabletSettingsSurfaceV2>
     </PrismaTabletShellUnified>
   );
 }

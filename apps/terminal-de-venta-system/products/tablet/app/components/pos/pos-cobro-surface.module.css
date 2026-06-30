@@ -1,0 +1,381 @@
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(12px, 1.5vw, 18px);
+  align-items: start;
+}
+
+.titleGroup {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.title {
+  margin: 0;
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  font-weight: 950;
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.description {
+  max-width: 740px;
+  margin: 0;
+  color: rgba(20, 32, 51, 0.70);
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 680;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+.closeButton,
+.secondaryButton,
+.quickButton {
+  min-height: var(--prisma-v2-touch-target, 48px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
+  border-radius: 999px;
+  color: var(--prisma-v2-graphite, #142033);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(247, 251, 255, 0.62)),
+    rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 10px 22px rgba(50, 84, 128, 0.08);
+  font: inherit;
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.closeButton {
+  padding: 0 clamp(14px, 1.4vw, 18px);
+}
+
+.secondaryButton {
+  padding: 0 clamp(18px, 1.8vw, 24px);
+}
+
+.quickButton {
+  min-height: 42px;
+  padding: 0 13px;
+  color: rgba(20, 32, 51, 0.80);
+  font-size: clamp(0.78rem, 0.92vw, 0.88rem);
+}
+
+.closeButton:hover:not(:disabled),
+.secondaryButton:hover:not(:disabled),
+.quickButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(47, 130, 255, 0.30);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 13px 28px rgba(47, 130, 255, 0.13);
+}
+
+.closeButton:focus-visible,
+.secondaryButton:focus-visible,
+.quickButton:focus-visible {
+  outline: 3px solid var(--prisma-v2-focus, rgba(47, 130, 255, 0.28));
+  outline-offset: 3px;
+}
+
+.closeButton:disabled,
+.secondaryButton:disabled,
+.quickButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+.contentGrid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.72fr);
+  gap: clamp(12px, 1.4vw, 18px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+}
+
+.methodsColumn,
+.methodsList,
+.reviewColumn {
+  min-width: 0;
+  display: grid;
+  gap: clamp(10px, 1.2vw, 14px);
+  align-content: start;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.1fr) repeat(2, minmax(150px, 0.65fr));
+  gap: clamp(9px, 1vw, 12px);
+}
+
+.amountCard {
+  align-content: start;
+}
+
+.amountLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(20, 32, 51, 0.62);
+  font-size: clamp(0.72rem, 0.84vw, 0.82rem);
+  font-weight: 940;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.amountValue {
+  display: block;
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(1.7rem, 4.1vw, 3rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.amountMeta {
+  color: rgba(95, 111, 132, 0.86);
+  font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+  font-weight: 760;
+  line-height: 1.25;
+}
+
+.methodsHeader {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.methodCard {
+  grid-template-columns: minmax(190px, 0.78fr) minmax(160px, 0.58fr) minmax(160px, 0.68fr);
+  align-items: end;
+}
+
+.methodHeader {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+}
+
+.methodIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  color: rgba(47, 130, 255, 0.90);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(239, 248, 255, 0.64)),
+    radial-gradient(circle at 50% 10%, rgba(52, 214, 255, 0.24), transparent 58%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.methodCopy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.methodCopy strong,
+.reviewBody strong {
+  min-width: 0;
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  font-weight: 930;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.methodCopy small,
+.reviewBody span,
+.reviewBody small {
+  min-width: 0;
+  color: rgba(95, 111, 132, 0.88);
+  font-size: clamp(0.78rem, 0.92vw, 0.9rem);
+  font-weight: 740;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.quickRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-self: stretch;
+  align-items: end;
+}
+
+.reviewCard {
+  align-content: start;
+  min-height: 100%;
+}
+
+.reviewBody {
+  display: grid;
+  gap: 5px;
+}
+
+.warningCard {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  padding: clamp(12px, 1.2vw, 15px);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: clamp(16px, 1.6vw, 20px);
+  color: #74420a;
+  background:
+    linear-gradient(145deg, rgba(255, 251, 235, 0.92), rgba(255, 247, 214, 0.66)),
+    radial-gradient(circle at 0% 0%, rgba(245, 158, 11, 0.16), transparent 42%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.warningCard strong {
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-weight: 940;
+  line-height: 1.1;
+}
+
+.warningCard span {
+  font-size: clamp(0.82rem, 0.95vw, 0.92rem);
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: minmax(180px, auto) minmax(220px, 0.42fr);
+  gap: clamp(10px, 1.2vw, 14px);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.confirmButton {
+  justify-self: end;
+}
+
+.spinner {
+  animation: prismaCobroSpin 0.8s linear infinite;
+}
+
+@keyframes prismaCobroSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 940px) {
+  .contentGrid,
+  .summaryGrid,
+  .methodCard,
+  .footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .confirmButton {
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .closeButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closeButton,
+  .secondaryButton,
+  .quickButton,
+  .spinner {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}
+
+/* PRISMA_SOFTGLASS_CANONICAL_2606_START */
+.topbar,
+.contentGrid,
+.footer,
+.methodCard,
+.reviewCard,
+.summaryGrid > * {
+  border-color: var(--prisma-soft-line, rgba(139, 152, 174, 0.22));
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.88), rgba(248,251,255,0.66)),
+    radial-gradient(circle at 16% 0%, rgba(110, 216, 255, 0.13), transparent 42%);
+  box-shadow: var(--prisma-soft-shadow-small, 0 12px 32px rgba(36,54,87,.1)), inset 0 1px 0 rgba(255,255,255,0.88);
+}
+
+.title {
+  color: var(--prisma-soft-ink, #151922);
+  letter-spacing: -0.045em;
+}
+
+.description,
+.amountLabel,
+.amountMeta,
+.methodCopy,
+.reviewBody {
+  color: var(--prisma-soft-muted, #667085);
+}
+
+.amountValue {
+  color: var(--prisma-soft-ink, #151922);
+}
+
+.methodCard {
+  border-radius: 20px;
+}
+
+.methodCard[data-active="true"] {
+  border-color: rgba(99, 194, 255, 0.62);
+  background:
+    linear-gradient(145deg, rgba(239, 250, 255, 0.92), rgba(255,255,255,0.74)),
+    radial-gradient(circle at 0% 50%, rgba(91, 209, 255, 0.18), transparent 42%);
+  box-shadow:
+    0 0 0 1px rgba(115, 213, 255, 0.36),
+    0 18px 34px rgba(55, 125, 255, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.90);
+}
+
+.confirmButton {
+  min-height: 58px;
+  border-radius: 999px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.42), transparent 36%),
+    linear-gradient(135deg, #58c7ff 0%, #377dff 54%, #9674ff 100%);
+  box-shadow: 0 18px 38px rgba(55, 125, 255, 0.24), inset 0 1px 0 rgba(255,255,255,0.42);
+}
+
+.secondaryButton,
+.closeButton,
+.quickButton {
+  border-radius: 999px;
+}
+/* PRISMA_SOFTGLASS_CANONICAL_2606_END */

@@ -31,6 +31,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import cloud_saas_api
 import license_ops_api
+import command_center_store
 
 APP_VERSION = "4.0.0-cloud-command-center"
 DEFAULT_PORT = 3160
@@ -773,6 +774,14 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             result = export_diagnostics(self.out_dir)
             self.json_response({"ok": True, "json": result["json"], "txt": result["txt"]})
             return
+        if path.startswith("/api/command-center"):
+            try:
+                body = self.read_json_body()
+                payload = command_center_store.command_center_payload(self.path, method="POST", body=body)
+                self.json_response(payload, code=200 if payload.get("ok") else 409)
+            except Exception as exc:
+                self.json_response({"ok": False, "error": str(exc)}, code=400)
+            return
         if path.startswith("/api/cloud-saas"):
             try:
                 body = self.read_json_body()
@@ -802,6 +811,10 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             with RUNTIME_LOCK:
                 payload = dict(RUNTIME_STATE)
             self.json_response(payload)
+            return
+        if path.startswith("/api/command-center"):
+            payload = command_center_store.command_center_payload(self.path, method="GET")
+            self.json_response(payload, code=200 if payload.get("ok") else 409)
             return
         if path.startswith("/api/cloud-saas"):
             payload = cloud_saas_api.cloud_saas_payload(self.path, method="GET", allow_admin=self.is_local_operator_request())

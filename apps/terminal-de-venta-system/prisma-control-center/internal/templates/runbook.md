@@ -7,6 +7,7 @@
 - `03_LEVANTAR_SOLO_UN_MODULO.cmd`: starts one selected PRISMA module and validates Cloudflare for that module.
 - `04_ABRIR_ATLAS_DEPENDENCIAS.cmd`: opens the dependency atlas.
 - `00_KILL_ALL_LOCAL.cmd` / `09_KILL_EVERYTHING_PRISMA.cmd`: stop PRISMA local ports only.
+- `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd`: starts the private PRISMA Cloud Command Center on 3160 without touching Control Center 3150.
 
 ## Safety rule
 
@@ -14,6 +15,6 @@ Unknown processes are never killed. A blocked port becomes `BLOCKED_UNKNOWN_PROC
 
 ## Logs
 
-All Control Center logs and reports are written under:
+Launcher evidence ZIPs are written under:
 
-`F:\repos\hitech-os\tools\_local\logs\prisma-control-center`
+`F:\descargasf`

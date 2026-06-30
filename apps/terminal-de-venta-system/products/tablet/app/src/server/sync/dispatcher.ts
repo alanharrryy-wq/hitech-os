@@ -11,6 +11,7 @@ type PcDispatchEventResult = {
   lifecycleStatus?: string;
   remoteEventId?: string;
   remoteLedgerId?: string;
+  idempotencyKey?: string;
   conflictCode?: string | null;
   rejectionCode?: string | null;
   conflicts?: Array<{ code?: string | null }>;
@@ -58,6 +59,21 @@ function backoffDate(attempts: number) {
   return new Date(Date.now() + (seconds + jitter) * 1000);
 }
 
+const PC_SUPPORTED_SCHEMA_VERSION = "1.0.0";
+const LEGACY_SCHEMA_VERSION_ALIASES = new Set(["boomsync2", "boom-sync-2", "v1", "1"]);
+
+function canonicalSchemaVersion(...values: unknown[]): string {
+  for (const value of values) {
+    if (typeof value !== "string") continue;
+    const normalized = value.trim();
+    if (!normalized) continue;
+    if (normalized === PC_SUPPORTED_SCHEMA_VERSION) return normalized;
+    if (LEGACY_SCHEMA_VERSION_ALIASES.has(normalized.toLowerCase())) return PC_SUPPORTED_SCHEMA_VERSION;
+  }
+  return PC_SUPPORTED_SCHEMA_VERSION;
+}
+
+
 const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "PENDING", "FAILED"];
 const OUTBOX_DISPATCH_SELECT = {
   id: true,
@@ -96,25 +112,32 @@ function buildBatch(events: TabletOutboxEvent[]) {
     events: events.map((event) => {
       const envelope = safePayload(event.payloadJson);
       const record = isRecord(envelope) ? envelope : {};
-      const payload = isRecord(record.payload) ? record.payload : isRecord(envelope) ? envelope : { rawPayloadJson: event.payloadJson };
+      const rawPayload: Record<string, unknown> = isRecord(record.payload) ? record.payload : isRecord(envelope) ? envelope : { rawPayloadJson: event.payloadJson };
+      const eventId = pickString(event.id, record.eventId);
+      const topic = pickString(record.topic, record.eventType, event.topic);
+      const actorId = pickString(record.actorId, rawPayload.actorId, rawPayload.cashierId, rawPayload.cashier, "tablet-operator");
+      const payload: Record<string, unknown> = { ...rawPayload };
+      if (!pickString(payload.actorId)) payload.actorId = actorId;
+      if (!pickString(payload.sourceEventId)) payload.sourceEventId = eventId;
       return {
-        eventId: pickString(record.eventId, event.id),
-        eventType: pickString(record.eventType, record.topic, event.topic),
-        topic: pickString(record.topic, record.eventType, event.topic),
-        idempotencyKey: pickString(record.idempotencyKey, event.idempotencyKey, event.id),
+        eventId,
+        eventType: topic,
+        topic,
+        idempotencyKey: pickString(record.idempotencyKey, event.idempotencyKey, eventId),
         businessId: pickString(forcedSyncBusinessId(), record.businessId, event.businessId),
         terminalId: pickString(forcedSyncTerminalId(), record.terminalId, event.terminalId, "tablet-terminal-local"),
-        actorId: pickString(record.actorId, payload.actorId, "tablet-operator"),
-        aggregateId: pickString(record.aggregateId, event.aggregateId),
-        correlationId: pickString(record.correlationId, event.aggregateId, event.id),
+        actorId,
+        aggregateId: pickString(record.aggregateId, event.aggregateId, eventId),
+        correlationId: pickString(record.correlationId, event.aggregateId, event.id, eventId),
         source: pickString(record.source, event.source, "tablet-pos"),
-        schemaVersion: pickString(record.schemaVersion, event.schemaVersion, "1.0.0"),
+        schemaVersion: canonicalSchemaVersion(record.schemaVersion, event.schemaVersion),
         occurredAt: pickString(record.occurredAt, event.createdAt instanceof Date ? event.createdAt.toISOString() : String(event.createdAt)),
         payload
       };
     })
   };
 }
+
 
 function safePayload(payloadJson: string) {
   try {
@@ -138,7 +161,13 @@ function pickString(...values: unknown[]): string {
 function resultFor(event: TabletOutboxEvent, response: PcDispatchBatchResponse): PcDispatchEventResult | null {
   const data = isRecord(response.data) ? response.data as PcDispatchBatchResponse : response;
   const results = data.results ?? data.events ?? [];
-  return results.find((item) => item.eventId === event.id || item.remoteEventId === event.id) ?? null;
+  const idempotencyKey = pickString(event.idempotencyKey, event.id);
+  return results.find((item) =>
+    item.eventId === event.id ||
+    item.remoteEventId === event.id ||
+    item.eventId === idempotencyKey ||
+    item.idempotencyKey === idempotencyKey
+  ) ?? null;
 }
 
 function isAck(result: PcDispatchEventResult): boolean {
@@ -169,6 +198,26 @@ async function applyAck(event: TabletOutboxEvent, result: PcDispatchEventResult)
         remoteConflictCode: result.lifecycleStatus === "conflict" ? remoteIssueCode(result, "remote_conflict") : null,
         remoteRejectedReason: result.lifecycleStatus === "dead_letter" ? remoteIssueCode(result, "remote_rejected") : null,
         lastError: null
+      }
+    });
+    return;
+  }
+
+  if (result.status === "failed") {
+    const terminal = result.retryable === false || result.lifecycleStatus === "dead_letter";
+    await prisma.outboxEvent.update({
+      where: { id: event.id },
+      data: {
+        status: terminal ? "failed" : "pending",
+        failedAt: terminal ? stamp : null,
+        lastAttemptAt: stamp,
+        nextRetryAt: terminal ? null : backoffDate(event.attempts + 1),
+        attempts: { increment: 1 },
+        remoteEventId: result.remoteEventId ?? result.eventId ?? null,
+        remoteLedgerId: result.remoteLedgerId ?? null,
+        remoteLifecycleStatus: result.lifecycleStatus ?? result.status ?? null,
+        remoteDiagnosticsJson: toJson(result.diagnostics),
+        lastError: remoteIssueCode(result, "Remote failed")
       }
     });
     return;
@@ -268,11 +317,27 @@ export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfi
         body: JSON.stringify(batch),
         signal: controller.signal
       });
-      const body = await response.json().catch(() => ({} as PcDispatchBatchResponse));
-      if (!response.ok) throw new Error(`PC ingest HTTP ${response.status}`);
-      await Promise.all(events.map((event: TabletOutboxEvent) => applyAck(event, resultFor(event, body) ?? { status: "failed", retryable: true, diagnostics: body.diagnostics })));
+      const body = await response.json().catch(() => ({
+        diagnostics: { httpStatus: response.status, message: "PC ingest returned non-JSON response." }
+      } as PcDispatchBatchResponse));
       const data = isRecord(body.data) ? body.data as PcDispatchBatchResponse : body;
-      return { ok: true, reason: "dispatched", dispatched: events.length, batchId: data.batchId ?? null };
+      const remoteResults = data.results ?? data.events ?? [];
+      const hasRemoteResults = Array.isArray(remoteResults) && remoteResults.length > 0;
+      if (!response.ok && !hasRemoteResults) {
+        throw new Error(`PC ingest HTTP ${response.status}`);
+      }
+      await Promise.all(events.map((event: TabletOutboxEvent) => applyAck(event, resultFor(event, body) ?? {
+        status: "failed",
+        retryable: response.status >= 500 || response.status === 429,
+        diagnostics: data.diagnostics ?? body.diagnostics ?? { httpStatus: response.status }
+      })));
+      return {
+        ok: response.ok,
+        reason: response.ok ? "dispatched" : "remote_results_applied_from_non_ok_response",
+        dispatched: events.length,
+        batchId: data.batchId ?? null,
+        httpStatus: response.status
+      };
     } catch (error) {
       await markNetworkFailure(events, error, config.maxAttempts);
       return { ok: false, reason: "dispatch_failed", dispatched: 0, error: error instanceof Error ? error.message : String(error) };

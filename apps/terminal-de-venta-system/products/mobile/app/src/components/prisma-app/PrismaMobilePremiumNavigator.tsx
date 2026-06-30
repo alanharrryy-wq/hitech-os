@@ -118,8 +118,22 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
       setActiveTab("sync");
       focusTab("sync");
     }
+    function openAlerts() {
+      setActiveTab("alertas");
+      focusTab("alertas");
+    }
+    function openCash() {
+      setActiveTab("caja");
+      focusTab("caja");
+    }
     window.addEventListener("prisma:open-health-radar", openHealthRadar);
-    return () => window.removeEventListener("prisma:open-health-radar", openHealthRadar);
+    window.addEventListener("prisma:open-alerts", openAlerts);
+    window.addEventListener("prisma:open-cash", openCash);
+    return () => {
+      window.removeEventListener("prisma:open-health-radar", openHealthRadar);
+      window.removeEventListener("prisma:open-alerts", openAlerts);
+      window.removeEventListener("prisma:open-cash", openCash);
+    };
   }, []);
 
   const tabs = useMemo(() => ([

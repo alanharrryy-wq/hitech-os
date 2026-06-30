@@ -1,9 +1,8 @@
 import "./globals.css";
-import "./prisma-tablet-light-premium-final.css";
-import "./prisma-tablet-background-workbench.css";
-import "./prisma-tablet-premium-governed.css";
+import "./prisma-tablet-softglass-canonical.css";
 import { headers } from "next/headers";
-import { TabletPremiumRuntimeEffects } from "../components/premium-visual";
+import { PRISMA_TABLET_VISUAL_V2 } from "../components/tablet-visual-v2/tablet-visual-tokens";
+import visualRootStyles from "../components/tablet-visual-v2/tablet-visual-v2-root.module.css";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {
@@ -22,20 +21,39 @@ function prismaRoutePanelId(route: string) {
 }
 
 export default async function RootLayout({ children }: { children: any }) {
-  const prismaSkin = process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-dark" ? "dark" : "light";
-  const prismaTheme = prismaSkin === "dark" ? "prisma-dark" : "prisma-light";
   const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
+  const canonicalViewport = `${PRISMA_TABLET_VISUAL_V2.canonicalViewport.width}x${PRISMA_TABLET_VISUAL_V2.canonicalViewport.height}@${PRISMA_TABLET_VISUAL_V2.canonicalViewport.zoom}`;
 
   return (
-    <html lang="es-MX" data-prisma-skin={prismaSkin} data-prisma-surface="tablet-pos" data-theme={prismaTheme} data-prisma-visual-mode="background-workbench" suppressHydrationWarning>
+    <html
+      lang="es-MX"
+      data-prisma-skin="light"
+      data-prisma-surface="tablet-softglass"
+      data-theme="prisma-light"
+      data-prisma-visual-mode="softglass-reference"
+      data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
+      data-prisma-canonical-viewport={canonicalViewport}
+      data-prisma-canonical-shell="softglass-reference-2606"
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var k="prisma.pos.skin";var allowed={light:1,dark:1,system:1};var selected=localStorage.getItem(k);if(!allowed[selected])selected="light";var resolved=selected==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):selected;var root=document.documentElement;root.dataset.prismaSkin=resolved;root.dataset.prismaSurface="tablet-pos";root.dataset.prismaVisualMode="background-workbench";root.dataset.theme=resolved==="dark"?"prisma-dark":"prisma-light";}catch(e){var root=document.documentElement;root.dataset.prismaSkin="light";root.dataset.prismaSurface="tablet-pos";root.dataset.prismaVisualMode="background-workbench";root.dataset.theme="prisma-light";}})();`
+            __html: `(function(){try{var root=document.documentElement;root.dataset.prismaSkin="light";root.dataset.theme="prisma-light";root.dataset.prismaSurface="tablet-softglass";root.dataset.prismaVisualMode="softglass-reference";root.dataset.prismaVisualV2="${PRISMA_TABLET_VISUAL_V2.dataAttribute}";root.dataset.prismaCanonicalViewport="${canonicalViewport}";root.dataset.prismaCanonicalShell="softglass-reference-2606";}catch(e){}})();`
           }}
         />
       </head>
-      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="tablet" data-prisma-route={route}><TabletPremiumRuntimeEffects />{children}</body>
+      <body
+        className={visualRootStyles.visualRoot}
+        data-prisma-panel={prismaRoutePanelId(route)}
+        data-prisma-surface="tablet"
+        data-prisma-route={route}
+        data-prisma-softglass-canonical="true"
+        data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
+        data-prisma-canonical-viewport={canonicalViewport}
+      >
+        {children}
+      </body>
     </html>
   );
 }
