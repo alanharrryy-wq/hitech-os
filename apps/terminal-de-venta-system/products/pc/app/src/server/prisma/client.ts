@@ -1,12 +1,9 @@
-import { PrismaClient } from "../../../.generated/prisma-client";
 import { existsSync, mkdirSync } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
+import type { PrismaClient as PrismaClientType } from "../../../.generated/prisma-client";
 
-const globalForPrisma = globalThis as { prisma?: PrismaClient };
-
-function toPrismaFileUrl(dbPath: string) {
-  return `file:${dbPath.replace(/\\/g, "/")}`;
-}
+const globalForPrisma = globalThis as { prisma?: PrismaClientType };
 
 function looksLikeTerminalRoot(candidate: string) {
   return (
@@ -34,18 +31,23 @@ function canonicalDatabaseUrl() {
   const terminalRoot = process.env.TV_SYSTEM_ROOT
     ? path.resolve(process.env.TV_SYSTEM_ROOT)
     : findTerminalRoot(process.cwd()) ?? path.resolve(process.cwd(), "..", "..", "..");
-  const repoRoot = path.resolve(terminalRoot, "..", "..");
   const dbPath = path.join(terminalRoot, "products", "pc", "app", "data", "canonical.db");
   mkdirSync(path.dirname(dbPath), { recursive: true });
-  return toPrismaFileUrl(dbPath);
+  const url = "file:../../../data/canonical.db";
+  process.env.DATABASE_URL = url;
+  return url;
 }
+
+const databaseUrl = canonicalDatabaseUrl();
+const requireGeneratedPrisma = createRequire(import.meta.url);
+const { PrismaClient } = requireGeneratedPrisma("../../../.generated/prisma-client") as typeof import("../../../.generated/prisma-client");
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     datasources: {
       db: {
-        url: canonicalDatabaseUrl()
+        url: databaseUrl
       }
     }
   });

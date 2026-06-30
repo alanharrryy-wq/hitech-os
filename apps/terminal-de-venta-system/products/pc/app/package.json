@@ -21,6 +21,7 @@
     "verify:pc:mass-catalog": "node tools/verify_pc_mass_catalog_04d.mjs",
     "verify:visual-os-pc-binding-00j": "node tools/verify_prisma_visual_os_pc_binding_00j.mjs",
     "verify:pc-ingest-idempotency": "node tools/verify_pc_ingest_idempotency_01.mjs",
+    "verify:prisma-original-customer-sync-e2e": "node ../../../../../node_modules/tsx/dist/cli.mjs tools/verify_prisma_original_customer_sync_e2e_01.mts --tsconfig tsconfig.json",
     "verify:pc-uiux-300": "node tools/verify_pc_uiux_300_addendum.mjs",
     "verify:supplier-sync-contract": "node tools/verify_supplier_sync_contract_01.mjs",
     "verify:supplier-projectors": "node tools/verify_supplier_projectors_01.mjs",
