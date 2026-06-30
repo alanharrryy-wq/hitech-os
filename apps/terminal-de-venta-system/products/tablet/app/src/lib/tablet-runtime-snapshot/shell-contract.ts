@@ -1,3 +1,5 @@
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
+
 export type TabletRuntimeTone = "ok" | "warn" | "danger" | "neutral";
 
 export type TabletShiftState = "open" | "closed" | "closing" | "review";
@@ -85,11 +87,11 @@ export const DEFAULT_TABLET_RUNTIME_SNAPSHOT: TabletRuntimeSnapshot = {
   localSalesAllowed: true,
   pcRequiredForBasicSale: false,
   identity: {
-    businessId: "biz_tablet_standalone",
-    businessName: "PRISMA Local",
-    storeName: "Tienda principal",
-    terminalId: "terminal_tablet_local_01",
-    terminalName: "Terminal local",
+    businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
+    businessName: PRISMA_ORIGINAL_CUSTOMER.displayName,
+    storeName: PRISMA_ORIGINAL_CUSTOMER.storeName,
+    terminalId: PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId,
+    terminalName: PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName,
     operatorId: "tablet-cashier",
     operatorName: "Operador"
   },

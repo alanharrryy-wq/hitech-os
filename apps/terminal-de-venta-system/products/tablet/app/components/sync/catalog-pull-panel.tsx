@@ -91,14 +91,14 @@ function resultTone(result: CatalogPullResult | null) {
 }
 
 function resultMessage(result: CatalogPullResult | null) {
-  if (!result) return "Sin pull de catalogo en esta sesion.";
+  if (!result) return "Sin actualizacion de datos en esta sesion.";
   if (result.ok && result.reason === "applied") return `Catalogo aplicado: ${result.counts.applied} cambio(s), ${result.counts.duplicate} duplicado(s).`;
   if (result.ok && result.reason === "empty") return "PC respondio correctamente; no habia cambios nuevos para aplicar.";
-  if (result.reason === "pc_sync_disabled") return "Pull PC apagado por configuracion. La Tablet sigue vendiendo local.";
-  if (result.reason === "pc_unavailable") return "PC no respondio al export de catalogo. El POS local no se bloquea.";
-  if (result.reason === "partial") return `Pull parcial: ${result.counts.applied} aplicado(s), ${result.counts.conflict} conflicto(s), ${result.counts.rejected} rechazado(s).`;
-  if (result.reason === "invalid_payload") return "PC envio payload invalido; checkpoint exitoso no se avanzo.";
-  return `Resultado catalogo: ${result.reason}.`;
+  if (result.reason === "pc_sync_disabled") return "Actualizacion desde PC apagada por configuracion. La Tablet sigue vendiendo local.";
+  if (result.reason === "pc_unavailable") return "PC no respondio para actualizar datos. El POS local no se bloquea.";
+  if (result.reason === "partial") return `Actualizacion parcial: ${result.counts.applied} aplicado(s), ${result.counts.conflict} por revisar, ${result.counts.rejected} rechazado(s).`;
+  if (result.reason === "invalid_payload") return "PC envio datos no validos; no se marco como actualizacion completada.";
+  return `Resultado de actualizacion: ${result.reason}.`;
 }
 
 function shortDate(value: string | null | undefined) {
@@ -106,6 +106,32 @@ function shortDate(value: string | null | undefined) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "sin registro";
   return new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(date);
+}
+
+function entityLabel(entity: string) {
+  const labels: Record<string, string> = {
+    Product: "Productos",
+    Barcode: "Codigos",
+    Brand: "Marcas",
+    TaxRate: "Impuestos",
+    Supplier: "Proveedores",
+    ProductSupplier: "Proveedor por producto",
+    PriceList: "Listas de precio",
+    PriceListItem: "Precios",
+    DropdownCatalog: "Opciones",
+    DropdownOption: "Valores"
+  };
+  return labels[entity] ?? entity.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+function checkpointStatusLabel(status: string | null | undefined) {
+  const raw = String(status ?? "").trim().toLowerCase();
+  if (!raw) return "sin intento";
+  if (["ok", "success", "applied", "completed", "synced"].includes(raw)) return "completado";
+  if (["failed", "error", "rejected"].includes(raw)) return "requiere atencion";
+  if (["partial", "conflict"].includes(raw)) return "por revisar";
+  if (["pending", "queued"].includes(raw)) return "pendiente";
+  return "revisado";
 }
 
 export function CatalogPullPanel() {
@@ -163,18 +189,18 @@ export function CatalogPullPanel() {
       <div className={styles.catalogHeader}>
         <div>
           <span>PC a Tablet</span>
-          <h2>Catalogo entrante</h2>
-          <p>Master-data, precios, impuestos y opciones se jalan desde PC con cursor local. La venta local no depende de este pull.</p>
+          <h2>Datos desde PC</h2>
+          <p>Productos, precios, impuestos y opciones se actualizan desde PC cuando esta disponible. La venta local no depende de esta actualizacion.</p>
         </div>
         <div className={styles.catalogActions}>
           <button type="button" onClick={() => void run("delta", false)} disabled={disabled}>
-            {busyMode === "delta" ? "Jalando" : "Pedir delta"}
+            {busyMode === "delta" ? "Actualizando" : "Actualizar datos"}
           </button>
           <button type="button" onClick={() => void run("bootstrap", true)} disabled={disabled}>
-            {busyMode === "bootstrap" ? "Aplicando" : "Bootstrap inicial"}
+            {busyMode === "bootstrap" ? "Preparando" : "Primera carga"}
           </button>
           <button type="button" onClick={() => void run("resync", true)} disabled={disabled}>
-            {busyMode === "resync" ? "Rearmando" : "Resync controlado"}
+            {busyMode === "resync" ? "Reparando" : "Reparar datos"}
           </button>
           <button type="button" onClick={() => void loadStatus()} disabled={disabled}>
             {busyMode === "refresh" ? "Actualizando" : "Actualizar"}
@@ -192,9 +218,9 @@ export function CatalogPullPanel() {
           <small>{status?.pc.origin ?? "sin origen PC"}</small>
         </article>
         <article>
-          <span>Cursor</span>
-          <strong>{checkpoint?.cursorValue ? "activo" : "sin cursor"}</strong>
-          <small>{checkpoint?.cursorValue ?? "bootstrap pendiente"}</small>
+          <span>Avance</span>
+          <strong>{checkpoint?.cursorValue ? "registrado" : "pendiente"}</strong>
+          <small>{checkpoint?.cursorValue ? "Hay referencia de ultima actualizacion" : "Falta primera carga"}</small>
         </article>
         <article>
           <span>Ultimo exito</span>
@@ -203,7 +229,7 @@ export function CatalogPullPanel() {
         </article>
         <article>
           <span>Ultimo intento</span>
-          <strong>{checkpoint?.status ?? "sin intento"}</strong>
+          <strong>{checkpointStatusLabel(checkpoint?.status)}</strong>
           <small>{shortDate(checkpoint?.lastAttemptedAt)}</small>
         </article>
       </div>
@@ -220,17 +246,28 @@ export function CatalogPullPanel() {
 
       <div className={styles.catalogEntityList}>
         {counts.map(([entity, count]) => (
-          <span key={entity}>{entity}: {count}</span>
+          <span key={entity}>{entityLabel(entity)}: {count}</span>
         ))}
       </div>
 
       {result?.findings.length ? (
         <div className={styles.catalogFindings}>
-          {result.findings.slice(0, 6).map((finding, index) => (
+          <span>{result.findings.length} dato(s) requieren revision de soporte.</span>
+        </div>
+      ) : null}
+
+      <details className={styles.supportDetails}>
+        <summary>Detalles de soporte</summary>
+        <div className={styles.diagnostics}>
+          <span>Modo tecnico: {result?.mode ?? "sin ejecucion"}</span>
+          <span>Referencia anterior: {result?.cursorBefore ?? checkpoint?.cursorValue ?? "sin registro"}</span>
+          <span>Referencia nueva: {result?.cursorAfter ?? "sin cambio"}</span>
+          <span>Stream: {status?.stream ?? "catalogo"}</span>
+          {result?.findings.slice(0, 6).map((finding, index) => (
             <span key={`${finding.code}-${finding.entityId ?? index}`}>{finding.code}: {finding.entityType ?? "payload"} {finding.entityId ?? ""}</span>
           ))}
         </div>
-      ) : null}
+      </details>
     </section>
   );
 }

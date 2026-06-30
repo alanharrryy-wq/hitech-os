@@ -6,6 +6,7 @@ import { requestJson } from "@/lib/pos/cart-state";
 import type { PendingSendStatus, SyncPanelResponse } from "@/lib/pending-offline-sync/sync-panel-contract";
 import { filterSyncItems } from "@/lib/pending-offline-sync/sync-panel-view-model";
 import { CatalogPullPanel } from "./catalog-pull-panel";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../shared/customer/prisma-original-customer";
 import styles from "./pending-offline-sync-panel.module.css";
 
 type FilterMode = "all" | "needs_attention" | PendingSendStatus;
@@ -27,7 +28,27 @@ type DispatchResult = {
   };
 };
 
-const DEFAULT_SYNC_BUSINESS_ID = "biz_tablet_standalone";
+type LicenseStatusResponse = {
+  ok: boolean;
+  data?: {
+    status?: {
+      state?: string;
+      plan?: string | null;
+      assignmentState?: string;
+      operationalDecision?: string;
+    };
+  };
+};
+
+type TabletPcHealth = {
+  ok?: boolean;
+  enabled?: boolean;
+  status?: string;
+  url?: string | null;
+  error?: string | null;
+};
+
+const DEFAULT_SYNC_BUSINESS_ID = PRISMA_ORIGINAL_CUSTOMER.businessId;
 
 const FILTERS: { key: FilterMode; label: string }[] = [
   { key: "needs_attention", label: "Por atender" },
@@ -93,23 +114,60 @@ function emptyQueueMessage(filter: FilterMode) {
   return "No hay elementos en este filtro.";
 }
 
+function licenseStateLabel(state: string | null | undefined) {
+  if (state === "active" || state === "development") return "Cuenta autorizada";
+  if (state === "offline_grace") return "Cuenta en gracia offline";
+  if (state === "missing") return "Activacion pendiente";
+  if (state === "expired") return "Licencia vencida";
+  if (state === "suspended" || state === "revoked") return "Licencia detenida";
+  return "Estado por revisar";
+}
+
+function assignmentLabel(state: string | null | undefined) {
+  if (state === "assigned") return "Tablet autorizada";
+  if (state === "unassigned") return "Tablet pendiente";
+  if (state?.startsWith("wrong_")) return "Asignacion no coincide";
+  if (state === "exceeded_limit") return "Limite por revisar";
+  return "Asignacion pendiente";
+}
+
+function pcConnectionLabel(health: TabletPcHealth | null) {
+  if (!health) return "Revisando conexion";
+  if (health.enabled === false) return "PC no configurada";
+  if (health.ok || health.status === "online") return "PC disponible";
+  if (health.status === "degraded") return "PC con aviso";
+  if (health.status === "offline") return "PC sin respuesta";
+  return "PC por revisar";
+}
+
 export function PendingOfflineSyncPanelScreen() {
   const [panel, setPanel] = useState<SyncPanelResponse | null>(null);
   const [filter, setFilter] = useState<FilterMode>("needs_attention");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);
+  const [license, setLicense] = useState<LicenseStatusResponse["data"] | null>(null);
+  const [pcHealth, setPcHealth] = useState<TabletPcHealth | null>(null);
 
   async function loadPanelOnly() {
     const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
     setPanel(r.data);
   }
 
+  async function loadOperationalContext() {
+    const [licenseResult, pcResult] = await Promise.allSettled([
+      requestJson<LicenseStatusResponse["data"]>("/api/license/status").then((response) => response.data),
+      plainJson<TabletPcHealth>("/api/pos/sync/health/pc")
+    ]);
+    if (licenseResult.status === "fulfilled") setLicense(licenseResult.value);
+    if (pcResult.status === "fulfilled") setPcHealth(pcResult.value);
+  }
+
   async function load() {
     setBusy(true);
     setError(null);
     try {
-      await loadPanelOnly();
+      await Promise.all([loadPanelOnly(), loadOperationalContext()]);
     } catch (e) {
       setError(readError(e));
     } finally {
@@ -171,7 +229,7 @@ export function PendingOfflineSyncPanelScreen() {
       setBusy(true);
       setError(null);
       try {
-        await loadPanelOnly();
+        await Promise.all([loadPanelOnly(), loadOperationalContext()]);
       } catch (e) {
         if (!cancelled) setError(readError(e));
       } finally {
@@ -189,6 +247,8 @@ export function PendingOfflineSyncPanelScreen() {
   const sendableCount = panel ? panel.summary.pending + panel.summary.failed : 0;
   const retryableCount = panel ? panel.summary.failed + panel.summary.conflict : 0;
   const noteTone = dispatchTone(dispatchResult);
+  const licenseStatus = license?.status;
+  const lastCheckedLabel = panel?.summary.lastCheckedAt ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt)) : "sin revision";
 
   return (
     <PrismaTabletShellUnified
@@ -220,6 +280,29 @@ export function PendingOfflineSyncPanelScreen() {
         {dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${noteTone}`]].join(" ")}>{dispatchMessage(dispatchResult)}</div> : null}
         {error ? <div className={styles.alert} role="alert">{error}</div> : null}
 
+        <section className={styles.accountGrid} aria-label="Cuenta, licencia y equipos vinculados">
+          <article>
+            <span>Cliente</span>
+            <strong>{PRISMA_ORIGINAL_CUSTOMER.displayName}</strong>
+            <small>Cuenta local de venta</small>
+          </article>
+          <article>
+            <span>Licencia</span>
+            <strong>{licenseStateLabel(licenseStatus?.state)}</strong>
+            <small>{licenseStatus?.plan ?? PRISMA_ORIGINAL_CUSTOMER.planLabel}</small>
+          </article>
+          <article>
+            <span>Tablet</span>
+            <strong>{assignmentLabel(licenseStatus?.assignmentState)}</strong>
+            <small>{PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName}</small>
+          </article>
+          <article>
+            <span>PC</span>
+            <strong>{pcConnectionLabel(pcHealth)}</strong>
+            <small>Venta local disponible aunque PC no responda</small>
+          </article>
+        </section>
+
         <CatalogPullPanel />
 
         <section className={styles.kpis}>
@@ -241,7 +324,7 @@ export function PendingOfflineSyncPanelScreen() {
           <article>
             <span>Confirmados</span>
             <strong>{panel?.summary.acked ?? 0}</strong>
-            <small>Ya quedaron cerrados</small>
+            <small>Confirmados por el flujo</small>
           </article>
         </section>
 
@@ -274,7 +357,15 @@ export function PendingOfflineSyncPanelScreen() {
           )}
         </section>
 
-        <section className={styles.diagnostics}>{panel?.diagnostics.map((note) => <span key={note}>{note}</span>)}</section>
+        <details className={styles.supportDetails}>
+          <summary>Detalles de soporte</summary>
+          <section className={styles.diagnostics}>
+            <span>Cliente: {PRISMA_ORIGINAL_CUSTOMER.displayName}</span>
+            <span>Ultima revision: {lastCheckedLabel}</span>
+            {pcHealth?.url ? <span>Destino PC configurado</span> : null}
+            {panel?.diagnostics.map((note) => <span key={note}>{note}</span>)}
+          </section>
+        </details>
       </main>
     </PrismaTabletShellUnified>
   );

@@ -1,5 +1,6 @@
 import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../shared/licensing";
 import type { RuntimeContext } from "../../../../../shared/runtime";
+import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../shared/customer/prisma-original-customer";
 import styles from "./license-ui.module.css";
 
 type Tone = "ok" | "warn" | "danger" | "neutral";
@@ -157,11 +158,12 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       </div>
 
       <div className={styles.identityStrip} aria-label="Resumen de licencia y equipo">
+        <Metric label="Cliente" value={PRISMA_ORIGINAL_CUSTOMER.displayName} />
         <Metric label="Estado" value={stateLabel(status.state)} tone={tone} />
         <Metric label="Plan" value={visibleValue(status.plan, "Sin plan instalado")} />
         <Metric label="Asignación" value={assignmentLabel(status.assignmentState)} />
-        <Metric label="Terminal" value={visibleValue(status.terminalId ?? runtimeContext.terminalId, "No declarada")} />
-        <Metric label="Sucursal" value={visibleValue(status.storeId ?? status.branchId ?? runtimeContext.storeId, "No declarada")} />
+        <Metric label="Terminal" value={PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName} />
+        <Metric label="Sucursal" value={PRISMA_ORIGINAL_CUSTOMER.storeName} />
         <Metric label="Vigencia" value={status.daysRemaining === null ? visibleValue(status.validUntil, "No disponible") : `${status.daysRemaining} días restantes`} />
       </div>
 

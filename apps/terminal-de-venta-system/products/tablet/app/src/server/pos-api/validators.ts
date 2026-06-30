@@ -1,8 +1,9 @@
 
 import type { CompleteLocalSaleInput, PosCartLineInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
+import { PRISMA_ORIGINAL_CUSTOMER, normalizePrismaOriginalBusinessId, normalizePrismaOriginalTerminalId } from "../../../../../../shared/customer/prisma-original-customer";
 
-export const DEFAULT_POS_API_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || "biz_tablet_standalone";
-export const DEFAULT_POS_API_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || "terminal_tablet_local_01";
+export const DEFAULT_POS_API_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.businessId;
+export const DEFAULT_POS_API_TERMINAL_ID = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_TERMINAL_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId;
 export const DEFAULT_POS_API_CASHIER = process.env.PRISMA_TABLET_CASHIER?.trim() || "tablet-cashier";
 
 export type ProductSearchInput = {
@@ -51,15 +52,13 @@ function asString(value: unknown, fallback = "") {
 }
 
 function normalizeBusinessId(value: unknown) {
-  const incoming = asString(value, "");
-  if (!incoming || incoming === "biz_tablet_standalone") return DEFAULT_POS_API_BUSINESS_ID;
-  return incoming;
+  const incoming = normalizePrismaOriginalBusinessId(value);
+  return incoming === PRISMA_ORIGINAL_CUSTOMER.businessId ? DEFAULT_POS_API_BUSINESS_ID : incoming;
 }
 
 function normalizeTerminalId(value: unknown) {
-  const incoming = asString(value, "");
-  if (!incoming || incoming === "terminal_tablet_local_01") return DEFAULT_POS_API_TERMINAL_ID;
-  return incoming;
+  const incoming = normalizePrismaOriginalTerminalId(value);
+  return incoming === PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId ? DEFAULT_POS_API_TERMINAL_ID : incoming;
 }
 
 function asPositiveInteger(value: unknown, fallback: number, max = 100) {
