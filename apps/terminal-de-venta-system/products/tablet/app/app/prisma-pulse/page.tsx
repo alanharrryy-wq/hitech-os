@@ -3,6 +3,8 @@ import { buildPrismaInsightEnvelope, buildPrismaTripleAppChartsViewModel } from 
 import { resolvePrismaChartFlags } from "@prisma-charts/prismaChartFlags";
 import { buildPendingOfflineSyncPanel } from "@/server/pos-sync-panel";
 import { getTabletRuntimeSnapshot, readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot";
+import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletReportSurfaceV2 } from "@components/tablet-visual-v2";
 import { PrismaTabletPulsePanel } from "./PrismaTabletPulsePanel";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -49,5 +51,16 @@ export default async function PrismaPulsePage({ searchParams }: { searchParams?:
     preview: flags.previewEnabled
   }, model.quality.tablet);
 
-  return <PrismaTabletPulsePanel envelope={envelope} flags={flags} />;
+  return (
+    <PrismaTabletShellUnified
+      currentPath="/prisma-pulse"
+      title="PRISMA Pulse"
+      subtitle="Lectura operativa de runtime, sincronización y señales visuales para Tablet."
+      kicker="Visual OS"
+    >
+      <TabletReportSurfaceV2 routeId="/prisma-pulse" title="PRISMA Pulse" description="Lectura operativa de runtime, sincronización y señales visuales para Tablet." statusLabel="Pulse">
+        <PrismaTabletPulsePanel envelope={envelope} flags={flags} />
+      </TabletReportSurfaceV2>
+    </PrismaTabletShellUnified>
+  );
 }

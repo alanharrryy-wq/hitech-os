@@ -18,9 +18,10 @@ import { addHeldCart, readHeldCartsFromStorage, removeHeldCart, writeHeldCartsTo
 import { PosProductSearch } from "./pos-product-search";
 import { PosProductList } from "./pos-product-list";
 import { PosTicketPanel } from "./pos-ticket-panel";
-import { PosPaymentPanel } from "./pos-payment-panel";
+import { PosCobroSurface } from "./pos-cobro-surface";
 import { PosSaleSuccess } from "./pos-sale-success";
 import { PosLiveBinding } from "./pos-live-binding";
+import { PosCommandDock, PosProductCanvas, PosTerminalBody, PosTerminalHeader, PosTerminalSurface, PosTicketRail } from "./terminal-v2";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 import styles from "./pos.module.css";
@@ -300,9 +301,14 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     }
     setCheckoutError(null);
     setCheckoutState("review");
-    const requestId = clientRequestId || (await getOrCreatePaymentRequestId(cart));
-    setClientRequestId(requestId);
     setPaymentOpen(true);
+    try {
+      const requestId = clientRequestId || (await getOrCreatePaymentRequestId(cart));
+      setClientRequestId(requestId);
+    } catch (error) {
+      setCheckoutError(error);
+      setCheckoutState("error");
+    }
   }
 
   async function confirmSale() {
@@ -365,48 +371,55 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         runtimeSnapshot={runtimeSnapshot}
         visualSurface="tablet-pos"
         visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
+        showBottomDock={false}
       >
-        <section
-          className={`${styles.statePanel} ${styles.posGateDeck}`}
-          data-prisma-operational-gate="closed-cash"
-          data-prisma-state="blocked"
-          data-prisma-panel="tablet.pos.closed-gate"
-          data-prisma-visual-unit="tablet.pos.turn-opening-card"
-          data-prisma-editable-slot="state-panel.layout,state-panel.spacing,state-panel.surface,state-panel.cta"
-          role="status"
+        <PosTerminalSurface
+          cartState="blocked"
+          paymentOpen={false}
+          visualState="blocked"
         >
-          <div className={styles.posGateHero}>
-            <span className={styles.posGateIcon} aria-hidden="true">
-              <PrismaIcon name="terminal" size={30} />
-            </span>
-            <span className={styles.posGateEyebrow}>Tablet vende sola</span>
-            <strong className={styles.posGateTitle}>Caja cerrada</strong>
-            <span className={styles.posGateDetail}>{gate.detail}</span>
-          </div>
+          <section
+            className={`${styles.statePanel} ${styles.posGateDeck}`}
+            data-prisma-operational-gate="closed-cash"
+            data-prisma-state="blocked"
+            data-prisma-panel="tablet.pos.closed-gate"
+            data-prisma-visual-unit="tablet.pos.turn-opening-card"
+            data-prisma-editable-slot="state-panel.layout,state-panel.spacing,state-panel.surface,state-panel.cta"
+            role="status"
+          >
+            <div className={styles.posGateHero}>
+              <span className={styles.posGateIcon} aria-hidden="true">
+                <PrismaIcon name="terminal" size={30} />
+              </span>
+              <span className={styles.posGateEyebrow}>Tablet vende sola</span>
+              <strong className={styles.posGateTitle}>Caja cerrada</strong>
+              <span className={styles.posGateDetail}>{gate.detail}</span>
+            </div>
 
-          <div className={styles.posGateMetaGrid} aria-label="Resumen operativo de caja">
-            <span className={styles.posGateMeta}>
-              <small>Sucursal</small>
-              <strong>{runtimeSnapshot.identity.storeName}</strong>
-            </span>
-            <span className={styles.posGateMeta}>
-              <small>Terminal</small>
-              <strong>{runtimeSnapshot.identity.terminalName}</strong>
-            </span>
-            <span className={styles.posGateMeta}>
-              <small>Operador</small>
-              <strong>{runtimeSnapshot.identity.operatorName}</strong>
-            </span>
-          </div>
+            <div className={styles.posGateMetaGrid} aria-label="Resumen operativo de caja">
+              <span className={styles.posGateMeta}>
+                <small>Sucursal</small>
+                <strong>{runtimeSnapshot.identity.storeName}</strong>
+              </span>
+              <span className={styles.posGateMeta}>
+                <small>Terminal</small>
+                <strong>{runtimeSnapshot.identity.terminalName}</strong>
+              </span>
+              <span className={styles.posGateMeta}>
+                <small>Operador</small>
+                <strong>{runtimeSnapshot.identity.operatorName}</strong>
+              </span>
+            </div>
 
-          <div className={styles.posGateActions}>
-            <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>
-              <PrismaIcon name="terminal" size={18} />
-              <span>{gate.actionLabel}</span>
-            </a>
-            <small>Abre el turno para activar venta, catálogo y cobro.</small>
-          </div>
-        </section>
+            <div className={styles.posGateActions}>
+              <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>
+                <PrismaIcon name="terminal" size={18} />
+                <span>{gate.actionLabel}</span>
+              </a>
+              <small>Abre el turno para activar venta, catálogo y cobro.</small>
+            </div>
+          </section>
+        </PosTerminalSurface>
       </PrismaTabletShellUnified>
     );
   }
@@ -421,124 +434,123 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       visualSurface="tablet-pos"
       runtimeSnapshot={runtimeSnapshot}
       visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
+      showBottomDock={false}
     >
-      <div
-        className={styles.posPremiumWorkspace}
-        data-prisma-component="PointOfSaleWorkspace"
-        data-prisma-panel="tablet.pos.workspace"
-        data-prisma-surface="tablet"
-        data-prisma-route="/pos"
-        data-prisma-vos-note="PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"
-        data-prisma-zone="tablet-pos-root"
-        data-prisma-role="operational-summary"
-        data-prisma-priority="primary"
-        data-prisma-motion="ambient"
-        data-prisma-qa="tablet-qa-pos"
-        data-prisma-vos="00B"
-        data-prisma-vos-stage="00F_00I"
-        data-prisma-vsurface="tablet-pos"
-        data-prisma-vpreset="POS_TOUCH"
-        data-prisma-golden-flow="touch-guided-sidebar-04i"
-        data-prisma-light-operational="00Q"
-        data-prisma-pos-live="00T"
-        data-prisma-layer="surface"
-        data-prisma-cart-state={cart.length ? "active" : "empty"}
-        data-prisma-visual-state={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
+      <PosTerminalSurface
+        cartState={cart.length ? "active" : "empty"}
+        paymentOpen={paymentOpen}
+        visualState={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
       >
         <PosLiveBinding />
         <span className={styles.posPremiumSceneGlow} aria-hidden="true" />
         <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H" />
-        <motion.section
-          className={styles.posPremiumCatalogArea}
-          data-prisma-role="operational-summary"
-          data-prisma-priority="primary"
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <PosProductSearch
-            query={query}
-            setQuery={setQuery}
-            loading={productState === "loading"}
-            error={productError}
-            resultCount={visibleProducts.length}
-            activeCount={activeProductCount}
-            state={productState}
-            onSearch={() => void runPrimaryLookup(query)}
-            onResolve={() => void resolveCode(query)}
-            onClear={() => {
-              setQuery("");
-              void loadProducts("");
-            }}
-          />
-          <nav
-            className={styles.posPremiumCategoryRail}
-            data-prisma-panel="tablet.pos.category-rail"
-            data-prisma-surface="tablet"
-            data-prisma-route="/pos"
-            data-prisma-zone="tablet-pos-category-chips"
-            data-prisma-role="secondary-action"
-            data-prisma-priority="support"
-          >
-            {categories.map((category, index) => (
-              <motion.button
-                key={category}
-                className={category === selectedCategory ? styles.posPremiumCategoryButtonActive : styles.posPremiumCategoryButton}
-                type="button"
-                onClick={() => setSelectedCategory(category)}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileTap={{ scale: 0.98 }}
-                whileHover={{ y: -1 }}
-                transition={{ duration: 0.16, delay: Math.min(index * 0.018, 0.16), ease: [0.22, 1, 0.36, 1] }}
-                data-prisma-component="CategoryButton"
-                data-active={category === selectedCategory ? "true" : "false"}
-                data-prisma-role="secondary-action"
-                data-prisma-priority={category === selectedCategory ? "primary" : "support"}
-                data-prisma-state={category === selectedCategory ? "selected" : undefined}
-                data-prisma-motion="press-feedback"
-              >
-                <strong>{category}</strong>
-              </motion.button>
-            ))}
-          </nav>
-          <PosProductList
-            products={visibleProducts}
-            state={productState}
-            error={productError}
-            query={query}
-            newProductHref={newProductHref}
-            canAddProduct={gate.canAddProduct}
-            blockedReason={gate.detail}
-            onAdd={addProduct}
-            onSearchAgain={() => void runPrimaryLookup(query)}
-            onCancelSearch={() => {
-              setQuery("");
-              void loadProducts("");
-            }}
-          />
-        </motion.section>
-
-        <PosTicketPanel
-          lines={cart}
-          heldCarts={heldCarts}
-          checkoutBusy={checkoutBusy}
-          checkoutError={checkoutError}
-          checkoutReason={checkoutReady.reason}
-          canCheckout={gate.canCheckout}
-          checkoutBlockedReason={gate.detail}
-          onIncrement={(productId) => setCart((current) => incrementCartLine(current, productId).lines)}
-          onDecrement={(productId) => setCart((current) => decrementCartLine(current, productId).lines)}
-          onRemove={(productId) => setCart((current) => removeCartLine(current, productId).lines)}
-          onClear={clearTicket}
-          onHold={holdActiveTicket}
-          onRestoreHeldCart={restoreHeldTicket}
-          onDiscardHeldCart={discardHeldTicket}
-          onCheckout={() => void openCheckout()}
+        <PosTerminalHeader
+          activeCount={activeProductCount}
+          cartQty={cartQty}
+          cartTotal={formatMoney(cartTotal)}
+          statusLabel={copy.label}
+          storeName={runtimeSnapshot.identity.storeName}
+          terminalName={runtimeSnapshot.identity.terminalName}
         />
-      </div>
+        <PosTerminalBody>
+          <PosProductCanvas>
+            <motion.section
+              className={styles.posPremiumCatalogArea}
+              data-prisma-role="operational-summary"
+              data-prisma-priority="primary"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <PosProductSearch
+                query={query}
+                setQuery={setQuery}
+                loading={productState === "loading"}
+                error={productError}
+                resultCount={visibleProducts.length}
+                activeCount={activeProductCount}
+                state={productState}
+                onSearch={() => void runPrimaryLookup(query)}
+                onResolve={() => void resolveCode(query)}
+                onClear={() => {
+                  setQuery("");
+                  void loadProducts("");
+                }}
+              />
+              <PosCommandDock>
+                <nav
+                  className={styles.posPremiumCategoryRail}
+                  data-prisma-panel="tablet.pos.category-rail"
+                  data-prisma-surface="tablet"
+                  data-prisma-route="/pos"
+                  data-prisma-zone="tablet-pos-category-chips"
+                  data-prisma-role="secondary-action"
+                  data-prisma-priority="support"
+                >
+                  {categories.map((category, index) => (
+                    <motion.button
+                      key={category}
+                      className={category === selectedCategory ? styles.posPremiumCategoryButtonActive : styles.posPremiumCategoryButton}
+                      type="button"
+                      onClick={() => setSelectedCategory(category)}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ y: -1 }}
+                      transition={{ duration: 0.16, delay: Math.min(index * 0.018, 0.16), ease: [0.22, 1, 0.36, 1] }}
+                      data-prisma-component="CategoryButton"
+                      data-active={category === selectedCategory ? "true" : "false"}
+                      data-prisma-role="secondary-action"
+                      data-prisma-priority={category === selectedCategory ? "primary" : "support"}
+                      data-prisma-state={category === selectedCategory ? "selected" : undefined}
+                      data-prisma-motion="press-feedback"
+                    >
+                      <strong>{category}</strong>
+                    </motion.button>
+                  ))}
+                </nav>
+              </PosCommandDock>
+              <PosProductList
+                products={visibleProducts}
+                state={productState}
+                error={productError}
+                query={query}
+                newProductHref={newProductHref}
+                canAddProduct={gate.canAddProduct}
+                blockedReason={gate.detail}
+                onAdd={addProduct}
+                onSearchAgain={() => void runPrimaryLookup(query)}
+                onCancelSearch={() => {
+                  setQuery("");
+                  void loadProducts("");
+                }}
+              />
+            </motion.section>
+          </PosProductCanvas>
 
-      <PosPaymentPanel
+          <PosTicketRail>
+            <PosTicketPanel
+              lines={cart}
+              heldCarts={heldCarts}
+              checkoutBusy={checkoutBusy}
+              checkoutError={checkoutError}
+              checkoutReason={checkoutReady.reason}
+              canCheckout={gate.canCheckout}
+              checkoutBlockedReason={gate.detail}
+              onIncrement={(productId) => setCart((current) => incrementCartLine(current, productId).lines)}
+              onDecrement={(productId) => setCart((current) => decrementCartLine(current, productId).lines)}
+              onRemove={(productId) => setCart((current) => removeCartLine(current, productId).lines)}
+              onClear={clearTicket}
+              onHold={holdActiveTicket}
+              onRestoreHeldCart={restoreHeldTicket}
+              onDiscardHeldCart={discardHeldTicket}
+              onCheckout={() => void openCheckout()}
+            />
+          </PosTicketRail>
+        </PosTerminalBody>
+      </PosTerminalSurface>
+
+      <PosCobroSurface
         open={paymentOpen}
         lines={cart}
         state={checkoutState}

@@ -2,9 +2,10 @@
 
 import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
-import { AlertTriangle, CheckCircle2, ChevronRight, Clock3, Gem, Minus, Plus, ReceiptText, Save, Trash2, Undo2, WalletCards } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock3, Gem, Minus, Plus, ReceiptText, Save, Trash2, Undo2, WalletCards } from "lucide-react";
 import { motion } from "motion/react";
 import { twMerge } from "tailwind-merge";
+import { PrismaLiquidAction } from "@components/tablet-visual-v2";
 import type { CartLine } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, formatMoney } from "@/lib/pos/cart-state";
 import type { HeldCart } from "@/lib/pos/held-carts";
@@ -29,23 +30,6 @@ const ticketPanelChrome = cva(styles.posPremiumTicketPanel, {
   },
   defaultVariants: {
     state: "empty"
-  }
-});
-
-const checkoutCtaChrome = cva(styles.posPremiumCheckoutCta, {
-  variants: {
-    disabled: {
-      true: styles.posPremiumCheckoutCtaDisabled,
-      false: styles.posPremiumCheckoutCtaReference
-    },
-    busy: {
-      true: styles.posPremiumCheckoutCtaBusy,
-      false: null
-    }
-  },
-  defaultVariants: {
-    disabled: false,
-    busy: false
   }
 });
 
@@ -170,6 +154,7 @@ export function PosTicketPanel({
                 data-prisma-zone="tablet-pos-ticket-line"
                 data-prisma-state="ready"
                 data-prisma-motion="hover-lift"
+                data-prisma-effect="product-added-echo pressed-depth"
                 layout
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -256,37 +241,32 @@ export function PosTicketPanel({
 
         {checkoutError ? <div className={styles.posPremiumInlineError} data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback"><AlertTriangle aria-hidden="true" size={16} /> Revisa el cobro antes de continuar.</div> : null}
 
-        <motion.button
-          className={cn(checkoutCtaChrome({ disabled: checkoutDisabled, busy: Boolean(checkoutBusy) }), styles.cobrarReferenceButton)}
+        <PrismaLiquidAction
+          className={styles.cobrarReferenceButton}
           type="button"
           id="prisma-cobrar-prismplate-button"
           disabled={checkoutDisabled}
           aria-disabled={checkoutDisabled}
-          whileTap={checkoutDisabled ? undefined : { scale: 0.982 }}
-          whileHover={checkoutDisabled ? undefined : { y: -1 }}
+          aria-label={!canCheckout ? "Abrir turno antes de cobrar" : checkoutBusy ? "Cobro en proceso" : "Abrir cobro"}
+          icon={<Gem aria-hidden="true" size={24} strokeWidth={2.15} />}
+          amount={formatMoney(total)}
+          status={checkoutDisabled ? "disabled" : checkoutBusy ? "loading" : "ready"}
+          sublabel={checkoutReady ? "Listo para cerrar" : "Revisar ticket"}
+          fullWidth
           data-prisma-component="CheckoutButton"
+          data-prisma-effect="liquid-glow pressed-depth ticket-total-pulse focus-halo"
           data-prisma-zone="tablet-pos-cobrar-cta"
           data-prisma-role="primary-action"
-          data-prisma-material="reference-prism-plate"
+          data-prisma-material="visual-surface-v2-liquid"
           data-prisma-priority={checkoutDisabled ? "passive" : "primary"}
           data-prisma-motion={checkoutDisabled ? "reduced-motion-safe" : "press-feedback"}
           data-prisma-state={checkoutDisabled ? "disabled" : checkoutBusy ? "loading" : "ready"}
           data-prisma-qa={checkoutDisabled ? "tablet-qa-disabled" : "tablet-qa-cobrar"}
-          data-prisma-legacy-class="cobrarReferenceFresh"
+          data-prisma-visual-v2="PRISMA_SOFTGLASS_TERMINAL_V2"
           onClick={onCheckout}
         >
-          <span className={styles.visuallyHidden}>Abrir cobro</span>
-          <span className={styles.cobrarReferenceShell} data-prisma-cobrar-layout="fresh-reference">
-            <span className={styles.cobrarReferenceGem} aria-hidden="true">
-              <Gem aria-hidden="true" size={24} strokeWidth={2.15} />
-            </span>
-            <span className={styles.cobrarReferenceLabel}>{!canCheckout ? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}</span>
-            <span className={styles.cobrarReferenceAmount}>{formatMoney(total)}</span>
-            <span className={styles.cobrarReferenceArrow} aria-hidden="true">
-              <ChevronRight size={23} />
-            </span>
-          </span>
-        </motion.button>
+          {!canCheckout ? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}
+        </PrismaLiquidAction>
       </section>
       <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias" data-prisma-role="secondary-action">
         <button type="button" disabled data-prisma-component="SecondaryActionCard">

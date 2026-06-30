@@ -2,6 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const PRISMA_TABLET_LIVE_BINDING_DISABLED_BY_DEFAULT_2406 = true;
+
+function shouldEnablePrismaTabletLiveBinding() {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("prismaLive") === "1" || params.has("prismaLiveDebug")) return true;
+  if (window.localStorage.getItem("prisma:live-enabled") === "1") return true;
+  return false;
+}
+
+
 type PrismaPayload = {
   type?: string;
   surface?: string;
@@ -90,7 +101,14 @@ export function PosLiveBinding() {
   const hasRecipeRef = useRef(false);
 
   useEffect(() => {
-    let source: EventSource | null = null;
+
+    if (!shouldEnablePrismaTabletLiveBinding()) {
+      document.documentElement.dataset.prismaPosLiveStatus = "disabled";
+      document.documentElement.dataset.prismaLive = "disabled";
+      return;
+    }
+
+let source: EventSource | null = null;
     let closed = false;
 
     function markStatus(nextStatus: string) {

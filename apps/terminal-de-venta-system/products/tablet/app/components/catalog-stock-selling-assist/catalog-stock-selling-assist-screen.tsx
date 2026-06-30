@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
@@ -37,6 +37,7 @@ import styles from "./catalog-stock-selling-assist.module.css";
 type ProductSearchResponse = { products: CatalogStockSellingAssistProduct[]; count: number };
 
 type Props = {
+  actions?: ReactNode;
   mode: CatalogStockSellingAssistMode;
   runtimeSnapshot?: TabletRuntimeSnapshot;
 };
@@ -205,7 +206,7 @@ function ProductDetailPanel({
   );
 }
 
-export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: Props) {
+export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: Props) {
   const copy = CATALOG_STOCK_SCREEN_COPY[mode];
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
   const [query, setQuery] = useState("");
@@ -331,6 +332,7 @@ export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAUL
       title={copy.title}
       subtitle={copy.subtitle}
       status={<TabletShellStatusPill tone={gate.canSell ? statusTone(state, products) : "warn"}>{gate.canSell ? statusText(state, products) : "Caja cerrada"}</TabletShellStatusPill>}
+      actions={actions}
       runtimeSnapshot={runtimeSnapshot}
     >
       <div className={styles.screen} data-prisma-screen={`catalog-stock-selling-assist-${mode}`}>

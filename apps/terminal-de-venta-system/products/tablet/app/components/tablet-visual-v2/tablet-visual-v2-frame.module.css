@@ -1,0 +1,85 @@
+.visualV2Shell {
+  --prisma-v2-shell-gap: clamp(10px, 1.5vw, 18px);
+  --prisma-v2-panel-radius: clamp(22px, 2.4vw, 34px);
+  --prisma-v2-control-radius: clamp(16px, 1.8vw, 24px);
+  --prisma-v2-layer-base: 0;
+  --prisma-v2-layer-surface: 10;
+  --prisma-v2-layer-header: 20;
+  --prisma-v2-layer-content: 30;
+  --prisma-v2-layer-ticket: 40;
+  --prisma-v2-layer-dock: 80;
+  --prisma-v2-layer-modal-backdrop: 300;
+  --prisma-v2-layer-modal: 320;
+
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  min-height: 100dvh;
+  color: var(--prisma-v2-graphite);
+}
+
+.visualV2Scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.72), transparent 22rem),
+    radial-gradient(circle at 80% 2%, rgba(52, 214, 255, 0.18), transparent 28rem),
+    radial-gradient(circle at 72% 78%, rgba(155, 140, 255, 0.10), transparent 26rem);
+  opacity: 0.86;
+}
+
+.visualV2Sidebar,
+.visualV2Header,
+.visualV2ActionBand {
+  border-color: var(--prisma-v2-border);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(247, 251, 255, 0.52)),
+    rgba(255, 255, 255, 0.42);
+  box-shadow: var(--prisma-v2-shadow-panel);
+  backdrop-filter: blur(var(--prisma-v2-blur)) saturate(1.14);
+  -webkit-backdrop-filter: blur(var(--prisma-v2-blur)) saturate(1.14);
+}
+
+.visualV2Main {
+  min-width: 0;
+  gap: var(--prisma-v2-shell-gap);
+}
+
+.visualV2Content {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.visualV2Header {
+  position: relative;
+  z-index: var(--prisma-v2-layer-header);
+}
+
+.visualV2Header::after {
+  content: "";
+  position: absolute;
+  inset: auto 24px -10px;
+  height: 18px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(52, 214, 255, 0.18), rgba(155, 140, 255, 0.14), transparent);
+  filter: blur(13px);
+}
+
+.visualV2BottomDock {
+  z-index: var(--prisma-v2-layer-dock);
+}
+
+@media (max-width: 1180px) {
+  .visualV2Shell {
+    --prisma-v2-shell-gap: clamp(8px, 1.4vw, 14px);
+  }
+}
+
+@media (max-width: 820px) {
+  .visualV2Scene {
+    opacity: 0.64;
+  }
+}

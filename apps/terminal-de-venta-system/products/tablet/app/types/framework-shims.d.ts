@@ -62,6 +62,10 @@ declare module "react" {
   export function useRef<T = undefined>(): MutableRefObject<T | undefined>;
 }
 
+declare module "react-dom" {
+  export function createPortal(children: any, container: any): any;
+}
+
 declare module "next/server" {
   export type NextRequest = {
     headers: HeadersInit;

@@ -1,0 +1,85 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--prisma-v2-layer-modal-backdrop, 300);
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding:
+    max(clamp(14px, 2.4vw, 32px), env(safe-area-inset-top))
+    max(clamp(14px, 2.4vw, 32px), env(safe-area-inset-right))
+    max(clamp(14px, 2.4vw, 32px), env(safe-area-inset-bottom))
+    max(clamp(14px, 2.4vw, 32px), env(safe-area-inset-left));
+  overflow: hidden;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(52, 214, 255, 0.22), transparent 32rem),
+    radial-gradient(circle at 84% 6%, rgba(155, 140, 255, 0.18), transparent 30rem),
+    linear-gradient(135deg, rgba(10, 22, 36, 0.56), rgba(27, 42, 62, 0.42));
+  backdrop-filter: blur(20px) saturate(1.10);
+  -webkit-backdrop-filter: blur(20px) saturate(1.10);
+  isolation: isolate;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 8% 7% auto auto;
+  width: min(430px, 44vw);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(52, 214, 255, 0.22), transparent 62%),
+    radial-gradient(circle at 72% 28%, rgba(155, 140, 255, 0.18), transparent 52%);
+  filter: blur(12px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.panel {
+  width: min(1040px, calc(100vw - 28px));
+  max-height: calc(100dvh - clamp(28px, 4.8vw, 64px));
+  position: relative;
+  z-index: var(--prisma-v2-layer-modal, 320);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(12px, 1.4vw, 16px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  padding: clamp(16px, 2.3vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: clamp(24px, 2.8vw, 34px);
+  color: var(--prisma-v2-graphite, #142033);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(242, 248, 255, 0.86)),
+    radial-gradient(circle at 20% 0%, rgba(52, 214, 255, 0.18), transparent 36rem);
+  box-shadow:
+    0 42px 110px rgba(2, 8, 23, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  outline: none;
+}
+
+.panel:focus-visible {
+  box-shadow:
+    0 0 0 3px var(--prisma-v2-focus, rgba(47, 130, 255, 0.28)),
+    0 42px 110px rgba(2, 8, 23, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+@media (max-width: 760px) {
+  .panel {
+    width: min(100%, calc(100vw - 18px));
+    max-height: calc(100dvh - 18px);
+    padding: clamp(13px, 4vw, 20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .panel {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}

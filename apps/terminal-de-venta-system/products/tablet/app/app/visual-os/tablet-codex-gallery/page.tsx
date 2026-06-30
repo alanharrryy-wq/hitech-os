@@ -1,4 +1,6 @@
 import { GalleryChrome, loadTabletGallerySource } from "../_tablet-gallery-runtime";
+import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletReportSurfaceV2 } from "@components/tablet-visual-v2";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -17,5 +19,16 @@ export default function TabletCodexGalleryPage() {
     requiredJsonFiles: ["tablet-codex-glass-gallery.demo.json", "visual-verifier-rules.json", "tablet-light-preset.schema.json"]
   });
 
-  return <GalleryChrome gallery={gallery} />;
+  return (
+    <PrismaTabletShellUnified
+      currentPath="/visual-os/tablet-codex-gallery"
+      title="Codex Gallery"
+      subtitle="Galería de paneles, vidrio, rim, glow, motion y capacidades visuales."
+      kicker="Visual OS"
+    >
+      <TabletReportSurfaceV2 routeId="/visual-os/tablet-codex-gallery" title="Codex Gallery" description="Galería de paneles, vidrio, rim, glow, motion y capacidades visuales." statusLabel="Gallery">
+        <GalleryChrome gallery={gallery} />
+      </TabletReportSurfaceV2>
+    </PrismaTabletShellUnified>
+  );
 }

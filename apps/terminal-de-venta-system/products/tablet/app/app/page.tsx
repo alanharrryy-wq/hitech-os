@@ -1,5 +1,6 @@
 import { TabletHomeScreen } from "@components/tablet-home/tablet-home-screen";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { TabletHomeSurfaceV2 } from "@components/tablet-visual-v2";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -32,7 +33,9 @@ export default async function TabletHomePage() {
       }
       runtimeSnapshot={snapshot}
     >
-      <TabletHomeScreen snapshot={snapshot} />
+      <TabletHomeSurfaceV2 routeId="/" title="Inicio operativo" description="Accesos principales de caja, ventas, stock y sincronización con lectura rápida para la Tablet." statusLabel={shiftOpen ? "Venta activa" : "Abrir caja"}>
+        <TabletHomeScreen snapshot={snapshot} />
+      </TabletHomeSurfaceV2>
     </PrismaTabletShellUnified>
   );
 }

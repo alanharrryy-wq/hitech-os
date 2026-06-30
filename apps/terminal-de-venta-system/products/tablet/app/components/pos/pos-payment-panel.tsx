@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
 import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import {
@@ -114,6 +115,7 @@ export function PosPaymentPanel({
   const visibleError = error ? friendlyPosError(error) : view.blockReason;
   const [focusedTender, setFocusedTender] = useState<PaymentMethod | null>(null);
   const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+  const dialogRef = useRef<HTMLElement | null>(null);
   const [amountDrafts, setAmountDrafts] = useState<Record<PaymentMethod, string>>({
     cash: decimalTenderValue(paymentTenders.find((tender) => tender.method === "cash")?.amountCents ?? 0),
     card: decimalTenderValue(paymentTenders.find((tender) => tender.method === "card")?.amountCents ?? 0),
@@ -166,12 +168,84 @@ export function PosPaymentPanel({
     });
   }, [paymentTenders, focusedTender]);
 
-  if (!open) return null;
+  useEffect(() => {
+    if (!open || typeof document === "undefined") return;
 
-  return (
+    const focusableSelector = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
+    const previousOverflow = document.body.style.overflow;
+    const previousOverscrollBehavior = document.body.style.overscrollBehavior;
+    const previousTouchAction = document.body.style.touchAction;
+    const previousPaymentModalState = document.body.dataset.prismaPaymentModalOpen;
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "contain";
+    document.body.style.touchAction = "none";
+    document.body.dataset.prismaPaymentModalOpen = "true";
+
+    const frame = window.requestAnimationFrame(() => {
+      const firstControl = dialogRef.current?.querySelector<HTMLElement>(focusableSelector);
+      (firstControl ?? dialogRef.current)?.focus();
+    });
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && !busy) {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter((node) => {
+        return node.tabIndex !== -1 && !node.hasAttribute("disabled") && node.getClientRects().length > 0;
+      });
+
+      if (!focusable.length) {
+        event.preventDefault();
+        dialogRef.current?.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+        return;
+      }
+
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      document.body.style.overscrollBehavior = previousOverscrollBehavior;
+      document.body.style.touchAction = previousTouchAction;
+      if (previousPaymentModalState === undefined) {
+        delete document.body.dataset.prismaPaymentModalOpen;
+      } else {
+        document.body.dataset.prismaPaymentModalOpen = previousPaymentModalState;
+      }
+      previouslyFocused?.focus?.();
+    };
+  }, [busy, onClose, open]);
+
+  if (!open) return null;
+  if (typeof document === "undefined") return null;
+
+  const paymentOverlay = (
     <motion.section
+      ref={dialogRef}
       className={styles.paymentPremiumOverlay}
-      aria-label="Ventana de método de pago"
+      aria-label="Cobro PRISMA"
       role="dialog"
       aria-modal="true"
       initial={{ opacity: 0 }}
@@ -179,6 +253,7 @@ export function PosPaymentPanel({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       data-prisma-panel="tablet.pos.payment-overlay"
+      data-prisma-overlay-root="document-body"
       data-prisma-surface="tablet"
       data-prisma-route="/pos"
       data-prisma-zone="tablet-checkout-root"
@@ -189,6 +264,11 @@ export function PosPaymentPanel({
       data-prisma-qa="tablet-qa-checkout"
       data-prisma-payment-method={view.paymentMethod}
       data-prisma-payment-can-confirm={view.canConfirm ? "true" : "false"}
+      data-prisma-fix="PRISMA_TABLET_POS_COBRAR_MODAL_CANONICAL_2406"
+      aria-labelledby="pos-payment-title"
+      aria-describedby="pos-payment-description"
+      tabIndex={-1}
+      data-prisma-payment-modal="true"
     >
       <span className={styles.paymentPremiumAtmosphere} aria-hidden="true" />
       <motion.div
@@ -207,8 +287,8 @@ export function PosPaymentPanel({
           <header className={styles.paymentPremiumHeader}>
             <div className={styles.paymentPremiumTitleBlock}>
               <span><ShieldCheck aria-hidden="true" size={15} /> Paso final de venta</span>
-              <h2>Método de pago</h2>
-              <p>Captura importes con punto decimal manual. El símbolo $ queda fijo afuera; referencia, autorización o folio son opcionales.</p>
+              <h2 id="pos-payment-title">Cobro PRISMA</h2>
+              <p id="pos-payment-description">Total a cobrar, saldo restante y métodos de pago disponibles. Captura importes con punto decimal manual; referencia, autorización o folio son opcionales.</p>
             </div>
             <PrismaActionButton
               className={cn(checkoutAction({ intent: "ghostGlass" }), styles.paymentPremiumCloseButton)}
@@ -245,6 +325,7 @@ export function PosPaymentPanel({
 
           <div className={styles.paymentPremiumBodyGrid}>
             <div className={styles.paymentPremiumTenderList} aria-label="Desglose de pago" data-prisma-zone="tablet-checkout-payment-breakdown" data-prisma-layer="3-payment-methods">
+              <span className={styles.paymentPremiumSectionLabel}><WalletCards aria-hidden="true" size={15} /> Métodos de pago disponibles</span>
               {paymentTenders.map((tender, index) => {
                 const definition = tenderDefinition(tender.method);
                 const active = tender.amountCents > 0;
@@ -410,11 +491,13 @@ export function PosPaymentPanel({
               ) : (
                 <CheckCircle2 aria-hidden="true" size={22} />
               )}
-              <span>{busy ? "Generando ticket..." : canExplainIncompletePayment && !view.canConfirm ? "Revisar saldo pendiente" : "OK, generar ticket"}</span>
+              <span>{busy ? "Generando ticket..." : canExplainIncompletePayment && !view.canConfirm ? "Revisar saldo pendiente" : "Generar ticket"}</span>
             </motion.button>
           </footer>
         </PrismaCheckoutPanel>
       </motion.div>
     </motion.section>
   );
+
+  return createPortal(paymentOverlay, document.body);
 }

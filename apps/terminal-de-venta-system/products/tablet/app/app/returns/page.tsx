@@ -29,5 +29,7 @@ export default async function ReturnsPage({ searchParams }: { searchParams?: Pro
   const runtimeSnapshot = await getTabletRuntimeSnapshot(runtimeInput);
   const businessId = typeof resolvedSearchParams.businessId === "string" ? resolvedSearchParams.businessId : runtimeInput.businessId;
 
-  return <ReturnsLandingScreen businessId={businessId} runtimeSnapshot={runtimeSnapshot} />;
+  return (
+    <ReturnsLandingScreen businessId={businessId} runtimeSnapshot={runtimeSnapshot} />
+  );
 }

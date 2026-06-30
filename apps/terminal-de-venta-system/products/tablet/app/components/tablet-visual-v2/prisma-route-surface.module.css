@@ -1,0 +1,287 @@
+.routeSurface {
+  --prisma-route-accent: var(--prisma-v2-cyan, #34d6ff);
+  --prisma-route-accent-2: var(--prisma-v2-blue, #2f82ff);
+  --prisma-route-accent-3: var(--prisma-v2-lavender, #9b8cff);
+
+  min-height: min(100%, 100dvh);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(12px, 1.4vw, 18px);
+  container-type: inline-size;
+  position: relative;
+  isolation: isolate;
+  color: var(--prisma-v2-graphite, #142033);
+}
+
+.routeSurface::before {
+  content: "";
+  position: absolute;
+  inset: clamp(6px, 1vw, 12px);
+  z-index: -1;
+  border-radius: clamp(24px, 3vw, 40px);
+  background:
+    radial-gradient(circle at 14% 10%, rgba(52, 214, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 86% 2%, rgba(155, 140, 255, 0.14), transparent 30%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.46), rgba(239, 248, 255, 0.20));
+  filter: blur(0);
+  opacity: 0.86;
+  pointer-events: none;
+}
+
+.routeSurface[data-intent="sales"] {
+  --prisma-route-accent: #22c6ee;
+  --prisma-route-accent-2: #2f82ff;
+}
+
+.routeSurface[data-intent="inventory"],
+.routeSurface[data-intent="catalog"] {
+  --prisma-route-accent: #34d399;
+  --prisma-route-accent-2: #34d6ff;
+}
+
+.routeSurface[data-intent="settings"],
+.routeSurface[data-intent="sync"] {
+  --prisma-route-accent: #9b8cff;
+  --prisma-route-accent-2: #2f82ff;
+}
+
+.routeHeader {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(12px, 1.4vw, 18px);
+  align-items: stretch;
+  padding: clamp(14px, 1.6vw, 22px);
+  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
+  border-radius: clamp(22px, 2.4vw, 34px);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.62)),
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--prisma-route-accent) 22%, transparent), transparent 42%);
+  box-shadow:
+    0 18px 52px rgba(31, 64, 104, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.12);
+  -webkit-backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.12);
+  z-index: var(--prisma-v2-layer-header, 20);
+}
+
+.routeTitleBlock {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(10px, 1.1vw, 14px);
+  align-items: start;
+}
+
+.routeGlyph {
+  width: clamp(42px, 4.2vw, 54px);
+  height: clamp(42px, 4.2vw, 54px);
+  display: grid;
+  place-items: center;
+  border-radius: clamp(16px, 1.8vw, 22px);
+  color: #082033;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--prisma-route-accent) 76%, white), color-mix(in srgb, var(--prisma-route-accent-2) 74%, white)),
+    radial-gradient(circle at 30% 12%, rgba(255, 255, 255, 0.78), transparent 36%);
+  box-shadow:
+    0 14px 32px color-mix(in srgb, var(--prisma-route-accent-2) 22%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+}
+
+.routeCopy {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.routeMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.routeKicker,
+.metricLabel {
+  color: rgba(20, 32, 51, 0.62);
+  font-size: clamp(0.74rem, 0.84vw, 0.84rem);
+  font-weight: 940;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.routeTitle {
+  margin: 0;
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(1.7rem, 3.2vw, 2.65rem);
+  font-weight: 950;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.routeDescription {
+  max-width: 76ch;
+  margin: 0;
+  color: rgba(20, 32, 51, 0.70);
+  font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+  font-weight: 720;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+.routeActions {
+  min-width: min(100%, 220px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 9px;
+  align-content: center;
+  justify-items: end;
+}
+
+.surfaceGrid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.30fr);
+  gap: clamp(12px, 1.4vw, 18px);
+  align-items: start;
+}
+
+.surfaceGrid[data-has-rail="false"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.contentPanel {
+  min-width: 0;
+  min-height: clamp(360px, 54dvh, 680px);
+  display: grid;
+  gap: clamp(10px, 1.2vw, 16px);
+  padding: clamp(12px, 1.4vw, 18px);
+  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
+  border-radius: clamp(22px, 2.4vw, 34px);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(247, 251, 255, 0.52)),
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--prisma-route-accent) 13%, transparent), transparent 36%);
+  box-shadow:
+    0 20px 58px rgba(31, 64, 104, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
+  -webkit-backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
+  z-index: var(--prisma-v2-layer-content, 30);
+}
+
+.contentPanel :where(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid var(--prisma-v2-focus, rgba(47, 130, 255, 0.28));
+  outline-offset: 3px;
+}
+
+.surfaceRail {
+  min-width: 0;
+  display: grid;
+  gap: clamp(9px, 1vw, 12px);
+  align-content: start;
+  position: sticky;
+  top: clamp(10px, 1.4vw, 18px);
+  z-index: var(--prisma-v2-layer-surface, 10);
+}
+
+.metricCard {
+  align-content: start;
+}
+
+.metricValue {
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 950;
+  line-height: 1.05;
+}
+
+.metricDetail {
+  color: rgba(95, 111, 132, 0.86);
+  font-size: clamp(0.8rem, 0.92vw, 0.9rem);
+  font-weight: 760;
+  line-height: 1.32;
+}
+
+.emptyState {
+  min-height: clamp(150px, 24dvh, 220px);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: clamp(18px, 2vw, 28px);
+}
+
+.emptyStateInner {
+  max-width: 32rem;
+  display: grid;
+  gap: 8px;
+}
+
+.emptyStateInner strong {
+  color: var(--prisma-v2-graphite, #142033);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 930;
+}
+
+.emptyStateInner span {
+  color: rgba(95, 111, 132, 0.88);
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  font-weight: 720;
+  line-height: 1.4;
+}
+
+.routeDock {
+  z-index: var(--prisma-v2-layer-dock, 80);
+}
+
+.routeDock a {
+  min-height: var(--prisma-v2-touch-target, 48px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 clamp(12px, 1.2vw, 16px);
+  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
+  border-radius: clamp(14px, 1.5vw, 20px);
+  color: rgba(20, 32, 51, 0.78);
+  background: rgba(255, 255, 255, 0.50);
+  font-size: clamp(0.82rem, 0.94vw, 0.92rem);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+@media (max-width: 980px) {
+  .routeHeader,
+  .surfaceGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .routeActions {
+    justify-items: stretch;
+  }
+
+  .surfaceRail {
+    position: static;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .routeTitleBlock {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .routeGlyph {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routeSurface,
+  .routeSurface::before,
+  .routeDock a {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}

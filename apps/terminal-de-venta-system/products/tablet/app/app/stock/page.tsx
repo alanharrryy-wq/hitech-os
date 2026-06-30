@@ -8,8 +8,5 @@ export const metadata = { title: "Existencias para vender - PRISMA Tablet", desc
 
 export default async function StockPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <>
-    <ContextualExportBand surface="stock" />
-    <CatalogStockSellingAssistScreen mode="stock" runtimeSnapshot={runtimeSnapshot} />
-  </>;
+  return <CatalogStockSellingAssistScreen actions={<ContextualExportBand surface="stock" />} mode="stock" runtimeSnapshot={runtimeSnapshot} />;
 }
