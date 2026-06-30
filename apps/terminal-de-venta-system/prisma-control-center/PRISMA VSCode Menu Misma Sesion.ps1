@@ -293,9 +293,9 @@ if ([string]::IsNullOrWhiteSpace($mode)) {
 $selectedNames = @()
 
 if ($mode -eq "all-local") {
-  $selectedNames = @($services | Where-Object { $_.group -ne "cloudflare" } | ForEach-Object { $_.name })
+  $selectedNames = @($services | Where-Object { $_.group -eq "local" } | ForEach-Object { $_.name })
 } elseif ($mode -eq "all") {
-  $selectedNames = @($services | ForEach-Object { $_.name })
+  $selectedNames = @($services | Where-Object { $_.group -eq "local" -or $_.group -eq "cloudflare" } | ForEach-Object { $_.name })
 } elseif ($mode -eq "custom") {
   $selectedNames = @(Show-ServicePicker $services)
 } elseif ($mode -eq "none") {
@@ -313,4 +313,3 @@ try {
   }
 } catch {}
 # END PRISMA_DEV_ROUTE_WARMER_CALL_V2
-

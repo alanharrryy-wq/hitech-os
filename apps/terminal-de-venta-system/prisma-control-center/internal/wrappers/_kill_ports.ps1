@@ -65,6 +65,46 @@ function Add-PortOwner {
   }
 }
 
+function Merge-PortOwnerRecord {
+  param(
+    [hashtable]$Owners,
+    [Parameter(Mandatory = $true)]$Owner
+  )
+
+  $targetPid = [int]$Owner.Pid
+  if ($targetPid -lt 0) { return }
+
+  if (-not $Owners.ContainsKey($targetPid)) {
+    $Owners[$targetPid] = [ordered]@{
+      Pid = $targetPid
+      Ports = New-Object System.Collections.Generic.List[int]
+      Lines = New-Object System.Collections.Generic.List[string]
+      States = New-Object System.Collections.Generic.List[string]
+    }
+  }
+
+  foreach ($port in @($Owner.Ports)) {
+    $portValue = [int]$port
+    if (-not $Owners[$targetPid].Ports.Contains($portValue)) {
+      $Owners[$targetPid].Ports.Add($portValue)
+    }
+  }
+
+  foreach ($line in @($Owner.Lines)) {
+    $lineText = [string]$line
+    if ($lineText -and -not $Owners[$targetPid].Lines.Contains($lineText)) {
+      $Owners[$targetPid].Lines.Add($lineText)
+    }
+  }
+
+  foreach ($state in @($Owner.States)) {
+    $stateText = [string]$state
+    if ($stateText -and -not $Owners[$targetPid].States.Contains($stateText)) {
+      $Owners[$targetPid].States.Add($stateText)
+    }
+  }
+}
+
 function Get-PortFromLocalEndpoint {
   param([string]$LocalEndpoint)
 
@@ -105,7 +145,7 @@ function Get-PortOwnersFromNetTcp {
 
       Add-PortOwner `
         -Owners $owners `
-        -Pid ([int]$conn.OwningProcess) `
+        -TargetPid ([int]$conn.OwningProcess) `
         -Port $localPort `
         -Protocol "TCP" `
         -State $state `
@@ -120,7 +160,7 @@ function Get-PortOwnersFromNetTcp {
 
       Add-PortOwner `
         -Owners $owners `
-        -Pid ([int]$udp.OwningProcess) `
+        -TargetPid ([int]$udp.OwningProcess) `
         -Port $localPort `
         -Protocol "UDP" `
         -State "BOUND" `
@@ -168,7 +208,7 @@ function Get-PortOwnersFromNetstat {
 
     Add-PortOwner `
       -Owners $owners `
-      -Pid ([int]$pidText) `
+      -TargetPid ([int]$pidText) `
       -Port ([int]$port) `
       -Protocol $proto `
       -State $state `
@@ -181,12 +221,39 @@ function Get-PortOwnersFromNetstat {
 function Get-PortOwners {
   param([int[]]$TargetPorts)
 
+  $records = @()
+  $netTcpOk = $false
+  $netstatOk = $false
+
   try {
-    return @(Get-PortOwnersFromNetTcp -TargetPorts $TargetPorts)
+    $records += @(Get-PortOwnersFromNetTcp -TargetPorts $TargetPorts)
+    $netTcpOk = $true
   } catch {
-    Write-Host "[PRISMA] WARN Get-NetTCPConnection/Get-NetUDPEndpoint no basto; uso netstat filtrado. $($_.Exception.Message)" -ForegroundColor DarkYellow
-    return @(Get-PortOwnersFromNetstat -TargetPorts $TargetPorts)
+    Write-Host "[PRISMA] WARN Get-NetTCPConnection/Get-NetUDPEndpoint no basto. $($_.Exception.Message)" -ForegroundColor DarkYellow
   }
+
+  try {
+    $records += @(Get-PortOwnersFromNetstat -TargetPorts $TargetPorts)
+    $netstatOk = $true
+  } catch {
+    if (-not $netTcpOk) {
+      throw "No pude inspeccionar puertos con Get-NetTCPConnection ni netstat. $($_.Exception.Message)"
+    }
+    Write-Host "[PRISMA] WARN netstat filtrado no basto; continuo con Get-NetTCPConnection. $($_.Exception.Message)" -ForegroundColor DarkYellow
+  }
+
+  if ($netTcpOk -and $netstatOk) {
+    Write-Host "[PRISMA] Inventario de puertos fusionado: Get-NetTCPConnection + netstat." -ForegroundColor DarkGray
+  } elseif ($netstatOk) {
+    Write-Host "[PRISMA] Inventario de puertos via netstat filtrado." -ForegroundColor DarkGray
+  }
+
+  $merged = @{}
+  foreach ($record in $records) {
+    Merge-PortOwnerRecord -Owners $merged -Owner $record
+  }
+
+  return @($merged.Values)
 }
 
 function Get-OwnerRuntimeInfo {

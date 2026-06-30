@@ -32,7 +32,8 @@ No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
    - Deja `latest_ALL_LOCAL_CLOUDFLARE.zip`.
 
 4. `03_LEVANTAR_SOLO_UN_MODULO.cmd`
-   - Menu quirurgico para levantar un modulo y Cloudflare sin abrir rutas viejas.
+   - Menu quirurgico para levantar un modulo sin abrir rutas viejas.
+   - Si el modulo tiene hostname publico, reinicia/valida Cloudflare; el 3160 queda privado local.
    - Deja `latest_MODULE_CLOUDFLARE.zip`.
 
 5. `04_ABRIR_ATLAS_DEPENDENCIAS.cmd`
@@ -40,13 +41,14 @@ No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
    - Deja `latest_DEPENDENCY_ATLAS_OPEN.zip`.
 
 6. `09_KILL_EVERYTHING_PRISMA.cmd`
-   - Libera `3000,3100,3110,3120,3130,3140,3150,3200`.
+   - Libera `3000,3100,3110,3120,3130,3140,3150,3160,3200`.
    - No levanta servicios.
    - Deja `latest_KILL_EVERYTHING.zip`.
 
 7. `12_ABRIR_PRISMA_CLOUD_COMMAND_CENTER_3160.cmd`
    - Abre el cockpit privado `PRISMA Cloud Command Center` en `http://127.0.0.1:3160/unified-shell.html`.
    - No toca Control Center 3150 ni levanta el stack completo.
+   - Deja `latest_CLOUD_COMMAND_CENTER_3160.zip`.
 
 ## ZIP generado
 

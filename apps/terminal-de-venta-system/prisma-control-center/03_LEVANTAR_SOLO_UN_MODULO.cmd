@@ -4,8 +4,9 @@ set "PCC_ROOT=%~dp0"
 
 echo.
 echo ============================================================
-echo PRISMA - LEVANTAR SOLO UN MODULO + CLOUDFLARE
-echo Menu quirurgico: libera el puerto elegido, levanta ese modulo y tunnel.
+echo PRISMA - LEVANTAR SOLO UN MODULO
+echo Menu quirurgico: libera el puerto elegido y levanta ese modulo.
+echo Si tiene hostname publico, reinicia y valida Cloudflare.
 echo Sin preguntas si algo ocupa puerto: se mata y se monta limpio.
 echo Root: %PCC_ROOT%
 echo ============================================================
