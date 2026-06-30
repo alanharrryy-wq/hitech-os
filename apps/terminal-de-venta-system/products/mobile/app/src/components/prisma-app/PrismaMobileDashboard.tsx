@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { sourceLabel, loadPrismaMobileSnapshot } from "@/lib/prisma-app/prisma-mobile-api-client";
 import { clearCachedPrismaMobileSnapshot } from "@/lib/prisma-app/prisma-mobile-cache";
-import { formatRelativeFetchLabel } from "@/lib/prisma-app/prisma-mobile-formatters";
+import { formatRelativeFetchLabel, formatSignedMxnFromCents } from "@/lib/prisma-app/prisma-mobile-formatters";
 import { prismaMobileErrorMessage } from "@/lib/prisma-app/prisma-mobile-error";
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { buildPrismaMobileOperationsList, derivePrismaMobileHero, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
@@ -23,7 +23,7 @@ const healthToneClass: Record<PrismaMobileHealthTone, string> = {
 
 const LOADING_SHELL_COPY = "Consultando fuentes conectadas y respaldo local cuando no hay señal. Mobile supervisa. Tablet Solo vende sola.";
 const CRYSTAL_SHELL_BACKGROUND =
-  "radial-gradient(circle at 12% 8%, rgba(100,216,255,0.24), transparent 24rem), radial-gradient(circle at 90% 4%, rgba(255,216,137,0.18), transparent 22rem), linear-gradient(180deg, #f5f8fc 0%, #eef3f8 58%, #e8f0f8 100%)";
+  "radial-gradient(circle at 16% 4%, rgba(246, 207, 132, 0.28), transparent 18rem), radial-gradient(circle at 78% 10%, rgba(118, 160, 148, 0.28), transparent 22rem), radial-gradient(circle at 62% 94%, rgba(255, 115, 49, 0.28), transparent 16rem), linear-gradient(180deg, rgba(10, 20, 18, 0.72), rgba(11, 16, 18, 0.94)), url('/prisma-app/atmospheric-cloudglass/storm-cloud-operations-real.jpg')";
 
 function readinessZone(level: string) {
   if (level === "ready") return "mobile-success-state";
@@ -32,14 +32,20 @@ function readinessZone(level: string) {
   return "mobile-sync-state";
 }
 
+function copyMobileText(text: string) {
+  if (typeof navigator === "undefined" || !navigator.clipboard) return;
+  void navigator.clipboard.writeText(text).catch(() => {});
+}
+
 function LoadingShell() {
   return (
     <main
-      className={styles.mobileRoot}
+      className={`${styles.mobileRoot} ${styles.atmosphericCloudglassRoot}`}
       data-prisma-product="mobile"
       data-prisma-state="loading"
       data-prisma-zone="mobile-app-shell"
-      style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#102033", width: "100%" }}
+      data-prisma-visual="atmospheric-cloudglass"
+      style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#f6f8ef", width: "100%" }}
     >
       <section className={styles.loadingShell} aria-label="Cargando PRISMA App" data-prisma-zone="mobile-loading-state">
         <div className={styles.loadingPhone}>
@@ -110,18 +116,38 @@ export function PrismaMobileDashboard() {
     if (loadState === "error") {
       return (
         <main
-          className={styles.mobileRoot}
+          className={`${styles.mobileRoot} ${styles.atmosphericCloudglassRoot}`}
           data-prisma-product="mobile"
           data-prisma-state="error"
           data-prisma-zone="mobile-app-shell"
-          style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#102033", width: "100%" }}
+          style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#f6f8ef", width: "100%" }}
         >
           <section className={styles.errorShell} data-prisma-zone="mobile-error-state">
             <span>PRISMA App</span>
-            <h1>No se pudo cargar la supervisión móvil</h1>
+            <h1>No hay datos frescos para supervisión móvil</h1>
             <p>{manualError ?? "Error desconocido al preparar la vista móvil."}</p>
-            <p className={styles.optionalAdderBoundaryMicro}>Tablet Solo puede seguir vendiendo localmente sin Mobile, PC, Cloudflare ni internet.</p>
-            <button type="button" onClick={() => void load("refresh")}>Reintentar</button>
+            <div className={styles.errorSignalGrid} aria-label="Qué puede hacer el usuario ahora">
+              <article>
+                <span>1 · Reintentar</span>
+                <strong>Pedir snapshot nuevo</strong>
+                <p>Vuelve a consultar `/api/mobile/snapshot` sin tocar POS, puertos ni procesos.</p>
+              </article>
+              <article>
+                <span>2 · Respaldo</span>
+                <strong>Limpiar caché local</strong>
+                <p>Evita quedarse viendo una lectura vieja cuando la fuente ya cambió.</p>
+              </article>
+              <article>
+                <span>3 · Operación base</span>
+                <strong>Tablet sigue vendiendo</strong>
+                <p>Mobile supervisa; no bloquea cobro, corte, ticket ni operación offline.</p>
+              </article>
+            </div>
+            <div className={styles.errorActionGrid}>
+              <button type="button" onClick={() => void load("refresh")}>Reintentar snapshot</button>
+              <button type="button" className={styles.secondaryButton} onClick={clearCacheAndRefresh}>Limpiar caché y reintentar</button>
+            </div>
+            <p className={styles.optionalAdderBoundaryMicro}>Si el problema sigue, revisa fuentes Tablet/PC. La pantalla ya no oculta el fallo detrás de polish visual.</p>
           </section>
         </main>
       );
@@ -142,10 +168,14 @@ export function PrismaMobileDashboard() {
     : readiness.level === "offline" || readiness.level === "blocked"
       ? "Bridge no disponible"
       : "Datos parciales";
+  const topAlert = snapshot.alerts.alerts[0] ?? null;
+  const cashDeltaLabel = formatSignedMxnFromCents(snapshot.cashCurrent.differenceCents);
+  const cashNeedsReview = snapshot.cashCurrent.countedLabel.toLowerCase().includes("sin conteo") || Math.abs(snapshot.cashCurrent.differenceCents) > 0;
+  const firstViewportSummary = `PRISMA Mobile · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label} · Caja: ${snapshot.cashCurrent.status} ${cashDeltaLabel} · Alertas: ${snapshot.alerts.counts.total}`;
 
   return (
     <main
-      className={styles.mobileRoot}
+      className={`${styles.mobileRoot} ${styles.atmosphericCloudglassRoot}`}
       data-prisma-panel="mobile.workspace"
       data-prisma-product="mobile"
       data-prisma-surface="mobile"
@@ -154,7 +184,7 @@ export function PrismaMobileDashboard() {
       data-prisma-source={clientSnapshot.source}
       data-prisma-stale={clientSnapshot.stale ? "true" : "false"}
       data-prisma-zone="mobile-app-shell"
-      style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#102033", width: "100%" }}
+      style={{ background: CRYSTAL_SHELL_BACKGROUND, color: "#f6f8ef", width: "100%" }}
     >
       <section className={styles.dashboardShell} aria-labelledby="prisma-mobile-dashboard-title">
         <header className={styles.brandHeader} data-prisma-zone="mobile-brand-header">
@@ -187,8 +217,6 @@ export function PrismaMobileDashboard() {
             </span>
           </div>
 
-          <PrismaMobileMultiContextSwitcher clientSnapshot={clientSnapshot} />
-
           <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="home" />
 
           <div className={styles.crystalQuickRead} data-prisma-zone="mobile-kpi-grid">
@@ -217,7 +245,58 @@ export function PrismaMobileDashboard() {
               <span data-prisma-zone="mobile-sync-state">{clientSnapshot.stale ? "Mostrando respaldo local" : "Lectura fresca"}</span>
               <span>{readiness.sourceSummary}</span>
             </div>
+            <div className={styles.actionButtonRow} aria-label="Acciones rápidas de inicio" data-prisma-zone="mobile-block1-actionability">
+              <button type="button" onClick={() => void load("refresh")}>Actualizar lectura</button>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("prisma:open-alerts"))}>Abrir alertas</button>
+              <button
+                type="button"
+                onClick={() => copyMobileText(`PRISMA Mobile · ${hero.headline} · ${primaryAction?.title ?? "Sin acciones urgentes"} · ${readiness.label}`)}
+              >
+                Copiar resumen
+              </button>
+            </div>
           </div>
+
+          <section className={styles.crystalOperationalDock} aria-label="Acciones verificables del Bloque 1" data-prisma-zone="mobile-block1-visual-priority">
+            <article>
+              <span>Confianza del dato</span>
+              <strong>{readiness.label}</strong>
+              <p>{readiness.sourceSummary}</p>
+              <small>{clientSnapshot.stale ? "Respaldo local visible" : "Lectura fresca visible"} · {formatRelativeFetchLabel(clientSnapshot.fetchedAt)}</small>
+            </article>
+            <article>
+              <span>Caja</span>
+              <strong>{snapshot.cashCurrent.status}</strong>
+              <p>{snapshot.cashCurrent.expectedLabel} esperado · {snapshot.cashCurrent.countedLabel} contado · {cashDeltaLabel}</p>
+              <div className={styles.miniActionRow}>
+                <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("prisma:open-cash"))}>Abrir caja</button>
+                <button type="button" onClick={() => copyMobileText(`PRISMA Caja · ${snapshot.cashCurrent.status} · Diferencia: ${cashDeltaLabel} · ${cashNeedsReview ? "Requiere revisión" : "Lista para cierre"}`)}>
+                  {cashNeedsReview ? "Pedir conteo" : "Copiar cierre"}
+                </button>
+              </div>
+            </article>
+            <article>
+              <span>Alertas</span>
+              <strong>{snapshot.alerts.counts.total > 0 ? `${snapshot.alerts.counts.total} activas` : "Sin urgentes"}</strong>
+              <p>{topAlert ? `${topAlert.area} · ${topAlert.title}` : "No hay excepciones activas que atender desde Mobile."}</p>
+              <div className={styles.miniActionRow}>
+                <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("prisma:open-alerts"))}>Abrir alertas</button>
+                <button type="button" onClick={() => copyMobileText(topAlert ? `PRISMA Alerta · ${topAlert.severity.toUpperCase()} · ${topAlert.title} · Acción: ${topAlert.recommendedAction ?? topAlert.action}` : firstViewportSummary)}>
+                  Copiar alerta
+                </button>
+              </div>
+            </article>
+          </section>
+
+          <details className={styles.mobileContextDisclosure}>
+            <summary>
+              <span>Contexto y configuración avanzada</span>
+              <strong>{snapshot.summary.businessName || snapshot.today.businessName || "PRISMA"} · {sourceLabel(clientSnapshot.source)}</strong>
+            </summary>
+            <div className={styles.mobileContextTucked}>
+              <PrismaMobileMultiContextSwitcher clientSnapshot={clientSnapshot} />
+            </div>
+          </details>
         </section>
 
         <PrismaMobilePremiumNavigator

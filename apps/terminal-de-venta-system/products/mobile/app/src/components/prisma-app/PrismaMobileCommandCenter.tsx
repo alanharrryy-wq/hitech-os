@@ -1,3 +1,5 @@
+"use client";
+
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { buildPrismaMobileCommandCenter, type PrismaMobileCommandTone } from "@/lib/prisma-app/prisma-mobile-command-center";
 import styles from "./prisma-mobile-dashboard.module.css";
@@ -17,6 +19,15 @@ const decisionKindLabel = {
   branch: "Sucursal",
   data: "Datos"
 } as const;
+
+function copyMobileText(text: string) {
+  if (typeof navigator === "undefined" || !navigator.clipboard) return;
+  void navigator.clipboard.writeText(text).catch(() => {});
+}
+
+function openMobileTab(tab: "alertas" | "caja") {
+  window.dispatchEvent(new CustomEvent(`prisma:open-${tab}`));
+}
 
 export function PrismaMobileCommandCenter({ clientSnapshot }: { clientSnapshot: PrismaMobileClientSnapshot }) {
   const command = buildPrismaMobileCommandCenter(clientSnapshot);
@@ -77,6 +88,17 @@ export function PrismaMobileCommandCenter({ clientSnapshot }: { clientSnapshot: 
                 <strong>{decision.title}</strong>
                 <p>{decision.detail}</p>
                 <small>{decision.action}</small>
+                <div className={styles.actionButtonRow} aria-label={`Acciones para ${decision.title}`}>
+                  <button
+                    type="button"
+                    onClick={() => copyMobileText(`PRISMA · ${decisionKindLabel[decision.kind]} · ${decision.title} · ${decision.detail} · Acción: ${decision.action} · Responsable: ${decision.owner}`)}
+                  >
+                    Copiar acción
+                  </button>
+                  <button type="button" onClick={() => openMobileTab(decision.kind === "cash" ? "caja" : "alertas")}>
+                    Abrir superficie
+                  </button>
+                </div>
               </div>
               <em>{decision.owner}</em>
             </article>

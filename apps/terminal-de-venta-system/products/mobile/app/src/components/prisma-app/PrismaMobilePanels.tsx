@@ -1,3 +1,5 @@
+"use client";
+
 import type { PrismaMobileAction, PrismaMobileAlert, PrismaMobileBranch, PrismaMobileCashCurrentPayload, PrismaMobileInventoryItem, PrismaMobileReportCard, PrismaMobileSalesPoint } from "@/lib/prisma-app/prisma-app-api-contracts";
 import type { ChartViewModel } from "@/lib/prisma-app/mobile-intelligence/contracts";
 import { formatSignedMxnFromCents, safePercentHeight } from "@/lib/prisma-app/prisma-mobile-formatters";
@@ -7,6 +9,15 @@ const priorityClass: Record<PrismaMobileAction["priority"], string> = { alta: st
 const alertClass: Record<PrismaMobileAlert["severity"], string> = { critica: styles.alertCritical, alta: styles.alertHigh, media: styles.alertMedium, info: styles.alertInfo };
 const inventoryClass: Record<PrismaMobileInventoryItem["state"], string> = { critico: styles.inventoryCritical, reponer: styles.inventoryReorder, normal: styles.inventoryNormal, sobrestock: styles.inventoryOverstock };
 const branchClass: Record<PrismaMobileBranch["status"], string> = { sano: styles.branchHealthy, revisar: styles.branchReview, urgente: styles.branchUrgent, offline: styles.branchOffline };
+
+function copyMobileText(text: string) {
+  if (typeof navigator === "undefined" || !navigator.clipboard) return;
+  void navigator.clipboard.writeText(text).catch(() => {});
+}
+
+function shareMobileText(text: string) {
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+}
 
 export function PrismaMobileActionPanel({ actions }: { actions: PrismaMobileAction[] }) {
   return <section className={styles.panelCard} aria-labelledby="mobile-actions-title" data-prisma-zone="mobile-review-first"><header><span>Acciones sugeridas</span><h2 id="mobile-actions-title">Qué revisar primero</h2><p className={styles.optionalAdderBoundaryMicro}>Son sugerencias de supervisión premium: Mobile no bloquea POS ni operación base.</p></header><div className={styles.actionList}>{actions.map((action, index) => <article key={`${action.title}-${index}`}><b>{index + 1}</b><div><strong>{action.title}</strong><span>{action.detail}</span><small>{action.owner}</small></div><em className={priorityClass[action.priority]}>{action.priority}</em></article>)}</div></section>;
@@ -19,7 +30,35 @@ export function PrismaMobileSalesChart({ chart, points }: { chart: ChartViewMode
 }
 
 export function PrismaMobileCashPanel({ cash }: { cash: PrismaMobileCashCurrentPayload }) {
-  return <section className={styles.panelCard} aria-labelledby="mobile-cash-title"><header><span>Caja · vista opcional</span><h2 id="mobile-cash-title">Lectura de caja sin operar POS</h2><p className={styles.optionalAdderBoundaryMicro}>Mobile supervisa; Tablet Solo vende sola y conserva cobro, corte, ticket y operación offline.</p></header><div className={styles.cashGrid}><article><span>Esperado</span><strong>{cash.expectedLabel}</strong></article><article><span>Contado</span><strong>{cash.countedLabel}</strong></article><article><span>Diferencia</span><strong>{formatSignedMxnFromCents(cash.differenceCents)}</strong></article></div><div className={styles.cashMovements}>{cash.movements.map((movement) => <p key={`${movement.label}-${movement.detail}`}><span>{movement.label}</span><strong>{movement.value}</strong><small>{movement.detail}</small></p>)}</div></section>;
+  const cashMessage = `PRISMA Caja · Esperado: ${cash.expectedLabel} · Contado: ${cash.countedLabel} · Diferencia: ${formatSignedMxnFromCents(cash.differenceCents)} · Estado: ${cash.status}`;
+  const cashWorkflow = cash.countedLabel.toLowerCase().includes("sin conteo")
+    ? ["Sin conteo real", "Pedir conteo", "Registrar responsable"]
+    : Math.abs(cash.differenceCents) > 0
+      ? ["Diferencia detectada", "Registrar nota", "Compartir revisión"]
+      : ["Caja revisada", "Sin diferencia", "Lista para cierre"];
+  return (
+    <section className={styles.panelCard} aria-labelledby="mobile-cash-title">
+      <header>
+        <span>Caja · vista opcional</span>
+        <h2 id="mobile-cash-title">Lectura de caja sin operar POS</h2>
+        <p className={styles.optionalAdderBoundaryMicro}>Mobile supervisa; Tablet Solo vende sola y conserva cobro, corte, ticket y operación offline.</p>
+      </header>
+      <div className={styles.cashGrid}>
+        <article><span>Esperado</span><strong>{cash.expectedLabel}</strong></article>
+        <article><span>Contado</span><strong>{cash.countedLabel}</strong></article>
+        <article><span>Diferencia</span><strong>{formatSignedMxnFromCents(cash.differenceCents)}</strong></article>
+      </div>
+      <div className={styles.cashWorkflow} aria-label="Estado operativo de caja">
+        {cashWorkflow.map((item, index) => <span key={item}>{index + 1}. {item}</span>)}
+      </div>
+      <div className={styles.actionButtonRow} aria-label="Acciones móviles para caja">
+        <button type="button" onClick={() => copyMobileText(`${cashMessage} · Acción: pedir conteo al encargado.`)}>Pedir conteo</button>
+        <button type="button" onClick={() => copyMobileText(`${cashMessage} · Nota pendiente: explicar diferencia o confirmar cierre.`)}>Registrar nota</button>
+        <button type="button" onClick={() => shareMobileText(cashMessage)}>Compartir caja</button>
+      </div>
+      <div className={styles.cashMovements}>{cash.movements.map((movement) => <p key={`${movement.label}-${movement.detail}`}><span>{movement.label}</span><strong>{movement.value}</strong><small>{movement.detail}</small></p>)}</div>
+    </section>
+  );
 }
 
 export function PrismaMobileInventoryPanel({ items }: { items: PrismaMobileInventoryItem[] }) {
@@ -27,7 +66,41 @@ export function PrismaMobileInventoryPanel({ items }: { items: PrismaMobileInven
 }
 
 export function PrismaMobileAlertsPanel({ alerts }: { alerts: PrismaMobileAlert[] }) {
-  return <section className={styles.panelCard} aria-labelledby="mobile-alerts-title"><header><span>Alertas</span><h2 id="mobile-alerts-title">Excepciones activas</h2></header><div className={styles.alertList}>{alerts.map((alert) => <article key={alert.id} className={alertClass[alert.severity]}><div><strong>{alert.title}</strong><span>{alert.area} · {alert.time}</span><p>{alert.detail}</p></div><em>{alert.severity}</em></article>)}</div></section>;
+  return (
+    <section className={styles.panelCard} aria-labelledby="mobile-alerts-title">
+      <header>
+        <span>Alertas</span>
+        <h2 id="mobile-alerts-title">Excepciones activas con seguimiento</h2>
+      </header>
+      <div className={styles.alertList}>
+        {alerts.map((alert) => {
+          const alertMessage = `PRISMA Alerta · ${alert.severity.toUpperCase()} · ${alert.area} · ${alert.title} · ${alert.detail} · Acción: ${alert.recommendedAction ?? alert.action}`;
+          return (
+            <article key={alert.id} className={alertClass[alert.severity]}>
+              <div>
+                <strong>{alert.title}</strong>
+                <span>{alert.area} · {alert.time} · {alert.source ?? "fuente móvil"}</span>
+                <p>{alert.detail}</p>
+                <small>{alert.whyItMatters ?? "Importa porque puede afectar operación, dinero o continuidad del día."}</small>
+                <div className={styles.alertWorkflow} aria-label={`Ciclo de vida para ${alert.title}`}>
+                  <span>Nueva</span>
+                  <span>Vista</span>
+                  <span>Asignable</span>
+                  <span>Resuelta con evidencia</span>
+                </div>
+                <div className={styles.actionButtonRow}>
+                  <button type="button" onClick={() => copyMobileText(alertMessage)}>Copiar alerta</button>
+                  <button type="button" onClick={() => shareMobileText(alertMessage)}>WhatsApp</button>
+                  <button type="button" onClick={() => copyMobileText(`${alertMessage} · Seguimiento creado manualmente desde Mobile.`)}>Crear seguimiento</button>
+                </div>
+              </div>
+              <em>{alert.severity}</em>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 export function PrismaMobileReportsPanel({ cards }: { cards: PrismaMobileReportCard[] }) {
