@@ -657,7 +657,7 @@ function openCloudView(view) {
 }
 
 function renderSidePanels() {
-  $('cloudPanel').innerHTML = `<div class="drawer"><h3>Cloud SaaS</h3><p>PRISMA Cloud Semilla, tenant demo-prisma, snapshots, notes, receipts y status.</p><button onclick="openCloudView('overview')">Abrir Cloud SaaS</button><button class="secondary" onclick="openCloudView('health')">Health</button><button class="secondary" onclick="openCloudView('commercial')">Commercial</button></div>`;
+  $('cloudPanel').innerHTML = `<div class="drawer"><h3>Cloud SaaS</h3><p>PRISMA Cloud Semilla, Prisma Original Customer, snapshots, notes, receipts y status.</p><button onclick="openCloudView('overview')">Abrir Cloud SaaS</button><button class="secondary" onclick="openCloudView('health')">Health</button><button class="secondary" onclick="openCloudView('commercial')">Commercial</button></div>`;
   $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro del lab 3160.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
 }
 

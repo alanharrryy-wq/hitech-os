@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "name": "PRISMA Cloud Private Cockpit",
   "apiBaseUrl": "https://app.hitechrts.com",
-  "tenantSlug": "demo-prisma",
+  "tenantSlug": "prisma-original-customer",
   "adminTokenSearch": {
     "root": "F:/descargasf",
     "folderGlob": "prcloud*",
@@ -14,12 +14,12 @@
     "capabilities": "/api/public/capabilities",
     "adminSelftest": "/api/admin/selftest",
     "commercialSummary": "/api/admin/commercial-summary",
-    "tenantSnapshot": "/api/admin/tenants/demo-prisma/snapshot",
-    "tenantStatus": "/api/public/tenants/demo-prisma/status",
-    "tenantNotes": "/api/admin/tenants/demo-prisma/notes",
+    "tenantSnapshot": "/api/admin/tenants/prisma-original-customer/snapshot",
+    "tenantStatus": "/api/public/tenants/prisma-original-customer/status",
+    "tenantNotes": "/api/admin/tenants/prisma-original-customer/notes",
     "deviceRegister": "/api/devices/register",
     "integrationReceipt": "/api/client/integration-receipt",
-    "clientContract": "/api/client/contract?tenant=demo-prisma"
+    "clientContract": "/api/client/contract?tenant=prisma-original-customer"
   },
   "safety": {
     "localHosts": ["127.0.0.1", "localhost", "::1"],

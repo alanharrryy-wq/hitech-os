@@ -1,0 +1,66 @@
+{
+  "schema_version": "prismo.runtime_dom_contract.v1",
+  "generated_at": "2026-06-30T08:38:24",
+  "purpose": "Classify legacy PCC IDs that are created dynamically by their owning runtime scripts so static HTML audits stop treating them as missing DOM regressions.",
+  "policy": {
+    "do_not_create_fake_static_nodes": true,
+    "reason": "Some atmosphere IDs must be created by canvas runtimes; static placeholder nodes can break visual layers.",
+    "visual_regression_guard": "Anchors are validated by script ownership, not inserted as hidden fake DOM."
+  },
+  "dynamic_ids": [
+    {
+      "id": "prisma-atmosphere-v5",
+      "owner": "internal/web/prisma_cc_atmosphere_v5.js",
+      "evidence": "ensureCanvas() creates canvas.id",
+      "type": "canvas"
+    },
+    {
+      "id": "prisma-atmosphere-v53-badge",
+      "owner": "internal/web/prisma_cc_atmosphere_v53_probe.js",
+      "evidence": "makeBadge() creates badge.id",
+      "type": "runtime_badge"
+    },
+    {
+      "id": "prisma-atmosphere-v53-root",
+      "owner": "internal/web/prisma_cc_atmosphere_v53_probe.js",
+      "evidence": "startFallbackCanvas() creates root.id",
+      "type": "runtime_root"
+    },
+    {
+      "id": "prisma-atmo-v54-badge",
+      "owner": "internal/web/prisma_cc_atmosphere_v54.js",
+      "evidence": "makeBadge() creates badge.id",
+      "type": "runtime_badge"
+    },
+    {
+      "id": "prisma-atmo-v54-root",
+      "owner": "internal/web/prisma_cc_atmosphere_v54.js",
+      "evidence": "createRoot() creates root.id",
+      "type": "runtime_root"
+    },
+    {
+      "id": "prisma-atmosphere-v56-root",
+      "owner": "internal/web/prisma_cc_v56_prismo_safe_retune.js",
+      "evidence": "startAtmosphere() creates root.id",
+      "type": "runtime_root"
+    },
+    {
+      "id": "prisma-atmosphere-v56-scrim",
+      "owner": "internal/web/prisma_cc_v56_prismo_safe_retune.js",
+      "evidence": "startAtmosphere() creates scrim.id",
+      "type": "runtime_scrim"
+    },
+    {
+      "id": "v40StatusText",
+      "owner": "internal/web/prisma_frost_tactical.js",
+      "evidence": "optional status text lookup; absence is safe and non-blocking",
+      "type": "optional_status"
+    },
+    {
+      "id": "opToast",
+      "owner": "internal/web/v24_cockpit.js",
+      "evidence": "toast helper creates #opToast when missing",
+      "type": "self_healing_toast"
+    }
+  ]
+}

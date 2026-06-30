@@ -78,6 +78,12 @@ except Exception:
     _prismo_theater_query_payload = None
     _prismo_tools_status_payload = None
 # PRISMO_AI_BRIDGE_IMPORT_END
+# PRISMO_APP_LIVE_CONTEXT_IMPORT_BEGIN
+try:
+    from prismo_app_live_context import app_live_context_payload as _prismo_app_live_context_payload
+except Exception:
+    _prismo_app_live_context_payload = None
+# PRISMO_APP_LIVE_CONTEXT_IMPORT_END
 # PRISMO_LEARNING_CORE_V1_IMPORT_BEGIN
 try:
     from prismo_learning.api import (
@@ -504,6 +510,21 @@ class PanelHandler(SimpleHTTPRequestHandler):
 
 
 
+
+
+        if self.path.startswith("/api/prismo/app-live-context") or self.path.startswith("/api/prismo/project-brain"):
+            if not self._is_local_request():
+                self._send_json({"ok": False, "status": "blocked", "block_reason": "PUBLIC_APP_LIVE_CONTEXT_BLOCKED", "read_only": True, "mutation_allowed": False}, status=403)
+                return
+            raw_query = ""
+            if "?" in self.path:
+                from urllib.parse import parse_qs, urlparse
+                raw_query = (parse_qs(urlparse(self.path).query).get("q") or [""])[0]
+            try:
+                self._send_json(_prismo_app_live_context_payload(query=raw_query, public=False) if _prismo_app_live_context_payload else {"ok": False, "status": "PRISMO_APP_LIVE_CONTEXT_UNAVAILABLE", "read_only": True, "mutation_allowed": False}, status=200 if _prismo_app_live_context_payload else 503)
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "PRISMO_APP_LIVE_CONTEXT_ERROR", "error": str(exc), "read_only": True, "mutation_allowed": False}, status=500)
+            return
 
         # PRISMO_LEARNING_CORE_V1_ROUTE_BEGIN
         if self.path in {"/api/prismo/learning/status", "/api/prismo/learning/status/"}:

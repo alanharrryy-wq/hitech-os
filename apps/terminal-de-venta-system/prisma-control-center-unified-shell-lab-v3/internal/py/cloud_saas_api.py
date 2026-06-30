@@ -14,7 +14,7 @@ SCHEMA_VERSION = "1.0"
 INTERNAL_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = INTERNAL_ROOT / "config" / "cloud_saas.json"
 DEFAULT_BASE_URL = "https://app.hitechrts.com"
-DEFAULT_TENANT = "demo-prisma"
+DEFAULT_TENANT = "prisma-original-customer"
 _QUICK_CACHE: dict[str, Any] = {"expires": 0.0, "payload": None}
 
 

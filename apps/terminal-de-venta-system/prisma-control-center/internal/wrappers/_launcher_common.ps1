@@ -17,6 +17,14 @@ param(
 
   [string]$ServiceId = "",
 
+  [switch]$Foreground,
+
+  [switch]$Detached,
+
+  [switch]$NoBrowser,
+
+  [switch]$OpenBrowser,
+
   [object]$Code = $null,
 
   [Parameter(ValueFromRemainingArguments = $true)]
@@ -146,6 +154,12 @@ function Get-PowerShellExecutable {
 
 $ForwardArgs = @(ConvertTo-ForwardArgs -ArgsValue $ForwardArgs)
 $IgnoredLauncherCode = ConvertTo-ScalarExitCode -Code $Code -Default 0
+if ($Foreground -and $Detached) {
+  throw "Launcher PRISMA invalido: usa -Foreground o -Detached, no ambos."
+}
+if ($OpenBrowser -and $NoBrowser) {
+  throw "Launcher PRISMA invalido: usa -OpenBrowser o -NoBrowser, no ambos."
+}
 $forwardServiceId = Get-NamedForwardArg -ArgsValue $ForwardArgs -Name "-ServiceId"
 if ($forwardServiceId) {
   $ServiceId = $forwardServiceId
@@ -494,7 +508,22 @@ function Start-ControlCenterDetached {
 }
 
 function Start-CloudCommandCenter3160 {
-  param([switch]$OpenBrowser)
+  param(
+    [switch]$Foreground,
+    [switch]$Detached,
+    [switch]$OpenBrowser,
+    [switch]$NoBrowser
+  )
+
+  if ($Foreground -and $Detached) {
+    throw "PRISMA Cloud Command Center 3160 no puede correr -Foreground y -Detached al mismo tiempo."
+  }
+
+  if (-not $Foreground -and -not $Detached) {
+    $Foreground = $true
+  }
+
+  $shouldOpenBrowser = ($OpenBrowser -and -not $NoBrowser)
   $labRoot = Get-CloudCommandCenterLabRoot
   $labScript = Join-Path $labRoot "internal\py\prisma_unified_lab_v3.py"
 
@@ -514,12 +543,24 @@ function Start-CloudCommandCenter3160 {
   $safeControlRoot = $ControlRoot.Replace("'", "''")
   $safeOutputDir = $BaseLogRoot.Replace("'", "''")
   $cmd = "py -3 '$safeLabScript' --lab-root '$safeLabRoot' --protected-current '$safeControlRoot' --out-dir '$safeOutputDir' --port 3160 --no-open"
-  [void](Start-DetachedPowerShell -Name "cloud-command-center-3160" -WorkingDirectory $labRoot -Command $cmd)
 
-  if (-not (Wait-Port -Port 3160 -TimeoutSeconds 60 -Name "PRISMA Cloud Command Center")) { return 2 }
-  if ($OpenBrowser) {
-    Start-Process "http://127.0.0.1:3160/unified-shell.html"
+  if ($Foreground) {
+    Write-Host "[PRISMA] Modo 3160: FOREGROUND en esta misma terminal. Ctrl+C lo apaga." -ForegroundColor Yellow
+    Write-Host "[PRISMA] No abre navegador automatico. URL manual: http://127.0.0.1:3160/unified-shell.html" -ForegroundColor DarkYellow
+    if ($shouldOpenBrowser) { Start-Process "http://127.0.0.1:3160/unified-shell.html" }
+    Push-Location $labRoot
+    try {
+      Invoke-Expression $cmd
+      return (ConvertTo-ScalarExitCode -Code $LASTEXITCODE -Default 0)
+    } finally {
+      Pop-Location
+    }
   }
+
+  Write-Host "[PRISMA] Modo 3160: DETACHED solicitado explicitamente." -ForegroundColor Yellow
+  [void](Start-DetachedPowerShell -Name "cloud-command-center-3160" -WorkingDirectory $labRoot -Command $cmd)
+  if (-not (Wait-Port -Port 3160 -TimeoutSeconds 60 -Name "PRISMA Cloud Command Center")) { return 2 }
+  if ($shouldOpenBrowser) { Start-Process "http://127.0.0.1:3160/unified-shell.html" }
   return 0
 }
 
@@ -546,7 +587,7 @@ function Start-OneServiceLocal {
     return Start-ControlCenterDetached -OpenBrowser
   }
   if ($Service.Kind -eq "cloud-command-center") {
-    return Start-CloudCommandCenter3160 -OpenBrowser
+    return Start-CloudCommandCenter3160 -Foreground -NoBrowser
   }
   return Start-NodeLikeService -Service $Service
 }
@@ -887,7 +928,10 @@ try {
     }
 
     "cloud-command-center-3160" {
-      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-CloudCommandCenter3160 -OpenBrowser) -Default 1
+      $runForeground = $Foreground -or (-not $Detached)
+      $runDetached = $Detached
+      $open3160 = $OpenBrowser -and (-not $NoBrowser)
+      $ExitCode = ConvertTo-ScalarExitCode -Code (Start-CloudCommandCenter3160 -Foreground:$runForeground -Detached:$runDetached -OpenBrowser:$open3160 -NoBrowser:$NoBrowser) -Default 1
       break
     }
 
