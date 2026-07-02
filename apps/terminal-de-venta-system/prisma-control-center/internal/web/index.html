@@ -3394,31 +3394,30 @@ body[data-prisma-interface="quality"] main{
               </div>
             </section>
 
-            <section class="prismo-render-grid" id="prismoRenderGrid" aria-label="Render blocks PRISMO">
-              <article class="prismo-render-card" data-type="executive_brief" data-layout="half">
-                <h4>Qué comunica PRISMO</h4>
-                <div class="prismo-mini-grid">
-                  <div class="prismo-mini-card"><strong>Entiende el sistema</strong><p>Lee señales técnicas y operativas sin mutar estado.</p></div>
-                  <div class="prismo-mini-card"><strong>Explica prioridades</strong><p>Convierte complejidad en lectura ejecutiva.</p></div>
-                  <div class="prismo-mini-card"><strong>Organiza evidencia</strong><p>Clasifica fuente, frescura, confianza y trazabilidad.</p></div>
-                  <div class="prismo-mini-card"><strong>Guía decisiones</strong><p>Propone siguientes pasos seguros y verificables.</p></div>
-                </div>
-              </article>
-              <article class="prismo-render-card" data-type="capabilities" data-layout="half">
-                <h4>Capacidades de IA Operacional</h4>
-                <div class="prismo-capability-cloud">
-                  <span>Runtime X-Ray</span><span>Repo Cartography</span><span>Authority Brain</span><span>Visual Answer Studio</span><span>Opportunity Scout</span><span>Safety Firewall</span><span>Visual QA Intelligence</span><span>Executive Brief Generator</span>
-                </div>
+            <div class="prismo-stage-heading">
+              <div>
+                <p class="prismo-label">Visual Stage</p>
+                <h3>Respuesta visual independiente</h3>
+                <p>PRISMO debe mostrar gráficos, matrices, timelines o mapas cuando existan datos estructurados. El texto ya no manda la escena.</p>
+              </div>
+              <span class="prismo-tag" data-state="ok">Auto Render</span>
+            </div>
+            <section class="prismo-render-grid prismo-visual-stage" id="prismoRenderGrid" aria-label="Visual Stage PRISMO">
+              <article class="prismo-render-card" data-type="chart_spec" data-layout="full">
+                <h4>Visual Stage en espera</h4>
+                <p>Pregunta por apps, rutas, componentes, CSS, evidencia, cambios o riesgos. PRISMO intentará responder con una forma visual, no sólo texto.</p>
               </article>
             </section>
-            <section class="prismo-feedback-dock" id="prismoFeedbackDock" aria-label="Feedback PRISMO">
-              <button type="button" data-prismo-feedback="helpful">This helped</button>
-              <button type="button" data-prismo-feedback="not_helpful">This did not help</button>
-              <button type="button" data-prismo-feedback="saved_reference">Save as reference</button>
-              <button type="button" data-prismo-feedback="converted_to_protocol">Convert into protocol</button>
-              <button type="button" data-prismo-feedback="adjusted">Adjust recommendation</button>
-              <span id="prismoFeedbackState">pending</span>
-            </section>
+            <details class="prismo-feedback-dock prismo-actions-menu" id="prismoFeedbackDock" aria-label="Acciones PRISMO">
+              <summary>Acciones y aprendizaje <span id="prismoFeedbackState">pending</span></summary>
+              <div class="prismo-feedback-actions">
+                <button type="button" data-prismo-feedback="helpful">This helped</button>
+                <button type="button" data-prismo-feedback="not_helpful">This did not help</button>
+                <button type="button" data-prismo-feedback="saved_reference">Save as reference</button>
+                <button type="button" data-prismo-feedback="converted_to_protocol">Convert into protocol</button>
+                <button type="button" data-prismo-feedback="adjusted">Adjust recommendation</button>
+              </div>
+            </details>
           </section>
           <aside class="prismo-side-stack prismo-chat-history-panel" aria-label="Historial conversacional PRISMO">
             <section class="prismo-panel prismo-history-shell" aria-label="Historial PRISMO">
@@ -3438,16 +3437,19 @@ body[data-prisma-interface="quality"] main{
               </div>
             </section>
 
-            <section class="prismo-panel prismo-live-context-card" aria-label="Contexto vivo read-only">
+            <section class="prismo-panel prismo-live-context-card prismo-compact-brain-card" aria-label="Project Brain read-only">
               <div class="prismo-panel-head">
                 <div>
-                  <h3>App Live Context</h3>
-                  <p>Project Brain read-only: apps, rutas, componentes, CSS, evidencias, memorias y deltas. No modifica nada.</p>
+                  <h3>Project Brain</h3>
+                  <p>Contexto read-only compacto: apps, rutas, componentes, CSS, evidencias, memorias y deltas. Cerrado por default para no estorbar.</p>
                 </div>
                 <span class="prismo-tag" id="prismoAppLiveState" data-state="warn">read-only</span>
               </div>
-              <div class="prismo-live-context-grid" id="prismoAppLiveContext">
-                <div class="prismo-mini-card"><strong>Esperando Project Brain</strong><small>Se actualiza al abrir PRISMO o al consultar. Memorias y evidencia quedan en F:\descargasf\PRISMO_LEARNING_STORE.</small></div>
+              <div class="prismo-live-context-grid prismo-compact-context" id="prismoAppLiveContext">
+                <details class="prismo-context-accordion">
+                  <summary>Esperando Project Brain</summary>
+                  <div class="prismo-mini-card"><strong>Learning Store</strong><small>Se actualiza al abrir PRISMO o al consultar. Memorias y evidencia quedan en F:\descargasf\PRISMO_LEARNING_STORE.</small></div>
+                </details>
               </div>
             </section>
           </aside>

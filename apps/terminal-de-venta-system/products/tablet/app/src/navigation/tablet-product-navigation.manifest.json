@@ -1,0 +1,80 @@
+{
+  "authority": {
+    "source": [
+      "surfverdict 3006.md",
+      "automesh mesh1 3006 0635 result.zip"
+    ],
+    "head": "e3086d89820a34ae93d2c6df834295ffa34b01f5",
+    "includedSurfaces": [
+      "tablet",
+      "pc",
+      "chart_lab"
+    ],
+    "excludedSurfaces": [
+      "mobile",
+      "shared_ui"
+    ],
+    "phase": "safe-contract-cleanup-no-runtime-menu-wiring"
+  },
+  "tablet": {
+    "finalSurfaces": [
+      "Venta",
+      "Turno y caja",
+      "Inventario",
+      "Ventas",
+      "Devoluciones",
+      "Sync y offline",
+      "Configuración"
+    ],
+    "finalMenuRoutes": [
+      "/pos",
+      "/shift",
+      "/stock",
+      "/sales/today",
+      "/returns",
+      "/sync",
+      "/settings/license"
+    ],
+    "submenuRoutes": [
+      "/catalog",
+      "/existencias",
+      "/inventory/low-stock",
+      "/sales/history",
+      "/offline",
+      "/settings/export"
+    ],
+    "stepRoutes": [
+      "/checkout"
+    ],
+    "dynamicRoutes": [
+      "/sales/today/:saleId",
+      "/sales/history/:saleId",
+      "/sales/today/:saleId/return"
+    ],
+    "aliasRoutes": {
+      "/inventory": "/stock",
+      "/sales": "/sales/today",
+      "/settings/data": "/settings/license"
+    },
+    "internalSupportRoutes": [
+      "/events/outbox"
+    ],
+    "candidateSupportRoutes": [
+      "/prisma-pulse"
+    ],
+    "labRoutes": [
+      "/prisma-dark-pos-reference",
+      "/prisma-visual-catalog",
+      "/referencia-visual",
+      "/release-gate",
+      "/screen-standard-preview",
+      "/visual-os",
+      "/visual-os/detached",
+      "/visual-os/materiality-catalog",
+      "/visual-os/pro",
+      "/visual-os/realtime",
+      "/visual-os/tablet-background-gallery",
+      "/visual-os/tablet-codex-gallery"
+    ]
+  }
+}

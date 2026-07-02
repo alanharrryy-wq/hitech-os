@@ -10,8 +10,10 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 LAB_ROOT = Path(__file__).resolve().parents[2]
+TERMINAL_ROOT = LAB_ROOT.parent
 DATA_DIR = LAB_ROOT / "internal" / "data"
 DB_PATH = DATA_DIR / "prisma-command-center.db"
+PLAN_CATALOG_PATH = TERMINAL_ROOT / "shared" / "licensing" / "plan-catalog.canonical.json"
 
 PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","item":"ID"}
 FIRST_CUSTOMER = {
@@ -27,12 +29,60 @@ FIRST_CUSTOMER = {
     "mobileDeviceId": "mobile_prisma_original_customer_001",
 }
 
+def _canonical_license_plan_options():
+    fallback = [
+        (
+            "TABLET_PC_MANAGED",
+            "Tablet + PC Managed",
+            {
+                "maxDevices": 4,
+                "maxBranches": 1,
+                "maxStores": 1,
+                "modules": ["pos.open", "event.outbox.view", "pc.open", "sync.managed"],
+                "features": ["pos.open", "event.outbox.view", "pc.open", "sync.managed"],
+                "canonicalPlan": "TABLET_PC_MANAGED",
+                "source": "shared/licensing/plan-catalog.canonical.json",
+            },
+        )
+    ]
+    try:
+        payload = json.loads(PLAN_CATALOG_PATH.read_text(encoding="utf-8"))
+        plans = payload.get("plans") if isinstance(payload, dict) else []
+        options = []
+        for plan in plans if isinstance(plans, list) else []:
+            if not isinstance(plan, dict) or not plan.get("vendible"):
+                continue
+            code = str(plan.get("plan") or "").strip()
+            if not code:
+                continue
+            limits = plan.get("limits") if isinstance(plan.get("limits"), dict) else {}
+            features = plan.get("features") if isinstance(plan.get("features"), list) else []
+            options.append(
+                (
+                    code,
+                    str(plan.get("label") or code),
+                    {
+                        "maxDevices": limits.get("maxDevices"),
+                        "maxBranches": limits.get("maxBranches"),
+                        "maxStores": limits.get("maxStores"),
+                        "modules": features,
+                        "features": features,
+                        "canonicalPlan": code,
+                        "source": "shared/licensing/plan-catalog.canonical.json",
+                        "tier": int(plan.get("rank") or 100),
+                    },
+                )
+            )
+        return options or fallback
+    except Exception:
+        return fallback
+
 CATALOGS = {
  "vertical": ("Giro / vertical", True, [("retail","Retail",{"suggestedPlan":"starter","modules":["pos","inventory","tickets","cash_cuts"]}),("abarrotes","Abarrotes / minisuper",{"suggestedPlan":"starter","modules":["pos","inventory","tickets","cash_cuts"]}),("restaurant","Restaurante / food service",{"suggestedPlan":"business","modules":["pos","tables","tickets","cash_cuts"]}),("bar","Bar",{"suggestedPlan":"business","modules":["pos","tables","tickets","cash_cuts"]}),("pharmacy","Farmacia",{"suggestedPlan":"business","modules":["pos","inventory","batch_tracking","tickets"]}),("hardware","Ferretería",{"suggestedPlan":"business","modules":["pos","inventory","quotes","tickets"]}),("fashion","Moda / boutique",{"suggestedPlan":"starter","modules":["pos","inventory","tickets"]}),("butcher","Carnicería",{"suggestedPlan":"business","modules":["pos","scale_support","inventory","tickets"]}),("tortilla","Tortillería",{"suggestedPlan":"starter","modules":["pos","tickets","cash_cuts"]}),("services","Servicios",{"suggestedPlan":"starter","modules":["pos","tickets","appointments"]}),("multi_branch","Multi-sucursal",{"suggestedPlan":"enterprise","modules":["pos","inventory","multi_branch","reports"]}),("other","Otro",{"requiresManualText":True})]),
  "subvertical": ("Subvertical", True, [("minisuper","Minisuper",{}),("specialty_store","Tienda especializada",{}),("restaurant_tables","Restaurante con mesas",{}),("quick_service","Comida rápida",{}),("coffee_shop","Cafetería",{}),("workshop","Taller",{}),("clinic","Consultorio",{}),("rental","Renta / servicios",{}),("other","Otro",{"requiresManualText":True})]),
  "business_size": ("Tamaño", False, [("small","Pequeño",{}),("medium","Mediano",{}),("multi_branch","Multi-sucursal",{}),("enterprise","Enterprise",{})]),
  "operation_mode": ("Tipo de operación", True, [("counter","Mostrador",{}),("tables","Mesas",{}),("inventory","Inventario fuerte",{}),("services","Servicios/citas",{}),("mixed","Mixto",{}),("other","Otro",{"requiresManualText":True})]),
- "license_plan": ("Tipo de licencia", False, [("demo","Piloto",{"maxDevices":1,"maxBranches":1,"modules":["pos","tickets"]}),("starter","Starter",{"maxDevices":1,"maxBranches":1,"modules":["pos","inventory","tickets","cash_cuts"]}),("business","Business",{"maxDevices":5,"maxBranches":1,"modules":["pos","inventory","reports","tickets","cash_cuts"]}),("pro","Pro",{"maxDevices":10,"maxBranches":3,"modules":["pos","inventory","reports","multiuser","integrations"]}),("enterprise","Enterprise",{"maxDevices":99,"maxBranches":99,"modules":["pos","inventory","reports","multi_branch","integrations","support_premium"]})]),
+ "license_plan": ("Tipo de licencia", False, _canonical_license_plan_options()),
  "device_type": ("Tipo de dispositivo", True, [("tablet_pos","Tablet POS",{"prefix":"TAB"}),("pc_register","Caja PC",{"prefix":"PC"}),("mobile","Terminal móvil",{"prefix":"MOB"}),("backoffice","Backoffice",{"prefix":"BO"}),("kiosk","Kiosko",{"prefix":"KSK"}),("peripheral","Periférico",{"prefix":"PER"}),("other","Otro",{"requiresManualText":True,"prefix":"OTH"})]),
  "deactivation_reason": ("Motivo de baja", True, [("cancellation","Cancelación",{}),("non_payment","Falta de pago",{}),("demo_ended","Fin de piloto",{}),("device_replacement","Cambio de dispositivo",{}),("duplicate_client","Cliente duplicado",{}),("migration","Migración",{}),("fraud_abuse","Fraude / abuso",{}),("support","Soporte técnico",{}),("other","Otro",{"requiresManualText":True})]),
  "city_zone": ("Ciudad / zona", True, [("mexico_city","CDMX",{}),("edomex","Estado de México",{}),("guadalajara","Guadalajara",{}),("monterrey","Monterrey",{}),("queretaro","Querétaro",{}),("other","Otro",{"requiresManualText":True})])
@@ -95,9 +145,9 @@ def _seed_first_customer(con):
     payload = {
         "customer": FIRST_CUSTOMER,
         "license": {
-            "plan": "business",
-            "status": "pending_cloud_activation",
-            "source": "shell_lab_prepared_not_canonical_override",
+            "plan": "TABLET_PC_MANAGED",
+            "status": "active_local_signed",
+            "source": "adlant4_local_signed_license",
         },
         "devices": [
             {"surface": "pc", "deviceId": FIRST_CUSTOMER["pcDeviceId"], "status": "pending_registration"},
@@ -113,7 +163,7 @@ def _seed_first_customer(con):
             "CLI-PRISMA-ORIGINAL",
             FIRST_CUSTOMER["displayName"],
             FIRST_CUSTOMER["displayName"],
-            "pending_cloud_activation",
+            "active_local_signed",
             "abarrotes",
             "minisuper",
             "small",
@@ -128,7 +178,7 @@ def _seed_first_customer(con):
         (
             FIRST_CUSTOMER["displayName"],
             FIRST_CUSTOMER["displayName"],
-            "pending_cloud_activation",
+            "active_local_signed",
             "abarrotes",
             "minisuper",
             "small",
@@ -146,20 +196,20 @@ def _seed_first_customer(con):
             "license_prisma_original_customer",
             "LIC-PRISMA-ORIGINAL",
             "client_prisma_original_customer",
-            "plan_business",
-            "pending_cloud_activation",
-            jd(["pos", "inventory", "reports", "tickets", "cash_cuts"]),
-            jd({"maxDevices": 5, "maxBranches": 1}),
+            "plan_TABLET_PC_MANAGED",
+            "active_local_signed",
+            jd(["pos.open", "event.outbox.view", "pc.open", "sync.managed"]),
+            jd({"maxDevices": 4, "maxBranches": 1, "maxStores": 1}),
             FIRST_CUSTOMER["licenseId"],
         ),
     )
     con.execute(
         "UPDATE LicenseAssignment SET planId=?, status=?, modules=?, limits=?, cloudLicenseId=?, updatedAt=CURRENT_TIMESTAMP WHERE id=?",
         (
-            "plan_business",
-            "pending_cloud_activation",
-            jd(["pos", "inventory", "reports", "tickets", "cash_cuts"]),
-            jd({"maxDevices": 5, "maxBranches": 1}),
+            "plan_TABLET_PC_MANAGED",
+            "active_local_signed",
+            jd(["pos.open", "event.outbox.view", "pc.open", "sync.managed"]),
+            jd({"maxDevices": 4, "maxBranches": 1, "maxStores": 1}),
             FIRST_CUSTOMER["licenseId"],
             "license_prisma_original_customer",
         ),
@@ -319,14 +369,17 @@ def reco(cats, b):
     op = b.get("operationMode") or "counter"
     opts = {o["code"]: o for o in cats.get("vertical", {}).get("options", [])}
     meta = (opts.get(vertical) or {}).get("metadata") or {}
-    plan = meta.get("suggestedPlan") or ("enterprise" if size in ("enterprise", "multi_branch") else "starter")
+    available_plans = {code for code, _label, _metadata in CATALOGS.get("license_plan", ("", False, []))[2]}
+    plan = meta.get("suggestedPlan") or "TABLET_PC_MANAGED"
+    if plan not in available_plans:
+        plan = "TABLET_PC_MANAGED"
     mods = list(meta.get("modules") or ["pos", "tickets", "cash_cuts"])
     if op == "inventory" and "inventory" not in mods:
         mods.append("inventory")
     if op in ("tables", "mixed") and "tables" not in mods and vertical in ("restaurant", "bar"):
         mods.append("tables")
     if size in ("multi_branch", "enterprise"):
-        plan = "enterprise"
+        plan = "TABLET_PC_MANAGED"
         if "multi_branch" not in mods:
             mods.append("multi_branch")
     device = "pc_register" if op == "tables" else "tablet_pos"
@@ -341,7 +394,7 @@ def add_event(con, typ, kind, code, summary, payload):
 def _counts(con):
     return {
         "clients": con.execute("SELECT COUNT(*) FROM CommandClient").fetchone()[0],
-        "activeClients": con.execute("SELECT COUNT(*) FROM CommandClient WHERE status IN ('active','prepared','pending_cloud_activation')").fetchone()[0],
+        "activeClients": con.execute("SELECT COUNT(*) FROM CommandClient WHERE status IN ('active','prepared','pending_cloud_activation','active_local_signed')").fetchone()[0],
         "preparedDrafts": con.execute("SELECT COUNT(*) FROM ProvisioningDraft WHERE status='prepared'").fetchone()[0],
         "licenses": con.execute("SELECT COUNT(*) FROM LicenseAssignment").fetchone()[0],
         "devices": con.execute("SELECT COUNT(*) FROM ManagedDevice").fetchone()[0],
@@ -372,13 +425,12 @@ def _local_payload(con):
     return {"clients": clients, "licenses": licenses, "devices": devices, "deactivations": deactivations, "drafts": drafts, "othersPending": others, "events": events}
 
 def _plan_by_code(con, plan_code):
-    plan_code = plan_code or "starter"
+    plan_code = plan_code or "TABLET_PC_MANAGED"
     row = con.execute("SELECT * FROM LicensePlan WHERE code=?", (plan_code,)).fetchone()
     if row:
         return dict(row)
-    # Fallback starter
-    row = con.execute("SELECT * FROM LicensePlan WHERE code='starter'").fetchone()
-    return dict(row) if row else {"id":"plan_starter","code":"starter","label":"Starter","modules":jd(["pos","tickets"]),"rules":jd({})}
+    row = con.execute("SELECT * FROM LicensePlan WHERE code='TABLET_PC_MANAGED'").fetchone()
+    return dict(row) if row else {"id":"plan_TABLET_PC_MANAGED","code":"TABLET_PC_MANAGED","label":"Tablet + PC Managed","modules":jd(["pos.open","event.outbox.view","pc.open","sync.managed"]),"rules":jd({"canonicalPlan":"TABLET_PC_MANAGED"})}
 
 def _client_by_code(con, client_code=None):
     if client_code:

@@ -25,6 +25,7 @@ function assignmentState(document: LicenseDocument, override?: LicenseAssignment
 
 function denialReason(state: NormalizedLicenseState, assignment: LicenseAssignmentState): LicenseDenialReason | null {
   if (assignment === "unassigned") return "device_unassigned";
+  if (assignment === "wrong_customer") return "wrong_customer";
   if (assignment === "wrong_business") return "wrong_business";
   if (assignment === "wrong_store") return "wrong_store";
   if (assignment === "wrong_device") return "wrong_device";
@@ -39,7 +40,7 @@ function denialReason(state: NormalizedLicenseState, assignment: LicenseAssignme
 }
 
 function operationalDecision(state: NormalizedLicenseState, assignment: LicenseAssignmentState): LicenseOperationalDecision {
-  if (["unassigned", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit"].includes(assignment)) return "deny";
+  if (["unassigned", "wrong_customer", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit"].includes(assignment)) return "deny";
   if (state === "invalid" || state === "revoked") return "deny";
   if (state === "missing" || state === "expired" || state === "suspended") return "degrade";
   if (state === "offline_grace") return "allow_with_warning";
@@ -73,6 +74,7 @@ export function normalizeLicenseDocument(document: LicenseDocument, options: { s
     deviceId: document.deviceId ?? document.tabletId ?? null,
     tabletId: document.tabletId ?? document.deviceId ?? null,
     terminalId: document.terminalId ?? null,
+    authorizedDevices: document.authorizedDevices ?? [],
     licenseId: document.licenseId,
     assignmentState: assignment,
     validFrom: document.validFrom,
@@ -122,6 +124,7 @@ export function missingLicenseStatus(path: string | null, options: { customerMod
     deviceId: null,
     tabletId: null,
     terminalId: null,
+    authorizedDevices: [],
     licenseId: null,
     assignmentState: "unknown",
     validFrom: null,
@@ -167,6 +170,7 @@ export function invalidLicenseStatus(path: string | null, issues: string[]): Nor
     deviceId: null,
     tabletId: null,
     terminalId: null,
+    authorizedDevices: [],
     licenseId: null,
     assignmentState: "unknown",
     validFrom: null,

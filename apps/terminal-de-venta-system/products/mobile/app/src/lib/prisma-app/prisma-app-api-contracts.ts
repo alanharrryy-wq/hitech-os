@@ -188,7 +188,7 @@ export const PrismaMobileSummaryPayloadSchema = z.object({
     tenantId: "tenant_prisma_original_customer",
     licenseId: "lic_prisma_original_customer_001",
     planLabel: "Business",
-    licenseStateLabel: "Licencia local pendiente de confirmacion",
+    licenseStateLabel: "Licencia local firmada activa",
     authorizationLabel: "Mobile vinculado a la cuenta",
     mobileDeviceLabel: "Mobile vinculado",
     tabletDeviceLabel: "Tablet vinculada",

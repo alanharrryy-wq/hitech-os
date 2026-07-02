@@ -1,0 +1,147 @@
+{
+  "version": "surfcln-3006-0830",
+  "authority": {
+    "source": [
+      "surfverdict 3006.md",
+      "automesh mesh1 3006 0635 result.zip"
+    ],
+    "head": "e3086d89820a34ae93d2c6df834295ffa34b01f5",
+    "includedSurfaces": [
+      "tablet",
+      "pc",
+      "chart_lab"
+    ],
+    "excludedSurfaces": [
+      "mobile",
+      "shared_ui"
+    ],
+    "phase": "safe-contract-cleanup-no-runtime-menu-wiring"
+  },
+  "outputs": {
+    "tabletContract": "products/tablet/app/src/navigation/tablet-page-contracts.ts",
+    "tabletManifest": "products/tablet/app/src/navigation/tablet-product-navigation.manifest.json",
+    "pcNavigationContract": "products/pc/app/src/uiux/pc-product-navigation.ts",
+    "pcManifest": "products/pc/app/src/uiux/pc-product-navigation.manifest.json",
+    "verificationGate": "tools/quality/verify_surface_product_navigation_cleanup_3006.mjs"
+  },
+  "allowedAction": "add contracts, manifests, documentation and static gate only",
+  "blockedActions": [
+    "touch mobile",
+    "touch shared_ui",
+    "touch control-center",
+    "kill processes",
+    "free ports",
+    "start dev servers",
+    "hot Prisma generation",
+    "delete source",
+    "runtime menu wiring without owner Mesh"
+  ],
+  "tablet": {
+    "finalSurfaces": [
+      "Venta",
+      "Turno y caja",
+      "Inventario",
+      "Ventas",
+      "Devoluciones",
+      "Sync y offline",
+      "Configuración"
+    ],
+    "finalMenuRoutes": [
+      "/pos",
+      "/shift",
+      "/stock",
+      "/sales/today",
+      "/returns",
+      "/sync",
+      "/settings/license"
+    ],
+    "submenuRoutes": [
+      "/catalog",
+      "/existencias",
+      "/inventory/low-stock",
+      "/sales/history",
+      "/offline",
+      "/settings/export"
+    ],
+    "stepRoutes": [
+      "/checkout"
+    ],
+    "dynamicRoutes": [
+      "/sales/today/:saleId",
+      "/sales/history/:saleId",
+      "/sales/today/:saleId/return"
+    ],
+    "aliasRoutes": {
+      "/inventory": "/stock",
+      "/sales": "/sales/today",
+      "/settings/data": "/settings/license"
+    },
+    "internalSupportRoutes": [
+      "/events/outbox"
+    ],
+    "candidateSupportRoutes": [
+      "/prisma-pulse"
+    ],
+    "labRoutes": [
+      "/prisma-dark-pos-reference",
+      "/prisma-visual-catalog",
+      "/referencia-visual",
+      "/release-gate",
+      "/screen-standard-preview",
+      "/visual-os",
+      "/visual-os/detached",
+      "/visual-os/materiality-catalog",
+      "/visual-os/pro",
+      "/visual-os/realtime",
+      "/visual-os/tablet-background-gallery",
+      "/visual-os/tablet-codex-gallery"
+    ]
+  },
+  "pc": {
+    "finalSurfaces": [
+      "Hoy",
+      "Inventario",
+      "Compras y proveedores",
+      "Ventas y caja",
+      "Sync y Tablet Ops",
+      "Reportes y BI",
+      "Sistema y calidad",
+      "Ayuda"
+    ],
+    "finalMenuRoutes": [
+      "/dashboard",
+      "/catalog",
+      "/purchasing",
+      "/proveedores",
+      "/sales-control",
+      "/sync",
+      "/devices",
+      "/exportables",
+      "/prisma-insights",
+      "/settings",
+      "/glosario"
+    ],
+    "hiddenFromFinalUser": [
+      "/laboratorio-pc",
+      "/laboratorio-pc/chart-lab",
+      "/laboratorio-pc/dashboard-governor",
+      "/laboratorio-pc/referencia-visual",
+      "/laboratorio-pc/referencia-visual/liquid-glass",
+      "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "/referencia-visual",
+      "/referencia-visual/liquid-glass",
+      "/referencia-visual/liquid-glass-capsules",
+      "/prisma-insights/chart-lab",
+      "/gobierno",
+      "/filtros-avanzados",
+      "/filtros-fecha"
+    ],
+    "aliases": {
+      "/": "/dashboard",
+      "/referencia-visual": "/laboratorio-pc/referencia-visual",
+      "/referencia-visual/liquid-glass": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "/referencia-visual/liquid-glass-capsules": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "/prisma-insights/chart-lab": "/laboratorio-pc/chart-lab"
+    }
+  }
+}

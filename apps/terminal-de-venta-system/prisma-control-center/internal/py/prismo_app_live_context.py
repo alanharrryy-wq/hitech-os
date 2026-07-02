@@ -434,16 +434,26 @@ def app_live_context_payload(query: str = "", public: bool = False) -> dict[str,
     cache = _cache_root()
     previous = _load_previous_current(cache)
     surfaces = [
-        ("tablet", "Tablet", "products/tablet/app"),
-        ("pc", "PC", "products/pc/app"),
-        ("mobile", "Mobile", "products/mobile/app"),
-        ("chart_lab", "Chart Lab", "products/chart-lab"),
-        ("eit", "EIT/Web", "external_interaction_template"),
-        ("shared_docs", "Docs/Ops", "docs"),
-        ("governance", "Governance", ".governance"),
-        ("prisma_control_center", "PRISMO Control Center", "prisma-control-center"),
+        (root, "tablet", "Tablet", "products/tablet/app", MAX_FILES_PER_SURFACE),
+        (root, "pc", "PC", "products/pc/app", MAX_FILES_PER_SURFACE),
+        (root, "mobile", "Mobile", "products/mobile/app", MAX_FILES_PER_SURFACE),
+        (root, "chart_lab", "Chart Lab", "products/chart-lab", MAX_FILES_PER_SURFACE),
+        (root, "eit", "EIT/Web", "external_interaction_template", MAX_FILES_PER_SURFACE),
+        (root, "shared_docs", "Docs/Ops", "docs", 16000),
+        (root, "governance", "Governance", ".governance", 12000),
+        (root, "prisma_control_center", "PRISMO Control Center", "prisma-control-center", MAX_FILES_PER_SURFACE),
+        (hitech, "hitech_repo_overview", "HiTech Repo Overview", ".", 22000),
     ]
-    apps = [_scan_surface(root, surface_id, label, rel_path) for surface_id, label, rel_path in surfaces]
+    apps = []
+    with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(surfaces))) as executor:
+        futures = [executor.submit(_scan_surface, scan_root, surface_id, label, rel_path, limit) for scan_root, surface_id, label, rel_path, limit in surfaces]
+        for future in as_completed(futures):
+            try:
+                apps.append(future.result())
+            except Exception as exc:
+                apps.append({"id": "scan_error", "label": "Scan error", "exists": False, "error": type(exc).__name__, "file_count": 0, "route_count": 0, "component_count": 0, "css_count": 0, "doc_count": 0})
+    preferred_order = {surface_id: index for index, (_scan_root, surface_id, _label, _rel_path, _limit) in enumerate(surfaces)}
+    apps.sort(key=lambda item: preferred_order.get(str(item.get("id")), 999))
     authority = _authority_memory(root)
     evidence = _evidence_library(descargas)
     delta = _delta(apps, previous)
@@ -474,7 +484,7 @@ def app_live_context_payload(query: str = "", public: bool = False) -> dict[str,
         "summary": summary,
         "project_brain": {
             "name": "PRISMO Project Brain Index",
-            "description": "Read-only map of PRISMA apps, routes, components, CSS, docs, governance and evidence.",
+            "description": "Read-only map of PRISMA apps, routes, components, CSS, docs, governance, repo overview and evidence.",
             "surfaces": [{"id": app.get("id"), "label": app.get("label"), "path": app.get("path"), "exists": app.get("exists"), "file_count": app.get("file_count"), "route_count": app.get("route_count"), "css_count": app.get("css_count")} for app in apps],
             "question_router": _question_router(),
         },

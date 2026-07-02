@@ -365,7 +365,10 @@ class PanelHandler(SimpleHTTPRequestHandler):
                     self._send_json({"ok": False, "status": "error", "error": "PRISMO bridge unavailable"}, status=503)
                     return
                 payload = self._read_json_body(max_bytes=750000)
-                result = _prismo_query_payload(payload, public=False)
+                if _prismo_theater_query_payload is not None:
+                    result = _prismo_theater_query_payload(payload, public=False)
+                else:
+                    result = _prismo_query_payload(payload, public=False)
                 if not isinstance(result, dict):
                     result = {
                         "ok": False,

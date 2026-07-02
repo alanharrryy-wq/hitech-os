@@ -20,7 +20,7 @@ export type LicenseGovernorSnapshot = {
 export function getLicenseGovernorSnapshot(options: { surface: LicenseSurface; featureKeys?: string[] }): LicenseGovernorSnapshot {
   const runtimeContext = resolveRuntimeContext({ role: options.surface });
   const refreshState = getLicenseRefreshStatus();
-  const loaded = loadLocalLicense();
+  const loaded = loadLocalLicense(runtimeContext);
   const status: NormalizedLicenseStatus = {
     ...loaded,
     lastRefreshAt: loaded.lastRefreshAt ?? refreshState.lastSuccessAt ?? refreshState.lastRefreshAt,

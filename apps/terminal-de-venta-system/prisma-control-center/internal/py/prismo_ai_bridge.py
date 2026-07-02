@@ -589,27 +589,31 @@ def _preferred_visual_type(query_text: str, interpretation: dict[str, Any], bloc
     area = _as_str(interpretation.get("area")).lower()
     lens = _as_str(interpretation.get("lens")).lower()
     text = query_text.lower()
-    if any(word in text for word in ["gráfic", "grafic", "chart", "métrica", "metrica", "número", "numero", "score", "porcentaje"]):
-        return _pick_existing(blocks, ["chart_spec", "runtime_map", "impact_map"])
-    if any(word in text for word in ["graph", "grafo", "flujo", "conecta", "depend", "mapa", "ruta", "apps", "app live", "tiempo real", "runtime"]) or lens == "runtime_state":
-        return _pick_existing(blocks, ["runtime_map", "impact_map", "flow_diagram"])
+    if any(word in text for word in ["ruta", "route", "page", "layout", "endpoint"]):
+        return _pick_existing(blocks, ["route_map", "chart_spec", "surface_matrix", "runtime_map"])
+    if any(word in text for word in ["css", "layer", "selector", "z-index", "visual", "capa"]):
+        return _pick_existing(blocks, ["layer_map", "chart_spec", "table_view", "surface_matrix"])
+    if any(word in text for word in ["gráfic", "grafic", "chart", "métrica", "metrica", "número", "numero", "score", "porcentaje", "conteo", "cuánt", "cuant"]):
+        return _pick_existing(blocks, ["chart_spec", "surface_matrix", "runtime_map", "impact_map"])
+    if any(word in text for word in ["graph", "grafo", "flujo", "conecta", "depend", "mapa", "apps", "app live", "tiempo real", "runtime", "superficie"]) or lens == "runtime_state":
+        return _pick_existing(blocks, ["chart_spec", "surface_matrix", "runtime_map", "impact_map", "flow_diagram"])
     if any(word in text for word in ["compar", "diff", "versus", " vs "]) or intent == "compare":
-        return _pick_existing(blocks, ["diff_view", "comparison_board"])
-    if any(word in text for word in ["timeline", "línea", "linea", "cambió", "cambio", "histórico", "historico", "evoluci"]):
-        return _pick_existing(blocks, ["timeline"])
+        return _pick_existing(blocks, ["diff_view", "chart_spec", "surface_matrix", "comparison_board"])
+    if any(word in text for word in ["timeline", "línea", "linea", "cambió", "cambio", "histórico", "historico", "evoluci", "delta", "desde"]):
+        return _pick_existing(blocks, ["timeline", "chart_spec"])
     if any(word in text for word in ["riesgo", "risk", "bloque", "blocker"]) or intent == "audit":
-        return _pick_existing(blocks, ["risk_matrix", "checklist"])
+        return _pick_existing(blocks, ["risk_matrix", "chart_spec", "checklist"])
     if any(word in text for word in ["autoridad", "govern", "gobern", "canon", "preceden"]) or area == "governance":
-        return _pick_existing(blocks, ["authority_map", "authority_strip"])
-    if any(word in text for word in ["evidencia", "evidence", "vault", "log"]):
-        return _pick_existing(blocks, ["evidence_board", "evidence_cards", "context_pack_explorer"])
-    if any(word in text for word in ["paso", "siguiente", "accion", "acción", "check"]) or intent in {"recommend", "prepare_action"}:
-        return _pick_existing(blocks, ["checklist", "next_best_action", "protocol_ladder"])
-    return _pick_existing(blocks, ["flow_diagram", "runtime_map", "executive_brief", "checklist", "risk_matrix"])
+        return _pick_existing(blocks, ["authority_map", "risk_matrix", "authority_strip"])
+    if any(word in text for word in ["evidencia", "evidence", "vault", "log", "zip", "result", "fail"]):
+        return _pick_existing(blocks, ["evidence_board", "chart_spec", "timeline", "evidence_cards", "context_pack_explorer"])
+    if any(word in text for word in ["paso", "siguiente", "accion", "acción", "check", "terminar", "pendiente"]) or intent in {"recommend", "prepare_action"}:
+        return _pick_existing(blocks, ["checklist", "chart_spec", "surface_matrix", "next_best_action", "protocol_ladder"])
+    return _pick_existing(blocks, ["chart_spec", "surface_matrix", "route_map", "runtime_map", "flow_diagram", "checklist", "risk_matrix"])
 
 
 def _shape_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], blocks: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str | None]:
-    hidden = {"technical_drawer", "action_bar", "feedback_dock", "memory_trace", "insight_chips"}
+    hidden = {"hero_response", "executive_brief", "next_best_action", "protocol_ladder", "procedural_steps", "technical_drawer", "action_bar", "feedback_dock", "memory_trace", "insight_chips", "authority_strip"}
     visual = [block for block in blocks if block.get("type") not in hidden]
     preferred = _preferred_visual_type(_query_text_for_render(base, interpretation), interpretation, visual)
     selected: list[dict[str, Any]] = []
@@ -624,7 +628,7 @@ def _shape_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], 
 
     if preferred:
         take(lambda block: block.get("type") == preferred)
-    take(lambda block: block.get("type") in {"runtime_map", "impact_map", "flow_diagram", "chart_spec", "diff_view", "timeline", "risk_matrix", "checklist", "evidence_board", "authority_map"})
+    take(lambda block: block.get("type") in {"chart_spec", "surface_matrix", "route_map", "layer_map", "runtime_map", "impact_map", "flow_diagram", "diff_view", "timeline", "risk_matrix", "checklist", "evidence_board", "authority_map", "table_view"})
     take(lambda block: block.get("type") in {"next_best_action", "protocol_ladder", "executive_brief"})
     for block in visual:
         if len(selected) >= 3:
@@ -643,6 +647,286 @@ def _shape_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], 
     primary_type = shaped[0].get("type") if shaped else None
     return shaped, suppressed, primary_type
 
+
+
+# PRISMO_FINAL_VISUAL_STAGE_BEGIN
+def _clamp_answer_text(text: str, max_chars: int = 520, max_lines: int = 5) -> str:
+    cleaned = " ".join(_as_str(text).split())
+    if not cleaned:
+        cleaned = "PRISMO leyó el contexto disponible en modo read-only y preparó una respuesta visual trazable."
+    lines = cleaned.splitlines()[:max_lines]
+    value = "\n".join(lines) if lines else cleaned
+    if len(value) > max_chars:
+        value = value[: max_chars - 1].rstrip() + "…"
+    return value
+
+
+def _visual_data_from_app_live(app_live: dict[str, Any], evidence: list[dict[str, Any]], risk: dict[str, Any]) -> dict[str, Any]:
+    app_live = _as_dict(app_live or {})
+    apps = [_as_dict(app) for app in _as_list(app_live.get("apps")) if _as_dict(app).get("exists", True)]
+    surfaces: list[dict[str, Any]] = []
+    route_nodes: list[dict[str, Any]] = []
+    layer_rows: list[dict[str, Any]] = []
+    for app in apps:
+        surface_id = _as_str(app.get("id") or app.get("surface") or app.get("label") or "surface")
+        label = _as_str(app.get("label") or app.get("id") or "Surface")
+        surfaces.append({
+            "id": surface_id,
+            "label": label,
+            "files": int(app.get("file_count") or 0),
+            "routes": int(app.get("route_count") or 0),
+            "components": int(app.get("component_count") or 0),
+            "css": int(app.get("css_count") or 0),
+            "docs": int(app.get("doc_count") or 0),
+        })
+        for route in _as_list(app.get("routes_sample"))[:16]:
+            route = _as_dict(route)
+            route_nodes.append({
+                "id": _as_str(route.get("route") or route.get("rel") or "route"),
+                "label": _as_str(route.get("route") or route.get("rel") or "route"),
+                "surface": label,
+                "status": "route",
+                "summary": _as_str(route.get("rel") or ""),
+            })
+        for item in _as_list(app.get("layer_signals"))[:18]:
+            item = _as_dict(item)
+            layer_rows.append({
+                "surface": label,
+                "file": _as_str(item.get("file") or ""),
+                "selector": _as_str(item.get("selector") or "")[:140],
+                "z_index": ", ".join([_as_str(x) for x in _as_list(item.get("z_index"))]) or "",
+                "important": int(item.get("important_count") or 0),
+                "backdrop": bool(item.get("backdrop_filter")),
+            })
+    evidence_library = _as_dict(app_live.get("evidence_library"))
+    delta = _as_dict(app_live.get("delta_scanner"))
+    summary = _as_dict(app_live.get("summary"))
+    memory_layers = _as_dict(app_live.get("memory_layers"))
+    evidence_items = evidence if evidence else []
+    visual_data = {
+        "surface_metrics": surfaces,
+        "route_nodes": route_nodes[:64],
+        "layer_rows": layer_rows[:64],
+        "summary": {
+            "app_count": int(summary.get("app_count") or len(surfaces)),
+            "file_count": int(summary.get("file_count") or sum(item["files"] for item in surfaces)),
+            "route_count": int(summary.get("route_count") or sum(item["routes"] for item in surfaces)),
+            "component_count": int(summary.get("component_count") or sum(item["components"] for item in surfaces)),
+            "css_count": int(summary.get("css_count") or sum(item["css"] for item in surfaces)),
+            "evidence_zip_count": int(summary.get("evidence_zip_count") or evidence_library.get("zip_count") or 0),
+            "memory_layer_count": int(summary.get("memory_layer_count") or len(memory_layers)),
+        },
+        "evidence_metrics": {
+            "zip_count": int(evidence_library.get("zip_count") or 0),
+            "latest_result": bool(evidence_library.get("latest_result")),
+            "latest_fail": bool(evidence_library.get("latest_fail")),
+            "response_evidence_count": len(evidence_items),
+        },
+        "delta_metrics": {
+            "available": bool(delta.get("available")),
+            "changed": int(delta.get("changed_count_sampled") or 0),
+            "added": int(delta.get("added_count_sampled") or 0),
+            "changed_files_sample": _as_list(delta.get("changed_files_sample"))[:12],
+            "added_files_sample": _as_list(delta.get("added_files_sample"))[:12],
+        },
+        "memory_layers": memory_layers,
+        "risk": risk,
+        "has_structured_data": bool(surfaces or evidence_library or delta or route_nodes or layer_rows),
+    }
+    if not visual_data["has_structured_data"]:
+        visual_data["no_visual_reason"] = "insufficient_structured_data"
+    return visual_data
+
+
+def _surface_chart_block(visual_data: dict[str, Any], metric: str = "routes") -> dict[str, Any] | None:
+    surfaces = [_as_dict(item) for item in _as_list(visual_data.get("surface_metrics")) if int(_as_dict(item).get(metric) or 0) > 0]
+    if not surfaces:
+        return None
+    labels = [_as_str(item.get("label") or item.get("id")) for item in surfaces[:8]]
+    route_data = [int(item.get("routes") or 0) for item in surfaces[:8]]
+    component_data = [int(item.get("components") or 0) for item in surfaces[:8]]
+    css_data = [int(item.get("css") or 0) for item in surfaces[:8]]
+    return _block_contract(
+        "visual_surface_metrics_chart",
+        "chart_spec",
+        "Visual Stage · Superficies del proyecto",
+        "Comparación read-only de rutas, componentes y CSS por superficie.",
+        12,
+        {
+            "chartType": "bar",
+            "meta": {"title": "Superficies PRISMA por rutas, componentes y CSS", "description": "Comparación read-only de Project Brain; no modifica apps, procesos ni Prisma."},
+            "labels": labels,
+            "xAxis": {"data": labels, "label": "Superficie"},
+            "series": [
+                {"name": "Rutas", "label": "Rutas", "data": route_data},
+                {"name": "Componentes", "label": "Componentes", "data": component_data},
+                {"name": "CSS", "label": "CSS", "data": css_data},
+            ],
+            "rows": surfaces[:8],
+            "footer": "Fuente: Project Brain read-only. No modifica apps ni procesos.",
+        },
+        "positive",
+    )
+
+
+def _surface_matrix_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    rows = [_as_dict(item) for item in _as_list(visual_data.get("surface_metrics"))]
+    if not rows:
+        return None
+    return _block_contract(
+        "visual_surface_matrix",
+        "surface_matrix",
+        "Surface matrix",
+        "Lectura tabular de archivos, rutas, componentes, CSS y docs por superficie.",
+        24,
+        {"rows": rows[:12], "columns": ["label", "files", "routes", "components", "css", "docs"]},
+        "neutral",
+    )
+
+
+def _evidence_chart_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    values = [int(evidence.get("zip_count") or 0), int(evidence.get("response_evidence_count") or 0), 1 if evidence.get("latest_result") else 0, 1 if evidence.get("latest_fail") else 0]
+    if not any(values):
+        return None
+    return _block_contract(
+        "visual_evidence_metrics_chart",
+        "chart_spec",
+        "Visual Stage · Evidencia disponible",
+        "Conteo compacto de evidencias indexadas y señales result/fail recientes.",
+        26,
+        {
+            "chartType": "bar",
+            "labels": ["ZIPs", "Respuesta", "Latest result", "Latest fail"],
+            "xAxis": {"data": ["ZIPs", "Respuesta", "Latest result", "Latest fail"], "label": "Tipo de evidencia"},
+            "series": [{"name": "Conteo", "label": "Conteo", "data": values}],
+            "footer": "Episodic memory / Evidence Librarian read-only.",
+        },
+        "neutral",
+    )
+
+
+def _delta_timeline_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    if not delta.get("available"):
+        return None
+    events = [
+        {"time": "Índice previo", "title": "Baseline disponible", "status": "ready", "summary": "PRISMO comparó contra el índice anterior guardado en Learning Store."},
+        {"time": "Ahora", "title": f"{delta.get('changed', 0)} changed · {delta.get('added', 0)} added", "status": "read-only", "summary": "Delta scanner preparó muestra de cambios sin modificar el proyecto."},
+    ]
+    for item in _as_list(delta.get("changed_files_sample"))[:4]:
+        item = _as_dict(item)
+        events.append({"time": "sample", "title": _as_str(item.get("rel") or "archivo cambiado"), "status": "changed", "summary": _as_str(item.get("mtime") or "")})
+    return _block_contract("visual_delta_timeline", "timeline", "Delta timeline", "Cambios detectados contra el índice anterior.", 28, {"events": events}, "neutral")
+
+
+def _memory_table_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    layers = _as_dict(visual_data.get("memory_layers"))
+    if not layers:
+        return None
+    rows = []
+    for key, value in layers.items():
+        value = _as_dict(value)
+        rows.append({"memory": _as_str(key).replace("_", " "), "confidence": _as_str(value.get("confidence") or "medium"), "purpose": _as_str(value.get("purpose") or "")})
+    return _block_contract("visual_memory_table", "table_view", "Memorias chidas activas", "Capas de memoria usadas para entender PRISMA en modo read-only.", 32, {"rows": rows[:10], "columns": ["memory", "confidence", "purpose"]}, "neutral")
+
+
+
+def _route_map_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    nodes = [_as_dict(item) for item in _as_list(visual_data.get("route_nodes"))]
+    if not nodes:
+        return None
+    return _block_contract(
+        "visual_route_map",
+        "route_map",
+        "Route map",
+        "Rutas detectadas por Project Brain en modo read-only.",
+        18,
+        {"nodes": nodes[:32]},
+        "positive",
+    )
+
+
+def _layer_map_block(visual_data: dict[str, Any]) -> dict[str, Any] | None:
+    rows = [_as_dict(item) for item in _as_list(visual_data.get("layer_rows"))]
+    if not rows:
+        return None
+    return _block_contract(
+        "visual_layer_map",
+        "table_view",
+        "Layer investigator",
+        "Selectores, z-index, backdrop y deuda visual muestreados sin modificar CSS.",
+        22,
+        {"rows": rows[:20], "columns": ["surface", "file", "selector", "z_index", "important", "backdrop"]},
+        "neutral",
+    )
+
+def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, Any], visual_data: dict[str, Any]) -> list[dict[str, Any]]:
+    query = _query_text_for_render(base, interpretation)
+    blocks: list[dict[str, Any]] = []
+    wants_routes = any(word in query for word in ["ruta", "route", "page", "layout", "endpoint"])
+    wants_layers = any(word in query for word in ["css", "layer", "selector", "z-index", "capa", "visual"])
+    wants_evidence = any(word in query for word in ["evidencia", "evidence", "fail", "result", "zip", "historial"])
+    wants_delta = any(word in query for word in ["cambio", "cambió", "delta", "desde", "ayer", "timeline", "histórico", "historico"])
+    wants_memory = any(word in query for word in ["memoria", "memory", "procedural", "semant", "episod"])
+
+    chart = _surface_chart_block(visual_data)
+    matrix = _surface_matrix_block(visual_data)
+    route_map = _route_map_block(visual_data)
+    layer_map = _layer_map_block(visual_data)
+    evidence_chart = _evidence_chart_block(visual_data)
+    delta_timeline = _delta_timeline_block(visual_data)
+    memory_table = _memory_table_block(visual_data)
+
+    # Contrato final: si hay métricas del proyecto, siempre debe existir al menos un gráfico primario.
+    if wants_routes and route_map:
+        blocks.append(route_map)
+    if wants_layers and layer_map:
+        blocks.append(layer_map)
+    if chart and chart not in blocks:
+        blocks.append(chart)
+    if wants_delta and delta_timeline:
+        blocks.append(delta_timeline)
+    if wants_evidence and evidence_chart:
+        blocks.append(evidence_chart)
+    if wants_memory and memory_table:
+        blocks.append(memory_table)
+    for optional in [matrix, route_map if not wants_routes else None, layer_map if not wants_layers else None, evidence_chart if not wants_evidence else None, delta_timeline if not wants_delta else None, memory_table if not wants_memory else None]:
+        if optional and not any(block.get("id") == optional.get("id") for block in blocks):
+            blocks.append(optional)
+    if not blocks and visual_data.get("no_visual_reason"):
+        blocks.append(_block_contract("visual_stage_empty", "direct_answer_card", "Visual Stage", "No hay visual útil para esta consulta.", 12, {"answer": f"No visual: {visual_data.get('no_visual_reason')}"}, "neutral"))
+    return blocks[:6]
+
+
+def _answer_channel_from_visual_data(base: dict[str, Any], visual_data: dict[str, Any], primary_type: str | None) -> dict[str, Any]:
+    direct = _as_str(base.get("direct_answer"))
+    summary = _as_dict(visual_data.get("summary"))
+    surfaces = _as_list(visual_data.get("surface_metrics"))
+    if surfaces:
+        text = (
+            f"Leí PRISMA en modo read-only: {summary.get('app_count', len(surfaces))} superficies, "
+            f"{summary.get('file_count', 0)} archivos, {summary.get('route_count', 0)} rutas, "
+            f"{summary.get('component_count', 0)} componentes y {summary.get('css_count', 0)} CSS. "
+            f"Abajo va el Visual Stage con {primary_type or 'chart_spec'} como evidencia visual."
+        )
+        if direct and len(direct) > 80 and not direct.lower().startswith("¡hola"):
+            full = direct
+        else:
+            full = text
+    else:
+        text = direct or "PRISMO respondió con el contexto disponible, sin mutar el proyecto."
+        full = direct or text
+    return {
+        "contract": "prismo.answer_channel.v2",
+        "short_text": _clamp_answer_text(text),
+        "full_text": full,
+        "max_chars": 420,
+        "visual_stage_required": bool(visual_data.get("has_structured_data")),
+        "primary_visual_type": primary_type,
+        "no_visual_reason": visual_data.get("no_visual_reason", ""),
+    }
+# PRISMO_FINAL_VISUAL_STAGE_END
 
 def _app_live_runtime_block(app_live: dict[str, Any]) -> dict[str, Any] | None:
     if not app_live or not app_live.get("ok"):
@@ -680,8 +964,11 @@ def _build_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], 
     next_step = _as_str(base.get("safe_next_step") or "Review evidence and run the narrowest verifier.")
     chains = ["question", "interpretation", "protocol", "evidence", "result", "feedback"]
     app_live_block = _app_live_runtime_block(_as_dict(app_live or {}))
+    visual_data = _visual_data_from_app_live(_as_dict(app_live or {}), evidence, risk)
+    visual_stage_blocks = _build_visual_stage_blocks(base, interpretation, visual_data)
     blocks = [
         _block_contract("hero_response", "hero_response", "PRISMO response", direct_answer, 10, {"answer": direct_answer, "confidence": interpretation.get("confidence"), "interpretation": interpretation}, "positive"),
+        *visual_stage_blocks,
         _block_contract("executive_brief", "executive_brief", "Executive brief", "PRISMO synthesized the current signal into operational priority, authority, and next action.", 20, {"sections": [{"title": "Priority", "items": [direct_answer]}, {"title": "Authority", "items": [_as_str(authority.get("winning_source") or "PRISMO runtime")]}, {"title": "Next", "items": [next_step]}]}),
         _block_contract("next_best_action", "next_best_action", "Next best action", next_step, 30, {"action": next_step, "impact": risk.get("level", "contextual"), "review_required": True}, "positive"),
         _block_contract("protocol_ladder", "protocol_ladder", "Protocol ladder", "Procedural memory ranked the safest protocol path for this answer.", 40, {"protocols": protocols, "ranking_basis": ["semantic match", "area/lens compatibility", "recent evidence", "governance constraints", "feedback statistics when available"]}),
@@ -697,7 +984,9 @@ def _build_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], 
         _block_contract("feedback_dock", "feedback_dock", "Feedback dock", "Feedback can update the safe adapter and influence later protocol ranking when persistence is available.", 140, {"states": ["pending", "helpful", "not_helpful", "saved_reference", "converted_to_protocol", "adjusted"]}),
     ]
     if app_live_block:
-        blocks.insert(2, app_live_block)
+        app_live_block["priority"] = 34
+        app_live_block["layout"] = "half"
+        blocks.append(app_live_block)
     return blocks
 
 
@@ -776,10 +1065,65 @@ def _response_memory_chain(payload: dict[str, Any], base: dict[str, Any], interp
     }
 
 
+
+def _prismo_local_readonly_base_response(payload: dict[str, Any], public: bool = False, query: str | None = None) -> dict[str, Any]:
+    """Fast local-first response for PRISMO Theater.
+
+    The theater is a read-only project brain. It must stay useful even when the
+    live provider is slow, missing, or unreachable. This helper intentionally
+    avoids network providers and creates a safe local response that the visual
+    hydrator can enrich with Project Brain, memories and evidence.
+    """
+    payload = _as_dict(payload)
+    request_id = _request_id()
+    mode = _mode(payload.get("mode"))
+    message = query if query is not None else _collect_message(payload)
+    evidence_raw = _collect_evidence(payload)
+    evidence, evidence_events = sanitize_text(evidence_raw, max_chars=250000)
+    context = build_context_packet(evidence)
+    context.setdefault("safetyEvents", [])
+    context["safetyEvents"].extend(evidence_events)
+    warnings = ["PRISMO_LOCAL_FIRST_READONLY_THEATER"]
+    if public:
+        warnings.append("PUBLIC_REDACTED_READ_ONLY")
+    response = make_demo_response(mode, message, context, request_id, warnings=warnings)
+    response = _as_dict(response)
+    response["ok"] = response.get("ok") is not False
+    response["status"] = response.get("status") or "success"
+    response["request_id"] = request_id
+    response["mode"] = mode
+    response["demo_mode"] = True
+    response["read_only"] = True
+    response["mutation_allowed"] = False
+    response.setdefault("evidence", evidence_cards_from_context(context))
+    response.setdefault("certainty_level", "CONFIRMADO_POR_INDICE_LOCAL")
+    response.setdefault("authority", {
+        "winning_source": "PRISMO_LOCAL_FIRST_READONLY_THEATER",
+        "winning_source_type": "runtime_contract",
+        "precedence_applied": ["current Project Brain", "Learning Store", "read-only contract"],
+        "notes": "Respuesta local-first para evitar bloqueo por proveedor externo."
+    })
+    response.setdefault("risk", {
+        "level": "low",
+        "summary": "Modo local read-only; sin mutación.",
+        "reasons": [],
+        "mitigations": ["Usar Project Brain y evidencia local como fuente primaria."]
+    })
+    response.setdefault("safe_next_step", "Consultar el Visual Stage y Project Brain antes de cualquier plan externo.")
+    response.setdefault("warnings", [])
+    response["warnings"] = _as_list(response.get("warnings")) + warnings
+    response.setdefault("errors", [])
+    response["meta"] = _as_dict(response.get("meta"))
+    response["meta"]["provider"] = "local_project_brain"
+    response["meta"]["schema_version"] = "solid_runtime_v4"
+    response["meta"]["local_first"] = True
+    return response
+
+
 def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) -> dict[str, Any]:
     payload = _as_dict(payload)
-    base = prismo_query_payload(payload, public=public)
     query = _collect_message(payload)
+    base = _prismo_local_readonly_base_response(payload, public=public, query=query)
     base["_prismo_query"] = query
     if public:
         base.setdefault("technical_trace", {})
@@ -803,6 +1147,8 @@ def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) 
     blocks, suppressed_blocks, primary_block_type = _shape_theater_blocks(base, interpretation, raw_blocks)
     render_plan = _build_render_plan(_as_str(base.get("request_id") or _request_id()), interpretation, blocks, primary_block_type=primary_block_type, suppressed_blocks=suppressed_blocks)
     evidence = _evidence_summary([_as_dict(item) for item in _as_list(base.get("evidence"))])
+    visual_data = _visual_data_from_app_live(_as_dict(app_live or {}), evidence, _as_dict(base.get("risk")))
+    answer_channel = _answer_channel_from_visual_data(base, visual_data, primary_block_type)
     chain = _response_memory_chain(payload, base, interpretation, protocols, evidence, render_plan)
     safety = {
         "read_only": True,
@@ -839,6 +1185,9 @@ def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) 
             "summary": _as_str(base.get("direct_answer")),
             "next_best_action": _as_str(base.get("safe_next_step")),
         },
+        "answer_channel": answer_channel,
+        "visual_data": visual_data,
+        "visual_stage": {"contract": "prismo.visual_stage.v2", "primary_block_type": primary_block_type, "required": bool(visual_data.get("has_structured_data")), "no_visual_reason": visual_data.get("no_visual_reason", "")},
         "render_plan": render_plan,
         "blocks": blocks,
         "render_blocks": blocks,
@@ -856,6 +1205,7 @@ def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) 
         "safety": safety,
         "feedback": {"state": "pending", "adapter": "/api/prismo/learning/feedback", "long_term_memory_claimed": False},
     }
+    theater["direct_answer"] = answer_channel.get("short_text") or _as_str(theater.get("direct_answer"))
     theater["meta"] = _as_dict(theater.get("meta"))
     theater["meta"]["theater_adapter"] = "prismo_theater_query_payload"
     theater["meta"]["render_block_count"] = len(blocks)

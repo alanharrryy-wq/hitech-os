@@ -1,4 +1,4 @@
-# PRISMA_CLOUD_COMMAND_CENTER_3160_WRAPPER_V2
+# PRISMA_CLOUD_COMMAND_CENTER_3160_WRAPPER_V4_HASH_SPLAT_SAFE
 param(
   [switch]$Foreground,
   [switch]$Detached,
@@ -17,7 +17,9 @@ function ConvertTo-ForwardArgs {
   foreach ($arg in @($ArgsValue)) {
     if ($null -eq $arg) { continue }
     if ($arg -is [System.Array]) {
-      foreach ($nested in @($arg)) { if ($null -ne $nested) { $items.Add([string]$nested) } }
+      foreach ($nested in @($arg)) {
+        if ($null -ne $nested) { $items.Add([string]$nested) }
+      }
       continue
     }
     $items.Add([string]$arg)
@@ -25,16 +27,40 @@ function ConvertTo-ForwardArgs {
   return [string[]]$items.ToArray()
 }
 
-$forward = @(ConvertTo-ForwardArgs -ArgsValue $ForwardArgs)
 [void]$Code
-$launcherArgs = @("-Profile", "cloud-command-center-3160")
 
-if ($Detached -and $Foreground) { throw "cloud_command_center_3160.ps1 invalido: usa -Foreground o -Detached, no ambos." }
-if ($OpenBrowser -and $NoBrowser) { throw "cloud_command_center_3160.ps1 invalido: usa -OpenBrowser o -NoBrowser, no ambos." }
+if ($Detached -and $Foreground) {
+  throw "cloud_command_center_3160.ps1 invalido: usa -Foreground o -Detached, no ambos."
+}
+if ($OpenBrowser -and $NoBrowser) {
+  throw "cloud_command_center_3160.ps1 invalido: usa -OpenBrowser o -NoBrowser, no ambos."
+}
 
-# Default homologado del 3160: foreground, sin navegador automatico.
-if ($Detached) { $launcherArgs += "-Detached" } else { $launcherArgs += "-Foreground" }
-if ($OpenBrowser) { $launcherArgs += "-OpenBrowser" } else { $launcherArgs += "-NoBrowser" }
+$Launcher = Join-Path $PSScriptRoot "_launcher_common.ps1"
+if (-not (Test-Path -LiteralPath $Launcher)) {
+  throw "No encontre launcher comun requerido: $Launcher"
+}
 
-& (Join-Path $PSScriptRoot "_launcher_common.ps1") @launcherArgs @forward
+# Los parametros nombrados se pasan con hashtable splatting.
+# Los argumentos remanentes se pasan aparte como array posicional.
+$launcherParams = @{
+  Profile = "cloud-command-center-3160"
+}
+
+# Default homologado del 3160: misma terminal, foreground y sin navegador automatico.
+if ($Detached) {
+  $launcherParams["Detached"] = $true
+} else {
+  $launcherParams["Foreground"] = $true
+}
+
+if ($OpenBrowser) {
+  $launcherParams["OpenBrowser"] = $true
+} else {
+  $launcherParams["NoBrowser"] = $true
+}
+
+$forward = @(ConvertTo-ForwardArgs -ArgsValue $ForwardArgs)
+
+& $Launcher @launcherParams @forward
 exit $LASTEXITCODE

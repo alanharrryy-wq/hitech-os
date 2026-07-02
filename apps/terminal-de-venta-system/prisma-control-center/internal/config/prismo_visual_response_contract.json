@@ -1,0 +1,147 @@
+{
+  "kind": "PRISMO_VISUAL_RESPONSE_CONTRACT",
+  "version": "solid_runtime_v4",
+  "task": "PRISMO Stable Runtime: local-first read-only query, client Visual Stage fallback that never goes blank, robust chart renderer, and /api/prismo/query compatibility without provider timeout.",
+  "principles": [
+    "PRISMO is a read-only project brain: observe, understand, remember, explain and visualize; never mutate apps in knowledge mode.",
+    "Text and visuals are separate channels. Text summarizes; Visual Stage proves.",
+    "When Project Brain has structured metrics, a visual block is mandatory; text-only requires explicit no_visual_reason.",
+    "Client fallback visuals must render if the backend response lacks visual blocks but App Live Context has metrics.",
+    "Executive brief, Project Brain detail, technical trace and feedback are collapsed or menu-based by default.",
+    "Learning Store persists semantic, procedural, episodic, visual and operational memory outside repo mutation scope."
+  ],
+  "answer_channel": {
+    "max_chars": 420,
+    "max_lines": 5,
+    "expanded_detail_location": "technical_drawer_or_expandable_detail",
+    "forbidden_default_content": [
+      "full technical trace",
+      "raw evidence dump",
+      "memory trace",
+      "duplicated executive brief"
+    ]
+  },
+  "visual_stage": {
+    "required_when": [
+      "surface_metrics_available",
+      "route_counts_available",
+      "component_counts_available",
+      "css_counts_available",
+      "evidence_counts_available",
+      "delta_counts_available",
+      "risk_matrix_available",
+      "timeline_events_available",
+      "dependency_edges_available",
+      "client_app_live_context_available",
+      "surface_chart_fallback_available"
+    ],
+    "allowed_primary_visuals": [
+      "chart_spec",
+      "surface_matrix",
+      "runtime_map",
+      "route_map",
+      "dependency_graph",
+      "timeline",
+      "diff_view",
+      "risk_matrix",
+      "evidence_board",
+      "table_view",
+      "layer_map"
+    ],
+    "max_primary_visuals": 1,
+    "max_secondary_visuals": 2,
+    "no_visual_contract": {
+      "required_field": "no_visual_reason",
+      "allowed_reasons": [
+        "conversational_only",
+        "insufficient_structured_data",
+        "unsafe_or_stale_evidence",
+        "user_requested_text_only"
+      ]
+    },
+    "client_fallback": "If backend blocks are absent, frontend must build chart_spec + surface_matrix from STATE.appLiveContext when available."
+  },
+  "visual_routing_rules": [
+    {
+      "query_about": "apps or surfaces",
+      "preferred_visual": "chart_spec:bar + surface_matrix"
+    },
+    {
+      "query_about": "routes",
+      "preferred_visual": "route_map or bar chart"
+    },
+    {
+      "query_about": "components",
+      "preferred_visual": "bar chart or table_view"
+    },
+    {
+      "query_about": "css or layers",
+      "preferred_visual": "layer_map or table_view"
+    },
+    {
+      "query_about": "changes or deltas",
+      "preferred_visual": "timeline or delta bar chart"
+    },
+    {
+      "query_about": "evidence",
+      "preferred_visual": "evidence_board"
+    },
+    {
+      "query_about": "failures",
+      "preferred_visual": "risk_matrix + timeline"
+    },
+    {
+      "query_about": "comparison",
+      "preferred_visual": "diff_view or grouped bar chart"
+    },
+    {
+      "query_about": "dependencies",
+      "preferred_visual": "dependency_graph"
+    }
+  ],
+  "memory_learning_contract": {
+    "auto_save_when": [
+      "answer_uses_current_project_brain",
+      "answer_uses_evidence_zip",
+      "answer_generates_visual_data",
+      "answer_derives_repeatable_procedure"
+    ],
+    "memory_kinds": [
+      "semantic",
+      "procedural",
+      "episodic",
+      "visual",
+      "operational"
+    ],
+    "storage_root": "F:\\descargasf\\PRISMO_LEARNING_STORE",
+    "mutation_policy": "read_only_project_observation_only_no_repo_mutation"
+  },
+  "ui_compaction_contract": {
+    "project_brain": "accordion_closed_by_default",
+    "app_live_context": "merged_under_project_brain_or_context_drawer",
+    "executive_brief": "accordion_closed_by_default",
+    "technical_detail": "drawer_closed_by_default",
+    "feedback": "compact_actions_menu",
+    "bottom_feedback": "details_menu_closed_by_default"
+  },
+  "validation_contract": {
+    "must_pass": [
+      "node --check modified JS",
+      "python py_compile modified Python",
+      "duplicate PRISMO script audit",
+      "dynamic DOM contract",
+      "visual response contract",
+      "no new !important",
+      "scope limited to prisma-control-center"
+    ],
+    "runtime_note": "Frontend refresh shows new JS/CSS. Python endpoints load when Control Center backend is restarted by the user."
+  },
+  "runtime_fix_contract": {
+    "query_strategy": "local_first_readonly_theater",
+    "client_timeout_ms": 9000,
+    "visual_stage_blank_allowed": false,
+    "chart_renderer_must_not_throw_on_labels_or_xAxis_without_data": true,
+    "legacy_query_endpoint_routes_to_theater": true,
+    "provider_network_dependency_for_project_brain_answers": false
+  }
+}

@@ -87,24 +87,43 @@ def _read_runtime_bundle(public: bool = False) -> dict[str, Any]:
     current_release = config_root / "current-release.json"
     identity = _read_json(identity_file)
     license_doc = _read_json(license_file)
-    assignment = license_doc.get("assignment") if isinstance(license_doc, dict) else None
+    envelope = license_doc if isinstance(license_doc, dict) and isinstance(license_doc.get("payload"), dict) else None
+    license_payload = envelope.get("payload") if envelope else license_doc
+    assignment = license_payload.get("assignment") if isinstance(license_payload, dict) else None
     if not isinstance(assignment, dict):
         assignment = {}
     license_summary = None
-    if isinstance(license_doc, dict):
+    if isinstance(license_payload, dict):
+        authorized_devices = license_payload.get("authorizedDevices")
+        if not isinstance(authorized_devices, list):
+            authorized_devices = []
         license_summary = {
-            "licenseId": license_doc.get("licenseId") or license_doc.get("id"),
-            "plan": license_doc.get("plan"),
-            "status": license_doc.get("status") or license_doc.get("state"),
-            "validUntil": license_doc.get("validUntil") or license_doc.get("expiresAt"),
+            "licenseId": license_payload.get("licenseId") or license_payload.get("id"),
+            "plan": license_payload.get("plan"),
+            "status": license_payload.get("status") or license_payload.get("state"),
+            "validUntil": license_payload.get("validUntil") or license_payload.get("expiresAt"),
             "assignment": {
-                "clientId": assignment.get("clientId") or license_doc.get("clientId"),
-                "businessId": assignment.get("businessId") or license_doc.get("businessId"),
-                "storeId": assignment.get("storeId") or assignment.get("branchId") or license_doc.get("storeId"),
-                "terminalId": assignment.get("terminalId") or license_doc.get("terminalId"),
-                "deviceId": assignment.get("deviceId") or assignment.get("tabletId") or license_doc.get("deviceId"),
+                "clientId": assignment.get("clientId") or license_payload.get("clientId"),
+                "businessId": assignment.get("businessId") or license_payload.get("businessId"),
+                "storeId": assignment.get("storeId") or assignment.get("branchId") or license_payload.get("storeId"),
+                "terminalId": assignment.get("terminalId") or license_payload.get("terminalId"),
+                "deviceId": assignment.get("deviceId") or assignment.get("tabletId") or license_payload.get("deviceId"),
             },
-            "signaturePresent": bool(license_doc.get("signature") or license_doc.get("signed") or license_doc.get("proof")),
+            "authorizedDeviceCount": len(authorized_devices),
+            "authorizedDevices": [
+                {
+                    "role": item.get("role"),
+                    "deviceId": item.get("deviceId"),
+                    "storeId": item.get("storeId"),
+                    "terminalId": item.get("terminalId"),
+                }
+                for item in authorized_devices
+                if isinstance(item, dict)
+            ],
+            "signedEnvelope": bool(envelope),
+            "keyId": envelope.get("keyId") if envelope else None,
+            "alg": envelope.get("alg") if envelope else None,
+            "signaturePresent": bool((envelope or license_doc).get("signature") if isinstance((envelope or license_doc), dict) else False),
         }
     bundle = {
         "runtimeConfig": _path_status(runtime_path, public),

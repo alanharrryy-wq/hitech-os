@@ -1,4 +1,5 @@
 export * from "./canonical-json";
+export * from "./adlant4-local-issuer";
 export * from "./feature-keys";
 export * from "./feature-resolver";
 export * from "./license-audit-events";

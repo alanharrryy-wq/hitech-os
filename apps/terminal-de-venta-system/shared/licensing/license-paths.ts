@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { buildDevPaths, defaultProgramDataRoot, findTerminalSystemRoot, resolveRuntimeContext } from "../runtime";
+import { buildDevPaths, defaultProgramDataRoot, findTerminalSystemRoot, resolveRuntimeContext, type RuntimeContext } from "../runtime";
 
 export type LicensePathResolution = {
   path: string;
@@ -16,8 +16,8 @@ export function getSystemRoot(): string {
   return path.resolve(process.env.TV_SYSTEM_ROOT || findTerminalSystemRoot(process.cwd()));
 }
 
-export function getLicenseCandidatePaths(): LicensePathResolution[] {
-  const context = resolveRuntimeContext();
+export function getLicenseCandidatePaths(runtimeContext?: RuntimeContext): LicensePathResolution[] {
+  const context = runtimeContext ?? resolveRuntimeContext();
   const source = context.provenance.licenseFile?.source;
   const primarySource: LicensePathResolution["source"] =
     source === "explicit" || source === "env" ? "explicit" :
@@ -66,7 +66,7 @@ export function getLicenseCandidatePaths(): LicensePathResolution[] {
   return candidates;
 }
 
-export function resolveLocalLicensePath(): LicensePathResolution {
-  const candidates = getLicenseCandidatePaths();
+export function resolveLocalLicensePath(runtimeContext?: RuntimeContext): LicensePathResolution {
+  const candidates = getLicenseCandidatePaths(runtimeContext);
   return candidates.find((candidate) => candidate.exists) ?? candidates[0];
 }
