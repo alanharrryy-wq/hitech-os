@@ -3,7 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DatabaseSync } from "node:sqlite";
+import { bootstrapPrismaOriginalCustomerLicense } from "../../../../shared/licensing/adlant4-local-issuer";
 import { getLicenseGovernorSnapshot } from "../../../../shared/licensing/license-governor";
+import { PLAN_CATALOG } from "../../../../shared/licensing/plan-catalog";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../shared/customer/prisma-original-customer";
 import { getMobileDataPlaneConfig } from "../../../mobile/app/src/lib/prisma-app/mobile-data-plane/config";
 import { buildSnapshotPayload } from "../../../mobile/app/src/lib/prisma-app/mobile-data-plane/payload-builders";
@@ -87,6 +89,34 @@ function run(db: Db, sql: string, ...params: unknown[]) {
 
 function json(value: unknown) {
   return JSON.stringify(value);
+}
+
+function withRuntimeConfig<T>(runtimeConfigPath: string, action: () => T): T {
+  const previous = process.env.PRISMA_RUNTIME_CONFIG;
+  process.env.PRISMA_RUNTIME_CONFIG = runtimeConfigPath;
+  try {
+    return action();
+  } finally {
+    if (previous === undefined) {
+      delete process.env.PRISMA_RUNTIME_CONFIG;
+    } else {
+      process.env.PRISMA_RUNTIME_CONFIG = previous;
+    }
+  }
+}
+
+function assertGovernorAllows(
+  snapshot: ReturnType<typeof getLicenseGovernorSnapshot>,
+  label: string,
+  expectedDecisionCount: number
+) {
+  assert(snapshot.status.state === "active", `${label} license state is not active: ${snapshot.status.state}`);
+  assert(snapshot.status.plan === "TABLET_PC_MANAGED", `${label} license plan is not TABLET_PC_MANAGED: ${snapshot.status.plan}`);
+  assert(snapshot.status.assignmentState === "assigned", `${label} license is not assigned: ${snapshot.status.assignmentState}`);
+  assert(snapshot.operationalDecision === "allow", `${label} operational decision is not allow: ${snapshot.operationalDecision}`);
+  assert(!snapshot.denialReason, `${label} license has denial reason: ${snapshot.denialReason}`);
+  assert(snapshot.decisions.length === expectedDecisionCount, `${label} governor returned unexpected decision count.`);
+  assert(snapshot.decisions.every((decision) => decision.allowed), `${label} governor denied at least one feature.`);
 }
 
 function isoDate(value: unknown) {
@@ -209,12 +239,12 @@ function writePcOperationalContext(db: Db, occurredAt: string) {
   ensureBusinessStoreTerminal(db);
   ensureProduct(db);
   for (const device of [
-    { id: "heartbeat_prisma_pc_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.pcDeviceId, source: "pc", surface: "pc", runtimeMode: "backoffice", appVersion: "e2e", licenseStatus: "pending_activation", syncStatus: "synced", health: "healthy", outboxCount: 0 },
-    { id: "heartbeat_prisma_tablet_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId, source: "tablet", surface: "tablet", runtimeMode: "local-pos", appVersion: "e2e", licenseStatus: "pending_activation", syncStatus: "synced", health: "healthy", outboxCount: 0 },
-    { id: "heartbeat_prisma_mobile_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId, source: "mobile", surface: "mobile", runtimeMode: "owner-mobile", appVersion: "e2e", licenseStatus: "pending_activation", syncStatus: "synced", health: "healthy", outboxCount: 0 }
+    { id: "heartbeat_prisma_pc_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.pcDeviceId, source: "pc", surface: "pc", runtimeMode: "backoffice", appVersion: "e2e", licenseStatus: "active_local_signed", syncStatus: "synced", health: "healthy", outboxCount: 0 },
+    { id: "heartbeat_prisma_tablet_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId, source: "tablet", surface: "tablet", runtimeMode: "local-pos", appVersion: "e2e", licenseStatus: "active_local_signed", syncStatus: "synced", health: "healthy", outboxCount: 0 },
+    { id: "heartbeat_prisma_mobile_e2e", deviceId: PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId, source: "mobile", surface: "mobile", runtimeMode: "owner-mobile", appVersion: "e2e", licenseStatus: "active_local_signed", syncStatus: "synced", health: "healthy", outboxCount: 0 }
   ]) {
-    run(db, "INSERT OR IGNORE INTO DeviceHeartbeat(id,businessId,deviceId,source,surface,runtimeMode,appVersion,schemaVersion,licenseStatus,syncStatus,health,status,outboxCount,lastSaleAt,lastDiagnosticAt,lastSeenAt,observedAt,metadataJson,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", device.id, PRISMA_ORIGINAL_CUSTOMER.businessId, device.deviceId, device.source, device.surface, device.runtimeMode, device.appVersion, "1.0.0", device.licenseStatus, device.syncStatus, device.health, "active", device.outboxCount, occurredAt, occurredAt, occurredAt, occurredAt, json({ customer: PRISMA_ORIGINAL_CUSTOMER.displayName, licenseId: PRISMA_ORIGINAL_CUSTOMER.licenseId, authorization: "pending_activation" }), occurredAt, occurredAt);
-    run(db, "UPDATE DeviceHeartbeat SET licenseStatus=?, syncStatus=?, health=?, status=?, outboxCount=?, lastSaleAt=?, lastDiagnosticAt=?, lastSeenAt=?, observedAt=?, metadataJson=?, updatedAt=? WHERE id=? AND businessId=?", device.licenseStatus, device.syncStatus, device.health, "active", device.outboxCount, occurredAt, occurredAt, occurredAt, occurredAt, json({ customer: PRISMA_ORIGINAL_CUSTOMER.displayName, licenseId: PRISMA_ORIGINAL_CUSTOMER.licenseId, authorization: "pending_activation" }), occurredAt, device.id, PRISMA_ORIGINAL_CUSTOMER.businessId);
+    run(db, "INSERT OR IGNORE INTO DeviceHeartbeat(id,businessId,deviceId,source,surface,runtimeMode,appVersion,schemaVersion,licenseStatus,syncStatus,health,status,outboxCount,lastSaleAt,lastDiagnosticAt,lastSeenAt,observedAt,metadataJson,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", device.id, PRISMA_ORIGINAL_CUSTOMER.businessId, device.deviceId, device.source, device.surface, device.runtimeMode, device.appVersion, "1.0.0", device.licenseStatus, device.syncStatus, device.health, "active", device.outboxCount, occurredAt, occurredAt, occurredAt, occurredAt, json({ customer: PRISMA_ORIGINAL_CUSTOMER.displayName, licenseId: PRISMA_ORIGINAL_CUSTOMER.licenseId, authorization: "signed_local" }), occurredAt, occurredAt);
+    run(db, "UPDATE DeviceHeartbeat SET licenseStatus=?, syncStatus=?, health=?, status=?, outboxCount=?, lastSaleAt=?, lastDiagnosticAt=?, lastSeenAt=?, observedAt=?, metadataJson=?, updatedAt=? WHERE id=? AND businessId=?", device.licenseStatus, device.syncStatus, device.health, "active", device.outboxCount, occurredAt, occurredAt, occurredAt, occurredAt, json({ customer: PRISMA_ORIGINAL_CUSTOMER.displayName, licenseId: PRISMA_ORIGINAL_CUSTOMER.licenseId, authorization: "signed_local" }), occurredAt, device.id, PRISMA_ORIGINAL_CUSTOMER.businessId);
   }
   run(db, "INSERT OR IGNORE INTO DataSourceFreshness(id,businessId,source,deviceId,surface,status,confidence,freshnessSeconds,latencyMs,errorCount,lastSeenAt,lastEventAt,lastCheckpointAt,lastHeartbeatAt,lastError,warningsJson,metadataJson,observedAt,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", "freshness_prisma_e2e_sale", PRISMA_ORIGINAL_CUSTOMER.businessId, "tablet-pos", PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId, "tablet", "ok", 1, 0, 0, 0, occurredAt, occurredAt, occurredAt, occurredAt, null, json([]), json({ saleReference: sale.folio, customer: PRISMA_ORIGINAL_CUSTOMER.displayName }), occurredAt, occurredAt, occurredAt);
   run(db, "UPDATE DataSourceFreshness SET status=?, confidence=?, freshnessSeconds=?, latencyMs=?, errorCount=?, lastSeenAt=?, lastEventAt=?, lastCheckpointAt=?, lastHeartbeatAt=?, warningsJson=?, metadataJson=?, observedAt=?, updatedAt=? WHERE id=? AND businessId=?", "ok", 1, 0, 0, 0, occurredAt, occurredAt, occurredAt, occurredAt, json([]), json({ saleReference: sale.folio, customer: PRISMA_ORIGINAL_CUSTOMER.displayName }), occurredAt, occurredAt, "freshness_prisma_e2e_sale", PRISMA_ORIGINAL_CUSTOMER.businessId);
@@ -223,12 +253,14 @@ function writePcOperationalContext(db: Db, occurredAt: string) {
 }
 
 function seedShellLab(db: Db, occurredAt: string) {
-  run(db, "INSERT OR IGNORE INTO LicensePlan(id,code,label,tier,maxDevices,maxBranches,active,modules,rules,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?)", "plan_business", "business", "Business", 100, 5, 1, 1, json(["pos", "inventory", "reports", "tickets", "cash_cuts"]), json({ canonicalLicenseEngine: "shared/licensing" }), occurredAt, occurredAt);
-  run(db, "UPDATE LicensePlan SET label=?, maxDevices=?, maxBranches=?, active=1, modules=?, rules=?, updatedAt=? WHERE code=?", "Business", 5, 1, json(["pos", "inventory", "reports", "tickets", "cash_cuts"]), json({ canonicalLicenseEngine: "shared/licensing" }), occurredAt, "business");
-  run(db, "INSERT OR IGNORE INTO CommandClient(id,internalId,humanCode,displayName,legalName,status,verticalCode,subverticalCode,sizeCode,operationCode,cityZoneCode,catalogOther,cloudTenantId,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", "client_prisma_original_customer", "client_prisma_original_customer", "CLI-PRISMA-ORIGINAL", PRISMA_ORIGINAL_CUSTOMER.displayName, PRISMA_ORIGINAL_CUSTOMER.displayName, "pending_cloud_activation", "abarrotes", "minisuper", "small", "counter", "mexico_city", json({ businessId: PRISMA_ORIGINAL_CUSTOMER.businessId, storeId: PRISMA_ORIGINAL_CUSTOMER.storeId }), PRISMA_ORIGINAL_CUSTOMER.tenantId, occurredAt, occurredAt);
-  run(db, "UPDATE CommandClient SET displayName=?, legalName=?, status=?, catalogOther=?, cloudTenantId=?, updatedAt=? WHERE id=?", PRISMA_ORIGINAL_CUSTOMER.displayName, PRISMA_ORIGINAL_CUSTOMER.displayName, "pending_cloud_activation", json({ businessId: PRISMA_ORIGINAL_CUSTOMER.businessId, storeId: PRISMA_ORIGINAL_CUSTOMER.storeId }), PRISMA_ORIGINAL_CUSTOMER.tenantId, occurredAt, "client_prisma_original_customer");
-  run(db, "INSERT OR IGNORE INTO LicenseAssignment(id,internalId,humanCode,clientId,planId,status,modules,limits,cloudLicenseId,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?)", "license_prisma_original_customer", "license_prisma_original_customer", "LIC-PRISMA-ORIGINAL", "client_prisma_original_customer", "plan_business", "pending_cloud_activation", json(["pos", "inventory", "reports", "tickets", "cash_cuts"]), json({ maxDevices: 5, maxBranches: 1 }), PRISMA_ORIGINAL_CUSTOMER.licenseId, occurredAt, occurredAt);
-  run(db, "UPDATE LicenseAssignment SET status=?, modules=?, limits=?, cloudLicenseId=?, updatedAt=? WHERE id=?", "pending_cloud_activation", json(["pos", "inventory", "reports", "tickets", "cash_cuts"]), json({ maxDevices: 5, maxBranches: 1 }), PRISMA_ORIGINAL_CUSTOMER.licenseId, occurredAt, "license_prisma_original_customer");
+  const managedPlan = PLAN_CATALOG.TABLET_PC_MANAGED;
+  const managedFeatures = [...managedPlan.features];
+  run(db, "INSERT OR IGNORE INTO LicensePlan(id,code,label,tier,maxDevices,maxBranches,active,modules,rules,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?)", "plan_TABLET_PC_MANAGED", "TABLET_PC_MANAGED", managedPlan.label, managedPlan.rank, 4, 1, 1, json(managedFeatures), json({ canonicalLicenseEngine: "shared/licensing", canonicalPlan: managedPlan.plan }), occurredAt, occurredAt);
+  run(db, "UPDATE LicensePlan SET label=?, maxDevices=?, maxBranches=?, active=1, modules=?, rules=?, updatedAt=? WHERE code=?", managedPlan.label, 4, 1, json(managedFeatures), json({ canonicalLicenseEngine: "shared/licensing", canonicalPlan: managedPlan.plan }), occurredAt, "TABLET_PC_MANAGED");
+  run(db, "INSERT OR IGNORE INTO CommandClient(id,internalId,humanCode,displayName,legalName,status,verticalCode,subverticalCode,sizeCode,operationCode,cityZoneCode,catalogOther,cloudTenantId,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", "client_prisma_original_customer", "client_prisma_original_customer", "CLI-PRISMA-ORIGINAL", PRISMA_ORIGINAL_CUSTOMER.displayName, PRISMA_ORIGINAL_CUSTOMER.displayName, "active_local_signed", "abarrotes", "minisuper", "small", "counter", "mexico_city", json({ businessId: PRISMA_ORIGINAL_CUSTOMER.businessId, storeId: PRISMA_ORIGINAL_CUSTOMER.storeId }), PRISMA_ORIGINAL_CUSTOMER.tenantId, occurredAt, occurredAt);
+  run(db, "UPDATE CommandClient SET displayName=?, legalName=?, status=?, catalogOther=?, cloudTenantId=?, updatedAt=? WHERE id=?", PRISMA_ORIGINAL_CUSTOMER.displayName, PRISMA_ORIGINAL_CUSTOMER.displayName, "active_local_signed", json({ businessId: PRISMA_ORIGINAL_CUSTOMER.businessId, storeId: PRISMA_ORIGINAL_CUSTOMER.storeId }), PRISMA_ORIGINAL_CUSTOMER.tenantId, occurredAt, "client_prisma_original_customer");
+  run(db, "INSERT OR IGNORE INTO LicenseAssignment(id,internalId,humanCode,clientId,planId,status,modules,limits,cloudLicenseId,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?)", "license_prisma_original_customer", "license_prisma_original_customer", "LIC-PRISMA-ORIGINAL", "client_prisma_original_customer", "plan_TABLET_PC_MANAGED", "active_local_signed", json(managedFeatures), json({ maxDevices: 4, maxBranches: 1, maxStores: 1 }), PRISMA_ORIGINAL_CUSTOMER.licenseId, occurredAt, occurredAt);
+  run(db, "UPDATE LicenseAssignment SET planId=?, status=?, modules=?, limits=?, cloudLicenseId=?, updatedAt=? WHERE id=?", "plan_TABLET_PC_MANAGED", "active_local_signed", json(managedFeatures), json({ maxDevices: 4, maxBranches: 1, maxStores: 1 }), PRISMA_ORIGINAL_CUSTOMER.licenseId, occurredAt, "license_prisma_original_customer");
   for (const device of [
     ["managed_pc_prisma_original_customer_001", "DEV-PRISMA-PC-001", "pc_register", "pc_backoffice", "REG-PRISMA-PC-001", PRISMA_ORIGINAL_CUSTOMER.pcDeviceId],
     ["managed_tablet_prisma_original_customer_001", "DEV-PRISMA-TAB-001", "tablet_pos", "tablet_pos", "REG-PRISMA-TAB-001", PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId],
@@ -361,6 +393,7 @@ function mobileStateFromPc(row: NonNullable<ReturnType<typeof pcEvidence>["sale"
 }
 
 async function main() {
+  const activation = bootstrapPrismaOriginalCustomerLicense();
   const backups = [
     backupFile(pcDbPath, "pc-canonical"),
     backupFile(tabletDbPath, "tablet-pos"),
@@ -449,8 +482,12 @@ async function main() {
     assert(mobileSnapshot.salesToday.tickets >= 1, "Mobile snapshot does not show the synchronized sale ticket.");
     assert(mobileSnapshot.salesToday.totalSalesCents >= sale.totalCents, "Mobile snapshot does not include the test sale total.");
 
-    const governorPc = getLicenseGovernorSnapshot({ surface: "pc", featureKeys: ["pc.open", "sync.managed"] });
-    const governorTablet = getLicenseGovernorSnapshot({ surface: "tablet", featureKeys: ["pos.sale.complete", "event.outbox.view"] });
+    const governorPc = withRuntimeConfig(activation.runtimeConfigs.pc, () => getLicenseGovernorSnapshot({ surface: "pc", featureKeys: ["pc.open", "sync.managed"] }));
+    const governorTablet = withRuntimeConfig(activation.runtimeConfigs.tablet, () => getLicenseGovernorSnapshot({ surface: "tablet", featureKeys: ["pos.sale.complete", "event.outbox.view"] }));
+    const governorMobile = withRuntimeConfig(activation.runtimeConfigs.mobile, () => getLicenseGovernorSnapshot({ surface: "mobile", featureKeys: [] }));
+    assertGovernorAllows(governorPc, "PC", 2);
+    assertGovernorAllows(governorTablet, "Tablet", 2);
+    assertGovernorAllows(governorMobile, "Mobile", 0);
 
     const evidence = {
       ok: true,
@@ -464,6 +501,19 @@ async function main() {
         shellLab: shellLabDbPath
       },
       backups,
+      activation: {
+        keyId: activation.keyId,
+        licenseHash: activation.licenseHash,
+        signedLicensePath: activation.signedLicensePath,
+        publicKeyPath: activation.publicKeyPath,
+        receiptPath: activation.receiptPath,
+        runtimeConfigs: activation.runtimeConfigs,
+        deviceIdentities: activation.deviceIdentities,
+        privateKeyPath: "<outside-repo-redacted>",
+        plan: activation.envelope.payload.plan,
+        customerId: activation.envelope.payload.customerId,
+        authorizedDevices: activation.envelope.payload.authorizedDevices
+      },
       rollback: {
         restoreBackups: backups.map((item) => `Copy ${item.backup} back to ${item.source}`),
         syntheticRows: {
@@ -503,6 +553,14 @@ async function main() {
           denialReason: governorTablet.denialReason,
           canUseLocalPos: governorTablet.canUseLocalPos,
           decisions: governorTablet.decisions.map((decision) => ({ key: decision.key, allowed: decision.allowed, reason: decision.reason }))
+        },
+        mobile: {
+          surface: governorMobile.surface,
+          state: governorMobile.status.state,
+          plan: governorMobile.status.plan,
+          operationalDecision: governorMobile.operationalDecision,
+          denialReason: governorMobile.denialReason,
+          assignmentState: governorMobile.status.assignmentState
         }
       },
       uiEvidence: {

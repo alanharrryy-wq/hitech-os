@@ -3,7 +3,7 @@ export const PRISMA_ORIGINAL_CUSTOMER = {
   customerId: "cust_prisma_original_customer",
   tenantId: "tenant_prisma_original_customer",
   licenseId: "lic_prisma_original_customer_001",
-  planLabel: "Business",
+  planLabel: "Tablet + PC Managed",
   businessId: "biz_78b3c840796a4a4dad",
   storeId: "store_00728649f3804a9e82",
   storeName: "Sucursal principal",

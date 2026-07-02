@@ -6,7 +6,8 @@ export type LicenseSchemaResult =
 
 const VALID_PLANS = new Set(["TABLET_SOLO", "TABLET_PRO", "TABLET_PC_MANAGED", "DEVELOPMENT"]);
 const VALID_STATES = new Set(["active", "suspended", "revoked", "development"]);
-const VALID_ASSIGNMENT_STATES = new Set(["assigned", "unassigned", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit", "unknown"]);
+const VALID_ASSIGNMENT_STATES = new Set(["assigned", "unassigned", "wrong_customer", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit", "unknown"]);
+const VALID_DEVICE_ROLES = new Set(["pc", "tablet", "mobile", "control", "shared"]);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -34,6 +35,22 @@ export function validateLicenseDocument(value: unknown): LicenseSchemaResult {
   if ("deviceId" in value && value.deviceId !== undefined && typeof value.deviceId !== "string") issues.push("deviceId must be a string when present");
   if ("tabletId" in value && value.tabletId !== undefined && typeof value.tabletId !== "string") issues.push("tabletId must be a string when present");
   if ("terminalId" in value && value.terminalId !== undefined && typeof value.terminalId !== "string") issues.push("terminalId must be a string when present");
+  if ("authorizedDevices" in value && value.authorizedDevices !== undefined) {
+    if (!Array.isArray(value.authorizedDevices)) {
+      issues.push("authorizedDevices must be an array when present");
+    } else {
+      for (const [index, device] of value.authorizedDevices.entries()) {
+        if (!isRecord(device)) {
+          issues.push(`authorizedDevices[${index}] must be an object`);
+          continue;
+        }
+        if (typeof device.deviceId !== "string" || !device.deviceId.trim()) issues.push(`authorizedDevices[${index}].deviceId must be a non-empty string`);
+        if (typeof device.role !== "string" || !VALID_DEVICE_ROLES.has(device.role)) issues.push(`authorizedDevices[${index}].role is not supported`);
+        if ("terminalId" in device && device.terminalId !== undefined && typeof device.terminalId !== "string") issues.push(`authorizedDevices[${index}].terminalId must be a string when present`);
+        if ("storeId" in device && device.storeId !== undefined && typeof device.storeId !== "string") issues.push(`authorizedDevices[${index}].storeId must be a string when present`);
+      }
+    }
+  }
   if ("assignmentState" in value && value.assignmentState !== undefined && (typeof value.assignmentState !== "string" || !VALID_ASSIGNMENT_STATES.has(value.assignmentState))) issues.push("assignmentState is not supported");
   if (typeof value.plan !== "string" || !VALID_PLANS.has(value.plan)) issues.push("plan is not supported");
   if (typeof value.state !== "string" || !VALID_STATES.has(value.state)) issues.push("state is not supported");

@@ -1,0 +1,66 @@
+{
+  "authority": {
+    "source": [
+      "surfverdict 3006.md",
+      "automesh mesh1 3006 0635 result.zip"
+    ],
+    "head": "e3086d89820a34ae93d2c6df834295ffa34b01f5",
+    "includedSurfaces": [
+      "tablet",
+      "pc",
+      "chart_lab"
+    ],
+    "excludedSurfaces": [
+      "mobile",
+      "shared_ui"
+    ],
+    "phase": "safe-contract-cleanup-no-runtime-menu-wiring"
+  },
+  "pc": {
+    "finalSurfaces": [
+      "Hoy",
+      "Inventario",
+      "Compras y proveedores",
+      "Ventas y caja",
+      "Sync y Tablet Ops",
+      "Reportes y BI",
+      "Sistema y calidad",
+      "Ayuda"
+    ],
+    "finalMenuRoutes": [
+      "/dashboard",
+      "/catalog",
+      "/purchasing",
+      "/proveedores",
+      "/sales-control",
+      "/sync",
+      "/devices",
+      "/exportables",
+      "/prisma-insights",
+      "/settings",
+      "/glosario"
+    ],
+    "hiddenFromFinalUser": [
+      "/laboratorio-pc",
+      "/laboratorio-pc/chart-lab",
+      "/laboratorio-pc/dashboard-governor",
+      "/laboratorio-pc/referencia-visual",
+      "/laboratorio-pc/referencia-visual/liquid-glass",
+      "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "/referencia-visual",
+      "/referencia-visual/liquid-glass",
+      "/referencia-visual/liquid-glass-capsules",
+      "/prisma-insights/chart-lab",
+      "/gobierno",
+      "/filtros-avanzados",
+      "/filtros-fecha"
+    ],
+    "aliases": {
+      "/": "/dashboard",
+      "/referencia-visual": "/laboratorio-pc/referencia-visual",
+      "/referencia-visual/liquid-glass": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "/referencia-visual/liquid-glass-capsules": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "/prisma-insights/chart-lab": "/laboratorio-pc/chart-lab"
+    }
+  }
+}

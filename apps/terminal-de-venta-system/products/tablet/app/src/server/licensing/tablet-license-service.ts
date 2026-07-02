@@ -1,4 +1,4 @@
-import { FEATURE_KEYS, getFeatureResolution, getLicenseGovernorSnapshot } from "../../../../../../shared/licensing";
+import { FEATURE_KEYS, getLicenseGovernorSnapshot } from "../../../../../../shared/licensing";
 import type { FeatureResolution, LicenseGovernorSnapshot, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
 
 export function getTabletLicenseStatus(): NormalizedLicenseStatus {
@@ -6,11 +6,11 @@ export function getTabletLicenseStatus(): NormalizedLicenseStatus {
 }
 
 export function resolveTabletFeature(featureKey: string): FeatureResolution {
-  return getFeatureResolution(featureKey);
+  return getLicenseGovernorSnapshot({ surface: "tablet", featureKeys: [featureKey] }).decisions[0];
 }
 
 export function getTabletFeatureList(): FeatureResolution[] {
-  return getTabletFeatureKeys().map((key) => resolveTabletFeature(key));
+  return getTabletLicenseGovernor().decisions;
 }
 
 export function getTabletLicenseGovernor(): LicenseGovernorSnapshot {

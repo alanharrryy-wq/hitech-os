@@ -19,7 +19,7 @@ export type NormalizedLicenseState =
 
 export type LicenseSource = "local_file" | "dev_file" | "fallback_policy" | "missing_license" | "invalid_license";
 
-export type LicenseSurface = "tablet" | "pc" | "shared";
+export type LicenseSurface = "tablet" | "pc" | "mobile" | "control" | "shared";
 
 export type LicenseFeatureSource = "license" | "fallback_policy" | "default" | "missing_license" | "invalid_license";
 
@@ -28,6 +28,7 @@ export type LicenseEnforcement = "allow" | "warn" | "soft_deny" | "hard_deny";
 export type LicenseAssignmentState =
   | "assigned"
   | "unassigned"
+  | "wrong_customer"
   | "wrong_business"
   | "wrong_store"
   | "wrong_device"
@@ -44,6 +45,7 @@ export type LicenseDenialReason =
   | "license_suspended"
   | "license_revoked"
   | "device_unassigned"
+  | "wrong_customer"
   | "wrong_business"
   | "wrong_store"
   | "wrong_device"
@@ -74,6 +76,7 @@ export type LicenseDocument = {
   deviceId?: string;
   tabletId?: string;
   terminalId?: string;
+  authorizedDevices?: AuthorizedLicenseDevice[];
   assignmentState?: LicenseAssignmentState;
   plan: Exclude<LicensePlan, "TABLET_SOLO_FALLBACK">;
   state: RawLicenseState;
@@ -87,6 +90,13 @@ export type LicenseDocument = {
   capabilities?: Record<string, boolean>;
   limits?: Record<string, number>;
   notes?: string[];
+};
+
+export type AuthorizedLicenseDevice = {
+  deviceId: string;
+  role: "pc" | "tablet" | "mobile" | "control" | "shared";
+  terminalId?: string;
+  storeId?: string;
 };
 
 export type LicenseWarning = {
@@ -105,6 +115,7 @@ export type NormalizedLicenseStatus = {
   deviceId: string | null;
   tabletId: string | null;
   terminalId: string | null;
+  authorizedDevices: AuthorizedLicenseDevice[];
   licenseId: string | null;
   assignmentState: LicenseAssignmentState;
   validFrom: string | null;

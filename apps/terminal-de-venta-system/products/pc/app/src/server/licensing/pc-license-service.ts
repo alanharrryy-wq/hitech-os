@@ -1,15 +1,22 @@
-import { FEATURE_KEYS, getFeatureResolution, getLicenseStatus } from "../../../../../../shared/licensing";
-import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
+import { FEATURE_KEYS, getLicenseGovernorSnapshot } from "../../../../../../shared/licensing";
+import type { FeatureResolution, LicenseGovernorSnapshot, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
+
+function getPcFeatureKeys(): string[] {
+  return FEATURE_KEYS.filter((key) => key.startsWith("pc.") || key.startsWith("sync.") || key.startsWith("catalog.") || key.startsWith("stock.") || key.startsWith("inventory.") || key.startsWith("purchase.") || key.startsWith("receiving.") || key.startsWith("replenishment.") || key.startsWith("audit.") || key.startsWith("multi.") || key.startsWith("forecast.") || key.startsWith("advanced."));
+}
+
+export function getPcLicenseGovernor(): LicenseGovernorSnapshot {
+  return getLicenseGovernorSnapshot({ surface: "pc", featureKeys: getPcFeatureKeys() });
+}
 
 export function getPcLicenseStatus(): NormalizedLicenseStatus {
-  return getLicenseStatus();
+  return getPcLicenseGovernor().status;
 }
 
 export function resolvePcFeature(featureKey: string): FeatureResolution {
-  return getFeatureResolution(featureKey);
+  return getLicenseGovernorSnapshot({ surface: "pc", featureKeys: [featureKey] }).decisions[0];
 }
 
 export function getPcFeatureList(): FeatureResolution[] {
-  const keys = FEATURE_KEYS.filter((key) => key.startsWith("pc.") || key.startsWith("sync.") || key.startsWith("catalog.") || key.startsWith("stock.") || key.startsWith("inventory.") || key.startsWith("purchase.") || key.startsWith("receiving.") || key.startsWith("replenishment.") || key.startsWith("audit.") || key.startsWith("multi.") || key.startsWith("forecast.") || key.startsWith("advanced."));
-  return keys.map((key) => resolvePcFeature(key));
+  return getPcLicenseGovernor().decisions;
 }

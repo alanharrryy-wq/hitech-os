@@ -59,7 +59,7 @@ export function resolveFeature(status: NormalizedLicenseStatus, key: string): Fe
     return deniedResolution(status, key, "La licencia local no está disponible o es inválida. Funciones avanzadas desactivadas.");
   }
 
-  if (["unassigned", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit"].includes(status.assignmentState)) {
+  if (["unassigned", "wrong_customer", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit"].includes(status.assignmentState)) {
     return deniedResolution(status, key, "Equipo no asignado correctamente a esta licencia. Revisa cliente, negocio, tienda y terminal.", "hard_deny");
   }
 
