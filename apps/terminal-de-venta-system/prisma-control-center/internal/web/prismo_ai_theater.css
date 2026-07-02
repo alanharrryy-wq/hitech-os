@@ -721,3 +721,35 @@ body[data-prisma-interface="license"] #subtitle {
   border-color: color-mix(in srgb,var(--accent) 34%,var(--line));
   box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.18), 0 0 0 1px color-mix(in srgb,var(--accent) 10%, transparent);
 }
+
+
+/* PRISMO Brain100 · usable read-only intelligence and roomy visual stage */
+#prismo-console .prismo-stage-heading{display:none}
+#prismo-console .prismo-visual-stage{min-height:0; padding:0; border:0; background:transparent; display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start; overflow:visible}
+#prismo-console .prismo-render-card{min-width:0; overflow:visible; align-self:start}
+#prismo-console .prismo-render-card[data-layout="full"]{grid-column:1 / -1}
+#prismo-console .prismo-render-card[data-layout="third"]{grid-column:auto}
+#prismo-console .prismo-answer-channel{gap:14px; max-height:none; overflow:visible}
+#prismo-console .prismo-answer-channel h3{font-size:18px; letter-spacing:.02em}
+#prismo-console .prismo-answer-main{display:grid; gap:10px; max-width:min(96ch,100%); font-size:15px; line-height:1.56; white-space:normal}
+#prismo-console .prismo-answer-main p{margin:0}
+#prismo-console .prismo-answer-main ul{margin:0; padding-left:18px; display:grid; gap:6px}
+#prismo-console .prismo-answer-detail{display:grid; gap:9px; margin:0 13px 13px; color:var(--text); line-height:1.52}
+#prismo-console .prismo-answer-detail p{margin:0}
+#prismo-console .prismo-compact-empty{padding:10px 12px; min-height:auto; opacity:.72}
+#prismo-console .prismo-chart-card[data-layout="full"]{min-height:auto}
+#prismo-console .prismo-chart-shell{gap:14px}
+#prismo-console .prismo-svg-chart{overflow-x:auto; overflow-y:hidden; padding:14px}
+#prismo-console .prismo-svg-chart svg{min-width:760px; min-height:320px}
+#prismo-console .prismo-surface-matrix-wide{gap:10px}
+#prismo-console .prismo-surface-row{grid-template-columns:minmax(120px,1.25fr) repeat(4,minmax(70px,.55fr)) minmax(82px,.55fr); font-size:12px}
+#prismo-console .prismo-surface-row strong{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+#prismo-console .prismo-graph-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
+#prismo-console .prismo-flow-node{min-height:74px; display:grid; align-content:start; gap:5px}
+#prismo-console .prismo-timeline-readable{gap:12px}
+#prismo-console .prismo-timeline-readable .prismo-timeline-time{display:grid; gap:2px; min-width:88px}
+#prismo-console .prismo-timeline-readable .prismo-timeline-time b{width:24px; height:24px; display:grid; place-items:center; border-radius:999px; border:1px solid var(--line); color:var(--text)}
+#prismo-console .prismo-table-scroll{max-height:520px; overflow:auto; padding-bottom:2px}
+#prismo-console .prismo-data-table td{vertical-align:top; line-height:1.35}
+#prismo-console .prismo-feedback-dock.prismo-actions-menu{display:none}
+@media (max-width:1180px){#prismo-console .prismo-visual-stage{grid-template-columns:1fr}#prismo-console .prismo-svg-chart svg{min-width:680px}#prismo-console .prismo-surface-row{grid-template-columns:1fr 1fr 1fr}}
