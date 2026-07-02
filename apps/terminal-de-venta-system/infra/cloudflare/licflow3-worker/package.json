@@ -1,0 +1,14 @@
+{
+  "name": "@hitech/prisma-licflow3-cloud-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/worker.js",
+    "wrangler:version": "pnpm exec wrangler --version",
+    "wrangler:whoami": "pnpm exec wrangler whoami"
+  },
+  "devDependencies": {
+    "wrangler": "4.93.0"
+  }
+}
