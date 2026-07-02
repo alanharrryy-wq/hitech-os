@@ -1,0 +1,848 @@
+{
+  "kind": "PRISMO_BRAIN100_IMPROVEMENTS",
+  "version": "brain100_readonly_v1",
+  "implemented_count": 120,
+  "mutation_policy": "read_only_project_observation_only",
+  "improvements": [
+    {
+      "id": "I001",
+      "implemented": true,
+      "category": "visual",
+      "description": "Query intent scoring por palabras clave ES/EN y tolerancia a escritura sin e",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I002",
+      "implemented": true,
+      "category": "memory",
+      "description": "Respuesta razonada sin límite artificial de 5 líneas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I003",
+      "implemented": true,
+      "category": "safety",
+      "description": "Respuesta con secciones Qué vi / Lectura / Siguiente pregunta cuando aporta valor",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I004",
+      "implemented": true,
+      "category": "ux",
+      "description": "Separación real de canal textual y canal visual",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I005",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Clasificación de consulta sobre apps/superficies",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I006",
+      "implemented": true,
+      "category": "visual",
+      "description": "Clasificación de consulta sobre rutas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I007",
+      "implemented": true,
+      "category": "memory",
+      "description": "Clasificación de consulta sobre componentes",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I008",
+      "implemented": true,
+      "category": "safety",
+      "description": "Clasificación de consulta sobre CSS/capas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I009",
+      "implemented": true,
+      "category": "ux",
+      "description": "Clasificación de consulta sobre evidencia/result/fail ZIPs",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I010",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Clasificación de consulta sobre deltas/cambios",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I011",
+      "implemented": true,
+      "category": "visual",
+      "description": "Clasificación de consulta sobre riesgos/gobernanza",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I012",
+      "implemented": true,
+      "category": "memory",
+      "description": "Clasificación de consulta sobre memorias",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I013",
+      "implemented": true,
+      "category": "safety",
+      "description": "Clasificación de consulta sobre terminar/desarrollar PRISMA",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I014",
+      "implemented": true,
+      "category": "ux",
+      "description": "Priorización visual por intención detectada",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I015",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Visual Stage obligatorio cuando hay métricas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I016",
+      "implemented": true,
+      "category": "visual",
+      "description": "Fallback visual cliente cuando backend no manda bloques",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I017",
+      "implemented": true,
+      "category": "memory",
+      "description": "Surface chart con data/xKey canónico",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I018",
+      "implemented": true,
+      "category": "safety",
+      "description": "Surface matrix tabular con files/routes/components/css/docs",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I019",
+      "implemented": true,
+      "category": "ux",
+      "description": "Delta timeline con baseline y cambios",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I020",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Evidence chart con ZIPs/latest result/latest fail",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I021",
+      "implemented": true,
+      "category": "visual",
+      "description": "Memory table con confianza por capa",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I022",
+      "implemented": true,
+      "category": "memory",
+      "description": "Route map desde rutas sampleadas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I023",
+      "implemented": true,
+      "category": "safety",
+      "description": "Layer investigator desde señales CSS",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I024",
+      "implemented": true,
+      "category": "ux",
+      "description": "Dependency graph de superficies y rutas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I025",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Checklist de capacidades activas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I026",
+      "implemented": true,
+      "category": "visual",
+      "description": "Risk matrix read-only con mitigaciones",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I027",
+      "implemented": true,
+      "category": "memory",
+      "description": "Table view para datos densos",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I028",
+      "implemented": true,
+      "category": "safety",
+      "description": "Render de chart sin romper por labels/xAxis",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I029",
+      "implemented": true,
+      "category": "ux",
+      "description": "Render de chart con series por array data",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I030",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Render de chart con series por dataKey",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I031",
+      "implemented": true,
+      "category": "visual",
+      "description": "SVG bars con ancho dinámico",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I032",
+      "implemented": true,
+      "category": "memory",
+      "description": "SVG bars con altura dinámica",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I033",
+      "implemented": true,
+      "category": "safety",
+      "description": "Labels de gráfico recortadas con title completo",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I034",
+      "implemented": true,
+      "category": "ux",
+      "description": "Valores visibles junto a barras",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I035",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Leyenda responsive",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I036",
+      "implemented": true,
+      "category": "visual",
+      "description": "Chart horizontal por default para comparaciones",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I037",
+      "implemented": true,
+      "category": "memory",
+      "description": "Timeline con tarjetas legibles",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I038",
+      "implemented": true,
+      "category": "safety",
+      "description": "Surface rows en grid responsivo",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I039",
+      "implemented": true,
+      "category": "ux",
+      "description": "Visual grid auto-fit",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I040",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Visual cards content-sized",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I041",
+      "implemented": true,
+      "category": "visual",
+      "description": "No placeholder de Visual Stage estorbando",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I042",
+      "implemented": true,
+      "category": "memory",
+      "description": "No texto “Respuesta visual independiente”",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I043",
+      "implemented": true,
+      "category": "safety",
+      "description": "No chip “Texto limitado”",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I044",
+      "implemented": true,
+      "category": "ux",
+      "description": "Respuesta PRISMO como título principal",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I045",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Detalles largos colapsables",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I046",
+      "implemented": true,
+      "category": "visual",
+      "description": "Riesgo visible sólo si importa",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I047",
+      "implemented": true,
+      "category": "memory",
+      "description": "Historial conserva bloques visuales compactos",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I048",
+      "implemented": true,
+      "category": "safety",
+      "description": "Historial no satura el teatro",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I049",
+      "implemented": true,
+      "category": "ux",
+      "description": "Project Brain colapsado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I050",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Memorias chidas colapsadas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I051",
+      "implemented": true,
+      "category": "visual",
+      "description": "Feedback escondido en menú",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I052",
+      "implemented": true,
+      "category": "memory",
+      "description": "Technical drawer conserva errores",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I053",
+      "implemented": true,
+      "category": "safety",
+      "description": "Read-only chip conservado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I054",
+      "implemented": true,
+      "category": "ux",
+      "description": "Certainty chip visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I055",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Visual primary chip visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I056",
+      "implemented": true,
+      "category": "visual",
+      "description": "Timeout cliente controlado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I057",
+      "implemented": true,
+      "category": "memory",
+      "description": "Query local-first sin esperar proveedor externo",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I058",
+      "implemented": true,
+      "category": "safety",
+      "description": "Provider dependency desactivado para Project Brain",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I059",
+      "implemented": true,
+      "category": "ux",
+      "description": "Respuesta de emergencia estructurada",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I060",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "No null guard",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I061",
+      "implemented": true,
+      "category": "visual",
+      "description": "Evidence librarian integrado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I062",
+      "implemented": true,
+      "category": "memory",
+      "description": "Learning Store como fuente",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I063",
+      "implemented": true,
+      "category": "safety",
+      "description": "Semantic memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I064",
+      "implemented": true,
+      "category": "ux",
+      "description": "Procedural memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I065",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Episodic memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I066",
+      "implemented": true,
+      "category": "visual",
+      "description": "Visual memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I067",
+      "implemented": true,
+      "category": "memory",
+      "description": "Operational memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I068",
+      "implemented": true,
+      "category": "safety",
+      "description": "Governance memory visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I069",
+      "implemented": true,
+      "category": "ux",
+      "description": "Authority readset considerado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I070",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Manual operativo considerado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I071",
+      "implemented": true,
+      "category": "visual",
+      "description": "No DB writes",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I072",
+      "implemented": true,
+      "category": "memory",
+      "description": "No env reads",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I073",
+      "implemented": true,
+      "category": "safety",
+      "description": "No deploy",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I074",
+      "implemented": true,
+      "category": "ux",
+      "description": "No git push",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I075",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "No browser automation obligatoria",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I076",
+      "implemented": true,
+      "category": "visual",
+      "description": "No procesos tocados",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I077",
+      "implemented": true,
+      "category": "memory",
+      "description": "No puertos liberados",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I078",
+      "implemented": true,
+      "category": "safety",
+      "description": "No dev server start",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I079",
+      "implemented": true,
+      "category": "ux",
+      "description": "No Prisma generate",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I080",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "No apps modificadas",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I081",
+      "implemented": true,
+      "category": "visual",
+      "description": "Installer con drift guard",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I082",
+      "implemented": true,
+      "category": "memory",
+      "description": "Installer con rollback",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I083",
+      "implemented": true,
+      "category": "safety",
+      "description": "Installer con result/fail ZIP",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I084",
+      "implemented": true,
+      "category": "ux",
+      "description": "Installer source-only sin pycache",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I085",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Validación JS node --check",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I086",
+      "implemented": true,
+      "category": "visual",
+      "description": "Validación Python compile en temp",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I087",
+      "implemented": true,
+      "category": "memory",
+      "description": "Validación JSON contracts",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I088",
+      "implemented": true,
+      "category": "safety",
+      "description": "Validación no duplicate PRISMO scripts",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I089",
+      "implemented": true,
+      "category": "ux",
+      "description": "Validación no new !important",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I090",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Validación scope PCC only",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I091",
+      "implemented": true,
+      "category": "visual",
+      "description": "Current files in fail ZIP",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I092",
+      "implemented": true,
+      "category": "memory",
+      "description": "Backups before changes",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I093",
+      "implemented": true,
+      "category": "safety",
+      "description": "Payload attempted in fail ZIP",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I094",
+      "implemented": true,
+      "category": "ux",
+      "description": "Continuation markdown",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I095",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Rollback latest shortcut",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I096",
+      "implemented": true,
+      "category": "visual",
+      "description": "URL encoded zip support",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I097",
+      "implemented": true,
+      "category": "memory",
+      "description": "Nombres humanos cortos",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I098",
+      "implemented": true,
+      "category": "safety",
+      "description": "Logs en F descargasf",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I099",
+      "implemented": true,
+      "category": "ux",
+      "description": "Progreso visible",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I100",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "No fake green",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I101",
+      "implemented": true,
+      "category": "visual",
+      "description": "Project Brain summary en respuesta",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I102",
+      "implemented": true,
+      "category": "memory",
+      "description": "Sugerencias de preguntas siguientes",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I103",
+      "implemented": true,
+      "category": "safety",
+      "description": "Contexto de confianza por fuente",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I104",
+      "implemented": true,
+      "category": "ux",
+      "description": "Compactación de texto sólo anti-desborde extremo",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I105",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Rutas y capas no se mezclan con texto principal",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I106",
+      "implemented": true,
+      "category": "visual",
+      "description": "Múltiples visuales relevantes hasta 8",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I107",
+      "implemented": true,
+      "category": "memory",
+      "description": "Primario full width",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I108",
+      "implemented": true,
+      "category": "safety",
+      "description": "Secundarios auto-fit",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I109",
+      "implemented": true,
+      "category": "ux",
+      "description": "Graph-like renderer con nodos y bordes",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I110",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Runtime map reusable",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I111",
+      "implemented": true,
+      "category": "visual",
+      "description": "Evidence board reusable",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I112",
+      "implemented": true,
+      "category": "memory",
+      "description": "Checklist reusable",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I113",
+      "implemented": true,
+      "category": "safety",
+      "description": "Diff view reusable",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I114",
+      "implemented": true,
+      "category": "ux",
+      "description": "Layer table con overflow controlado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I115",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Chart shell con overflow horizontal sólo si hace falta",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I116",
+      "implemented": true,
+      "category": "visual",
+      "description": "Answer paragraphs preservan saltos de línea",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I117",
+      "implemented": true,
+      "category": "memory",
+      "description": "Safe HTML escaping preservado",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I118",
+      "implemented": true,
+      "category": "safety",
+      "description": "Renderer catch por bloque",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I119",
+      "implemented": true,
+      "category": "ux",
+      "description": "Visual no queda vacío si Project Brain existe",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I120",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Contrato brain100 versionado",
+      "evidence": "payload + validation gates"
+    }
+  ]
+}

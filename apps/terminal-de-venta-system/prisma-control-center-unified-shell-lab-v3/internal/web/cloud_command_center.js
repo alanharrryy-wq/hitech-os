@@ -130,6 +130,12 @@
     return { code, ms, ok: !!endpoint.ok, raw: endpoint };
   }
 
+  function contractEndpoint(name) {
+    return (state.data?.licflow3Contract?.endpoints || []).find((item) => item.key === name) || null;
+  }
+
+  const LICFLOW3_ENDPOINT_MATRIX = ["health", "capabilities", "tenantStatus", "adminSelftest", "commercialSummary", "tenantSnapshot", "clientContract", "supportDiagnostics", "licenseActivate", "licenseRefresh", "licenseRevoke", "deviceRegister", "integrationReceipt"];
+
   function endpointRows(names) {
     const labels = {
       health: "Salud cloud",
@@ -138,10 +144,22 @@
       adminSelftest: "Diagnóstico administrativo",
       commercialSummary: "Resumen comercial",
       tenantSnapshot: "Estado completo del cliente",
-      clientContract: "Contrato cliente"
+      clientContract: "Contrato cliente",
+      supportDiagnostics: "Diagnóstico soporte",
+      licenseActivate: "Activar licencia",
+      licenseRefresh: "Refrescar licencia",
+      licenseRevoke: "Revocar licencia",
+      deviceRegister: "Registrar dispositivo",
+      integrationReceipt: "Recibo integración"
     };
     return names.map((name) => {
       const item = endpointState(name);
+      const contract = contractEndpoint(name);
+      if (!item.raw?.name && contract) {
+        const status = contract.configured ? "CONFIGURADO" : "FALTA";
+        const guard = contract.mutatesCloud ? "sin autocall" : (contract.safeSummaryCall ? "summary" : "manual");
+        return [labels[name] || name, `${status} · ${contract.method} ${contract.configuredPath || contract.path} · ${guard}`];
+      }
       return [labels[name] || name, `${item.code} · ${item.ms}`];
     });
   }
@@ -220,6 +238,8 @@
     if (!admin.enabled) found.push({ level: "warn", title: "Modo lectura segura", detail: "El token admin local no está activo, así que las acciones de escritura se bloquean." });
     if (!endpointState("health").ok) found.push({ level: "bad", title: "Salud cloud no confirmó OK", detail: "Revisar System para detalle técnico." });
     if (!endpointState("tenantStatus").ok) found.push({ level: "warn", title: "Estado público del cliente incompleto", detail: `No se pudo confirmar status público de ${FIRST_CUSTOMER_NAME}.` });
+    if (data.licflow3Contract?.missing?.length) found.push({ level: "warn", title: "Contrato LICFLOW3 incompleto", detail: `Faltan endpoints: ${data.licflow3Contract.missing.join(", ")}.` });
+    if (data.licflow3Contract?.hostedCloudEvidenceStatus === "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED") found.push({ level: "warn", title: "Cloudflare vivo requiere evidencia", detail: "No se declara PASS hosted sin smoke autorizado de app.hitechrts.com." });
     if (!d.license && !state.license?.runtime?.license) found.push({ level: "warn", title: "Licencia sin ficha clara", detail: "Falta estado de licencia legible para operación." });
     if (!safeCount(d.devices)) found.push({ level: "warn", title: "Sin dispositivos visibles", detail: "El snapshot no devolvió dispositivos." });
     return found;
@@ -242,6 +262,8 @@
       `Cliente: ${d.tenant?.displayName || d.tenant?.slug || state.data?.cloud?.tenantSlug || FIRST_CUSTOMER_NAME}`,
       `Licencia: ${license.status || d.license?.status || state.license?.status || "revisar"}`,
       `Plan: ${license.plan || d.license?.plan || "-"}`,
+      `LICFLOW3: ${state.data?.licflow3Contract?.claim || "contract_incomplete"}`,
+      `Hosted cloud evidence: ${state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"}`,
       `Dispositivos: ${safeCount(d.devices)}`,
       `Receipts: ${safeCount(d.receipts)}`,
       `Notas: ${safeCount(d.notes)}`,
@@ -277,6 +299,9 @@
       `Licencia: ${license.status || "revisar"}`,
       `Plan: ${license.plan || d.license?.plan || "-"}`,
       `Contrato: ${contract.status || contract.plan || endpointState("clientContract").code}`,
+      `LICFLOW3: ${state.data?.licflow3Contract?.claim || "contract_incomplete"}`,
+      `Hosted cloud evidence: ${state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"}`,
+      `Soporte cloud: ${endpointState("supportDiagnostics").code}`,
       `Dispositivos: ${safeCount(d.devices)}`,
       `Receipts: ${safeCount(d.receipts)}`,
       `Notas: ${safeCount(d.notes)}`,
@@ -708,6 +733,7 @@
   function renderContracts() {
     const d = derived();
     const contract = d.publicContract || {};
+    const licflow3 = state.data?.licflow3Contract || {};
     return [
       panel("Contrato actual", "Estado contractual resumido para operar.", kvGrid([
         ["Estado", contract.status || endpointState("clientContract").code],
@@ -715,6 +741,12 @@
         ["Cliente", contract.tenant || contract.tenantSlug || d.tenant?.slug || FIRST_CUSTOMER_NAME],
         ["Capacidades", endpointState("capabilities").code]
       ]), { span: 5, tag: endpointState("clientContract").ok ? "CONTRATO" : "REVISAR" }),
+      panel("LICFLOW3 bridge", "Contrato hosted sin declarar cloud PASS sin evidencia viva.", kvGrid([
+        ["Contrato", licflow3.claim || "contract_incomplete"],
+        ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
+        ["Endpoints faltantes", safeCount(licflow3.missing)],
+        ["Cloud vivo", licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]
+      ]), { span: 7, tag: licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED" }),
       panel("Acciones de configuración", "Comparar, copiar y saltar a licencias sin ver endpoints.", actions([
         actionButton("refresh", "Actualizar contrato", "primary"),
         actionButton("compare-contract", "Comparar contrato vs capacidades"),
@@ -773,9 +805,9 @@
       panel("Herramientas técnicas", "Aquí sí vive el fierro: diagnostics, runtime y raw evidence.", actions([actionButton("export-diagnostics", "Exportar diagnóstico", "primary"),actionButton("refresh", "Actualizar sistema"),actionButton("copy-endpoint-matrix", "Copiar endpoint matrix"),actionButton("copy-local-desk", "Copiar escritorio local")]), { span: 4, tag: state.health?.overall || state.health?.status || "SYSTEM" }),
       panel("Runtime", "Mensajes locales recientes.", list(events.slice(-12).reverse().map((item) => [item.time || item.ts || "evento", item.message || item.kind || JSON.stringify(item).slice(0, 120)]), "Sin eventos runtime."), { span: 4, tag: `${events.length} eventos` }),
       panel("Auditoría local", "Eventos generados por altas, licencias, dispositivos, bajas y Otros.", localDesk("events", "Sin auditoría local."), { span: 12, tag: "AUDIT" }),
-      panel("Endpoint matrix", "Detalle técnico permitido sólo en System.", list(endpointRows(["health", "capabilities", "tenantStatus", "adminSelftest", "commercialSummary", "tenantSnapshot", "clientContract"])), { span: 12, tag: "MATRIX" }),
+      panel("Endpoint matrix", "Detalle técnico permitido sólo en System.", list(endpointRows(LICFLOW3_ENDPOINT_MATRIX)), { span: 12, tag: "MATRIX" }),
       panel("Contrato de módulos", "Legado técnico retenido sólo como evidencia.", list(modules.map((m) => [m.name || m.id, `${m.statusLabel || "-"} · ${m.port || "-"}`])), { span: 6, tag: `${modules.length} módulos` }),
-      panel("Raw técnico", "Payloads redacted para diagnóstico.", details("Abrir raw system", { health: state.health, runtime: state.runtime, contract: state.contract, commandCenter: ccStore() }, false), { span: 6, tag: "RAW" }),
+      panel("Raw técnico", "Payloads redacted para diagnóstico.", details("Abrir raw system", { health: state.health, runtime: state.runtime, contract: state.contract, licflow3Contract: state.data?.licflow3Contract, commandCenter: ccStore() }, false), { span: 6, tag: "RAW" }),
       resultPanel()
     ].join("");
   }
@@ -874,7 +906,7 @@
         const admin = state.data?.admin || {};
         await copyText(`Seguridad PRISMA CC\nModo: ${admin.enabled ? "acciones locales" : "lectura segura"}\nToken disponible: ${admin.tokenAvailable ? "sí server-side/local" : "no"}\nToken visible en browser: no mostrado por UI\nEstado: ${mainStatus()}`, "Resumen de seguridad");
       } else if (action === "copy-endpoint-matrix") {
-        await copyText(endpointRows(["health", "capabilities", "tenantStatus", "adminSelftest", "commercialSummary", "tenantSnapshot", "clientContract"]).map(([a, b]) => `${a}: ${b}`).join("\n"), "Endpoint matrix");
+        await copyText(endpointRows(LICFLOW3_ENDPOINT_MATRIX).map(([a, b]) => `${a}: ${b}`).join("\n"), "Endpoint matrix");
       } else if (action === "compare-license-contract" || action === "compare-contract") {
         const license = state.license?.runtime?.license || derived().license || {};
         const contract = derived().publicContract || {};

@@ -17,9 +17,20 @@
     "tenantSnapshot": "/api/admin/tenants/prisma-original-customer/snapshot",
     "tenantStatus": "/api/public/tenants/prisma-original-customer/status",
     "tenantNotes": "/api/admin/tenants/prisma-original-customer/notes",
+    "licenseActivate": "/api/licenses/activate",
+    "licenseRefresh": "/api/licenses/refresh",
+    "licenseRevoke": "/api/licenses/revoke",
     "deviceRegister": "/api/devices/register",
     "integrationReceipt": "/api/client/integration-receipt",
+    "supportDiagnostics": "/api/support/diagnostics?tenant=prisma-original-customer",
     "clientContract": "/api/client/contract?tenant=prisma-original-customer"
+  },
+  "licflow3": {
+    "contractId": "LICFLOW3_CLOUDFLARE_HOSTED_LICENSING_SUPPORT_BRIDGE",
+    "status": "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
+    "workerScaffold": "infra/cloudflare/licflow3-worker",
+    "noMutatingEndpointAutocall": true,
+    "noDeployWithoutAuthorization": true
   },
   "safety": {
     "localHosts": ["127.0.0.1", "localhost", "::1"],

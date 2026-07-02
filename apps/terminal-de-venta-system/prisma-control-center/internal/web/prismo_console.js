@@ -5,8 +5,9 @@
   const STORE_HISTORY = "prismo-chat-history-v1";
   const MAX_HISTORY_ITEMS = 28;
   const FILE_PREVIEW_LIMIT = 180000;
-  const ANSWER_MAX_CHARS = 420;
-  const ANSWER_MAX_LINES = 5;
+  const RESPONSE_REASONABLE_MAX_CHARS = 6200;
+  const RESPONSE_REASONABLE_MAX_LINES = 80;
+  const MAX_VISUAL_BLOCKS = 8;
   const SUGGESTIONS = [
     "¿Qué evidencia reciente explica el estado de PRISMO?",
     "¿Qué protocolo debería rankear primero y por qué?",
@@ -384,18 +385,36 @@
     return text.length > max ? `${text.slice(0, max - 1)}…` : text;
   }
 
-  function boundedAnswer(value) {
-    const text = String(value ?? "").replace(/\s+/g, " ").trim();
-    if (!text) return "PRISMO respondió en modo read-only y preparó el Visual Stage con la mejor forma disponible.";
-    return clampText(text, ANSWER_MAX_CHARS);
+  function reasonableAnswer(value) {
+    const text = String(value ?? "").replace(/\r\n/g, "\n").trim();
+    if (!text) return "PRISMO respondió en modo read-only con la evidencia estructurada disponible.";
+    const lines = text.split("\n");
+    const limitedLines = lines.slice(0, RESPONSE_REASONABLE_MAX_LINES).join("\n");
+    return limitedLines.length > RESPONSE_REASONABLE_MAX_CHARS
+      ? `${limitedLines.slice(0, RESPONSE_REASONABLE_MAX_CHARS - 1).trim()}…`
+      : limitedLines;
+  }
+
+  function formatAnswerHtml(value) {
+    const text = reasonableAnswer(value);
+    const chunks = text.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean);
+    if (!chunks.length) return `<p>${esc(text)}</p>`;
+    return chunks.map((part) => {
+      const lines = part.split("\n").map((line) => line.trim()).filter(Boolean);
+      if (lines.length > 1 && lines.every((line) => /^[-•*]\s+/.test(line))) {
+        return `<ul>${lines.map((line) => `<li>${esc(line.replace(/^[-•*]\s+/, ""))}</li>`).join("")}</ul>`;
+      }
+      return `<p>${esc(part)}</p>`;
+    }).join("");
   }
 
   function normalizeAnswerChannel(payload) {
     const channel = payload && payload.answer_channel ? payload.answer_channel : {};
     const full = String(channel.full_text || payload.direct_answer || "");
+    const main = channel.main_text || channel.short_text || payload.direct_answer || full;
     return {
-      shortText: boundedAnswer(channel.short_text || payload.direct_answer || full),
-      fullText: full,
+      shortText: reasonableAnswer(main),
+      fullText: reasonableAnswer(full || main),
       primaryVisual: channel.primary_visual_type || (payload.visual_stage && payload.visual_stage.primary_block_type) || "visual",
       noVisualReason: channel.no_visual_reason || (payload.visual_stage && payload.visual_stage.no_visual_reason) || "",
       visualRequired: Boolean(channel.visual_stage_required || (payload.visual_stage && payload.visual_stage.required))
@@ -635,20 +654,62 @@
     };
   }
 
+  function routeFallbackBlock(rows) {
+    const apps = (STATE.appLiveContext && Array.isArray(STATE.appLiveContext.apps)) ? STATE.appLiveContext.apps : [];
+    const nodes = [];
+    apps.forEach((app) => {
+      (Array.isArray(app.routes_sample) ? app.routes_sample : []).slice(0, 8).forEach((route) => {
+        nodes.push({ id: route.route || route.rel || app.id, label: route.route || route.rel || "route", status: app.label || app.id, summary: route.rel || "" });
+      });
+    });
+    if (!nodes.length && rows.length) {
+      rows.slice(0, 8).forEach((row) => nodes.push({ id: row.id, label: row.label, status: `${row.routes} rutas`, summary: `${row.files} archivos · ${row.components} componentes` }));
+    }
+    if (!nodes.length) return null;
+    return { id: "client_visual_route_map", type: "route_map", title: "Route map", description: "Rutas y superficies detectadas por Project Brain.", priority: 5, layout: "half", visual_role: "secondary", status: "ready", data: { nodes: nodes.slice(0, 40) } };
+  }
+
+  function layerFallbackBlock() {
+    const apps = (STATE.appLiveContext && Array.isArray(STATE.appLiveContext.apps)) ? STATE.appLiveContext.apps : [];
+    const rows = [];
+    apps.forEach((app) => {
+      (Array.isArray(app.layer_signals) ? app.layer_signals : []).slice(0, 8).forEach((sig) => rows.push({ surface: app.label || app.id, file: sig.file || "", selector: sig.selector || "", z_index: Array.isArray(sig.z_index) ? sig.z_index.join(", ") : "", important: sig.important_count || 0, backdrop: Boolean(sig.backdrop_filter) }));
+    });
+    if (!rows.length) return null;
+    return { id: "client_visual_layer_table", type: "table_view", title: "Layer investigator", description: "Selectores, z-index y señales visuales, sin tocar CSS.", priority: 6, layout: "half", visual_role: "secondary", status: "ready", data: { rows: rows.slice(0, 28), columns: ["surface", "file", "selector", "z_index", "important", "backdrop"] } };
+  }
+
+  function memoryFallbackBlock() {
+    const layers = (STATE.appLiveContext && STATE.appLiveContext.memory_layers) || {};
+    const rows = Object.entries(layers).map(([key, value]) => ({ memory: key.replaceAll("_", " "), confidence: (value && value.confidence) || "medium", purpose: (value && value.purpose) || "" }));
+    if (!rows.length) return null;
+    return { id: "client_visual_memory_layers", type: "table_view", title: "Memorias chidas", description: "Capas de memoria activas para entender PRISMA.", priority: 7, layout: "half", visual_role: "secondary", status: "ready", data: { rows: rows.slice(0, 10), columns: ["memory", "confidence", "purpose"] } };
+  }
+
+  function capabilityFallbackBlock() {
+    return { id: "client_visual_capability_checklist", type: "checklist", title: "Inteligencia read-only activa", description: "Capacidades locales que PRISMO puede usar sin modificar el proyecto.", priority: 8, layout: "half", visual_role: "secondary", status: "ready", data: { items: [
+      { label: "Project Brain indexado", done: Boolean(STATE.appLiveContext && STATE.appLiveContext.ok), status: "apps/rutas/componentes/CSS" },
+      { label: "Visual Stage automático", done: true, status: "chart/matrix/timeline/map" },
+      { label: "Memoria semántica/procedural/episódica", done: true, status: "Learning Store" },
+      { label: "Read-only contract", done: true, status: "sin mutación" },
+      { label: "Fallback local si bridge falla", done: true, status: "cliente + Project Brain" }
+    ] } };
+  }
+
   function buildClientVisualFallbacks(payload) {
     const rows = visualRowsFromLiveContext();
     if (!rows.length) return [];
     const query = queryTextFromPayload(payload);
     const out = [chartBlockFromRows(rows, payload), matrixBlockFromRows(rows)];
-    if (/evidencia|evidence|zip|fail|result|historial/.test(query)) {
-      const evidence = evidenceFallbackBlock();
-      if (evidence) out.splice(1, 0, evidence);
-    }
-    if (/cambio|cambió|delta|desde|ayer|timeline|histórico|historico/.test(query)) {
-      const delta = deltaFallbackBlock();
-      if (delta) out.splice(1, 0, delta);
-    }
-    return out;
+    const add = (block) => { if (block && !out.some((item) => item.id === block.id)) out.push(block); };
+    if (/evidencia|evidence|zip|fail|result|historial/.test(query)) add(evidenceFallbackBlock());
+    if (/cambio|cambió|delta|desde|ayer|timeline|histórico|historico/.test(query)) add(deltaFallbackBlock());
+    if (/ruta|route|app|superficie|surface|mapa|grafo|graph|depend/.test(query)) add(routeFallbackBlock(rows));
+    if (/css|layer|selector|z-index|capa|visual/.test(query)) add(layerFallbackBlock());
+    if (/memoria|memory|procedural|semant|episod|aprendiz/.test(query)) add(memoryFallbackBlock());
+    if (/capacidad|inteligencia|util|usar|terminar|desarroll/.test(query)) add(capabilityFallbackBlock());
+    if (out.length < 4) { add(routeFallbackBlock(rows)); add(evidenceFallbackBlock()); add(memoryFallbackBlock()); }
+    return out.slice(0, MAX_VISUAL_BLOCKS);
   }
 
   function mergeVisualFallbacks(blocks, payload) {
@@ -676,17 +737,16 @@
         <article class="prismo-response-card prismo-answer-channel" data-visual-required="${answer.visualRequired ? "true" : "false"}">
           <div class="prismo-response-meta">
             <span class="prismo-tag" data-state="${payload.status === "blocked" ? "bad" : "ok"}">${esc(payload.status || "success")}</span>
-            <span class="prismo-tag">Texto limitado</span>
             <span class="prismo-tag" data-state="ok">Read-only</span>
             <span class="prismo-tag">Visual: ${esc(answer.primaryVisual)}</span>
             <span class="prismo-tag">${esc(certainty)}</span>
           </div>
-          <h3>Respuesta corta</h3>
-          <p class="prismo-answer prismo-answer-short">${esc(answer.shortText)}</p>
+          <h3>Respuesta PRISMO</h3>
+          <div class="prismo-answer prismo-answer-main">${formatAnswerHtml(answer.shortText)}</div>
           ${showRisk ? `<div class="prismo-risk-summary"><strong>Riesgo visible</strong><br>${esc(risk.summary || risk.level || "sin riesgo reportado")}</div>` : ""}
           <details class="prismo-collapsible-brief">
             <summary>Ver explicación completa y siguiente paso</summary>
-            <p>${esc(fullDetail)}</p>
+            <div class="prismo-answer-detail">${formatAnswerHtml(fullDetail)}</div>
             <div class="prismo-safe-step"><strong>Siguiente paso</strong><br>${esc(payload.safe_next_step || "Seguir consultando en modo read-only con evidencia fresca.")}</div>
           </details>
         </article>`;
@@ -772,8 +832,8 @@
     take((block) => block.type === "chart_spec");
     take((block) => block.type === "surface_matrix");
     take((block) => ["timeline", "runtime_map", "route_map", "dependency_graph", "risk_matrix", "evidence_board", "table_view", "checklist", "diff_view"].includes(block.type));
-    visual.forEach((block) => { if (selected.length < 3 && !selected.some((picked) => picked.id === block.id)) selected.push(block); });
-    return selected.slice(0, 3).map((block, index) => ({ ...block, layout: index === 0 ? "full" : (block.layout || "half"), visual_role: index === 0 ? "primary" : "secondary" }));
+    visual.forEach((block) => { if (selected.length < MAX_VISUAL_BLOCKS && !selected.some((picked) => picked.id === block.id)) selected.push(block); });
+    return selected.slice(0, MAX_VISUAL_BLOCKS).map((block, index) => ({ ...block, layout: index === 0 ? "full" : (block.layout || (index < 3 ? "half" : "third")), visual_role: index === 0 ? "primary" : "secondary" }));
   }
 
   function renderBlocks(blocks, payload) {
@@ -788,7 +848,7 @@
     const selected = selectDisplayBlocks(merged, payload || STATE.lastResponse || {});
     if (!selected.length) {
       const reason = (payload && payload.visual_stage && payload.visual_stage.no_visual_reason) || "insufficient_structured_data";
-      root.innerHTML = `<article class="prismo-render-card" data-type="no_visual_reason" data-layout="full"><h4>Visual Stage</h4><p>No hay visual útil para esta consulta.</p><small>${esc(reason)}</small></article>`;
+      root.innerHTML = `<article class="prismo-render-card prismo-compact-empty" data-type="no_visual_reason" data-layout="full"><h4>Sin visual estructurado</h4><small>${esc(reason)}</small></article>`;
       return;
     }
     selected.forEach((block) => {

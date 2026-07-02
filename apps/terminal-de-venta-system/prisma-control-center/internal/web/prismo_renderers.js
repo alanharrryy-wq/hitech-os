@@ -121,11 +121,8 @@
   function renderFlow(block) {
     const data = block.data || {};
     if (data.variant === "neural_operations_graph") return renderNeuralGraph(block);
-    const nodes = asArray(data.nodes || data.items || data.rows);
-    const html = `<div class="prismo-flow">${nodes.map((node, index) => {
-      const next = index < nodes.length - 1 ? `<div class="prismo-flow-arrow">→</div>` : "";
-      return `<div class="prismo-flow-node" data-status="${esc(node.status || "unknown")}"><strong>${esc(node.label || node.id || node.path || "Nodo")}</strong><small>${esc(node.summary || node.status || node.kind || "")}</small></div>${next}`;
-    }).join("") || `<div class="prismo-empty">Sin nodos.</div>`}</div>`;
+    const nodes = asArray(data.nodes || data.items || data.rows).slice(0, 48);
+    const html = `<div class="prismo-flow prismo-graph-grid">${nodes.map((node) => `<div class="prismo-flow-node" data-status="${esc(node.status || node.kind || "unknown")}"><strong title="${esc(node.label || node.id || node.path || "Nodo")}">${esc(node.label || node.id || node.path || "Nodo")}</strong><small>${esc(node.summary || node.status || node.kind || "")}</small></div>`).join("") || `<div class="prismo-empty">Sin nodos.</div>`}</div>`;
     return card(block, html);
   }
 
@@ -148,8 +145,8 @@
   }
 
   function renderTimeline(block) {
-    const events = asArray((block.data || {}).events);
-    return card(block, `<div class="prismo-timeline">${events.map((event) => `<div class="prismo-timeline-row"><div class="prismo-timeline-time">${esc(event.time || event.date || "now")}</div><div class="prismo-mini-card"><strong>${esc(event.title || "Evento")}</strong><small>${esc(event.status || event.source || "")}</small><p>${esc(event.summary || "")}</p></div></div>`).join("") || `<div class="prismo-empty">Sin timeline.</div>`}</div>`);
+    const events = asArray((block.data || {}).events).slice(0, 20);
+    return card(block, `<div class="prismo-timeline prismo-timeline-readable">${events.map((event, index) => `<div class="prismo-timeline-row"><div class="prismo-timeline-time"><b>${index + 1}</b><span>${esc(event.time || event.date || "now")}</span></div><div class="prismo-mini-card"><strong>${esc(event.title || "Evento")}</strong><small>${esc(event.status || event.source || "")}</small><p>${esc(event.summary || "")}</p></div></div>`).join("") || `<div class="prismo-empty">Sin timeline.</div>`}</div>`);
   }
 
   function renderBrief(block) {
@@ -181,8 +178,18 @@
   function normalizeChartSpec(spec) {
     spec = spec && typeof spec === "object" ? spec : {};
     const meta = spec.meta || {};
-    const sourceData = asArray(spec.data);
+    let sourceData = asArray(spec.data || spec.rows);
     const xKey = spec.xKey || (spec.xAxis && spec.xAxis.key) || spec.nameKey || "label";
+    if (!sourceData.length && Array.isArray(spec.labels) && Array.isArray(spec.series)) {
+      sourceData = spec.labels.map((label, index) => {
+        const row = { [xKey]: label };
+        spec.series.forEach((serie, sidx) => {
+          const key = serie.dataKey || serie.key || serie.name || `series_${sidx + 1}`;
+          row[key] = Array.isArray(serie.data) ? serie.data[index] : 0;
+        });
+        return row;
+      });
+    }
     let rawLabels = [];
     if (spec.xAxis && Array.isArray(spec.xAxis.data)) rawLabels = spec.xAxis.data;
     else if (Array.isArray(spec.labels)) rawLabels = spec.labels;
@@ -224,11 +231,11 @@
     const labels = chart.labels.slice(0, 10);
     const series = chart.series.slice(0, 4);
     if (!labels.length || !series.length) return "";
-    const width = 920;
-    const rowH = 48;
-    const top = 30;
-    const left = 150;
-    const right = 46;
+    const width = Math.max(920, 260 + Math.max(...labels.map((label) => label.length)) * 7);
+    const rowH = Math.max(46, 26 + series.length * 13);
+    const top = 34;
+    const left = Math.min(240, Math.max(132, Math.max(...labels.map((label) => label.length)) * 7));
+    const right = 72;
     const barGap = 4;
     const innerW = width - left - right;
     const height = top + labels.length * rowH + 40;
@@ -247,7 +254,8 @@
         const y = yBase + 7 + sidx * (barH + barGap);
         return `<rect x="${left}" y="${y}" width="${w}" height="${barH}" rx="7" class="prismo-svg-bar prismo-svg-series-${sidx}"/><text x="${left + w + 8}" y="${y + barH - 2}" class="prismo-svg-value">${esc(`${s.valuePrefix}${value}${s.valueSuffix}`)}</text>`;
       }).join("");
-      return `<g><text x="18" y="${yBase + rowH / 2 + 5}" class="prismo-svg-label">${esc(label)}</text>${bars}</g>`;
+      const shownLabel = label.length > 24 ? `${label.slice(0, 23)}…` : label;
+      return `<g><text x="18" y="${yBase + rowH / 2 + 5}" class="prismo-svg-label"><title>${esc(label)}</title>${esc(shownLabel)}</text>${bars}</g>`;
     }).join("");
     const legend = series.map((s, idx) => `<span><i class="prismo-legend-dot prismo-svg-series-${idx}"></i>${esc(s.label)}</span>`).join("");
     return `<div class="prismo-svg-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(chart.title)}">${grid}${rows}</svg><div class="prismo-chart-legend">${legend}</div></div>`;
@@ -300,8 +308,8 @@
   }
 
   function renderSurfaceMatrix(block) {
-    const rows = asArray((block.data || {}).rows);
-    const html = `<div class="prismo-surface-matrix">${rows.map((row) => `<div class="prismo-surface-row"><strong>${esc(row.label || row.id || "Surface")}</strong><span><b>${esc(row.routes || 0)}</b> rutas</span><span><b>${esc(row.components || 0)}</b> comps</span><span><b>${esc(row.css || 0)}</b> css</span><small>${esc(row.files || 0)} files</small></div>`).join("") || `<div class="prismo-empty">Sin superficies.</div>`}</div>`;
+    const rows = asArray((block.data || {}).rows).slice(0, 16);
+    const html = `<div class="prismo-surface-matrix prismo-surface-matrix-wide">${rows.map((row) => `<div class="prismo-surface-row"><strong title="${esc(row.label || row.id || "Surface")}">${esc(row.label || row.id || "Surface")}</strong><span><b>${esc(row.routes || 0)}</b> rutas</span><span><b>${esc(row.components || 0)}</b> comps</span><span><b>${esc(row.css || 0)}</b> css</span><span><b>${esc(row.docs || 0)}</b> docs</span><small>${esc(row.files || 0)} files</small></div>`).join("") || `<div class="prismo-empty">Sin superficies.</div>`}</div>`;
     return card(block, html);
   }
 

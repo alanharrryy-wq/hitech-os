@@ -16,6 +16,23 @@ CONFIG_PATH = INTERNAL_ROOT / "config" / "cloud_saas.json"
 DEFAULT_BASE_URL = "https://app.hitechrts.com"
 DEFAULT_TENANT = "prisma-original-customer"
 _QUICK_CACHE: dict[str, Any] = {"expires": 0.0, "payload": None}
+LICFLOW3_CONTRACT_ID = "LICFLOW3_CLOUDFLARE_HOSTED_LICENSING_SUPPORT_BRIDGE"
+LICFLOW3_ENDPOINTS: dict[str, dict[str, Any]] = {
+    "health": {"method": "GET", "path": "/health", "capability": "health", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "REUSE"},
+    "capabilities": {"method": "GET", "path": "/api/public/capabilities", "capability": "capabilities", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "REUSE"},
+    "tenantStatus": {"method": "GET", "path": "/api/public/tenants/prisma-original-customer/status", "capability": "tenant_status", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "REUSE"},
+    "clientContract": {"method": "GET", "path": "/api/client/contract?tenant=prisma-original-customer", "capability": "contract_fetch", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "REUSE"},
+    "licenseActivate": {"method": "POST", "path": "/api/licenses/activate", "capability": "activate", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "CREATE"},
+    "licenseRefresh": {"method": "POST", "path": "/api/licenses/refresh", "capability": "refresh", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "CREATE"},
+    "licenseRevoke": {"method": "POST", "path": "/api/licenses/revoke", "capability": "revoke", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "CREATE"},
+    "deviceRegister": {"method": "POST", "path": "/api/devices/register", "capability": "register_device", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "EXTEND"},
+    "integrationReceipt": {"method": "POST", "path": "/api/client/integration-receipt", "capability": "integration_receipt", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "EXTEND"},
+    "supportDiagnostics": {"method": "GET", "path": "/api/support/diagnostics?tenant=prisma-original-customer", "capability": "support_diagnostics", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "CREATE"},
+    "adminSelftest": {"method": "GET", "path": "/api/admin/selftest", "capability": "admin_selftest", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "REUSE"},
+    "commercialSummary": {"method": "GET", "path": "/api/admin/commercial-summary", "capability": "commercial_summary", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "REUSE"},
+    "tenantSnapshot": {"method": "GET", "path": "/api/admin/tenants/prisma-original-customer/snapshot", "capability": "tenant_snapshot", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "REUSE"},
+    "tenantNotes": {"method": "POST", "path": "/api/admin/tenants/prisma-original-customer/notes", "capability": "tenant_notes", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "REUSE"},
+}
 
 
 def _now() -> str:
@@ -233,7 +250,10 @@ def _derive(summary: dict[str, Any]) -> dict[str, Any]:
     snapshot = _first_dict(endpoints.get("tenantSnapshot", {}).get("data"))
     commercial = _first_dict(endpoints.get("commercialSummary", {}).get("data"))
     contract = _first_dict(endpoints.get("clientContract", {}).get("data"))
+    support = _first_dict(endpoints.get("supportDiagnostics", {}).get("data"))
+    licflow3 = _first_dict(summary.get("licflow3Contract"))
     caps = capabilities.get("capabilities") if isinstance(capabilities.get("capabilities"), dict) else {}
+    license_payload = status.get("license") if isinstance(status.get("license"), dict) else {}
     return {
         "service": health.get("service") or capabilities.get("service") or "PRISMA Cloud Semilla",
         "version": health.get("version") or capabilities.get("version") or "-",
@@ -241,14 +261,66 @@ def _derive(summary: dict[str, Any]) -> dict[str, Any]:
         "counts": health.get("counts") if isinstance(health.get("counts"), dict) else {},
         "capabilities": caps,
         "tenant": status.get("tenant") if isinstance(status.get("tenant"), dict) else {},
-        "license": status.get("license") if isinstance(status.get("license"), dict) else {},
+        "license": license_payload,
+        "activationStatus": license_payload.get("activationStatus") or license_payload.get("status") or "REVIEW",
         "publicContract": status.get("publicContract") if isinstance(status.get("publicContract"), dict) else contract,
         "commercialSummary": commercial,
+        "supportDiagnostics": support,
         "devices": _list_from_keys(snapshot, ["devices", "registeredDevices", "recentDevices"]),
         "notes": _list_from_keys(snapshot, ["notes", "tenantNotes", "recentNotes"]),
         "receipts": _list_from_keys(snapshot, ["receipts", "integrationReceipts", "recentReceipts"]),
         "events": _list_from_keys(snapshot, ["events", "auditEvents", "recentEvents", "audit", "clientEvents"]),
         "snapshot": snapshot,
+        "licflow3ContractStatus": licflow3.get("claim") or "contract_incomplete",
+        "hostedCloudEvidence": licflow3.get("hostedCloudEvidenceStatus") or "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
+    }
+
+
+def _licflow3_contract_status(endpoints: dict[str, Any] | None = None) -> dict[str, Any]:
+    config = _load_config()
+    configured_endpoints = config.get("endpoints") if isinstance(config.get("endpoints"), dict) else {}
+    missing: list[str] = []
+    mismatched: list[dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
+    for key, spec in LICFLOW3_ENDPOINTS.items():
+        configured = str(configured_endpoints.get(key) or "")
+        if not configured:
+            missing.append(key)
+        elif configured != spec["path"]:
+            mismatched.append({"key": key, "expected": spec["path"], "actual": configured})
+        row = dict(spec)
+        row.update({"key": key, "configured": bool(configured), "configuredPath": configured or None})
+        rows.append(row)
+    base_url = _base_url()
+    base_url_matches = base_url == DEFAULT_BASE_URL
+    endpoint_payloads = endpoints or {}
+    live_read_names = ["health", "capabilities", "tenantStatus", "clientContract"]
+    live_ok = all(bool(endpoint_payloads.get(name, {}).get("ok")) for name in live_read_names)
+    ok = base_url_matches and not missing and not mismatched
+    return {
+        "ok": ok,
+        "schemaVersion": "1.0.0",
+        "contractId": LICFLOW3_CONTRACT_ID,
+        "baseUrl": DEFAULT_BASE_URL,
+        "tenantSlug": _tenant_slug(),
+        "configuredBaseUrl": base_url,
+        "baseUrlMatches": base_url_matches,
+        "missing": missing,
+        "mismatched": mismatched,
+        "endpoints": rows,
+        "hostedCloudEvidenceStatus": "LIVE_EVIDENCE_PRESENT" if live_ok else "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
+        "claim": "contract_ready" if ok else "contract_incomplete",
+        "safety": {
+            "cockpit": "127.0.0.1:3160",
+            "noDeployByDefault": True,
+            "noDnsMutationByDefault": True,
+            "noTunnelMutationByDefault": True,
+            "noSecretValuesInRepo": True,
+            "noDbFilesInEvidence": True,
+            "noMutatingEndpointAutocall": True,
+            "tabletOfflineMustRemainValid": True,
+            "licflow2RemainsCanonicalLocalActivation": True,
+        },
     }
 
 
@@ -263,6 +335,7 @@ def summary_payload(allow_admin: bool = False) -> dict[str, Any]:
         "adminSelftest": _call("adminSelftest", admin=True, allow_admin=admin_enabled),
         "commercialSummary": _call("commercialSummary", admin=True, allow_admin=admin_enabled),
         "tenantSnapshot": _call("tenantSnapshot", admin=True, allow_admin=admin_enabled),
+        "supportDiagnostics": _call("supportDiagnostics", admin=True, allow_admin=admin_enabled),
     }
     payload = {
         "ok": any(item.get("ok") for item in endpoints.values()),
@@ -286,6 +359,7 @@ def summary_payload(allow_admin: bool = False) -> dict[str, Any]:
             {"id": "device-register-smoke", "label": "Device smoke", "enabled": admin_enabled},
         ],
     }
+    payload["licflow3Contract"] = _licflow3_contract_status(endpoints)
     payload["derived"] = _derive(payload)
     return _redact(payload)
 
@@ -365,6 +439,8 @@ def cloud_saas_payload(path_text: str, method: str = "GET", body: dict[str, Any]
         return summary_payload(allow_admin=allow_admin)
     if path == "/api/cloud-saas/config":
         return _redact({"ok": True, "schemaVersion": SCHEMA_VERSION, "source": SOURCE, "config": _load_config(), "admin": admin_token_status()})
+    if path == "/api/cloud-saas/licflow3-contract":
+        return _redact({"ok": True, "schemaVersion": SCHEMA_VERSION, "source": SOURCE, "licflow3Contract": _licflow3_contract_status()})
     admin_enabled = bool(allow_admin and _admin_token_record().get("token"))
     if path == "/api/cloud-saas/notes":
         return _call("tenantNotes", method="POST", body=_note_payload(body), admin=True, allow_admin=admin_enabled)

@@ -38,6 +38,7 @@
       "/exportables",
       "/prisma-insights",
       "/settings",
+      "/settings/license",
       "/glosario"
     ],
     "hiddenFromFinalUser": [
@@ -61,6 +62,14 @@
       "/referencia-visual/liquid-glass": "/laboratorio-pc/referencia-visual/liquid-glass",
       "/referencia-visual/liquid-glass-capsules": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
       "/prisma-insights/chart-lab": "/laboratorio-pc/chart-lab"
+    },
+    "visibilityRestoration": {
+      "licenseSurface": {
+        "route": "/settings/license",
+        "reason": "Existing PC license surface restored as governed final-menu shortcut after LICSURF 0207 confirmed route exists and was only secondary/contract-visible.",
+        "noNewSurface": true,
+        "licenseRuntime": "Remains secondary/support as /license-runtime"
+      }
     }
   }
 }

@@ -33,7 +33,7 @@ function screenZoneFromPath(currentPath: string) {
   if (currentPath === "/sales/today" || currentPath.startsWith("/sales/today/") || currentPath === "/sales") return "tablet-sales-root";
   if (currentPath === "/shift") return "tablet-shift-root";
   if (currentPath === "/sync" || currentPath === "/events/outbox") return "tablet-sync-root";
-  if (currentPath === "/offline" || currentPath === "/settings/export") return "tablet-offline-root";
+  if (currentPath === "/offline" || currentPath === "/settings/export" || currentPath === "/settings/license" || currentPath === "/settings/data") return "tablet-support-root";
   if (currentPath === "/returns" || currentPath.includes("/return")) return "tablet-returns-root";
   if (currentPath === "/catalog" || currentPath === "/stock" || currentPath === "/existencias" || currentPath === "/inventory" || currentPath === "/inventory/low-stock") return "tablet-catalog-root";
   return "tablet-reference-root";
@@ -71,7 +71,9 @@ export function PrismaTabletShellUnified({
   const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos" : "tablet-softglass");
   const resolvedVisualPreset = visualPreset ?? "PRISMA_SOFTGLASS_REFERENCE_2606";
   const primaryTopItems = visibleNavItems;
-  const dockItems = visibleNavItems.filter((item) => ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync"].includes(item.href));
+  const dockItems = visibleNavItems.filter((item) =>
+    ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync", "/settings/license"].includes(item.href)
+  );
 
   return (
     <div

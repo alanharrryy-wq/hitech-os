@@ -9,6 +9,7 @@
     ["snapshots", "Snapshots"],
     ["notes", "Notes"],
     ["receipts", "Receipts"],
+    ["contract", "LICFLOW3"],
     ["health", "Health"],
     ["commercial", "Commercial"]
   ];
@@ -115,6 +116,7 @@
       ${card("Cloud", derived.service || "PRISMA Cloud Semilla", rows([["Version", derived.version || "-"], ["Tenant", derived.tenant?.slug || FIRST_TENANT_SLUG], ["DB", derived.dbHealth ? JSON.stringify(derived.dbHealth).slice(0, 90) : "-"]]), state.data?.mode)}
       ${card("Counts", "Resumen vivo", rows([["Tenants", counts.tenants ?? "-"], ["Devices", counts.devices ?? "-"], ["Licencias activas", counts.activeLicenses ?? "-"], ["Activation codes", counts.activeActivationCodes ?? "-"]]), "LIVE")}
       ${card("Tenant", derived.tenant?.displayName || derived.tenant?.slug || FIRST_CUSTOMER_NAME, rows([["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"], ["License", derived.license?.status || "-"]]), derived.tenant?.status || "REVIEW")}
+      ${card("LICFLOW3", state.data?.licflow3Contract?.claim || "contract_incomplete", rows([["Endpoints faltantes", (state.data?.licflow3Contract?.missing || []).length], ["Hosted evidence", state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]]), state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "REVIEW")}
       ${endpointCard("health", "Health")}
       ${endpointCard("capabilities", "Capabilities")}
       ${endpointCard("tenantStatus", "Tenant Status")}
@@ -189,7 +191,22 @@
       ${endpointCard("adminSelftest", "Admin Selftest")}
       ${endpointCard("tenantStatus", "Tenant Status")}
       ${endpointCard("clientContract", "Client Contract")}
+      ${endpointCard("supportDiagnostics", "Support Diagnostics")}
       ${card("Eventos", "Cloud snapshot", listRows(state.data?.derived?.events, "Sin eventos o snapshot admin no disponible"), "READ")}
+    </div>`;
+  }
+
+  function contract() {
+    const licflow3 = state.data?.licflow3Contract || {};
+    const endpoints = Array.isArray(licflow3.endpoints) ? licflow3.endpoints : [];
+    return `<div class="cloudSaasGrid two">
+      ${card("LICFLOW3", licflow3.claim || "contract_incomplete", rows([
+        ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
+        ["Tenant", licflow3.tenantSlug || state.data?.cloud?.tenantSlug || FIRST_TENANT_SLUG],
+        ["Faltantes", (licflow3.missing || []).join(", ") || "0"],
+        ["Hosted evidence", licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]
+      ]), licflow3.hostedCloudEvidenceStatus || "REVIEW")}
+      ${card("Endpoints", "Contrato configurado", listRows(endpoints.map((item) => ({ name: item.key, status: `${item.configured ? "CONFIGURADO" : "FALTA"} ${item.method} ${item.configuredPath || item.path}` })), "Sin contrato LICFLOW3"), "CONTRACT")}
     </div>`;
   }
 
@@ -202,7 +219,7 @@
 
   function content() {
     if (!state.data) return '<section class="cloudSaasCard"><h3>Cargando Cloud SaaS...</h3></section>';
-    const views = { overview, licenses, tenants, devices, snapshots, notes, receipts, health, commercial };
+    const views = { overview, licenses, tenants, devices, snapshots, notes, receipts, contract, health, commercial };
     const view = views[state.view] || overview;
     return view();
   }

@@ -10,6 +10,7 @@ export * from "./license-loader";
 export * from "./license-normalizer";
 export * from "./license-paths";
 export * from "./licflow2-activation";
+export * from "./licflow3-cloud-contract";
 export * from "./license-public-keys";
 export * from "./license-refresh-client";
 export * from "./license-refresh-config";

@@ -1,7 +1,7 @@
 {
   "kind": "PRISMO_VISUAL_RESPONSE_CONTRACT",
-  "version": "solid_runtime_v4",
-  "task": "PRISMO Stable Runtime: local-first read-only query, client Visual Stage fallback that never goes blank, robust chart renderer, and /api/prismo/query compatibility without provider timeout.",
+  "version": "brain100_readonly_v1",
+  "task": "PRISMO Brain100: utilidad read-only real, inteligencia local, visuales útiles y respuesta razonable sin límites piteros.",
   "principles": [
     "PRISMO is a read-only project brain: observe, understand, remember, explain and visualize; never mutate apps in knowledge mode.",
     "Text and visuals are separate channels. Text summarizes; Visual Stage proves.",
@@ -11,14 +11,13 @@
     "Learning Store persists semantic, procedural, episodic, visual and operational memory outside repo mutation scope."
   ],
   "answer_channel": {
-    "max_chars": 420,
-    "max_lines": 5,
-    "expanded_detail_location": "technical_drawer_or_expandable_detail",
+    "max_chars": "reasonable_anti_overflow_7600_not_five_lines",
+    "max_lines": "reasonable_anti_overflow_100_not_fixed_answer_cap",
+    "behavior": "answer what is necessary when evidence exists; keep details collapsible when long",
     "forbidden_default_content": [
-      "full technical trace",
-      "raw evidence dump",
-      "memory trace",
-      "duplicated executive brief"
+      "raw trace dump",
+      "artificial five-line truncation",
+      "placeholder visual copy"
     ]
   },
   "visual_stage": {
@@ -49,7 +48,7 @@
       "layer_map"
     ],
     "max_primary_visuals": 1,
-    "max_secondary_visuals": 2,
+    "max_secondary_visuals": 7,
     "no_visual_contract": {
       "required_field": "no_visual_reason",
       "allowed_reasons": [
@@ -132,7 +131,10 @@
       "dynamic DOM contract",
       "visual response contract",
       "no new !important",
-      "scope limited to prisma-control-center"
+      "scope limited to prisma-control-center",
+      "brain100 improvements manifest count >= 100",
+      "no visual placeholder copy",
+      "no artificial answer cap"
     ],
     "runtime_note": "Frontend refresh shows new JS/CSS. Python endpoints load when Control Center backend is restarted by the user."
   },
@@ -142,6 +144,8 @@
     "visual_stage_blank_allowed": false,
     "chart_renderer_must_not_throw_on_labels_or_xAxis_without_data": true,
     "legacy_query_endpoint_routes_to_theater": true,
-    "provider_network_dependency_for_project_brain_answers": false
-  }
+    "provider_network_dependency_for_project_brain_answers": false,
+    "brain100_intelligence": "local query profile + project brain + memory/evidence/delta hydrator"
+  },
+  "brain100_manifest": "internal/config/prismo_brain100_improvements.json"
 }

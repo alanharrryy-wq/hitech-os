@@ -515,6 +515,21 @@ class PanelHandler(SimpleHTTPRequestHandler):
 
 
 
+        if self.path.startswith("/api/prismo/brain100-improvements"):
+            if not self._is_local_request():
+                self._send_json({"ok": False, "status": "blocked", "block_reason": "PUBLIC_BRAIN100_BLOCKED", "read_only": True, "mutation_allowed": False}, status=403)
+                return
+            try:
+                path = Path(__file__).resolve().parents[1] / "config" / "prismo_brain100_improvements.json"
+                payload = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"ok": False, "status": "BRAIN100_MANIFEST_MISSING"}
+                payload["ok"] = payload.get("ok", True)
+                payload["read_only"] = True
+                payload["mutation_allowed"] = False
+                self._send_json(payload)
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "BRAIN100_MANIFEST_ERROR", "error": str(exc), "read_only": True, "mutation_allowed": False}, status=500)
+            return
+
         if self.path.startswith("/api/prismo/app-live-context") or self.path.startswith("/api/prismo/project-brain"):
             if not self._is_local_request():
                 self._send_json({"ok": False, "status": "blocked", "block_reason": "PUBLIC_APP_LIVE_CONTEXT_BLOCKED", "read_only": True, "mutation_allowed": False}, status=403)
