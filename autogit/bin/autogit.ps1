@@ -20,11 +20,24 @@ try { Start-Transcript -Path $Transcript -Force | Out-Null } catch { Write-Host 
 try {
   Set-Location $EngineRoot
   $pyLauncher = Get-Command py -ErrorAction SilentlyContinue
-  if ($pyLauncher) { & py -3 -m autogit_engine.cli --repo $RepoRoot --out $OutDir --mode $Mode @args; $code = $LASTEXITCODE }
-  else {
-    $python = Get-Command python -ErrorAction SilentlyContinue
-    if (-not $python) { throw 'No encontre Python ni py launcher en PATH.' }
-    & python -m autogit_engine.cli --repo $RepoRoot --out $OutDir --mode $Mode @args; $code = $LASTEXITCODE
+  $python = Get-Command python -ErrorAction SilentlyContinue
+  $UsePy = $false
+  if ($pyLauncher) { $UsePy = $true }
+  elseif (-not $python) { throw 'No encontre Python ni py launcher en PATH.' }
+
+  $FlightCommands = @('plan','apply-plan','merge')
+  $FirstArg = if ($args.Count -gt 0) { [string]$args[0] } else { '' }
+
+  if ($FlightCommands -contains $FirstArg) {
+    if ($UsePy) { & py -3 -m autogit_engine.flight_cli --repo $RepoRoot --out $OutDir @args; $code = $LASTEXITCODE }
+    else { & python -m autogit_engine.flight_cli --repo $RepoRoot --out $OutDir @args; $code = $LASTEXITCODE }
+  } else {
+    if ($UsePy) { & py -3 -m autogit_engine.cli --repo $RepoRoot --out $OutDir --mode $Mode @args; $code = $LASTEXITCODE }
+    else { & python -m autogit_engine.cli --repo $RepoRoot --out $OutDir --mode $Mode @args; $code = $LASTEXITCODE }
+  }
+  if ($code -eq 2 -and $FirstArg -eq 'plan') {
+    Write-Host "[AutoGit] PLAN BLOQUEADO con codigo 2. Revisa el PLAN_ZIP y corrige blockers antes de apply-plan." -ForegroundColor Yellow
+    exit 2
   }
   if ($code -ne 0) { throw "AutoGit termino con codigo $code. Revisa el ZIP fail en $OutDir." }
 }
