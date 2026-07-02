@@ -51,6 +51,43 @@
   -webkit-backdrop-filter: none;
 }
 
+.summary {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary strong {
+  color: var(--prisma-prem-ink, #172033);
+  font-size: 16px;
+}
+
+.summary small {
+  color: var(--prisma-text-secondary, #536783);
+  font-weight: 680;
+  line-height: 1.35;
+}
+
+.card:not([open]) {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 12px 14px;
+}
+
+.card:not([open]) .actions,
+.card:not([open]) .history {
+  display: none;
+}
+
+.card[open] .actions {
+  margin-top: 12px;
+}
+
 .actions {
   box-shadow: none;
   filter: none;

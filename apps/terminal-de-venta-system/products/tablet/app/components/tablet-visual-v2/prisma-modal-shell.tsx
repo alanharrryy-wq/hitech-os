@@ -7,11 +7,13 @@ type PrismaModalShellProps = {
   children: ReactNode;
   className?: string;
   onOverlayMouseDown?: (event: any) => void;
+  overlayClassName?: string;
   panelRef?: MutableRefObject<HTMLElement | null>;
   [key: string]: any;
 };
 
-export function PrismaModalShell({ children, className, onOverlayMouseDown, panelRef, ...props }: PrismaModalShellProps) {
+export function PrismaModalShell({ children, className, onOverlayMouseDown, overlayClassName, panelRef, ...props }: PrismaModalShellProps) {
+  const overlayClasses = overlayClassName ? `${styles.overlay} ${overlayClassName}` : styles.overlay;
   const panelClasses = className ? `${styles.panel} ${className}` : styles.panel;
 
   return (
@@ -26,7 +28,7 @@ export function PrismaModalShell({ children, className, onOverlayMouseDown, pane
       data-prisma-qa="tablet-qa-cobro-visual-v2"
       data-prisma-layer="modalBackdrop"
       data-prisma-effect="modal-depth-dim focus-halo"
-      className={styles.overlay}
+      className={overlayClasses}
       onMouseDown={onOverlayMouseDown}
       role="presentation"
     >

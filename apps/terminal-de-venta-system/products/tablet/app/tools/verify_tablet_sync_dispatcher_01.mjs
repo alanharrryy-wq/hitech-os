@@ -23,6 +23,9 @@ const syncPanel = read(syncPanelPath);
 for (const token of ["dispatchTabletOutboxOnce", "loadPendingEvents", "nextRetryAt", "lastAttemptAt", "remoteLedgerId", "remoteLifecycleStatus", "remoteDiagnosticsJson", "backoffDate", "inFlight"]) {
   mustContain("dispatcher", dispatcher, token);
 }
+for (const token of ['const cleanDispatch = response.status === 200', 'reason: cleanDispatch ? "dispatched" : response.ok ? "partial"']) {
+  mustContain("dispatcher", dispatcher, token);
+}
 for (const token of ["PRISMA_TABLET_PC_SYNC_ENABLED", "PRISMA_TABLET_PC_ORIGIN", "PRISMA_TABLET_SYNC_AUTODISPATCH", "sanitizePcOrigin", "checkPrismaPcHealth"]) {
   mustContain("pc-origin", pcOrigin, token);
 }

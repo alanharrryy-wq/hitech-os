@@ -242,13 +242,13 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRe
           </div>
 
           <details className={styles.lockedDiagnostic}>
-            <summary>Evidencia técnica para soporte</summary>
-            <p>Bloqueado para caja. Soporte puede usar el endpoint local y los logs sanitizados desde herramientas administrativas.</p>
+            <summary>Detalle para revisión</summary>
+            <p>Bloqueado para caja. El administrador puede revisar el caso desde sus herramientas de revisión.</p>
           </details>
         </>
       ) : (
         <div className={styles.diagnosticSection}>
-          <strong>Evidencia técnica protegida</strong>
+          <strong>Detalle protegido</strong>
           <span>No se muestran IDs internos ni errores crudos en caja. Reintenta, vuelve a ventas o comparte este caso con soporte.</span>
         </div>
       )}

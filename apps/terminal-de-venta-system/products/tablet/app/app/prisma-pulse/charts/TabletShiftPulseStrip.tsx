@@ -7,8 +7,8 @@ import { TabletChartCard } from "./TabletChartCard";
 
 export function TabletShiftPulseStrip({ data, quality, onFocusLabel }: { data: ShiftPulseBucket[]; quality: PrismaChartQuality; onFocusLabel: (label: string) => void }) {
   return (
-    <TabletChartCard title="Shift Pulse Strip" subtitle="Ventas, tickets y presion de fila" quality={quality}>
-      <PrismaEChart option={shiftPulseStripOption(data)} renderer="svg" height={260} label="Shift Pulse Strip" description="Tira de pulso de turno para saber si la Tablet puede seguir operando." empty={data.length === 0} onFocusLabel={onFocusLabel} />
+    <TabletChartCard title="Turno actual" subtitle="Ventas, tickets y presion de fila" quality={quality}>
+      <PrismaEChart option={shiftPulseStripOption(data)} renderer="svg" height={260} label="Turno actual" description="Lectura de turno para saber si la Tablet puede seguir operando." empty={data.length === 0} onFocusLabel={onFocusLabel} />
     </TabletChartCard>
   );
 }

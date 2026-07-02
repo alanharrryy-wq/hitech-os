@@ -153,7 +153,7 @@ function categoryForFeature(key: string) {
   if (raw.includes("sale") || raw.includes("pos") || raw.includes("ticket") || raw.includes("checkout")) return "Ventas";
   if (raw.includes("cash") || raw.includes("shift") || raw.includes("session") || raw.includes("corte")) return "Turno y caja";
   if (raw.includes("stock") || raw.includes("inventory") || raw.includes("catalog") || raw.includes("product")) return "Inventario local";
-  if (raw.includes("sync") || raw.includes("outbox") || raw.includes("export") || raw.includes("evidence")) return "Sincronización y respaldos";
+  if (raw.includes("sync") || raw.includes("outbox") || raw.includes("export") || raw.includes("evidence")) return "Pendientes y respaldos";
   if (raw.includes("report") || raw.includes("audit") || raw.includes("history")) return "Reportes";
   return "Otras funciones";
 }
@@ -163,7 +163,7 @@ function featureLabel(key: string) {
   if (normalized.includes("sale") || normalized.includes("checkout")) return "Cobro y venta";
   if (normalized.includes("cash") || normalized.includes("shift")) return "Turno y caja";
   if (normalized.includes("stock") || normalized.includes("inventory") || normalized.includes("catalog") || normalized.includes("product")) return "Inventario";
-  if (normalized.includes("sync") || normalized.includes("outbox") || normalized.includes("evidence")) return "Sincronización y respaldos";
+  if (normalized.includes("sync") || normalized.includes("outbox") || normalized.includes("evidence")) return "Pendientes y respaldos";
   if (normalized.includes("export")) return "Exportaciones";
   if (normalized.includes("report") || normalized.includes("audit") || normalized.includes("history")) return "Reportes";
   const raw = key.replace(/[._:-]+/g, " ").trim();
@@ -221,8 +221,8 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
         <summary>Ver detalle para soporte</summary>
         <div className={styles.compactMetricGrid}>
           <Metric label="Modo de operación" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
-          <Metric label="Origen config" value={visibleValue(runtimeContext.configPath, "Config por defecto o no declarada")} />
-          <Metric label="Archivo licencia" value={visibleValue(status.path ?? runtimeContext.licenseFile ?? runtimeContext.paths.licenseFile, "No declarado")} />
+          <Metric label="Configuración" value={visibleValue(runtimeContext.configPath, "No declarada")} />
+          <Metric label="Licencia instalada" value={visibleValue(status.path ?? runtimeContext.licenseFile ?? runtimeContext.paths.licenseFile, "No declarada")} />
           <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "No declarado")} />
           <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "No declarado")} />
           <Metric label="Origen" value={sourceLabel(status.source)} />

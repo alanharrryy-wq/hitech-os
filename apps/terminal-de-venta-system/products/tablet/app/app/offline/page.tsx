@@ -1,8 +1,8 @@
 import { OfflineExportAuditScreen } from "@components/offline/offline-export-audit-screen";
 
 export const metadata = {
-  title: "Offline y export - PRISMA Tablet",
-  description: "Auditoría local de ventas, outbox, stock y exportaciones de Tablet."
+  title: "Sin conexión y respaldo - PRISMA Tablet",
+  description: "Revisión local de ventas, pendientes, existencias y respaldos de Tablet."
 };
 
 export default function OfflineAuditPage() {

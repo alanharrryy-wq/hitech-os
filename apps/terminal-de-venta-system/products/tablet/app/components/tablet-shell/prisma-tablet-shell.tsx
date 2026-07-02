@@ -43,13 +43,14 @@ export function PrismaTabletShellUnified({
   currentPath,
   title,
   subtitle,
-  kicker = "PRISMA POS",
+  kicker = "PRISMA Tablet",
   status,
   actions,
   runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT,
   visualSurface,
   visualPreset,
   showBottomDock = true,
+  dockMode = "sticky",
   children
 }: {
   currentPath: string;
@@ -62,6 +63,7 @@ export function PrismaTabletShellUnified({
   visualSurface?: string;
   visualPreset?: string;
   showBottomDock?: boolean;
+  dockMode?: "sticky" | "inline";
   children: ReactNode;
 }) {
   const flowStage = getTabletFlowStage(currentPath);
@@ -100,7 +102,7 @@ export function PrismaTabletShellUnified({
           </span>
           <span className={styles.brandText}>
             <strong>PRISMA</strong>
-            <small>POS</small>
+            <small>Tablet</small>
           </span>
         </a>
 
@@ -160,7 +162,7 @@ export function PrismaTabletShellUnified({
       </main>
 
       {showBottomDock ? (
-        <nav className={styles.bottomDock} aria-label="Dock principal Tablet" data-prisma-component="TabletBottomNav" data-prisma-layer="dock">
+        <nav className={joinClasses(styles.bottomDock, dockMode === "inline" && styles.bottomDockInline)} aria-label="Dock principal Tablet" data-prisma-component="TabletBottomNav" data-prisma-layer="dock">
           <div className={styles.bottomDockInner}>
             {dockItems.map((item) => {
               const active = isTabletNavActive(currentPath, item.href);

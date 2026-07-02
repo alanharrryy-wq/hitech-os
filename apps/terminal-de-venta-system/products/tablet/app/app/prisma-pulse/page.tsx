@@ -12,8 +12,8 @@ type SearchParams = Record<string, string | string[] | undefined>;
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "PRISMA Pulse - Tablet Operations",
-  description: "Preview operativo de Tablet con dos charts touch-first."
+  title: "Estado operativo - PRISMA Tablet",
+  description: "Resumen operativo de Tablet con dos graficas tactiles."
 };
 
 function toUrlSearchParams(searchParams: SearchParams) {
@@ -37,8 +37,8 @@ export default async function PrismaPulsePage({ searchParams }: { searchParams?:
     getTabletRuntimeSnapshot(input),
     buildPendingOfflineSyncPanel({ businessId: input.businessId, limit: 200 })
   ]);
-  if (runtimeResult.status === "rejected") errors.push(`Tablet runtime unavailable: ${runtimeResult.reason instanceof Error ? runtimeResult.reason.message : String(runtimeResult.reason)}`);
-  if (syncPanelResult.status === "rejected") errors.push(`Tablet sync panel unavailable: ${syncPanelResult.reason instanceof Error ? syncPanelResult.reason.message : String(syncPanelResult.reason)}`);
+  if (runtimeResult.status === "rejected") errors.push(`Estado operativo no disponible: ${runtimeResult.reason instanceof Error ? runtimeResult.reason.message : String(runtimeResult.reason)}`);
+  if (syncPanelResult.status === "rejected") errors.push(`Pendientes no disponibles: ${syncPanelResult.reason instanceof Error ? syncPanelResult.reason.message : String(syncPanelResult.reason)}`);
   const model = buildPrismaTripleAppChartsViewModel({
     tablet: {
       runtime: runtimeResult.status === "fulfilled" ? runtimeResult.value : null,
@@ -54,11 +54,11 @@ export default async function PrismaPulsePage({ searchParams }: { searchParams?:
   return (
     <PrismaTabletShellUnified
       currentPath="/prisma-pulse"
-      title="PRISMA Pulse"
-      subtitle="Lectura operativa de runtime, sincronización y señales visuales para Tablet."
-      kicker="Visual OS"
+      title="Estado operativo"
+      subtitle="Lectura de turno, venta local y pendientes de la Tablet."
+      kicker="PRISMA Tablet"
     >
-      <TabletReportSurfaceV2 routeId="/prisma-pulse" title="PRISMA Pulse" description="Lectura operativa de runtime, sincronización y señales visuales para Tablet." statusLabel="Pulse">
+      <TabletReportSurfaceV2 routeId="/prisma-pulse" title="Estado operativo" description="Lectura de turno, venta local y pendientes de la Tablet." statusLabel="Estado">
         <PrismaTabletPulsePanel envelope={envelope} flags={flags} />
       </TabletReportSurfaceV2>
     </PrismaTabletShellUnified>

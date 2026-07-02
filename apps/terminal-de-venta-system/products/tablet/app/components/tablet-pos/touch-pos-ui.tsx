@@ -150,6 +150,24 @@ function statusTone(value: string): "ok" | "warn" | "danger" | "neutral" {
   return "neutral";
 }
 
+function eventTopicLabel(topic: string) {
+  const normalized = topic.toLowerCase();
+  if (normalized.includes("sale")) return "Venta guardada";
+  if (normalized.includes("return")) return "Devolución guardada";
+  if (normalized.includes("cash")) return "Movimiento de caja";
+  if (normalized.includes("stock") || normalized.includes("inventory")) return "Movimiento de existencia";
+  return "Movimiento local";
+}
+
+function eventStatusLabel(status: string) {
+  const normalized = status.toLowerCase();
+  if (normalized === "acked" || normalized === "sent") return "Confirmado";
+  if (normalized === "pending") return "Pendiente";
+  if (normalized === "failed") return "Reintento requerido";
+  if (normalized === "conflict") return "Revisión requerida";
+  return "Guardado";
+}
+
 export function StatusPill({ tone = "neutral", children }: { tone?: "ok" | "warn" | "danger" | "neutral"; children: ReactNode }) {
   return <span className={[styles.statusPill, styles[`status_${tone}`]].join(" ")}>{children}</span>;
 }
@@ -747,19 +765,19 @@ export function OutboxEventsScreen() {
   }, []);
 
   return (
-    <AppChrome currentPath="/events/outbox" title="Pendientes por enviar" subtitle="Eventos locales esperando sincronización." status={<RuntimeStatus state={state} />}>
+    <AppChrome currentPath="/events/outbox" title="Pendientes por enviar" subtitle="Movimientos guardados esperando envío." status={<RuntimeStatus state={state} />}>
       <section className={styles.summaryGrid}>
         <Metric label="Pendientes" value={String(counts.pending ?? 0)} note="por enviar" icon="chart" />
         <Metric label="Fallidos" value={String(counts.failed ?? 0)} note="requieren atención" icon="bell" />
-        <Metric label="ACK" value={String(counts.acked ?? 0)} note="confirmados" icon="receipt" />
+        <Metric label="Confirmados" value={String(counts.acked ?? 0)} note="ya recibidos" icon="receipt" />
         <Metric label="Conflictos" value={String(counts.conflict ?? 0)} note="para PC" icon="settings" />
       </section>
       {state === "error" ? <OperationalError error={error} /> : null}
-      {state === "empty" ? <StatePanel icon="chart" title="Sin pendientes por enviar" description="Las ventas locales generarán eventos operativos aquí." /> : null}
+      {state === "empty" ? <StatePanel icon="chart" title="Sin pendientes por enviar" description="Las ventas locales aparecerán aquí cuando esperen envío." /> : null}
       {events.length ? (
-        <DataPanel title="Eventos locales">
+        <DataPanel title="Movimientos guardados">
           {events.map((event) => (
-            <DataRow key={event.id} title={event.topic} detail={`${event.aggregateId} · ${new Date(event.createdAt).toLocaleString("es-MX")}`} aside={<StatusPill tone={statusTone(event.status)}>{event.status}</StatusPill>} />
+            <DataRow key={event.id} title={eventTopicLabel(event.topic)} detail={`Creado ${new Date(event.createdAt).toLocaleString("es-MX")}`} aside={<StatusPill tone={statusTone(event.status)}>{eventStatusLabel(event.status)}</StatusPill>} />
           ))}
         </DataPanel>
       ) : null}
@@ -772,8 +790,8 @@ export function ExportSettingsScreen() {
   const endpoints = [
     { label: "Ventas de hoy JSON", href: "/api/pos/export/sales-today?format=json" },
     { label: "Ventas de hoy CSV", href: "/api/pos/export/sales-today?format=csv" },
-    { label: "Eventos JSON", href: "/api/pos/export/events?format=json" },
-    { label: "Eventos CSV", href: "/api/pos/export/events?format=csv" },
+    { label: "Pendientes JSON", href: "/api/pos/export/events?format=json" },
+    { label: "Pendientes CSV", href: "/api/pos/export/events?format=csv" },
     { label: "Movimientos JSON", href: "/api/pos/export/inventory-movements?format=json" },
     { label: "Movimientos CSV", href: "/api/pos/export/inventory-movements?format=csv" }
   ];

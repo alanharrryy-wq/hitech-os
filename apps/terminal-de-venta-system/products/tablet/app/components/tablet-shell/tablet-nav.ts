@@ -29,7 +29,7 @@ export type TabletFlowStage = "inicio" | "venta" | "operacion" | "consulta" | "s
 export const TABLET_NAV_GROUP_LABELS: Record<TabletNavGroup, string> = {
   operacion: "Operación",
   consulta: "Consulta rápida",
-  soporte: "Soporte"
+  soporte: "Continuidad"
 };
 
 const TABLET_NAV_PRESENTATION: Record<string, Pick<TabletNavItem, "shortLabel" | "icon" | "group" | "primary">> = {
@@ -38,7 +38,7 @@ const TABLET_NAV_PRESENTATION: Record<string, Pick<TabletNavItem, "shortLabel" |
   "/stock": { shortLabel: "Inventario", icon: "package", group: "consulta" },
   "/sales/today": { shortLabel: "Ventas", icon: "receipt", group: "consulta" },
   "/returns": { shortLabel: "Devol.", icon: "receipt", group: "consulta" },
-  "/sync": { shortLabel: "Sync", icon: "bell", group: "soporte" },
+  "/sync": { shortLabel: "Pendientes", icon: "bell", group: "soporte" },
   "/settings/license": { shortLabel: "Licencia", icon: "settings", group: "soporte" }
 };
 
@@ -138,7 +138,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
   if (stage === "inicio") {
     return {
       label: "Mapa de trabajo",
-      helper: "Las pantallas principales quedan visibles; Inicio orienta el flujo sin exponer pantallas internas."
+      helper: "Inicio muestra solo lo necesario para vender, revisar y atender pendientes."
     };
   }
   if (stage === "venta") {
@@ -150,13 +150,13 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
   if (stage === "consulta") {
     return {
       label: "Consulta rápida",
-      helper: "Inventario, ventas y devoluciones se revisan sin convertir Tablet en backoffice."
+      helper: "Inventario, ventas y devoluciones se revisan sin salir de la Tablet."
     };
   }
   if (stage === "soporte") {
     return {
-      label: "Soporte operativo",
-      helper: "Pendientes, respaldo y licencia explican continuidad sin mostrar herramientas internas."
+      label: "Continuidad",
+      helper: "Pendientes, respaldo y licencia muestran que hacer para seguir operando."
     };
   }
   return {

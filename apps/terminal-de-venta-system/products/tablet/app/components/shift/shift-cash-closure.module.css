@@ -256,6 +256,15 @@
   -webkit-backdrop-filter: none;
 }
 
+.panel[data-current="false"] {
+  opacity: .72;
+}
+
+.panel[data-current="true"] {
+  border-color: var(--shift-line-strong);
+  background: rgba(255,255,255,.52);
+}
+
 .panelHeader {
   display: flex;
   align-items: flex-start;
