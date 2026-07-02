@@ -9,6 +9,7 @@ export * from "./license-governor";
 export * from "./license-loader";
 export * from "./license-normalizer";
 export * from "./license-paths";
+export * from "./licflow2-activation";
 export * from "./license-public-keys";
 export * from "./license-refresh-client";
 export * from "./license-refresh-config";

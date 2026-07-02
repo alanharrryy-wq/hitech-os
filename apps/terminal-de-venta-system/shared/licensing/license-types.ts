@@ -38,6 +38,20 @@ export type LicenseAssignmentState =
 
 export type LicenseOperationalDecision = "allow" | "allow_with_warning" | "degrade" | "deny";
 
+export type LicenseActivationMode = "OFFLINE_PACKAGE" | "ONLINE_ACTIVATION" | "HYBRID";
+
+export type LicenseActivationMetadata = {
+  schemaVersion: string;
+  mode: LicenseActivationMode;
+  status: "prepared" | "activated" | "refresh_pending" | "refresh_failed" | "revoked";
+  channel: "local_package" | "local_loopback_contract" | "hybrid_package_with_refresh";
+  receiptId: string;
+  activatedAt: string;
+  issuedBy: string;
+  hostedCloud: boolean;
+  supportCode: string;
+};
+
 export type LicenseDenialReason =
   | "license_missing"
   | "license_invalid"
@@ -86,6 +100,7 @@ export type LicenseDocument = {
   lastSeenAt?: string;
   lastRefreshAt?: string;
   offlineGraceDays?: number;
+  activation?: LicenseActivationMetadata;
   features?: Record<string, boolean>;
   capabilities?: Record<string, boolean>;
   limits?: Record<string, number>;

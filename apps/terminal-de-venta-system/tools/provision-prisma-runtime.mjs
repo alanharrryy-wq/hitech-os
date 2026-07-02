@@ -57,20 +57,64 @@ function buildPaths({ runtimeRoot, businessId }) {
   };
 }
 
+function readJsonFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function resolvePackageFile(packageRoot, packageRelPath) {
+  const resolved = path.resolve(packageRoot, String(packageRelPath || ""));
+  if (!isPathInside(packageRoot, resolved) && path.resolve(packageRoot) !== resolved) {
+    throw new Error(`Activation package file points outside package root: ${packageRelPath}`);
+  }
+  return resolved;
+}
+
+function loadActivationPackage(packageRoot, role) {
+  const root = path.resolve(packageRoot);
+  const manifestPath = path.join(root, "activation-package.json");
+  if (!fs.existsSync(manifestPath)) throw new Error(`Activation package manifest missing: ${manifestPath}`);
+  const manifest = readJsonFile(manifestPath);
+  const roleSpec = manifest?.roles?.[role];
+  if (!roleSpec) throw new Error(`Activation package does not include role ${role}: ${manifestPath}`);
+  const licenseSource = resolvePackageFile(root, roleSpec.license);
+  const receiptSource = resolvePackageFile(root, roleSpec.receipt);
+  const identitySource = resolvePackageFile(root, roleSpec.deviceIdentity);
+  const runtimeTemplate = resolvePackageFile(root, roleSpec.runtimeConfig);
+  for (const file of [licenseSource, receiptSource, identitySource, runtimeTemplate]) {
+    if (!fs.existsSync(file)) throw new Error(`Activation package file missing: ${file}`);
+  }
+  const identity = readJsonFile(identitySource);
+  return {
+    root,
+    manifestPath,
+    manifest,
+    roleSpec,
+    licenseSource,
+    receiptSource,
+    identitySource,
+    runtimeTemplate,
+    identity
+  };
+}
+
 function parseArgs() {
   const args = process.argv.slice(2);
   const mode = argValue(args, "--runtime-mode", "customer");
   const vertical = argValue(args, "--vertical", "commerce");
   const role = argValue(args, "--role", "tablet");
-  const businessId = argValue(args, "--business-id", "biz_78b3c840796a4a4dad");
-  const storeId = argValue(args, "--store-id", "store_00728649f3804a9e82");
-  const terminalId = argValue(args, "--terminal-id", role === "tablet" ? "term_49103c7382d84663a3" : `${role}_prisma_original_customer_terminal_001`);
-  const deviceId = argValue(args, "--device-id", `${role}_prisma_original_customer_001`);
-  const packageType = argValue(args, "--package-type", role === "pc" ? "PC_BACKOFFICE" : "TABLET_SOLO");
-  const clientId = argValue(args, "--client-id", "cust_prisma_original_customer");
+  const activationPackageRoot = argValue(args, "--activation-package");
+  const activationPackage = activationPackageRoot ? loadActivationPackage(activationPackageRoot, role) : null;
+  const packageIdentity = activationPackage?.identity && typeof activationPackage.identity === "object" ? activationPackage.identity : {};
+  const packageCustomer = activationPackage?.manifest?.customer && typeof activationPackage.manifest.customer === "object" ? activationPackage.manifest.customer : {};
+  const businessId = argValue(args, "--business-id", packageIdentity.businessId || packageCustomer.businessId || "biz_78b3c840796a4a4dad");
+  const storeId = argValue(args, "--store-id", packageIdentity.storeId || packageCustomer.storeId || "store_00728649f3804a9e82");
+  const terminalId = argValue(args, "--terminal-id", packageIdentity.terminalId || (role === "tablet" ? "term_49103c7382d84663a3" : `${role}_prisma_original_customer_terminal_001`));
+  const deviceId = argValue(args, "--device-id", packageIdentity.deviceId || `${role}_prisma_original_customer_001`);
+  const packageType = argValue(args, "--package-type", packageCustomer.plan || (role === "pc" ? "PC_BACKOFFICE" : "TABLET_SOLO"));
+  const clientId = argValue(args, "--client-id", packageCustomer.customerId || "cust_prisma_original_customer");
   const explicitRoot = argValue(args, "--runtime-root");
   const rootBase = explicitRoot || path.join(defaultProgramDataRoot(), "PRISMA", titleCase(vertical));
-  const licenseSource = argValue(args, "--license-file");
+  const licenseSource = activationPackage?.licenseSource || argValue(args, "--license-file");
   const pcOrigin = argValue(args, "--pc-origin", packageType === "TABLET_PC_MANAGED" ? "http://127.0.0.1:3130" : null);
   const pcIngestPath = argValue(args, "--pc-ingest-path", "/api/backoffice/sync/ingest");
   const pcHealthPath = argValue(args, "--pc-health-path", "/api/health");
@@ -93,6 +137,7 @@ function parseArgs() {
     clientId,
     runtimeRoot: path.resolve(rootBase),
     licenseSource: licenseSource ? path.resolve(licenseSource) : null,
+    activationPackage,
     pcOrigin,
     pcIngestPath,
     pcHealthPath,
@@ -122,11 +167,20 @@ function copyLicense(source, target, dryRun, actions) {
   }
 }
 
+function copyJsonArtifact(action, source, target, dryRun, actions) {
+  actions.push({ action, source, path: target });
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.copyFileSync(source, target);
+  }
+}
+
 function main() {
   const options = parseArgs();
   const actions = [];
   const paths = buildPaths(options);
   const issues = [];
+  const activationReceiptTarget = options.activationPackage ? path.join(paths.configRoot, "activation-receipt.json") : null;
 
   if ((options.mode === "customer" || options.mode === "release") && isPathInside(terminalRoot, options.runtimeRoot)) {
     issues.push({ code: "RUNTIME_ROOT_POINTS_TO_REPO", message: "Customer/release runtime root must not point inside the repo.", path: options.runtimeRoot });
@@ -154,6 +208,14 @@ function main() {
       file: paths.licenseFile,
       mode: "local_signed_with_optional_refresh"
     },
+    activation: options.activationPackage ? {
+      mode: options.activationPackage.manifest.mode,
+      packageId: options.activationPackage.manifest.packageId,
+      source: "licflow2_activation_package",
+      manifestFile: options.activationPackage.manifestPath,
+      receiptFile: activationReceiptTarget,
+      hostedCloud: false
+    } : undefined,
     sync: {
       enabled: options.packageType === "TABLET_PC_MANAGED",
       mode: options.packageType === "TABLET_PC_MANAGED" ? "local_network_optional" : "none",
@@ -168,7 +230,10 @@ function main() {
     features: {},
     support: {
       diagnosticsEnabled: true,
-      requiresConsent: true
+      requiresConsent: true,
+      activationMode: options.activationPackage?.manifest?.mode,
+      activationPackageId: options.activationPackage?.manifest?.packageId,
+      activationReceipt: activationReceiptTarget ?? undefined
     },
     updates: {
       channel: "stable",
@@ -205,8 +270,15 @@ function main() {
 
   for (const dir of dirs) ensureDir(dir, options.dryRun, actions);
   writeJsonFile(path.join(paths.configRoot, "runtime.json"), runtimeConfig, options.dryRun, actions);
-  writeJsonFile(paths.deviceIdentityFile, identity, options.dryRun, actions);
+  if (options.activationPackage?.identitySource) {
+    copyJsonArtifact("copy_device_identity", options.activationPackage.identitySource, paths.deviceIdentityFile, options.dryRun, actions);
+  } else {
+    writeJsonFile(paths.deviceIdentityFile, identity, options.dryRun, actions);
+  }
   if (options.licenseSource) copyLicense(options.licenseSource, paths.licenseFile, options.dryRun, actions);
+  if (options.activationPackage?.receiptSource && activationReceiptTarget) {
+    copyJsonArtifact("copy_activation_receipt", options.activationPackage.receiptSource, activationReceiptTarget, options.dryRun, actions);
+  }
   writeJsonFile(path.join(paths.configRoot, "provisioning-evidence.json"), {
     generatedAt: nowIso(),
     dryRun: options.dryRun,
@@ -215,6 +287,12 @@ function main() {
     storeId: options.storeId,
     terminalId: options.terminalId,
     deviceId: options.deviceId,
+    activationPackage: options.activationPackage ? {
+      packageId: options.activationPackage.manifest.packageId,
+      mode: options.activationPackage.manifest.mode,
+      manifestPath: options.activationPackage.manifestPath,
+      role: options.role
+    } : null,
     actions
   }, options.dryRun, actions);
 

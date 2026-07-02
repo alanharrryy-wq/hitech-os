@@ -34,6 +34,8 @@
   function render(root, payload) {
     const runtime = payload && payload.runtime ? payload.runtime : {};
     const summary = runtime.runtime || {};
+    const license = runtime.license || {};
+    const activation = license.activation || {};
     root.innerHTML = `
       <div class="licenseOpsMiniGrid">
         <section class="cloudSaasCard">
@@ -47,6 +49,7 @@
             ${row("License file", runtime.licenseFile)}
             ${row("Current release", runtime.currentRelease)}
             <div class="cloudSaasRow"><small>Identidad</small><strong>${esc(summary.businessId || "-")} / ${esc(summary.storeId || "-")} / ${esc(summary.terminalId || "-")} / ${esc(summary.deviceId || "-")}</strong></div>
+            <div class="cloudSaasRow"><small>Activacion</small><strong>${esc(activation.mode || "-")} / ${esc(activation.receiptId || activation.packageId || "-")}</strong></div>
           </div>
         </section>
         <section class="cloudSaasCard">

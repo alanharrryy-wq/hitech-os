@@ -37,6 +37,30 @@ export type Adlant4BootstrapResult = {
   envelope: SignedLicenseEnvelope;
 };
 
+export type Adlant4RuntimeFilePayload = {
+  identity: {
+    schemaVersion: string;
+    deviceId: string;
+    terminalId: string;
+    businessId: string;
+    storeId: string;
+    vertical: "commerce";
+    role: Adlant4RuntimeRole;
+    createdAt: string;
+    updatedAt: string;
+  };
+  runtimeConfig: Record<string, unknown>;
+};
+
+export type Adlant4RuntimeFileOptions = {
+  licensePath: string;
+  deviceIdentityPath: string;
+  receiptPath: string;
+  issuedAt: string;
+  activation?: Record<string, unknown> | null;
+  support?: Record<string, unknown> | null;
+};
+
 function base64Url(buffer: Buffer): string {
   return buffer.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
@@ -163,47 +187,63 @@ export function signLicenseDocument(document: LicenseDocument, privateKeyPem: st
   };
 }
 
-function writeRuntimeFiles(paths: Adlant4IssuerPaths, licensePath: string, issuedAt: string): void {
-  const roles: Record<Adlant4RuntimeRole, { deviceId: string; terminalId: string | null }> = {
+export function buildAdlant4RuntimeFilePayload(role: Adlant4RuntimeRole, options: Adlant4RuntimeFileOptions): Adlant4RuntimeFilePayload {
+  const roleSpecs: Record<Adlant4RuntimeRole, { deviceId: string; terminalId: string | null }> = {
     pc: { deviceId: PRISMA_ORIGINAL_CUSTOMER.pcDeviceId, terminalId: null },
     tablet: { deviceId: PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId, terminalId: PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId },
     mobile: { deviceId: PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId, terminalId: null }
   };
-  for (const [role, spec] of Object.entries(roles) as Array<[Adlant4RuntimeRole, { deviceId: string; terminalId: string | null }]>) {
-    const identity = {
-      schemaVersion: "1.0.0",
-      deviceId: spec.deviceId,
-      terminalId: spec.terminalId ?? `${role}_no_terminal`,
-      businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
-      storeId: PRISMA_ORIGINAL_CUSTOMER.storeId,
-      vertical: "commerce",
-      role,
-      createdAt: issuedAt,
-      updatedAt: issuedAt
-    };
-    writeJson(paths.deviceIdentities[role], identity);
-    writeJson(paths.runtimeConfigs[role], {
-      schemaVersion: "1.0.0",
-      runtimeMode: "customer",
-      runtimeProfile: "managed",
-      vertical: "commerce",
-      role,
-      clientId: PRISMA_ORIGINAL_CUSTOMER.customerId,
-      businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
-      storeId: PRISMA_ORIGINAL_CUSTOMER.storeId,
-      terminalId: spec.terminalId ?? undefined,
-      deviceId: spec.deviceId,
-      packageType: "TABLET_PC_MANAGED",
-      license: { file: licensePath, mode: "signed-local" },
-      paths: {
-        licenseFile: licensePath,
-        deviceIdentityFile: paths.deviceIdentities[role]
-      },
-      support: {
-        activationReceipt: paths.receiptPath,
-        issuer: ADLANT4_ISSUER_LABEL
-      }
+  const spec = roleSpecs[role];
+  const identity = {
+    schemaVersion: "1.0.0",
+    deviceId: spec.deviceId,
+    terminalId: spec.terminalId ?? `${role}_no_terminal`,
+    businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
+    storeId: PRISMA_ORIGINAL_CUSTOMER.storeId,
+    vertical: "commerce" as const,
+    role,
+    createdAt: options.issuedAt,
+    updatedAt: options.issuedAt
+  };
+  const runtimeConfig: Record<string, unknown> = {
+    schemaVersion: "1.0.0",
+    runtimeMode: "customer",
+    runtimeProfile: "managed",
+    vertical: "commerce",
+    role,
+    clientId: PRISMA_ORIGINAL_CUSTOMER.customerId,
+    businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
+    storeId: PRISMA_ORIGINAL_CUSTOMER.storeId,
+    terminalId: spec.terminalId ?? undefined,
+    deviceId: spec.deviceId,
+    packageType: "TABLET_PC_MANAGED",
+    license: { file: options.licensePath, mode: "signed-local" },
+    paths: {
+      licenseFile: options.licensePath,
+      deviceIdentityFile: options.deviceIdentityPath
+    },
+    support: {
+      activationReceipt: options.receiptPath,
+      issuer: ADLANT4_ISSUER_LABEL,
+      ...(options.support ?? {})
+    }
+  };
+  if (options.activation) runtimeConfig.activation = options.activation;
+  return { identity, runtimeConfig };
+}
+
+function writeRuntimeFiles(paths: Adlant4IssuerPaths, licensePath: string, issuedAt: string): void {
+  const roles: Adlant4RuntimeRole[] = ["pc", "tablet", "mobile"];
+  for (const role of roles) {
+    const payload = buildAdlant4RuntimeFilePayload(role, {
+      licensePath,
+      deviceIdentityPath: paths.deviceIdentities[role],
+      receiptPath: paths.receiptPath,
+      issuedAt
     });
+    const identity = payload.identity;
+    writeJson(paths.deviceIdentities[role], identity);
+    writeJson(paths.runtimeConfigs[role], payload.runtimeConfig);
   }
 }
 

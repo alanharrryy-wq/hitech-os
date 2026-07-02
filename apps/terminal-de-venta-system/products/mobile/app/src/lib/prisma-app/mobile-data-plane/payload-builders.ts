@@ -114,6 +114,8 @@ export function buildSummaryPayload(state: MobileDataPlaneState): PrismaMobileSu
       tenantId: state.config.tenantId,
       licenseId: state.config.licenseId,
       planLabel: state.config.planLabel,
+      activationMode: state.config.activationMode,
+      activationModeLabel: state.config.activationModeLabel,
       licenseStateLabel: state.config.licenseStateLabel,
       authorizationLabel: state.config.authorizationLabel,
       mobileDeviceLabel: "Mobile vinculado",

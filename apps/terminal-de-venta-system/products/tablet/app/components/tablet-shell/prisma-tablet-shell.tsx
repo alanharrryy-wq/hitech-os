@@ -70,8 +70,8 @@ export function PrismaTabletShellUnified({
   const pendingCount = getTabletPendingCount(runtimeSnapshot);
   const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos" : "tablet-softglass");
   const resolvedVisualPreset = visualPreset ?? "PRISMA_SOFTGLASS_REFERENCE_2606";
-  const primaryTopItems = visibleNavItems.filter((item) => ["/", "/pos", "/catalog", "/stock", "/sales/today", "/sync"].includes(item.href));
-  const dockItems = visibleNavItems.filter((item) => ["/", "/pos", "/catalog", "/sales/today", "/returns", "/sync"].includes(item.href));
+  const primaryTopItems = visibleNavItems;
+  const dockItems = visibleNavItems.filter((item) => ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync"].includes(item.href));
 
   return (
     <div
@@ -92,7 +92,7 @@ export function PrismaTabletShellUnified({
       <span className={styles.scene} aria-hidden="true" />
 
       <header className={styles.topbar} data-prisma-component="TopCommandBar" data-prisma-role="app-owner" data-prisma-layer="header">
-        <a className={styles.brand} href="/" aria-label="Ir al inicio de PRISMA POS">
+        <a className={styles.brand} href="/pos" aria-label="Ir a vender en PRISMA POS">
           <span className={styles.brandMark} aria-hidden="true">
             <img className={styles.brandImage} src="/prisma/logo-prisma-primary.png" alt="" />
           </span>
@@ -103,7 +103,7 @@ export function PrismaTabletShellUnified({
         </a>
 
         <div className={styles.contextChips} aria-label="Contexto de venta">
-          <a className={styles.contextChip} href="/catalog">
+          <a className={styles.contextChip} href="/stock">
             <PrismaIcon name="tag" size={17} />
             <span>{runtimeSnapshot.identity.storeName}</span>
           </a>
