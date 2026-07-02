@@ -1,6 +1,7 @@
 import { pcModuleRegistry } from "./module-registry";
 import { PC_ROUTE_MAP, type PcRouteMapEntry, type PcRouteStatus } from "@/uiux/route-map";
 import { getPcRouteContract, normalizePcPathname, PC_GROUP_LABELS } from "@/uiux/decision-model";
+import { PC_FINAL_NAVIGATION } from "@/uiux/pc-product-navigation";
 
 export type PcHumanGroupSlug =
   | "hoy"
@@ -35,19 +36,31 @@ export type PcPrimaryNavigationItem = {
   icon: string;
 };
 
-export const PC_PRIMARY_NAVIGATION: PcPrimaryNavigationItem[] = [
-  { href: "/dashboard", title: "Hoy", description: "Qué atender ahora", group: "hoy", icon: "HO" },
-  { href: "/sales-control", title: "Ventas y caja", description: "Venta, dinero, tickets y cortes", group: "ventas-caja", icon: "VE" },
-  { href: "/catalog", title: "Inventario", description: "Productos, existencias y movimientos", group: "inventario", icon: "IN" },
-  { href: "/purchasing", title: "Compras", description: "Pedidos, recepción y reabasto", group: "compras", icon: "CO" },
-  { href: "/proveedores", title: "Proveedores", description: "Acciones con proveedores y pagos", group: "proveedores", icon: "PR" },
-  { href: "/sync", title: "Sincronización", description: "Cambios entre PC y tablet", group: "sincronizacion", icon: "SI" },
-  { href: "/exportables", title: "Reportes", description: "Descargas, contratos y evidencia", group: "reportes", icon: "RE" },
-  { href: "/prisma-insights", title: "Análisis", description: "Lecturas visuales y Chart Lab", group: "analisis", icon: "AN" },
-  { href: "/devices", title: "Sistema", description: "Salud, equipos, licencia y auditoría", group: "sistema", icon: "SY" },
-  { href: "/settings", title: "Configuración", description: "Reglas, permisos y terminales", group: "configuracion", icon: "AJ" }
-];
+const PC_PRODUCT_NAV_PRESENTATION: Record<string, { description: string; group: PcHumanGroupSlug; icon: string }> = {
+  "/dashboard": { description: "Qué atender ahora", group: "hoy", icon: "HO" },
+  "/catalog": { description: "Productos, existencias y movimientos", group: "inventario", icon: "IN" },
+  "/purchasing": { description: "Pedidos, recepción y reabasto", group: "compras", icon: "CO" },
+  "/proveedores": { description: "Proveedores, compras y decisiones de abasto", group: "proveedores", icon: "PR" },
+  "/sales-control": { description: "Venta, dinero, tickets y cortes", group: "ventas-caja", icon: "VE" },
+  "/sync": { description: "Cambios entre PC y Tablet", group: "sincronizacion", icon: "SI" },
+  "/devices": { description: "Equipos, conexión y operación Tablet", group: "sistema", icon: "EQ" },
+  "/exportables": { description: "Descargas, contratos y evidencia", group: "reportes", icon: "RE" },
+  "/prisma-insights": { description: "Lecturas ejecutivas y señales de negocio", group: "analisis", icon: "AN" },
+  "/settings": { description: "Reglas, permisos y terminales", group: "configuracion", icon: "AJ" },
+  "/glosario": { description: "Ayuda y lenguaje operativo", group: "ayuda", icon: "AY" }
+};
 
+export const PC_PRIMARY_NAVIGATION: PcPrimaryNavigationItem[] = PC_FINAL_NAVIGATION
+  .filter((route) => Boolean(PC_PRODUCT_NAV_PRESENTATION[route.route]))
+  .slice()
+  .sort((a, b) => a.order - b.order)
+  .map((route) => ({
+    href: route.route,
+    title: route.label,
+    description: PC_PRODUCT_NAV_PRESENTATION[route.route].description,
+    group: PC_PRODUCT_NAV_PRESENTATION[route.route].group,
+    icon: PC_PRODUCT_NAV_PRESENTATION[route.route].icon
+  }));
 
 // Compatibility tokens for PC-UIUX-300 verifier.
 // These labels are intentionally not first-level navigation titles, because ANSI nav stays human-first.
@@ -59,17 +72,18 @@ const GROUP_DESCRIPTIONS: Record<string, string> = {
   inventario: "Productos, existencias, códigos, conteos y movimientos.",
   compras: "Pedidos, recepción, reabasto y diferencias.",
   proveedores: "Proveedores, cuentas por pagar, calidad y calendario.",
-  sincronizacion: "Cambios pendientes, confirmaciones y estado PC-tablet.",
+  sincronizacion: "Cambios pendientes, confirmaciones y estado PC-Tablet.",
   reportes: "Descargas, contratos y evidencia exportable.",
-  analisis: "Gráficas, insights y laboratorio visual.",
+  analisis: "Gráficas e insights de negocio final.",
   sistema: "Salud de plataforma, equipos, licencia e historial.",
   configuracion: "Reglas, permisos, terminales y preferencias.",
-  ayuda: "Guías internas y referencias técnicas bajo demanda."
+  ayuda: "Guías internas y referencias operativas bajo demanda."
 };
 
 const ROUTE_MAP_BY_ROUTE = new Map<string, PcRouteMapEntry>(PC_ROUTE_MAP.map((entry) => [entry.route, entry]));
 const MODULE_BY_ROUTE = new Map(pcModuleRegistry.map((module) => [module.route, module]));
 const PRIMARY_BY_GROUP = new Map(PC_PRIMARY_NAVIGATION.map((item) => [item.group, item]));
+const PRIMARY_ROUTES = new Set(PC_PRIMARY_NAVIGATION.map((item) => item.href));
 
 function isClientVisibleRouteStatus(status: PcRouteStatus) {
   return status !== "internal" && status !== "lab";
@@ -114,6 +128,8 @@ export function getNavigation(): PcNavigationItem[] {
   const routeOnlyEntries = PC_ROUTE_MAP
     .filter((entry) => !moduleRoutes.has(entry.route))
     .filter((entry) => isClientVisibleRouteStatus(entry.status))
+    .filter((entry) => entry.route !== "/")
+    .filter((entry) => !PRIMARY_ROUTES.has(entry.route) || Boolean(PC_PRODUCT_NAV_PRESENTATION[entry.route]))
     .map((entry) => ({
       href: entry.route,
       title: entry.humanName,

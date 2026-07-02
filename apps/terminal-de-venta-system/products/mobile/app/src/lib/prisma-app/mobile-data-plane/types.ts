@@ -24,6 +24,8 @@ export type MobileDataPlaneConfig = {
   tenantId: string;
   licenseId: string;
   planLabel: string;
+  activationMode: string;
+  activationModeLabel: string;
   licenseStateLabel: string;
   authorizationLabel: string;
   pcDeviceId: string;

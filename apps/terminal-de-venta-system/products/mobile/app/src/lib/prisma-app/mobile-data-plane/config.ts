@@ -38,6 +38,8 @@ export function getMobileDataPlaneConfig(): MobileDataPlaneConfig {
     tenantId: readString("PRISMA_MOBILE_TENANT_ID", PRISMA_ORIGINAL_CUSTOMER.tenantId),
     licenseId: readString("PRISMA_MOBILE_LICENSE_ID", PRISMA_ORIGINAL_CUSTOMER.licenseId),
     planLabel: readString("PRISMA_MOBILE_PLAN_LABEL", PRISMA_ORIGINAL_CUSTOMER.planLabel),
+    activationMode: readString("PRISMA_MOBILE_ACTIVATION_MODE", "HYBRID"),
+    activationModeLabel: readString("PRISMA_MOBILE_ACTIVATION_MODE_LABEL", "Activacion hibrida local firmada"),
     licenseStateLabel: readString("PRISMA_MOBILE_LICENSE_STATE_LABEL", "Licencia local firmada activa"),
     authorizationLabel: readString("PRISMA_MOBILE_AUTHORIZATION_LABEL", "Mobile vinculado a la cuenta"),
     pcDeviceId: readString("PRISMA_MOBILE_PC_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.pcDeviceId),

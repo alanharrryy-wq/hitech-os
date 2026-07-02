@@ -92,6 +92,12 @@ def _read_runtime_bundle(public: bool = False) -> dict[str, Any]:
     assignment = license_payload.get("assignment") if isinstance(license_payload, dict) else None
     if not isinstance(assignment, dict):
         assignment = {}
+    activation = license_payload.get("activation") if isinstance(license_payload, dict) else None
+    if not isinstance(activation, dict):
+        activation = {}
+    runtime_activation = runtime.get("activation") if isinstance(runtime, dict) else None
+    if not isinstance(runtime_activation, dict):
+        runtime_activation = {}
     license_summary = None
     if isinstance(license_payload, dict):
         authorized_devices = license_payload.get("authorizedDevices")
@@ -110,6 +116,15 @@ def _read_runtime_bundle(public: bool = False) -> dict[str, Any]:
                 "deviceId": assignment.get("deviceId") or assignment.get("tabletId") or license_payload.get("deviceId"),
             },
             "authorizedDeviceCount": len(authorized_devices),
+            "activation": {
+                "mode": activation.get("mode") or runtime_activation.get("mode"),
+                "status": activation.get("status"),
+                "receiptId": activation.get("receiptId"),
+                "receiptFile": runtime_activation.get("receiptFile"),
+                "packageId": runtime_activation.get("packageId"),
+                "hostedCloud": bool(activation.get("hostedCloud") or runtime_activation.get("hostedCloud")),
+                "supportCode": activation.get("supportCode"),
+            },
             "authorizedDevices": [
                 {
                     "role": item.get("role"),

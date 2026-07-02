@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-07-02",
+  "sourceOfTruth": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "activationModes": [
+    "OFFLINE_PACKAGE",
+    "ONLINE_ACTIVATION",
+    "HYBRID"
+  ],
+  "issuer": {
+    "file": "shared/licensing/adlant4-local-issuer.ts",
+    "keyId": "adlant4_local_2026_0630",
+    "algorithm": "Ed25519",
+    "privateKeyLocation": "outside-repo-redacted"
+  },
+  "customerTruth": "shared/customer/prisma-original-customer.ts",
+  "provisioningTool": "tools/provision-prisma-runtime.mjs",
+  "onlineActivation": {
+    "endpoint": "POST /licenses/activate",
+    "hostedCloudClaimed": false
+  },
+  "runtimeWrites": [
+    "Config/runtime.json",
+    "Config/device-identity.json",
+    "Config/license.json",
+    "Config/activation-receipt.json",
+    "Config/provisioning-evidence.json"
+  ],
+  "neverCommit": [
+    "*.db",
+    "*.sqlite",
+    "*.sqlite3",
+    ".env*",
+    "*.pem",
+    "*.pfx",
+    "*.p12",
+    "private-key files",
+    "runtime customer data"
+  ]
+}
