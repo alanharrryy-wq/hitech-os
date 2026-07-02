@@ -35,7 +35,7 @@ const posScreen = hasAll("components/pos/pos-screen.tsx", [
   "PosProductSearch",
   "PosProductList",
   "PosTicketPanel",
-  "PosPaymentPanel",
+  "PosCobroSurface",
   "completeCartSale",
   "await loadProducts(query)",
   "setLastReceipt(receipt)",
@@ -53,12 +53,12 @@ check("POS page participates in this gate", Boolean(posPage), "app/pos/page.tsx"
 hasAll("components/pos/pos-product-search.tsx", [
   "type=\"search\"",
   "onSearch",
-  "onResolve",
   "onClear",
   "Buscar",
-  "Resolver código",
+  "Buscar producto o escanear código",
   "Limpiar"
 ]);
+check("POS search hides resolver action in final surface", !read("components/pos/pos-product-search.tsx").includes("Resolver código"), "components/pos/pos-product-search.tsx");
 hasAll("components/pos/pos-product-list.tsx", [
   "onAdd(product)",
   "disabled={disabled}",
@@ -66,23 +66,25 @@ hasAll("components/pos/pos-product-list.tsx", [
   "ProductGrid"
 ]);
 hasAll("components/pos/pos-ticket-panel.tsx", [
-  "COBRAR",
+  "Cobrar",
   "QuantityStepper",
   "onIncrement",
   "onDecrement",
   "onRemove",
   "onCheckout",
   "onHold",
-  "Limpiar"
+  "Guardar ticket",
+  "Opciones de ticket",
+  "Cancelar venta"
 ]);
-hasAll("components/pos/pos-payment-panel.tsx", [
+hasAll("components/pos/pos-cobro-surface.tsx", [
   "role=\"dialog\"",
   "onPaymentTenderChange",
   "onConfirm",
-  "OK, generar ticket",
+  "Completar pago",
   "Volver al ticket",
   "Cancelar cobro",
-  "data-prisma-zone=\"tablet-checkout-confirm-action\""
+  "data-prisma-checkout-finalize"
 ]);
 
 const cartState = hasAll("src/lib/pos/cart-state.ts", [
@@ -122,9 +124,9 @@ const catalogPull = hasAll("components/sync/catalog-pull-panel.tsx", [
   "/api/pos/sync/pull",
   "method: \"POST\"",
   "setStatus(response.data)",
-  "Pedir delta",
-  "Bootstrap inicial",
-  "Resync controlado",
+  "Actualizar datos",
+  "Primera carga",
+  "Reparar datos",
   "Actualizar"
 ]);
 check("catalog pull refreshes status after mutation", countNeedle(catalogPull, "setStatus(response.data)") >= 3, "components/sync/catalog-pull-panel.tsx");
@@ -134,7 +136,7 @@ hasAll("components/offline/offline-export-audit-screen.tsx", [
   "/api/pos/offline/audit?limit=40",
   "Actualizar",
   "Ventas CSV",
-  "Eventos JSON",
+  "Pendientes JSON",
   "Movimientos CSV"
 ]);
 hasAll("app/offline/page.tsx", ["OfflineExportAuditScreen"]);
@@ -146,13 +148,15 @@ const catalogStock = hasAll("components/catalog-stock-selling-assist/catalog-sto
   "addSellingAssistProductToCart",
   "prisma:tablet-cart-updated",
   "Buscar",
-  "Resolver código",
+  "Escanear",
+  "StockExportMenu",
   "Limpiar",
   "Agregar a venta"
 ]);
 check("catalog/stock listens for cart and catalog refresh events", catalogStock.includes("prisma:tablet-catalog-updated") && catalogStock.includes("handleCart"), "components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx");
-hasAll("app/catalog/page.tsx", ["CatalogStockSellingAssistScreen", "mode=\"catalog\""]);
-hasAll("app/stock/page.tsx", ["CatalogStockSellingAssistScreen", "mode=\"stock\"", "ContextualExportBand"]);
+hasAll("app/catalog/page.tsx", ["CatalogScreen", "force-dynamic"]);
+hasAll("app/stock/page.tsx", ["CatalogStockSellingAssistScreen", "mode=\"stock\""]);
+check("stock route no longer mounts default export overlay", !read("app/stock/page.tsx").includes("ContextualExportBand"), "app/stock/page.tsx");
 hasAll("app/existencias/page.tsx", ["CatalogStockSellingAssistScreen", "mode=\"stock\""]);
 
 hasAll("components/sales/sales-today-screen.tsx", [
@@ -186,14 +190,18 @@ const stockCss = hasAll("components/catalog-stock-selling-assist/catalog-stock-s
 const shellCss = hasAll("components/tablet-shell/prisma-tablet-shell.module.css", [
   "@media",
   "grid-template-columns",
-  "PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SHELL_START"
+  ".bottomDockInner",
+  ".compactSellingShell",
+  "min-height: 52px"
 ]);
 check("POS CSS keeps responsive fallback", posCss.includes("grid-template-columns: 1fr"), "components/pos/pos.module.css");
 check("checkout CSS keeps single-column fallback", checkoutCss.includes("grid-template-columns: 1fr"), "components/checkout/checkout.module.css");
 check("stock CSS keeps single-column fallback", stockCss.includes("grid-template-columns: 1fr"), "components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css");
 check("shell CSS keeps adaptive shell", shellCss.includes("minmax"), "components/tablet-shell/prisma-tablet-shell.module.css");
 check("shell CSS keeps viewport-height baseline", /min-height:\s*100(?:dvh|svh|vh)/.test(shellCss), "components/tablet-shell/prisma-tablet-shell.module.css");
-check("POS products use adaptive auto-fit grid", posCss.includes("repeat(auto-fit, minmax(154px, 1fr))"), "components/pos/pos.module.css");
+check("POS shell hides oversized title header", shellCss.includes(".compactSellingShell .main") && shellCss.includes("grid-template-rows: minmax(0, 1fr)"), "components/tablet-shell/prisma-tablet-shell.module.css");
+check("POS shell removes fixed outer frame", shellCss.includes("inset: 0") && shellCss.includes("border: 0") && shellCss.includes("box-shadow: none"), "components/tablet-shell/prisma-tablet-shell.module.css");
+check("POS products use final compact auto-fit grid", posCss.includes("repeat(auto-fit, minmax(156px, 1fr))"), "components/pos/pos.module.css");
 check("checkout payment card keeps landscape split", posCss.includes("grid-template-columns: minmax(260px, 0.88fr) minmax(320px, 1.12fr)"), "components/pos/pos.module.css");
 check("catalog/stock rows keep adaptive add action fallback", stockCss.includes(".rowAddButton") && stockCss.includes("grid-column: 1 / -1"), "components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css");
 
@@ -203,9 +211,8 @@ const salesCss = hasAll("components/sales/sales.module.css", [
   "@media (max-width: 820px)"
 ]);
 const shiftCss = hasAll("components/shift/shift-cash-closure.module.css", [
-  "PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SHIFT_START",
-  "repeat(auto-fit, minmax(150px, 1fr))",
-  "@media (max-width: 980px)"
+  "grid-template-columns",
+  "@media"
 ]);
 const syncCss = hasAll("components/sync/pending-offline-sync-panel.module.css", [
   "PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::SYNC_START",

@@ -14,7 +14,7 @@ function toneForState(state: string): Tone {
 function stateLabel(state: string) {
   const labels: Record<string, string> = {
     active: "Licencia activa",
-    development: "Modo desarrollo",
+    development: "Licencia activa",
     offline_grace: "Operando con gracia offline",
     missing: "Licencia pendiente",
     invalid: "Licencia inválida",
@@ -28,7 +28,7 @@ function stateLabel(state: string) {
 function assignmentLabel(state: string) {
   const labels: Record<string, string> = {
     assigned: "Equipo asignado",
-    unassigned: "Equipo pendiente de asignar",
+    unassigned: "Equipo no asignado",
     wrong_business: "Negocio no coincide",
     wrong_store: "Sucursal no coincide",
     wrong_device: "Dispositivo no coincide",
@@ -51,16 +51,48 @@ function decisionLabel(decision: string) {
 
 function runtimeModeLabel(mode: RuntimeContext["runtimeMode"]) {
   const labels: Record<RuntimeContext["runtimeMode"], string> = {
-    dev: "Desarrollo",
+    dev: "Prueba",
     customer: "Cliente",
     test: "Prueba",
-    release: "Release"
+    release: "Entrega"
   };
   return labels[mode];
 }
 
 function visibleValue(value: string | null | undefined, fallback: string) {
   return value && value.trim() ? value : fallback;
+}
+
+function sourceLabel(source: string | null | undefined) {
+  const raw = (source ?? "").toLowerCase();
+  if (!raw) return "No declarado";
+  if (raw.includes("local")) return "Licencia local";
+  if (raw.includes("remote") || raw.includes("online")) return "Servicio administrativo";
+  if (raw.includes("fallback") || raw.includes("default")) return "Estado provisional";
+  return "Estado revisado";
+}
+
+function featureReasonLabel(reason: string | null | undefined) {
+  const raw = (reason ?? "").trim();
+  if (!raw) return "Revisado por la licencia local.";
+  const lower = raw.toLowerCase();
+  const labels: Record<string, string> = {
+    license_missing: "Falta instalar una licencia local válida.",
+    license_invalid: "La licencia instalada no se pudo validar.",
+    license_expired: "La vigencia de la licencia terminó.",
+    license_suspended: "La licencia está suspendida.",
+    license_revoked: "La licencia fue revocada.",
+    device_unassigned: "Este equipo no está asignado en la licencia.",
+    wrong_business: "La licencia pertenece a otro negocio.",
+    wrong_store: "La licencia pertenece a otra sucursal.",
+    wrong_device: "La licencia pertenece a otro dispositivo.",
+    wrong_terminal: "La licencia pertenece a otra terminal.",
+    exceeded_limit: "Se excedió el límite de terminales permitidas.",
+    feature_not_entitled: "El plan no incluye esta función."
+  };
+  if (labels[lower]) return labels[lower];
+  if (/^[a-z0-9_.:-]+$/i.test(raw) && /[_:.-]/.test(raw)) return "Revisado por la licencia local.";
+  return raw;
 }
 
 function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext) {
@@ -84,8 +116,8 @@ function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext)
   }
   if (context.runtimeMode === "dev") {
     return {
-      title: "Entorno de desarrollo",
-      copy: "Esta Tablet está en modo desarrollo. La licencia real debe instalarse antes de entregar el equipo a cliente."
+      title: "Revisar antes de entrega",
+      copy: "El administrador debe confirmar la licencia final antes de entregar el equipo a cliente."
     };
   }
   return {
@@ -121,12 +153,19 @@ function categoryForFeature(key: string) {
   if (raw.includes("sale") || raw.includes("pos") || raw.includes("ticket") || raw.includes("checkout")) return "Ventas";
   if (raw.includes("cash") || raw.includes("shift") || raw.includes("session") || raw.includes("corte")) return "Turno y caja";
   if (raw.includes("stock") || raw.includes("inventory") || raw.includes("catalog") || raw.includes("product")) return "Inventario local";
-  if (raw.includes("sync") || raw.includes("outbox") || raw.includes("export") || raw.includes("evidence")) return "Sincronización y evidencia";
+  if (raw.includes("sync") || raw.includes("outbox") || raw.includes("export") || raw.includes("evidence")) return "Sincronización y respaldos";
   if (raw.includes("report") || raw.includes("audit") || raw.includes("history")) return "Reportes";
   return "Otras funciones";
 }
 
 function featureLabel(key: string) {
+  const normalized = key.toLowerCase();
+  if (normalized.includes("sale") || normalized.includes("checkout")) return "Cobro y venta";
+  if (normalized.includes("cash") || normalized.includes("shift")) return "Turno y caja";
+  if (normalized.includes("stock") || normalized.includes("inventory") || normalized.includes("catalog") || normalized.includes("product")) return "Inventario";
+  if (normalized.includes("sync") || normalized.includes("outbox") || normalized.includes("evidence")) return "Sincronización y respaldos";
+  if (normalized.includes("export")) return "Exportaciones";
+  if (normalized.includes("report") || normalized.includes("audit") || normalized.includes("history")) return "Reportes";
   const raw = key.replace(/[._:-]+/g, " ").trim();
   return raw ? raw.replace(/\b\w/g, (ch) => ch.toUpperCase()) : "Función";
 }
@@ -181,12 +220,12 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       <details className={styles.evidenceDisclosure}>
         <summary>Ver detalle para soporte</summary>
         <div className={styles.compactMetricGrid}>
-          <Metric label="Modo runtime" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
+          <Metric label="Modo de operación" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
           <Metric label="Origen config" value={visibleValue(runtimeContext.configPath, "Config por defecto o no declarada")} />
           <Metric label="Archivo licencia" value={visibleValue(status.path ?? runtimeContext.licenseFile ?? runtimeContext.paths.licenseFile, "No declarado")} />
           <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "No declarado")} />
           <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "No declarado")} />
-          <Metric label="Fuente" value={status.source} />
+          <Metric label="Origen" value={sourceLabel(status.source)} />
           <Metric label="Cliente" value={visibleValue(status.customerId, "No declarado")} />
           <Metric label="Motivo" value={status.denialReason ? issueCopy(status) : "Sin bloqueo principal"} />
         </div>
@@ -246,7 +285,7 @@ export function FeatureList({ features }: { features: FeatureResolution[] }) {
                   <div key={feature.key} className={styles.featureItem}>
                     <div>
                       <strong>{featureLabel(feature.key)}</strong>
-                      <span>{feature.reason || "Revisado por la licencia local."}</span>
+                      <span>{featureReasonLabel(feature.reason)}</span>
                     </div>
                     <span className={`${styles.featurePill} ${feature.allowed ? styles.ok : styles.danger}`}>{feature.allowed ? "Permitida" : "No disponible"}</span>
                   </div>

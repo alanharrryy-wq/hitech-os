@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { clsx, type ClassValue } from "clsx";
-import { Loader2, RefreshCcw, ScanLine, Search, Sparkles } from "lucide-react";
+import { Loader2, RefreshCcw, Search, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { twMerge } from "tailwind-merge";
 import type { UiState } from "@/lib/pos/cart-state";
@@ -15,11 +15,11 @@ import styles from "./pos.module.css";
  */
 
 function stateCopy(state?: UiState) {
-  if (state === "loading") return "Consultando catálogo";
-  if (state === "error") return "Catálogo requiere revisión";
+  if (state === "loading") return "Buscando productos";
+  if (state === "error") return "Revisa productos";
   if (state === "empty") return "Sin coincidencias";
-  if (state === "ready") return "Catálogo listo";
-  return "Búsqueda local";
+  if (state === "ready") return "Productos listos";
+  return "Buscar producto";
 }
 
 function cn(...inputs: ClassValue[]) {
@@ -36,10 +36,8 @@ export function PosProductSearch({
   loading,
   error,
   resultCount,
-  activeCount,
   state,
   onSearch,
-  onResolve,
   onClear
 }: {
   query: string;
@@ -47,10 +45,8 @@ export function PosProductSearch({
   loading: boolean;
   error: unknown;
   resultCount?: number;
-  activeCount?: number;
   state?: UiState;
   onSearch: () => void;
-  onResolve: () => void;
   onClear: () => void;
 }) {
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -94,7 +90,7 @@ export function PosProductSearch({
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Nombre, SKU o código de barras"
+            placeholder="Buscar producto o escanear código"
             type="search"
           />
         </div>
@@ -102,8 +98,7 @@ export function PosProductSearch({
 
       <div className={styles.posPremiumCatalogInsight} aria-live="polite">
         <span>{stateCopy(state)}</span>
-        <strong>{activeCount ?? 0} activos</strong>
-        <small>{resultCount ?? 0} visibles</small>
+        <small>{resultCount ?? 0} productos</small>
       </div>
 
       <div className={styles.posPremiumSearchActions}>
@@ -121,24 +116,6 @@ export function PosProductSearch({
         >
           {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={17} /> : <Search aria-hidden="true" size={17} />}
           Buscar
-        </motion.button>
-        <motion.button
-          className={styles.posPremiumSecondaryButton}
-          type="button"
-          onClick={onResolve}
-          disabled={loading || !query.trim()}
-          whileTap={loading || !query.trim() ? undefined : { scale: 0.98 }}
-          whileHover={loading || !query.trim() ? undefined : { y: -1 }}
-          data-prisma-component="ScanButton"
-          data-prisma-zone="tablet-pos-scan-action"
-          data-prisma-role="scan-command"
-          data-prisma-priority="primary"
-          data-prisma-state={loading ? "loading" : !query.trim() ? "disabled" : "ready"}
-          data-prisma-motion="press-feedback"
-          data-prisma-qa={!query.trim() ? "tablet-qa-disabled" : undefined}
-        >
-          <ScanLine aria-hidden="true" size={18} />
-          Resolver código
         </motion.button>
         <motion.button
           className={styles.posPremiumGhostButton}

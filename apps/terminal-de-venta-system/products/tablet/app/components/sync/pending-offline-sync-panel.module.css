@@ -541,3 +541,110 @@
   color: var(--prisma-text-secondary);
 }
 @media(max-width:560px){.accountGrid{grid-template-columns:1fr}}
+
+/* PRISMA_TABLET_PRODUCT_BEAUTY_0207_SYNC */
+.page {
+  gap: 12px;
+}
+
+.hero,
+.accountGrid article,
+.kpis article,
+.item,
+.empty,
+.supportDetails,
+.dispatchNote,
+.alert {
+  color: #142033;
+  border-color: rgba(188, 212, 239, 0.58);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(239, 247, 255, 0.72)),
+    radial-gradient(circle at 12% 0%, rgba(108, 190, 255, 0.12), transparent 42%);
+  box-shadow: 0 12px 30px rgba(31, 65, 105, 0.10), inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 0;
+  padding: 16px 18px;
+}
+
+.hero span,
+.accountGrid span,
+.kpis span,
+.item span,
+.supportDetails summary {
+  color: #1764d8;
+}
+
+.hero h1 {
+  margin: 5px 0 6px;
+  color: #101827;
+  font-size: clamp(1.55rem, 2.4vw, 2.25rem);
+  line-height: 1.04;
+}
+
+.hero p,
+.accountGrid small,
+.kpis small,
+.item p,
+.item small,
+.item em {
+  color: rgba(42, 59, 82, 0.74);
+}
+
+.accountGrid,
+.kpis {
+  gap: 10px;
+}
+
+.accountGrid article,
+.kpis article {
+  padding: 13px;
+  border-radius: 18px;
+}
+
+.accountGrid strong,
+.kpis strong,
+.item aside strong {
+  color: #1764d8;
+}
+
+.heroActions button,
+.filterBar button {
+  min-height: 44px;
+  color: #125bd9;
+  border-color: rgba(91, 151, 230, 0.32);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.heroActions .primaryAction {
+  color: #ffffff;
+  background: linear-gradient(180deg, #9dccff 0%, #3f8cff 48%, #1764d8 100%);
+}
+
+.heroActions button:last-child {
+  color: #687893;
+  background: rgba(244, 248, 253, 0.86);
+}
+
+.queue {
+  gap: 8px;
+}
+
+.item {
+  padding: 13px;
+  border-radius: 18px;
+}
+
+.empty {
+  color: rgba(42, 59, 82, 0.76);
+}
+
+.diagnostics span {
+  color: #1764d8;
+  border-color: rgba(91, 151, 230, 0.28);
+  background: rgba(21, 87, 255, 0.08);
+}

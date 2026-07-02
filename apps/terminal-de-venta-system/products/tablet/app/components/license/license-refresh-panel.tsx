@@ -15,7 +15,7 @@ type RefreshStatus = {
 
 function refreshStateLabel(state: string) {
   const labels: Record<string, string> = {
-    refresh_disabled: "Actualización remota no configurada",
+    refresh_disabled: "Refresh remoto no configurado",
     missing_server_url: "Servidor no configurado",
     missing_device_id: "Equipo sin identificador",
     configured: "Configurada",
@@ -65,7 +65,7 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
       {hasError ? (
         <div className={styles.warning}>
           <strong>Última actualización no completada</strong>
-          <span>Se conserva la política local vigente. El administrador puede revisar el detalle técnico fuera de esta Tablet.</span>
+          <span>Se conserva la política local vigente. El administrador puede revisar el detalle de soporte fuera de esta Tablet.</span>
         </div>
       ) : null}
 

@@ -35,11 +35,11 @@ export const TABLET_NAV_GROUP_LABELS: Record<TabletNavGroup, string> = {
 const TABLET_NAV_PRESENTATION: Record<string, Pick<TabletNavItem, "shortLabel" | "icon" | "group" | "primary">> = {
   "/pos": { shortLabel: "Vender", icon: "cart", group: "operacion", primary: true },
   "/shift": { shortLabel: "Turno", icon: "terminal", group: "operacion" },
-  "/stock": { shortLabel: "Stock", icon: "package", group: "consulta" },
+  "/stock": { shortLabel: "Inventario", icon: "package", group: "consulta" },
   "/sales/today": { shortLabel: "Ventas", icon: "receipt", group: "consulta" },
-  "/returns": { shortLabel: "Dev.", icon: "receipt", group: "consulta" },
-  "/sync": { shortLabel: "Sinc.", icon: "bell", group: "soporte" },
-  "/settings/license": { shortLabel: "Lic.", icon: "settings", group: "soporte" }
+  "/returns": { shortLabel: "Devol.", icon: "receipt", group: "consulta" },
+  "/sync": { shortLabel: "Sync", icon: "bell", group: "soporte" },
+  "/settings/license": { shortLabel: "Licencia", icon: "settings", group: "soporte" }
 };
 
 const DEFAULT_TABLET_NAV_PRESENTATION: Pick<TabletNavItem, "shortLabel" | "icon" | "group" | "primary"> = {
@@ -138,7 +138,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
   if (stage === "inicio") {
     return {
       label: "Mapa de trabajo",
-      helper: "Las pantallas principales quedan visibles; Inicio orienta el flujo sin exponer laboratorios."
+      helper: "Las pantallas principales quedan visibles; Inicio orienta el flujo sin exponer pantallas internas."
     };
   }
   if (stage === "venta") {

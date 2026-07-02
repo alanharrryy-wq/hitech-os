@@ -17,7 +17,7 @@ function statusTone(state: string) {
 function statusLabel(state: string) {
   const labels: Record<string, string> = {
     active: "Lista para operar",
-    development: "Modo desarrollo",
+    development: "Lista para operar",
     offline_grace: "Operando offline",
     missing: "Licencia pendiente",
     invalid: "Licencia inválida",

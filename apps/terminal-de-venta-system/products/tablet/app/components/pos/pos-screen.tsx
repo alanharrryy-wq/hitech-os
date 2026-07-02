@@ -468,10 +468,8 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                 loading={productState === "loading"}
                 error={productError}
                 resultCount={visibleProducts.length}
-                activeCount={activeProductCount}
                 state={productState}
                 onSearch={() => void runPrimaryLookup(query)}
-                onResolve={() => void resolveCode(query)}
                 onClear={() => {
                   setQuery("");
                   void loadProducts("");

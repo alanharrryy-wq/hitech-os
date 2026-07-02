@@ -118,7 +118,7 @@ export function PosTicketPanel({
     >
       <header className={styles.posPremiumTicketHeader} data-prisma-component="CartHeader">
         <div>
-          <span><ReceiptText aria-hidden="true" size={15} /> Ticket activo</span>
+          <span><ReceiptText aria-hidden="true" size={15} /> Ticket actual</span>
           <h2>{qty} piezas</h2>
         </div>
         <motion.button
@@ -268,30 +268,26 @@ export function PosTicketPanel({
           {!canCheckout ? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}
         </PrismaLiquidAction>
       </section>
-      <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias" data-prisma-role="secondary-action">
-        <button type="button" disabled data-prisma-component="SecondaryActionCard">
-          <ReceiptText aria-hidden="true" size={18} />
-          <span>Reembolso</span>
-          <small>Pronto</small>
-        </button>
-        <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
-          <Save aria-hidden="true" size={18} />
-          <span>Guardar</span>
-          <small>Guardar</small>
-        </button>
-        <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="SecondaryActionCard">
-          <Undo2 aria-hidden="true" size={18} />
-          <span>Cancelar venta</span>
-          <small>Limpiar</small>
-        </button>
-      </div>
+      <details className={styles.posPremiumTicketOptions} data-prisma-role="secondary-action">
+        <summary>Opciones de ticket</summary>
+        <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias">
+          <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
+            <Save aria-hidden="true" size={18} />
+            <span>Guardar ticket</span>
+          </button>
+          <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="SecondaryActionCard">
+            <Undo2 aria-hidden="true" size={18} />
+            <span>Cancelar venta</span>
+          </button>
+        </div>
+      </details>
 
       {heldCarts.length ? (
-        <section className={styles.heldCartShelf} aria-label="Tickets en espera" data-prisma-component="HeldCartShelf">
-          <header>
-            <span>Tickets guardados</span>
+        <details className={styles.heldCartShelf} aria-label="Tickets en espera" data-prisma-component="HeldCartShelf">
+          <summary>
+            <span>Tickets en espera</span>
             <strong>{heldCarts.length}</strong>
-          </header>
+          </summary>
           <div className={styles.heldCartList}>
             {heldCarts.slice(0, 4).map((heldCart, index) => (
               <article key={heldCart.id} className={styles.heldCartCard} data-prisma-component="HeldCartCard">
@@ -310,7 +306,7 @@ export function PosTicketPanel({
               </article>
             ))}
           </div>
-        </section>
+        </details>
       ) : null}
     </motion.aside>
   );

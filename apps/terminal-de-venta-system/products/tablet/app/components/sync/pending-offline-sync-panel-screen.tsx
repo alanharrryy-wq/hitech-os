@@ -84,10 +84,10 @@ function dispatchTone(result: DispatchResult | null) {
 
 function visibleSyncError(message: string | null | undefined) {
   const raw = (message ?? "").trim();
-  if (!raw) return "La cola local quedó protegida. Puedes reintentar cuando la PC esté disponible.";
+  if (!raw) return "Los pendientes quedaron guardados. Puedes reintentar cuando la PC esté disponible.";
   const lower = raw.toLowerCase();
   if (lower.includes("operation was aborted") || lower.includes("aborterror") || lower.includes("aborted")) {
-    return "El envío se interrumpió antes de terminar. La cola local quedó guardada y puedes reintentar sin perder ventas.";
+    return "El envío se interrumpió antes de terminar. Los pendientes quedaron guardados y puedes reintentar sin perder ventas.";
   }
   if (lower.includes("failed to fetch") || lower.includes("networkerror")) {
     return "No se alcanzó la PC en este intento. La venta local sigue disponible y los pendientes quedan guardados.";
@@ -100,24 +100,24 @@ function dispatchMessage(result: DispatchResult | null) {
   const targetUrl = result.health?.url ? ` Destino: ${result.health.url}.` : "";
   const lastError = result.health?.error ? ` ${visibleSyncError(result.health.error)}` : result.error ? ` ${visibleSyncError(result.error)}` : "";
   if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} evento(s) mandado(s) a PC.`;
-  if (result.ok && result.reason === "empty") return "La cola no tenía eventos listos para enviar.";
-  if (result.reason === "pc_sync_disabled") return `Sync PC apagado por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
-  if (result.reason === "missing_pc_origin") return "Falta configurar el destino PC. Hay cola local, pero no hay destino configurado para enviar.";
-  if (result.reason === "pc_unavailable") return `PC no disponible. La cola queda guardada localmente.${targetUrl}${lastError}`;
+  if (result.ok && result.reason === "empty") return "No había pendientes listos para enviar.";
+  if (result.reason === "pc_sync_disabled") return `Sincronización con PC apagada por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
+  if (result.reason === "missing_pc_origin") return "Falta configurar el destino PC. Hay pendientes guardados, pero no hay destino configurado para enviar.";
+  if (result.reason === "pc_unavailable") return `PC no disponible. Los pendientes quedan guardados localmente.${targetUrl}${lastError}`;
   if (result.reason === "dispatcher_in_flight") return "Ya hay un envío en curso. No se duplicó la operación.";
-  if (result.reason === "dispatch_failed") return `No se pudo completar el envío.${lastError || " La cola quedó protegida para reintento."}`;
-  return `Resultado de sync: ${result.reason}.`;
+  if (result.reason === "dispatch_failed") return `No se pudo completar el envío.${lastError || " Los pendientes quedaron protegidos para reintento."}`;
+  return `Resultado de sincronización: ${result.reason}.`;
 }
 
 function emptyQueueMessage(filter: FilterMode) {
-  if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No pending items to send.";
+  if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No hay pendientes para enviar.";
   return "No hay elementos en este filtro.";
 }
 
 function licenseStateLabel(state: string | null | undefined) {
   if (state === "active" || state === "development") return "Cuenta autorizada";
   if (state === "offline_grace") return "Cuenta en gracia offline";
-  if (state === "missing") return "Activacion pendiente";
+  if (state === "missing") return "Activación pendiente";
   if (state === "expired") return "Licencia vencida";
   if (state === "suspended" || state === "revoked") return "Licencia detenida";
   return "Estado por revisar";
@@ -126,9 +126,9 @@ function licenseStateLabel(state: string | null | undefined) {
 function assignmentLabel(state: string | null | undefined) {
   if (state === "assigned") return "Tablet autorizada";
   if (state === "unassigned") return "Tablet pendiente";
-  if (state?.startsWith("wrong_")) return "Asignacion no coincide";
-  if (state === "exceeded_limit") return "Limite por revisar";
-  return "Asignacion pendiente";
+  if (state?.startsWith("wrong_")) return "Asignación no coincide";
+  if (state === "exceeded_limit") return "Límite por revisar";
+  return "Asignación pendiente";
 }
 
 function pcConnectionLabel(health: TabletPcHealth | null) {
@@ -138,6 +138,13 @@ function pcConnectionLabel(health: TabletPcHealth | null) {
   if (health.status === "degraded") return "PC con aviso";
   if (health.status === "offline") return "PC sin respuesta";
   return "PC por revisar";
+}
+
+function syncHeadline(panel: SyncPanelResponse | null) {
+  if (!panel) return "Revisando pendientes";
+  if (panel.summary.failed > 0 || panel.summary.conflict > 0) return "Pendientes que requieren atención";
+  if (panel.summary.pending > 0) return "Pendientes por sincronizar";
+  return "Sincronización al día";
 }
 
 export function PendingOfflineSyncPanelScreen() {
@@ -248,21 +255,22 @@ export function PendingOfflineSyncPanelScreen() {
   const retryableCount = panel ? panel.summary.failed + panel.summary.conflict : 0;
   const noteTone = dispatchTone(dispatchResult);
   const licenseStatus = license?.status;
-  const lastCheckedLabel = panel?.summary.lastCheckedAt ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt)) : "sin revision";
+  const headline = syncHeadline(panel);
+  const lastCheckedLabel = panel?.summary.lastCheckedAt ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt)) : "sin revisión";
 
   return (
     <PrismaTabletShellUnified
       currentPath="/sync"
       title="Pendientes y conexión"
       subtitle="Lo que quedó guardado localmente, lo que falló y lo que necesita atención."
-      status={<TabletShellStatusPill tone={tone}>{panel?.summary.headline ?? "Revisando"}</TabletShellStatusPill>}
+      status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
     >
       <main className={styles.page}>
         <section className={styles.hero}>
           <div>
             <span>Continuidad operativa</span>
-            <h1>{panel?.summary.operatorMessage ?? "Revisando trabajo local"}</h1>
-            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar con datos reales de la cola local.</p>
+            <h1>{headline}</h1>
+            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar sin abrir herramientas de soporte.</p>
           </div>
           <div className={styles.heroActions}>
             <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0}>

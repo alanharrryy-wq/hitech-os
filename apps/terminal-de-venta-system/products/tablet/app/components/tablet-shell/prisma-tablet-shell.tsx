@@ -70,14 +70,14 @@ export function PrismaTabletShellUnified({
   const pendingCount = getTabletPendingCount(runtimeSnapshot);
   const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos" : "tablet-softglass");
   const resolvedVisualPreset = visualPreset ?? "PRISMA_SOFTGLASS_REFERENCE_2606";
-  const primaryTopItems = visibleNavItems;
+  const compactSellingSurface = currentPath === "/pos" || currentPath === "/checkout";
   const dockItems = visibleNavItems.filter((item) =>
     ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync", "/settings/license"].includes(item.href)
   );
 
   return (
     <div
-      className={styles.shell}
+      className={joinClasses(styles.shell, compactSellingSurface && styles.compactSellingShell)}
       data-prisma-component="AppShell"
       data-prisma-product="tablet"
       data-prisma-flow-stage={flowStage}
@@ -96,7 +96,7 @@ export function PrismaTabletShellUnified({
       <header className={styles.topbar} data-prisma-component="TopCommandBar" data-prisma-role="app-owner" data-prisma-layer="header">
         <a className={styles.brand} href="/pos" aria-label="Ir a vender en PRISMA POS">
           <span className={styles.brandMark} aria-hidden="true">
-            <img className={styles.brandImage} src="/prisma/logo-prisma-primary.png" alt="" />
+            <img className={styles.brandImage} src="/prisma/logo-prisma-mark-transparent.png" alt="" />
           </span>
           <span className={styles.brandText}>
             <strong>PRISMA</strong>
@@ -104,43 +104,22 @@ export function PrismaTabletShellUnified({
           </span>
         </a>
 
-        <div className={styles.contextChips} aria-label="Contexto de venta">
-          <a className={styles.contextChip} href="/stock">
-            <PrismaIcon name="tag" size={17} />
-            <span>{runtimeSnapshot.identity.storeName}</span>
-          </a>
-          <a className={styles.contextChip} href="/shift">
-            <PrismaIcon name="terminal" size={17} />
-            <span>{runtimeSnapshot.identity.terminalName}</span>
-          </a>
-          <span className={styles.contextChip}>
-            <PrismaIcon name="dashboard" size={17} />
-            <span>{runtimeSnapshot.identity.operatorName}</span>
-          </span>
-        </div>
-
-        <nav className={styles.topNav} aria-label="Navegación principal Tablet">
-          {primaryTopItems.map((item) => {
-            const active = isTabletNavActive(currentPath, item.href);
-            const showPendingBadge = item.href === "/sync" && pendingCount > 0;
-            return (
-              <a
-                key={item.href}
-                className={active ? styles.topNavItemActive : styles.topNavItem}
-                href={item.href}
-                aria-current={active ? "page" : undefined}
-                title={item.description}
-                data-prisma-component="TopNavItem"
-                data-active={active ? "true" : undefined}
-                data-attention={showPendingBadge ? "true" : undefined}
-              >
-                <PrismaIcon name={item.icon} size={18} />
-                <span>{item.shortLabel}</span>
-                {showPendingBadge ? <strong>{pendingCount}</strong> : null}
-              </a>
-            );
-          })}
-        </nav>
+        {!compactSellingSurface ? (
+          <div className={styles.contextChips} aria-label="Contexto de venta">
+            <a className={styles.contextChip} href="/stock">
+              <PrismaIcon name="tag" size={17} />
+              <span>{runtimeSnapshot.identity.storeName}</span>
+            </a>
+            <a className={styles.contextChip} href="/shift">
+              <PrismaIcon name="terminal" size={17} />
+              <span>{runtimeSnapshot.identity.terminalName}</span>
+            </a>
+            <span className={styles.contextChip}>
+              <PrismaIcon name="dashboard" size={17} />
+              <span>{runtimeSnapshot.identity.operatorName}</span>
+            </span>
+          </div>
+        ) : null}
 
         <div className={styles.topStatus} data-prisma-role="status-surface">
           <a className={styles.saleStateChip} href="/pos" aria-label={flowCopy.helper}>
@@ -156,14 +135,18 @@ export function PrismaTabletShellUnified({
       </header>
 
       <main id="contenido-principal" className={styles.main} data-prisma-component="SoftglassMain">
-        <section className={styles.titleHeader} aria-label="Pantalla actual">
-          <div className={styles.titleGroup}>
-            <span className={styles.kicker}>{kicker}</span>
-            <h1>{title}</h1>
-            <p>{subtitle}</p>
-          </div>
-          {actions ? <div className={styles.actionBand} aria-label="Acciones de pantalla">{actions}</div> : null}
-        </section>
+        {!compactSellingSurface ? (
+          <section className={styles.titleHeader} aria-label="Pantalla actual">
+            <div className={styles.titleGroup}>
+              <span className={styles.kicker}>{kicker}</span>
+              <h1>{title}</h1>
+              <p>{subtitle}</p>
+            </div>
+            {actions ? <div className={styles.actionBand} aria-label="Acciones de pantalla">{actions}</div> : null}
+          </section>
+        ) : actions ? (
+          <div className={styles.actionBand} aria-label="Acciones de pantalla">{actions}</div>
+        ) : null}
 
         <div
           className={styles.content}

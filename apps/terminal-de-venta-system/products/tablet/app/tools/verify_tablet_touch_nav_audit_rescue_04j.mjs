@@ -37,12 +37,13 @@ const css = read(files.css);
 check("keyboard bridge eliminado", !exists(files.bridge));
 check("pos-screen no monta keyboard bridge", !pos.includes("PosPaymentKeyboardBridge"));
 check("ticket sin teclas F", !["F2", "F3", "F4", "F5", "F6"].some((key) => ticket.includes(key)));
-check("ticket usa acciones touch", ["Tocar", "Guardar", "Limpiar", "Recuperar"].every((needle) => ticket.includes(needle)));
+check("ticket usa acciones touch", ["Guardar ticket", "Cancelar venta", "Recuperar", "Opciones de ticket"].every((needle) => ticket.includes(needle)));
 check("tablet nav incluye etapas de flujo", nav.includes("TabletFlowStage") && nav.includes("getTabletFlowStage"));
-check("tablet nav incluye items visibles por contexto", nav.includes("getVisibleTabletNavItems") && nav.includes("return [navByHref(\"/\")]") );
-check("shell usa guided sidebar", shell.includes("GuidedSidebarNav") && shell.includes("visibleNavItems.map"));
+check("tablet nav incluye items finales visibles", nav.includes("getVisibleTabletNavItems") && nav.includes("return TABLET_NAV_ITEMS"));
+check("shell usa topbar contextual y dock final", shell.includes("contextChips") && shell.includes('data-prisma-component="TabletBottomNav"') && !shell.includes('data-prisma-component="TopNavItem"'));
 check("shell expone data flow stage", shell.includes("data-prisma-flow-stage"));
-check("css incluye hint de flujo", css.includes("navFlowHint"));
+check("css incluye densidad compacta de topbar y dock", css.includes(".topbar") && css.includes(".bottomDockInner") && css.includes(".compactSellingShell") && css.includes("min-height: 52px"));
+check("pos no reintroduce header gigante", shell.includes("compactSellingSurface") && shell.includes("!compactSellingSurface") && css.includes(".compactSellingShell .main"));
 
 if (process.exitCode) {
   process.exit(process.exitCode);

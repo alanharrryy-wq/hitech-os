@@ -1,19 +1,19 @@
 .surface {
   min-width: 0;
-  min-height: min(720px, calc(100dvh - 210px));
+  min-height: min(760px, calc(100dvh - 74px));
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 12px;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 8px;
   position: relative;
   isolation: isolate;
-  padding: clamp(8px, 0.9vw, 12px);
-  border-radius: 28px;
+  padding: clamp(4px, 0.55vw, 8px);
+  border-radius: 20px;
   background: transparent;
 }
 
 .header {
+  display: none;
   min-height: 0;
-  display: flex;
   align-items: center;
   gap: 10px;
   padding: 0 4px 2px;
@@ -37,8 +37,8 @@
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(305px, 360px);
-  gap: clamp(14px, 1.45vw, 20px);
+  grid-template-columns: minmax(0, 1fr) clamp(320px, 31vw, 370px);
+  gap: clamp(8px, 0.95vw, 13px);
   align-items: stretch;
 }
 
@@ -50,7 +50,7 @@
   align-content: start;
   gap: 14px;
   border: 1px solid var(--prisma-soft-line, rgba(139, 152, 174, 0.22));
-  border-radius: 26px;
+  border-radius: 20px;
   background:
     linear-gradient(145deg, rgba(255,255,255,0.78), rgba(247,250,255,0.54)),
     radial-gradient(circle at 14% 0%, rgba(121, 213, 255, 0.13), transparent 42%);
@@ -60,11 +60,11 @@
 }
 
 .canvas {
-  padding: clamp(10px, 1vw, 14px);
+  padding: clamp(7px, 0.85vw, 12px);
 }
 
 .ticketRail {
-  padding: clamp(10px, 1vw, 14px);
+  padding: clamp(8px, 0.85vw, 12px);
 }
 
 .commandDock {

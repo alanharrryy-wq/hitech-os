@@ -231,6 +231,8 @@
 .primaryAction,
 .secondaryAction,
 .ghostAction,
+.exportMenu summary,
+.exportMenuBody a,
 .rowAddButton,
 .filterButton,
 .filterActive,
@@ -274,6 +276,50 @@
 .ghostAction {
   color: var(--prisma-text-secondary);
   background: transparent;
+}
+
+.exportMenu {
+  position: relative;
+}
+
+.exportMenu summary {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  color: var(--prisma-text-secondary);
+  background: transparent;
+  list-style: none;
+}
+
+.exportMenu summary::-webkit-details-marker {
+  display: none;
+}
+
+.exportMenuBody {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 12;
+  min-width: 190px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-lg);
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--prisma-shadow-glass);
+}
+
+.exportMenuBody a {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--prisma-text-primary);
+  background: var(--prisma-glass-gradient);
+  text-decoration: none;
 }
 
 .primaryAction:disabled,
@@ -545,6 +591,11 @@
   .detailActions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .exportMenuBody {
+    position: static;
+    margin-top: 8px;
   }
 }
 

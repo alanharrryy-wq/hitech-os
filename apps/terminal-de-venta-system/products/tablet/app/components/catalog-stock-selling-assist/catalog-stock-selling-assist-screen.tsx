@@ -99,6 +99,18 @@ function OfflineStrip({ online, cachedCount }: { online: boolean; cachedCount: n
   );
 }
 
+function StockExportMenu() {
+  return (
+    <details className={styles.exportMenu}>
+      <summary>Exportar</summary>
+      <div className={styles.exportMenuBody}>
+        <Link href="/settings/export">Exportaciones</Link>
+        <Link href="/offline">Respaldo local</Link>
+      </div>
+    </details>
+  );
+}
+
 function MetricCard({ metric }: { metric: ReturnType<typeof buildCatalogStockMetrics>[number] }) {
   const toneClass = metric.tone === "ok" ? styles.metricOk : metric.tone === "warn" ? styles.metricWarn : metric.tone === "danger" ? styles.metricDanger : styles.metricNeutral;
   return (
@@ -372,8 +384,9 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
               </label>
               <div className={styles.searchActions}>
                 <button type="submit" className={styles.primaryAction} disabled={state === "loading"}>{state === "loading" ? "Buscando..." : "Buscar"}</button>
-                <button type="button" className={styles.secondaryAction} onClick={() => void resolveCode()} disabled={!query.trim() || state === "loading"}>Resolver código</button>
+                <button type="button" className={styles.secondaryAction} onClick={() => void resolveCode()} disabled={!query.trim() || state === "loading"}>Escanear</button>
                 <button type="button" className={styles.ghostAction} onClick={() => { setQuery(""); void loadProducts(""); }}>Limpiar</button>
+                {mode === "stock" ? <StockExportMenu /> : null}
               </div>
             </form>
 

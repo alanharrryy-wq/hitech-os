@@ -10922,3 +10922,176 @@
   border-radius: 999px;
 }
 /* PRISMA_SOFTGLASS_CANONICAL_2606_END */
+
+/* PRISMA_TABLET_PRODUCT_BEAUTY_0207_START */
+.posPremiumWorkspace {
+  min-height: calc(100dvh - 82px);
+  gap: 12px;
+  padding-bottom: 78px;
+}
+
+.posPremiumCatalogArea {
+  gap: 10px;
+}
+
+.posPremiumSearchCard {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.posPremiumSearchInputWrap {
+  min-height: 56px;
+}
+
+.posPremiumCatalogInsight {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--prisma-soft-muted, #667085);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.posPremiumCatalogInsight small {
+  color: var(--prisma-soft-ink, #151922);
+  font-weight: 900;
+}
+
+.posPremiumSearchActions {
+  justify-content: flex-end;
+}
+
+.posPremiumSearchActions .posPremiumPrimaryButton,
+.posPremiumSearchActions .posPremiumGhostButton {
+  min-height: 50px;
+  padding-inline: 16px;
+}
+
+.posPremiumProductGrid {
+  grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+  gap: 10px;
+}
+
+.posPremiumProductCard {
+  min-height: 172px;
+  grid-template-rows: auto minmax(58px, 72px) minmax(34px, auto) auto;
+  gap: 6px;
+  border-radius: 18px;
+  padding: 10px;
+}
+
+.posPremiumProductStage {
+  min-height: 66px;
+  border-radius: 16px;
+}
+
+.posPremiumProductStage .productFigure {
+  width: 54px;
+  height: 70px;
+}
+
+.posPremiumProductName {
+  font-size: 0.88rem;
+  line-height: 1.15;
+}
+
+.posPremiumProductPrice {
+  font-size: 0.98rem;
+}
+
+.posPremiumCategoryRail {
+  gap: 7px;
+  padding: 0 2px 2px;
+}
+
+.posPremiumCategoryButton,
+.posPremiumCategoryButtonActive {
+  min-height: 48px;
+  min-width: 92px;
+  padding: 0 12px;
+}
+
+.posPremiumTicketPanel {
+  gap: 10px;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.posPremiumTicketLines {
+  min-height: 170px;
+  max-height: min(42dvh, 390px);
+}
+
+.posPremiumTicketLine {
+  padding: 7px;
+}
+
+.posPremiumDiagnosticOk,
+.posPremiumDiagnosticWarn {
+  min-height: 0;
+  padding: 8px 10px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+}
+
+.posPremiumTotalsBreakdown {
+  display: none;
+}
+
+.cobrarReferenceButton {
+  min-height: 72px;
+}
+
+.posPremiumTicketOptions,
+.heldCartShelf {
+  border: 1px solid rgba(151, 196, 244, 0.34);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.posPremiumTicketOptions summary,
+.heldCartShelf summary {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 12px;
+  color: var(--prisma-soft-ink, #151922);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.posPremiumSecondaryCheckoutActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+
+.posPremiumSecondaryCheckoutActions button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 999px;
+  padding: 0 12px;
+}
+
+.heldCartList {
+  display: grid;
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+/* PRISMA_TABLET_PRODUCT_BEAUTY_0207_END */

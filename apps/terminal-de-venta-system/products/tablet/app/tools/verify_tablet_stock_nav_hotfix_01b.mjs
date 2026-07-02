@@ -5,6 +5,7 @@ import path from "node:path";
 const appRoot = process.cwd();
 const navPath = path.join(appRoot, "components", "tablet-shell", "tablet-nav.ts");
 const stockPath = path.join(appRoot, "app", "stock", "page.tsx");
+const stockScreenPath = path.join(appRoot, "components", "catalog-stock-selling-assist", "catalog-stock-selling-assist-screen.tsx");
 
 function ok(message) {
   console.log(`OK ${message}`);
@@ -25,15 +26,16 @@ function readRequired(filePath, label) {
 }
 
 const nav = readRequired(navPath, "components/tablet-shell/tablet-nav.ts");
+const stockScreen = readRequired(stockScreenPath, "components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx");
 
 const checks = [
-  [nav.includes('href: "/stock", label: "Existencias"'), 'Existencias points to /stock'],
+  [nav.includes('"/stock": { shortLabel: "Inventario"'), 'Inventario final points to /stock'],
   [!nav.includes('href: "/inventory/low-stock", label: "Existencias"'), 'Existencias no longer points directly to low-stock'],
   [nav.includes('if (href === "/stock")'), 'active matcher handles /stock'],
-  [nav.includes('currentPath === "/inventory/low-stock"'), 'low-stock still highlights Existencias'],
-  [nav.includes('href: "/settings/export"'), 'export navigation preserved'],
-  [nav.includes('href: "/returns"'), 'returns navigation preserved'],
-  [nav.includes('href: "/sync"'), 'sync navigation preserved'],
+  [nav.includes('normalizedPath === "/inventory/low-stock"'), 'low-stock still highlights Inventario'],
+  [stockScreen.includes("function StockExportMenu") && stockScreen.includes('href="/settings/export"'), 'export navigation preserved as stock menu'],
+  [nav.includes('"/returns": { shortLabel: "Devol."'), 'returns navigation preserved'],
+  [nav.includes('"/sync": { shortLabel: "Sync"'), 'sync navigation preserved'],
 ];
 
 for (const [condition, message] of checks) {
@@ -43,10 +45,10 @@ for (const [condition, message] of checks) {
 
 if (fs.existsSync(stockPath)) {
   const stock = fs.readFileSync(stockPath, "utf8");
-  if (stock.includes("PrismaOperationalScreen") && stock.includes('currentPath: "/stock"')) {
+  if (stock.includes("CatalogStockSellingAssistScreen") && stock.includes('mode="stock"') && !stock.includes("ContextualExportBand")) {
     ok("stock route is the real operational screen");
   } else {
-    console.log("WARN stock route exists but does not look like PRISMA_TABLET_STOCK_SCREEN_01A_REAL_VIEW yet");
+    console.log("WARN stock route exists but does not look like the final 0207 stock screen yet");
   }
 } else {
   console.log("WARN app/stock/page.tsx is missing; nav fix is installed but /stock needs its screen package");

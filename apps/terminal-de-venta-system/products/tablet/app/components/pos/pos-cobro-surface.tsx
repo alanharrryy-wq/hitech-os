@@ -11,7 +11,7 @@ import { isCheckoutBusy } from "@/lib/pos/payment-contract";
 import type { PaymentMethod, PaymentTenderInput } from "@/lib/pos/payment-state";
 import { paymentMethodDefinition } from "@/lib/pos/payment-state";
 import { buildPaymentReviewViewModel } from "@/lib/pos/payment-view-model";
-import { centsFromDecimalString, suggestedCashTenderCents } from "@/lib/pos/payment-tender";
+import { centsFromDecimalString, sanitizeMoneyDraft, suggestedCashTenderCents } from "@/lib/pos/payment-tender";
 import { friendlyPosError } from "@/lib/pos/pos-visible-errors";
 import styles from "./pos-cobro-surface.module.css";
 
@@ -29,15 +29,6 @@ type CobroSurfaceProps = {
 
 function decimalTenderValue(cents: number) {
   return (Math.max(0, cents) / 100).toFixed(2);
-}
-
-function sanitizeManualMoneyInput(value: string) {
-  const compact = value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
-  const [whole = "", ...decimalParts] = compact.split(".");
-  const decimals = decimalParts.join("").slice(0, 2);
-  if (compact.startsWith(".")) return `0.${decimals}`;
-  if (decimalParts.length > 0) return `${whole || "0"}.${decimals}`;
-  return whole;
 }
 
 function manualMoneyDraftToCents(value: string) {
@@ -175,9 +166,14 @@ export function PosCobroSurface({
     onPaymentTenderChange(method, patch);
   }
 
+  function updateTenderAmount(method: PaymentMethod, amountCents: number) {
+    updateTender(method, { amountCents });
+    setAmountDrafts((current) => ({ ...current, [method]: decimalTenderValue(amountCents) }));
+  }
+
   function addRemainingTo(method: PaymentMethod) {
     const current = paymentTenders.find((tender) => tender.method === method)?.amountCents ?? 0;
-    updateTender(method, { amountCents: current + view.remainingCents });
+    updateTenderAmount(method, current + view.remainingCents);
     setFocusedTender(method);
   }
 
@@ -276,12 +272,13 @@ export function PosCobroSurface({
                         setFocusedTender(tender.method);
                         event.currentTarget.select();
                       }}
-                      onBlur={() => {
+                      onBlur={(event) => {
                         setFocusedTender(null);
-                        setAmountDrafts((current) => ({ ...current, [tender.method]: decimalTenderValue(manualMoneyDraftToCents(current[tender.method] ?? "0")) }));
+                        const amountCents = manualMoneyDraftToCents(event.currentTarget.value);
+                        updateTenderAmount(tender.method, amountCents);
                       }}
                       onChange={(event) => {
-                        const draft = sanitizeManualMoneyInput(event.target.value);
+                        const draft = sanitizeMoneyDraft(event.target.value);
                         setAmountDrafts((current) => ({ ...current, [tender.method]: draft }));
                         updateTender(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
                       }}
@@ -300,7 +297,7 @@ export function PosCobroSurface({
                   ) : (
                     <div className={styles.quickRow} aria-label="Efectivo rápido">
                       {suggestedCash.map((value) => (
-                        <button key={value} className={styles.quickButton} type="button" disabled={busy} onClick={() => updateTender("cash", { amountCents: value })}>
+                        <button key={value} className={styles.quickButton} type="button" disabled={busy} onClick={() => updateTenderAmount("cash", value)}>
                           {value === view.totalCents ? "Exacto" : formatMoney(value)}
                         </button>
                       ))}

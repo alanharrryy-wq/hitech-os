@@ -8,15 +8,43 @@ export type CashTenderReview = {
   visibleDetail: string;
 };
 
+function moneyParts(value: string, options: { preserveTrailingSeparator?: boolean } = {}) {
+  const cleaned = value.replace(/[^0-9.,]/g, "").trim();
+  if (!cleaned) return { whole: "", decimals: "", hasDecimal: false };
+
+  const lastDot = cleaned.lastIndexOf(".");
+  const lastComma = cleaned.lastIndexOf(",");
+  const decimalIndex = Math.max(lastDot, lastComma);
+  if (decimalIndex < 0) {
+    return { whole: cleaned.replace(/[.,]/g, ""), decimals: "", hasDecimal: false };
+  }
+
+  const before = cleaned.slice(0, decimalIndex).replace(/[.,]/g, "");
+  const after = cleaned.slice(decimalIndex + 1).replace(/[.,]/g, "");
+  const trailingSeparator = decimalIndex === cleaned.length - 1;
+  const decimalLike = trailingSeparator ? options.preserveTrailingSeparator : after.length > 0 && after.length <= 2;
+
+  if (!decimalLike) {
+    return { whole: cleaned.replace(/[.,]/g, ""), decimals: "", hasDecimal: false };
+  }
+
+  return {
+    whole: before || "0",
+    decimals: after.slice(0, 2),
+    hasDecimal: true
+  };
+}
+
+export function sanitizeMoneyDraft(value: string) {
+  const parts = moneyParts(value, { preserveTrailingSeparator: true });
+  if (!parts.whole && !parts.decimals) return "";
+  if (!parts.hasDecimal) return parts.whole;
+  return `${parts.whole}.${parts.decimals}`;
+}
+
 export function centsFromDecimalString(value: string) {
-  const raw = value.replace(/[^0-9.,-]/g, "").trim();
-  const decimalNormalized = raw.includes(".")
-    ? raw.replace(/,/g, "")
-    : raw.replace(/,/g, ".");
-  const parts = decimalNormalized.split(".");
-  const normalized = parts.length > 1
-    ? `${parts.shift() ?? "0"}.${parts.join("").slice(0, 2)}`
-    : decimalNormalized;
+  const parts = moneyParts(value);
+  const normalized = parts.hasDecimal ? `${parts.whole || "0"}.${parts.decimals}` : parts.whole;
   const parsed = Number(normalized);
   if (!Number.isFinite(parsed) || parsed <= 0) return 0;
   return Math.round(parsed * 100);
