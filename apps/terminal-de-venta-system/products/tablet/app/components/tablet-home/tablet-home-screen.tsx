@@ -1,6 +1,5 @@
 import type { TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { buildTabletHomeViewModel } from "@/lib/tablet-home/home-view-model";
-import { TabletRuntimePanel } from "@components/tablet-runtime/tablet-runtime-panel";
 import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 import styles from "./tablet-home.module.css";
 
@@ -18,21 +17,13 @@ export function TabletHomeScreen({ snapshot }: Props) {
   const shiftOpen = gate.canSell;
   const pending = pendingCount(snapshot);
 
-  const workflowSteps = [
-    { step: "1", title: shiftOpen ? "Turno abierto" : "Abrir turno", description: shiftOpen ? "Caja lista para operar con corte trazable." : "Prepara caja antes de vender para que tickets y corte salgan limpios.", href: "/shift", label: shiftOpen ? "Ver turno" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
-    { step: "2", title: shiftOpen ? "Vender" : "Caja cerrada", description: shiftOpen ? "Busca, escanea, arma el ticket y cobra sin salir del flujo POS." : gate.detail, href: shiftOpen ? "/pos" : "/shift", label: shiftOpen ? "Ir a vender" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
-    { step: "3", title: "Revisar tickets", description: "Consulta ventas cerradas, detalle y devoluciones cuando aplique.", href: "/sales/today", label: "Ventas de hoy", tone: "neutral" },
-    { step: "4", title: "Respaldar y sincronizar", description: "Revisa pendientes, respaldo local y continuidad antes de cerrar operación.", href: "/offline", label: "Respaldo", tone: pending > 0 ? "warn" : "neutral" }
-  ];
-
-  const toolCards = [
-    { href: "/catalog?new=1", title: "Registrar producto nuevo", description: "Alta rápida para venderlo desde esta Tablet.", label: "Registrar" },
-    { href: "/catalog", title: "Catálogo", description: "Productos disponibles para venta local.", label: "Abrir" },
-    { href: "/stock", title: "Existencias", description: "Disponibilidad operativa, quiebres y señales de reabasto.", label: "Revisar" },
-    { href: "/inventory/low-stock", title: "Existencias bajas", description: "Productos que necesitan revisión o reabasto.", label: "Ver bajos" },
-    { href: "/sync", title: "Pendientes", description: pending > 0 ? `${pending} eventos por revisar.` : "Sin pendientes visibles.", label: pending > 0 ? "Atender" : "Ver" },
-    { href: "/offline", title: "Sin conexión / Respaldo", description: "Movimientos guardados, exportación y respaldo operativo.", label: "Abrir" },
-    { href: "/settings/license", title: "Licencia", description: "Estado de permisos y activación de la Tablet.", label: "Revisar" }
+  const quickCards = [
+    { href: shiftOpen ? "/pos" : "/shift", title: shiftOpen ? "Vender" : "Abrir turno", description: shiftOpen ? "Busca productos, arma el ticket y cobra." : gate.detail, label: shiftOpen ? "Vender" : "Abrir", tone: shiftOpen ? "ok" : "warn" },
+    { href: "/stock", title: "Inventario", description: "Revisa existencias y productos con pocas piezas.", label: "Revisar", tone: snapshot.catalog.lowStockProducts > 0 ? "warn" : "neutral" },
+    { href: "/sales/today", title: "Ventas de hoy", description: "Consulta tickets cerrados y totales del dia.", label: "Ver", tone: "neutral" },
+    { href: "/returns", title: "Devoluciones", description: "Busca el ticket y registra la devolucion correcta.", label: "Abrir", tone: "neutral" },
+    { href: "/sync", title: "Pendientes", description: pending > 0 ? `${pending} pendientes por atender.` : "Todo al dia.", label: pending > 0 ? "Atender" : "Ver", tone: pending > 0 ? "warn" : "ok" },
+    { href: "/settings/license", title: "Licencia", description: "Confirma si la Tablet puede operar.", label: "Estado", tone: "neutral" }
   ];
 
   return (
@@ -62,81 +53,44 @@ export function TabletHomeScreen({ snapshot }: Props) {
         ))}
       </section>
 
-      <section className={styles.workflowPanel} aria-label="Mapa de flujo de trabajo">
+      <section className={styles.toolPanel} aria-label="Accesos principales">
         <div className={styles.workflowHeader}>
           <div>
-            <span>Flujo de trabajo</span>
-            <h3>Todo lo importante queda a la vista</h3>
+            <span>Accesos principales</span>
+            <h3>Lo necesario para operar</h3>
           </div>
-          <p>Tablet mantiene la venta al frente y deja cada consulta crítica a un toque.</p>
-        </div>
-        <div className={styles.workflowSteps}>
-          {workflowSteps.map((step) => (
-            <a className={styles.workflowStep} href={step.href} key={step.title} data-tone={step.tone}>
-              <strong>{step.step}</strong>
-              <span>
-                <b>{step.title}</b>
-                <small>{step.description}</small>
-              </span>
-              <em>{step.label} →</em>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.toolPanel} aria-label="Herramientas disponibles">
-        <div className={styles.workflowHeader}>
-          <div>
-            <span>Herramientas disponibles</span>
-            <h3>Consulta y soporte sin adivinar rutas</h3>
-          </div>
+          <p>Venta, inventario, tickets, devoluciones, pendientes y licencia en una sola lectura.</p>
         </div>
         <div className={styles.toolGrid}>
-          {toolCards.map((tool) => (
-            <a className={styles.toolCard} href={tool.href} key={tool.href}>
+          {quickCards.map((tool) => (
+            <a className={styles.toolCard} href={tool.href} key={tool.href} data-tone={tool.tone}>
               <span>
                 <b>{tool.title}</b>
                 <small>{tool.description}</small>
               </span>
-              <em>{tool.label} →</em>
+              <em>{tool.label}</em>
             </a>
           ))}
         </div>
       </section>
 
-      <section className={styles.mainGrid} aria-label="Acciones y alertas">
-        <div className={styles.actionGrid}>
-          {vm.actions.map((action) => (
-            <a className={styles.actionCard} href={action.href} key={action.title} data-priority={action.priority} data-tone={action.tone}>
-              <div>
-                <h3>{action.title}</h3>
-                <p>{action.description}</p>
+      <aside className={styles.alertCard} aria-label="Alertas operativas">
+        <h3>Alertas importantes</h3>
+        <p>Turno, pendientes y existencias sin ruido extra en la caja.</p>
+        {vm.alerts.length ? (
+          <div className={styles.alertList}>
+            {vm.alerts.slice(0, 3).map((alert) => (
+              <div className={styles.alertItem} key={alert.title} data-tone={alert.tone}>
+                <strong>{alert.title}</strong>
+                <p>{alert.description}</p>
+                <a href={alert.href}>{alert.action}</a>
               </div>
-              <span>{action.label}</span>
-            </a>
-          ))}
-        </div>
-        <div className={styles.sideStack}>
-          <TabletRuntimePanel snapshot={snapshot} />
-          <aside className={styles.alertCard} aria-label="Alertas operativas">
-            <h3>Alertas que sí importan</h3>
-            <p>Turno, pendientes y existencias sin meter ruido de backoffice en la caja.</p>
-            {vm.alerts.length ? (
-              <div className={styles.alertList}>
-                {vm.alerts.map((alert) => (
-                  <div className={styles.alertItem} key={alert.title} data-tone={alert.tone}>
-                    <strong>{alert.title}</strong>
-                    <p>{alert.description}</p>
-                    <a href={alert.href}>{alert.action}</a>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.emptyAlert}>Sin alertas críticas. Puedes continuar vendiendo con el respaldo local disponible.</div>
-            )}
-          </aside>
-        </div>
-      </section>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.emptyAlert}>Sin alertas criticas. Puedes continuar vendiendo con respaldo local disponible.</div>
+        )}
+      </aside>
     </div>
   );
 }

@@ -15,7 +15,7 @@ type RefreshStatus = {
 
 function refreshStateLabel(state: string) {
   const labels: Record<string, string> = {
-    refresh_disabled: "Refresh remoto no configurado",
+    refresh_disabled: "Actualización no configurada",
     missing_server_url: "Servidor no configurado",
     missing_device_id: "Equipo sin identificador",
     configured: "Configurada",

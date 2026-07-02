@@ -13,7 +13,7 @@ type ApiCurrent = { shift: ShiftCashSummary | null };
 type ApiShift = { shift: ShiftCashSummary };
 type UiState = "idle" | "loading" | "ready" | "error" | "success";
 
-const DEFAULT_CASHIER = "tablet-cashier";
+const DEFAULT_CASHIER = "Cajero principal";
 
 function readError(error: unknown) {
   if (typeof error === "object" && error && "message" in error) return String((error as { message?: string }).message ?? "No se pudo operar turno.");
@@ -119,6 +119,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
   const closePreview = useMemo(() => buildClosePreview(shift, cashCounted), [shift, cashCounted]);
   const canOpen = !shift || shift.status === "CLOSED";
   const canClose = Boolean(shift?.canClose && cashCounted.trim());
+  const closePanelActive = shift?.status === "OPEN";
   const statusTone = shift?.status === "OPEN" ? "ok" : error ? "danger" : "neutral";
 
   return (
@@ -134,7 +135,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
       <main className={styles.page} data-prisma-shift-layer="root" data-prisma-shift-workbench="route-1006-1535">
         <section className={styles.hero} data-prisma-shift-layer="hero">
           <div>
-            <span className={styles.eyebrow}>Corte operativo local</span>
+            <span className={styles.eyebrow}>Caja del dia</span>
             <h1>{copy.title}</h1>
             <p>{copy.detail}</p>
           </div>
@@ -151,15 +152,15 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
         </section>
 
         <section className={styles.workspace} data-prisma-shift-layer="workspace">
-          <article className={styles.panel} data-prisma-shift-layer="panel-open">
+          <article className={styles.panel} data-current={canOpen ? "true" : "false"} data-prisma-shift-layer="panel-open">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Abrir turno</span><strong>{canOpen ? "Caja lista para iniciar" : "Ya hay turno abierto"}</strong></header>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Cajero</span><input value={cashier} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashier(event.target.value)} disabled={!canOpen || state === "loading"} /></label>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Caja inicial</span><input inputMode="decimal" value={cashStart} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashStart(event.target.value)} disabled={!canOpen || state === "loading"} /></label>
             <button type="button" className={styles.primaryButton} data-prisma-shift-layer="primary-action" onClick={() => void openShift()} disabled={!canOpen || state === "loading" || !cashier.trim()}>Abrir turno</button>
-            {!canOpen ? <p className={styles.note}>Para abrir otro turno, primero cierra el actual. Si no, esto se vuelve caja rusa, y no de las divertidas.</p> : null}
+            {!canOpen ? <p className={styles.note}>Para iniciar otro turno, primero cierra el turno abierto.</p> : null}
           </article>
 
-          <article className={styles.panel} data-prisma-shift-layer="panel-close">
+          <article className={styles.panel} data-current={closePanelActive ? "true" : "false"} data-prisma-shift-layer="panel-close">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Cerrar turno</span><strong>{shift?.status === "OPEN" ? "Conteo requerido" : "Sin turno abierto"}</strong></header>
             <div className={styles.cashBreakdown} data-prisma-shift-layer="cash-breakdown">
               <div data-prisma-shift-layer="cash-tile"><span>Caja inicial</span><strong>{formatMoney(shift?.cashStartCents ?? 0)}</strong></div>
@@ -175,7 +176,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
 
         <section className={styles.flowGuard} data-prisma-shift-layer="flow-guard">
           <strong>{gate.canSell ? "Venta habilitada" : "Venta bloqueada hasta abrir turno"}</strong>
-          <p>{gate.canSell ? "Los tickets nuevos quedaran ligados al turno abierto." : "La caja necesita turno abierto antes de cerrar ventas. Sin turno, vender seria como cobrar en servilleta: romantico, inutil y auditable con lupa."}</p>
+          <p>{gate.canSell ? "Los tickets nuevos quedaran ligados al turno abierto." : "Abre turno para que cada venta quede ligada a caja, ticket y corte."}</p>
         </section>
       </main>
     </PrismaTabletShellUnified>

@@ -32,6 +32,43 @@
   text-transform: uppercase;
 }
 
+.exportSummary {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.exportSummary::-webkit-details-marker {
+  display: none;
+}
+
+.exportSummary strong {
+  font-size: 18px;
+}
+
+.exportSummary small {
+  color: rgba(248, 250, 252, 0.7);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.exportCard:not([open]),
+.panel:not([open]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.exportCard:not([open]) .actions,
+.panel:not([open]) .diagnostics {
+  display: none;
+}
+
+.exportCard[open] .actions,
+.panel[open] .diagnostics {
+  margin-top: 12px;
+}
+
 .hero p,
 .exportCard p,
 .row span,
@@ -187,6 +224,7 @@
 
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero p,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportSummary small,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row span,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted,

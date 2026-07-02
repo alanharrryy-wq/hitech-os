@@ -1,0 +1,280 @@
+{
+  "id": "TABREST_NON_POS_OWNER_MAP",
+  "date": "2026-07-02",
+  "repo": "F:/repos/hitech-os",
+  "scope": "PRISMA Tablet non-POS surfaces",
+  "excluded": [
+    {
+      "route": "/pos",
+      "reason": "Primary sale surface excluded from TABREST. A separate user-requested light cobro correction is tracked outside this owner map."
+    },
+    {
+      "route": "/checkout",
+      "reason": "Sale/cobro step excluded from TABREST non-POS polish."
+    }
+  ],
+  "authorities": [
+    "products/tablet/app/src/navigation/tablet-page-contracts.ts",
+    "products/tablet/app/src/navigation/tablet-product-navigation.manifest.json",
+    "products/tablet/app/components/tablet-shell/tablet-nav.ts",
+    "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx"
+  ],
+  "surfaces": [
+    {
+      "route": "/",
+      "owner": "products/tablet/app/components/tablet-home/tablet-home-screen.tsx",
+      "style": "products/tablet/app/components/tablet-home/tablet-home.module.css",
+      "status": "needs-polish",
+      "findings": [
+        "Home is visually dense for one-glance use.",
+        "Runtime/support-oriented content is still present through the home side stack.",
+        "Tool cards exceed the final-screen simplicity target."
+      ],
+      "plannedActions": [
+        "Reduce to clear primary actions and remove internal/support text from first view.",
+        "Keep no more than six obvious entry points."
+      ]
+    },
+    {
+      "route": "shell",
+      "owner": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx",
+      "style": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+      "status": "needs-copy-polish",
+      "findings": [
+        "Bottom dock already limits final routes.",
+        "Topbar has context chips only, but flow helper copy can still read as internal support."
+      ],
+      "plannedActions": [
+        "Keep topbar contextual.",
+        "Clean technical/helper wording and verify no duplicate final nav."
+      ]
+    },
+    {
+      "route": "/shift",
+      "owner": "products/tablet/app/components/shift/shift-cash-closure-screen.tsx",
+      "style": "products/tablet/app/components/shift/shift-cash-closure.module.css",
+      "status": "needs-polish",
+      "findings": [
+        "Open and close panels have similar visual priority.",
+        "Informal flow-guard copy should be replaced with professional operator language."
+      ],
+      "plannedActions": [
+        "Make the current shift state drive the primary action.",
+        "Clean copy and keep only useful panels."
+      ]
+    },
+    {
+      "route": "/stock",
+      "owner": "products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "style": "products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css",
+      "status": "needs-secondary-export-polish",
+      "findings": [
+        "Search and product cards are product-facing.",
+        "Filters and export affordances are still prominent."
+      ],
+      "plannedActions": [
+        "Keep inventory readable for selling.",
+        "Make export secondary and verify it is not open by default."
+      ]
+    },
+    {
+      "route": "/existencias",
+      "owner": "products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "style": "products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css",
+      "status": "shares-stock-owner",
+      "findings": [
+        "Uses the same stock mode owner as /stock."
+      ],
+      "plannedActions": [
+        "Keep wording aligned with stock route and avoid duplicate product concepts."
+      ]
+    },
+    {
+      "route": "/inventory/low-stock",
+      "owner": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx:LowStockScreen",
+      "style": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+      "status": "legacy-wrapper",
+      "findings": [
+        "Still rendered by the legacy touch-pos UI helper.",
+        "Copy is mostly human but uses older visual structure."
+      ],
+      "plannedActions": [
+        "Keep as secondary inventory route.",
+        "Avoid exposing it as final nav."
+      ]
+    },
+    {
+      "route": "/catalog",
+      "owner": "products/tablet/app/components/catalog/catalog-screen.tsx",
+      "style": "products/tablet/app/components/catalog/catalog.module.css",
+      "status": "needs-secondary-positioning",
+      "findings": [
+        "Catalog belongs under inventory and should not compete with selling."
+      ],
+      "plannedActions": [
+        "Keep supervisor catalog actions clear and secondary."
+      ]
+    },
+    {
+      "route": "/sales/today",
+      "owner": "products/tablet/app/components/sales/sales-today-screen.tsx",
+      "style": "products/tablet/app/components/sales/sales.module.css",
+      "status": "needs-export-secondary",
+      "findings": [
+        "Contextual export actions are visible as a full card by default.",
+        "Sales list and KPI strip are otherwise product-facing."
+      ],
+      "plannedActions": [
+        "Collapse export actions behind a secondary control.",
+        "Keep the route focused on tickets and totals."
+      ]
+    },
+    {
+      "route": "/sales/history",
+      "owner": "products/tablet/app/components/sales/sales-history-screen.tsx",
+      "style": "products/tablet/app/components/sales/sales.module.css",
+      "status": "minor-polish",
+      "findings": [
+        "History is a secondary route and mostly human-readable."
+      ],
+      "plannedActions": [
+        "Keep as secondary sales view and avoid nav duplication."
+      ]
+    },
+    {
+      "route": "/sales/today/:saleId",
+      "owner": "products/tablet/app/components/sales/sales-ticket-detail-screen.tsx",
+      "style": "products/tablet/app/components/sales/sales.module.css",
+      "status": "dynamic-secondary",
+      "findings": [
+        "Dynamic detail should only open from ticket lists."
+      ],
+      "plannedActions": [
+        "Verify no root navigation exposes dynamic ticket routes."
+      ]
+    },
+    {
+      "route": "/returns",
+      "owner": "products/tablet/app/components/returns/returns-landing-screen.tsx",
+      "style": "products/tablet/app/components/returns/returns.module.css",
+      "status": "minor-polish",
+      "findings": [
+        "Return landing is product-facing but can better explain the operator flow."
+      ],
+      "plannedActions": [
+        "Clarify select-ticket, reason, review, confirm flow without changing semantics."
+      ]
+    },
+    {
+      "route": "/sales/today/:saleId/return",
+      "owner": "products/tablet/app/components/returns/return-from-ticket-screen.tsx",
+      "style": "products/tablet/app/components/returns/returns.module.css",
+      "status": "dynamic-secondary",
+      "findings": [
+        "Reason selection and confirmation exist but need final wording review."
+      ],
+      "plannedActions": [
+        "Keep confirmation clear and route contextual."
+      ]
+    },
+    {
+      "route": "/sync",
+      "owner": "products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+      "style": "products/tablet/app/components/sync/pending-offline-sync-panel.module.css",
+      "status": "needs-operator-focus",
+      "findings": [
+        "Pending work, account details, catalog pull, KPIs, filters, and diagnostics compete in first view.",
+        "Diagnostics/support details should be secondary."
+      ],
+      "plannedActions": [
+        "Make pending status and retry actions primary.",
+        "Move support detail behind disclosure."
+      ]
+    },
+    {
+      "route": "/offline",
+      "owner": "products/tablet/app/components/offline/offline-export-audit-screen.tsx",
+      "style": "products/tablet/app/components/offline/offline-export-audit.module.css",
+      "status": "needs-export-secondary",
+      "findings": [
+        "Export card is prominent by default.",
+        "Diagnostics are visible as a full panel."
+      ],
+      "plannedActions": [
+        "Make exports and diagnostics secondary.",
+        "Rename metadata/copy away from technical outbox language."
+      ]
+    },
+    {
+      "route": "/events/outbox",
+      "owner": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx:OutboxEventsScreen",
+      "style": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+      "status": "internal-support",
+      "findings": [
+        "Uses event/topic/ACK style labels and raw identifiers.",
+        "Contract marks it internal-support."
+      ],
+      "plannedActions": [
+        "Keep out of final nav and home.",
+        "If accessible, translate labels to pending-work language."
+      ]
+    },
+    {
+      "route": "/settings/license",
+      "owner": "products/tablet/app/app/settings/license/page.tsx",
+      "components": [
+        "products/tablet/app/components/license/license-status-card.tsx",
+        "products/tablet/app/components/license/license-refresh-panel.tsx"
+      ],
+      "style": "products/tablet/app/components/license/license-ui.module.css",
+      "status": "mostly-ready",
+      "findings": [
+        "Readonly license posture is already present.",
+        "Support details are collapsed with details elements.",
+        "Copy still requires final scan for technical terms."
+      ],
+      "plannedActions": [
+        "Verify no activation/import/admin workflow is exposed.",
+        "Keep support evidence secondary."
+      ]
+    },
+    {
+      "route": "/settings/export",
+      "owner": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx:ExportSettingsScreen",
+      "style": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+      "status": "secondary-export",
+      "findings": [
+        "Export endpoints are directly visible.",
+        "Route is submenu, not final nav."
+      ],
+      "plannedActions": [
+        "Keep export actions secondary and human-readable."
+      ]
+    },
+    {
+      "route": "/settings/data",
+      "owner": "products/tablet/app/app/settings/data/page.tsx",
+      "status": "alias",
+      "findings": [
+        "Redirects to /settings/license."
+      ],
+      "plannedActions": [
+        "Keep alias out of final nav."
+      ]
+    },
+    {
+      "route": "/prisma-pulse",
+      "owner": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "style": "products/tablet/app/app/prisma-pulse/prisma-tablet-pulse.module.css",
+      "status": "candidate-support-needs-hide-or-rename",
+      "findings": [
+        "Route is candidate-support in the contract.",
+        "Visible copy includes PRISMA Pulse, Visual OS, runtime, and outbox-style language."
+      ],
+      "plannedActions": [
+        "Keep out of home/nav.",
+        "Hide from final flows or rename to human Estado operativo if it remains reachable."
+      ]
+    }
+  ]
+}

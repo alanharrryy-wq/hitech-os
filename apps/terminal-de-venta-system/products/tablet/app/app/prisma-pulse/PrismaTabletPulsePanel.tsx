@@ -15,8 +15,8 @@ type PrismaTabletPulsePanelProps = {
 const QUICK_FILTERS = [
   { id: "shift", label: "Turno actual", summary: "Vista enfocada en salud del turno y continuidad de venta local." },
   { id: "risks", label: "Solo riesgos", summary: "Filtro de revisión: prioriza alertas y señales de riesgo operativo." },
-  { id: "sync", label: "Pendientes sync", summary: "Filtro de revisión: mira outbox, reintentos y cola local Tablet." },
-  { id: "reset", label: "Reset", summary: "Filtros limpios. Vista completa del pulso Tablet." }
+  { id: "sync", label: "Pendientes", summary: "Filtro de revisión: mira reintentos y pendientes locales de la Tablet." },
+  { id: "reset", label: "Todo", summary: "Filtros limpios. Vista completa del estado Tablet." }
 ] as const;
 
 export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePanelProps) {
@@ -33,9 +33,9 @@ export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePan
       <main className={styles.shell} data-prisma-charts-surface="tablet" data-prisma-charts-enabled="false">
         <section className={styles.disabledPanel}>
           <p>Tablet opera</p>
-          <h1>Pulse preview apagado</h1>
+          <h1>Vista operativa apagada</h1>
           <span>{flags.reason}</span>
-          <strong>Use ?preview=charts para revisar sin afectar ventas locales.</strong>
+          <strong>Activa la vista de graficas solo para revisión autorizada.</strong>
         </section>
       </main>
     );
@@ -46,13 +46,13 @@ export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePan
       <section className={styles.header}>
         <div>
           <p>Tablet opera</p>
-          <h1>PRISMA Operations Pulse</h1>
-          <span>Dos charts tactiles: seguir vendiendo y revisar outbox local.</span>
+          <h1>Estado operativo</h1>
+          <span>Dos graficas tactiles: seguir vendiendo y revisar pendientes locales.</span>
         </div>
         <aside>
           <strong>{formatPercent(envelope.confidence.score)}</strong>
           <small>{envelope.quality.sourceLabel}</small>
-          <small>TTL {formatAgeMinutes(envelope.freshness.maxStaleMinutes)}</small>
+        <small>Vigencia {formatAgeMinutes(envelope.freshness.maxStaleMinutes)}</small>
         </aside>
       </section>
 
@@ -75,7 +75,7 @@ export function PrismaTabletPulsePanel({ envelope, flags }: PrismaTabletPulsePan
         <strong>{focusLabel}</strong>
       </section>
 
-      <section className={styles.grid} aria-label="Dos charts operativos Tablet">
+      <section className={styles.grid} aria-label="Dos graficas operativas Tablet">
         <TabletShiftPulseStrip data={envelope.data.shiftPulseStrip} quality={envelope.quality} onFocusLabel={setFocusLabel} />
         <TabletSyncOutboxStatusMatrix data={envelope.data.syncOutboxStatusMatrix} quality={envelope.quality} onFocusLabel={setFocusLabel} />
       </section>

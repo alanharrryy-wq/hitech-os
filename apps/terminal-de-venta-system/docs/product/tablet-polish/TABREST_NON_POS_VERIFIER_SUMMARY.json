@@ -1,0 +1,76 @@
+{
+  "id": "TABREST_NON_POS_VERIFIER_SUMMARY",
+  "date": "2026-07-02",
+  "status": "PASS_STATIC_AND_SYNC_LIVE_SMOKE",
+  "commands": [
+    {
+      "command": "pnpm run verify:tablet-cobro-light-amounts-0207",
+      "cwd": "apps/terminal-de-venta-system/products/tablet/app",
+      "status": "PASS",
+      "output": "PRISMA_TABLET_COBRO_LIGHT_AMOUNTS_0207 PASS 16 checks"
+    },
+    {
+      "command": "pnpm run verify:tabrest-non-pos-0207",
+      "cwd": "apps/terminal-de-venta-system/products/tablet/app",
+      "status": "PASS",
+      "children": [
+        "TABREST_NON_POS_COPY_0207 PASS 76 checks",
+        "TABREST_NON_POS_NAVIGATION_0207 PASS 17 checks",
+        "TABREST_INVENTORY_EXPORT_SECONDARY_0207 PASS 13 checks",
+        "TABREST_SYNC_HUMAN_PENDING_0207 PASS 22 checks",
+        "TABREST_LICENSE_HUMAN_0207 PASS 10 checks",
+        "TABREST_INTERACTIONS_0207 PASS 15 checks",
+        "ZERO PRIORITY GATE: PASS"
+      ]
+    },
+    {
+      "command": "pnpm run verify:tablet-sync-dispatcher",
+      "cwd": "apps/terminal-de-venta-system/products/tablet/app",
+      "status": "PASS",
+      "output": "PRISMA_TABLET_SYNC_DISPATCHER_01 passed"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit",
+      "cwd": "apps/terminal-de-venta-system/products/tablet/app",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "cwd": "F:/repos/hitech-os",
+      "status": "PASS"
+    },
+    {
+      "command": "node -e \"JSON.parse(...)\"",
+      "cwd": "F:/repos/hitech-os",
+      "status": "PASS",
+      "output": "OWNER_MAP_JSON_OK"
+    },
+    {
+      "command": "Playwright live /sync tablet and PC viewport smoke",
+      "cwd": "F:/repos/hitech-os",
+      "status": "PASS",
+      "output": "Loaded http://127.0.0.1:3120/sync in tablet and PC viewports; no page errors; visible queue limited to 8; inline dock no longer overlaps list; PC health response online."
+    },
+    {
+      "command": "POST http://127.0.0.1:3120/api/pos/sync/dispatch",
+      "cwd": "F:/repos/hitech-os",
+      "status": "PASS",
+      "output": "Partial PC response now returns ok:false reason:partial httpStatus:207."
+    },
+    {
+      "command": "pnpm exec next build --webpack",
+      "cwd": "apps/terminal-de-venta-system/products/tablet/app",
+      "status": "BLOCKED_ENV",
+      "output": "Prior CSS Modules pure selector error was cleared; build then failed on EPERM scandir C:/Users/alanh/Configuración local."
+    }
+  ],
+  "notRun": [
+    "New dev server startup",
+    "Full production build green due Windows EPERM scan blocker"
+  ],
+  "zeroImportantReportDirs": [
+    "F:/descargasf/zero-important-gate 202607021411",
+    "F:/descargasf/zero-important-gate 202607021407",
+    "F:/descargasf/zero-important-gate 202607021405"
+  ]
+}

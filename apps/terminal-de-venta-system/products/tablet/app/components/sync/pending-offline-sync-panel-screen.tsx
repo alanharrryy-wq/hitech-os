@@ -10,6 +10,7 @@ import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../shared/customer/prisma-
 import styles from "./pending-offline-sync-panel.module.css";
 
 type FilterMode = "all" | "needs_attention" | PendingSendStatus;
+type ActionMode = "loading" | "refreshing" | "sending" | "retrying" | null;
 
 type DispatchResult = {
   ok: boolean;
@@ -49,6 +50,7 @@ type TabletPcHealth = {
 };
 
 const DEFAULT_SYNC_BUSINESS_ID = PRISMA_ORIGINAL_CUSTOMER.businessId;
+const QUEUE_PREVIEW_LIMIT = 8;
 
 const FILTERS: { key: FilterMode; label: string }[] = [
   { key: "needs_attention", label: "Por atender" },
@@ -78,7 +80,7 @@ async function plainJson<T>(url: string, init?: RequestInit): Promise<T> {
 function dispatchTone(result: DispatchResult | null) {
   if (!result) return "neutral";
   if (result.ok) return "ok";
-  if (["pc_sync_disabled", "missing_pc_origin", "pc_unavailable", "empty"].includes(result.reason)) return "warn";
+  if (["pc_sync_disabled", "missing_pc_origin", "pc_unavailable", "empty", "partial", "remote_results_applied_from_non_ok_response"].includes(result.reason)) return "warn";
   return "danger";
 }
 
@@ -99,19 +101,31 @@ function dispatchMessage(result: DispatchResult | null) {
   if (!result) return "Sin intento de envío todavía.";
   const targetUrl = result.health?.url ? ` Destino: ${result.health.url}.` : "";
   const lastError = result.health?.error ? ` ${visibleSyncError(result.health.error)}` : result.error ? ` ${visibleSyncError(result.error)}` : "";
-  if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} evento(s) mandado(s) a PC.`;
+  if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} pendiente(s) mandado(s) a PC.`;
   if (result.ok && result.reason === "empty") return "No había pendientes listos para enviar.";
-  if (result.reason === "pc_sync_disabled") return `Sincronización con PC apagada por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
+  if (result.reason === "partial") return `PC recibió ${result.dispatched} pendiente(s), pero respondió con avisos. Revisa la lista: lo aceptado se confirma y lo pendiente queda protegido para reintento.`;
+  if (result.reason === "remote_results_applied_from_non_ok_response") return "PC respondió con rechazo o aviso. La Tablet conservó los pendientes que no quedaron confirmados.";
+  if (result.reason === "pc_sync_disabled") return `Envío a PC apagado por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
   if (result.reason === "missing_pc_origin") return "Falta configurar el destino PC. Hay pendientes guardados, pero no hay destino configurado para enviar.";
   if (result.reason === "pc_unavailable") return `PC no disponible. Los pendientes quedan guardados localmente.${targetUrl}${lastError}`;
   if (result.reason === "dispatcher_in_flight") return "Ya hay un envío en curso. No se duplicó la operación.";
   if (result.reason === "dispatch_failed") return `No se pudo completar el envío.${lastError || " Los pendientes quedaron protegidos para reintento."}`;
-  return `Resultado de sincronización: ${result.reason}.`;
+  return `Resultado de envío: ${result.reason}.`;
 }
 
 function emptyQueueMessage(filter: FilterMode) {
   if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No hay pendientes para enviar.";
   return "No hay elementos en este filtro.";
+}
+
+function filterTitle(filter: FilterMode) {
+  if (filter === "needs_attention") return "Por atender";
+  if (filter === "pending") return "Pendientes por enviar";
+  if (filter === "failed") return "Fallidos";
+  if (filter === "conflict") return "En revision";
+  if (filter === "sent") return "Enviados";
+  if (filter === "acked") return "Confirmados";
+  return "Todo";
 }
 
 function licenseStateLabel(state: string | null | undefined) {
@@ -140,21 +154,31 @@ function pcConnectionLabel(health: TabletPcHealth | null) {
   return "PC por revisar";
 }
 
+function pcConnectionTone(health: TabletPcHealth | null) {
+  if (!health) return "neutral";
+  if (health.enabled === false) return "warn";
+  if (health.ok || health.status === "online") return "ok";
+  if (health.status === "degraded") return "warn";
+  return "danger";
+}
+
 function syncHeadline(panel: SyncPanelResponse | null) {
   if (!panel) return "Revisando pendientes";
   if (panel.summary.failed > 0 || panel.summary.conflict > 0) return "Pendientes que requieren atención";
-  if (panel.summary.pending > 0) return "Pendientes por sincronizar";
-  return "Sincronización al día";
+  if (panel.summary.pending > 0) return "Pendientes por enviar";
+  return "Pendientes al día";
 }
 
 export function PendingOfflineSyncPanelScreen() {
   const [panel, setPanel] = useState<SyncPanelResponse | null>(null);
   const [filter, setFilter] = useState<FilterMode>("needs_attention");
-  const [busy, setBusy] = useState(false);
+  const [actionMode, setActionMode] = useState<ActionMode>(null);
+  const [showAll, setShowAll] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);
   const [license, setLicense] = useState<LicenseStatusResponse["data"] | null>(null);
   const [pcHealth, setPcHealth] = useState<TabletPcHealth | null>(null);
+  const busy = actionMode !== null;
 
   async function loadPanelOnly() {
     const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
@@ -171,19 +195,19 @@ export function PendingOfflineSyncPanelScreen() {
   }
 
   async function load() {
-    setBusy(true);
+    setActionMode("refreshing");
     setError(null);
     try {
       await Promise.all([loadPanelOnly(), loadOperationalContext()]);
     } catch (e) {
       setError(readError(e));
     } finally {
-      setBusy(false);
+      setActionMode(null);
     }
   }
 
   async function dispatchNow(force = false) {
-    setBusy(true);
+    setActionMode("sending");
     setError(null);
     try {
       const result = await plainJson<DispatchResult>("/api/pos/sync/dispatch", {
@@ -191,19 +215,19 @@ export function PendingOfflineSyncPanelScreen() {
         body: JSON.stringify({ force, source: "sync-panel" })
       });
       setDispatchResult(result);
-      await loadPanelOnly();
+      await Promise.all([loadPanelOnly(), loadOperationalContext()]);
     } catch (e) {
       setError(readError(e));
       try {
         await loadPanelOnly();
       } catch {}
     } finally {
-      setBusy(false);
+      setActionMode(null);
     }
   }
 
   async function retryFailed() {
-    setBusy(true);
+    setActionMode("retrying");
     setError(null);
     try {
       await requestJson<{ updated: number; message: string }>("/api/pos/sync/retry", {
@@ -219,28 +243,28 @@ export function PendingOfflineSyncPanelScreen() {
         body: JSON.stringify({ force: true, source: "sync-panel-retry" })
       });
       setDispatchResult(result);
-      await loadPanelOnly();
+      await Promise.all([loadPanelOnly(), loadOperationalContext()]);
     } catch (e) {
       setError(readError(e));
       try {
         await loadPanelOnly();
       } catch {}
     } finally {
-      setBusy(false);
+      setActionMode(null);
     }
   }
 
   useEffect(() => {
     let cancelled = false;
     async function boot() {
-      setBusy(true);
+      setActionMode("loading");
       setError(null);
       try {
         await Promise.all([loadPanelOnly(), loadOperationalContext()]);
       } catch (e) {
         if (!cancelled) setError(readError(e));
       } finally {
-        if (!cancelled) setBusy(false);
+        if (!cancelled) setActionMode(null);
       }
     }
     void boot();
@@ -250,13 +274,23 @@ export function PendingOfflineSyncPanelScreen() {
   }, []);
 
   const items = useMemo(() => (panel ? filterSyncItems(panel.items, filter) : []), [panel, filter]);
+  const visibleItems = useMemo(() => showAll ? items : items.slice(0, QUEUE_PREVIEW_LIMIT), [items, showAll]);
+  const hiddenItems = Math.max(0, items.length - visibleItems.length);
   const tone = panel?.summary.risk === "danger" ? "danger" : panel?.summary.risk === "warn" ? "warn" : "ok";
   const sendableCount = panel ? panel.summary.pending + panel.summary.failed : 0;
   const retryableCount = panel ? panel.summary.failed + panel.summary.conflict : 0;
   const noteTone = dispatchTone(dispatchResult);
+  const pcTone = pcConnectionTone(pcHealth);
   const licenseStatus = license?.status;
   const headline = syncHeadline(panel);
   const lastCheckedLabel = panel?.summary.lastCheckedAt ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt)) : "sin revisión";
+  const activeStatusMessage = actionMode === "sending"
+    ? "Enviando pendientes a PC..."
+    : actionMode === "retrying"
+      ? "Preparando reintento..."
+      : actionMode === "refreshing" || actionMode === "loading"
+        ? "Actualizando estado..."
+        : dispatchMessage(dispatchResult);
 
   return (
     <PrismaTabletShellUnified
@@ -264,54 +298,35 @@ export function PendingOfflineSyncPanelScreen() {
       title="Pendientes y conexión"
       subtitle="Lo que quedó guardado localmente, lo que falló y lo que necesita atención."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
+      dockMode="inline"
     >
       <main className={styles.page}>
         <section className={styles.hero}>
           <div>
             <span>Continuidad operativa</span>
             <h1>{headline}</h1>
-            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar sin abrir herramientas de soporte.</p>
+            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar, reintentar o revisar.</p>
+            <div className={styles.heroMeta} aria-label="Estado de conexión y revisión">
+              <span className={[styles.metaPill, styles[`metaPill_${pcTone}`]].join(" ")}>{pcConnectionLabel(pcHealth)}</span>
+              <span className={styles.metaPill}>Revisado {lastCheckedLabel}</span>
+              <span className={styles.metaPill}>{panel?.summary.total ?? 0} movimientos en cola</span>
+            </div>
           </div>
           <div className={styles.heroActions}>
             <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0}>
-              {busy ? "Trabajando" : "Enviar pendientes"}
+              {actionMode === "sending" ? "Enviando..." : "Enviar pendientes"}
             </button>
             <button className={styles.secondaryAction} type="button" onClick={() => void load()} disabled={busy}>
-              Actualizar estado
+              {actionMode === "refreshing" || actionMode === "loading" ? "Actualizando..." : "Actualizar estado"}
             </button>
             <button type="button" onClick={() => void retryFailed()} disabled={busy || retryableCount === 0}>
-              Reintentar fallidos
+              {actionMode === "retrying" ? "Reintentando..." : "Reintentar fallidos"}
             </button>
           </div>
         </section>
 
-        {dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${noteTone}`]].join(" ")}>{dispatchMessage(dispatchResult)}</div> : null}
+        {busy || dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}
         {error ? <div className={styles.alert} role="alert">{error}</div> : null}
-
-        <section className={styles.accountGrid} aria-label="Cuenta, licencia y equipos vinculados">
-          <article>
-            <span>Cliente</span>
-            <strong>{PRISMA_ORIGINAL_CUSTOMER.displayName}</strong>
-            <small>Cuenta local de venta</small>
-          </article>
-          <article>
-            <span>Licencia</span>
-            <strong>{licenseStateLabel(licenseStatus?.state)}</strong>
-            <small>{licenseStatus?.plan ?? PRISMA_ORIGINAL_CUSTOMER.planLabel}</small>
-          </article>
-          <article>
-            <span>Tablet</span>
-            <strong>{assignmentLabel(licenseStatus?.assignmentState)}</strong>
-            <small>{PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName}</small>
-          </article>
-          <article>
-            <span>PC</span>
-            <strong>{pcConnectionLabel(pcHealth)}</strong>
-            <small>Venta local disponible aunque PC no responda</small>
-          </article>
-        </section>
-
-        <CatalogPullPanel />
 
         <section className={styles.kpis}>
           <article>
@@ -336,37 +351,83 @@ export function PendingOfflineSyncPanelScreen() {
           </article>
         </section>
 
-        <section className={styles.filterBar}>
-          {FILTERS.map((f) => (
-            <button key={f.key} type="button" onClick={() => setFilter(f.key)} className={filter === f.key ? styles.activeFilter : undefined}>
-              {f.label}
-            </button>
-          ))}
-        </section>
+        <section className={styles.queuePanel} aria-label="Movimientos pendientes">
+          <div className={styles.queueHeader}>
+            <div>
+              <span>Lista operativa</span>
+              <h2>{filterTitle(filter)}</h2>
+              <p>{items.length > QUEUE_PREVIEW_LIMIT && !showAll ? `Mostrando ${QUEUE_PREVIEW_LIMIT} de ${items.length}. Usa "Ver todos" solo para revisar uno por uno.` : `${items.length} movimiento(s) visibles.`}</p>
+            </div>
+            {items.length > QUEUE_PREVIEW_LIMIT ? (
+              <button className={styles.showMoreButton} type="button" onClick={() => setShowAll((value) => !value)}>
+                {showAll ? "Ver menos" : `Ver todos (${hiddenItems} más)`}
+              </button>
+            ) : null}
+          </div>
 
-        <section className={styles.queue}>
-          {items.length === 0 ? (
-            <div className={styles.empty}>{emptyQueueMessage(filter)}</div>
-          ) : (
-            items.map((item) => (
-              <article className={[styles.item, styles[`risk_${item.risk}`]].join(" ")} key={item.id}>
-                <div>
-                  <span>{item.statusLabel}</span>
-                  <h2>{item.title}</h2>
-                  <p>{item.description}</p>
-                </div>
-                <aside>
-                  <strong>{item.attempts}</strong>
-                  <small>intentos</small>
-                  {item.canRetry ? <em>Reintento disponible</em> : <em>Sin acción requerida</em>}
-                </aside>
-              </article>
-            ))
-          )}
+          <div className={styles.filterBar}>
+            {FILTERS.map((f) => (
+              <button key={f.key} type="button" onClick={() => { setFilter(f.key); setShowAll(false); }} className={filter === f.key ? styles.activeFilter : undefined}>
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          <div className={styles.queue}>
+            {visibleItems.length === 0 ? (
+              <div className={styles.empty}>{emptyQueueMessage(filter)}</div>
+            ) : (
+              visibleItems.map((item) => (
+                <article className={[styles.item, styles[`risk_${item.risk}`]].join(" ")} key={item.id}>
+                  <div>
+                    <span>{item.statusLabel}</span>
+                    <h2>{item.title}</h2>
+                    <p>{item.description}</p>
+                  </div>
+                  <aside>
+                    <strong>{item.attempts}</strong>
+                    <small>intentos</small>
+                    {item.canRetry ? <em>Reintento disponible</em> : <em>Sin acción requerida</em>}
+                  </aside>
+                </article>
+              ))
+            )}
+          </div>
         </section>
 
         <details className={styles.supportDetails}>
-          <summary>Detalles de soporte</summary>
+          <summary>Cuenta y equipos</summary>
+          <section className={styles.accountGrid} aria-label="Cuenta, licencia y equipos vinculados">
+            <article>
+              <span>Cliente</span>
+              <strong>{PRISMA_ORIGINAL_CUSTOMER.displayName}</strong>
+              <small>Cuenta local de venta</small>
+            </article>
+            <article>
+              <span>Licencia</span>
+              <strong>{licenseStateLabel(licenseStatus?.state)}</strong>
+              <small>{licenseStatus?.plan ?? PRISMA_ORIGINAL_CUSTOMER.planLabel}</small>
+            </article>
+            <article>
+              <span>Tablet</span>
+              <strong>{assignmentLabel(licenseStatus?.assignmentState)}</strong>
+              <small>{PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName}</small>
+            </article>
+            <article>
+              <span>PC</span>
+              <strong>{pcConnectionLabel(pcHealth)}</strong>
+              <small>Venta local disponible aunque PC no responda</small>
+            </article>
+          </section>
+        </details>
+
+        <details className={styles.supportDetails}>
+          <summary>Actualizar catálogo</summary>
+          <CatalogPullPanel />
+        </details>
+
+        <details className={styles.supportDetails}>
+          <summary>Detalle adicional</summary>
           <section className={styles.diagnostics}>
             <span>Cliente: {PRISMA_ORIGINAL_CUSTOMER.displayName}</span>
             <span>Ultima revision: {lastCheckedLabel}</span>

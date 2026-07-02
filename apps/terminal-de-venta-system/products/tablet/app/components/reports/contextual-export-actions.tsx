@@ -39,12 +39,12 @@ export function ContextualExportActions({ surface }: ContextualExportActionsProp
   }
 
   return (
-    <section className={styles.card} aria-labelledby={`contextual-export-${surface}`}>
-      <div>
-        <span>Exportar datos</span>
-        <h2 id={`contextual-export-${surface}`}>Descarga lo que estas revisando</h2>
-        <p>{surfaceCopy(surface)}</p>
-      </div>
+    <details className={styles.card} aria-labelledby={`contextual-export-${surface}`}>
+      <summary className={styles.summary}>
+        <span>Exportar</span>
+        <strong id={`contextual-export-${surface}`}>Descargar reporte</strong>
+        <small>{surfaceCopy(surface)}</small>
+      </summary>
 
       <div className={styles.actions}>
         {actions.map((action) => (
@@ -70,6 +70,6 @@ export function ContextualExportActions({ surface }: ContextualExportActionsProp
           ))}
         </ul>
       ) : null}
-    </section>
+    </details>
   );
 }

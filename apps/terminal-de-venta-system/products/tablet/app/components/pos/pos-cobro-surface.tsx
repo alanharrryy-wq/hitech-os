@@ -215,6 +215,7 @@ export function PosCobroSurface({
       aria-modal="true"
       aria-labelledby="pos-cobro-title"
       aria-describedby="pos-cobro-description"
+      overlayClassName={styles.cobroOverlay}
       onOverlayMouseDown={(event: any) => {
         if (event.target === event.currentTarget) event.preventDefault();
       }}

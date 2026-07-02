@@ -331,9 +331,10 @@ export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfi
         retryable: response.status >= 500 || response.status === 429,
         diagnostics: data.diagnostics ?? body.diagnostics ?? { httpStatus: response.status }
       })));
+      const cleanDispatch = response.status === 200;
       return {
-        ok: response.ok,
-        reason: response.ok ? "dispatched" : "remote_results_applied_from_non_ok_response",
+        ok: cleanDispatch,
+        reason: cleanDispatch ? "dispatched" : response.ok ? "partial" : "remote_results_applied_from_non_ok_response",
         dispatched: events.length,
         batchId: data.batchId ?? null,
         httpStatus: response.status

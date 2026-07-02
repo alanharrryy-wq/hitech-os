@@ -111,7 +111,7 @@ export function OfflineExportAuditScreen() {
   const headline = useMemo(() => {
     if (!audit) return "Revisando datos locales";
     if (audit.outbox.failed > 0) return `${audit.outbox.failed} pendiente(s) por revisar`;
-    if (audit.outbox.pending > 0) return `${audit.outbox.pending} pendientes por sincronizar`;
+    if (audit.outbox.pending > 0) return `${audit.outbox.pending} pendientes por enviar`;
     return "Operación local sana";
   }, [audit]);
 
@@ -121,15 +121,15 @@ export function OfflineExportAuditScreen() {
     <PrismaTabletShellUnified
       currentPath="/offline"
       title="Sin conexión y respaldo"
-      subtitle="No pierdes ventas: la Tablet guarda los movimientos localmente y los envía cuando vuelve la conexión."
+      subtitle="No pierdes ventas: la Tablet guarda los movimientos y los envia cuando vuelve la conexión."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
     >
       <main className={styles.page}>
         <section className={styles.hero}>
           <div>
             <span>Tablet vende sola</span>
-            <h1>No. Tus movimientos están guardados en esta Tablet.</h1>
-            <p>Ventas, pendientes por enviar, movimientos de existencias, productos bajos y respaldos salen desde la base local.</p>
+            <h1>Tus movimientos están guardados en esta Tablet.</h1>
+            <p>Ventas, pendientes por enviar, movimientos de existencias, productos bajos y respaldos quedan disponibles aun sin conexión.</p>
           </div>
           <button type="button" onClick={() => void load()} disabled={state === "loading"}>
             {state === "loading" ? "Actualizando…" : "Actualizar"}
@@ -145,12 +145,12 @@ export function OfflineExportAuditScreen() {
           <article><span>Existencias bajas</span><strong>{audit?.inventory.lowStockCount ?? 0}</strong><small>productos</small></article>
         </section>
 
-        <section className={styles.exportCard}>
-          <div>
-            <span>Exportar evidencia</span>
-            <h2>Descarga ventas, pendientes y movimientos</h2>
-            <p>Útil para respaldo, revisión externa o sincronización manual cuando PC todavía no está conectada.</p>
-          </div>
+        <details className={styles.exportCard}>
+          <summary className={styles.exportSummary}>
+            <span>Respaldo</span>
+            <strong>Descargar archivos</strong>
+            <small>Ventas, pendientes y movimientos cuando necesites respaldo manual.</small>
+          </summary>
           <div className={styles.actions}>
             {audit ? (
               Object.entries({
@@ -165,7 +165,7 @@ export function OfflineExportAuditScreen() {
               <span className={styles.muted}>Cargando enlaces…</span>
             )}
           </div>
-        </section>
+        </details>
 
         <section className={styles.columns}>
           <article className={styles.panel}>
@@ -189,10 +189,14 @@ export function OfflineExportAuditScreen() {
           </article>
         </section>
 
-        <section className={styles.panel}>
-          <h2>Diagnóstico</h2>
+        <details className={styles.panel}>
+          <summary className={styles.exportSummary}>
+            <span>Soporte</span>
+            <strong>Detalle de respaldo</strong>
+            <small>Información adicional para revisión administrativa.</small>
+          </summary>
           <div className={styles.diagnostics}>{audit?.diagnostics.map((item) => <span key={item}>{item}</span>) ?? <span>Cargando diagnóstico local...</span>}</div>
-        </section>
+        </details>
       </main>
     </PrismaTabletShellUnified>
   );

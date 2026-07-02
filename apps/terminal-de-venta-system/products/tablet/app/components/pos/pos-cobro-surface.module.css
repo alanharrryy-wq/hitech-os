@@ -381,6 +381,22 @@
 /* PRISMA_SOFTGLASS_CANONICAL_2606_END */
 
 /* PRISMA_TABLET_COBRO_PREMIUM_LIGHT_0207_START */
+.cobroOverlay {
+  background:
+    radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.74), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(183, 219, 255, 0.34), transparent 34%),
+    linear-gradient(135deg, rgba(236, 244, 255, 0.88), rgba(216, 230, 248, 0.80) 52%, rgba(196, 216, 240, 0.84)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(128, 154, 190, 0.24));
+  backdrop-filter: blur(13px) saturate(1.10);
+  -webkit-backdrop-filter: blur(13px) saturate(1.10);
+}
+
+.cobroOverlay [data-prisma-layer="modal"] {
+  box-shadow:
+    0 34px 92px rgba(39, 67, 111, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
 .cobroPanel {
   --cobro-ink: #172033;
   --cobro-muted: rgba(69, 83, 107, 0.76);
@@ -400,10 +416,11 @@
   border: 1px solid rgba(255, 255, 255, 0.64);
   color: var(--cobro-ink);
   background:
-    linear-gradient(135deg, rgba(249, 252, 255, 0.90), rgba(231, 241, 252, 0.74) 54%, rgba(224, 236, 250, 0.80)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(238, 246, 255, 0.66));
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.82), transparent 34%),
+    linear-gradient(135deg, rgba(249, 252, 255, 0.86), rgba(232, 242, 254, 0.70) 54%, rgba(226, 238, 252, 0.76)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 247, 255, 0.58));
   box-shadow:
-    0 42px 118px rgba(3, 12, 31, 0.38),
+    0 32px 88px rgba(39, 67, 111, 0.24),
     inset 0 1px 0 rgba(255,255,255,0.92),
     inset 0 -1px 0 rgba(129, 166, 210, 0.16);
   backdrop-filter: blur(24px) saturate(1.14);
