@@ -104,7 +104,7 @@ export function PosPaymentPanel({
   const busy = isCheckoutBusy(state);
   const view = buildPaymentReviewViewModel({ lines, paymentTenders });
   const visibleError = error ? friendlyPosError(error) : view.blockReason;
-  const [focusedTender, setFocusedTender] = useState<PaymentMethod | null>(null);
+  const focusedTenderRef = useRef<PaymentMethod | null>(null);
   const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
   const dialogRef = useRef<HTMLElement | null>(null);
   const [amountDrafts, setAmountDrafts] = useState<Record<PaymentMethod, string>>({
@@ -120,6 +120,14 @@ export function PosPaymentPanel({
     onPaymentTenderChange(method, patch);
   }
 
+  function focusTender(method: PaymentMethod) {
+    focusedTenderRef.current = method;
+  }
+
+  function clearFocusedTender() {
+    focusedTenderRef.current = null;
+  }
+
   function updateTenderAmount(method: PaymentMethod, amountCents: number) {
     updateTender(method, { amountCents });
     setAmountDrafts((current) => ({ ...current, [method]: decimalTenderValue(amountCents) }));
@@ -128,7 +136,7 @@ export function PosPaymentPanel({
   function addRemainingTo(method: PaymentMethod) {
     const current = paymentTenders.find((tender) => tender.method === method)?.amountCents ?? 0;
     updateTenderAmount(method, current + view.remainingCents);
-    setFocusedTender(method);
+    focusTender(method);
   }
 
   function clearTenderAmounts() {
@@ -153,7 +161,7 @@ export function PosPaymentPanel({
       let changed = false;
       const next = { ...current };
       for (const tender of paymentTenders) {
-        if (focusedTender === tender.method) continue;
+        if (focusedTenderRef.current === tender.method) continue;
         const formatted = decimalTenderValue(tender.amountCents);
         if (manualMoneyDraftToCents(next[tender.method] ?? "") !== tender.amountCents || !next[tender.method]) {
           next[tender.method] = formatted;
@@ -162,7 +170,7 @@ export function PosPaymentPanel({
       }
       return changed ? next : current;
     });
-  }, [paymentTenders, focusedTender]);
+  }, [paymentTenders]);
 
   useEffect(() => {
     if (!open || typeof document === "undefined") return;
@@ -355,11 +363,11 @@ export function PosPaymentPanel({
                           value={amountDrafts[tender.method] ?? "0.00"}
                           disabled={busy}
                           onFocus={(event) => {
-                            setFocusedTender(tender.method);
+                            focusTender(tender.method);
                             event.currentTarget.select();
                           }}
                           onBlur={(event) => {
-                            setFocusedTender(null);
+                            clearFocusedTender();
                             const amountCents = manualMoneyDraftToCents(event.currentTarget.value);
                             updateTender(tender.method, { amountCents });
                             setAmountDrafts((current) => ({
@@ -368,6 +376,7 @@ export function PosPaymentPanel({
                             }));
                           }}
                           onChange={(event) => {
+                            focusedTenderRef.current = tender.method;
                             const draft = sanitizeMoneyDraft(event.target.value);
                             setAmountDrafts((current) => ({ ...current, [tender.method]: draft }));
                             updateTender(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
@@ -452,7 +461,7 @@ export function PosPaymentPanel({
                 <p id="pos-insufficient-copy">El pago todavía no cubre el total. Agrega otro método de pago, ajusta el importe o completa el saldo pendiente.</p>
                 <div className={styles.paymentPremiumInsufficientActions}>
                   <button type="button" onClick={() => addRemainingTo("card")}>Agregar otro método</button>
-                  <button type="button" onClick={() => { setShowInsufficientDialog(false); setFocusedTender("cash"); }}>Ajustar importe</button>
+                  <button type="button" onClick={() => { setShowInsufficientDialog(false); focusTender("cash"); }}>Ajustar importe</button>
                   <button type="button" onClick={() => addRemainingTo("transfer")}>Cambiar método</button>
                   <button type="button" onClick={onClose}>Volver al ticket</button>
                   <button type="button" onClick={clearTenderAmounts}>Cancelar cobro</button>

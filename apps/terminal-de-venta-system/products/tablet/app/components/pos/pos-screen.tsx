@@ -311,7 +311,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     }
   }
 
-  async function confirmSale() {
+  async function confirmSale(paymentTendersOverride: PaymentTenderInput[] = paymentTenders) {
     if (checkoutBusy) return;
     if (!gate.canCheckout) {
       setCheckoutError(gate.detail);
@@ -323,7 +323,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     setCheckoutState("submitting");
     setCheckoutError(null);
     try {
-      const receipt = await completeCartSale({ lines: cart, paymentTenders, clientRequestId: requestId });
+      const receipt = await completeCartSale({ lines: cart, paymentTenders: paymentTendersOverride, clientRequestId: requestId });
       setLastReceipt(receipt);
       setCart([]);
       clearCartStorage();
@@ -557,7 +557,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         clientRequestId={clientRequestId}
         onPaymentTenderChange={updatePaymentTender}
         onClose={() => setPaymentOpen(false)}
-        onConfirm={() => void confirmSale()}
+        onConfirm={(draftPaymentTenders) => void confirmSale(draftPaymentTenders)}
       />
 
       <PosSaleSuccess sale={lastReceipt} onNewSale={clearTicket} />

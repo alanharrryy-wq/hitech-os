@@ -24,7 +24,7 @@ type CobroSurfaceProps = {
   clientRequestId: string;
   onPaymentTenderChange: (method: PaymentMethod, patch: Partial<Pick<PaymentTenderInput, "amountCents" | "reference">>) => void;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (paymentTenders: PaymentTenderInput[]) => void;
 };
 
 function decimalTenderValue(cents: number) {
@@ -53,9 +53,8 @@ export function PosCobroSurface({
   onConfirm
 }: CobroSurfaceProps) {
   const busy = isCheckoutBusy(state);
-  const view = buildPaymentReviewViewModel({ lines, paymentTenders });
-  const visibleError = error ? friendlyPosError(error) : view.blockReason;
-  const [focusedTender, setFocusedTender] = useState<PaymentMethod | null>(null);
+  const visibleError = error ? friendlyPosError(error) : null;
+  const focusedTenderRef = useRef<PaymentMethod | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
   const panelRef = useRef<HTMLElement | null>(null);
@@ -65,11 +64,26 @@ export function PosCobroSurface({
     card: decimalTenderValue(paymentTenders.find((tender) => tender.method === "card")?.amountCents ?? 0),
     transfer: decimalTenderValue(paymentTenders.find((tender) => tender.method === "transfer")?.amountCents ?? 0)
   });
+  const draftPaymentTenders = useMemo<PaymentTenderInput[]>(
+    () =>
+      paymentTenders.map((tender) => ({
+        ...tender,
+        amountCents: manualMoneyDraftToCents(amountDrafts[tender.method] ?? decimalTenderValue(tender.amountCents))
+      })),
+    [paymentTenders, amountDrafts]
+  );
+  const view = buildPaymentReviewViewModel({ lines, paymentTenders: draftPaymentTenders });
 
   const canExplainIncompletePayment = view.paidCents > 0 && view.paidCents < view.totalCents;
   const confirmDisabled = busy || (!view.canConfirm && !canExplainIncompletePayment);
   const suggestedCash = useMemo(() => suggestedCashTenderCents(Math.max(view.remainingCents, view.totalCents)).slice(0, 5), [view.remainingCents, view.totalCents]);
   const paymentTone = view.canConfirm ? "success" : canExplainIncompletePayment ? "warning" : "neutral";
+  const checkoutMood = busy ? "loading" : view.canConfirm ? "ready" : canExplainIncompletePayment ? "short" : "idle";
+  const statusCopy = view.canConfirm
+    ? "Listo para cobrar"
+    : canExplainIncompletePayment
+      ? `Faltan ${formatMoney(view.remainingCents)}`
+      : "Captura el pago";
 
   useEffect(() => setMounted(true), []);
 
@@ -82,7 +96,7 @@ export function PosCobroSurface({
       let changed = false;
       const next = { ...current };
       for (const tender of paymentTenders) {
-        if (focusedTender === tender.method) continue;
+        if (focusedTenderRef.current === tender.method) continue;
         const formatted = decimalTenderValue(tender.amountCents);
         if (manualMoneyDraftToCents(next[tender.method] ?? "") !== tender.amountCents || !next[tender.method]) {
           next[tender.method] = formatted;
@@ -91,7 +105,7 @@ export function PosCobroSurface({
       }
       return changed ? next : current;
     });
-  }, [paymentTenders, focusedTender]);
+  }, [paymentTenders]);
 
   useEffect(() => {
     if (!open || !mounted || typeof document === "undefined") return;
@@ -166,20 +180,28 @@ export function PosCobroSurface({
     onPaymentTenderChange(method, patch);
   }
 
+  function focusTender(method: PaymentMethod) {
+    focusedTenderRef.current = method;
+  }
+
+  function clearFocusedTender() {
+    focusedTenderRef.current = null;
+  }
+
   function updateTenderAmount(method: PaymentMethod, amountCents: number) {
     updateTender(method, { amountCents });
     setAmountDrafts((current) => ({ ...current, [method]: decimalTenderValue(amountCents) }));
   }
 
   function addRemainingTo(method: PaymentMethod) {
-    const current = paymentTenders.find((tender) => tender.method === method)?.amountCents ?? 0;
+    const current = draftPaymentTenders.find((tender) => tender.method === method)?.amountCents ?? 0;
     updateTenderAmount(method, current + view.remainingCents);
-    setFocusedTender(method);
+    focusTender(method);
   }
 
   function handleConfirmClick() {
     if (view.canConfirm) {
-      onConfirm();
+      onConfirm(draftPaymentTenders);
       return;
     }
     if (canExplainIncompletePayment) setShowInsufficientDialog(true);
@@ -196,18 +218,18 @@ export function PosCobroSurface({
       onOverlayMouseDown={(event: any) => {
         if (event.target === event.currentTarget) event.preventDefault();
       }}
+      className={styles.cobroPanel}
+      data-prisma-cobro-state={checkoutMood}
     >
       <header className={styles.topbar}>
         <div className={styles.titleGroup}>
-          <PrismaStatusChip tone={paymentTone} icon={view.canConfirm ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}>Cobro PRISMA</PrismaStatusChip>
-          <h2 id="pos-cobro-title" className={styles.title}>Cobro PRISMA</h2>
-          <p id="pos-cobro-description" className={styles.description}>
-            Total a cobrar, saldo restante y métodos de pago disponibles. El cobro vive encima del POS y bloquea productos, ticket y navegación inferior mientras está abierto.
-          </p>
+          <PrismaStatusChip tone={paymentTone} icon={view.canConfirm ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}>{statusCopy}</PrismaStatusChip>
+          <h2 id="pos-cobro-title" className={styles.title}>Cobro</h2>
+          <p id="pos-cobro-description" className={styles.description}>Recibe, revisa cambio y genera el ticket.</p>
         </div>
-        <button ref={closeRef} className={styles.closeButton} type="button" onClick={onClose} disabled={busy}>
+        <button ref={closeRef} className={styles.closeButton} type="button" aria-label="Cancelar cobro" onClick={onClose} disabled={busy}>
           <X aria-hidden="true" size={18} />
-          Cancelar cobro
+          Cancelar
         </button>
       </header>
 
@@ -215,29 +237,28 @@ export function PosCobroSurface({
         <div className={styles.methodsColumn} aria-label="Métodos de pago disponibles">
           <div className={styles.summaryGrid}>
             <PrismaSoftCard className={styles.amountCard} tone="amount" data-prisma-effect="softglass-surface ticket-total-pulse">
-              <span className={styles.amountLabel}>Total a cobrar</span>
+              <span className={styles.amountLabel}>Total</span>
               <strong className={styles.amountValue}>{formatMoney(view.totalCents)}</strong>
-              <span className={styles.amountMeta}>{lines.length} productos en ticket</span>
+              <span className={styles.amountMeta}>{lines.length} producto{lines.length === 1 ? "" : "s"}</span>
             </PrismaSoftCard>
             <PrismaSoftCard className={styles.amountCard} tone={view.remainingCents > 0 ? "warning" : "amount"}>
-              <span className={styles.amountLabel}>Saldo restante</span>
-              <strong className={styles.amountValue}>{formatMoney(view.remainingCents)}</strong>
-              <span className={styles.amountMeta}>Pago mixto compatible</span>
+              <span className={styles.amountLabel}>{view.remainingCents > 0 ? "Falta" : "Recibido"}</span>
+              <strong className={styles.amountValue}>{formatMoney(view.remainingCents > 0 ? view.remainingCents : view.paidCents)}</strong>
+              <span className={styles.amountMeta}>{view.remainingCents > 0 ? "Completa el saldo" : "Pago cubierto"}</span>
             </PrismaSoftCard>
             <PrismaSoftCard className={styles.amountCard}>
               <span className={styles.amountLabel}>Cambio</span>
               <strong className={styles.amountValue}>{formatMoney(view.changeCents)}</strong>
-              <span className={styles.amountMeta}>Sólo si aplica</span>
+              <span className={styles.amountMeta}>Entrega al cliente</span>
             </PrismaSoftCard>
           </div>
 
           <div className={styles.methodsHeader}>
-            <span className={styles.amountLabel}>Métodos de pago</span>
-            <PrismaStatusChip tone={paymentTone}>{view.canConfirm ? "Listo para cobrar" : "Pago por completar"}</PrismaStatusChip>
+            <span className={styles.amountLabel}>Pago recibido</span>
           </div>
 
           <div className={styles.methodsList}>
-            {paymentTenders.map((tender) => {
+            {draftPaymentTenders.map((tender) => {
               const definition = paymentMethodDefinition(tender.method);
               const active = tender.amountCents > 0;
               return (
@@ -254,10 +275,10 @@ export function PosCobroSurface({
                     <span className={styles.methodIcon}><PaymentIcon method={tender.method} /></span>
                     <div className={styles.methodCopy}>
                       <strong>{definition.label}</strong>
-                      <small>{definition.visibleConfirmation}</small>
+                      <small>{tender.method === "cash" ? "Efectivo recibido" : "Importe confirmado"}</small>
                     </div>
                   </div>
-                  <PrismaGlassControl label="Importe" icon="$">
+                  <PrismaGlassControl className={styles.moneyControl} label="Importe" icon="$">
                     <input
                       type="text"
                       inputMode="decimal"
@@ -269,23 +290,23 @@ export function PosCobroSurface({
                       value={amountDrafts[tender.method] ?? "0.00"}
                       disabled={busy}
                       onFocus={(event) => {
-                        setFocusedTender(tender.method);
+                        focusTender(tender.method);
                         event.currentTarget.select();
                       }}
                       onBlur={(event) => {
-                        setFocusedTender(null);
+                        clearFocusedTender();
                         const amountCents = manualMoneyDraftToCents(event.currentTarget.value);
                         updateTenderAmount(tender.method, amountCents);
                       }}
                       onChange={(event) => {
+                        focusedTenderRef.current = tender.method;
                         const draft = sanitizeMoneyDraft(event.target.value);
                         setAmountDrafts((current) => ({ ...current, [tender.method]: draft }));
-                        updateTender(tender.method, { amountCents: manualMoneyDraftToCents(draft) });
                       }}
                     />
                   </PrismaGlassControl>
                   {tender.method !== "cash" ? (
-                    <PrismaGlassControl label="Referencia opcional" hint="Autorización o folio">
+                    <PrismaGlassControl className={styles.moneyControl} label="Referencia opcional" hint="Autorización o folio">
                       <input
                         placeholder="Autorización o folio"
                         aria-label={`Referencia opcional ${definition.label}`}
@@ -311,11 +332,9 @@ export function PosCobroSurface({
 
         <aside className={styles.reviewColumn} aria-live="polite">
           <PrismaSoftCard className={styles.reviewCard} data-prisma-effect="softglass-surface ticket-total-pulse">
-            <PrismaStatusChip tone={paymentTone}>Resumen de cobro</PrismaStatusChip>
             <div className={styles.reviewBody}>
               <strong>{view.tenderLabel}</strong>
-              <span>{view.tenderDetail}</span>
-              {clientRequestId ? <small>Referencia de venta: {clientRequestId.slice(0, 8)}</small> : null}
+              <span>{view.canConfirm ? "Todo cubierto. Genera el ticket cuando confirmes el cobro." : canExplainIncompletePayment ? "El importe no cubre el total." : "Captura efectivo, tarjeta o transferencia."}</span>
             </div>
             {view.remainingCents > 0 ? (
               <button className={styles.quickButton} type="button" disabled={busy} onClick={() => addRemainingTo("cash")}>
@@ -324,8 +343,8 @@ export function PosCobroSurface({
             ) : null}
             {canExplainIncompletePayment || showInsufficientDialog ? (
               <div className={styles.warningCard} role={showInsufficientDialog ? "alert" : "status"}>
-                <strong>Pago incompleto</strong>
-                <span>El pago todavía no cubre el total. Agrega otro método de pago, ajusta el importe o completa el saldo pendiente.</span>
+                <strong>Importe insuficiente</strong>
+                <span>Faltan {formatMoney(view.remainingCents)} para cerrar.</span>
               </div>
             ) : null}
             {visibleError ? (
@@ -351,6 +370,7 @@ export function PosCobroSurface({
           amount={view.remainingCents > 0 ? `Falta ${formatMoney(view.remainingCents)}` : formatMoney(view.totalCents)}
           status={busy ? "loading" : view.canConfirm ? "success" : confirmDisabled ? "disabled" : "ready"}
           variant={view.canConfirm ? "success" : "primary"}
+          data-payment-state={checkoutMood}
           data-prisma-checkout-finalize="visual-surface-v2"
           data-prisma-qa={view.canConfirm ? "tablet-qa-cobro-confirm" : "tablet-qa-cobro-incomplete"}
         >
