@@ -72,7 +72,7 @@ export const PC_PRODUCT_ROUTES: PcProductRoute[] = [
   { route: '/contratos-reporte', label: 'Contratos de reporte', module: 'Reportes y BI', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/contratos-reporte', finalMenu: false, order: 76 },
 
   { route: '/settings', label: 'Configuración', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'final', canonicalRoute: '/settings', finalMenu: true, order: 80 },
-  { route: '/settings/license', label: 'Licencia', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/settings/license', finalMenu: false, order: 81 },
+  { route: '/settings/license', label: 'Licencia', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'final', canonicalRoute: '/settings/license', finalMenu: true, order: 81 },
   { route: '/data-quality', label: 'Calidad de datos', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/data-quality', finalMenu: false, order: 82 },
   { route: '/audit', label: 'Auditoría', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/audit', finalMenu: false, order: 83 },
   { route: '/detalle-registros', label: 'Detalle de registros', module: 'Sistema y calidad', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/detalle-registros', finalMenu: false, order: 84 },

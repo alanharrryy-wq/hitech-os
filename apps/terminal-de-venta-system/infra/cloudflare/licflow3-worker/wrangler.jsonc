@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "prisma-licflow3-cloud-licensing",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-02",
+  "workers_dev": false,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "PRISMA_LICFLOW3_D1",
+      "database_name": "prisma-licflow3-licensing",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "vars": {
+    "PRISMA_LICFLOW3_MODE": "scaffold"
+  }
+}

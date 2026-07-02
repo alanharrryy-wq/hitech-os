@@ -47,6 +47,7 @@ const PC_PRODUCT_NAV_PRESENTATION: Record<string, { description: string; group: 
   "/exportables": { description: "Descargas, contratos y evidencia", group: "reportes", icon: "RE" },
   "/prisma-insights": { description: "Lecturas ejecutivas y señales de negocio", group: "analisis", icon: "AN" },
   "/settings": { description: "Reglas, permisos y terminales", group: "configuracion", icon: "AJ" },
+  "/settings/license": { description: "Licencia, activación y modos offline/online/híbrido", group: "configuracion", icon: "LI" },
   "/glosario": { description: "Ayuda y lenguaje operativo", group: "ayuda", icon: "AY" }
 };
 
