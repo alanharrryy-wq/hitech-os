@@ -56,6 +56,8 @@ export function PosProductSearch({
 
   const [searchFocused, setSearchFocused] = useState(false);
   const searchExpanded = searchFocused || Boolean(query.trim()) || loading || Boolean(error);
+  const searchInputId = "tablet-pos-product-search";
+  const searchResultsId = "tablet-pos-product-results";
 
   return (
     <motion.form
@@ -82,16 +84,20 @@ export function PosProductSearch({
       data-prisma-qa="tablet-qa-search"
       data-prisma-search-expanded={searchExpanded ? "true" : "false"}
       data-prisma-search-density="05C"
+      aria-expanded={searchExpanded}
+      aria-controls={searchResultsId}
     >
-      <label className={styles.posPremiumSearchLabel}>
+      <label className={styles.posPremiumSearchLabel} htmlFor={searchInputId}>
         <span><Sparkles aria-hidden="true" size={15} /> Buscar o escanear</span>
         <div className={styles.posPremiumSearchInputWrap} data-prisma-qa="tablet-qa-focus">
           {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={22} /> : <Search aria-hidden="true" size={22} />}
           <input
+            id={searchInputId}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar producto o escanear código"
             type="search"
+            aria-controls={searchResultsId}
           />
         </div>
       </label>

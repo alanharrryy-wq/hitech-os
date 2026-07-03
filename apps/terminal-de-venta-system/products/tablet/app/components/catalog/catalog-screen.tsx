@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { catalogVisibleError } from "@/lib/catalog/product-visible-errors";
 import type { CatalogProduct, CatalogProductFormState } from "@/lib/catalog/product-form-state";
 import { catalogRequest, emptyProductForm, formToPayload, productToForm } from "@/lib/catalog/product-form-state";
@@ -26,6 +27,19 @@ export function CatalogScreen() {
   function beginEditProduct(product: CatalogProduct) {
     setForm(productToForm(product));
     setNotice(`Editando ${product.name}. Revisa el panel derecho y guarda cambios.`);
+    setError(null);
+
+    window.requestAnimationFrame(() => {
+      drawerDockRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+      const firstInput = drawerDockRef.current?.querySelector<HTMLInputElement>("[data-catalog-field='name']");
+      firstInput?.focus({ preventScroll: true });
+      firstInput?.select();
+    });
+  }
+
+  function beginNewProduct() {
+    setForm({ ...emptyProductForm });
+    setNotice("Listo para registrar producto nuevo. Completa nombre, precio, SKU y existencia.");
     setError(null);
 
     window.requestAnimationFrame(() => {
@@ -85,6 +99,11 @@ export function CatalogScreen() {
 
   useEffect(() => {
     const sku = searchParams.get("sku")?.trim() || searchParams.get("code")?.trim() || "";
+    const wantsNewProduct = searchParams.get("new") === "1";
+    if (wantsNewProduct && !sku) {
+      beginNewProduct();
+      return;
+    }
     if (!sku) return;
     setForm((current) => {
       if (current.id || current.sku || current.barcode) return current;
@@ -101,6 +120,24 @@ export function CatalogScreen() {
       subtitle="Consulta, crea y edita productos básicos para vender en Tablet sin pedirle permiso a PC."
       status={<TabletShellStatusPill tone={error ? "danger" : "ok"}>{error ? "Revisar catálogo" : `${activeCount} activos`}</TabletShellStatusPill>}
     >
+      <QuickActionStrip label="Acciones rapidas de catalogo">
+        <QuickActionTile
+          title="Nuevo producto"
+          description="Abre el formulario real de catálogo para registrar un producto vendible."
+          actionLabel="Crear"
+          icon="plus"
+          tone="inventory"
+          onClick={beginNewProduct}
+          owner="catalog"
+          kind="quick-create"
+          controls="catalog-product-form"
+        />
+        <QuickActionTile title="Stock bajo" description="Revisa productos con pocas piezas antes de vender." actionLabel="Ver" icon="package" tone="warning" href="/inventory/low-stock" owner="stock" />
+        <QuickActionTile title="Exportar catalogo" description="Usa la pantalla de exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
+        <QuickActionTile title="Ajustar stock" description="Propietario de ajuste directo no confirmado en esta superficie." icon="settings" tone="neutral" deferredReason="Pendiente: requiere dueño de ajuste de existencias." owner="stock" kind="deferred-create" />
+        <QuickActionTile title="Nueva categoria" description="Propietario de categorías no confirmado en Tablet." icon="tag" tone="neutral" deferredReason="Pendiente: no hay API local confirmada de categorías." owner="catalog" kind="deferred-create" />
+      </QuickActionStrip>
+
       <div className={styles.catalogLayout}>
         <section className={styles.catalogMain} aria-label="Catálogo de productos">
           <div className={styles.toolbar}>
@@ -124,7 +161,7 @@ export function CatalogScreen() {
           <CatalogProductTable products={products} selectedId={form.id} onEdit={beginEditProduct} />
         </section>
 
-        <div ref={drawerDockRef} className={styles.drawerDock} data-editing={form.id ? "true" : "false"}>
+        <div ref={drawerDockRef} id="catalog-product-form" className={styles.drawerDock} data-editing={form.id ? "true" : "false"}>
           <CatalogProductDrawer
             form={form}
             saving={saving}

@@ -231,6 +231,7 @@ export function PosProductList({
   return (
     <>
       <section
+        id="tablet-pos-product-results"
         className={styles.posPremiumProductGrid}
         aria-label="Productos encontrados"
         data-prisma-component="ProductGrid"

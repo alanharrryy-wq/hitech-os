@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
@@ -145,6 +146,14 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
           </div>
         </section>
 
+        <QuickActionStrip label="Acciones rapidas de turno">
+          <QuickActionTile title="Abrir turno" description="Lleva al formulario real para iniciar caja." actionLabel="Abrir" icon="terminal" tone="primary" href="#abrir-turno" owner="shift" />
+          <QuickActionTile title="Cerrar turno" description="Lleva al conteo físico y cierre de caja." actionLabel="Cerrar" icon="wallet" tone="warning" href="#cerrar-turno" owner="shift" />
+          <QuickActionTile title="Ir a vender" description={gate.canShowSellNavigation ? "Regresa al POS con el turno actual." : gate.detail} actionLabel={gate.canShowSellNavigation ? "Vender" : gate.actionLabel} icon="cart" tone={gate.canShowSellNavigation ? "success" : "warning"} href={gate.actionHref} owner="pos" />
+          <QuickActionTile title="Actualizar caja" description="Relee el turno actual sin cambiar datos." actionLabel="Actualizar" icon="bell" tone="sync" onClick={() => void loadCurrentShift()} disabled={state === "loading"} owner="shift" />
+          <QuickActionTile title="Exportar corte" description="El endpoint de corte directo no está confirmado." icon="save" tone="neutral" deferredReason="Pendiente: exportación de turno requiere dueño confirmado." owner="shift" kind="deferred-create" />
+        </QuickActionStrip>
+
         {error ? <div className={styles.errorBanner} role="alert">{error}</div> : null}
 
         <section className={styles.kpiGrid} aria-label="Resumen del turno" data-prisma-shift-layer="kpi-grid">
@@ -152,7 +161,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
         </section>
 
         <section className={styles.workspace} data-prisma-shift-layer="workspace">
-          <article className={styles.panel} data-current={canOpen ? "true" : "false"} data-prisma-shift-layer="panel-open">
+          <article id="abrir-turno" className={styles.panel} data-current={canOpen ? "true" : "false"} data-prisma-shift-layer="panel-open">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Abrir turno</span><strong>{canOpen ? "Caja lista para iniciar" : "Ya hay turno abierto"}</strong></header>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Cajero</span><input value={cashier} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashier(event.target.value)} disabled={!canOpen || state === "loading"} /></label>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Caja inicial</span><input inputMode="decimal" value={cashStart} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashStart(event.target.value)} disabled={!canOpen || state === "loading"} /></label>
@@ -160,7 +169,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
             {!canOpen ? <p className={styles.note}>Para iniciar otro turno, primero cierra el turno abierto.</p> : null}
           </article>
 
-          <article className={styles.panel} data-current={closePanelActive ? "true" : "false"} data-prisma-shift-layer="panel-close">
+          <article id="cerrar-turno" className={styles.panel} data-current={closePanelActive ? "true" : "false"} data-prisma-shift-layer="panel-close">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Cerrar turno</span><strong>{shift?.status === "OPEN" ? "Conteo requerido" : "Sin turno abierto"}</strong></header>
             <div className={styles.cashBreakdown} data-prisma-shift-layer="cash-breakdown">
               <div data-prisma-shift-layer="cash-tile"><span>Caja inicial</span><strong>{formatMoney(shift?.cashStartCents ?? 0)}</strong></div>

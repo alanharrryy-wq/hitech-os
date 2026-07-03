@@ -1,12 +1,15 @@
 (function () {
   "use strict";
 
+  // PRISMO_TQFIX4_CLIENT_FALLBACK: Theater Query errors never replace a useful Project Brain answer.
+
   const STORE_INTERFACE = "prisma-control-center-interface-v1";
   const STORE_HISTORY = "prismo-chat-history-v1";
   const MAX_HISTORY_ITEMS = 28;
   const FILE_PREVIEW_LIMIT = 180000;
   const ANSWER_OVERFLOW_GUARD = { chars: 24000, lines: 320 };
   const MAX_VISUAL_BLOCKS = 12;
+  const PRISMO_QUERY_FALLBACK_CONTRACT = "theater_query_never_blocks_project_brain_v1";
   const SUGGESTIONS = [
     "¿Qué evidencia reciente explica el estado de PRISMO?",
     "¿Qué protocolo debería rankear primero y por qué?",
@@ -558,6 +561,47 @@
     ).toLowerCase();
   }
 
+  function isProductionQuery(query) {
+    const text = String(query || "").toLowerCase();
+    return /producci[oó]n|produccion|production|prod|release|go live|salir|cerrar|terminar|qu[eé] falta|que falta|faltan|pendiente|listo|ready/.test(text);
+  }
+
+  function sumSurfaceRows(rows) {
+    return rows.reduce((acc, row) => {
+      acc.files += Number(row.files || 0);
+      acc.routes += Number(row.routes || 0);
+      acc.components += Number(row.components || 0);
+      acc.css += Number(row.css || 0);
+      acc.docs += Number(row.docs || 0);
+      return acc;
+    }, { files: 0, routes: 0, components: 0, css: 0, docs: 0 });
+  }
+
+  function productionWeightRows(rows) {
+    return rows.map((row) => {
+      const weight = Number(row.routes || 0) * 4 + Number(row.components || 0) * 3 + Number(row.css || 0) * 2 + Math.floor(Number(row.files || 0) / 100) + Math.floor(Number(row.docs || 0) / 80);
+      return { ...row, weight, prodRisk: weight >= 850 ? "high" : weight >= 300 || Number(row.css || 0) >= 40 ? "medium" : "low" };
+    }).sort((a, b) => Number(b.weight || 0) - Number(a.weight || 0));
+  }
+
+  function productionAnswerText(rows, requestPayload, error) {
+    const totals = sumSurfaceRows(rows);
+    const evidence = (STATE.appLiveContext && STATE.appLiveContext.evidence_library) || {};
+    const delta = (STATE.appLiveContext && STATE.appLiveContext.delta_scanner) || {};
+    const ranked = productionWeightRows(rows).slice(0, 4);
+    const rankedText = ranked.length ? ranked.map((row) => `${row.label}: peso ${row.weight} (${row.routes} rutas, ${row.components} comps, ${row.css} CSS)`).join("; ") : "sin superficies ponderables";
+    const parts = [
+      `Para acercar PRISMA a producción, el punto no es sólo contar ${totals.routes} rutas y ${totals.files} archivos; falta convertir ese inventario en readiness verificable por superficie.`,
+      "Faltantes principales: scorecard de producción por superficie; certificación runtime/QA de rutas críticas; evidencia fresca por scope; clasificación de bloqueadores vs deuda; cierre o registro de deuda visual/CSS; y un plan de release con gates claros.",
+      `Prioridad read-only por peso: ${rankedText}. No significa que estén rotas; significa que ahí conviene empezar porque concentran más rutas, componentes o CSS.`,
+      `Evidencia: ${Number(evidence.zip_count || 0)} ZIPs indexados; latest_result=${Boolean(evidence.latest_result)}; latest_fail=${Boolean(evidence.latest_fail)}. Sin evidencia fresca por superficie, la conclusión debe ser orientación, no green de producción.`,
+      delta.available ? `Delta disponible: ${Number(delta.changed_count_sampled || 0)} changed / ${Number(delta.added_count_sampled || 0)} added. Úsalo para detectar deriva reciente antes de declarar estabilidad.` : "Delta no está fresco o está en baseline; PRISMO puede describir estado actual, pero no afirmar estabilidad histórica fuerte.",
+      "Siguiente paso: pedir `readiness por superficie` empezando por la superficie de mayor peso. Para cada una: rutas críticas, evidencia reciente, riesgos, deuda visual y conclusión de producción. Todo sigue read-only."
+    ];
+    if (error) parts.push(`Nota técnica: el bridge live se degradó (${error.code || error.message || String(error)}), pero el análisis salió del Project Brain local ya cargado.`);
+    return parts.join("\n\n");
+  }
+
   function chartBlockFromRows(rows, payload) {
     const chartRows = rows.slice(0, 10).map((row) => ({
       surface: row.label,
@@ -748,6 +792,50 @@
     return { id: "client_visual_readonly_risk_matrix", type: "risk_matrix", title: "Riesgos read-only", description: "Riesgos de interpretación detectados sin tocar archivos.", priority: 6, layout: "half", visual_role: "secondary", status: "ready", data: { items } };
   }
 
+  function productionReadinessBlock(rows) {
+    const totals = sumSurfaceRows(rows);
+    const evidence = (STATE.appLiveContext && STATE.appLiveContext.evidence_library) || {};
+    const delta = (STATE.appLiveContext && STATE.appLiveContext.delta_scanner) || {};
+    const ranked = productionWeightRows(rows);
+    const top = ranked[0] || {};
+    return { id: "client_visual_production_readiness", type: "checklist", title: "Production readiness scorecard", description: "Qué falta para acercar PRISMA a producción, no sólo qué puede leer PRISMO.", priority: 1, layout: "full", visual_role: "primary", status: "ready", data: { items: [
+      { label: "Inventario read-only suficiente", done: Boolean(totals.files && totals.routes), status: `${totals.files} archivos · ${totals.routes} rutas` },
+      { label: "Evidencia fresca por scope", done: Boolean(evidence.latest_result), status: evidence.latest_result ? "hay result reciente" : "falta confirmar result por superficie" },
+      { label: "Runtime/QA de rutas críticas", done: false, status: "pendiente de evidencia certificada por superficie" },
+      { label: "Bloqueadores vs deuda separados", done: false, status: "necesita scorecard por surface" },
+      { label: "Deuda visual/CSS clasificada", done: false, status: `${totals.css} CSS; revisar capas críticas` },
+      { label: "Delta reciente revisado", done: Boolean(delta.available), status: delta.available ? `${delta.changed_count_sampled || 0} changed / ${delta.added_count_sampled || 0} added` : "baseline no concluyente" },
+      { label: "Superficie prioritaria calculada", done: Boolean(top.label), status: top.label ? `${top.label} · peso ${top.weight}` : "sin superficie top" },
+      { label: "Contrato read-only respetado", done: true, status: "PRISMO orienta; no modifica" }
+    ] } };
+  }
+
+  function productionSurfaceRiskBlock(rows) {
+    const ranked = productionWeightRows(rows).slice(0, 8);
+    const items = ranked.map((row) => ({
+      risk: `${row.label} readiness`,
+      title: `${row.label} readiness`,
+      level: row.prodRisk,
+      summary: `Peso ${row.weight}: ${row.routes} rutas, ${row.components} componentes, ${row.css} CSS.`,
+      mitigation: "Pedir scorecard específico: rutas críticas, evidencia fresca, runtime QA, deuda visual y bloqueadores."
+    }));
+    return { id: "client_visual_production_surface_risk", type: "risk_matrix", title: "Riesgo por superficie para producción", description: "Priorización read-only por peso real de rutas, componentes y CSS.", priority: 2, layout: "full", visual_role: "primary", status: "ready", data: { items } };
+  }
+
+  function productionNextStepsBlock(rows) {
+    const ranked = productionWeightRows(rows);
+    const top = ranked[0] || {};
+    const totals = sumSurfaceRows(rows);
+    return { id: "client_visual_production_next_steps", type: "checklist", title: "Siguiente paso hacia producción", description: "Cómo convertir contexto en avance real sin tocar el proyecto desde PRISMO.", priority: 3, layout: "half", visual_role: "secondary", status: "ready", data: { items: [
+      { label: "Readiness por superficie", done: false, status: top.label ? `empezar por ${top.label}` : "definir surface inicial" },
+      { label: "Rutas críticas vs evidencia", done: false, status: `${totals.routes} rutas indexadas` },
+      { label: "Separar bloqueadores, warnings y deuda", done: false, status: "evitar inventario gigante sin prioridad" },
+      { label: "Confirmar evidence fresh", done: false, status: "usar result/fail ZIPs recientes" },
+      { label: "Revisar delta reciente", done: Boolean(STATE.appLiveContext && STATE.appLiveContext.delta_scanner && STATE.appLiveContext.delta_scanner.available), status: "antes de declarar estabilidad" },
+      { label: "Mantener modo conocimiento", done: true, status: "read-only" }
+    ] } };
+  }
+
   function intelligenceRouterBlock(payload) {
     const query = queryTextFromPayload(payload);
     const signals = [
@@ -772,6 +860,19 @@
     const wantsBroad = !query || /todo|completo|diagn[oó]stico|desarroll|terminar|prisma|proyecto|inteligencia|util|útil/.test(query);
     const out = [];
     const add = (block) => { if (block && !out.some((item) => item.id === block.id)) out.push(block); };
+
+    if (isProductionQuery(query)) {
+      add(productionReadinessBlock(rows));
+      add(productionSurfaceRiskBlock(rows));
+      add(productionNextStepsBlock(rows));
+      add(evidenceFallbackBlock());
+      add(deltaFallbackBlock());
+      add(chartBlockFromRows(rows, payload));
+      add(matrixBlockFromRows(rows));
+      if (/ruta|route|endpoint|mapa/.test(query)) add(routeFallbackBlock(rows));
+      if (/css|layer|selector|z-index|capa|visual/.test(query)) add(layerFallbackBlock());
+      return out.slice(0, MAX_VISUAL_BLOCKS);
+    }
 
     add(chartBlockFromRows(rows, payload));
     add(matrixBlockFromRows(rows));
@@ -1169,8 +1270,10 @@
     }, { files: 0, routes: 0, components: 0, css: 0 });
     const blocks = buildClientVisualFallbacks(requestPayload);
     const reason = error && (error.code || error.message || String(error));
+    const query = queryTextFromPayload(requestPayload);
+    const prodQuery = isProductionQuery(query);
     const shortText = rows.length
-      ? `PRISMO usó Project Brain en modo local read-only. Detecté ${rows.length} superficies, ${summary.files} archivos, ${summary.routes} rutas, ${summary.components} componentes y ${summary.css} CSS. Con eso puedo comparar superficies, revisar rutas, capas, evidencia, delta y memoria sin modificar el proyecto.`
+      ? (prodQuery ? productionAnswerText(rows, requestPayload, error) : `PRISMO usó Project Brain en modo local read-only. Detecté ${rows.length} superficies, ${summary.files} archivos, ${summary.routes} rutas, ${summary.components} componentes y ${summary.css} CSS. Con eso puedo comparar superficies, revisar rutas, capas, evidencia, delta y memoria sin modificar el proyecto.`)
       : "PRISMO no pudo consultar el bridge y tampoco encontró Project Brain cargado; conviene refrescar contexto antes de concluir.";
     return {
       ok: Boolean(rows.length),
@@ -1186,17 +1289,17 @@
         contract: "prismo.answer_channel.v3.client_local",
         short_text: shortText,
         full_text: rows.length
-          ? `${shortText} El bridge de consulta no respondió a tiempo, así que PRISMO usó el índice local ya cargado.`
+          ? (prodQuery ? shortText : `${shortText} El bridge de consulta no respondió a tiempo, así que PRISMO usó el índice local ya cargado.`)
           : `No hubo respuesta del bridge y no se encontró Project Brain cargado. Motivo técnico: ${reason || "unknown"}.`,
         overflow_guard: "no_artificial_answer_cap_client_local",
         visual_stage_required: Boolean(rows.length),
-        primary_visual_type: rows.length ? "chart_spec" : "no_visual_reason",
+        primary_visual_type: rows.length ? (prodQuery ? "production_readiness" : "chart_spec") : "no_visual_reason",
         no_visual_reason: rows.length ? "" : "project_brain_unavailable"
       },
       visual_stage: {
         required: Boolean(rows.length),
         source: "client_project_brain_fallback",
-        primary_block_type: rows.length ? "chart_spec" : "no_visual_reason",
+        primary_block_type: rows.length ? (prodQuery ? "production_readiness" : "chart_spec") : "no_visual_reason",
         no_visual_reason: rows.length ? "" : "project_brain_unavailable"
       },
       authority: {
@@ -1217,9 +1320,81 @@
       blocks,
       warnings: ["PRISMO_CLIENT_PROJECT_BRAIN_FALLBACK"],
       errors: reason ? [{ code: "PRISMO_QUERY_BRIDGE_DEGRADED", message: String(reason), safe_message: "Consulta local degradada con Visual Stage disponible.", recoverable: true }] : [],
-      meta: { provider: "client_project_brain", schema_version: "solid_runtime_v4", render_block_count: blocks.length }
+      meta: { provider: "client_project_brain", schema_version: "prodreadiness_client_v1", render_block_count: blocks.length }
     };
   }
+
+
+  function isTheaterQueryDegraded(payload, error) {
+    const status = String((payload && payload.status) || "").toLowerCase();
+    const blob = [
+      status,
+      payload && payload.ok === false ? "ok_false" : "",
+      payload && payload.direct_answer,
+      payload && payload.error,
+      payload && payload.safe_next_step,
+      payload && payload.block_reason,
+      payload && payload.certainty_level,
+      payload && JSON.stringify(payload.errors || []),
+      payload && JSON.stringify(payload.warnings || []),
+      error && error.message,
+      error && error.code
+    ].filter(Boolean).join(" ");
+    return Boolean(
+      /PRISMO Theater adapter unavailable|PRISMO_THEATER_QUERY_SERVER_FALLBACK|PRISMO_THEATER_QUERY_IMPL_DEGRADED|PRISMO_QUERY_BRIDGE_DEGRADED|timeout:\/api\/prismo\/theater\/query|Theater Query|adapter unavailable|returned null|NO_CONFIRMADO/i.test(blob) &&
+      (status === "error" || status === "blocked" || /fallback|degrad|timeout|validar|adapter|returned null/i.test(blob))
+    );
+  }
+
+  function compactServerError(payload, error) {
+    const errors = Array.isArray(payload && payload.errors) ? payload.errors.slice(0, 6) : [];
+    const warnings = Array.isArray(payload && payload.warnings) ? payload.warnings.slice(0, 10) : [];
+    return {
+      server_status: payload && payload.status,
+      server_request_id: payload && payload.request_id,
+      server_error: payload && (payload.error || payload.direct_answer),
+      client_error: error && (error.message || String(error)),
+      client_code: error && error.code,
+      warnings,
+      errors
+    };
+  }
+
+  function responseForDisplay(response, requestPayload, error) {
+    const serverPayload = response && typeof response === "object" ? response : null;
+    const degraded = isTheaterQueryDegraded(serverPayload, error);
+    if (degraded || (!serverPayload && error)) {
+      const fallback = buildClientOnlyResponse(requestPayload, error || { message: serverPayload && (serverPayload.error || serverPayload.direct_answer) || "theater_query_degraded" });
+      if (fallback && fallback.ok) {
+        const serverDetail = compactServerError(serverPayload || {}, error || {});
+        fallback.status = "partial";
+        fallback.ok = true;
+        fallback.certainty_level = "CONFIRMADO_POR_INDICE_LOCAL";
+        fallback.warnings = Array.from(new Set([...(fallback.warnings || []), "PRISMO_THEATER_QUERY_DEGRADED_HIDDEN_FROM_USER", ...(serverDetail.warnings || [])]));
+        fallback.errors = [
+          ...(Array.isArray(fallback.errors) ? fallback.errors : []),
+          {
+            code: "PRISMO_THEATER_QUERY_DEGRADED_HIDDEN_FROM_USER",
+            message: "Theater Query no validó en backend, pero Project Brain client-side respondió en modo read-only.",
+            safe_message: "PRISMO usó Project Brain local; el detalle técnico conserva la falla del bridge.",
+            recoverable: true,
+            server_detail: serverDetail
+          }
+        ];
+        fallback.technical_trace = {
+          ...(fallback.technical_trace || {}),
+          adapter_path: "client::responseForDisplay",
+          degraded_server_payload: serverDetail,
+          fallback_source: "Project Brain client cache",
+          policy: "Never show Theater Query validation failure as the main user answer when local Project Brain is available."
+        };
+        fallback.meta = { ...(fallback.meta || {}), bridge_degraded_hidden: true, schema_version: "prodreadiness_client_v2" };
+        return fallback;
+      }
+    }
+    return serverPayload || buildClientOnlyResponse(requestPayload, error);
+  }
+
 
   async function submit(event) {
     event.preventDefault();
@@ -1244,17 +1419,21 @@
         body: JSON.stringify(payload),
         timeoutMs: 9000
       });
-      setState("rendering");
-      renderResponse(response, payload);
-      addHistoryEntry(payload, response);
-      if (responseClearsComposer(response)) resetComposerAfterSuccess();
+      const displayResponse = responseForDisplay(response, payload, null);
+      setState(displayResponse.status === "error" ? "error" : "rendering");
+      renderResponse(displayResponse, payload);
+      addHistoryEntry(payload, displayResponse);
+      if (responseClearsComposer(displayResponse)) resetComposerAfterSuccess();
     } catch (error) {
-      setState("error");
-      const errorResponse = error.payload || buildClientOnlyResponse(payload, error);
-      renderResponse(errorResponse, payload);
-      addHistoryEntry(payload, errorResponse);
-      const prompt = $("#prismoPrompt");
-      if (prompt) prompt.focus();
+      const displayResponse = responseForDisplay(error.payload || null, payload, error);
+      setState(displayResponse.status === "error" ? "error" : "rendering");
+      renderResponse(displayResponse, payload);
+      addHistoryEntry(payload, displayResponse);
+      if (responseClearsComposer(displayResponse)) resetComposerAfterSuccess();
+      else {
+        const prompt = $("#prismoPrompt");
+        if (prompt) prompt.focus();
+      }
     } finally {
       STATE.busy = false;
       if (send) send.disabled = false;

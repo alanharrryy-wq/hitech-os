@@ -1,7 +1,7 @@
 {
   "kind": "PRISMO_BRAIN100_IMPROVEMENTS",
-  "version": "brainfinal_readonly_v2",
-  "implemented_count": 160,
+  "version": "prodreadiness_readonly_v1+tqfix3",
+  "implemented_count": 202,
   "mutation_policy": "read_only_project_observation_only",
   "improvements": [
     {
@@ -1123,6 +1123,307 @@
       "category": "diagnostic",
       "description": "Installer valida que no existan cuadritos de Respuesta visual independiente",
       "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": 161,
+      "key": "production_intent_router",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Detecta consultas de producción/release/readiness y no las trata como inventario genérico."
+    },
+    {
+      "id": 162,
+      "key": "production_answer_directness",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Responde qué falta para producción antes de mostrar conteos."
+    },
+    {
+      "id": 163,
+      "key": "production_vs_context_readiness_split",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Separa readiness del producto contra readiness de PRISMO como lector."
+    },
+    {
+      "id": 164,
+      "key": "surface_weight_priority",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Pondera superficies por rutas, componentes, CSS, docs y archivos."
+    },
+    {
+      "id": 165,
+      "key": "production_readiness_scorecard",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Genera scorecard visual de producción con pendientes reales."
+    },
+    {
+      "id": 166,
+      "key": "surface_production_risk_matrix",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Genera matriz de riesgo por superficie para priorizar análisis."
+    },
+    {
+      "id": 167,
+      "key": "production_next_steps",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Genera checklist de siguientes pasos para avanzar hacia producción."
+    },
+    {
+      "id": 168,
+      "key": "route_map_not_default_for_production",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Evita abrir route map gigante salvo que la consulta pida rutas."
+    },
+    {
+      "id": 169,
+      "key": "layer_table_not_default_for_production",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Evita abrir selectores crudos salvo que la consulta pida CSS/layers."
+    },
+    {
+      "id": 170,
+      "key": "evidence_freshness_required",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Explica cuándo la evidencia no basta para declarar green."
+    },
+    {
+      "id": 171,
+      "key": "delta_stability_warning",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Marca que sin delta fresco no se puede afirmar estabilidad histórica."
+    },
+    {
+      "id": 172,
+      "key": "blocker_warning_debt_language",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Distingue bloqueador, warning y deuda en producción."
+    },
+    {
+      "id": 173,
+      "key": "client_local_production_answer",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "El fallback cliente también responde producción, aunque el backend viejo esté vivo."
+    },
+    {
+      "id": 174,
+      "key": "client_production_visual_plan",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "El fallback cliente genera scorecard/riesgos/siguiente paso antes de gráficos genéricos."
+    },
+    {
+      "id": 175,
+      "key": "backend_production_visual_plan",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "El backend local genera scorecard/riesgos/siguiente paso antes de route/layer maps."
+    },
+    {
+      "id": 176,
+      "key": "production_confidence_language",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Evita fake green: orientación si falta evidencia fresca."
+    },
+    {
+      "id": 177,
+      "key": "surface_priority_phrase",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Explica que peso alto no significa roto, sino prioridad de análisis."
+    },
+    {
+      "id": 178,
+      "key": "release_gate_prompting",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Sugiere readiness por superficie como próximo prompt operativo."
+    },
+    {
+      "id": 179,
+      "key": "production_readonly_contract",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Refuerza que PRISMO orienta y no modifica en esta fase."
+    },
+    {
+      "id": 180,
+      "key": "inventory_to_diagnosis_shift",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Convierte Project Brain de inventario a diagnóstico accionable read-only."
+    },
+    {
+      "id": 181,
+      "key": "production_evidence_summary",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Resume latest_result/latest_fail en la respuesta central."
+    },
+    {
+      "id": 182,
+      "key": "production_delta_summary",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Resume cambios recientes en la respuesta central."
+    },
+    {
+      "id": 183,
+      "key": "production_css_debt_summary",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Resume deuda visual/CSS como riesgo, no como dump de selectores."
+    },
+    {
+      "id": 184,
+      "key": "production_visual_block_order",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Ordena visuales: readiness, riesgos, siguiente paso, evidencia, delta, chart."
+    },
+    {
+      "id": 185,
+      "key": "production_query_regex_spanish",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Incluye español con acentos y variantes sin acento para detectar producción."
+    },
+    {
+      "id": 186,
+      "key": "production_query_regex_english",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Incluye production/release/ready/go live."
+    },
+    {
+      "id": 187,
+      "key": "no_generic_router_first",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Router de inteligencia deja de ser visual prioritario en preguntas de producción."
+    },
+    {
+      "id": 188,
+      "key": "no_raw_layers_first",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Layer investigator queda bajo demanda en producción."
+    },
+    {
+      "id": 189,
+      "key": "no_route_dump_first",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Route map queda bajo demanda en producción."
+    },
+    {
+      "id": 190,
+      "key": "prodreadiness_contract_v1",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Nuevo contrato visual prodreadiness_readonly_v1."
+    },
+    {
+      "id": 191,
+      "key": "prodreadiness_client_schema",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Nuevo schema de fallback cliente prodreadiness_client_v1."
+    },
+    {
+      "id": 192,
+      "key": "prodreadiness_backend_schema",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Nuevo schema backend prodreadiness_readonly_v1."
+    },
+    {
+      "id": 193,
+      "key": "actionable_missing_list",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "La respuesta enumera faltantes concretos de producción."
+    },
+    {
+      "id": 194,
+      "key": "evidence_scope_warning",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Aclara que un ZIP global no prueba readiness por superficie."
+    },
+    {
+      "id": 195,
+      "key": "qa_runtime_missing_signal",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Incluye QA/runtime route certification como pendiente explícito."
+    },
+    {
+      "id": 196,
+      "key": "gate_matrix_missing_signal",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Incluye gates de release por superficie como pendiente."
+    },
+    {
+      "id": 197,
+      "key": "surface_score_weight_formula",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Documenta fórmula de peso para explicar prioridades."
+    },
+    {
+      "id": 198,
+      "key": "high_medium_low_surface_risk",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Clasifica riesgo por superficie en high/medium/low."
+    },
+    {
+      "id": 199,
+      "key": "development_readiness_kept_supporting",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Mantiene readiness de PRISMO como apoyo, no como respuesta principal."
+    },
+    {
+      "id": 200,
+      "key": "production_single_intent_focus",
+      "status": "implemented",
+      "category": "production_readiness_intelligence",
+      "description": "Evita buffet visual cuando la pregunta pide producción."
+    },
+    {
+      "id": "tqfix_never_block_project_brain_v1",
+      "title": "Theater Query degradation cannot block Project Brain answers",
+      "status": "implemented",
+      "benefit": "PRISMO answers production/readiness questions from local read-only Project Brain even when the Theater Query backend validator fails."
+    },
+    {
+      "id": "I201",
+      "implemented": true,
+      "category": "safety",
+      "description": "TQFIX3: el texto crudo de validación Theater Query no aparece en la respuesta principal; se conserva sólo como detalle técnico.",
+      "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I202",
+      "title": "Theater Query fallback never replaces Project Brain answer",
+      "category": "runtime_intelligence",
+      "implemented": true,
+      "benefit": "If the live Theater Query validator fails, PRISMO still answers from Project Brain local read-only and sends the technical failure to trace."
     }
-  ]
+  ],
+  "tqfix_contract": "tqfix_never_block_project_brain_v1"
 }

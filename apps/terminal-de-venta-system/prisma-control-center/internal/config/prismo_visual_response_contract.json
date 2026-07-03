@@ -1,14 +1,17 @@
 {
   "kind": "PRISMO_VISUAL_RESPONSE_CONTRACT",
-  "version": "brainfinal_readonly_v2",
-  "task": "PRISMO BrainFinal: herramienta read-only utilizable para desarrollar PRISMA, con inteligencia local, memoria, visuales reales y respuesta razonable sin límite artificial.",
+  "version": "tqfix4_project_brain_fallback_v1",
+  "task": "PRISMO Production Readiness Analyst: responder qué falta para acercar PRISMA a producción con diagnóstico priorizado, evidencia y visuales útiles, no sólo inventario.",
   "principles": [
     "PRISMO is a read-only project brain: observe, understand, remember, explain and visualize; never mutate apps in knowledge mode.",
     "Text and visuals are separate channels. Text summarizes; Visual Stage proves.",
     "When Project Brain has structured metrics, a visual block is mandatory; text-only requires explicit no_visual_reason.",
     "Client fallback visuals must render if the backend response lacks visual blocks but App Live Context has metrics.",
     "Executive brief, Project Brain detail, technical trace and feedback are collapsed or menu-based by default.",
-    "Learning Store persists semantic, procedural, episodic, visual and operational memory outside repo mutation scope."
+    "Learning Store persists semantic, procedural, episodic, visual and operational memory outside repo mutation scope.",
+    "For production/readiness questions, PRISMO must answer the user intent directly: blockers, risks, evidence freshness, surface priorities and next step.",
+    "Production readiness is different from PRISMO context readiness. Do not confuse “I can read the project” with “the product is ready”.",
+    "Route maps and Layer Investigator are supporting drawers for production questions unless the user explicitly asks for routes/CSS."
   ],
   "answer_channel": {
     "behavior": "answer what is necessary and reasonable; no 5/10 line cap and no 420 char cap",
@@ -167,5 +170,63 @@
       "STABLE2",
       "Brain100"
     ]
+  },
+  "production_readiness_router": {
+    "trigger_keywords": [
+      "producción",
+      "produccion",
+      "production",
+      "release",
+      "go live",
+      "qué falta",
+      "faltan",
+      "pendiente",
+      "listo",
+      "ready",
+      "cerrar",
+      "terminar"
+    ],
+    "primary_blocks": [
+      "production_readiness_scorecard",
+      "surface_production_risk",
+      "production_next_steps"
+    ],
+    "secondary_blocks": [
+      "evidence_chart",
+      "delta_timeline",
+      "surface_chart",
+      "surface_matrix"
+    ],
+    "collapsed_by_default_when_not_requested": [
+      "route_map",
+      "layer_investigator",
+      "raw_selector_table",
+      "router_table"
+    ],
+    "answer_required_fields": [
+      "faltantes principales",
+      "superficie prioritaria",
+      "evidencia fresca",
+      "delta/estabilidad",
+      "siguiente paso"
+    ]
+  },
+  "runtime_theater_query_fallback_contract": {
+    "version": "tqfix3_never_show_raw_validation_error_v2",
+    "policy": "Theater Query validation/backend failures must be hidden from the main answer when Project Brain local data is available.",
+    "client_fallback": "responseForDisplay builds a client Project Brain answer and preserves server error in technical_trace.",
+    "server_fallback": "panel and bridge return partial read-only fallback instead of hard 500 when Theater Query impl throws.",
+    "main_answer_policy": "The exact Theater Query validation failure string is forbidden in the visible answer channel; Project Brain local fallback must answer when metrics exist.",
+    "technical_trace_policy": "Server validation details may be preserved only in technical_trace/errors for drawers."
+  },
+  "theater_query_failure_policy": {
+    "visible_answer": "use_project_brain_local_readonly",
+    "technical_error_location": "technical_trace",
+    "never_show_as_main_answer": [
+      "Theater Query validation failure",
+      "No se pudo validar Theater Query"
+    ],
+    "fallback_marker": "PRISMO_TQFIX4_CLIENT_FALLBACK",
+    "backend_marker": "PRISMO_TQFIX4_BACKEND_FALLBACK"
   }
 }

@@ -4,6 +4,7 @@ import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from "re
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import type { PrismaIconName } from "@components/prisma-dark-pos/prisma-dark-pos-data";
 import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionGrid, QuickActionTile, type QuickActionTone } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { tabletVisibleLabels } from "@/lib/i18n/tablet-visible-labels";
 import styles from "./touch-pos.module.css";
 
@@ -787,21 +788,23 @@ export function OutboxEventsScreen() {
 
 export function ExportSettingsScreen() {
   const [status, setStatus] = useState<string | null>(null);
-  const endpoints = [
-    { label: "Ventas de hoy JSON", href: "/api/pos/export/sales-today?format=json" },
-    { label: "Ventas de hoy CSV", href: "/api/pos/export/sales-today?format=csv" },
-    { label: "Pendientes JSON", href: "/api/pos/export/events?format=json" },
-    { label: "Pendientes CSV", href: "/api/pos/export/events?format=csv" },
-    { label: "Movimientos JSON", href: "/api/pos/export/inventory-movements?format=json" },
-    { label: "Movimientos CSV", href: "/api/pos/export/inventory-movements?format=csv" }
+  const endpoints: Array<{ label: string; description: string; href: string; icon: PrismaIconName; tone: QuickActionTone; owner: string }> = [
+    { label: "Ventas CSV", description: "Tickets cerrados de hoy en formato hoja de cálculo.", href: "/api/pos/export/sales-today?format=csv", icon: "receipt", tone: "primary", owner: "sales" },
+    { label: "Ventas JSON", description: "Ventas de hoy con detalle estructurado.", href: "/api/pos/export/sales-today?format=json", icon: "receipt", tone: "jewel", owner: "sales" },
+    { label: "Pendientes CSV", description: "Cola local por enviar o revisar.", href: "/api/pos/export/events?format=csv", icon: "bell", tone: "warning", owner: "sync" },
+    { label: "Pendientes JSON", description: "Movimientos locales con estado y diagnóstico.", href: "/api/pos/export/events?format=json", icon: "bell", tone: "sync", owner: "sync" },
+    { label: "Movimientos CSV", description: "Movimientos de inventario exportables.", href: "/api/pos/export/inventory-movements?format=csv", icon: "package", tone: "inventory", owner: "stock" },
+    { label: "Movimientos JSON", description: "Movimientos de inventario estructurados.", href: "/api/pos/export/inventory-movements?format=json", icon: "package", tone: "success", owner: "stock" }
   ];
 
   return (
     <AppChrome currentPath="/settings/export" title="Exportaciones locales" subtitle="Salidas operativas desde la base local de Tablet." status={<RuntimeStatus state={status ? "success" : "ready"} />}>
       <ExportPanel>
         {endpoints.map((endpoint) => (
-          <ExportButton key={endpoint.href} label={endpoint.label} href={endpoint.href} onDone={setStatus} />
+          <ExportButton key={endpoint.href} {...endpoint} onDone={setStatus} />
         ))}
+        <QuickActionTile title="Respaldo offline" description="Abre auditoría y respaldo local completo." actionLabel="Abrir" icon="save" tone="license" href="/offline" owner="offline" />
+        <QuickActionTile title="Turno y caja" description="No hay endpoint confirmado de corte directo en esta pantalla." icon="wallet" tone="neutral" deferredReason="Pendiente: exportación de turno requiere dueño confirmado." owner="shift" kind="deferred-create" />
       </ExportPanel>
       {status ? <div className={styles.successLine}>{status}</div> : null}
     </AppChrome>
@@ -809,22 +812,40 @@ export function ExportSettingsScreen() {
 }
 
 export function ExportPanel({ children }: { children: ReactNode }) {
-  return <section className={styles.exportGrid}>{children}</section>;
+  return <QuickActionGrid label="Tipos de exportacion local" density="wide">{children}</QuickActionGrid>;
 }
 
-export function ExportButton({ label, href, onDone }: { label: string; href: string; onDone: (message: string) => void }) {
+export function ExportButton({
+  label,
+  description,
+  href,
+  icon,
+  tone,
+  owner,
+  onDone
+}: {
+  label: string;
+  description: string;
+  href: string;
+  icon: PrismaIconName;
+  tone: QuickActionTone;
+  owner: string;
+  onDone: (message: string) => void;
+}) {
   return (
-    <button
-      className={styles.exportButton}
-      type="button"
+    <QuickActionTile
+      title={label}
+      description={description}
+      actionLabel="Descargar"
+      icon={icon}
+      tone={tone}
+      owner={owner}
+      kind="export"
       onClick={() => {
         window.open(href, "_blank", "noopener,noreferrer");
         onDone(`${label} solicitado.`);
       }}
-    >
-      <PrismaIcon name="save" size={22} />
-      <span>{label}</span>
-    </button>
+    />
   );
 }
 

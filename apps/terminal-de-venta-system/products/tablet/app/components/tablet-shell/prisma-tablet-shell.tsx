@@ -76,6 +76,15 @@ export function PrismaTabletShellUnified({
   const dockItems = visibleNavItems.filter((item) =>
     ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync", "/settings/license"].includes(item.href)
   );
+  const moreLinks = [
+    { href: "/settings/license", label: "Configuracion", description: "Licencia, equipo y continuidad", icon: "settings" as const },
+    { href: "/settings/export", label: "Exportaciones", description: "Ventas, pendientes y movimientos", icon: "save" as const },
+    { href: "/offline", label: "Modo offline", description: "Respaldo local y auditoria", icon: "bell" as const },
+    { href: "/prisma-pulse", label: "Estado operativo", description: "Lectura de salud de la Tablet", icon: "dashboard" as const },
+    { href: "/settings/license#license-support", label: "Soporte", description: "Detalle visible para soporte", icon: "users" as const },
+    { href: "/inventory/low-stock", label: "Stock bajo", description: "Productos que requieren atencion", icon: "package" as const },
+    { href: "/sales/history", label: "Historial", description: "Tickets locales anteriores", icon: "chart" as const }
+  ];
 
   return (
     <div
@@ -132,6 +141,23 @@ export function PrismaTabletShellUnified({
             <PrismaIcon name="bell" size={17} />
             <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
           </a>
+          <details className={styles.moreMenu} data-prisma-component="TabletMoreMenu">
+            <summary aria-label="Abrir mas acciones de Tablet">
+              <PrismaIcon name="more" size={18} />
+              <span>Mas</span>
+            </summary>
+            <div className={styles.moreMenuPanel}>
+              {moreLinks.map((item) => (
+                <a className={styles.moreMenuItem} href={item.href} key={item.href}>
+                  <PrismaIcon name={item.icon} size={18} />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.description}</small>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </details>
           {status ? <div className={styles.statusArea}>{status}</div> : null}
         </div>
       </header>

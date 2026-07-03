@@ -29,6 +29,11 @@ from prismo_safety import (
 
 
 VERSION = "1.0.0"
+
+# PRISMO_TQFIX4_BACKEND_FALLBACK: backend fallback enabled for Theater Query validation failures.
+# If the live Theater Query path fails, PRISMO must answer from Project Brain local read-only and move technical errors to trace.
+PRISMO_TQFIX4_BACKEND_FALLBACK = "backend_fallback_enabled_project_brain_readonly"
+
 MODES = {"ASK", "INSPECT", "IMPROVE", "EVIDENCE"}
 GUIDANCE_INTENTS = {
     "diagnose": "Diagnose",
@@ -875,6 +880,7 @@ def _brain100_query_profile(query: str, interpretation: dict[str, Any]) -> dict[
         "delta": ["cambio", "cambió", "delta", "desde", "ayer", "timeline", "histórico", "historico"],
         "memory": ["memoria", "memory", "procedural", "semant", "episod", "aprendiz"],
         "risk": ["riesgo", "risk", "bloque", "blocker", "gate", "gobern", "autoridad"],
+        "production": ["producción", "produccion", "production", "prod", "release", "go live", "salir", "cerrar", "terminar", "falt", "pendiente", "listo", "ready", "produccion"],
         "build": ["terminar", "desarroll", "útil", "util", "mejora", "arregl", "funcion"],
         "graph": ["grafo", "graph", "mapa", "depend", "conecta", "flujo"],
         "chart": ["graf", "chart", "métrica", "metrica", "número", "numero", "conteo", "cuánt", "cuant"],
@@ -924,6 +930,123 @@ def _brain100_reasoning_table_block(profile: dict[str, Any], visual_data: dict[s
     return _block_contract("brain100_reasoning_router", "table_view", "Router de inteligencia", "Por qué PRISMO eligió esas formas de respuesta.", 34, {"rows": rows[:14], "columns": ["signal", "score", "used"]}, "neutral")
 
 
+def _brainfinal_is_production_query(profile: dict[str, Any]) -> bool:
+    scores = _as_dict(profile.get("scores"))
+    matched = set(_as_list(profile.get("matched")))
+    text = _as_str(profile.get("raw_query")).lower()
+    return bool(
+        scores.get("production")
+        or "production" in matched
+        or any(word in text for word in ["producción", "produccion", "production", "go live", "release", "salir", "qué falta", "que falta", "faltan", "pendiente", "listo para"])
+    )
+
+
+def _brainfinal_surface_weight_rows(visual_data: dict[str, Any]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for surface in [_as_dict(item) for item in _as_list(visual_data.get("surface_metrics"))]:
+        files = int(surface.get("files") or 0)
+        routes = int(surface.get("routes") or 0)
+        components = int(surface.get("components") or 0)
+        css = int(surface.get("css") or 0)
+        docs = int(surface.get("docs") or 0)
+        weight = routes * 4 + components * 3 + css * 2 + max(files // 100, 0) + max(docs // 80, 0)
+        if routes or components or css or files:
+            rows.append({
+                "surface": _as_str(surface.get("label") or surface.get("id") or "Surface"),
+                "files": files,
+                "routes": routes,
+                "components": components,
+                "css": css,
+                "docs": docs,
+                "weight": weight,
+                "risk": "high" if weight >= 850 else "medium" if weight >= 300 or css >= 40 else "low",
+            })
+    return sorted(rows, key=lambda item: int(item.get("weight") or 0), reverse=True)
+
+
+def _brainfinal_production_readiness_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
+    summary = _as_dict(visual_data.get("summary"))
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    rows = _brainfinal_surface_weight_rows(visual_data)
+    heavy = rows[0] if rows else {}
+    items = [
+        {"label": "Inventario read-only suficiente", "done": bool(summary.get("file_count") and summary.get("route_count")), "status": f"{summary.get('file_count', 0)} archivos · {summary.get('route_count', 0)} rutas"},
+        {"label": "Evidencia histórica disponible", "done": bool(evidence.get("zip_count")), "status": f"{evidence.get('zip_count', 0)} ZIPs; result={bool(evidence.get('latest_result'))}; fail={bool(evidence.get('latest_fail'))}"},
+        {"label": "Delta comparativo disponible", "done": bool(delta.get("available")), "status": f"changed={delta.get('changed', 0)} · added={delta.get('added', 0)}" if delta.get("available") else "falta baseline comparativo fresco"},
+        {"label": "Prioridad por superficie calculada", "done": bool(rows), "status": f"top={heavy.get('surface', 'n/a')} · peso={heavy.get('weight', 0)}"},
+        {"label": "Certificación runtime por ruta", "done": False, "status": "pendiente de evidencia runtime/QA por superficie"},
+        {"label": "Cierre de deuda visual/CSS", "done": False, "status": f"{summary.get('css_count', 0)} CSS detectados; revisar capas críticas antes de producción"},
+        {"label": "Gates de release por superficie", "done": False, "status": "requiere scorecard final: Tablet, PC, Mobile, Chart Lab, EIT"},
+        {"label": "Plan de salida sin mutación directa", "done": True, "status": "PRISMO puede orientar read-only; cambios deben ir por paquetes/gates"},
+    ]
+    return _block_contract("brainfinal_product_readiness_scorecard", "checklist", "Production readiness scorecard", "Qué falta para acercar PRISMA a producción, no sólo qué puede leer PRISMO.", 8, {"items": items}, "neutral")
+
+
+def _brainfinal_surface_production_risk_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
+    rows = _brainfinal_surface_weight_rows(visual_data)
+    items = []
+    for row in rows[:8]:
+        reasons = []
+        if row.get("routes"): reasons.append(f"{row.get('routes')} rutas")
+        if row.get("components"): reasons.append(f"{row.get('components')} componentes")
+        if row.get("css"): reasons.append(f"{row.get('css')} CSS")
+        items.append({
+            "risk": f"{row.get('surface')} readiness",
+            "level": row.get("risk") or "medium",
+            "summary": f"Peso {row.get('weight', 0)} por {', '.join(reasons[:3])}.",
+            "mitigation": "Pedir scorecard específico de esta superficie: rutas críticas, evidencia fresca, QA runtime, deuda visual y bloqueadores.",
+        })
+    if not items:
+        items.append({"risk": "Sin superficies indexadas", "level": "medium", "summary": "Project Brain no entregó superficie ponderable.", "mitigation": "Refrescar App Live Context."})
+    return _block_contract("brainfinal_surface_production_risk", "risk_matrix", "Riesgo por superficie para producción", "Priorización read-only por peso real de rutas, componentes y CSS.", 10, {"items": items}, "neutral")
+
+
+def _brainfinal_production_next_steps_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
+    summary = _as_dict(visual_data.get("summary"))
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    rows = _brainfinal_surface_weight_rows(visual_data)
+    top = rows[0].get("surface") if rows else "superficie principal"
+    items = [
+        {"label": "Generar readiness por superficie", "done": False, "status": f"empezar por {top}"},
+        {"label": "Cruzar rutas críticas contra evidencia", "done": False, "status": f"{summary.get('route_count', 0)} rutas indexadas"},
+        {"label": "Separar bloqueadores vs deuda", "done": False, "status": "producción necesita gates claros, no inventario gigante"},
+        {"label": "Validar evidencia fresca", "done": bool(evidence.get("latest_result")), "status": "hay result reciente" if evidence.get("latest_result") else "falta result fresco por scope"},
+        {"label": "Revisar cambios recientes", "done": bool(delta.get("available")), "status": f"{delta.get('changed', 0)} changed / {delta.get('added', 0)} added" if delta.get("available") else "sin delta fresco"},
+        {"label": "Preparar plan sin modificar", "done": True, "status": "PRISMO sólo orienta en esta fase read-only"},
+    ]
+    return _block_contract("brainfinal_production_next_steps", "checklist", "Siguiente paso hacia producción", "Orden de trabajo recomendado para convertir contexto en avance real.", 12, {"items": items}, "positive")
+
+
+def _brainfinal_production_answer_text(base: dict[str, Any], profile: dict[str, Any], visual_data: dict[str, Any], primary_type: str | None) -> str:
+    summary = _as_dict(visual_data.get("summary"))
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    rows = _brainfinal_surface_weight_rows(visual_data)
+    top = rows[:4]
+    top_text = "; ".join(f"{row.get('surface')} peso {row.get('weight')} ({row.get('routes')} rutas, {row.get('components')} comps, {row.get('css')} CSS)" for row in top) or "sin superficies ponderables"
+    missing = [
+        "scorecard de producción por superficie, separando bloqueador, warning y deuda",
+        "certificación runtime/QA de rutas críticas, no sólo conteo de rutas",
+        "evidencia fresca por scope para confirmar qué ya está cerrado y qué sigue abierto",
+        "cierre o clasificación de deuda visual/CSS antes de tocar interfaz",
+        "plan de release read-only: qué validar primero, con qué evidencia y con qué riesgo",
+    ]
+    lines = [
+        f"Para acercar PRISMA a producción no basta con saber que existen {summary.get('route_count', 0)} rutas y {summary.get('file_count', 0)} archivos. Lo que falta es convertir ese inventario en readiness verificable: qué está certificado, qué está en riesgo y qué evidencia lo prueba.",
+        "Faltantes principales: " + "; ".join(missing) + ".",
+        f"Prioridad por peso detectado: {top_text}. Eso no significa que esas superficies estén rotas; significa que ahí conviene empezar el análisis de producción porque concentran más rutas/componentes/CSS.",
+        f"Evidencia: PRISMO ve {evidence.get('zip_count', 0)} ZIPs; latest_result={bool(evidence.get('latest_result'))}; latest_fail={bool(evidence.get('latest_fail'))}. Si la evidencia no está fresca por superficie, la conclusión debe quedarse como orientación, no como green de producción.",
+    ]
+    if delta.get("available"):
+        lines.append(f"Delta: hay comparación contra índice previo con {delta.get('changed', 0)} changed y {delta.get('added', 0)} added. Eso debe usarse para detectar deriva reciente antes de declarar estabilidad.")
+    else:
+        lines.append("Delta: falta una comparación fresca; sin eso PRISMO puede describir el estado actual, pero no afirmar estabilidad histórica fuerte.")
+    lines.append("Siguiente paso recomendado: pedirle a PRISMO un `readiness por superficie` empezando por la superficie de mayor peso, y exigir para cada una: rutas críticas, evidencia reciente, riesgos, deuda visual y conclusión de producción. Todo en read-only; nada de modificar el proyecto desde esta fase.")
+    return "\n\n".join(lines)
+
+
 
 def _brainfinal_development_readiness_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
     summary = _as_dict(visual_data.get("summary"))
@@ -956,6 +1079,8 @@ def _brainfinal_risk_matrix_block(profile: dict[str, Any], visual_data: dict[str
 
 
 def _brain100_answer_text(base: dict[str, Any], profile: dict[str, Any], visual_data: dict[str, Any], primary_type: str | None) -> str:
+    if _brainfinal_is_production_query(profile):
+        return _brainfinal_production_answer_text(base, profile, visual_data, primary_type)
     summary = _as_dict(visual_data.get("summary"))
     surfaces = [_as_dict(item) for item in _as_list(visual_data.get("surface_metrics"))]
     top_routes = sorted(surfaces, key=lambda item: int(item.get("routes") or 0), reverse=True)[:4]
@@ -1007,12 +1132,20 @@ def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, A
     reasoning = _brain100_reasoning_table_block(profile, visual_data)
     readiness = _brainfinal_development_readiness_block(profile, visual_data)
     risk_matrix = _brainfinal_risk_matrix_block(profile, visual_data)
+    production_query = _brainfinal_is_production_query(profile)
+    production_readiness = _brainfinal_production_readiness_block(profile, visual_data)
+    production_risk = _brainfinal_surface_production_risk_block(profile, visual_data)
+    production_next = _brainfinal_production_next_steps_block(profile, visual_data)
 
     def add(block: dict[str, Any] | None) -> None:
         if block and not any(item.get("id") == block.get("id") for item in blocks):
             blocks.append(block)
 
-    if "routes" in wants:
+    if production_query:
+        add(production_readiness); add(production_risk); add(production_next); add(evidence_chart); add(delta_timeline); add(chart); add(matrix)
+        if "routes" in wants: add(route_map)
+        if "layers" in wants: add(layer_map)
+    elif "routes" in wants:
         add(route_map); add(chart); add(matrix)
     elif "layers" in wants:
         add(layer_map); add(chart); add(matrix)
@@ -1029,8 +1162,12 @@ def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, A
     else:
         add(chart); add(matrix); add(dependency)
 
-    for optional in [matrix, route_map, layer_map, evidence_chart, delta_timeline, memory_table, risk_matrix, readiness, capability, reasoning, dependency]:
-        add(optional)
+    if production_query:
+        for optional in [risk_matrix, readiness, capability]:
+            add(optional)
+    else:
+        for optional in [matrix, route_map, layer_map, evidence_chart, delta_timeline, memory_table, risk_matrix, readiness, capability, reasoning, dependency]:
+            add(optional)
     if not blocks and visual_data.get("no_visual_reason"):
         blocks.append(_block_contract("visual_stage_empty", "direct_answer_card", "Sin visual estructurado", f"No visual: {visual_data.get('no_visual_reason')}", 12, {"answer": f"No visual: {visual_data.get('no_visual_reason')}"}, "neutral"))
     return blocks[:12]
@@ -1050,7 +1187,7 @@ def _answer_channel_from_visual_data(base: dict[str, Any], visual_data: dict[str
         text = direct or "PRISMO respondió con el contexto disponible, sin mutar el proyecto."
         full = text
     return {
-        "contract": "prismo.answer_channel.brainfinal.v2",
+        "contract": "prismo.answer_channel.production_readiness.v1",
         "main_text": _clamp_answer_text(text),
         "short_text": _clamp_answer_text(text),
         "full_text": _clamp_answer_text(full, overflow_chars=32000, overflow_lines=420),
@@ -1249,12 +1386,12 @@ def _prismo_local_readonly_base_response(payload: dict[str, Any], public: bool =
     response.setdefault("errors", [])
     response["meta"] = _as_dict(response.get("meta"))
     response["meta"]["provider"] = "local_project_brain"
-    response["meta"]["schema_version"] = "brainfinal_readonly_v2"
+    response["meta"]["schema_version"] = "prodreadiness_readonly_v1"
     response["meta"]["local_first"] = True
     return response
 
 
-def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) -> dict[str, Any]:
+def _prismo_theater_query_payload_impl(payload: dict[str, Any], public: bool = False) -> dict[str, Any]:
     payload = _as_dict(payload)
     query = _collect_message(payload)
     base = _prismo_local_readonly_base_response(payload, public=public, query=query)
@@ -1346,6 +1483,68 @@ def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) 
     theater["meta"]["suppressed_render_block_count"] = len(suppressed_blocks)
     return theater
 
+
+
+def prismo_theater_query_payload(payload: dict[str, Any], public: bool = False) -> dict[str, Any]:
+    """Safe public function for Theater Query.
+
+    The UI must never receive a hard Theater Query validation failure when
+    local Project Brain can still answer read-only. This wrapper preserves the
+    full implementation when it works and returns a structured partial fallback
+    when any inner visual/memory hydrator misbehaves.
+    """
+    try:
+        return _prismo_theater_query_payload_impl(payload, public=public)
+    except Exception as exc:  # noqa: BLE001 - endpoint must degrade, not explode.
+        safe_payload = _as_dict(payload)
+        query = _collect_message(safe_payload)
+        response = _prismo_local_readonly_base_response(safe_payload, public=public, query=query)
+        response["ok"] = True
+        response["status"] = "partial"
+        response["certainty_level"] = "CONFIRMADO_POR_INDICE_LOCAL"
+        response["direct_answer"] = (
+            "PRISMO usó fallback local read-only con Project Brain porque el Theater Query vivo no validó. "
+            "Aun así puede diagnosticar superficies, rutas, evidencia, riesgos y readiness sin modificar el proyecto."
+        )
+        response["safe_next_step"] = "Usar Project Brain read-only y revisar el detalle técnico del bridge si hace falta."
+        response["warnings"] = _as_list(response.get("warnings")) + ["PRISMO_THEATER_QUERY_IMPL_DEGRADED"]
+        response["errors"] = _as_list(response.get("errors")) + [{
+            "code": "PRISMO_THEATER_QUERY_IMPL_DEGRADED",
+            "message": f"{type(exc).__name__}: {exc}",
+            "safe_message": "Theater Query cayó a fallback local read-only.",
+            "recoverable": True,
+        }]
+        response["answer_channel"] = {
+            "contract": "prismo.answer_channel.server_degraded.v1",
+            "main_text": response["direct_answer"],
+            "short_text": response["direct_answer"],
+            "full_text": response["direct_answer"],
+            "overflow_guard": "no_artificial_answer_cap_reasonable_ui_guard",
+            "visual_stage_required": True,
+            "primary_visual_type": "chart_spec",
+            "no_visual_reason": "",
+        }
+        response["visual_stage"] = {
+            "contract": "prismo.visual_stage.server_degraded.v1",
+            "primary_block_type": "chart_spec",
+            "required": True,
+            "source": "server_degraded_local_first",
+            "no_visual_reason": "",
+        }
+        response["blocks"] = []
+        response["render_blocks"] = []
+        response["technical_trace"] = {
+            "adapter_path": "internal/py/prismo_ai_bridge.py::prismo_theater_query_payload",
+            "fallback": "server_degraded_local_first",
+            "exception_type": type(exc).__name__,
+            "exception_message": str(exc),
+        }
+        response["meta"] = _as_dict(response.get("meta"))
+        response["meta"]["theater_adapter"] = "prismo_theater_query_payload_safe_wrapper"
+        response["meta"]["tqfix4_backend_fallback"] = True
+        response["meta"]["backend_fallback_contract"] = PRISMO_TQFIX4_BACKEND_FALLBACK
+        response["meta"]["schema_version"] = "prodreadiness_server_degraded_v1"
+        return response
 
 def _prismo_query_payload_impl(payload: dict[str, Any], public: bool = False) -> dict[str, Any]:
     request_id = _request_id()

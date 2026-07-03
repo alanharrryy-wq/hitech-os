@@ -1,0 +1,27 @@
+{
+  "date": "2026-07-03",
+  "classification": "STATIC_PASS_LIVE_BROWSER_NOT_RUN_BY_CONSTRAINT",
+  "commands": [
+    { "command": "node tools/quality/verify_tablet_mamastrophic_full_surface_0207.mjs", "status": "PASS" },
+    { "command": "node tools/quality/verify_tablet_interactive_jewel_system_0207.mjs", "status": "PASS" },
+    { "command": "node tools/quality/verify_tablet_quick_create_tiles_0207.mjs", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app exec tsc -p tsconfig.json --noEmit --pretty false", "status": "PASS", "notes": "Direct tsc; did not run package typecheck script because that script invokes Prisma generate." },
+    { "command": "git diff --check", "status": "PASS_WITH_WARNINGS", "notes": "Only preexisting CRLF warnings on older dirty tablet-polish/tools files." },
+    { "command": "pnpm run verify:zero-important", "status": "PASS", "notes": "ZERO PRIORITY GATE: PASS; scanned 1249 live runtime source files." },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-non-pos-navigation-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-non-pos-copy-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-inventory-export-secondary-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-sync-human-pending-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-license-human-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tabrest-interactions-0207", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tablet-visual-layer-cleanup", "status": "PASS", "notes": "13 checks; 35 routes; 0 failing routes." },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tablet-sync-dispatcher", "status": "PASS" },
+    { "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app run verify:tablet-cobro-light-amounts-0207", "status": "PASS" }
+  ],
+  "not_run": [
+    {
+      "item": "VS Code Browser Device Emulation",
+      "reason": "Task prohibited starting/freeing dev servers."
+    }
+  ]
+}
