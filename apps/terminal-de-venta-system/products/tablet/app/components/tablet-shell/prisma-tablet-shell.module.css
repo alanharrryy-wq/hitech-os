@@ -159,7 +159,8 @@
 .topNavItem,
 .topNavItemActive,
 .saleStateChip,
-.syncChip {
+.syncChip,
+.moreMenu summary {
   min-height: 46px;
   display: inline-flex;
   align-items: center;
@@ -176,7 +177,8 @@
 .topNavItem svg,
 .topNavItemActive svg,
 .saleStateChip svg,
-.syncChip svg {
+.syncChip svg,
+.moreMenu summary svg {
   color: #344054;
 }
 
@@ -209,6 +211,107 @@
 .syncChipWarn {
   border-color: rgba(255, 190, 92, 0.52);
   background: rgba(255, 246, 226, 0.78);
+}
+
+.moreMenu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.moreMenu summary {
+  border: 1px solid var(--prisma-soft-line, rgba(139, 152, 174, 0.22));
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.88), rgba(248,251,255,0.66)),
+    radial-gradient(circle at 16% 0%, rgba(154, 130, 255, 0.13), transparent 36%);
+  box-shadow: var(--prisma-soft-shadow-small, 0 12px 32px rgba(36,54,87,.1)), inset 0 1px 0 rgba(255,255,255,0.88);
+  cursor: pointer;
+  list-style: none;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.moreMenu summary::-webkit-details-marker {
+  display: none;
+}
+
+.moreMenu summary:hover,
+.moreMenu summary:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(117, 149, 230, 0.42);
+  outline: none;
+  box-shadow: 0 14px 30px rgba(54, 93, 160, 0.14), inset 0 1px 0 rgba(255,255,255,0.90);
+}
+
+.moreMenu[open] summary {
+  color: #ffffff;
+  border-color: rgba(189, 222, 255, 0.82);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.42), transparent 36%),
+    linear-gradient(135deg, #58c7ff 0%, #377dff 54%, #8f75ff 100%);
+}
+
+.moreMenu[open] summary svg {
+  color: #ffffff;
+}
+
+.moreMenuPanel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 150;
+  width: min(360px, calc(100vw - 32px));
+  display: grid;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid rgba(139, 152, 174, 0.24);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255,255,255,0.92), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,248,255,0.90));
+  box-shadow: 0 20px 48px rgba(41, 70, 116, 0.18), inset 0 1px 0 rgba(255,255,255,0.92);
+}
+
+.moreMenuItem {
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid rgba(139, 152, 174, 0.14);
+  border-radius: 16px;
+  color: var(--prisma-soft-ink, #151922);
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(241,247,255,0.52));
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.moreMenuItem:hover,
+.moreMenuItem:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(55, 125, 255, 0.32);
+  outline: none;
+  box-shadow: 0 10px 22px rgba(49, 100, 170, 0.12);
+}
+
+.moreMenuItem svg {
+  color: #377dff;
+}
+
+.moreMenuItem span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.moreMenuItem strong {
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.moreMenuItem small {
+  color: var(--prisma-soft-muted, #667085);
+  font-size: 0.76rem;
+  line-height: 1.25;
 }
 
 .statusArea {
@@ -430,6 +533,11 @@
   .actionBand {
     justify-content: flex-start;
     overflow-x: auto;
+  }
+
+  .moreMenuPanel {
+    left: 0;
+    right: auto;
   }
 
   .bottomDockInner {

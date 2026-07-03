@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import styles from "./offline-export-audit.module.css";
 
@@ -136,6 +137,13 @@ export function OfflineExportAuditScreen() {
           </button>
         </section>
 
+        <QuickActionStrip label="Acciones rapidas offline">
+          <QuickActionTile title="Exportar respaldo" description="Abre los archivos reales de ventas, pendientes y movimientos." actionLabel="Descargar" icon="save" tone="sync" href="#respaldo-local" owner="offline" />
+          <QuickActionTile title="Ver pendientes" description="Revisa y reintenta movimientos por enviar." actionLabel="Pendientes" icon="bell" tone="warning" href="/sync" owner="sync" />
+          <QuickActionTile title="Reintentar conexion" description="Relee la auditoría offline local." actionLabel={state === "loading" ? "Actualizando" : "Actualizar"} icon="search" tone="neutral" onClick={() => void load()} disabled={state === "loading"} owner="offline" />
+          <QuickActionTile title="Sincronizacion" description="Abre el panel de continuidad y conexión." actionLabel="Abrir" icon="arrow-right" tone="primary" href="/sync" owner="sync" />
+        </QuickActionStrip>
+
         {state === "error" ? <div className={styles.alert}>{error}</div> : null}
 
         <section className={styles.kpis}>
@@ -146,7 +154,7 @@ export function OfflineExportAuditScreen() {
         </section>
 
         <details className={styles.exportCard}>
-          <summary className={styles.exportSummary}>
+          <summary className={styles.exportSummary} id="respaldo-local">
             <span>Respaldo</span>
             <strong>Descargar archivos</strong>
             <small>Ventas, pendientes y movimientos cuando necesites respaldo manual.</small>

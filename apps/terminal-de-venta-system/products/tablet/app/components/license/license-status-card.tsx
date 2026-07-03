@@ -218,7 +218,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       ) : null}
 
       <details className={styles.evidenceDisclosure}>
-        <summary>Ver detalle para soporte</summary>
+        <summary id="license-support">Ver detalle para soporte</summary>
         <div className={styles.compactMetricGrid}>
           <Metric label="Modo de operación" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
           <Metric label="Configuración" value={visibleValue(runtimeContext.configPath, "No declarada")} />

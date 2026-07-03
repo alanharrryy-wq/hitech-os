@@ -925,3 +925,69 @@
   background: var(--prisma-tablet-danger-soft);
 }
 /* PRISMA_TABLET_PREMIUM_VISUAL_1006::END */
+
+/* TABLET_MAMASTROPHIC_STOCK_SEARCH_COLLAPSE_0207 */
+.searchPanel {
+  transition: grid-template-columns 170ms ease, padding 170ms ease, background 170ms ease;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] {
+  grid-template-columns: minmax(190px, 340px) auto;
+  align-items: center;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] label {
+  gap: 0;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] label > span {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] .searchInputWrap {
+  min-height: 46px;
+  border-radius: 999px;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] .searchActions {
+  max-width: 132px;
+  overflow: hidden;
+  justify-content: flex-end;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] .searchActions > :not(:first-child) {
+  width: 1px;
+  min-width: 0;
+  max-width: 0;
+  padding-inline: 0;
+  border-width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.searchPanel[data-prisma-search-expanded="false"] .primaryAction {
+  min-height: 44px;
+  padding-inline: 14px;
+  border-radius: 999px;
+}
+
+.searchPanel[data-prisma-search-expanded="true"] {
+  grid-template-columns: minmax(240px, 1fr) auto;
+}
+
+@media (max-width: 760px) {
+  .searchPanel[data-prisma-search-expanded="false"],
+  .searchPanel[data-prisma-search-expanded="true"] {
+    grid-template-columns: 1fr;
+  }
+
+  .searchPanel[data-prisma-search-expanded="false"] .searchActions {
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+}

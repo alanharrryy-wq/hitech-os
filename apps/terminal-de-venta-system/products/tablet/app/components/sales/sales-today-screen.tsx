@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import type { SalesTodaySummary } from "@/lib/sales-today/types";
 import { buildSalesKpis, filterTickets } from "@/lib/sales-today/view-model";
@@ -37,8 +38,14 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
           <h1>Resumen de caja operativo</h1>
           <p>Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p>
         </section>
+        <QuickActionStrip label="Acciones rapidas de ventas de hoy">
+          <QuickActionTile title="Nueva venta" description={gate.canShowSellNavigation ? "Abre POS para capturar otro ticket." : gate.detail} actionLabel={gate.canShowSellNavigation ? "Vender" : gate.actionLabel} icon="cart" tone={gate.canShowSellNavigation ? "primary" : "warning"} href={gate.actionHref} owner="pos" kind="quick-create" />
+          <QuickActionTile title="Buscar ticket" description="Enfoca la búsqueda local por folio, cajero o producto." actionLabel="Buscar" icon="search" tone="neutral" href="#buscar-ticket" owner="sales" />
+          <QuickActionTile title="Exportar ventas" description="Abre exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
+          <QuickActionTile title="Nueva devolucion" description="Elige un ticket cerrado para devolver productos." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
+        </QuickActionStrip>
         {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : <div className={styles.empty}>Cargando ventas del día…</div>}
-        <div className={styles.toolbar}>
+        <div className={styles.toolbar} id="buscar-ticket">
           <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Buscar por folio, cajero o producto" />
           <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Volver a vender" : gate.actionLabel}</a>
         </div>

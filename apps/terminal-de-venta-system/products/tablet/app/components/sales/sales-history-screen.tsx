@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import type { SalesTodaySummary } from "@/lib/sales-today/types";
 import { buildSalesKpis, filterTickets } from "@/lib/sales-today/view-model";
@@ -96,7 +97,14 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
           <p>Busca tickets locales por rangos acotados. La Tablet consulta su propia base y sigue vendiendo aunque PC no esté disponible.</p>
         </section>
 
-        <div className={styles.rangeBar} role="tablist" aria-label="Rangos de historial">
+        <QuickActionStrip label="Acciones rapidas de historial">
+          <QuickActionTile title="Buscar ticket" description="Enfoca los filtros locales de historial." actionLabel="Buscar" icon="search" tone="neutral" href="#buscar-ticket-historial" owner="sales" />
+          <QuickActionTile title="Filtrar fecha" description="Ajusta el rango acotado de consulta local." actionLabel="Filtrar" icon="chart" tone="jewel" href="#rango-ventas" owner="sales" />
+          <QuickActionTile title="Exportar historial" description="Usa exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
+          <QuickActionTile title="Crear devolucion" description="Abre devoluciones desde tickets cerrados." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
+        </QuickActionStrip>
+
+        <div className={styles.rangeBar} id="rango-ventas" role="tablist" aria-label="Rangos de historial">
           {PRESETS.map((item) => (
             <button
               key={item.key}
@@ -110,7 +118,7 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
           ))}
         </div>
 
-        <form className={styles.historyFilters} onSubmit={applyCustomRange}>
+        <form className={styles.historyFilters} id="buscar-ticket-historial" onSubmit={applyCustomRange}>
           <label>
             Buscar
             <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Folio, cajero, SKU o producto" />

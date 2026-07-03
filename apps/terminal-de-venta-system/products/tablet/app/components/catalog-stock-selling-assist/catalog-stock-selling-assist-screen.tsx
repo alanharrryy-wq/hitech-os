@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot, type CanSellDecision } from "@/lib/operational-gate/can-sell";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
@@ -230,6 +231,7 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
   const [online, setOnline] = useState(true);
   const [cartNotice, setCartNotice] = useState("");
   const [cartSummary, setCartSummary] = useState({ lines: 0, units: 0, hasCart: false });
+  const [searchFocused, setSearchFocused] = useState(false);
   const queryRef = useRef(query);
 
   const metrics = useMemo(() => buildCatalogStockMetrics(products), [products]);
@@ -239,6 +241,7 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
     return bySelected ?? visibleProducts[0] ?? null;
   }, [products, selectedId, visibleProducts]);
   const riskSummary = useMemo(() => buildStockRiskSummary(products), [products]);
+  const searchExpanded = searchFocused || Boolean(query.trim()) || state === "loading" || Boolean(error);
 
   async function loadProducts(nextQuery = query) {
     if (typeof navigator !== "undefined" && !navigator.onLine && products.length) {
@@ -363,18 +366,37 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
           </div>
         </section>
 
+        <QuickActionStrip label={mode === "stock" ? "Acciones rapidas de inventario" : "Acciones rapidas de catalogo operativo"}>
+          <QuickActionTile title="Nuevo producto" description="Registra producto vendible en el catálogo real." actionLabel="Crear" icon="plus" tone="inventory" href="/catalog?new=1" owner="catalog" kind="quick-create" />
+          <QuickActionTile title="Ajustar stock" description="El ajuste directo requiere dueño confirmado." icon="settings" tone="neutral" deferredReason="Pendiente: no hay flujo local confirmado de ajuste." owner="stock" kind="deferred-create" />
+          <QuickActionTile title="Stock bajo" description="Ver productos que piden reposición." actionLabel="Ver" icon="package" tone="warning" href="/inventory/low-stock" owner="stock" />
+          <QuickActionTile title="Exportar inventario" description="Descarga movimientos de inventario desde exportaciones." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
+          <QuickActionTile title="Importar catalogo" description="Usa el panel de sincronización cuando haya fuente PC autorizada." icon="truck" tone="neutral" deferredReason="Pendiente: importación requiere origen autorizado." owner="sync" kind="deferred-create" />
+        </QuickActionStrip>
+
         <section className={styles.metricGrid} aria-label="Resumen catálogo y existencias">
           {metrics.map((metric) => <MetricCard key={metric.id} metric={metric} />)}
         </section>
 
         <section className={styles.workspace}>
           <div className={styles.mainPanel}>
-            <form className={styles.searchPanel} onSubmit={(event) => { event.preventDefault(); void loadProducts(query); }}>
+            <form
+              className={styles.searchPanel}
+              onSubmit={(event) => { event.preventDefault(); void loadProducts(query); }}
+              onFocusCapture={() => setSearchFocused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setSearchFocused(false);
+              }}
+              data-prisma-search-expanded={searchExpanded ? "true" : "false"}
+              aria-expanded={searchExpanded}
+              aria-controls="catalog-stock-results"
+            >
               <label>
                 <span>Búsqueda operativa</span>
                 <div className={styles.searchInputWrap}>
                   <PrismaIcon name="search" size={20} />
                   <input
+                    id="catalog-stock-search"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder={copy.searchPlaceholder}
@@ -407,7 +429,7 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
 
             {error ? <div className={styles.errorBox} role="alert">{visibleApiError(error)}</div> : null}
 
-            <div className={styles.productList} aria-label="Productos encontrados">
+            <div className={styles.productList} id="catalog-stock-results" aria-label="Productos encontrados">
               {state === "loading" ? (
                 <div className={styles.statePanel}><PrismaIcon name="package" size={24} /><strong>Leyendo catálogo local</strong><span>Consultando productos y existencias.</span></div>
               ) : visibleProducts.length ? (
