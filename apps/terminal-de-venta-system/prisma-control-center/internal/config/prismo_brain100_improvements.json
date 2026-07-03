@@ -1,7 +1,7 @@
 {
   "kind": "PRISMO_BRAIN100_IMPROVEMENTS",
-  "version": "brain100_readonly_v1",
-  "implemented_count": 120,
+  "version": "brainfinal_readonly_v2",
+  "implemented_count": 160,
   "mutation_policy": "read_only_project_observation_only",
   "improvements": [
     {
@@ -843,6 +843,286 @@
       "category": "intelligence",
       "description": "Contrato brain100 versionado",
       "evidence": "payload + validation gates"
+    },
+    {
+      "id": "I121",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Respuesta principal sin cap artificial; sólo protección anti-desborde UI extrema",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I122",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Router cliente amplía señales broad/completo/desarrollo para visuales múltiples",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I123",
+      "implemented": true,
+      "category": "visual",
+      "description": "Fallback cliente genera readiness checklist para desarrollo read-only",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I124",
+      "implemented": true,
+      "category": "visual",
+      "description": "Fallback cliente genera risk matrix aunque el bridge esté degradado",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I125",
+      "implemented": true,
+      "category": "visual",
+      "description": "Fallback cliente genera router table para explicar elección visual",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I126",
+      "implemented": true,
+      "category": "visual",
+      "description": "Visual Stage permite hasta 12 bloques útiles sin saturar la respuesta textual",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I127",
+      "implemented": true,
+      "category": "visual",
+      "description": "Renderer agrega soporte SVG pie chart para composición simple",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I128",
+      "implemented": true,
+      "category": "visual",
+      "description": "Renderer agrega soporte SVG scatter para relaciones numéricas",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I129",
+      "implemented": true,
+      "category": "visual",
+      "description": "Chart normalizer soporta valueKey/nameKey cuando no hay series explícitas",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I130",
+      "implemented": true,
+      "category": "ux",
+      "description": "Visual Stage usa dos columnas amplias y apila responsivamente bajo 1120px",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I131",
+      "implemented": true,
+      "category": "ux",
+      "description": "Surface Matrix y Timeline reciben altura mínima legible",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I132",
+      "implemented": true,
+      "category": "ux",
+      "description": "Respuesta textual aumenta ancho de lectura sin cortar contenido razonable",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I133",
+      "implemented": true,
+      "category": "ux",
+      "description": "Placeholders no_visual_reason se ocultan si no aportan valor",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I134",
+      "implemented": true,
+      "category": "memory",
+      "description": "Respuesta integra estado de memoria semántica/procedural/episódica/visual/operacional",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I135",
+      "implemented": true,
+      "category": "memory",
+      "description": "Respuesta distingue evidencia disponible vs evidencia insuficiente",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I136",
+      "implemented": true,
+      "category": "memory",
+      "description": "Respuesta distingue delta baseline vs delta comparativo disponible",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I137",
+      "implemented": true,
+      "category": "safety",
+      "description": "Mantiene modo conocimiento sin mutación de apps producto",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I138",
+      "implemented": true,
+      "category": "safety",
+      "description": "Mantiene política sin procesos, sin puertos, sin dev servers y sin Prisma generate",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I139",
+      "implemented": true,
+      "category": "safety",
+      "description": "No agrega !important y conserva deuda existente como hallazgo, no como patrón",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I140",
+      "implemented": true,
+      "category": "governance",
+      "description": "Contrato visual sube a brainfinal_readonly_v2 sin downgrade de Brain100",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I141",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend agrega readiness block para estimar preparación de PRISMO como herramienta",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I142",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend agrega risk matrix de interpretación antes de usar conclusiones",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I143",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend answer text agrega superficies con más archivos",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I144",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend answer text agrega superficies con más rutas",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I145",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend answer text agrega carga CSS/visual y criterio de layer investigator",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I146",
+      "implemented": true,
+      "category": "intelligence",
+      "description": "Backend answer text agrega guía de uso para terminar desarrollo PRISMA",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I147",
+      "implemented": true,
+      "category": "visual",
+      "description": "Build visual stage incluye risk matrix y readiness entre secundarios",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I148",
+      "implemented": true,
+      "category": "visual",
+      "description": "Build visual stage devuelve hasta 12 bloques seleccionados",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I149",
+      "implemented": true,
+      "category": "visual",
+      "description": "Fallback broad genera route/evidence/delta/layer/memory/capability/risk/readiness",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I150",
+      "implemented": true,
+      "category": "visual",
+      "description": "Gráficas principales mantienen SVG con scroll horizontal controlado",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I151",
+      "implemented": true,
+      "category": "ux",
+      "description": "Theater layout da más espacio al centro y reduce columnas laterales",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I152",
+      "implemented": true,
+      "category": "ux",
+      "description": "Tablas visuales aumentan altura máxima dinámica",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I153",
+      "implemented": true,
+      "category": "ux",
+      "description": "Cards graph/mini permiten overflow-wrap para rutas largas",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I154",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Manifest documenta mejoras adicionales de BrainFinal",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I155",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida ausencia de RESPONSE_REASONABLE_MAX",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I156",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida ausencia de max_chars 420",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I157",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida contrato brainfinal_readonly_v2",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I158",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida soporte pie/scatter en renderer",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I159",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida readiness/risk client fallbacks",
+      "evidence": "brfinal1 payload + installer validation gates"
+    },
+    {
+      "id": "I160",
+      "implemented": true,
+      "category": "diagnostic",
+      "description": "Installer valida que no existan cuadritos de Respuesta visual independiente",
+      "evidence": "brfinal1 payload + installer validation gates"
     }
   ]
 }

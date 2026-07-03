@@ -5,9 +5,8 @@
   const STORE_HISTORY = "prismo-chat-history-v1";
   const MAX_HISTORY_ITEMS = 28;
   const FILE_PREVIEW_LIMIT = 180000;
-  const RESPONSE_REASONABLE_MAX_CHARS = 6200;
-  const RESPONSE_REASONABLE_MAX_LINES = 80;
-  const MAX_VISUAL_BLOCKS = 8;
+  const ANSWER_OVERFLOW_GUARD = { chars: 24000, lines: 320 };
+  const MAX_VISUAL_BLOCKS = 12;
   const SUGGESTIONS = [
     "¿Qué evidencia reciente explica el estado de PRISMO?",
     "¿Qué protocolo debería rankear primero y por qué?",
@@ -387,12 +386,21 @@
 
   function reasonableAnswer(value) {
     const text = String(value ?? "").replace(/\r\n/g, "\n").trim();
-    if (!text) return "PRISMO respondió en modo read-only con la evidencia estructurada disponible.";
-    const lines = text.split("\n");
-    const limitedLines = lines.slice(0, RESPONSE_REASONABLE_MAX_LINES).join("\n");
-    return limitedLines.length > RESPONSE_REASONABLE_MAX_CHARS
-      ? `${limitedLines.slice(0, RESPONSE_REASONABLE_MAX_CHARS - 1).trim()}…`
-      : limitedLines;
+    if (!text) return "PRISMO leyó el contexto disponible en modo read-only y preparó una respuesta trazable.";
+    const normalized = text
+      .split("\n")
+      .map((line) => line.trimEnd())
+      .join("\n")
+      .replace(/\n{4,}/g, "\n\n\n")
+      .trim();
+    const lines = normalized.split("\n");
+    let guarded = lines.length > ANSWER_OVERFLOW_GUARD.lines
+      ? `${lines.slice(0, ANSWER_OVERFLOW_GUARD.lines).join("\n").trim()}\n\n…[respuesta abreviada solo por protección anti-desborde de UI]`
+      : normalized;
+    if (guarded.length > ANSWER_OVERFLOW_GUARD.chars) {
+      guarded = `${guarded.slice(0, ANSWER_OVERFLOW_GUARD.chars - 72).trim()}\n\n…[respuesta abreviada solo por protección anti-desborde de UI]`;
+    }
+    return guarded;
   }
 
   function formatAnswerHtml(value) {
@@ -410,10 +418,12 @@
 
   function normalizeAnswerChannel(payload) {
     const channel = payload && payload.answer_channel ? payload.answer_channel : {};
-    const full = String(channel.full_text || payload.direct_answer || "");
+    const full = String(channel.full_text || channel.expanded_text || payload.direct_answer || "");
     const main = channel.main_text || channel.short_text || payload.direct_answer || full;
+    const mainText = reasonableAnswer(main);
     return {
-      shortText: reasonableAnswer(main),
+      mainText,
+      shortText: mainText,
       fullText: reasonableAnswer(full || main),
       primaryVisual: channel.primary_visual_type || (payload.visual_stage && payload.visual_stage.primary_block_type) || "visual",
       noVisualReason: channel.no_visual_reason || (payload.visual_stage && payload.visual_stage.no_visual_reason) || "",
@@ -696,19 +706,84 @@
     ] } };
   }
 
+
+  function developmentReadinessBlock(rows) {
+    const totals = rows.reduce((acc, row) => {
+      acc.files += row.files || 0;
+      acc.routes += row.routes || 0;
+      acc.components += row.components || 0;
+      acc.css += row.css || 0;
+      return acc;
+    }, { files: 0, routes: 0, components: 0, css: 0 });
+    return {
+      id: "client_visual_development_readiness",
+      type: "checklist",
+      title: "Readiness para desarrollar PRISMA",
+      description: "Lectura read-only de si PRISMO tiene suficiente contexto para orientar desarrollo sin tocar apps.",
+      priority: 5,
+      layout: "half",
+      visual_role: "secondary",
+      status: "ready",
+      data: { items: [
+        { label: "Project Brain ve superficies", done: rows.length > 0, status: `${rows.length} superficies` },
+        { label: "Rutas indexadas", done: totals.routes > 0, status: `${totals.routes} rutas` },
+        { label: "Componentes indexados", done: totals.components > 0, status: `${totals.components} componentes` },
+        { label: "CSS y capas visibles", done: totals.css > 0, status: `${totals.css} CSS` },
+        { label: "Evidencia consultable", done: Boolean(STATE.appLiveContext && STATE.appLiveContext.evidence_library && STATE.appLiveContext.evidence_library.zip_count), status: `${(STATE.appLiveContext && STATE.appLiveContext.evidence_library && STATE.appLiveContext.evidence_library.zip_count) || 0} ZIPs` },
+        { label: "Modo conocimiento seguro", done: true, status: "read-only / sin mutación" }
+      ] }
+    };
+  }
+
+  function riskFallbackBlock(rows) {
+    const evidence = (STATE.appLiveContext && STATE.appLiveContext.evidence_library) || {};
+    const delta = (STATE.appLiveContext && STATE.appLiveContext.delta_scanner) || {};
+    const cssHeavy = rows.slice().sort((a, b) => (b.css || 0) - (a.css || 0))[0];
+    const items = [
+      { title: "Contexto fresco", risk: "Contexto fresco", level: rows.length ? "low" : "medium", summary: rows.length ? "Project Brain cargó superficies actuales." : "No hay superficies cargadas todavía.", mitigation: "Refrescar Project Brain antes de decisiones grandes." },
+      { title: "Evidencia histórica", risk: "Evidencia histórica", level: evidence.zip_count ? "low" : "medium", summary: `${evidence.zip_count || 0} ZIPs indexados.`, mitigation: "Consultar result/fail ZIPs antes de asumir causa raíz." },
+      { title: "Delta reciente", risk: "Delta reciente", level: delta.available ? "low" : "medium", summary: delta.available ? `${delta.changed_count_sampled || 0} changed / ${delta.added_count_sampled || 0} added.` : "Primer índice o baseline no disponible.", mitigation: "Comparar contra siguiente índice para detectar deriva real." }
+    ];
+    if (cssHeavy) items.push({ title: "Carga visual", risk: "Carga visual", level: (cssHeavy.css || 0) > 40 ? "medium" : "low", summary: `${cssHeavy.label}: ${cssHeavy.css || 0} CSS detectados.`, mitigation: "Usar Layer Investigator antes de cualquier cambio visual." });
+    return { id: "client_visual_readonly_risk_matrix", type: "risk_matrix", title: "Riesgos read-only", description: "Riesgos de interpretación detectados sin tocar archivos.", priority: 6, layout: "half", visual_role: "secondary", status: "ready", data: { items } };
+  }
+
+  function intelligenceRouterBlock(payload) {
+    const query = queryTextFromPayload(payload);
+    const signals = [
+      ["surfaces", /app|apps|superficie|surface|tablet|pc|mobile|chart/.test(query)],
+      ["routes", /ruta|route|page|layout|endpoint/.test(query)],
+      ["layers", /css|layer|selector|z-index|capa|visual/.test(query)],
+      ["evidence", /evidencia|evidence|zip|fail|result|log/.test(query)],
+      ["delta", /cambio|cambió|delta|desde|ayer|timeline|histórico|historico/.test(query)],
+      ["memory", /memoria|memory|procedural|semant|episod|aprendiz/.test(query)],
+      ["risk", /riesgo|risk|bloque|blocker|gate|gobern|autoridad/.test(query)],
+      ["build", /terminar|desarroll|útil|util|mejora|arregl|funcion/.test(query)],
+      ["graph", /grafo|graph|mapa|depend|conecta|flujo/.test(query)],
+      ["chart", /graf|chart|métrica|metrica|número|numero|conteo|cuánt|cuant/.test(query)]
+    ];
+    return { id: "client_visual_intelligence_router", type: "table_view", title: "Router de inteligencia", description: "Señales detectadas para elegir texto, memoria y visuales.", priority: 9, layout: "half", visual_role: "secondary", status: "ready", data: { rows: signals.map(([signal, used]) => ({ signal, used: used ? "yes" : "available", source: "client query profiler" })), columns: ["signal", "used", "source"] } };
+  }
+
   function buildClientVisualFallbacks(payload) {
     const rows = visualRowsFromLiveContext();
     if (!rows.length) return [];
     const query = queryTextFromPayload(payload);
-    const out = [chartBlockFromRows(rows, payload), matrixBlockFromRows(rows)];
+    const wantsBroad = !query || /todo|completo|diagn[oó]stico|desarroll|terminar|prisma|proyecto|inteligencia|util|útil/.test(query);
+    const out = [];
     const add = (block) => { if (block && !out.some((item) => item.id === block.id)) out.push(block); };
-    if (/evidencia|evidence|zip|fail|result|historial/.test(query)) add(evidenceFallbackBlock());
-    if (/cambio|cambió|delta|desde|ayer|timeline|histórico|historico/.test(query)) add(deltaFallbackBlock());
-    if (/ruta|route|app|superficie|surface|mapa|grafo|graph|depend/.test(query)) add(routeFallbackBlock(rows));
-    if (/css|layer|selector|z-index|capa|visual/.test(query)) add(layerFallbackBlock());
-    if (/memoria|memory|procedural|semant|episod|aprendiz/.test(query)) add(memoryFallbackBlock());
-    if (/capacidad|inteligencia|util|usar|terminar|desarroll/.test(query)) add(capabilityFallbackBlock());
-    if (out.length < 4) { add(routeFallbackBlock(rows)); add(evidenceFallbackBlock()); add(memoryFallbackBlock()); }
+
+    add(chartBlockFromRows(rows, payload));
+    add(matrixBlockFromRows(rows));
+    if (wantsBroad || /ruta|route|app|superficie|surface|mapa|grafo|graph|depend/.test(query)) add(routeFallbackBlock(rows));
+    if (wantsBroad || /evidencia|evidence|zip|fail|result|historial/.test(query)) add(evidenceFallbackBlock());
+    if (wantsBroad || /cambio|cambió|delta|desde|ayer|timeline|histórico|historico/.test(query)) add(deltaFallbackBlock());
+    if (wantsBroad || /css|layer|selector|z-index|capa|visual/.test(query)) add(layerFallbackBlock());
+    if (wantsBroad || /memoria|memory|procedural|semant|episod|aprendiz/.test(query)) add(memoryFallbackBlock());
+    if (wantsBroad || /capacidad|inteligencia|util|usar|terminar|desarroll/.test(query)) add(capabilityFallbackBlock());
+    if (wantsBroad || /riesgo|risk|gate|bloque|blocker|seguro/.test(query)) add(riskFallbackBlock(rows));
+    if (wantsBroad || /router|por qu[eé]|elige|inteligencia/.test(query)) add(intelligenceRouterBlock(payload));
+    if (wantsBroad || /terminar|desarroll|pendiente|listo|readiness/.test(query)) add(developmentReadinessBlock(rows));
     return out.slice(0, MAX_VISUAL_BLOCKS);
   }
 
@@ -732,7 +807,7 @@
       const risk = payload.risk || {};
       const showRisk = ["high", "critical"].includes(String(risk.level || "").toLowerCase()) || payload.status === "blocked";
       const answer = normalizeAnswerChannel(payload);
-      const fullDetail = answer.fullText && answer.fullText !== answer.shortText ? answer.fullText : (payload.safe_next_step || "Detalle disponible en el drawer técnico.");
+      const fullDetail = answer.fullText && answer.fullText !== answer.mainText ? answer.fullText : (payload.safe_next_step || "Detalle disponible en el drawer técnico.");
       stream.innerHTML = `
         <article class="prismo-response-card prismo-answer-channel" data-visual-required="${answer.visualRequired ? "true" : "false"}">
           <div class="prismo-response-meta">
@@ -742,7 +817,7 @@
             <span class="prismo-tag">${esc(certainty)}</span>
           </div>
           <h3>Respuesta PRISMO</h3>
-          <div class="prismo-answer prismo-answer-main">${formatAnswerHtml(answer.shortText)}</div>
+          <div class="prismo-answer prismo-answer-main">${formatAnswerHtml(answer.mainText || answer.shortText)}</div>
           ${showRisk ? `<div class="prismo-risk-summary"><strong>Riesgo visible</strong><br>${esc(risk.summary || risk.level || "sin riesgo reportado")}</div>` : ""}
           <details class="prismo-collapsible-brief">
             <summary>Ver explicación completa y siguiente paso</summary>
@@ -848,7 +923,7 @@
     const selected = selectDisplayBlocks(merged, payload || STATE.lastResponse || {});
     if (!selected.length) {
       const reason = (payload && payload.visual_stage && payload.visual_stage.no_visual_reason) || "insufficient_structured_data";
-      root.innerHTML = `<article class="prismo-render-card prismo-compact-empty" data-type="no_visual_reason" data-layout="full"><h4>Sin visual estructurado</h4><small>${esc(reason)}</small></article>`;
+      root.innerHTML = reason === "conversational_only" ? "" : `<article class="prismo-render-card prismo-compact-empty" data-type="no_visual_reason" data-layout="full"><h4>Visual no requerido</h4><small>${esc(reason)}</small></article>`;
       return;
     }
     selected.forEach((block) => {
@@ -1095,8 +1170,8 @@
     const blocks = buildClientVisualFallbacks(requestPayload);
     const reason = error && (error.code || error.message || String(error));
     const shortText = rows.length
-      ? `PRISMO respondió en modo local read-only: ${rows.length} superficies, ${summary.files} archivos, ${summary.routes} rutas, ${summary.components} componentes y ${summary.css} CSS. El Visual Stage se generó desde Project Brain.`
-      : "PRISMO no pudo consultar el bridge, y no encontró datos suficientes para generar Visual Stage local.";
+      ? `PRISMO usó Project Brain en modo local read-only. Detecté ${rows.length} superficies, ${summary.files} archivos, ${summary.routes} rutas, ${summary.components} componentes y ${summary.css} CSS. Con eso puedo comparar superficies, revisar rutas, capas, evidencia, delta y memoria sin modificar el proyecto.`
+      : "PRISMO no pudo consultar el bridge y tampoco encontró Project Brain cargado; conviene refrescar contexto antes de concluir.";
     return {
       ok: Boolean(rows.length),
       status: rows.length ? "partial" : "error",
@@ -1113,7 +1188,7 @@
         full_text: rows.length
           ? `${shortText} El bridge de consulta no respondió a tiempo, así que PRISMO usó el índice local ya cargado.`
           : `No hubo respuesta del bridge y no se encontró Project Brain cargado. Motivo técnico: ${reason || "unknown"}.`,
-        max_chars: 420,
+        overflow_guard: "no_artificial_answer_cap_client_local",
         visual_stage_required: Boolean(rows.length),
         primary_visual_type: rows.length ? "chart_spec" : "no_visual_reason",
         no_visual_reason: rows.length ? "" : "project_brain_unavailable"

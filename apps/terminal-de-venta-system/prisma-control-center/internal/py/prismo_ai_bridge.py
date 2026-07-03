@@ -650,14 +650,17 @@ def _shape_theater_blocks(base: dict[str, Any], interpretation: dict[str, Any], 
 
 
 # PRISMO_FINAL_VISUAL_STAGE_BEGIN
-def _clamp_answer_text(text: str, max_chars: int = 520, max_lines: int = 5) -> str:
-    cleaned = " ".join(_as_str(text).split())
+def _clamp_answer_text(text: str, overflow_chars: int = 24000, overflow_lines: int = 320) -> str:
+    # Nombre histórico conservado por compatibilidad: esto ya no mutila la respuesta a 5 líneas.
+    # Sólo protege la UI contra salidas absurdamente enormes.
+    cleaned = _as_str(text).replace("\r\n", "\n").strip()
     if not cleaned:
-        cleaned = "PRISMO leyó el contexto disponible en modo read-only y preparó una respuesta visual trazable."
-    lines = cleaned.splitlines()[:max_lines]
-    value = "\n".join(lines) if lines else cleaned
-    if len(value) > max_chars:
-        value = value[: max_chars - 1].rstrip() + "…"
+        cleaned = "PRISMO leyó el contexto disponible en modo read-only y preparó una respuesta trazable."
+    cleaned = re.sub(r"\n{4,}", "\n\n\n", cleaned)
+    lines = cleaned.splitlines()
+    value = "\n".join(lines[:overflow_lines]).strip() if len(lines) > overflow_lines else cleaned
+    if len(value) > overflow_chars:
+        value = value[: max(0, overflow_chars - 72)].rstrip() + "\n\n…[respuesta abreviada sólo por protección anti-desborde de UI]"
     return value
 
 
@@ -921,28 +924,71 @@ def _brain100_reasoning_table_block(profile: dict[str, Any], visual_data: dict[s
     return _block_contract("brain100_reasoning_router", "table_view", "Router de inteligencia", "Por qué PRISMO eligió esas formas de respuesta.", 34, {"rows": rows[:14], "columns": ["signal", "score", "used"]}, "neutral")
 
 
+
+def _brainfinal_development_readiness_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
+    summary = _as_dict(visual_data.get("summary"))
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    items = [
+        {"label": "Puede orientar desarrollo read-only", "done": bool(summary.get("file_count")), "status": f"{summary.get('file_count', 0)} files vistos"},
+        {"label": "Tiene mapa de rutas", "done": bool(summary.get("route_count")), "status": f"{summary.get('route_count', 0)} rutas"},
+        {"label": "Tiene mapa de componentes", "done": bool(summary.get("component_count")), "status": f"{summary.get('component_count', 0)} componentes"},
+        {"label": "Tiene mapa visual/CSS", "done": bool(summary.get("css_count")), "status": f"{summary.get('css_count', 0)} CSS"},
+        {"label": "Tiene memoria episódica", "done": bool(evidence.get("zip_count")), "status": f"{evidence.get('zip_count', 0)} ZIPs"},
+        {"label": "Puede comparar deltas", "done": bool(delta.get("available")), "status": f"{delta.get('changed', 0)} changed / {delta.get('added', 0)} added"},
+    ]
+    return _block_contract("brainfinal_development_readiness", "checklist", "Readiness para desarrollar PRISMA", "Qué tan preparado está PRISMO para ayudarte sin tocar el proyecto.", 14, {"items": items}, "positive")
+
+
+def _brainfinal_risk_matrix_block(profile: dict[str, Any], visual_data: dict[str, Any]) -> dict[str, Any]:
+    summary = _as_dict(visual_data.get("summary"))
+    evidence = _as_dict(visual_data.get("evidence_metrics"))
+    delta = _as_dict(visual_data.get("delta_metrics"))
+    layers = _as_dict(visual_data.get("memory_layers"))
+    items = [
+        {"risk": "Contexto insuficiente", "level": "low" if summary.get("file_count") else "medium", "summary": f"{summary.get('file_count', 0)} archivos indexados.", "mitigation": "Refrescar Project Brain antes de decidir."},
+        {"risk": "Evidencia vieja o ausente", "level": "low" if evidence.get("zip_count") else "medium", "summary": f"{evidence.get('zip_count', 0)} ZIPs en Evidence Librarian.", "mitigation": "Usar result/fail ZIPs recientes como autoridad."},
+        {"risk": "Cambio no comparado", "level": "low" if delta.get("available") else "medium", "summary": "Delta disponible." if delta.get("available") else "Aún sin baseline comparativo.", "mitigation": "Generar otro índice tras cambios para comparar deriva."},
+        {"risk": "Capas visuales complejas", "level": "medium" if summary.get("css_count", 0) > 80 else "low", "summary": f"{summary.get('css_count', 0)} CSS detectados.", "mitigation": "Usar Layer Investigator antes de mover UI."},
+        {"risk": "Memoria no aplicada", "level": "low" if layers else "medium", "summary": f"{len(layers)} capas de memoria disponibles.", "mitigation": "Consultar semántica/procedural/episódica según consulta."},
+    ]
+    return _block_contract("brainfinal_risk_matrix", "risk_matrix", "Riesgos de interpretación", "Riesgos read-only antes de usar una conclusión para desarrollo.", 20, {"items": items}, "neutral")
+
+
 def _brain100_answer_text(base: dict[str, Any], profile: dict[str, Any], visual_data: dict[str, Any], primary_type: str | None) -> str:
     summary = _as_dict(visual_data.get("summary"))
     surfaces = [_as_dict(item) for item in _as_list(visual_data.get("surface_metrics"))]
-    top_routes = sorted(surfaces, key=lambda item: int(item.get("routes") or 0), reverse=True)[:3]
-    top_css = sorted(surfaces, key=lambda item: int(item.get("css") or 0), reverse=True)[:3]
+    top_routes = sorted(surfaces, key=lambda item: int(item.get("routes") or 0), reverse=True)[:4]
+    top_files = sorted(surfaces, key=lambda item: int(item.get("files") or 0), reverse=True)[:4]
+    top_css = sorted(surfaces, key=lambda item: int(item.get("css") or 0), reverse=True)[:4]
     evidence = _as_dict(visual_data.get("evidence_metrics"))
     delta = _as_dict(visual_data.get("delta_metrics"))
-    matched = ", ".join(_as_list(profile.get("matched"))[:6]) or "general"
+    layers = _as_dict(visual_data.get("memory_layers"))
+    matched = ", ".join(_as_list(profile.get("matched"))[:8]) or "general"
+
     lines = [
-        f"Leí PRISMA en modo read-only y detecté {summary.get('app_count', len(surfaces))} superficies, {summary.get('file_count', 0)} archivos, {summary.get('route_count', 0)} rutas, {summary.get('component_count', 0)} componentes y {summary.get('css_count', 0)} CSS.",
-        f"Interpreté la consulta como `{profile.get('primary', 'general')}` con señales: {matched}. Por eso elegí `{primary_type or 'visual automático'}` como visual principal y dejé otros bloques como apoyo.",
+        f"Leí PRISMA en modo read-only y detecté {summary.get('app_count', len(surfaces))} superficies, {summary.get('file_count', 0)} archivos, {summary.get('route_count', 0)} rutas, {summary.get('component_count', 0)} componentes, {summary.get('css_count', 0)} CSS y {summary.get('memory_layer_count', len(layers))} capas de memoria.",
+        f"Interpreté tu consulta como `{profile.get('primary', 'general')}` con señales `{matched}`. Por eso el visual principal es `{primary_type or 'visual automático'}` y dejé matrices, timeline, memoria, riesgo o grafo como apoyo cuando hay datos.",
     ]
+    if top_files:
+        lines.append("Superficies con más archivos: " + "; ".join(f"{item.get('label')}: {item.get('files')}" for item in top_files) + ".")
     if top_routes:
         lines.append("Superficies con más rutas: " + "; ".join(f"{item.get('label')}: {item.get('routes')}" for item in top_routes) + ".")
-    if top_css and profile.get("primary") in {"layers", "surfaces", "general", "chart"}:
-        lines.append("Mayor carga CSS detectada: " + "; ".join(f"{item.get('label')}: {item.get('css')}" for item in top_css) + ".")
+    if top_css:
+        lines.append("Mayor carga CSS/visual detectada: " + "; ".join(f"{item.get('label')}: {item.get('css')}" for item in top_css) + ". Esto no implica error, pero sí indica dónde conviene usar Layer Investigator antes de tocar UI.")
     if evidence.get("zip_count"):
-        lines.append(f"Evidence Librarian tiene {evidence.get('zip_count')} ZIPs indexados; latest_result={bool(evidence.get('latest_result'))}, latest_fail={bool(evidence.get('latest_fail'))}.")
+        lines.append(f"Evidence Librarian trae {evidence.get('zip_count')} ZIPs indexados; latest_result={bool(evidence.get('latest_result'))}, latest_fail={bool(evidence.get('latest_fail'))}. Esa memoria episódica sirve para explicar fallos pasados sin inventar causa raíz.")
+    else:
+        lines.append("Evidence Librarian no reporta ZIPs suficientes en esta lectura; si preguntas por fallos o regresiones, la confianza debe bajar hasta refrescar evidencia.")
     if delta.get("available"):
-        lines.append(f"Delta Scanner comparó contra índice previo: {delta.get('changed', 0)} changed y {delta.get('added', 0)} added, sin tocar repo.")
-    lines.append("Puedes usarlo para preguntar por rutas, CSS, capas, evidencia, riesgos, cambios o qué falta para terminar una superficie. PRISMO no modifica apps en este modo; observa, entiende, memoriza y visualiza.")
+        lines.append(f"Delta Scanner comparó contra índice previo: {delta.get('changed', 0)} changed y {delta.get('added', 0)} added. Esa señal ayuda a responder qué cambió sin hacer git write ni tocar procesos.")
+    else:
+        lines.append("Delta Scanner todavía está en modo baseline o primer índice; puede entender el estado actual, pero no afirmar cambios históricos fuertes sin otro índice posterior.")
+    if layers:
+        lines.append("Memorias activas: " + "; ".join(f"{k.replace('_', ' ')}={_as_dict(v).get('confidence', 'medium')}" for k, v in list(layers.items())[:8]) + ".")
+    lines.append("Para terminar de desarrollar PRISMA, úsalo como cerebro observador: pregúntale por superficies, rutas, CSS/capas, evidencia reciente, riesgos, deudas o qué falta. En este modo no modifica apps; observa, entiende, memoriza y visualiza con evidencia.")
     return "\n\n".join(lines)
+
 
 def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, Any], visual_data: dict[str, Any]) -> list[dict[str, Any]]:
     query = _query_text_for_render(base, interpretation)
@@ -959,6 +1005,8 @@ def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, A
     dependency = _brain100_dependency_graph_block(visual_data)
     capability = _brain100_capability_block(profile, visual_data)
     reasoning = _brain100_reasoning_table_block(profile, visual_data)
+    readiness = _brainfinal_development_readiness_block(profile, visual_data)
+    risk_matrix = _brainfinal_risk_matrix_block(profile, visual_data)
 
     def add(block: dict[str, Any] | None) -> None:
         if block and not any(item.get("id") == block.get("id") for item in blocks):
@@ -977,15 +1025,15 @@ def _build_visual_stage_blocks(base: dict[str, Any], interpretation: dict[str, A
     elif "graph" in wants:
         add(dependency); add(route_map); add(chart)
     elif "risk" in wants:
-        add(reasoning); add(evidence_chart); add(delta_timeline)
+        add(risk_matrix); add(reasoning); add(evidence_chart); add(delta_timeline)
     else:
         add(chart); add(matrix); add(dependency)
 
-    for optional in [matrix, route_map, layer_map, evidence_chart, delta_timeline, memory_table, capability, reasoning, dependency]:
+    for optional in [matrix, route_map, layer_map, evidence_chart, delta_timeline, memory_table, risk_matrix, readiness, capability, reasoning, dependency]:
         add(optional)
     if not blocks and visual_data.get("no_visual_reason"):
         blocks.append(_block_contract("visual_stage_empty", "direct_answer_card", "Sin visual estructurado", f"No visual: {visual_data.get('no_visual_reason')}", 12, {"answer": f"No visual: {visual_data.get('no_visual_reason')}"}, "neutral"))
-    return blocks[:10]
+    return blocks[:12]
 
 
 def _answer_channel_from_visual_data(base: dict[str, Any], visual_data: dict[str, Any], primary_type: str | None) -> dict[str, Any]:
@@ -1002,11 +1050,11 @@ def _answer_channel_from_visual_data(base: dict[str, Any], visual_data: dict[str
         text = direct or "PRISMO respondió con el contexto disponible, sin mutar el proyecto."
         full = text
     return {
-        "contract": "prismo.answer_channel.brain100.v1",
-        "main_text": _clamp_answer_text(text, max_chars=4200, max_lines=60),
-        "short_text": _clamp_answer_text(text, max_chars=4200, max_lines=60),
-        "full_text": _clamp_answer_text(full, max_chars=7600, max_lines=100),
-        "max_chars": 7600,
+        "contract": "prismo.answer_channel.brainfinal.v2",
+        "main_text": _clamp_answer_text(text),
+        "short_text": _clamp_answer_text(text),
+        "full_text": _clamp_answer_text(full, overflow_chars=32000, overflow_lines=420),
+        "overflow_guard": "no_artificial_answer_cap_reasonable_ui_guard",
         "visual_stage_required": bool(visual_data.get("has_structured_data")),
         "primary_visual_type": primary_type,
         "no_visual_reason": visual_data.get("no_visual_reason", ""),
@@ -1201,7 +1249,7 @@ def _prismo_local_readonly_base_response(payload: dict[str, Any], public: bool =
     response.setdefault("errors", [])
     response["meta"] = _as_dict(response.get("meta"))
     response["meta"]["provider"] = "local_project_brain"
-    response["meta"]["schema_version"] = "brain100_readonly_v1"
+    response["meta"]["schema_version"] = "brainfinal_readonly_v2"
     response["meta"]["local_first"] = True
     return response
 

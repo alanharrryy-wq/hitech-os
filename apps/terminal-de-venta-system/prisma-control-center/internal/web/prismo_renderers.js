@@ -195,8 +195,8 @@
     else if (Array.isArray(spec.labels)) rawLabels = spec.labels;
     else if (sourceData.length && xKey) rawLabels = sourceData.map((row, index) => row && row[xKey] !== undefined ? row[xKey] : `Item ${index + 1}`);
 
-    const series = asArray(spec.series).map((item, idx) => {
-      const dataKey = item.dataKey || item.key || item.name || `series_${idx + 1}`;
+    let series = asArray(spec.series).map((item, idx) => {
+      const dataKey = item.dataKey || item.key || item.name || spec.valueKey || `series_${idx + 1}`;
       const values = Array.isArray(item.data)
         ? item.data.map(num)
         : sourceData.map((row) => num(row && row[dataKey]));
@@ -208,6 +208,15 @@
         valueSuffix: item.valueSuffix || ""
       };
     }).filter((item) => item.values.length);
+    if (!series.length && spec.valueKey && sourceData.length) {
+      series = [{
+        label: spec.valueKey,
+        dataKey: spec.valueKey,
+        values: sourceData.map((row) => num(row && row[spec.valueKey])),
+        valuePrefix: "",
+        valueSuffix: ""
+      }];
+    }
 
     const labels = rawLabels.length
       ? rawLabels.map((x, i) => String(x || `Item ${i + 1}`))
@@ -286,10 +295,63 @@
     return `<div class="prismo-svg-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(chart.title)}">${grid}${lines}${axis}</svg><div class="prismo-chart-legend">${legend}</div></div>`;
   }
 
+
+  function renderSvgPie(chart) {
+    const series = chart.series[0];
+    const labels = chart.labels.slice(0, 8);
+    const values = series ? series.values.slice(0, labels.length) : [];
+    const total = values.reduce((acc, value) => acc + Math.max(0, num(value)), 0);
+    if (!labels.length || !total) return "";
+    const width = 760, height = 360, cx = 185, cy = 180, radius = 124;
+    let angle = -Math.PI / 2;
+    const slices = values.map((raw, idx) => {
+      const value = Math.max(0, num(raw));
+      const next = angle + (value / total) * Math.PI * 2;
+      const large = next - angle > Math.PI ? 1 : 0;
+      const x1 = cx + Math.cos(angle) * radius;
+      const y1 = cy + Math.sin(angle) * radius;
+      const x2 = cx + Math.cos(next) * radius;
+      const y2 = cy + Math.sin(next) * radius;
+      const mid = (angle + next) / 2;
+      const lx = cx + Math.cos(mid) * (radius + 34);
+      const ly = cy + Math.sin(mid) * (radius + 34);
+      const pct = Math.round((value / total) * 100);
+      angle = next;
+      return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${large} 1 ${x2} ${y2} Z" class="prismo-svg-bar prismo-svg-series-${idx % 4}"/><text x="${lx}" y="${ly}" class="prismo-svg-value">${esc(pct)}%</text>`;
+    }).join("");
+    const legend = labels.map((label, idx) => `<span><i class="prismo-legend-dot prismo-svg-series-${idx % 4}"></i>${esc(label)} · ${esc(values[idx])}</span>`).join("");
+    return `<div class="prismo-svg-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(chart.title)}">${slices}</svg><div class="prismo-chart-legend">${legend}</div></div>`;
+  }
+
+  function renderSvgScatter(chart) {
+    const series = chart.series[0];
+    const rows = chart.data.slice(0, 36);
+    if (!rows.length || !series) return "";
+    const xKey = chart.nameKey || "x";
+    const yKey = series.dataKey;
+    const xValues = rows.map((row, index) => num(row[xKey] !== undefined ? row[xKey] : index + 1));
+    const yValues = rows.map((row) => num(row[yKey]));
+    const width = 920, height = 360, left = 64, right = 30, top = 28, bottom = 52;
+    const innerW = width - left - right, innerH = height - top - bottom;
+    const minX = Math.min(...xValues), maxX = Math.max(...xValues, minX + 1);
+    const minY = Math.min(0, ...yValues), maxY = Math.max(1, ...yValues);
+    const xFor = (v) => left + ((v - minX) / Math.max(1, maxX - minX)) * innerW;
+    const yFor = (v) => top + innerH - ((v - minY) / Math.max(1, maxY - minY)) * innerH;
+    const grid = [0, .25, .5, .75, 1].map((t) => {
+      const y = top + innerH * t;
+      const val = Math.round(maxY - (maxY - minY) * t);
+      return `<line x1="${left}" x2="${width - right}" y1="${y}" y2="${y}" class="prismo-svg-grid"/><text x="18" y="${y + 4}" class="prismo-svg-tick">${esc(val)}</text>`;
+    }).join("");
+    const dots = rows.map((row, idx) => `<circle cx="${xFor(xValues[idx])}" cy="${yFor(yValues[idx])}" r="5" class="prismo-svg-dot prismo-svg-series-${idx % 4}"><title>${esc(row.label || row.name || chart.labels[idx] || `Item ${idx + 1}`)}: ${esc(yValues[idx])}</title></circle>`).join("");
+    return `<div class="prismo-svg-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(chart.title)}">${grid}${dots}</svg><div class="prismo-chart-legend"><span><i class="prismo-legend-dot"></i>${esc(series.label)}</span></div></div>`;
+  }
+
   function renderChart(block) {
     const chart = normalizeChartSpec(block.data || {});
     let visual = "";
     if (chart.chartType === "line") visual = renderSvgLine(chart);
+    else if (chart.chartType === "pie") visual = renderSvgPie(chart);
+    else if (chart.chartType === "scatter") visual = renderSvgScatter(chart);
     else visual = renderSvgBars(chart);
     if (!visual) {
       visual = `<div class="prismo-empty">Chart spec sin datos renderizables.</div>`;
