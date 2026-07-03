@@ -498,3 +498,27 @@ Un hotfix visual puede entrar al repo final si trae:
 **Rollback probado:** Sí para `govclean2`; `opsclose1` reportó `rollback_executed: true`.
 **Regla nueva:** Para visual/premium de `/pos`, el orden es: governance limpio, `posctx.py` fresco, Authority Mesh exacto con `LAYERS_MAP.md/json`, manual operativo consultado desde app-root, y sólo después patch. AutoMesh debe reconocer el manual tanto en raíz como en app-root. No usar smoke funcional como green visual.
 **Notas:** No tocar PC, Mobile, Chart Lab ni Shared UI salvo que matrices Authority Mesh lo autoricen explícitamente. No usar `!important`, priority override tokens ni hacks globales.
+
+### 2026-07-03 12:31 - LICFLOW3 POST 404 era worker vivo stale y config local desalineada
+
+**Tipo:** GOTCHA / EVIDENCE_LEARNING / COMMAND_WORKS
+**Superficie:** Cloudflare LICFLOW3 / Tooling / 3160
+**Contexto:** `https://app.hitechrts.com` tenia `/health` y `/api/public/capabilities` en `200`, pero `POST /api/licenses/activate`, `/refresh` y `/revoke` devolvian `404`.
+**Precondiciones:** Repo `F:\repos\hitech-os`, app `apps/terminal-de-venta-system`, sin deploy, sin DNS/Tunnel, sin secrets, sin D1 copy/export, sin levantar servidores.
+**Comando exacto:**
+
+```powershell
+$ErrorActionPreference='Stop'
+Set-Location 'F:\repos\hitech-os\apps\terminal-de-venta-system'
+python tools/prisma-governance/authority_mesh.py --task "Corregir LICFLOW3 Cloudflare licensing routes para que POST /api/licenses/activate, /refresh y /revoke funcionen contra app.hitechrts.com sin downgrades, sin duplicar LICFLOW2, sin tocar secretos, sin copiar DB, sin deploy automatico no autorizado y preservando Worker real prisma-cloud-semilla y D1 real prisma_cloud_semilla." --output .governance/current
+pnpm run verify:licflow3:route-activate
+pnpm run verify:licflow3:route-refresh
+pnpm run verify:licflow3:route-revoke
+```
+
+**Resultado observado:** PARTIAL. Local route contract PASS con `401 ADMIN_TOKEN_REQUIRED` para dummy sin token; live target seguia en `404` porque no hubo deploy autorizado.
+**Evidencia:** `.governance/current/LICFLOW3_ROUTE_MAP.md`, `.governance/current/LICFLOW3_OWNERSHIP_MAP.md`, `F:\descargasf\licflow3-evidence\latest\verifier-output\verify_licflow3_route-*.json`.
+**Causa real:** El worker vivo `prisma-cloud-semilla` estaba en version `prcloud5-2026-06-23` y no tenia las rutas POST de LICFLOW3; el `wrangler.jsonc` local todavia apuntaba al scaffold `prisma-licflow3-cloud-licensing` y D1 placeholder, no al worker/D1 reales.
+**Rollback probado:** N/A. No hubo deploy ni mutacion cloud; rollback local es revertir el diff de `infra/cloudflare/licflow3-worker`, `tools/verify-licflow3.mts`, `package.json` y docs.
+**Regla nueva:** En LICFLOW3, antes de diagnosticar handlers, confirmar tres cosas juntas: respuesta viva con version, worker/D1 reales en Wrangler, y `wrangler.jsonc` local apuntando a esos nombres reales. Si local pasa y live sigue 404, el cierre honesto es `LOCAL_READY_CLOUDFLARE_DEPLOY_AUTH_REQUIRED`.
+**Notas:** No llamar PASS funcional hosted hasta tener deploy/smoke autorizado. Dummy route evidence puede aceptar `400/401/403/422`, nunca `404` ni `5xx`.
