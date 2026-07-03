@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+# PRISMO_TQFIX4_PANEL_PARTIAL_FALLBACK: query endpoint should degrade to Project Brain partial response instead of hard error.
+PRISMO_TQFIX4_PANEL_PARTIAL_FALLBACK = True
+
 import json
 import threading
 import time
@@ -338,12 +341,45 @@ class PanelHandler(SimpleHTTPRequestHandler):
             except Exception as exc:  # noqa: BLE001 - never expose stack traces to UI.
                 self._send_json(
                     {
-                        "ok": False,
-                        "status": "error",
-                        "direct_answer": "No se pudo validar Theater Query. No se ejecutó ninguna acción.",
-                        "error": str(exc),
+                        "ok": True,
+                        "status": "partial",
+                        "read_only": True,
+                        "mutation_allowed": False,
+                        "direct_answer": "PRISMO activó fallback read-only porque Theater Query no validó en backend. Project Brain local puede seguir respondiendo sin ejecutar acciones.",
+                        "certainty_level": "CONFIRMADO_POR_INDICE_LOCAL",
+                        "answer_channel": {
+                            "contract": "prismo.answer_channel.panel_degraded.v1",
+                            "main_text": "PRISMO activó fallback read-only porque Theater Query no validó en backend. Project Brain local puede seguir respondiendo sin ejecutar acciones.",
+                            "short_text": "PRISMO activó fallback read-only porque Theater Query no validó en backend.",
+                            "full_text": "PRISMO activó fallback read-only porque Theater Query no validó en backend. El cliente debe usar Project Brain local, Visual Stage y memorias chidas; el detalle técnico conserva la excepción.",
+                            "visual_stage_required": True,
+                            "primary_visual_type": "chart_spec",
+                            "no_visual_reason": ""
+                        },
+                        "visual_stage": {
+                            "contract": "prismo.visual_stage.panel_degraded.v1",
+                            "required": True,
+                            "primary_block_type": "chart_spec",
+                            "source": "panel_fallback"
+                        },
+                        "render_blocks": [],
+                        "blocks": [],
+                        "warnings": ["PRISMO_THEATER_QUERY_SERVER_FALLBACK"],
+                        "errors": [
+                            {
+                                "code": "PRISMO_THEATER_QUERY_SERVER_FALLBACK",
+                                "message": str(exc),
+                                "safe_message": "Theater Query cayó a fallback read-only.",
+                                "recoverable": True
+                            }
+                        ],
+                        "safe_next_step": "Usar Project Brain read-only y revisar el drawer técnico si hace falta.",
+                        "meta": {
+                            "provider": "panel_server_fallback",
+                            "schema_version": "prodreadiness_panel_degraded_v1"
+                        }
                     },
-                    status=500,
+                    status=200,
                 )
             return
 
