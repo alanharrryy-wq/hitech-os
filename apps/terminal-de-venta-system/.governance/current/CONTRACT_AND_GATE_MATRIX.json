@@ -1,48 +1,22 @@
 {
-  "task": "Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.",
+  "task": "Corregir LICFLOW3 Cloudflare licensing routes para que POST /api/licenses/activate, /refresh y /revoke funcionen contra app.hitechrts.com sin downgrades, sin duplicar LICFLOW2, sin tocar secretos, sin copiar DB, sin deploy automático no autorizado y preservando Worker real prisma-cloud-semilla y D1 real prisma_cloud_semilla.",
   "apps": [
-    "backgrounds",
-    "chart-lab",
-    "control-center",
-    "database-sync",
-    "mobile",
-    "pc",
     "productization",
-    "quality",
-    "shared-kernel",
-    "shared-ui",
-    "tablet",
-    "web"
+    "tablet"
   ],
   "change_types": [
-    "data_sync",
-    "visual"
+    "data_sync"
   ],
   "required_gates": [
     "real_db_destructive_tests_forbidden",
     "schema_parity_required",
     "sync_fixture_required",
-    "visual_manifest_required",
-    "visual_evidence_required",
-    "layer_budget_required",
-    "no_fake_green",
     "authority_readset_lock_required",
     "app_impact_matrix_required",
     "contract_gate_matrix_required",
     "rollback_required",
     "diagnostic_zip_on_failure",
-    "no_fake_green",
-    "visual_capability_matrix_required",
-    "visual_stack_decision_required",
-    "app_visual_exploitation_matrix_required",
-    "visual_capability_rejection_reasons_required",
-    "visual_exploitation_contract_required",
-    "app_capability_requirements_required",
-    "screen_visual_stack_plan_required",
-    "premium_acceptance_bar_required",
-    "used_rejected_capability_matrix_required",
-    "layer_budget_decision_required",
-    "visual_evidence_or_pending_verification_required"
+    "no_fake_green"
   ],
   "forbidden_default_actions": [
     "kill dev processes",
@@ -95,172 +69,108 @@
       "reason": "tablet_authority"
     },
     {
-      "path": "quality/contracts/mobile-truthfulness.contract.json",
-      "bytes": 519,
-      "sha256": "7814441d8ae6ca2bc9b96b19feb82dea09de1d8c7f6edd4f5e0db53b0ca3b56a",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "quality/contracts/control-audit-only.contract.json",
-      "bytes": 483,
-      "sha256": "49d4bce2a68b8f865012319a664498e0f55b6d1fbe715d8c0934634c83796eee",
-      "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "quality/contracts/operational-drift.contract.json",
-      "bytes": 549,
-      "sha256": "4322fe3921675e81bdca86b174d8e2e2b2a317dedf046e9a013e10188a504a59",
-      "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "quality/contracts/cloudflare-optional-base.contract.json",
-      "bytes": 558,
-      "sha256": "1117d1ea3439c528e138a7401478f01672fdc37c17404f794a9263ae19f32b8a",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/contracts.json",
-      "bytes": 10359,
-      "sha256": "f0ed5192988e1dc3c694402c322a51562210444d4245354c91795297068c59e0",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
       "path": "quality/contracts/customer-assurance.contract.json",
       "bytes": 567,
       "sha256": "751124e0e8fde425fefe32f33df061425084d4c1066ce5dbcbbd6f5f4014ea6a",
       "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/customer-evidence-ledger.contract.json",
-      "bytes": 546,
-      "sha256": "d20f32e178fe5ffdb7d48e40fca941571cc3e2b98b8ebac385271be14cfe8bc8",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/demo-safety.contract.json",
-      "bytes": 536,
-      "sha256": "6f5235a220a3ef673a55289b27b106a050b936284dc5e352649887735cd0a80a",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/idempotent-sync.contract.json",
-      "bytes": 479,
-      "sha256": "590bb352e55606404a56ded00a7cbbfb0cffae7231c5659e2233959a4dfd6a00",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/no-destructive-testing-on-real-db.contract.json",
-      "bytes": 513,
-      "sha256": "65c97e44376a63595682ff87fda044e7da7eaa2be403cd48e86cfaee8bb04c3b",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/prisma-not-pos-only.contract.json",
-      "bytes": 482,
-      "sha256": "960b5529e3525e5278d9a27e1a5ddd54cf2a301ba7c65aeb25ed1b67a26d3640",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
-    },
-    {
-      "path": "quality/contracts/schema-migration-parity.contract.json",
-      "bytes": 510,
-      "sha256": "bf865fb9d7d594f2c82ad2240bd867cc956cdbd8d768fd2eced009a8aa8a26ab",
-      "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
+      "source_id": "app:productization",
+      "reason": "productization_authority"
     },
     {
       "path": "quality/contracts/support-pack-redaction.contract.json",
       "bytes": 568,
       "sha256": "96e47caa115a54a6333f38e379c75854df182539f14c479d6131721697ae8099",
       "extension": ".json",
-      "source_id": "app:quality",
-      "reason": "quality_authority"
+      "source_id": "app:productization",
+      "reason": "productization_authority"
     },
     {
-      "path": "docs/contracts/API_RESPONSE_CONTRACT.md",
-      "bytes": 1344,
-      "sha256": "7e0d5ed2eb40bf5003631a260a34b196f3f66390f80257383a1770621aeaf237",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/schema-migration-parity.contract.json",
+      "bytes": 510,
+      "sha256": "bf865fb9d7d594f2c82ad2240bd867cc956cdbd8d768fd2eced009a8aa8a26ab",
+      "extension": ".json",
+      "source_id": "type:data_sync",
+      "reason": "data_sync_authority"
     },
     {
-      "path": "docs/contracts/ERRORS_CONTRACT.md",
-      "bytes": 1187,
-      "sha256": "0dab09208b3bac204df5dd6523a7679cef88337bd02d999950a7c4698d5fd4c6",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/idempotent-sync.contract.json",
+      "bytes": 479,
+      "sha256": "590bb352e55606404a56ded00a7cbbfb0cffae7231c5659e2233959a4dfd6a00",
+      "extension": ".json",
+      "source_id": "type:data_sync",
+      "reason": "data_sync_authority"
     },
     {
-      "path": "docs/contracts/EVENT_CONTRACT.md",
-      "bytes": 2114,
-      "sha256": "0189199658c0207bc12bb9a4c195e610e215779808b67328020a8fb090f65982",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/no-destructive-testing-on-real-db.contract.json",
+      "bytes": 513,
+      "sha256": "65c97e44376a63595682ff87fda044e7da7eaa2be403cd48e86cfaee8bb04c3b",
+      "extension": ".json",
+      "source_id": "type:data_sync",
+      "reason": "data_sync_authority"
     },
     {
-      "path": "docs/contracts/EXPORT_CONTRACT.md",
-      "bytes": 803,
-      "sha256": "f8f4a30c9a93738c45b61a579500da6c5147cf6aaf4e6696335688266f1fc3b7",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/cloudflare-optional-base.contract.json",
+      "bytes": 558,
+      "sha256": "1117d1ea3439c528e138a7401478f01672fdc37c17404f794a9263ae19f32b8a",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
     },
     {
-      "path": "docs/contracts/PERMISSIONS_AUDIT_CONTRACT.md",
-      "bytes": 1613,
-      "sha256": "c9702506b9de9e05bd3b9967ee8c4fe9b7a01a046b97885f63c37516f93987af",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/contracts.json",
+      "bytes": 10359,
+      "sha256": "f0ed5192988e1dc3c694402c322a51562210444d4245354c91795297068c59e0",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
     },
     {
-      "path": "docs/contracts/QA_ACCEPTANCE_CONTRACT.md",
-      "bytes": 1254,
-      "sha256": "255f559773b2ab7bb82fbe44bc00ac896a7ead870a7f1c85377c72caf5e8d506",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/control-audit-only.contract.json",
+      "bytes": 483,
+      "sha256": "49d4bce2a68b8f865012319a664498e0f55b6d1fbe715d8c0934634c83796eee",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
     },
     {
-      "path": "docs/contracts/SYNC_RECONCILIATION_CONTRACT.md",
-      "bytes": 2092,
-      "sha256": "841cd3598cf9c4b8c98df398b71a86c7abf398ced138246be5f9b850f7ec358f",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/customer-evidence-ledger.contract.json",
+      "bytes": 546,
+      "sha256": "d20f32e178fe5ffdb7d48e40fca941571cc3e2b98b8ebac385271be14cfe8bc8",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
     },
     {
-      "path": "docs/contracts/UI_STATE_CONTRACT.md",
-      "bytes": 979,
-      "sha256": "857f63652b713691b8188ebecd26a6fdd1103a20eb88831c0b98a13a3dd3e17c",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
+      "path": "quality/contracts/demo-safety.contract.json",
+      "bytes": 536,
+      "sha256": "6f5235a220a3ef673a55289b27b106a050b936284dc5e352649887735cd0a80a",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
+    },
+    {
+      "path": "quality/contracts/mobile-truthfulness.contract.json",
+      "bytes": 519,
+      "sha256": "7814441d8ae6ca2bc9b96b19feb82dea09de1d8c7f6edd4f5e0db53b0ca3b56a",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
+    },
+    {
+      "path": "quality/contracts/operational-drift.contract.json",
+      "bytes": 549,
+      "sha256": "4322fe3921675e81bdca86b174d8e2e2b2a317dedf046e9a013e10188a504a59",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
+    },
+    {
+      "path": "quality/contracts/prisma-not-pos-only.contract.json",
+      "bytes": 482,
+      "sha256": "960b5529e3525e5278d9a27e1a5ddd54cf2a301ba7c65aeb25ed1b67a26d3640",
+      "extension": ".json",
+      "source_id": "quality:always",
+      "reason": "quality_governance_scan"
     }
   ],
   "critical_missing": [],

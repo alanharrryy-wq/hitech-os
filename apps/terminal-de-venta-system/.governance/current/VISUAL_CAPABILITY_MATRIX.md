@@ -1,9 +1,9 @@
 # PRISMA Visual Capability Matrix
 
-- Task: `Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.`
+- Task: `Corregir LICFLOW3 Cloudflare licensing routes para que POST /api/licenses/activate, /refresh y /revoke funcionen contra app.hitechrts.com sin downgrades, sin duplicar LICFLOW2, sin tocar secretos, sin copiar DB, sin deploy automático no autorizado y preservando Worker real prisma-cloud-semilla y D1 real prisma_cloud_semilla.`
 - Status: `PASS`
-- Generated: `2026-06-19T03:52:56-06:00`
-- Visual required: `True`
+- Generated: `2026-07-03T12:19:43-06:00`
+- Visual required: `False`
 
 | Capability | Kind | Available | Risk | Default decision | Evidence count | Contribution |
 |---|---|---:|---|---|---:|---|
@@ -29,7 +29,7 @@
 | radix-tooltip | package | yes | medium | use_if_relevant | 2 | Non-blocking help for secondary controls when touch UX stays clear. |
 | prisma-recipes | repo_capability | yes | low | prefer | 27 | Approved visual recipes including liquid/glass/pill/cloudglass where authorized. |
 | vanilla-extract | package | yes | medium | use_if_relevant | 2 | Static governed tokens/styles when repo pattern already exists. |
-| prisma-tokens | repo_capability | yes | low | prefer | 13 | Governed spacing, color, radius, shadow, typography and state primitives. |
+| prisma-tokens | repo_capability | yes | low | prefer | 14 | Governed spacing, color, radius, shadow, typography and state primitives. |
 | class-variance-authority | package | yes | low | use_if_relevant | 2 | Typed class variants for governed component states. |
 | prisma-visual-os | repo_capability | yes | low | prefer | 25 | Governed controls, layers, presets, recipes and release gates. |
 | ogl | package | yes | high | bounded_optional_high_risk | 2 | Bounded ambient/background WebGL only when layer budget allows. |
