@@ -1968,3 +1968,33 @@
   text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */
+
+/* TABNP1_HOME_PRODUCT_TRIM_0207
+   Keep Inicio as product entry. Hide heavy runtime/metrics blocks from first pass.
+*/
+.metricGrid,
+.mainGrid {
+  display: none;
+}
+
+.homeShell {
+  gap: 14px;
+}
+
+.hero,
+.workflowPanel,
+.toolPanel {
+  border-color: rgba(86,125,170,.18);
+  background: linear-gradient(145deg, rgba(255,255,255,.90), rgba(248,251,255,.66));
+  box-shadow: 0 12px 34px rgba(36,54,87,.10);
+}
+
+.workflowSteps,
+.toolGrid {
+  gap: 10px;
+}
+
+.workflowStep,
+.toolCard {
+  min-height: 86px;
+}

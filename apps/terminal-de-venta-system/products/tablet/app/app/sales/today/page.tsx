@@ -1,3 +1,4 @@
+export const metadata = { title: "Ventas de hoy - PRISMA Tablet", description: "Consulta tickets, totales y acciones de venta del día." };
 import { SalesTodayScreen } from "@components/sales/sales-today-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
