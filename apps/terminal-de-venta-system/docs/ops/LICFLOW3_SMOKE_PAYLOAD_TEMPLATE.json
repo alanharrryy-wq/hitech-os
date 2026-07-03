@@ -1,0 +1,83 @@
+{
+  "README": "Copy this file to F:\\descargasf\\licflow3_smoke_payload.json and replace ONLY dummy values. Do not use real customer licenses or secrets.",
+  "base_url": "https://app.hitechrts.com",
+  "requests": [
+    {
+      "name": "activate",
+      "method": "POST",
+      "path": "/api/licenses/activate",
+      "body": {
+        "licenseKey": "DUMMY-LICFLOW3-TEST-KEY",
+        "deviceId": "dummy-device-id",
+        "tenantId": "dummy-tenant",
+        "app": "terminal-de-venta-system"
+      },
+      "expected_status_any_of": [
+        200,
+        201,
+        400,
+        401,
+        403,
+        422
+      ]
+    },
+    {
+      "name": "refresh",
+      "method": "POST",
+      "path": "/api/licenses/refresh",
+      "body": {
+        "licenseKey": "DUMMY-LICFLOW3-TEST-KEY",
+        "deviceId": "dummy-device-id",
+        "tenantId": "dummy-tenant"
+      },
+      "expected_status_any_of": [
+        200,
+        201,
+        400,
+        401,
+        403,
+        422
+      ]
+    },
+    {
+      "name": "revoke",
+      "method": "POST",
+      "path": "/api/licenses/revoke",
+      "body": {
+        "licenseKey": "DUMMY-LICFLOW3-TEST-KEY",
+        "deviceId": "dummy-device-id",
+        "tenantId": "dummy-tenant",
+        "reason": "dummy-smoke"
+      },
+      "expected_status_any_of": [
+        200,
+        201,
+        204,
+        400,
+        401,
+        403,
+        422
+      ]
+    }
+  ],
+  "pass_policy": {
+    "route_evidence_only_statuses": [
+      400,
+      401,
+      403,
+      422
+    ],
+    "functional_success_statuses": [
+      200,
+      201,
+      204
+    ],
+    "never_accept_statuses": [
+      500,
+      501,
+      502,
+      503,
+      504
+    ]
+  }
+}
