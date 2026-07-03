@@ -41,9 +41,12 @@ export function ContextualExportActions({ surface }: ContextualExportActionsProp
   return (
     <details className={styles.card} aria-labelledby={`contextual-export-${surface}`}>
       <summary className={styles.summary}>
-        <span>Exportar</span>
-        <strong id={`contextual-export-${surface}`}>Descargar reporte</strong>
-        <small>{surfaceCopy(surface)}</small>
+        <span className={styles.summaryCopy}>
+          <small>Exportaciones</small>
+          <strong id={`contextual-export-${surface}`}>Descargar datos de esta vista</strong>
+          <em>{surfaceCopy(surface)}</em>
+        </span>
+        <b>Abrir</b>
       </summary>
 
       <div className={styles.actions}>

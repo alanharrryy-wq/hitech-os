@@ -753,3 +753,63 @@ body[data-prisma-interface="license"] #subtitle {
 #prismo-console .prismo-data-table td{vertical-align:top; line-height:1.35}
 #prismo-console .prismo-feedback-dock.prismo-actions-menu{display:none}
 @media (max-width:1180px){#prismo-console .prismo-visual-stage{grid-template-columns:1fr}#prismo-console .prismo-svg-chart svg{min-width:680px}#prismo-console .prismo-surface-row{grid-template-columns:1fr 1fr 1fr}}
+
+
+/* PRISMO BRFINAL1 · inteligencia usable + escenario visual respirable */
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout{
+  grid-template-columns:minmax(250px,.58fr) minmax(680px,1.9fr) minmax(280px,.68fr);
+  gap:18px;
+}
+#prismo-console .prismo-response-card.prismo-answer-channel{
+  padding:18px 20px;
+}
+#prismo-console .prismo-answer-main{
+  max-width:min(118ch,100%);
+  font-size:clamp(15px,1.05vw,17px);
+  line-height:1.62;
+}
+#prismo-console .prismo-answer-main p + p{
+  margin-top:4px;
+}
+#prismo-console .prismo-answer-detail{
+  max-width:118ch;
+}
+#prismo-console .prismo-visual-stage{
+  grid-template-columns:repeat(2,minmax(360px,1fr));
+  gap:18px;
+}
+#prismo-console .prismo-render-card[data-visual-role="primary"]{
+  grid-column:1 / -1;
+}
+#prismo-console .prismo-render-card[data-type="surface_matrix"],
+#prismo-console .prismo-render-card[data-type="timeline"]{
+  min-height:280px;
+}
+#prismo-console .prismo-svg-chart svg{
+  min-width:840px;
+  min-height:360px;
+}
+#prismo-console .prismo-chart-card[data-layout="full"] .prismo-svg-chart svg{
+  min-height:390px;
+}
+#prismo-console .prismo-table-scroll{
+  max-height:min(62vh,720px);
+}
+#prismo-console .prismo-surface-row{
+  padding:12px 14px;
+}
+#prismo-console .prismo-flow-node,
+#prismo-console .prismo-mini-card{
+  overflow-wrap:anywhere;
+}
+#prismo-console .prismo-compact-empty[data-type="no_visual_reason"]{
+  display:none;
+}
+@media (max-width:1360px){
+  #prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout{grid-template-columns:minmax(240px,.62fr) minmax(560px,1.68fr) minmax(270px,.72fr)}
+}
+@media (max-width:1120px){
+  #prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] .prismo-theater-layout,
+  #prismo-console .prismo-visual-stage{grid-template-columns:1fr}
+  #prismo-console .prismo-svg-chart svg{min-width:720px}
+}

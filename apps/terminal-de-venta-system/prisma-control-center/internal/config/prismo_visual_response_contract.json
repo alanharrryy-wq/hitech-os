@@ -1,7 +1,7 @@
 {
   "kind": "PRISMO_VISUAL_RESPONSE_CONTRACT",
-  "version": "brain100_readonly_v1",
-  "task": "PRISMO Brain100: utilidad read-only real, inteligencia local, visuales útiles y respuesta razonable sin límites piteros.",
+  "version": "brainfinal_readonly_v2",
+  "task": "PRISMO BrainFinal: herramienta read-only utilizable para desarrollar PRISMA, con inteligencia local, memoria, visuales reales y respuesta razonable sin límite artificial.",
   "principles": [
     "PRISMO is a read-only project brain: observe, understand, remember, explain and visualize; never mutate apps in knowledge mode.",
     "Text and visuals are separate channels. Text summarizes; Visual Stage proves.",
@@ -11,13 +11,17 @@
     "Learning Store persists semantic, procedural, episodic, visual and operational memory outside repo mutation scope."
   ],
   "answer_channel": {
-    "max_chars": "reasonable_anti_overflow_7600_not_five_lines",
-    "max_lines": "reasonable_anti_overflow_100_not_fixed_answer_cap",
-    "behavior": "answer what is necessary when evidence exists; keep details collapsible when long",
+    "behavior": "answer what is necessary and reasonable; no 5/10 line cap and no 420 char cap",
+    "overflow_guard": {
+      "chars": 24000,
+      "lines": 320,
+      "purpose": "only anti-overflow UI guard, not a content policy"
+    },
     "forbidden_default_content": [
       "raw trace dump",
       "artificial five-line truncation",
-      "placeholder visual copy"
+      "placeholder visual copy",
+      "Texto limitado chip"
     ]
   },
   "visual_stage": {
@@ -48,7 +52,7 @@
       "layer_map"
     ],
     "max_primary_visuals": 1,
-    "max_secondary_visuals": 7,
+    "max_secondary_visuals": 11,
     "no_visual_contract": {
       "required_field": "no_visual_reason",
       "allowed_reasons": [
@@ -58,7 +62,7 @@
         "user_requested_text_only"
       ]
     },
-    "client_fallback": "If backend blocks are absent, frontend must build chart_spec + surface_matrix from STATE.appLiveContext when available."
+    "client_fallback": "If backend blocks are absent, frontend builds chart_spec, surface_matrix, route_map, evidence chart, delta timeline, layer table, memory table, risk matrix and readiness checklist from STATE.appLiveContext when useful."
   },
   "visual_routing_rules": [
     {
@@ -147,5 +151,21 @@
     "provider_network_dependency_for_project_brain_answers": false,
     "brain100_intelligence": "local query profile + project brain + memory/evidence/delta hydrator"
   },
-  "brain100_manifest": "internal/config/prismo_brain100_improvements.json"
+  "brain100_manifest": "internal/config/prismo_brain100_improvements.json",
+  "brainfinal": {
+    "version": "brainfinal_readonly_v2",
+    "visual_blocks_target": "up to 12 relevant blocks, selected by query profiler and structured data availability",
+    "read_only_intelligence": [
+      "semantic memory",
+      "procedural memory",
+      "episodic evidence",
+      "visual layer memory",
+      "operational delta memory",
+      "governance memory"
+    ],
+    "no_downgrade_from": [
+      "STABLE2",
+      "Brain100"
+    ]
+  }
 }

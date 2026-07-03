@@ -180,3 +180,65 @@
   text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
 }
 /* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */
+
+/* TABNP1_EXPORT_SECONDARY_0207 */
+.card {
+  margin: 0 0 12px;
+  border-color: rgba(86,125,170,.18);
+  background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(248,251,255,.62));
+  color: var(--prisma-soft-ink, #151922);
+  box-shadow: 0 10px 28px rgba(36,54,87,.08);
+}
+
+.summary {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summaryCopy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.summaryCopy small {
+  color: #377dff;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.summaryCopy strong {
+  color: var(--prisma-soft-ink, #151922);
+  font-size: 15px;
+}
+
+.summaryCopy em {
+  color: var(--prisma-soft-muted, #667085);
+  font-style: normal;
+  font-weight: 680;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summary b {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 14px;
+  color: #377dff;
+  background: rgba(55,125,255,.09);
+  font-size: .86rem;
+}

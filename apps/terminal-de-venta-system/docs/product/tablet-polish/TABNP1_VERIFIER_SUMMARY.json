@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "run": "tabnp1 0207 2225",
+  "changed": [
+    {
+      "file": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+      "reason": "oculta navegación duplicada en topbar sin tocar TSX",
+      "sha256_after": "a2600259421afc7cc994ae7cd2aee14a34485af7d74b2c18610096cd00462432"
+    },
+    {
+      "file": "products/tablet/app/components/reports/contextual-export-actions.tsx",
+      "reason": "ContextualExportActions cerrado por default",
+      "sha256_after": "f1d37867b3346a7014f7a6dc5e983745987babf94eb32c713d9df46e3b725b70"
+    },
+    {
+      "file": "products/tablet/app/components/reports/contextual-export.module.css",
+      "reason": "CSS exportaciones secundarias",
+      "sha256_after": "4faac9393096cd216e5cbb356d5441f516d0797022211a36e39783f10fe1f56b"
+    },
+    {
+      "file": "products/tablet/app/components/tablet-home/tablet-home.module.css",
+      "reason": "Home compacta sin runtime panel/metrics pesados",
+      "sha256_after": "15e43f962a0ed746ff6bd95aec84af45d5be345d688d5e83a2eabbd6f97bc69c"
+    },
+    {
+      "file": "products/tablet/app/components/shift/shift-cash-closure-screen.tsx",
+      "reason": "copy Turno humano; replacements=2",
+      "sha256_after": "868d0f064fd53ad2e82f82481177c9a0678430cbf53e4023f910ac493474d134"
+    },
+    {
+      "file": "products/tablet/app/components/license/license-refresh-panel.tsx",
+      "reason": "copy Licencia humano; replacements=6",
+      "sha256_after": "94fb254af8623deb6a4e1831593f5d4dfb714319c1f399e25c7681bf8d053a88"
+    },
+    {
+      "file": "products/tablet/app/app/sales/today/page.tsx",
+      "reason": "metadata humana",
+      "sha256_after": "cd3c2454a4ccb36ec276fed0dbd0da0b608c6f13823d78ff14d8abaefa67488b"
+    },
+    {
+      "file": "products/tablet/app/app/sales/history/page.tsx",
+      "reason": "metadata humana",
+      "sha256_after": "6c0735fb0184444ea707aec2bcb9bc0afcbe6c54f1544f7bfadef9f180bc3d03"
+    },
+    {
+      "file": "products/tablet/app/app/events/outbox/page.tsx",
+      "reason": "metadata humana",
+      "sha256_after": "8d9c13b37ec01aa5d9648f1d411beb106ec90e56fe7d3a3dbce3321fd6a74eaa"
+    },
+    {
+      "file": "tools/quality/verify_tabnp1_tablet_non_pos_0207.mjs",
+      "reason": "verifier tabnp1",
+      "sha256_after": "9c534cbda0116e4c6081a2a7cd53071de277b002034749a69e0c573b94b05a99"
+    },
+    {
+      "file": "docs/product/tablet-polish/TABNP1_CHANGED_FILES.md",
+      "reason": "changed files report",
+      "sha256_after": "50542412876b55289c814674ffb774ef0bd82e59a05cc0f50b23c72a11b2edea"
+    },
+    {
+      "file": "docs/product/tablet-polish/TABNP1_BACKOUT.md",
+      "reason": "backout report",
+      "sha256_after": "dbc8cca43f06c4cbe4e7197a23b1af4def65302374a15b66760a568138259be3"
+    }
+  ],
+  "created": [
+    "tools/quality/verify_tabnp1_tablet_non_pos_0207.mjs",
+    "docs/product/tablet-polish/TABNP1_CHANGED_FILES.md",
+    "docs/product/tablet-polish/TABNP1_BACKOUT.md"
+  ],
+  "skipped": [
+    {
+      "file": "products/tablet/app/app/offline/page.tsx",
+      "reason": "patrones no encontrados"
+    }
+  ],
+  "warnings": [],
+  "status_after": "## autogit/clasificar_y_cerrar_cambios_actu-20260702-221332...origin/autogit/clasificar_y_cerrar_cambios_actu-20260702-221332\n M apps/terminal-de-venta-system/products/tablet/app/app/events/outbox/page.tsx\n M apps/terminal-de-venta-system/products/tablet/app/app/sales/history/page.tsx\n M apps/terminal-de-venta-system/products/tablet/app/app/sales/today/page.tsx\n M apps/terminal-de-venta-system/products/tablet/app/components/license/license-refresh-panel.tsx\n M apps/terminal-de-venta-system/products/tablet/app/components/reports/contextual-export-actions.tsx\n M apps/terminal-de-venta-system/products/tablet/app/components/reports/contextual-export.module.css\n M apps/terminal-de-venta-system/products/tablet/app/components/shift/shift-cash-closure-screen.tsx\n M apps/terminal-de-venta-system/products/tablet/app/components/tablet-home/tablet-home.module.css\n M apps/terminal-de-venta-system/products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css\n?? apps/terminal-de-venta-system/docs/product/tablet-polish/TABNP1_BACKOUT.md\n?? apps/terminal-de-venta-system/docs/product/tablet-polish/TABNP1_CHANGED_FILES.md\n?? apps/terminal-de-venta-system/tools/quality/verify_tabnp1_tablet_non_pos_0207.mjs\n",
+  "rollback_package": "use ROLLBACK.ps1 from original downloaded package; it reads F:\\descargasf\\tabnp1 last.json"
+}

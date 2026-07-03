@@ -167,7 +167,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
               <div data-prisma-shift-layer="cash-tile"><span>Ventas del turno</span><strong>{formatMoney(shift?.salesTotalCents ?? 0)}</strong></div>
               <div data-prisma-shift-layer="cash-tile"><span>Efectivo esperado</span><strong>{formatMoney(shift?.expectedCashCents ?? 0)}</strong></div>
             </div>
-            <label className={styles.field} data-prisma-shift-layer="field"><span>Conteo fisico</span><input inputMode="decimal" value={cashCounted} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashCounted(event.target.value)} disabled={shift?.status !== "OPEN" || state === "loading"} /></label>
+            <label className={styles.field} data-prisma-shift-layer="field"><span>Conteo físico</span><input inputMode="decimal" value={cashCounted} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashCounted(event.target.value)} disabled={shift?.status !== "OPEN" || state === "loading"} /></label>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Nota opcional</span><textarea value={closeNote} onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setCloseNote(event.target.value)} disabled={shift?.status !== "OPEN" || state === "loading"} /></label>
             <div className={styles.varianceBox} data-prisma-shift-layer="variance" data-tone={varianceTone(closePreview.varianceCents)}><span>Diferencia estimada</span><strong>{formatMoney(closePreview.varianceCents)}</strong><small>{closePreview.copy}</small></div>
             <button type="button" className={styles.dangerButton} data-prisma-shift-layer="danger-action" onClick={() => void closeShift()} disabled={!canClose || state === "loading"}>Cerrar turno</button>
@@ -176,7 +176,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
 
         <section className={styles.flowGuard} data-prisma-shift-layer="flow-guard">
           <strong>{gate.canSell ? "Venta habilitada" : "Venta bloqueada hasta abrir turno"}</strong>
-          <p>{gate.canSell ? "Los tickets nuevos quedaran ligados al turno abierto." : "Abre turno para que cada venta quede ligada a caja, ticket y corte."}</p>
+          <p>{gate.canSell ? "Los tickets nuevos quedarán ligados al turno abierto." : "Abre turno para que cada venta quede ligada a caja, ticket y corte."}</p>
         </section>
       </main>
     </PrismaTabletShellUnified>

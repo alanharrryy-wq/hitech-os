@@ -16,8 +16,8 @@ type RefreshStatus = {
 function refreshStateLabel(state: string) {
   const labels: Record<string, string> = {
     refresh_disabled: "Actualización no configurada",
-    missing_server_url: "Servidor no configurado",
-    missing_device_id: "Equipo sin identificador",
+    missing_server_url: "Actualización no preparada",
+    missing_device_id: "Equipo pendiente de identificar",
     configured: "Configurada",
     disabled: "Desactivada",
     never_refreshed: "Sin actualización remota",
@@ -39,8 +39,8 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
   const hasError = Boolean(initialStatus.lastError);
   const headline = initialStatus.enabled ? "Actualización automática disponible" : "Licencia local primero";
   const copy = initialStatus.enabled
-    ? "El sistema puede recibir actualización remota si el entorno administrativo lo tiene configurado. Esta Tablet no dispara cambios manuales de licencia."
-    : "La Tablet sólo muestra el estado instalado. Activar, importar o corregir licencias corresponde al administrador, fuera del equipo del cliente.";
+    ? "El equipo puede recibir actualización si el administrador la dejó preparada. Aquí sólo se muestra el estado visible para operar."
+    : "La Tablet muestra la autorización instalada y conserva una lectura clara para el cliente. Las acciones avanzadas quedan para soporte.";
 
   return (
     <section className={`${styles.card} ${styles.refreshPanel}`} id="license-refresh" data-prisma-license-refresh-view="readonly">
@@ -49,7 +49,7 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
           <p className={styles.eyebrow}>Actualización</p>
           <h2 className={styles.sectionTitle}>{headline}</h2>
         </div>
-        <span className={styles.readonlyPill}>Sin acciones</span>
+        <span className={styles.readonlyPill}>Sólo lectura</span>
       </div>
       <p className={styles.copy}>{copy}</p>
 
@@ -69,7 +69,7 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
         </div>
       ) : null}
 
-      <p className={styles.helper}>Esta vista no contiene botones de activación, importación, renovación ni administración.</p>
+      <p className={styles.helper}>Las acciones avanzadas de licencia quedan agrupadas en soporte para no interrumpir la operación diaria.</p>
     </section>
   );
 }
