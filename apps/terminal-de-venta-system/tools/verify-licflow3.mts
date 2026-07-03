@@ -18,6 +18,9 @@ const terminalRoot = path.resolve(scriptDir, "..");
 const monorepoRoot = path.resolve(terminalRoot, "..", "..");
 const terminalRel = "apps/terminal-de-venta-system";
 const mode = String(process.argv[2] ?? "").trim();
+const LICFLOW3_REAL_WORKER_NAME = "prisma-cloud-semilla";
+const LICFLOW3_REAL_D1_NAME = "prisma_cloud_semilla";
+const LICFLOW3_REAL_D1_ID = "76b12f35-f123-4b94-914f-6dde22b7fdc9";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -76,6 +79,77 @@ function runNodeCheck(relativePath: string): JsonObject {
     stdout: result.stdout,
     stderr: result.stderr
   };
+}
+
+function runWorkerRouteContract(action: "activate" | "refresh" | "revoke"): void {
+  const routeByAction = {
+    activate: {
+      path: "/api/licenses/activate",
+      body: {
+        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        deviceId: "dummy-device-id",
+        tenantId: "dummy-tenant",
+        app: "terminal-de-venta-system"
+      }
+    },
+    refresh: {
+      path: "/api/licenses/refresh",
+      body: {
+        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        deviceId: "dummy-device-id",
+        tenantId: "dummy-tenant"
+      }
+    },
+    revoke: {
+      path: "/api/licenses/revoke",
+      body: {
+        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        deviceId: "dummy-device-id",
+        tenantId: "dummy-tenant",
+        reason: "dummy-smoke"
+      }
+    }
+  } as const;
+  const route = routeByAction[action];
+  const script = `
+    import worker from "./infra/cloudflare/licflow3-worker/src/worker.js";
+    const request = new Request("https://local.licflow3.test${route.path}", {
+      method: "POST",
+      headers: { "content-type": "application/json", "accept": "application/json" },
+      body: JSON.stringify(${JSON.stringify(route.body)})
+    });
+    const response = await worker.fetch(request, { PRISMA_LICFLOW3_MODE: "local-contract-test" }, {});
+    const text = await response.text();
+    console.log(JSON.stringify({
+      status: response.status,
+      contentType: response.headers.get("content-type"),
+      bodySha256: await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then((buf) => Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("")),
+      body: JSON.parse(text)
+    }));
+  `;
+  const result = spawnSync(process.execPath, ["--input-type=module", "-e", script], { cwd: terminalRoot, encoding: "utf8" });
+  assert(result.status === 0, `local worker route ${action} failed: ${result.stderr || result.stdout}`);
+  const observed = JSON.parse(result.stdout) as {
+    status: number;
+    contentType: string | null;
+    bodySha256: string;
+    body: { ok?: unknown; status?: unknown; reason?: unknown };
+  };
+  const acceptedRouteEvidence = new Set([400, 401, 403, 422]);
+  assert(observed.status !== 404, `${route.path} returned 404 in local worker contract check.`);
+  assert(observed.status < 500, `${route.path} returned blocker status ${observed.status}.`);
+  assert(acceptedRouteEvidence.has(observed.status), `${route.path} returned non-contract dummy status ${observed.status}.`);
+  assert(observed.body && observed.body.ok === false, `${route.path} did not return structured rejection JSON.`);
+  pass(`verify:licflow3:route-${action}`, {
+    route: route.path,
+    method: "POST",
+    expectedDummyStatuses: [...acceptedRouteEvidence],
+    observedStatus: observed.status,
+    observedBodyStatus: observed.body.status || null,
+    observedReason: observed.body.reason || null,
+    bodySha256: observed.bodySha256,
+    liveCloudTouched: false
+  });
 }
 
 function scanFiles(files: string[], tokens: string[]) {
@@ -212,9 +286,11 @@ function modeAppHitechrtsContract(): void {
   assert(check.exitCode === 0, `Worker syntax check failed: ${check.stderr || check.stdout}`);
   assert(packageJson.devDependencies.wrangler === "4.93.0", "Worker root must use package-local Wrangler 4.93.0.");
   assert(packageJson.scripts["wrangler:version"].includes("pnpm exec wrangler --version"), "Worker root lacks package-local Wrangler version script.");
-  assert(wrangler.name === "prisma-licflow3-cloud-licensing", "Wrangler project name mismatch.");
+  assert(wrangler.name === LICFLOW3_REAL_WORKER_NAME, "Wrangler project name must preserve real Worker prisma-cloud-semilla.");
   assert(!("routes" in wrangler), "Wrangler scaffold must not bind routes before authorization.");
   assert(JSON.stringify(wrangler).includes("PRISMA_LICFLOW3_D1"), "Wrangler config missing D1 binding name.");
+  const d1Databases = Array.isArray(wrangler.d1_databases) ? wrangler.d1_databases : [];
+  assert(d1Databases.some((item) => item.database_name === LICFLOW3_REAL_D1_NAME && item.database_id === LICFLOW3_REAL_D1_ID), "Wrangler config must preserve real D1 prisma_cloud_semilla.");
   for (const token of ["/api/licenses/activate", "/api/licenses/refresh", "/api/licenses/revoke", "/api/devices/register", "/api/client/integration-receipt", "/api/support/diagnostics"]) {
     assert(worker.includes(token), `Worker missing endpoint ${token}`);
   }
@@ -225,6 +301,8 @@ function modeAppHitechrtsContract(): void {
   assert(readme.includes("PRISMA_ADMIN_TOKEN") && readme.includes("PRISMA_LICFLOW3_D1"), "Worker README does not document expected binding/secret names.");
   pass("verify:licflow3:app-hitechrts-contract", {
     workerRoot,
+    realWorker: LICFLOW3_REAL_WORKER_NAME,
+    realD1: LICFLOW3_REAL_D1_NAME,
     wranglerPattern: "pnpm -C infra/cloudflare/licflow3-worker exec wrangler --version",
     nodeCheck: check,
     deployPerformed: false,
@@ -277,7 +355,7 @@ function modeNoSecrets(): void {
   });
 }
 
-function modeNoDbCommit(): void {
+function modeNoDbCommit(verifierName = "verify:licflow3:no-db-commit"): void {
   const dbExts = new Set([".db", ".sqlite", ".sqlite3", ".db-wal", ".db-shm"]);
   const tracked = runGit(["ls-files", "-z", "--", terminalRel]).split("\0").filter(Boolean);
   const trackedDb = tracked.filter((file) => dbExts.has(path.extname(file).toLowerCase()));
@@ -287,10 +365,10 @@ function modeNoDbCommit(): void {
     .filter((file) => dbExts.has(path.extname(file).toLowerCase()));
   assert(trackedDb.length === 0, `Tracked DB files found: ${trackedDb.join(", ")}`);
   assert(dirtyDb.length === 0, `Dirty DB files found in git status: ${dirtyDb.join(", ")}`);
-  pass("verify:licflow3:no-db-commit", { trackedDbFiles: trackedDb, dirtyDbFiles: dirtyDb, scannedGitScope: terminalRel });
+  pass(verifierName, { trackedDbFiles: trackedDb, dirtyDbFiles: dirtyDb, scannedGitScope: terminalRel });
 }
 
-function modeNoDangerAutorun(): void {
+function modeNoDangerAutorun(verifierName = "verify:licflow3:no-danger-autorun"): void {
   const packageJson = readJson<{ scripts: Record<string, string> }>("package.json");
   const licflow3Scripts = Object.entries(packageJson.scripts).filter(([key]) => key.startsWith("verify:licflow3:"));
   assert(licflow3Scripts.length >= 10, "Expected LICFLOW3 verifier scripts are missing.");
@@ -314,7 +392,7 @@ function modeNoDangerAutorun(): void {
   const badScripts = licflow3Scripts.filter(([, value]) => dangerTokens.some((token) => value.toLowerCase().includes(token.toLowerCase())));
   assert(hits.length === 0, `Dangerous tokens found in LICFLOW3 files: ${JSON.stringify(hits)}`);
   assert(badScripts.length === 0, `Dangerous verifier script commands found: ${JSON.stringify(badScripts)}`);
-  pass("verify:licflow3:no-danger-autorun", {
+  pass(verifierName, {
     scripts: licflow3Scripts.map(([key]) => key),
     dangerTokens,
     hits
@@ -362,14 +440,29 @@ try {
     case "app-hitechrts-contract":
       modeAppHitechrtsContract();
       break;
+    case "route-activate":
+      runWorkerRouteContract("activate");
+      break;
+    case "route-refresh":
+      runWorkerRouteContract("refresh");
+      break;
+    case "route-revoke":
+      runWorkerRouteContract("revoke");
+      break;
     case "no-secrets":
       modeNoSecrets();
       break;
     case "no-db":
       modeNoDbCommit();
       break;
+    case "no-db-copy":
+      modeNoDbCommit("verify:licflow3:no-db-copy");
+      break;
     case "no-danger-autorun":
       modeNoDangerAutorun();
+      break;
+    case "no-deploy-autorun":
+      modeNoDangerAutorun("verify:licflow3:no-deploy-autorun");
       break;
     case "offline-still-valid":
       modeLicflow2Compatibility("offline");

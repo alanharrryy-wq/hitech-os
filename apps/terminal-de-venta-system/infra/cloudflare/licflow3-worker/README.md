@@ -1,8 +1,11 @@
 # LICFLOW3 Cloudflare Worker Scaffold
 
-This is the minimal governed scaffold for `https://app.hitechrts.com` licensing/support endpoints.
+This is the governed Worker source for `https://app.hitechrts.com` licensing/support endpoints.
 
-It was added because no canonical Worker, Pages Function, or D1 backend root for `app.hitechrts.com` was found in the active workspace.
+It is aligned to the live Cloudflare resources confirmed for LICFLOW3:
+
+- Worker: `prisma-cloud-semilla`
+- D1: `prisma_cloud_semilla`
 
 ## Safety
 
@@ -14,7 +17,7 @@ It was added because no canonical Worker, Pages Function, or D1 backend root for
 
 ## Expected Commands
 
-Use package-local Wrangler only:
+Use package-local Wrangler only from this worker root:
 
 ```powershell
 pnpm -C infra/cloudflare/licflow3-worker exec wrangler --version
@@ -54,3 +57,5 @@ Only names are documented. Values must be configured outside the repo.
 - `POST /api/admin/tenants/:tenant/notes`
 
 Mutating endpoints require `PRISMA_ADMIN_TOKEN` and a D1 binding. Without D1, they return an explicit binding-required status instead of fake success.
+
+Dummy smoke without the admin token must return a structured non-404 rejection such as `401 ADMIN_TOKEN_REQUIRED`. A `404` for `/api/licenses/*` means the live Worker route table is stale or not running this source.

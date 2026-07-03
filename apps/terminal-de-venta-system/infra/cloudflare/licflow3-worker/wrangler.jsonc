@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "prisma-licflow3-cloud-licensing",
+  "name": "prisma-cloud-semilla",
   "main": "src/worker.js",
   "compatibility_date": "2026-07-02",
   "workers_dev": false,
@@ -8,11 +8,11 @@
   "d1_databases": [
     {
       "binding": "PRISMA_LICFLOW3_D1",
-      "database_name": "prisma-licflow3-licensing",
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_name": "prisma_cloud_semilla",
+      "database_id": "76b12f35-f123-4b94-914f-6dde22b7fdc9"
     }
   ],
   "vars": {
-    "PRISMA_LICFLOW3_MODE": "scaffold"
+    "PRISMA_LICFLOW3_MODE": "worker-d1"
   }
 }
