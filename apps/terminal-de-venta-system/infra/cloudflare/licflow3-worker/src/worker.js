@@ -1,5 +1,5 @@
 const SERVICE = "PRISMA LICFLOW3 Cloud Licensing Support Bridge";
-const VERSION = "0.1.0-scaffold";
+const VERSION = "0.2.0-prisma-cloud-semilla-routing";
 const TENANT = "prisma-original-customer";
 const PLAN = "TABLET_PC_MANAGED";
 

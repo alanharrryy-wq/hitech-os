@@ -1,28 +1,17 @@
 # PRISMA AUTHORITY MESH ENVELOPE
 
-Task: Build PRISMA Premium Visual Mise en Place v1 across Tablet, Mobile/App, PC, Web/Edit, Control Center, Chart Lab and Shared UI, preparing all surfaces to use the full available visual library/effect/token/component ecosystem for future premium design.
+Task: Corregir LICFLOW3 Cloudflare licensing routes para que POST /api/licenses/activate, /refresh y /revoke funcionen contra app.hitechrts.com sin downgrades, sin duplicar LICFLOW2, sin tocar secretos, sin copiar DB, sin deploy automático no autorizado y preservando Worker real prisma-cloud-semilla y D1 real prisma_cloud_semilla.
 
 Status: `PASS`
 
 ## Apps / surfaces detected
 
-- backgrounds
-- chart-lab
-- control-center
-- database-sync
-- mobile
-- pc
 - productization
-- quality
-- shared-kernel
-- shared-ui
 - tablet
-- web
 
 ## Change types detected
 
 - data_sync
-- visual
 
 ## Mandatory readset lock
 
@@ -33,27 +22,12 @@ Use `.governance/current/AUTHORITY_READSET.lock.json` as the authority readset f
 - real_db_destructive_tests_forbidden
 - schema_parity_required
 - sync_fixture_required
-- visual_manifest_required
-- visual_evidence_required
-- layer_budget_required
-- no_fake_green
 - authority_readset_lock_required
 - app_impact_matrix_required
 - contract_gate_matrix_required
 - rollback_required
 - diagnostic_zip_on_failure
 - no_fake_green
-- visual_capability_matrix_required
-- visual_stack_decision_required
-- app_visual_exploitation_matrix_required
-- visual_capability_rejection_reasons_required
-- visual_exploitation_contract_required
-- app_capability_requirements_required
-- screen_visual_stack_plan_required
-- premium_acceptance_bar_required
-- used_rejected_capability_matrix_required
-- layer_budget_decision_required
-- visual_evidence_or_pending_verification_required
 
 ## Forbidden default actions
 

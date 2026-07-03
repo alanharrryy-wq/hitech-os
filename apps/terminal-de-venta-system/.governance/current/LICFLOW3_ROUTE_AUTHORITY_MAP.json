@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-07-03",
+  "task": "Corregir LICFLOW3 Cloudflare licensing POST routes",
+  "authorityMesh": {
+    "path": ".governance/current/AUTHORITY_MESH_REPORT.md",
+    "status": "PASS"
+  },
+  "live": {
+    "baseUrl": "https://app.hitechrts.com",
+    "worker": "prisma-cloud-semilla",
+    "d1": "prisma_cloud_semilla",
+    "observedVersion": "prcloud5-2026-06-23",
+    "prePatchPostStatus": 404
+  },
+  "repo": {
+    "workerSource": "infra/cloudflare/licflow3-worker/src/worker.js",
+    "workerConfig": "infra/cloudflare/licflow3-worker/wrangler.jsonc",
+    "contract": "shared/licensing/licflow3-cloud-contract.ts",
+    "bridgeConfig": "prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json",
+    "bridgeApi": "prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py",
+    "verifier": "tools/verify-licflow3.mts"
+  },
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/licenses/activate",
+      "contractKey": "licenseActivate",
+      "handler": "activateLicense(request, env, \"activate\")",
+      "dummyExpectedAnyOf": [400, 401, 403, 422]
+    },
+    {
+      "method": "POST",
+      "path": "/api/licenses/refresh",
+      "contractKey": "licenseRefresh",
+      "handler": "activateLicense(request, env, \"refresh\")",
+      "dummyExpectedAnyOf": [400, 401, 403, 422]
+    },
+    {
+      "method": "POST",
+      "path": "/api/licenses/revoke",
+      "contractKey": "licenseRevoke",
+      "handler": "activateLicense(request, env, \"revoke\")",
+      "dummyExpectedAnyOf": [400, 401, 403, 422]
+    }
+  ],
+  "forbidden": [
+    "deploy without explicit authorization",
+    "DNS mutation",
+    "Tunnel mutation",
+    "secret value read/print",
+    "D1 copy/export",
+    "LICFLOW2 duplication",
+    "Tablet dependency on Cloudflare"
+  ]
+}

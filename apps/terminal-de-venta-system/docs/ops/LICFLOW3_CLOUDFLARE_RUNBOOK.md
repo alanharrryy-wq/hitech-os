@@ -9,8 +9,37 @@ Este README/runbook deja el cierre LICFLOW3 en un solo lugar para no volver a bu
 ```text
 LICFLOW3 local repo/scaffold: PASS
 LICFLOW3 Cloudflare live evidence read-only: PASS
-Cloudflare functional POST smoke: PENDING_AUTHORIZED_PAYLOAD
+Cloudflare functional POST smoke: BLOCKED_LIVE_WORKER_404
+Current local repair state: LOCAL_READY_CLOUDFLARE_DEPLOY_AUTH_REQUIRED
 ```
+
+## Actualizacion 2026-07-03: POST 404 root cause
+
+Dummy POST smoke without admin token confirmed the live target still returns structured `404` for:
+
+```text
+POST /api/licenses/activate
+POST /api/licenses/refresh
+POST /api/licenses/revoke
+```
+
+At the same time, `/health` and `/api/public/capabilities` respond from `PRISMA Cloud Semilla` version `prcloud5-2026-06-23`.
+
+Root cause classification:
+
+```text
+d) Pages/app handler distinto
+f) mismatch entre scaffold prisma-licflow3-cloud-licensing y Worker real prisma-cloud-semilla
+```
+
+The repo-local worker source has the POST handlers, but the live worker version deployed on 2026-06-23 does not. The local worker config is now aligned to:
+
+```text
+Worker: prisma-cloud-semilla
+D1: prisma_cloud_semilla
+```
+
+No deploy was executed. A live fix for `app.hitechrts.com` requires explicit Cloudflare deploy authorization.
 
 ## Repo y app
 
@@ -158,7 +187,7 @@ pnpm -C <root-con-wrangler> exec wrangler whoami
 El root que funcionó fue detectado como package root con Wrangler disponible, por ejemplo:
 
 ```text
-products/chart-lab/app
+apps/terminal-de-venta-system/products/chart-lab/app
 ```
 
 Para operaciones de Worker LICFLOW3 usar `--cwd` apuntando al worker root cuando aplique:
@@ -167,16 +196,16 @@ Para operaciones de Worker LICFLOW3 usar `--cwd` apuntando al worker root cuando
 pnpm -C <root-con-wrangler> exec wrangler --cwd "F:\repos\hitech-os\apps\terminal-de-venta-system\infra\cloudflare\licflow3-worker" <comando>
 ```
 
-## Worker local scaffold vs Worker real
+## Worker repo source vs Worker real
 
-Config local LICFLOW3 puede mencionar:
+Legacy/local-only LICFLOW3 config used to mention:
 
 ```text
 prisma-licflow3-cloud-licensing
 prisma-licflow3-licensing
 ```
 
-Pero la evidencia viva real confirmó:
+Do not use those names for the real repair unless a future migration explicitly creates a new stack. The evidence viva real confirmed:
 
 ```text
 Worker remoto real:
@@ -186,7 +215,13 @@ D1 remoto real:
 prisma_cloud_semilla
 ```
 
-No duplicar LICFLOW2 ni crear otro stack cloud/licensing.
+The governed worker source is:
+
+```text
+infra/cloudflare/licflow3-worker
+```
+
+Its `wrangler.jsonc` must preserve the real Worker and D1 names above. No duplicar LICFLOW2 ni crear otro stack cloud/licensing.
 
 ## Comandos read-only útiles
 
@@ -201,8 +236,8 @@ $ErrorActionPreference='Stop'; Set-Location 'F:\repos\hitech-os'; git status --s
 ```powershell
 $ErrorActionPreference='Stop'
 Set-Location 'F:\repos\hitech-os'
-pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler --version
-pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler whoami
+pnpm -C 'F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app' exec wrangler --version
+pnpm -C 'F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app' exec wrangler whoami
 ```
 
 ### D1 list
@@ -210,7 +245,7 @@ pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler whoami
 ```powershell
 $ErrorActionPreference='Stop'
 Set-Location 'F:\repos\hitech-os'
-pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler d1 list --json
+pnpm -C 'F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app' exec wrangler d1 list --json
 ```
 
 ### D1 info
@@ -218,7 +253,7 @@ pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler d1 list --json
 ```powershell
 $ErrorActionPreference='Stop'
 Set-Location 'F:\repos\hitech-os'
-pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler d1 info prisma_cloud_semilla --json
+pnpm -C 'F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app' exec wrangler d1 info prisma_cloud_semilla --json
 ```
 
 ### Worker deployments/status/versions/secrets names-only
@@ -226,12 +261,49 @@ pnpm -C 'F:\repos\hitech-os\products\chart-lab\app' exec wrangler d1 info prisma
 ```powershell
 $ErrorActionPreference='Stop'
 Set-Location 'F:\repos\hitech-os'
-$Root='F:\repos\hitech-os\products\chart-lab\app'
+$Root='F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app'
 $Cwd='F:\repos\hitech-os\apps\terminal-de-venta-system\infra\cloudflare\licflow3-worker'
 pnpm -C $Root exec wrangler --cwd $Cwd deployments list --name prisma-cloud-semilla --json
 pnpm -C $Root exec wrangler --cwd $Cwd deployments status --name prisma-cloud-semilla --json
 pnpm -C $Root exec wrangler --cwd $Cwd versions list --name prisma-cloud-semilla --json
 pnpm -C $Root exec wrangler --cwd $Cwd secret list --name prisma-cloud-semilla --format json
+```
+
+### Local route contract verifiers
+
+These checks do not call production. They import the local Worker and assert dummy POST reaches the handler and returns a structured non-404 contract rejection.
+
+```powershell
+$ErrorActionPreference='Stop'
+Set-Location 'F:\repos\hitech-os\apps\terminal-de-venta-system'
+pnpm run verify:licflow3:route-activate
+pnpm run verify:licflow3:route-refresh
+pnpm run verify:licflow3:route-revoke
+pnpm run verify:licflow3:no-secrets
+pnpm run verify:licflow3:no-db-copy
+pnpm run verify:licflow3:no-deploy-autorun
+```
+
+### Deploy plan, not authorization
+
+Only run after explicit user authorization:
+
+```powershell
+$ErrorActionPreference='Stop'
+Set-Location 'F:\repos\hitech-os'
+$WorkerRoot='F:\repos\hitech-os\apps\terminal-de-venta-system\infra\cloudflare\licflow3-worker'
+pnpm -C $WorkerRoot exec wrangler deploy --name prisma-cloud-semilla
+```
+
+Rollback, if the authorized deploy fails smoke:
+
+```powershell
+$ErrorActionPreference='Stop'
+Set-Location 'F:\repos\hitech-os'
+$Root='F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app'
+$WorkerRoot='F:\repos\hitech-os\apps\terminal-de-venta-system\infra\cloudflare\licflow3-worker'
+pnpm -C $Root exec wrangler --cwd $WorkerRoot versions list --name prisma-cloud-semilla --json
+pnpm -C $Root exec wrangler --cwd $WorkerRoot versions deploy <previous-version-id> --name prisma-cloud-semilla
 ```
 
 Nunca leer valores de secrets. Sólo names-only.
@@ -292,6 +364,7 @@ Para declarar PASS funcional, hace falta al menos:
 POST /api/licenses/activate responde según contrato esperado
 POST /api/licenses/refresh responde según contrato esperado
 POST /api/licenses/revoke responde según contrato esperado
+no 404
 no 5xx
 no secrets impresos
 no DB dump
@@ -312,5 +385,6 @@ No `PASS funcional`.
 ```text
 LICFLOW3 repo local: cerrado
 Cloudflare live evidence read-only: cerrado
-Functional POST smoke: pendiente de payload dummy autorizado
+Functional POST smoke: local route contract PASS; live target still requires authorized deploy
+Current classification: LOCAL_READY_CLOUDFLARE_DEPLOY_AUTH_REQUIRED
 ```
