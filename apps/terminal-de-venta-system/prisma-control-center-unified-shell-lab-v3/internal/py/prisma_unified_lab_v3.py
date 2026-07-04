@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""PRISMA Cloud Command Center.
+"""Prisma Cloud Center.
 
 Private cockpit server for PRISMA Cloud on 127.0.0.1:3160. It keeps the
 current Control Center on 3150 protected and exposes cloud, licensing,
@@ -33,7 +33,7 @@ import cloud_saas_api
 import license_ops_api
 import command_center_store
 
-APP_VERSION = "4.0.0-cloud-command-center"
+APP_VERSION = "4.1.0-prisma-cloud-center"
 DEFAULT_PORT = 3160
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PROTECTED_CURRENT = r"F:\repos\hitech-os\apps\terminal-de-venta-system\prisma-control-center"
@@ -42,8 +42,8 @@ DEFAULT_OUT_DIR = r"F:\descargasf"
 MODULE_CONTRACT: Dict[str, Any] = {
     "contractVersion": 1,
     "lab": {
-        "name": "PRISMA Cloud Command Center",
-        "mode": "PRIVATE_CLOUD_COMMAND_CENTER",
+        "name": "Prisma Cloud Center",
+        "mode": "PRISMA_CLOUD_CENTER",
         "host": "127.0.0.1",
         "port": 3160,
         "themeInheritance": False,
@@ -57,7 +57,7 @@ MODULE_CONTRACT: Dict[str, Any] = {
         {
             "id": "cloud-saas",
             "name": "PRISMA Cloud",
-            "role": "Private Cockpit Cloud Semilla + licencias",
+            "role": "LICFLOW3 Cloud Semilla + license operations",
             "port": 3160,
             "portLabel": "app.hitechrts.com",
             "directUrl": "https://app.hitechrts.com",
@@ -69,8 +69,8 @@ MODULE_CONTRACT: Dict[str, Any] = {
             "themeMode": "inherits",
             "protected": False,
             "actions": ["nativeCloud", "refresh", "adminNote", "receiptSmoke", "deviceSmoke", "licenseOps"],
-            "statusLabel": "CLOUD_READONLY",
-            "qualityScope": ["cloud", "adminTokenLocal", "licenseOpsReadOnly"],
+            "statusLabel": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
+            "qualityScope": ["cloud", "adminTokenPresenceOnly", "licenseOpsReadOnly"],
             "healthKind": "cloud",
         },
         {
@@ -92,7 +92,7 @@ MODULE_CONTRACT: Dict[str, Any] = {
         },
         {
             "id": "chart",
-            "name": "Chart Lab",
+            "name": "Chart Analytics",
             "role": "Analytics / lectura visual",
             "port": 3000,
             "directUrl": "http://127.0.0.1:3000",
@@ -415,10 +415,10 @@ def write_contract_files(lab_root: Path, protected_current: Path, out_dir: Path)
     contract["lab"]["outDir"] = str(out_dir)
     (runtime / "prisma-module-contract.json").write_text(json.dumps(contract, indent=2, ensure_ascii=False), encoding="utf-8")
     (runtime / "prisma-lab-port-override.json").write_text(json.dumps({
-        "mode": "SAFE_LAB_V3",
-        "labHost": DEFAULT_HOST,
-        "labPort": DEFAULT_PORT,
-        "labUrl": f"http://{DEFAULT_HOST}:{DEFAULT_PORT}/unified-shell.html",
+        "mode": "PRISMA_CLOUD_CENTER",
+        "cloudCenterHost": DEFAULT_HOST,
+        "cloudCenterPort": DEFAULT_PORT,
+        "cloudCenterUrl": f"http://{DEFAULT_HOST}:{DEFAULT_PORT}/unified-shell.html",
         "protectedCurrentControlCenter": {
             "path": str(protected_current),
             "port": 3150,
@@ -446,11 +446,11 @@ def export_diagnostics(out_dir: Path) -> Dict[str, Any]:
         "cloudSaas": cloud_saas_api.summary_payload(allow_admin=False),
         "licenseOps": license_ops_api.license_ops_payload("/api/license-ops/latest", public=True),
     }
-    json_path = out_dir / f"PRISMA_CLOUD_COMMAND_CENTER_DIAGNOSTICS_{ts}.json"
-    txt_path = out_dir / f"PRISMA_CLOUD_COMMAND_CENTER_DIAGNOSTICS_{ts}.txt"
+    json_path = out_dir / f"PRISMA_CLOUD_CENTER_DIAGNOSTICS_{ts}.json"
+    txt_path = out_dir / f"PRISMA_CLOUD_CENTER_DIAGNOSTICS_{ts}.txt"
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     lines = [
-        "PRISMA Cloud Command Center diagnostics",
+        "Prisma Cloud Center diagnostics",
         f"Generated: {payload['generatedAt']}",
         f"Overall: {snapshot['overall']}",
         f"Warnings: {snapshot['warnings']}",
@@ -470,7 +470,7 @@ def command_center_html(lab_root: Path) -> str:
         return html_path.read_text(encoding="utf-8")
     except Exception as exc:
         add_event(f"Command Center HTML fallback: {exc}", "warn")
-        return """<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>PRISMA Cloud Command Center</title><body style=\"font-family:Segoe UI;background:#07101b;color:#f4f8fc;padding:32px\"><h1>PRISMA Cloud Command Center</h1><p>Shell assets are not available. Check internal/web/cloud_command_center.html.</p></body></html>"""
+        return """<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Prisma Cloud Center</title><body style=\"font-family:Segoe UI;background:#07101b;color:#f4f8fc;padding:32px\"><h1>Prisma Cloud Center</h1><p>Web assets are not available. Check internal/web/cloud_command_center.html.</p></body></html>"""
 
 
 def replace_absolute_refs(html: str, port: int) -> str:
@@ -489,7 +489,7 @@ UI_HTML = r'''<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PRISMA Unified Shell Lab v3</title>
+<title>Prisma Cloud Center</title>
 <link rel="stylesheet" href="/internal/web/cloud_saas_console.css" />
 <link rel="stylesheet" href="/internal/web/license_ops_console.css" />
 <style>
@@ -564,8 +564,8 @@ pre { white-space:pre-wrap; word-break:break-word; color:var(--muted); backgroun
 <div class="shell">
   <aside class="side card">
     <div class="brand">
-      <h1>PRISMA Unified Shell</h1>
-      <p>SAFE LAB v3 en 3160. Contrato de módulos, previews nativos, health, logs, diagnóstico y temas heredados.</p>
+      <h1>Prisma Cloud Center</h1>
+      <p>Consola local 3160 para licencias, LICFLOW3, health, diagnostics y evidencia sanitizada.</p>
     </div>
     <select class="theme" id="theme">
       <option value="obsidian">Obsidian Glass</option>
@@ -658,7 +658,7 @@ function openCloudView(view) {
 
 function renderSidePanels() {
   $('cloudPanel').innerHTML = `<div class="drawer"><h3>Cloud SaaS</h3><p>PRISMA Cloud Semilla, Prisma Original Customer, snapshots, notes, receipts y status.</p><button onclick="openCloudView('overview')">Abrir Cloud SaaS</button><button class="secondary" onclick="openCloudView('health')">Health</button><button class="secondary" onclick="openCloudView('commercial')">Commercial</button></div>`;
-  $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro del lab 3160.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
+  $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro de Prisma Cloud Center.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
 }
 
 function renderQuality() {
@@ -673,17 +673,17 @@ function renderQuality() {
 function renderLogs() {
   const wrap = $('logs');
   const events = health?.events || [];
-  wrap.innerHTML = `<div class="drawer"><h3>Logs Lab</h3><p>Últimos eventos del runtime.</p><pre>${JSON.stringify(events.slice(-40), null, 2)}</pre></div>`;
+  wrap.innerHTML = `<div class="drawer"><h3>Runtime logs</h3><p>Últimos eventos del runtime.</p><pre>${JSON.stringify(events.slice(-40), null, 2)}</pre></div>`;
 }
 
 function renderContract() {
-  $('contract').innerHTML = `<div class="drawer"><h3>Module Embed Contract</h3><p>Contrato vivo usado por el shell.</p><pre>${JSON.stringify(contract, null, 2)}</pre></div>`;
+  $('contract').innerHTML = `<div class="drawer"><h3>Module Contract</h3><p>Contrato vivo usado por Prisma Cloud Center.</p><pre>${JSON.stringify(contract, null, 2)}</pre></div>`;
 }
 
 function nativeHtml(m) {
   if (m.id === 'cloud-saas') return `<div id="cloudSaasConsole" class="cloudSaasMount"></div>`;
   if (m.id === 'mobile') return `<div class="device"><div class="screen"><span class="pill live">MOBILE SUPERVISA</span><h2>Mobile Intelligence Layer</h2><p>Snapshot, freshness, alertas, action inbox y evidencia. No vende; supervisa.</p><div class="fakeCard"></div><div class="fakeCard"></div><div class="fakeCard"></div><button onclick="setViewMode('direct')">Ver app viva en 3140</button></div></div>`;
-  if (m.id === 'tablet') return `<div class="device tabletDevice"><div class="screen"><span class="pill live">TABLET OPERA SOLA</span><h2>Tablet Operations Preview</h2><p>La tablet no depende de PC, Mobile, cloud ni Lab para operar.</p><div class="fakeCard"></div><div class="fakeCard"></div><button onclick="setViewMode('direct')">Ver tablet viva en 3120</button></div></div>`;
+  if (m.id === 'tablet') return `<div class="device tabletDevice"><div class="screen"><span class="pill live">TABLET OPERA SOLA</span><h2>Tablet Operations Preview</h2><p>La tablet no depende de PC, Mobile, cloud ni consola para operar.</p><div class="fakeCard"></div><div class="fakeCard"></div><button onclick="setViewMode('direct')">Ver tablet viva en 3120</button></div></div>`;
   if (m.id === 'addon') return `<div class="addonBox"><span class="pill live">SLOT READY · 3165</span><h2>Nuevo Añadido</h2><p>Contrato listo para conectar módulo real sin duplicar bays. Hereda temas, health, logs y fallback.</p><div class="addonGrid"><div class="kpi"><label>embedMode</label><strong>nativePreview</strong></div><div class="kpi"><label>Puerto</label><strong>3165</strong></div><div class="kpi"><label>Estado</label><strong>SLOT_READY</strong></div></div><br><button onclick="setViewMode('direct')">Probar live embed 3165</button></div>`;
   return `<div class="addonBox"><span class="pill warn">PREVIEW</span><h2>${m.name}</h2><p>Este módulo usa ${m.embedMode}. Puedes cambiar a live embed o abrir externo.</p><button onclick="setViewMode('direct')">Ver live embed</button></div>`;
 }
@@ -719,7 +719,7 @@ boot().catch(e => { document.body.innerHTML = '<pre style="color:white;padding:2
 
 
 class PrismaLabHandler(SimpleHTTPRequestHandler):
-    server_version = "PRISMA-Lab-v3"
+    server_version = "PRISMA-Cloud-Center"
 
     def __init__(self, *args: Any, directory: str | None = None, lab_root: Path, protected_current: Path, out_dir: Path, **kwargs: Any) -> None:
         self.lab_root = lab_root
@@ -842,7 +842,7 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             return
         target = f"http://127.0.0.1:{port}{rest}"
         try:
-            req = urllib.request.Request(target, headers={"User-Agent": "PRISMA-Lab-v3/proxy", "Accept": self.headers.get("Accept", "*/*")})
+            req = urllib.request.Request(target, headers={"User-Agent": "PRISMA-Cloud-Center/proxy", "Accept": self.headers.get("Accept", "*/*")})
             with urllib.request.urlopen(req, timeout=15) as resp:
                 raw = resp.read()
                 content_type = resp.headers.get("Content-Type", "application/octet-stream")
@@ -860,7 +860,7 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
                     self.send_header(key, value)
                 self.send_header("Content-Length", str(len(raw)))
                 self.send_header("Cache-Control", "no-store")
-                self.send_header("X-PRISMA-Lab-Proxy", APP_VERSION)
+                self.send_header("X-PRISMA-Cloud-Center-Proxy", APP_VERSION)
                 self.end_headers()
                 self.wfile.write(raw)
         except urllib.error.HTTPError as exc:
@@ -885,28 +885,12 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
         add_event(fmt % args, "http")
 
 
-def kill_lab_port_only(port: int, protected_current: Path) -> None:
-    protected_text = str(protected_current).lower()
-    for pid in port_owners(port):
-        if pid in (0, 4, os.getpid()):
-            add_event(f"SKIP pid {pid} on lab port {port}", "warn")
-            continue
-        info = process_info(pid)
-        command = (info.get("commandLine") or "").lower()
-        if protected_text and protected_text in command:
-            add_event(f"PROTECTED pid {pid} belongs to current Control Center; not stopping", "warn")
-            continue
-        add_event(f"Stopping old lab port owner pid={pid} name={info.get('processName')}", "warn")
-        run(["taskkill.exe", "/PID", str(pid), "/T", "/F"], timeout=20)
-        time.sleep(0.5)
-
-
 def serve(lab_root: Path, protected_current: Path, out_dir: Path, host: str, port: int) -> None:
     write_contract_files(lab_root, protected_current, out_dir)
     lab_root.mkdir(parents=True, exist_ok=True)
     handler = partial(PrismaLabHandler, directory=str(lab_root), lab_root=lab_root, protected_current=protected_current, out_dir=out_dir)
     httpd = ThreadingHTTPServer((host, port), handler)
-    add_event(f"PRISMA Cloud Command Center listening on http://{host}:{port}/unified-shell.html")
+    add_event(f"Prisma Cloud Center listening on http://{host}:{port}/unified-shell.html")
     httpd.serve_forever()
 
 
@@ -930,13 +914,13 @@ def start(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
         )
         time.sleep(1.5)
     else:
-        print(f"Puerto {port} ya tiene un proceso escuchando; no se mata ni se reemplaza. Reabre manualmente si necesitas recargar el patch.")
+        print(f"Puerto {port} ya tiene un proceso escuchando; no se mata ni se reemplaza. Reabre manualmente si necesitas recargar Prisma Cloud Center.")
     url = f"http://{host}:{port}/unified-shell.html?v={int(time.time())}"
     print("=" * 64)
-    print("PRISMA Cloud Command Center")
+    print("Prisma Cloud Center")
     print(f"Local cockpit: {url}")
     print(f"Protected current Control Center: {protected_current}")
-    print("No toca 3150. Command Center corre en 3160. Cloud SaaS y licencias viven dentro del shell.")
+    print("No toca 3150. Prisma Cloud Center corre en 3160. Cloud SaaS y licencias viven dentro de la consola.")
     print("=" * 64)
     if open_browser:
         webbrowser.open(url)
@@ -945,9 +929,19 @@ def start(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
 def self_test(lab_root: Path, protected_current: Path, out_dir: Path) -> int:
     failures: List[str] = []
     required = [
+        lab_root / "00_ABRIR_PRISMA_CLOUD_CENTER.cmd",
+        lab_root / "01_SELF_TEST_PRISMA_CLOUD_CENTER.cmd",
+        lab_root / "02_EXPORT_DIAGNOSTICS_PRISMA_CLOUD_CENTER.cmd",
         lab_root / "00_ABRIR_UNIFIED_SHELL_LAB_V3.cmd",
         lab_root / "01_SELF_TEST_LAB_V3.cmd",
         lab_root / "02_EXPORT_DIAGNOSTICS_LAB_V3.cmd",
+        lab_root / "README.md",
+        lab_root / "MANUAL.md",
+        lab_root / "RUNBOOK.md",
+        lab_root / "ARCHITECTURE.md",
+        lab_root / "SECURITY.md",
+        lab_root / "TROUBLESHOOTING.md",
+        lab_root / "CHANGELOG.md",
         lab_root / "internal" / "py" / "prisma_unified_lab_v3.py",
         lab_root / "internal" / "py" / "cloud_saas_api.py",
         lab_root / "internal" / "py" / "license_ops_api.py",
@@ -977,7 +971,7 @@ def self_test(lab_root: Path, protected_current: Path, out_dir: Path) -> int:
         "generatedAt": datetime.now().isoformat(timespec="seconds"),
         "health": health_snapshot(),
     }
-    report = out_dir / f"PRISMA_UNIFIED_SHELL_LAB_V3_SELF_TEST_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    report = out_dir / f"PRISMA_CLOUD_CENTER_SELF_TEST_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     out_dir.mkdir(parents=True, exist_ok=True)
     report.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     print("SELF TEST:", result["status"])

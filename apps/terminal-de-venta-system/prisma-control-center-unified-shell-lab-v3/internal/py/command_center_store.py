@@ -507,7 +507,7 @@ def draft_client(con, b):
         )
     con.execute(
         "INSERT INTO ClientNote(id,clientId,noteType,text) VALUES(?,?,?,?)",
-        (uid(), cid, "system", "Alta preparada localmente desde PRISMA Cloud Command Center. Pendiente activación cloud."),
+        (uid(), cid, "system", "Alta preparada localmente desde Prisma Cloud Center. Pendiente activación cloud."),
     )
     payload = {"client": {"dbId": cid, "displayName": name, "status": status, **ids["client"]}, "contract": ids["contract"], "provisioning": ids["provisioning"], "recommendation": rec, "source": "local_prepared_not_cloud_created"}
     con.execute(

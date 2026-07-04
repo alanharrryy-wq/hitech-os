@@ -1,13 +1,13 @@
 {
   "contractVersion": 1,
   "lab": {
-    "name": "PRISMA Cloud Command Center",
-    "mode": "PRIVATE_CLOUD_COMMAND_CENTER",
+    "name": "Prisma Cloud Center",
+    "mode": "PRISMA_CLOUD_CENTER",
     "host": "127.0.0.1",
     "port": 3160,
     "themeInheritance": false,
     "noTouchPolicy": "Never modifies protected current Control Center",
-    "protectedCurrentPath": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
+    "protectedCurrentPath": "apps\\terminal-de-venta-system\\prisma-control-center",
     "outDir": "F:\\descargasf"
   },
   "themeTokens": {
@@ -20,7 +20,7 @@
     {
       "id": "cloud-saas",
       "name": "PRISMA Cloud",
-      "role": "Private Cockpit Cloud Semilla + licencias",
+      "role": "LICFLOW3 Cloud Semilla + license operations",
       "port": 3160,
       "portLabel": "app.hitechrts.com",
       "directUrl": "https://app.hitechrts.com",
@@ -39,10 +39,10 @@
         "deviceSmoke",
         "licenseOps"
       ],
-      "statusLabel": "CLOUD_READONLY",
+      "statusLabel": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
       "qualityScope": [
         "cloud",
-        "adminTokenLocal",
+        "adminTokenPresenceOnly",
         "licenseOpsReadOnly"
       ],
       "healthKind": "cloud"
@@ -76,7 +76,7 @@
     },
     {
       "id": "chart",
-      "name": "Chart Lab",
+      "name": "Chart Analytics",
       "role": "Analytics / lectura visual",
       "port": 3000,
       "directUrl": "http://127.0.0.1:3000",

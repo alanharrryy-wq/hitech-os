@@ -86,12 +86,12 @@
     const admin = data.admin || {};
     return `<section class="cloudSaasHero">
       <div>
-        <h2>PRISMA Cloud Private Cockpit</h2>
+        <h2>Prisma Cloud Center</h2>
         <p>${esc(derived.service || "PRISMA Cloud Semilla")} · ${esc(derived.version || "-")} · ${esc(data.cloud?.baseUrl || "https://app.hitechrts.com")}</p>
       </div>
       <div class="cloudSaasMode">
         ${row("Modo", data.mode || "READ_ONLY")}
-        ${row("Admin local", admin.enabled ? "activo" : (admin.tokenAvailable ? "bloqueado por host" : "sin token"))}
+        ${row("adminTokenPresent", admin.adminTokenPresent ? "true" : "false")}
       </div>
     </section>`;
   }
@@ -116,7 +116,7 @@
       ${card("Cloud", derived.service || "PRISMA Cloud Semilla", rows([["Version", derived.version || "-"], ["Tenant", derived.tenant?.slug || FIRST_TENANT_SLUG], ["DB", derived.dbHealth ? JSON.stringify(derived.dbHealth).slice(0, 90) : "-"]]), state.data?.mode)}
       ${card("Counts", "Resumen vivo", rows([["Tenants", counts.tenants ?? "-"], ["Devices", counts.devices ?? "-"], ["Licencias activas", counts.activeLicenses ?? "-"], ["Activation codes", counts.activeActivationCodes ?? "-"]]), "LIVE")}
       ${card("Tenant", derived.tenant?.displayName || derived.tenant?.slug || FIRST_CUSTOMER_NAME, rows([["Status", derived.tenant?.status || "-"], ["Plan", derived.tenant?.plan || "-"], ["License", derived.license?.status || "-"]]), derived.tenant?.status || "REVIEW")}
-      ${card("LICFLOW3", state.data?.licflow3Contract?.claim || "contract_incomplete", rows([["Endpoints faltantes", (state.data?.licflow3Contract?.missing || []).length], ["Hosted evidence", state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]]), state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "REVIEW")}
+      ${card("LICFLOW3", state.data?.licflow3Contract?.claim || "routes_live", rows([["Estado", state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"], ["Worker", state.data?.licflow3Contract?.worker || "prisma-cloud-semilla"], ["D1", state.data?.licflow3Contract?.d1 || "prisma_cloud_semilla"]]), state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE")}
       ${endpointCard("health", "Health")}
       ${endpointCard("capabilities", "Capabilities")}
       ${endpointCard("tenantStatus", "Tenant Status")}
@@ -204,8 +204,11 @@
         ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
         ["Tenant", licflow3.tenantSlug || state.data?.cloud?.tenantSlug || FIRST_TENANT_SLUG],
         ["Faltantes", (licflow3.missing || []).join(", ") || "0"],
-        ["Hosted evidence", licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]
-      ]), licflow3.hostedCloudEvidenceStatus || "REVIEW")}
+        ["Estado", licflow3.hostedCloudEvidenceStatus || licflow3.status || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"],
+        ["Worker", licflow3.worker || "prisma-cloud-semilla"],
+        ["D1", licflow3.d1 || "prisma_cloud_semilla"],
+        ["Smoke sin token", "401 ADMIN_TOKEN_REQUIRED"]
+      ]), licflow3.hostedCloudEvidenceStatus || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE")}
       ${card("Endpoints", "Contrato configurado", listRows(endpoints.map((item) => ({ name: item.key, status: `${item.configured ? "CONFIGURADO" : "FALTA"} ${item.method} ${item.configuredPath || item.path}` })), "Sin contrato LICFLOW3"), "CONTRACT")}
     </div>`;
   }

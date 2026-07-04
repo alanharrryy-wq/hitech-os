@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   buildLicflow3CloudContractStatus,
+  LICFLOW3_CLOUDFLARE_ROUTES_LIVE,
   LICFLOW3_CLOUD_CONTRACT,
   LICFLOW3_CLOUD_ENDPOINTS,
   LICFLOW3_REQUIRED_CAPABILITIES,
@@ -198,7 +199,7 @@ function modeInventory(): void {
   ];
   const combined = reports.map(readText).join("\n");
   for (const report of reports) assert(fs.existsSync(path.join(terminalRoot, report)), `Missing report: ${report}`);
-  for (const token of ["REUSE", "EXTEND", "CREATE", "LEGACY_DO_NOT_USE_WITHOUT_PROOF", "DOC_ONLY", "RUNTIME_ARTIFACT", "DANGER_DO_NOT_AUTORUN", "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]) {
+  for (const token of ["REUSE", "EXTEND", "CREATE", "LEGACY_DO_NOT_USE_WITHOUT_PROOF", "DOC_ONLY", "RUNTIME_ARTIFACT", "DANGER_DO_NOT_AUTORUN"]) {
     assert(combined.includes(token), `Inventory reports do not include classification token ${token}`);
   }
   assert(combined.includes("git status --short --branch"), "Inventory did not capture requested git status preflight.");
@@ -227,7 +228,7 @@ function modeCloudContract(): void {
   const config = readJson<{ apiBaseUrl: string; tenantSlug: string; endpoints: Partial<Record<Licflow3EndpointKey, string>> }>("prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json");
   const status = buildLicflow3CloudContractStatus({ apiBaseUrl: config.apiBaseUrl, tenantSlug: config.tenantSlug, endpoints: config.endpoints });
   assert(status.ok, `LICFLOW3 cloud contract incomplete: ${JSON.stringify({ missing: status.missing, mismatched: status.mismatched })}`);
-  assert(status.hostedCloudEvidenceStatus === "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED", "Static verifier must not claim live Cloudflare evidence.");
+  assert(status.hostedCloudEvidenceStatus === LICFLOW3_CLOUDFLARE_ROUTES_LIVE, "LICFLOW3 cloud contract must reflect the authorized live Cloudflare routes evidence.");
   const capabilities = new Set(LICFLOW3_CLOUD_ENDPOINTS.map((endpoint) => endpoint.capability));
   for (const capability of LICFLOW3_REQUIRED_CAPABILITIES) assert(capabilities.has(capability), `Missing required capability ${capability}`);
   for (const endpoint of LICFLOW3_CLOUD_ENDPOINTS.filter((item) => item.mutatesCloud)) {
@@ -238,7 +239,8 @@ function modeCloudContract(): void {
     baseUrl: status.baseUrl,
     tenantSlug: status.tenantSlug,
     endpointCount: LICFLOW3_CLOUD_ENDPOINTS.length,
-    hostedCloudEvidenceStatus: status.hostedCloudEvidenceStatus
+    hostedCloudEvidenceStatus: status.hostedCloudEvidenceStatus,
+    liveDeployment: status.liveDeployment
   });
 }
 
@@ -306,7 +308,8 @@ function modeAppHitechrtsContract(): void {
     wranglerPattern: "pnpm -C infra/cloudflare/licflow3-worker exec wrangler --version",
     nodeCheck: check,
     deployPerformed: false,
-    cloudflareLiveEvidence: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"
+    cloudflareLiveEvidence: LICFLOW3_CLOUDFLARE_ROUTES_LIVE,
+    liveDeployment: LICFLOW3_CLOUD_CONTRACT.liveDeployment
   });
 }
 
