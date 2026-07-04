@@ -7,7 +7,7 @@
 | Repo deploy config | LICFLOW3 worker scaffold | `infra/cloudflare/licflow3-worker/wrangler.jsonc` | Must point to real Worker/D1 for deploy-ready repair. |
 | Route handlers | LICFLOW3 worker source | `infra/cloudflare/licflow3-worker/src/worker.js` | Add/connect POST handlers here only. |
 | Contract truth | Shared licensing | `shared/licensing/licflow3-cloud-contract.ts` | Keep POST contract consistent with worker routes. |
-| Operator diagnostics | Existing 3160 cockpit | `prisma-control-center-unified-shell-lab-v3/**` | No parallel cockpit; no mutating autocalls. |
+| Operator diagnostics | Existing 3160 cockpit | `Prisma Cloud Ctr/**` | No parallel cockpit; no mutating autocalls. |
 | Local/offline licensing | LICFLOW2 / ADLANT4 | `shared/licensing/licflow2-activation.ts`, `shared/licensing/adlant4-local-issuer.ts` | Do not duplicate or downgrade LICFLOW2. |
 | Validation | LICFLOW3 verifier | `tools/verify-licflow3.mts` | Prove route contract locally and safety gates. |
 
