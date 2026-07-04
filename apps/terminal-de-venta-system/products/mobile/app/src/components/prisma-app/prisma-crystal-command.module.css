@@ -493,3 +493,321 @@
   }
 }
 
+/* BEGIN APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+.crystalCommand {
+  max-width: 100%;
+  overflow-x: clip;
+  color: var(--appmovil-cc-text);
+}
+.crystalPanel,
+.heroGauge,
+.sparkCard,
+.syncGrid article,
+.radarGrid article,
+.briefGrid article,
+.timelineList button,
+.segmented button,
+.evidenceStrip span,
+.statusChip {
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line);
+  background:
+    radial-gradient(circle at 9% 0%, rgba(255, 255, 255, .075), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .036), rgba(255, 255, 255, .012) 52%),
+    rgba(7, 16, 29, .22);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .20), inset 0 1px 0 rgba(255, 255, 255, .07);
+  backdrop-filter: blur(5px) saturate(118%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(118%) contrast(104%);
+}
+.crystalPanel :where(h3, strong),
+.heroGauge :where(h3, strong),
+.sparkCard :where(h3, strong) {
+  color: var(--appmovil-cc-text);
+}
+.crystalPanel :where(p, small, span, em),
+.heroGauge :where(p, small, span, em),
+.sparkCard :where(p, small, span, em),
+.syncGrid article :where(small, span),
+.radarGrid article :where(small, span),
+.briefGrid article :where(small, span) {
+  color: var(--appmovil-cc-soft);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .28);
+}
+.segmented {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+.segmented button {
+  min-width: max-content;
+  color: var(--appmovil-cc-text);
+}
+@media (max-width: 460px) {
+  .crystalCommand {
+    gap: 10px;
+  }
+  .crystalPanel,
+  .heroGauge,
+  .sparkCard {
+    border-radius: 18px;
+    padding: 12px;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  .syncGrid,
+  .radarGrid,
+  .briefGrid {
+    grid-template-columns: 1fr;
+  }
+  .evidenceStrip,
+  .segmented {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .evidenceStrip span,
+  .segmented button {
+    flex: 0 0 auto;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+/* Phone-first Crystal Command: no horizontal spill, darker translucent glass. */
+.crystalCommand {
+  --prisma-panel: rgba(8, 16, 28, 0.34);
+  --prisma-panel-soft: rgba(12, 22, 36, 0.30);
+  --prisma-metal: rgba(190, 213, 235, 0.18);
+  --prisma-glass: rgba(7, 16, 29, 0.20);
+  --prisma-text: rgba(255, 248, 226, 0.94);
+  --prisma-secondary: rgba(246, 240, 218, 0.76);
+  --prisma-muted: rgba(218, 231, 242, 0.66);
+  --prisma-blue: #7adfff;
+  --prisma-blue-glow: rgba(88, 218, 255, 0.22);
+  --prisma-line: rgba(255, 236, 204, 0.18);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.crystalCommand *,
+.crystalCommand *::before,
+.crystalCommand *::after {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.crystalPanel,
+.heroGauge,
+.sparkCard {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.crystalPanel {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(126, 220, 255, 0.14), transparent 13rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(9, 18, 31, 0.58)),
+    rgba(7, 16, 29, 0.22);
+  border-color: rgba(255, 236, 204, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 236, 204, 0.08),
+    0 18px 46px rgba(0, 0, 0, 0.26);
+  color: var(--prisma-text);
+  backdrop-filter: blur(16px) saturate(1.16) contrast(1.03);
+  -webkit-backdrop-filter: blur(16px) saturate(1.16) contrast(1.03);
+}
+
+.crystalPanel::before {
+  background:
+    linear-gradient(126deg, rgba(255, 255, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 95% 0%, rgba(122, 223, 255, 0.12), transparent 12rem);
+  opacity: 0.66;
+}
+
+.crystalPanel h3,
+.emptyState strong,
+.syncGrid strong,
+.radarGrid strong,
+.briefGrid strong,
+.rankingList strong,
+.timelineList strong {
+  color: var(--prisma-text);
+}
+
+.crystalPanel p,
+.emptyState span,
+.barChart span,
+.tooltipLine span,
+.rankingList span,
+.syncGrid span,
+.radarGrid span,
+.timelineList span {
+  color: var(--prisma-secondary);
+}
+
+.crystalPanel header span,
+.evidenceStrip span:first-child,
+.briefGrid span {
+  color: rgba(135, 232, 255, 0.92);
+}
+
+.gaugeButton {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.20), transparent 5.4rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(8, 16, 28, 0.32)),
+    rgba(10, 18, 30, 0.24);
+  color: var(--prisma-text);
+}
+
+.gaugeButton svg {
+  width: min(100%, 218px);
+  max-width: 100%;
+}
+
+.gaugeButton span {
+  background: rgba(7, 16, 29, 0.34);
+  border-color: rgba(122, 223, 255, 0.22);
+  color: rgba(223, 250, 255, 0.92);
+  max-width: calc(100% - 18px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.evidenceStrip {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(86px, 100%), 1fr));
+  gap: 6px;
+  overflow: hidden;
+}
+
+.evidenceStrip span {
+  min-width: 0;
+  max-width: 100%;
+  border-color: rgba(255, 236, 204, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(8, 16, 28, 0.26)),
+    rgba(7, 16, 29, 0.18);
+  color: rgba(246, 241, 219, 0.76);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.segmented {
+  width: 100%;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  overflow: hidden;
+}
+
+.segmented button {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 7px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-color: rgba(255, 236, 204, 0.16);
+  background: rgba(7, 16, 29, 0.22);
+  color: rgba(246, 241, 219, 0.76);
+}
+
+.segmented .segmentActive {
+  background: rgba(122, 223, 255, 0.14);
+  border-color: rgba(122, 223, 255, 0.28);
+  color: rgba(221, 250, 255, 0.96);
+}
+
+.syncGrid article,
+.radarGrid article,
+.briefGrid article,
+.tooltipLine,
+.rankingList button,
+.timelineList button,
+.emptyState {
+  min-width: 0;
+  max-width: 100%;
+  border-color: rgba(255, 236, 204, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(8, 16, 28, 0.26)),
+    rgba(7, 16, 29, 0.18);
+  color: var(--prisma-text);
+}
+
+.rankingList button,
+.timelineList button {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.donutLayout,
+.briefGrid,
+.syncGrid,
+.radarGrid {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.timelineCard svg {
+  overflow: hidden;
+}
+
+@media (max-width: 680px) {
+  .crystalCommand {
+    gap: 10px;
+  }
+
+  .crystalPanel {
+    padding: 12px;
+    border-radius: 17px;
+  }
+
+  .segmented {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gaugeButton {
+    min-height: 132px;
+  }
+
+  .gaugeButton strong {
+    font-size: clamp(2.15rem, 16vw, 3.6rem);
+  }
+}
+
+@media (max-width: 380px) {
+  .segmented button {
+    padding-inline: 6px;
+    font-size: 0.74rem;
+  }
+
+  .evidenceStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.crystalCommand { width: 100%; max-width: 100%; min-width: 0; grid-template-columns: minmax(0, 1fr); overflow-x: clip; }
+.crystalPanel, .heroGauge, .sparkCard, .emptyState, .timelineCard { grid-column: 1 / -1; width: 100%; max-width: 100%; min-width: 0; overflow: hidden; color: var(--appmovil-cc-text, var(--prisma-text)); background: radial-gradient(circle at 8% 0%, rgba(255,255,255,.07), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.012)), var(--appmovil-cc-panel, rgba(7,16,29,.18)); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); }
+.crystalPanel *, .heroGauge *, .sparkCard *, .emptyState *, .timelineCard * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.evidenceStrip, .briefGrid, .syncGrid, .radarGrid, .segmented, .rankingList, .timelineList, .bulletTrack, .donutLayout { width: 100%; max-width: 100%; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr)); gap: clamp(6px, 2vw, 10px); overflow: visible; }
+.evidenceStrip > *, .briefGrid > *, .syncGrid > *, .radarGrid > *, .segmented > *, .rankingList > *, .timelineList > *, .bulletTrack > *, .donutLayout > * { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+/* END MOVILGFT7_FIXED3140_0407 */

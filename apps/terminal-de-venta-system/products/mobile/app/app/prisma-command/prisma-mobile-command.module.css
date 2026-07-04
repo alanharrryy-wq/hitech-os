@@ -219,3 +219,120 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+.shell {
+  min-height: 100dvh;
+  color: var(--appmovil-cc-text);
+  background-color: var(--appmovil-cc-bg);
+  background-image:
+    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
+    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
+    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
+    var(--appmovil-cc-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.header,
+.disabledPanel,
+.focusPanel,
+.card,
+.sparkCard,
+.emptySpark {
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line);
+  border-radius: var(--appmovil-cc-radius-lg);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, .080), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .042), rgba(255, 255, 255, .010) 48%, rgba(255, 255, 255, .014)),
+    var(--appmovil-cc-panel);
+  box-shadow: var(--appmovil-cc-shadow);
+  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+}
+
+.header,
+.disabledPanel,
+.focusPanel,
+.grid {
+  width: min(100%, 430px);
+  max-width: 430px;
+}
+
+.header h1,
+.disabledPanel h1 {
+  color: var(--appmovil-cc-text);
+  font-size: clamp(2.1rem, 11vw, 3.8rem);
+  line-height: .92;
+  text-shadow: 0 1px 0 rgba(0,0,0,.34), 0 0 14px rgba(120,235,255,.18);
+}
+
+.header p,
+.disabledPanel p,
+.focusPanel span,
+.sparkCard header span {
+  color: var(--appmovil-cc-accent);
+}
+
+.header span,
+.header small,
+.disabledPanel span,
+.cardHeader p,
+.cardFooter,
+.sparkCard small {
+  color: var(--appmovil-cc-soft);
+}
+
+.signalRow strong,
+.signalRow small,
+.filterRail button,
+.cardHeader strong {
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line);
+  background: rgba(255, 255, 255, .055);
+}
+
+.filterRail {
+  width: min(100%, 430px);
+  max-width: 430px;
+  scrollbar-width: thin;
+}
+
+.filterRail button {
+  min-height: 44px;
+}
+
+.grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.cardHeader {
+  align-items: flex-start;
+}
+
+.cardHeader strong {
+  color: var(--appmovil-cc-bg);
+  background: var(--appmovil-cc-accent);
+}
+
+.disabledPanel {
+  margin: 10vh auto;
+}
+/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.shell, .header, .disabledPanel, .focusPanel, .grid, .card, .sparkGrid, .sparkCard, .emptySpark, .filterRail, .signalRow { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
+.header, .disabledPanel, .focusPanel, .grid { inline-size: min(100%, 430px); max-inline-size: calc(100vw - 20px); margin-inline: auto; }
+.filterRail, .signalRow, .cardFooter, .sparkCard header, .cardHeader { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr)); gap: clamp(6px, 2vw, 10px); overflow: visible; }
+.filterRail button, .signalRow strong, .signalRow small, .cardFooter > *, .sparkCard header > *, .cardHeader > * { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.card, .sparkCard, .emptySpark, .header, .disabledPanel, .focusPanel { background-color: color-mix(in srgb, var(--appmovil-cc-panel, rgba(7,16,29,.18)) 82%, transparent); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); color: var(--appmovil-cc-text, #f8fafc); }
+@media (max-width: 620px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+@supports not (overflow: clip) { .shell, .header, .disabledPanel, .focusPanel, .grid, .card, .sparkGrid, .sparkCard, .emptySpark, .filterRail, .signalRow { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */

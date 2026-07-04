@@ -1062,3 +1062,200 @@
     font-size: 1.74rem;
   }
 }
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+.pageRoot {
+  min-height: 100dvh;
+  overflow-x: clip;
+  overflow-y: auto;
+  color: var(--appmovil-cc-text);
+  background-color: var(--appmovil-cc-bg);
+  background-image:
+    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
+    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
+    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
+    var(--appmovil-cc-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  place-items: start center;
+}
+
+.pageRoot::before {
+  opacity: .32;
+  background:
+    linear-gradient(rgba(255,255,255,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.ambientGlow {
+  width: min(92vmin, 560px);
+  height: min(92vmin, 560px);
+  opacity: .58;
+  filter: blur(20px);
+}
+
+.starField {
+  opacity: .30;
+  mix-blend-mode: screen;
+}
+
+.phoneStage {
+  width: min(100%, 430px);
+  min-width: 0;
+}
+
+.phoneShell {
+  width: min(100%, 392px);
+  min-height: auto;
+  border-radius: clamp(34px, 9vw, 48px);
+  padding: clamp(7px, 2vw, 10px);
+  background:
+    linear-gradient(135deg, rgba(219,235,255,.82), rgba(46,56,74,.54) 17%, rgba(0,0,0,.74) 48%, rgba(169,238,255,.28) 100%);
+  box-shadow: 0 28px 80px rgba(0,0,0,.48), 0 0 0 1px rgba(255,255,255,.18), inset 0 0 0 1px rgba(255,255,255,.14);
+}
+
+.phoneScreen,
+.installCard,
+.guideCard,
+.platformCard,
+.platformOrbCard,
+.minimalMessage,
+.warning {
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, .080), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .042), rgba(255, 255, 255, .010) 48%, rgba(255, 255, 255, .014)),
+    var(--appmovil-cc-panel);
+  box-shadow: var(--appmovil-cc-shadow);
+  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+}
+
+.phoneScreen {
+  border-radius: clamp(28px, 8vw, 40px);
+  min-height: auto;
+}
+
+.screenContent {
+  min-height: auto;
+  gap: 12px;
+  padding: clamp(16px, 5vw, 22px);
+}
+
+.minimalHero h1,
+.pageHero h1 {
+  color: var(--appmovil-cc-text);
+  font-size: clamp(2rem, 10vw, 3.6rem);
+  line-height: .92;
+  text-shadow: 0 1px 0 rgba(0,0,0,.34), 0 0 14px rgba(120,235,255,.18);
+}
+
+.minimalHero p,
+.pageHero p,
+.installHeader p,
+.guideSteps,
+.installContextNote,
+.platformText,
+.message,
+.minimalMessage {
+  color: var(--appmovil-cc-soft);
+}
+
+.brandPill,
+.selectorTopline,
+.orbLabel,
+.installStatusGrid span {
+  color: var(--appmovil-cc-accent);
+}
+
+.installActions,
+.secondaryInstallActions,
+.platformChooser,
+.platformChooserMinimal,
+.stepsGrid,
+.installStatusGrid {
+  grid-template-columns: 1fr;
+}
+
+.installActions button,
+.secondaryInstallActions a,
+.copyLinkButton,
+.platformCard,
+.platformOrbCard {
+  min-height: 44px;
+}
+
+@media (max-width: 430px) {
+  .phoneShell {
+    width: 100%;
+  }
+  .screenContent {
+    padding: 16px;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+.pageRoot {
+  overflow-x: clip;
+}
+.phoneStage,
+.phoneShell,
+.phoneScreen,
+.installCard,
+.guideCard,
+.platformCard,
+.platformOrbCard,
+.minimalMessage,
+.warning {
+  max-width: 100%;
+  overflow-x: clip;
+}
+.phoneScreen,
+.installCard,
+.guideCard,
+.platformCard,
+.platformOrbCard,
+.minimalMessage,
+.warning {
+  background:
+    radial-gradient(circle at 9% 0%, rgba(255, 255, 255, .070), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .034), rgba(255, 255, 255, .010) 52%),
+    rgba(7, 16, 29, .22);
+}
+.phoneScreen :where(p, small, span, em),
+.installCard :where(p, small, span, em),
+.guideCard :where(p, small, span, em),
+.platformCard :where(p, small, span, em),
+.platformOrbCard :where(p, small, span, em),
+.minimalMessage,
+.warning {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .30);
+}
+@media (max-width: 430px) {
+  .phoneStage {
+    width: 100%;
+  }
+  .phoneShell {
+    width: 100%;
+    padding: 7px;
+  }
+  .screenContent {
+    padding: 14px;
+    gap: 10px;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.shell, .card, .installPanel, .offlinePanel, .actionGrid, .statusGrid, .featureGrid, .hero, .content, .main { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
+.card, .installPanel, .offlinePanel, .hero, .content, .main { inline-size: min(100%, 430px); margin-inline: auto; }
+.actionGrid, .statusGrid, .featureGrid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 118px), 1fr)); }
+.shell button, .shell a, .card *, .installPanel *, .offlinePanel * { max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+@supports not (overflow: clip) { .shell, .card, .installPanel, .offlinePanel, .actionGrid, .statusGrid, .featureGrid, .hero, .content, .main { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */

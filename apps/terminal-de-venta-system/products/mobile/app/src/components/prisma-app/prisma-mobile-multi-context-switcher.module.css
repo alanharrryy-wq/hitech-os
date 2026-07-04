@@ -147,3 +147,235 @@
   display: none;
 }
 /* PRISMA_DELAYER_01_END */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+.multiContextRoot {
+  max-width: 100%;
+  overflow-x: clip;
+  contain: paint;
+}
+.orbitalAura {
+  inset: 0;
+  width: auto;
+  height: auto;
+  opacity: .34;
+  filter: blur(14px) saturate(114%);
+  transform: none;
+}
+.contextHeader,
+.contextBrand,
+.contextDeck,
+.glassPlate,
+.contextRail,
+.statusQuad,
+.commandGrid,
+.themeRail {
+  min-width: 0;
+  max-width: 100%;
+}
+.themeRail {
+  width: 100%;
+}
+.themeRail button,
+.searchRow button,
+.switchSheet footer button {
+  min-width: 0;
+}
+.contextFacet,
+.statusCard,
+.heroCard,
+.radarCard,
+.timelineCard,
+.evidenceCard,
+.selectorStack article,
+.recentContexts,
+.sourceMatrix article {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.contextFacet strong,
+.statusCard strong,
+.timelineCard strong,
+.contextBrand h2,
+.contextBrand p {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 620px) {
+  .multiContextRoot {
+    border-radius: 22px;
+    padding: 10px;
+    gap: 10px;
+  }
+  .contextHeader {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .themeRail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 8px;
+  }
+  .themeRail button {
+    width: 100%;
+    min-height: 44px;
+    padding: 7px 8px;
+  }
+  .themeRail strong,
+  .themeRail span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .contextRail,
+  .statusQuad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .commandGrid,
+  .searchRow,
+  .sourceMatrix {
+    grid-template-columns: 1fr;
+  }
+  .heroCard,
+  .radarCard,
+  .timelineCard,
+  .evidenceCard {
+    min-height: 164px;
+    padding: 12px;
+  }
+}
+@media (max-width: 380px) {
+  .themeRail,
+  .contextRail,
+  .statusQuad {
+    grid-template-columns: 1fr;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+/* Phone containment for the active multi-context switcher. */
+.multiContextRoot {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.multiContextRoot *,
+.multiContextRoot *::before,
+.multiContextRoot *::after {
+  max-width: 100%;
+}
+
+.orbitalAura {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(10px);
+  opacity: 0.36;
+  transform: none;
+  animation-duration: 24s;
+  contain: paint;
+}
+
+.contextHeader,
+.contextBrand,
+.contextDeck,
+.contextRail,
+.liveStrip,
+.statusQuad,
+.commandGrid,
+.glassPlate {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.themeRail {
+  justify-content: start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.themeRail button {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 7px 8px;
+  overflow: hidden;
+}
+
+.themeRail strong,
+.themeRail span,
+.contextFacet strong,
+.contextFacet small,
+.liveStrip em,
+.liveStrip small,
+.statusCard span,
+.statusCard strong,
+.statusCard small {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.themeRail strong,
+.themeRail span,
+.contextFacet strong,
+.contextFacet small {
+  white-space: nowrap;
+}
+
+.contextRail {
+  overflow: hidden;
+}
+
+.contextFacet {
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .contextHeader {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .themeRail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .themeRail button {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .themeRail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .themeRail button {
+    padding-inline: 6px;
+    font-size: 0.7rem;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.multiContextRoot, .contextDeck, .glassPlate, .contextRail, .statusQuad, .commandGrid, .selectorStack, .recentContexts, .sourceMatrix, .sheetShell, .switchSheet { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; contain: layout paint; }
+.orbitalAura, .crystalCube, .radarOrb, .evidenceGauge { width: min(100%, 430px); max-width: 100%; min-width: 0; overflow: hidden; contain: layout paint; }
+.themeRail, .contextRail, .liveStrip, .statusQuad, .commandGrid, .searchRow, .recentContexts, .sourceMatrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 92px), 1fr)); gap: clamp(6px, 2vw, 10px); width: 100%; max-width: 100%; min-width: 0; overflow: visible; }
+.themeRail button, .themeRail [role="tab"], .contextRail button, .contextFacet, .statusCard, .heroCard, .radarCard, .timelineCard, .evidenceCard, .searchRow > *, .recentContexts > *, .sourceMatrix > * { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.obsidian, .silver, .graphite, .glassPlate, .statusCard, .heroCard, .radarCard, .timelineCard, .evidenceCard { color: var(--appmovil-cc-text, inherit); background-color: color-mix(in srgb, var(--appmovil-cc-panel, rgba(7,16,29,.18)) 82%, transparent); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); }
+@supports not (overflow: clip) { .multiContextRoot, .contextDeck, .glassPlate, .contextRail, .statusQuad, .commandGrid, .selectorStack, .recentContexts, .sourceMatrix { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */

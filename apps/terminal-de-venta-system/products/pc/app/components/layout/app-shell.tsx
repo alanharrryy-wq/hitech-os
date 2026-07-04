@@ -9,10 +9,35 @@ function isActive(currentPath: string, href: string) {
   return currentPath === href || (href !== "/" && currentPath.startsWith(`${href}/`));
 }
 
+const COMMAND_NAV_GROUP_LABELS: Record<string, string> = {
+  hoy: "Operación",
+  inventario: "Inventario",
+  compras: "Compras",
+  proveedores: "Compras",
+  "ventas-caja": "Ventas / Caja",
+  sincronizacion: "Sincronización",
+  reportes: "Control / Auditoría",
+  analisis: "Control / Auditoría",
+  sistema: "Sistema",
+  configuracion: "Configuración",
+  ayuda: "Sistema"
+};
+
+function groupPrimaryNavigation(items: ReturnType<typeof getPrimaryNavigation>) {
+  const groups = new Map<string, typeof items>();
+
+  for (const item of items) {
+    const label = COMMAND_NAV_GROUP_LABELS[item.group] ?? "Sistema";
+    groups.set(label, [...(groups.get(label) ?? []), item]);
+  }
+
+  return [...groups.entries()].map(([label, groupItems]) => ({ label, items: groupItems }));
+}
+
 export function AppShell({ currentPath, children }: { currentPath: string; children: ReactNode }) {
   const current = getCurrentRouteMeta(currentPath);
   const primaryNav = getPrimaryNavigation();
-  const groupedNavigation = primaryNav;
+  const groupedNavigation = groupPrimaryNavigation(primaryNav);
   const secondaryNav = getSecondaryNavigationForPath(currentPath).filter((item) => item.href !== current.primaryHref && item.status !== "internal" && item.status !== "lab");
   const routeActions = getPrimaryRouteActions(currentPath);
   const hideRouteIntentStrip = currentPath === "/sales-control";
@@ -26,7 +51,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           <div className="brand-row">
             <img className="brand-logo-img" src="/brand/prisma-logo-official.png" alt="PRISMA" />
             <div>
-              <div className="subtle">Centro de decisiones simple</div>
+              <div className="subtle">Command Center PC</div>
             </div>
           </div>
         </div>
@@ -36,22 +61,27 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             <p className="nav-group-title">Buscar</p>
             <form className="search-shell" action="/sales-control" method="get" data-prisma-component="SidebarSearch">
               <span aria-hidden="true">⌕</span>
-              <input name="q" placeholder="Buscar folio, producto, equipo o proveedor" aria-label="Buscar en venta, inventario, compras y sincronización" />
+              <input name="q" placeholder="Buscar folio, producto o proveedor" aria-label="Buscar en venta, inventario, compras y sincronización" />
             </form>
           </section>
 
           <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="PrimaryHumanNavigation" data-uiux-first-level="human-only">
             <p className="nav-group-title">Navegación principal</p>
             <nav className="nav" aria-label="Áreas principales">
-              {groupedNavigation.map((item) => (
-                <NavLink
-                  key={item.href}
-                  href={item.href}
-                  title={item.title}
-                  description={item.description}
-                  active={current.group === item.group || isActive(currentPath, item.href)}
-                  icon={item.icon}
-                />
+              {groupedNavigation.map((group) => (
+                <div className="nav-section" key={group.label}>
+                  <span className="nav-section-title">{group.label}</span>
+                  {group.items.map((item) => (
+                    <NavLink
+                      key={item.href}
+                      href={item.href}
+                      title={item.title}
+                      description={item.description}
+                      active={current.group === item.group || isActive(currentPath, item.href)}
+                      icon={item.icon}
+                    />
+                  ))}
+                </div>
               ))}
             </nav>
           </section>
@@ -85,7 +115,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
               <span>Última sync</span>
               <strong>{pcMessages.shell.lastSync}</strong>
             </div>
-            <small>PC ligero, Tablet independiente. Sin ruido visual abajo.</small>
+            <small>PC gobierna, Tablet vende independiente.</small>
           </section>
           <nav className="footer-actions pc-premium-footer-actions" aria-label="Atajos de soporte PC">
             <a className="footer-chip" href="/glosario">Ayuda</a>
@@ -98,18 +128,18 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         <header className="topbar" data-prisma-component="TopBar" data-route-contract-resolved="true">
           <div className="topbar-brand">
             <span className="brand-mark" aria-hidden="true" style={{ width: 28, height: 28, fontSize: 14 }}>
-              ●
+              CC
             </span>
             <span>{current.title}</span>
           </div>
 
           <form className="search-shell" action="/sales-control" method="get" aria-label="Buscar en PRISMA PC" data-prisma-component="SearchBar">
             <span aria-hidden="true">⌕</span>
-            <input name="q" placeholder="Buscar folio, producto, equipo o proveedor" />
+            <input name="q" placeholder="Buscar folio, producto o proveedor" />
           </form>
 
           <div className="user-shell" data-prisma-component="UserMenu">
-            <div className="sync-chip" title="PC cliente final en modo claro">Modo claro</div>
+            <div className="sync-chip" title="PC cliente final en modo comando">Command</div>
             {routeActions.slice(0, 1).map((action) => (
               <a key={action.label} className={action.primary ? "btn btn-primary" : "btn btn-secondary"} href={action.href}>
                 {action.label}
@@ -118,7 +148,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             <div className="sync-chip">{pcMessages.shell.syncChip}</div>
             <div className="user-chip">
               <span className="avatar">PC</span>
-              <span>{pcMessages.shell.userChip}</span>
+              <span>Control PC</span>
             </div>
           </div>
         </header>

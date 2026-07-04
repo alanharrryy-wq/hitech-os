@@ -14,7 +14,7 @@
 | Repo Worker source | `infra/cloudflare/licflow3-worker/src/worker.js` | Canonical local worker code for LICFLOW3 routes. | yes, minimal |
 | Repo Worker config | `infra/cloudflare/licflow3-worker/wrangler.jsonc` | Deploy target and D1 binding metadata. | yes, must preserve real Worker/D1 |
 | Contract source | `shared/licensing/licflow3-cloud-contract.ts` | Canonical LICFLOW3 endpoint contract. | only if contract changes |
-| 3160 bridge | `prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json` and `.../py/cloud_saas_api.py` | Operator read-only/redacted contract and diagnostics bridge. | only guarded diagnostics |
+| 3160 bridge | `Prisma Cloud Ctr/internal/config/cloud_saas.json` and `.../py/cloud_saas_api.py` | Operator read-only/redacted contract and diagnostics bridge. | only guarded diagnostics |
 | Verifier | `tools/verify-licflow3.mts` | Local route/config/safety verifier. | yes |
 
 ## Current live observation

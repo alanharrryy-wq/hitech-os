@@ -2926,3 +2926,432 @@
   }
 }
 /* MOBILE_ATMOSPHERIC_CLOUDGLASS_2406_END */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+.mobileRoot {
+  min-height: 100dvh;
+  color: var(--appmovil-cc-text);
+  background-color: var(--appmovil-cc-bg);
+  background-image:
+    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
+    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
+    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
+    var(--appmovil-cc-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.mobileRoot::before,
+.mobileRoot::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mobileRoot::before {
+  inset: -8%;
+  opacity: .42;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(520px 280px at 18% 22%, rgba(116, 210, 255, .18), transparent 70%),
+    radial-gradient(460px 250px at 78% 18%, rgba(188, 144, 255, .14), transparent 72%),
+    radial-gradient(640px 360px at 56% 82%, rgba(104, 255, 214, .10), transparent 76%);
+}
+
+.mobileRoot::after {
+  opacity: .58;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(420px 300px at 50% 108%, rgba(169, 238, 255, .10), transparent 68%);
+}
+
+.dashboardShell,
+.loadingShell,
+.errorShell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 430px);
+  max-width: 430px;
+  margin-inline: auto;
+}
+
+.dashboardShell {
+  gap: 12px;
+}
+
+.loadingShell,
+.errorShell {
+  min-height: calc(100dvh - 30px);
+  grid-template-columns: 1fr;
+  gap: 12px;
+  place-content: center;
+}
+
+.loadingPhone {
+  height: auto;
+  min-height: 300px;
+  border-radius: 34px;
+  padding: 18px;
+}
+
+.heroPanel,
+.contentGrid,
+.premiumPanelGrid,
+.cashGrid,
+.dataReadinessGrid,
+.commandSignalGrid,
+.commandBriefGrid,
+.commandDecisionGrid,
+.commandSecondaryGrid,
+.dailyBriefCardGrid,
+.decisionLedgerCardGrid,
+.healthRadarGrid,
+.actionLaneGrid,
+.errorSignalGrid {
+  grid-template-columns: 1fr;
+}
+
+.heroPanel {
+  gap: 12px;
+}
+
+.heroCopy,
+.phonePreview,
+.warningPanel,
+.controlPanel,
+.metricCard,
+.operationsGrid article,
+.panelCard,
+.errorShell,
+.premiumNavigator,
+.premiumTabPanel,
+.todayHero,
+.taskPanel,
+.chartCard,
+.cashBalance,
+.cashTimeline,
+.alertCard,
+.reportList,
+.multiNote,
+.commandCard,
+.commandCenter,
+.commandBrief,
+.commandScoreCard,
+.dataReadinessPanel,
+.dailyBrief,
+.decisionLedger,
+.healthRadarPanel,
+.actionInbox,
+.pulseTimeline {
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, .080), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .042), rgba(255, 255, 255, .010) 48%, rgba(255, 255, 255, .014)),
+    var(--appmovil-cc-panel);
+  box-shadow: var(--appmovil-cc-shadow);
+  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+}
+
+.heroCopy,
+.panelCard,
+.premiumNavigator,
+.premiumTabPanel,
+.commandCenter,
+.dataReadinessPanel,
+.dailyBrief,
+.decisionLedger,
+.healthRadarPanel,
+.actionInbox,
+.pulseTimeline {
+  border-radius: var(--appmovil-cc-radius-xl);
+  padding: clamp(16px, 4.8vw, 22px);
+}
+
+.heroCopy h1,
+.loadingShell h1,
+.errorShell h1 {
+  color: var(--appmovil-cc-text);
+  font-size: clamp(2.05rem, 11vw, 3.75rem);
+  line-height: .92;
+  letter-spacing: -.065em;
+  text-shadow: 0 1px 0 rgba(0,0,0,.34), 0 0 14px rgba(120,235,255,.18);
+}
+
+.heroCopy strong {
+  color: var(--appmovil-cc-accent);
+  font-size: clamp(2.25rem, 12vw, 4rem);
+  line-height: .9;
+  text-shadow: 0 0 18px rgba(169, 238, 255, .20);
+}
+
+.heroCopy p,
+.loadingShell p,
+.errorShell p,
+.panelCard p,
+.panelCard small,
+.metricCard small,
+.operationsGrid small,
+.commandMetaStrip,
+.commandDataQuality,
+.commandBrief,
+.dailyBriefStatus,
+.decisionLedgerDigest,
+.healthRadarBottom,
+.pulseTimelineNarrative {
+  color: var(--appmovil-cc-soft);
+}
+
+.eyebrow,
+.panelCard header span,
+.controlPanel span,
+.metricCard span,
+.operationsGrid article span,
+.commandEyebrow,
+.sectionEyebrow {
+  color: var(--appmovil-cc-accent);
+}
+
+.heroBadges span,
+.controlPanel button,
+.errorShell button,
+.metricCard small,
+.operationsGrid small,
+.panelCard small,
+.alertList em,
+.inventoryList em,
+.branchList em,
+.actionList em,
+.statusChip,
+.sourceChip,
+.secondaryButton {
+  color: var(--appmovil-cc-soft);
+  border-color: var(--appmovil-cc-line);
+  background: rgba(255, 255, 255, .055);
+}
+
+.sectionNav,
+.premiumTabRail,
+.crystalActionStrip,
+.filterRail {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  border-color: var(--appmovil-cc-line);
+  background: rgba(7, 16, 29, .28);
+  backdrop-filter: blur(5px) saturate(126%);
+  -webkit-backdrop-filter: blur(5px) saturate(126%);
+}
+
+.sectionNav a,
+.premiumTabRail button,
+.controlPanel button,
+.errorShell button,
+.secondaryButton {
+  min-height: 44px;
+  color: var(--appmovil-cc-text);
+  border-color: var(--appmovil-cc-line-soft);
+  background: rgba(255, 255, 255, .050);
+}
+
+.metricGrid,
+.operationsGrid,
+.premiumPanelStack,
+.reportGrid,
+.actionList,
+.alertList,
+.inventoryList,
+.branchList {
+  gap: 10px;
+}
+
+.phonePreview,
+.phoneHero,
+.phoneChrome,
+.crystalFirstViewport {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 460px) {
+  .mobileRoot {
+    padding-inline: max(10px, env(safe-area-inset-left));
+  }
+  .dashboardShell,
+  .loadingShell,
+  .errorShell {
+    width: 100%;
+  }
+  .heroCopy,
+  .panelCard,
+  .premiumNavigator,
+  .premiumTabPanel,
+  .commandCenter,
+  .dataReadinessPanel,
+  .dailyBrief,
+  .decisionLedger,
+  .healthRadarPanel,
+  .actionInbox,
+  .pulseTimeline {
+    border-radius: 24px;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+.mobileRoot.atmosphericCloudglassRoot {
+  overflow-x: clip;
+}
+.mobileRoot.atmosphericCloudglassRoot .dashboardShell {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, .060), transparent 32%),
+    linear-gradient(180deg, rgba(7, 16, 29, .26), rgba(7, 16, 29, .18) 46%, rgba(5, 11, 20, .22));
+  border-color: var(--appmovil-cc-line);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .08);
+  backdrop-filter: blur(6px) saturate(122%) contrast(104%);
+  -webkit-backdrop-filter: blur(6px) saturate(122%) contrast(104%);
+  max-width: min(100%, 430px);
+  overflow-x: clip;
+}
+.mobileRoot.atmosphericCloudglassRoot .crystalFirstViewport,
+.mobileRoot.atmosphericCloudglassRoot .crystalDecisionHeader,
+.mobileRoot.atmosphericCloudglassRoot .panelCard,
+.mobileRoot.atmosphericCloudglassRoot .premiumTabPanel,
+.mobileRoot.atmosphericCloudglassRoot .premiumNavigator,
+.mobileRoot.atmosphericCloudglassRoot .commandCenter,
+.mobileRoot.atmosphericCloudglassRoot .dataReadinessPanel,
+.mobileRoot.atmosphericCloudglassRoot .dailyBrief,
+.mobileRoot.atmosphericCloudglassRoot .decisionLedger,
+.mobileRoot.atmosphericCloudglassRoot .healthRadarPanel,
+.mobileRoot.atmosphericCloudglassRoot .actionInbox,
+.mobileRoot.atmosphericCloudglassRoot .pulseTimeline {
+  color: var(--appmovil-cc-text);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255, 255, 255, .070), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, .034), rgba(255, 255, 255, .010) 52%),
+    rgba(7, 16, 29, .20);
+  border-color: var(--appmovil-cc-line);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .07);
+  backdrop-filter: blur(5px) saturate(118%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(118%) contrast(104%);
+  overflow-x: clip;
+}
+.mobileRoot.atmosphericCloudglassRoot :where(p, small, span, em, li) {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .28);
+}
+.mobileRoot.atmosphericCloudglassRoot :where(.sectionNav, .premiumTabRail, .crystalActionStrip, .filterRail) {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+@media (max-width: 460px) {
+  .mobileRoot.atmosphericCloudglassRoot {
+    padding-inline: 10px;
+  }
+  .mobileRoot.atmosphericCloudglassRoot .dashboardShell {
+    width: 100%;
+    max-width: 430px;
+    padding-inline: 10px;
+  }
+  .mobileRoot.atmosphericCloudglassRoot :where(.heroCopy, .panelCard, .premiumNavigator, .premiumTabPanel, .commandCenter, .dataReadinessPanel, .dailyBrief, .decisionLedger, .healthRadarPanel, .actionInbox, .pulseTimeline) {
+    border-radius: 22px;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+/* Final phone containment guard for the active dashboard shell. */
+.mobileRoot,
+.atmosphericCloudglassRoot,
+.dashboardShell,
+.crystalFirstViewport,
+.crystalOperationalDock,
+.crystalActionStrip,
+.crystalDecisionHeader,
+.mobileContextDisclosure,
+.mobileContextTucked {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.atmosphericCloudglassRoot {
+  overscroll-behavior-x: none;
+}
+
+.atmosphericCloudglassRoot .dashboardShell {
+  width: min(100% - 14px, 430px);
+  max-width: calc(100vw - 14px);
+}
+
+.atmosphericCloudglassRoot .crystalFirstViewport,
+.atmosphericCloudglassRoot .crystalOperationalDock,
+.atmosphericCloudglassRoot .crystalActionStrip {
+  width: 100%;
+  max-width: 100%;
+}
+
+.atmosphericCloudglassRoot .crystalQuickRead,
+.atmosphericCloudglassRoot .actionButtonRow,
+.atmosphericCloudglassRoot .miniActionRow {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.atmosphericCloudglassRoot .actionButtonRow,
+.atmosphericCloudglassRoot .miniActionRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.atmosphericCloudglassRoot .actionButtonRow button,
+.atmosphericCloudglassRoot .miniActionRow button {
+  min-width: 0;
+  width: 100%;
+  padding-inline: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .atmosphericCloudglassRoot .dashboardShell {
+    width: min(100% - 10px, 410px);
+    max-width: calc(100vw - 10px);
+    padding: 10px;
+  }
+
+  .atmosphericCloudglassRoot .actionButtonRow,
+  .atmosphericCloudglassRoot .miniActionRow {
+    gap: 6px;
+  }
+
+  .atmosphericCloudglassRoot .actionButtonRow button,
+  .atmosphericCloudglassRoot .miniActionRow button {
+    font-size: 0.76rem;
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT3_PHONE_CONTAINMENT_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.mobileRoot, .dashboardShell, .commandCenter, .premiumNavigator, .premiumTabPanel, .premiumPanelStack, .premiumPanelGrid, .commandDecisionGrid, .commandBriefGrid, .commandSignalGrid, .actionLaneGrid, .dailyBriefCardGrid, .dailyBriefSectionGrid, .healthRadarGrid, .dataReadinessGrid, .decisionLedgerCardGrid, .pulseTimelineCardGrid, .operationsGrid, .metricGrid, .reportGrid, .cashGrid, .phoneStats { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; contain: layout paint; }
+.dashboardShell, .loadingShell, .errorShell { inline-size: min(100%, 430px); max-inline-size: calc(100vw - 20px); margin-inline: auto; }
+.premiumTabRail, .commandMetaStrip, .heroBadges, .actionInboxStatus, .dailyBriefStatus, .decisionLedgerMeta, .healthRadarBottom, .statusChip, .sourceChip { width: 100%; max-width: 100%; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 92px), 1fr)); gap: clamp(6px, 2vw, 10px); overflow: visible; }
+.premiumTabRail button, .premiumTabRail [role="tab"], .commandMetaStrip > *, .heroBadges > *, .actionInboxStatus > *, .dailyBriefStatus > *, .decisionLedgerMeta > *, .healthRadarBottom > *, .statusChip, .sourceChip { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; text-align: center; }
+.commandCard, .panelCard, .metricCard, .commandScoreCard, .commandBrief, .commandSignal, .actionLane, .actionCard, .dailyBriefSection, .healthRadarPanel, .healthRadarSection, .healthRadarItem, .decisionLedger, .decisionLedgerDigest, .decisionLedgerExport, .pulseTimelineNarrative, .pulseTimelineCheckpoint, .dataReadinessPanel, .decisionLedgerProofCards, .warningPanel { max-width: 100%; min-width: 0; overflow: hidden; color: var(--appmovil-cc-text, inherit); background-color: color-mix(in srgb, var(--appmovil-cc-panel, rgba(7,16,29,.18)) 82%, transparent); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); }
+.commandCard *, .panelCard *, .metricCard *, .commandScoreCard *, .commandBrief *, .commandSignal *, .actionLane *, .actionCard *, .dailyBriefSection *, .healthRadarPanel *, .healthRadarSection *, .healthRadarItem *, .decisionLedger *, .warningPanel * { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .premiumPanelGrid, .commandDecisionGrid, .commandBriefGrid, .commandSignalGrid, .actionLaneGrid, .dailyBriefCardGrid, .dailyBriefSectionGrid, .healthRadarGrid, .dataReadinessGrid, .decisionLedgerCardGrid, .pulseTimelineCardGrid, .operationsGrid, .metricGrid, .reportGrid, .cashGrid { grid-template-columns: minmax(0, 1fr); } }
+@supports not (overflow: clip) { .mobileRoot, .dashboardShell, .commandCenter, .premiumNavigator, .premiumTabPanel, .premiumPanelStack, .premiumPanelGrid { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */
