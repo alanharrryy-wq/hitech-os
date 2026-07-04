@@ -15,8 +15,8 @@ Generated: 2026-07-02
 
 ## Evidence Sources
 
-- Shell Lab License Ops: `prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py`
-- Shell Lab UI: `prisma-control-center-unified-shell-lab-v3/internal/web/license_ops_console.js`
+- Shell Lab License Ops: `Prisma Cloud Ctr/internal/py/license_ops_api.py`
+- Shell Lab UI: `Prisma Cloud Ctr/internal/web/license_ops_console.js`
 - PC governor: `products/pc/app/src/server/licensing/pc-license-service.ts`
 - Tablet governor: `products/tablet/app/src/server/licensing/tablet-license-service.ts`
 - Mobile account contract: `products/mobile/app/src/lib/prisma-app/prisma-app-api-contracts.ts`

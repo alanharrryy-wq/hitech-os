@@ -58,14 +58,14 @@ Pre-existing dirty changes, classified:
 
 | Source | Classification | Finding |
 | --- | --- | --- |
-| `prisma-control-center-unified-shell-lab-v3` | REUSE | Existing private cockpit lab for `127.0.0.1:3160`; do not create a parallel cockpit. |
-| `prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json` | EXTEND | Already targets `https://app.hitechrts.com` and lists health, capabilities, tenant status, admin selftest, commercial summary, tenant snapshot, notes, device register, integration receipt, and client contract. Missing explicit activate/refresh/revoke/support diagnostics endpoints. |
-| `prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py` | EXTEND | Existing redacted server-side bridge to app.hitechrts.com. It already blocks admin writes unless localhost and token are available. |
-| `prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py` | REUSE | Existing read-only license/runtime summary for 3160. |
-| `prisma-control-center-unified-shell-lab-v3/internal/py/prisma_unified_lab_v3.py` | REUSE | Routes `/api/cloud-saas`, `/api/license-ops`, `/api/contract`, diagnostics, and the unified shell. |
-| `prisma-control-center-unified-shell-lab-v3/internal/runtime/prisma-module-contract.json` | EXTEND | Declares `PRISMA Cloud Command Center`, host `127.0.0.1`, port `3160`, cloud module direct URL `https://app.hitechrts.com`. |
-| `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js` | EXTEND | Main 3160 cockpit already shows cloud, client, license, devices, receipts, support, contract, diagnostics, endpoint matrix. Needs explicit LICFLOW3 contract/hosted evidence visibility. |
-| `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js` | EXTEND | Secondary cloud console already shows health, capabilities, tenant status, contract, commercial, receipts, devices. Needs support diagnostics and LICFLOW3 contract status. |
+| `Prisma Cloud Ctr` | REUSE | Existing private cockpit lab for `127.0.0.1:3160`; do not create a parallel cockpit. |
+| `Prisma Cloud Ctr/internal/config/cloud_saas.json` | EXTEND | Already targets `https://app.hitechrts.com` and lists health, capabilities, tenant status, admin selftest, commercial summary, tenant snapshot, notes, device register, integration receipt, and client contract. Missing explicit activate/refresh/revoke/support diagnostics endpoints. |
+| `Prisma Cloud Ctr/internal/py/cloud_saas_api.py` | EXTEND | Existing redacted server-side bridge to app.hitechrts.com. It already blocks admin writes unless localhost and token are available. |
+| `Prisma Cloud Ctr/internal/py/license_ops_api.py` | REUSE | Existing read-only license/runtime summary for 3160. |
+| `Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py` | REUSE | Routes `/api/cloud-saas`, `/api/license-ops`, `/api/contract`, diagnostics, and the unified shell. |
+| `Prisma Cloud Ctr/internal/runtime/prisma-module-contract.json` | EXTEND | Declares `PRISMA Cloud Command Center`, host `127.0.0.1`, port `3160`, cloud module direct URL `https://app.hitechrts.com`. |
+| `Prisma Cloud Ctr/internal/web/cloud_command_center.js` | EXTEND | Main 3160 cockpit already shows cloud, client, license, devices, receipts, support, contract, diagnostics, endpoint matrix. Needs explicit LICFLOW3 contract/hosted evidence visibility. |
+| `Prisma Cloud Ctr/internal/web/cloud_saas_console.js` | EXTEND | Secondary cloud console already shows health, capabilities, tenant status, contract, commercial, receipts, devices. Needs support diagnostics and LICFLOW3 contract status. |
 | `prisma-control-center/internal/wrappers/cloud_command_center_3160.ps1` | REUSE | Existing private 3160 launcher. Do not duplicate. |
 
 ## Cloudflare Existing Evidence

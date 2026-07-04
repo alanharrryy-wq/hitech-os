@@ -22,7 +22,7 @@ Generated: 2026-07-02
 
 | Item | Classification | Detail |
 | --- | --- | --- |
-| 3160 private cockpit | REUSE | Exists under `prisma-control-center-unified-shell-lab-v3` and `cloud_command_center_3160.ps1`. |
+| 3160 private cockpit | REUSE | Exists under `Prisma Cloud Ctr` and `cloud_command_center_3160.ps1`. |
 | app.hitechrts.com target URL | REUSE | Exists in `cloud_saas.json` and module contract. |
 | Read-only cloud bridge | EXTEND | `cloud_saas_api.py` already calls configured public/admin endpoints with redaction and local admin token guard. |
 | License runtime summary | REUSE | `license_ops_api.py` exposes runtime/license/activation summary read-only. |
@@ -39,7 +39,7 @@ The expected final classification cannot be a full hosted-cloud PASS without liv
 After the LICFLOW3 patch, the repo now contains:
 
 - canonical contract: `shared/licensing/licflow3-cloud-contract.ts`
-- 3160 bridge contract status: `prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py`
+- 3160 bridge contract status: `Prisma Cloud Ctr/internal/py/cloud_saas_api.py`
 - app.hitechrts.com scaffold: `infra/cloudflare/licflow3-worker`
 - D1 migration scaffold: `infra/cloudflare/licflow3-worker/migrations/0001_licflow3_core.sql`
 - verifier suite: `tools/verify-licflow3.mts`

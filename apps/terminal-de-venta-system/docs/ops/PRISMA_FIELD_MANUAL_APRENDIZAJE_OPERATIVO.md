@@ -477,6 +477,7 @@ Un hotfix visual puede entrar al repo final si trae:
 
 | Fecha | Cambio |
 |---|---|
+| 2026-07-03 | Aprendizaje LICFLOW4 Admin Bridge: token solo backend, confirmaciones obligatorias, dry-run primero y commit sin Mobile/PC/Tablet ni generated evidence. |
 | 2026-06-18 | Cierre operativo POS /pos: governance limpio con govclean2, posctx limpio, AutoMesh PASS, Layer Map obligatorio y ruta app-root del manual corregida. |
 | 2026-06-10 | Creación del manual vivo con primeras entradas de TodoALV, hot-injection, Prisma EPERM, smoke funcional, delayer visual y gobernanza tri-superficie. |
 
@@ -522,3 +523,26 @@ pnpm run verify:licflow3:route-revoke
 **Rollback probado:** N/A. No hubo deploy ni mutacion cloud; rollback local es revertir el diff de `infra/cloudflare/licflow3-worker`, `tools/verify-licflow3.mts`, `package.json` y docs.
 **Regla nueva:** En LICFLOW3, antes de diagnosticar handlers, confirmar tres cosas juntas: respuesta viva con version, worker/D1 reales en Wrangler, y `wrangler.jsonc` local apuntando a esos nombres reales. Si local pasa y live sigue 404, el cierre honesto es `LOCAL_READY_CLOUDFLARE_DEPLOY_AUTH_REQUIRED`.
 **Notas:** No llamar PASS funcional hosted hasta tener deploy/smoke autorizado. Dummy route evidence puede aceptar `400/401/403/422`, nunca `404` ni `5xx`.
+
+### 2026-07-03 21:34 - LICFLOW4 Admin Bridge pertenece al backend local 3160
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS
+**Superficie:** Prisma Cloud Ctr / LICFLOW4 / 3160
+**Contexto:** Prisma Cloud Ctr necesitaba operar `activate`, `refresh` y `revoke` contra LICFLOW3 sin entregar `ADMIN_TOKEN` al navegador ni crear otro cockpit o adapter.
+**Precondiciones:** Repo `F:\repos\hitech-os`, app `apps/terminal-de-venta-system`, sin AutoGit, sin stash, sin deploy Cloudflare, sin D1 dump/export/copy, sin matar procesos, sin tocar Mobile/PC/Tablet.
+**Comando exacto:**
+
+```powershell
+pnpm run verify:licflow4:admin-bridge
+pnpm run verify:licflow4:no-token-frontend
+pnpm run verify:licflow4:confirmations
+pnpm run verify:licflow4:diagnostics-sanitized
+pnpm run verify:licflow4:no-autorun-mutations
+```
+
+**Resultado observado:** PASS local. Python compile, JS check, JSON parse, self-test, LICFLOW3 verifiers seguros y LICFLOW4 verifiers nuevos pasaron sin deploy, sin D1 y sin mutacion real.
+**Evidencia:** `F:\descargasf\licflow4-admin-bridge-inventory-*.zip`; `F:\descargasf\licflow4-admin-bridge-precommit-*.zip`; `F:\descargasf\licflow4-admin-bridge-result-*.zip`.
+**Causa real:** El token admin debe vivir en el backend local y leerse solo dentro de la ruta confirmada. El frontend solo puede recibir booleanos, codigos sanitizados y resumen de audit redacted.
+**Rollback probado:** N/A hasta cierre del PR; rollback local es revertir el rename de `Prisma Cloud Ctr`, `licflow4_admin_bridge.py`, scripts `verify:licflow4:*`, docs y verifiers tocados.
+**Regla nueva:** Para LICFLOW4, el orden seguro es inventario ZIP, bridge backend local, UI sin token, dry-run primero, confirmacion `confirmAdminLicenseAction: true`, revoke con `REVOKE_LICENSE`, diagnostics sanitizado, verifiers sin mutacion real, evidence ZIP, staging explicito sin Mobile/PC/Tablet ni generated evidence.
+**Notas:** Si una referencia historica vive en PC o generated evidence excluido, no arrastrarla al commit LICFLOW4; reportarla como scope conflict en lugar de ensuciar trabajo paralelo.

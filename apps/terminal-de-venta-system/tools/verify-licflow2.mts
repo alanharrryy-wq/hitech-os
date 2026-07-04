@@ -252,8 +252,8 @@ function modeSupport(): void {
   const provision = runProvision(packageResult, "mobile", path.join(root, "provisioned-mobile-runtime"));
   const governor = withEnv({ PRISMA_RUNTIME_CONFIG: provision.runtimeConfigPath }, () => getLicenseGovernorSnapshot({ surface: "mobile", featureKeys: [] }));
   assertGovernorActive(governor, "support mobile");
-  const licenseOpsPy = readText("prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py");
-  const licenseOpsJs = readText("prisma-control-center-unified-shell-lab-v3/internal/web/license_ops_console.js");
+  const licenseOpsPy = readText("Prisma Cloud Ctr/internal/py/license_ops_api.py");
+  const licenseOpsJs = readText("Prisma Cloud Ctr/internal/web/license_ops_console.js");
   const mobileConfig = readText("products/mobile/app/src/lib/prisma-app/mobile-data-plane/config.ts");
   const mobileContracts = readText("products/mobile/app/src/lib/prisma-app/prisma-app-api-contracts.ts");
   assert(licenseOpsPy.includes('"activation"'), "Shell Lab License Ops API does not expose activation summary.");
@@ -263,8 +263,8 @@ function modeSupport(): void {
   assert(mobileContracts.includes("activationModeLabel"), "Mobile API account contract lacks activation mode label.");
   pass("verify:licflow2:support", {
     shellLab: {
-      api: "prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py",
-      ui: "prisma-control-center-unified-shell-lab-v3/internal/web/license_ops_console.js",
+      api: "Prisma Cloud Ctr/internal/py/license_ops_api.py",
+      ui: "Prisma Cloud Ctr/internal/web/license_ops_console.js",
       readOnly: true
     },
     pcTablet: "existing license governor snapshots expose raw activation metadata",
@@ -296,8 +296,8 @@ function modeNoSecrets(): void {
     evidenceBase(),
     path.join(terminalRoot, "shared", "licensing", "licflow2-activation.ts"),
     path.join(terminalRoot, "tools", "verify-licflow2.mts"),
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "py", "license_ops_api.py"),
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "web", "license_ops_console.js")
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "py", "license_ops_api.py"),
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "web", "license_ops_console.js")
   ];
   const files = roots.flatMap((root) => fs.existsSync(root) && fs.statSync(root).isDirectory() ? walk(root, [".json", ".md", ".ts", ".mts", ".js", ".py"]) : fs.existsSync(root) ? [root] : []);
   const forbiddenNameHits = files
@@ -347,8 +347,8 @@ function modeNoDemoLeaks(): void {
     path.join(terminalRoot, "products", "mobile", "app", "src", "lib", "prisma-app", "mobile-data-plane", "types.ts"),
     path.join(terminalRoot, "products", "mobile", "app", "src", "lib", "prisma-app", "mobile-data-plane", "payload-builders.ts"),
     path.join(terminalRoot, "products", "mobile", "app", "src", "lib", "prisma-app", "prisma-app-api-contracts.ts"),
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "py", "license_ops_api.py"),
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "web", "license_ops_console.js"),
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "py", "license_ops_api.py"),
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "web", "license_ops_console.js"),
     ...walk(evidenceBase(), [".json", ".md"]).filter((file) => !file.replace(/\\/g, "/").includes("/verifier-output/"))
   ].filter((file) => fs.existsSync(file));
   const hits = scanFiles(files, forbidden);

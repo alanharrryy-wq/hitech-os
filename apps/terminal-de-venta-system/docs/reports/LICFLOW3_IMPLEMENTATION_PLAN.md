@@ -13,10 +13,10 @@ This plan follows the existing-first inventory and preserves LICFLOW2, Tablet st
    - Mark live status as `CLOUDFLARE_LIVE_EVIDENCE_REQUIRED` until live verification is authorized and passes.
 
 2. Extend existing 3160 cloud bridge.
-   - File: `prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json`
-   - File: `prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py`
-   - File: `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js`
-   - File: `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js`
+   - File: `Prisma Cloud Ctr/internal/config/cloud_saas.json`
+   - File: `Prisma Cloud Ctr/internal/py/cloud_saas_api.py`
+   - File: `Prisma Cloud Ctr/internal/web/cloud_command_center.js`
+   - File: `Prisma Cloud Ctr/internal/web/cloud_saas_console.js`
    - Do not create another cockpit.
    - Do not auto-call mutating license endpoints in summary refresh.
 
@@ -58,7 +58,7 @@ This plan follows the existing-first inventory and preserves LICFLOW2, Tablet st
 
 - Static compile:
   - `node --check infra/cloudflare/licflow3-worker/src/worker.js`
-  - `python -m py_compile prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py`
+  - `python -m py_compile Prisma Cloud Ctr/internal/py/cloud_saas_api.py`
 - LICFLOW3 verifiers:
   - Run all new `verify:licflow3:*` scripts.
 - Existing compatibility:

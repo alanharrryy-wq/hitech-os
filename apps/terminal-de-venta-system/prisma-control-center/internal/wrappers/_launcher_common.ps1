@@ -231,7 +231,7 @@ function Get-JsonObject {
 }
 
 function Get-CloudCommandCenterLabRoot {
-  $candidate = Join-Path (Split-Path -Parent $ControlRoot) "prisma-control-center-unified-shell-lab-v3"
+  $candidate = Join-Path (Split-Path -Parent $ControlRoot) "Prisma Cloud Ctr"
   if (Test-Path -LiteralPath $candidate) {
     return (Resolve-Path -LiteralPath $candidate).Path
   }
