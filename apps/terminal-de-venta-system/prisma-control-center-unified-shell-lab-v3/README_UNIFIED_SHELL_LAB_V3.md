@@ -1,22 +1,11 @@
-# PRISMA Unified Shell Lab v3.1
+# Legacy Compatibility Note
 
-Este laboratorio corre en `127.0.0.1:3160` y no toca el Control Center bueno en `3150`.
+This filename is kept only so older shortcuts do not break.
 
-## Reglas duras
+The product is now **Prisma Cloud Center**. Use:
 
-- Tablet opera sola.
-- PC gobierna si existe.
-- Mobile supervisa.
-- Core registra.
-- Control audita.
-- El Lab no mata ni reemplaza el Control Center bueno.
+1. `01_SELF_TEST_PRISMA_CLOUD_CENTER.cmd`
+2. `00_ABRIR_PRISMA_CLOUD_CENTER.cmd`
+3. `02_EXPORT_DIAGNOSTICS_PRISMA_CLOUD_CENTER.cmd`
 
-## Uso
-
-1. Corre `01_SELF_TEST_LAB_V3.cmd`.
-2. Corre `00_ABRIR_UNIFIED_SHELL_LAB_V3.cmd`.
-3. Usa `02_EXPORT_DIAGNOSTICS_LAB_V3.cmd` para sacar reporte.
-
-## Nuevo Añadido
-
-El slot está reservado en puerto `3165` con `embedMode=nativePreview`, listo para conectar una app real después.
+The canonical manual is `MANUAL.md`.
