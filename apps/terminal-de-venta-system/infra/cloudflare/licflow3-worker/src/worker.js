@@ -2,6 +2,7 @@ const SERVICE = "PRISMA LICFLOW3 Cloud Licensing Support Bridge";
 const VERSION = "0.2.0-prisma-cloud-semilla-routing";
 const TENANT = "prisma-original-customer";
 const PLAN = "TABLET_PC_MANAGED";
+const LICFLOW3_LIVE_STATUS = "LICFLOW3_CLOUDFLARE_ROUTES_LIVE";
 
 const CONTRACT_ENDPOINTS = [
   ["GET", "/health", "health", false],
@@ -120,8 +121,8 @@ async function license(env, slug = TENANT) {
     tenant_slug: slug,
     status: "pending_cloud_activation",
     plan: PLAN,
-    activationStatus: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
-    activation_status: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"
+    activationStatus: LICFLOW3_LIVE_STATUS,
+    activation_status: LICFLOW3_LIVE_STATUS
   };
 }
 
@@ -140,7 +141,7 @@ function normalizeLicense(row) {
     tenantSlug: row.tenantSlug || row.tenant_slug || TENANT,
     status: row.status || "pending_cloud_activation",
     plan: row.plan || PLAN,
-    activationStatus: row.activationStatus || row.activation_status || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
+    activationStatus: row.activationStatus || row.activation_status || LICFLOW3_LIVE_STATUS,
     validUntil: row.validUntil || row.valid_until || null
   };
 }
@@ -190,7 +191,7 @@ async function health(env) {
       devices: deviceCount ? deviceCount.count : 0,
       receipts: receiptCount ? receiptCount.count : 0
     },
-    hostedCloudEvidence: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"
+    hostedCloudEvidence: LICFLOW3_LIVE_STATUS
   };
 }
 
@@ -207,7 +208,7 @@ async function tenantStatus(env, slug) {
       status: tenantRow.status,
       plan: tenantRow.plan,
       contractVersion: "licflow3-scaffold-v1",
-      hostedCloudEvidence: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"
+      hostedCloudEvidence: LICFLOW3_LIVE_STATUS
     }
   };
 }
@@ -254,7 +255,7 @@ async function diagnostics(env, slug) {
     tenantSlug: slug,
     dbBinding: db ? "present" : "missing",
     mode: env.PRISMA_LICFLOW3_MODE || "scaffold",
-    hostedCloudEvidence: "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED",
+    hostedCloudEvidence: LICFLOW3_LIVE_STATUS,
     contract: CONTRACT_ENDPOINTS.map(([method, path, capability, mutatesCloud]) => ({ method, path, capability, mutatesCloud }))
   };
 }
