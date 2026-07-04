@@ -225,7 +225,7 @@ function modeNoDuplicates(): void {
 }
 
 function modeCloudContract(): void {
-  const config = readJson<{ apiBaseUrl: string; tenantSlug: string; endpoints: Partial<Record<Licflow3EndpointKey, string>> }>("prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json");
+  const config = readJson<{ apiBaseUrl: string; tenantSlug: string; endpoints: Partial<Record<Licflow3EndpointKey, string>> }>("Prisma Cloud Ctr/internal/config/cloud_saas.json");
   const status = buildLicflow3CloudContractStatus({ apiBaseUrl: config.apiBaseUrl, tenantSlug: config.tenantSlug, endpoints: config.endpoints });
   assert(status.ok, `LICFLOW3 cloud contract incomplete: ${JSON.stringify({ missing: status.missing, mismatched: status.mismatched })}`);
   assert(status.hostedCloudEvidenceStatus === LICFLOW3_CLOUDFLARE_ROUTES_LIVE, "LICFLOW3 cloud contract must reflect the authorized live Cloudflare routes evidence.");
@@ -245,11 +245,11 @@ function modeCloudContract(): void {
 }
 
 function mode3160Bridge(): void {
-  const config = readText("prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json");
-  const api = readText("prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py");
-  const ccc = readText("prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js");
-  const consoleJs = readText("prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js");
-  const contract = readJson<{ lab: { host: string; port: number }; modules: Array<{ id: string; directUrl?: string }> }>("prisma-control-center-unified-shell-lab-v3/internal/runtime/prisma-module-contract.json");
+  const config = readText("Prisma Cloud Ctr/internal/config/cloud_saas.json");
+  const api = readText("Prisma Cloud Ctr/internal/py/cloud_saas_api.py");
+  const ccc = readText("Prisma Cloud Ctr/internal/web/cloud_command_center.js");
+  const consoleJs = readText("Prisma Cloud Ctr/internal/web/cloud_saas_console.js");
+  const contract = readJson<{ lab: { host: string; port: number }; modules: Array<{ id: string; directUrl?: string }> }>("Prisma Cloud Ctr/internal/runtime/prisma-module-contract.json");
   const wrapper = readText("prisma-control-center/internal/wrappers/cloud_command_center_3160.ps1");
   for (const token of ["licenseActivate", "licenseRefresh", "licenseRevoke", "supportDiagnostics", "LICFLOW3_CLOUDFLARE_HOSTED_LICENSING_SUPPORT_BRIDGE"]) {
     assert(config.includes(token) || api.includes(token) || ccc.includes(token) || consoleJs.includes(token), `3160 bridge missing token ${token}`);
@@ -269,10 +269,10 @@ function mode3160Bridge(): void {
     cockpit: "127.0.0.1:3160",
     cloudTarget: "https://app.hitechrts.com",
     files: [
-      "prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json",
-      "prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py",
-      "prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js",
-      "prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js"
+      "Prisma Cloud Ctr/internal/config/cloud_saas.json",
+      "Prisma Cloud Ctr/internal/py/cloud_saas_api.py",
+      "Prisma Cloud Ctr/internal/web/cloud_command_center.js",
+      "Prisma Cloud Ctr/internal/web/cloud_saas_console.js"
     ]
   });
 }
@@ -318,10 +318,10 @@ function modeNoSecrets(): void {
     "docs/reports",
     "shared/licensing/licflow3-cloud-contract.ts",
     "tools/verify-licflow3.mts",
-    "prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json",
-    "prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py",
-    "prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js",
-    "prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js",
+    "Prisma Cloud Ctr/internal/config/cloud_saas.json",
+    "Prisma Cloud Ctr/internal/py/cloud_saas_api.py",
+    "Prisma Cloud Ctr/internal/web/cloud_command_center.js",
+    "Prisma Cloud Ctr/internal/web/cloud_saas_console.js",
     "infra/cloudflare/licflow3-worker"
   ];
   const files = roots.flatMap((root) => {

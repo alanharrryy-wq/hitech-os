@@ -1,0 +1,242 @@
+{
+  "contractVersion": 1,
+  "lab": {
+    "name": "Prisma Cloud Ctr",
+    "mode": "PRISMA_CLOUD_CTR",
+    "host": "127.0.0.1",
+    "port": 3160,
+    "themeInheritance": false,
+    "noTouchPolicy": "Never modifies protected current Control Center",
+    "protectedCurrentPath": "apps\\terminal-de-venta-system\\prisma-control-center",
+    "outDir": "F:\\descargasf"
+  },
+  "themeTokens": {
+    "supportedThemes": [
+      "prisma-frost-command"
+    ],
+    "defaultTheme": "prisma-frost-command"
+  },
+  "modules": [
+    {
+      "id": "cloud-saas",
+      "name": "PRISMA Cloud",
+      "role": "LICFLOW3 Cloud Semilla + license operations",
+      "port": 3160,
+      "portLabel": "app.hitechrts.com",
+      "directUrl": "https://app.hitechrts.com",
+      "embedUrl": "native://cloud-saas",
+      "healthUrl": "https://app.hitechrts.com/health",
+      "fallbackUrl": "https://app.hitechrts.com/health",
+      "embedMode": "nativeCloud",
+      "viewportMode": "desktop",
+      "themeMode": "inherits",
+      "protected": false,
+      "actions": [
+        "nativeCloud",
+        "refresh",
+        "adminBridge",
+        "adminNote",
+        "receiptSmoke",
+        "deviceSmoke",
+        "licenseOps"
+      ],
+      "statusLabel": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
+      "qualityScope": [
+        "cloud",
+        "adminTokenPresenceOnly",
+        "licflow4AdminBridge",
+        "licenseOpsReadOnly"
+      ],
+      "healthKind": "cloud"
+    },
+    {
+      "id": "control",
+      "name": "Control Center bueno",
+      "role": "Protegido / torre actual",
+      "port": 3150,
+      "directUrl": "http://127.0.0.1:3150",
+      "embedUrl": "/__proxy__/3150/",
+      "healthUrl": "http://127.0.0.1:3150",
+      "fallbackUrl": "http://127.0.0.1:3150",
+      "embedMode": "proxy",
+      "viewportMode": "desktop",
+      "themeMode": "isolated",
+      "protected": true,
+      "actions": [
+        "openExternal",
+        "reload",
+        "health",
+        "logs",
+        "diagnostics"
+      ],
+      "statusLabel": "PROTECTED_LINKED",
+      "qualityScope": [
+        "port",
+        "http",
+        "proxy"
+      ]
+    },
+    {
+      "id": "chart",
+      "name": "Chart Analytics",
+      "role": "Analytics / lectura visual",
+      "port": 3000,
+      "directUrl": "http://127.0.0.1:3000",
+      "embedUrl": "http://127.0.0.1:3000",
+      "healthUrl": "http://127.0.0.1:3000",
+      "fallbackUrl": "http://127.0.0.1:3000",
+      "embedMode": "direct",
+      "viewportMode": "desktop",
+      "themeMode": "isolated",
+      "protected": false,
+      "actions": [
+        "openEmbedded",
+        "openExternal",
+        "reload",
+        "health",
+        "logs"
+      ],
+      "statusLabel": "OBSERVE",
+      "qualityScope": [
+        "port",
+        "http"
+      ]
+    },
+    {
+      "id": "web",
+      "name": "Web/EIT",
+      "role": "Web Control local",
+      "port": 3110,
+      "directUrl": "http://127.0.0.1:3110",
+      "embedUrl": "http://127.0.0.1:3110",
+      "healthUrl": "http://127.0.0.1:3110",
+      "fallbackUrl": "http://127.0.0.1:3110",
+      "embedMode": "direct",
+      "viewportMode": "desktop",
+      "themeMode": "isolated",
+      "protected": false,
+      "actions": [
+        "openEmbedded",
+        "openExternal",
+        "reload",
+        "health",
+        "logs"
+      ],
+      "statusLabel": "OBSERVE",
+      "qualityScope": [
+        "port",
+        "http"
+      ]
+    },
+    {
+      "id": "tablet",
+      "name": "Tablet",
+      "role": "Opera sola",
+      "port": 3120,
+      "directUrl": "http://127.0.0.1:3120",
+      "embedUrl": "native://tablet-preview",
+      "liveEmbedUrl": "http://127.0.0.1:3120",
+      "healthUrl": "http://127.0.0.1:3120",
+      "fallbackUrl": "http://127.0.0.1:3120",
+      "embedMode": "nativePreview",
+      "viewportMode": "tablet",
+      "themeMode": "inherits",
+      "protected": false,
+      "actions": [
+        "nativePreview",
+        "liveEmbed",
+        "openExternal",
+        "health",
+        "logs"
+      ],
+      "statusLabel": "TABLET_OPERATES_ALONE",
+      "qualityScope": [
+        "port",
+        "http",
+        "canonicalRule"
+      ]
+    },
+    {
+      "id": "pc",
+      "name": "PC",
+      "role": "Gobierna si existe",
+      "port": 3130,
+      "directUrl": "http://127.0.0.1:3130",
+      "embedUrl": "http://127.0.0.1:3130",
+      "healthUrl": "http://127.0.0.1:3130",
+      "fallbackUrl": "http://127.0.0.1:3130",
+      "embedMode": "direct",
+      "viewportMode": "desktop",
+      "themeMode": "isolated",
+      "protected": false,
+      "actions": [
+        "openEmbedded",
+        "openExternal",
+        "reload",
+        "health",
+        "logs"
+      ],
+      "statusLabel": "PC_GOVERNS_IF_PRESENT",
+      "qualityScope": [
+        "port",
+        "http"
+      ]
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile",
+      "role": "Supervisa, no vende",
+      "port": 3140,
+      "directUrl": "http://127.0.0.1:3140",
+      "embedUrl": "native://mobile-preview",
+      "liveEmbedUrl": "http://127.0.0.1:3140",
+      "healthUrl": "http://127.0.0.1:3140",
+      "fallbackUrl": "http://127.0.0.1:3140",
+      "embedMode": "nativePreview",
+      "viewportMode": "mobile",
+      "themeMode": "inherits",
+      "protected": false,
+      "actions": [
+        "nativePreview",
+        "liveEmbed",
+        "openExternal",
+        "health",
+        "logs"
+      ],
+      "statusLabel": "MOBILE_SUPERVISES",
+      "qualityScope": [
+        "port",
+        "http",
+        "canonicalRule"
+      ]
+    },
+    {
+      "id": "addon",
+      "name": "Nuevo Añadido",
+      "role": "Slot listo para conectar",
+      "port": 3165,
+      "directUrl": "http://127.0.0.1:3165",
+      "embedUrl": "native://addon-slot",
+      "liveEmbedUrl": "http://127.0.0.1:3165",
+      "healthUrl": "http://127.0.0.1:3165",
+      "fallbackUrl": "http://127.0.0.1:3165",
+      "embedMode": "nativePreview",
+      "viewportMode": "fluid",
+      "themeMode": "inherits",
+      "protected": false,
+      "actions": [
+        "contract",
+        "nativePreview",
+        "liveEmbed",
+        "openExternal",
+        "health",
+        "diagnostics"
+      ],
+      "statusLabel": "SLOT_READY",
+      "qualityScope": [
+        "contract",
+        "futurePort"
+      ]
+    }
+  ]
+}

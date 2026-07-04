@@ -13,7 +13,7 @@ F:\descargasf\licflow2-result-20260702-014703
 | Command | Exit code |
 | --- | ---: |
 | `node --check tools/provision-prisma-runtime.mjs` | 0 |
-| `python -m py_compile prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py` | 0 |
+| `python -m py_compile Prisma Cloud Ctr/internal/py/license_ops_api.py` | 0 |
 | `pnpm run verify:licflow2:inventory` | 0 |
 | `pnpm run verify:licflow2:offline` | 0 |
 | `pnpm run verify:licflow2:online` | 0 |

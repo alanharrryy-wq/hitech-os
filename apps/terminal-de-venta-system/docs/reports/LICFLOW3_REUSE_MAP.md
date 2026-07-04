@@ -18,7 +18,7 @@ Generated: 2026-07-02
 | Cloud contract: capabilities | `cloud_saas.json` has `capabilities`; 3160 reads it | REUSE | Use as read-only public capabilities. |
 | Cloud contract: commercial summary | `cloud_saas.json` has `commercialSummary`; 3160 reads with admin token guard | REUSE | Keep local/admin-only behavior. |
 | Cloud contract: contract fetch | `cloud_saas.json` has `clientContract`; 3160 reads it | REUSE | Use as client contract fetch. |
-| 3160 cockpit bridge | `prisma-control-center-unified-shell-lab-v3` and `cloud_command_center_3160.ps1` | EXTEND | Keep `127.0.0.1:3160` as only cockpit; add LICFLOW3 contract status/hosted evidence to existing panels. |
+| 3160 cockpit bridge | `Prisma Cloud Ctr` and `cloud_command_center_3160.ps1` | EXTEND | Keep `127.0.0.1:3160` as only cockpit; add LICFLOW3 contract status/hosted evidence to existing panels. |
 | app.hitechrts.com bridge | `cloud_saas_api.py`, `cloud_saas.json` | EXTEND | Point bridge at existing target; if live endpoint is absent, report live evidence required. |
 | app.hitechrts.com backend | No Worker/Pages/D1 root found | CREATE | Add minimal governed Worker/D1 scaffold with no deploy and no DNS/Tunnel mutation. |
 | Wrangler usage | `products/chart-lab/app` has package-local Wrangler | REUSE | For licensing worker, document/use `pnpm -C <worker-root> exec wrangler`; never require global Wrangler. |
@@ -41,10 +41,10 @@ Generated: 2026-07-02
 | --- | --- | --- |
 | `shared/licensing/licflow3-cloud-contract.ts` | CREATE | Canonical LICFLOW3 hosted licensing/support contract. |
 | `shared/licensing/index.ts` | EXTEND | Export the new contract module. |
-| `prisma-control-center-unified-shell-lab-v3/internal/config/cloud_saas.json` | EXTEND | Add missing LICFLOW3 endpoints and contract metadata. |
-| `prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py` | EXTEND | Expose redacted LICFLOW3 contract status and support diagnostics evidence. |
-| `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js` | EXTEND | Show contract/support diagnostics/hosted evidence in existing cockpit. |
-| `prisma-control-center-unified-shell-lab-v3/internal/web/cloud_saas_console.js` | EXTEND | Show support diagnostics and LICFLOW3 contract status. |
+| `Prisma Cloud Ctr/internal/config/cloud_saas.json` | EXTEND | Add missing LICFLOW3 endpoints and contract metadata. |
+| `Prisma Cloud Ctr/internal/py/cloud_saas_api.py` | EXTEND | Expose redacted LICFLOW3 contract status and support diagnostics evidence. |
+| `Prisma Cloud Ctr/internal/web/cloud_command_center.js` | EXTEND | Show contract/support diagnostics/hosted evidence in existing cockpit. |
+| `Prisma Cloud Ctr/internal/web/cloud_saas_console.js` | EXTEND | Show support diagnostics and LICFLOW3 contract status. |
 | `infra/cloudflare/licflow3-worker` | CREATE | Minimal app.hitechrts.com Worker/D1 scaffold because no canonical backend root was found. |
 | `tools/verify-licflow3.mts` | CREATE | LICFLOW3 verifier suite. |
 | `package.json` | EXTEND | Add `verify:licflow3:*` scripts. |

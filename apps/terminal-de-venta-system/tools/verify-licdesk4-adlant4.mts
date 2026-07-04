@@ -96,8 +96,8 @@ function modeCatalog(): void {
     assert(features.has(key), `TABLET_PC_MANAGED is missing required feature ${key}.`);
     assert(PLAN_CATALOG.TABLET_PC_MANAGED.features.has(key), `TypeScript PLAN_CATALOG is missing required feature ${key}.`);
   }
-  const shellStore = readText("prisma-control-center-unified-shell-lab-v3/internal/py/command_center_store.py");
-  const shellUi = readText("prisma-control-center-unified-shell-lab-v3/internal/web/cloud_command_center.js");
+  const shellStore = readText("Prisma Cloud Ctr/internal/py/command_center_store.py");
+  const shellUi = readText("Prisma Cloud Ctr/internal/web/cloud_command_center.js");
   assert(shellStore.includes("PLAN_CATALOG_PATH"), "Shell Lab store does not read the canonical plan catalog.");
   assert(shellStore.includes("TABLET_PC_MANAGED"), "Shell Lab store is not wired to TABLET_PC_MANAGED.");
   assert(shellUi.includes("TABLET_PC_MANAGED"), "Shell Lab UI fallback is not wired to TABLET_PC_MANAGED.");
@@ -194,8 +194,8 @@ function modeGovernor(verifierName = "verify:licdesk:governor"): void {
 }
 
 function modeSupport(): void {
-  const licenseOps = readText("prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py");
-  const shellStore = readText("prisma-control-center-unified-shell-lab-v3/internal/py/command_center_store.py");
+  const licenseOps = readText("Prisma Cloud Ctr/internal/py/license_ops_api.py");
+  const shellStore = readText("Prisma Cloud Ctr/internal/py/command_center_store.py");
   const pcService = readText("products/pc/app/src/server/licensing/pc-license-service.ts");
   const tabletService = readText("products/tablet/app/src/server/licensing/tablet-license-service.ts");
   const mobileConfig = readText("products/mobile/app/src/lib/prisma-app/mobile-data-plane/config.ts");
@@ -264,8 +264,8 @@ function modeNoDb(): void {
 function modeNoDemo(): void {
   const forbidden = ["cust_demo", "biz_demo", "demo-prisma"];
   const productionRoots = [
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "py"),
-    path.join(terminalRoot, "prisma-control-center-unified-shell-lab-v3", "internal", "web"),
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "py"),
+    path.join(terminalRoot, "Prisma Cloud Ctr", "internal", "web"),
     path.join(terminalRoot, "products", "pc", "app", "src"),
     path.join(terminalRoot, "products", "tablet", "app", "src"),
     path.join(terminalRoot, "products", "mobile", "app", "src"),

@@ -27,7 +27,7 @@ F:\descargasf\licflow3 0207 0344 result
 | Command | Exit code |
 | --- | ---: |
 | `node --check infra/cloudflare/licflow3-worker/src/worker.js` | 0 |
-| `py -3 -m py_compile prisma-control-center-unified-shell-lab-v3/internal/py/cloud_saas_api.py` | 0 |
+| `py -3 -m py_compile Prisma Cloud Ctr/internal/py/cloud_saas_api.py` | 0 |
 | `pnpm run verify:licflow3:inventory` | 0 |
 | `pnpm run verify:licflow3:no-duplicates` | 0 |
 | `pnpm run verify:licflow3:cloud-contract` | 0 |

@@ -20,7 +20,7 @@ LICFLOW2 implements three activation modes on top of the existing LICDESK4/ADLAN
 | Tablet | `products/tablet/app/package.json` has Next `dev`, `build`, `start` scripts on port 3120 and local Prisma scripts. | Local Next/web app with local Tablet data plane. Tablet PWA/native packaging is unresolved from inspected evidence. |
 | PC | `products/pc/app/package.json` has Next `dev`, `build`, `start` scripts on port 3130. | Local Next/web app for PC backoffice/governance. Desktop/Electron packaging is unresolved from inspected evidence. |
 | Mobile | `products/mobile/app/package.json`, `public/manifest.webmanifest`, `public/prisma-mobile-sw.js`. | Next web/PWA evidence exists. Native/Play Store readiness has scripts, but hosted/store distribution is not claimed by LICFLOW2. |
-| Shell Lab | `prisma-control-center-unified-shell-lab-v3/internal/py/license_ops_api.py`, `internal/web/license_ops_console.js`, `internal/web/cloud_command_center.js`. | Local Shell Lab/control surface with read-only License Ops and prepared customer/device/license desks. |
+| Shell Lab | `Prisma Cloud Ctr/internal/py/license_ops_api.py`, `internal/web/license_ops_console.js`, `internal/web/cloud_command_center.js`. | Local Shell Lab/control surface with read-only License Ops and prepared customer/device/license desks. |
 
 ## New-Customer Flow
 
