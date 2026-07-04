@@ -3,12 +3,16 @@
   gap: 18px;
   margin: 18px 0;
   padding: 20px;
-  border: 1px solid rgba(97, 141, 197, 0.25);
-  border-radius: 26px;
+  border: 1px solid var(--cc-line, rgba(205, 234, 255, 0.13));
+  border-radius: var(--cc-radius-lg, 24px);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(234, 247, 255, 0.82)),
-    radial-gradient(circle at 12% 0%, rgba(0, 153, 255, 0.14), transparent 36%);
-  box-shadow: 0 22px 70px rgba(41, 90, 138, 0.13);
+    radial-gradient(circle at 12% 0%, rgba(120, 235, 255, 0.040), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.030), rgba(255, 255, 255, 0.006)),
+    rgba(5, 15, 29, 0.30);
+  box-shadow: var(--cc-shadow, 0 14px 34px rgba(0, 0, 0, 0.11));
+  backdrop-filter: blur(var(--cc-blur, 2px)) saturate(108%) contrast(102%);
+  -webkit-backdrop-filter: blur(var(--cc-blur, 2px)) saturate(108%) contrast(102%);
+  color: var(--cc-text, #f4f8fc);
 }
 
 .header {
@@ -20,18 +24,19 @@
 
 .header h2 {
   margin: 4px 0 6px;
-  font-size: clamp(22px, 2.4vw, 34px);
-  letter-spacing: -0.04em;
+  color: var(--cc-text, #f4f8fc);
+  font-size: 26px;
+  letter-spacing: 0;
 }
 
 .header p {
   max-width: 920px;
   margin: 0;
-  color: var(--prisma-text-muted);
+  color: var(--cc-soft, rgba(229, 244, 255, 0.76));
 }
 
 .kicker {
-  color: var(--prisma-accent-blue);
+  color: var(--cc-accent, #a9eeff);
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -41,10 +46,13 @@
 .healthPill {
   min-width: 116px;
   padding: 12px 14px;
-  border: 1px solid rgba(3, 93, 199, 0.2);
-  border-radius: 18px;
+  border: 1px solid rgba(169, 238, 255, 0.30);
+  border-radius: var(--cc-radius-md, 18px);
   text-align: center;
-  background: rgba(255, 255, 255, 0.78);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.010)),
+    rgba(4, 15, 29, 0.44);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 14px 32px rgba(0,0,0,0.12);
 }
 
 .healthPill strong,
@@ -53,14 +61,14 @@
 }
 
 .healthPill strong {
-  color: #073ea7;
+  color: var(--cc-accent, #a9eeff);
   font-size: 26px;
   line-height: 1;
 }
 
 .healthPill span {
   margin-top: 4px;
-  color: var(--prisma-text-muted);
+  color: var(--cc-muted, #c4d1dc);
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -79,7 +87,7 @@
 
 .searchBox span,
 .labelRow strong {
-  color: #17375f;
+  color: var(--cc-muted, #c4d1dc);
   font-size: 12px;
   font-weight: 950;
   letter-spacing: 0.06em;
@@ -90,18 +98,27 @@
 .selectCard select {
   width: 100%;
   min-height: 44px;
-  border: 1px solid rgba(97, 141, 197, 0.32);
-  border-radius: 15px;
+  border: 1px solid rgba(163, 216, 255, 0.22);
+  border-radius: var(--cc-radius-sm, 14px);
   padding: 10px 12px;
-  color: var(--prisma-text-primary);
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  color: var(--cc-text, #f4f8fc);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.010)),
+    rgba(4, 15, 29, 0.54);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 12px 24px rgba(0,0,0,0.10);
+  color-scheme: dark;
 }
 
 .searchBox input:focus,
 .selectCard select:focus {
-  outline: 3px solid rgba(4, 72, 255, 0.16);
-  border-color: rgba(4, 72, 255, 0.48);
+  outline: 0;
+  border-color: rgba(132, 224, 255, 0.58);
+  box-shadow: 0 0 0 3px rgba(76, 179, 255, 0.13), 0 18px 46px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.selectCard select option {
+  color: var(--cc-text, #f4f8fc);
+  background: #07101b;
 }
 
 .grid {
@@ -113,9 +130,11 @@
 .selectCard {
   min-height: 132px;
   padding: 14px;
-  border: 1px solid rgba(97, 141, 197, 0.22);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(146, 211, 255, 0.20);
+  border-radius: var(--cc-radius-md, 18px);
+  background:
+    radial-gradient(420px 180px at 0% 0%, rgba(123, 211, 255, 0.13), transparent 66%),
+    linear-gradient(180deg, rgba(22, 47, 70, 0.38), rgba(11, 27, 45, 0.48));
 }
 
 .labelRow {
@@ -128,24 +147,25 @@
 .labelRow em {
   padding: 4px 8px;
   border-radius: 999px;
-  color: #064899;
+  color: var(--cc-accent, #a9eeff);
   font-size: 10px;
   font-style: normal;
   font-weight: 950;
   text-transform: uppercase;
-  background: rgba(218, 238, 255, 0.92);
+  border: 1px solid rgba(169, 238, 255, 0.24);
+  background: rgba(169, 238, 255, 0.08);
 }
 
 .selectCard small {
   min-height: 28px;
-  color: var(--prisma-text-muted);
+  color: var(--cc-muted, #c4d1dc);
   font-size: 11px;
   line-height: 1.3;
 }
 
 .quickCreateLink {
   width: max-content;
-  color: #064899;
+  color: var(--cc-accent, #a9eeff);
   font-size: 12px;
   font-weight: 900;
   text-decoration: underline;
@@ -172,22 +192,27 @@
 }
 
 .actions button {
-  border: 0;
-  color: #fff;
-  background: linear-gradient(135deg, #0448ff, #00a2ff);
+  border: 1px solid rgba(139, 238, 255, 0.58);
+  color: var(--cc-text, #f4f8fc);
+  background:
+    linear-gradient(180deg, rgba(139, 238, 255, 0.16), rgba(174, 122, 255, 0.06)),
+    rgba(11, 22, 36, 0.22);
+  box-shadow: 0 0 18px rgba(120, 235, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.10);
   cursor: pointer;
 }
 
 .actions a,
 .actions summary {
-  border: 1px solid rgba(97, 141, 197, 0.28);
-  color: #073ea7;
-  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(232, 247, 255, 0.20);
+  color: rgba(232, 247, 255, 0.82);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.030), rgba(255, 255, 255, 0.006)),
+    rgba(11, 22, 36, 0.12);
   cursor: pointer;
 }
 
 .actions details {
-  color: var(--prisma-text-muted);
+  color: var(--cc-muted, #c4d1dc);
 }
 
 .actions ul {

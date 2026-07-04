@@ -33,3 +33,53 @@ input {
 :root { --prisma-mobile-premium-ink: #102033; --prisma-mobile-premium-blue: #465bff; --prisma-mobile-premium-mint: #00d6b2; --prisma-mobile-premium-glow: 0 24px 70px rgba(20, 33, 61, 0.14); }
 ::selection { background: rgba(70, 91, 255, 0.18); color: var(--prisma-mobile-premium-ink); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms; animation-iteration-count: 1; scroll-behavior: auto; } }
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+:root {
+  --appmovil-cc-bg: #07101b;
+  --appmovil-cc-bg-2: #0a1521;
+  --appmovil-cc-text: #f4f8fc;
+  --appmovil-cc-soft: rgba(229, 244, 255, .82);
+  --appmovil-cc-muted: rgba(196, 209, 220, .78);
+  --appmovil-cc-line: rgba(205, 234, 255, .16);
+  --appmovil-cc-line-soft: rgba(236, 250, 255, .10);
+  --appmovil-cc-panel: rgba(7, 16, 29, .18);
+  --appmovil-cc-panel-strong: rgba(7, 16, 29, .25);
+  --appmovil-cc-glass: rgba(9, 17, 29, .19);
+  --appmovil-cc-highlight: rgba(255, 255, 255, .055);
+  --appmovil-cc-accent: #a9eeff;
+  --appmovil-cc-accent-2: #c4d6ff;
+  --appmovil-cc-accent-3: #d7c6ff;
+  --appmovil-cc-ok: #8ff7d1;
+  --appmovil-cc-warn: #ffd38c;
+  --appmovil-cc-bad: #ff9aa6;
+  --appmovil-cc-radius-xl: 30px;
+  --appmovil-cc-radius-lg: 24px;
+  --appmovil-cc-radius-md: 18px;
+  --appmovil-cc-shadow: 0 16px 46px rgba(0, 0, 0, .22), 0 0 22px rgba(120, 235, 255, .04), inset 0 1px 0 rgba(255, 255, 255, .07);
+  --appmovil-cc-bg-image: url('/backgrounds/prisma-mobile/appmovil-command-center-simon-spring.jpg');
+}
+
+html[data-prisma-surface="mobile-pulse"] body,
+body[data-prisma-surface="mobile"] {
+  color: var(--appmovil-cc-text);
+  background-color: var(--appmovil-cc-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+body[data-prisma-surface="mobile"] ::selection {
+  background: rgba(169, 238, 255, .24);
+  color: #ffffff;
+}
+/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+body[data-prisma-surface="mobile"], html[data-prisma-surface="mobile-pulse"] body { width: 100%; max-width: 100vw; overflow-x: clip; color: var(--appmovil-cc-text, #f4f8fc); background-color: var(--appmovil-cc-bg, #07101b); }
+body[data-prisma-surface="mobile"] *, body[data-prisma-surface="mobile"] *::before, body[data-prisma-surface="mobile"] *::after, html[data-prisma-surface="mobile-pulse"] body *, html[data-prisma-surface="mobile-pulse"] body *::before, html[data-prisma-surface="mobile-pulse"] body *::after { box-sizing: border-box; min-width: 0; }
+body[data-prisma-surface="mobile"] img, body[data-prisma-surface="mobile"] svg, body[data-prisma-surface="mobile"] canvas, body[data-prisma-surface="mobile"] video, html[data-prisma-surface="mobile-pulse"] body img, html[data-prisma-surface="mobile-pulse"] body svg, html[data-prisma-surface="mobile-pulse"] body canvas, html[data-prisma-surface="mobile-pulse"] body video { max-width: 100%; }
+body[data-prisma-surface="mobile"] button, body[data-prisma-surface="mobile"] [role="button"], body[data-prisma-surface="mobile"] [role="tab"], html[data-prisma-surface="mobile-pulse"] body button, html[data-prisma-surface="mobile-pulse"] body [role="button"], html[data-prisma-surface="mobile-pulse"] body [role="tab"] { max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+@supports not (overflow: clip) { html, body, body[data-prisma-surface="mobile"], html[data-prisma-surface="mobile-pulse"] body { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */

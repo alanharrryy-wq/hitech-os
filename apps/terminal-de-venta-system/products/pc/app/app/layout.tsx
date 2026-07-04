@@ -19,15 +19,15 @@ const prismaSkinBootstrap = `
 (function () {
   try {
     var root = document.documentElement;
-    root.dataset.prismaSkin = "light";
+    root.dataset.prismaSkin = "tactical";
     root.dataset.prismaSurface = "pc-backoffice";
-    root.dataset.theme = "prisma-light";
-    root.dataset.prismaSkinPreference = "light";
+    root.dataset.theme = "prisma-command-center";
+    root.dataset.prismaSkinPreference = "tactical";
   } catch (error) {
-    document.documentElement.dataset.prismaSkin = "light";
+    document.documentElement.dataset.prismaSkin = "tactical";
     document.documentElement.dataset.prismaSurface = "pc-backoffice";
-    document.documentElement.dataset.theme = "prisma-light";
-    document.documentElement.dataset.prismaSkinPreference = "light";
+    document.documentElement.dataset.theme = "prisma-command-center";
+    document.documentElement.dataset.prismaSkinPreference = "tactical";
   }
 })();
 `;
@@ -48,12 +48,12 @@ export default async function RootLayout({ children }: { children: any }) {
   return (
     <html
       lang="es-MX"
-      data-theme="prisma-light"
-      data-prisma-skin="light"
-      data-prisma-skin-preference="light"
+      data-theme="prisma-command-center"
+      data-prisma-skin="tactical"
+      data-prisma-skin-preference="tactical"
       data-prisma-surface="pc-backoffice"
-      data-prisma-visual-os="PC_PREMIUM_LIGHT_SYS1"
-      data-prisma-vos-binding="00J"
+      data-prisma-visual-os="PC_UNIFIED_COMMAND_CENTER_0307"
+      data-prisma-vos-binding="UCC-0307"
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: prismaSkinBootstrap }} />

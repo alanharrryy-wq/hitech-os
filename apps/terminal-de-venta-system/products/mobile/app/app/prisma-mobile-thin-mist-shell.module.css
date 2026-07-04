@@ -75,3 +75,102 @@
     transition: none;
   }
 }
+
+/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+.shell {
+  --prisma-mobile-bg: var(--appmovil-cc-bg);
+  --prisma-mobile-ink: var(--appmovil-cc-text);
+  --prisma-mobile-muted: var(--appmovil-cc-muted);
+  --prisma-mobile-line: var(--appmovil-cc-line);
+  --prisma-mobile-panel: var(--appmovil-cc-panel);
+  --prisma-mobile-focus: rgba(169, 238, 255, .46);
+  min-height: 100dvh;
+  color: var(--appmovil-cc-text);
+  background-color: var(--appmovil-cc-bg);
+  background-image:
+    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
+    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
+    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
+    var(--appmovil-cc-bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.shell::before {
+  content: "";
+  position: fixed;
+  inset: -8%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .46;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(520px 280px at 18% 22%, rgba(116, 210, 255, .18), transparent 70%),
+    radial-gradient(460px 250px at 78% 18%, rgba(188, 144, 255, .14), transparent 72%),
+    radial-gradient(640px 360px at 56% 82%, rgba(104, 255, 214, .10), transparent 76%);
+  filter: saturate(118%);
+  animation: appmovilCcAtmosphere 56s cubic-bezier(.42, 0, .22, 1) infinite alternate;
+}
+
+.shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .64;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(440px 320px at 50% 108%, rgba(169, 238, 255, .10), transparent 68%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  width: min(100%, 430px);
+  margin-inline: auto;
+  padding-inline: max(10px, env(safe-area-inset-left));
+}
+
+.shell :global([data-mobile-card]),
+.shell :global([data-prisma-card]),
+.shell :global([data-command-card]) {
+  color: var(--appmovil-cc-text);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255, 255, 255, .075), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, .040), rgba(255, 255, 255, .010)),
+    var(--appmovil-cc-panel);
+  border-color: var(--appmovil-cc-line);
+  box-shadow: var(--appmovil-cc-shadow);
+  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
+}
+
+@keyframes appmovilCcAtmosphere {
+  from { transform: translate3d(-1.5%, -.4%, 0) scale(1.01); }
+  to { transform: translate3d(1.6%, .8%, 0) scale(1.035); }
+}
+
+@media (max-width: 460px) {
+  .content {
+    width: 100%;
+    padding-inline: max(10px, env(safe-area-inset-left));
+  }
+}
+/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
+
+
+/* BEGIN MOVILGFT7_FIXED3140_0407 */
+.shell, .content { width: 100%; max-width: 100vw; overflow-x: clip; }
+.content { inline-size: min(100%, 430px); max-inline-size: calc(100vw - max(0px, env(safe-area-inset-left)) - max(0px, env(safe-area-inset-right))); margin-inline: auto; padding-inline: clamp(10px, 3vw, 16px); }
+.content > * { max-width: 100%; min-width: 0; }
+.shell :global(.premiumTabRail), .shell :global(.themeRail), .shell :global([data-mobile-rail]), .shell :global([data-command-rail]) { width: 100%; max-width: 100%; min-width: 0; overflow: visible; }
+@supports not (overflow: clip) { .shell, .content { overflow-x: hidden; } }
+/* END MOVILGFT7_FIXED3140_0407 */
