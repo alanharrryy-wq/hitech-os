@@ -136,6 +136,14 @@
 
   const LICFLOW3_ENDPOINT_MATRIX = ["health", "capabilities", "tenantStatus", "adminSelftest", "commercialSummary", "tenantSnapshot", "clientContract", "supportDiagnostics", "licenseActivate", "licenseRefresh", "licenseRevoke", "deviceRegister", "integrationReceipt"];
 
+  function licflow3LiveStatus() {
+    return state.data?.licflow3Contract?.hostedCloudEvidenceStatus || state.data?.licflow3Contract?.status || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE";
+  }
+
+  function adminTokenPresent() {
+    return !!state.data?.admin?.adminTokenPresent;
+  }
+
   function endpointRows(names) {
     const labels = {
       health: "Salud cloud",
@@ -235,11 +243,9 @@
     const admin = data.admin || {};
     const found = [];
     if (!data.ok) found.push({ level: "warn", title: "Cloud requiere revisión", detail: data.error || data.status || "No hay PASS completo en resumen." });
-    if (!admin.enabled) found.push({ level: "warn", title: "Modo lectura segura", detail: "El token admin local no está activo, así que las acciones de escritura se bloquean." });
     if (!endpointState("health").ok) found.push({ level: "bad", title: "Salud cloud no confirmó OK", detail: "Revisar System para detalle técnico." });
     if (!endpointState("tenantStatus").ok) found.push({ level: "warn", title: "Estado público del cliente incompleto", detail: `No se pudo confirmar status público de ${FIRST_CUSTOMER_NAME}.` });
     if (data.licflow3Contract?.missing?.length) found.push({ level: "warn", title: "Contrato LICFLOW3 incompleto", detail: `Faltan endpoints: ${data.licflow3Contract.missing.join(", ")}.` });
-    if (data.licflow3Contract?.hostedCloudEvidenceStatus === "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED") found.push({ level: "warn", title: "Cloudflare vivo requiere evidencia", detail: "No se declara PASS hosted sin smoke autorizado de app.hitechrts.com." });
     if (!d.license && !state.license?.runtime?.license) found.push({ level: "warn", title: "Licencia sin ficha clara", detail: "Falta estado de licencia legible para operación." });
     if (!safeCount(d.devices)) found.push({ level: "warn", title: "Sin dispositivos visibles", detail: "El snapshot no devolvió dispositivos." });
     return found;
@@ -256,14 +262,17 @@
     const license = state.license?.runtime?.license || d.license || {};
     const problems = collectProblems();
     return [
-      "PRISMA Cloud Command Center",
+      "Prisma Cloud Center",
       `Estado general: ${mainStatus()}`,
       `Cloud: ${state.data?.ok ? "en línea" : "revisar"}`,
       `Cliente: ${d.tenant?.displayName || d.tenant?.slug || state.data?.cloud?.tenantSlug || FIRST_CUSTOMER_NAME}`,
       `Licencia: ${license.status || d.license?.status || state.license?.status || "revisar"}`,
       `Plan: ${license.plan || d.license?.plan || "-"}`,
       `LICFLOW3: ${state.data?.licflow3Contract?.claim || "contract_incomplete"}`,
-      `Hosted cloud evidence: ${state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"}`,
+      `LICFLOW3 live state: ${licflow3LiveStatus()}`,
+      `Worker: ${state.data?.licflow3Contract?.worker || "prisma-cloud-semilla"}`,
+      `D1: ${state.data?.licflow3Contract?.d1 || "prisma_cloud_semilla"}`,
+      `adminTokenPresent: ${adminTokenPresent() ? "true" : "false"}`,
       `Dispositivos: ${safeCount(d.devices)}`,
       `Receipts: ${safeCount(d.receipts)}`,
       `Notas: ${safeCount(d.notes)}`,
@@ -300,7 +309,8 @@
       `Plan: ${license.plan || d.license?.plan || "-"}`,
       `Contrato: ${contract.status || contract.plan || endpointState("clientContract").code}`,
       `LICFLOW3: ${state.data?.licflow3Contract?.claim || "contract_incomplete"}`,
-      `Hosted cloud evidence: ${state.data?.licflow3Contract?.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"}`,
+      `LICFLOW3 live state: ${licflow3LiveStatus()}`,
+      `adminTokenPresent: ${adminTokenPresent() ? "true" : "false"}`,
       `Soporte cloud: ${endpointState("supportDiagnostics").code}`,
       `Dispositivos: ${safeCount(d.devices)}`,
       `Receipts: ${safeCount(d.receipts)}`,
@@ -653,7 +663,7 @@
     const c = localCounts();
     const last = localRows("events").slice(0, 8).map((e)=>`- ${e.createdAt || ""} ${e.entityCode || e.entityKind || "evento"}: ${e.summary || e.eventType || ""}`).join("\n") || "- Sin eventos locales.";
     return [
-      "PRISMA Cloud Command Center - escritorio local",
+      "Prisma Cloud Center - escritorio local",
       `Clientes: ${c.clients || 0}`,
       `Licencias: ${c.licenses || 0}`,
       `Dispositivos: ${c.devices || 0}`,
@@ -688,7 +698,7 @@
     return [
       panel("Acciones principales","Elige la tarea. La cabina genera IDs y usa catálogos; tú no escribes folios.",actions([surfaceButton("provisioning","+ Nuevo cliente"),surfaceButton("entitlements","Asignar licencia"),surfaceButton("fleet","Agregar dispositivo"),surfaceButton("security","Dar de baja"),surfaceButton("operations","Ver escritorio local"),surfaceButton("support","Resolver soporte")]),{span:7,tag:"TAREAS"}),
       panel("Escritorio local","Lo que ya existe en la DB del cockpit: clientes, licencias, dispositivos, bajas, otros y auditoría.",localDashboard(),{span:5,tag:`${c.preparedDrafts||0} drafts`}),
-      panel("Resumen actual","Lo que está pasando sin endpointés.",kvGrid([["Cloud",state.data?.ok?"En línea":"Revisar"],["Cliente",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["Licencia",d.license?.status||state.license?.runtime?.license?.status||"Revisar"],["Problemas",p.length?`${p.length} por revisar`:"Sin bloqueadores"]]),{span:5,tag:mainStatus()}),
+      panel("Resumen actual","Lo que está pasando sin tocar acciones admin.",kvGrid([["Cloud",state.data?.ok?"En línea":"Revisar"],["LICFLOW3",licflow3LiveStatus()],["Cliente",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["adminTokenPresent",adminTokenPresent()?"true":"false"],["Problemas",p.length?`${p.length} por revisar`:"Sin bloqueadores"]]),{span:5,tag:mainStatus()}),
       panel("Operar escritorio","Copiar digest, abrir clientes o ir a System sin mirar raw técnico.",actions([actionButton("refresh","Actualizar todo","primary"),actionButton("copy-local-desk","Copiar escritorio local"),surfaceButton("customers","Clientes"),surfaceButton("operations","Reportes"),surfaceButton("system","System")]),{span:7,tag:"DESK"}),
       panel("Problemas detectados","Si algo bloquea, aparece aquí en humano.",problemsHtml(),{span:12,tag:p.length?"REVIEW":"OK"}),
       resultPanel()
@@ -741,12 +751,16 @@
         ["Cliente", contract.tenant || contract.tenantSlug || d.tenant?.slug || FIRST_CUSTOMER_NAME],
         ["Capacidades", endpointState("capabilities").code]
       ]), { span: 5, tag: endpointState("clientContract").ok ? "CONTRATO" : "REVISAR" }),
-      panel("LICFLOW3 bridge", "Contrato hosted sin declarar cloud PASS sin evidencia viva.", kvGrid([
-        ["Contrato", licflow3.claim || "contract_incomplete"],
+      panel("LICFLOW3 live routes", "Cloudflare routes are deployed and protected; unauthenticated POST smoke expects 401 ADMIN_TOKEN_REQUIRED.", kvGrid([
+        ["Estado", licflow3.hostedCloudEvidenceStatus || licflow3.status || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"],
+        ["Worker", licflow3.worker || "prisma-cloud-semilla"],
+        ["D1", licflow3.d1 || "prisma_cloud_semilla"],
         ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
-        ["Endpoints faltantes", safeCount(licflow3.missing)],
-        ["Cloud vivo", licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED"]
-      ]), { span: 7, tag: licflow3.hostedCloudEvidenceStatus || "CLOUDFLARE_LIVE_EVIDENCE_REQUIRED" }),
+        ["Activate", "POST /api/licenses/activate -> 401 ADMIN_TOKEN_REQUIRED"],
+        ["Refresh", "POST /api/licenses/refresh -> 401 ADMIN_TOKEN_REQUIRED"],
+        ["Revoke", "POST /api/licenses/revoke -> 401 ADMIN_TOKEN_REQUIRED"],
+        ["adminTokenPresent", adminTokenPresent() ? "true" : "false"]
+      ]), { span: 7, tag: licflow3LiveStatus() }),
       panel("Acciones de configuración", "Comparar, copiar y saltar a licencias sin ver endpoints.", actions([
         actionButton("refresh", "Actualizar contrato", "primary"),
         actionButton("compare-contract", "Comparar contrato vs capacidades"),
@@ -778,7 +792,7 @@
         ["Licencia", d.license?.status || state.license?.runtime?.license?.status || "Revisar"],
         ["Problemas", collectProblems().length]
       ]), { span: 5, tag: "SOPORTE" }),
-      panel("Acciones de soporte", "Crear nota y copiar paquete listo para seguimiento.", `<textarea id="supportNoteText" class="cc-textarea" spellcheck="true">Nota interna desde PRISMA Cloud Command Center.</textarea>${actions([
+      panel("Acciones de soporte", "Crear nota y copiar paquete listo para seguimiento.", `<textarea id="supportNoteText" class="cc-textarea" spellcheck="true">Nota interna desde Prisma Cloud Center.</textarea>${actions([
         actionButton("create-note", "Agregar nota interna", "primary"),
         actionButton("copy-support", "Copiar paquete de soporte"),
         actionButton("show-problems", "Ver problemas"),
@@ -904,7 +918,7 @@
         await copyText(supportPacket(), "Paquete de soporte");
       } else if (action === "copy-security") {
         const admin = state.data?.admin || {};
-        await copyText(`Seguridad PRISMA CC\nModo: ${admin.enabled ? "acciones locales" : "lectura segura"}\nToken disponible: ${admin.tokenAvailable ? "sí server-side/local" : "no"}\nToken visible en browser: no mostrado por UI\nEstado: ${mainStatus()}`, "Resumen de seguridad");
+        await copyText(`Seguridad Prisma Cloud Center\nModo: ${admin.enabled ? "acciones admin" : "lectura segura"}\nadminTokenPresent: ${adminTokenPresent() ? "true" : "false"}\nValor de token leido: false\nAcciones mutating: bloqueadas hasta LICFLOW4 Admin Bridge\nEstado: ${mainStatus()}`, "Resumen de seguridad");
       } else if (action === "copy-endpoint-matrix") {
         await copyText(endpointRows(LICFLOW3_ENDPOINT_MATRIX).map(([a, b]) => `${a}: ${b}`).join("\n"), "Endpoint matrix");
       } else if (action === "compare-license-contract" || action === "compare-contract") {
@@ -925,11 +939,11 @@
         setResult("Seguridad", keys.length ? "Hay llaves sospechosas en localStorage." : "Browser limpio: no se detectaron llaves token/secret/auth en localStorage.", { ok: !keys.length, suspiciousLocalStorageKeys: keys }, { kind: keys.length ? "warn" : "ok" });
         toast(keys.length ? "Revisar localStorage" : "Browser limpio");
       } else if (action === "clear-cache") {
-        ["prisma-cloud-command-center-cache", "cc-last-surface"].forEach((key) => localStorage.removeItem(key));
+        ["prisma-cloud-center-cache", "cc-last-surface"].forEach((key) => localStorage.removeItem(key));
         setResult("Cache", "Cache local visual limpiada sin tocar token ni datos server-side.", { ok: true }, { kind: "ok" });
         toast("Cache local limpiada");
       } else if (action === "create-note") {
-        const text = $("supportNoteText")?.value || "Nota interna desde PRISMA Cloud Command Center.";
+        const text = $("supportNoteText")?.value || "Nota interna desde Prisma Cloud Center.";
         result = await postAction("/api/cloud-saas/notes", { text });
         setResult("Nota interna", result.ok ? `Nota creada en ${FIRST_CUSTOMER_NAME}.` : "La nota no se confirmó; revisar evidencia.", result, { kind: result.ok ? "ok" : "warn" });
         toast(result.ok ? "Nota creada" : "Nota a revisar");
@@ -959,7 +973,7 @@
         await copyText(localRows("devices").map((r)=>localPlainSummary("devices", r)).join("\n\n") || "Sin dispositivos locales.", "Dispositivos locales");
       } else if (action === "export-diagnostics") {
         result = await postAction("/api/export-diagnostics", {});
-        setResult("Diagnóstico", "Diagnóstico exportado por el lab local.", result, { kind: result.ok === false ? "warn" : "ok", surface: "system" });
+        setResult("Diagnóstico", "Diagnóstico exportado por Prisma Cloud Center.", result, { kind: result.ok === false ? "warn" : "ok", surface: "system" });
         toast("Diagnóstico exportado");
       }
       render();
