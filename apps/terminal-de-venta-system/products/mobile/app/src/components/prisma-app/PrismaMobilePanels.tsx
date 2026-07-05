@@ -41,7 +41,7 @@ export function PrismaMobileCashPanel({ cash }: { cash: PrismaMobileCashCurrentP
       <header>
         <span>Caja · vista opcional</span>
         <h2 id="mobile-cash-title">Lectura de caja sin operar POS</h2>
-        <p className={styles.optionalAdderBoundaryMicro}>Mobile supervisa; Tablet Solo vende sola y conserva cobro, corte, ticket y operación offline.</p>
+        <p className={styles.optionalAdderBoundaryMicro}>Mobile supervisa; Tablet Solo vende sola y conserva ticket, caja local y operación offline.</p>
       </header>
       <div className={styles.cashGrid}>
         <article><span>Esperado</span><strong>{cash.expectedLabel}</strong></article>
@@ -81,7 +81,7 @@ export function PrismaMobileAlertsPanel({ alerts }: { alerts: PrismaMobileAlert[
                 <strong>{alert.title}</strong>
                 <span>{alert.area} · {alert.time} · {alert.source ?? "fuente móvil"}</span>
                 <p>{alert.detail}</p>
-                <small>{alert.whyItMatters ?? "Importa porque puede afectar operación, dinero o continuidad del día."}</small>
+                <small>{alert.whyItMatters ?? "Importa porque puede afectar operación, inventario o continuidad del día."}</small>
                 <div className={styles.alertWorkflow} aria-label={`Ciclo de vida para ${alert.title}`}>
                   <span>Nueva</span>
                   <span>Vista</span>

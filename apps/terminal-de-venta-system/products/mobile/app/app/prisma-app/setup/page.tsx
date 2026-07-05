@@ -1,13 +1,16 @@
 import { resolveMobileCustomerSetup, MOBILE_CUSTOMER_SETUP_SLOT_LABEL } from "@/lib/prisma-app/prisma-mobile-customer-setup";
 import styles from "@/components/prisma-app/prisma-mobile-pwa.module.css";
 
+type SearchParams = Promise<{ code?: string; setupCode?: string }> | { code?: string; setupCode?: string };
+
 export const metadata = {
   title: "Prisma Customer Setup | Mobile Companion",
   description: "Setup Link, Setup Code y Device Claim para PRISMA Mobile."
 };
 
-export default function PrismaMobileCustomerSetupPage({ searchParams }: { searchParams?: { code?: string; setupCode?: string } }) {
-  const code = searchParams?.code || searchParams?.setupCode || "";
+export default async function PrismaMobileCustomerSetupPage({ searchParams }: { searchParams?: SearchParams }) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const code = resolvedSearchParams.code || resolvedSearchParams.setupCode || "";
   const setup = resolveMobileCustomerSetup(code);
 
   return (

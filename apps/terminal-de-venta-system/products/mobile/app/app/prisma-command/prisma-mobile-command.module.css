@@ -1,241 +1,21 @@
 .shell {
-  min-height: 100vh;
-  padding: 18px;
-  color: #f8fafc;
+  --cmd-text: #fff8e7;
+  --cmd-muted: rgba(255, 248, 231, 0.72);
+  --cmd-line: rgba(255, 248, 231, 0.14);
+  --cmd-gold: #ffd977;
+  min-height: 100svh;
+  width: 100%;
+  color: var(--cmd-text);
   background:
-    linear-gradient(180deg, rgba(5, 12, 26, .98), rgba(11, 27, 50, .94)),
-    radial-gradient(circle at 82% 8%, rgba(99, 223, 255, .22), transparent 26%),
-    #071426;
-}
-
-.header,
-.disabledPanel,
-.focusPanel,
-.card {
-  border: 1px solid rgba(190, 209, 232, .18);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, .075);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, .28);
-  backdrop-filter: blur(18px);
-}
-
-.header {
-  max-width: 720px;
-  margin: 0 auto 12px;
-  padding: 18px;
-}
-
-.header p,
-.disabledPanel p {
-  margin: 0;
-  color: #63dfff;
-  font-size: .75rem;
-  font-weight: 950;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-}
-
-.header h1,
-.disabledPanel h1 {
-  margin: 4px 0 8px;
-  font-size: clamp(2.2rem, 13vw, 4.6rem);
-  line-height: .9;
-  letter-spacing: 0;
-}
-
-.header span,
-.header small,
-.disabledPanel span,
-.cardHeader p,
-.cardFooter,
-.sparkCard small {
-  color: #c8d3e0;
-}
-
-.signalRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.signalRow strong,
-.signalRow small,
-.filterRail button {
-  border: 1px solid rgba(99, 223, 255, .22);
-  border-radius: 999px;
-  padding: 8px 10px;
-  background: rgba(99, 223, 255, .10);
-}
-
-.filterRail {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  max-width: 720px;
-  margin: 0 auto 12px;
-  padding-bottom: 2px;
-}
-
-.filterRail button {
-  min-height: 42px;
-  color: #f8fafc;
-  font-weight: 900;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.focusPanel {
-  display: grid;
-  gap: 4px;
-  max-width: 720px;
-  margin: 0 auto 12px;
-  padding: 12px 14px;
-}
-
-.focusPanel span {
-  color: #63dfff;
-  font-size: .72rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.card {
-  min-width: 0;
-  padding: 12px;
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.cardHeader h2 {
-  margin: 0 0 3px;
-  font-size: .96rem;
-  line-height: 1.1;
-  letter-spacing: 0;
-}
-
-.cardHeader p {
-  margin: 0;
-  font-size: .78rem;
-}
-
-.cardHeader strong {
-  align-self: start;
-  border-radius: 999px;
-  padding: 6px 8px;
-  color: #071426;
-  background: #63dfff;
-  font-size: .76rem;
-  white-space: nowrap;
-}
-
-.chartFrame {
-  position: relative;
-  min-width: 0;
-}
-
-.cardFooter {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-top: 1px solid rgba(255, 255, 255, .12);
-  margin-top: 8px;
-  padding-top: 8px;
-  font-size: .7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.sparkGrid {
-  display: grid;
-  gap: 8px;
-}
-
-.sparkCard,
-.emptySpark {
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-radius: 8px;
-  padding: 8px;
-  background: rgba(0, 0, 0, .16);
-}
-
-.sparkCard header {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.sparkCard header span {
-  color: #e59b2a;
-  font-size: .72rem;
-  font-weight: 900;
-}
-
-.sparkCard small {
-  display: block;
-  margin-top: 4px;
-  font-size: .72rem;
-}
-
-.emptySpark {
-  min-height: 96px;
-  display: grid;
-  place-items: center;
-  color: #c8d3e0;
-}
-
-.disabledPanel {
-  max-width: 680px;
-  margin: 16vh auto;
-  padding: 22px;
-}
-
-.disabledPanel strong {
-  display: block;
-  margin-top: 12px;
-}
-
-@media (max-width: 620px) {
-  .shell {
-    padding: 12px;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
-.shell {
-  min-height: 100dvh;
-  color: var(--appmovil-cc-text);
-  background-color: var(--appmovil-cc-bg);
-  background-image:
-    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
-    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
-    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
-    var(--appmovil-cc-bg-image);
-  background-repeat: no-repeat;
+    linear-gradient(180deg, rgba(4, 9, 8, 0.28), rgba(4, 9, 8, 0.94)),
+    url("/backgrounds/prisma-mobile/appmovil-command-center-simon-spring.jpg");
   background-size: cover;
-  background-position: center center;
-  padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
-  isolation: isolate;
-  overflow-x: clip;
+  background-position: center;
+  padding: max(14px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  overflow-x: hidden;
 }
 
 .header,
@@ -244,95 +24,92 @@
 .card,
 .sparkCard,
 .emptySpark {
-  color: var(--appmovil-cc-text);
-  border-color: var(--appmovil-cc-line);
-  border-radius: var(--appmovil-cc-radius-lg);
+  width: min(430px, 100%);
+  margin-inline: auto;
+  border: 1px solid var(--cmd-line);
+  border-radius: 24px;
+  padding: 12px;
   background:
-    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, .080), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, .042), rgba(255, 255, 255, .010) 48%, rgba(255, 255, 255, .014)),
-    var(--appmovil-cc-panel);
-  box-shadow: var(--appmovil-cc-shadow);
-  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
-  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
-}
-
-.header,
-.disabledPanel,
-.focusPanel,
-.grid {
-  width: min(100%, 430px);
-  max-width: 430px;
-}
-
-.header h1,
-.disabledPanel h1 {
-  color: var(--appmovil-cc-text);
-  font-size: clamp(2.1rem, 11vw, 3.8rem);
-  line-height: .92;
-  text-shadow: 0 1px 0 rgba(0,0,0,.34), 0 0 14px rgba(120,235,255,.18);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+    rgba(7, 12, 10, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 16px 46px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(7px) saturate(1.12);
 }
 
 .header p,
 .disabledPanel p,
-.focusPanel span,
-.sparkCard header span {
-  color: var(--appmovil-cc-accent);
-}
-
-.header span,
-.header small,
-.disabledPanel span,
-.cardHeader p,
+.cardHeader span,
 .cardFooter,
-.sparkCard small {
-  color: var(--appmovil-cc-soft);
+.signalRow,
+.focusPanel span {
+  color: var(--cmd-muted);
+  font-size: 0.74rem;
+  line-height: 1.35;
 }
 
-.signalRow strong,
-.signalRow small,
-.filterRail button,
-.cardHeader strong {
-  color: var(--appmovil-cc-text);
-  border-color: var(--appmovil-cc-line);
-  background: rgba(255, 255, 255, .055);
+.header h1,
+.disabledPanel h1 {
+  margin: 2px 0;
+  font-size: clamp(1.5rem, 8vw, 2.3rem);
+  line-height: 0.98;
+  letter-spacing: 0;
 }
 
 .filterRail {
-  width: min(100%, 430px);
-  max-width: 430px;
-  scrollbar-width: thin;
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filterRail::-webkit-scrollbar {
+  display: none;
 }
 
 .filterRail button {
-  min-height: 44px;
+  appearance: none;
+  border: 1px solid var(--cmd-line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--cmd-text);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.grid {
+.grid,
+.sparkGrid {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: grid;
   grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.cardHeader,
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
   gap: 10px;
 }
 
-.cardHeader {
-  align-items: flex-start;
+.chartFrame {
+  min-height: 154px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
 }
 
-.cardHeader strong {
-  color: var(--appmovil-cc-bg);
-  background: var(--appmovil-cc-accent);
+.signalRow {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.disabledPanel {
-  margin: 10vh auto;
+.signalRow span {
+  border: 1px solid var(--cmd-line);
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: rgba(255, 255, 255, 0.06);
 }
-/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
-
-
-/* BEGIN MOVILGFT7_FIXED3140_0407 */
-.shell, .header, .disabledPanel, .focusPanel, .grid, .card, .sparkGrid, .sparkCard, .emptySpark, .filterRail, .signalRow { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
-.header, .disabledPanel, .focusPanel, .grid { inline-size: min(100%, 430px); max-inline-size: calc(100vw - 20px); margin-inline: auto; }
-.filterRail, .signalRow, .cardFooter, .sparkCard header, .cardHeader { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr)); gap: clamp(6px, 2vw, 10px); overflow: visible; }
-.filterRail button, .signalRow strong, .signalRow small, .cardFooter > *, .sparkCard header > *, .cardHeader > * { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
-.card, .sparkCard, .emptySpark, .header, .disabledPanel, .focusPanel { background-color: color-mix(in srgb, var(--appmovil-cc-panel, rgba(7,16,29,.18)) 82%, transparent); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); color: var(--appmovil-cc-text, #f8fafc); }
-@media (max-width: 620px) { .grid { grid-template-columns: minmax(0, 1fr); } }
-@supports not (overflow: clip) { .shell, .header, .disabledPanel, .focusPanel, .grid, .card, .sparkGrid, .sparkCard, .emptySpark, .filterRail, .signalRow { overflow-x: hidden; } }
-/* END MOVILGFT7_FIXED3140_0407 */

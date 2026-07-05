@@ -2257,9 +2257,45 @@ def smtp_diagnostics(public: bool = False) -> dict[str, Any]:
 
 def pin_status(public: bool = False) -> dict[str, Any]:
     ledger = ensure_ledger()
-    rows = [dict(r) for r in ledger.execute("SELECT pin_id, owner_email, created_at, expires_at, consumed_at, email_status FROM lifecycle_pin_tokens ORDER BY id DESC LIMIT 5")]
-    ledger.close()
-    payload = {"ok": True, "status": "PIN_STATUS_READY", "pin_required": bool(config().get("pin_required", True)), "allow_clear_without_pin": bool(config().get("allow_clear_without_pin", False)), "recent_tokens": rows}
+    source_table = "none"
+    try:
+        has_modern = bool(ledger.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='lifecycle_pins'").fetchone())
+        has_legacy = bool(ledger.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='lifecycle_pin_tokens'").fetchone())
+        if has_modern:
+            source_table = "lifecycle_pins"
+            rows = [dict(r) for r in ledger.execute("""
+                SELECT pin_id, owner_email, created_at, expires_at, used_at AS consumed_at, status, evidence_path
+                FROM lifecycle_pins
+                ORDER BY created_at DESC
+                LIMIT 5
+            """)]
+            for row in rows:
+                status = str(row.get("status") or "UNKNOWN")
+                row["email_status"] = "LOCAL_EVIDENCE" if row.get("evidence_path") else status
+        elif has_legacy:
+            source_table = "lifecycle_pin_tokens"
+            rows = [dict(r) for r in ledger.execute("""
+                SELECT pin_id, owner_email, created_at, expires_at, consumed_at, email_status
+                FROM lifecycle_pin_tokens
+                ORDER BY id DESC
+                LIMIT 5
+            """)]
+            for row in rows:
+                row["status"] = row.get("email_status") or "UNKNOWN"
+                row["evidence_path"] = None
+        else:
+            rows = []
+    finally:
+        ledger.close()
+    payload = {
+        "ok": True,
+        "status": "PIN_STATUS_READY",
+        "pin_required": bool(config().get("pin_required", True)),
+        "allow_clear_without_pin": bool(config().get("allow_clear_without_pin", False)),
+        "pin_schema_table": source_table,
+        "recent_tokens": rows,
+        "recent_pins": rows,
+    }
     return public_safe(payload) if public else payload
 
 
@@ -3144,7 +3180,9 @@ _V6_SIGNATURES = [
     ("sku", "LIKE", "DL-%"),
     ("folio", "LIKE", "DL-%"),
     ("folio", "LIKE", "OC-DL-%"),
+    ("folio", "LIKE", "REC-DL-%"),
     ("clientRequestId", "LIKE", "dl-lifecycle_%"),
+    ("email", "LIKE", "%@prisma.local"),
     ("payloadJson", "LIKE", "%prisma_data_lifecycle%"),
     ("payloadJson", "LIKE", "%PRISMA Data Lifecycle%"),
     ("metadataJson", "LIKE", "%prisma_data_lifecycle%"),
@@ -3202,6 +3240,16 @@ def _v6_qmarks(values: list[str]) -> str:
     return ",".join(["?"] * len(values))
 
 
+def _v6_signature_where(cols: set[str]) -> tuple[list[str], list[str]]:
+    clauses: list[str] = []
+    params: list[str] = []
+    for col, op, val in _V6_SIGNATURES:
+        if col in cols:
+            clauses.append(f"{_v6_ident(col)} {op} ?")
+            params.append(val)
+    return clauses, params
+
+
 def _v6_domain_for_table(table: str) -> str:
     try:
         for domain, tables in domain_map().items():  # type: ignore[name-defined]
@@ -3219,40 +3267,14 @@ def _v6_detect_seed_business_ids(con: sqlite3.Connection) -> list[str]:
     ids: set[str] = set()
     if "Business" in tset:
         c = _v6_cols(con, "Business")
-        wh: list[str] = []
-        params: list[str] = []
         if "name" in c:
-            wh.append(f"{_v6_ident('name')} = ?")
-            params.append("Abarrotes Prisma Central")
-        if "taxId" in c:
-            wh.append(f"{_v6_ident('taxId')} = ?")
-            params.append("XAXX010101000")
-        if wh:
             try:
-                for row in con.execute(f"SELECT {_v6_ident('id')} FROM {_v6_ident('Business')} WHERE " + " OR ".join(wh), params):
+                sql = f"SELECT {_v6_ident('id')} FROM {_v6_ident('Business')} WHERE {_v6_ident('name')} = ?"
+                for row in con.execute(sql, ["Abarrotes Prisma Central"]):
                     if row[0]:
                         ids.add(str(row[0]))
             except Exception:
                 pass
-    for table in tset:
-        c = _v6_cols(con, table)
-        if "businessId" not in c:
-            continue
-        clauses: list[str] = []
-        params: list[str] = []
-        for col, op, val in _V6_SIGNATURES:
-            if col in c:
-                clauses.append(f"{_v6_ident(col)} {op} ?")
-                params.append(val)
-        if not clauses:
-            continue
-        try:
-            sql = f"SELECT DISTINCT {_v6_ident('businessId')} FROM {_v6_ident(table)} WHERE " + " OR ".join(clauses)
-            for row in con.execute(sql, params):
-                if row[0]:
-                    ids.add(str(row[0]))
-        except Exception:
-            pass
     ids.discard("biz_tablet_standalone")
     return sorted(ids)
 
@@ -3279,6 +3301,22 @@ def _v6_analyze_db(db: dict[str, Any]) -> dict[str, Any]:
                     count = 0
                 if count:
                     planned[table] = count
+        for table in sorted(tset):
+            c = _v6_cols(con, table)
+            clauses, params = _v6_signature_where(c)
+            if not clauses:
+                continue
+            sql = f"SELECT COUNT(*) FROM {_v6_ident(table)} WHERE (" + " OR ".join(clauses) + ")"
+            query_params = list(params)
+            if seed_ids and "businessId" in c:
+                sql += f" AND {_v6_ident('businessId')} NOT IN ({_v6_qmarks(seed_ids)})"
+                query_params.extend(seed_ids)
+            try:
+                count = int(con.execute(sql, query_params).fetchone()[0])
+            except Exception:
+                count = 0
+            if count:
+                planned[table] = int(planned.get(table, 0)) + count
         for table, specs in _V6_CHART_SIGNATURES.items():
             if table not in tset:
                 continue
@@ -3490,6 +3528,40 @@ def _v6_delete_external_seed_db(db: dict[str, Any], analysis: dict[str, Any]) ->
                 delta = con.total_changes - before
                 if delta:
                     result["deleted"][table] = int(result["deleted"].get(table, 0)) + int(delta)
+        for table in _V6_DELETE_ORDER:
+            if table not in tset:
+                continue
+            c = _v6_cols(con, table)
+            clauses, params = _v6_signature_where(c)
+            if not clauses:
+                continue
+            sql = f"DELETE FROM {_v6_ident(table)} WHERE (" + " OR ".join(clauses) + ")"
+            query_params = list(params)
+            if seed_ids and "businessId" in c:
+                sql += f" AND {_v6_ident('businessId')} NOT IN ({_v6_qmarks(seed_ids)})"
+                query_params.extend(seed_ids)
+            before = con.total_changes
+            con.execute(sql, query_params)
+            delta = con.total_changes - before
+            if delta:
+                result["deleted"][table] = int(result["deleted"].get(table, 0)) + int(delta)
+        for table in sorted(tset):
+            if table in _V6_DELETE_ORDER:
+                continue
+            c = _v6_cols(con, table)
+            clauses, params = _v6_signature_where(c)
+            if not clauses:
+                continue
+            sql = f"DELETE FROM {_v6_ident(table)} WHERE (" + " OR ".join(clauses) + ")"
+            query_params = list(params)
+            if seed_ids and "businessId" in c:
+                sql += f" AND {_v6_ident('businessId')} NOT IN ({_v6_qmarks(seed_ids)})"
+                query_params.extend(seed_ids)
+            before = con.total_changes
+            con.execute(sql, query_params)
+            delta = con.total_changes - before
+            if delta:
+                result["deleted"][table] = int(result["deleted"].get(table, 0)) + int(delta)
         fk = [tuple(row) for row in con.execute("PRAGMA foreign_key_check").fetchall()]
         result["foreign_key_check"] = fk[:50]
         if fk:

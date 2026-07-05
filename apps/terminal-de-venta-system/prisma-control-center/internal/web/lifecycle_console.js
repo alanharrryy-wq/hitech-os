@@ -74,7 +74,9 @@
             <div class="lifecycleSeal">
               <div class="lifecycleSealCard"><small>Estado</small><strong id="lifecycleStatus">Cargando</strong></div>
               <div class="lifecycleSealCard"><small>PIN</small><strong id="lifecyclePinState">-</strong></div>
-              <div class="lifecycleSealCard"><small>Open records</small><strong id="lifecycleOpenRecords">-</strong></div>
+              <div class="lifecycleSealCard"><small>Clear candidates</small><strong id="lifecycleOpenRecords">-</strong></div>
+              <div class="lifecycleSealCard"><small>Ledger open</small><strong id="lifecycleLedgerOpenRecords">-</strong></div>
+              <div class="lifecycleSealCard"><small>External signature</small><strong id="lifecycleExternalOpenRecords">-</strong></div>
               <div class="lifecycleSealCard"><small>DBs</small><strong id="lifecycleDbCount">-</strong></div>
             </div>
           </div>
@@ -123,7 +125,7 @@
           <div class="lifecyclePanelHead">
             <div>
               <h3>Dashboard por dominio</h3>
-              <p>Cifras actuales por dominio: total, generado por Lifecycle, manual/real estimado y estado.</p>
+              <p>Cifras actuales por dominio: total, candidatos Clear por ledger/firma externa, manual/real estimado y estado.</p>
             </div>
             <button id="lifecycleRefreshButton" type="button" class="lifecycleGhostButton">Actualizar</button>
           </div>
@@ -175,6 +177,10 @@
     if (pin) pin.textContent = payload.pin_required ? "Activo" : "Desactivado";
     const open = $("#lifecycleOpenRecords");
     if (open) open.textContent = String(payload.generated_records_open ?? "-");
+    const ledgerOpen = $("#lifecycleLedgerOpenRecords");
+    if (ledgerOpen) ledgerOpen.textContent = String(payload.ledger_records_open ?? payload.generated_records_open ?? "-");
+    const externalOpen = $("#lifecycleExternalOpenRecords");
+    if (externalOpen) externalOpen.textContent = String(payload.external_seed_records_open ?? "0");
     const dbCount = $("#lifecycleDbCount");
     if (dbCount) dbCount.textContent = String((payload.databases || []).length);
     const grid = $("#lifecycleDomainGrid");
