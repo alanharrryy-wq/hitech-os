@@ -18,10 +18,22 @@ param(
   [int]$MaxScrollContainers = 36,
   [int]$MaxContainerTiles = 120,
   [int]$TileOverlapPx = 80,
+  [int]$ViewportWidth = 1365,
+  [int]$ViewportHeight = 768,
+  [int]$SettleMs = 700,
   [string]$ArtifactRoot = '',
   [switch]$NoZip
 )
 $ErrorActionPreference = 'Stop'
+# MAMHOME_RUNTIME_BEGIN
+$__mamRuntimeCandidates = @(
+  (Join-Path $PSScriptRoot 'core\mam-runtime.ps1'),
+  (Join-Path $PSScriptRoot 'mam-runtime.ps1'),
+  (Join-Path (Split-Path -Parent $PSScriptRoot) 'core\mam-runtime.ps1')
+)
+$__mamRuntimeHelper = $__mamRuntimeCandidates | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+if ($__mamRuntimeHelper) { . $__mamRuntimeHelper }
+# MAMHOME_RUNTIME_END
 # PRISMA Plawright Mamastrophic arr7 timeout-guard
 
 function Normalize-Surf8Surface([string]$Value) {
@@ -206,29 +218,35 @@ function Resolve-PlaywrightInvocation([string]$pcRoot) {
   if (-not $nodeCmd) { throw 'No encontre node en PATH.' }
   $node = $nodeCmd.Source
   $attempts = New-Object System.Collections.Generic.List[string]
-  foreach ($mod in @('@playwright/test/cli', '@playwright/test/cli.js')) {
-    $cli = Invoke-NodeResolve $node $pcRoot $mod
-    if ($cli -and (Test-Path -LiteralPath $cli)) {
-      return @{ Kind='node-resolve-cli'; Exe=$node; ArgsPrefix=@($cli, 'test'); Cwd=$pcRoot; Detail="require.resolve $mod desde PC app"; Attempts=$attempts }
+  $runtimeRoot = Join-Path $toolRoot '.mam-runtime'
+  $candidateRoots = @($runtimeRoot, $pcRoot, $toolRoot, $termRoot, (Split-Path -Parent $toolRoot)) |
+    Where-Object { $_ -and (Test-Path -LiteralPath $_) } |
+    Select-Object -Unique
+  foreach ($root in $candidateRoots) {
+    foreach ($mod in @('@playwright/test/cli', '@playwright/test/cli.js')) {
+      $cli = Invoke-NodeResolve $node $root $mod
+      if ($cli -and (Test-Path -LiteralPath $cli)) {
+        return @{ Kind='node-resolve-cli'; Exe=$node; ArgsPrefix=@($cli, 'test'); Cwd=$root; Detail="require.resolve $mod desde $root"; Attempts=$attempts }
+      }
+      [void]$attempts.Add("missing $mod desde $root")
     }
-    [void]$attempts.Add("missing $mod desde $pcRoot")
-  }
-  $pkg = Invoke-NodeResolve $node $pcRoot '@playwright/test/package.json'
-  if ($pkg) {
-    $pkgDir = Split-Path -Parent $pkg
-    $cli = Join-Path $pkgDir 'cli.js'
-    if (Test-Path -LiteralPath $cli) {
-      return @{ Kind='node-package-cli'; Exe=$node; ArgsPrefix=@($cli, 'test'); Cwd=$pcRoot; Detail='@playwright/test package cli.js desde PC app'; Attempts=$attempts }
+    $pkg = Invoke-NodeResolve $node $root '@playwright/test/package.json'
+    if ($pkg) {
+      $pkgDir = Split-Path -Parent $pkg
+      $cli = Join-Path $pkgDir 'cli.js'
+      if (Test-Path -LiteralPath $cli) {
+        return @{ Kind='node-package-cli'; Exe=$node; ArgsPrefix=@($cli, 'test'); Cwd=$root; Detail="@playwright/test package cli.js desde $root"; Attempts=$attempts }
+      }
+      [void]$attempts.Add("package resolved but cli missing $cli")
     }
-    [void]$attempts.Add("package resolved but cli missing $cli")
-  }
-  $cmd = Join-Path $pcRoot 'node_modules\.bin\playwright.cmd'
-  if (Test-Path -LiteralPath $cmd) {
-    return @{ Kind='local-bin'; Exe=$cmd; ArgsPrefix=@('test'); Cwd=$pcRoot; Detail='PC app node_modules .bin playwright.cmd'; Attempts=$attempts }
+    $cmd = Join-Path $root 'node_modules\.bin\playwright.cmd'
+    if (Test-Path -LiteralPath $cmd) {
+      return @{ Kind='local-bin'; Exe=$cmd; ArgsPrefix=@('test'); Cwd=$root; Detail="node_modules .bin playwright.cmd desde $root"; Attempts=$attempts }
+    }
   }
   $pnpm = Get-Command pnpm -ErrorAction SilentlyContinue
   if ($pnpm) {
-    return @{ Kind='pnpm-C'; Exe=$pnpm.Source; ArgsPrefix=@('-C', $pcRoot, 'exec', 'playwright', 'test'); Cwd=$pcRoot; Detail='pnpm -C PC app exec playwright test'; Attempts=$attempts }
+    return @{ Kind='pnpm-C'; Exe=$pnpm.Source; ArgsPrefix=@('-C', $pcRoot, 'exec', 'playwright', 'test'); Cwd=$pcRoot; Detail='pnpm -C PC app exec playwright test fallback'; Attempts=$attempts }
   }
   return @{ Kind='missing'; Attempts=$attempts }
 }
@@ -752,11 +770,11 @@ try {
     Add-RunLog "WARNING partial online macros: $($onlinePorts.Count)/$macroTotal"
   }
 
-  Show-ProgressLine 40 'resolviendo Playwright desde PC app'
+  Show-ProgressLine 40 'resolviendo Playwright desde runtime Mamastrophic local/fallback'
   $resolver = Resolve-PlaywrightInvocation $pcRoot
   Write-JsonFile (Join-Path $reports 'playwright_resolver.json') $resolver
   Add-RunLog "playwrightResolver=$($resolver['Kind']) exe=$($resolver['Exe'])"
-  if ($resolver['Kind'] -eq 'missing') { throw 'No pude resolver Playwright CLI desde PC app.' }
+  if ($resolver['Kind'] -eq 'missing') { throw 'No pude resolver Playwright CLI desde runtime Mamastrophic local/fallback.' }
 
   $nodeCmdForModule = Get-Command node -ErrorAction SilentlyContinue
   $playwrightTestModule = $null
@@ -788,6 +806,9 @@ try {
   $env:PRISMA_SURF_MAX_SCROLL_CONTAINERS = [string]$MaxScrollContainers
   $env:PRISMA_SURF_MAX_CONTAINER_TILES = [string]$MaxContainerTiles
   $env:PRISMA_SURF_TILE_OVERLAP_PX = [string]$TileOverlapPx
+  $env:PRISMA_SURF_VIEWPORT_WIDTH = [string]$ViewportWidth
+  $env:PRISMA_SURF_VIEWPORT_HEIGHT = [string]$ViewportHeight
+  $env:PRISMA_SURF_SETTLE_MS = [string]$SettleMs
   $env:PRISMA_SURF_ONLINE_PORTS = ($onlinePorts -join ',')
   $env:PRISMA_SURF_WORKERS = [string]$Workers
   $env:PRISMA_SURF_SURFACE = $SurfaceKey
@@ -802,6 +823,7 @@ try {
   $env:PRISMA_SURF_GOTO_RETRIES = [string]$GotoRetries
   $env:PRISMA_SURF_SCREENSHOT_TIMEOUT_MS = [string]$ScreenshotTimeoutMs
   $env:PRISMA_SURF_PROBE_TIMEOUT_MS = [string]$ProbeTimeoutMs
+  Add-RunLog "viewport=$ViewportWidth x $ViewportHeight settleMs=$SettleMs"
   Add-RunLog "timeouts test=$TestTimeoutMs goto=$GotoTimeoutMs retries=$GotoRetries screenshot=$ScreenshotTimeoutMs probe=$ProbeTimeoutMs deepScroll=$EffectiveDeepScroll fullPage=$EffectiveFullPage maxPageTiles=$MaxPageTiles maxScrollContainers=$MaxScrollContainers maxContainerTiles=$MaxContainerTiles"
   if ($visualQaMode) {
     $env:PRISMA_VISUALQA_OUT_DIR = $outDir
@@ -1010,3 +1032,5 @@ try {
   if ($NoZip) { Write-Host "ARTIFACT DIR: $outDir" -ForegroundColor Red } else { Write-Host "ZIP fail: $failZip" -ForegroundColor Red }
   exit 1
 }
+
+# MAMVIEW4_VIEWPORT_BRIDGE_0407: core/run-surf8-capture.ps1 accepts viewport params and exports PRISMA_SURF_VIEWPORT_WIDTH/HEIGHT/SETTLE_MS.

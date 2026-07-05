@@ -36,6 +36,15 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# MAMHOME_RUNTIME_BEGIN
+$__mamRuntimeCandidates = @(
+  (Join-Path $PSScriptRoot 'core\mam-runtime.ps1'),
+  (Join-Path $PSScriptRoot 'mam-runtime.ps1'),
+  (Join-Path (Split-Path -Parent $PSScriptRoot) 'core\mam-runtime.ps1')
+)
+$__mamRuntimeHelper = $__mamRuntimeCandidates | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+if ($__mamRuntimeHelper) { . $__mamRuntimeHelper }
+# MAMHOME_RUNTIME_END
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CoreRunner = Join-Path $Here 'core\run-surf8-capture.ps1'
 if (!(Test-Path -LiteralPath $CoreRunner)) { throw "No encontre core runner: $CoreRunner" }
@@ -138,7 +147,7 @@ function Write-MamDashboard {
 
 function Build-CoreArgs {
   param([string]$SurfaceName, [int]$ChildWorkers, [string]$ChildArtifactRoot, [bool]$ChildNoZip)
-  $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$CoreRunner,'-Mode',$Mode,'-Surface',$SurfaceName,'-Workers',[string]$ChildWorkers,'-Shards',[string]$Shards,'-GpuMode',$GpuMode,'-TestTimeoutMs',[string]$TestTimeoutMs,'-GotoTimeoutMs',[string]$GotoTimeoutMs,'-GotoRetries',[string]$GotoRetries,'-ScreenshotTimeoutMs',[string]$ScreenshotTimeoutMs,'-ProbeTimeoutMs',[string]$ProbeTimeoutMs,'-DeepScroll',$DeepScroll,'-MaxPageTiles',[string]$MaxPageTiles,'-MaxScrollContainers',[string]$MaxScrollContainers,'-MaxContainerTiles',[string]$MaxContainerTiles,'-TileOverlapPx',[string]$TileOverlapPx)
+  $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$CoreRunner,'-Mode',$Mode,'-Surface',$SurfaceName,'-Workers',[string]$ChildWorkers,'-Shards',[string]$Shards,'-GpuMode',$GpuMode,'-TestTimeoutMs',[string]$TestTimeoutMs,'-GotoTimeoutMs',[string]$GotoTimeoutMs,'-GotoRetries',[string]$GotoRetries,'-ScreenshotTimeoutMs',[string]$ScreenshotTimeoutMs,'-ProbeTimeoutMs',[string]$ProbeTimeoutMs,'-DeepScroll',$DeepScroll,'-MaxPageTiles',[string]$MaxPageTiles,'-MaxScrollContainers',[string]$MaxScrollContainers,'-MaxContainerTiles',[string]$MaxContainerTiles,'-TileOverlapPx',[string]$TileOverlapPx,'-ViewportWidth',[string]$ViewportWidth,'-ViewportHeight',[string]$ViewportHeight,'-SettleMs',[string]$SettleMs)
   if ($NoScreenshots) { $args += '-NoScreenshots' }
   if ($FullPage) { $args += '-FullPage' }
   if ($AllowPartial) { $args += '-AllowPartial' }
@@ -294,3 +303,5 @@ if ($Mode -eq 'point-probe') {
 
 if ($surfaceKey -eq 'all') { Invoke-MamAllSurfacesParallel }
 Invoke-SingleSurfaceCore
+
+# MAMVIEW4_VIEWPORT_BRIDGE_0407: RUN.ps1 forwards ViewportWidth/ViewportHeight/SettleMs into core runner.

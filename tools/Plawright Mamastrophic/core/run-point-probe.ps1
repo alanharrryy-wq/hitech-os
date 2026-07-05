@@ -18,6 +18,15 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# MAMHOME_RUNTIME_BEGIN
+$__mamRuntimeCandidates = @(
+  (Join-Path $PSScriptRoot 'core\mam-runtime.ps1'),
+  (Join-Path $PSScriptRoot 'mam-runtime.ps1'),
+  (Join-Path (Split-Path -Parent $PSScriptRoot) 'core\mam-runtime.ps1')
+)
+$__mamRuntimeHelper = $__mamRuntimeCandidates | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+if ($__mamRuntimeHelper) { . $__mamRuntimeHelper }
+# MAMHOME_RUNTIME_END
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ToolRoot = Split-Path -Parent $Here
 $NodeScript = Join-Path $ToolRoot 'tests\surf8.point-probe.cjs'
@@ -110,7 +119,8 @@ $stamp = Get-Date -Format 'ddMM HHmmss'
 if ([string]::IsNullOrWhiteSpace($ArtifactRoot)) { $ArtifactRoot = Join-Path $OutRoot ("mam point $SurfaceKey $stamp") }
 New-Item -ItemType Directory -Force -Path $ArtifactRoot | Out-Null
 
-$resolveRoots = @($AppRoot, $PcAppRoot, $RepoRoot, $ToolRoot, (Split-Path -Parent $ToolRoot), (Split-Path -Parent $RepoRoot)) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -Unique
+$mamRuntimeRoot = Join-Path $ToolRoot '.mam-runtime'
+$resolveRoots = @($mamRuntimeRoot, $AppRoot, $PcAppRoot, $RepoRoot, $ToolRoot, (Split-Path -Parent $ToolRoot), (Split-Path -Parent $RepoRoot)) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -Unique
 $env:PRISMA_TOOL_ROOT = $ToolRoot
 $env:PRISMA_REPO_ROOT = $RepoRoot
 $env:PRISMA_APP_ROOT = $AppRoot
