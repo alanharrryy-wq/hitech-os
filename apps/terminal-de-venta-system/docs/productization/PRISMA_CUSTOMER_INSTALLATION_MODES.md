@@ -70,3 +70,15 @@ Instala o coordina:
 ## 6. Regla de continuidad
 
 Tablet no debe dejar de vender por falta de PC, Remote Ops o internet.
+
+## 7. TABLET_PC_MOBILE_MANAGED Setup
+
+For a customer package with Tablet + PC + Mobile:
+
+1. Prisma Cloud Center creates a Prisma Customer Setup.
+2. Customer receives Setup Link, Setup Code, and Setup QR.
+3. Tablet claims Tablet POS Slot.
+4. PC claims PC Admin Slot.
+5. Mobile claims Mobile Companion Slot.
+
+This mode does not require sending admin tokens to the customer. Tablet sale continuity remains local and must not depend on PC, Mobile, Cloudflare, or internet unless the existing license governor already requires it.

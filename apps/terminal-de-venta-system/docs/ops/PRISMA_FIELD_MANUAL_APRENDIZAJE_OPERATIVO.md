@@ -546,3 +546,23 @@ pnpm run verify:licflow4:no-autorun-mutations
 **Rollback probado:** N/A hasta cierre del PR; rollback local es revertir el rename de `Prisma Cloud Ctr`, `licflow4_admin_bridge.py`, scripts `verify:licflow4:*`, docs y verifiers tocados.
 **Regla nueva:** Para LICFLOW4, el orden seguro es inventario ZIP, bridge backend local, UI sin token, dry-run primero, confirmacion `confirmAdminLicenseAction: true`, revoke con `REVOKE_LICENSE`, diagnostics sanitizado, verifiers sin mutacion real, evidence ZIP, staging explicito sin Mobile/PC/Tablet ni generated evidence.
 **Notas:** Si una referencia historica vive en PC o generated evidence excluido, no arrastrarla al commit LICFLOW4; reportarla como scope conflict en lugar de ensuciar trabajo paralelo.
+
+### 2026-07-04 - LICFLOW5 canonical naming y Customer Setup multi-device
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS
+**Superficie:** Prisma Cloud Ctr / Prisma Cloud Center / License Operations / Customer Setup / 3160
+**Contexto:** LICFLOW3/LICFLOW4 son nombres historicos utiles para rutas, verifiers y lineage tecnico, pero no deben ser lenguaje principal de operador. El mismo pase agrega Prisma Customer Setup para cliente Tablet + PC + Mobile sin crear otro Control Center.
+**Precondiciones:** Repo `F:\repos\hitech-os`, app `apps/terminal-de-venta-system`, sin deploy Cloudflare, sin D1 live, sin secretos, sin matar procesos, sin levantar dev servers, sin Prisma regenerate.
+**Comando exacto:**
+
+```powershell
+pnpm -C apps/terminal-de-venta-system run verify:license:canonical-naming
+pnpm -C apps/terminal-de-venta-system run verify:customer-setup:multidevice
+```
+
+**Resultado observado:** Source-ready esperado. Los nombres con numeros quedan en lineage tecnico, rutas, verifiers, constantes y raw diagnostics; UI/docs operador usan `Prisma Cloud Center`, `Cloud License Gateway`, `License Admin Bridge`, `Simulation (Dry Run)`, `Confirmed License Operation`, `License Operation Audit`, `License Diagnostics` y `License Route Map`.
+**Evidencia:** Verifiers source-only y diff de Cloud Ctr/shared licensing/Cloud Gateway source.
+**Causa real:** Operador necesita lenguaje humano y flujo seguro; cliente necesita Setup Link, Setup Code, Setup QR y Device Slots sin admin token.
+**Rollback probado:** N/A. Rollback local es revertir los archivos source/docs/verifiers tocados.
+**Regla nueva:** No crear otro Control Center ni otro customer setup subsystem. Extender `Prisma Cloud Ctr`, `shared/licensing`, Cloud License Gateway source y las tres superficies con un contrato compartido. Source-ready no equivale a hosted PASS hasta deploy/D1 autorizados.
+**Notas:** Pendiente futuro: migrar nombres de package scripts solo con plan de compatibilidad; live Customer Setup requiere autorizacion explicita de deploy y migracion D1.

@@ -58,6 +58,14 @@ Touchpoints indirectos:
 ```text
 license.expiring
 license.offline_grace
+
+## Prisma Customer Setup Touchpoints
+
+- Tablet: `/setup?code=...` resolves setup and claims `Tablet POS Slot`; sales continuity remains governed by the existing Tablet license governor.
+- PC: `/setup?code=...` resolves setup and claims `PC Admin Slot`; license runtime/devices surfaces can link to setup without replacing backoffice behavior.
+- Mobile: `/prisma-app/setup?code=...` resolves setup and claims `Mobile Companion Slot`; install page can forward the Setup Code.
+
+All three surfaces share `CustomerSetupSurface`, `CustomerSetupPass`, `CustomerSetupSlot`, `DeviceClaimRequest`, and `DeviceClaimResponse`.
 support.reply_received
 plugin.available
 plugin.enabled

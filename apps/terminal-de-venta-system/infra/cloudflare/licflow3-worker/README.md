@@ -55,7 +55,13 @@ Only names are documented. Values must be configured outside the repo.
 - `GET /api/admin/commercial-summary`
 - `GET /api/admin/tenants/:tenant/snapshot`
 - `POST /api/admin/tenants/:tenant/notes`
+- `POST /api/admin/customer-setups/create`
+- `GET /api/customer/setup/:setupCode`
+- `POST /api/customer/devices/claim`
+- `GET /api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId`
 
 Mutating endpoints require `PRISMA_ADMIN_TOKEN` and a D1 binding. Without D1, they return an explicit binding-required status instead of fake success.
+
+Customer setup resolve, claim, and status endpoints are customer-safe and use Setup Code, not the admin token. The source migration `0002_customer_setup.sql` is included for `customer_setups`, `customer_setup_slots`, and `customer_device_claims`; do not run it against live D1 without explicit authorization.
 
 Dummy smoke without the admin token must return a structured non-404 rejection such as `401 ADMIN_TOKEN_REQUIRED`. A `404` for `/api/licenses/*` means the live Worker route table is stale or not running this source.

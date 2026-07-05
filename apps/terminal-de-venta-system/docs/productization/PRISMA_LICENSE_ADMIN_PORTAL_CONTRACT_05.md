@@ -65,6 +65,21 @@ Estas acciones requieren confirmación explícita:
 ```text
 license.revoke
 license.suspend
+
+## Prisma Cloud Center Customer Setup Addendum
+
+The admin portal surface for this flow is the existing Prisma Cloud Center, not a new Control Center.
+
+Operator creates or represents a Prisma Customer Setup package with:
+
+- Setup Link
+- Setup Code
+- Setup QR
+- Tablet POS Slot
+- PC Admin Slot
+- Mobile Companion Slot
+
+License Admin Bridge remains separate. Customer onboarding must not be modeled as activate/refresh/revoke.
 device.reset
 plan.downgrade
 terminal.limit.reduce
