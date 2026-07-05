@@ -81,4 +81,15 @@ device.activated
 device.limit_exceeded
 license.refresh_succeeded
 license.refresh_failed
+
+## Prisma Customer Setup Addendum
+
+Multi-device activation starts with `Prisma Customer Setup`, not a separate activation subsystem. The shared contract is `shared/licensing/customer-setup-contract.ts`.
+
+- Tablet claims `Tablet POS Slot` with surface `tablet`.
+- PC claims `PC Admin Slot` with surface `pc`.
+- Mobile claims `Mobile Companion Slot` with surface `mobile`.
+- Setup Link, Setup Code, and Setup QR identify the Setup Pass.
+- Customer Device Claim never uses `ADMIN_TOKEN`.
+- Replacement is explicit and must not silently overwrite an existing slot.
 ```

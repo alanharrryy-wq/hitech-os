@@ -1498,6 +1498,7 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
       lastError: refresh.lastError ? "sanitized_error_present" : null
     },
     actions: [
+      { label: "Prisma Customer Setup", href: "/setup" },
       refresh.enabled
         ? { label: "Actualizar licencia", href: "/api/license/refresh", method: "POST", successMessage: "Actualizacion de licencia solicitada." }
         : { label: "Actualizar licencia", href: "/license-runtime", disabledReason: "No hay endpoint remoto configurado." }

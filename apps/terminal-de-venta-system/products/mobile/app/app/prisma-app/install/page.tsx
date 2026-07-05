@@ -6,6 +6,6 @@ export const metadata = {
     "Landing premium de instalación PRISMA App para usuarios que abren el enlace desde WhatsApp en Android o iPhone."
 };
 
-export default function PrismaAppInstallPage() {
-  return <PrismaMobilePwaInstallPage />;
+export default function PrismaAppInstallPage({ searchParams }: { searchParams?: { code?: string; setupCode?: string } }) {
+  return <PrismaMobilePwaInstallPage setupCode={searchParams?.code || searchParams?.setupCode || ""} />;
 }

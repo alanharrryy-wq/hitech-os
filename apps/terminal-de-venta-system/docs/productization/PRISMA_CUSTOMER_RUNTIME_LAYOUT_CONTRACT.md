@@ -83,6 +83,25 @@ C:\ProgramData\PRISMA\
 | pc/data | PC | DB backoffice |
 | pc/imports | PC | entradas controladas |
 | sync | Local Agent/PC | intercambio y conflictos |
+
+## Prisma Customer Setup Runtime Files
+
+Customer setup state should be stored as safe local identity/claim metadata, not as admin credentials.
+
+Recommended local concepts:
+
+- setup code used
+- setup id
+- claimed slot label
+- surface
+- device id
+- customer id
+- tenant id
+- business id
+- license id when issued
+- `secretsExposed: false`
+
+Do not store `ADMIN_TOKEN`, Cloudflare secrets, D1 dumps, or raw admin headers in customer runtime folders.
 | support/bundles | soporte | diagnosticos exportables |
 | updates | installer/agent | paquetes versionados |
 | rollback | installer/agent | snapshots de reversa |

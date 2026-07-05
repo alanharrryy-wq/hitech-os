@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Prisma Cloud Ctr.
+"""Prisma Cloud Center.
 
 Private cockpit server for PRISMA Cloud on 127.0.0.1:3160. It keeps the
 current Control Center on 3150 protected and exposes cloud, licensing,
@@ -34,7 +34,7 @@ import license_ops_api
 import command_center_store
 import licflow4_admin_bridge
 
-APP_VERSION = "4.2.0-prisma-cloud-ctr-licflow4"
+APP_VERSION = "4.3.0-prisma-cloud-center-operator-readiness"
 DEFAULT_PORT = 3160
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PROTECTED_CURRENT = r"F:\repos\hitech-os\apps\terminal-de-venta-system\prisma-control-center"
@@ -43,7 +43,8 @@ DEFAULT_OUT_DIR = r"F:\descargasf"
 MODULE_CONTRACT: Dict[str, Any] = {
     "contractVersion": 1,
     "lab": {
-        "name": "Prisma Cloud Ctr",
+        "name": "Prisma Cloud Center",
+        "displayName": "Prisma Cloud Center",
         "mode": "PRISMA_CLOUD_CTR",
         "host": "127.0.0.1",
         "port": 3160,
@@ -57,8 +58,9 @@ MODULE_CONTRACT: Dict[str, Any] = {
     "modules": [
         {
             "id": "cloud-saas",
-            "name": "PRISMA Cloud",
-            "role": "LICFLOW3 Cloud Semilla + license operations",
+            "name": "Prisma Cloud Center",
+            "role": "Cloud License Gateway + License Operations",
+            "displayRole": "Cloud License Gateway + License Operations",
             "port": 3160,
             "portLabel": "app.hitechrts.com",
             "directUrl": "https://app.hitechrts.com",
@@ -71,7 +73,8 @@ MODULE_CONTRACT: Dict[str, Any] = {
             "protected": False,
             "actions": ["nativeCloud", "refresh", "adminBridge", "adminNote", "receiptSmoke", "deviceSmoke", "licenseOps"],
             "statusLabel": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
-            "qualityScope": ["cloud", "adminTokenPresenceOnly", "licflow4AdminBridge", "licenseOpsReadOnly"],
+            "statusDisplay": "Cloud License Gateway: Live",
+            "qualityScope": ["cloud", "adminTokenPresenceOnly", "licflow4AdminBridge", "licenseAdminBridge", "licenseOpsReadOnly"],
             "healthKind": "cloud",
         },
         {
@@ -446,13 +449,14 @@ def export_diagnostics(out_dir: Path) -> Dict[str, Any]:
         "contract": MODULE_CONTRACT,
         "cloudSaas": cloud_saas_api.summary_payload(allow_admin=False),
         "licenseOps": license_ops_api.license_ops_payload("/api/license-ops/latest", public=True),
+        "licenseAdminBridge": licflow4_admin_bridge.diagnostics_payload(),
         "licflow4AdminBridge": licflow4_admin_bridge.diagnostics_payload(),
     }
     json_path = out_dir / f"PRISMA_CLOUD_CTR_DIAGNOSTICS_{ts}.json"
     txt_path = out_dir / f"PRISMA_CLOUD_CTR_DIAGNOSTICS_{ts}.txt"
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     lines = [
-        "Prisma Cloud Ctr diagnostics",
+        "Prisma Cloud Center diagnostics",
         f"Generated: {payload['generatedAt']}",
         f"Overall: {snapshot['overall']}",
         f"Warnings: {snapshot['warnings']}",
@@ -472,7 +476,7 @@ def command_center_html(lab_root: Path) -> str:
         return html_path.read_text(encoding="utf-8")
     except Exception as exc:
         add_event(f"Command Center HTML fallback: {exc}", "warn")
-        return """<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Prisma Cloud Ctr</title><body style=\"font-family:Segoe UI;background:#07101b;color:#f4f8fc;padding:32px\"><h1>Prisma Cloud Ctr</h1><p>Web assets are not available. Check internal/web/cloud_command_center.html.</p></body></html>"""
+        return """<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Prisma Cloud Center</title><body style=\"font-family:Segoe UI;background:#07101b;color:#f4f8fc;padding:32px\"><h1>Prisma Cloud Center</h1><p>Web assets are not available. Check internal/web/cloud_command_center.html.</p></body></html>"""
 
 
 def replace_absolute_refs(html: str, port: int) -> str:
@@ -491,7 +495,7 @@ UI_HTML = r'''<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Prisma Cloud Ctr</title>
+<title>Prisma Cloud Center</title>
 <link rel="stylesheet" href="/internal/web/cloud_saas_console.css" />
 <link rel="stylesheet" href="/internal/web/license_ops_console.css" />
 <style>
@@ -566,7 +570,7 @@ pre { white-space:pre-wrap; word-break:break-word; color:var(--muted); backgroun
 <div class="shell">
   <aside class="side card">
     <div class="brand">
-      <h1>Prisma Cloud Ctr</h1>
+      <h1>Prisma Cloud Center</h1>
       <p>Consola local 3160 para licencias, LICFLOW3, health, diagnostics y evidencia sanitizada.</p>
     </div>
     <select class="theme" id="theme">
@@ -660,7 +664,7 @@ function openCloudView(view) {
 
 function renderSidePanels() {
   $('cloudPanel').innerHTML = `<div class="drawer"><h3>Cloud SaaS</h3><p>PRISMA Cloud Semilla, Prisma Original Customer, snapshots, notes, receipts y status.</p><button onclick="openCloudView('overview')">Abrir Cloud SaaS</button><button class="secondary" onclick="openCloudView('health')">Health</button><button class="secondary" onclick="openCloudView('commercial')">Commercial</button></div>`;
-  $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro de Prisma Cloud Ctr.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
+  $('licensePanel').innerHTML = `<div class="drawer"><h3>Licencias</h3><p>Modulo 3150 adaptado en modo read-only dentro de Prisma Cloud Center.</p><button onclick="openCloudView('licenses')">Abrir Licencias</button></div>`;
 }
 
 function renderQuality() {
@@ -679,7 +683,7 @@ function renderLogs() {
 }
 
 function renderContract() {
-  $('contract').innerHTML = `<div class="drawer"><h3>Module Contract</h3><p>Contrato vivo usado por Prisma Cloud Ctr.</p><pre>${JSON.stringify(contract, null, 2)}</pre></div>`;
+  $('contract').innerHTML = `<div class="drawer"><h3>Module Contract</h3><p>Contrato vivo usado por Prisma Cloud Center.</p><pre>${JSON.stringify(contract, null, 2)}</pre></div>`;
 }
 
 function nativeHtml(m) {
@@ -911,7 +915,7 @@ def serve(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
     lab_root.mkdir(parents=True, exist_ok=True)
     handler = partial(PrismaLabHandler, directory=str(lab_root), lab_root=lab_root, protected_current=protected_current, out_dir=out_dir)
     httpd = ThreadingHTTPServer((host, port), handler)
-    add_event(f"Prisma Cloud Ctr listening on http://{host}:{port}/unified-shell.html")
+    add_event(f"Prisma Cloud Center listening on http://{host}:{port}/unified-shell.html")
     httpd.serve_forever()
 
 
@@ -935,13 +939,13 @@ def start(lab_root: Path, protected_current: Path, out_dir: Path, host: str, por
         )
         time.sleep(1.5)
     else:
-        print(f"Puerto {port} ya tiene un proceso escuchando; no se mata ni se reemplaza. Reabre manualmente si necesitas recargar Prisma Cloud Ctr.")
+        print(f"Puerto {port} ya tiene un proceso escuchando; no se mata ni se reemplaza. Reabre manualmente si necesitas recargar Prisma Cloud Center.")
     url = f"http://{host}:{port}/unified-shell.html?v={int(time.time())}"
     print("=" * 64)
-    print("Prisma Cloud Ctr")
+    print("Prisma Cloud Center")
     print(f"Local cockpit: {url}")
     print(f"Protected current Control Center: {protected_current}")
-    print("No toca 3150. Prisma Cloud Ctr corre en 3160. Cloud SaaS y licencias viven dentro de la consola.")
+    print("No toca 3150. Prisma Cloud Center corre en 3160. Cloud SaaS y licencias viven dentro de la consola.")
     print("=" * 64)
     if open_browser:
         webbrowser.open(url)

@@ -811,3 +811,127 @@
 .evidenceStrip, .briefGrid, .syncGrid, .radarGrid, .segmented, .rankingList, .timelineList, .bulletTrack, .donutLayout { width: 100%; max-width: 100%; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr)); gap: clamp(6px, 2vw, 10px); overflow: visible; }
 .evidenceStrip > *, .briefGrid > *, .syncGrid > *, .radarGrid > *, .segmented > *, .rankingList > *, .timelineList > *, .bulletTrack > *, .donutLayout > * { width: 100%; max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
 /* END MOVILGFT7_FIXED3140_0407 */
+
+/* BEGIN MOVILPARITY1_CLOUDCTR_0407 */
+.crystalCommand {
+  --prisma-page: transparent;
+  --prisma-panel: rgba(8, 24, 39, 0.30);
+  --prisma-panel-soft: rgba(8, 24, 39, 0.24);
+  --prisma-metal: rgba(205, 234, 255, 0.16);
+  --prisma-glass: rgba(8, 24, 39, 0.25);
+  --prisma-text: rgba(249, 253, 255, 0.96);
+  --prisma-secondary: rgba(222, 236, 246, 0.78);
+  --prisma-muted: rgba(205, 222, 237, 0.66);
+  --prisma-blue: #8feaff;
+  --prisma-blue-glow: rgba(143, 234, 255, 0.30);
+  --prisma-line: rgba(205, 234, 255, 0.18);
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  overflow-x: clip;
+}
+
+.crystalPanel,
+.heroGauge,
+.sparkCard,
+.syncGrid article,
+.radarGrid article,
+.briefGrid article,
+.timelineList button,
+.rankingList button,
+.tooltipLine,
+.emptyState {
+  grid-column: 1 / -1;
+  color: var(--prisma-text);
+  border-color: rgba(205, 234, 255, 0.18);
+  background:
+    radial-gradient(260px 150px at 10% 0%, rgba(205, 234, 255, 0.11), transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(8, 24, 39, 0.34)),
+    rgba(8, 24, 39, 0.26);
+  box-shadow: 0 16px 42px rgba(0,0,0,0.21), inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(17px) saturate(118%);
+  -webkit-backdrop-filter: blur(17px) saturate(118%);
+}
+
+.crystalPanel::before {
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.12), transparent 30%),
+    radial-gradient(240px 140px at 90% 0%, rgba(143,234,255,0.10), transparent 76%);
+}
+
+.crystalPanel h3,
+.crystalPanel strong,
+.gaugeButton strong,
+.emptyState strong,
+.syncGrid strong,
+.radarGrid strong,
+.briefGrid strong,
+.rankingList strong,
+.timelineList strong {
+  color: var(--prisma-text);
+  text-shadow: 0 9px 22px rgba(0,0,0,0.20);
+}
+
+.crystalPanel p,
+.crystalPanel small,
+.barChart span,
+.tooltipLine span,
+.rankingList span,
+.syncGrid span,
+.radarGrid span,
+.timelineList span,
+.emptyState span {
+  color: var(--prisma-secondary);
+}
+
+.gaugeButton,
+.segmented button,
+.evidenceStrip span {
+  color: var(--prisma-text);
+  border-color: rgba(205, 234, 255, 0.16);
+  background: rgba(8, 24, 39, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.gaugeButton span,
+.segmented .segmentActive {
+  color: rgba(214, 250, 255, 0.96);
+  border-color: rgba(143, 234, 255, 0.28);
+  background: rgba(60, 190, 230, 0.16);
+}
+
+.evidenceStrip,
+.segmented,
+.syncGrid,
+.radarGrid,
+.briefGrid,
+.donutLayout,
+.rankingList,
+.timelineList {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.evidenceStrip span,
+.segmented button {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 420px) {
+  .syncGrid,
+  .radarGrid,
+  .briefGrid,
+  .segmented,
+  .evidenceStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* END MOVILPARITY1_CLOUDCTR_0407 */

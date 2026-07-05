@@ -3,6 +3,15 @@ const VERSION = "0.2.0-prisma-cloud-semilla-routing";
 const TENANT = "prisma-original-customer";
 const PLAN = "TABLET_PC_MANAGED";
 const LICFLOW3_LIVE_STATUS = "LICFLOW3_CLOUDFLARE_ROUTES_LIVE";
+const CUSTOMER_SETUP_SCHEMA_VERSION = "1.0.0";
+const DEFAULT_SETUP_CODE = "PRISMA-SETUP-STARTER";
+const DEFAULT_SETUP_PACKAGE = "PRISMA_TRIPLE_DEVICE_STARTER";
+const DEFAULT_SETUP_PLAN = "TABLET_PC_MOBILE_MANAGED";
+const SLOT_LABELS = {
+  tablet: "Tablet POS Slot",
+  pc: "PC Admin Slot",
+  mobile: "Mobile Companion Slot"
+};
 
 const CONTRACT_ENDPOINTS = [
   ["GET", "/health", "health", false],
@@ -18,7 +27,11 @@ const CONTRACT_ENDPOINTS = [
   ["GET", "/api/admin/selftest", "admin_selftest", false],
   ["GET", "/api/admin/commercial-summary", "commercial_summary", false],
   ["GET", `/api/admin/tenants/${TENANT}/snapshot`, "tenant_snapshot", false],
-  ["POST", `/api/admin/tenants/${TENANT}/notes`, "tenant_notes", true]
+  ["POST", `/api/admin/tenants/${TENANT}/notes`, "tenant_notes", true],
+  ["POST", "/api/admin/customer-setups/create", "customer_setup_create", true],
+  ["GET", "/api/customer/setup/:setupCode", "customer_setup_resolve", false],
+  ["POST", "/api/customer/devices/claim", "customer_device_claim", true],
+  ["GET", "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId", "customer_license_status", false]
 ];
 
 function json(payload, status = 200) {
@@ -41,6 +54,15 @@ function d1(env) {
 
 function tenantSlugFromUrl(url) {
   return url.searchParams.get("tenant") || TENANT;
+}
+
+function normalizeSetupCode(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
+function normalizeSurface(value) {
+  const surface = String(value || "").trim().toLowerCase();
+  return Object.prototype.hasOwnProperty.call(SLOT_LABELS, surface) ? surface : "";
 }
 
 function authorized(request, env) {
@@ -146,6 +168,41 @@ function normalizeLicense(row) {
   };
 }
 
+function defaultSlots() {
+  return [
+    { surface: "tablet", label: SLOT_LABELS.tablet, allowed: 1, claimed: 0 },
+    { surface: "pc", label: SLOT_LABELS.pc, allowed: 1, claimed: 0 },
+    { surface: "mobile", label: SLOT_LABELS.mobile, allowed: 1, claimed: 0 }
+  ];
+}
+
+function buildSetupPass(row = {}, slots = defaultSlots()) {
+  const setupCode = normalizeSetupCode(row.setupCode || row.setup_code || DEFAULT_SETUP_CODE);
+  const tenantSlug = row.tenantSlug || row.tenant_slug || TENANT;
+  const businessName = row.businessName || row.business_name || "Prisma Original Customer";
+  return {
+    ok: true,
+    schemaVersion: CUSTOMER_SETUP_SCHEMA_VERSION,
+    setupId: row.setupId || row.setup_id || `setup_${setupCode.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+    setupCode,
+    setupUrl: row.setupUrl || row.setup_url || `https://app.hitechrts.com/setup/${encodeURIComponent(setupCode)}`,
+    qrPayload: row.qrPayload || row.qr_payload || `prisma://setup/${encodeURIComponent(setupCode)}`,
+    customerId: row.customerId || row.customer_id || "cust_prisma_original_customer",
+    tenantId: row.tenantId || row.tenant_id || "tenant_prisma_original_customer",
+    tenantSlug,
+    businessId: row.businessId || row.business_id || "biz_prisma_original_customer",
+    businessName,
+    packageCode: row.packageCode || row.package_code || DEFAULT_SETUP_PACKAGE,
+    planCode: row.planCode || row.plan_code || DEFAULT_SETUP_PLAN,
+    status: row.status || "source_ready",
+    expiresAt: row.expiresAt || row.expires_at || null,
+    slots,
+    customerMessage: "Prisma Customer Setup source is ready; live customer use requires authorized Cloud License Gateway deploy and D1 migration.",
+    nextStep: "Use Setup Link, Setup Code, or Setup QR after deployment authorization.",
+    secretsExposed: false
+  };
+}
+
 async function capabilities(env) {
   return {
     ok: true,
@@ -162,6 +219,11 @@ async function capabilities(env) {
       supportDiagnostics: true,
       commercialSummary: true,
       contractFetch: true,
+      customerSetup: true,
+      setupLink: true,
+      setupQr: true,
+      deviceClaim: true,
+      multiDeviceSlots: true,
       signedLicenseIssuance: false,
       deployClaim: false
     },
@@ -232,6 +294,167 @@ async function snapshot(env, slug) {
     notes,
     events
   };
+}
+
+async function setupSlots(env, setupId) {
+  const rows = await all(env, "select surface, label, allowed, claimed from customer_setup_slots where setup_id = ? order by surface", [setupId]);
+  if (!rows.length) return defaultSlots();
+  return rows.map((row) => ({
+    surface: row.surface,
+    label: row.label || SLOT_LABELS[row.surface] || row.surface,
+    allowed: Number(row.allowed || 0),
+    claimed: Number(row.claimed || 0)
+  }));
+}
+
+async function setupByCode(env, setupCode) {
+  const row = await first(env, "select setup_id, setup_code, setup_url, qr_payload, customer_id, tenant_id, tenant_slug, business_id, business_name, package_code, plan_code, status, expires_at from customer_setups where setup_code = ?", [setupCode]);
+  if (!row) return null;
+  return buildSetupPass(row, await setupSlots(env, row.setup_id));
+}
+
+async function createCustomerSetup(request, env) {
+  const denied = adminRequired(request, env);
+  if (denied) return denied;
+  const body = await readJson(request);
+  const setupCode = normalizeSetupCode(body.setupCode || DEFAULT_SETUP_CODE);
+  const setupId = body.setupId || `setup_${crypto.randomUUID()}`;
+  const pass = buildSetupPass({
+    setupId,
+    setupCode,
+    customerId: body.customerId,
+    tenantId: body.tenantId,
+    tenantSlug: body.tenantSlug || TENANT,
+    businessId: body.businessId,
+    businessName: body.businessName,
+    expiresAt: body.expiresAt,
+    status: "active"
+  });
+  if (!d1(env)) return json({ ...pass, ok: false, status: "D1_BINDING_REQUIRED", sourceReady: true }, 503);
+  const result = await run(env, "insert or replace into customer_setups (setup_id, setup_code, setup_url, qr_payload, customer_id, tenant_id, tenant_slug, business_id, business_name, package_code, plan_code, status, expires_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+    pass.setupId,
+    pass.setupCode,
+    pass.setupUrl,
+    pass.qrPayload,
+    pass.customerId,
+    pass.tenantId,
+    pass.tenantSlug,
+    pass.businessId,
+    pass.businessName,
+    pass.packageCode,
+    pass.planCode,
+    pass.status,
+    pass.expiresAt,
+    now()
+  ]);
+  if (!result.ok) return json({ ...pass, ok: false, status: result.status, secretsExposed: false }, 500);
+  for (const slot of pass.slots) {
+    await run(env, "insert or replace into customer_setup_slots (setup_id, surface, label, allowed, claimed, updated_at) values (?, ?, ?, ?, ?, ?)", [
+      pass.setupId,
+      slot.surface,
+      slot.label,
+      slot.allowed,
+      slot.claimed,
+      now()
+    ]);
+  }
+  await recordAudit(env, pass.tenantSlug, "customer_setup.create", { setupId: pass.setupId, setupCode: pass.setupCode, packageCode: pass.packageCode });
+  return json(pass);
+}
+
+async function resolveCustomerSetup(env, setupCode) {
+  const code = normalizeSetupCode(setupCode);
+  if (!code) return json({ ok: false, status: "SETUP_CODE_REQUIRED", customerMessage: "Falta el codigo de configuracion.", nextStep: "Pega el Setup Code o abre el Setup Link.", secretsExposed: false }, 400);
+  if (!d1(env)) return json(buildSetupPass({ setupCode: code, status: "source_ready" }));
+  const pass = await setupByCode(env, code);
+  if (!pass) return json({ ok: false, status: "SETUP_NOT_FOUND", customerMessage: "No encontramos este setup.", nextStep: "Revisa el Setup Code o pide un link nuevo.", secretsExposed: false }, 404);
+  return json(pass);
+}
+
+async function claimCustomerDevice(request, env) {
+  const body = await readJson(request);
+  const setupCode = normalizeSetupCode(body.setupCode);
+  const surface = normalizeSurface(body.surface);
+  const deviceId = String(body.deviceId || "").trim();
+  if (!setupCode) return json({ ok: false, status: "SETUP_CODE_REQUIRED", resultCode: "SETUP_CODE_REQUIRED", customerMessage: "Falta el codigo de configuracion.", nextStep: "Pega el Setup Code o abre el Setup Link.", secretsExposed: false }, 400);
+  if (!surface) return json({ ok: false, status: "SURFACE_NOT_ALLOWED", resultCode: "SURFACE_NOT_ALLOWED", customerMessage: "Este paquete no incluye esta app.", nextStep: "Revisa tu plan o contacta soporte.", secretsExposed: false }, 422);
+  if (!deviceId) return json({ ok: false, status: "INVALID_DEVICE_CLAIM", resultCode: "DEVICE_ID_REQUIRED", customerMessage: "Falta identificar este dispositivo.", nextStep: "Reintenta desde la app para generar el identificador local.", secretsExposed: false }, 400);
+  if (!d1(env)) {
+    const pass = buildSetupPass({ setupCode, status: "source_ready" });
+    return json({
+      ok: true,
+      status: "source_ready",
+      resultCode: "CUSTOMER_SETUP_SOURCE_READY",
+      customerMessage: `Este dispositivo esta listo para reclamar ${SLOT_LABELS[surface]} cuando Prisma Customer Setup este desplegado.`,
+      nextStep: "Conserva el Setup Code y reintenta cuando soporte confirme el deploy del Cloud License Gateway.",
+      customer: { customerId: pass.customerId, displayName: pass.businessName },
+      business: { businessId: pass.businessId, displayName: pass.businessName },
+      license: { licenseId: "lic_prisma_customer_setup_pending", planCode: pass.planCode, state: "source_ready" },
+      device: { deviceId, surface, slotLabel: SLOT_LABELS[surface] },
+      slots: pass.slots,
+      localLicensePayload: { signed: false, source: "customer-setup-source-ready" },
+      secretsExposed: false
+    });
+  }
+  const pass = await setupByCode(env, setupCode);
+  if (!pass) return json({ ok: false, status: "SETUP_NOT_FOUND", resultCode: "SETUP_NOT_FOUND", customerMessage: "No encontramos este setup.", nextStep: "Revisa el Setup Code o pide un link nuevo.", secretsExposed: false }, 404);
+  const slot = pass.slots.find((item) => item.surface === surface);
+  if (!slot) return json({ ok: false, status: "SURFACE_NOT_ALLOWED", resultCode: "SURFACE_NOT_ALLOWED", customerMessage: "Este paquete no incluye esta app.", nextStep: "Revisa tu plan o contacta soporte.", secretsExposed: false }, 422);
+  const existing = await first(env, "select claim_id, device_id, surface from customer_device_claims where setup_id = ? and device_id = ? limit 1", [pass.setupId, deviceId]);
+  if (existing) return json({ ok: false, status: "DEVICE_ALREADY_CLAIMED", resultCode: "DEVICE_ALREADY_CLAIMED", customerMessage: "Este dispositivo ya esta activado.", nextStep: "Continua usando la app o revisa soporte si cambiaste de equipo.", secretsExposed: false }, 409);
+  if (slot.claimed >= slot.allowed) return json({ ok: false, status: "DEVICE_SLOT_FULL", resultCode: "DEVICE_SLOT_FULL", customerMessage: "Ya se uso el cupo para este tipo de dispositivo.", nextStep: "Solicita reemplazo autorizado o un cupo adicional.", secretsExposed: false }, 409);
+  const claimId = `claim_${crypto.randomUUID()}`;
+  const result = await run(env, "insert into customer_device_claims (claim_id, setup_id, setup_code, tenant_slug, surface, device_id, device_name, installation_fingerprint, app_version, operator_label, status, claimed_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+    claimId,
+    pass.setupId,
+    pass.setupCode,
+    pass.tenantSlug,
+    surface,
+    deviceId,
+    String(body.deviceName || deviceId).slice(0, 160),
+    String(body.installationFingerprint || "").slice(0, 160),
+    String(body.appVersion || "").slice(0, 80),
+    String(body.operatorLabel || "").slice(0, 160),
+    "claimed",
+    now()
+  ]);
+  if (!result.ok) return json({ ok: false, status: result.status, resultCode: "CUSTOMER_SETUP_UPSTREAM_FAILED", customerMessage: "No pudimos validar el setup.", nextStep: "Reintenta o contacta soporte con evidencia sanitizada.", secretsExposed: false }, 500);
+  await run(env, "update customer_setup_slots set claimed = claimed + 1, updated_at = ? where setup_id = ? and surface = ?", [now(), pass.setupId, surface]);
+  await recordAudit(env, pass.tenantSlug, "customer_device.claim", { setupCode, surface, deviceId });
+  const updatedPass = await setupByCode(env, setupCode) || pass;
+  return json({
+    ok: true,
+    status: "claimed",
+    resultCode: "DEVICE_CLAIM_ACCEPTED",
+    customerMessage: `Este dispositivo quedo activado para ${SLOT_LABELS[surface]}.`,
+    nextStep: "Continua en la app.",
+    customer: { customerId: pass.customerId, displayName: pass.businessName },
+    business: { businessId: pass.businessId, displayName: pass.businessName },
+    license: { licenseId: "lic_prisma_customer_setup_claimed", planCode: pass.planCode, state: "active" },
+    device: { deviceId, surface, slotLabel: SLOT_LABELS[surface] },
+    slots: updatedPass.slots,
+    localLicensePayload: { signed: false, source: "customer-setup-scaffold" },
+    secretsExposed: false
+  });
+}
+
+async function customerLicenseStatus(env, url) {
+  const setupCode = normalizeSetupCode(url.searchParams.get("setupCode"));
+  const deviceId = String(url.searchParams.get("deviceId") || "").trim();
+  if (!setupCode) return json({ ok: false, status: "SETUP_CODE_REQUIRED", customerMessage: "Falta el codigo de configuracion.", nextStep: "Pega el Setup Code o abre el Setup Link.", secretsExposed: false }, 400);
+  const pass = d1(env) ? await setupByCode(env, setupCode) : buildSetupPass({ setupCode, status: "source_ready" });
+  if (!pass) return json({ ok: false, status: "SETUP_NOT_FOUND", customerMessage: "No encontramos este setup.", nextStep: "Revisa el Setup Code o pide un link nuevo.", secretsExposed: false }, 404);
+  return json({
+    ok: true,
+    status: pass.status,
+    setupCode,
+    deviceId: deviceId || null,
+    license: { planCode: pass.planCode, state: pass.status === "active" ? "active" : "source_ready", signed: false },
+    slots: pass.slots,
+    customerMessage: pass.customerMessage,
+    nextStep: pass.nextStep,
+    secretsExposed: false
+  });
 }
 
 async function commercialSummary(env, slug) {
@@ -356,6 +579,11 @@ async function route(request, env) {
   }
   const adminNotesMatch = url.pathname.match(/^\/api\/admin\/tenants\/([^/]+)\/notes$/);
   if (method === "POST" && adminNotesMatch) return createNote(request, env, adminNotesMatch[1]);
+  if (method === "POST" && url.pathname === "/api/admin/customer-setups/create") return createCustomerSetup(request, env);
+  const customerSetupMatch = url.pathname.match(/^\/api\/customer\/setup\/([^/]+)$/);
+  if (method === "GET" && customerSetupMatch) return resolveCustomerSetup(env, decodeURIComponent(customerSetupMatch[1]));
+  if (method === "POST" && url.pathname === "/api/customer/devices/claim") return claimCustomerDevice(request, env);
+  if (method === "GET" && url.pathname === "/api/customer/license/status") return customerLicenseStatus(env, url);
   if (method === "POST" && url.pathname === "/api/licenses/activate") return activateLicense(request, env, "activate");
   if (method === "POST" && url.pathname === "/api/licenses/refresh") return activateLicense(request, env, "refresh");
   if (method === "POST" && url.pathname === "/api/licenses/revoke") return activateLicense(request, env, "revoke");

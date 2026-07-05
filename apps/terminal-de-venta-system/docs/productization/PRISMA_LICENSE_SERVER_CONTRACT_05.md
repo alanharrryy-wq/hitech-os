@@ -150,6 +150,21 @@ license.revoked
 license.renewed
 license.upgraded
 license.downgraded
+
+## Prisma Customer Setup Addendum
+
+Cloud License Gateway source supports customer-safe setup routes alongside existing license routes:
+
+```text
+POST /api/admin/customer-setups/create
+GET  /api/customer/setup/:setupCode
+POST /api/customer/devices/claim
+GET  /api/customer/license/status?setupCode=...&deviceId=...
+```
+
+`/api/admin/customer-setups/create` is admin protected. Customer resolve, claim, and status routes use Setup Code and never use `ADMIN_TOKEN`.
+
+Source migration `0002_customer_setup.sql` adds `customer_setups`, `customer_setup_slots`, and `customer_device_claims`. Do not run it on live D1 without authorization.
 device.activated
 device.limit_exceeded
 signature.issued

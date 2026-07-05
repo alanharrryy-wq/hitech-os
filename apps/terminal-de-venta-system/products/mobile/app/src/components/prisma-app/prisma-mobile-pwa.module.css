@@ -1259,3 +1259,155 @@
 .shell button, .shell a, .card *, .installPanel *, .offlinePanel * { max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
 @supports not (overflow: clip) { .shell, .card, .installPanel, .offlinePanel, .actionGrid, .statusGrid, .featureGrid, .hero, .content, .main { overflow-x: hidden; } }
 /* END MOVILGFT7_FIXED3140_0407 */
+
+/* BEGIN MOVILPARITY1_CLOUDCTR_0407 */
+.pageRoot {
+  min-height: 100dvh;
+  overflow-x: clip;
+  padding: clamp(18px, 5vw, 25px) clamp(18px, 5vw, 22px);
+  background:
+    linear-gradient(180deg, rgba(18, 20, 32, 0.16), rgba(18, 20, 32, 0.46)),
+    var(--appmovil-cc-bg-image),
+    linear-gradient(180deg, #111927, #09111d 64%, #07101a);
+  background-size: cover;
+  background-position: center;
+  place-items: start center;
+}
+
+.phoneStage,
+.phoneShell,
+.phoneScreen {
+  width: min(100%, 444px);
+  max-width: 100%;
+}
+
+.phoneShell {
+  min-height: auto;
+  border-radius: 34px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.phoneShell::before,
+.phoneButtonLeft,
+.phoneButtonRight,
+.dynamicIsland {
+  display: none;
+}
+
+.phoneScreen {
+  min-height: auto;
+  overflow: visible;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(216, 236, 248, 0.18), rgba(10, 24, 38, 0.50)),
+    rgba(11, 26, 42, 0.44);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.20);
+  border: 1px solid rgba(210, 236, 255, 0.20);
+  backdrop-filter: blur(22px) saturate(122%);
+  -webkit-backdrop-filter: blur(22px) saturate(122%);
+}
+
+.phoneScreen::after {
+  opacity: 0.58;
+}
+
+.screenContent {
+  min-height: auto;
+  align-content: start;
+  padding: clamp(20px, 6vw, 26px);
+  gap: 16px;
+}
+
+.brandPill,
+.hiddenDashboardLink,
+.selectorTopline,
+.installContextNote,
+.minimalMessage,
+.installGuide,
+.platformOrbCard {
+  color: rgba(249,253,255,0.94);
+  border-color: rgba(205,234,255,0.18);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(5,17,29,0.42)),
+    rgba(8,24,39,0.30);
+  box-shadow: 0 16px 42px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.13);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+}
+
+.minimalHero h1 {
+  color: #ffffff;
+  max-width: 8ch;
+  margin-inline: auto;
+  font-size: clamp(3rem, 14vw, 4.5rem);
+  line-height: 0.84;
+  letter-spacing: -0.08em;
+  text-shadow: 0 2px 0 rgba(255,255,255,0.12), 0 18px 44px rgba(0,0,0,0.38), 0 0 28px rgba(218,241,255,0.25);
+}
+
+.minimalHero p,
+.hiddenDashboardLink small,
+.installContextNote,
+.installGuide,
+.minimalMessage {
+  color: rgba(224,236,246,0.84);
+}
+
+.brandMark img {
+  width: clamp(72px, 22vw, 104px);
+  height: clamp(72px, 22vw, 104px);
+}
+
+.brandMark span,
+.hiddenDashboardLink strong {
+  color: rgba(255,255,255,0.94);
+  text-shadow: 0 10px 28px rgba(0,0,0,0.28);
+}
+
+.platformChooserMinimal {
+  gap: 12px;
+}
+
+.platformOrbCard {
+  min-height: 112px;
+  border-radius: 24px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 13px;
+  padding: 16px;
+}
+
+.platformArrow {
+  width: 48px;
+  height: 48px;
+  background: rgba(8, 24, 39, 0.30);
+  border-color: rgba(205,234,255,0.24);
+}
+
+@media (max-width: 520px) {
+  .pageRoot {
+    padding: 16px 12px;
+  }
+
+  .phoneStage,
+  .phoneShell,
+  .phoneScreen {
+    min-height: auto;
+    border-radius: 28px;
+  }
+
+  .screenContent {
+    padding: 18px;
+  }
+
+  .platformOrbCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .platformArrow {
+    width: 100%;
+    height: 42px;
+  }
+}
+/* END MOVILPARITY1_CLOUDCTR_0407 */

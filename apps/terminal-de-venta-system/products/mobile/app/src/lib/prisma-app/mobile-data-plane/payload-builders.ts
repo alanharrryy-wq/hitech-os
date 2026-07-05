@@ -120,7 +120,9 @@ export function buildSummaryPayload(state: MobileDataPlaneState): PrismaMobileSu
       authorizationLabel: state.config.authorizationLabel,
       mobileDeviceLabel: "Mobile vinculado",
       tabletDeviceLabel: "Tablet vinculada",
-      pcDeviceLabel: "PC vinculada"
+      pcDeviceLabel: "PC vinculada",
+      customerSetupLabel: "Prisma Customer Setup",
+      setupSlotLabel: "Mobile Companion Slot"
     },
     kpis: [
       { key: "ventas", label: "Ventas hoy", value: moneyLabel(state.salesToday.totalSalesCents), note: salesNote, tone: "gold" as const, numericValue: state.salesToday.totalSalesCents, unit: "MXN" },

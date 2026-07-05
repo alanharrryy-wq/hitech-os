@@ -30,6 +30,19 @@ export default async function PcLicensePage() {
         </div>
       </section>
 
+      <section className="card" data-prisma-component="CustomerSetupEntrypoint">
+        <div className="section-head">
+          <div>
+            <div className="kicker">Prisma Customer Setup</div>
+            <h2 className="section-title">Reclamar PC Admin Slot con Setup Code.</h2>
+            <div className="section-copy">
+              El setup de cliente usa Setup Link, Setup Code y Device Claim. No usa admin token ni reemplaza License Admin Bridge.
+            </div>
+          </div>
+          <a className="btn primary" href="/setup">Abrir setup</a>
+        </div>
+      </section>
+
       <section className="card" data-prisma-component="LicenseFeatureList">
         <div className="kicker">funciones disponibles</div>
         <h2 className="section-title">Herramientas activas y restricciones explicadas.</h2>

@@ -44,7 +44,11 @@ export type Licflow3EndpointKey =
   | "adminSelftest"
   | "commercialSummary"
   | "tenantSnapshot"
-  | "tenantNotes";
+  | "tenantNotes"
+  | "customerSetupCreate"
+  | "customerSetupResolve"
+  | "customerDeviceClaim"
+  | "customerLicenseStatus";
 
 export type Licflow3EndpointContract = {
   key: Licflow3EndpointKey;
@@ -65,7 +69,11 @@ export type Licflow3EndpointContract = {
     | "admin_selftest"
     | "commercial_summary"
     | "tenant_snapshot"
-    | "tenant_notes";
+    | "tenant_notes"
+    | "customer_setup_create"
+    | "customer_setup_resolve"
+    | "customer_device_claim"
+    | "customer_license_status";
   mutatesCloud: boolean;
   adminRequired: boolean;
   safeSummaryCall: boolean;
@@ -243,6 +251,50 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     adminRequired: true,
     safeSummaryCall: false,
     classification: "REUSE"
+  },
+  {
+    key: "customerSetupCreate",
+    label: "Prisma Customer Setup Create",
+    method: "POST",
+    path: "/api/admin/customer-setups/create",
+    capability: "customer_setup_create",
+    mutatesCloud: true,
+    adminRequired: true,
+    safeSummaryCall: false,
+    classification: "CREATE"
+  },
+  {
+    key: "customerSetupResolve",
+    label: "Prisma Customer Setup Resolve",
+    method: "GET",
+    path: "/api/customer/setup/:setupCode",
+    capability: "customer_setup_resolve",
+    mutatesCloud: false,
+    adminRequired: false,
+    safeSummaryCall: true,
+    classification: "CREATE"
+  },
+  {
+    key: "customerDeviceClaim",
+    label: "Customer Device Claim",
+    method: "POST",
+    path: "/api/customer/devices/claim",
+    capability: "customer_device_claim",
+    mutatesCloud: true,
+    adminRequired: false,
+    safeSummaryCall: false,
+    classification: "CREATE"
+  },
+  {
+    key: "customerLicenseStatus",
+    label: "Customer License Status",
+    method: "GET",
+    path: "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId",
+    capability: "customer_license_status",
+    mutatesCloud: false,
+    adminRequired: false,
+    safeSummaryCall: true,
+    classification: "CREATE"
   }
 ] as const;
 
@@ -256,7 +308,11 @@ export const LICFLOW3_REQUIRED_CAPABILITIES = [
   "support_diagnostics",
   "capabilities",
   "commercial_summary",
-  "contract_fetch"
+  "contract_fetch",
+  "customer_setup_create",
+  "customer_setup_resolve",
+  "customer_device_claim",
+  "customer_license_status"
 ] as const;
 
 export const LICFLOW3_CLOUD_CONTRACT = {

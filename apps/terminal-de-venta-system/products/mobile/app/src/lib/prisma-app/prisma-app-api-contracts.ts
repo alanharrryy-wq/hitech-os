@@ -92,7 +92,9 @@ export const PrismaMobileAccountSummarySchema = z.object({
   authorizationLabel: z.string().min(1),
   mobileDeviceLabel: z.string().min(1),
   tabletDeviceLabel: z.string().min(1),
-  pcDeviceLabel: z.string().min(1)
+  pcDeviceLabel: z.string().min(1),
+  customerSetupLabel: z.string().min(1).default("Prisma Customer Setup"),
+  setupSlotLabel: z.string().min(1).default("Mobile Companion Slot")
 });
 
 export const PrismaMobileSalesPointSchema = z.object({
@@ -196,7 +198,9 @@ export const PrismaMobileSummaryPayloadSchema = z.object({
     authorizationLabel: "Mobile vinculado a la cuenta",
     mobileDeviceLabel: "Mobile vinculado",
     tabletDeviceLabel: "Tablet vinculada",
-    pcDeviceLabel: "PC vinculada"
+    pcDeviceLabel: "PC vinculada",
+    customerSetupLabel: "Prisma Customer Setup",
+    setupSlotLabel: "Mobile Companion Slot"
   }),
   kpis: z.array(PrismaMobileKpiSchema).min(1),
   quickActions: z.array(PrismaMobileActionSchema)

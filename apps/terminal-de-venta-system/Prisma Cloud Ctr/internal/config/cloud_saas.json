@@ -1,6 +1,7 @@
 {
   "schemaVersion": "1.0",
   "name": "Prisma Cloud Ctr",
+  "displayName": "Prisma Cloud Center",
   "apiBaseUrl": "https://app.hitechrts.com",
   "tenantSlug": "prisma-original-customer",
   "adminTokenSearch": {
@@ -23,11 +24,21 @@
     "deviceRegister": "/api/devices/register",
     "integrationReceipt": "/api/client/integration-receipt",
     "supportDiagnostics": "/api/support/diagnostics?tenant=prisma-original-customer",
-    "clientContract": "/api/client/contract?tenant=prisma-original-customer"
+    "clientContract": "/api/client/contract?tenant=prisma-original-customer",
+    "customerSetupCreate": "/api/admin/customer-setups/create",
+    "customerSetupResolve": "/api/customer/setup/:setupCode",
+    "customerDeviceClaim": "/api/customer/devices/claim",
+    "customerLicenseStatus": "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId"
   },
   "licflow3": {
     "contractId": "LICFLOW3_CLOUDFLARE_HOSTED_LICENSING_SUPPORT_BRIDGE",
     "status": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
+    "displayName": "Cloud License Gateway",
+    "routeMapDisplayName": "Cloud License Routes",
+    "databaseDisplayName": "Cloud License Database",
+    "apiDisplayName": "Cloud License Gateway API",
+    "statusDisplay": "Cloud License Gateway: Live",
+    "legacyInternalName": "LICFLOW3",
     "worker": "prisma-cloud-semilla",
     "d1": "prisma_cloud_semilla",
     "wranglerCommand": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler",

@@ -41,6 +41,10 @@ LICFLOW3_ENDPOINTS: dict[str, dict[str, Any]] = {
     "commercialSummary": {"method": "GET", "path": "/api/admin/commercial-summary", "capability": "commercial_summary", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "REUSE"},
     "tenantSnapshot": {"method": "GET", "path": "/api/admin/tenants/prisma-original-customer/snapshot", "capability": "tenant_snapshot", "mutatesCloud": False, "adminRequired": True, "safeSummaryCall": True, "classification": "REUSE"},
     "tenantNotes": {"method": "POST", "path": "/api/admin/tenants/prisma-original-customer/notes", "capability": "tenant_notes", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "REUSE"},
+    "customerSetupCreate": {"method": "POST", "path": "/api/admin/customer-setups/create", "capability": "customer_setup_create", "mutatesCloud": True, "adminRequired": True, "safeSummaryCall": False, "classification": "CREATE"},
+    "customerSetupResolve": {"method": "GET", "path": "/api/customer/setup/:setupCode", "capability": "customer_setup_resolve", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "CREATE"},
+    "customerDeviceClaim": {"method": "POST", "path": "/api/customer/devices/claim", "capability": "customer_device_claim", "mutatesCloud": True, "adminRequired": False, "safeSummaryCall": False, "classification": "CREATE"},
+    "customerLicenseStatus": {"method": "GET", "path": "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId", "capability": "customer_license_status", "mutatesCloud": False, "adminRequired": False, "safeSummaryCall": True, "classification": "CREATE"},
 }
 
 
@@ -300,6 +304,12 @@ def _licflow3_contract_status(endpoints: dict[str, Any] | None = None) -> dict[s
         "schemaVersion": "1.0.0",
         "contractId": LICFLOW3_CONTRACT_ID,
         "status": LICFLOW3_LIVE_STATUS,
+        "displayName": "Cloud License Gateway",
+        "routeMapDisplayName": "Cloud License Routes",
+        "databaseDisplayName": "Cloud License Database",
+        "apiDisplayName": "Cloud License Gateway API",
+        "statusDisplay": "Cloud License Gateway: Live",
+        "legacyInternalName": "LICFLOW3",
         "worker": LICFLOW3_WORKER,
         "d1": LICFLOW3_D1,
         "wranglerCommand": LICFLOW3_WRANGLER_COMMAND,
