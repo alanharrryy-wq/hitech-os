@@ -6,7 +6,8 @@ export const PRISMA_TRIPLE_DEVICE_STARTER_PLAN = "TABLET_PC_MOBILE_MANAGED";
 
 export type CustomerSetupSurface = "tablet" | "pc" | "mobile";
 export type CustomerSetupStatus = "active" | "expired" | "revoked" | "draft" | "source_ready";
-export type DeviceClaimStatus = "claimed" | "already_claimed" | "slot_full" | "replacement_required" | "source_ready";
+export type DeviceClaimStatus = "claimed" | "already_claimed" | "slot_full" | "replacement_required" | "replaced" | "source_ready";
+export type CustomerLicenseCommercialStatus = "active" | "expiring" | "grace_period" | "suspended" | "revoked" | "renewed";
 
 export type CustomerSetupErrorCode =
   | "SETUP_CODE_REQUIRED"
@@ -16,8 +17,15 @@ export type CustomerSetupErrorCode =
   | "DEVICE_SLOT_FULL"
   | "DEVICE_ALREADY_CLAIMED"
   | "DEVICE_REPLACEMENT_REQUIRED"
+  | "DEVICE_REPLACEMENT_DEVICE_IDS_REQUIRED"
+  | "DEVICE_REPLACEMENT_NOT_ALLOWED"
+  | "DEVICE_NOT_CLAIMED"
+  | "DEVICE_ID_REQUIRED"
   | "SURFACE_NOT_ALLOWED"
-  | "CUSTOMER_SETUP_UPSTREAM_FAILED";
+  | "CUSTOMER_SETUP_UPSTREAM_FAILED"
+  | "LICENSE_SUSPENDED"
+  | "LICENSE_REVOKED"
+  | "LICENSE_EXPIRED";
 
 export type CustomerSetupSlot = {
   surface: CustomerSetupSurface;
@@ -43,6 +51,99 @@ export type CustomerSetupPass = {
   expiresAt: string | null;
   slots: CustomerSetupSlot[];
   customerMessage: string;
+  nextStep: string;
+  secretsExposed: false;
+};
+
+export type CustomerPortalSnapshot = {
+  ok: true;
+  status: "CUSTOMER_PORTAL_READY";
+  resultCode: "CUSTOMER_PORTAL_READY";
+  tenant: {
+    tenantSlug: string;
+    businessName: string;
+  };
+  setup: {
+    setupCode: string;
+    setupLink: string;
+    setupQr: string;
+    status: CustomerSetupStatus;
+    expiresAt: string | null;
+  };
+  slots: CustomerSetupSlot[];
+  devices: Array<{
+    deviceId: string;
+    deviceName?: string;
+    surface: CustomerSetupSurface;
+    status: DeviceClaimStatus;
+    claimedAt?: string;
+    replacedAt?: string | null;
+  }>;
+  license: {
+    licenseId: string;
+    status: CustomerLicenseCommercialStatus | "expired" | "pending";
+    planCode: string;
+    validUntil: string | null;
+  };
+  magicLink: {
+    href: string;
+    scope: "setup-pass-only";
+    admin: false;
+  };
+  support: {
+    replacementRequestAvailable: boolean;
+    nextStep: string;
+  };
+  secretsExposed: false;
+};
+
+export type CustomerLicenseRefreshResponse = {
+  ok: boolean;
+  status: "refreshed" | CustomerLicenseCommercialStatus | "expired";
+  resultCode:
+    | "LICENSE_REFRESHED"
+    | "DEVICE_NOT_CLAIMED"
+    | "LICENSE_SUSPENDED"
+    | "LICENSE_REVOKED"
+    | "LICENSE_EXPIRED"
+    | CustomerSetupErrorCode;
+  setupCode?: string;
+  device?: {
+    deviceId: string;
+    surface: CustomerSetupSurface;
+    status: DeviceClaimStatus;
+    claimId: string;
+  };
+  license?: {
+    licenseId: string;
+    planCode: string;
+    state: CustomerLicenseCommercialStatus | "expired" | "pending";
+    validUntil: string | null;
+    signed: false;
+  };
+  customerMessage: string;
+  nextStep: string;
+  secretsExposed: false;
+};
+
+export type DeviceReplacementRequest = {
+  setupCode: string;
+  surface: CustomerSetupSurface;
+  oldDeviceId: string;
+  newDeviceId: string;
+  reason: string;
+};
+
+export type DeviceReplacementResponse = {
+  ok: boolean;
+  status: "REPLACEMENT_REQUESTED" | "DEVICE_REPLACEMENT_APPROVED" | "DEVICE_REPLACEMENT_NOT_ALLOWED";
+  resultCode: "REPLACEMENT_REQUESTED" | "DEVICE_REPLACEMENT_APPROVED" | "DEVICE_REPLACEMENT_NOT_ALLOWED";
+  replacementRequestId?: string;
+  setupCode?: string;
+  surface?: CustomerSetupSurface;
+  oldDeviceId?: string;
+  newDeviceId?: string;
+  customerMessage?: string;
   nextStep: string;
   secretsExposed: false;
 };
@@ -124,6 +225,22 @@ export const CUSTOMER_SETUP_ERROR_COPY: Record<CustomerSetupErrorCode, { custome
     customerMessage: "Hay otro dispositivo en ese cupo.",
     nextStep: "Solicita reemplazo autorizado antes de reclamar este equipo."
   },
+  DEVICE_REPLACEMENT_DEVICE_IDS_REQUIRED: {
+    customerMessage: "Falta identificar el equipo anterior y el nuevo.",
+    nextStep: "Reintenta desde la app o contacta soporte."
+  },
+  DEVICE_REPLACEMENT_NOT_ALLOWED: {
+    customerMessage: "No encontramos un dispositivo activo para reemplazar en ese cupo.",
+    nextStep: "Verifica el equipo anterior o contacta soporte."
+  },
+  DEVICE_NOT_CLAIMED: {
+    customerMessage: "Este dispositivo no esta reclamado en este setup.",
+    nextStep: "Reclama el dispositivo o contacta soporte."
+  },
+  DEVICE_ID_REQUIRED: {
+    customerMessage: "Falta identificar este dispositivo.",
+    nextStep: "Reintenta desde la app para generar el identificador local."
+  },
   SURFACE_NOT_ALLOWED: {
     customerMessage: "Este paquete no incluye esta app.",
     nextStep: "Revisa tu plan o contacta soporte."
@@ -131,6 +248,18 @@ export const CUSTOMER_SETUP_ERROR_COPY: Record<CustomerSetupErrorCode, { custome
   CUSTOMER_SETUP_UPSTREAM_FAILED: {
     customerMessage: "No pudimos validar el setup.",
     nextStep: "Reintenta o contacta soporte con evidencia sanitizada."
+  },
+  LICENSE_SUSPENDED: {
+    customerMessage: "Licencia suspendida.",
+    nextStep: "Contacta soporte para reactivar la cuenta."
+  },
+  LICENSE_REVOKED: {
+    customerMessage: "Licencia revocada.",
+    nextStep: "Contacta soporte para revisar la cuenta."
+  },
+  LICENSE_EXPIRED: {
+    customerMessage: "Licencia vencida.",
+    nextStep: "Renueva o contacta soporte para reactivar la cuenta."
   }
 };
 
