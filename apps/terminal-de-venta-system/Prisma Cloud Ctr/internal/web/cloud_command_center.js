@@ -780,7 +780,7 @@
         ["Last result", bridge.lastResultCode || "-"],
         ["safeToMutate", bridge.safeToMutate ? "true" : "false"]
       ]),
-      `<div class="cc-empty">License Admin Bridge never asks for ADMIN_TOKEN in the browser. Simulation validates fields first; Confirmed License Operation requires server-side token and explicit confirmation.</div>`,
+      `<div class="cc-empty">License Admin Bridge never asks for credencial privilegiada server-side in the browser. Simulation validates fields first; Confirmed License Operation requires server-side token and explicit confirmation.</div>`,
       `<div class="cc-empty"><strong>Operator checklist</strong></div>`,
       list(checklist),
       `<div class="cc-empty"><strong>License Operation Audit</strong></div>`,
@@ -794,7 +794,7 @@
   function renderEntitlements() { const c=localCounts(); return [
     panel("Asignar licencia","Elige cliente y plan desde catálogo. Límites y módulos vienen gobernados.",licenseWizard(),{span:8,tag:"LICENCIA"}),
     panel("Catálogo de planes","Tipos disponibles, límites y módulos incluidos.",planCatalogDesk(),{span:4,tag:`${(ccStore().licensePlans||[]).length} planes`}),
-    panel("License Admin Bridge","Puente local seguro para activate, refresh y revoke sin exponer ADMIN_TOKEN al frontend.",bridgePanel(),{span:12,tag:licflow4Bridge().bridgeAvailable ? "BRIDGE" : "REVIEW"}),
+    panel("License Admin Bridge","Puente local seguro para activate, refresh y revoke sin exponer credencial privilegiada server-side al frontend.",bridgePanel(),{span:12,tag:licflow4Bridge().bridgeAvailable ? "BRIDGE" : "REVIEW"}),
     panel("Mesa de licencias","Asignaciones preparadas con folio LIC y contrato CTR.",localDesk("licenses","Todavía no hay licencias preparadas."),{span:12,tag:`${c.licenses||0} local`}),
     panel("Reglas","Las licencias locales quedan preparadas; activate/refresh/revoke sólo pasan por License Admin Bridge con confirmación.",list([["Estado","pending_cloud_activation / prepared"],["Folio","LIC-YYYY-000001"],["Contrato","CTR-YYYY-000001"],["Cloud","Confirmed License Operation protected by bridge"],["Revoke","requiere REVOKE_LICENSE"]]),{span:12,tag:"REGLAS"}),
     resultPanel()
@@ -847,7 +847,7 @@
         ["Estado", setup.status],
         ["secretsExposed", "false"]
       ]), { span: 6, tag: "SETUP" }),
-      panel("Device Slots", "Cada app reclama sólo su slot correcto, sin ADMIN_TOKEN y sin duplicar subsistemas.", list(setup.slots.map(([label, surface, claim]) => [label, `${surface} · ${claim}`])), { span: 6, tag: "SLOTS" }),
+      panel("Device Slots", "Cada app reclama sólo su slot correcto, sin credencial privilegiada en navegador y sin duplicar subsistemas.", list(setup.slots.map(([label, surface, claim]) => [label, `${surface} · ${claim}`])), { span: 6, tag: "SLOTS" }),
       panel("Customer-safe endpoints", "Cloud License Gateway source now contains customer setup routes. Live customer use still needs deploy/D1 authorization.", list([
         ["Admin create", "POST /api/admin/customer-setups/create"],
         ["Resolve setup", "GET /api/customer/setup/:setupCode"],
@@ -875,14 +875,14 @@
         ["Cliente", contract.tenant || contract.tenantSlug || d.tenant?.slug || FIRST_CUSTOMER_NAME],
         ["Capacidades", endpointState("capabilities").code]
       ]), { span: 5, tag: endpointState("clientContract").ok ? "CONTRATO" : "REVISAR" }),
-      panel("Cloud License Routes", "Cloudflare routes are deployed and protected; unauthenticated POST smoke expects 401 ADMIN_TOKEN_REQUIRED.", kvGrid([
+      panel("Cloud License Routes", "Cloudflare routes are deployed and protected; unauthenticated POST smoke expects 401 protected-route response.", kvGrid([
         ["Estado", licflow3.statusDisplay || licflow3.hostedCloudEvidenceStatus || licflow3.status || "Cloud License Gateway: Live"],
         ["Worker", licflow3.worker || "prisma-cloud-semilla"],
         ["Cloud License Database", licflow3.d1 || "prisma_cloud_semilla"],
         ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
-        ["Activate", "POST /api/licenses/activate -> 401 ADMIN_TOKEN_REQUIRED"],
-        ["Refresh", "POST /api/licenses/refresh -> 401 ADMIN_TOKEN_REQUIRED"],
-        ["Revoke", "POST /api/licenses/revoke -> 401 ADMIN_TOKEN_REQUIRED"],
+        ["Activate", "POST /api/licenses/activate -> 401 protected-route response"],
+        ["Refresh", "POST /api/licenses/refresh -> 401 protected-route response"],
+        ["Revoke", "POST /api/licenses/revoke -> 401 protected-route response"],
         ["Admin Token Status", adminTokenPresent() ? "presence-only" : "missing"]
       ]), { span: 7, tag: licflow3LiveStatus() }),
       panel("Acciones de configuración", "Comparar, copiar y saltar a licencias sin ver endpoints.", actions([

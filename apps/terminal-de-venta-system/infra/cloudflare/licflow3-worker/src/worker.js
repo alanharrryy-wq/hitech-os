@@ -136,7 +136,10 @@ async function tenant(env, slug = TENANT) {
 
 async function license(env, slug = TENANT) {
   const row = await first(env, "select license_id, tenant_slug, status, plan, activation_status, valid_until, created_at, updated_at from licenses where tenant_slug = ? order by updated_at desc limit 1", [slug]);
-  return row || {
+  if (row) return row;
+  const legacyRow = await first(env, "select l.id as license_id, t.slug as tenant_slug, l.status, l.plan, l.status as activation_status, l.expires_at as valid_until, l.created_at, l.updated_at from licenses l join tenants t on l.tenant_id = t.id where t.slug = ? order by l.updated_at desc limit 1", [slug]);
+  if (legacyRow) return legacyRow;
+  return {
     licenseId: "pending-hosted-license",
     license_id: "pending-hosted-license",
     tenantSlug: slug,
@@ -146,6 +149,30 @@ async function license(env, slug = TENANT) {
     activationStatus: LICFLOW3_LIVE_STATUS,
     activation_status: LICFLOW3_LIVE_STATUS
   };
+}
+
+async function devicesForTenant(env, slug) {
+  const rows = await all(env, "select device_id as deviceId, device_name as name, role, platform, status, created_at as createdAt from devices where tenant_slug = ? order by updated_at desc limit 50", [slug]);
+  if (rows.length) return rows;
+  return all(env, "select d.id as deviceId, d.label as name, 'device' as role, d.device_code as platform, d.status, d.created_at as createdAt from devices d join tenants t on d.tenant_id = t.id where t.slug = ? order by d.updated_at desc limit 50", [slug]);
+}
+
+async function receiptsForTenant(env, slug) {
+  const rows = await all(env, "select receipt_id as receiptId, kind, ok, created_at as createdAt from integration_receipts where tenant_slug = ? order by created_at desc limit 50", [slug]);
+  if (rows.length) return rows;
+  return all(env, "select r.id as receiptId, r.receipt_type as kind, case when r.status = 'accepted' then 1 else 0 end as ok, r.created_at as createdAt from integration_receipts r join tenants t on r.tenant_id = t.id where t.slug = ? order by r.created_at desc limit 50", [slug]);
+}
+
+async function notesForTenant(env, slug) {
+  const rows = await all(env, "select note_id as id, text, source, created_at as createdAt from support_notes where tenant_slug = ? order by created_at desc limit 50", [slug]);
+  if (rows.length) return rows;
+  return all(env, "select n.id, n.body as text, n.created_by as source, n.created_at as createdAt from tenant_notes n join tenants t on n.tenant_id = t.id where t.slug = ? order by n.created_at desc limit 50", [slug]);
+}
+
+async function eventsForTenant(env, slug) {
+  const rows = await all(env, "select event_id as id, event_type as type, created_at as createdAt from audit_events where tenant_slug = ? order by created_at desc limit 50", [slug]);
+  if (rows.length) return rows;
+  return all(env, "select e.id, e.event_type as type, e.created_at as createdAt from client_events e join tenants t on e.tenant_id = t.id where t.slug = ? order by e.created_at desc limit 50", [slug]);
 }
 
 function normalizeTenant(row) {
@@ -278,10 +305,10 @@ async function tenantStatus(env, slug) {
 async function snapshot(env, slug) {
   const [tenantPayload, devices, receipts, notes, events] = await Promise.all([
     tenantStatus(env, slug),
-    all(env, "select device_id as deviceId, device_name as name, role, platform, status, created_at as createdAt from devices where tenant_slug = ? order by updated_at desc limit 50", [slug]),
-    all(env, "select receipt_id as receiptId, kind, ok, created_at as createdAt from integration_receipts where tenant_slug = ? order by created_at desc limit 50", [slug]),
-    all(env, "select note_id as id, text, source, created_at as createdAt from support_notes where tenant_slug = ? order by created_at desc limit 50", [slug]),
-    all(env, "select event_id as id, event_type as type, created_at as createdAt from audit_events where tenant_slug = ? order by created_at desc limit 50", [slug])
+    devicesForTenant(env, slug),
+    receiptsForTenant(env, slug),
+    notesForTenant(env, slug),
+    eventsForTenant(env, slug)
   ]);
   return {
     ok: true,
@@ -485,7 +512,10 @@ async function diagnostics(env, slug) {
 
 async function recordAudit(env, slug, eventType, payload) {
   const eventId = `${eventType}-${crypto.randomUUID()}`;
-  await run(env, "insert into audit_events (event_id, tenant_slug, event_type, payload_json) values (?, ?, ?, ?)", [eventId, slug, eventType, JSON.stringify(payload || {})]);
+  const result = await run(env, "insert into audit_events (event_id, tenant_slug, event_type, payload_json) values (?, ?, ?, ?)", [eventId, slug, eventType, JSON.stringify(payload || {})]);
+  if (!result.ok) {
+    await run(env, "insert into audit_log (id, actor, action, entity_type, entity_id, payload_json) values (?, ?, ?, ?, ?, ?)", [eventId, "licflow3-worker", eventType, "tenant", slug, JSON.stringify(payload || {})]);
+  }
   return eventId;
 }
 
@@ -498,7 +528,10 @@ async function activateLicense(request, env, mode) {
   const slug = body.tenantSlug || body.tenant || TENANT;
   const licenseId = body.licenseId || `licflow3-${mode}-${crypto.randomUUID()}`;
   const status = mode === "revoke" ? "revoked" : mode === "refresh" ? "refreshed" : "pending_signed_license";
-  const result = await run(env, "insert or replace into licenses (license_id, tenant_slug, status, plan, activation_status, updated_at) values (?, ?, ?, ?, ?, ?)", [licenseId, slug, status, body.plan || PLAN, status, now()]);
+  let result = await run(env, "insert or replace into licenses (license_id, tenant_slug, status, plan, activation_status, updated_at) values (?, ?, ?, ?, ?, ?)", [licenseId, slug, status, body.plan || PLAN, status, now()]);
+  if (!result.ok) {
+    result = await run(env, "insert or replace into licenses (id, tenant_id, plan, status, updated_at) values (?, (select id from tenants where slug = ?), ?, ?, ?)", [licenseId, slug, body.plan || PLAN, status, now()]);
+  }
   await recordAudit(env, slug, `license.${mode}`, { licenseId, status });
   return json({
     ok: result.ok,
@@ -518,7 +551,10 @@ async function registerDevice(request, env) {
   const body = await readJson(request);
   const slug = body.tenantSlug || TENANT;
   const deviceId = body.deviceId || `device-${crypto.randomUUID()}`;
-  const result = await run(env, "insert or replace into devices (device_id, tenant_slug, device_name, role, platform, status, updated_at) values (?, ?, ?, ?, ?, ?, ?)", [deviceId, slug, body.deviceName || deviceId, body.role || "unknown", body.platform || "unknown", "registered", now()]);
+  let result = await run(env, "insert or replace into devices (device_id, tenant_slug, device_name, role, platform, status, updated_at) values (?, ?, ?, ?, ?, ?, ?)", [deviceId, slug, body.deviceName || deviceId, body.role || "unknown", body.platform || "unknown", "registered", now()]);
+  if (!result.ok) {
+    result = await run(env, "insert or replace into devices (id, tenant_id, device_code, label, status, updated_at) values (?, (select id from tenants where slug = ?), ?, ?, ?, ?)", [deviceId, slug, deviceId, body.deviceName || deviceId, "registered", now()]);
+  }
   await recordAudit(env, slug, "device.register", { deviceId });
   return json({ ok: result.ok, status: result.ok ? "registered" : result.status, tenantSlug: slug, deviceId }, result.ok ? 200 : 500);
 }
@@ -530,7 +566,10 @@ async function integrationReceipt(request, env) {
   const body = await readJson(request);
   const slug = body.tenantSlug || TENANT;
   const receiptId = body.receiptId || `receipt-${crypto.randomUUID()}`;
-  const result = await run(env, "insert or replace into integration_receipts (receipt_id, tenant_slug, kind, ok, payload_json) values (?, ?, ?, ?, ?)", [receiptId, slug, body.kind || "integration", body.ok ? 1 : 0, JSON.stringify(body.payload || {})]);
+  let result = await run(env, "insert or replace into integration_receipts (receipt_id, tenant_slug, kind, ok, payload_json) values (?, ?, ?, ?, ?)", [receiptId, slug, body.kind || "integration", body.ok ? 1 : 0, JSON.stringify(body.payload || {})]);
+  if (!result.ok) {
+    result = await run(env, "insert or replace into integration_receipts (id, tenant_id, receipt_type, payload_json, status, created_at) values (?, (select id from tenants where slug = ?), ?, ?, ?, ?)", [receiptId, slug, body.kind || "integration", JSON.stringify(body.payload || {}), body.ok ? "accepted" : "rejected", now()]);
+  }
   await recordAudit(env, slug, "integration.receipt", { receiptId });
   return json({ ok: result.ok, status: result.ok ? "recorded" : result.status, tenantSlug: slug, receiptId }, result.ok ? 200 : 500);
 }
@@ -542,7 +581,10 @@ async function createNote(request, env, slug) {
   const body = await readJson(request);
   const noteId = `note-${crypto.randomUUID()}`;
   const text = String(body.text || "").slice(0, 2000) || "Operator note";
-  const result = await run(env, "insert into support_notes (note_id, tenant_slug, text, source) values (?, ?, ?, ?)", [noteId, slug, text, body.source || "licflow3-worker"]);
+  let result = await run(env, "insert into support_notes (note_id, tenant_slug, text, source) values (?, ?, ?, ?)", [noteId, slug, text, body.source || "licflow3-worker"]);
+  if (!result.ok) {
+    result = await run(env, "insert into tenant_notes (id, tenant_id, note_type, body, created_by, created_at) values (?, (select id from tenants where slug = ?), ?, ?, ?, ?)", [noteId, slug, "general", text, body.source || "licflow3-worker", now()]);
+  }
   await recordAudit(env, slug, "tenant.note", { noteId });
   return json({ ok: result.ok, status: result.ok ? "created" : result.status, tenantSlug: slug, noteId }, result.ok ? 200 : 500);
 }

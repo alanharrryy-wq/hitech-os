@@ -28,6 +28,9 @@ function registerSurf8VisualQaTests(test, expect) {
   const onlinePorts = new Set(String(process.env.PRISMA_SURF_ONLINE_PORTS || "").split(",").map(s => s.trim()).filter(Boolean));
   const runMode = String(process.env.PRISMA_SURF_MODE || "visualqa");
   const gpuMode = String(process.env.PRISMA_SURF_GPU_MODE || "off").toLowerCase();
+  const viewportWidth = Math.max(240, Number(process.env.PRISMA_SURF_VIEWPORT_WIDTH || 1365));
+  const viewportHeight = Math.max(320, Number(process.env.PRISMA_SURF_VIEWPORT_HEIGHT || 768));
+  const viewport = { width: viewportWidth, height: viewportHeight };
 
   let gpuArgs = [];
   try {
@@ -50,7 +53,7 @@ function registerSurf8VisualQaTests(test, expect) {
   }, null, 2));
 
   test.describe.configure({ mode: "parallel" });
-  test.use({ trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
+  test.use({ viewport, trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
   test.setTimeout(testTimeout);
 
   function safeName(value) {
@@ -604,3 +607,5 @@ function registerSurf8VisualQaTests(test, expect) {
 }
 
 module.exports = { registerSurf8VisualQaTests };
+
+// MAMVIEW4_VIEWPORT_BRIDGE_0407: visualqa engine uses explicit Playwright viewport from PRISMA_SURF_VIEWPORT_WIDTH/HEIGHT.

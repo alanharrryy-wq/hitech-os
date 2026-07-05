@@ -54,8 +54,7 @@ CREATE TABLE IF NOT EXISTS audit_events (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_licenses_tenant_slug ON licenses (tenant_slug);
-CREATE INDEX IF NOT EXISTS idx_devices_tenant_slug ON devices (tenant_slug);
-CREATE INDEX IF NOT EXISTS idx_receipts_tenant_slug ON integration_receipts (tenant_slug);
-CREATE INDEX IF NOT EXISTS idx_support_notes_tenant_slug ON support_notes (tenant_slug);
-CREATE INDEX IF NOT EXISTS idx_audit_events_tenant_slug ON audit_events (tenant_slug);
+-- Baseline migration must be recordable on fresh D1 databases and on the
+-- legacy live D1 schema, where several existing tables use tenant_id/id names.
+-- Worker source handles both schemas; schema-specific indexes are intentionally
+-- left to later migrations that can target known columns.

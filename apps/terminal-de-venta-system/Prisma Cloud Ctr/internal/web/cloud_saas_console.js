@@ -207,7 +207,7 @@
         ["Estado", licflow3.hostedCloudEvidenceStatus || licflow3.status || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"],
         ["Worker", licflow3.worker || "prisma-cloud-semilla"],
         ["D1", licflow3.d1 || "prisma_cloud_semilla"],
-        ["Smoke sin token", "401 ADMIN_TOKEN_REQUIRED"]
+        ["Smoke sin token", "401 protected-route response"]
       ]), licflow3.hostedCloudEvidenceStatus || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE")}
       ${card("Endpoints", "Contrato configurado", listRows(endpoints.map((item) => ({ name: item.key, status: `${item.configured ? "CONFIGURADO" : "FALTA"} ${item.method} ${item.configuredPath || item.path}` })), "Sin contrato LICFLOW3"), "CONTRACT")}
     </div>`;
