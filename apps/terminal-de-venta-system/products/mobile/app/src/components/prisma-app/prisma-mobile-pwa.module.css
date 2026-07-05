@@ -1,815 +1,22 @@
-.pageRoot {
-  min-height: 100vh;
-  overflow: hidden;
-  position: relative;
-  color: #fff7df;
-  background:
-    radial-gradient(circle at 13% 9%, rgba(73, 137, 255, .34), transparent 18rem),
-    radial-gradient(circle at 88% 18%, rgba(255, 205, 102, .18), transparent 22rem),
-    radial-gradient(circle at 52% 105%, rgba(75, 255, 190, .14), transparent 23rem),
-    linear-gradient(160deg, #02050b 0%, #07111f 48%, #020308 100%);
-  padding: max(18px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  display: grid;
-  place-items: center;
-}
-
-.pageRoot::before,
-.starField {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.pageRoot::before {
-  background:
-    linear-gradient(rgba(255,255,255,.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
-  background-size: 86px 86px;
-  mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
-  opacity: .44;
-}
-
-.starField {
-  background:
-    radial-gradient(circle at 22% 17%, rgba(255,255,255,.52) 0 1px, transparent 2px),
-    radial-gradient(circle at 76% 12%, rgba(255,213,106,.48) 0 1px, transparent 2px),
-    radial-gradient(circle at 82% 68%, rgba(118, 183, 255, .34) 0 1px, transparent 2px),
-    radial-gradient(circle at 18% 82%, rgba(255,255,255,.28) 0 1px, transparent 2px);
-  filter: blur(.2px);
-  opacity: .58;
-}
-
-.ambientGlow {
-  position: absolute;
-  width: min(86vmin, 760px);
-  height: min(86vmin, 760px);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 35% 35%, rgba(255, 213, 106, .20), transparent 41%),
-    radial-gradient(circle at 65% 62%, rgba(75, 150, 255, .28), transparent 46%);
-  filter: blur(22px);
-  animation: prismaFloat 10s ease-in-out infinite alternate;
-  opacity: .9;
-}
-
-.phoneStage {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 560px);
-  display: grid;
-  place-items: center;
-}
-
-.phoneShell {
-  position: relative;
-  width: min(100%, 470px);
-  min-height: min(940px, calc(100vh - 36px));
-  border-radius: clamp(46px, 10vw, 74px);
-  padding: clamp(10px, 2.1vw, 14px);
-  background:
-    linear-gradient(135deg, rgba(219,235,255,.96), rgba(46,56,74,.72) 17%, rgba(0,0,0,.96) 48%, rgba(246,214,139,.86) 100%);
-  box-shadow:
-    0 42px 120px rgba(0,0,0,.66),
-    0 0 0 1px rgba(255,255,255,.18),
-    inset 0 0 0 1px rgba(255,255,255,.18);
-}
-
-.phoneShell::before {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border-radius: inherit;
-  border: 1px solid rgba(120, 174, 255, .38);
-  pointer-events: none;
-  box-shadow: inset 0 0 36px rgba(96, 154, 255, .18);
-}
-
-.phoneButtonLeft,
-.phoneButtonRight {
-  position: absolute;
-  width: 3px;
-  border-radius: 99px;
-  background: linear-gradient(#9ebcff, #182334 48%, #f1ca75);
-  opacity: .75;
-}
-
-.phoneButtonLeft {
-  left: -4px;
-  top: 28%;
-  height: 76px;
-}
-
-.phoneButtonRight {
-  right: -4px;
-  top: 34%;
-  height: 104px;
-}
-
-.phoneScreen {
-  position: relative;
-  min-height: min(918px, calc(100vh - 60px));
-  overflow: hidden;
-  border-radius: clamp(38px, 9vw, 62px);
-  background:
-    radial-gradient(circle at 14% 7%, rgba(58, 125, 255, .26), transparent 17rem),
-    radial-gradient(circle at 86% 78%, rgba(255, 205, 105, .20), transparent 17rem),
-    radial-gradient(circle at 50% 55%, rgba(94, 118, 174, .10), transparent 21rem),
-    linear-gradient(168deg, #030914 0%, #07111e 52%, #03050a 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.10),
-    inset 0 -50px 100px rgba(0,0,0,.42);
-}
-
-.phoneScreen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(105deg, rgba(255,255,255,.08), transparent 22%, transparent 78%, rgba(255,213,106,.08)),
-    radial-gradient(circle at 50% 100%, rgba(255,255,255,.12), transparent 17rem);
-  mix-blend-mode: screen;
-}
-
-.dynamicIsland {
-  position: absolute;
-  z-index: 3;
-  top: 16px;
-  left: 50%;
-  width: 128px;
-  height: 36px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: #02040a;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.12),
-    0 0 0 1px rgba(255,255,255,.10),
-    0 16px 34px rgba(0,0,0,.48);
-}
-
-.screenContent {
-  position: relative;
-  z-index: 2;
-  min-height: inherit;
-  display: grid;
-  align-content: center;
-  gap: clamp(16px, 3.4vh, 25px);
-  padding: clamp(72px, 9vh, 98px) clamp(24px, 5.5vw, 40px) clamp(30px, 5vh, 42px);
-}
-
-.brandPill {
-  justify-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid rgba(255, 213, 106, .38);
-  color: rgba(238, 247, 255, .88);
-  background:
-    linear-gradient(90deg, rgba(42, 226, 120, .13), rgba(255,255,255,.045) 38%, rgba(255, 213, 106, .08)),
-    rgba(2, 8, 18, .66);
-  border-radius: 999px;
-  padding: 10px 18px 10px 13px;
-  font-weight: 900;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  box-shadow:
-    0 0 36px rgba(255, 213, 106, .12),
-    inset 0 1px 0 rgba(255,255,255,.14);
-  backdrop-filter: blur(18px) saturate(130%);
-}
-
-.whatsappGlyph {
-  width: 32px;
-  height: 32px;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  display: inline-grid;
-  place-items: center;
-  color: #fff;
-  font-size: 1.05rem;
-  line-height: 1;
-  background:
-    radial-gradient(circle at 35% 30%, #d9ffe0, #42d86e 38%, #17843a 100%);
-  box-shadow:
-    0 0 18px rgba(55, 218, 105, .54),
-    inset 0 1px 0 rgba(255,255,255,.44);
-}
-
-.minimalHero {
-  text-align: center;
-  display: grid;
-  gap: 10px;
-}
-
-.brandMark {
-  justify-self: center;
-  width: min(320px, 72vw);
-  display: grid;
-  place-items: center;
-  gap: 9px;
-  margin: 0 0 4px;
-}
-
-.brandMark img {
-  width: clamp(132px, 32vw, 190px);
-  height: clamp(132px, 32vw, 190px);
-  object-fit: contain;
-  filter:
-    drop-shadow(0 0 28px rgba(82, 154, 255, .42))
-    drop-shadow(0 0 44px rgba(118, 91, 255, .26))
-    drop-shadow(0 0 26px rgba(255, 238, 195, .18));
-}
-
-.brandMark span {
-  color: rgba(255, 255, 255, .84);
-  font-size: clamp(2.55rem, 9vw, 4.55rem);
-  line-height: .9;
-  letter-spacing: .28em;
-  text-indent: .28em;
-  font-weight: 500;
-  text-shadow:
-    0 1px 0 rgba(255,255,255,.44),
-    0 18px 46px rgba(0,0,0,.62);
-}
-
-.minimalHero h1 {
-  margin: 0;
-  color: #fff0bd;
-  font-size: clamp(3.15rem, 10vw, 5.6rem);
-  line-height: .88;
-  letter-spacing: -.072em;
-  text-wrap: balance;
-  text-shadow:
-    0 3px 0 rgba(255,255,255,.06),
-    0 24px 70px rgba(0,0,0,.58),
-    0 0 32px rgba(255, 213, 106, .12);
-}
-
-.minimalHero p {
-  margin: 0 auto;
-  max-width: 380px;
-  color: #b7c6dc;
-  line-height: 1.48;
-  font-size: clamp(1rem, 2.9vw, 1.2rem);
-}
-
-.installCard,
-.compactCard {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  gap: clamp(14px, 2.7vh, 22px);
-}
-
-.selectorTopline {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  color: rgba(205, 218, 237, .78);
-  font-size: .78rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  font-weight: 900;
-}
-
-.selectorTopline i {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  background: #76ffb2;
-  box-shadow: 0 0 22px #76ffb2;
-}
-
-.platformChooserMinimal {
-  display: grid;
-  gap: clamp(14px, 2.4vh, 20px);
-}
-
-.platformOrbCard {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  min-height: clamp(132px, 18vh, 158px);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: clamp(28px, 6vw, 36px);
-  cursor: pointer;
-  color: #fff7df;
-  text-align: left;
-  padding: clamp(18px, 4.6vw, 24px);
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(16px, 4vw, 22px);
-  background:
-    radial-gradient(circle at 91% 52%, rgba(255,255,255,.18), transparent 20%),
-    linear-gradient(137deg, rgba(255,255,255,.13), rgba(255,255,255,.052));
-  box-shadow:
-    0 24px 70px rgba(0,0,0,.34),
-    inset 0 1px 0 rgba(255,255,255,.17),
-    inset 0 -1px 0 rgba(255,255,255,.06);
-  transform: translateY(0) scale(1);
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
-  backdrop-filter: blur(20px) saturate(140%);
-}
-
-.platformOrbCard[data-platform="android"] {
-  border-color: rgba(125, 189, 255, .42);
-  background:
-    radial-gradient(circle at 10% 20%, rgba(84, 139, 255, .28), transparent 26%),
-    radial-gradient(circle at 88% 50%, rgba(58, 255, 187, .24), transparent 30%),
-    linear-gradient(137deg, rgba(84, 120, 184, .25), rgba(255,255,255,.045));
-  box-shadow:
-    0 24px 70px rgba(0,0,0,.34),
-    0 0 44px rgba(74, 142, 255, .16),
-    inset 0 1px 0 rgba(255,255,255,.17);
-}
-
-.platformOrbCard[data-platform="ios"] {
-  border-color: rgba(255, 213, 106, .43);
-  background:
-    radial-gradient(circle at 13% 25%, rgba(255, 233, 164, .18), transparent 28%),
-    radial-gradient(circle at 91% 52%, rgba(255, 213, 106, .30), transparent 31%),
-    linear-gradient(137deg, rgba(255,255,255,.13), rgba(124, 101, 58, .08));
-  box-shadow:
-    0 24px 70px rgba(0,0,0,.34),
-    0 0 48px rgba(255, 213, 106, .15),
-    inset 0 1px 0 rgba(255,255,255,.17);
-}
-
-.platformOrbCard::before,
-.platformOrbCard::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-}
-
-.platformOrbCard::before {
-  inset: 0;
-  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.16) 46%, transparent 72%);
-  transform: translateX(-130%);
-  transition: transform .62s ease;
-}
-
-.platformOrbCard::after {
-  inset: 1px;
-  border-radius: inherit;
-  border: 1px solid rgba(255,255,255,.08);
-}
-
-.platformOrbCard:hover,
-.platformOrbCard:focus-visible,
-.platformOrbCard[data-selected="true"] {
-  outline: none;
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(255, 238, 190, .72);
-  box-shadow:
-    0 32px 80px rgba(0,0,0,.46),
-    0 0 76px rgba(255,213,106,.14),
-    inset 0 1px 0 rgba(255,255,255,.25);
-}
-
-.platformOrbCard:hover::before,
-.platformOrbCard:focus-visible::before,
-.platformOrbCard[data-selected="true"]::before {
-  transform: translateX(130%);
-}
-
-.orbIcon {
-  position: relative;
-  z-index: 1;
-  width: clamp(64px, 15vw, 84px);
-  height: clamp(64px, 15vw, 84px);
-  display: grid;
-  place-items: center;
-  border-radius: 24px;
-  background: rgba(255,255,255,.11);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.18),
-    0 18px 42px rgba(0,0,0,.30);
-}
-
-.androidGlyph,
-.appleGlyph {
-  position: relative;
-  display: block;
-  width: 42px;
-  height: 42px;
-  color: transparent;
-}
-
-.androidGlyph {
-  border-radius: 14px 14px 16px 16px;
-  background: linear-gradient(180deg, #d9ff7a, #6ed44e 60%, #2c8a27);
-  box-shadow: 0 0 22px rgba(138, 255, 91, .36), inset 0 1px 0 rgba(255,255,255,.45);
-}
-
-.androidGlyph::before,
-.androidGlyph::after,
-.appleGlyph::before,
-.appleGlyph::after {
-  content: "";
-  position: absolute;
-  display: block;
-}
-
-.androidGlyph::before {
-  left: 8px;
-  right: 8px;
-  top: -9px;
-  height: 14px;
-  border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, #d9ff7a, #77db51);
-  box-shadow:
-    -11px 24px 0 -8px #1c63c8,
-    11px 24px 0 -8px #1c63c8;
-}
-
-.androidGlyph::after {
-  width: 4px;
-  height: 16px;
-  top: -15px;
-  left: 9px;
-  border-radius: 999px;
-  background: #a8f36a;
-  box-shadow: 20px 0 0 #a8f36a;
-  transform: rotate(-22deg);
-}
-
-.appleGlyph {
-  border-radius: 48% 52% 46% 54% / 55% 55% 45% 45%;
-  background: linear-gradient(135deg, #fff8cc, #f0c15e 44%, #9f711f 100%);
-  box-shadow: 0 0 24px rgba(255,213,106,.42), inset 0 1px 0 rgba(255,255,255,.54);
-}
-
-.appleGlyph::before {
-  width: 16px;
-  height: 10px;
-  right: 2px;
-  top: -8px;
-  border-radius: 100% 0 100% 0;
-  background: linear-gradient(135deg, #edffb1, #cfa03e);
-  transform: rotate(-28deg);
-}
-
-.appleGlyph::after {
-  width: 12px;
-  height: 20px;
-  right: -4px;
-  top: 12px;
-  border-radius: 999px 0 0 999px;
-  background: rgba(5, 8, 14, .88);
-}
-
-.platformText {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-  display: grid;
-  gap: 5px;
-}
-
-.orbLabel {
-  color: #ffe3a0;
-  font-size: clamp(.74rem, 2.5vw, .92rem);
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-weight: 900;
-}
-
-.platformOrbCard strong {
-  display: block;
-  color: #fff3cf;
-  font-size: clamp(2.8rem, 12vw, 4.25rem);
-  line-height: .88;
-  letter-spacing: -.08em;
-  text-shadow: 0 18px 46px rgba(0,0,0,.48);
-}
-
-.platformArrow {
-  position: relative;
-  z-index: 1;
-  width: clamp(58px, 14vw, 74px);
-  height: clamp(58px, 14vw, 74px);
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  color: #f4fff8;
-  font-size: clamp(2rem, 6vw, 3rem);
-  border: 1px solid currentColor;
-  background: rgba(255,255,255,.065);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 0 34px rgba(255,255,255,.10);
-}
-
-.platformOrbCard[data-platform="android"] .platformArrow {
-  color: #9fffe1;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 0 42px rgba(66, 255, 187, .22);
-}
-
-.platformOrbCard[data-platform="ios"] .platformArrow {
-  color: #ffe6a0;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 0 42px rgba(255, 213, 106, .22);
-}
-
-.installContextNote {
-  margin: 0;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: 24px;
-  color: #c7d4e8;
-  background:
-    radial-gradient(circle at 8% 50%, rgba(45, 225, 124, .18), transparent 30%),
-    linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.032));
-  padding: 15px 16px;
-  line-height: 1.45;
-  box-shadow:
-    0 18px 42px rgba(0,0,0,.24),
-    inset 0 1px 0 rgba(255,255,255,.13);
-}
-
-.minimalMessage {
-  margin: 0;
-  border: 1px solid rgba(255, 213, 106, .26);
-  border-radius: 22px;
-  color: #fff1bf;
-  background: rgba(255, 213, 106, .08);
-  padding: 13px 16px;
-  line-height: 1.48;
-  text-align: center;
-}
-
-.installGuide {
-  display: grid;
-  gap: 10px;
-  border: 1px solid rgba(255, 255, 255, .13);
-  border-radius: 22px;
-  color: #d9e6f7;
-  background:
-    radial-gradient(circle at 12% 0%, rgba(118, 255, 178, .13), transparent 30%),
-    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.032));
-  padding: 14px 16px;
-  box-shadow:
-    0 18px 42px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(255,255,255,.12);
-  backdrop-filter: blur(18px) saturate(130%);
-}
-
-.installGuide[data-platform-guide="ios"] {
-  border-color: rgba(255, 213, 106, .22);
-  background:
-    radial-gradient(circle at 12% 0%, rgba(255, 213, 106, .14), transparent 32%),
-    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.032));
-}
-
-.installGuide strong {
-  color: #fff0bd;
-  font-size: .82rem;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-}
-
-.guideSteps {
-  margin: 0;
-  padding-left: 20px;
-  display: grid;
-  gap: 6px;
-  color: #c8d6e8;
-  font-size: .88rem;
-  line-height: 1.38;
-}
-
-.guideSteps li::marker {
-  color: #ffe3a0;
-  font-weight: 900;
-}
-
-.secondaryInstallActions {
-  display: flex;
-  justify-content: center;
-  min-height: 0;
-}
-
-.copyLinkButton {
-  appearance: none;
-  border: 0;
-  border-radius: 999px;
-  color: rgba(218, 230, 250, .76);
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  font-size: .82rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-
-.copyLinkButton:hover,
-.copyLinkButton:focus-visible {
-  color: #ffe3a0;
-  outline: none;
-}
-
-.hiddenDashboardLink {
-  justify-self: center;
-  min-width: min(290px, 100%);
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1px 13px;
-  align-items: center;
-  color: rgba(255,255,255,.76);
-  text-decoration: none;
-  border-radius: 999px;
-  padding: 8px 16px;
-}
-
-.hiddenDashboardLink span {
-  grid-row: 1 / span 2;
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  color: #d8e3f7;
-  border: 1px solid rgba(216,227,247,.36);
-  background: rgba(255,255,255,.035);
-}
-
-.hiddenDashboardLink strong {
-  color: #e8eef8;
-  font-size: clamp(1.45rem, 5vw, 2rem);
-  font-weight: 700;
-}
-
-.hiddenDashboardLink small {
-  color: rgba(216,227,247,.58);
-  font-size: .86rem;
-}
-
-.hiddenDashboardLink:hover,
-.hiddenDashboardLink:focus-visible {
-  color: #ffd56a;
-  outline: none;
-}
-
-.pageHero,
-.installHeader,
-.installStatusGrid,
-.installActions,
-.stepsGrid,
-.guideCard,
-.warning,
-.message,
-.heroLinks,
-.platformChooser,
-.platformCard {
-  display: none;
-}
-
-@keyframes prismaFloat {
-  from { transform: translate3d(-10%, -8%, 0) rotate(0deg) scale(1); }
-  to { transform: translate3d(10%, 6%, 0) rotate(18deg) scale(1.08); }
-}
-
-@media (max-width: 520px) {
-  .pageRoot {
-    padding: 0;
-    place-items: stretch;
-  }
-
-  .phoneStage,
-  .phoneShell,
-  .phoneScreen {
-    width: 100%;
-    min-height: 100vh;
-    border-radius: 0;
-  }
-
-  .phoneShell {
-    padding: 0;
-    background: #02050b;
-  }
-
-  .phoneShell::before,
-  .phoneButtonLeft,
-  .phoneButtonRight {
-    display: none;
-  }
-
-  .phoneScreen {
-    box-shadow: none;
-  }
-
-  .screenContent {
-    padding: max(72px, calc(env(safe-area-inset-top) + 58px)) 18px max(22px, env(safe-area-inset-bottom));
-    gap: 16px;
-  }
-
-  .brandPill {
-    font-size: .72rem;
-    letter-spacing: .11em;
-  }
-
-  .platformOrbCard {
-    min-height: 126px;
-    border-radius: 28px;
-    gap: 13px;
-  }
-
-  .orbIcon {
-    width: 62px;
-    height: 62px;
-    border-radius: 20px;
-  }
-
-  .androidGlyph,
-  .appleGlyph {
-    transform: scale(.88);
-  }
-
-  .platformArrow {
-    width: 52px;
-    height: 52px;
-  }
-}
-
-@media (max-height: 760px) {
-  .screenContent {
-    gap: 12px;
-    padding-top: 58px;
-    padding-bottom: 18px;
-  }
-
-  .brandMark img {
-    width: 112px;
-    height: 112px;
-  }
-
-  .brandMark span {
-    font-size: 2.4rem;
-  }
-
-  .minimalHero h1 {
-    font-size: 3rem;
-  }
-
-  .minimalHero p,
-  .selectorTopline,
-  .copyLinkButton {
-    font-size: .74rem;
-  }
-
-  .platformOrbCard {
-    min-height: 104px;
-    padding: 14px;
-  }
-
-  .orbIcon {
-    width: 54px;
-    height: 54px;
-  }
-
-  .androidGlyph,
-  .appleGlyph {
-    transform: scale(.76);
-  }
-
-  .platformOrbCard strong {
-    font-size: 2.35rem;
-  }
-
-  .installContextNote {
-    padding: 11px 13px;
-  }
-
-  .hiddenDashboardLink strong {
-    font-size: 1.25rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ambientGlow,
-  .platformOrbCard,
-  .platformOrbCard::before {
-    animation: none;
-    transition: none;
-  }
-}
-
-/* PRISMA install landing black surface */
-
 /* PRISMA Crystal Command Mobile: PWA install */
 .pageRoot {
+  --pwa-text: #fff8e7;
+  --pwa-muted: rgba(255, 248, 231, 0.72);
+  --pwa-line: rgba(255, 248, 231, 0.15);
+  --pwa-gold: #ffd977;
   min-height: 100svh;
+  width: 100%;
+  color: var(--pwa-text);
   background:
-    radial-gradient(circle at 12% 8%, rgba(100, 216, 255, 0.28), transparent 24rem),
-    radial-gradient(circle at 90% 6%, rgba(255, 216, 137, 0.24), transparent 22rem),
-    linear-gradient(180deg, #f5f8fc 0%, #eef3f8 56%, #e8f0f8 100%);
-  color: #102033;
+    linear-gradient(180deg, rgba(4, 9, 8, 0.3), rgba(4, 9, 8, 0.92)),
+    url("/backgrounds/prisma-mobile/appmovil-command-center-simon-spring.jpg");
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-items: start center;
+  padding: max(14px, env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom));
+  overflow-x: hidden;
+  font-family: "Aptos", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
 }
 
 .ambientGlow,
@@ -820,594 +27,222 @@
   display: none;
 }
 
-.phoneStage {
-  width: min(720px, 100%);
-  min-height: 100svh;
+.phoneStage,
+.minimalShell {
+  width: min(430px, 100%);
+  min-height: calc(100svh - 28px);
   display: grid;
-  align-items: start;
-  padding: 16px;
+  align-content: start;
 }
 
-.phoneShell {
+.phoneShell,
+.phoneScreen,
+.screenContent {
   width: 100%;
-  min-height: auto;
-  border: 1px solid rgba(36, 107, 254, 0.16);
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 22px 70px rgba(45, 74, 105, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  padding: 0;
-}
-
-.phoneScreen {
-  min-height: auto;
+  min-width: 0;
   border: 0;
-  border-radius: 28px;
+  border-radius: 0;
   background: transparent;
   box-shadow: none;
 }
 
 .screenContent {
-  gap: 14px;
-  padding: 18px;
+  display: grid;
+  gap: 12px;
 }
 
-.brandPill {
-  width: fit-content;
-  border: 1px solid rgba(36, 107, 254, 0.14);
-  background: rgba(255, 255, 255, 0.72);
-  color: #246bfe;
-  box-shadow: none;
+.brandPill,
+.installContextNote,
+.minimalMessage {
+  border: 1px solid var(--pwa-line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--pwa-muted);
+  background: rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(7px);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.minimalHero,
+.installCard,
+.compactCard {
+  border: 1px solid var(--pwa-line);
+  border-radius: 26px;
+  padding: 14px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.115), rgba(255, 255, 255, 0.045)),
+    rgba(6, 12, 10, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 20px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(7px) saturate(1.12);
 }
 
 .minimalHero {
-  gap: 8px;
-}
-
-.brandMark {
-  gap: 8px;
-}
-
-.brandMark img {
-  width: 64px;
-  height: 64px;
-}
-
-.brandMark span {
-  color: #102033;
-  font-size: 1.35rem;
-  letter-spacing: 0;
-}
-
-.minimalHero h1 {
-  color: #102033;
-  font-size: 2.15rem;
-  line-height: 1.02;
-  letter-spacing: 0;
-}
-
-.minimalHero p {
-  color: #31445a;
-  font-size: 0.95rem;
-}
-
-.installCard,
-.compactCard {
-  border: 1px solid rgba(57, 189, 248, 0.34);
-  border-radius: 24px;
-  background:
-    linear-gradient(150deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 255, 0.78)),
-    radial-gradient(circle at 90% 8%, rgba(57, 189, 248, 0.18), transparent 16rem);
-  color: #102033;
-  box-shadow: 0 18px 48px rgba(45, 74, 105, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-}
-
-.selectorTopline,
-.installContextNote,
-.minimalMessage,
-.hiddenDashboardLink small {
-  color: #31445a;
-}
-
-.platformChooserMinimal {
+  display: grid;
   gap: 10px;
 }
 
-.platformOrbCard {
-  min-height: 96px;
-  border: 1px solid rgba(36, 107, 254, 0.14);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.74);
-  color: #102033;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 12px 28px rgba(45, 74, 105, 0.1);
-}
-
-.platformOrbCard[data-platform="android"] {
-  border-color: rgba(34, 160, 107, 0.28);
-}
-
-.platformOrbCard[data-platform="ios"] {
-  border-color: rgba(243, 201, 107, 0.34);
-}
-
-.platformText strong {
-  color: #102033;
-  font-size: 1.75rem;
+.minimalHero h1 {
+  margin: 0;
+  color: var(--pwa-text);
+  font-size: clamp(1.65rem, 8vw, 2.35rem);
+  line-height: 0.98;
   letter-spacing: 0;
 }
 
-.orbLabel {
-  color: #246bfe;
-  letter-spacing: 0;
-}
-
-.platformArrow {
-  border-color: rgba(57, 189, 248, 0.34);
-  background: rgba(255, 255, 255, 0.58);
-  color: #246bfe;
-}
-
-.installGuide {
-  border-color: rgba(36, 107, 254, 0.16);
-  background: rgba(255, 255, 255, 0.74);
-  color: #102033;
-}
-
-.installGuide[data-platform-guide="ios"] {
-  border-color: rgba(243, 201, 107, 0.34);
-}
-
-.installGuide strong,
-.guideSteps li::marker {
-  color: #246bfe;
-}
-
-.guideSteps {
-  color: #31445a;
-}
-
-.copyLinkButton,
-.hiddenDashboardLink {
-  border-color: rgba(36, 107, 254, 0.22);
-  background: rgba(255, 255, 255, 0.72);
-  color: #246bfe;
-}
-
-.hiddenDashboardLink strong {
-  color: #102033;
-}
-
-/* PRISMA Crystal Command Mobile: states */
-.installCard[data-prisma-pwa-status="installed"],
-.compactCard[data-prisma-pwa-status="installed"] {
-  border-color: rgba(34, 160, 107, 0.34);
-}
-
-.installCard[data-prisma-pwa-status="unsupported"],
-.compactCard[data-prisma-pwa-status="unsupported"] {
-  border-color: rgba(224, 82, 82, 0.32);
-}
-
-/* PRISMA Crystal Command Mobile: responsive */
-@media (max-width: 560px) {
-  .phoneStage {
-    padding: 10px;
-  }
-
-  .phoneShell,
-  .phoneScreen,
-  .installCard,
-  .compactCard {
-    border-radius: 22px;
-  }
-
-  .screenContent {
-    padding: 14px;
-  }
-
-  .brandMark img {
-    width: 52px;
-    height: 52px;
-  }
-
-  .minimalHero h1 {
-    font-size: 1.78rem;
-  }
-
-  .platformOrbCard {
-    min-height: 88px;
-  }
-
-  .platformText strong {
-    font-size: 1.45rem;
-  }
-}
-
-/* PRISMA Crystal Command Mobile: PWA install */
-.minimalHero {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
+.minimalHero p,
+.installCard p,
+.installGuide,
+.guideSteps,
+.platformText,
+.selectorTopline {
+  margin: 0;
+  color: var(--pwa-muted);
+  font-size: 0.82rem;
+  line-height: 1.42;
 }
 
 .brandMark {
-  width: auto;
-  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  gap: 8px;
+  border: 1px solid var(--pwa-line);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--pwa-text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .brandMark img {
-  display: none;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
-.brandMark span {
-  font-size: 1.28rem;
-  letter-spacing: 0.18em;
-  text-indent: 0.18em;
+.installCard {
+  display: grid;
+  gap: 12px;
 }
 
-.minimalHero h1 {
-  font-size: 2.05rem;
-  line-height: 1.05;
-  letter-spacing: 0;
-}
-
-.minimalHero p {
-  font-size: 0.95rem;
-}
-
-@media (max-width: 560px) {
-  .minimalHero h1 {
-    font-size: 1.74rem;
-  }
-}
-
-/* BEGIN APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
-.pageRoot {
-  min-height: 100dvh;
-  overflow-x: clip;
-  overflow-y: auto;
-  color: var(--appmovil-cc-text);
-  background-color: var(--appmovil-cc-bg);
-  background-image:
-    radial-gradient(720px 420px at 12% 4%, rgba(190, 224, 255, .16), transparent 62%),
-    radial-gradient(600px 360px at 86% 7%, rgba(112, 182, 235, .15), transparent 62%),
-    linear-gradient(180deg, rgba(8, 15, 24, .06), rgba(8, 15, 24, .20) 52%, rgba(5, 10, 17, .30)),
-    var(--appmovil-cc-bg-image);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
-  place-items: start center;
-}
-
-.pageRoot::before {
-  opacity: .32;
-  background:
-    linear-gradient(rgba(255,255,255,.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-.ambientGlow {
-  width: min(92vmin, 560px);
-  height: min(92vmin, 560px);
-  opacity: .58;
-  filter: blur(20px);
-}
-
-.starField {
-  opacity: .30;
-  mix-blend-mode: screen;
-}
-
-.phoneStage {
-  width: min(100%, 430px);
+.installHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
 }
 
-.phoneShell {
-  width: min(100%, 392px);
-  min-height: auto;
-  border-radius: clamp(34px, 9vw, 48px);
-  padding: clamp(7px, 2vw, 10px);
-  background:
-    linear-gradient(135deg, rgba(219,235,255,.82), rgba(46,56,74,.54) 17%, rgba(0,0,0,.74) 48%, rgba(169,238,255,.28) 100%);
-  box-shadow: 0 28px 80px rgba(0,0,0,.48), 0 0 0 1px rgba(255,255,255,.18), inset 0 0 0 1px rgba(255,255,255,.14);
-}
-
-.phoneScreen,
-.installCard,
-.guideCard,
-.platformCard,
-.platformOrbCard,
-.minimalMessage,
-.warning {
-  color: var(--appmovil-cc-text);
-  border-color: var(--appmovil-cc-line);
-  background:
-    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, .080), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, .042), rgba(255, 255, 255, .010) 48%, rgba(255, 255, 255, .014)),
-    var(--appmovil-cc-panel);
-  box-shadow: var(--appmovil-cc-shadow);
-  backdrop-filter: blur(5px) saturate(126%) contrast(104%);
-  -webkit-backdrop-filter: blur(5px) saturate(126%) contrast(104%);
-}
-
-.phoneScreen {
-  border-radius: clamp(28px, 8vw, 40px);
-  min-height: auto;
-}
-
-.screenContent {
-  min-height: auto;
-  gap: 12px;
-  padding: clamp(16px, 5vw, 22px);
-}
-
-.minimalHero h1,
-.pageHero h1 {
-  color: var(--appmovil-cc-text);
-  font-size: clamp(2rem, 10vw, 3.6rem);
-  line-height: .92;
-  text-shadow: 0 1px 0 rgba(0,0,0,.34), 0 0 14px rgba(120,235,255,.18);
-}
-
-.minimalHero p,
-.pageHero p,
-.installHeader p,
-.guideSteps,
-.installContextNote,
-.platformText,
-.message,
-.minimalMessage {
-  color: var(--appmovil-cc-soft);
-}
-
-.brandPill,
+.installHeader span,
 .selectorTopline,
-.orbLabel,
-.installStatusGrid span {
-  color: var(--appmovil-cc-accent);
+.orbLabel {
+  color: rgba(255, 248, 231, 0.55);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.installActions,
-.secondaryInstallActions,
-.platformChooser,
+.installHeader strong {
+  color: var(--pwa-text);
+  overflow-wrap: anywhere;
+}
+
 .platformChooserMinimal,
-.stepsGrid,
-.installStatusGrid {
-  grid-template-columns: 1fr;
+.installStatusGrid,
+.secondaryInstallActions,
+.installActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.installActions button,
-.secondaryInstallActions a,
+.platformOrbCard,
 .copyLinkButton,
-.platformCard,
-.platformOrbCard {
-  min-height: 44px;
-}
-
-@media (max-width: 430px) {
-  .phoneShell {
-    width: 100%;
-  }
-  .screenContent {
-    padding: 16px;
-  }
-}
-/* END APPMOVIL_VISUAL_GRAFT_CC_LAB_V1_0307 */
-
-/* BEGIN APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
-.pageRoot {
-  overflow-x: clip;
-}
-.phoneStage,
-.phoneShell,
-.phoneScreen,
-.installCard,
-.guideCard,
-.platformCard,
-.platformOrbCard,
-.minimalMessage,
-.warning {
-  max-width: 100%;
-  overflow-x: clip;
-}
-.phoneScreen,
-.installCard,
-.guideCard,
-.platformCard,
-.platformOrbCard,
-.minimalMessage,
-.warning {
-  background:
-    radial-gradient(circle at 9% 0%, rgba(255, 255, 255, .070), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, .034), rgba(255, 255, 255, .010) 52%),
-    rgba(7, 16, 29, .22);
-}
-.phoneScreen :where(p, small, span, em),
-.installCard :where(p, small, span, em),
-.guideCard :where(p, small, span, em),
-.platformCard :where(p, small, span, em),
-.platformOrbCard :where(p, small, span, em),
-.minimalMessage,
-.warning {
-  text-shadow: 0 1px 1px rgba(0, 0, 0, .30);
-}
-@media (max-width: 430px) {
-  .phoneStage {
-    width: 100%;
-  }
-  .phoneShell {
-    width: 100%;
-    padding: 7px;
-  }
-  .screenContent {
-    padding: 14px;
-    gap: 10px;
-  }
-}
-/* END APPMOVIL_VISUAL_GRAFT2_POLISH_0307 */
-
-
-/* BEGIN MOVILGFT7_FIXED3140_0407 */
-.shell, .card, .installPanel, .offlinePanel, .actionGrid, .statusGrid, .featureGrid, .hero, .content, .main { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
-.card, .installPanel, .offlinePanel, .hero, .content, .main { inline-size: min(100%, 430px); margin-inline: auto; }
-.actionGrid, .statusGrid, .featureGrid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 118px), 1fr)); }
-.shell button, .shell a, .card *, .installPanel *, .offlinePanel * { max-width: 100%; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
-@supports not (overflow: clip) { .shell, .card, .installPanel, .offlinePanel, .actionGrid, .statusGrid, .featureGrid, .hero, .content, .main { overflow-x: hidden; } }
-/* END MOVILGFT7_FIXED3140_0407 */
-
-/* BEGIN MOVILPARITY1_CLOUDCTR_0407 */
-.pageRoot {
-  min-height: 100dvh;
-  overflow-x: clip;
-  padding: clamp(18px, 5vw, 25px) clamp(18px, 5vw, 22px);
-  background:
-    linear-gradient(180deg, rgba(18, 20, 32, 0.16), rgba(18, 20, 32, 0.46)),
-    var(--appmovil-cc-bg-image),
-    linear-gradient(180deg, #111927, #09111d 64%, #07101a);
-  background-size: cover;
-  background-position: center;
-  place-items: start center;
-}
-
-.phoneStage,
-.phoneShell,
-.phoneScreen {
-  width: min(100%, 444px);
-  max-width: 100%;
-}
-
-.phoneShell {
-  min-height: auto;
-  border-radius: 34px;
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.phoneShell::before,
-.phoneButtonLeft,
-.phoneButtonRight,
-.dynamicIsland {
-  display: none;
-}
-
-.phoneScreen {
-  min-height: auto;
-  overflow: visible;
-  border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(216, 236, 248, 0.18), rgba(10, 24, 38, 0.50)),
-    rgba(11, 26, 42, 0.44);
-  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.20);
-  border: 1px solid rgba(210, 236, 255, 0.20);
-  backdrop-filter: blur(22px) saturate(122%);
-  -webkit-backdrop-filter: blur(22px) saturate(122%);
-}
-
-.phoneScreen::after {
-  opacity: 0.58;
-}
-
-.screenContent {
-  min-height: auto;
-  align-content: start;
-  padding: clamp(20px, 6vw, 26px);
-  gap: 16px;
-}
-
-.brandPill,
 .hiddenDashboardLink,
-.selectorTopline,
-.installContextNote,
-.minimalMessage,
-.installGuide,
-.platformOrbCard {
-  color: rgba(249,253,255,0.94);
-  border-color: rgba(205,234,255,0.18);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(5,17,29,0.42)),
-    rgba(8,24,39,0.30);
-  box-shadow: 0 16px 42px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.13);
-  backdrop-filter: blur(18px) saturate(120%);
-  -webkit-backdrop-filter: blur(18px) saturate(120%);
+.installActions a,
+.secondaryInstallActions a,
+.secondaryInstallActions button {
+  appearance: none;
+  border: 1px solid var(--pwa-line);
+  border-radius: 18px;
+  min-width: 0;
+  padding: 11px;
+  color: var(--pwa-text);
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  display: grid;
+  gap: 5px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.minimalHero h1 {
-  color: #ffffff;
-  max-width: 8ch;
-  margin-inline: auto;
-  font-size: clamp(3rem, 14vw, 4.5rem);
-  line-height: 0.84;
-  letter-spacing: -0.08em;
-  text-shadow: 0 2px 0 rgba(255,255,255,0.12), 0 18px 44px rgba(0,0,0,0.38), 0 0 28px rgba(218,241,255,0.25);
+.copyLinkButton,
+.installActions a,
+/* PRISMA Crystal Command Mobile: states */
+.hiddenDashboardLink {
+  color: #1f1608;
+  background: linear-gradient(135deg, var(--pwa-gold), #fff0b7);
+  font-weight: 850;
 }
 
-.minimalHero p,
-.hiddenDashboardLink small,
-.installContextNote,
-.installGuide,
-.minimalMessage {
-  color: rgba(224,236,246,0.84);
+.hiddenDashboardLink {
+  position: static;
+  overflow: visible;
+  width: auto;
+  height: auto;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
 }
 
-.brandMark img {
-  width: clamp(72px, 22vw, 104px);
-  height: clamp(72px, 22vw, 104px);
-}
-
-.brandMark span,
-.hiddenDashboardLink strong {
-  color: rgba(255,255,255,0.94);
-  text-shadow: 0 10px 28px rgba(0,0,0,0.28);
-}
-
-.platformChooserMinimal {
-  gap: 12px;
-}
-
-.platformOrbCard {
-  min-height: 112px;
-  border-radius: 24px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 13px;
-  padding: 16px;
+.orbIcon,
+.androidGlyph,
+.appleGlyph,
+.whatsappGlyph {
+  width: 34px;
+  height: 34px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: var(--pwa-gold);
+  background: rgba(255, 255, 255, 0.09);
+  font-size: 1rem;
 }
 
 .platformArrow {
-  width: 48px;
-  height: 48px;
-  background: rgba(8, 24, 39, 0.30);
-  border-color: rgba(205,234,255,0.24);
+  color: var(--pwa-gold);
 }
 
-@media (max-width: 520px) {
+.guideSteps {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.installStatusGrid span {
+  border: 1px solid var(--pwa-line);
+  border-radius: 15px;
+  padding: 9px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--pwa-muted);
+  font-size: 0.74rem;
+}
+
+/* PRISMA Crystal Command Mobile: responsive */
+@media (max-width: 374px) {
   .pageRoot {
-    padding: 16px 12px;
+    padding-inline: 9px;
   }
 
-  .phoneStage,
-  .phoneShell,
-  .phoneScreen {
-    min-height: auto;
-    border-radius: 28px;
-  }
-
-  .screenContent {
-    padding: 18px;
-  }
-
-  .platformOrbCard {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .platformArrow {
-    width: 100%;
-    height: 42px;
+  .platformChooserMinimal,
+  .installStatusGrid,
+  .secondaryInstallActions,
+  .installActions {
+    grid-template-columns: 1fr;
   }
 }
-/* END MOVILPARITY1_CLOUDCTR_0407 */
