@@ -63,7 +63,7 @@ function modeAdminBridge(): void {
   assert(server.includes("is_local_operator_request()"), "Mutating bridge routes must enforce local operator requests.");
   assert(bridge.includes("X-Prisma-Admin-Token"), "Backend bridge must send admin token server-side.");
   assert(bridge.includes("_read_admin_token_for_bridge()"), "Backend bridge must read token only inside bridge action path.");
-  assert(ui.includes("LICFLOW4 Admin Bridge"), "Cloud Command Center does not render LICFLOW4 bridge status.");
+  assert(ui.includes("License Admin Bridge"), "Cloud Command Center does not render License Admin Bridge status.");
   for (const action of ["activate", "refresh", "revoke"]) {
     assert(ui.includes(`bridgeForm("${action}"`), `Cloud Command Center lacks ${action} bridge form.`);
   }
@@ -129,12 +129,50 @@ function modeDiagnosticsSanitized(): void {
   const server = readText(cloudCtr("internal/py/prisma_unified_lab_v3.py"));
   const bridge = readText(cloudCtr("internal/py/licflow4_admin_bridge.py"));
   assert(server.includes('"licflow4AdminBridge": licflow4_admin_bridge.diagnostics_payload()'), "Diagnostics export does not include LICFLOW4 bridge summary.");
+  assert(server.includes('"licenseAdminBridge": licflow4_admin_bridge.diagnostics_payload()'), "Diagnostics export does not include canonical License Admin Bridge summary.");
   assert(bridge.includes('"secretsExposed": False'), "Bridge diagnostics must assert secretsExposed false.");
   assert(!bridge.includes('"token": token'), "Bridge must not serialize raw token.");
   assert(!server.includes("ADMIN_TOKEN.txt"), "Server diagnostics must not expose token file names.");
   pass("verify:licflow4:diagnostics-sanitized", {
     diagnostics: "licflow4AdminBridge",
     secretsExposed: false
+  });
+}
+
+function modeCanonicalNaming(): void {
+  const server = readText(cloudCtr("internal/py/prisma_unified_lab_v3.py"));
+  const bridge = readText(cloudCtr("internal/py/licflow4_admin_bridge.py"));
+  const ui = readText(cloudCtr("internal/web/cloud_command_center.js"));
+  const html = readText(cloudCtr("internal/web/cloud_command_center.html"));
+  const config = readText(cloudCtr("internal/config/cloud_saas.json"));
+  for (const token of [
+    "Prisma Cloud Center",
+    "Cloud License Gateway",
+    "License Admin Bridge",
+    "Simulation (Dry Run)",
+    "Confirmed License Operation",
+    "License Route Map",
+    "License Operation Audit",
+    "License Diagnostics",
+    "Admin Token Status"
+  ]) {
+    assert(`${server}\n${bridge}\n${ui}\n${html}\n${config}`.includes(token), `Missing canonical operator label ${token}`);
+  }
+  assert(!ui.includes('panel("LICFLOW4 Admin Bridge"'), "UI still renders old LICFLOW4 Admin Bridge panel title.");
+  assert(!ui.includes('panel("LICFLOW3 live routes"'), "UI still renders old LICFLOW3 live routes panel title.");
+  for (const token of ["tokenMode", "mutationMode", "lastSimulationAt", "lastConfirmedOperationAt", "lastResultCode", "upstreamReachable", "operatorChecklist", "safeToMutate", "safeToMutateReason", "safeToMutateChecks"]) {
+    assert(bridge.includes(token), `Bridge status missing operator readiness field ${token}`);
+  }
+  assert(bridge.includes('"secretsExposed": False'), "Bridge diagnostics must explicitly report secretsExposed false.");
+  assert(bridge.includes('def _safe_to_mutate_state('), "Bridge safeToMutate must be calculated by helper, not hardcoded as decorative false.");
+  assert(!bridge.includes('"safeToMutate": False,'), "Bridge safeToMutate must not be hardcoded to false in status.");
+  assert(bridge.includes('"safeToMutateReason"') && bridge.includes('"safeToMutateChecks"'), "Bridge status must explain safeToMutate gates.");
+    assert(bridge.includes('if dry_run:') && bridge.includes('ADMIN_ACTION_CONFIRMATION_REQUIRED') && bridge.includes('REVOKE_CONFIRMATION_REQUIRED'), "Bridge must keep simulation separate from confirmed operation gates.");
+  pass("verify:licflow4:canonical-naming", {
+    displayName: "Prisma Cloud Center",
+    cloudGateway: "Cloud License Gateway",
+    adminBridge: "License Admin Bridge",
+    simulationFirst: true
   });
 }
 
@@ -167,7 +205,8 @@ const modes: Record<string, () => void> = {
   "no-token-frontend": modeNoTokenFrontend,
   confirmations: modeConfirmations,
   "diagnostics-sanitized": modeDiagnosticsSanitized,
-  "no-autorun-mutations": modeNoAutorunMutations
+  "no-autorun-mutations": modeNoAutorunMutations,
+  "canonical-naming": modeCanonicalNaming
 };
 
 const run = modes[mode];

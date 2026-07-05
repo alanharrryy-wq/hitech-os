@@ -1,13 +1,14 @@
 {
   "contractVersion": 1,
   "lab": {
-    "name": "Prisma Cloud Ctr",
+    "name": "Prisma Cloud Center",
+    "displayName": "Prisma Cloud Center",
     "mode": "PRISMA_CLOUD_CTR",
     "host": "127.0.0.1",
     "port": 3160,
     "themeInheritance": false,
     "noTouchPolicy": "Never modifies protected current Control Center",
-    "protectedCurrentPath": "apps\\terminal-de-venta-system\\prisma-control-center",
+    "protectedCurrentPath": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
     "outDir": "F:\\descargasf"
   },
   "themeTokens": {
@@ -19,8 +20,9 @@
   "modules": [
     {
       "id": "cloud-saas",
-      "name": "PRISMA Cloud",
-      "role": "LICFLOW3 Cloud Semilla + license operations",
+      "name": "Prisma Cloud Center",
+      "role": "Cloud License Gateway + License Operations",
+      "displayRole": "Cloud License Gateway + License Operations",
       "port": 3160,
       "portLabel": "app.hitechrts.com",
       "directUrl": "https://app.hitechrts.com",
@@ -41,10 +43,12 @@
         "licenseOps"
       ],
       "statusLabel": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE",
+      "statusDisplay": "Cloud License Gateway: Live",
       "qualityScope": [
         "cloud",
         "adminTokenPresenceOnly",
         "licflow4AdminBridge",
+        "licenseAdminBridge",
         "licenseOpsReadOnly"
       ],
       "healthKind": "cloud"

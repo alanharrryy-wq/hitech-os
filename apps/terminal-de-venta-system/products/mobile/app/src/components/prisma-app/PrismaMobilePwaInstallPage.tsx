@@ -3,10 +3,12 @@ import styles from "./prisma-mobile-pwa.module.css";
 
 type PrismaMobilePwaInstallPageProps = {
   mode?: "install" | "offline";
+  setupCode?: string;
 };
 
-export function PrismaMobilePwaInstallPage({ mode = "install" }: PrismaMobilePwaInstallPageProps) {
+export function PrismaMobilePwaInstallPage({ mode = "install", setupCode = "" }: PrismaMobilePwaInstallPageProps) {
   const offline = mode === "offline";
+  const setupHref = setupCode ? `/prisma-app/setup?code=${encodeURIComponent(setupCode)}` : "/prisma-app/setup";
 
   return (
     <main
@@ -44,6 +46,9 @@ export function PrismaMobilePwaInstallPage({ mode = "install" }: PrismaMobilePwa
               </header>
 
               <PrismaMobilePwaInstallCard />
+              <a className={styles.hiddenDashboardLink} href={setupHref} aria-label="Abrir Prisma Customer Setup para reclamar Mobile Companion Slot">
+                Prisma Customer Setup
+              </a>
             </div>
           </div>
         </div>

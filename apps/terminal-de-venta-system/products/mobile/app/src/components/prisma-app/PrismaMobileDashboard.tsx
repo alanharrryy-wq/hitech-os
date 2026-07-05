@@ -194,9 +194,9 @@ export function PrismaMobileDashboard() {
               <img src="/prisma-mobile-premium-mark.svg" alt="" />
             </span>
             <div className={styles.brandText}>
-              <p>PRISMA</p>
-              <h1 id="prisma-mobile-dashboard-title">Crystal Command</h1>
-              <span>Supervision operativa movil</span>
+              <p>Mobile operations · 3140</p>
+              <h1 id="prisma-mobile-dashboard-title">Prisma Mobile Ctr</h1>
+              <span>Supervision operativa movil conectada</span>
             </div>
           </div>
           <div className={styles.brandMeta}>
@@ -207,19 +207,25 @@ export function PrismaMobileDashboard() {
           </div>
         </header>
 
-        <section className={styles.crystalFirstViewport} aria-label="Resumen operativo PRISMA Crystal Command" data-prisma-zone="mobile-crystal-first-viewport">
+        {/* MOVILPARITY1_CLOUDCTR_0407: visual parity tabs, anchors only, no new features. */}
+        <nav className={styles.parityTabRail} aria-label="Navegacion primaria movil">
+          <a href="#mobile-inicio">Command</a>
+          <a href="#mobile-actions">Acciones</a>
+          <a href="#mobile-supervisor">Supervisor</a>
+        </nav>
+
+        <section id="mobile-inicio" className={styles.crystalFirstViewport} aria-label="Resumen operativo PRISMA Crystal Command" data-prisma-zone="mobile-crystal-first-viewport">
           <div className={styles.crystalDecisionHeader}>
             <div>
-              <span>Resumen operativo</span>
-              <h2>{hero.headline}</h2>
-              <p>{hero.subline}</p>
+              <span>Inicio</span>
+              <h2>¿Qué quieres hacer?</h2>
+              <strong className={styles.parityConnectedHeadline}>{hero.headline}</strong>
+              <p>Acciones claras: revisar operación, clientes, alertas, inventario y soporte conectado sin leer JSON.</p>
             </div>
             <span className={`${styles.statusChip} ${healthToneClass[hero.health]}`} data-prisma-zone={readinessZone(readiness.level)}>
               {readiness.label}
             </span>
           </div>
-
-          <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="home" />
 
           <div className={styles.crystalQuickRead} data-prisma-zone="mobile-kpi-grid">
             <article data-prisma-zone="mobile-primary-metric">
@@ -259,7 +265,7 @@ export function PrismaMobileDashboard() {
             </div>
           </div>
 
-          <section className={styles.crystalOperationalDock} aria-label="Acciones verificables del Bloque 1" data-prisma-zone="mobile-block1-visual-priority">
+          <section id="mobile-actions" className={styles.crystalOperationalDock} aria-label="Acciones verificables del Bloque 1" data-prisma-zone="mobile-block1-visual-priority">
             <article>
               <span>Cuenta</span>
               <strong>{account.customerName}</strong>
@@ -295,6 +301,14 @@ export function PrismaMobileDashboard() {
               </div>
             </article>
           </section>
+
+          <details id="mobile-supervisor" className={styles.connectedSupervisorDisclosure}>
+            <summary>
+              <span>Supervisor conectado</span>
+              <strong>Crystal Command completo</strong>
+            </summary>
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="home" />
+          </details>
 
           <details className={styles.mobileContextDisclosure}>
             <summary>

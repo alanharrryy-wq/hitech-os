@@ -379,3 +379,25 @@
 .obsidian, .silver, .graphite, .glassPlate, .statusCard, .heroCard, .radarCard, .timelineCard, .evidenceCard { color: var(--appmovil-cc-text, inherit); background-color: color-mix(in srgb, var(--appmovil-cc-panel, rgba(7,16,29,.18)) 82%, transparent); border-color: var(--appmovil-cc-line, rgba(205,234,255,.16)); }
 @supports not (overflow: clip) { .multiContextRoot, .contextDeck, .glassPlate, .contextRail, .statusQuad, .commandGrid, .selectorStack, .recentContexts, .sourceMatrix { overflow-x: hidden; } }
 /* END MOVILGFT7_FIXED3140_0407 */
+
+/* BEGIN MOVILPARITY1_CLOUDCTR_0407 */
+.multiContextSwitcher,
+.contextSwitcher,
+.themeRail,
+.orbitalAura {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.themeRail,
+.orbitalAura {
+  border-color: rgba(205,234,255,0.18);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(8,24,39,0.28)),
+    rgba(8,24,39,0.24);
+  box-shadow: 0 16px 42px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+}
+/* END MOVILPARITY1_CLOUDCTR_0407 */

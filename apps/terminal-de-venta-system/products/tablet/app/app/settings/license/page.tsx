@@ -47,6 +47,7 @@ export default async function TabletLicensePage() {
         <main className={styles.pageStack} data-prisma-license-client-view="readonly">
           <QuickActionGrid label="Acciones rapidas de licencia" density="wide">
             <QuickActionTile title="Importar licencia" description="La importación no se ejecuta desde la vista cliente." icon="save" tone="neutral" deferredReason="Pendiente: activación e importación pertenecen al flujo administrativo." owner="license" kind="deferred-create" />
+            <QuickActionTile title="Prisma Customer Setup" description="Abrir Setup Link o Setup Code para reclamar Tablet POS Slot." actionLabel="Setup" icon="settings" tone="license" href="/setup" owner="license" />
             <QuickActionTile title="Contactar soporte" description="Abre el detalle visible para compartir estado de equipo." actionLabel="Soporte" icon="users" tone="license" href="#license-support" owner="license" />
             <QuickActionTile title="Exportar respaldo" description="Revisa respaldo offline y archivos locales." actionLabel="Respaldo" icon="save" tone="sync" href="/offline" owner="offline" />
             <QuickActionTile title="Detalles para soporte" description="Estado, asignación, vigencia y origen de licencia." actionLabel="Ver detalle" icon="settings" tone="jewel" href="#license-support" owner="license" />

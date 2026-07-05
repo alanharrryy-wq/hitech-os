@@ -174,3 +174,23 @@
 .shell :global(.premiumTabRail), .shell :global(.themeRail), .shell :global([data-mobile-rail]), .shell :global([data-command-rail]) { width: 100%; max-width: 100%; min-width: 0; overflow: visible; }
 @supports not (overflow: clip) { .shell, .content { overflow-x: hidden; } }
 /* END MOVILGFT7_FIXED3140_0407 */
+
+/* BEGIN MOVILPARITY1_CLOUDCTR_0407 */
+.shell {
+  color: var(--appmovil-cc-text);
+  background-color: #09111d;
+  background-image:
+    linear-gradient(180deg, rgba(18, 20, 32, 0.16), rgba(18, 20, 32, 0.46)),
+    var(--appmovil-cc-bg-image),
+    linear-gradient(180deg, #111927, #09111d 64%, #07101a);
+  background-size: cover;
+  background-position: center;
+  overflow-x: clip;
+}
+
+.content {
+  inline-size: min(100%, 444px);
+  max-inline-size: 100%;
+  padding-inline: clamp(12px, 4vw, 20px);
+}
+/* END MOVILPARITY1_CLOUDCTR_0407 */
