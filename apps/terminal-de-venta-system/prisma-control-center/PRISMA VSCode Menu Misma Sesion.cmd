@@ -1,4 +1,5 @@
 @echo off
+REM PRISMA_VSCODE_MENU_FAST_IGNIT_FOLDER_OPEN
 setlocal
 set "PS1=%~dp0PRISMA VSCode Menu Misma Sesion.ps1"
 

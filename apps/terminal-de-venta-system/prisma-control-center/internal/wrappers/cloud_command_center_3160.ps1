@@ -1,4 +1,4 @@
-# PRISMA_CLOUD_COMMAND_CENTER_3160_WRAPPER_V4_HASH_SPLAT_SAFE
+# PRISMA_CLOUD_COMMAND_CENTER_3160_WRAPPER_V5_VSCODE_FOREGROUND_SAFE
 param(
   [switch]$Foreground,
   [switch]$Detached,
@@ -47,7 +47,7 @@ $launcherParams = @{
   Profile = "cloud-command-center-3160"
 }
 
-# Default homologado del 3160: misma terminal, foreground y sin navegador automatico.
+# Default homologado del 3160: misma terminal, foreground, sin navegador automatico y reset de puerto delegado a _launcher_common.ps1.
 if ($Detached) {
   $launcherParams["Detached"] = $true
 } else {
