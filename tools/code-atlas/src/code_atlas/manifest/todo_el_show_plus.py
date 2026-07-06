@@ -106,3 +106,13 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+# CATLAS_OPERATIONAL_V3_TODO_EL_SHOW_PLUS_BEGIN
+TODO_EL_SHOW_PLUS_OPERATIONAL_EVIDENCE_V3={
+  "id":"operational_evidence_atlas_v3",
+  "status":"source_ready_not_production_certified",
+  "monolith_dependency":False,
+  "entrypoints":["code_atlas.operational.runner:run_operational_atlas","code_atlas.operational.cli:main"],
+  "hard_rules":["ERD = structure","Operational Evidence = row-level evidence","Production Gate = certification","unknown_missing_provenance = no green","Multi-Tenant Leakage Guard blocks without real tenant/scope contract","Do not touch tools/code-atlas/code-atlas.py without explicit authorization"]
+}
+# CATLAS_OPERATIONAL_V3_TODO_EL_SHOW_PLUS_END
