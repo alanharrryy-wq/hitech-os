@@ -68,9 +68,9 @@ export function normalizeSalesToday(payload: unknown, config: MobileDataPlaneCon
   const totalSalesCents = readCents(record, ["totalSalesCents", "netSalesCents", "totalCents", "amountCents"], sales.reduce((sum, sale) => sum + sale.totalCents, 0));
   const tickets = readNonNegativeInt(record, ["tickets", "ticketCount", "transactions"], sales.length);
   const averageTicketCents = tickets > 0 ? Math.round(totalSalesCents / tickets) : 0;
-  return { sales, totalSalesCents, tickets, averageTicketCents, hourlyBuckets: buildHourlyBuckets(sales), topCategory: topCategory(sales), sourceLabel: "Tablet POS" };
+  return { sales, totalSalesCents, tickets, averageTicketCents, hourlyBuckets: buildHourlyBuckets(sales), topCategory: topCategory(sales), sourceLabel: "Tablet POS", recentActivity: null };
 }
 
 export function emptySalesToday(): CanonicalSalesToday {
-  return { sales: [], totalSalesCents: 0, tickets: 0, averageTicketCents: 0, hourlyBuckets: [], topCategory: "Esperando ventas reales", sourceLabel: "sin ventas registradas" };
+  return { sales: [], totalSalesCents: 0, tickets: 0, averageTicketCents: 0, hourlyBuckets: [], topCategory: "Sin categoría dominante", sourceLabel: "sin ventas registradas", recentActivity: null };
 }

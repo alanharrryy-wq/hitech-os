@@ -103,9 +103,9 @@ export const chartRuntimeDataStatus: LabChartDataStatus = runtimeSnapshot.schema
       : "invalid";
 
 export const chartRuntimeFreshnessLabel = chartRuntimeDataStatus === "invalid"
-  ? "Invalid Chart Lab runtime snapshot metadata; charts fall back to shared deterministic mocks and no browser DB access is used."
+  ? "Invalid Chart Lab runtime snapshot metadata; charts fall back to shared reference data and no browser DB access is used."
   : chartRuntimeSnapshotAvailable
     ? hasRuntimeGovernanceSource
       ? `SQLite runtime snapshot generated ${runtimeSnapshot.meta?.generatedAt ?? runtimeSnapshot.generatedAt ?? "unknown"} from read-only local DB sources; no browser DB access.`
       : `SQLite runtime snapshot generated ${runtimeSnapshot.meta?.generatedAt ?? runtimeSnapshot.generatedAt ?? "unknown"} from read-only Tablet SQLite; PC/canonical DB are optional and currently unknown, so PC/Mobile charts are partial adapter-ready derivatives; no browser DB access.`
-    : "Shared deterministic mock; run tools/prisma/prisma_chart_runtime_snapshot.py --collect-only to refresh a local SQLite runtime snapshot.";
+    : "Shared deterministic reference data; run tools/prisma/prisma_chart_runtime_snapshot.py --collect-only to refresh a local SQLite runtime snapshot.";

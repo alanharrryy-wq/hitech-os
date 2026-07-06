@@ -214,6 +214,16 @@ export const PrismaMobileSalesTodayPayloadSchema = z.object({
   averageTicketLabel: z.string().min(1),
   deltaAgainstYesterday: z.string().min(1),
   strongCategory: z.string().min(1),
+  recentActivity: z.object({
+    label: z.string().min(1),
+    totalSalesCents: z.number().int().nonnegative(),
+    totalSalesLabel: z.string().min(1),
+    tickets: z.number().int().nonnegative(),
+    averageTicketCents: z.number().int().nonnegative(),
+    averageTicketLabel: z.string().min(1),
+    lastSaleAt: z.string().nullable(),
+    sourceLabel: z.string().min(1)
+  }).nullable().default(null),
   timeline: z.array(PrismaMobileSalesPointSchema)
 });
 

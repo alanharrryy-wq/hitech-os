@@ -1,16 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { getPrismaMobileDataReadiness, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
 import { sourceLabel } from "@/lib/prisma-app/prisma-mobile-api-client";
 import { formatRelativeFetchLabel } from "@/lib/prisma-app/prisma-mobile-formatters";
-import { PrismaMobileCommandCenter } from "./PrismaMobileCommandCenter";
-import { PrismaMobileActionInbox } from "./PrismaMobileActionInbox";
-import { PrismaMobileDailyBrief } from "./PrismaMobileDailyBrief";
-import { PrismaMobileDecisionLedger } from "./PrismaMobileDecisionLedger";
-import { PrismaMobilePulseTimeline } from "./PrismaMobilePulseTimeline";
-import { PrismaMobileHealthRadar } from "./PrismaMobileHealthRadar";
 import styles from "./prisma-mobile-dashboard.module.css";
 
 type LoadState = "idle" | "loading" | "ready" | "refreshing" | "error";
@@ -30,8 +24,6 @@ type Props = {
   loadState: LoadState;
   onRefresh: () => void;
   onClearCache: () => void;
-  systemCrystalHome: ReactNode;
-  systemContextSwitcher: ReactNode;
 };
 
 const TAB_ORDER: PremiumTabId[] = ["inicio", "ventas", "operacion", "alertas", "stock", "sistema"];
@@ -115,7 +107,7 @@ function PrismaMobileReadinessPanel({ clientSnapshot }: { clientSnapshot: Prisma
   );
 }
 
-export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadState, onRefresh, onClearCache, systemCrystalHome, systemContextSwitcher }: Props) {
+export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadState, onRefresh, onClearCache }: Props) {
   const [activeTab, setActiveTab] = useState<PremiumTabId>(() => initialTabFromHash());
   const snapshot = clientSnapshot.snapshot;
   const readiness = getPrismaMobileDataReadiness(snapshot);
@@ -162,13 +154,14 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
     };
   }, []);
 
+  const recent = snapshot.salesToday.recentActivity;
   const tabs = useMemo(() => ([
-    { id: "inicio" as const, label: "Inicio", eyebrow: "INICIO", title: "Pulso movil del negocio", detail: `${sourceLabel(clientSnapshot.source)} · ${readiness.sourceSummary}`, badge: snapshot.summary.urgentAlerts > 0 ? snapshot.summary.urgentAlerts.toString() : "ok" },
-    { id: "ventas" as const, label: "Ventas", eyebrow: "VENTAS", title: "Ventas visibles", detail: snapshot.salesToday.tickets > 0 ? "Actividad real disponible en snapshot." : "Sin ventas reales disponibles todavia.", badge: snapshot.salesToday.tickets.toString() },
-    { id: "operacion" as const, label: "Operacion", eyebrow: "OPERACION", title: "Operacion", detail: "Tablet, PC, Mobile y sync en una matriz corta.", badge: operations.filter((item) => item.tone !== "sano").length > 0 ? operations.filter((item) => item.tone !== "sano").length.toString() : "ok" },
-    { id: "alertas" as const, label: "Alertas", eyebrow: "ALERTAS", title: "Alertas", detail: snapshot.alerts.counts.total > 0 ? "Priorizadas por severidad y siguiente accion." : "Sin alertas activas.", badge: snapshot.alerts.counts.total > 0 ? snapshot.alerts.counts.total.toString() : "ok" },
-    { id: "stock" as const, label: "Stock", eyebrow: "STOCK", title: "Stock operativo", detail: visibleStock.length > 0 ? "Senales de inventario disponibles." : "Stock movil pendiente de Tablet POS.", badge: urgentStock.toString() },
-    { id: "sistema" as const, label: "Sistema", eyebrow: "SISTEMA", title: "Sistema", detail: "Contratos, fuente y diagnostico subordinados.", badge: syncSignals > 0 ? syncSignals.toString() : "ok" }
+    { id: "inicio" as const, label: "Inicio", eyebrow: "INICIO", title: "Pulso móvil del negocio", detail: `${sourceLabel(clientSnapshot.source)} · ${readiness.sourceSummary}`, badge: snapshot.summary.urgentAlerts > 0 ? snapshot.summary.urgentAlerts.toString() : "ok" },
+    { id: "ventas" as const, label: "Ventas", eyebrow: "VENTAS", title: "Ventas visibles", detail: snapshot.salesToday.tickets > 0 ? "Actividad disponible en el periodo actual." : recent && recent.tickets > 0 ? `Hoy sin tickets; ${recent.label} con actividad.` : "Sin ventas cerradas en la lectura disponible.", badge: snapshot.salesToday.tickets > 0 ? snapshot.salesToday.tickets.toString() : recent?.tickets?.toString() ?? "0" },
+    { id: "operacion" as const, label: "Operación", eyebrow: "OPERACIÓN", title: "Operación", detail: "Tablet, PC, Mobile y sync en una matriz corta.", badge: operations.filter((item) => item.tone !== "sano").length > 0 ? operations.filter((item) => item.tone !== "sano").length.toString() : "ok" },
+    { id: "alertas" as const, label: "Alertas", eyebrow: "ALERTAS", title: "Alertas", detail: snapshot.alerts.counts.total > 0 ? "Priorizadas por severidad y siguiente acción." : "Sin alertas activas.", badge: snapshot.alerts.counts.total > 0 ? snapshot.alerts.counts.total.toString() : "ok" },
+    { id: "stock" as const, label: "Stock", eyebrow: "STOCK", title: "Stock operativo", detail: visibleStock.length > 0 ? "Señales de inventario disponibles." : "Stock móvil pendiente de fuente operativa.", badge: urgentStock.toString() },
+    { id: "sistema" as const, label: "Sistema", eyebrow: "SISTEMA", title: "Sistema", detail: "Fuente, estado y diagnóstico subordinados.", badge: syncSignals > 0 ? syncSignals.toString() : "ok" }
   ]), [operations, readiness.headline, snapshot, syncSignals, urgentStock, visibleStock.length]);
 
   const activeIndex = TAB_ORDER.indexOf(activeTab);
@@ -210,8 +203,9 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
           <div className={styles.screenGrid}>
             <section className={styles.metricStrip} data-prisma-zone="mobile-kpi-grid">
               <CompactMetric primary label="Venta hoy" value={snapshot.salesToday.totalSalesLabel} detail={`${snapshot.salesToday.tickets} tickets`} />
+              {recent ? <CompactMetric label={recent.label} value={recent.totalSalesLabel} detail={`${recent.tickets} tickets`} /> : null}
               <CompactMetric label="Alertas" value={snapshot.alerts.counts.total} detail={snapshot.alerts.counts.total > 0 ? "activas" : "sin urgentes"} />
-              <CompactMetric label="Stock" value={urgentStock} detail={urgentStock > 0 ? "senales" : "estable"} />
+              <CompactMetric label="Stock" value={urgentStock} detail={urgentStock > 0 ? "señales" : "estable"} />
             </section>
             <section className={styles.primaryInsightCard}>
               <span>Insight principal</span>
@@ -232,18 +226,19 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
               <CompactMetric primary label="Venta hoy" value={snapshot.salesToday.totalSalesLabel} />
               <CompactMetric label="Tickets" value={snapshot.salesToday.tickets} />
               <CompactMetric label="Ticket prom." value={snapshot.salesToday.averageTicketLabel} />
+              {recent ? <CompactMetric label={recent.label} value={recent.totalSalesLabel} detail={`${recent.tickets} tickets`} /> : null}
             </section>
             <section className={styles.salesPulseCard}>
               <header>
                 <span>Ritmo de venta</span>
-                <strong>{snapshot.salesToday.tickets > 0 ? snapshot.salesToday.strongCategory : "Sin ventas reales disponibles todavia"}</strong>
+                <strong>{snapshot.salesToday.tickets > 0 ? snapshot.salesToday.strongCategory : recent ? "Última actividad disponible" : "Sin ventas cerradas en la lectura disponible"}</strong>
               </header>
               <div className={styles.miniBars} aria-label="Ritmo de venta por horario">
                 {visibleSales.map((point) => <i key={point.hour} style={{ height: point.height }} title={`${point.label}: ${point.amount}`} />)}
               </div>
             </section>
             <section className={styles.sourceSummaryCard}>
-              <span>Ultimo dato confiable</span>
+              <span>Último dato confiable</span>
               <strong>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}</strong>
               <p>{readiness.sourceSummary}</p>
             </section>
@@ -255,17 +250,17 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
             <section className={styles.statusMatrix}>
               <article><span>Tablet</span><strong>{snapshot.summary.account.tabletDeviceLabel}</strong><small>Base operativa local</small></article>
               <article><span>PC</span><strong>{readiness.pcState === "connected" ? "Conectado" : "No disponible"}</strong><small>{snapshot.summary.account.pcDeviceLabel}</small></article>
-              <article><span>Mobile</span><strong>{sourceLabel(clientSnapshot.source)}</strong><small>{clientSnapshot.stale ? "respaldo local" : "lectura fresca"}</small></article>
+              <article><span>Mobile</span><strong>{sourceLabel(clientSnapshot.source)}</strong><small>{clientSnapshot.stale ? "fuente local" : "lectura fresca"}</small></article>
               <article><span>Sync</span><strong>{readiness.syncState}</strong><small>{readiness.sourceSummary}</small></article>
             </section>
             <section className={styles.signalCard}>
-              <span>Senal clave</span>
+              <span>Señal clave</span>
               <strong>{operations[0]?.value ?? readiness.label}</strong>
               <p>{operations[0]?.detail ?? readiness.detail}</p>
             </section>
             <section className={styles.quickActionPills}>
               <button type="button" onClick={onRefresh}>{loadState === "refreshing" ? "Actualizando..." : "Actualizar"}</button>
-              <button type="button" onClick={() => selectTab("sistema")}>Diagnostico</button>
+              <button type="button" onClick={() => selectTab("sistema")}>Diagnóstico</button>
             </section>
           </div>
         ) : null}
@@ -311,8 +306,8 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
                 <article>
                   <div>
                     <span>Inventario</span>
-                    <strong>Stock movil pendiente de Tablet POS</strong>
-                    <p>Cuando el snapshot entregue SKUs reales, se mostraran aqui.</p>
+                    <strong>Stock móvil pendiente de fuente operativa</strong>
+                    <p>Cuando la lectura entregue SKUs, se mostrarán aquí.</p>
                   </div>
                 </article>
               )}
@@ -324,19 +319,12 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
           <div className={styles.screenGrid}>
             <PrismaMobileReadinessPanel clientSnapshot={clientSnapshot} />
             <section className={styles.systemSignalGrid}>
-              <article><span>Fuente</span><strong>{sourceLabel(clientSnapshot.source)}</strong><small>{clientSnapshot.stale ? "respaldo local" : "lectura fresca"}</small></article>
+              <article><span>Fuente</span><strong>{sourceLabel(clientSnapshot.source)}</strong><small>{clientSnapshot.stale ? "fuente local" : "lectura fresca"}</small></article>
               <article><span>Upstreams</span><strong>{badUpstreams > 0 ? `${badUpstreams} revisar` : "ok"}</strong><small>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}</small></article>
             </section>
-            <details className={styles.systemContractDrawer}>
-              <summary><span>Contratos tecnicos</span><strong>Crystal y contexto preservados</strong></summary>
-              <div className={styles.systemContractPreview}>
-                {systemCrystalHome}
-                {systemContextSwitcher}
-              </div>
-            </details>
             <section className={styles.quickActionPills}>
               <button type="button" onClick={onRefresh}>{loadState === "refreshing" ? "Actualizando..." : "Actualizar"}</button>
-              <button type="button" onClick={onClearCache}>Limpiar cache</button>
+              <button type="button" onClick={onClearCache}>Limpiar caché</button>
             </section>
           </div>
         ) : null}
@@ -365,18 +353,9 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
       </nav>
 
       <section className={styles.optionalAdderBoundaryCompact} data-prisma-zone="mobile-optional-adder-boundary">
-        <strong>Mobile no es requisito para vender.</strong>
-        <span>Mobile supervisa. Tablet Solo vende sola. PC y Mobile son adders opcionales. Cloudflare y soporte remoto son opcionales. Internet no es requisito para venta base Tablet Solo.</span>
+        <strong>Mobile supervisa. Tablet vende y alimenta datos.</strong>
+        <span>Mobile no inventa cifras. Sin Tablet POS, Mobile no recibe ventas ni stock confiable. PC y Mobile acompañan; Tablet POS es la fuente operativa principal.</span>
       </section>
-
-      <div className={styles.contractMountShelf} aria-hidden="true">
-        <PrismaMobileCommandCenter clientSnapshot={clientSnapshot} />
-        <PrismaMobileActionInbox clientSnapshot={clientSnapshot} />
-        <PrismaMobileDailyBrief clientSnapshot={clientSnapshot} />
-        <PrismaMobileDecisionLedger clientSnapshot={clientSnapshot} />
-        <PrismaMobileHealthRadar clientSnapshot={clientSnapshot} />
-        <PrismaMobilePulseTimeline clientSnapshot={clientSnapshot} />
-      </div>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import { prisma } from "../prisma/client";
 import type { SalesHistoryInput, SalesTodayInput } from "./validators";
 
 const MAX_HISTORY_DAYS = 60;
+const CLOSED_SALE_STATUSES = ["PAID", "COMPLETED"];
 
 function toIso(value: unknown): string {
   if (value instanceof Date) return value.toISOString();
@@ -121,7 +122,7 @@ export async function getTodaySalesSummary(input: SalesTodayInput) {
     prisma.sale.findMany({
       where: {
         businessId: input.businessId,
-        status: "COMPLETED",
+        status: { in: CLOSED_SALE_STATUSES },
         createdAt: { gte: from, lt: to },
         ...(input.terminalId ? { terminalId: input.terminalId } : {})
       },
@@ -182,7 +183,7 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
   const query = input.query?.trim().toLowerCase() ?? "";
   const where: any = {
     businessId: input.businessId,
-    status: "COMPLETED",
+    status: { in: CLOSED_SALE_STATUSES },
     createdAt: { gte: range.from, lt: range.to },
     ...(input.terminalId ? { terminalId: input.terminalId } : {})
   };

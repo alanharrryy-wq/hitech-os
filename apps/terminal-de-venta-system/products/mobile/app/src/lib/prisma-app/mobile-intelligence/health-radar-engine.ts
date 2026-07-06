@@ -25,23 +25,25 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
   const tabletSource = report.sources.find((source) => source.id === "tablet");
   const pcSource = report.sources.find((source) => source.id === "pc");
   const controlSource = report.sources.find((source) => source.id === "control");
-  const tabletAvailability: OperationalValueStatus = tabletSource?.status === "ok" ? "ok" : tabletSource?.status === "unknown" ? "unknown" : "offline";
+  const localSourceOk = report.sources.some((source) => source.id === "local" && source.status === "ok");
+  const tabletAvailability: OperationalValueStatus = tabletSource?.status === "ok" ? "ok" : localSourceOk ? "partial" : tabletSource?.status === "unknown" ? "unknown" : "offline";
   const pcAvailability: OperationalValueStatus = pcSource?.status === "ok" ? "ok" : pcSource?.status === "unknown" ? "unknown" : "partial";
   const controlAvailability: OperationalValueStatus = controlSource?.status === "ok" ? "ok" : controlSource?.status === "unknown" ? "unknown" : "partial";
+  const tabletOperationalAvailable = tabletAvailability === "ok" || tabletAvailability === "partial";
 
   const pendingSync = state.outbox.pending + state.outbox.failed;
   const inventoryRisk = state.inventory.critical * 22 + state.inventory.reorder * 9;
   const alertRisk = alerts.counts.critical * 22 + alerts.counts.high * 12 + alerts.counts.medium * 5;
-  const salesScore = tabletAvailability === "ok" ? clampScore(100 - (state.salesToday.tickets === 0 ? 28 : 0)) : null;
+  const salesScore = tabletOperationalAvailable ? clampScore(100 - (state.salesToday.tickets === 0 && !state.salesToday.recentActivity ? 28 : 0)) : null;
   const cashScore = state.cash.countedCents === null ? null : clampScore(100 - Math.min(68, Math.abs(state.cash.differenceCents) / 350));
 
   const dimensions: HealthRadarDimension[] = [
     dimension({
       key: "tablet",
       label: "Tablet",
-      score: tabletAvailability === "ok" ? 92 : null,
-      confidence: tabletAvailability === "ok" ? report.confidence : 0.35,
-      explanation: tabletAvailability === "ok" ? "Tablet respondió y alimenta operación local." : "Tablet no está disponible para Mobile; POS local no queda bloqueado.",
+      score: tabletOperationalAvailable ? 92 : null,
+      confidence: tabletOperationalAvailable ? report.confidence : 0.35,
+      explanation: tabletAvailability === "ok" ? "Tablet certifica heartbeat y alimenta operación local." : localSourceOk ? "Datos operativos disponibles; heartbeat Tablet pendiente de certificación." : "Fuente Tablet pendiente de certificación para Mobile.",
       evidence: [evidence("radar-tablet", "Estado Tablet", "DataQuality", tabletSource?.status ?? "unknown")],
       availability: tabletAvailability
     }),
@@ -50,7 +52,7 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
       label: "PC",
       score: pcAvailability === "ok" ? 86 : null,
       confidence: pcAvailability === "ok" ? report.confidence : 0.4,
-      explanation: pcAvailability === "ok" ? "PC aporta gobierno y consolidado." : "PC no respondió; Mobile mantiene supervisión parcial sin convertirse en POS.",
+      explanation: pcAvailability === "ok" ? "PC aporta gobierno y consolidado." : "PC pendiente de certificación; Mobile mantiene supervisión parcial sin convertirse en POS.",
       evidence: [evidence("radar-pc", "Estado PC", "DataQuality", pcSource?.status ?? "unknown")],
       availability: pcAvailability
     }),
@@ -65,7 +67,7 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
     dimension({
       key: "sync",
       label: "Sync",
-      score: tabletAvailability === "ok" ? clampScore(100 - state.outbox.failed * 24 - state.outbox.pending * 7) : null,
+      score: tabletOperationalAvailable ? clampScore(100 - state.outbox.failed * 24 - state.outbox.pending * 7) : null,
       confidence: report.confidence,
       explanation: pendingSync > 0 ? "Hay eventos pendientes o fallidos que limitan auditoría." : "No hay presión visible de outbox.",
       evidence: [evidence("radar-sync", "Outbox", "Tablet POS", `${state.outbox.pending} pendientes, ${state.outbox.failed} fallidos`)],
@@ -74,7 +76,7 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
     dimension({
       key: "inventory",
       label: "Inventario",
-      score: tabletAvailability === "ok" ? clampScore(100 - inventoryRisk) : null,
+      score: tabletOperationalAvailable ? clampScore(100 - inventoryRisk) : null,
       confidence: report.confidence,
       explanation: inventoryRisk > 0 ? "Stock bajo puede pegarle a venta hoy." : "Watchlist sin presión crítica visible.",
       evidence: [evidence("radar-inventory", "Inventario", "Tablet POS", `${state.inventory.critical} críticos, ${state.inventory.reorder} reponer`)],
@@ -84,8 +86,8 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
       key: "sales",
       label: "Ventas",
       score: salesScore,
-      confidence: tabletAvailability === "ok" ? report.confidence : 0.3,
-      explanation: state.salesToday.tickets > 0 ? "Ventas reales presentes en el snapshot." : "Sin tickets reales o fuente no disponible.",
+      confidence: tabletOperationalAvailable ? report.confidence : 0.3,
+      explanation: state.salesToday.tickets > 0 ? "Ventas reales presentes en el snapshot." : state.salesToday.recentActivity ? "Última actividad disponible desde fuente local." : "Sin tickets del día en la fuente certificada.",
       evidence: [evidence("radar-sales", "Ventas", "Tablet POS", `${state.salesToday.tickets} tickets`)],
       availability: tabletAvailability
     }),
@@ -119,7 +121,7 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
       label: "Control",
       score: controlAvailability === "ok" ? 86 : null,
       confidence: controlAvailability === "ok" ? report.confidence : 0.35,
-      explanation: controlAvailability === "ok" ? "Control puede auditar incidentes." : "Control no está configurado o no respondió; auditoría queda parcial.",
+      explanation: controlAvailability === "ok" ? "Control puede auditar incidentes." : "Control pendiente de certificación; auditoría queda parcial.",
       evidence: [evidence("radar-control", "Control", "DataQuality", controlSource?.status ?? "unknown")],
       availability: controlAvailability
     })
@@ -130,4 +132,3 @@ export function buildIntelligenceHealthRadar(state: MobileDataPlaneState, report
   const status = globalScore === null ? "unknown" : dimensions.some((item) => item.status === "blocked") ? "blocked" : globalScore >= 82 ? "healthy" : globalScore >= 62 ? "watch" : "degraded";
   return HealthRadarSchema.parse({ globalScore, status, confidence: report.confidence, dimensions });
 }
-

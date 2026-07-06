@@ -102,7 +102,7 @@ export function sourceLabel(source: PrismaMobileClientSnapshot["source"]): strin
     "connected-data-plane": "Data-plane Tablet/PC",
     "tablet-pos": "Tablet POS",
     "pc-backoffice": "PC Backoffice",
-    "local-cache": "Caché local",
+    "local-cache": "Fuente local disponible",
     "unavailable": "Sin fuente conectada"
   };
   return labels[source] ?? source;

@@ -112,6 +112,14 @@ export type CanonicalSalesToday = {
   hourlyBuckets: Array<{ hour: string; amountCents: number; tickets: number }>;
   topCategory: string;
   sourceLabel: string;
+  recentActivity: {
+    label: string;
+    totalSalesCents: number;
+    tickets: number;
+    averageTicketCents: number;
+    lastSaleAt: string | null;
+    sourceLabel: string;
+  } | null;
 };
 
 export type CanonicalInventoryItem = {

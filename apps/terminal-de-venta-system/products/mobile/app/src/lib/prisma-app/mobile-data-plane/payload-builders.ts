@@ -18,6 +18,13 @@ function inventoryItems(state: MobileDataPlaneState): PrismaMobileInventoryItem[
 }
 
 export function buildSalesTodayPayload(state: MobileDataPlaneState): PrismaMobileSalesTodayPayload {
+  const recentActivity = state.salesToday.recentActivity
+    ? {
+        ...state.salesToday.recentActivity,
+        totalSalesLabel: moneyLabel(state.salesToday.recentActivity.totalSalesCents),
+        averageTicketLabel: moneyLabel(state.salesToday.recentActivity.averageTicketCents)
+      }
+    : null;
   return {
     totalSalesCents: state.salesToday.totalSalesCents,
     totalSalesLabel: moneyLabel(state.salesToday.totalSalesCents),
@@ -25,7 +32,8 @@ export function buildSalesTodayPayload(state: MobileDataPlaneState): PrismaMobil
     averageTicketCents: state.salesToday.averageTicketCents,
     averageTicketLabel: moneyLabel(state.salesToday.averageTicketCents),
     deltaAgainstYesterday: state.pc.consolidatedSalesCents === null ? "esperando consolidado PC" : signedMoneyLabel(state.salesToday.totalSalesCents - state.pc.consolidatedSalesCents),
-    strongCategory: state.salesToday.topCategory,
+    strongCategory: state.salesToday.tickets > 0 ? state.salesToday.topCategory : recentActivity?.label ?? state.salesToday.topCategory,
+    recentActivity,
     timeline: salesTimeline(state)
   };
 }
@@ -97,8 +105,17 @@ export function buildSummaryPayload(state: MobileDataPlaneState): PrismaMobileSu
       : alerts.counts.high > 0 || branches.counts.review > 0 || dataReadiness.level === "partial" || dataReadiness.level === "empty"
         ? "revisar"
         : "sano";
-  const salesNote = state.salesToday.tickets > 0 ? `${state.salesToday.tickets} tickets cerrados` : "sin tickets cerrados hoy";
-  const ticketNote = state.salesToday.tickets > 0 ? "promedio desde ventas reales" : "esperando primer ticket real";
+  const recent = state.salesToday.recentActivity;
+  const salesNote = state.salesToday.tickets > 0
+    ? `${state.salesToday.tickets} tickets cerrados`
+    : recent && recent.tickets > 0
+      ? `${recent.tickets} tickets en ${recent.label}`
+      : "sin tickets cerrados hoy";
+  const ticketNote = state.salesToday.tickets > 0
+    ? "promedio de venta actual"
+    : recent && recent.tickets > 0
+      ? `promedio en ${recent.label}`
+      : "sin tickets en el periodo actual";
   return {
     businessName: state.config.businessName,
     screen: "hoy" as const,
@@ -126,6 +143,7 @@ export function buildSummaryPayload(state: MobileDataPlaneState): PrismaMobileSu
     },
     kpis: [
       { key: "ventas", label: "Ventas hoy", value: moneyLabel(state.salesToday.totalSalesCents), note: salesNote, tone: "gold" as const, numericValue: state.salesToday.totalSalesCents, unit: "MXN" },
+      ...(recent ? [{ key: "actividad_reciente", label: "Últimos 30 días", value: moneyLabel(recent.totalSalesCents), note: `${recent.tickets} tickets`, tone: "blue" as const, numericValue: recent.totalSalesCents, unit: "MXN" }] : []),
       { key: "ticket_promedio", label: "Ticket promedio", value: moneyLabel(state.salesToday.averageTicketCents), note: ticketNote, tone: "green" as const, numericValue: state.salesToday.averageTicketCents, unit: "MXN" },
       { key: "stock", label: "Stock crítico", value: String(state.inventory.critical), note: state.inventory.items.length > 0 ? `${state.inventory.reorder} SKUs por reponer` : "watchlist sin SKUs recibidos", tone: state.inventory.critical > 0 ? "red" as const : "blue" as const, numericValue: state.inventory.critical, unit: "SKUs" },
       { key: "sync", label: "Sync pendiente", value: String(state.outbox.pending), note: state.outbox.failed > 0 ? `${state.outbox.failed} fallidos` : dataReadiness.syncState === "unknown" ? "sin confirmación reciente" : "sin fallos visibles", tone: state.outbox.failed > 0 ? "red" as const : "neutral" as const, numericValue: state.outbox.pending, unit: "eventos" }

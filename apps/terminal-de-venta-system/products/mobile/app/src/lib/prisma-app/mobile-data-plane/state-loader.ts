@@ -8,6 +8,7 @@ import { normalizePcDashboard, offlinePcDashboard } from "./pc-adapter";
 import { emptySalesToday, normalizeSalesToday } from "./sales-adapter";
 import { applyDataSourceFreshness, buildMobileSourceStatuses } from "../mobile-intelligence/source-status";
 import type { DataPlaneRuntimeMode, MobileDataPlaneState } from "./types";
+import { readLocalDbSnapshot } from "./local-db-snapshot";
 
 function secondsSince(value: string | null): number | null {
   if (!value) return null;
@@ -62,21 +63,27 @@ export async function loadMobileDataPlaneState(): Promise<MobileDataPlaneState> 
     if (result.status !== "ok") warnings.push(`${result.upstream}/${result.role}: ${result.error ?? result.status}`);
   }
 
-  const salesToday = salesResult.status === "ok" ? normalizeSalesToday(salesResult.data, config) : emptySalesToday();
-  const inventory = inventoryResult.status === "ok" ? normalizeInventoryWatchlist(inventoryResult.data, config) : emptyInventoryWatchlist();
-  const outbox = outboxResult.status === "ok" ? normalizeOutboxState(outboxResult.data) : emptyOutboxState();
-  const pc = pcResult.status === "ok" ? normalizePcDashboard(pcResult.data) : offlinePcDashboard();
-  const cash = deriveCashState(salesToday, config);
+  const needsLocalSnapshot = salesResult.status !== "ok" || inventoryResult.status !== "ok" || outboxResult.status !== "ok" || pcResult.status !== "ok";
+  const localSnapshot = needsLocalSnapshot ? await readLocalDbSnapshot(config) : null;
+  if (localSnapshot) warnings.push(...localSnapshot.warnings);
+
+  const salesToday = salesResult.status === "ok" ? normalizeSalesToday(salesResult.data, config) : localSnapshot?.salesToday ?? emptySalesToday();
+  const inventory = inventoryResult.status === "ok" ? normalizeInventoryWatchlist(inventoryResult.data, config) : localSnapshot?.inventory ?? emptyInventoryWatchlist();
+  const outbox = outboxResult.status === "ok" ? normalizeOutboxState(outboxResult.data) : localSnapshot?.outbox ?? emptyOutboxState();
+  const pc = pcResult.status === "ok" ? normalizePcDashboard(pcResult.data) : localSnapshot?.pc ?? offlinePcDashboard();
+  const cash = localSnapshot?.cash ?? deriveCashState(salesToday, config);
   const fetchResults = [salesResult, inventoryResult, outboxResult, pcResult, tabletHealthResult, pcHealthResult, controlHealthResult, controlIncidentsResult, blackBoxHealthResult, blackBoxIncidentsResult];
-  const probes = fetchResults.map(probeFromFetchResult);
+  const probes = [...fetchResults.map(probeFromFetchResult), ...(localSnapshot?.probes ?? [])];
   const sourceStatuses = applyDataSourceFreshness(buildMobileSourceStatuses(fetchResults), pcResult.status === "ok" ? pcResult.data : null);
+  const localDataAvailable = Boolean(localSnapshot && (salesToday.recentActivity?.tickets || salesToday.tickets || inventory.items.length || pc.ok));
+  const localOnlySnapshot = Boolean(localSnapshot && salesResult.status !== "ok" && tabletHealthResult.status !== "ok" && pcResult.status !== "ok" && pcHealthResult.status !== "ok");
   const mode = runtimeMode({
-    tabletOk: salesResult.status === "ok" || tabletHealthResult.status === "ok",
-    pcOk: pcResult.status === "ok" || pcHealthResult.status === "ok",
+    tabletOk: salesResult.status === "ok" || tabletHealthResult.status === "ok" || localDataAvailable,
+    pcOk: pcResult.status === "ok" || pcHealthResult.status === "ok" || Boolean(localSnapshot?.pc.ok),
     staleAfterMs: config.staleAfterMs,
     oldestPendingAt: outbox.oldestPendingAt,
     lastSyncedAt: outbox.lastSyncedAt,
     warnings
   });
-  return { config, probes, sourceStatuses, salesToday, inventory, outbox, cash, pc, warnings, runtimeMode: mode };
+  return { config, probes, sourceStatuses, salesToday, inventory, outbox, cash, pc, warnings, runtimeMode: localOnlySnapshot || (localSnapshot && mode === "offline") ? "stale" : mode };
 }
