@@ -1,0 +1,5 @@
+# DEVICE_CLAIM_CROSSCHECK
+
+| surface | slotStatus | status | evidence |
+| --- | --- | --- | --- |
+| tablet/pc/mobile | AVAILABLE/CLAIMED | PASS | customer_device_claim_slots |

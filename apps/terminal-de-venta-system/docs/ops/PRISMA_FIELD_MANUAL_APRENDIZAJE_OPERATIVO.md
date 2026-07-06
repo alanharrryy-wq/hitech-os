@@ -670,3 +670,23 @@ F:\descargasf\licsetup 0507 085944 result.zip
 F:\descargasf\status refresh diag 0507 090852 result.zip
 ```
 <!-- PRISMA_LICENSING_OPERATOR_ADMIN_GUIDE_LINK_END -->
+
+### 2026-07-06 - LICFLOW3 revoke D1 legacy trigger fix
+
+**Tipo:** GOTCHA / EVIDENCE_LEARNING / COMMAND_WORKS
+**Superficie:** Cloudflare Worker / D1 / LICFLOW3
+**Contexto:** Cierre live despues de deploy en `https://app.hitechrts.com`, con `workers_dev=false` y Worker canonico `prisma-cloud-semilla`.
+**Sintoma:** `POST /api/licenses/revoke` devolvio `500 D1_WRITE_FAILED`; el response previo mostraba `license.status=revoked`, lo que indicaba riesgo de mutacion parcial o respuesta no verificable.
+**Evidencia:** `F:\descargasf\livesmk 0607 052127 fail.zip`; `F:\descargasf\licrevctx 0607 053502.zip`; `F:\descargasf\automesh mesh1 0607 0541 result.zip`; ZIP final de la corrida `licrevfix 0607 HHMM result|fail.zip`.
+**Causa real:** `0004_license_client_integrity.sql` creo triggers sobre `licenses` usando `NEW.license_id`, pero el D1 vivo usa schema legacy `licenses.id / tenant_id`. El trigger era incompatible con el schema remoto real.
+**Rollback probado:** Local via backups/rollback de evidencia; D1 remoto requiere migracion compensatoria, no rollback magico.
+**Reglas nuevas:**
+
+- Antes de agregar triggers o constraints D1 sobre tablas vivas, verificar schema remoto real con `sqlite_schema`, `PRAGMA table_info`, migraciones aplicadas y compatibilidad legacy/nuevo.
+- Revoke debe ser atomico, idempotente y no debe reportar green si status/audit no persisten.
+- Cuando `workers_dev=false`, la URL viva canonica es `https://app.hitechrts.com`, no `*.workers.dev`.
+- Wrangler OAuth local es la ruta preferida para deploy y D1 remoto en este proyecto; no usar `CLOUDFLARE_API_TOKEN` en este flujo.
+- Worker secrets son write-only; si se pierde el token admin, se rota uno nuevo y no se intenta recuperar.
+- No usar `INSERT OR REPLACE` en `licenses` si puede borrar/reinsertar y activar FKs/triggers peligrosos; preferir update/insert explicito.
+
+**Cierre esperado:** `0005_fix_license_revoke_legacy_schema_triggers.sql` aplicado remotamente, Worker deployado, schema remoto sin triggers incompatibles, `/health` y capabilities PASS, smoke live PASS o FAIL documentado sin fake green.

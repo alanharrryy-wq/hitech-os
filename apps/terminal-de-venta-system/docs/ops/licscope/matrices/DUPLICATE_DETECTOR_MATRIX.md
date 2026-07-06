@@ -1,0 +1,5 @@
+# DUPLICATE_DETECTOR_MATRIX
+
+| ruleSet | status | evidence |
+| --- | --- | --- |
+| DUPLICATE_DETECTOR_RULES | PASS | DUPLICATE_DETECTOR_RULES.json |

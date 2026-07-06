@@ -1,0 +1,5 @@
+# CLIENT_OPERATIONS_MATRIX
+
+| client | business | operations | status | evidence |
+| --- | --- | --- | --- | --- |
+| customerId | businessId | setup/license/device/sale | PASS | GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json |
