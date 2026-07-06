@@ -160,6 +160,23 @@ TREE_HTML_RENDER_BUFFER_ROWS = max(8, int(os.environ.get("CODE_ATLAS_TREE_RENDER
 TREE_HTML_ROW_HEIGHT_PX = max(28, int(os.environ.get("CODE_ATLAS_TREE_ROW_HEIGHT_PX", "38") or "38"))
 CODE_ATLAS_ZIP_MODE = os.environ.get("CODE_ATLAS_ZIP_MODE", "store").strip().lower()
 
+# Compact artifact naming for human-facing Tree HTML outputs. Keep generated ZIPs
+# short by default (for example: atlas 0507 1421.zip) while preserving all
+# detailed identity inside manifests and reports.
+CODE_ATLAS_SHORT_OUTPUT_NAMES = os.environ.get("CODE_ATLAS_SHORT_OUTPUT_NAMES", "1").strip().lower() not in {"0", "false", "off", "no"}
+CODE_ATLAS_SHORT_OUTPUT_BASE = os.environ.get("CODE_ATLAS_SHORT_OUTPUT_BASE", "atlas")
+CODE_ATLAS_SHORT_DATE_STAMP_FORMAT = os.environ.get("CODE_ATLAS_SHORT_DATE_STAMP_FORMAT", "%d%m %H%M")
+
+# Tree HTML sharding. The Atlas must never hide real filesystem entries just
+# because a repo is huge. When the report gets too large, it is split into an
+# index + multiple standalone HTML parts + complete TXT/JSONL data + manifest.
+# v2 keeps redundant-build exclusions, but sharding activates earlier so medium
+# PRISMA trees do not become one swollen HTML with duplicated embedded exports.
+CODE_ATLAS_TREE_HTML_SHARDING = os.environ.get("CODE_ATLAS_TREE_HTML_SHARDING", "1").strip().lower() not in {"0", "false", "off", "no"}
+TREE_HTML_SHARD_THRESHOLD_ENTRIES = max(1000, int(os.environ.get("CODE_ATLAS_TREE_HTML_SHARD_THRESHOLD_ENTRIES", "4000") or "4000"))
+TREE_HTML_SHARD_MAX_ENTRIES = max(500, int(os.environ.get("CODE_ATLAS_TREE_HTML_SHARD_MAX_ENTRIES", "2500") or "2500"))
+TREE_HTML_SHARD_MAX_PAYLOAD_BYTES = max(1024 * 1024, int(os.environ.get("CODE_ATLAS_TREE_HTML_SHARD_MAX_PAYLOAD_BYTES", str(4 * 1024 * 1024)) or str(4 * 1024 * 1024)))
+
 
 TREE_EXCLUDED_DIR_NAMES: set[str] = EXCLUDED_DIR_NAMES | {
     ".next",
@@ -499,6 +516,62 @@ def ensure_output_dir(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
 
+def _code_atlas_compact_artifact_base(raw: Any | None = None) -> str:
+    """Return a short, readable artifact base name, max 10 chars when feasible."""
+    value = clean_text(str(CODE_ATLAS_SHORT_OUTPUT_BASE if raw is None else raw))
+    value = value or "atlas"
+    forbidden = '<>:"/' + chr(92) + '|?*'
+    cleaned = "".join(ch if ch not in forbidden else " " for ch in value)
+    cleaned = " ".join(cleaned.split()).strip(" ._") or "atlas"
+    # Keep the pre-date base short as requested; do not turn it into goblin soup.
+    if len(cleaned) > 10:
+        cleaned = cleaned[:10].rstrip(" ._") or "atlas"
+    return cleaned
+
+
+def _code_atlas_compact_stamp() -> str:
+    stamp_format = clean_text(str(CODE_ATLAS_SHORT_DATE_STAMP_FORMAT or "%d%m %H%M"))
+    try:
+        return datetime.now().strftime(stamp_format)
+    except Exception:
+        return datetime.now().strftime("%d%m %H%M")
+
+
+def _code_atlas_unique_file_path(directory: Path, stem: str, suffix: str) -> Path:
+    ensure_output_dir(directory)
+    suffix = suffix if suffix.startswith(".") else f".{suffix}"
+    for attempt in range(0, 1000):
+        serial = "" if attempt == 0 else f" {attempt + 1:02d}"
+        candidate = directory / f"{stem}{serial}{suffix}"
+        if not candidate.exists():
+            return candidate
+    return directory / f"{stem} {datetime.now().strftime('%S%f')}{suffix}"
+
+
+def _code_atlas_unique_bundle_and_zip_paths(directory: Path, stem: str) -> tuple[Path, Path]:
+    ensure_output_dir(directory)
+    for attempt in range(0, 1000):
+        serial = "" if attempt == 0 else f" {attempt + 1:02d}"
+        bundle_dir = directory / f"{stem}{serial}"
+        zip_path = directory / f"{stem}{serial}.zip"
+        if not bundle_dir.exists() and not zip_path.exists():
+            return bundle_dir, zip_path
+    fallback = f"{stem} {datetime.now().strftime('%S%f')}"
+    return directory / fallback, directory / f"{fallback}.zip"
+
+
+def _code_atlas_compact_tree_html_file_path(directory: Path, suffix: str = ".html") -> Path:
+    base = _code_atlas_compact_artifact_base(os.environ.get("CODE_ATLAS_TREE_HTML_BASE", CODE_ATLAS_SHORT_OUTPUT_BASE))
+    stem = f"{base} {_code_atlas_compact_stamp()}"
+    return _code_atlas_unique_file_path(directory, stem, suffix)
+
+
+def _code_atlas_compact_tree_html_bundle_paths(directory: Path) -> tuple[Path, Path]:
+    base = _code_atlas_compact_artifact_base(os.environ.get("CODE_ATLAS_TREE_HTML_ZIP_BASE", CODE_ATLAS_SHORT_OUTPUT_BASE))
+    stem = f"{base} {_code_atlas_compact_stamp()}"
+    return _code_atlas_unique_bundle_and_zip_paths(directory, stem)
+
+
 def selection_anchor_path(selected_path: str) -> Path:
     """
     Si eliges una carpeta, esa carpeta es el ancla.
@@ -563,6 +636,9 @@ def make_tree_html_output_path(
     focus_target: str = "",
 ) -> Path:
     ensure_output_dir(TREE_OUTPUT_DIR)
+
+    if CODE_ATLAS_SHORT_OUTPUT_NAMES:
+        return _code_atlas_compact_tree_html_file_path(TREE_OUTPUT_DIR, ".html")
 
     stamp = datetime.now().strftime(DATE_STAMP_FORMAT)
     anchor = derive_project_root(selected_path)
@@ -1163,17 +1239,13 @@ def build_premium_tree_html_virtualized(
         "buffer_rows": TREE_HTML_RENDER_BUFFER_ROWS,
         "high_density": len(entries) >= TREE_HTML_VIRTUALIZE_THRESHOLD,
         "io_workers": _code_atlas_io_workers(),
+        "scan_mode": "REDUNDANT_FILTERED",
+        "excluded_dirs": sorted(TREE_EXCLUDED_DIR_NAMES),
+        "export_mode": "client_side_from_node_model",
         "nodes": [_tree_entry_to_payload(node) for node in nodes],
     }
-    tree_text = build_filesystem_tree_text(
-        selected_path=selected_path,
-        project_root=project_root,
-        entries=entries,
-        summary=summary,
-    )
     export_name = f"{TREE_HTML_OUTPUT_FILE_PREFIX}_{safe_slug(project_root.name or 'project')}_{datetime.now().strftime(DATE_STAMP_FORMAT)}.txt"
     payload_json = _json_for_script(payload)
-    tree_text_json = _json_for_script(tree_text)
     export_name_json = _json_for_script(export_name)
     template = r"""<!doctype html>
 <html lang="en">
@@ -1303,7 +1375,8 @@ def build_premium_tree_html_virtualized(
         <p class="subtitle">Large tree mode: renderiza sólo lo visible para que el navegador no se vuelva tamal.</p>
         <p class="meta">Selected: __SELECTED__</p>
         <p class="meta">Root: __ROOT__</p>
-        <span class="density" id="densityBadge">High density mode</span>
+        <span class="density" id="densityBadge">High density mode · redundant-filtered</span>
+        <p class="meta">Excluded redundant dirs: __EXCLUDED_DIRS__</p>
       </section>
       <section class="toolbar">
         <input id="search" class="search" type="search" placeholder="Search folders/files without freezing" autocomplete="off">
@@ -1342,8 +1415,30 @@ def build_premium_tree_html_virtualized(
   <script id="treeModel" type="application/json">__MODEL_JSON__</script>
   <script>
     const MODEL = JSON.parse(document.getElementById("treeModel").textContent);
-    const TREE_TEXT = __TREE_TEXT__;
     const EXPORT_NAME = __EXPORT_NAME__;
+
+    function buildExportTreeText(){
+      const lines = [
+        "Code Atlas Filesystem Tree",
+        `Generated: ${MODEL.summary.scanned_at || "-"}`,
+        `Selected path: ${MODEL.selected_path || "-"}`,
+        `Project root: ${MODEL.project_root || "-"}`,
+        `Scan mode: ${MODEL.scan_mode || "REDUNDANT_FILTERED"}`,
+        `Excluded dirs: ${(MODEL.excluded_dirs || []).join(", ") || "(none)"}`,
+        `Total folders: ${MODEL.summary.total_folders ?? "-"}`,
+        `Total files: ${MODEL.summary.total_files ?? "-"}`,
+        `Total size: ${MODEL.summary.total_size || "-"}`,
+        `Max depth: ${MODEL.summary.max_depth ?? "-"}`,
+        "",
+        "Tree:"
+      ];
+      for(const n of MODEL.nodes || []){
+        const indent = "  ".repeat(Math.max(0, Number(n.depth || 0)));
+        const marker = n.kind === "folder" ? "+ " : "- ";
+        lines.push(`${indent}${marker}${n.name}  [${n.size || "-"}]`);
+      }
+      return lines.join("\n") + "\n";
+    }
     const ROW_H = MODEL.row_height || 38;
     const BUFFER = MODEL.buffer_rows || 18;
 
@@ -1482,7 +1577,7 @@ def build_premium_tree_html_virtualized(
       if(n && navigator.clipboard) await navigator.clipboard.writeText(n.path);
     };
     document.getElementById("exportTree").onclick = () => {
-      const blob = new Blob([TREE_TEXT], {type:"text/plain;charset=utf-8"});
+      const blob = new Blob([buildExportTreeText()], {type:"text/plain;charset=utf-8"});
       const url = URL.createObjectURL(blob);
       const a=document.createElement("a");
       a.href=url; a.download=EXPORT_NAME; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
@@ -1510,8 +1605,8 @@ def build_premium_tree_html_virtualized(
         .replace("__ROW_HEIGHT__", str(TREE_HTML_ROW_HEIGHT_PX))
         .replace("__SELECTED__", _html_escape(selected_path))
         .replace("__ROOT__", _html_escape(project_root))
+        .replace("__EXCLUDED_DIRS__", _html_escape(", ".join(sorted(TREE_EXCLUDED_DIR_NAMES))))
         .replace("__MODEL_JSON__", payload_json)
-        .replace("__TREE_TEXT__", tree_text_json)
         .replace("__EXPORT_NAME__", export_name_json)
     )
 
@@ -16053,6 +16148,372 @@ def write_tree_html(
     notify("Tree HTML Premium guardado.", str(resolved_path))
 
 
+def _tree_html_entry_estimated_payload_bytes(entry: FileTreeEntry) -> int:
+    text_weight = (
+        len(entry.relative_path.encode("utf-8", errors="ignore"))
+        + len(entry.name.encode("utf-8", errors="ignore"))
+        + len(entry.suffix.encode("utf-8", errors="ignore"))
+    )
+    # v2: the previous estimator was too optimistic for standalone HTML because
+    # every entry becomes JSON plus DOM-ready metadata and escaped strings. This
+    # estimate intentionally prices that overhead so sharding activates before a
+    # browser-hostile single file is produced.
+    return 640 + (text_weight * 6)
+
+
+def _tree_html_total_estimated_payload_bytes(entries: list[FileTreeEntry]) -> int:
+    return sum(_tree_html_entry_estimated_payload_bytes(entry) for entry in entries)
+
+
+def _tree_html_should_shard(entries: list[FileTreeEntry]) -> bool:
+    if not CODE_ATLAS_TREE_HTML_SHARDING:
+        return False
+
+    entry_count = len(entries)
+    estimated_payload = _tree_html_total_estimated_payload_bytes(entries)
+
+    if entry_count >= TREE_HTML_SHARD_THRESHOLD_ENTRIES:
+        return True
+
+    if estimated_payload >= TREE_HTML_SHARD_MAX_PAYLOAD_BYTES:
+        return True
+
+    # v2: virtualized HTML avoids rendering all rows, but it still embeds the
+    # full node model. If the model is already medium-large, prefer the sharded
+    # index + parts bundle instead of one swollen HTML.
+    if entry_count >= TREE_HTML_VIRTUALIZE_THRESHOLD and estimated_payload >= max(2 * 1024 * 1024, TREE_HTML_SHARD_MAX_PAYLOAD_BYTES // 2):
+        return True
+
+    return False
+
+
+def _tree_html_shard_entries(entries: list[FileTreeEntry]) -> list[list[FileTreeEntry]]:
+    shards: list[list[FileTreeEntry]] = []
+    current: list[FileTreeEntry] = []
+    current_bytes = 0
+
+    for entry in entries:
+        estimated = _tree_html_entry_estimated_payload_bytes(entry)
+        would_exceed_count = len(current) >= TREE_HTML_SHARD_MAX_ENTRIES
+        would_exceed_bytes = bool(current) and (current_bytes + estimated) > TREE_HTML_SHARD_MAX_PAYLOAD_BYTES
+        if current and (would_exceed_count or would_exceed_bytes):
+            shards.append(current)
+            current = []
+            current_bytes = 0
+        current.append(entry)
+        current_bytes += estimated
+
+    if current:
+        shards.append(current)
+    return shards or [list(entries)]
+
+
+def _tree_html_payload_from_entries(entries: list[FileTreeEntry], start_index: int = 0) -> list[dict[str, Any]]:
+    payload: list[dict[str, Any]] = []
+    for offset, entry in enumerate(entries):
+        size_bytes = entry.cumulative_size_bytes if entry.is_dir else entry.size_bytes
+        payload.append(
+            {
+                "id": f"row-{start_index + offset}",
+                "name": entry.name,
+                "path": entry.relative_path,
+                "depth": int(entry.depth),
+                "kind": "folder" if entry.is_dir else "file",
+                "type": _tree_entry_type(entry),
+                "size_bytes": int(size_bytes),
+                "size": format_size_bytes(size_bytes),
+                "modified_ts": float(entry.modified_ts),
+                "modified": _format_modified_ts(entry.modified_ts),
+                "child_count": int(entry.child_count),
+            }
+        )
+    return payload
+
+
+def _tree_html_full_tree_jsonl(entries: list[FileTreeEntry]) -> str:
+    lines: list[str] = []
+    for index, entry in enumerate(entries):
+        size_bytes = entry.cumulative_size_bytes if entry.is_dir else entry.size_bytes
+        lines.append(
+            json.dumps(
+                {
+                    "index": index,
+                    "path": entry.relative_path,
+                    "name": entry.name,
+                    "depth": entry.depth,
+                    "kind": "folder" if entry.is_dir else "file",
+                    "type": _tree_entry_type(entry),
+                    "size_bytes": int(size_bytes),
+                    "modified_ts": float(entry.modified_ts),
+                    "children": int(entry.child_count),
+                },
+                ensure_ascii=False,
+            )
+        )
+    return "\n".join(lines) + "\n"
+
+
+def build_premium_tree_html_shard_part(
+    *,
+    selected_path: str,
+    project_root: Path,
+    summary: FileTreeSummary,
+    shard_entries: list[FileTreeEntry],
+    manifest: dict[str, Any],
+    part_meta: dict[str, Any],
+) -> str:
+    payload = {
+        "version": "tree-html-sharded-part-v1",
+        "selected_path": str(selected_path),
+        "project_root": str(project_root),
+        "summary": manifest.get("summary", {}),
+        "part": part_meta,
+        "row_height": TREE_HTML_ROW_HEIGHT_PX,
+        "buffer_rows": TREE_HTML_RENDER_BUFFER_ROWS,
+        "rows": _tree_html_payload_from_entries(shard_entries, int(part_meta.get("start_index", 0))),
+    }
+    payload_json = _json_for_script(payload)
+    previous_link = str(part_meta.get("previous_file") or "../index.html")
+    next_link = str(part_meta.get("next_file") or "../index.html")
+    template = r"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Atlas Tree Premium · Part __PART_NUMBER__</title>
+  <style>
+    :root{color-scheme:dark;--panel:rgba(24,28,35,.86);--line:rgba(222,232,246,.16);--text:#eaf1fb;--muted:#94a2b8;--soft:#c2cfdf;--cyan:#8de9ff;--gold:#e4c678;--row-h:__ROW_HEIGHT__px;--mono:"Cascadia Mono",Consolas,monospace;--sans:"Segoe UI",system-ui,sans-serif}
+    *{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:var(--sans);color:var(--text);background:radial-gradient(circle at 15% -10%,rgba(141,233,255,.16),transparent 34rem),linear-gradient(135deg,#05070a,#111926 54%,#07090d);overflow:hidden}.shell{height:100vh;display:grid;grid-template-rows:auto 1fr auto;gap:.75rem;padding:1rem}.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),var(--panel);box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(16px)}
+    header{padding:1rem;display:grid;grid-template-columns:minmax(25rem,1fr) minmax(34rem,1.2fr);gap:1rem;align-items:end}.eyebrow{margin:0 0 .35rem;color:var(--gold);font:800 .72rem var(--sans);letter-spacing:.16em;text-transform:uppercase}h1{margin:0;font-size:clamp(1.35rem,2.2vw,2.2rem);line-height:1.05}.meta{margin:.35rem 0 0;color:var(--muted);font:.76rem var(--mono);overflow-wrap:anywhere}.toolbar{display:grid;grid-template-columns:1fr repeat(5,auto);gap:.45rem;align-items:center}
+    input,button{height:2.35rem;border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(5,8,12,.62);padding:0 .75rem;font:700 .78rem var(--sans)}button{cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.025)),rgba(12,16,22,.86)}a.btn{height:2.35rem;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:12px;color:var(--text);text-decoration:none;padding:0 .75rem;font:800 .78rem var(--sans)}.hot{color:#071016!important;background:linear-gradient(180deg,#a8f2ff,#66d9f0)!important;border-color:rgba(141,233,255,.72)!important}
+    .workspace{min-height:0;display:grid;grid-template-rows:auto 1fr;overflow:hidden}.table-head,.row{display:grid;grid-template-columns:minmax(34rem,1fr) 10rem 8rem 12rem}.table-head{border-bottom:1px solid rgba(222,232,246,.28);background:rgba(9,13,18,.74);min-width:78rem}.table-head span,.table-head button{padding:.75rem .85rem;text-align:left;color:var(--soft);font:800 .72rem var(--sans);letter-spacing:.12em;text-transform:uppercase;background:transparent;border:0}.right{text-align:right!important}
+    .viewport{position:relative;min-height:0;overflow:auto;contain:strict}.spacer{position:relative;width:100%;min-width:78rem}.rows{position:absolute;left:0;right:0;top:0}.row{position:absolute;left:0;right:0;height:var(--row-h);align-items:center;border-bottom:1px solid rgba(222,232,246,.075);color:rgba(233,238,246,.82);transform:translateY(var(--y))}.row:hover{background:rgba(141,233,255,.06);color:#fff}.cell{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .85rem}.name{display:flex;align-items:center;gap:.45rem;font-weight:750}.indent{flex:0 0 calc(var(--depth) * 1.25rem)}.badge{width:2.2rem;height:1.25rem;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:8px;color:var(--cyan);font:.62rem var(--mono)}.path{color:var(--muted);font:.72rem var(--mono);margin-left:.35rem}.size,.type,.modified{font:.78rem var(--mono);color:var(--soft)}.size{text-align:right}mark{background:rgba(141,233,255,.24);color:#fff;border-radius:4px;padding:0 .1rem}.status{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));overflow:hidden}.metric{padding:.75rem .9rem;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric span{display:block;color:var(--muted);font:800 .66rem var(--sans);letter-spacing:.12em;text-transform:uppercase}.metric b{display:block;color:#fff;font:.88rem var(--mono);overflow:hidden;text-overflow:ellipsis}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="card"><section><p class="eyebrow">Filesystem inventory · sharded</p><h1>Parte __PART_NUMBER__ de __PART_TOTAL__</h1><p class="meta">Rango: __RANGE__ · Entradas en esta parte: __PART_ENTRIES__</p><p class="meta">Root: __ROOT__</p></section><section class="toolbar"><input id="search" type="search" placeholder="Buscar dentro de esta parte"><a class="btn" href="../index.html">Índice</a><a class="btn" href="__PREVIOUS__">Anterior</a><a class="btn" href="__NEXT__">Siguiente</a><button id="sortName">Nombre</button><button id="sortSize" class="hot">Tamaño</button></section></header>
+    <section class="card workspace"><div class="table-head"><button id="headName">Name</button><button id="headSize" class="right">Size</button><span>Type</span><span>Modified</span></div><div class="viewport" id="viewport"><div class="spacer" id="spacer"><div class="rows" id="rows"></div></div></div></section>
+    <footer class="card status"><div class="metric"><span>Total folders</span><b id="mFolders"></b></div><div class="metric"><span>Total files</span><b id="mFiles"></b></div><div class="metric"><span>Total size</span><b id="mSize"></b></div><div class="metric"><span>Part rows</span><b id="mRows"></b></div><div class="metric"><span>Visible rows</span><b id="mVisible"></b></div><div class="metric"><span>Complete</span><b>true</b></div></footer>
+  </main>
+  <script id="treePartModel" type="application/json">__MODEL_JSON__</script>
+  <script>
+    const MODEL=JSON.parse(document.getElementById('treePartModel').textContent);const ROW_H=MODEL.row_height||38;const BUFFER=MODEL.buffer_rows||18;let rows=MODEL.rows.slice();let visible=rows.slice();let query='';let sortKey='path';let sortDir=1;const viewport=document.getElementById('viewport');const spacer=document.getElementById('spacer');const rowsEl=document.getElementById('rows');const searchEl=document.getElementById('search');
+    function norm(v){return String(v||'').toLowerCase()}function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function hi(v){const s=esc(v);const q=String(query||'').trim();if(!q)return s;const safe=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp(safe,'ig'),m=>`<mark>${m}</mark>`)}
+    function apply(){const q=norm(query);visible=rows.filter(n=>!q||norm(n.name).includes(q)||norm(n.path).includes(q)||norm(n.type).includes(q));visible.sort((a,b)=>{let r=0;if(sortKey==='size')r=(a.size_bytes||0)-(b.size_bytes||0);else r=norm(a[sortKey]||a.path).localeCompare(norm(b[sortKey]||b.path),undefined,{numeric:true,sensitivity:'base'});return r*sortDir});spacer.style.height=`${visible.length*ROW_H}px`;document.getElementById('mVisible').textContent=visible.length.toLocaleString();render()}
+    function render(){const st=viewport.scrollTop;const h=viewport.clientHeight||600;const start=Math.max(0,Math.floor(st/ROW_H)-BUFFER);const end=Math.min(visible.length,Math.ceil((st+h)/ROW_H)+BUFFER);const f=document.createDocumentFragment();rowsEl.textContent='';for(let i=start;i<end;i++){const n=visible[i];const row=document.createElement('div');row.className='row';row.style.setProperty('--y',`${i*ROW_H}px`);row.style.setProperty('--depth',String(n.depth));row.innerHTML=`<div class="cell name"><span class="indent"></span><span class="badge">${n.kind==='folder'?'DIR':esc((n.type||'FILE').slice(0,3))}</span><span>${hi(n.name)}</span><span class="path">${hi(n.path)}</span></div><div class="cell size">${esc(n.size)}</div><div class="cell type">${esc(n.type)}</div><div class="cell modified">${esc(n.modified)}</div>`;f.appendChild(row)}rowsEl.appendChild(f)}
+    searchEl.addEventListener('input',()=>{query=searchEl.value;apply()});viewport.addEventListener('scroll',()=>requestAnimationFrame(render));document.getElementById('sortName').onclick=document.getElementById('headName').onclick=()=>{sortKey='path';sortDir*=-1;apply()};document.getElementById('sortSize').onclick=document.getElementById('headSize').onclick=()=>{sortKey='size';sortDir*=-1;apply()};
+    document.getElementById('mFolders').textContent=(MODEL.summary.total_folders||0).toLocaleString();document.getElementById('mFiles').textContent=(MODEL.summary.total_files||0).toLocaleString();document.getElementById('mSize').textContent=MODEL.summary.total_size||'';document.getElementById('mRows').textContent=rows.length.toLocaleString();apply();
+  </script>
+</body>
+</html>"""
+    return (
+        template
+        .replace("__PART_NUMBER__", str(part_meta.get("part_number", "")))
+        .replace("__PART_TOTAL__", str(part_meta.get("part_total", "")))
+        .replace("__PART_ENTRIES__", str(part_meta.get("entries", "")))
+        .replace("__RANGE__", f"{part_meta.get('start_index', 0)} - {part_meta.get('end_index', 0)}")
+        .replace("__ROOT__", _html_escape(project_root))
+        .replace("__PREVIOUS__", _html_escape(previous_link))
+        .replace("__NEXT__", _html_escape(next_link))
+        .replace("__ROW_HEIGHT__", str(TREE_HTML_ROW_HEIGHT_PX))
+        .replace("__MODEL_JSON__", payload_json)
+    )
+
+
+def build_premium_tree_html_shard_index(
+    *,
+    selected_path: str,
+    project_root: Path,
+    manifest: dict[str, Any],
+) -> str:
+    parts = list(manifest.get("parts", []))
+    rows = []
+    for part in parts:
+        rows.append(
+            "<tr>"
+            f"<td><a href=\"{_html_escape(part.get('file', ''))}\">Parte {_html_escape(part.get('part_number', ''))}</a></td>"
+            f"<td>{_html_escape(part.get('entries', ''))}</td>"
+            f"<td>{_html_escape(part.get('start_index', ''))} - {_html_escape(part.get('end_index', ''))}</td>"
+            f"<td>{_html_escape(part.get('first_path', ''))}</td>"
+            f"<td>{_html_escape(part.get('last_path', ''))}</td>"
+            "</tr>"
+        )
+    rows_html = "\n".join(rows)
+    manifest_json = _json_for_script(manifest)
+    first_part = str(parts[0].get("file", "")) if parts else ""
+    summary = dict(manifest.get("summary", {}))
+    template = r"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Code Atlas Tree Premium · Sharded Index</title><style>:root{color-scheme:dark;--panel:rgba(24,28,35,.86);--line:rgba(222,232,246,.16);--text:#eaf1fb;--muted:#94a2b8;--cyan:#8de9ff;--gold:#e4c678;--mono:"Cascadia Mono",Consolas,monospace;--sans:"Segoe UI",system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:var(--sans);color:var(--text);background:radial-gradient(circle at 15% -10%,rgba(141,233,255,.16),transparent 34rem),linear-gradient(135deg,#05070a,#111926 54%,#07090d)}.shell{width:min(100%,118rem);margin:0 auto;padding:1rem;display:grid;gap:1rem}.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),var(--panel);box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(16px)}header,section{padding:1rem}.eyebrow{margin:0 0 .35rem;color:var(--gold);font:800 .72rem var(--sans);letter-spacing:.16em;text-transform:uppercase}h1{margin:0;font-size:clamp(1.7rem,2.5vw,2.7rem)}.meta{margin:.35rem 0 0;color:var(--muted);font:.78rem var(--mono);overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.75rem}.metric{padding:.9rem}.metric span{display:block;color:var(--muted);font:800 .66rem var(--sans);letter-spacing:.12em;text-transform:uppercase}.metric b{display:block;font:1.1rem var(--mono);color:#fff}.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}a.btn,button{border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(5,8,12,.62);padding:.65rem .8rem;font:800 .78rem var(--sans);text-decoration:none;cursor:pointer}.hot{color:#071016;background:linear-gradient(180deg,#a8f2ff,#66d9f0);border-color:rgba(141,233,255,.72)}table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:14px}th,td{padding:.75rem;border-bottom:1px solid rgba(222,232,246,.12);text-align:left;vertical-align:top}th{font:800 .72rem var(--sans);color:#c2cfdf;letter-spacing:.12em;text-transform:uppercase;background:rgba(9,13,18,.74)}td{font:.8rem var(--mono);color:#dce6f4}td a{color:var(--cyan);font:900 .86rem var(--sans)}pre{white-space:pre-wrap;overflow:auto;padding:1rem;border-radius:14px;background:rgba(0,0,0,.24);border:1px solid var(--line);color:#dce6f4}</style></head><body><main class="shell"><header class="card"><p class="eyebrow">Filesystem inventory · complete sharded output</p><h1>Code Atlas Tree Premium</h1><p class="meta">Root: __ROOT__</p><p class="meta">Selected: __SELECTED__</p><div class="actions"><a class="btn hot" href="__FIRST_PART__">Abrir primera parte</a><a class="btn" href="data/full_tree.txt">Full tree TXT</a><a class="btn" href="data/full_tree.jsonl">Full tree JSONL</a><a class="btn" href="manifest/tree_html_sharded_manifest.json">Manifest JSON</a><button id="copyManifest">Copiar manifest</button></div></header><section class="card grid"><div class="metric"><span>Folders</span><b>__FOLDERS__</b></div><div class="metric"><span>Files</span><b>__FILES__</b></div><div class="metric"><span>Entries</span><b>__ENTRIES__</b></div><div class="metric"><span>Total size</span><b>__SIZE__</b></div><div class="metric"><span>Parts</span><b>__PARTS__</b></div></section><section class="card"><h2>Partes generadas</h2><table><thead><tr><th>Parte</th><th>Entries</th><th>Rango</th><th>Primer path</th><th>Último path</th></tr></thead><tbody>__PART_ROWS__</tbody></table></section><section class="card"><h2>Garantía del inventario</h2><pre>complete: true
+No se truncaron entradas. Si un archivo fue escaneado, aparece en full_tree.txt, full_tree.jsonl y en una parte HTML.
+Exclusiones activas: __EXCLUDED__</pre></section></main><script id="manifest" type="application/json">__MANIFEST_JSON__</script><script>document.getElementById('copyManifest').onclick=async()=>{if(navigator.clipboard)await navigator.clipboard.writeText(document.getElementById('manifest').textContent)}</script></body></html>"""
+    return (
+        template
+        .replace("__ROOT__", _html_escape(project_root))
+        .replace("__SELECTED__", _html_escape(selected_path))
+        .replace("__FIRST_PART__", _html_escape(first_part))
+        .replace("__FOLDERS__", _html_escape(summary.get("total_folders", "")))
+        .replace("__FILES__", _html_escape(summary.get("total_files", "")))
+        .replace("__ENTRIES__", _html_escape(summary.get("total_entries", "")))
+        .replace("__SIZE__", _html_escape(summary.get("total_size", "")))
+        .replace("__PARTS__", _html_escape(len(parts)))
+        .replace("__PART_ROWS__", rows_html)
+        .replace("__EXCLUDED__", _html_escape(", ".join(sorted(TREE_EXCLUDED_DIR_NAMES))))
+        .replace("__MANIFEST_JSON__", manifest_json)
+    )
+
+
+def write_premium_tree_html_sharded(
+    *,
+    selected_path: str,
+    project_root: Path,
+    entries: list[FileTreeEntry],
+    summary: FileTreeSummary,
+    output_path: Path,
+    notify: Callable[[str, str], None],
+) -> Path:
+    resolved_index = output_path.expanduser().resolve()
+    if CODE_ATLAS_SHORT_OUTPUT_NAMES:
+        bundle_dir, zip_path = _code_atlas_compact_tree_html_bundle_paths(resolved_index.parent)
+    else:
+        bundle_dir = resolved_index.with_name(f"{resolved_index.stem}_sharded")
+        zip_path = resolved_index.with_name(f"{resolved_index.stem}_sharded.zip")
+    parts_dir = bundle_dir / "parts"
+    data_dir = bundle_dir / "data"
+    manifest_dir = bundle_dir / "manifest"
+    reports_dir = bundle_dir / "reports"
+    for folder in (parts_dir, data_dir, manifest_dir, reports_dir):
+        ensure_output_dir(folder)
+
+    shards = _tree_html_shard_entries(entries)
+    manifest: dict[str, Any] = {
+        "version": "tree-html-sharded-v2",
+        "complete": True,
+        "scan_mode": "REDUNDANT_FILTERED",
+        "completeness_scope": "complete_after_redundant_exclusions",
+        "virtualized_tree_text_embedded": False,
+        "selected_path": str(selected_path),
+        "project_root": str(project_root),
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "output_name_policy": {
+            "short_names": CODE_ATLAS_SHORT_OUTPUT_NAMES,
+            "base_max_chars": 10,
+            "bundle_dir_name": bundle_dir.name,
+            "zip_file_name": zip_path.name,
+            "legacy_long_name_suppressed": bool(CODE_ATLAS_SHORT_OUTPUT_NAMES),
+        },
+        "thresholds": {
+            "max_entries_per_part": TREE_HTML_SHARD_MAX_ENTRIES,
+            "max_payload_bytes_per_part": TREE_HTML_SHARD_MAX_PAYLOAD_BYTES,
+            "shard_threshold_entries": TREE_HTML_SHARD_THRESHOLD_ENTRIES,
+        },
+        "excluded_dirs": sorted(TREE_EXCLUDED_DIR_NAMES),
+        "summary": {
+            "total_entries": len(entries),
+            "total_folders": summary.total_folders,
+            "total_files": summary.total_files,
+            "total_size_bytes": summary.total_size_bytes,
+            "total_size": format_size_bytes(summary.total_size_bytes),
+            "max_depth": summary.max_depth,
+            "scanned_at": summary.scanned_at,
+        },
+        "parts": [],
+    }
+
+    cursor = 0
+    part_total = len(shards)
+    for index, shard in enumerate(shards, start=1):
+        part_name = f"tree_part_{index:03d}_of_{part_total:03d}.html"
+        previous_name = f"tree_part_{index - 1:03d}_of_{part_total:03d}.html" if index > 1 else "../index.html"
+        next_name = f"tree_part_{index + 1:03d}_of_{part_total:03d}.html" if index < part_total else "../index.html"
+        part_meta = {
+            "part_number": index,
+            "part_total": part_total,
+            "file": f"parts/{part_name}",
+            "previous_file": previous_name,
+            "next_file": next_name,
+            "entries": len(shard),
+            "start_index": cursor,
+            "end_index": cursor + len(shard) - 1,
+            "first_path": shard[0].relative_path if shard else "",
+            "last_path": shard[-1].relative_path if shard else "",
+            "estimated_payload_bytes": _tree_html_total_estimated_payload_bytes(shard),
+        }
+        manifest["parts"].append(part_meta)
+        cursor += len(shard)
+
+    notify("Guardando Tree HTML Premium por partes...", f"{part_total} partes | {len(entries)} entradas completas")
+    for part_meta, shard in zip(manifest["parts"], shards):
+        html_markup = build_premium_tree_html_shard_part(
+            selected_path=selected_path,
+            project_root=project_root,
+            summary=summary,
+            shard_entries=shard,
+            manifest=manifest,
+            part_meta=part_meta,
+        )
+        (bundle_dir / str(part_meta["file"])).write_text(html_markup, encoding="utf-8")
+
+    full_tree_text = build_filesystem_tree_text(selected_path=selected_path, project_root=project_root, entries=entries, summary=summary)
+    (data_dir / "full_tree.txt").write_text(full_tree_text, encoding="utf-8")
+    (data_dir / "full_tree.jsonl").write_text(_tree_html_full_tree_jsonl(entries), encoding="utf-8")
+    (manifest_dir / "tree_html_sharded_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    (reports_dir / "summary.md").write_text(
+        "\n".join(
+            [
+                "# Code Atlas Tree HTML Sharded v2",
+                "",
+                f"- Complete: {manifest['complete']}",
+                f"- Scan mode: {manifest['scan_mode']}",
+                f"- Completeness scope: {manifest['completeness_scope']}",
+                f"- Root: `{project_root}`",
+                f"- Entries: {len(entries)}",
+                f"- Folders: {summary.total_folders}",
+                f"- Files: {summary.total_files}",
+                f"- Parts: {part_total}",
+                f"- ZIP name: `{zip_path.name}`",
+                f"- Bundle folder: `{bundle_dir.name}`",
+                f"- Full tree TXT: `data/full_tree.txt`",
+                f"- Full tree JSONL: `data/full_tree.jsonl`",
+                "",
+                "No entries are intentionally hidden in the HTML output; large inventories are split into parts.",
+            ]
+        ) + "\n",
+        encoding="utf-8",
+    )
+
+    index_path = bundle_dir / "index.html"
+    index_path.write_text(build_premium_tree_html_shard_index(selected_path=selected_path, project_root=project_root, manifest=manifest), encoding="utf-8")
+
+    zip_settings = _code_atlas_zip_settings()
+    with zipfile.ZipFile(zip_path, "w", **zip_settings) as zf:
+        for path in sorted(bundle_dir.rglob("*")):
+            if path.is_file():
+                zf.write(path, path.relative_to(bundle_dir).as_posix())
+
+    notify("Tree HTML Premium por partes guardado.", f"Índice: {index_path} | ZIP: {zip_path}")
+    return index_path
+
+
+def write_premium_tree_html_output(
+    *,
+    selected_path: str,
+    project_root: Path,
+    entries: list[FileTreeEntry],
+    summary: FileTreeSummary,
+    view: GraphView = "package",
+    focus_target: str = "",
+    notify: Callable[[str, str], None],
+) -> Path:
+    output_path = make_tree_html_output_path(selected_path=selected_path, view=view, focus_target=focus_target)
+    if _tree_html_should_shard(entries):
+        return write_premium_tree_html_sharded(selected_path=selected_path, project_root=project_root, entries=entries, summary=summary, output_path=output_path, notify=notify)
+
+    html_markup = build_premium_tree_html(selected_path=selected_path, project_root=project_root, entries=entries, summary=summary)
+    write_tree_html(html_markup, output_path, notify)
+    return output_path
+
+
 def _ca_svg_attr(opening_tag: str, name: str) -> str:
     marker = f'{name}="'
     start = opening_tag.find(marker)
@@ -18226,18 +18687,22 @@ def run_tree_html_premium_report(
             f"{file_tree_summary.total_folders} folders | {file_tree_summary.total_files} files",
         )
 
-    html_markup = build_premium_tree_html(
+    if notify is None:
+        def _silent_notify(status: str, detail: str = "") -> None:
+            return None
+        effective_notify = _silent_notify
+    else:
+        effective_notify = notify
+
+    output_path = write_premium_tree_html_output(
         selected_path=str(project_root),
         project_root=project_root,
         entries=file_tree_entries,
         summary=file_tree_summary,
-    )
-    output_path = make_tree_html_output_path(
-        selected_path=str(project_root),
         view="package",
         focus_target="",
+        notify=effective_notify,
     )
-    write_tree_html(html_markup, output_path, notify)
     if not output_path.exists() or output_path.stat().st_size <= 0:
         raise RuntimeError(f"No se pudo validar el Tree HTML Premium generado: {output_path}")
     return output_path
@@ -20683,18 +21148,15 @@ def main() -> int:
                         "Construyendo Tree HTML Premium...",
                         f"{file_tree_summary.total_folders} folders | {file_tree_summary.total_files} files",
                     )
-                    html_markup = build_premium_tree_html(
+                    output_path = write_premium_tree_html_output(
                         selected_path=state.selected_path,
                         project_root=project_root,
                         entries=file_tree_entries,
                         summary=file_tree_summary,
-                    )
-                    output_path = make_tree_html_output_path(
-                        selected_path=state.selected_path,
                         view=state.view,
                         focus_target=state.focus_target,
+                        notify=notify,
                     )
-                    write_tree_html(html_markup, output_path, notify)
                     output_label = "Tree HTML Premium"
                 else:
                     notify(
