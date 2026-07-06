@@ -9,12 +9,14 @@ Prisma Customer Setup is the customer onboarding flow for a package with Tablet,
 When a client buys Tablet + PC + Mobile:
 
 1. Admin creates the customer/package in Prisma Cloud Center.
-2. Prisma creates Setup Link, Setup Code, and Setup QR.
-3. Customer opens setup on Tablet, PC, and Mobile.
-4. Each app claims its own Device Slot.
-5. Local license state is stored safely.
-6. Refresh/status keeps devices in sync.
-7. Support sees sanitized setup evidence.
+2. Admin chooses customer + plan once.
+3. Prisma creates license, license assignment, setup bundle, Setup Link, Setup Code, and Setup QR.
+4. Prisma creates device claim slots automatically from plan limits.
+5. Customer opens setup on Tablet, PC, and Mobile.
+6. Each app claims its own prepared Device Slot.
+7. Local license state is stored safely.
+8. Refresh/status keeps devices in sync.
+9. Support sees sanitized setup evidence.
 
 ## Canonical Names
 
@@ -42,6 +44,9 @@ The module exports:
 - `CustomerSetupSurface = "tablet" | "pc" | "mobile"`
 - `CustomerSetupPass`
 - `CustomerSetupSlot`
+- `PlanProvisioningDefinition`
+- `DeviceClaimSlot`
+- `PlanBasedProvisioningResult`
 - `DeviceClaimRequest`
 - `DeviceClaimResponse`
 - `CustomerSetupErrorCode`
@@ -76,9 +81,25 @@ Source migration:
 
 ```text
 infra/cloudflare/licflow3-worker/migrations/0002_customer_setup.sql
+infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql
 ```
 
+`0002_customer_setup.sql` is the historical Customer Setup base. Plan-based provisioning is additive in `0003_plan_based_provisioning.sql`; do not rewrite `0002` unless repository evidence proves it is still a draft.
+
 Do not deploy or run D1 without explicit authorization.
+
+## Plan-Based Provisioning
+
+Plan provisioning uses `PLAN_BASED_PROVISIONING_CATALOG` in `shared/licensing/customer-setup-contract.ts` and the matching Cloud License Gateway plan catalog. The one-shot create route produces `licenseId`, `licenseAssignmentId`, `setupBundleId`, `setupCode`, `setupLink`, `setupQrPayload`, prepared `deviceClaimSlots`, and `auditEventId`.
+
+Acceptance gates:
+
+- `manualDeviceClaimRequired = false`
+- `operatorActionCount = 1`
+- plan -> slots comes from max devices per surface
+- claims consume existing slots, not manual per-device claim records
+- consumed claims cannot exceed surface limits
+- every prepared slot carries surface, status, claim code, expiration, license, plan, and audit
 
 ## Surface Rules
 

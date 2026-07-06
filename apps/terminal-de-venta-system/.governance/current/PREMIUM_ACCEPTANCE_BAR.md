@@ -1,6 +1,6 @@
 # PRISMA Premium Acceptance Bar
 
-- Task: `Corregir LICFLOW3 Cloudflare licensing routes para que POST /api/licenses/activate, /refresh y /revoke funcionen contra app.hitechrts.com sin downgrades, sin duplicar LICFLOW2, sin tocar secretos, sin copiar DB, sin deploy automático no autorizado y preservando Worker real prisma-cloud-semilla y D1 real prisma_cloud_semilla.`
+- Task: `PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes`
 
 ## Minimum bar
 
