@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "checkedAt": "2026-07-06T08:23:42.875Z",
+  "certifiedDay": "2026-07-05",
+  "mode": "all",
+  "results": [
+    {
+      "surface": "pc-sales-control",
+      "ok": true,
+      "todayStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "recentStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "storeCount": 1,
+      "terminalCount": 3
+    },
+    {
+      "surface": "tablet-pos",
+      "ok": true,
+      "contract": "operative sales surface, not required to be historical dashboard",
+      "todayStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "recentStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "productCount": 3,
+      "stockSnapshotCount": 0,
+      "productStockCount": 3,
+      "stockCount": 3,
+      "cashCount": 2
+    },
+    {
+      "surface": "mobile",
+      "ok": true,
+      "todayStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "recentStats": {
+        "tickets": 12,
+        "totalCents": 36000,
+        "averageTicketCents": 3000
+      },
+      "productCount": 3
+    },
+    {
+      "surface": "chart-lab",
+      "ok": true,
+      "counts": {
+        "runtime_sources": 1,
+        "runtime_metadata": 1,
+        "runtime_chart_payloads": 6
+      },
+      "total": 8
+    },
+    {
+      "surface": "data-lifecycle",
+      "ok": true,
+      "counters": [
+        "clear_candidates_open",
+        "ledger_records_open",
+        "external_signature_records_open",
+        "total_db_rows_open",
+        "generated_lifecycle_records_open",
+        "manual_or_base_records_open"
+      ],
+      "pinTable": "lifecycle_pins"
+    }
+  ],
+  "failures": []
+}

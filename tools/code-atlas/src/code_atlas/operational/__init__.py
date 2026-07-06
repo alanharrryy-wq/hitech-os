@@ -1,2 +1,3 @@
-from .suite50 import run_operational_evidence, run_operational_evidence_atlas, run
-__all__=["run_operational_evidence","run_operational_evidence_atlas","run"]
+"""PRISMA Code Atlas Operational Evidence package."""
+from .runner import run_operational_atlas
+__all__=["run_operational_atlas"]

@@ -1,0 +1,4514 @@
+{
+  "baseline": "snapshot_baseline_from_current",
+  "edges": [
+    {
+      "fromEntity": "AuditCount",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditCount"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditCount",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditCount",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "actorId",
+      "toEntity": "actor",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "entityId",
+      "toEntity": "entity",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Barcode"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Barcode",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Barcode",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Brand",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Brand"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Brand",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Brand",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Business",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Business"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Business",
+      "fromField": "taxId",
+      "toEntity": "tax",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Business"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "cashMovementId",
+      "toEntity": "CashMovement",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "CashMovement"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "actorId",
+      "toEntity": "actor",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashMovement"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashMovement",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashMovement",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashSession"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "storeId",
+      "toEntity": "Store",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Store"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "cashierId",
+      "toEntity": "cashier",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "CashSession"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DataSourceFreshness",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DataSourceFreshness"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DataSourceFreshness",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DataSourceFreshness",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DataSourceFreshness",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DataSourceFreshness"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DeviceHeartbeat",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DeviceHeartbeat"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DeviceHeartbeat",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DeviceHeartbeat",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DeviceHeartbeat",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DeviceHeartbeat"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownCatalog",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DropdownCatalog"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownCatalog",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DropdownCatalog",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "catalogId",
+      "toEntity": "catalog",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "purchaseOrderId",
+      "toEntity": "PurchaseOrder",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "PurchaseOrder"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "goodsReceiptId",
+      "toEntity": "GoodsReceipt",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "GoodsReceipt"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "purchaseOrderLineId",
+      "toEntity": "PurchaseOrderLine",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "PurchaseOrderLine"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "aggregateId",
+      "toEntity": "aggregate",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "correlationId",
+      "toEntity": "correlation",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Permission",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Permission"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Permission",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Permission",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceList",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceList"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PriceList",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceList",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "priceListId",
+      "toEntity": "PriceList",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "PriceList"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Product"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "brandId",
+      "toEntity": "Brand",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "Brand"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "taxRateId",
+      "toEntity": "TaxRate",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "TaxRate"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "purchaseOrderId",
+      "toEntity": "PurchaseOrder",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "PurchaseOrder"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Role",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Role"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Role",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Role",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Sale"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturn",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturn"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleReturn",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturn",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleReturnId",
+      "toEntity": "SaleReturn",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "SaleReturn"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleLineId",
+      "toEntity": "SaleLine",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "SaleLine"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "stockMovementId",
+      "toEntity": "StockMovement",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "StockMovement"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockMovement"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockMovement",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockMovement",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Store",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Store"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Store",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Store",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Supplier",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Supplier"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Supplier",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Supplier",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "openedById",
+      "toEntity": "openedBy",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "assignedToId",
+      "toEntity": "assignedTo",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "eventId",
+      "toEntity": "event",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "outboxEventId",
+      "toEntity": "OutboxEvent",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt",
+        "OutboxEvent"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncAttempt",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncAttempt",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "lastEventId",
+      "toEntity": "lastEvent",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "lastAttemptId",
+      "toEntity": "lastAttempt",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "eventId",
+      "toEntity": "event",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "outboxEventId",
+      "toEntity": "OutboxEvent",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict",
+        "OutboxEvent"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncConflict",
+      "fromField": "aggregateId",
+      "toEntity": "aggregate",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncConflict"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncOutboxStatusBucket",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncOutboxStatusBucket"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncOutboxStatusBucket",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncOutboxStatusBucket",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncOutboxStatusBucket",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncOutboxStatusBucket"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncOutboxStatusBucket",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "SyncOutboxStatusBucket",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "TaxRate",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "TaxRate"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "TaxRate",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "TaxRate",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Terminal"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Terminal",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "storeId",
+      "toEntity": "Store",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "Terminal",
+        "Store"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "User",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "User"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "User",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/pc/app/data/canonical.db"
+      ],
+      "evidenceTables": [
+        "User",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "AuditCount",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditCount"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditCount",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditCount",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "actorId",
+      "toEntity": "actor",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "AuditEvent",
+      "fromField": "entityId",
+      "toEntity": "entity",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "AuditEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Barcode"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Barcode",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Barcode",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Barcode",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Brand",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Brand"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Brand",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Brand",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Business",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Business"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Business",
+      "fromField": "taxId",
+      "toEntity": "tax",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Business"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "cashMovementId",
+      "toEntity": "CashMovement",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment",
+        "CashMovement"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashAdjustment",
+      "fromField": "actorId",
+      "toEntity": "actor",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashAdjustment"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashMovement"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashMovement",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashMovement",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashMovement",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashSession"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "storeId",
+      "toEntity": "Store",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Store"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashSession",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "CashSession",
+      "fromField": "cashierId",
+      "toEntity": "cashier",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "CashSession"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownCatalog",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "DropdownCatalog"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownCatalog",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "DropdownCatalog",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "DropdownOption",
+      "fromField": "catalogId",
+      "toEntity": "catalog",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "DropdownOption"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "purchaseOrderId",
+      "toEntity": "PurchaseOrder",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "PurchaseOrder"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceipt",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceipt",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "goodsReceiptId",
+      "toEntity": "GoodsReceipt",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "GoodsReceipt"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "purchaseOrderLineId",
+      "toEntity": "PurchaseOrderLine",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "PurchaseOrderLine"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "GoodsReceiptLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "GoodsReceiptLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "aggregateId",
+      "toEntity": "aggregate",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "remoteEventId",
+      "toEntity": "remoteEvent",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "OutboxEvent",
+      "fromField": "remoteLedgerId",
+      "toEntity": "remoteLedger",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Permission",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Permission"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Permission",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Permission",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceList",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceList"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PriceList",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceList",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "priceListId",
+      "toEntity": "PriceList",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "PriceList"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PriceListItem",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PriceListItem",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Product"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "brandId",
+      "toEntity": "Brand",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "Brand"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Product",
+      "fromField": "taxRateId",
+      "toEntity": "TaxRate",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Product",
+        "TaxRate"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ProductSupplier",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ProductSupplier",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrder",
+      "fromField": "supplierId",
+      "toEntity": "Supplier",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrder",
+        "Supplier"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "purchaseOrderId",
+      "toEntity": "PurchaseOrder",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "PurchaseOrder"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "PurchaseOrderLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "PurchaseOrderLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "ReplenishmentSignal",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "ReplenishmentSignal",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Role",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Role"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Role",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Role",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Sale"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "cashSessionId",
+      "toEntity": "CashSession",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "CashSession"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Sale",
+      "fromField": "clientRequestId",
+      "toEntity": "clientRequest",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Sale"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SalePaymentTender",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SalePaymentTender",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturn",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturn"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleReturn",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturn",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleReturnId",
+      "toEntity": "SaleReturn",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "SaleReturn"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleId",
+      "toEntity": "Sale",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "saleLineId",
+      "toEntity": "SaleLine",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "SaleLine"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SaleReturnLine",
+      "fromField": "stockMovementId",
+      "toEntity": "StockMovement",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SaleReturnLine",
+        "StockMovement"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockMovement"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockMovement",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockMovement",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockMovement",
+      "fromField": "sourceId",
+      "toEntity": "source",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockMovement"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "StockSnapshot",
+      "fromField": "productId",
+      "toEntity": "Product",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": false,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "StockSnapshot",
+        "Product"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Store",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Store"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Store",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Store",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Supplier",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Supplier"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Supplier",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Supplier",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "openedById",
+      "toEntity": "openedBy",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SupportIncident",
+      "fromField": "assignedToId",
+      "toEntity": "assignedTo",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SupportIncident"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "deviceId",
+      "toEntity": "device",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": true,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "terminalId",
+      "toEntity": "Terminal",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint",
+        "Terminal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "lastEventId",
+      "toEntity": "lastEvent",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "SyncCheckpoint",
+      "fromField": "lastAttemptId",
+      "toEntity": "lastAttempt",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "SyncCheckpoint"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "TabletLocalSecuritySecret",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "TabletLocalSecuritySecret",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "TaxRate",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "TaxRate"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "TaxRate",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "TaxRate",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Terminal"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Terminal",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "Terminal",
+      "fromField": "storeId",
+      "toEntity": "Store",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "Terminal",
+        "Store"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "User",
+      "fromField": "id",
+      "toEntity": "",
+      "toField": "id",
+      "relationshipType": "NO_CONFIRMADO",
+      "required": false,
+      "confidence": "LOW",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "User"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "User",
+      "fromField": "businessId",
+      "toEntity": "Business",
+      "toField": "id",
+      "relationshipType": "DERIVED",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "products/tablet/app/data/tablet-pos.db"
+      ],
+      "evidenceTables": [
+        "User",
+        "Business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "setup bundle",
+      "fromField": "license_id",
+      "toEntity": "license",
+      "toField": "license_id",
+      "relationshipType": "SERVICE_QUERY",
+      "required": true,
+      "confidence": "HIGH",
+      "evidenceFiles": [
+        "infra/cloudflare/licflow3-worker/src/worker.js"
+      ],
+      "evidenceTables": [
+        "customer_setup_bundles",
+        "licenses"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "claim slot",
+      "fromField": "license_id",
+      "toEntity": "license",
+      "toField": "license_id",
+      "relationshipType": "SERVICE_QUERY",
+      "required": true,
+      "confidence": "HIGH",
+      "evidenceFiles": [
+        "infra/cloudflare/licflow3-worker/src/worker.js"
+      ],
+      "evidenceTables": [
+        "customer_device_claim_slots"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "claim slot",
+      "fromField": "plan_id",
+      "toEntity": "license plan",
+      "toField": "plan_id",
+      "relationshipType": "SERVICE_QUERY",
+      "required": true,
+      "confidence": "HIGH",
+      "evidenceFiles": [
+        "infra/cloudflare/licflow3-worker/src/worker.js"
+      ],
+      "evidenceTables": [
+        "customer_device_claim_slots",
+        "license_plans"
+      ],
+      "status": "PASS"
+    },
+    {
+      "fromEntity": "sale",
+      "fromField": "id",
+      "toEntity": "outbox event",
+      "toField": "aggregateId",
+      "relationshipType": "PAYLOAD_JSON",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "tools/licscope-closure.mjs"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    },
+    {
+      "fromEntity": "tablet sale",
+      "fromField": "id",
+      "toEntity": "canonical sale",
+      "toField": "idempotencyKey/clientRequestId",
+      "relationshipType": "DOC_CONTRACT",
+      "required": true,
+      "confidence": "MEDIUM",
+      "evidenceFiles": [
+        "docs/ops/licscope/TABLET_TO_CANONICAL_LINKING_RULES.md"
+      ],
+      "evidenceTables": [
+        "Sale",
+        "OutboxEvent"
+      ],
+      "status": "NO_CONFIRMADO"
+    }
+  ]
+}

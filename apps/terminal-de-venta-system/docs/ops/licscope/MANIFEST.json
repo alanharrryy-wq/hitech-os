@@ -1,0 +1,2441 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "status": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "finalStatus": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "sourceOnly": false,
+  "rawDbsCopied": false,
+  "deployPerformed": false,
+  "d1LiveWritePerformed": false,
+  "migrationsApplied": false,
+  "runtimeTouched": false,
+  "secretsPrinted": false,
+  "files": [
+    {
+      "path": "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+      "sha256": "a4c4deb81f6b317dd5502409beca27be346df729cd741efcb13713ed9657b66f",
+      "bytes": 72407
+    },
+    {
+      "path": "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.md",
+      "sha256": "54fc888dd23cd6ad5f8120e94d88cb28ff093ee878842ce32e975d4fdaa22d0a",
+      "bytes": 30935
+    },
+    {
+      "path": "docs/ops/licscope/AUDIT_COMPLETENESS_MATRIX.csv",
+      "sha256": "dee99de2297d465ba6db4693c621b25b7fb7de7ec71566afcc76ac522ffdda9d",
+      "bytes": 84
+    },
+    {
+      "path": "docs/ops/licscope/AUDIT_COMPLETENESS_MATRIX.json",
+      "sha256": "3882f51b5b4cd192f1f26e2512b49255d6475cde777b2c2b62883e1853c6fcdd",
+      "bytes": 237
+    },
+    {
+      "path": "docs/ops/licscope/AUDIT_COMPLETENESS_MATRIX.md",
+      "sha256": "f9bef90e34744b8c801959b5399fc6f26d1e75617486a1008829562591e08dee",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/AUDIT_COMPLETENESS_RULES.json",
+      "sha256": "01b5d1955d0737869140a403e001314fac698c16b7029539c963eb7c23a34be8",
+      "bytes": 781
+    },
+    {
+      "path": "docs/ops/licscope/AUDIT_COMPLETENESS_RULES.md",
+      "sha256": "f245882530c4d64753b339abe9fd9dde4222489f287e75a8ec53a18a6b2d566e",
+      "bytes": 489
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/infra_cloudflare_licflow3-worker_src_worker.js.HEAD.txt",
+      "sha256": "64f47a251904b56a2ad6eef3919cf42c95cc24c0e0c72d7f861f1a46909f782d",
+      "bytes": 69627
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/package.json.HEAD.txt",
+      "sha256": "9c2ee96d91daa5f86d854d7aefa115c1d952b943bc744615015470b5a34df4b2",
+      "bytes": 18566
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/products_tablet_app_src_lib_pos-ui_pos-error-copy.ts.HEAD.txt",
+      "sha256": "ed2ccd9bc2f13324b4ac0dbda6bff19ab6fe8b3537b09bea7ea2ba47729ea46e",
+      "bytes": 269
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/shared_licensing_customer-setup-contract.ts.HEAD.txt",
+      "sha256": "e30a49845703652350c084b881bd07b6a40a895ec3aa1245c9ad483364faa764",
+      "bytes": 20777
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/shared_licensing_feature-resolver.ts.HEAD.txt",
+      "sha256": "61d522eb9f42aed260165d5f3f98e91e553addab61e6e688b5b68858832a7593",
+      "bytes": 5414
+    },
+    {
+      "path": "docs/ops/licscope/backups_from_HEAD/tools_verify-customer-setup-multidevice.mjs.HEAD.txt",
+      "sha256": "d4299129c5321e633f6ae89a33a7e185674d81a63ea8710988e1307dfc38b144",
+      "bytes": 15808
+    },
+    {
+      "path": "docs/ops/licscope/BACKUPS_MANIFEST.json",
+      "sha256": "2633637a27087f87008dc7c9e5603f642f920587a40d659634bb8b06e5dd3e97",
+      "bytes": 1514
+    },
+    {
+      "path": "docs/ops/licscope/BUSINESS_CLIENT_STORE_TERMINAL_OWNERSHIP.md",
+      "sha256": "04d5051096cf84b0d7dea671541ab4e052a2b34c575577ffa401c720b8505f69",
+      "bytes": 251
+    },
+    {
+      "path": "docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md",
+      "sha256": "7c580a5a05839494c2654e70d90c714d134c09d613e65fe5cfc3e8e9dad74417",
+      "bytes": 260
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_ONBOARDING_FLOW_MATRIX.csv",
+      "sha256": "31555826b064c0b9981973ccbe2fd4aa838cb24502135e2d758e4716c96842db",
+      "bytes": 115
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_ONBOARDING_FLOW_MATRIX.json",
+      "sha256": "8828e6a7dcb4d2a04c7f08e853301b1357d6b6b6c11b1a2a7fd642ddba051210",
+      "bytes": 292
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_ONBOARDING_FLOW_MATRIX.md",
+      "sha256": "374a35c58b641ec0f712c0a1fc984f9ac7ad32673bccc46a69bbf326e0867d78",
+      "bytes": 205
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_OPERATIONS_MATRIX.csv",
+      "sha256": "5f26a496f9e0924de37f8116d60d554e1d2645b7ab08bd254ebe21349b5db380",
+      "bytes": 137
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_OPERATIONS_MATRIX.json",
+      "sha256": "af478e524382717a152524f11685968dbe8fafb6175ae8b0ee07ea54a4e2f5df",
+      "bytes": 313
+    },
+    {
+      "path": "docs/ops/licscope/CLIENT_OPERATIONS_MATRIX.md",
+      "sha256": "366d2ce52f4382eff9c008bb38214bef7f9cecc8605bd8cded835f055b525d26",
+      "bytes": 222
+    },
+    {
+      "path": "docs/ops/licscope/CLOUD_TENANT_ID_DEFINITION.md",
+      "sha256": "a5b37481d996c1c41a47debc9d6d39d84cd12ab01a44c4ffd3caff47c968b887",
+      "bytes": 211
+    },
+    {
+      "path": "docs/ops/licscope/CONTINUATION.md",
+      "sha256": "dc21a17387a7617683d9626af71883051d330e45171fc55861b4dedca4ee0e0b",
+      "bytes": 287
+    },
+    {
+      "path": "docs/ops/licscope/COVERAGE_CHECKLIST.json",
+      "sha256": "f1713c6412175bb0997b0583709c533ebfd00c8e2d5b8014318fc12fc9e7ecb3",
+      "bytes": 21640
+    },
+    {
+      "path": "docs/ops/licscope/COVERAGE_CHECKLIST.md",
+      "sha256": "e968de41f60b66e0e74d23c95c795bd513846b067d9b0ccdee2c9dbd67541750",
+      "bytes": 12946
+    },
+    {
+      "path": "docs/ops/licscope/COVERAGE_CHECKLIST_60.json",
+      "sha256": "e9d8da847e2d3a56635c3b850056db93c830357abe6024d19a52a62d512ae836",
+      "bytes": 23852
+    },
+    {
+      "path": "docs/ops/licscope/COVERAGE_CHECKLIST_60.md",
+      "sha256": "7c346eb3e1dae6fe6d16bd87e2ee595e45634931486b264316ad36ade71acd0d",
+      "bytes": 12675
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_SETUP_JOURNEY_MAP.json",
+      "sha256": "ee0ff9b0307dc7dc0d3b4a11b40285d6daccd5f66dba10f41882eaa7eab19800",
+      "bytes": 3209
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_SETUP_JOURNEY_MAP.md",
+      "sha256": "ef3e1f5cd3fcc5390a7ce4e4f8375523887e1b6a0eb7ccc471a11597223922fa",
+      "bytes": 1850
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_VISIBLE_MATRIX.csv",
+      "sha256": "acc46afa567cb836fb195aa7aa762c53a2dadc640e31d73b11daecee6eb327ce",
+      "bytes": 59
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_VISIBLE_MATRIX.json",
+      "sha256": "88a0040e6b991ebb5a18261fcdbb85fc3b44f3cc6a54abe0cd34859b3f1abccc",
+      "bytes": 208
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_VISIBLE_MATRIX.md",
+      "sha256": "5fb33e49c612057a737672607a83429860ba9b382b60761ed57f2b3a4b6534dc",
+      "bytes": 123
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md",
+      "sha256": "9c00397604c019e5bd9f7cfab15164e24885f6de1e7014e3f7cf159d3532a4d3",
+      "bytes": 277
+    },
+    {
+      "path": "docs/ops/licscope/CUSTOMER_VISIBLE_SCAN.json",
+      "sha256": "4b05838a543d950503505cc6eb0f457f25db87ebd47df5a221050ea46ec6888c",
+      "bytes": 28185
+    },
+    {
+      "path": "docs/ops/licscope/db_inventory.md",
+      "sha256": "e374ef071b2db527048ea98bacf15c6fa32a668d81987015b71de7745ae96a01",
+      "bytes": 354
+    },
+    {
+      "path": "docs/ops/licscope/deploy/DEPLOY_BLOCKERS.json",
+      "sha256": "7f5135ab608ca2cea8abb0dc8d9b4ecaeb9a3fc1ef0f21d4d5400fdeb7759164",
+      "bytes": 377
+    },
+    {
+      "path": "docs/ops/licscope/deploy/DEPLOY_BLOCKERS.md",
+      "sha256": "71caf2113d08edd7d031a0c4d301cb8c72d9b1549260ece01e42cb1a7d49927a",
+      "bytes": 317
+    },
+    {
+      "path": "docs/ops/licscope/deploy/DEPLOY_PREFLIGHT.json",
+      "sha256": "5e4a207e16230017deb20c55bd181e9c640452fc11150f1bbf4f3ff679d1036f",
+      "bytes": 982
+    },
+    {
+      "path": "docs/ops/licscope/deploy/DEPLOY_PREFLIGHT.md",
+      "sha256": "3c7fa0a5da08ba9e88d25833958141704971f0142008142ff5c06a28c9ba1f55",
+      "bytes": 212
+    },
+    {
+      "path": "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json",
+      "sha256": "c04a506ca0c61a0d45c1084d91519686107ec649374e0ac66fa3221cddcd0599",
+      "bytes": 2601
+    },
+    {
+      "path": "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.md",
+      "sha256": "4f6ce99b5955ffbe9c9f04331c0aed7d01f37d93d81c35c97cf6e83433b5b7ac",
+      "bytes": 1771
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_CROSSCHECK.csv",
+      "sha256": "007d56a7957843e9d6e9c3e0c47aced47cbcefd159f1377b79224fcf694c2fd9",
+      "bytes": 103
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_CROSSCHECK.json",
+      "sha256": "51e307a8cdc2ec1b53595f0cad6c88b8dd1789f512c17e9bacc81aada45009c4",
+      "bytes": 266
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_CROSSCHECK.md",
+      "sha256": "51c0d31b76b1bf464352f36c4415bc46b6dc508473c279de192d5601f5e5d0f0",
+      "bytes": 177
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_SLOT_MATRIX.csv",
+      "sha256": "25875816d6e5800763f2d31ce82f143555d5881863e99ec18fb2ffaab14c9ed3",
+      "bytes": 110
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_SLOT_MATRIX.json",
+      "sha256": "4ba7178163e68fdf95b9f8315e71b63b5e3c042c08e49258930c92877f1988dd",
+      "bytes": 284
+    },
+    {
+      "path": "docs/ops/licscope/DEVICE_CLAIM_SLOT_MATRIX.md",
+      "sha256": "d64a91301046a60b46e2a25bbb2ef8db45aafa73bab7b3e38c40807da5529d28",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/DUPLICATE_DETECTOR_MATRIX.csv",
+      "sha256": "2671a1f0956a72179e8efe2155f7fda74239a0c14bff476fa9e95ce87b83892c",
+      "bytes": 84
+    },
+    {
+      "path": "docs/ops/licscope/DUPLICATE_DETECTOR_MATRIX.json",
+      "sha256": "baddd28e70a66100d4d1e89c95c99cc5acdf42be2d9ffebc661d63877dd53d67",
+      "bytes": 237
+    },
+    {
+      "path": "docs/ops/licscope/DUPLICATE_DETECTOR_MATRIX.md",
+      "sha256": "52bb7f13d5038815eb77040d5165bbff9a682cc307330e424051bd07f673c151",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json",
+      "sha256": "1a53decc841d4b8699eb29c629e6dbf59dc453e76e174ae615f1f2f1798089f7",
+      "bytes": 750
+    },
+    {
+      "path": "docs/ops/licscope/DUPLICATE_DETECTOR_RULES.md",
+      "sha256": "5ec3cfb0f7d017b2144153cc33670bfa6453df150752c4cb1870f721bef47945",
+      "bytes": 458
+    },
+    {
+      "path": "docs/ops/licscope/ENTITY_DEFINITIONS.json",
+      "sha256": "cea1345f6d2543b5fe7d571b2a6fbbe47b07b9cd2b0ccca5c3207f367bb2ba73",
+      "bytes": 8648
+    },
+    {
+      "path": "docs/ops/licscope/ENTITY_DEFINITIONS.md",
+      "sha256": "b0be693b2f33c7799b1c1cad91c6b5efb15b15ca7e1ffb6216fb7d61c5817235",
+      "bytes": 3181
+    },
+    {
+      "path": "docs/ops/licscope/FIELD_ALIAS_CONTRACT.md",
+      "sha256": "09255aaae78a601718e80123e1349593defb8426c89f23c0cf4c7d85d922d6ee",
+      "bytes": 668
+    },
+    {
+      "path": "docs/ops/licscope/FILES_FOR_NEXT_AGENT.json",
+      "sha256": "75ec3293fd15d62d8a318e250e0878cc9d3a01ad92339af5d5cb9ec0f5f6016f",
+      "bytes": 141047
+    },
+    {
+      "path": "docs/ops/licscope/FILES_FOR_NEXT_AGENT.md",
+      "sha256": "800d542ee7a3e0f5b1b3641d25d837a84192ed9313ab574dffeb508744d67bf5",
+      "bytes": 68105
+    },
+    {
+      "path": "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json",
+      "sha256": "53ad2c6024bc0ff2b3b20f42bca7d776e5bd4020e3d671b282b9739015e82255",
+      "bytes": 16392
+    },
+    {
+      "path": "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.md",
+      "sha256": "5913b1a1d2e6449459a5febd7f597b0be19da9ad28cc26da850cc0045804b34f",
+      "bytes": 5617
+    },
+    {
+      "path": "docs/ops/licscope/GOLDEN_PATH_OPERATIONS_MATRIX.csv",
+      "sha256": "e169092f9ea8b955f40d03f1c7ed852107193e2640309f038870a17fa5bef0ea",
+      "bytes": 7744
+    },
+    {
+      "path": "docs/ops/licscope/GOLDEN_PATH_OPERATIONS_MATRIX.json",
+      "sha256": "b5d58c051c785a215aa7fd3f3042469db381e90fe543ae84377f04c33ad25c99",
+      "bytes": 16436
+    },
+    {
+      "path": "docs/ops/licscope/GOLDEN_PATH_OPERATIONS_MATRIX.md",
+      "sha256": "a4e1b17a20d7c4b02be8271ee322cbc965f487a8a84003248a9eb913a539cfa7",
+      "bytes": 8286
+    },
+    {
+      "path": "docs/ops/licscope/LICENSE_DEVICE_CROSSCHECK.csv",
+      "sha256": "75313d8284419700cc4564034b208c3126a29eeed91483c2c494897a707dc16d",
+      "bytes": 121
+    },
+    {
+      "path": "docs/ops/licscope/LICENSE_DEVICE_CROSSCHECK.json",
+      "sha256": "93cebe05952768be82b675f577aba8b2d00c9160a579f9a16863e47b12a8122a",
+      "bytes": 298
+    },
+    {
+      "path": "docs/ops/licscope/LICENSE_DEVICE_CROSSCHECK.md",
+      "sha256": "fa05b7f520d096abff4eb12baae1d293cdceefac338b85de32ddbbc0db5c1418",
+      "bytes": 207
+    },
+    {
+      "path": "docs/ops/licscope/LICSCOPE_HANDOFF.json",
+      "sha256": "bb094ce3064243c211090cc3e278ab14d3cf4f70d5791bcbc5e4e9ec4a9b0785",
+      "bytes": 969
+    },
+    {
+      "path": "docs/ops/licscope/LICSCOPE_HANDOFF.md",
+      "sha256": "518c3583f102afd4232ce856636f160ebc61eb9bd0f535531d0abb79fdddcbfd",
+      "bytes": 389
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-customer-setup.json",
+      "sha256": "490d9f87192a1783f3a99bdc0d8d11d4170df92d9f6344b55da2b6d9a0345624",
+      "bytes": 328
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-customer-setup.md",
+      "sha256": "63cb9dd8aa9f1bc54b18b7ee976eb745449455c255ae424bdbf616d6cc843ace",
+      "bytes": 93
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-customer-visible-safety.json",
+      "sha256": "6fcf2ecab41d6043533917bf8aa11e2166c4e1c290c541ab8164f7b3d32b2da8",
+      "bytes": 346
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-customer-visible-safety.md",
+      "sha256": "c86ed0fd596501a6d62e5675efaf851ad6dc3a33199ea05d034b6297ea79c87a",
+      "bytes": 102
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-device-without-license-blocked.json",
+      "sha256": "0f0d39940f5cf025cba91dd5ad9706f0fa276e4757e8d2d53b9736020caae898",
+      "bytes": 360
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-device-without-license-blocked.md",
+      "sha256": "8dd0bd52c5705e7081f4b9675b0c7566aece37eb0d03a5d38de2d00c179b6a39",
+      "bytes": 109
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-license-without-client-blocked.json",
+      "sha256": "12891d5b410ef31ab0f1730385626b61982752661e97057c133213e89edb63c8",
+      "bytes": 360
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-license-without-client-blocked.md",
+      "sha256": "79519e136786c136b246b731c957055cbbbb4159e3d39fbd20f830bf13a3a3c5",
+      "bytes": 109
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-mobile-claim.json",
+      "sha256": "077c6b038cbb805ba6701abbc2c98ec10d8250bf0765534cd7f0ef67acf8a68d",
+      "bytes": 324
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-mobile-claim.md",
+      "sha256": "41079c939087fd761a7aa866ba78501f8a90183b770b622fb9845d634c000626",
+      "bytes": 91
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-pc-claim.json",
+      "sha256": "db69e06eb3c1e3ca46d3b6c4b485eb717db20c3c9f3a8cabc2f649a2ae1964bf",
+      "bytes": 316
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-pc-claim.md",
+      "sha256": "f3a6021cf3ce9a3ce00067555fab55505ad1473b0846c718c577b7b24cc14553",
+      "bytes": 87
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-pii-secret-safety.json",
+      "sha256": "9240c70457dc8f948ac2d6bf587f076d0b14f79c7b1dfe784ca7725f75ae6501",
+      "bytes": 334
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-pii-secret-safety.md",
+      "sha256": "1671ea44e1899c92052b90ec76dac8b7a22251f81fef9a96f2391f1274b96ebf",
+      "bytes": 96
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-plan-provisioning.json",
+      "sha256": "3b2713996dd2aac9f41855c8d413f6baba3445ee8709172fff2b416922911949",
+      "bytes": 334
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-plan-provisioning.md",
+      "sha256": "01eee55e3926abb94906afa0cc1d67e75671e318b6e6a7ea8f2005d1fde793f6",
+      "bytes": 96
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-sale-outbox-sync-canonical.json",
+      "sha256": "1a5e4f65f3c97931dd228b573769f3475d12feca2c9ad8c589b739badb4091e5",
+      "bytes": 352
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-sale-outbox-sync-canonical.md",
+      "sha256": "53ede1a75b01d50a85a7e91629a303302bfc1da2b0e5227f1215f71a49190fbd",
+      "bytes": 105
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-sale-provenance.json",
+      "sha256": "304a046b84852bf913a156bf34c05ac216c1deafeb66e6e19ba1dba8d4339927",
+      "bytes": 330
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-sale-provenance.md",
+      "sha256": "98e36bf85131e11f2f326922f8f8b0d6a7964d5d87e5c40625f7ecdd1b899e11",
+      "bytes": 94
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-tablet-claim.json",
+      "sha256": "fd869edf424febdea5bc5cab41859f1921462e70a037893506a171838dc65287",
+      "bytes": 324
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-tablet-claim.md",
+      "sha256": "2608bf845f485aac263407425a0c7a9a34dd39b57d3eceda30eaccaedac3c22d",
+      "bytes": 91
+    },
+    {
+      "path": "docs/ops/licscope/MANIFEST.json",
+      "sha256": "1a6082e32c4f18a1cb7b6dfb7227dc599b2b6fdcf6778d9f502f8176bab09d09",
+      "bytes": 90539
+    },
+    {
+      "path": "docs/ops/licscope/matrices/AUDIT_COMPLETENESS_MATRIX.csv",
+      "sha256": "dee99de2297d465ba6db4693c621b25b7fb7de7ec71566afcc76ac522ffdda9d",
+      "bytes": 84
+    },
+    {
+      "path": "docs/ops/licscope/matrices/AUDIT_COMPLETENESS_MATRIX.json",
+      "sha256": "3882f51b5b4cd192f1f26e2512b49255d6475cde777b2c2b62883e1853c6fcdd",
+      "bytes": 237
+    },
+    {
+      "path": "docs/ops/licscope/matrices/AUDIT_COMPLETENESS_MATRIX.md",
+      "sha256": "f9bef90e34744b8c801959b5399fc6f26d1e75617486a1008829562591e08dee",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_ONBOARDING_FLOW_MATRIX.csv",
+      "sha256": "31555826b064c0b9981973ccbe2fd4aa838cb24502135e2d758e4716c96842db",
+      "bytes": 115
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_ONBOARDING_FLOW_MATRIX.json",
+      "sha256": "8828e6a7dcb4d2a04c7f08e853301b1357d6b6b6c11b1a2a7fd642ddba051210",
+      "bytes": 292
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_ONBOARDING_FLOW_MATRIX.md",
+      "sha256": "374a35c58b641ec0f712c0a1fc984f9ac7ad32673bccc46a69bbf326e0867d78",
+      "bytes": 205
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_OPERATIONS_MATRIX.csv",
+      "sha256": "5f26a496f9e0924de37f8116d60d554e1d2645b7ab08bd254ebe21349b5db380",
+      "bytes": 137
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_OPERATIONS_MATRIX.json",
+      "sha256": "af478e524382717a152524f11685968dbe8fafb6175ae8b0ee07ea54a4e2f5df",
+      "bytes": 313
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CLIENT_OPERATIONS_MATRIX.md",
+      "sha256": "366d2ce52f4382eff9c008bb38214bef7f9cecc8605bd8cded835f055b525d26",
+      "bytes": 222
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CUSTOMER_VISIBLE_MATRIX.csv",
+      "sha256": "acc46afa567cb836fb195aa7aa762c53a2dadc640e31d73b11daecee6eb327ce",
+      "bytes": 59
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CUSTOMER_VISIBLE_MATRIX.json",
+      "sha256": "88a0040e6b991ebb5a18261fcdbb85fc3b44f3cc6a54abe0cd34859b3f1abccc",
+      "bytes": 208
+    },
+    {
+      "path": "docs/ops/licscope/matrices/CUSTOMER_VISIBLE_MATRIX.md",
+      "sha256": "5fb33e49c612057a737672607a83429860ba9b382b60761ed57f2b3a4b6534dc",
+      "bytes": 123
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_CROSSCHECK.csv",
+      "sha256": "007d56a7957843e9d6e9c3e0c47aced47cbcefd159f1377b79224fcf694c2fd9",
+      "bytes": 103
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_CROSSCHECK.json",
+      "sha256": "51e307a8cdc2ec1b53595f0cad6c88b8dd1789f512c17e9bacc81aada45009c4",
+      "bytes": 266
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_CROSSCHECK.md",
+      "sha256": "51c0d31b76b1bf464352f36c4415bc46b6dc508473c279de192d5601f5e5d0f0",
+      "bytes": 177
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_SLOT_MATRIX.csv",
+      "sha256": "25875816d6e5800763f2d31ce82f143555d5881863e99ec18fb2ffaab14c9ed3",
+      "bytes": 110
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_SLOT_MATRIX.json",
+      "sha256": "4ba7178163e68fdf95b9f8315e71b63b5e3c042c08e49258930c92877f1988dd",
+      "bytes": 284
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DEVICE_CLAIM_SLOT_MATRIX.md",
+      "sha256": "d64a91301046a60b46e2a25bbb2ef8db45aafa73bab7b3e38c40807da5529d28",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DUPLICATE_DETECTOR_MATRIX.csv",
+      "sha256": "2671a1f0956a72179e8efe2155f7fda74239a0c14bff476fa9e95ce87b83892c",
+      "bytes": 84
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DUPLICATE_DETECTOR_MATRIX.json",
+      "sha256": "baddd28e70a66100d4d1e89c95c99cc5acdf42be2d9ffebc661d63877dd53d67",
+      "bytes": 237
+    },
+    {
+      "path": "docs/ops/licscope/matrices/DUPLICATE_DETECTOR_MATRIX.md",
+      "sha256": "52bb7f13d5038815eb77040d5165bbff9a682cc307330e424051bd07f673c151",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/matrices/GOLDEN_PATH_OPERATIONS_MATRIX.csv",
+      "sha256": "e169092f9ea8b955f40d03f1c7ed852107193e2640309f038870a17fa5bef0ea",
+      "bytes": 7744
+    },
+    {
+      "path": "docs/ops/licscope/matrices/GOLDEN_PATH_OPERATIONS_MATRIX.json",
+      "sha256": "b5d58c051c785a215aa7fd3f3042469db381e90fe543ae84377f04c33ad25c99",
+      "bytes": 16436
+    },
+    {
+      "path": "docs/ops/licscope/matrices/GOLDEN_PATH_OPERATIONS_MATRIX.md",
+      "sha256": "a4e1b17a20d7c4b02be8271ee322cbc965f487a8a84003248a9eb913a539cfa7",
+      "bytes": 8286
+    },
+    {
+      "path": "docs/ops/licscope/matrices/LICENSE_DEVICE_CROSSCHECK.csv",
+      "sha256": "75313d8284419700cc4564034b208c3126a29eeed91483c2c494897a707dc16d",
+      "bytes": 121
+    },
+    {
+      "path": "docs/ops/licscope/matrices/LICENSE_DEVICE_CROSSCHECK.json",
+      "sha256": "93cebe05952768be82b675f577aba8b2d00c9160a579f9a16863e47b12a8122a",
+      "bytes": 298
+    },
+    {
+      "path": "docs/ops/licscope/matrices/LICENSE_DEVICE_CROSSCHECK.md",
+      "sha256": "fa05b7f520d096abff4eb12baae1d293cdceefac338b85de32ddbbc0db5c1418",
+      "bytes": 207
+    },
+    {
+      "path": "docs/ops/licscope/matrices/ORPHAN_DETECTOR_MATRIX.csv",
+      "sha256": "0fcf2acd9cdb4068eef233b169097d25a79d4681f9a61553606c3c5d167945b0",
+      "bytes": 78
+    },
+    {
+      "path": "docs/ops/licscope/matrices/ORPHAN_DETECTOR_MATRIX.json",
+      "sha256": "41c89d2c11f5db9f70f80b65e2bdf7f9fcfdc134fd3dfc3006c2138e3c72e306",
+      "bytes": 228
+    },
+    {
+      "path": "docs/ops/licscope/matrices/ORPHAN_DETECTOR_MATRIX.md",
+      "sha256": "e91f3aa3d948ee063f70182e6f425357268c50ed6ce89ade2cf7617ac07f03ec",
+      "bytes": 141
+    },
+    {
+      "path": "docs/ops/licscope/matrices/OUTBOX_SYNC_CANONICAL_MATRIX.csv",
+      "sha256": "2b773278d0477170273dda429b6c0d7524694515f81e05448d853476e7f2b353",
+      "bytes": 110
+    },
+    {
+      "path": "docs/ops/licscope/matrices/OUTBOX_SYNC_CANONICAL_MATRIX.json",
+      "sha256": "6b93d62194b69c5247d85cd5ce267106c0054ff5cefedfc4e0e9f32f4f2f7903",
+      "bytes": 290
+    },
+    {
+      "path": "docs/ops/licscope/matrices/OUTBOX_SYNC_CANONICAL_MATRIX.md",
+      "sha256": "537d2adfcf0343a0e04364156f370073ecc0ded26c670e6333ab301ec258b308",
+      "bytes": 199
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PII_SECRET_SAFETY_MATRIX.csv",
+      "sha256": "6af729c371ddb47be9ddf6fc2bedaa1602e217027a255a6d2fad1b867bced707",
+      "bytes": 83
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PII_SECRET_SAFETY_MATRIX.json",
+      "sha256": "87a9a37c478050da1e1a1e70f90c807010a99bfa8daa9f2be0feb2afc68fb212",
+      "bytes": 243
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PII_SECRET_SAFETY_MATRIX.md",
+      "sha256": "6bef884a20b77bce921ac8cfa8ba702546340973540fcc4b12b4dfe04b5e6301",
+      "bytes": 158
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PLAN_PROVISIONING_MATRIX.csv",
+      "sha256": "70ff9140699f22088a9333224666a55a67be134a26a92ec92bbc08467b0d7c67",
+      "bytes": 108
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PLAN_PROVISIONING_MATRIX.json",
+      "sha256": "002af0b3cbea2b69525dfe63793136b6ee859346ff470577cdd86520ea8a306e",
+      "bytes": 270
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PLAN_PROVISIONING_MATRIX.md",
+      "sha256": "d847aadce37df1b3a3932568f11e0a1e99d6947a405917174e133f4fbc2a4929",
+      "bytes": 183
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PRODUCTION_READINESS_MATRIX.csv",
+      "sha256": "685bb42dd4919b477c798c33583df5482633213d81d4002a9156a1b381b90b09",
+      "bytes": 109
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PRODUCTION_READINESS_MATRIX.json",
+      "sha256": "22c664d3ae1dc026ffb18f4a4d6bdc4377500c86b65fbacd7eeb0e4dbb2e16eb",
+      "bytes": 276
+    },
+    {
+      "path": "docs/ops/licscope/matrices/PRODUCTION_READINESS_MATRIX.md",
+      "sha256": "3abef882f2d968a39c8cf19dd5729997f20ea64ef3d3483b6c106a7d3a3e8c20",
+      "bytes": 187
+    },
+    {
+      "path": "docs/ops/licscope/matrices/RECONCILIATION_MATRIX.csv",
+      "sha256": "7e05e75dee3b17af7329dae0fd620e79e8b2c1ac9bf1b409d7976f99a7473e52",
+      "bytes": 76
+    },
+    {
+      "path": "docs/ops/licscope/matrices/RECONCILIATION_MATRIX.json",
+      "sha256": "33afe500ec4f05733710c362e774bb87d48bb05d44872e2978eb73b66b272e05",
+      "bytes": 225
+    },
+    {
+      "path": "docs/ops/licscope/matrices/RECONCILIATION_MATRIX.md",
+      "sha256": "d9ac035a21ce6c872450fc783112a09bf19c311a9993a59df03da4d4d98b4469",
+      "bytes": 138
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_LINEAGE_MATRIX.csv",
+      "sha256": "fa8b66886e60f79ac4ff56ac1f5949871cb8e42ede5abb27a65b2eb7224b75dd",
+      "bytes": 129
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_LINEAGE_MATRIX.json",
+      "sha256": "bc3cce785b35216b09578e645063dd936f93f512c21949fd319ec41b25f1bb67",
+      "bytes": 289
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_LINEAGE_MATRIX.md",
+      "sha256": "4b1e745542906cdeb67f829c4f6aeedb1f7484e8bf63c6aec42f500a67717548",
+      "bytes": 200
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_OUTBOX_LINKING_MATRIX.csv",
+      "sha256": "c97f9c57d5dc58f948c0f3583614b6dbd5dc3becca8573420e5e006f0d09e270",
+      "bytes": 104
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_OUTBOX_LINKING_MATRIX.json",
+      "sha256": "550d1023fec6a46224e7b2a9f8d3736202f23464ae28fd2dc24a9d7b10856dc9",
+      "bytes": 271
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_OUTBOX_LINKING_MATRIX.md",
+      "sha256": "8db8a690579285c6ee44768f5c64403740a3852b7970819b938f22beda7b5b0c",
+      "bytes": 182
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_PROVENANCE_MATRIX.csv",
+      "sha256": "c968b71bfe91afbd0751c561ecc189059b8893d1589e37513f510063d11d10a2",
+      "bytes": 115
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_PROVENANCE_MATRIX.json",
+      "sha256": "53a32f3b275a14f2f44918b038a47fdce1ec53ff732120ef7e46e487871cb9c7",
+      "bytes": 278
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SALES_PROVENANCE_MATRIX.md",
+      "sha256": "778834499832447d4e8e0fea15c8ce965d0442cce27d17ef01f2d9fab57c42a7",
+      "bytes": 189
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SETUP_BUNDLE_MATRIX.csv",
+      "sha256": "ea3785ef8e75476da6d6dc900e30e5b437a273f05b637be1d87c0266888b74c0",
+      "bytes": 97
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SETUP_BUNDLE_MATRIX.json",
+      "sha256": "241d0b01532b548176070ede302fdda49494854319f5b63218a41ecf716113da",
+      "bytes": 254
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SETUP_BUNDLE_MATRIX.md",
+      "sha256": "dcd19bf248052f42385b23a4c07cc3e89811006865575536131edb522a64a5a8",
+      "bytes": 167
+    },
+    {
+      "path": "docs/ops/licscope/matrices/STALENESS_MONITOR_MATRIX.csv",
+      "sha256": "af463990fe44d788a5b737a66ee978d807e3ef7feed22d1780082a2fc4e1ce57",
+      "bytes": 66
+    },
+    {
+      "path": "docs/ops/licscope/matrices/STALENESS_MONITOR_MATRIX.json",
+      "sha256": "b00111ab4e23091a585145993b5944ccd0ed1b1a57f5184ab6c9511c02bc0b9e",
+      "bytes": 218
+    },
+    {
+      "path": "docs/ops/licscope/matrices/STALENESS_MONITOR_MATRIX.md",
+      "sha256": "7ae90c5bbcef8f30931735af47fdd1c34d6ce94c6b65714635ebf623faab9aea",
+      "bytes": 131
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SURFACE_SCOPE_PERMISSION_MATRIX.csv",
+      "sha256": "ff449603d5bdfc68e8cf117841c3546706e02c4972ed2e37bdc0119dcf767b04",
+      "bytes": 1775
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SURFACE_SCOPE_PERMISSION_MATRIX.json",
+      "sha256": "dda9b49ade36efdbcfe316f78d1218226121e22f835c843fe5d996e288ad802b",
+      "bytes": 4565
+    },
+    {
+      "path": "docs/ops/licscope/matrices/SURFACE_SCOPE_PERMISSION_MATRIX.md",
+      "sha256": "41fddf2b9f9f9eda532671d8f7b1ac28e81c9c7244697abb998e4727f8550f17",
+      "bytes": 2011
+    },
+    {
+      "path": "docs/ops/licscope/matrices/TENANT_SCOPE_MATRIX.csv",
+      "sha256": "ad3984655c65fc7ccfc67fa6c5c48235a6f59007a29f52f453917c979897e8aa",
+      "bytes": 113
+    },
+    {
+      "path": "docs/ops/licscope/matrices/TENANT_SCOPE_MATRIX.json",
+      "sha256": "05acbb9b53a546a62efe9083945ea96d72a51e468d39c47e797b125f04743e44",
+      "bytes": 284
+    },
+    {
+      "path": "docs/ops/licscope/matrices/TENANT_SCOPE_MATRIX.md",
+      "sha256": "ad3bdc75a23f19cd47ffb8a050772553404dfab77dcb0c0c946e835eefd8b761",
+      "bytes": 193
+    },
+    {
+      "path": "docs/ops/licscope/MULTI_TENANT_LEAKAGE_DEFINITION.md",
+      "sha256": "46857368027e65ed90bd689094e96eeda370933e17e6446e1466dfaafc653a6b",
+      "bytes": 250
+    },
+    {
+      "path": "docs/ops/licscope/NEXT_BEST_ACTIONS.md",
+      "sha256": "6b5b89ef3777645d54fd52c3f9c3004c36dc3b25447c6659f29a001027cbc97e",
+      "bytes": 300
+    },
+    {
+      "path": "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.json",
+      "sha256": "6e81f87882ba1388d91cd78eba245d8b85edba5923588556880170f118a16fce",
+      "bytes": 500
+    },
+    {
+      "path": "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.md",
+      "sha256": "aff7d5014e210bce7ca1de0a2ac8a683e53a4edc59013252d7812d5e6680d116",
+      "bytes": 338
+    },
+    {
+      "path": "docs/ops/licscope/ORPHAN_DETECTOR_MATRIX.csv",
+      "sha256": "0fcf2acd9cdb4068eef233b169097d25a79d4681f9a61553606c3c5d167945b0",
+      "bytes": 78
+    },
+    {
+      "path": "docs/ops/licscope/ORPHAN_DETECTOR_MATRIX.json",
+      "sha256": "41c89d2c11f5db9f70f80b65e2bdf7f9fcfdc134fd3dfc3006c2138e3c72e306",
+      "bytes": 228
+    },
+    {
+      "path": "docs/ops/licscope/ORPHAN_DETECTOR_MATRIX.md",
+      "sha256": "e91f3aa3d948ee063f70182e6f425357268c50ed6ce89ade2cf7617ac07f03ec",
+      "bytes": 141
+    },
+    {
+      "path": "docs/ops/licscope/ORPHAN_DETECTOR_RULES.json",
+      "sha256": "1621b7dd7165000f6e5ee21a6b79cd4bbdc41662bb98d23a575769381b07ebfa",
+      "bytes": 2415
+    },
+    {
+      "path": "docs/ops/licscope/ORPHAN_DETECTOR_RULES.md",
+      "sha256": "b60f04bb319518c763a668cd76131d338264166d52b601abf2b891a3bf71c3d3",
+      "bytes": 1388
+    },
+    {
+      "path": "docs/ops/licscope/OUTBOX_SYNC_CANONICAL_MATRIX.csv",
+      "sha256": "2b773278d0477170273dda429b6c0d7524694515f81e05448d853476e7f2b353",
+      "bytes": 110
+    },
+    {
+      "path": "docs/ops/licscope/OUTBOX_SYNC_CANONICAL_MATRIX.json",
+      "sha256": "6b93d62194b69c5247d85cd5ce267106c0054ff5cefedfc4e0e9f32f4f2f7903",
+      "bytes": 290
+    },
+    {
+      "path": "docs/ops/licscope/OUTBOX_SYNC_CANONICAL_MATRIX.md",
+      "sha256": "537d2adfcf0343a0e04364156f370073ecc0ded26c670e6333ab301ec258b308",
+      "bytes": 199
+    },
+    {
+      "path": "docs/ops/licscope/payload_json_index.json",
+      "sha256": "637766538f72cac28737aa08f7a1ab2f38d1e13613d7dc6ccf8760deccbb81a7",
+      "bytes": 108902
+    },
+    {
+      "path": "docs/ops/licscope/payload_json_index.md",
+      "sha256": "d9cd35dac963b453d171943387a4555bdb139bf473f0b004924fc6f5ed3e6435",
+      "bytes": 12426
+    },
+    {
+      "path": "docs/ops/licscope/PII_REDACTION_RULES.md",
+      "sha256": "22a6c1926abbde39f6f5cb2f16116aef6fb31db1b22c46d32e89c29530c627ca",
+      "bytes": 238
+    },
+    {
+      "path": "docs/ops/licscope/PII_SECRET_SAFETY_MATRIX.csv",
+      "sha256": "6af729c371ddb47be9ddf6fc2bedaa1602e217027a255a6d2fad1b867bced707",
+      "bytes": 83
+    },
+    {
+      "path": "docs/ops/licscope/PII_SECRET_SAFETY_MATRIX.json",
+      "sha256": "87a9a37c478050da1e1a1e70f90c807010a99bfa8daa9f2be0feb2afc68fb212",
+      "bytes": 243
+    },
+    {
+      "path": "docs/ops/licscope/PII_SECRET_SAFETY_MATRIX.md",
+      "sha256": "6bef884a20b77bce921ac8cfa8ba702546340973540fcc4b12b4dfe04b5e6301",
+      "bytes": 158
+    },
+    {
+      "path": "docs/ops/licscope/PLAN_PROVISIONING_MATRIX.csv",
+      "sha256": "70ff9140699f22088a9333224666a55a67be134a26a92ec92bbc08467b0d7c67",
+      "bytes": 108
+    },
+    {
+      "path": "docs/ops/licscope/PLAN_PROVISIONING_MATRIX.json",
+      "sha256": "002af0b3cbea2b69525dfe63793136b6ee859346ff470577cdd86520ea8a306e",
+      "bytes": 270
+    },
+    {
+      "path": "docs/ops/licscope/PLAN_PROVISIONING_MATRIX.md",
+      "sha256": "d847aadce37df1b3a3932568f11e0a1e99d6947a405917174e133f4fbc2a4929",
+      "bytes": 183
+    },
+    {
+      "path": "docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json",
+      "sha256": "07c643738c79706f73a59c5433c3fcc4b61be9c534a68fc0f09714c8bac32a4f",
+      "bytes": 2698
+    },
+    {
+      "path": "docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.md",
+      "sha256": "231128277772664ee374d12ad9e30e7adec5015e9f181b3b764681d4cf5dcf5a",
+      "bytes": 1420
+    },
+    {
+      "path": "docs/ops/licscope/PRODUCTION_READINESS_MATRIX.csv",
+      "sha256": "685bb42dd4919b477c798c33583df5482633213d81d4002a9156a1b381b90b09",
+      "bytes": 109
+    },
+    {
+      "path": "docs/ops/licscope/PRODUCTION_READINESS_MATRIX.json",
+      "sha256": "22c664d3ae1dc026ffb18f4a4d6bdc4377500c86b65fbacd7eeb0e4dbb2e16eb",
+      "bytes": 276
+    },
+    {
+      "path": "docs/ops/licscope/PRODUCTION_READINESS_MATRIX.md",
+      "sha256": "3abef882f2d968a39c8cf19dd5729997f20ea64ef3d3483b6c106a7d3a3e8c20",
+      "bytes": 187
+    },
+    {
+      "path": "docs/ops/licscope/RECONCILIATION_MATRIX.csv",
+      "sha256": "7e05e75dee3b17af7329dae0fd620e79e8b2c1ac9bf1b409d7976f99a7473e52",
+      "bytes": 76
+    },
+    {
+      "path": "docs/ops/licscope/RECONCILIATION_MATRIX.json",
+      "sha256": "33afe500ec4f05733710c362e774bb87d48bb05d44872e2978eb73b66b272e05",
+      "bytes": 225
+    },
+    {
+      "path": "docs/ops/licscope/RECONCILIATION_MATRIX.md",
+      "sha256": "d9ac035a21ce6c872450fc783112a09bf19c311a9993a59df03da4d4d98b4469",
+      "bytes": 138
+    },
+    {
+      "path": "docs/ops/licscope/RECONCILIATION_RULES.json",
+      "sha256": "9de4a9849aa73d8b689a975f09d79ed32d0c90ca18093adb043b9a5aaf08e755",
+      "bytes": 3898
+    },
+    {
+      "path": "docs/ops/licscope/RECONCILIATION_RULES.md",
+      "sha256": "2e5c370543282012a6c18259260db4067a770d783a6db8acbcdb8c03321cc669",
+      "bytes": 2199
+    },
+    {
+      "path": "docs/ops/licscope/relationship_edges.json",
+      "sha256": "34bb5113df3e98df079ebf951c14b40a51adff67d670134e4a4c178315511519",
+      "bytes": 123464
+    },
+    {
+      "path": "docs/ops/licscope/relationship_edges.md",
+      "sha256": "fbf32ac37f6705195ac45c19fa170256479858dd764f08868904370953efcd9a",
+      "bytes": 21315
+    },
+    {
+      "path": "docs/ops/licscope/RELATIONSHIP_EDGE_CLOSURE_REPORT.json",
+      "sha256": "3baf1518f3af354e9b8871a47f8fd8f36f48f5e1d6a74ca51cef6a289bec2a51",
+      "bytes": 164
+    },
+    {
+      "path": "docs/ops/licscope/RELATIONSHIP_EDGE_CLOSURE_REPORT.md",
+      "sha256": "57a9cda16a3600f33336319a19c6386b5cbc53ba8a435c408bcabaaa016da3cc",
+      "bytes": 183
+    },
+    {
+      "path": "docs/ops/licscope/RELEASE_BLOCKING_VISIBLE_DATA.md",
+      "sha256": "2bb33329772c0273594ab0258002810ab7b6476c2c07cc355af8f8320fc20333",
+      "bytes": 156
+    },
+    {
+      "path": "docs/ops/licscope/reports/API_OR_LOADER_RESPONSE_EVIDENCE.md",
+      "sha256": "7d71bc9d07ea124bb5abec794873722ccf427ac7cfad8223ced1ab5b5da8d05f",
+      "bytes": 187
+    },
+    {
+      "path": "docs/ops/licscope/reports/BACKUPS_MANIFEST.json",
+      "sha256": "2633637a27087f87008dc7c9e5603f642f920587a40d659634bb8b06e5dd3e97",
+      "bytes": 1514
+    },
+    {
+      "path": "docs/ops/licscope/reports/CHART_LAB_CODE_CERTIFICATION.md",
+      "sha256": "a51336e739f43e42ae69ea37b82e78c16830cc94acab384e14a8de45c516f4db",
+      "bytes": 160
+    },
+    {
+      "path": "docs/ops/licscope/reports/CODE_PATH_CERTIFICATION.md",
+      "sha256": "b26aae8cc3aa3a7c9f0f7e1ee3164d348c578d73a6bbeb73020a7f16a848711a",
+      "bytes": 212
+    },
+    {
+      "path": "docs/ops/licscope/reports/CONTINUATION.md",
+      "sha256": "bde5e8c71c630c3ad841105dc0b2536ba771d22e7538d1d70d733305e0870e76",
+      "bytes": 98
+    },
+    {
+      "path": "docs/ops/licscope/reports/database_to_surface_audit.json",
+      "sha256": "51a8440e7aaa0bc625b45f335bc0090cf5148ae007a7d4a560f929e654eaa7df",
+      "bytes": 2100
+    },
+    {
+      "path": "docs/ops/licscope/reports/DATABASE_TO_SURFACE_AUDIT.md",
+      "sha256": "123d54146656377d87b6f02d1dc17d48f9ed83d00496cd165eb0272fafdc5250",
+      "bytes": 1453
+    },
+    {
+      "path": "docs/ops/licscope/reports/DATA_LIFECYCLE_DASHBOARD_CODE_CERTIFICATION.md",
+      "sha256": "8280903455f3caab5e75dbe2134dbee679702b1838c8489250b9f6e32f630531",
+      "bytes": 237
+    },
+    {
+      "path": "docs/ops/licscope/reports/DATE_WINDOW_REPORT.md",
+      "sha256": "70718be90378b4e5cd28cf4ce7c474cbf62d7a4c02aebf041f206082319399b6",
+      "bytes": 175
+    },
+    {
+      "path": "docs/ops/licscope/reports/FALLBACK_AND_MOCK_REPORT.md",
+      "sha256": "b8c6d3a3105f6d924bd4940481497696b8cec14ded1d446544c29aa11fd90a95",
+      "bytes": 220
+    },
+    {
+      "path": "docs/ops/licscope/reports/FILES_CHANGED.md",
+      "sha256": "1deaae60035632db60dba5590c9dec006b7ad5c8c805d67669cb910a4fc08b33",
+      "bytes": 119
+    },
+    {
+      "path": "docs/ops/licscope/reports/mobile_client_copy_audit.md",
+      "sha256": "7b22fbf12c96b7ccb20e9f8c10f053f54aa371dc95988eb73fc9d44c1d646c08",
+      "bytes": 203
+    },
+    {
+      "path": "docs/ops/licscope/reports/MOBILE_HOME_CODE_CERTIFICATION.md",
+      "sha256": "4c90af073af27b075f4df30e2d489682314e409cbe4ccf18e99d7713b09bd06b",
+      "bytes": 301
+    },
+    {
+      "path": "docs/ops/licscope/reports/OFFLINE_STATUS_REPORT.md",
+      "sha256": "6ec48e0d426debc07072d114e3a430567df3f83710438263b386dcdb87d7ab74",
+      "bytes": 168
+    },
+    {
+      "path": "docs/ops/licscope/reports/PC_SALES_CONTROL_CODE_CERTIFICATION.md",
+      "sha256": "2c803870c0665c7de6767d48ab17fb5be8274a05f27de716fcc23f1634c37936",
+      "bytes": 228
+    },
+    {
+      "path": "docs/ops/licscope/reports/ROLLBACK.ps1",
+      "sha256": "b20854e4d42aff2171d1a182667befe030a29ef7a06ee6bd95e1d04022be97fa",
+      "bytes": 90
+    },
+    {
+      "path": "docs/ops/licscope/reports/ROLLBACK.py",
+      "sha256": "c23e7e1c9667d60e276f3b2e9550c5fb100ee181d1863544c5ec28be92cc7d67",
+      "bytes": 86
+    },
+    {
+      "path": "docs/ops/licscope/reports/SCREEN_METRIC_CONTRACT.md",
+      "sha256": "7d26881bbc8e0872fcc335c3c987fc5016808baa9f0f7e5b3e7bb4f86f714e81",
+      "bytes": 280
+    },
+    {
+      "path": "docs/ops/licscope/reports/SQL_SOURCE_EVIDENCE.md",
+      "sha256": "8d098d75422d826909e2f1239ac12110d64e54c575bece4bdb32fe975111a689",
+      "bytes": 154
+    },
+    {
+      "path": "docs/ops/licscope/reports/SURFACE_REFLECTION_MATRIX.md",
+      "sha256": "2690c7aa6df6258ffb1d4ee31451a7510cea4f8c93f455d38261d2c4786109ab",
+      "bytes": 573
+    },
+    {
+      "path": "docs/ops/licscope/reports/SURFACE_TO_DATA_MATRIX.md",
+      "sha256": "123d54146656377d87b6f02d1dc17d48f9ed83d00496cd165eb0272fafdc5250",
+      "bytes": 1453
+    },
+    {
+      "path": "docs/ops/licscope/reports/TABLET_POS_CODE_CERTIFICATION.md",
+      "sha256": "3936a51bc843f3f58f9005e78929ab8d07ddab265b6fd30cdd32948526025e93",
+      "bytes": 247
+    },
+    {
+      "path": "docs/ops/licscope/reports/UI_READER_ROUTE_MAP.md",
+      "sha256": "123d54146656377d87b6f02d1dc17d48f9ed83d00496cd165eb0272fafdc5250",
+      "bytes": 1453
+    },
+    {
+      "path": "docs/ops/licscope/reports/VERIFIER_RESULTS.md",
+      "sha256": "d56dfb52da85880a8f9384b93881c55b01d92744f833345db9b1026ba91fe757",
+      "bytes": 132
+    },
+    {
+      "path": "docs/ops/licscope/reports/WRONG_ZERO_REPORT.md",
+      "sha256": "195ecc00bcb43d05ef5a9f974c89e76178d7643170e2450c010b3c98fe815df5",
+      "bytes": 170
+    },
+    {
+      "path": "docs/ops/licscope/rollback/ROLLBACK.ps1",
+      "sha256": "d63ad4bf3e76ac6c088ee10ecf2661dcac8338fb5f95a289464c564d39a542a4",
+      "bytes": 235
+    },
+    {
+      "path": "docs/ops/licscope/row_counts.json",
+      "sha256": "307ab7cdf0a320701ee03779d42a5f0f8294070d1640d3680313235be0e7e060",
+      "bytes": 2025
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/AuditEvent.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/AuditEvent.json",
+      "sha256": "1499561eba26cc78951d5abfac95f3446abcaa8bc8010a7667551c05486a7c1d",
+      "bytes": 212
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Business.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Business.json",
+      "sha256": "bd546df8d8d950f2160b0253579c3004007c7e1cecb6a0b799d9d6743b89ed86",
+      "bytes": 208
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CashSession.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CashSession.json",
+      "sha256": "6e24759ec599c62d67925ee73afe53a0db2fadb5b76a9c7b4c31452e37bc7264",
+      "bytes": 214
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CloudBridgeStatus.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CloudBridgeStatus.json",
+      "sha256": "6c544462dd2f16c96b8dbf4cb9d0a3c06a82259f0f4d56bd86502bd65a2f19a1",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CommandAuditEvent.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CommandAuditEvent.json",
+      "sha256": "2324be6e6f371159745616055afda31c484b398a66ae4f286af8ac46246e1d12",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CommandClient.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/CommandClient.json",
+      "sha256": "a54efca6bd39434fc5b14937cb29e5d16b495ed4165e7397f8c046bc6aac5840",
+      "bytes": 218
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/DeviceHeartbeat.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/DeviceHeartbeat.json",
+      "sha256": "2e1f762e6b89e4a34b50b18db41cbf53f8a238e340921fb84f86e03ff4b773c7",
+      "bytes": 222
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/GeneratedIdentity.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/GeneratedIdentity.json",
+      "sha256": "d7773fe652ca7572c39c5ff844da13186930ed18b8cbbf6410ddada9a108d811",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/LicenseAssignment.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/LicenseAssignment.json",
+      "sha256": "2b8dc2b76b02f89f409b11f5e3cf3db0959ebafa4db0b669b5c71312690bbc08",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/LicensePlan.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/LicensePlan.json",
+      "sha256": "6113910d9a62f7873b0e8575be585e341a08d2e7c02631c43d890783aa9f3c01",
+      "bytes": 214
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/ManagedDevice.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/ManagedDevice.json",
+      "sha256": "cd2eab73050a4183fe510fd5f4b5e40746e4ebc0b93b9cd64faf6c1088954aa7",
+      "bytes": 218
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/OutboxEvent.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/OutboxEvent.json",
+      "sha256": "52092b8ef73458061e9e4f3bcd1a966cd4bd2021a32c65374901a22665d2c27e",
+      "bytes": 214
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/ProvisioningDraft.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/ProvisioningDraft.json",
+      "sha256": "a2c30809a587702bfed59e591a95da774f0cdac38a7ac8f21798afb07fb17621",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Sale.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Sale.json",
+      "sha256": "7c66ef0363b77b306d55bd99bdb23f664539320c82415f634b853fc96926e720",
+      "bytes": 200
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SaleLine.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SaleLine.json",
+      "sha256": "09735e1e3d60e871901b7d6575d30bf9907205d6d8fb239d42d3d0326e1d1003",
+      "bytes": 208
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SalePaymentTender.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SalePaymentTender.json",
+      "sha256": "60c1a8b0e3a689595b379b01053ffc1fada9d4547dd36030c78b73b1e37aba43",
+      "bytes": 226
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Store.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Store.json",
+      "sha256": "0a47169f4d23b0cd42bec7e50b347b49044ffffdbf62c68d96f0d78229cc73f2",
+      "bytes": 202
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SyncCheckpoint.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/SyncCheckpoint.json",
+      "sha256": "6d7ed427d37f2f89291b3de7a34b820b251ed6902993ccbfdc49bc81dccf21cd",
+      "bytes": 220
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Terminal.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/Terminal.json",
+      "sha256": "de4203bbb5c428e3c0feaafbd4542a001fd8695b2cb5866402b2a1cc3b01b5e3",
+      "bytes": 208
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/User.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/chart-runtime-governance/User.json",
+      "sha256": "c378cbfaf8c06284e43ef1dc1ba32c9dea491810c5a2392d4de0bff5949fd3c3",
+      "bytes": 200
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/AuditEvent.csv",
+      "sha256": "81034b4f1f8eb1a0541996eece5b0d6c623994570b7766235ed917984a938886",
+      "bytes": 100
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/AuditEvent.json",
+      "sha256": "d61d64602b985b91518469a42abd38d2fb795ae7c13098b80fe1d63a1a29bbbb",
+      "bytes": 204
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Business.csv",
+      "sha256": "244854b851e0722aee20b89457e72e43429654163932f0e3b6aec7dd6fe069cb",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Business.json",
+      "sha256": "39a7cdb79a9ca8708eddc6c8fe4ad4aa46928e1be978eebbe4a2e2a5a9db560c",
+      "bytes": 429
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CashSession.csv",
+      "sha256": "5e3a593a1594f0e725b68b9c9ff64926a5cc9c6a770e61f41e10fe1d3609f3d3",
+      "bytes": 550
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CashSession.json",
+      "sha256": "a12ab4cfa029cbf77009bb06a52c67373044296da8b4695b2045475928acbde9",
+      "bytes": 1298
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CloudBridgeStatus.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CloudBridgeStatus.json",
+      "sha256": "d721ba4fc9492b71f5d64ed047a683cc112b4b0635f5060327239259069782ba",
+      "bytes": 192
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CommandAuditEvent.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CommandAuditEvent.json",
+      "sha256": "4483765cba02bef6229f5ffee7a95fb1fba210e7620a8ee859cbb66e6343987f",
+      "bytes": 192
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CommandClient.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/CommandClient.json",
+      "sha256": "a19dae3e8d06a377837c6daf49ee315939094e03b93f81a54065df3ea3024618",
+      "bytes": 184
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/DeviceHeartbeat.csv",
+      "sha256": "50edf9a6ddcfa710c94a0646936abf1aa20aeeb13f89f26d177e970c8c730253",
+      "bytes": 209
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/DeviceHeartbeat.json",
+      "sha256": "c287e0166755288deac3b16b598096ce320e3e29bde0e6d5e1dd69074412eb13",
+      "bytes": 209
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/GeneratedIdentity.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/GeneratedIdentity.json",
+      "sha256": "e67fca6f17372d4be4fd30e3d1e58d19b234c9fb22f285990fb4eb3014611b63",
+      "bytes": 192
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/LicenseAssignment.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/LicenseAssignment.json",
+      "sha256": "72ecc0c8177e5125b18e7f3a9b284f7f5a51b65770672c4b56b173675e37fb31",
+      "bytes": 192
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/LicensePlan.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/LicensePlan.json",
+      "sha256": "31ec0ba68ab0bb2139ea7f9e8b1fddb782e25c50cea34f9264665fc565f0bbd8",
+      "bytes": 180
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/ManagedDevice.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/ManagedDevice.json",
+      "sha256": "fdb420d007c340bf46b4fa122dfa834b18f7e2770ead888c398305354639174b",
+      "bytes": 184
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/OutboxEvent.csv",
+      "sha256": "cdb3574c4fa5becc3988dad76e0703864963cac700ac905976c85e49a3531e73",
+      "bytes": 12734
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/OutboxEvent.json",
+      "sha256": "5dab8b4a48550d02ae3573c40b3cbfde968368c6060494956b07440030760735",
+      "bytes": 19967
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/ProvisioningDraft.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/ProvisioningDraft.json",
+      "sha256": "ec45753b525c91cb7275f9b2b4c179d9dc6f60c296351bea93b830d0d6b4bf2f",
+      "bytes": 192
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Sale.csv",
+      "sha256": "b3882f5ba47a8d5988baa4a100d59a256808f1ebad7c02f1d255936fff91b936",
+      "bytes": 1803
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Sale.json",
+      "sha256": "77a375ce368fe5eca28ebe1a18e4e972cdc1fd97dd2e5597f4dc9f487883d907",
+      "bytes": 4300
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SaleLine.csv",
+      "sha256": "5f75c62810442bb93894a40f24b198539c65caeac5edd21ceac3f1109797d74c",
+      "bytes": 3355
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SaleLine.json",
+      "sha256": "be724e87ee747b3840ae7ccd564903546b92fc84bd9026922a631e9652fc40fd",
+      "bytes": 8482
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SalePaymentTender.csv",
+      "sha256": "9ca3aaba52b271a6ff47ec9b6c0face5c7bf61546d942eeb1aba121097d8aaac",
+      "bytes": 6138
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SalePaymentTender.json",
+      "sha256": "94c49a6ab03203ee1e0f112db1b14e654148aef9eaab5199e8762c833a3075fb",
+      "bytes": 8447
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Store.csv",
+      "sha256": "3297d5cd2f703b6475e2aefe86418c7400edd01d4e07c26876438dc497e010b7",
+      "bytes": 177
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Store.json",
+      "sha256": "85a5a36ae00a8b54398ad6b839dbc7a4896505a23df71da78e05618786c9c878",
+      "bytes": 451
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SyncCheckpoint.csv",
+      "sha256": "2a9745a5d89496e7846cc6893c588936bf260c3e73e682a730f608315c3c872f",
+      "bytes": 528
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/SyncCheckpoint.json",
+      "sha256": "55db1f656c51fa8fb43c7926cb0577f2a37bfc84c279990ffd433b3aaa4b2bf1",
+      "bytes": 933
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Terminal.csv",
+      "sha256": "24df689558f8d4450bcf80f60424a74cc947870b90e29605bf4689b92fa22176",
+      "bytes": 528
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/Terminal.json",
+      "sha256": "329ad26c77aed4854cd53130b742018a888d0ae25bbcc0a5eecb8c5eed144630",
+      "bytes": 1161
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/User.csv",
+      "sha256": "080c6762eed217f52023cb7932a58bf758263c9d8e688419e4fcbd9de053bbdf",
+      "bytes": 221
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/pc-canonical/User.json",
+      "sha256": "e46efa74dc1432f9dbcffe5c936075e26679944a388aa94e382c5c841373eb7b",
+      "bytes": 506
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/AuditEvent.csv",
+      "sha256": "81034b4f1f8eb1a0541996eece5b0d6c623994570b7766235ed917984a938886",
+      "bytes": 100
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/AuditEvent.json",
+      "sha256": "b73d1232ebed491874ad66247c36fa97c14ba3d6867962d4f8f9f854fd1403f2",
+      "bytes": 202
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Business.csv",
+      "sha256": "244854b851e0722aee20b89457e72e43429654163932f0e3b6aec7dd6fe069cb",
+      "bytes": 150
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Business.json",
+      "sha256": "7b56cdc4045e52827ef171b27134ddb5d0f70bd0211a5f8f1b5fd830ff2e68cf",
+      "bytes": 427
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CashSession.csv",
+      "sha256": "5e3a593a1594f0e725b68b9c9ff64926a5cc9c6a770e61f41e10fe1d3609f3d3",
+      "bytes": 550
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CashSession.json",
+      "sha256": "64a88a48ea61c94c05800b32c3dabd5e6b796aa43938e2810d3ee1e347692036",
+      "bytes": 1296
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CloudBridgeStatus.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CloudBridgeStatus.json",
+      "sha256": "bf9faed3935012a7599547c977de917ff2f716aeea0ec8958a253fbb91379518",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CommandAuditEvent.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CommandAuditEvent.json",
+      "sha256": "e3c07c2df6955a777fda3ae0a6d0944641c4fda73480a0fbabb2b8ea4fcd624f",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CommandClient.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/CommandClient.json",
+      "sha256": "eaa649824b4747d6bcfbc7aec45fae624808ba98c0603936e90f75986a2a40a4",
+      "bytes": 187
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/DeviceHeartbeat.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/DeviceHeartbeat.json",
+      "sha256": "c2108e54917d26f9fa7b179a4fcbce33669b6a59601d3f1396bdfa8b2213f4ad",
+      "bytes": 191
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/GeneratedIdentity.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/GeneratedIdentity.json",
+      "sha256": "04f86ddd3e0fdceaef7d4f91c737700edba27d7df3a57eafca41378a19f49f31",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/LicenseAssignment.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/LicenseAssignment.json",
+      "sha256": "6363cc80c1562302dfb0f17e775da1489b7ac8013479ac61ec79ffad3149564f",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/LicensePlan.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/LicensePlan.json",
+      "sha256": "45552ae345b6a98b6e137597df26e597f70c43f943d4a4064b22b3d7f81d5393",
+      "bytes": 183
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/ManagedDevice.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/ManagedDevice.json",
+      "sha256": "be19a3eb466f7cc96bfcb157d59bdc59e873467f3db3274ef8350bc3d9f63c1c",
+      "bytes": 187
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/OutboxEvent.csv",
+      "sha256": "d4e24ec3b9ddc2ec8cde66efc7f7e7207928241fc170bfd0eeff1c0f430c3180",
+      "bytes": 10255
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/OutboxEvent.json",
+      "sha256": "11e7f027a73fc67fc356884f29b437cddac2c52ffe0e500a7d1fa9b3e4f0716f",
+      "bytes": 18345
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/ProvisioningDraft.csv",
+      "sha256": "fd545a14f00c6d03df67bfe97ae21f879ea3f2c4a57d355d12d14e1efda11f4c",
+      "bytes": 25
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/ProvisioningDraft.json",
+      "sha256": "0b7a0999b4f013cc388425b257cd13a807184a958b188de115eb7e9951a170e5",
+      "bytes": 195
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Sale.csv",
+      "sha256": "6a4586278c3d840f1a6ba45558549fa9aec57615b421e205fc84b7c66c48b50c",
+      "bytes": 2599
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Sale.json",
+      "sha256": "6583c57bc7ceda33afca83062791cc50b791139bc6256cc3e7838325fd6b5314",
+      "bytes": 7106
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SaleLine.csv",
+      "sha256": "5f75c62810442bb93894a40f24b198539c65caeac5edd21ceac3f1109797d74c",
+      "bytes": 3355
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SaleLine.json",
+      "sha256": "a2d0ede12b15ce76186752ee3b9a68dbe147121614e192ca90ed08f2ba896e55",
+      "bytes": 8480
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SalePaymentTender.csv",
+      "sha256": "9ca3aaba52b271a6ff47ec9b6c0face5c7bf61546d942eeb1aba121097d8aaac",
+      "bytes": 6138
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SalePaymentTender.json",
+      "sha256": "fce4f04867cdecc1a6f1f6f4cd4586deda4629c9702de1281c72576e767df2bf",
+      "bytes": 8445
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Store.csv",
+      "sha256": "3297d5cd2f703b6475e2aefe86418c7400edd01d4e07c26876438dc497e010b7",
+      "bytes": 177
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Store.json",
+      "sha256": "251c810115ea8d041cff0bcabee8c6c97818d4b61e31aa606a013e846e3bf60e",
+      "bytes": 449
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SyncCheckpoint.csv",
+      "sha256": "e220ff5fbcf596d71f160c0da3980b00350aa053b49b80da108c0e7744c5e476",
+      "bytes": 630
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/SyncCheckpoint.json",
+      "sha256": "9c5727dae62f9e6ff9bca836f68e6f5c5a05215b284386798ee5c49ceeec5ab0",
+      "bytes": 1069
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Terminal.csv",
+      "sha256": "24df689558f8d4450bcf80f60424a74cc947870b90e29605bf4689b92fa22176",
+      "bytes": 528
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/Terminal.json",
+      "sha256": "ccd10d0d05e3b5974c538c7b7368dafc837938df962399fbb716390766a8b4a0",
+      "bytes": 1159
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/User.csv",
+      "sha256": "080c6762eed217f52023cb7932a58bf758263c9d8e688419e4fcbd9de053bbdf",
+      "bytes": 221
+    },
+    {
+      "path": "docs/ops/licscope/row_exports_sanitized/tablet-pos/User.json",
+      "sha256": "fe9b97b893c0bddad0dbd638cccb233907f23e505097d352f373c065635e4c46",
+      "bytes": 504
+    },
+    {
+      "path": "docs/ops/licscope/RUNTIME_EVIDENCE_CLOSURE_REPORT.json",
+      "sha256": "5a36726ddcfaa0fba3a6783b244a0a0825bf58bbb9dcd322bbaf1521c10e01df",
+      "bytes": 229
+    },
+    {
+      "path": "docs/ops/licscope/RUNTIME_EVIDENCE_CLOSURE_REPORT.md",
+      "sha256": "3e488fa251da4991103b09e8b16f7aeaf17272bd0eff11883bb2c17bb3ac6cd8",
+      "bytes": 265
+    },
+    {
+      "path": "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
+      "sha256": "a6f97c5adef013e57718c77d9169d21141704b5678efc4613778d0896209b533",
+      "bytes": 6484
+    },
+    {
+      "path": "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.md",
+      "sha256": "01a7f370d8253e45ce64e6a50a6ce8cb3d5dfeeb01c88b2ac497ab63815f2dbb",
+      "bytes": 3487
+    },
+    {
+      "path": "docs/ops/licscope/SALES_LINEAGE_MATRIX.csv",
+      "sha256": "fa8b66886e60f79ac4ff56ac1f5949871cb8e42ede5abb27a65b2eb7224b75dd",
+      "bytes": 129
+    },
+    {
+      "path": "docs/ops/licscope/SALES_LINEAGE_MATRIX.json",
+      "sha256": "bc3cce785b35216b09578e645063dd936f93f512c21949fd319ec41b25f1bb67",
+      "bytes": 289
+    },
+    {
+      "path": "docs/ops/licscope/SALES_LINEAGE_MATRIX.md",
+      "sha256": "4b1e745542906cdeb67f829c4f6aeedb1f7484e8bf63c6aec42f500a67717548",
+      "bytes": 200
+    },
+    {
+      "path": "docs/ops/licscope/SALES_OUTBOX_LINKING_MATRIX.csv",
+      "sha256": "c97f9c57d5dc58f948c0f3583614b6dbd5dc3becca8573420e5e006f0d09e270",
+      "bytes": 104
+    },
+    {
+      "path": "docs/ops/licscope/SALES_OUTBOX_LINKING_MATRIX.json",
+      "sha256": "550d1023fec6a46224e7b2a9f8d3736202f23464ae28fd2dc24a9d7b10856dc9",
+      "bytes": 271
+    },
+    {
+      "path": "docs/ops/licscope/SALES_OUTBOX_LINKING_MATRIX.md",
+      "sha256": "8db8a690579285c6ee44768f5c64403740a3852b7970819b938f22beda7b5b0c",
+      "bytes": 182
+    },
+    {
+      "path": "docs/ops/licscope/SALES_OUTBOX_LINKING_RULES.md",
+      "sha256": "3665dc2303940685007e52a9d5dc956d47243beea9785329fb8ad26e693d66d4",
+      "bytes": 286
+    },
+    {
+      "path": "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json",
+      "sha256": "3f0c78283d4ccb69603c1b804bf7871922fd92f9977af94bedf105807727d59e",
+      "bytes": 1367
+    },
+    {
+      "path": "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.md",
+      "sha256": "b791424477a748080302542321acafbdecd50619cca589d7b6b2154540cd30ec",
+      "bytes": 1260
+    },
+    {
+      "path": "docs/ops/licscope/SALES_PROVENANCE_MATRIX.csv",
+      "sha256": "c968b71bfe91afbd0751c561ecc189059b8893d1589e37513f510063d11d10a2",
+      "bytes": 115
+    },
+    {
+      "path": "docs/ops/licscope/SALES_PROVENANCE_MATRIX.json",
+      "sha256": "53a32f3b275a14f2f44918b038a47fdce1ec53ff732120ef7e46e487871cb9c7",
+      "bytes": 278
+    },
+    {
+      "path": "docs/ops/licscope/SALES_PROVENANCE_MATRIX.md",
+      "sha256": "778834499832447d4e8e0fea15c8ce965d0442cce27d17ef01f2d9fab57c42a7",
+      "bytes": 189
+    },
+    {
+      "path": "docs/ops/licscope/SANITIZED_CONFIG_INDEX.json",
+      "sha256": "939d766602238953cc6cfd6d8c9f82567afde32814f12bca344eee65aa0c14eb",
+      "bytes": 688
+    },
+    {
+      "path": "docs/ops/licscope/SANITIZED_CONFIG_INDEX.md",
+      "sha256": "e27986ccb9e092d0d1610835c9e0e67f8fba725fc90301796f16590f8f671cdd",
+      "bytes": 418
+    },
+    {
+      "path": "docs/ops/licscope/SECRET_EXPOSURE_RULES.md",
+      "sha256": "6d7c7336e95814f9d4d9313f42970065158600e0d9a94fcce2673cd3d8981b01",
+      "bytes": 206
+    },
+    {
+      "path": "docs/ops/licscope/SERVICE_REPOSITORY_MAP.json",
+      "sha256": "18912b805e95f630367b1a9161d51ab5d027b840fa98c4389fd4610dca6e43b9",
+      "bytes": 75783
+    },
+    {
+      "path": "docs/ops/licscope/SERVICE_REPOSITORY_MAP.md",
+      "sha256": "403ba29f00b246519c32a04f54a7d87a225f8761d78e2d0ff9d969e71eac5826",
+      "bytes": 37285
+    },
+    {
+      "path": "docs/ops/licscope/SETUP_BUNDLE_MATRIX.csv",
+      "sha256": "ea3785ef8e75476da6d6dc900e30e5b437a273f05b637be1d87c0266888b74c0",
+      "bytes": 97
+    },
+    {
+      "path": "docs/ops/licscope/SETUP_BUNDLE_MATRIX.json",
+      "sha256": "241d0b01532b548176070ede302fdda49494854319f5b63218a41ecf716113da",
+      "bytes": 254
+    },
+    {
+      "path": "docs/ops/licscope/SETUP_BUNDLE_MATRIX.md",
+      "sha256": "dcd19bf248052f42385b23a4c07cc3e89811006865575536131edb522a64a5a8",
+      "bytes": 167
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/audit.json",
+      "sha256": "38783c8ebd75ec52e9b63937c96323c1ed7ab5fb896d6a04ed170e2a9e958db1",
+      "bytes": 126
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/clients.json",
+      "sha256": "999b53e459a78bc1591b20bbf7b00f2897b024279f411ec3de0ca2d9c78e0268",
+      "bytes": 128
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/devices.json",
+      "sha256": "1191dd8e32a3f110b2c827171174edd02edbaf7b9f8ba927ce3c20228c5448d2",
+      "bytes": 128
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/devices_licenses_clients_sales_outbox_sync.json",
+      "sha256": "b02fcd37b77b668e0713b38cfb4edc0f97b2359eb923dc96517659c9ffac35b6",
+      "bytes": 503
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/licenses.json",
+      "sha256": "4c5bfc9838c69e065d914d633aff1fa49c62b07fa0a703cbab9c253d4e363659",
+      "bytes": 129
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/outbox.json",
+      "sha256": "cf7f8da91e8ab5a17e8dcf85f11a9cde32a7ec489cf5aef86c53fbf3d92ed7e4",
+      "bytes": 127
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/payload_json_index.json",
+      "sha256": "637766538f72cac28737aa08f7a1ab2f38d1e13613d7dc6ccf8760deccbb81a7",
+      "bytes": 108902
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/relationship_edges.json",
+      "sha256": "dd2c9a7f3e695d4a93ed5d0b3a29273c9e9de41b6110630b781570be28b85a52",
+      "bytes": 108925
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/row_counts.json",
+      "sha256": "307ab7cdf0a320701ee03779d42a5f0f8294070d1640d3680313235be0e7e060",
+      "bytes": 2025
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/sales.json",
+      "sha256": "496473d063e2041f23f68b223b70ef98588b49f7772fdf271ea29504171b3163",
+      "bytes": 126
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/sync.json",
+      "sha256": "b15a45954ef031dcc12851076e4a711e42ae00443ccf56830bc7ca859782d0d2",
+      "bytes": 125
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/current/table_columns.json",
+      "sha256": "716f56efaac6a2456f95a7f200cad139bdc254cb1a1238d1ab67f460d560e1f0",
+      "bytes": 143695
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/previous/devices_licenses_clients_sales_outbox_sync.json",
+      "sha256": "234eb42036bed30234b9bca02010a14e5fa9dd83a2b55cfa04a6a01d9bf416bb",
+      "bytes": 553
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/previous/payload_json_index.json",
+      "sha256": "5e69fa1e4b4537956ae33b06dd35161f7006853ff6f29164ad4fec3619fdad4a",
+      "bytes": 108950
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/previous/relationship_edges.json",
+      "sha256": "5c34253c2678800cbff827b1016ba31ef2baa3ff381fb55f17ee78cf8cc33fd9",
+      "bytes": 108973
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/previous/row_counts.json",
+      "sha256": "41edd685d092295f4bdee76a8a878b8512415c1a351a9c622cd7a658185ca6c9",
+      "bytes": 2073
+    },
+    {
+      "path": "docs/ops/licscope/snapshots/previous/table_columns.json",
+      "sha256": "57bdca420115acf39b901844ea1840e3239ef9883ce26e7323306a73c90fa6ca",
+      "bytes": 143743
+    },
+    {
+      "path": "docs/ops/licscope/SNAPSHOT_DIFF.json",
+      "sha256": "e5d2f092636c641e659c74a0b17e1982517e95ac6df5878d8fa91d0bb7a0a96a",
+      "bytes": 169
+    },
+    {
+      "path": "docs/ops/licscope/SNAPSHOT_DIFF.md",
+      "sha256": "34c48e86726899ca2163da02dd4157311a13fd22918467355f7392b7cc6f718e",
+      "bytes": 119
+    },
+    {
+      "path": "docs/ops/licscope/source_review/AGENTS.md",
+      "sha256": "7dccb52d7d344f1af2db6942e57d0c80ef47c7afd6ce330e9108090886b1a7d5",
+      "bytes": 100
+    },
+    {
+      "path": "docs/ops/licscope/source_review/AGENTS.md.md",
+      "sha256": "7dccb52d7d344f1af2db6942e57d0c80ef47c7afd6ce330e9108090886b1a7d5",
+      "bytes": 100
+    },
+    {
+      "path": "docs/ops/licscope/source_review/docs_architecture.md",
+      "sha256": "a98bae474eccdbc71b90c4b9e6e9ba02d068bf2c67f1d649e8857f874f2887bb",
+      "bytes": 115
+    },
+    {
+      "path": "docs/ops/licscope/source_review/docs_contracts.md",
+      "sha256": "9cd9bfc59771629dbf051f4f591e3991f79ffbf5b50df29e947f05952507d72f",
+      "bytes": 109
+    },
+    {
+      "path": "docs/ops/licscope/source_review/docs_ops.md",
+      "sha256": "a5ca3c4f37983ab37e13f4efd074d95d3d069462c48451cb58204362810696b6",
+      "bytes": 97
+    },
+    {
+      "path": "docs/ops/licscope/source_review/docs_productization.md",
+      "sha256": "87a4af68bcd62d7e618e6f5ed56cbbf5bd82999bf4307936f3d3522aa32e6ae6",
+      "bytes": 119
+    },
+    {
+      "path": "docs/ops/licscope/source_review/infra_cloudflare.md",
+      "sha256": "ba41e52cc79f0cd28107870aef138d4a07016b3dcf00869be17aab14b10c82c6",
+      "bytes": 113
+    },
+    {
+      "path": "docs/ops/licscope/source_review/prisma_control_center.md",
+      "sha256": "595532f2ed6fa9f72b8f59c4825999f52a1221d63ab87d583aeb016933c7f152",
+      "bytes": 123
+    },
+    {
+      "path": "docs/ops/licscope/source_review/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+      "sha256": "5ec3ba10cc465c55763014c39e46e3ea93ec825f04a8fcbb7d8ab62d5e218f94",
+      "bytes": 173
+    },
+    {
+      "path": "docs/ops/licscope/source_review/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md.md",
+      "sha256": "5ec3ba10cc465c55763014c39e46e3ea93ec825f04a8fcbb7d8ab62d5e218f94",
+      "bytes": 173
+    },
+    {
+      "path": "docs/ops/licscope/source_review/products_chart_lab.md",
+      "sha256": "77d59d7049a09f2a04c62040d1447fd2959b1cfcc2f0f0c973e9c9a1dc9179b0",
+      "bytes": 117
+    },
+    {
+      "path": "docs/ops/licscope/source_review/products_mobile.md",
+      "sha256": "63b3147c57651f15ee75fa5faba94c861bc4c64ad2af03c42981fb11c21c2099",
+      "bytes": 111
+    },
+    {
+      "path": "docs/ops/licscope/source_review/products_pc.md",
+      "sha256": "dedd8df3b83d4d4a48ba2134cf51c99602fcbd5d645618c5a198e54d101f982d",
+      "bytes": 103
+    },
+    {
+      "path": "docs/ops/licscope/source_review/products_tablet.md",
+      "sha256": "24a5b0556d6a1f4596b6b056d969755d51e55c321ace964d6bff4c9479b15e38",
+      "bytes": 111
+    },
+    {
+      "path": "docs/ops/licscope/source_review/quality.md",
+      "sha256": "85f99025c2c31fd9f31923a0d7b9c96ac800394620a48ec323aacb1a4ada8eea",
+      "bytes": 95
+    },
+    {
+      "path": "docs/ops/licscope/source_review/scripts.md",
+      "sha256": "8e73d36d5892607886313e08ea2fa5f65932eeadc0f1f5ff1bdfb527e7874fa6",
+      "bytes": 95
+    },
+    {
+      "path": "docs/ops/licscope/source_review/shared_contracts.md",
+      "sha256": "cf5f8fb250b108a44bcc2d18ed053eba764c3f2c46e77c6a39308ed891ef03bf",
+      "bytes": 113
+    },
+    {
+      "path": "docs/ops/licscope/source_review/shared_licensing.md",
+      "sha256": "351d28f3dd3996a3a23f8314056ef1c221f1ba95c6d41176df82a4f68c87b08d",
+      "bytes": 113
+    },
+    {
+      "path": "docs/ops/licscope/source_review/tools.md",
+      "sha256": "838ca7e80a6577c8eebf80558d2dc46f169df6f787426d9ead095c1f40af4e0a",
+      "bytes": 91
+    },
+    {
+      "path": "docs/ops/licscope/STALENESS_MONITOR_MATRIX.csv",
+      "sha256": "af463990fe44d788a5b737a66ee978d807e3ef7feed22d1780082a2fc4e1ce57",
+      "bytes": 66
+    },
+    {
+      "path": "docs/ops/licscope/STALENESS_MONITOR_MATRIX.json",
+      "sha256": "b00111ab4e23091a585145993b5944ccd0ed1b1a57f5184ab6c9511c02bc0b9e",
+      "bytes": 218
+    },
+    {
+      "path": "docs/ops/licscope/STALENESS_MONITOR_MATRIX.md",
+      "sha256": "7ae90c5bbcef8f30931735af47fdd1c34d6ce94c6b65714635ebf623faab9aea",
+      "bytes": 131
+    },
+    {
+      "path": "docs/ops/licscope/STALENESS_RULES.json",
+      "sha256": "530a4dd8a666d334a73a317efa13a6a840de8a405f3aa49eba367c74099c7b53",
+      "bytes": 863
+    },
+    {
+      "path": "docs/ops/licscope/STALENESS_RULES.md",
+      "sha256": "5d6e03835dd1e6573d511ea708970eefab0c783491b97f42f23257767bbd768d",
+      "bytes": 501
+    },
+    {
+      "path": "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json",
+      "sha256": "6463f973cb3035a2f2f1e13fb79eb2e2d1f4ccdd6bfb2a0142063c8c719c3139",
+      "bytes": 4522
+    },
+    {
+      "path": "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.md",
+      "sha256": "fe4da189784c4bab9709cbdbdca5f9c8f83dbe66f4acb863fb4a8537ee70c8b6",
+      "bytes": 1513
+    },
+    {
+      "path": "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_MATRIX.csv",
+      "sha256": "ff449603d5bdfc68e8cf117841c3546706e02c4972ed2e37bdc0119dcf767b04",
+      "bytes": 1775
+    },
+    {
+      "path": "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_MATRIX.json",
+      "sha256": "dda9b49ade36efdbcfe316f78d1218226121e22f835c843fe5d996e288ad802b",
+      "bytes": 4565
+    },
+    {
+      "path": "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_MATRIX.md",
+      "sha256": "41fddf2b9f9f9eda532671d8f7b1ac28e81c9c7244697abb998e4727f8550f17",
+      "bytes": 2011
+    },
+    {
+      "path": "docs/ops/licscope/SYNC_CHECKPOINT_DEFINITION.md",
+      "sha256": "b49c1c9da9ec39ca7468b4728d5729c7dc0a87c38956eb9cf823a272aa6dbc96",
+      "bytes": 224
+    },
+    {
+      "path": "docs/ops/licscope/SYNC_SCOPEKEY_DEFINITION.md",
+      "sha256": "1c9a7864fa95420277d977451d3c87e2943731abc6014d8e4d6e7774441a9f8e",
+      "bytes": 198
+    },
+    {
+      "path": "docs/ops/licscope/TABLET_TO_CANONICAL_LINKING_RULES.md",
+      "sha256": "7ba2a3ae421a6dcf2bb45abf7078ca2dd2017bb2f2d633550bed79d27a83d530",
+      "bytes": 258
+    },
+    {
+      "path": "docs/ops/licscope/table_columns.json",
+      "sha256": "716f56efaac6a2456f95a7f200cad139bdc254cb1a1238d1ab67f460d560e1f0",
+      "bytes": 143695
+    },
+    {
+      "path": "docs/ops/licscope/TENANT_SCOPE_CONTRACT.json",
+      "sha256": "6f604733a09c54c7aefc938614d1dee87e26e39e56065a90b8088d4f6ad8f957",
+      "bytes": 1562
+    },
+    {
+      "path": "docs/ops/licscope/TENANT_SCOPE_CONTRACT.md",
+      "sha256": "b6c5a72a8b609e5ff4f45a64274f71de822f33b05e3a8c5bdb89e39b743abc19",
+      "bytes": 416
+    },
+    {
+      "path": "docs/ops/licscope/TENANT_SCOPE_MATRIX.csv",
+      "sha256": "ad3984655c65fc7ccfc67fa6c5c48235a6f59007a29f52f453917c979897e8aa",
+      "bytes": 113
+    },
+    {
+      "path": "docs/ops/licscope/TENANT_SCOPE_MATRIX.json",
+      "sha256": "05acbb9b53a546a62efe9083945ea96d72a51e468d39c47e797b125f04743e44",
+      "bytes": 284
+    },
+    {
+      "path": "docs/ops/licscope/TENANT_SCOPE_MATRIX.md",
+      "sha256": "ad3bdc75a23f19cd47ffb8a050772553404dfab77dcb0c0c946e835eefd8b761",
+      "bytes": 193
+    },
+    {
+      "path": "docs/ops/licscope/VALIDATION_RESULTS.json",
+      "sha256": "7dec20b517c29ba0817d28ac0e3d38983185ad45ea640682816a7cb582784026",
+      "bytes": 6215
+    },
+    {
+      "path": "docs/ops/licscope/VALIDATION_RESULTS.md",
+      "sha256": "426dc529cd70f60299a4fbd0838b8197370dbd58cc5cc285dc9c10a13ff3b964",
+      "bytes": 3723
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/command-run-results.json",
+      "sha256": "95778393f8d7f2c31aba7bed86b852390460d185e87d902cd0cd8d685a1a3e2a",
+      "bytes": 34980
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/extra-command-run-results.json",
+      "sha256": "4c38756759e84cc01e11cd5b89fcaea5d29145f1ca7d57aaaafa03622286fe6d",
+      "bytes": 5694
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/typecheck-results.json",
+      "sha256": "20f76ddf8ee44d10518ea1b595c3ea835c7d432dd2c9026b5f21fe1a8b540557",
+      "bytes": 1041
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-audit-completeness.json",
+      "sha256": "de218da7a62443a3051b89bde14db19d06e3a97f35003b7eb24db8452c6a91d5",
+      "bytes": 699
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-audit-completeness.md",
+      "sha256": "faa3671acb19fb3d46c653ea7c5ca98369356195aa470c43903633cad4a29456",
+      "bytes": 289
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-customer-setup-full.json",
+      "sha256": "ca4693bdba63dc8848d8e8febf4ab56d2ca47ff425d72cbd566e0b5bee376387",
+      "bytes": 1001
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-customer-setup-full.md",
+      "sha256": "7a2d8892c225bc0fd5196f28dace7cd22e75a547338dcba63da84d6777c4c3a7",
+      "bytes": 447
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-customer-visible-safety.json",
+      "sha256": "31340addef72719fadff91f77e8be41c9674d5a92a39749cea0d8ea2fcfd93da",
+      "bytes": 873
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-customer-visible-safety.md",
+      "sha256": "b8aebf62054a5159b7db420324547e8c3fb5fa9cc0aca5ae6568fa314fb006a1",
+      "bytes": 367
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-data-surfaces.json",
+      "sha256": "c0d3ffc85178ed4b8a793ecac59e782e9b094db4f605c4000a919162abc17eb2",
+      "bytes": 1883
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json",
+      "sha256": "c011a54908c316eca1b2894fe57a4d96023c00e3715a4dc6ccaa1a8eb84697e8",
+      "bytes": 1313
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.md",
+      "sha256": "3ad291cfe3c6de0501e78f9d4473d76e445f40a2e89fed695740a4050511738b",
+      "bytes": 518
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-duplicate-detector.json",
+      "sha256": "fe064d447c66065d12d6d26c3833455a2c6ee332b52df305392122afecac53e0",
+      "bytes": 699
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-duplicate-detector.md",
+      "sha256": "4ca6e844e5bc216e80232a339040e8ee5f624af2637003930fd3e4184f1c11c2",
+      "bytes": 289
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-golden-path-operations.json",
+      "sha256": "91b56f51cb715714810564c337b10924b10c999ddecaf237073f83bbfebdcc17",
+      "bytes": 974
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-golden-path-operations.md",
+      "sha256": "0a3065c3a205e171a72ad2c69ba9ef98c333a73112bc5c07a38920dc31be3620",
+      "bytes": 420
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-license-device-crosscheck.json",
+      "sha256": "c221faffc454902d7d9373c6edb1dd559dadca43c7706770c0d8709ba8c5fa85",
+      "bytes": 706
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-license-device-crosscheck.md",
+      "sha256": "33916aab52f297c8badc96c92a53f09afca49aea4ffe4a864a59cd67c64a3819",
+      "bytes": 296
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-license-without-client-blocked.json",
+      "sha256": "657b7aa6a027188a84bd21812e15bef5a9c028c36c4c547efd71d39fbd8ddadb",
+      "bytes": 1381
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-license-without-client-blocked.md",
+      "sha256": "c02e32ca22c5bed9d7e7662b5bb7d56d4bed788df1db5b322ce1aeefd1aa27b7",
+      "bytes": 544
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-mobile-claim.json",
+      "sha256": "68b64c1f96d5f723a2ef74fb86cafd34a087b418fbab4192711d692d78a80dd9",
+      "bytes": 994
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-mobile-claim.md",
+      "sha256": "57882d796f20dcdf05cdfb3144721e24e24beb127715cd6343b3ab933251d3cc",
+      "bytes": 440
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-orphan-detector.json",
+      "sha256": "79361c0e53a43e9104dbff898847727674e663305bdd1708e2b9b28da1518d99",
+      "bytes": 696
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-orphan-detector.md",
+      "sha256": "9448ff1155a5925d71c88778f22fa624e4630a9bf46d4abf8fe7430fee3b10bf",
+      "bytes": 286
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json",
+      "sha256": "f70400c9c77d11738b0ae73c09562dde1d7eeec1b1f70c108c5db35b9ff3df44",
+      "bytes": 883
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.md",
+      "sha256": "ada27f80b8617e4ba153ba3b2598cf93cbc5086d33e4b83dd13981ff58a3e9f9",
+      "bytes": 377
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-pc-claim.json",
+      "sha256": "ee54d40563b909b593f9627629eb2d1d2847393d3ab8961b7c54b516b8021b6a",
+      "bytes": 990
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-pc-claim.md",
+      "sha256": "093f68382ab95916c21d276019ceaf4bb41dc53153fe6814a8a57576b9453420",
+      "bytes": 436
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-pii-secret-safety.json",
+      "sha256": "fc378e32d6ae0b6c419b093f0a6725ad243560ea7b25b0839b0af64fa447eeb1",
+      "bytes": 879
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-pii-secret-safety.md",
+      "sha256": "bc2ef07c07818ee9de4eeff0f2ab2afb8a68d2480bde59219a99d284826d2f61",
+      "bytes": 373
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json",
+      "sha256": "104a2b4af354bacd3514497cf8406266dcdac1fc7840d471ec4b5027741c0f12",
+      "bytes": 1008
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.md",
+      "sha256": "6430cacfc9d1e525727d6c95ffe7a164b0d312b512b32556ea09eb88c74d0048",
+      "bytes": 454
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-sales-outbox-linking.json",
+      "sha256": "1ee25365a28f773e5c49143adcc5b4b920202133b33d182b46fada3b826a110d",
+      "bytes": 882
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-sales-outbox-linking.md",
+      "sha256": "1b1a224b8aac0123008e441c291be94ef4547b09dd89deb9d18036a2e10517ff",
+      "bytes": 376
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-sales-provenance-lineage.json",
+      "sha256": "dab284259e58230f792b1f7255c7a0619b841bcdb026ec8ee30a7d991a09925e",
+      "bytes": 886
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-sales-provenance-lineage.md",
+      "sha256": "3c409d3a66ad8cd7e0b1e244d813c02d4f8532ca996e70db5f2c217cb3c6b082",
+      "bytes": 380
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-staleness-monitor.json",
+      "sha256": "f1e01486bc04f92fb78ee793f4d32fd0991db62d8db6e275857c121487d48c43",
+      "bytes": 698
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-staleness-monitor.md",
+      "sha256": "c6d4970a9b19fb8869457d5eff5624dad1782e70f2f06c931071afdd37008f90",
+      "bytes": 288
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-surface-scope-permissions.json",
+      "sha256": "ecdef666f2c5ce6a4674c75431fa6a1cad27f1ab3adb650683cc7f2e9819d3bc",
+      "bytes": 706
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-surface-scope-permissions.md",
+      "sha256": "8c300ede75372f5bb91c5626e911f762ab4aba401e45476c9ed3effa4cc107ea",
+      "bytes": 296
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-tablet-claim.json",
+      "sha256": "51fd594de5830e83f460648647a467d5356feab9900d55b4b9e357437407adcb",
+      "bytes": 994
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-tablet-claim.md",
+      "sha256": "16fa00a2799363ccd6350efc4c1eaa53beda3b69fb194bfd70e94561d5d3e1d7",
+      "bytes": 440
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-tenant-scope-readiness.json",
+      "sha256": "7a9ff6bec1d0cf6c16867f2681aae86dd11ec950f8e3c5f6c1a0e0484ab796dd",
+      "bytes": 791
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-tenant-scope-readiness.md",
+      "sha256": "116df529cfdad1caa9c7755dc55e6fe4bc88aa27cd714a461a781ce633fc066e",
+      "bytes": 333
+    },
+    {
+      "path": "docs/ops/licscope/WHY_THIS_IS_RED.md",
+      "sha256": "2870023b92d4d742f06f779ab551825e5a0bbcbe096aec997aab415b4308b1b1",
+      "bytes": 331
+    },
+    {
+      "path": "docs/ops/licscope/ZIP_RESULT.json",
+      "sha256": "380ac231d1491d13d1d8cda95efc10c357342138025298568afeaf09b1cc5354",
+      "bytes": 201
+    }
+  ],
+  "verifierOutputs": [
+    {
+      "verifier": "verify:tenant-scope-readiness",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:license-device-crosscheck",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:tablet-claim",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:pc-claim",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:mobile-claim",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:sales-provenance-lineage",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:sales-outbox-linking",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:outbox-sync-canonical",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:revoke-renewal-replacement",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:surface-scope-permissions",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:customer-visible-safety",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:pii-secret-safety",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:orphan-detector",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:duplicate-detector",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:staleness-monitor",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:audit-completeness",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:golden-path-operations",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:device-without-license-blocked",
+      "status": "PASS"
+    },
+    {
+      "verifier": "verify:license-without-client-blocked",
+      "status": "PASS"
+    }
+  ]
+}

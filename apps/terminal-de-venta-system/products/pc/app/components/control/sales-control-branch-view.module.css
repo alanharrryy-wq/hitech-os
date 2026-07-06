@@ -10,17 +10,17 @@
   align-items: end;
   gap: 18px;
   padding: 22px 24px;
-  border: 1px solid rgba(35, 87, 146, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 28px;
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.94), rgba(235, 247, 255, 0.82)),
-    radial-gradient(circle at 96% 10%, rgba(4, 72, 255, 0.12), transparent 34%);
-  box-shadow: 0 22px 64px rgba(33, 75, 126, 0.13);
+    linear-gradient(125deg, rgba(10, 18, 34, 0.88), rgba(12, 24, 42, 0.76)),
+    radial-gradient(circle at 96% 10%, rgba(4, 72, 255, 0.16), transparent 34%);
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.30);
 }
 
 .ledgerHero h1 {
   margin: 4px 0 8px;
-  color: #0c2e55;
+  color: rgba(241, 249, 255, 0.94);
   font-size: clamp(30px, 4.5vw, 58px);
   line-height: 0.94;
   letter-spacing: -0.055em;
@@ -71,23 +71,23 @@
 .primaryTotal,
 .recentActivityTotal,
 .financialFacts {
-  border: 1px solid rgba(35, 87, 146, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 16px 46px rgba(33, 75, 126, 0.10);
+  background: rgba(10, 20, 36, 0.82);
+  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.24);
 }
 
 .primaryTotal {
   padding: 20px;
   background:
-    linear-gradient(140deg, rgba(255, 255, 255, 0.98), rgba(229, 245, 255, 0.88)),
+    linear-gradient(140deg, rgba(15, 27, 48, 0.96), rgba(14, 26, 44, 0.84)),
     radial-gradient(circle at 8% 0%, rgba(0, 162, 255, 0.18), transparent 38%);
 }
 
 .recentActivityTotal {
   padding: 16px 18px;
   background:
-    linear-gradient(140deg, rgba(255, 255, 255, 0.98), rgba(240, 252, 247, 0.92)),
+    linear-gradient(140deg, rgba(15, 27, 48, 0.96), rgba(15, 27, 48, 0.88)),
     radial-gradient(circle at 10% 0%, rgba(22, 163, 74, 0.14), transparent 36%);
 }
 
@@ -173,10 +173,10 @@
 .operationChecklist,
 .addBranchDock,
 .emptyState {
-  border: 1px solid rgba(35, 87, 146, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 14px 40px rgba(33, 75, 126, 0.09);
+  background: rgba(10, 18, 34, 0.82);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
 }
 
 .branchRail {
@@ -217,25 +217,25 @@
   gap: 5px;
   min-height: 78px;
   padding: 10px 12px;
-  border: 1px solid rgba(97, 141, 197, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 17px;
-  background: rgba(235, 248, 255, 0.76);
-  color: #17375f;
+  background: rgba(12, 24, 39, 0.76);
+  color: rgba(231, 242, 255, 0.92);
   text-decoration: none;
 }
 
 .branchRailList span,
 .branchRailList small {
-  color: var(--prisma-text-muted);
+  color: rgba(176, 195, 221, 0.76);
 }
 
 .branchRailList strong {
-  color: #073ea7;
+  color: rgba(185, 219, 255, 0.96);
   font-size: 20px;
 }
 
 .updatedNote {
-  color: var(--prisma-text-muted);
+  color: rgba(176, 195, 221, 0.78);
   text-align: right;
 }
 
@@ -257,7 +257,7 @@
   display: grid;
   padding: 10px;
   border-radius: 16px;
-  background: rgba(235, 248, 255, 0.78);
+  background: rgba(12, 24, 39, 0.86);
 }
 
 .paymentList strong {
@@ -292,11 +292,11 @@
 .addBranchForm input {
   min-height: 42px;
   width: 100%;
-  border: 1px solid rgba(97, 141, 197, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 14px;
   padding: 9px 11px;
-  color: var(--prisma-text-primary);
-  background: rgba(255, 255, 255, 0.96);
+  color: rgba(237, 244, 255, 0.96);
+  background: rgba(10, 18, 34, 0.78);
 }
 
 .cashActionForm button,
@@ -317,9 +317,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  color: #073ea7;
+  color: rgba(185, 219, 255, 0.96);
   font-weight: 950;
-  background: rgba(231, 244, 255, 0.90);
+  background: rgba(12, 24, 39, 0.76);
   text-decoration: none;
 }
 
@@ -353,11 +353,11 @@
 }
 
 .branchCard {
-  border: 1px solid rgba(35, 87, 146, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 18px 48px rgba(33, 75, 126, 0.10);
+  background: rgba(10, 18, 34, 0.82);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
 }
 
 .branchSummary {
@@ -368,17 +368,17 @@
   align-items: center;
   padding: 14px 16px;
   list-style: none;
-  background: linear-gradient(90deg, rgba(235, 248, 255, 0.82), rgba(255, 255, 255, 0.88));
+  background: linear-gradient(90deg, rgba(15, 27, 48, 0.94), rgba(12, 24, 39, 0.90));
 }
 
 .branchSummary strong {
   display: block;
-  color: #123a66;
+  color: rgba(241, 249, 255, 0.96);
   font-size: 22px;
 }
 
 .branchSummary small {
-  color: var(--prisma-text-muted);
+  color: rgba(176, 195, 221, 0.72);
 }
 
 .branchStats {
@@ -398,7 +398,7 @@
 }
 
 .branchStats span {
-  background: rgba(231, 244, 255, 0.88);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .branchStats small {
@@ -446,9 +446,9 @@
 
 .tabletCard {
   padding: 12px;
-  border: 1px solid rgba(138, 175, 220, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  background: rgba(235, 248, 255, 0.76);
+  background: rgba(13, 25, 44, 0.86);
 }
 
 .tabletCard strong,
@@ -479,9 +479,9 @@
 
 .ticketTableWrap {
   overflow-x: auto;
-  border: 1px solid rgba(35, 87, 146, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  background: #ffffff;
+  background: rgba(10, 18, 34, 0.84);
 }
 
 .ticketTable {
@@ -493,21 +493,22 @@
 .ticketTable th,
 .ticketTable td {
   padding: 9px 10px;
-  border-bottom: 1px solid rgba(138, 175, 220, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   text-align: left;
   vertical-align: top;
   font-size: 13px;
+  color: rgba(226, 232, 255, 0.88);
 }
 
 .ticketTable th {
   position: sticky;
   top: 0;
   z-index: 1;
-  color: #073ea7;
+  color: rgba(227, 242, 255, 0.94);
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
-  background: rgba(231, 244, 255, 0.96);
+  background: rgba(12, 24, 39, 0.92);
 }
 
 .amountCell {
@@ -525,10 +526,10 @@
   width: min(860px, calc(100vw - 92px));
   margin-top: 10px;
   padding: 14px;
-  border: 1px solid rgba(35, 87, 146, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  background: rgba(236, 248, 255, 0.95);
-  box-shadow: 0 18px 42px rgba(33, 75, 126, 0.14);
+  background: rgba(12, 24, 39, 0.88);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
 }
 
 .ticketDetailHeader {
@@ -591,8 +592,8 @@
   margin-top: 10px;
   padding: 10px;
   border-radius: 14px;
-  color: #315a82;
-  background: rgba(255, 255, 255, 0.78);
+  color: rgba(210, 226, 255, 0.90);
+  background: rgba(12, 24, 39, 0.82);
 }
 
 .ticketActionBoard,

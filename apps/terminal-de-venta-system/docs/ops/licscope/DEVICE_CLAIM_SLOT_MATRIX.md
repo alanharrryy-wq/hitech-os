@@ -1,0 +1,5 @@
+# DEVICE_CLAIM_SLOT_MATRIX
+
+| slotId | surface | claimCodePresent | status | evidence |
+| --- | --- | --- | --- | --- |
+| slotId | tablet/pc/mobile | true | PASS | customer_device_claim_slots |

@@ -263,15 +263,78 @@ async function all(env, sql, params = []) {
   }
 }
 
+function sanitizeDiagnosticText(value) {
+  return String(value || "unknown")
+    .replace(/Bearer\s+[A-Za-z0-9._~+/=-]+/gi, "Bearer [REDACTED]")
+    .replace(/prisma_[A-Za-z0-9._~+/=-]+/g, "[REDACTED_PRISMA_TOKEN]")
+    .replace(/Authorization:\s*[^\s]+/gi, "Authorization: [REDACTED]")
+    .slice(0, 360);
+}
+
+function d1ErrorHint(error) {
+  const text = sanitizeDiagnosticText(error && error.message ? error.message : error).toLowerCase();
+  if (text.includes("new.license_id") || text.includes("no such column: license_id")) return "schema_mismatch_legacy_licenses";
+  if (text.includes("no such table") && text.includes("audit")) return "audit_table_missing_or_legacy_named";
+  if (text.includes("foreign key")) return "foreign_key_or_replace_conflict";
+  if (text.includes("unique constraint")) return "unique_constraint_conflict";
+  if (text.includes("trigger")) return "trigger_or_constraint_rejected_write";
+  return "inspect_sanitized_d1_error";
+}
+
 async function run(env, sql, params = []) {
   const db = d1(env);
   if (!db) return { ok: false, status: "D1_BINDING_REQUIRED" };
   try {
-    await db.prepare(sql).bind(...params).run();
-    return { ok: true };
+    const result = await db.prepare(sql).bind(...params).run();
+    return { ok: true, meta: result?.meta || null, changes: result?.meta?.changes ?? null };
   } catch (error) {
-    return { ok: false, status: "D1_WRITE_FAILED", error: String(error && error.message ? error.message : error) };
+    return {
+      ok: false,
+      status: "D1_WRITE_FAILED",
+      error: sanitizeDiagnosticText(error && error.message ? error.message : error),
+      hint: d1ErrorHint(error)
+    };
   }
+}
+
+async function runBatch(env, statements, context = {}) {
+  const db = d1(env);
+  if (!db) return { ok: false, status: "D1_BINDING_REQUIRED", operation: context.operation || "unknown" };
+  try {
+    const prepared = statements.map((statement) => db.prepare(statement.sql).bind(...(statement.params || [])));
+    await db.batch(prepared);
+    return { ok: true, statements: statements.length };
+  } catch (error) {
+    return {
+      ok: false,
+      status: "D1_WRITE_FAILED",
+      operation: context.operation || "unknown",
+      table: context.table || "unknown",
+      error: sanitizeDiagnosticText(error && error.message ? error.message : error),
+      hint: d1ErrorHint(error)
+    };
+  }
+}
+
+async function tableColumns(env, tableName) {
+  if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(tableName)) return new Set();
+  const rows = await all(env, `PRAGMA table_info(${tableName})`);
+  return new Set(rows.map((row) => row.name).filter(Boolean));
+}
+
+async function licenseSchemaMode(env) {
+  const columns = await tableColumns(env, "licenses");
+  if (columns.has("license_id") && columns.has("tenant_slug")) return "canonical";
+  if (columns.has("id") && columns.has("tenant_id")) return "legacy";
+  return "unknown";
+}
+
+async function auditSchemaMode(env) {
+  const auditEvents = await tableColumns(env, "audit_events");
+  if (auditEvents.has("event_id") && auditEvents.has("tenant_slug") && auditEvents.has("event_type")) return "audit_events";
+  const auditLog = await tableColumns(env, "audit_log");
+  if (auditLog.has("id") && auditLog.has("action") && auditLog.has("payload_json")) return "audit_log";
+  return "none";
 }
 
 async function tenant(env, slug = TENANT) {
@@ -300,6 +363,46 @@ async function license(env, slug = TENANT) {
     activationStatus: LICFLOW3_LIVE_STATUS,
     activation_status: LICFLOW3_LIVE_STATUS
   };
+}
+
+async function licenseById(env, slug, licenseId, schemaMode = null) {
+  const mode = schemaMode || await licenseSchemaMode(env);
+  if (mode === "canonical") {
+    const row = await first(env, "select license_id, tenant_slug, status, plan, activation_status, valid_until, created_at, updated_at from licenses where license_id = ? and tenant_slug = ? limit 1", [licenseId, slug]);
+    if (row) return row;
+  }
+  if (mode === "legacy" || mode === "canonical") {
+    const legacyRow = await first(env, "select l.id as license_id, t.slug as tenant_slug, l.status, l.plan, l.status as activation_status, l.expires_at as valid_until, l.created_at, l.updated_at from licenses l join tenants t on l.tenant_id = t.id where l.id = ? and t.slug = ? limit 1", [licenseId, slug]);
+    if (legacyRow) return legacyRow;
+  }
+  return null;
+}
+
+function auditInsertStatement(auditMode, eventId, slug, eventType, payload) {
+  const payloadJson = JSON.stringify(payload || {});
+  if (auditMode === "audit_events") {
+    return {
+      sql: "insert into audit_events (event_id, tenant_slug, event_type, payload_json) values (?, ?, ?, ?)",
+      params: [eventId, slug, eventType, payloadJson]
+    };
+  }
+  if (auditMode === "audit_log") {
+    return {
+      sql: "insert into audit_log (id, actor, action, entity_type, entity_id, payload_json) values (?, ?, ?, ?, ?, ?)",
+      params: [eventId, "licflow3-worker", eventType, "tenant", slug, payloadJson]
+    };
+  }
+  return null;
+}
+
+async function auditEventExists(env, auditMode, eventId) {
+  if (auditMode === "audit_events") {
+    return Boolean(await first(env, "select event_id from audit_events where event_id = ? limit 1", [eventId]));
+  }
+  if (auditMode === "audit_log") {
+    return Boolean(await first(env, "select id from audit_log where id = ? limit 1", [eventId]));
+  }
+  return false;
 }
 
 async function devicesForTenant(env, slug) {
@@ -636,19 +739,56 @@ async function consumeClaimSlot(env, claimSlot, deviceId, auditEventId) {
 }
 
 async function upsertTenant(env, slug, displayName, plan) {
-  let result = await run(env, "insert or replace into tenants (id, slug, display_name, status, plan, updated_at) values (?, ?, ?, ?, ?, ?)", [`tenant_${slug}`, slug, displayName, "active", plan, now()]);
-  if (!result.ok) {
-    result = await run(env, "insert or replace into tenants (slug, display_name, status, plan, updated_at) values (?, ?, ?, ?, ?)", [slug, displayName, "active", plan, now()]);
+  const columns = await tableColumns(env, "tenants");
+  const existing = await first(env, "select slug from tenants where slug = ? limit 1", [slug]);
+  if (existing) {
+    return run(env, "update tenants set display_name = ?, status = ?, plan = ?, updated_at = ? where slug = ?", [displayName, "active", plan, now(), slug]);
   }
-  return result;
+  if (columns.has("id")) {
+    return run(env, "insert into tenants (id, slug, display_name, status, plan, updated_at) values (?, ?, ?, ?, ?, ?)", [`tenant_${slug}`, slug, displayName, "active", plan, now()]);
+  }
+  if (columns.has("slug")) {
+    return run(env, "insert into tenants (slug, display_name, status, plan, updated_at) values (?, ?, ?, ?, ?)", [slug, displayName, "active", plan, now()]);
+  }
+  return { ok: false, status: "TENANTS_SCHEMA_UNSUPPORTED", hint: "tenants_table_missing_slug" };
 }
 
 async function upsertLicense(env, slug, licenseId, status, plan, validUntil) {
-  let result = await run(env, "insert or replace into licenses (license_id, tenant_slug, status, plan, activation_status, valid_until, updated_at) values (?, ?, ?, ?, ?, ?, ?)", [licenseId, slug, status, plan, status, validUntil || null, now()]);
-  if (!result.ok) {
-    result = await run(env, "insert or replace into licenses (id, tenant_id, plan, status, expires_at, updated_at) values (?, (select id from tenants where slug = ?), ?, ?, ?, ?)", [licenseId, slug, plan, status, validUntil || null, now()]);
+  const schemaMode = await licenseSchemaMode(env);
+  const existing = await licenseById(env, slug, licenseId, schemaMode);
+  if (schemaMode === "canonical") {
+    if (existing) {
+      return run(env, "update licenses set tenant_slug = ?, status = ?, plan = ?, activation_status = ?, valid_until = ?, updated_at = ? where license_id = ?", [slug, status, plan, status, validUntil || null, now(), licenseId]);
+    }
+    return run(env, "insert into licenses (license_id, tenant_slug, status, plan, activation_status, valid_until, updated_at) values (?, ?, ?, ?, ?, ?, ?)", [licenseId, slug, status, plan, status, validUntil || null, now()]);
   }
-  return result;
+  if (schemaMode === "legacy") {
+    if (existing) {
+      return run(env, "update licenses set plan = ?, status = ?, expires_at = ?, updated_at = ? where id = ? and tenant_id = (select id from tenants where slug = ?)", [plan, status, validUntil || null, now(), licenseId, slug]);
+    }
+    return run(env, "insert into licenses (id, tenant_id, plan, status, expires_at, updated_at) values (?, (select id from tenants where slug = ?), ?, ?, ?, ?)", [licenseId, slug, plan, status, validUntil || null, now()]);
+  }
+  return { ok: false, status: "LICENSE_SCHEMA_UNSUPPORTED", hint: "licenses_table_missing_canonical_or_legacy_columns" };
+}
+
+async function requireLicenseClientContext(env, slug, licenseId, status, mode) {
+  if (mode === "revoke" || !ACTIVE_LICENSE_STATES.has(status)) {
+    return { ok: true, source: "non_active_or_revoke" };
+  }
+  const assignment = await first(env, "select license_assignment_id as licenseAssignmentId, customer_id as customerId, business_id as businessId, setup_bundle_id as setupBundleId from license_assignments where license_id = ? and customer_id is not null and business_id is not null order by updated_at desc limit 1", [licenseId]);
+  if (assignment?.customerId && assignment?.businessId) return { ok: true, source: "license_assignment", assignment };
+  const bundle = await first(env, "select setup_bundle_id as setupBundleId, customer_id as customerId, business_id as businessId, license_assignment_id as licenseAssignmentId from customer_setup_bundles where license_id = ? and customer_id is not null and business_id is not null order by updated_at desc limit 1", [licenseId]);
+  if (bundle?.customerId && bundle?.businessId) return { ok: true, source: "setup_bundle", bundle };
+  return {
+    ok: false,
+    status: "LICENSE_CLIENT_CONTEXT_REQUIRED",
+    resultCode: "LICENSE_WITHOUT_CLIENT_BLOCKED",
+    customerMessage: "No se puede activar una licencia comercial sin cliente, negocio y setup/assignment asociado.",
+    operatorMessage: "Use plan-based customer setup first so license, assignment, setup bundle and claim slots are created together.",
+    nextStep: "Run /api/admin/customer-setups/create or pass an existing license tied to customer_setup_bundles/license_assignments.",
+    tenantSlug: slug,
+    licenseId
+  };
 }
 
 async function upsertLicensePlan(env, plan) {
@@ -775,6 +915,8 @@ async function createCustomerSetup(request, env) {
   const planResult = await upsertLicensePlan(env, plan);
   if (!planResult.ok) return json({ ...pass, ok: false, status: planResult.status, resultCode: "PLAN_PROVISIONING_SCHEMA_REQUIRED", nextStep: "Apply migration 0003_plan_based_provisioning.sql before live provisioning.", secretsExposed: false }, 500);
   await upsertTenant(env, pass.tenantSlug, pass.businessName, plan.planId);
+  const assignmentResult = await upsertLicenseAssignment(env, pass);
+  if (!assignmentResult.ok) return json({ ...pass, ok: false, status: assignmentResult.status, resultCode: "LICENSE_ASSIGNMENT_CREATE_FAILED", secretsExposed: false }, 500);
   await upsertLicense(env, pass.tenantSlug, pass.licenseId, "active", plan.planId, validUntil);
   const result = await run(env, "insert or replace into customer_setups (setup_id, setup_code, setup_url, qr_payload, customer_id, tenant_id, tenant_slug, business_id, business_name, package_code, plan_code, status, expires_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
     pass.setupId,
@@ -793,8 +935,6 @@ async function createCustomerSetup(request, env) {
     now()
   ]);
   if (!result.ok) return json({ ...pass, ok: false, status: result.status, secretsExposed: false }, 500);
-  const assignmentResult = await upsertLicenseAssignment(env, pass);
-  if (!assignmentResult.ok) return json({ ...pass, ok: false, status: assignmentResult.status, resultCode: "LICENSE_ASSIGNMENT_CREATE_FAILED", secretsExposed: false }, 500);
   for (const slot of pass.slots) {
     await run(env, "insert or replace into customer_setup_slots (setup_id, surface, label, allowed, claimed, updated_at) values (?, ?, ?, ?, ?, ?)", [
       pass.setupId,
@@ -1117,11 +1257,151 @@ async function diagnostics(env, slug) {
   };
 }
 
+async function revokeLicenseAtomically(env, slug, licenseId, plan, validUntil, reason, operationRequestId) {
+  const schemaMode = await licenseSchemaMode(env);
+  if (schemaMode === "unknown") {
+    return {
+      ok: false,
+      status: "LICENSE_SCHEMA_UNSUPPORTED",
+      resultCode: "LICENSE_SCHEMA_UNSUPPORTED",
+      httpStatus: 500,
+      safeToMutateReason: "licenses table does not expose canonical or legacy columns.",
+      nextStep: "Inspect remote sqlite_schema and PRAGMA table_info(licenses).",
+      d1Hint: "licenses_table_missing_canonical_or_legacy_columns"
+    };
+  }
+
+  const before = await licenseById(env, slug, licenseId, schemaMode);
+  if (!before) {
+    return {
+      ok: false,
+      status: "LICENSE_NOT_FOUND",
+      resultCode: "LICENSE_NOT_FOUND",
+      httpStatus: 404,
+      safeToMutateReason: "No persisted license matched tenantSlug and licenseId.",
+      nextStep: "Verify tenantSlug/licenseId before revoke; revoke does not create licenses.",
+      d1Hint: "read_before_write_empty"
+    };
+  }
+
+  const auditMode = await auditSchemaMode(env);
+  if (auditMode === "none") {
+    return {
+      ok: false,
+      status: "AUDIT_TABLE_REQUIRED",
+      resultCode: "AUDIT_TABLE_REQUIRED",
+      httpStatus: 500,
+      safeToMutateReason: "Revoke requires an audit/event table before returning green.",
+      nextStep: "Inspect remote sqlite_schema for audit_events or audit_log.",
+      d1Hint: "audit_table_missing"
+    };
+  }
+
+  const alreadyRevoked = before.status === "revoked";
+  const eventType = alreadyRevoked ? "license.revoke.idempotent" : "license.revoke";
+  const eventId = `${eventType}-${crypto.randomUUID()}`;
+  const payload = {
+    licenseId,
+    tenantSlug: slug,
+    status: "revoked",
+    previousStatus: before.status || null,
+    plan: plan || before.plan || PLAN,
+    reason: reason || null,
+    idempotent: alreadyRevoked,
+    requestId: operationRequestId
+  };
+  const statements = [];
+  if (!alreadyRevoked && schemaMode === "canonical") {
+    statements.push({
+      sql: "update licenses set status = ?, activation_status = ?, plan = ?, valid_until = coalesce(?, valid_until), updated_at = ? where license_id = ? and tenant_slug = ?",
+      params: ["revoked", "revoked", plan || before.plan || PLAN, validUntil || null, now(), licenseId, slug]
+    });
+  }
+  if (!alreadyRevoked && schemaMode === "legacy") {
+    statements.push({
+      sql: "update licenses set status = ?, plan = ?, expires_at = coalesce(?, expires_at), updated_at = ? where id = ? and tenant_id = (select id from tenants where slug = ?)",
+      params: ["revoked", plan || before.plan || PLAN, validUntil || null, now(), licenseId, slug]
+    });
+  }
+
+  const auditStatement = auditInsertStatement(auditMode, eventId, slug, eventType, payload);
+  if (!auditStatement) {
+    return {
+      ok: false,
+      status: "AUDIT_TABLE_REQUIRED",
+      resultCode: "AUDIT_TABLE_REQUIRED",
+      httpStatus: 500,
+      safeToMutateReason: "No compatible audit insert statement is available.",
+      nextStep: "Inspect audit_events/audit_log schema.",
+      d1Hint: "audit_insert_statement_missing"
+    };
+  }
+  statements.push(auditStatement);
+
+  const write = await runBatch(env, statements, { operation: "license_revoke", table: `licenses+${auditMode}` });
+  if (!write.ok) {
+    return {
+      ...write,
+      resultCode: write.status,
+      httpStatus: 500,
+      safeToMutateReason: "Cloud License Database mutation failed before verified persistence.",
+      nextStep: "Inspect sanitized D1 hint and remote schema; do not declare revoke green.",
+      d1Hint: write.hint
+    };
+  }
+
+  const after = await licenseById(env, slug, licenseId, schemaMode);
+  if (!after || after.status !== "revoked") {
+    return {
+      ok: false,
+      status: "D1_REVOKE_PERSISTENCE_FAILED",
+      resultCode: "D1_REVOKE_PERSISTENCE_FAILED",
+      httpStatus: 500,
+      safeToMutateReason: "D1 write returned OK but read-after-write did not confirm revoked.",
+      nextStep: "Inspect license row and audit event before retrying.",
+      d1Hint: "read_after_write_not_revoked",
+      schemaMode,
+      auditTable: auditMode,
+      auditEventId: eventId
+    };
+  }
+
+  const auditVerified = await auditEventExists(env, auditMode, eventId);
+  if (!auditVerified) {
+    return {
+      ok: false,
+      status: "D1_REVOKE_AUDIT_VERIFY_FAILED",
+      resultCode: "D1_REVOKE_AUDIT_VERIFY_FAILED",
+      httpStatus: 500,
+      safeToMutateReason: "D1 write returned OK but audit/event read-back did not confirm persistence.",
+      nextStep: "Inspect audit table before declaring cleanup revoke PASS.",
+      d1Hint: "audit_read_after_write_missing",
+      schemaMode,
+      auditTable: auditMode,
+      auditEventId: eventId
+    };
+  }
+
+  return {
+    ok: true,
+    status: "revoked",
+    resultCode: "REVOKE_CONFIRMED",
+    persisted: true,
+    auditVerified: true,
+    auditTable: auditMode,
+    auditEventId: eventId,
+    schemaMode,
+    idempotent: alreadyRevoked,
+    license: normalizeLicense(after)
+  };
+}
+
 async function recordAudit(env, slug, eventType, payload) {
   const eventId = `${eventType}-${crypto.randomUUID()}`;
-  const result = await run(env, "insert into audit_events (event_id, tenant_slug, event_type, payload_json) values (?, ?, ?, ?)", [eventId, slug, eventType, JSON.stringify(payload || {})]);
-  if (!result.ok) {
-    await run(env, "insert into audit_log (id, actor, action, entity_type, entity_id, payload_json) values (?, ?, ?, ?, ?, ?)", [eventId, "licflow3-worker", eventType, "tenant", slug, JSON.stringify(payload || {})]);
+  const auditMode = await auditSchemaMode(env);
+  const statement = auditInsertStatement(auditMode, eventId, slug, eventType, payload);
+  if (statement) {
+    await run(env, statement.sql, statement.params);
   }
   return eventId;
 }
@@ -1185,7 +1465,71 @@ async function activateLicense(request, env, mode) {
       extra: { tenantSlug: slug, licenseId, plannedStatus: status }
     }));
   }
-  await upsertTenant(env, slug, body.businessName || slug, body.plan || PLAN);
+  if (mode !== "revoke") {
+    await upsertTenant(env, slug, body.businessName || slug, body.plan || PLAN);
+  }
+  if (mode === "revoke") {
+    const operationRequestId = requestId("licops");
+    const revokeResult = await revokeLicenseAtomically(env, slug, licenseId, body.plan || PLAN, validUntil, body.reason, operationRequestId);
+    return json(operatorResult(mode, mutationMode, revokeResult.resultCode || revokeResult.status, {
+      ok: revokeResult.ok,
+      status: revokeResult.ok ? "revoked" : revokeResult.status,
+      safeToMutate: revokeResult.ok,
+      safeToMutateReason: revokeResult.ok ? "Confirmed operation gates passed; revoke status and audit/event persisted." : revokeResult.safeToMutateReason,
+      safeToMutateChecks: {
+        adminToken: "validated_server_side",
+        confirmation: true,
+        revokePhrase: true,
+        reason: "present",
+        readAfterWrite: revokeResult.ok ? "confirmed" : "not_confirmed",
+        auditEvent: revokeResult.ok ? "verified" : "not_verified"
+      },
+      revokePhraseAccepted: true,
+      operatorMessage: revokeResult.ok ? "Confirmed License Operation completed and verified." : "Confirmed License Operation failed before verified persistence.",
+      nextStep: revokeResult.ok ? "Review License Operation Audit and customer status." : revokeResult.nextStep || "Inspect sanitized diagnostics.",
+      requestId: operationRequestId,
+      latencyMs: Date.now() - started,
+      extra: {
+        tenantSlug: slug,
+        licenseId,
+        license: revokeResult.license ? { ...revokeResult.license, signedLicenseIssued: false } : { licenseId, status: revokeResult.status, plan: body.plan || PLAN, validUntil, signedLicenseIssued: false },
+        revokePersistence: {
+          persisted: revokeResult.persisted === true,
+          readAfterWrite: revokeResult.ok ? "confirmed" : "not_confirmed",
+          auditVerified: revokeResult.auditVerified === true,
+          auditTable: revokeResult.auditTable || null,
+          auditEventId: revokeResult.auditEventId || null,
+          schemaMode: revokeResult.schemaMode || null,
+          idempotent: revokeResult.idempotent === true
+        },
+        d1: {
+          operation: revokeResult.operation || "license_revoke",
+          table: revokeResult.table || "licenses",
+          hint: revokeResult.d1Hint || revokeResult.hint || null,
+          error: revokeResult.error || null
+        }
+      }
+    }), revokeResult.ok ? 200 : revokeResult.httpStatus || 500);
+  }
+  const clientContext = await requireLicenseClientContext(env, slug, licenseId, status, mode);
+  if (!clientContext.ok) {
+    return json(operatorResult(mode, mutationMode, clientContext.resultCode, {
+      ok: false,
+      status: clientContext.status,
+      safeToMutate: false,
+      safeToMutateReason: clientContext.operatorMessage,
+      safeToMutateChecks: {
+        adminToken: "validated_server_side",
+        confirmation: true,
+        clientContext: "missing",
+        licenseAssignmentOrSetupBundle: "missing"
+      },
+      operatorMessage: clientContext.operatorMessage,
+      nextStep: clientContext.nextStep,
+      latencyMs: Date.now() - started,
+      extra: { tenantSlug: slug, licenseId }
+    }), 409);
+  }
   const result = await upsertLicense(env, slug, licenseId, status, body.plan || PLAN, validUntil);
   await recordAudit(env, slug, `license.${mode}`, { licenseId, status, reason: body.reason || null });
   return json(operatorResult(mode, mutationMode, result.ok ? resultCode : result.status, {

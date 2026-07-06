@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "db": "tablet-pos",
+  "table": "CashSession",
+  "rowCount": 2,
+  "sanitized": true,
+  "rawDbCopied": false,
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rows": [
+    {
+      "id": "cash_seed_tpos_001",
+      "businessId": "biz_prisma_rey_lineage_seed",
+      "storeId": "store_prisma_rey_centro",
+      "terminalId": "term_tablet_pos_001",
+      "cashierId": "usr_seed_cashier_001",
+      "cashier": "Caja 1",
+      "openedAt": "2026-07-05T09:00:00Z",
+      "closedAt": null,
+      "cashStartCents": 50000,
+      "cashEndCents": null,
+      "expectedCashCents": null,
+      "varianceCents": null,
+      "status": "open",
+      "createdAt": "2026-07-05T17:06:54Z",
+      "updatedAt": "2026-07-05T17:06:54Z"
+    },
+    {
+      "id": "cash_seed_tpos_002",
+      "businessId": "biz_prisma_rey_lineage_seed",
+      "storeId": "store_prisma_rey_centro",
+      "terminalId": "term_tablet_pos_002",
+      "cashierId": "usr_seed_cashier_001",
+      "cashier": "Caja 2",
+      "openedAt": "2026-07-05T09:00:00Z",
+      "closedAt": null,
+      "cashStartCents": 50000,
+      "cashEndCents": null,
+      "expectedCashCents": null,
+      "varianceCents": null,
+      "status": "open",
+      "createdAt": "2026-07-05T17:06:54Z",
+      "updatedAt": "2026-07-05T17:06:54Z"
+    }
+  ]
+}

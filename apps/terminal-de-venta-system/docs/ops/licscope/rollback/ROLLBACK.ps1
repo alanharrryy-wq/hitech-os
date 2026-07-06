@@ -1,0 +1,1 @@
+Write-Host 'Review git diff. To roll back generated LICSCOPE artifacts, remove docs/ops/licscope from the working tree; to roll back source edits, restore the files listed in BACKUPS_MANIFEST.json from backups_from_HEAD after review.'

@@ -1,0 +1,4583 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "keys": [
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "$",
+      "types": {
+        "object": 24
+      },
+      "frequency": 24,
+      "sample": null
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "diagnosticsJson",
+      "path": "$",
+      "types": {
+        "object": 12
+      },
+      "frequency": 12,
+      "sample": null
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "req_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "createdAt",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "2026-07-05T09:03:00Z"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "folio",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "PR-20260705-0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "diagnosticsJson",
+      "path": "lineage",
+      "types": {
+        "string": 12
+      },
+      "frequency": 12,
+      "sample": "explicit"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceType",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "tablet_pos"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "seedline",
+      "types": {
+        "boolean": 24
+      },
+      "frequency": 24,
+      "sample": true
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "diagnosticsJson",
+      "path": "seedline",
+      "types": {
+        "boolean": 12
+      },
+      "frequency": 12,
+      "sample": true
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "evt_seedline_sale_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "status",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "PAID"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "surface",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "tablet"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "target",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "canonical"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "totalCents",
+      "types": {
+        "number": 24
+      },
+      "frequency": 24,
+      "sample": 3300
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "$",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "chartKey",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "[REDACTED_SECRET]"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "generatedBy",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "PRISMA Data Lifecycle"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "mode",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "light"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series",
+      "types": {
+        "array": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[0]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[0].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 1
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[0].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[0].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 153
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[1]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[1].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 2
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[1].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[1].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 163
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[10]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[10].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 11
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[10].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[10].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 200
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[11]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[11].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 12
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[11].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[11].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 208
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[12]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[12].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 13
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[12].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[12].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 136
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[13]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[13].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 14
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[13].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "warn"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[13].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 225
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[14]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[14].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 15
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[14].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[14].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 111
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[15]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[15].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 16
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[15].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[15].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 157
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[16]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[16].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 17
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[16].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[16].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 147
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[17]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[17].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 18
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[17].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[17].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 250
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[18]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[18].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 19
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[18].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[18].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 189
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[19]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[19].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 20
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[19].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "warn"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[19].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 204
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[2]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[2].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 3
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[2].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[2].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 172
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[20]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[20].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 21
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[20].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[20].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 205
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[21]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[21].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 22
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[21].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "warn"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[21].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 210
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[22]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[22].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 23
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[22].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[22].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 170
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[23]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[23].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 24
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[23].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[23].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 120
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[24]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[24].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 25
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[24].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "critical"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[24].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 183
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[25]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[25].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 26
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[25].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "warn"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[25].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 229
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[26]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[26].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 27
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[26].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[26].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 141
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[27]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[27].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 28
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[27].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[27].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 242
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[28]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[28].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 29
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[28].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[28].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 127
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[29]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[29].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 30
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[29].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[29].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 143
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[3]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[3].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 4
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[3].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[3].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 163
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[4]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[4].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 5
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[4].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[4].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 174
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[5]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[5].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 6
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[5].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[5].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 190
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[6]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[6].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 7
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[6].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[6].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 175
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[7]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[7].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 8
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[7].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[7].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 170
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[8]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[8].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 9
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[8].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[8].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 211
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[9]",
+      "types": {
+        "object": 6
+      },
+      "frequency": 6,
+      "sample": null
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[9].day",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 10
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[9].risk",
+      "types": {
+        "string": 6
+      },
+      "frequency": 6,
+      "sample": "ok"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "series[9].value",
+      "types": {
+        "number": 6
+      },
+      "frequency": 6,
+      "sample": 233
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "$",
+      "types": {
+        "object": 24
+      },
+      "frequency": 24,
+      "sample": null
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "req_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceType",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "tablet_pos"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "seedline",
+      "types": {
+        "boolean": 24
+      },
+      "frequency": 24,
+      "sample": true
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "types": {
+        "string": 24
+      },
+      "frequency": 24,
+      "sample": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SyncCheckpoint",
+      "column": "metadataJson",
+      "path": "$",
+      "types": {
+        "object": 2
+      },
+      "frequency": 2,
+      "sample": null
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SyncCheckpoint",
+      "column": "metadataJson",
+      "path": "sales",
+      "types": {
+        "number": 2
+      },
+      "frequency": 2,
+      "sample": 12
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SyncCheckpoint",
+      "column": "metadataJson",
+      "path": "seedline",
+      "types": {
+        "boolean": 2
+      },
+      "frequency": 2,
+      "sample": true
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SyncCheckpoint",
+      "column": "metadataJson",
+      "path": "tablets",
+      "types": {
+        "number": 2
+      },
+      "frequency": 2,
+      "sample": 2
+    }
+  ],
+  "malformed": [],
+  "empty": [
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "remoteDiagnosticsJson",
+      "rowId": "evt_seedline_sale_0012"
+    }
+  ],
+  "idFindings": [
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0003"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0004"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0006"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0007"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0008"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0009"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0010"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0011"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0012"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "pc-canonical",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "saleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "sourceEventId",
+      "value": "evt_seedline_sale_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "OutboxEvent",
+      "column": "payloadJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0003"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0004"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0006"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0007"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0008"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0009"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0010"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0011"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originSaleId",
+      "value": "sale_seedline_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "clientRequestId",
+      "value": "req_seedline_0012"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originDeviceId",
+      "value": "DEV-2026-000005"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originTerminalId",
+      "value": "term_tablet_pos_002"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originStoreId",
+      "value": "store_prisma_rey_centro"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "originBusinessId",
+      "value": "biz_prisma_rey_lineage_seed"
+    },
+    {
+      "db": "tablet-pos",
+      "table": "SalePaymentTender",
+      "column": "metadataJson",
+      "path": "syncBatchId",
+      "value": "sync_batch_seedline_001"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    },
+    {
+      "db": "chart-runtime-governance",
+      "table": "runtime_chart_payloads",
+      "column": "payloadJson",
+      "path": "batchId",
+      "value": "lifecycle_light_20260705_063131_57e5dc"
+    }
+  ]
+}

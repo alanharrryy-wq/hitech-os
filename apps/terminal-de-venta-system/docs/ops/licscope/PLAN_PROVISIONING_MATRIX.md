@@ -1,0 +1,5 @@
+# PLAN_PROVISIONING_MATRIX
+
+| planId | autoGenerateSlots | status | evidence |
+| --- | --- | --- | --- |
+| TABLET_PC_MOBILE_MANAGED | true | PASS | PLAN_BASED_PROVISIONING_CATALOG |

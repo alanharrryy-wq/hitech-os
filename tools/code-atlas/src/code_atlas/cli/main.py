@@ -36,3 +36,9 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+# CATLAS_OPERATIONAL_V3_BRIDGE_BEGIN
+def _catlas_operational_v3_main(argv=None):
+    from code_atlas.operational.cli import main as _main
+    return _main(argv)
+# CATLAS_OPERATIONAL_V3_BRIDGE_END
