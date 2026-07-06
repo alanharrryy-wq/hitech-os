@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "matrix": "SALES_OUTBOX_LINKING_MATRIX",
+  "rows": [
+    {
+      "sale": "Sale.id",
+      "outbox": "OutboxEvent.aggregateId/payloadJson",
+      "status": "WARNING",
+      "evidence": "payload_json_index.json"
+    }
+  ]
+}

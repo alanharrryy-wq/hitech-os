@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rules": [
+    {
+      "rule": "sync dormido",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale heartbeat",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale sync checkpoint",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale outbox event",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale cash session",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale device",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    }
+  ]
+}

@@ -40,33 +40,30 @@ input {
 .shell {
   width: min(100%, 1520px);
   margin: 0 auto;
-  padding: 26px;
+  padding: clamp(12px, 1.7vw, 26px);
   display: grid;
-  grid-template-columns: 282px minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: clamp(198px, 20vw, 282px) minmax(0, 1fr);
+  gap: clamp(10px, 1.4vw, 24px);
+  align-items: start;
 }
 
 .sidebar {
   position: sticky;
-  top: 22px;
-  height: calc(100vh - 44px);
-  min-height: 720px;
-  padding: 18px;
-  border-radius: var(--prisma-radius-xl);
-  background:
-    linear-gradient(180deg, var(--prisma-sidebar-surface), var(--prisma-cart-panel-surface)),
-    var(--prisma-sidebar-surface);
-  border: 1px solid var(--prisma-border-soft);
-  box-shadow: var(--prisma-shadow-glass);
+  top: clamp(10px, 1.4vw, 22px);
+  height: calc(100dvh - clamp(20px, 2.8vw, 44px));
+  min-height: 0;
+  max-height: calc(100dvh - clamp(20px, 2.8vw, 44px));
+  padding: clamp(10px, 1.15vw, 18px);
+  border-radius: clamp(20px, 2.1vw, var(--prisma-radius-xl));
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  backdrop-filter: blur(24px);
+  gap: clamp(8px, 1vw, 16px);
+  overflow: hidden;
+  align-self: start;
 }
 
 .brand-block,
-.sidebar-panel,
-.footer-stack > * {
+.sidebar-panel {
   position: relative;
   overflow: hidden;
   border-radius: var(--prisma-radius-lg);
@@ -76,8 +73,7 @@ input {
 }
 
 [data-theme="prisma-light"] .brand-block,
-[data-theme="prisma-light"] .sidebar-panel,
-[data-theme="prisma-light"] .footer-stack > * {
+[data-theme="prisma-light"] .sidebar-panel {
   background:
     var(--prisma-frosted-accent-gradient),
     var(--prisma-glass-gradient);
@@ -1398,6 +1394,51 @@ body {
 }
 
 @media (max-width: 980px) {
+  .shell {
+    grid-template-columns: clamp(166px, 25vw, 218px) minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .sidebar {
+    top: 10px;
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .brand-block {
+    min-height: 104px;
+    padding: 10px 6px;
+  }
+
+  .brand {
+    font-size: clamp(13px, 2vw, 18px);
+    letter-spacing: 0.12em;
+  }
+
+  .nav a {
+    min-height: 40px;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 8px;
+    padding: 7px 8px;
+  }
+
+  .nav-title {
+    font-size: 12px;
+    line-height: 1.12;
+  }
+
+  .nav-desc {
+    font-size: 10px;
+    line-height: 1.15;
+  }
+
+  .sidebar-panel {
+    padding: 10px;
+  }
+
   .topbar { grid-template-columns: 1fr; }
   .user-shell { flex-wrap: wrap; }
 }
@@ -1501,13 +1542,13 @@ html[data-prisma-surface="pc-backoffice"] {
   --prisma-pc-light-border-soft: rgba(191, 207, 232, 0.74);
   --prisma-pc-light-border-medium: rgba(156, 181, 218, 0.76);
   --prisma-pc-light-border-strong: rgba(21, 87, 255, 0.38);
-  --prisma-pc-light-panel: rgba(255, 255, 255, 0.68);
-  --prisma-pc-light-panel-dense: rgba(255, 255, 255, 0.82);
-  --prisma-pc-light-card: rgba(255, 255, 255, 0.58);
-  --prisma-pc-light-card-dense: rgba(255, 255, 255, 0.78);
-  --prisma-pc-light-table: rgba(255, 255, 255, 0.90);
-  --prisma-pc-light-control: rgba(255, 255, 255, 0.72);
-  --prisma-pc-light-popover: rgba(255, 255, 255, 0.94);
+  --prisma-pc-light-panel: rgba(9, 18, 30, 0.76);
+  --prisma-pc-light-panel-dense: rgba(10, 20, 34, 0.86);
+  --prisma-pc-light-card: rgba(10, 20, 34, 0.70);
+  --prisma-pc-light-card-dense: rgba(12, 24, 39, 0.82);
+  --prisma-pc-light-table: rgba(11, 23, 38, 0.82);
+  --prisma-pc-light-control: rgba(10, 20, 34, 0.78);
+  --prisma-pc-light-popover: rgba(12, 24, 39, 0.86);
   --prisma-pc-light-panel-blur: 32px;
   --prisma-pc-light-card-blur: 20px;
   --prisma-pc-light-control-blur: 12px;
@@ -2919,9 +2960,9 @@ html[data-prisma-surface="pc-backoffice"] {
   --prisma-shadow-glass: 0 10px 24px rgba(31, 68, 105, 0.08);
   --prisma-shadow-card: 0 8px 20px rgba(31, 68, 105, 0.07);
   --prisma-glass-gradient: rgba(255, 255, 255, 0.54);
-  --prisma-panel-gradient: rgba(255, 255, 255, 0.60);
-  --prisma-sidebar-surface: rgba(255, 255, 255, 0.64);
-  --prisma-cart-panel-surface: rgba(255, 255, 255, 0.58);
+  --prisma-panel-gradient: linear-gradient(180deg, rgba(12, 24, 39, 0.86), rgba(7, 16, 28, 0.74));
+  --prisma-sidebar-surface: rgba(8, 18, 30, 0.82);
+  --prisma-cart-panel-surface: rgba(9, 20, 34, 0.76);
 }
 
 html[data-prisma-surface="pc-backoffice"] :is(

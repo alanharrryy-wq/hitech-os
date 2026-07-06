@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-07-06T02:25:06.5580748-06:00",
+  "tokenPresent": false,
+  "tokenValuePrinted": false,
+  "workerPath": "apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker",
+  "wranglerVersionExitCode": 0,
+  "wranglerVersion": "4.93.0",
+  "dryRunExitCode": 0,
+  "dryRunOutputSanitized": "⛅️ wrangler 4.93.0\r\n───────────────────\r\nTotal Upload: 73.58 KiB / gzip: 14.98 KiB\r\nYour Worker has access to the following bindings:\r\nBinding                                              Resource                  \r\nenv.PRISMA_LICFLOW3_D1 (prisma_cloud_semilla)        D1 Database               \r\nenv.PRISMA_LICFLOW3_MODE (\"worker-d1\")               Environment Variable      \r\n\r\n--dry-run: exiting now.",
+  "deployAllowedByUser": true,
+  "deployPerformed": false,
+  "d1LiveWritePerformed": false,
+  "finalStatus": "BLOCKED_BY_MISSING_SECRET_OR_PREFLIGHT",
+  "blocker": "BLOCKED_BY_MISSING_SECRET"
+}

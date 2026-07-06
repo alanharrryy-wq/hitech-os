@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rows": [
+    {
+      "step": "setup link",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "setup code",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "QR",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "claim",
+      "api": "/api/customer/devices/claim",
+      "table": "customer_setup_bundles",
+      "service": "claimCustomerDevice",
+      "verifier": "verify:tablet-claim/verify:pc-claim/verify:mobile-claim",
+      "status": "PASS"
+    },
+    {
+      "step": "activation",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "slots",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_device_claim_slots",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "portal",
+      "api": "/api/customer/portal",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    },
+    {
+      "step": "billing",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PARCIAL"
+    },
+    {
+      "step": "renewal",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PARCIAL"
+    },
+    {
+      "step": "grace",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PARCIAL"
+    },
+    {
+      "step": "revoke",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PARCIAL"
+    },
+    {
+      "step": "device replacement",
+      "api": "/api/admin/customer-setups/create",
+      "table": "customer_setup_bundles",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PARCIAL"
+    },
+    {
+      "step": "audit",
+      "api": "/api/admin/customer-setups/create",
+      "table": "audit_events",
+      "service": "createCustomerSetup",
+      "verifier": "verify:customer-setup-full",
+      "status": "PASS"
+    }
+  ]
+}

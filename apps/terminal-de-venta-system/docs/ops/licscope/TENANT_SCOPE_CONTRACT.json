@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "status": "PASS",
+  "tenant": {
+    "definition": "Tenant is the license and operational isolation boundary. Current canonical source fields are tenantId and tenantSlug from customer setup and worker contracts.",
+    "distinctFromCustomer": true,
+    "cloudTenantId": {
+      "status": "NO_ENCONTRADO",
+      "meaning": "No canonical cloudTenantId field is present in the inspected DB/source contracts. Do not treat cloudTenantId as tenant id, tenant slug, external id or business alias without a future contract/migration."
+    },
+    "scopeKey": {
+      "status": "PARCIAL",
+      "meaning": "scopeKey is a sync cursor alias when present. If absent, scope derives from tenantId/tenantSlug/businessId/storeId/terminalId/deviceId according to this contract."
+    },
+    "dominantFields": [
+      "tenantId",
+      "tenantSlug",
+      "customerId",
+      "businessId",
+      "storeId",
+      "terminalId",
+      "deviceId",
+      "licenseId"
+    ]
+  },
+  "illegalCrosses": [
+    "device claim across another tenant/customer",
+    "sale visible across another business without admin scope",
+    "license assignment without customer/business",
+    "setup bundle without license/client",
+    "claim slot without plan/license/client"
+  ],
+  "validCrosses": [
+    "PC/Admin reads canonical scoped by tenant/business",
+    "Mobile supervises read-only scoped snapshot",
+    "Tablet writes local sale scoped by license/device/business/terminal",
+    "Cloud worker mutates customer/license/device setup server-side"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "status": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "finalStatus": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "passRequires": [
+    {
+      "condition": "tenant/scope contract exists",
+      "status": "PASS",
+      "evidence": "TENANT_SCOPE_CONTRACT.json",
+      "blocker": ""
+    },
+    {
+      "condition": "sales provenance exists",
+      "status": "PASS",
+      "evidence": "SALES_PROVENANCE_CONTRACT.json",
+      "blocker": ""
+    },
+    {
+      "condition": "sale -> outbox -> sync -> canonical rules exist",
+      "status": "PASS",
+      "evidence": "SALES_OUTBOX_LINKING_RULES.md,TABLET_TO_CANONICAL_LINKING_RULES.md",
+      "blocker": ""
+    },
+    {
+      "condition": "device cannot sell without license",
+      "status": "PASS",
+      "evidence": "shared/licensing/feature-resolver.ts,products/tablet/app/app/api/pos/sales/complete/route.ts",
+      "blocker": ""
+    },
+    {
+      "condition": "license cannot exist without client",
+      "status": "PASS",
+      "evidence": "infra/cloudflare/licflow3-worker/src/worker.js,0004_license_client_integrity.sql",
+      "blocker": ""
+    },
+    {
+      "condition": "customer-facing visible data scan",
+      "status": "PASS",
+      "evidence": "CUSTOMER_VISIBLE_SCAN.json",
+      "blocker": ""
+    },
+    {
+      "condition": "PII/secrets redaction rules",
+      "status": "PASS",
+      "evidence": "PII_SECRET_SAFETY_MATRIX.json",
+      "blocker": ""
+    },
+    {
+      "condition": "audit completeness rules",
+      "status": "PASS",
+      "evidence": "AUDIT_COMPLETENESS_RULES.json,audit_events/recordAudit",
+      "blocker": ""
+    },
+    {
+      "condition": "revoke/renewal/replacement verifier exists",
+      "status": "PASS",
+      "evidence": "verify:revoke-renewal-replacement",
+      "blocker": ""
+    },
+    {
+      "condition": "golden path verifier exists",
+      "status": "PASS",
+      "evidence": "verify:golden-path-operations",
+      "blocker": ""
+    },
+    {
+      "condition": "Cloudflare deploy",
+      "status": "BLOCKED",
+      "evidence": "deploy/DEPLOY_BLOCKERS.json",
+      "blocker": "BLOCKED_BY_MISSING_SECRET"
+    },
+    {
+      "condition": "D1 live migrations",
+      "status": "BLOCKED",
+      "evidence": "deploy/DEPLOY_BLOCKERS.json",
+      "blocker": "BLOCKED_BY_MISSING_SECRET"
+    },
+    {
+      "condition": "live smoke certification",
+      "status": "BLOCKED",
+      "evidence": "deploy/LIVE_SMOKE_BLOCKERS.json",
+      "blocker": "BLOCKED_BY_MISSING_SECRET"
+    }
+  ],
+  "deployPerformed": false,
+  "d1LiveWritePerformed": false,
+  "sourceOnly": false,
+  "liveSafeBlockedWithExactRequirements": true
+}

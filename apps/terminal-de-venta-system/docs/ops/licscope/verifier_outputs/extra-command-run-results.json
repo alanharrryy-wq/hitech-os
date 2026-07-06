@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-07-06T02:24:14.5698530-06:00",
+  "results": [
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-setup:multidevice",
+      "startedAt": "2026-07-06T02:24:12.4073951-06:00",
+      "finishedAt": "2026-07-06T02:24:12.9783568-06:00",
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "> @hitech/terminal-de-venta-system@0.4.0 verify:customer-setup:multidevice F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\r\n> node tools/verify-customer-setup-multidevice.mjs\r\n\r\n{\r\n  \"ok\": true,\r\n  \"verifier\": \"verify:customer-setup:multidevice\",\r\n  \"generatedAt\": \"2026-07-06T08:24:12.932Z\",\r\n  \"mode\": \"multidevice\",\r\n  \"sharedContract\": \"shared/licensing/customer-setup-contract.ts\",\r\n  \"sourceOnly\": true,\r\n  \"deployPerformed\": false,\r\n  \"d1OperationPerformed\": false\r\n}"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-setup:plan-provisioning",
+      "startedAt": "2026-07-06T02:24:12.9847113-06:00",
+      "finishedAt": "2026-07-06T02:24:13.4973006-06:00",
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "> @hitech/terminal-de-venta-system@0.4.0 verify:customer-setup:plan-provisioning F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\r\n> node tools/verify-customer-setup-multidevice.mjs plan-provisioning\r\n\r\n{\r\n  \"ok\": true,\r\n  \"verifier\": \"VERIFY_PLAN_BASED_PROVISIONING_READONLY\",\r\n  \"generatedAt\": \"2026-07-06T08:24:13.454Z\",\r\n  \"mode\": \"plan-provisioning\",\r\n  \"sourceOnly\": true,\r\n  \"deployPerformed\": false,\r\n  \"d1OperationPerformed\": false,\r\n  \"migration\": \"infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql\",\r\n  \"e2e\": \"E2E_012_PLAN_BASED_CLIENT_ONBOARDING\"\r\n}"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run e2e:012:plan-based-client-onboarding",
+      "startedAt": "2026-07-06T02:24:13.4975987-06:00",
+      "finishedAt": "2026-07-06T02:24:14.0412118-06:00",
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "> @hitech/terminal-de-venta-system@0.4.0 e2e:012:plan-based-client-onboarding F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\r\n> node tools/verify-customer-setup-multidevice.mjs e2e-012-plan-based-client-onboarding\r\n\r\n{\r\n  \"ok\": true,\r\n  \"verifier\": \"E2E_012_PLAN_BASED_CLIENT_ONBOARDING\",\r\n  \"generatedAt\": \"2026-07-06T08:24:14.002Z\",\r\n  \"mode\": \"e2e-012-plan-based-client-onboarding\",\r\n  \"sourceVerifier\": \"VERIFY_PLAN_BASED_PROVISIONING_READONLY\",\r\n  \"sourceOnly\": true,\r\n  \"deployPerformed\": false,\r\n  \"d1OperationPerformed\": false,\r\n  \"manualDeviceClaimRequired\": false\r\n}"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:data-surfaces",
+      "startedAt": "2026-07-06T02:24:14.0414307-06:00",
+      "finishedAt": "2026-07-06T02:24:14.5696472-06:00",
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "> @hitech/terminal-de-venta-system@0.4.0 verify:data-surfaces F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\r\n> node tools/verify-data-surface-connections.mjs --mode=all\r\n\r\n(node:17312) ExperimentalWarning: SQLite is an experimental feature and might change at any time\r\n(Use `node --trace-warnings ...` to show where the warning was created)\r\n{\r\n  \"ok\": true,\r\n  \"checkedAt\": \"2026-07-06T08:24:14.538Z\",\r\n  \"certifiedDay\": \"2026-07-05\",\r\n  \"mode\": \"all\",\r\n  \"results\": [\r\n    {\r\n      \"surface\": \"pc-sales-control\",\r\n      \"ok\": true,\r\n      \"todayStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"recentStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"storeCount\": 1,\r\n      \"terminalCount\": 3\r\n    },\r\n    {\r\n      \"surface\": \"tablet-pos\",\r\n      \"ok\": true,\r\n      \"contract\": \"operative sales surface, not required to be historical dashboard\",\r\n      \"todayStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"recentStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"productCount\": 3,\r\n      \"stockSnapshotCount\": 0,\r\n      \"productStockCount\": 3,\r\n      \"stockCount\": 3,\r\n      \"cashCount\": 2\r\n    },\r\n    {\r\n      \"surface\": \"mobile\",\r\n      \"ok\": true,\r\n      \"todayStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"recentStats\": {\r\n        \"tickets\": 12,\r\n        \"totalCents\": 36000,\r\n        \"averageTicketCents\": 3000\r\n      },\r\n      \"productCount\": 3\r\n    },\r\n    {\r\n      \"surface\": \"chart-lab\",\r\n      \"ok\": true,\r\n      \"counts\": {\r\n        \"runtime_sources\": 1,\r\n        \"runtime_metadata\": 1,\r\n        \"runtime_chart_payloads\": 6\r\n      },\r\n      \"total\": 8\r\n    },\r\n    {\r\n      \"surface\": \"data-lifecycle\",\r\n      \"ok\": true,\r\n      \"counters\": [\r\n        \"clear_candidates_open\",\r\n        \"ledger_records_open\",\r\n        \"external_signature_records_open\",\r\n        \"total_db_rows_open\",\r\n        \"generated_lifecycle_records_open\",\r\n        \"manual_or_base_records_open\"\r\n      ],\r\n      \"pinTable\": \"lifecycle_pins\"\r\n    }\r\n  ],\r\n  \"failures\": []\r\n}"
+    }
+  ]
+}

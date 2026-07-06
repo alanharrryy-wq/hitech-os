@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "db": "pc-canonical",
+  "table": "SyncCheckpoint",
+  "rowCount": 1,
+  "sanitized": true,
+  "rawDbCopied": false,
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rows": [
+    {
+      "id": "sync_checkpoint_seedline_001",
+      "businessId": "biz_prisma_rey_lineage_seed",
+      "source": "seedline_SyncCheckpoint_source_0",
+      "deviceId": null,
+      "terminalId": "term_tablet_pos_001",
+      "stream": "seedline_SyncCheckpoint_stream_0",
+      "cursorValue": "sync_batch_seedline_001",
+      "lastEventId": "evt_seedline_sale_0012",
+      "lastIdempotencyKey": "[REDACTED_SECRET]",
+      "lastAttemptId": null,
+      "status": "synced",
+      "lifecycleStatus": "seedline_correlated",
+      "checkpointAt": "2026-07-05T17:06:54Z",
+      "metadataJson": "{\"seedline\": true, \"sales\": 12, \"tablets\": 2}",
+      "createdAt": "2026-07-05T17:06:54Z",
+      "updatedAt": "2026-07-05T17:06:54Z"
+    }
+  ]
+}

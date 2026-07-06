@@ -57,14 +57,6 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         </div>
 
         <div className="sidebar-main-scroll" role="region" aria-label="Módulos de navegación PC">
-          <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="SecondaryActionCard">
-            <p className="nav-group-title">Buscar</p>
-            <form className="search-shell" action="/sales-control" method="get" data-prisma-component="SidebarSearch">
-              <span aria-hidden="true">⌕</span>
-              <input name="q" placeholder="Buscar folio, producto o proveedor" aria-label="Buscar en venta, inventario, compras y sincronización" />
-            </form>
-          </section>
-
           <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="PrimaryHumanNavigation" data-uiux-first-level="human-only">
             <p className="nav-group-title">Navegación principal</p>
             <nav className="nav" aria-label="Áreas principales">
@@ -103,24 +95,6 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
               </nav>
             </section>
           ) : null}
-        </div>
-
-        <div className="footer-stack pc-premium-footer-stack" data-prisma-component="SidebarStatusDock">
-          <section className="pc-premium-sidebar-status" data-prisma-component="TerminalStatusCard" aria-label="Estado operativo PC y Tablet">
-            <div className="pc-premium-status-line">
-              <span>Gemelo Tablet</span>
-              <strong>{pcMessages.shell.twinStatus}</strong>
-            </div>
-            <div className="pc-premium-status-line">
-              <span>Última sync</span>
-              <strong>{pcMessages.shell.lastSync}</strong>
-            </div>
-            <small>PC gobierna, Tablet vende independiente.</small>
-          </section>
-          <nav className="footer-actions pc-premium-footer-actions" aria-label="Atajos de soporte PC">
-            <a className="footer-chip" href="/glosario">Ayuda</a>
-            <a className="footer-chip" href="/sync">Sync</a>
-          </nav>
         </div>
       </aside>
 

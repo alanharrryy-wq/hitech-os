@@ -1,0 +1,6970 @@
+{
+  "pc-canonical": {
+    "AuditCount": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "countedBy",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "variance",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "countedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "AuditEvent": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "actorId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "entityType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "entityId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "summary",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "beforeJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "afterJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Barcode": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Brand": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Business": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "taxId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'MXN'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashAdjustment": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "cashMovementId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "actorId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "adjustmentType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "evidenceJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashMovement": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "movement",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashSession": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "storeId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "cashierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "openedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "closedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "cashStartCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "cashEndCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "expectedCashCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "varianceCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DataSourceFreshness": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "surface",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "confidence",
+        "type": "REAL",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "freshnessSeconds",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "latencyMs",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "errorCount",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lastSeenAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "lastEventAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "lastCheckpointAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "lastHeartbeatAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "lastError",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "warningsJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "observedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DeviceHeartbeat": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "surface",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "runtimeMode",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "appVersion",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "schemaVersion",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "licenseStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "syncStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "health",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "outboxCount",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "lastSaleAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "lastDiagnosticAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "lastSeenAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "observedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DropdownCatalog": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DropdownOption": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "catalogId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "sortOrder",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "GoodsReceipt": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "purchaseOrderId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "receivedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "subtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "taxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "GoodsReceiptLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "goodsReceiptId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "purchaseOrderLineId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "qtyReceived",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "unitCostCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lineSubtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lineTaxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "lineTotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "OutboxEvent": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "eventType",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "aggregateId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "idempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "correlationId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "payloadJson",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "schemaVersion",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "lifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "attempts",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "sentAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "receivedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "validatedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "acceptedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "projectedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 20,
+        "name": "reconciledAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 21,
+        "name": "failedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 22,
+        "name": "deadLetterAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 23,
+        "name": "conflictCode",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 24,
+        "name": "diagnosticsJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 25,
+        "name": "lastError",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "Permission": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PriceList": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'MXN'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "startsAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "endsAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PriceListItem": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "priceListId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "startsAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "endsAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Product": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "category",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "brandId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "costCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "stockOnHand",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "taxRateId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "ProductSupplier": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isPrimary",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "leadTimeDays",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PurchaseOrder": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "expectedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "subtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "taxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PurchaseOrderLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "purchaseOrderId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "qtyOrdered",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "unitCostCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "lineSubtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lineTaxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lineTotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "ReplenishmentSignal": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "suggestedQty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "priority",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Role": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Sale": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SaleLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "productName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SalePaymentTender": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "tenderType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reference",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "recordedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SaleReturn": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleFolio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "SaleReturnLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleReturnId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "saleLineId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "productName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "restoreStock",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "stockMovementId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "StockMovement": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "movement",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "StockSnapshot": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "onHand",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reserved",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "available",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "daysCover",
+        "type": "REAL",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "snapshotAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "Store": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Supplier": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SupportIncident": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "openedById",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "assignedToId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'open'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "severity",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'normal'",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'local'",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "evidenceJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "resolvedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "SyncAttempt": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "eventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "outboxEventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "idempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "attemptNumber",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "1",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "receivedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "startedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "finishedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "durationMs",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "errorCode",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "diagnosticsJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "payloadFingerprint",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 20,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SyncCheckpoint": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "stream",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "cursorValue",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "lastEventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "lastIdempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lastAttemptId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "lifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "checkpointAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SyncConflict": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "eventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "outboxEventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "idempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "aggregateId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "conflictCode",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "severity",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "detail",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'open'",
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "detectedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "resolvedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "resolution",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "diagnosticsJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 20,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SyncOutboxStatusBucket": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "lifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "bucketStartAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "bucketEndAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "count",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "oldestEventAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "newestEventAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "staleCount",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "TaxRate": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "rateBps",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Terminal": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "storeId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "User": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "displayName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "email",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "_PermissionToRole": [
+      {
+        "cid": 0,
+        "name": "A",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 1,
+        "name": "B",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "_RoleToUser": [
+      {
+        "cid": 0,
+        "name": "A",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 1,
+        "name": "B",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ]
+  },
+  "tablet-pos": {
+    "AuditCount": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "countedBy",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "variance",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "countedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "AuditEvent": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "actorId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "entityType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "entityId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "summary",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "beforeJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "afterJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Barcode": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Brand": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Business": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "taxId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'MXN'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashAdjustment": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "cashMovementId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "actorId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "adjustmentType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "evidenceJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashMovement": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "movement",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "CashSession": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "storeId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "cashierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "openedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "closedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "cashStartCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "cashEndCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "expectedCashCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "varianceCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DropdownCatalog": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "DropdownOption": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "catalogId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "sortOrder",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "GoodsReceipt": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "purchaseOrderId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "receivedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "subtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "taxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "GoodsReceiptLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "goodsReceiptId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "purchaseOrderLineId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "qtyReceived",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "unitCostCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lineSubtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lineTaxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "lineTotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "OutboxEvent": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "topic",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "aggregateId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "payloadJson",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "attempts",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "sentAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lastError",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "schemaVersion",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "syncedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "idempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "lastAttemptAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "nextRetryAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "ackedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "failedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 19,
+        "name": "conflictedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 20,
+        "name": "deadLetterAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 21,
+        "name": "remoteEventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 22,
+        "name": "remoteLedgerId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 23,
+        "name": "remoteLifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 24,
+        "name": "remoteDiagnosticsJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 25,
+        "name": "remoteConflictCode",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 26,
+        "name": "remoteRejectedReason",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "Permission": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PriceList": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'MXN'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "startsAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "endsAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PriceListItem": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "priceListId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "startsAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "endsAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Product": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "category",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "brandId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "costCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "stockOnHand",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "taxRateId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "ProductSupplier": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isPrimary",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "leadTimeDays",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PurchaseOrder": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "supplierId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "expectedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "subtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "taxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "PurchaseOrderLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "purchaseOrderId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "qtyOrdered",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "unitCostCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "lineSubtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lineTaxCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lineTotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "ReplenishmentSignal": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "suggestedQty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "priority",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Role": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Sale": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "cashSessionId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "clientRequestId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "folio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "subtotalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "discountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "completedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "paymentMethod",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'cash'",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "cashReceivedCents",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "changeCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SaleLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "productName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "priceCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "totalCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SalePaymentTender": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "tenderType",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reference",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "recordedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SaleReturn": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleFolio",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "cashier",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "SaleReturnLine": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "saleReturnId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "saleId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "saleLineId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "sku",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "productName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "amountCents",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "restoreStock",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "stockMovementId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "StockMovement": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "movement",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "qty",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "afterQty",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "beforeQty",
+        "type": "INTEGER",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "sourceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "sourceType",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "StockSnapshot": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "productId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "location",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "onHand",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "reserved",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "available",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "daysCover",
+        "type": "REAL",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "snapshotAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "Store": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Supplier": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "SupportIncident": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "openedById",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "assignedToId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'open'",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "severity",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'normal'",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'local'",
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "evidenceJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "resolvedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "SyncCheckpoint": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "source",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "scopeKey",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "deviceId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "terminalId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "stream",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "cursorValue",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 8,
+        "name": "lastEventId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 9,
+        "name": "lastIdempotencyKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 10,
+        "name": "lastAttemptId",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 11,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 12,
+        "name": "lifecycleStatus",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 13,
+        "name": "checkpointAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 14,
+        "name": "lastAttemptedAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 15,
+        "name": "lastSuccessfulAt",
+        "type": "DATETIME",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 16,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 17,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 18,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "TabletLocalSecuritySecret": [
+      {
+        "cid": 0,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "secretKey",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 2,
+        "name": "secretHash",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "salt",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "metadataJson",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "TaxRate": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "rateBps",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "isDefault",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "false",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "Terminal": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "storeId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "code",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "isActive",
+        "type": "BOOLEAN",
+        "notnull": true,
+        "defaultValue": "true",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "User": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "businessId",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "displayName",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "email",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": "'ACTIVE'",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "createdAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "updatedAt",
+        "type": "DATETIME",
+        "notnull": true,
+        "defaultValue": "CURRENT_TIMESTAMP",
+        "pk": false
+      }
+    ],
+    "_PermissionToRole": [
+      {
+        "cid": 0,
+        "name": "A",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 1,
+        "name": "B",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "_RoleToUser": [
+      {
+        "cid": 0,
+        "name": "A",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 1,
+        "name": "B",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ]
+  },
+  "chart-runtime-governance": {
+    "runtime_chart_payloads": [
+      {
+        "cid": 0,
+        "name": "chartKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "surface",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "payloadJson",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "dataStatus",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sourceMode",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "generatedAt",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "runtime_metadata": [
+      {
+        "cid": 0,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "value",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "updatedAt",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ],
+    "runtime_sources": [
+      {
+        "cid": 0,
+        "name": "sourceKey",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": true
+      },
+      {
+        "cid": 1,
+        "name": "path",
+        "type": "TEXT",
+        "notnull": false,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 2,
+        "name": "state",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 3,
+        "name": "sourceKind",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      },
+      {
+        "cid": 4,
+        "name": "sourceOfTruth",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 5,
+        "name": "openedReadOnly",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "1",
+        "pk": false
+      },
+      {
+        "cid": 6,
+        "name": "requiredForTabletSales",
+        "type": "INTEGER",
+        "notnull": true,
+        "defaultValue": "0",
+        "pk": false
+      },
+      {
+        "cid": 7,
+        "name": "updatedAt",
+        "type": "TEXT",
+        "notnull": true,
+        "defaultValue": null,
+        "pk": false
+      }
+    ]
+  }
+}

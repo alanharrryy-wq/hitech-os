@@ -1,0 +1,714 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "status": "PASS",
+  "releaseBlockingCount": 0,
+  "totalHits": 77,
+  "blockedWords": [
+    "demo",
+    "test",
+    "mock",
+    "dummy",
+    "smoke",
+    "prueba",
+    "fixture",
+    "pilot",
+    "piloto",
+    "starter"
+  ],
+  "hits": [
+    {
+      "file": "products/tablet/app/app/api/pos/sync/retry/route.ts",
+      "line": 1,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "import { toPosApiError } from \"@/server/pos-api/errors\";import { fail, ok } from \"@/server/pos-api/responses\";import { requestPendingRetry } from \"@/server/pos-sync-panel\";export const runtime=\"nodejs\";export const dynam",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/globals.css",
+      "line": 413,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": ".referencia-visual-demo {",
+      "classification": "REVIEWED_NON_BLOCKING",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/prisma-pulse/page.tsx",
+      "line": 50,
+      "token": "mock",
+      "status": "PASS",
+      "lineText": "source: flags.useMockFallback ? \"mock-fallback\" : \"local-adapter\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
+      "line": 16,
+      "token": "piloto",
+      "status": "PASS",
+      "lineText": "Esta ruta piloto consume componentes reales desde products/shared-ui/prisma sin tocar POS ni checkout.",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/referencia-visual/page.tsx",
+      "line": 22,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "<div className=\"referencia-visual-demo\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "line": 9,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "title: \"PRISMA Materiality Catalog · Visual OS Pilot 01\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "line": 11,
+      "token": "Piloto",
+      "status": "PASS",
+      "lineText": "\"Piloto controlado del Surface Visual Governor: Materiality Catalog, Atmosphere Engine, Double Glass, Hydro Rim y route budgets. Visual OS only. No toca POS.\"",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
+      "line": 23,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "\"surface-visual-governor.pilot-01.json\"",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
+      "line": 20,
+      "token": "smoke",
+      "status": "PASS",
+      "lineText": "htmlFiles: [\"tablet-codex-background-gallery-smoke-test.html\", \"background-presets-smoke-test.html\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "line": 18,
+      "token": "smoke",
+      "status": "PASS",
+      "lineText": "htmlFiles: [\"tablet-codex-glass-gallery-smoke-test.html\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
+      "line": 19,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "requiredJsonFiles: [\"tablet-codex-glass-gallery.demo.json\", \"visual-verifier-rules.json\", \"tablet-light-preset.schema.json\"]",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/_tablet-gallery-runtime.tsx",
+      "line": 103,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (/^(?:data:|blob:|https?:|mailto:|tel:|#)/i.test(trimmed)) return trimmed;",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/_tablet-gallery-runtime.tsx",
+      "line": 136,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (/<base\\b/i.test(html)) {",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/visual-os/_tablet-gallery-runtime.tsx",
+      "line": 140,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "const withTarget = /\\starget=/i.test(withoutHref) ? withoutHref : `${withoutHref} target=\"_self\"`;",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-contract.ts",
+      "line": 92,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "\"demo\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-contract.ts",
+      "line": 96,
+      "token": "fixture",
+      "status": "PASS",
+      "lineText": "\"fixture\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-contract.ts",
+      "line": 97,
+      "token": "mock",
+      "status": "PASS",
+      "lineText": "\"mock\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/sales-ticket-export.ts",
+      "line": 7,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /[\",\\n]/.test(raw) ? `\"${raw.replace(/\"/g, '\"\"')}\"` : raw;",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/prisma-surface-governor/surface-runtime-adapter.ts",
+      "line": 42,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "reason: \"Pilot 17 adapter exposes governed recipe consumption without applying styles automatically.\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/local-admin.prisma.ts",
+      "line": 108,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (!/^\\d{6}$/.test(pin)) throw new Error(\"LOCAL_USER_PIN_INVALID\");",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-detail.prisma.ts",
+      "line": 9,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return maybe?.code === \"P2023\" && /Inconsistent column data|Conversion failed/i.test(String(maybe.message ?? \"\"));",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-reset.prisma.ts",
+      "line": 67,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (!normalized || /\\s/.test(normalized) || normalized.length < 2 || normalized.length > 48) {",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-reset.prisma.ts",
+      "line": 75,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (!/^\\d{6}$/.test(normalized)) throw new Error(\"RESET_ADMIN_PIN_INVALID_FORMAT\");",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-export/index.ts",
+      "line": 13,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (/[\",\\r\\n]/.test(text)) return `\"${text.replace(/\"/g, '\"\"')}\"`;",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/api/backoffice/demo/purge/route.ts",
+      "line": 8,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "const detail = guardedMutationResponse(\"demo.purge\");",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/api/backoffice/demo/reset/route.ts",
+      "line": 8,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "const detail = guardedMutationResponse(\"demo.reset\");",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/api/backoffice/demo/seed/route.ts",
+      "line": 8,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "const detail = guardedMutationResponse(\"demo.seed\");",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/api/backoffice/demo/status/route.ts",
+      "line": 9,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "return ok(await getPcDataModeStatusContract(), { endpoint: \"GET /api/backoffice/demo/status\", mutation: false });",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/globals.css",
+      "line": 822,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": ".referencia-visual-demo {",
+      "classification": "REVIEWED_NON_BLOCKING",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "line": 42,
+      "token": "mock",
+      "status": "PASS",
+      "lineText": "<p>Inspector de las 14 graficas: pasaporte, fuente, contrato, adapter, mock, receta visual y estados soportados.</p>",
+      "classification": "REVIEWED_NON_BLOCKING",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "line": 68,
+      "token": "Mock",
+      "status": "PASS",
+      "lineText": "<p><strong>Mock:</strong> {chart.mockName}</p>",
+      "classification": "REVIEWED_NON_BLOCKING",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "line": 26,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "data-prisma-surface-governor=\"pilot-04\"",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "line": 57,
+      "token": "Mock",
+      "status": "PASS",
+      "lineText": "<div className={styles.chartHeader}><div><p className={styles.eyebrow}>Señal del día</p><h3>Pulso operativo</h3></div><span>Mock visual seguro</span></div>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 98,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "data-prisma-liquid-glass-pilot=\"20\"",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 109,
+      "token": "seed",
+      "status": "PASS",
+      "lineText": "<feTurbulence type=\"fractalNoise\" baseFrequency=\"0.012 0.018\" numOctaves=\"2\" seed=\"20\" result=\"liquidNoise\" />",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 129,
+      "token": "piloto",
+      "status": "PASS",
+      "lineText": "<div className={styles.controlCluster} aria-label=\"Controles del piloto\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 150,
+      "token": "piloto",
+      "status": "PASS",
+      "lineText": "<div className={styles.status} aria-label=\"Estado del piloto\" data-lg-glass-panel=\"status\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 209,
+      "token": "piloto",
+      "status": "PASS",
+      "lineText": "<div className={styles.actions} aria-label=\"Contratos del piloto\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "line": 211,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "<GlassLink href=\"/surface-visual-governor/liquid-glass/latest/route-budget.liquid-glass.pilot-20.json\">Route budget</GlassLink>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "line": 70,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "<p className={styles.kicker}>Visual test</p>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 4,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Materiality Catalog mirror\", \"/surface-visual-governor/reference-visual/pilot-03/materiality-catalog.registry.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 5,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "[\"Pilot 02 index\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/index.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 6,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Chart recipe\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/chart.recipe.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 7,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Visual recipe\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/visual.recipe.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 8,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Motion recipe\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/motion.recipe.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 9,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Background recipe\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/background.recipe.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 10,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Surface compatibility\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/surface.compatibility.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 11,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Ultra Codex index\", \"/surface-visual-governor/reference-visual/pilot-03/recipe-export/ultra-codex.index.json\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 40,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "[\"Chart Lab\", \"Consumidor\", \"Usa recetas exportadas por Pilot 02 como taller visual.\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 45,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Storm cloud real\", \"/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 46,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Liquid operations reference\", \"/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 47,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Soft gray clouds\", \"/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 48,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "[\"Aurora slate veil\", \"/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/aurora-slate-veil.svg\"],",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 55,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "data-pilot=\"03_pc_referencia_visual\"",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 60,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "<link rel=\"stylesheet\" href=\"/surface-visual-governor/reference-visual/pilot-03/prisma-pc-reference-visual.css\" />",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 63,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "<p className=\"prvKicker\">PRISMA Surface Visual Governor · Pilot 03</p>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 66,
+      "token": "prueba",
+      "status": "PASS",
+      "lineText": "Sala de prueba para conectar PC con el Materiality Catalog, validar Cloudglass Executive OS y revisar recetas de Chart Lab sin contaminar rutas operativas.",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 69,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "<a className=\"prvButton prvButtonPrimary\" href=\"/surface-visual-governor/reference-visual/pilot-03/index.json\">Abrir contrato Pilot 03</a>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 70,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "<a className=\"prvButton\" href=\"/surface-visual-governor/reference-visual/pilot-03/materiality-catalog.registry.json\">Ver Materiality Catalog</a>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 71,
+      "token": "pilot",
+      "status": "PASS",
+      "lineText": "<a className=\"prvButton\" href=\"/surface-visual-governor/reference-visual/pilot-03/recipe-export/index.json\">Ver recetas Chart Lab</a>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 75,
+      "token": "piloto",
+      "status": "PASS",
+      "lineText": "<aside className=\"prvStatusCard\" aria-label=\"Estado del piloto\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 140,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "<p>Los JSON de Pilot 02 quedan disponibles para inspección directa desde PC. La técnica vive abierta para QA, no escondida debajo del tapete.</p>",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "line": 153,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "Pilot 03 sólo escribe en PC /referencia-visual, public reference assets, docs y verifier. No modifica POS, checkout, package.json, lockfiles, bases de datos ni deploy. Si algo truena, rollback automático y evidencia en &",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/prisma-dev-issue-badge-cleaner.tsx",
+      "line": 20,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "if (!ISSUE_BADGE_PATTERN.test(text) && !NEXT_DEV_MARK_PATTERN.test(text)) return false;",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/prisma-dev-issue-badge-cleaner.tsx",
+      "line": 47,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "(ISSUE_BADGE_PATTERN.test(text) || NEXT_DEV_MARK_PATTERN.test(text)) &&",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/app/prisma-surf-fix6-lifecycle-runtime.tsx",
+      "line": 32,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return LIFECYCLE_TEXT.test(text);",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/components/suppliers/supplier-action-cockpit.tsx",
+      "line": 338,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return typeof value === \"string\" && value.trim().length > 0 && /^[0-9.]+$/.test(value.trim());",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/pc/app/components/uiux/human-status-badge.tsx",
+      "line": 8,
+      "token": "demo",
+      "status": "PASS",
+      "lineText": "demo: \"chip chip-demo\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/app/prisma-command/page.tsx",
+      "line": 34,
+      "token": "mock",
+      "status": "PASS",
+      "lineText": "source: flags.useMockFallback ? \"mock-fallback\" : \"snapshot-adapter\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx",
+      "line": 46,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "const hasIndustrialSignals = snapshot.healthRadar.dimensions.some((dimension) => /sync|device|inventory|source|data/i.test(dimension.key));",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-formatters.ts",
+      "line": 19,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /^\\d{1,3}%$/.test(value) ? value : \"0%\";",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "line": 27,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /Android/i.test(ua) && /Chrome\\//i.test(ua) && !/EdgA|OPR|SamsungBrowser|wv/i.test(ua);",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "line": 31,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /Android/i.test(getUserAgent());",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "line": 36,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /iPhone|iPad|iPod/i.test(ua) || (typeof navigator !== \"undefined\" && navigator.platform === \"MacIntel\" && navigator.maxTouchPoints > 1);",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "line": 41,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return isIOSDevice() && /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|Instagram|FBAN|FBAV|WhatsApp/i.test(ua);",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "line": 45,
+      "token": "test",
+      "status": "PASS",
+      "lineText": "return /WhatsApp/i.test(getUserAgent());",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/mobile/app/src/prisma-surface-governor/surface-runtime-adapter.ts",
+      "line": 40,
+      "token": "Pilot",
+      "status": "PASS",
+      "lineText": "reason: \"Pilot 17 adapter exposes governed recipe consumption without applying styles automatically.\",",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    }
+  ],
+  "releaseBlockingHits": []
+}

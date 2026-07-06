@@ -1,0 +1,456 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "matrix": "GOLDEN_PATH_OPERATIONS_MATRIX",
+  "rows": [
+    {
+      "stepId": "GP01",
+      "stepName": "crear cliente",
+      "required": true,
+      "sourceSurface": "3160 / control plane",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "customer_setups/customer_setup_bundles",
+      "fieldExpected": "customerId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "createCustomerSetup",
+      "verifierExpected": "verify:customer-setup-full",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP02",
+      "stepName": "elegir plan",
+      "required": true,
+      "sourceSurface": "3160 / control plane",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "license_plans",
+      "fieldExpected": "planId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "resolveCustomerSetupPlan",
+      "verifierExpected": "verify:tenant-scope-readiness",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP03",
+      "stepName": "crear licencia",
+      "required": true,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "licenses",
+      "fieldExpected": "licenseId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "upsertLicense",
+      "verifierExpected": "verify:license-device-crosscheck",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP04",
+      "stepName": "crear assignment",
+      "required": true,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "license_assignments",
+      "fieldExpected": "licenseAssignmentId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "upsertLicenseAssignment",
+      "verifierExpected": "verify:license-device-crosscheck",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP05",
+      "stepName": "crear setup bundle",
+      "required": true,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "Customer Portal",
+      "tableExpected": "customer_setup_bundles",
+      "fieldExpected": "setupBundleId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "upsertSetupBundle",
+      "verifierExpected": "verify:customer-setup-full",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP06",
+      "stepName": "crear claim slots",
+      "required": true,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "Tablet/PC/Mobile",
+      "tableExpected": "customer_device_claim_slots",
+      "fieldExpected": "slotId",
+      "apiExpected": "/api/admin/customer-setups/create",
+      "serviceExpected": "upsertDeviceClaimSlot",
+      "verifierExpected": "verify:customer-setup-full",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP07",
+      "stepName": "claim Tablet",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "customer_device_claim_slots/customer_device_claims",
+      "fieldExpected": "deviceId",
+      "apiExpected": "/api/customer/devices/claim",
+      "serviceExpected": "claimCustomerDevice",
+      "verifierExpected": "verify:tablet-claim",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP08",
+      "stepName": "claim PC",
+      "required": true,
+      "sourceSurface": "PC/Admin",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "customer_device_claim_slots/customer_device_claims",
+      "fieldExpected": "deviceId",
+      "apiExpected": "/api/customer/devices/claim",
+      "serviceExpected": "claimCustomerDevice",
+      "verifierExpected": "verify:pc-claim",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP09",
+      "stepName": "claim Mobile",
+      "required": true,
+      "sourceSurface": "Mobile",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "customer_device_claim_slots/customer_device_claims",
+      "fieldExpected": "deviceId",
+      "apiExpected": "/api/customer/devices/claim",
+      "serviceExpected": "claimCustomerDevice",
+      "verifierExpected": "verify:mobile-claim",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP10",
+      "stepName": "crear business/store/terminal/user",
+      "required": true,
+      "sourceSurface": "PC/Admin",
+      "targetSurface": "Tablet POS",
+      "tableExpected": "Business/Store/Terminal/User",
+      "fieldExpected": "businessId/storeId/terminalId/userId",
+      "apiExpected": "source APIs",
+      "serviceExpected": "services/repositories",
+      "verifierExpected": "verify:tenant-scope-readiness",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": "Requires per-app DB relationship proof."
+    },
+    {
+      "stepId": "GP11",
+      "stepName": "abrir cash session",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "Tablet POS DB",
+      "tableExpected": "CashSession",
+      "fieldExpected": "cashSessionId",
+      "apiExpected": "Tablet POS API",
+      "serviceExpected": "cash session service",
+      "verifierExpected": "verify:sales-provenance-lineage",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": "Provenance depends on table fields present."
+    },
+    {
+      "stepId": "GP12",
+      "stepName": "crear venta en Tablet",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "tablet-pos.db",
+      "tableExpected": "Sale",
+      "fieldExpected": "saleId",
+      "apiExpected": "Tablet POS sales API",
+      "serviceExpected": "sales service",
+      "verifierExpected": "verify:sales-provenance-lineage",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": "Runtime not executed in this source-only run."
+    },
+    {
+      "stepId": "GP13",
+      "stepName": "crear sale lines",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "tablet-pos.db",
+      "tableExpected": "SaleLine",
+      "fieldExpected": "saleId",
+      "apiExpected": "Tablet POS sales API",
+      "serviceExpected": "sales service",
+      "verifierExpected": "verify:sales-provenance-lineage",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP14",
+      "stepName": "crear payment/tender",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "tablet-pos.db",
+      "tableExpected": "SalePaymentTender",
+      "fieldExpected": "saleId",
+      "apiExpected": "Tablet POS sales API",
+      "serviceExpected": "sales service",
+      "verifierExpected": "verify:sales-provenance-lineage",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP15",
+      "stepName": "crear outbox event",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "sync/outbox",
+      "tableExpected": "OutboxEvent",
+      "fieldExpected": "aggregateId/idempotencyKey",
+      "apiExpected": "outbox API/service",
+      "serviceExpected": "outbox service",
+      "verifierExpected": "verify:sales-outbox-linking",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP16",
+      "stepName": "sync",
+      "required": true,
+      "sourceSurface": "Tablet POS",
+      "targetSurface": "PC/Admin",
+      "tableExpected": "SyncCheckpoint",
+      "fieldExpected": "scopeKey/businessId",
+      "apiExpected": "sync APIs",
+      "serviceExpected": "sync service",
+      "verifierExpected": "verify:outbox-sync-canonical",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP17",
+      "stepName": "canonical projection en PC",
+      "required": true,
+      "sourceSurface": "PC/Admin",
+      "targetSurface": "canonical.db",
+      "tableExpected": "Sale",
+      "fieldExpected": "id/idempotencyKey",
+      "apiExpected": "projection service",
+      "serviceExpected": "pc service",
+      "verifierExpected": "verify:outbox-sync-canonical",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP18",
+      "stepName": "PC/Admin lee operacion",
+      "required": true,
+      "sourceSurface": "PC/Admin",
+      "targetSurface": "PC UI",
+      "tableExpected": "canonical tables",
+      "fieldExpected": "businessId",
+      "apiExpected": "PC APIs",
+      "serviceExpected": "pc-command-center.service",
+      "verifierExpected": "verify:golden-path-operations",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP19",
+      "stepName": "Mobile supervisa operacion",
+      "required": true,
+      "sourceSurface": "Mobile",
+      "targetSurface": "Mobile UI",
+      "tableExpected": "tablet/canonical snapshot",
+      "fieldExpected": "businessId",
+      "apiExpected": "mobile snapshot API",
+      "serviceExpected": "mobile-data-plane",
+      "verifierExpected": "verify:golden-path-operations",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP20",
+      "stepName": "Customer Portal ve permitido",
+      "required": true,
+      "sourceSurface": "Customer Portal",
+      "targetSurface": "Customer Portal",
+      "tableExpected": "customer_setup_bundles/customer_device_claims",
+      "fieldExpected": "setupCode/deviceId",
+      "apiExpected": "/api/customer/portal",
+      "serviceExpected": "customerPortal",
+      "verifierExpected": "verify:customer-setup-full",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PASS",
+      "blockerIfMissing": ""
+    },
+    {
+      "stepId": "GP21",
+      "stepName": "renewal",
+      "required": false,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "License",
+      "tableExpected": "licenses",
+      "fieldExpected": "licenseId",
+      "apiExpected": "/api/licenses/renew",
+      "serviceExpected": "activateLicense",
+      "verifierExpected": "verify:revoke-renewal-replacement",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PARCIAL",
+      "blockerIfMissing": "Source route present; live proof not executed."
+    },
+    {
+      "stepId": "GP22",
+      "stepName": "grace",
+      "required": false,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "License",
+      "tableExpected": "licenses",
+      "fieldExpected": "validUntil/status",
+      "apiExpected": "license status",
+      "serviceExpected": "licenseStateForCustomer",
+      "verifierExpected": "verify:revoke-renewal-replacement",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PARCIAL",
+      "blockerIfMissing": "Policy exists in contract; live proof not executed."
+    },
+    {
+      "stepId": "GP23",
+      "stepName": "revoke",
+      "required": false,
+      "sourceSurface": "Cloud licensing worker",
+      "targetSurface": "License",
+      "tableExpected": "licenses",
+      "fieldExpected": "status",
+      "apiExpected": "/api/licenses/revoke",
+      "serviceExpected": "activateLicense",
+      "verifierExpected": "verify:revoke-renewal-replacement",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PARCIAL",
+      "blockerIfMissing": "Source route present; live proof not executed."
+    },
+    {
+      "stepId": "GP24",
+      "stepName": "device replacement",
+      "required": false,
+      "sourceSurface": "Customer Portal/Admin",
+      "targetSurface": "Cloud licensing worker",
+      "tableExpected": "customer_device_claims",
+      "fieldExpected": "deviceId",
+      "apiExpected": "/api/customer/devices/replacement/request",
+      "serviceExpected": "requestDeviceReplacement",
+      "verifierExpected": "verify:revoke-renewal-replacement",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "PARCIAL",
+      "blockerIfMissing": "Source route present; live proof not executed."
+    },
+    {
+      "stepId": "GP25",
+      "stepName": "audit",
+      "required": true,
+      "sourceSurface": "All controlled mutations",
+      "targetSurface": "audit tables/events",
+      "tableExpected": "audit_events",
+      "fieldExpected": "auditEventId",
+      "apiExpected": "worker/services",
+      "serviceExpected": "recordAudit",
+      "verifierExpected": "verify:audit-completeness",
+      "evidenceExpected": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
+        "docs/ops/licscope/relationship_edges.json"
+      ],
+      "status": "WARNING",
+      "blockerIfMissing": "Source audit hooks found; DB completeness depends on live data."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rows": [
+    {
+      "surface": "Tablet POS",
+      "route": "/pos,/api/pos/sales/complete,/api/pos/products/search,/api/pos/inventory/low-stock",
+      "component": "PosScreen/Tablet POS loaders",
+      "loader": "getTabletRuntimeSnapshot,getTodaySalesSummary,searchProducts,getLowStockProducts",
+      "db": "products/tablet/app/data/tablet-pos.db",
+      "tables": "Product,StockSnapshot,CashSession,Sale,SaleLine,SalePaymentTender,OutboxEvent",
+      "status": "PASS",
+      "evidence": "verify:data-surface:tablet"
+    },
+    {
+      "surface": "PC/Admin",
+      "route": "/sales-control,/api/backoffice/sales-control",
+      "component": "sales-control page and branch view",
+      "loader": "getPcSalesControl",
+      "db": "products/pc/app/data/canonical.db",
+      "tables": "Sale,SaleLine,SalePaymentTender,Store,Terminal,Product",
+      "status": "PASS",
+      "evidence": "verify:data-surface:pc"
+    },
+    {
+      "surface": "Mobile",
+      "route": "/api/mobile/snapshot",
+      "component": "PrismaMobileDashboard",
+      "loader": "loadMobileDataPlaneState,readLocalDbSnapshot",
+      "db": "products/tablet/app/data/tablet-pos.db",
+      "tables": "Sale,Product,StockSnapshot",
+      "status": "PASS",
+      "evidence": "verify:data-surface:mobile"
+    },
+    {
+      "surface": "Chart Lab",
+      "route": "Chart Lab runtime readers",
+      "component": "PrismaChartLabShell",
+      "loader": "chart-runtime-data,lifecycle_api counters",
+      "db": "products/chart-lab/app/data/chart-runtime-governance.db",
+      "tables": "runtime_chart_payloads,runtime_metadata,runtime_sources",
+      "status": "PASS",
+      "evidence": "verify:data-surface:chart"
+    },
+    {
+      "surface": "Data Lifecycle",
+      "route": "prisma-control-center lifecycle API",
+      "component": "lifecycle_console.js",
+      "loader": "lifecycle_api.py",
+      "db": "Data Lifecycle configured DB set",
+      "tables": "lifecycle_pins plus chart/runtime counters",
+      "status": "PASS",
+      "evidence": "verify:data-surface:lifecycle"
+    }
+  ]
+}

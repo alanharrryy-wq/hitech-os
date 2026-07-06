@@ -1,0 +1,3032 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "services": [
+    {
+      "file": "products/tablet/app/src/composition/module-registry.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/composition/navigation.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sale",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog/product-form-state.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-cart-handoff.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/catalog-stock-selling-assist/catalog-stock-selling-assist-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/contextual-export-reports/contextual-export-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/contextual-export-reports/contextual-export-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/core/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/data/demo.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/i18n/messages/es.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/i18n/tablet-visible-labels.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/offline/offline-state.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/operational-gate/can-sell.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pending-offline-sync/sync-panel-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/cart-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/cart-state.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "tender",
+        "cash session",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-error-normalizer.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-flow.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "tender",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-idempotency.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-ledger.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-offline-policy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-operation-events.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-session.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-state.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "tender"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-tender.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "tender"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/payment-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "tender"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/pos-visible-errors.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/shift-flow.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos/ticket-success-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/pos-ui/pos-error-copy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-audit-ledger.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-flow.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-policy-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-reasons.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-stock-impact.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/returns-contextual/return-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sale line",
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/sales-kpi-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/sales-ticket-export.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/sales-ticket-filters.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/sales-today/view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/checkout.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/dashboard.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/hardening.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/returns.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/sales.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/shift.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/stock.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/sync.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/services/ux-pro.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/shift-cash-closure/shift-cash-closure-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/shift-cash-closure/shift-cash-closure-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/tablet-home/home-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/tablet-home/operational-priority.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/tablet-runtime-snapshot/shell-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/tablet-runtime-snapshot/view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/lib/tablet-runtime-snapshot/visible-copy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/modules/pos/module.manifest.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/modules/sales/module.manifest.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/modules/sync/module.manifest.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/navigation/tablet-page-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sale",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/licensing/tablet-customer-setup.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/licensing/tablet-license-api.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/licensing/tablet-license-refresh.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/licensing/tablet-license-service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/local-catalog/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/operable-release-gate/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/errors.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "tender",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/local-admin.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "license",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/product-mutation-validators.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/product-mutations.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/product-queries.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/return-validators.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/returns-policy.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/returns.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "cash session",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-detail.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "license",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-reset.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "license",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/sales-summary.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/supplier-mutations.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-api/validators.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/audit.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/constants.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/errors.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "tender",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/event-factory.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/events.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/ids.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-engine/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-export/contextual.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-export/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-outbox/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-reports/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-runtime/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-security/audit.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "business",
+        "sale",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-shift/repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-shift/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-shift/validators.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/pos-sync-panel/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/prisma/client.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/dashboard-kpi.repository.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/outbox-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/product-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/return-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/sale-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sale line"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/repositories/shift-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "cash session"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/sync/catalog-pull.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "device",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/sync/dispatcher.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/sync/events.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/sync/outbox.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/sync/pc-origin.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/tablet-runtime-snapshot/build.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/tablet-runtime-snapshot/env.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/tablet-runtime-snapshot/index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/tablet-runtime-snapshot/queries.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/server/tablet-runtime-snapshot/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/tablet/app/src/visual-os/realtime/prisma-realtime-client.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/composition/module-registry.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "sale",
+        "cash session",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/composition/navigation.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "license",
+        "device",
+        "sale",
+        "tender",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/conflicts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/dashboard.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sale line",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/event-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/overview.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/security-audit.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "business",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/backoffice/sync-ingest-store.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/core/route-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "sale",
+        "cash session",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/core/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/data/demo.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i01/governance-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i03/project-index.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i05/replenishment-sync-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i06/dashboard-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i06/dashboard-helpers.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i07/validation-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i08/ux-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i09/detail-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i10/reporting-data.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/i18n/messages/es.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/services/catalog.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/services/dashboard.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/services/inventory.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/services/procurement.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/services/sync.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/action-reducer.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/client-persistence.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/data-quality.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/event-catalog.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/export-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/fixtures.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/in-memory-repository.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/inventory-bridge.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/lifecycle-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/lifecycle-report.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/lifecycle-scenarios.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/lifecycle-validator.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/operations-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/prisma-mapping.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/repository-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/server.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/smart-purchase-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/transition-policy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/lib/suppliers/visible-labels.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/audit/module.manifest.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/catalog/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/inventory/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/operations/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/sync/module.manifest.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/sync/tri-db-status.types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/modules/sync/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/prisma-visual-os/interface-constitution/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/licensing/pc-customer-setup.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/licensing/pc-license-api.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/licensing/pc-license-refresh.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/licensing/pc-license-service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/prisma/client.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/audit-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/barcode-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/catalog.repository.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/inventory.repository.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/operation.repository.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/outbox-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/product-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/purchase-order-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/repositories/stock-repository.prisma.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/catalog-delta-export.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/catalog.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/inventory-ledger.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/kpi-formulas.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/operation-control.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/pc-command-center.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/pc-data-mode-contract.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "device",
+        "sale",
+        "sale line",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/pc-sync-chart-data.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "device",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/sync-ingest.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/sync-observability.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "device",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/sync-projectors.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/sync-release.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/tri-db-command.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/services/tri-db-status.service.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/sync/events.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "cash session",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/sync/outbox.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/validators/catalog-quality.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/validators/inventory-integrity.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/server/validators/sync-event-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "business",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/catalog-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/copy-dictionary.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/decision-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/page-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "sale",
+        "tender",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/pc-product-navigation.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "license",
+        "device",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/purchasing-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tender",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/reports-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/route-map.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "license",
+        "device",
+        "sale",
+        "cash session",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/sales-and-cash-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "cash session",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/settings-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/status-translator.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/suppliers-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tender",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/sync-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/system-screen-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/pc/app/src/uiux/technical-route-map.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "license",
+        "device",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileActionInbox.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "tender",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileCrystalCommand.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "device",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobilePanels.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "device",
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "device",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/alerts-policy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device",
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/cash-policy.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/config.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/data-readiness.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/diagnostics.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/endpoint-handlers.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/endpoints.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/http.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/inventory-adapter.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/local-db-snapshot.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sale line",
+        "cash session",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/money.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/outbox-adapter.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/payload-builders.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "sale",
+        "sale line",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/sales-adapter.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/state-loader.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/types.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "sale",
+        "sale line",
+        "outbox",
+        "sync",
+        "canonical"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/action-inbox-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device",
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/alert-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device",
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/chart-series-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "sale line",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/connectors.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "device",
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/daily-brief-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/health-radar-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/snapshot-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/source-status.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/timeline-engine.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/view-models.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "sale",
+        "outbox",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-app-api-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-app-section-contracts.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-action-inbox.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-api-client.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-cache.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-command-center.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale",
+        "sync",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-customer-setup.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-daily-brief.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-decision-ledger.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "audit"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-health-radar.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "tender",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pulse-timeline.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "business",
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "device",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-contract.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "client",
+        "sale"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "products/mobile/app/src/lib/prisma-app/prisma-mobile-view-model.ts",
+      "kind": "service/repository",
+      "readsOrWrites": "read/no_confirmado",
+      "entities": [
+        "business",
+        "sale",
+        "sale line",
+        "sync"
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "infra/cloudflare/licflow3-worker/src/worker.js",
+      "kind": "service/repository",
+      "readsOrWrites": "read/write",
+      "entities": [
+        "client",
+        "tenant",
+        "business",
+        "license",
+        "device",
+        "setup bundle",
+        "claim slot",
+        "sale",
+        "outbox",
+        "sync",
+        "canonical",
+        "audit"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

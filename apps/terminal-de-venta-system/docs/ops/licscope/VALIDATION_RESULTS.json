@@ -1,0 +1,177 @@
+{
+  "generatedAt": "2026-07-06T02:25:30.1328383-06:00",
+  "deployPerformed": false,
+  "d1LiveWritePerformed": false,
+  "runtimeTouched": false,
+  "secretsPrinted": false,
+  "validations": [
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:tenant-scope-readiness",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:license-device-crosscheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-setup-full",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:tablet-claim",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:pc-claim",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:mobile-claim",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:sales-provenance-lineage",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:sales-outbox-linking",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:outbox-sync-canonical",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:revoke-renewal-replacement",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:surface-scope-permissions",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-visible-safety",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:pii-secret-safety",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:orphan-detector",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:duplicate-detector",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:staleness-monitor",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:audit-completeness",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:golden-path-operations",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:device-without-license-blocked",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:license-without-client-blocked",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-setup:multidevice",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/extra-command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:customer-setup:plan-provisioning",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/extra-command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run e2e:012:plan-based-client-onboarding",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/extra-command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system run verify:data-surfaces",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/extra-command-run-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system/products/tablet/app exec tsc --noEmit",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/typecheck-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system/products/pc/app exec tsc --noEmit",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/typecheck-results.json"
+    },
+    {
+      "command": "pnpm -C apps/terminal-de-venta-system/products/mobile/app exec tsc --noEmit",
+      "status": "PASS",
+      "exitCode": 0,
+      "source": "verifier_outputs/typecheck-results.json"
+    },
+    {
+      "command": "Cloudflare worker deploy preflight/dry-run",
+      "status": "BLOCKED",
+      "exitCode": 0,
+      "source": "deploy/DEPLOY_PREFLIGHT.json"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "rules": [
+    {
+      "rule": "venta sin provenance",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "device sin licencia",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "license sin client",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "client sin license",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "business sin client/scope",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "store sin business",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "terminal sin store",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "cash session sin user/terminal",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "sale sin cash session",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "sale sin line",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "sale sin tender",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "outbox sin sale",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "sync dormido",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "duplicate device id",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "duplicate license id",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "duplicate setup code",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "duplicate sale id",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "duplicate idempotencyKey",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale heartbeat",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale sync checkpoint",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale outbox event",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale cash session",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "stale device",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "missing audit for claim",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "missing audit for setup",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "missing audit for revoke",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "missing audit for renewal",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    },
+    {
+      "rule": "missing audit for device replacement",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/relationship_edges.json"
+    }
+  ]
+}

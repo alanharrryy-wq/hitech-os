@@ -1,0 +1,815 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "requiredItemCount": 60,
+  "items": [
+    {
+      "number": 1,
+      "requirement": "Export row-level sanitizado completo de las DBs principales, no sólo samples.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 2,
+      "requirement": "Todas las filas sanitizadas de estas tablas: CommandClient, LicenseAssignment, LicensePlan, ManagedDevice, ProvisioningDraft, CommandAuditEvent, Business, Store, Terminal, User, CashSession, Sale, SaleLine, SalePaymentTender, OutboxEvent, SyncCheckpoint, DeviceHeartbeat, AuditEvent.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized",
+        "docs/ops/licscope/row_counts.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized",
+        "docs/ops/licscope/row_counts.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 3,
+      "requirement": "row_counts.json completo por DB y tabla.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_counts.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_counts.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 4,
+      "requirement": "table_columns.json completo por DB y tabla.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/table_columns.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/table_columns.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 5,
+      "requirement": "relationship_edges.json con relaciones reales detectadas entre cliente, business, licencia, device, store, terminal, usuario, cash session, venta, líneas, pagos, outbox y sync.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/relationship_edges.json",
+        "docs/ops/licscope/RELATIONSHIP_EDGE_CLOSURE_REPORT.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/relationship_edges.json",
+        "docs/ops/licscope/RELATIONSHIP_EDGE_CLOSURE_REPORT.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 6,
+      "requirement": "payload_json_index.json con llaves encontradas dentro de OutboxEvent.payloadJson y cualquier payload operativo parecido.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/payload_json_index.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/payload_json_index.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 7,
+      "requirement": "Contrato oficial de tenant/scope.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/TENANT_SCOPE_CONTRACT.json",
+        "docs/ops/licscope/TENANT_SCOPE_CONTRACT.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/TENANT_SCOPE_CONTRACT.json",
+        "docs/ops/licscope/TENANT_SCOPE_CONTRACT.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 8,
+      "requirement": "Definición exacta de cloudTenantId.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/CLOUD_TENANT_ID_DEFINITION.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/CLOUD_TENANT_ID_DEFINITION.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 9,
+      "requirement": "Definición exacta de scopeKey en SyncCheckpoint.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SYNC_SCOPEKEY_DEFINITION.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SYNC_SCOPEKEY_DEFINITION.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 10,
+      "requirement": "Contrato de permisos por scope.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 11,
+      "requirement": "Contrato oficial de provenance de ventas.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 12,
+      "requirement": "Regla oficial para enlazar venta con outbox.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SALES_OUTBOX_LINKING_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SALES_OUTBOX_LINKING_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 13,
+      "requirement": "Regla oficial para enlazar venta Tablet con venta canonical/PC.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/TABLET_TO_CANONICAL_LINKING_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/TABLET_TO_CANONICAL_LINKING_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 14,
+      "requirement": "Regla oficial para originDeviceId cuando no existe campo directo en Sale.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 15,
+      "requirement": "Regla oficial para derivar storeId de venta cuando sólo existe terminalId.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json",
+        "docs/ops/licscope/FIELD_ALIAS_CONTRACT.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SALES_PROVENANCE_CONTRACT.json",
+        "docs/ops/licscope/FIELD_ALIAS_CONTRACT.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 16,
+      "requirement": "Contrato de alias de campos en JSON.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/FIELD_ALIAS_CONTRACT.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/FIELD_ALIAS_CONTRACT.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 17,
+      "requirement": "Datos reales o export completo de DeviceHeartbeat.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 18,
+      "requirement": "Datos reales o export completo de AuditEvent.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 19,
+      "requirement": "Datos reales o export completo de CommandAuditEvent.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 20,
+      "requirement": "Confirmación explícita de tablas operativas vacías.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/row_exports_sanitized",
+        "docs/ops/licscope/db_inventory.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/row_exports_sanitized",
+        "docs/ops/licscope/db_inventory.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 21,
+      "requirement": "Golden path operativo esperado paso por paso.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 22,
+      "requirement": "Para cada paso del golden path: tabla, campo, API, surface, verifier y evidencia.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/GOLDEN_PATH_LICENSE_TO_SALE_TO_SYNC.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 23,
+      "requirement": "Mapa API -> servicio/repositorio -> tabla -> surface -> verifier.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 24,
+      "requirement": "Lista de rutas API de licensing/setup/customer/device/sales/sync/billing/revoke/renewal/replacement.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 25,
+      "requirement": "Lista de servicios/repositorios que escriben o leen cliente, licencia, device, venta, outbox, sync y canonical.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SERVICE_REPOSITORY_MAP.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SERVICE_REPOSITORY_MAP.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 26,
+      "requirement": "Contrato de roles por superficie.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json",
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json",
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 27,
+      "requirement": "Regla dura de qué surface puede originar ventas.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json",
+        "shared/licensing/feature-resolver.ts"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json",
+        "shared/licensing/feature-resolver.ts"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 28,
+      "requirement": "Regla dura de qué surface puede administrar licencias/devices.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 29,
+      "requirement": "Regla dura de qué surface sólo puede leer o supervisar.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 30,
+      "requirement": "Reglas customer-visible.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 31,
+      "requirement": "Reglas para palabras demo/test/mock/dummy/smoke/prueba/fixture/pilot/piloto.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md",
+        "docs/ops/licscope/CUSTOMER_VISIBLE_SCAN.json"
+      ],
+      "evidence": [
+        "releaseBlockingCount=0"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 32,
+      "requirement": "Lista de clientes/nombres de prueba permitidos.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json",
+        "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json",
+        "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 33,
+      "requirement": "Lista de nombres o datos que bloquean release.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/RELEASE_BLOCKING_VISIBLE_DATA.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/RELEASE_BLOCKING_VISIBLE_DATA.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 34,
+      "requirement": "Reglas de PII.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/PII_REDACTION_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/PII_REDACTION_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 35,
+      "requirement": "Reglas de secretos.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SECRET_EXPOSURE_RULES.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SECRET_EXPOSURE_RULES.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 36,
+      "requirement": "Dos snapshots operativos comparables.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/snapshots/current",
+        "docs/ops/licscope/snapshots/previous"
+      ],
+      "evidence": [
+        "docs/ops/licscope/snapshots/current",
+        "docs/ops/licscope/snapshots/previous"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 37,
+      "requirement": "Snapshot anterior y snapshot actual de row counts.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/snapshots/current/row_counts.json",
+        "docs/ops/licscope/snapshots/previous/row_counts.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/snapshots/current/row_counts.json",
+        "docs/ops/licscope/snapshots/previous/row_counts.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 38,
+      "requirement": "Snapshot anterior y actual de devices/licencias/clientes/ventas/outbox/sync.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/snapshots/current/devices_licenses_clients_sales_outbox_sync.json",
+        "docs/ops/licscope/snapshots/previous/devices_licenses_clients_sales_outbox_sync.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/snapshots/current/devices_licenses_clients_sales_outbox_sync.json",
+        "docs/ops/licscope/snapshots/previous/devices_licenses_clients_sales_outbox_sync.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 39,
+      "requirement": "Historial mínimo de cambios operativos relevantes.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.json",
+        "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.json",
+        "docs/ops/licscope/OPERATIONAL_CHANGE_HISTORY.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 40,
+      "requirement": "Verifiers exactos que certifican setup de cliente.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-customer-setup-full.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-customer-setup-full.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 41,
+      "requirement": "Verifiers exactos que certifican claim de Tablet.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-tablet-claim.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-tablet-claim.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 42,
+      "requirement": "Verifiers exactos que certifican claim de PC.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-pc-claim.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-pc-claim.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 43,
+      "requirement": "Verifiers exactos que certifican claim de Mobile.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-mobile-claim.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-mobile-claim.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 44,
+      "requirement": "Verifiers exactos que certifican venta completa.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json",
+        "tools/verify-data-surface-connections.mjs"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json",
+        "tools/verify-data-surface-connections.mjs"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 45,
+      "requirement": "Verifiers exactos que certifican outbox/sync/canonical.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 46,
+      "requirement": "Verifiers exactos que certifican revoke/renewal/device replacement.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 47,
+      "requirement": "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.",
+      "status": "BLOCKED",
+      "filesProduced": [
+        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
+        "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
+        "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"
+      ],
+      "blocker": "BLOCKED_BY_MISSING_SECRET",
+      "nextAction": "Provide live Cloudflare credentials and run governed live smokes."
+    },
+    {
+      "number": 48,
+      "requirement": "Contrato de production readiness.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 49,
+      "requirement": "Reglas para orphan detector.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/ORPHAN_DETECTOR_RULES.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/ORPHAN_DETECTOR_RULES.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 50,
+      "requirement": "Reglas para duplicate detector.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 51,
+      "requirement": "Reglas para staleness.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/STALENESS_RULES.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/STALENESS_RULES.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 52,
+      "requirement": "Reglas para audit completeness.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/AUDIT_COMPLETENESS_RULES.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/AUDIT_COMPLETENESS_RULES.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 53,
+      "requirement": "Reglas de reconciliación.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/RECONCILIATION_RULES.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/RECONCILIATION_RULES.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 54,
+      "requirement": "Mapa de customer setup journey.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/CUSTOMER_SETUP_JOURNEY_MAP.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/CUSTOMER_SETUP_JOURNEY_MAP.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 55,
+      "requirement": "Definición de cliente real vs cliente fixture vs cliente smoke.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/ENTITY_DEFINITIONS.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 56,
+      "requirement": "Definición de multi-tenant leakage.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/MULTI_TENANT_LEAKAGE_DEFINITION.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/MULTI_TENANT_LEAKAGE_DEFINITION.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 57,
+      "requirement": "Definición de business/client/store/terminal ownership.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/BUSINESS_CLIENT_STORE_TERMINAL_OWNERSHIP.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/BUSINESS_CLIENT_STORE_TERMINAL_OWNERSHIP.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 58,
+      "requirement": "Definición de canonical projection.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 59,
+      "requirement": "Definición de sync checkpoint correcto.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SYNC_CHECKPOINT_DEFINITION.md"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SYNC_CHECKPOINT_DEFINITION.md"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    },
+    {
+      "number": 60,
+      "requirement": "Cualquier .env.example, config sanitizada o docs que expliquen nombres de DB, sin secretos reales.",
+      "status": "PASS",
+      "filesProduced": [
+        "docs/ops/licscope/SANITIZED_CONFIG_INDEX.json"
+      ],
+      "evidence": [
+        "docs/ops/licscope/SANITIZED_CONFIG_INDEX.json"
+      ],
+      "blocker": "",
+      "nextAction": ""
+    }
+  ]
+}

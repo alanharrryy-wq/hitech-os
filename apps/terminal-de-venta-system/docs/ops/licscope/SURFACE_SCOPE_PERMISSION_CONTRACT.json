@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "surfaces": [
+    {
+      "surface": "Tablet POS",
+      "canRead": "sales,catalog,inventory,cash",
+      "canWrite": "YES scoped",
+      "canCreateSales": true,
+      "canManageLicenses": false,
+      "canManageDevices": true,
+      "canClaimDevice": false,
+      "canAdminInventory": false,
+      "canViewCustomerData": true,
+      "canViewTenantData": true,
+      "canViewSales": true,
+      "canViewAudit": [
+        "license",
+        "device",
+        "business"
+      ],
+      "forbiddenWrites": "sales,outbox,cash",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "PC/Admin",
+      "canRead": "canonical,sales,inventory,licensing",
+      "canWrite": "YES scoped",
+      "canCreateSales": false,
+      "canManageLicenses": true,
+      "canManageDevices": true,
+      "canClaimDevice": true,
+      "canAdminInventory": true,
+      "canViewCustomerData": true,
+      "canViewTenantData": true,
+      "canViewSales": true,
+      "canViewAudit": [
+        "tenant",
+        "business",
+        "admin"
+      ],
+      "forbiddenWrites": "admin/licensing/sync",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "Mobile",
+      "canRead": "snapshot,sales,stock,alerts",
+      "canWrite": "NO by default",
+      "canCreateSales": false,
+      "canManageLicenses": false,
+      "canManageDevices": false,
+      "canClaimDevice": false,
+      "canAdminInventory": true,
+      "canViewCustomerData": true,
+      "canViewTenantData": true,
+      "canViewSales": false,
+      "canViewAudit": [
+        "tenant",
+        "business",
+        "supervisor"
+      ],
+      "forbiddenWrites": "none by default",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "Chart Lab",
+      "canRead": "runtime visual data",
+      "canWrite": "NO by default",
+      "canCreateSales": false,
+      "canManageLicenses": false,
+      "canManageDevices": false,
+      "canClaimDevice": false,
+      "canAdminInventory": false,
+      "canViewCustomerData": false,
+      "canViewTenantData": false,
+      "canViewSales": false,
+      "canViewAudit": [
+        "runtime-readonly"
+      ],
+      "forbiddenWrites": "none by default",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "Customer Portal",
+      "canRead": "setup/license status",
+      "canWrite": "YES scoped",
+      "canCreateSales": false,
+      "canManageLicenses": false,
+      "canManageDevices": true,
+      "canClaimDevice": false,
+      "canAdminInventory": true,
+      "canViewCustomerData": true,
+      "canViewTenantData": false,
+      "canViewSales": false,
+      "canViewAudit": [
+        "setupCode",
+        "deviceId"
+      ],
+      "forbiddenWrites": "device claim/license refresh",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "3160 / control plane",
+      "canRead": "ops/licensing",
+      "canWrite": "YES scoped",
+      "canCreateSales": false,
+      "canManageLicenses": true,
+      "canManageDevices": true,
+      "canClaimDevice": false,
+      "canAdminInventory": true,
+      "canViewCustomerData": true,
+      "canViewTenantData": true,
+      "canViewSales": true,
+      "canViewAudit": [
+        "admin"
+      ],
+      "forbiddenWrites": "customer/license/device admin",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    },
+    {
+      "surface": "Cloud licensing worker",
+      "canRead": "licensing/setup/device",
+      "canWrite": "YES scoped",
+      "canCreateSales": false,
+      "canManageLicenses": true,
+      "canManageDevices": true,
+      "canClaimDevice": false,
+      "canAdminInventory": true,
+      "canViewCustomerData": true,
+      "canViewTenantData": false,
+      "canViewSales": true,
+      "canViewAudit": [
+        "admin/customer setup"
+      ],
+      "forbiddenWrites": "licensing/setup/device",
+      "requiredScope": "PASS",
+      "evidence": [
+        "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json"
+      ]
+    }
+  ]
+}
