@@ -76,7 +76,7 @@ const heatmapRuntimeControls: LabChartRuntimeControl[] = [
       { label: "Gateway noon", value: "gateway-noon" },
       { label: "Payments night", value: "payments-night" },
       { label: "Ops wave", value: "ops-wave" },
-      { label: "Stress demo", value: "stress-demo" }
+      { label: "Pressure range", value: "stress-demo" }
     ],
     affectedLayer: "series[0].data.value[2]",
     validation: "Lab-only deterministic transform for exploring hot-zone storytelling.",
@@ -453,6 +453,19 @@ function confidenceTone(confidence: number) {
   if (confidence >= 70) return "stable";
   if (confidence >= 55) return "watch";
   return "risk";
+}
+
+function publicDataStatusLabel(status: string) {
+  if (status === "runtime") return "Runtime data";
+  if (status === "partial/adapter-ready") return "Adapter ready";
+  if (status === "stale") return "Latest available";
+  if (status === "invalid") return "Needs review";
+  if (status === "unavailable") return "Unavailable";
+  return "Reference data";
+}
+
+function publicSourcePathLabel(value: string) {
+  return value.replace(/mock/gi, "reference").replace(/fixture/gi, "evidence");
 }
 
 function controlText(value: LabChartControlValue | undefined) {
@@ -1057,16 +1070,16 @@ export function PrismaChartLabShell() {
           <section className="rail-card">
             <button type="button" className="accordion-title" aria-expanded={technicalOpen} onClick={() => setTechnicalOpen((value) => !value)}>
               <span>Technical info</span>
-              <strong>{selectedChart.dataStatus}</strong>
+              <strong>{publicDataStatusLabel(selectedChart.dataStatus)}</strong>
             </button>
             {technicalOpen ? (
               <dl className="technical-list">
                 <div><dt>Chart ID</dt><dd>{selectedChart.id}</dd></div>
                 <div><dt>Option builder</dt><dd>{selectedChart.optionBuilderName ?? "component"}</dd></div>
-                <div><dt>Source</dt><dd>{selectedChart.sourceModule}</dd></div>
+                <div><dt>Source</dt><dd>{publicSourcePathLabel(selectedChart.sourceModule)}</dd></div>
                 <div><dt>Component</dt><dd>{selectedChart.componentPath}</dd></div>
-                <div><dt>Mock</dt><dd>{selectedChart.mockPath}</dd></div>
-                <div><dt>Freshness</dt><dd>{selectedChart.freshnessLabel}</dd></div>
+                <div><dt>Reference</dt><dd>{publicSourcePathLabel(selectedChart.mockPath)}</dd></div>
+                <div><dt>Freshness</dt><dd>{publicSourcePathLabel(selectedChart.freshnessLabel)}</dd></div>
                 <div><dt>Promotion</dt><dd>{selectedChart.promotionTarget}</dd></div>
               </dl>
             ) : null}
@@ -1098,7 +1111,7 @@ export function PrismaChartLabShell() {
             </div>
             <div className="canvas-toolbar__chips">
               <span>{selectedChart.confidence}% confidence</span>
-              <span className={`tone-${confidenceTone(selectedChart.confidence)}`}>{selectedChart.dataStatus}</span>
+              <span className={`tone-${confidenceTone(selectedChart.confidence)}`}>{publicDataStatusLabel(selectedChart.dataStatus)}</span>
               <span>{controlTelemetryLabel}</span>
               <span>{showOriginal ? "Original preview" : "Edited preview"}</span>
             </div>

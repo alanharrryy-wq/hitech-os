@@ -58,12 +58,18 @@
 
 .financialStrip {
   display: grid;
-  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+  grid-template-columns: minmax(260px, 0.88fr) minmax(0, 1.12fr);
   gap: 12px;
   align-items: stretch;
 }
 
+.financialLead {
+  display: grid;
+  gap: 12px;
+}
+
 .primaryTotal,
+.recentActivityTotal,
 .financialFacts {
   border: 1px solid rgba(35, 87, 146, 0.22);
   border-radius: 24px;
@@ -78,23 +84,37 @@
     radial-gradient(circle at 8% 0%, rgba(0, 162, 255, 0.18), transparent 38%);
 }
 
-.primaryTotal strong {
+.recentActivityTotal {
+  padding: 16px 18px;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.98), rgba(240, 252, 247, 0.92)),
+    radial-gradient(circle at 10% 0%, rgba(22, 163, 74, 0.14), transparent 36%);
+}
+
+.primaryTotal strong,
+.recentActivityTotal strong {
   display: block;
   margin: 8px 0 6px;
   color: #052f9f;
   font-size: clamp(36px, 5.8vw, 78px);
   line-height: 0.86;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
-.primaryTotal small {
+.recentActivityTotal strong {
+  color: #0f6b42;
+  font-size: clamp(26px, 3vw, 44px);
+}
+
+.primaryTotal small,
+.recentActivityTotal small {
   color: var(--prisma-text-muted);
   font-weight: 800;
 }
 
 .financialFacts {
   display: grid;
-  grid-template-columns: repeat(5, minmax(112px, 1fr));
+  grid-template-columns: repeat(3, minmax(112px, 1fr));
   overflow: hidden;
 }
 

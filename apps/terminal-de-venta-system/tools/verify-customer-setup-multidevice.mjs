@@ -96,6 +96,134 @@ function assertCloudSource() {
   }
 }
 
+function matrixSection(documentText, matrixName) {
+  const marker = `## ${matrixName}`;
+  const start = documentText.indexOf(marker);
+  assert(start >= 0, `Missing matrix ${matrixName}`);
+  const rest = documentText.slice(start + marker.length);
+  const nextHeading = rest.search(/\n##\s+/);
+  return nextHeading >= 0 ? rest.slice(0, nextHeading) : rest;
+}
+
+function assertMatrixColumns(documentText, matrixName, columns, docName) {
+  const section = matrixSection(documentText, matrixName);
+  for (const column of columns) {
+    assert(section.includes(column), `${docName} ${matrixName} missing required column ${column}`);
+  }
+}
+
+function assertPlanBasedProvisioningReadonly() {
+  const contract = read("shared/licensing/customer-setup-contract.ts");
+  const worker = read("infra/cloudflare/licflow3-worker/src/worker.js");
+  const migration0002 = read("infra/cloudflare/licflow3-worker/migrations/0002_customer_setup.sql");
+  const migration0003 = read("infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql");
+  const opsMap = read("docs/ops/PRISMA_SUPREME_OPERATIONS_MAP.md");
+  const productization = read("docs/productization/PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md");
+  const e2e012 = read("docs/productization/E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md");
+
+  for (const token of [
+    "PlanProvisioningDefinition",
+    "PlanBasedProvisioningResult",
+    "DeviceClaimSlot",
+    "PLAN_BASED_PROVISIONING_CATALOG",
+    "resolvePlanProvisioningDefinition",
+    "aggregateSlotsForPlan",
+    "buildDeviceClaimSlotsForPlan",
+    "maxTabletDevices",
+    "maxPcDevices",
+    "maxMobileDevices",
+    "maxTotalDevices",
+    "allowedSurfaces",
+    "setupMode",
+    "claimMode",
+    "requiresManualApproval",
+    "expirationPolicy",
+    "gracePolicy",
+    "renewalPolicy",
+    "manualDeviceClaimRequired: false",
+    "operatorActionCount: 1"
+  ]) {
+    assert(contract.includes(token), `Shared plan provisioning contract missing ${token}`);
+  }
+  for (const planId of ["TABLET_SOLO", "TABLET_PRO", "TABLET_PC_MANAGED", "TABLET_PC_MOBILE_MANAGED"]) {
+    assert(contract.includes(planId), `Shared plan catalog missing ${planId}`);
+    assert(worker.includes(planId), `Worker plan catalog missing ${planId}`);
+    assert(opsMap.includes(planId), `Ops matrix missing ${planId}`);
+    assert(productization.includes(planId), `Productization matrix missing ${planId}`);
+  }
+  for (const token of [
+    "PLAN_PROVISIONING_CATALOG",
+    "resolveCustomerSetupPlan",
+    "buildDeviceClaimSlotsForPlan",
+    "upsertLicensePlan",
+    "upsertLicenseAssignment",
+    "upsertSetupBundle",
+    "upsertDeviceClaimSlot",
+    "nextAvailableClaimSlot",
+    "consumeClaimSlot",
+    "PLAN_BASED_CUSTOMER_ONBOARDING_READY",
+    "PLAN_PROVISIONING_SCHEMA_REQUIRED",
+    "customer_setup.plan_based_provision",
+    "claimSlotsCreated",
+    "manualDeviceClaimRequired: false",
+    "operatorActionCount: 1",
+    "claimed < allowed",
+    "status = 'AVAILABLE'",
+    "status = 'CLAIMED'",
+    "claimSlotId",
+    "setupBundle",
+    "deviceClaimSlots"
+  ]) {
+    assert(worker.includes(token), `Worker plan provisioning path missing ${token}`);
+  }
+  for (const token of [
+    "CREATE TABLE IF NOT EXISTS license_plans",
+    "CREATE TABLE IF NOT EXISTS license_assignments",
+    "CREATE TABLE IF NOT EXISTS customer_setup_bundles",
+    "CREATE TABLE IF NOT EXISTS customer_device_claim_slots",
+    "claim_code TEXT NOT NULL UNIQUE",
+    "expires_at TEXT NOT NULL",
+    "status TEXT NOT NULL DEFAULT 'AVAILABLE'",
+    "audit_event_id TEXT",
+    "UNIQUE (setup_bundle_id, surface, slot_index)"
+  ]) {
+    assert(migration0003.includes(token), `Plan provisioning migration missing ${token}`);
+  }
+  for (const legacyToken of ["customer_setup_bundles", "customer_device_claim_slots", "license_assignments"]) {
+    assert(!migration0002.includes(legacyToken), `Historical 0002 migration was mutated with ${legacyToken}`);
+  }
+  for (const matrix of [
+    "PLAN_PROVISIONING_MATRIX",
+    "SETUP_BUNDLE_MATRIX",
+    "DEVICE_CLAIM_SLOT_MATRIX",
+    "CLIENT_ONBOARDING_FLOW_MATRIX"
+  ]) {
+    assert(opsMap.includes(matrix), `Ops map missing ${matrix}`);
+    assert(productization.includes(matrix), `Productization doc missing ${matrix}`);
+  }
+  const matrixRequirements = {
+    PLAN_PROVISIONING_MATRIX: ["planId", "planName", "maxTabletDevices", "maxPcDevices", "maxMobileDevices", "maxTotalDevices", "allowedSurfaces", "features", "claimMode", "autoGenerateSlots", "requiresManualApproval", "status", "evidence"],
+    SETUP_BUNDLE_MATRIX: ["setupBundleId", "clientId", "tenantId", "businessId", "licenseId", "planId", "setupCode", "setupLink", "setupQrPresent", "claimSlotsGenerated", "tabletSlots", "pcSlots", "mobileSlots", "expiresAt", "createdBy", "createdAt", "status", "evidence"],
+    DEVICE_CLAIM_SLOT_MATRIX: ["slotId", "setupBundleId", "clientId", "licenseId", "planId", "surface", "claimCodePresent", "deviceId", "claimedAt", "expiresAt", "status", "risk", "evidence"],
+    CLIENT_ONBOARDING_FLOW_MATRIX: ["clientId", "planId", "licenseCreated", "assignmentCreated", "setupBundleCreated", "claimSlotsCreated", "qrCreated", "auditCreated", "operatorActionCount", "manualDeviceClaimRequired", "status", "evidence"]
+  };
+  for (const [matrix, columns] of Object.entries(matrixRequirements)) {
+    assertMatrixColumns(opsMap, matrix, columns, "PRISMA_SUPREME_OPERATIONS_MAP.md");
+    assertMatrixColumns(productization, matrix, columns, "PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md");
+  }
+  for (const token of [
+    "manualDeviceClaimRequired = false",
+    "operator chooses customer + plan once",
+    "plan -> slots",
+    "setup bundle",
+    "audit",
+    "VERIFY_PLAN_BASED_PROVISIONING_READONLY"
+  ]) {
+    assert(`${opsMap}\n${productization}\n${e2e012}`.includes(token), `Plan onboarding docs missing ${token}`);
+  }
+  assert(e2e012.includes("E2E_012_PLAN_BASED_CLIENT_ONBOARDING"), "Missing E2E_012 plan onboarding spec/result.");
+}
+
 function assertSurfaceEntrypoints() {
   const files = [
     "products/tablet/app/app/setup/page.tsx",
@@ -170,6 +298,7 @@ function runAll() {
   assertSharedContract();
   assertCloudCenter();
   assertCloudSource();
+  assertPlanBasedProvisioningReadonly();
   assertSurfaceEntrypoints();
   assertNoSecrets();
   assertPreservedRoutes();
@@ -187,6 +316,30 @@ try {
   if (mode === "no-secrets") {
     assertNoSecrets();
     pass("verify:customer-setup:no-secrets", { mode });
+  } else if (mode === "plan-provisioning") {
+    assertSharedContract();
+    assertCloudSource();
+    assertPlanBasedProvisioningReadonly();
+    pass("VERIFY_PLAN_BASED_PROVISIONING_READONLY", {
+      mode,
+      sourceOnly: true,
+      deployPerformed: false,
+      d1OperationPerformed: false,
+      migration: "infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql",
+      e2e: "E2E_012_PLAN_BASED_CLIENT_ONBOARDING"
+    });
+  } else if (mode === "e2e-012-plan-based-client-onboarding") {
+    assertSharedContract();
+    assertCloudSource();
+    assertPlanBasedProvisioningReadonly();
+    pass("E2E_012_PLAN_BASED_CLIENT_ONBOARDING", {
+      mode,
+      sourceVerifier: "VERIFY_PLAN_BASED_PROVISIONING_READONLY",
+      sourceOnly: true,
+      deployPerformed: false,
+      d1OperationPerformed: false,
+      manualDeviceClaimRequired: false
+    });
   } else if (mode === "surface-entrypoints") {
     assertSurfaceEntrypoints();
     pass("verify:customer-setup:surface-entrypoints", { mode });

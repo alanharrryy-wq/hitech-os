@@ -7,8 +7,6 @@ import { formatRelativeFetchLabel } from "@/lib/prisma-app/prisma-mobile-formatt
 import { prismaMobileErrorMessage } from "@/lib/prisma-app/prisma-mobile-error";
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { buildPrismaMobileOperationsList, derivePrismaMobileHero, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
-import { PrismaMobileCrystalCommand } from "./PrismaMobileCrystalCommand";
-import { PrismaMobileMultiContextSwitcher } from "./PrismaMobileMultiContextSwitcher";
 import { PrismaMobilePremiumNavigator } from "./PrismaMobilePremiumNavigator";
 import styles from "./prisma-mobile-dashboard.module.css";
 
@@ -21,7 +19,7 @@ const healthToneClass: Record<PrismaMobileHealthTone, string> = {
   offline: styles.healthOffline
 };
 
-const LOADING_SHELL_COPY = "Consultando fuentes conectadas y respaldo local cuando no hay senal. Mobile supervisa. Tablet Solo vende sola.";
+const LOADING_SHELL_COPY = "Consultando información operativa disponible. Mobile supervisa. Tablet vende y alimenta datos.";
 
 function readinessZone(level: string) {
   if (level === "ready") return "mobile-success-state";
@@ -47,7 +45,7 @@ function LoadingShell() {
         </div>
         <div>
           <span>PRISMA App</span>
-          <h1>Cargando operacion movil</h1>
+          <h1>Cargando operación móvil</h1>
           <p suppressHydrationWarning>{LOADING_SHELL_COPY}</p>
         </div>
       </section>
@@ -115,7 +113,7 @@ export function PrismaMobileDashboard() {
         >
           <section className={styles.errorShell} data-prisma-zone="mobile-error-state">
             <span>PRISMA App</span>
-            <h1>No hay datos frescos para supervision movil</h1>
+            <h1>No hay datos frescos para supervisión móvil</h1>
             <p>{manualError ?? "Error desconocido al preparar la vista movil."}</p>
             <div className={styles.errorSignalGrid} aria-label="Que puede hacer el usuario ahora">
               <article>
@@ -129,7 +127,7 @@ export function PrismaMobileDashboard() {
                 <p>Evita quedarse viendo una lectura vieja cuando la fuente ya cambio.</p>
               </article>
               <article>
-                <span>3 · Operacion base</span>
+                <span>3 · Operación base</span>
                 <strong>Tablet sigue vendiendo</strong>
                 <p>Mobile supervisa sin convertirse en requisito operativo.</p>
               </article>
@@ -138,7 +136,7 @@ export function PrismaMobileDashboard() {
               <button type="button" onClick={() => void load("refresh")}>Reintentar snapshot</button>
               <button type="button" className={styles.secondaryButton} onClick={clearCacheAndRefresh}>Limpiar cache y reintentar</button>
             </div>
-            <p className={styles.optionalAdderBoundaryMicro}>Si el problema sigue, revisa fuentes Tablet/PC. La pantalla no oculta fallas detras del polish visual.</p>
+            <p className={styles.optionalAdderBoundaryMicro}>Si el problema sigue, revisa fuentes Tablet/PC. La pantalla separa datos disponibles de señales pendientes.</p>
           </section>
         </main>
       );
@@ -172,11 +170,11 @@ export function PrismaMobileDashboard() {
         <header className={styles.brandHeader} data-prisma-zone="mobile-brand-header">
           <div className={styles.brandIdentity}>
             <span className={styles.brandLogo} data-prisma-zone="mobile-logo" aria-hidden="true">
-              <img src="/prisma-mobile-premium-mark.svg" alt="" />
+              <img src="/branding/prisma/prisma-mobile-header-mark-256.webp" alt="" />
             </span>
             <div className={styles.brandText}>
               <p>Mobile · 3140</p>
-              <h1 id="prisma-mobile-dashboard-title">Prisma Mobile Cloud</h1>
+              <h1 id="prisma-mobile-dashboard-title">Prisma Mobile</h1>
               <span>{account.customerName}</span>
             </div>
           </div>
@@ -193,8 +191,6 @@ export function PrismaMobileDashboard() {
             loadState={loadState}
             onRefresh={() => void load("refresh")}
             onClearCache={clearCacheAndRefresh}
-            systemCrystalHome={<PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="home" />}
-            systemContextSwitcher={<PrismaMobileMultiContextSwitcher clientSnapshot={clientSnapshot} />}
           />
         </section>
       </section>

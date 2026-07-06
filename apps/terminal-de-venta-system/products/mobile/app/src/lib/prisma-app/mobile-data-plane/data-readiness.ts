@@ -25,13 +25,32 @@ export type MobileDataReadinessReport = {
 };
 
 function upstreamOk(state: MobileDataPlaneState, id: "tablet" | "pc"): boolean {
-  return state.probes.some((probe) => probe.id === id && probe.ok);
+  return state.probes.some((probe) => probe.id === id && probe.ok && !probe.url.startsWith("file:"));
+}
+
+function localPcAvailable(state: MobileDataPlaneState): boolean {
+  return state.probes.some((probe) => probe.id === "pc" && probe.ok && probe.url.startsWith("file:"));
+}
+
+function localSourceAvailable(state: MobileDataPlaneState): boolean {
+  return state.probes.some((probe) => probe.id === "local" && probe.ok)
+    || Boolean(state.salesToday.recentActivity?.tickets)
+    || state.inventory.items.length > 0;
 }
 
 function readableSourceSummary(state: MobileDataPlaneState): string {
-  const tablet = upstreamOk(state, "tablet") ? "Tablet conectada" : "Tablet sin respuesta";
-  const pc = upstreamOk(state, "pc") ? "PC conectada" : "PC sin respuesta";
-  const mode = state.runtimeMode === "live" ? "lectura completa" : state.runtimeMode === "partial" ? "lectura parcial" : state.runtimeMode === "stale" ? "lectura stale" : "sin fuentes activas";
+  const local = localSourceAvailable(state);
+  const tablet = upstreamOk(state, "tablet")
+    ? "Tablet certificada"
+    : local
+      ? "Datos operativos disponibles · heartbeat Tablet no certificado"
+      : "Fuente Tablet pendiente de certificación";
+  const pc = upstreamOk(state, "pc")
+    ? "PC disponible"
+    : local && localPcAvailable(state)
+      ? "PC local disponible"
+      : "PC pendiente de certificación";
+  const mode = state.runtimeMode === "live" ? "lectura completa" : state.runtimeMode === "partial" ? "lectura parcial" : state.runtimeMode === "stale" ? "última actividad disponible" : "sin fuente certificada";
   return `${tablet} · ${pc} · ${mode}`;
 }
 
@@ -49,23 +68,26 @@ function classifySync(state: MobileDataPlaneState): MobileDataReadinessReport["s
 export function deriveMobileDataReadiness(state: MobileDataPlaneState): MobileDataReadinessReport {
   const facts: string[] = [];
   const actions: MobileDataReadinessAction[] = [];
-  const tabletAvailable = upstreamOk(state, "tablet");
-  const pcAvailable = upstreamOk(state, "pc");
-  const salesState: MobileDataReadinessReport["salesState"] = tabletAvailable ? (state.salesToday.tickets > 0 ? "with_sales" : "empty") : "unavailable";
+  const local = localSourceAvailable(state);
+  const tabletAvailable = upstreamOk(state, "tablet") || local;
+  const pcAvailable = upstreamOk(state, "pc") || Boolean(local && localPcAvailable(state));
+  const recentTickets = state.salesToday.recentActivity?.tickets ?? 0;
+  const salesState: MobileDataReadinessReport["salesState"] = tabletAvailable ? (state.salesToday.tickets > 0 || recentTickets > 0 ? "with_sales" : "empty") : "unavailable";
   const inventoryState: MobileDataReadinessReport["inventoryState"] = tabletAvailable ? (state.inventory.items.length > 0 ? "with_items" : "empty") : "unavailable";
   const pcState: MobileDataReadinessReport["pcState"] = pcAvailable ? "connected" : "unavailable";
   const syncState = classifySync(state);
 
   if (salesState === "with_sales") addOnce(facts, `${state.salesToday.tickets} tickets cerrados hoy`);
-  if (salesState === "empty") addOnce(facts, "Tablet respondió, pero todavía no hay ventas cerradas hoy");
-  if (salesState === "unavailable") addOnce(facts, "Ventas no disponibles porque Tablet POS no respondió");
+  if (salesState === "with_sales" && state.salesToday.tickets === 0 && state.salesToday.recentActivity) addOnce(facts, `${state.salesToday.recentActivity.tickets} tickets en ${state.salesToday.recentActivity.label}`);
+  if (salesState === "empty") addOnce(facts, "Sin tickets cerrados hoy en la lectura disponible");
+  if (salesState === "unavailable") addOnce(facts, "Ventas pendientes de certificación de fuente operativa");
 
   if (inventoryState === "with_items") addOnce(facts, `${state.inventory.items.length} SKUs en watchlist operativa`);
   if (inventoryState === "empty") addOnce(facts, "Inventario operativo sin SKUs recibidos");
-  if (inventoryState === "unavailable") addOnce(facts, "Inventario no disponible porque Tablet POS no respondió");
+  if (inventoryState === "unavailable") addOnce(facts, "Inventario pendiente de certificación de fuente operativa");
 
   if (pcState === "connected") addOnce(facts, "Backoffice disponible para lectura consolidada");
-  else addOnce(facts, "Backoffice no disponible; la lectura móvil queda centrada en Tablet/local");
+  else addOnce(facts, "Backoffice pendiente de certificación; Mobile se mantiene como supervisor");
 
   if (syncState === "failed") addOnce(facts, `${state.outbox.failed} eventos de sync fallidos`);
   if (syncState === "pending") addOnce(facts, `${state.outbox.pending} eventos pendientes de sync`);
@@ -73,16 +95,18 @@ export function deriveMobileDataReadiness(state: MobileDataPlaneState): MobileDa
   if (syncState === "unknown") addOnce(facts, "Sync sin confirmación reciente");
 
   if (!tabletAvailable) {
-    actions.push({ title: "Levantar Tablet POS", detail: "Sin Tablet no hay ventas, stock operativo ni outbox confiable para la app móvil.", owner: "Operación", priority: "alta" });
+    actions.push({ title: "Certificar fuente Tablet", detail: "Mobile supervisa. Tablet es la fuente operativa de ventas, stock y caja.", owner: "Operación", priority: "alta" });
   }
-  if (tabletAvailable && state.salesToday.tickets === 0) {
-    actions.push({ title: "Confirmar primera venta real", detail: "La lectura está conectada, pero todavía no existe ticket cerrado hoy.", owner: "Caja", priority: "media" });
+  if (tabletAvailable && state.salesToday.tickets === 0 && recentTickets > 0) {
+    actions.push({ title: "Revisar actividad reciente", detail: "Hoy está en cero; la actividad reciente confirma datos operativos disponibles.", owner: "Caja", priority: "baja" });
+  } else if (tabletAvailable && state.salesToday.tickets === 0) {
+    actions.push({ title: "Confirmar venta actual", detail: "La lectura está disponible, pero todavía no existe ticket cerrado hoy.", owner: "Caja", priority: "media" });
   }
   if (tabletAvailable && state.inventory.items.length === 0) {
     actions.push({ title: "Confirmar endpoint de inventario", detail: "La app no recibió SKUs para watchlist; revisa stock bajo o catálogo local.", owner: "Inventario", priority: "media" });
   }
   if (!pcAvailable) {
-    actions.push({ title: "Revisar PC Backoffice", detail: "No bloquea la lectura de Tablet, pero sí limita comparación, gobierno y consolidado.", owner: "Backoffice", priority: "baja" });
+    actions.push({ title: "Certificar PC Backoffice", detail: "No bloquea la lectura de Tablet; limita comparación, gobierno y consolidado.", owner: "Backoffice", priority: "baja" });
   }
   if (state.outbox.failed > 0) {
     actions.push({ title: "Resolver eventos fallidos", detail: "Hay eventos que no llegaron limpios; conviene exportar o reintentar sync.", owner: "Sincronización", priority: "alta" });
@@ -108,22 +132,22 @@ export function deriveMobileDataReadiness(state: MobileDataPlaneState): MobileDa
     ready: "Datos listos",
     partial: "Lectura parcial",
     empty: "Esperando operación",
-    offline: "Sin fuentes activas",
-    blocked: "Fuente clave pendiente"
+    offline: "Sin fuente certificada",
+    blocked: "Fuente operativa pendiente"
   };
   const headlines: Record<MobileDataReadinessLevel, string> = {
     ready: "La app ya tiene lectura operativa confiable.",
-    partial: "La app sirve para decidir, pero hay una fuente o señal por revisar.",
+    partial: "La app muestra datos operativos y separa señales pendientes de certificar.",
     empty: "PRISMA en línea. Tu negocio ya responde.",
-    offline: "La app no tiene fuentes activas en este momento.",
-    blocked: "Tablet POS es necesaria para alimentar ventas e inventario móvil."
+    offline: "La app no tiene una fuente certificada en este momento.",
+    blocked: "Tablet es necesaria para alimentar ventas e inventario móvil."
   };
   const details: Record<MobileDataReadinessLevel, string> = {
     ready: "Ventas, inventario y salud de sync llegan sin señales críticas.",
-    partial: "La información visible separa datos reales, vacíos operativos y fuentes caídas para no vender humo con corbata.",
+    partial: "La información visible separa actividad disponible, vacíos operativos y señales pendientes de certificar.",
     empty: "Aún no hay ventas registradas. Cuando Tablet cierre tickets, el resumen aparecerá aquí.",
-    offline: "Muestra estado honesto y acciones claras en lugar de rellenar con datos inventados.",
-    blocked: "Primero hay que recuperar Tablet POS o configurar PRISMA_MOBILE_TABLET_ORIGIN."
+    offline: "Muestra estado honesto y acciones claras sin rellenar cifras.",
+    blocked: "Primero hay que certificar la fuente Tablet o configurar PRISMA_MOBILE_TABLET_ORIGIN."
   };
 
   return {

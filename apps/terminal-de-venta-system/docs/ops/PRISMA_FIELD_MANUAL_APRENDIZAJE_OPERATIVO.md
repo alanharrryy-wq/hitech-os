@@ -566,3 +566,107 @@ pnpm -C apps/terminal-de-venta-system run verify:customer-setup:multidevice
 **Rollback probado:** N/A. Rollback local es revertir los archivos source/docs/verifiers tocados.
 **Regla nueva:** No crear otro Control Center ni otro customer setup subsystem. Extender `Prisma Cloud Ctr`, `shared/licensing`, Cloud License Gateway source y las tres superficies con un contrato compartido. Source-ready no equivale a hosted PASS hasta deploy/D1 autorizados.
 **Notas:** Pendiente futuro: migrar nombres de package scripts solo con plan de compatibilidad; live Customer Setup requiere autorizacion explicita de deploy y migracion D1.
+
+
+<!-- PRISMA_ADMIN_TOKEN_GENERATION_RULE_20260705_F13:MANUAL_BEGIN -->
+## 2026-07-05 - Regla de generación y rotación de `PRISMA_ADMIN_TOKEN`
+
+**Tipo:** seguridad operativa / licencias / token admin.
+**Superficie:** Cloudflare Worker `licflow3`, Cloud Center 3160, License Admin Bridge.
+**Marcador interno:** `OPS-20260705-CLI000003-F13`.
+
+### Aprendizaje
+
+`PRISMA_ADMIN_TOKEN` no se recupera ni se lee desde Cloudflare. Los Cloudflare Worker secrets son write-only. Si se necesita un token admin nuevo, se genera localmente en memoria y se rota el secret anterior con flujo controlado.
+
+Forma validada:
+
+```python
+import secrets
+token = "prisma_" + secrets.token_urlsafe(48)
+```
+
+Luego se guarda como secret, sin imprimirlo:
+
+```text
+wrangler secret put PRISMA_ADMIN_TOKEN
+```
+
+o mediante `npx wrangler`, pasando el valor por stdin desde el proceso seguro.
+
+### Evidencia permitida
+
+Sólo se conserva fingerprint truncado:
+
+```python
+fingerprint = sha256(token)[:16]
+```
+
+Fingerprint observado en la última rotación operativa:
+
+```text
+aac47e57afec80b6
+```
+
+### Reglas
+
+- No pedir el token real en chat.
+- No imprimir el token.
+- No guardar el token en docs, logs, ZIPs, screenshots ni transcript de terminal.
+- No pegar el token en navegador.
+- No intentar leer un Cloudflare Worker secret viejo.
+- Al rotar, el token anterior queda inválido.
+- Cloud Center puede mostrar `READ_ONLY_ADMIN_TOKEN_PRESENT`, pero eso no significa que el valor esté disponible.
+- Si la consola no tiene `PRISMA_ADMIN_TOKEN`, usar bridge server-side o pedir autorización explícita para rotar uno nuevo.
+
+### Archivo canónico agregado
+
+Ver:
+
+```text
+apps/terminal-de-venta-system/docs/ops/PRISMA_LICENSING_ROTATION_RULE.md
+```
+<!-- PRISMA_ADMIN_TOKEN_GENERATION_RULE_20260705_F13:MANUAL_END -->
+<!-- PRISMA_LICENSING_OPERATOR_ADMIN_GUIDE_LINK_START -->
+## 2026-07-05 - PRISMA Licensing Operator/Admin Guide
+
+Se agregó/actualizó la guía operativa canónica:
+
+```text
+docs/ops/PRISMA_LICENSING_OPERATOR_ADMIN_GUIDE.md
+```
+
+Resumen operativo documentado:
+
+- Setup real: `PRISMA-SETUP-CLI-2026-000003`.
+- Cliente visible: `Prisma Rey`.
+- Tenant: `tenant_prisma_rey`.
+- Tenant slug: `prisma-rey`.
+- Tablet POS Slot: `1/1`.
+- PC Admin Slot: `1/1`.
+- Mobile Companion Slot: `1/1`.
+- Status customer-safe OK en los tres devices.
+- Refresh customer-safe OK en los tres devices.
+- Diagnostics sin token respondió `ADMIN_TOKEN_REQUIRED`, que es el bloqueo seguro esperado.
+- `secretsExposed=false` confirmado.
+
+Reglas reforzadas:
+
+- No usar `PRISMA-SETUP-STARTER` como setup real.
+- No pedir, imprimir, guardar ni pegar admin token.
+- No crear LICFLOW paralelo.
+- No deploy, D1 migration, Git write ni cambio de secrets sin autorización explícita.
+- Si hay duda de payload/contrato, recolectar mesh fresco antes de cualquier POST.
+- Antes de cualquier commit nuevo, correr AutoGit plan fresco.
+
+Evidencias principales:
+
+```text
+F:\descargasf\licmesh fresh 0507 083902 result.zip
+F:\descargasf\tablet claim 0507 084842 result.zip
+F:\descargasf\pcmobile mesh 0507 085634 result.zip
+F:\descargasf\pc mobile claim 0507 085915 result.zip
+F:\descargasf\licsetup 0507 085944 result.zip
+F:\descargasf\status refresh diag 0507 090852 result.zip
+```
+<!-- PRISMA_LICENSING_OPERATOR_ADMIN_GUIDE_LINK_END -->

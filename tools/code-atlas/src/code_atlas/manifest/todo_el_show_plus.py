@@ -9,6 +9,7 @@ from code_atlas.core.io_utils import human_bytes, iter_project_files, safe_rel, 
 from code_atlas.coverage.atlas_audit import CoverageAuditConfig, run_audit, save_audit
 from code_atlas.coverage.important_gate import evaluate_gate, save_gate
 from code_atlas.db_glass.reality_check import run_reality_check, save_reality_check
+from code_atlas.operational.evidence import run_operational_evidence
 
 
 def build_tree_text(root: Path) -> str:
@@ -31,6 +32,7 @@ def run_todo_plus(project_root: Path, output_dir: Path, *, atlas_paths: tuple[Pa
     gate_json, gate_md = save_gate(gate, output_dir)
     db = run_reality_check(root)
     db_json, db_md = save_reality_check(db, output_dir)
+    operational = run_operational_evidence(root, output_dir / "operational_evidence")
     tree_path = write_text(output_dir / "full_tree.txt", build_tree_text(root))
 
     manifest = {
@@ -42,6 +44,7 @@ def run_todo_plus(project_root: Path, output_dir: Path, *, atlas_paths: tuple[Pa
             "atlas_coverage_audit": {"validation": coverage.get("validation"), "json": str(cov_json), "md": str(cov_md), "counts": coverage.get("counts", {})},
             "important_files_gate": {"status": gate.get("status"), "json": str(gate_json), "md": str(gate_md), "blockers_count": gate.get("blockers_count", 0)},
             "db_reality_check": {"validation": db.get("validation"), "json": str(db_json), "md": str(db_md), "counts": db.get("counts", {}), "warnings": db.get("warnings", [])},
+            "operational_evidence_atlas": {"status": operational.get("production_readiness"), "production_certified": operational.get("production_certified", False), "output_dir": operational.get("output_dir"), "exports": operational.get("exports", {})},
             "tree": {"path": str(tree_path)},
         },
     }

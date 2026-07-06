@@ -4,6 +4,7 @@ import { buildSnapshotPayload } from "@/lib/prisma-app/mobile-data-plane/payload
 import { sourceFromRuntimeMode } from "@/lib/prisma-app/mobile-data-plane/runtime-mode";
 import { okMobileSnapshotResponse } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 

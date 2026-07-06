@@ -58,18 +58,20 @@ function dedupeAlerts(alerts: MobileAlert[]): MobileAlert[] {
 
 function dataQualityAlerts(report: DataQualityReport): DraftAlert[] {
   const alerts: DraftAlert[] = [];
+  const localSourceOk = report.sources.some((source) => source.id === "local" && source.status === "ok");
   for (const source of report.sources) {
     if (source.id === "local") continue;
     if (source.status === "ok") continue;
-    const severity: MobileAlert["severity"] = source.id === "tablet" && source.status !== "unknown" ? "high" : source.id === "pc" ? "medium" : "low";
+    const sourcePendingLabel = source.id === "tablet" && localSourceOk ? "heartbeat pendiente" : source.status === "unknown" ? "sin configurar" : "pendiente de certificación";
+    const severity: MobileAlert["severity"] = source.id === "tablet" && source.status !== "unknown" && !localSourceOk ? "high" : source.id === "pc" ? "medium" : "low";
     const sourceEvidence = evidence(`${source.id}-status`, `${source.label} status`, source.label, source.lastError ?? source.warnings[0] ?? source.status);
     alerts.push({
       category: source.id === "tablet" ? "DEVICE" : source.id === "pc" ? "HEALTH" : "AUDIT",
       severity,
-      title: `${source.label} ${source.status === "unknown" ? "no configurado" : "no respondió"}`,
+      title: `${source.label} ${sourcePendingLabel}`,
       summary: `${source.label} quedó en estado ${source.status}.`,
-      whyItMatters: source.id === "tablet" ? "Mobile pierde ventas, inventario operativo y outbox; Tablet puede seguir vendiendo localmente." : "La supervisión queda parcial y baja la confianza del snapshot.",
-      recommendedAction: source.id === "tablet" ? "Verificar Tablet POS y usar Mobile sólo como lectura degradada hasta recuperar fuente." : "Revisar la fuente cuando se requiera gobierno o auditoría fina.",
+      whyItMatters: source.id === "tablet" && localSourceOk ? "Mobile conserva lectura operativa local; el heartbeat aún no certifica disponibilidad." : source.id === "tablet" ? "Mobile requiere fuente operativa certificada para ventas, inventario y outbox." : "La supervisión queda parcial y baja la confianza del snapshot.",
+      recommendedAction: source.id === "tablet" ? "Certificar heartbeat Tablet sin tocar el proceso activo; Mobile sigue supervisando datos disponibles." : "Revisar la fuente cuando se requiera gobierno o auditoría fina.",
       source: source.label,
       sourceRef: source.id,
       confidence: report.confidence,
@@ -227,4 +229,3 @@ export function buildIntelligenceAlerts(state: MobileDataPlaneState, report: Dat
   const primaryRecommendedAction = alerts[0]?.recommendedAction ?? "Mantener supervisión normal y revisar el brief diario antes del cierre.";
   return AlertCenterSchema.parse({ alerts, counts, primaryRecommendedAction });
 }
-

@@ -107,6 +107,18 @@ export type SalesControlBranchSummary = {
   ticketRows: SalesControlTicket[];
 };
 
+export type SalesControlActivityWindow = {
+  label: string;
+  totalLabel: string;
+  netLabel: string;
+  ticketsLabel: string;
+  averageLabel: string;
+  branchCountLabel: string;
+  tabletCountLabel: string;
+  lastSaleAt: string;
+  sourceLine: string;
+};
+
 export type SalesControlViewModel = {
   roleLabel: string;
   syncHref: string;
@@ -119,6 +131,7 @@ export type SalesControlViewModel = {
   tabletCountLabel: string;
   updatedLabel: string;
   branches: SalesControlBranchSummary[];
+  recentActivity: SalesControlActivityWindow;
 };
 
 export type CommandCenterModel = {
@@ -238,6 +251,15 @@ function relativeLabel(value: unknown) {
 
 function sum(values: number[]) {
   return values.reduce((acc, value) => acc + value, 0);
+}
+
+function lastThirtyDayRange() {
+  const today = startOfDay(new Date());
+  return {
+    from: addDays(today, -29),
+    toExclusive: addDays(today, 1),
+    label: "Últimos 30 días"
+  };
 }
 
 function normalizeStatus(value: string | null | undefined) {
@@ -501,6 +523,43 @@ function serializeRowDetail(items: string[]) {
   return JSON.stringify({ items }, null, 2);
 }
 
+function buildSalesActivityWindow(input: {
+  label: string;
+  sales: any[];
+  returns: any[];
+  terminals: any[];
+  stores: any[];
+}) {
+  const terminalById = new Map(input.terminals.map((terminal: any) => [String(terminal.id), terminal]));
+  const branchIds = new Set<string>();
+  const tabletIds = new Set<string>();
+  let lastSaleTime = 0;
+  const totalCents = sum(input.sales.map((sale: any) => Number(sale.totalCents ?? 0)));
+  const returnCents = sum(input.returns.map((row: any) => Number(row.amountCents ?? 0)));
+
+  for (const sale of input.sales) {
+    const terminalId = String(sale.terminalId ?? "");
+    if (terminalId) tabletIds.add(terminalId);
+    const terminal = sale.terminal ?? terminalById.get(terminalId);
+    const storeId = String(terminal?.storeId ?? sale.cashSession?.storeId ?? "");
+    if (storeId) branchIds.add(storeId);
+    const saleTime = sale.createdAt ? new Date(sale.createdAt).getTime() : 0;
+    if (Number.isFinite(saleTime)) lastSaleTime = Math.max(lastSaleTime, saleTime);
+  }
+
+  return {
+    label: input.label,
+    totalLabel: money(totalCents),
+    netLabel: money(totalCents - returnCents),
+    ticketsLabel: numberLabel(input.sales.length),
+    averageLabel: money(input.sales.length ? Math.round(totalCents / input.sales.length) : 0),
+    branchCountLabel: numberLabel(branchIds.size || input.stores.length),
+    tabletCountLabel: numberLabel(tabletIds.size || input.terminals.length),
+    lastSaleAt: lastSaleTime ? dateLabel(new Date(lastSaleTime)) : "sin actividad en el periodo",
+    sourceLine: "canonical.db · Sale, SaleLine, SalePaymentTender, Store y Terminal"
+  } satisfies SalesControlActivityWindow;
+}
+
 
 
 function buildSalesControlView(input: {
@@ -512,6 +571,7 @@ function buildSalesControlView(input: {
   buckets: any[];
   totalCents: number;
   returnCents: number;
+  recentActivity: SalesControlActivityWindow;
 }) {
   const terminalById = new Map(input.terminals.map((terminal: any) => [String(terminal.id), terminal]));
   const storeById = new Map(input.stores.map((store: any) => [String(store.id), store]));
@@ -677,9 +737,10 @@ function buildSalesControlView(input: {
     ticketsLabel: numberLabel(input.sales.length),
     averageLabel: money(input.sales.length ? Math.round(totalCents / input.sales.length) : 0),
     branchCountLabel: numberLabel(branches.filter((branch) => branch.tickets > 0).length || branches.length),
-    tabletCountLabel: numberLabel(tabletIds.size),
+    tabletCountLabel: numberLabel(tabletIds.size || input.terminals.length),
     updatedLabel: dateLabel(new Date()),
-    branches
+    branches,
+    recentActivity: input.recentActivity
   } satisfies SalesControlViewModel;
 }
 
@@ -690,12 +751,14 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
   const limit = clampLimit(readParam(params, "limit"), 120);
   const query = readParam(params, "q").toLowerCase();
   const range = resolveDateRange(params);
+  const recentRange = lastThirtyDayRange();
   const blockedPanel = range.blocked ? [{ title: "Rango bloqueado", body: range.blocked, tone: "warn" as const }] : [];
   const where = range.blocked
     ? { businessId, id: "__blocked__" }
     : { businessId, createdAt: { gte: range.from, lt: range.toExclusive } };
+  const recentWhere = { businessId, createdAt: { gte: recentRange.from, lt: recentRange.toExclusive } };
 
-  const [salesRaw, returns, triDb, terminalsRaw, storesRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
+  const [salesRaw, returns, recentSalesRaw, recentReturnsRaw, triDb, terminalsRaw, storesRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
     safe(() => db.sale.findMany({
       where,
       include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } },
@@ -708,6 +771,18 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
       orderBy: { createdAt: "desc" },
       take: limit
     }), [] as any[]),
+    safe(() => db.sale.findMany({
+      where: recentWhere,
+      include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } },
+      orderBy: { createdAt: "desc" },
+      take: Math.max(limit, 500)
+    }), [] as any[]),
+    safe(() => db.saleReturn.findMany({
+      where: recentWhere,
+      include: { lines: true },
+      orderBy: { createdAt: "desc" },
+      take: Math.max(limit, 500)
+    }), [] as any[]),
     getTriDbStatusCard(),
     safe(() => db.terminal.findMany({ where: { businessId, isActive: true }, include: { store: true }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
     safe(() => db.store.findMany({ where: { businessId }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
@@ -716,6 +791,8 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     safe(() => db.syncOutboxStatusBucket.findMany({ where: { businessId }, orderBy: { bucketStartAt: "desc" }, take: 160 }), [] as any[])
   ]);
   const sales = filterByQuery(salesRaw, query);
+  const recentSales = filterByQuery(recentSalesRaw, query);
+  const recentReturns = filterByQuery(recentReturnsRaw, query);
   const terminals = terminalsRaw;
   const stores = storesRaw;
   const sessions = sessionsRaw;
@@ -810,7 +887,14 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     heartbeats,
     buckets,
     totalCents,
-    returnCents
+    returnCents,
+    recentActivity: buildSalesActivityWindow({
+      label: recentRange.label,
+      sales: recentSales,
+      returns: recentReturns,
+      terminals,
+      stores
+    })
   });
 
   const panels: CommandPanel[] = [
@@ -840,12 +924,13 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     title: "Control de ventas",
     description: "Auditoria y gobierno de ventas consolidadas desde la base canonica de PC.",
     periodLabel: range.label,
-    sourceLine: `Fuente: canonical DB. Rango: ${range.label}. Limite: ${limit}.`,
+    sourceLine: `Fuente: canonical.db. Rango actual: ${range.label}. Actividad reciente: ${recentRange.label}. Límite: ${limit}.`,
     independenceLine: "Tablet vende y consulta localmente; PC no es requisito para vender.",
     metrics: [
       { label: "Venta bruta", value: money(totalCents), note: "Suma de Sale.totalCents", tone: sales.length ? "ok" : "warn" },
       { label: "Tickets", value: numberLabel(sales.length), note: "Tickets consolidados PC" },
       { label: "Ticket promedio", value: money(sales.length ? Math.round(totalCents / sales.length) : 0), note: "Venta / tickets" },
+      { label: "Actividad reciente", value: salesControlView.recentActivity.netLabel, note: `${salesControlView.recentActivity.label} · ${salesControlView.recentActivity.ticketsLabel} tickets`, tone: recentSales.length ? "ok" : "warn" },
       { label: "Devoluciones", value: money(returnCents), note: "SaleReturn en rango", tone: returnCents ? "warn" : "ok" },
       { label: "Venta neta", value: money(totalCents - returnCents), note: "Bruta menos devoluciones" }
     ],
@@ -920,7 +1005,7 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
         emptyMessage: "Sin cajeros registrados en PC."
       }
     ],
-    diagnostics: { businessId, query, range, triDbSource: triDb.sourcePath, exportFormats: ["json", "csv"] },
+    diagnostics: { businessId, query, range, recentRange, recentActivity: salesControlView.recentActivity, triDbSource: triDb.sourcePath, exportFormats: ["json", "csv"] },
     actions: [
       { label: "Exportar JSON", href: "/api/backoffice/sales-control?format=json" },
       { label: "Exportar CSV", href: "/api/backoffice/sales-control?format=csv" }

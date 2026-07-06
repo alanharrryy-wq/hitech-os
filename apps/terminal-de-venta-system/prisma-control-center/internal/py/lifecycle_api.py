@@ -3302,6 +3302,8 @@ def _v6_analyze_db(db: dict[str, Any]) -> dict[str, Any]:
                 if count:
                     planned[table] = count
         for table in sorted(tset):
+            if table in _V6_CHART_SIGNATURES:
+                continue
             c = _v6_cols(con, table)
             clauses, params = _v6_signature_where(c)
             if not clauses:
@@ -3408,8 +3410,10 @@ def clear_preview(public: bool = False) -> dict[str, Any]:  # type: ignore[overr
         "hardeningVersion": HARDENING_VERSION,
         "clear_engine": "ledger_plus_signature",
         "records_to_clear": max(ledger_total, external_total),
+        "clear_candidates_open": max(ledger_total, external_total),
         "ledger_records_to_clear": ledger_total,
         "external_seed_records_to_clear": external_total,
+        "external_signature_records_to_clear": external_total,
         "by_domain": by_domain,
         "external_seed_scan": scan,
     })
@@ -3441,13 +3445,22 @@ def latest_dashboard(public: bool = False) -> dict[str, Any]:  # type: ignore[ov
                 domain["state"] = "generated"
             else:
                 domain["state"] = "manual_or_real"
+    total_db_rows = sum(int(domain.get("total") or 0) for domain in payload.get("domains", []) or [])
+    generated_lifecycle = sum(int(domain.get("generated") or 0) for domain in payload.get("domains", []) or [])
+    manual_or_base = sum(int(domain.get("manual_or_real") or 0) for domain in payload.get("domains", []) or [])
+    clear_candidates = max(ledger_total, external_total)
     payload.update({
         "apiVersion": API_VERSION,
         "hardeningVersion": HARDENING_VERSION,
         "clear_engine": "ledger_plus_signature",
         "ledger_records_open": ledger_total,
         "external_seed_records_open": external_total,
-        "generated_records_open": max(ledger_total, external_total),
+        "external_signature_records_open": external_total,
+        "clear_candidates_open": clear_candidates,
+        "total_db_rows_open": total_db_rows,
+        "generated_lifecycle_records_open": generated_lifecycle,
+        "manual_or_base_records_open": manual_or_base,
+        "generated_records_open": clear_candidates,
         "external_seed_scan": scan,
     })
     if public:

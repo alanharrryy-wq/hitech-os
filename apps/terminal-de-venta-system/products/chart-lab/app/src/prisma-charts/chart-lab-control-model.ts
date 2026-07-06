@@ -37,7 +37,7 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       defaultValue: "clean",
       options: scenarioOptions,
       affectedLayer: "data",
-      affectedDataTransform: "scales or suppresses mock values to preview state behavior",
+      affectedDataTransform: "scales or suppresses reference values to preview state behavior",
       validation: "value must be one of clean, critical, partial, stale, offline, dense",
       risk: "low",
       resetBehavior: "returns to clean",
@@ -422,7 +422,7 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
         { label: "Gateway noon", value: "gateway-noon" },
         { label: "Payments night", value: "payments-night" },
         { label: "Ops wave", value: "ops-wave" },
-        { label: "Stress demo", value: "stress-demo" }
+        { label: "Pressure range", value: "stress-demo" }
       ],
       affectedLayer: "series[0].data.value[2]",
       affectedDataTransform: "lab-only deterministic heat-zone transform for preview storytelling",
@@ -1027,7 +1027,7 @@ function applyScenario(option: Record<string, unknown>, scenario: LabChartScenar
   }
   const title = option.title;
   if (isRecord(title)) {
-    title.subtext = `${String(title.subtext ?? "")} | scenario=${scenario} mock/demo`;
+    title.subtext = `${String(title.subtext ?? "")} | scenario=${scenario} reference`;
   }
 }
 

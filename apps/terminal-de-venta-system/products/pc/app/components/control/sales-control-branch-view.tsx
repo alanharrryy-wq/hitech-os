@@ -314,12 +314,20 @@ function SalesOperationChecklist() {
 }
 
 function FinancialStrip({ model, view }: { model: CommandCenterModel; view: NonNullable<CommandCenterModel["salesControl"]> }) {
+  const recent = view.recentActivity;
   return (
-    <section className={styles.financialStrip} data-prisma-component="PcSalesFinancialStrip">
-      <div className={styles.primaryTotal}>
-        <span className={styles.kicker}>ledger operativo</span>
-        <strong>{view.netLabel}</strong>
-        <small>Venta neta · {model.periodLabel ?? "periodo actual"}</small>
+    <section className={styles.financialStrip} data-prisma-component="PcSalesFinancialStrip" data-prisma-recent-activity={recent.ticketsLabel}>
+      <div className={styles.financialLead}>
+        <div className={styles.primaryTotal}>
+          <span className={styles.kicker}>ledger operativo</span>
+          <strong>{view.netLabel}</strong>
+          <small>Venta neta · {model.periodLabel ?? "periodo actual"}</small>
+        </div>
+        <div className={styles.recentActivityTotal}>
+          <span className={styles.kicker}>actividad reciente</span>
+          <strong>{recent.netLabel}</strong>
+          <small>{recent.label} · {recent.ticketsLabel} tickets · último: {recent.lastSaleAt}</small>
+        </div>
       </div>
       <div className={styles.financialFacts}>
         <span><strong>{view.totalLabel}</strong><small>Venta bruta</small></span>
@@ -327,6 +335,7 @@ function FinancialStrip({ model, view }: { model: CommandCenterModel; view: NonN
         <span><strong>{view.averageLabel}</strong><small>Ticket promedio</small></span>
         <span><strong>{view.branchCountLabel}</strong><small>Sucursales</small></span>
         <span><strong>{view.tabletCountLabel}</strong><small>Tablets</small></span>
+        <span><strong>{recent.averageLabel}</strong><small>Promedio reciente</small></span>
       </div>
     </section>
   );

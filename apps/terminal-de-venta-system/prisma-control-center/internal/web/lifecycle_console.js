@@ -77,7 +77,10 @@
               <div class="lifecycleSealCard"><small>Clear candidates</small><strong id="lifecycleOpenRecords">-</strong></div>
               <div class="lifecycleSealCard"><small>Ledger open</small><strong id="lifecycleLedgerOpenRecords">-</strong></div>
               <div class="lifecycleSealCard"><small>External signature</small><strong id="lifecycleExternalOpenRecords">-</strong></div>
-              <div class="lifecycleSealCard"><small>DBs</small><strong id="lifecycleDbCount">-</strong></div>
+              <div class="lifecycleSealCard"><small>Total DB rows</small><strong id="lifecycleTotalDbRows">-</strong></div>
+              <div class="lifecycleSealCard"><small>Generated lifecycle</small><strong id="lifecycleGeneratedLifecycleRows">-</strong></div>
+              <div class="lifecycleSealCard"><small>Manual/base</small><strong id="lifecycleManualBaseRows">-</strong></div>
+              <div class="lifecycleSealCard"><small>DB files</small><strong id="lifecycleDbCount">-</strong></div>
             </div>
           </div>
         </div>
@@ -176,11 +179,17 @@
     const pin = $("#lifecyclePinState");
     if (pin) pin.textContent = payload.pin_required ? "Activo" : "Desactivado";
     const open = $("#lifecycleOpenRecords");
-    if (open) open.textContent = String(payload.generated_records_open ?? "-");
+    if (open) open.textContent = String(payload.clear_candidates_open ?? payload.generated_records_open ?? "-");
     const ledgerOpen = $("#lifecycleLedgerOpenRecords");
-    if (ledgerOpen) ledgerOpen.textContent = String(payload.ledger_records_open ?? payload.generated_records_open ?? "-");
+    if (ledgerOpen) ledgerOpen.textContent = String(payload.ledger_records_open ?? "-");
     const externalOpen = $("#lifecycleExternalOpenRecords");
-    if (externalOpen) externalOpen.textContent = String(payload.external_seed_records_open ?? "0");
+    if (externalOpen) externalOpen.textContent = String(payload.external_signature_records_open ?? payload.external_seed_records_open ?? "0");
+    const totalDbRows = $("#lifecycleTotalDbRows");
+    if (totalDbRows) totalDbRows.textContent = String(payload.total_db_rows_open ?? "-");
+    const generatedLifecycle = $("#lifecycleGeneratedLifecycleRows");
+    if (generatedLifecycle) generatedLifecycle.textContent = String(payload.generated_lifecycle_records_open ?? "-");
+    const manualBase = $("#lifecycleManualBaseRows");
+    if (manualBase) manualBase.textContent = String(payload.manual_or_base_records_open ?? "-");
     const dbCount = $("#lifecycleDbCount");
     if (dbCount) dbCount.textContent = String((payload.databases || []).length);
     const grid = $("#lifecycleDomainGrid");
