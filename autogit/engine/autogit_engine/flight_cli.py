@@ -16,6 +16,34 @@ import zipfile
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# AG98_IMPORT_BLOCK_V1
+try:
+    from .ag98_policy import (
+        is_sensitive_named_evidence_allowed as ag98_is_sensitive_named_evidence_allowed,
+        classify_commit_group as ag98_classify_commit_group,
+        messages_and_order as ag98_messages_and_order,
+    )
+    from .ag98_runtime import filter_changed_paths as ag98_filter_changed_paths
+    from .ag98_selfheal import autofix_staged_whitespace as ag98_autofix_staged_whitespace
+    from .ag98_dashboard import (
+        write_plan_dashboard as ag98_write_plan_dashboard,
+        write_apply_dashboard as ag98_write_apply_dashboard,
+        write_ci_decision as ag98_write_ci_decision,
+    )
+except Exception:
+    def ag98_is_sensitive_named_evidence_allowed(repo, rel): return False
+    def ag98_classify_commit_group(rel): return None
+    def ag98_messages_and_order(repo=None): return ({}, [])
+    def ag98_filter_changed_paths(repo, runner, changed_paths, report=None):
+        return {"committable_paths": changed_paths, "excluded": [], "blockers": [], "warnings": []}
+    def ag98_autofix_staged_whitespace(repo, runner, report, group_paths=None):
+        return {"ok": False, "fixed": [], "skipped": [], "disabled": True}
+    def ag98_write_plan_dashboard(*args, **kwargs): return None
+    def ag98_write_apply_dashboard(*args, **kwargs): return None
+    def ag98_write_ci_decision(*args, **kwargs): return None
+# /AG98_IMPORT_BLOCK_V1
+
+
 SCHEMA = "autogit.flight_control.v2"
 DEFAULT_OUT = Path(r"F:\descargasf")
 PROTECTED_BRANCHES = {"main", "master", "prod", "production", "release"}
@@ -124,6 +152,13 @@ def parse_status_z(raw: str):
     return out
 
 def classify_path(rel: str) -> str:
+    # AG98_CLASSIFY_GROUP_HOOK_V1
+    try:
+        _ag98_group = ag98_classify_commit_group(rel)
+        if _ag98_group:
+            return _ag98_group
+    except Exception:
+        pass
     p = rel.replace('\\','/')
     name = Path(p).name.lower()
     if name in LOCK_NAMES or name in PKG_NAMES:
@@ -159,6 +194,17 @@ MESSAGE_BY_GROUP = {
     "misc": "chore(prisma): update remaining files",
 }
 ORDER = ["tooling/autogit", "control-center/wrappers", "control-center/3160-runtime", "control-center", "docs", "deps", "app-surfaces", "tooling", "assets", "misc"]
+
+
+# AG98_ORDER_MESSAGE_OVERRIDE_V1
+try:
+    _ag98_messages, _ag98_order = ag98_messages_and_order()
+    MESSAGE_BY_GROUP.update(_ag98_messages)
+    if _ag98_order:
+        ORDER = _ag98_order + [g for g in ORDER if g not in _ag98_order]
+except Exception:
+    pass
+# /AG98_ORDER_MESSAGE_OVERRIDE_V1
 
 def read_json(p: Path):
     try: return json.loads(text_or_empty(p))
@@ -211,9 +257,14 @@ def autogit_prisma_licscope_sensitive_evidence_allowed_v3(rel: str) -> bool:
 
 def secret_scan_file(repo: Path, rel: str):
     p = repo / rel
+    # AG98_SENSITIVE_POLICY_HOOK_V1
+    try:
+        ag98_sensitive_allowlisted = ag98_is_sensitive_named_evidence_allowed(repo, rel)
+    except Exception:
+        ag98_sensitive_allowlisted = False
     if not p.exists() or not p.is_file(): return []
     allowlisted_sensitive_evidence = autogit_prisma_licscope_sensitive_evidence_allowed_v3(rel)
-    if is_sensitive_name(rel) and not allowlisted_sensitive_evidence:
+    if is_sensitive_name(rel) and not ((allowlisted_sensitive_evidence) or ag98_sensitive_allowlisted):
         return [{"path": rel, "severity": "BLOCKER", "kind": "sensitive_filename", "detail": "Sensitive filename changed; review manually."}]
     if not is_text_path(rel) or p.stat().st_size > MAX_TEXT_BYTES: return []
     text = text_or_empty(p)
@@ -371,6 +422,17 @@ def build_plan(args):
     status_raw = runner.run(["git","status","--porcelain=v1","-z","--untracked-files=all"], check=True, name="git_status_z").stdout
     status = parse_status_z(status_raw)
     changed_paths = sorted({x.get("path") for x in status if x.get("path")})
+    # AG98_RUNTIME_FILTER_HOOK_V1
+    ag98_preflight_blockers = []
+    ag98_preflight_warnings = []
+    ag98_noise_summary = {"committable_paths": changed_paths, "excluded": [], "blockers": [], "warnings": []}
+    try:
+        ag98_noise_summary = ag98_filter_changed_paths(repo, runner, changed_paths, report)
+        changed_paths = sorted(ag98_noise_summary.get("committable_paths", changed_paths))
+        ag98_preflight_blockers.extend(ag98_noise_summary.get("blockers") or [])
+        ag98_preflight_warnings.extend(ag98_noise_summary.get("warnings") or [])
+    except Exception as ag98_exc:
+        ag98_preflight_warnings.append({"severity": "WARNING", "kind": "ag98_runtime_filter_failed", "detail": repr(ag98_exc)})
     remote_text = sanitize_remote_text(runner.run(["git","remote","-v"], name="git_remotes").stdout)
     (report/"git_remote_sanitized.txt").write_text(remote_text, encoding="utf-8")
     (report/"git_status.json").write_text(json.dumps(status, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -388,7 +450,9 @@ def build_plan(args):
     lock_changed=[p for p in changed_paths if Path(p).name in LOCK_NAMES]
     if lock_changed:
         warnings.append({"severity":"WARNING", "kind":"lockfile_changed", "paths": lock_changed, "detail":"Lockfile changed; no-downgrade review required before merge."})
-    blockers = [*secret_rows, *downgrades, *vblockers]
+    # AG98_PREFLIGHT_BLOCKERS_HOOK_V1
+    warnings = [*ag98_preflight_warnings, *warnings]
+    blockers = [*ag98_preflight_blockers, *secret_rows, *downgrades, *vblockers]
     progress(45, "Agrupando commits")
     groups={}
     for rel in changed_paths:
@@ -427,6 +491,11 @@ def build_plan(args):
         }
     }
     plan["plan_id"] = hashlib.sha256(json.dumps({k:v for k,v in plan.items() if k!="plan_id"}, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:16]
+    # AG98_PLAN_DASHBOARD_HOOK_V1
+    try:
+        ag98_write_plan_dashboard(report, plan, ag98_noise_summary, validations)
+    except Exception as ag98_exc:
+        (report/"AG98_DASHBOARD_ERROR.txt").write_text(repr(ag98_exc), encoding="utf-8")
     progress(76, "Escribiendo plan lock")
     (report/"AUTOGIT_PLAN.lock.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
     md = [f"# AutoGit Flight Control Plan", "", f"Plan ID: `{plan['plan_id']}`", f"Task: {args.task}", f"Repo: `{repo}`", f"Branch: `{branch}`", f"HEAD: `{head}`", "", f"Blockers: {len(blockers)}", f"Warnings: {len(warnings)}", "", "## Commit groups"]
@@ -507,6 +576,12 @@ def apply_plan(args):
         diffq=runner.run(["git","diff","--cached","--quiet"], timeout=120, name=f"cached_quiet_{idx}")
         if diffq.returncode == 0:
             continue
+        # AG98_SELF_HEAL_CACHED_CHECK_V1
+        ag98_cached = runner.run(["git","diff","--cached","--check"], timeout=180, name=f"cached_diff_check_{idx}_before_ag98")
+        if ag98_cached.returncode != 0:
+            ag98_fix = ag98_autofix_staged_whitespace(repo, runner, report, paths)
+            if not ag98_fix.get("ok"):
+                runner.run(["git","diff","--cached","--check"], check=True, timeout=180, name=f"cached_diff_check_{idx}_after_ag98")
         runner.run(["git","diff","--cached","--check"], check=True, timeout=180, name=f"cached_diff_check_{idx}")
         runner.run(["git","commit","-m",g.get("message") or "chore(prisma): update files","-m",g.get("body") or "AutoGit Flight Control commit."], check=True, timeout=600, name=f"git_commit_{idx}")
         sha=runner.run(["git","rev-parse","HEAD"], check=True, name=f"head_after_commit_{idx}").stdout.strip()
@@ -532,6 +607,11 @@ def apply_plan(args):
             progress(84, "Esperar checks")
             chk=runner.run(["gh","pr","checks",url,"--watch","--fail-fast"], timeout=args.check_timeout, name="gh_pr_checks")
             checks={"returncode":chk.returncode,"stdout":chk.stdout,"stderr":chk.stderr,"ok":chk.returncode==0 or "no checks" in (chk.stdout+chk.stderr).lower()}
+            # AG98_CI_DECISION_APPLY_HOOK_V1
+            try:
+                ag98_write_ci_decision(report, chk.stdout, chk.stderr, chk.returncode, context="apply_pr_checks")
+            except Exception:
+                pass
             if not checks["ok"]:
                 raise FlightError("GitHub checks failed; merge blocked")
         if args.allow_merge:
@@ -543,6 +623,11 @@ def apply_plan(args):
             if m.returncode != 0:
                 raise FlightError("PR merge failed")
     summary={"result":"ok","branch":branch,"created_commits":created,"pr":pr,"checks":checks,"merged":merged,"rollback":"Use generated revert commands; no reset --hard was executed."}
+    # AG98_APPLY_DASHBOARD_HOOK_V1
+    try:
+        ag98_write_apply_dashboard(report, summary)
+    except Exception as ag98_exc:
+        (report/"AG98_DASHBOARD_ERROR.txt").write_text(repr(ag98_exc), encoding="utf-8")
     (report/"summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     (report/"REVERT_COMMANDS.ps1").write_text(make_revert_script(created), encoding="utf-8")
     (report/"REPORT.md").write_text(make_apply_md(summary), encoding="utf-8")
@@ -583,12 +668,31 @@ def merge_command(args):
         raise FlightError("gh CLI no encontrado")
     if args.wait_checks:
         chk=runner.run(["gh","pr","checks",args.pr,"--watch","--fail-fast"], timeout=args.check_timeout, name="gh_pr_checks")
+        # AG98_CI_DECISION_MERGE_HOOK_V1
+        try:
+            ag98_write_ci_decision(report, chk.stdout, chk.stderr, chk.returncode, context="merge_pr_checks")
+        except Exception:
+            pass
         if chk.returncode != 0 and "no checks" not in (chk.stdout+chk.stderr).lower():
             raise FlightError("Checks failed; merge blocked")
     elif not args.allow_merge_no_checks:
         raise FlightError("Merge requires --wait-checks or --allow-merge-no-checks")
     m=runner.run(["gh","pr","merge",args.pr,"--merge","--delete-branch"], timeout=600, name="gh_pr_merge")
     summary={"result":"ok" if m.returncode==0 else "failed", "returncode":m.returncode, "stdout":m.stdout, "stderr":m.stderr}
+    # AG98_SYNC_LOCAL_MAIN_HOOK_V1
+    if m.returncode == 0 and getattr(args, "sync_local_main", False):
+        sync_steps = []
+        for _cmd, _name in [
+            (["git", "fetch", "origin", "main"], "ag98_sync_fetch_main"),
+            (["git", "checkout", "main"], "ag98_sync_checkout_main"),
+            (["git", "pull", "--ff-only", "origin", "main"], "ag98_sync_pull_main"),
+            (["git", "status", "--short", "--branch"], "ag98_sync_status_main"),
+        ]:
+            _cp = runner.run(_cmd, timeout=600, name=_name)
+            sync_steps.append({"cmd": _cmd, "returncode": _cp.returncode, "stdout": _cp.stdout, "stderr": _cp.stderr})
+            if _cp.returncode != 0:
+                raise FlightError("AG98 local main sync failed")
+        summary["sync_local_main"] = sync_steps
     (report/"summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     zip_path=out/f"autogit merge {stamp} result.zip" if m.returncode==0 else out/f"autogit merge {stamp} fail.zip"
     make_zip(report, zip_path)
@@ -600,6 +704,12 @@ def fail_zip(out: Path, report: Path|None, exc: BaseException):
     stamp=now_stamp(); fail=out/f"autogit flight {stamp} fail"
     fail.mkdir(parents=True, exist_ok=True)
     (fail/"ERROR.txt").write_text(repr(exc), encoding="utf-8")
+    # AG98_FAIL_ZIP_STATUS_HOOK_V1
+    try:
+        _status = subprocess.run(["git", "status", "--short", "--branch"], cwd=str(Path.cwd()), text=True, encoding="utf-8", errors="replace", stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60)
+        (fail/"git_status_failure.txt").write_text((_status.stdout or "") + (_status.stderr or ""), encoding="utf-8", errors="replace")
+    except Exception:
+        pass
     if report and report.exists():
         dest=fail/"partial_report"; shutil.copytree(report,dest,dirs_exist_ok=True)
     zip_path=out/f"autogit flight {stamp} fail.zip"; make_zip(fail, zip_path)
@@ -612,7 +722,7 @@ def main(argv=None):
     sub=ap.add_subparsers(dest="cmd", required=True)
     p=sub.add_parser("plan"); p.add_argument("--task", required=True); p.add_argument("--base", default="main")
     a=sub.add_parser("apply-plan"); a.add_argument("--plan", required=True); a.add_argument("--task", default=""); a.add_argument("--base", default="main"); a.add_argument("--branch"); a.add_argument("--remote", default="origin"); a.add_argument("--allow-commit", action="store_true"); a.add_argument("--allow-push", action="store_true"); a.add_argument("--allow-pr", action="store_true"); a.add_argument("--allow-merge", action="store_true"); a.add_argument("--allow-merge-no-checks", action="store_true"); a.add_argument("--wait-checks", action="store_true"); a.add_argument("--check-timeout", type=int, default=1800); a.add_argument("--pr-title"); a.add_argument("--allow-drift", action="store_true")
-    m=sub.add_parser("merge"); m.add_argument("--pr", required=True); m.add_argument("--allow-merge", action="store_true"); m.add_argument("--allow-merge-no-checks", action="store_true"); m.add_argument("--wait-checks", action="store_true"); m.add_argument("--check-timeout", type=int, default=1800)
+    m=sub.add_parser("merge"); m.add_argument("--pr", required=True); m.add_argument("--allow-merge", action="store_true"); m.add_argument("--allow-merge-no-checks", action="store_true"); m.add_argument("--wait-checks", action="store_true"); m.add_argument("--check-timeout", type=int, default=1800); m.add_argument("--sync-local-main", action="store_true")  # AG98_SYNC_LOCAL_MAIN_ARG_V1
     ns=ap.parse_args(argv)
     out=Path(ns.out or DEFAULT_OUT); report=None
     try:
