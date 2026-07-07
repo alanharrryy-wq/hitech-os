@@ -1446,16 +1446,11 @@ body {
 
 
 /* PRISMA_PC_READABILITY_SCROLL_ESMX_04 START */
-.sidebar { height: calc(100dvh - 44px); max-height: calc(100dvh - 44px); overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+.sidebar { height: auto; max-height: none; overflow: visible; display: flex; flex-direction: column; min-height: 0; }
 .brand-block, .footer-stack { flex: 0 0 auto; }
-.sidebar-main-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-right: 4px; margin-right: -4px; scrollbar-width: thin; scrollbar-color: rgba(255, 216, 143, 0.42) rgba(255, 255, 255, 0.06); }
-.sidebar-main-scroll::-webkit-scrollbar { width: 8px; }
-.sidebar-main-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 999px; }
-.sidebar-main-scroll::-webkit-scrollbar-thumb { background: rgba(255, 216, 143, 0.46); border-radius: 999px; }
-.sidebar-main-scroll .sidebar-panel { flex: 0 0 auto; }
 .sidebar-nav-panel, .sidebar-utility-panel { overflow: visible; }
 #contenido-principal:focus { outline: 2px solid rgba(255, 216, 143, 0.58); outline-offset: 10px; }
-@media (max-width: 1180px) { .sidebar { height: auto; max-height: none; overflow: visible; } .sidebar-main-scroll { max-height: none; overflow: visible; padding-right: 0; margin-right: 0; } }
+@media (max-width: 1180px) { .sidebar { height: auto; max-height: none; overflow: visible; } }
 /* PRISMA_PC_READABILITY_SCROLL_ESMX_04 END */
 
 /* PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 START */
@@ -1465,24 +1460,15 @@ body {
   }
 
   .sidebar {
-    position: sticky;
-    top: 14px;
-    height: calc(100dvh - 28px);
-    max-height: calc(100dvh - 28px);
+    position: relative;
+    top: auto;
+    height: auto;
+    max-height: none;
     min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     display: block;
     padding-bottom: 18px;
     scrollbar-gutter: stable both-edges;
-  }
-
-  .sidebar-main-scroll {
-    display: block;
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-    margin-right: 0;
   }
 
   .brand-block,
@@ -1990,8 +1976,6 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a,
   transform: translateY(1px) scale(0.992);
 }
 
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar-main-scroll::-webkit-scrollbar-thumb,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar-main-scroll::-webkit-scrollbar-thumb,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, rgba(21, 87, 255, 0.42), rgba(115, 154, 230, 0.24));
@@ -2041,7 +2025,6 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-
 }
 
 .sidebar,
-.sidebar-main-scroll,
 .app-sidebar,
 nav[aria-label="Navegación principal"] {
   scrollbar-gutter: auto;
@@ -2087,14 +2070,6 @@ nav[aria-label="Navegación principal"] {
   border-radius: 26px;
   object-fit: contain;
   filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
-}
-
-.brand-block.prisma-brand-image-card {
-  min-height: 188px;
-  padding: 16px 12px;
-  background:
-    radial-gradient(circle at 50% 16%, rgba(55, 145, 255, 0.22), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(239, 246, 255, 0.7));
 }
 
 .prisma-home {
@@ -2501,20 +2476,17 @@ nav[aria-label="Navegación principal"] {
 html,
 body,
 .shell,
-.sidebar,
-.sidebar-main-scroll {
+.sidebar {
   scrollbar-color: rgba(55, 118, 224, 0.3) transparent;
 }
 
 *::-webkit-scrollbar-track,
-.sidebar::-webkit-scrollbar-track,
-.sidebar-main-scroll::-webkit-scrollbar-track {
+.sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
 
 *::-webkit-scrollbar-thumb,
-.sidebar::-webkit-scrollbar-thumb,
-.sidebar-main-scroll::-webkit-scrollbar-thumb {
+.sidebar::-webkit-scrollbar-thumb {
   background: rgba(55, 118, 224, 0.28);
   border-radius: 999px;
   border: 2px solid transparent;
@@ -2646,16 +2618,8 @@ body,
   width: min(194px, 86%);
   height: auto;
   object-fit: contain;
-  border-radius: 0;
+  border-radius: 18px;
   filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
-}
-
-.brand-block.prisma-brand-image-card {
-  min-height: 188px;
-  padding: 16px 12px;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(55, 145, 255, 0.20), transparent 44%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.80), rgba(239, 246, 255, 0.72));
 }
 
 @media (max-width: 1280px) {

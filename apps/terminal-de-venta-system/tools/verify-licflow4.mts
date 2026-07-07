@@ -63,6 +63,8 @@ function modeAdminBridge(): void {
   assert(server.includes("is_local_operator_request()"), "Mutating bridge routes must enforce local operator requests.");
   assert(bridge.includes("X-Prisma-Admin-Token"), "Backend bridge must send admin token server-side.");
   assert(bridge.includes("_read_admin_token_for_bridge()"), "Backend bridge must read token only inside bridge action path.");
+  assert(bridge.includes('def _license_id('), "Backend bridge must normalize licenseId with licenseKey alias compatibility.");
+  assert(bridge.includes('"licenseId": license_id'), "Backend bridge must forward canonical licenseId to Worker.");
   assert(ui.includes("License Admin Bridge"), "Cloud Command Center does not render License Admin Bridge status.");
   for (const action of ["activate", "refresh", "revoke"]) {
     assert(ui.includes(`bridgeForm("${action}"`), `Cloud Command Center lacks ${action} bridge form.`);
@@ -108,6 +110,9 @@ function modeConfirmations(): void {
     "ADMIN_ACTION_CONFIRMATION_REQUIRED",
     "confirmRevoke",
     "REVOKE_LICENSE",
+    "licenseId",
+    "licenseKey",
+    "mutationMode",
     "REVOKE_CONFIRMATION_REQUIRED",
     "INVALID_ADMIN_ACTION_PAYLOAD",
     "DRY_RUN_READY",
@@ -118,10 +123,14 @@ function modeConfirmations(): void {
   }
   assert(ui.includes("data-bridge-confirm") && ui.includes("bridge-confirm-${esc(action)}"), "UI lacks explicit action confirmations.");
   assert(ui.includes("bridge-phrase-revoke"), "UI lacks revoke phrase field.");
+  assert(bridge.includes('"confirmAdminLicenseAction"') && bridge.includes('"confirmRevoke"'), "Bridge outbound payload must preserve Worker confirmation fields.");
+  assert(bridge.includes('"dryRun": dry_run') && bridge.includes('"mutationMode": "simulation" if dry_run else "confirmed"'), "Bridge outbound payload must keep simulation separate from confirmed operations.");
+  assert(bridge.includes('"reason"') && bridge.includes("REVOKE_LICENSE"), "Bridge must preserve revoke reason and phrase.");
   pass("verify:licflow4:confirmations", {
     confirmationField: "confirmAdminLicenseAction",
     revokePhrase: "REVOKE_LICENSE",
-    dryRunOnlyCheck: true
+    dryRunOnlyCheck: true,
+    canonicalLicenseId: true
   });
 }
 

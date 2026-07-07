@@ -38,6 +38,7 @@ No browser, no screenshots, no deploy, no D1 live operation, and no new runtime 
 - The worker creates the setup bundle.
 - The worker creates device claim slots from plan limits.
 - The bundle carries setup code, setup link, setup QR payload, expiration, and audit id.
+- The Worker emits sanitized `customer_setup.create` and `customer_setup.plan_based_provision` audit events.
 - Tablet, PC, and Mobile claim against prepared slots.
 - Claims cannot exceed per-surface plan limits.
 - `manualDeviceClaimRequired = false`.
@@ -58,4 +59,4 @@ PASS when the verifier succeeds.
 
 ## Fail Conditions
 
-FAIL if the operator must create claims manually by device, if plan -> slots is absent, if no setup bundle exists, if no audit exists, if surface limits are not derived from the plan, or if a device claim can be made without license and plan linkage.
+FAIL if the operator must create claims manually by device, if plan -> slots is absent, if no setup bundle exists, if either `customer_setup.create` or `customer_setup.plan_based_provision` audit evidence is absent, if surface limits are not derived from the plan, or if a device claim can be made without license and plan linkage.

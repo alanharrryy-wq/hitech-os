@@ -209,7 +209,7 @@
         ["D1", licflow3.d1 || "prisma_cloud_semilla"],
         ["Smoke sin token", "401 protected-route response"]
       ]), licflow3.hostedCloudEvidenceStatus || "LICFLOW3_CLOUDFLARE_ROUTES_LIVE")}
-      ${card("Endpoints", "Contrato configurado", listRows(endpoints.map((item) => ({ name: item.key, status: `${item.configured ? "CONFIGURADO" : "FALTA"} ${item.method} ${item.configuredPath || item.path}` })), "Sin contrato LICFLOW3"), "CONTRACT")}
+      ${card("Endpoints", "Contrato configurado", listRows(endpoints.map((item) => ({ name: item.key, status: `${item.configured ? "CONFIGURADO" : "FALTA"} ${item.method} ${item.configuredPath || item.path} · ${(item.routeTags || []).join(", ") || "sin-clasificacion"}` })), "Sin contrato LICFLOW3"), "CONTRACT")}
     </div>`;
   }
 

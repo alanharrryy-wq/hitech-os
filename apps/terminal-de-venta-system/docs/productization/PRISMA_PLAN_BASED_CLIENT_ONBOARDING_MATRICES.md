@@ -60,7 +60,8 @@ Flow detail:
 | Tablet claim | setup code + tablet device | `claimCustomerDevice` | claimed tablet slot | Tablet consumes prepared slot. |
 | PC claim | setup code + pc device | `claimCustomerDevice` | claimed pc slot | PC consumes prepared slot if plan allows pc. |
 | Mobile claim | setup code + mobile device | `claimCustomerDevice` | claimed mobile slot | Mobile consumes prepared slot if plan allows mobile. |
-| Audit | provisioning payload | `recordAudit` | `customer_setup.plan_based_provision` | audit exists and carries plan/license/bundle evidence. |
+| Audit create | setup payload | `recordAudit` | `customer_setup.create` | audit exists and carries sanitized setup creation evidence. |
+| Audit provisioning | provisioning payload | `recordAudit` | `customer_setup.plan_based_provision` | audit exists and carries plan/license/bundle evidence. |
 
 ## PASS Rules
 

@@ -1017,16 +1017,9 @@
 
 /* PRISMA PC Suppliers UX v08 - global import bridge.
    Este archivo se importa desde app/layout.tsx. La v07 falló visualmente porque suppliers.css no estaba cargado por Next. */
-html[data-theme] .sidebar-main-scroll,
 html[data-theme] .app-shell-sidebar,
 html[data-theme] .app-sidebar-scroll {
   min-height: 0;
-}
-html[data-theme] .sidebar-main-scroll {
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  padding-right: 4px;
 }
 html[data-theme] .supplier-readable-v07 .reason-callout-v07 summary {
   text-transform: uppercase;

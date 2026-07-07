@@ -671,3 +671,87 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* PRISMA_PC_SALES_CONTROL_CLOUDGLASS_V3_START
+   Local module finish for /sales-control. Keep readable cloudglass, remove dark-text-on-dark residue, no force flags.
+*/
+.salesLedger {
+  color: rgba(238, 248, 255, 0.93);
+}
+
+.salesLedger :is(.ledgerHero, .financialStrip, .ledgerShell, .branchRail, .branchSummary, .branchBody, .ticketDetail, .ticketTableWrap, .paymentStrip, .cashActionDock, .operationChecklist, .addBranchDock, .emptyState, .tabletCard, .evidenceNote) {
+  background: linear-gradient(145deg, rgba(6, 19, 34, 0.62), rgba(12, 32, 52, 0.40));
+  border-color: rgba(148, 220, 255, 0.20);
+  color: rgba(238, 248, 255, 0.93);
+  box-shadow: 0 24px 78px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(230, 248, 255, 0.08);
+  backdrop-filter: blur(18px) saturate(136%);
+}
+
+.salesLedger :is(.ledgerHero, .branchSummary, .ticketDetail) {
+  background: linear-gradient(145deg, rgba(5, 17, 31, 0.68), rgba(13, 34, 55, 0.42));
+}
+
+.salesLedger :is(.branchCard, .ticketDisclosure, .ticketSplit > *, .ticketDetailGrid > *, .paymentList li, .financialFacts span) {
+  background: linear-gradient(145deg, rgba(11, 35, 56, 0.48), rgba(4, 16, 30, 0.30));
+  border-color: rgba(155, 222, 255, 0.16);
+  color: rgba(229, 242, 251, 0.90);
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 1), .ticketSplit > *:nth-child(3n + 1), .financialFacts span:nth-child(3n + 1)) {
+  background: linear-gradient(145deg, rgba(9, 58, 77, 0.38), rgba(5, 20, 36, 0.28));
+  border-color: rgba(103, 232, 249, 0.22);
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 2), .ticketSplit > *:nth-child(3n + 2), .financialFacts span:nth-child(3n + 2)) {
+  background: linear-gradient(145deg, rgba(70, 53, 17, 0.34), rgba(8, 22, 37, 0.27));
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 3), .ticketSplit > *:nth-child(3n + 3), .financialFacts span:nth-child(3n + 3)) {
+  background: linear-gradient(145deg, rgba(18, 67, 52, 0.32), rgba(7, 21, 36, 0.27));
+  border-color: rgba(52, 211, 153, 0.20);
+}
+
+.salesLedger :is(h1, h2, h3, h4, strong, .primaryTotal, .recentActivityTotal, .amountCell, .branchSummary strong, .paymentList strong, .ticketDetailHeader h3, .operationChecklist strong, .tabletCard strong) {
+  color: rgba(249, 253, 255, 0.97);
+  text-shadow: 0 0 16px rgba(103, 232, 249, 0.12);
+}
+
+.salesLedger :is(p, span, small, label, td, th, .updatedNote, .financialLead, .branchStats, .tabletCard span) {
+  color: rgba(214, 231, 242, 0.86);
+}
+
+.salesLedger :is(.okPill, .warnPill, .statusPill) {
+  background: linear-gradient(145deg, rgba(10, 31, 49, 0.58), rgba(5, 19, 33, 0.38));
+  border-color: rgba(155, 222, 255, 0.22);
+  color: rgba(234, 246, 255, 0.92);
+}
+
+.salesLedger .okPill {
+  border-color: rgba(52, 211, 153, 0.35);
+  color: rgba(181, 255, 225, 0.96);
+}
+
+.salesLedger .warnPill {
+  border-color: rgba(251, 191, 36, 0.36);
+  color: rgba(255, 225, 158, 0.96);
+}
+
+.salesLedger :is(a, button, .syncButton, .inlineActions button, .ticketActionBoard a, .cashActionForm button, .addBranchForm button) {
+  background: linear-gradient(145deg, rgba(13, 50, 70, 0.66), rgba(5, 21, 37, 0.52));
+  color: rgba(247, 253, 255, 0.94);
+  border-color: rgba(103, 232, 249, 0.30);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(223, 249, 255, 0.10);
+}
+
+.salesLedger :is(input, select, textarea) {
+  background: linear-gradient(145deg, rgba(3, 15, 29, 0.72), rgba(11, 30, 49, 0.48));
+  color: rgba(247, 253, 255, 0.94);
+  border-color: rgba(142, 218, 255, 0.24);
+}
+
+.ticketDetailGrid,
+.ticketSplit {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+/* PRISMA_PC_SALES_CONTROL_CLOUDGLASS_V3_END */

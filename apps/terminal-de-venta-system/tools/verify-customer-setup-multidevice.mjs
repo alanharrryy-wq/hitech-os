@@ -163,6 +163,7 @@ function assertPlanBasedProvisioningReadonly() {
     "consumeClaimSlot",
     "PLAN_BASED_CUSTOMER_ONBOARDING_READY",
     "PLAN_PROVISIONING_SCHEMA_REQUIRED",
+    "customer_setup.create",
     "customer_setup.plan_based_provision",
     "claimSlotsCreated",
     "manualDeviceClaimRequired: false",
@@ -217,10 +218,16 @@ function assertPlanBasedProvisioningReadonly() {
     "plan -> slots",
     "setup bundle",
     "audit",
+    "customer_setup.create",
+    "customer_setup.plan_based_provision",
     "VERIFY_PLAN_BASED_PROVISIONING_READONLY"
   ]) {
     assert(`${opsMap}\n${productization}\n${e2e012}`.includes(token), `Plan onboarding docs missing ${token}`);
   }
+  const smoke = read("tools/smoke-licops-e2e.mjs");
+  const legacyCreatedResultCode = ["CUSTOMER_SETUP", "CREATED"].join("_");
+  assert(smoke.includes('resultCode: "PLAN_BASED_CUSTOMER_ONBOARDING_READY"'), "Live Customer Setup smoke must expect the canonical plan-based resultCode.");
+  assert(!smoke.includes(`resultCode: "${legacyCreatedResultCode}"`), `Live Customer Setup smoke still expects legacy ${legacyCreatedResultCode}.`);
   assert(e2e012.includes("E2E_012_PLAN_BASED_CLIENT_ONBOARDING"), "Missing E2E_012 plan onboarding spec/result.");
 }
 
