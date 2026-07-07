@@ -123,6 +123,25 @@ def text_or_empty(p: Path) -> str:
         return p.read_text(encoding="utf-8", errors="replace")
     except Exception:
         return ""
+# AG98_JSON_VALIDATION_LARGE_JSON_V1
+def json_text_for_validation(p: Path) -> str:
+    # Read JSON for validation without the small evidence-text cap.
+    # text_or_empty() stays capped for evidence snapshots.
+    if not p.exists() or not p.is_file():
+        return ""
+    try:
+        max_json_bytes = max(int(globals().get("MAX_TEXT_BYTES", 0)) * 64, 64 * 1024 * 1024)
+    except Exception:
+        max_json_bytes = 64 * 1024 * 1024
+    try:
+        if p.stat().st_size > max_json_bytes:
+            return ""
+        return p.read_bytes().decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return p.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return ""
+# /AG98_JSON_VALIDATION_LARGE_JSON_V1
 
 def is_text_path(rel: str) -> bool:
     return Path(rel).suffix.lower() in TEXT_EXTS or Path(rel).name in {"package.json", "pnpm-lock.yaml", "yarn.lock"}
@@ -207,7 +226,7 @@ except Exception:
 # /AG98_ORDER_MESSAGE_OVERRIDE_V1
 
 def read_json(p: Path):
-    try: return json.loads(text_or_empty(p))
+    try: return json.loads(json_text_for_validation(p))
     except Exception: return None
 
 def version_tuple(v: str):
@@ -340,7 +359,7 @@ def validate_changed_files(repo: Path, runner: Runner, changed_paths: list[str],
         suf=p.suffix.lower(); name=p.name.lower()
         if suf == ".json" or name == "package.json":
             try:
-                json.loads(text_or_empty(p))
+                json.loads(json_text_for_validation(p))
                 rows.append({"path":rel,"check":"json_parse","ok":True})
             except Exception as e:
                 rows.append({"path":rel,"check":"json_parse","ok":False,"error":repr(e)})
