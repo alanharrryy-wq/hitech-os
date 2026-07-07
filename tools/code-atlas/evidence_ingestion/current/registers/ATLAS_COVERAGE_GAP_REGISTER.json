@@ -1,0 +1,50 @@
+{
+  "kind": "ATLAS_COVERAGE_GAP_REGISTER.v1",
+  "status": "PASS_ATLAS_COVERAGE_AUDIT_RECONCILED_WITH_KNOWN_GAPS",
+  "validation": "PASS_WITH_KNOWN_GAPS_NOT_COMPLETE",
+  "counts": {
+    "project_files": 6433,
+    "package_files": 12183,
+    "important_paths": 91,
+    "atlas_nodes": 533,
+    "kept_paths": 23,
+    "missing_important": 35,
+    "missing_atlas_nodes": 398,
+    "missing_kept": 20,
+    "extras_vs_kept": 6430
+  },
+  "confirmedGaps": {
+    "missingImportant": 35,
+    "missingAtlasNodes": 398,
+    "missingKept": 20
+  },
+  "doesNotProve": [
+    "Atlas semantic coverage complete",
+    "All workspaces runtime verified",
+    "Production readiness"
+  ],
+  "nextGate": "BUILD_SURFACE_AWARE_ATLAS_NODE_RESOLVER_OR_ACCEPT_KNOWN_GAPS",
+  "sourceStatusBeforeReconciliation": "WARN_ATLAS_COVERAGE_INCOMPLETE",
+  "coverageComplete": false,
+  "semanticAtlasComplete": false,
+  "knownGapCounts": {
+    "project_files": 6433,
+    "package_files": 12183,
+    "important_paths": 91,
+    "atlas_nodes": 533,
+    "kept_paths": 23,
+    "missing_important": 35,
+    "missing_atlas_nodes": 398,
+    "missing_kept": 20,
+    "extras_vs_kept": 6430
+  },
+  "reconciliation": {
+    "importantFilesGate": "PASS_IMPORTANT_FILES_GATE_RECONCILED",
+    "importantBlockersRemaining": 0,
+    "unresolvedImports": "PASS_UNRESOLVED_IMPORTS_VERIFIED_AND_CLASSIFIED",
+    "unclassifiedLiveEdges": 0,
+    "dbReality": "WARN_DB_REALITY_GHOST_RELATIONS_CLASSIFIED"
+  },
+  "closedAs": "AUDIT_RECONCILED_NOT_SEMANTICALLY_COMPLETE",
+  "updatedAt": "2026-07-07T01:11:35"
+}

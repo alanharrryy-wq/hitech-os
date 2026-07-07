@@ -1,0 +1,417 @@
+{
+  "kind": "DB_REALITY_INDEX.v1",
+  "status": "WARN_DB_REALITY_GHOST_RELATIONS_CLASSIFIED",
+  "sourceValidation": "PASS",
+  "warnings": [
+    "ghost_relations_classified_not_fixed_in_schema",
+    "ghost_relations_detected"
+  ],
+  "counts": {
+    "sqlite_files": 6,
+    "prisma_schemas": 6,
+    "migrations": 21,
+    "seeds": 7,
+    "env_files": 4,
+    "api_route_candidates": 198,
+    "ghost_relations": 14
+  },
+  "ghostRelations": [
+    {
+      "sqlite": "Prisma Cloud Ctr/internal/data/prisma-command-center.db",
+      "from_table": "CatalogOption",
+      "from_column": "catalogId",
+      "to_table": "Catalog",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "Prisma Cloud Ctr/internal/data/prisma-command-center.db",
+      "from_table": "CatalogOtherSubmission",
+      "from_column": "catalogId",
+      "to_table": "Catalog",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "GoodsReceiptLine",
+      "from_column": "purchaseOrderLineId",
+      "to_table": "PurchaseOrderLine",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "OutboxEvent",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncAttempt",
+      "from_column": "outboxEventId",
+      "to_table": "OutboxEvent",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncAttempt",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncCheckpoint",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncConflict",
+      "from_column": "outboxEventId",
+      "to_table": "OutboxEvent",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncConflict",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncOutboxStatusBucket",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "GoodsReceiptLine",
+      "from_column": "purchaseOrderLineId",
+      "to_table": "PurchaseOrderLine",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "OutboxEvent",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "SyncCheckpoint",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "TabletLocalSecuritySecret",
+      "from_column": "businessId",
+      "to_table": "Business",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it"
+    }
+  ],
+  "nextGate": "DB_SCHEMA_CONTRACT_DECISION_QUEUE",
+  "ghostRelationsClassified": [
+    {
+      "sqlite": "Prisma Cloud Ctr/internal/data/prisma-command-center.db",
+      "from_table": "CatalogOption",
+      "from_column": "catalogId",
+      "to_table": "Catalog",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "Prisma Cloud Ctr/internal/data/prisma-command-center.db",
+      "from_table": "CatalogOtherSubmission",
+      "from_column": "catalogId",
+      "to_table": "Catalog",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "GoodsReceiptLine",
+      "from_column": "purchaseOrderLineId",
+      "to_table": "PurchaseOrderLine",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "OutboxEvent",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncAttempt",
+      "from_column": "outboxEventId",
+      "to_table": "OutboxEvent",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncAttempt",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncCheckpoint",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncConflict",
+      "from_column": "outboxEventId",
+      "to_table": "OutboxEvent",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncConflict",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/pc/app/data/canonical.db",
+      "from_table": "SyncOutboxStatusBucket",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "GoodsReceiptLine",
+      "from_column": "purchaseOrderLineId",
+      "to_table": "PurchaseOrderLine",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "OutboxEvent",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "SyncCheckpoint",
+      "from_column": "terminalId",
+      "to_table": "Terminal",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "SYNC_OUTBOX_TERMINAL_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    },
+    {
+      "sqlite": "products/tablet/app/data/tablet-pos.db",
+      "from_table": "TabletLocalSecuritySecret",
+      "from_column": "businessId",
+      "to_table": "Business",
+      "to_column": "id",
+      "inferred": true,
+      "risk": true,
+      "reason": "column name looks like a foreign key but SQLite does not declare it",
+      "classificationStatus": "CLASSIFIED_GHOST_RELATION_REQUIRES_SCHEMA_OR_MIGRATION_PROOF",
+      "gateImpact": "WARNING_NOT_SOURCE_PATCH",
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION",
+      "doesNotProve": [
+        "SQLite declared FK exists",
+        "Prisma relation exists",
+        "runtime lineage is production-certified"
+      ]
+    }
+  ],
+  "ghostRelationsUnclassified": 0,
+  "updatedAt": "2026-07-07T01:11:35"
+}

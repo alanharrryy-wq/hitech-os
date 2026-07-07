@@ -56,7 +56,7 @@ NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
 VisibilityPreset = Literal["executive", "engineering", "raw"]
-OutputMode = Literal["svg", "tree", "tree_html", "black_glass", "db_black_glass_erd", "todo_el_show"]
+OutputMode = Literal["svg", "tree", "tree_html", "black_glass", "db_black_glass_erd", "todo_el_show", "db_evidence_atlas"]
 
 
 # ----------------------------
@@ -3735,6 +3735,21 @@ def _coerce_output_mode(value: Any) -> OutputMode:
         "full suite",
     }:
         return "todo_el_show"
+    # CODE_ATLAS_DB_EVIDENCE_ATLAS_MODE_V01
+    if cleaned in {
+        "db_evidence_atlas",
+        "db evidence atlas",
+        "db evidence",
+        "database evidence",
+        "database evidence atlas",
+        "dbevid",
+        "evidence_atlas",
+        "evidence atlas",
+        "operational evidence",
+        "operational_evidence",
+    }:
+        return "db_evidence_atlas"
+    # /CODE_ATLAS_DB_EVIDENCE_ATLAS_MODE_V01
     if cleaned in {
         "db_black_glass_erd",
         "db_erd",
@@ -5290,6 +5305,10 @@ def create_button(
         default=bool(default),
         minimum_width=int(minimum_width) if minimum_width > 0 else None,
     )
+    # CODE_ATLAS_BUTTON_VARIANT_PROPERTY_V01
+    normalized_variant = _clean_text(variant or "secondary").lower() or "secondary"
+    button.setProperty("variant", normalized_variant)
+    # /CODE_ATLAS_BUTTON_VARIANT_PROPERTY_V01
     button.setEnabled(enabled)
     button.setAutoDefault(bool(default) if auto_default is None else bool(auto_default))
 
@@ -5298,8 +5317,9 @@ def create_button(
         "secondary": 14,
         "success": 22,
         "danger": 16,
+        "evidence": 24,
     }.get((variant or "secondary").strip().lower(), 14)
-    shadow_blur = 16.0 if (variant or "").strip().lower() == "primary" else 12.0
+    shadow_blur = 16.0 if (variant or "").strip().lower() in {"primary", "evidence"} else 12.0
 
     apply_shadow(button, blur=shadow_blur, y_offset=4.0, alpha=shadow_alpha)
     repolish(button)
@@ -5599,6 +5619,16 @@ class SelectorDialog(QDialog):
             minimum_width=164,
         )
 
+        # CODE_ATLAS_DB_EVIDENCE_ATLAS_BUTTON_V01
+        self.db_evidence_atlas_button = create_button(
+            "DB Evidence Atlas",
+            "evidence",
+            self.confirm_db_evidence_atlas,
+            tooltip="Genera DB Evidence Atlas: evidencia row-level, clientes, licencias, devices, ventas, lineage, schema drift, runtime links y production gate readiness en un solo ZIP.",
+            minimum_width=184,
+        )
+        # /CODE_ATLAS_DB_EVIDENCE_ATLAS_BUTTON_V01
+
         # CODE_ATLAS_MOTOR_HUB_BUTTON_V01
         self.motor_hub_button = create_button(
             "Motores PRISMA",
@@ -5626,6 +5656,9 @@ class SelectorDialog(QDialog):
         footer_bottom_row.addStretch(1)
         footer_bottom_row.addWidget(self.todo_el_show_button, 0)
         footer_bottom_row.addWidget(self.db_black_glass_erd_button, 0)
+        # CODE_ATLAS_DB_EVIDENCE_ATLAS_FOOTER_V01
+        footer_bottom_row.addWidget(self.db_evidence_atlas_button, 0)
+        # /CODE_ATLAS_DB_EVIDENCE_ATLAS_FOOTER_V01
         # CODE_ATLAS_MOTOR_HUB_FOOTER_V01
         footer_bottom_row.addWidget(self.motor_hub_button, 0)
         # /CODE_ATLAS_MOTOR_HUB_FOOTER_V01
@@ -6067,6 +6100,36 @@ class SelectorDialog(QDialog):
             output_mode="db_black_glass_erd",
         )
         self.accept()
+
+    # CODE_ATLAS_DB_EVIDENCE_ATLAS_METHOD_V01
+    def confirm_db_evidence_atlas(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar DB Evidence Atlas",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="db_evidence_atlas",
+        )
+        self.accept()
+
+    # /CODE_ATLAS_DB_EVIDENCE_ATLAS_METHOD_V01
 
     # CODE_ATLAS_MOTOR_HUB_METHOD_V01
     def open_motor_hub(self) -> None:
@@ -11891,6 +11954,19 @@ def build_app_stylesheet(theme_id: str) -> str:
         background: {_qss_vertical_gradient(secondary_hover_top, secondary_hover_bottom)};
         border: 1px solid {input_hover};
     }}
+
+    /* CODE_ATLAS_DB_EVIDENCE_ATLAS_QSS_V01 */
+    QPushButton[variant="evidence"] {{
+        color: {selection_fg};
+        background: {_qss_vertical_gradient(primary_top, success_bottom)};
+        border: 1px solid {input_hover};
+    }}
+
+    QPushButton[variant="evidence"]:hover {{
+        background: {_qss_vertical_gradient(primary_hover_top, success_hover_bottom)};
+        border: 1px solid {good_chip_border};
+    }}
+    /* /CODE_ATLAS_DB_EVIDENCE_ATLAS_QSS_V01 */
 
     QPushButton[variant="success"] {{
         color: {selection_fg};
@@ -20762,6 +20838,235 @@ def _db_black_glass_related_artifacts(output_path: Path) -> list[Path]:
     return [path for path in candidates if path.is_file()]
 
 
+
+# CODE_ATLAS_DB_EVIDENCE_ATLAS_RUNNER_V01
+DB_EVIDENCE_ATLAS_RAW_DB_SUFFIXES = {".db", ".sqlite", ".sqlite3"}
+DB_EVIDENCE_ATLAS_RAW_DB_NAME_MARKERS = ("-wal", "-shm", "-journal", ".wal", ".shm", ".journal")
+
+
+def _db_evidence_atlas_downloads_root() -> Path:
+    return _code_atlas_safe_downloads_root()
+
+
+def _db_evidence_atlas_is_raw_database(path: Path) -> bool:
+    name = path.name.lower()
+    if path.suffix.lower() in DB_EVIDENCE_ATLAS_RAW_DB_SUFFIXES:
+        return True
+    return any(name.endswith(marker) for marker in DB_EVIDENCE_ATLAS_RAW_DB_NAME_MARKERS)
+
+
+def _db_evidence_atlas_add_tree(zf: zipfile.ZipFile, root: Path, prefix: str, skipped: list[str]) -> int:
+    added = 0
+    if not root.exists():
+        return added
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        if _db_evidence_atlas_is_raw_database(path):
+            skipped.append(str(path))
+            continue
+        arc = prefix.strip("/") + "/" + path.relative_to(root).as_posix()
+        zf.write(path, arc)
+        added += 1
+    return added
+
+
+def _db_evidence_atlas_call_runner(runner: Callable[..., Any], repo_root: Path, output_dir: Path, result_root: Path) -> Any:
+    attempts: list[tuple[tuple[Any, ...], dict[str, Any]]] = [
+        ((str(repo_root), str(output_dir), str(result_root)), {}),
+        ((str(repo_root), str(output_dir)), {}),
+        ((), {"repo_root": str(repo_root), "output_dir": str(output_dir), "result_root": str(result_root)}),
+        ((), {"repo": str(repo_root), "out": str(output_dir), "result_root": str(result_root)}),
+        ((), {"repo": str(repo_root), "output_dir": str(output_dir)}),
+    ]
+    last_type_error = ""
+    for args, kwargs in attempts:
+        try:
+            return runner(*args, **kwargs)
+        except TypeError as exc:
+            last_type_error = str(exc)
+            continue
+    raise TypeError(f"No compatible run_operational_atlas signature accepted the monolith call: {last_type_error}")
+
+
+def _db_evidence_atlas_write_zip(
+    *,
+    zip_path: Path,
+    staging_root: Path,
+    output_dir: Path,
+    manifest: dict[str, Any],
+    status: str,
+    error_text: str = "",
+) -> Path:
+    skipped_raw_databases: list[str] = []
+    zip_settings = _code_atlas_zip_settings()
+    manifest = dict(manifest)
+    manifest.update(
+        {
+            "kind": "db_evidence_atlas_single_zip_v1",
+            "status": status,
+            "final_zip": str(zip_path),
+            "output_policy": "single_final_zip_in_downloads_root",
+            "raw_databases_included": False,
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+        }
+    )
+    if error_text:
+        manifest["error"] = error_text
+
+    with zipfile.ZipFile(zip_path, "w", **zip_settings) as zf:
+        zf.writestr("manifest/db_evidence_atlas_manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+        zf.writestr("reports/DB_EVIDENCE_ATLAS_RESULT.md", "\n".join([
+            "# DB Evidence Atlas",
+            "",
+            f"- Status: `{status}`",
+            f"- Final ZIP: `{zip_path}`",
+            f"- Raw DBs included: `False`",
+            f"- Generated: `{manifest['generated_at']}`",
+            "",
+            "This ZIP is generated by the Code Atlas monolith launcher and delegates heavy evidence logic to `code_atlas.operational`.",
+            "",
+            error_text if error_text else "Generation completed.",
+        ]) + "\n")
+        if output_dir.exists():
+            _db_evidence_atlas_add_tree(zf, output_dir, "db_evidence_atlas", skipped_raw_databases)
+        if staging_root.exists():
+            logs_root = staging_root / "logs"
+            if logs_root.exists():
+                _db_evidence_atlas_add_tree(zf, logs_root, "logs", skipped_raw_databases)
+        zf.writestr("manifest/skipped_raw_databases.json", json.dumps(skipped_raw_databases, ensure_ascii=False, indent=2))
+
+    if not zip_path.exists() or zip_path.stat().st_size <= 0:
+        raise RuntimeError(f"No se pudo validar el ZIP DB Evidence Atlas generado: {zip_path}")
+    return zip_path
+
+
+# CODE_ATLAS_DB_EVIDENCE_VIEWER_REFINED_HOOK_V01
+def _db_evidence_atlas_refine_viewer(output_dir: Path, logs_root: Path, manifest: dict[str, Any]) -> None:
+    """Post-process DB Evidence Atlas HTML into the refined human viewer."""
+    try:
+        from code_atlas.operational.viewer_refined import rewrite_operational_viewer
+        viewer_result = rewrite_operational_viewer(output_dir=output_dir, manifest=manifest)
+        manifest["viewer_refined"] = viewer_result
+        logs_root.mkdir(parents=True, exist_ok=True)
+        (logs_root / "viewer_refined.json").write_text(json.dumps(viewer_result, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception:
+        logs_root.mkdir(parents=True, exist_ok=True)
+        (logs_root / "viewer_refined_error.txt").write_text(traceback.format_exc(), encoding="utf-8")
+        raise
+# /CODE_ATLAS_DB_EVIDENCE_VIEWER_REFINED_HOOK_V01
+
+
+def run_db_evidence_atlas(
+    selected_path: str,
+    *,
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para DB Evidence Atlas no existe:\n\n{selected_scope}")
+
+    repo_root = _code_atlas_repo_root()
+    downloads_root = _db_evidence_atlas_downloads_root()
+    stamp = datetime.now().strftime("%d%m %H%M")
+    final_zip_path = _code_atlas_unique_file_path(downloads_root, f"dbevid {stamp} result", ".zip")
+    fail_zip_path = _code_atlas_unique_file_path(downloads_root, f"dbevid {stamp} fail", ".zip")
+    staging_root = downloads_root / f"_dbevid_work_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{os.getpid()}"
+    output_dir = staging_root / "operational_output"
+    result_root = staging_root / "result"
+    logs_root = staging_root / "logs"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result_root.mkdir(parents=True, exist_ok=True)
+    logs_root.mkdir(parents=True, exist_ok=True)
+
+    manifest: dict[str, Any] = {
+        "selected_path": str(selected_path),
+        "selected_scope": str(selected_scope),
+        "repo_root": str(repo_root),
+        "downloads_root": str(downloads_root),
+        "monolith_launcher_only": True,
+        "runner_module": "code_atlas.operational.run_operational_atlas",
+        "zip_base": "dbevid",
+    }
+
+    try:
+        if notify is not None:
+            notify("DB Evidence Atlas · cargando runner modular...", str(repo_root))
+        src_root = Path(__file__).expanduser().resolve().parent / "src"
+        if str(src_root) not in sys.path:
+            sys.path.insert(0, str(src_root))
+        from code_atlas.operational import run_operational_atlas
+
+        if notify is not None:
+            notify("DB Evidence Atlas · generando evidencia row-level...", str(selected_scope))
+        runner_result = _db_evidence_atlas_call_runner(run_operational_atlas, repo_root, output_dir, result_root)
+        manifest["runner_result_type"] = type(runner_result).__name__
+        manifest["runner_result_repr"] = repr(runner_result)[:2000]
+        (logs_root / "runner_result.json").write_text(json.dumps({"repr": repr(runner_result)}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        # CODE_ATLAS_DB_EVIDENCE_VIEWER_REFINED_CALL_V01
+        if notify is not None:
+            notify("DB Evidence Atlas · refinando viewer elegante...", str(output_dir / "operational_evidence_atlas.html"))
+        _db_evidence_atlas_refine_viewer(output_dir, logs_root, manifest)
+        # /CODE_ATLAS_DB_EVIDENCE_VIEWER_REFINED_CALL_V01
+
+        expected_names = {
+            "ATLAS_MANIFEST_PLUS.json",
+            "operational_evidence_atlas.html",
+            "operational_evidence_atlas.json",
+            "placeholder_ledger.json",
+            "CAN_PATCH_DECISION.md",
+            "WHY_THIS_IS_RED.md",
+        }
+        generated_names = {path.name for path in output_dir.rglob("*") if path.is_file()}
+        missing = sorted(expected_names - generated_names)
+        manifest["expected_outputs"] = sorted(expected_names)
+        manifest["missing_expected_outputs"] = missing
+        manifest["generated_file_count"] = sum(1 for path in output_dir.rglob("*") if path.is_file())
+        if missing:
+            raise RuntimeError("DB Evidence Atlas no generó outputs esperados: " + ", ".join(missing))
+
+        if notify is not None:
+            notify("DB Evidence Atlas · empaquetando ZIP único...", str(final_zip_path))
+        return _db_evidence_atlas_write_zip(
+            zip_path=final_zip_path,
+            staging_root=staging_root,
+            output_dir=output_dir,
+            manifest=manifest,
+            status="PASS_DB_EVIDENCE_ATLAS_RESULT_ZIP_CREATED",
+        )
+    except Exception as exc:
+        error_text = traceback.format_exc()
+        try:
+            (logs_root / "ERROR.txt").write_text(error_text, encoding="utf-8")
+            _db_evidence_atlas_write_zip(
+                zip_path=fail_zip_path,
+                staging_root=staging_root,
+                output_dir=output_dir,
+                manifest=manifest,
+                status="FAIL_DB_EVIDENCE_ATLAS_RESULT_ZIP_CREATED",
+                error_text=error_text,
+            )
+        except Exception:
+            pass
+        raise RuntimeError(f"DB Evidence Atlas falló. Se generó diagnóstico si fue posible: {fail_zip_path}") from exc
+    finally:
+        try:
+            if staging_root.exists():
+                shutil.rmtree(staging_root, ignore_errors=True)
+        except Exception:
+            pass
+
+
+def build_db_evidence_atlas_success_footer_text(output_path: Path) -> str:
+    return "\n".join(
+        [
+            f"ZIP: {short_path(str(output_path), 92)}",
+            "DB Evidence Atlas listo. Cierra esta ventana para generar otro reporte. El ZIP se abrirá al cerrar.",
+        ]
+    )
+# /CODE_ATLAS_DB_EVIDENCE_ATLAS_RUNNER_V01
+
 def run_todo_el_show_bundle(
     selected_path: str,
     *,
@@ -21062,6 +21367,41 @@ def main() -> int:
                 destroy_progress_ui(progress)
                 progress = None
                 continue
+
+            # CODE_ATLAS_DB_EVIDENCE_ATLAS_DISPATCH_V01
+            if output_mode == "db_evidence_atlas":
+                notify("Preparando DB Evidence Atlas...", str(Path(state.project_root)))
+                output_path = run_db_evidence_atlas(
+                    state.selected_path,
+                    notify=notify,
+                )
+                notify("Validando DB Evidence Atlas...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el ZIP DB Evidence Atlas generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "DB Evidence Atlas listo.",
+                    "\n".join(
+                        [
+                            "ZIP único generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            "Salida: F:\\descargasf",
+                        ]
+                    ),
+                )
+                _set_progress_footer(
+                    progress,
+                    build_db_evidence_atlas_success_footer_text(output_path),
+                )
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+            # /CODE_ATLAS_DB_EVIDENCE_ATLAS_DISPATCH_V01
 
             if output_mode == "db_black_glass_erd":
                 notify("Preparando DB Glass ERD...", str(Path(state.project_root)))

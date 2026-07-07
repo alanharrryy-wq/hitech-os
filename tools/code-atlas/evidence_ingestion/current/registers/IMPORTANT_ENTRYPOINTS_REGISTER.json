@@ -1,0 +1,1654 @@
+{
+  "kind": "IMPORTANT_ENTRYPOINTS_REGISTER.v1",
+  "status": "PASS_IMPORTANT_FILES_GATE_RECONCILED",
+  "sourceStatus": "FAIL",
+  "blockersCount": 0,
+  "sourceCounts": {
+    "project_files": 6433,
+    "package_files": 12183,
+    "important_paths": 91,
+    "atlas_nodes": 533,
+    "kept_paths": 23,
+    "missing_important": 35,
+    "missing_atlas_nodes": 398,
+    "missing_kept": 20,
+    "extras_vs_kept": 6430
+  },
+  "items": [
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center",
+      "normalized": "prisma-control-center",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Cloud Center"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_TO_CANONICAL_REPO_PATH",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "Legacy/root-relative item mapped to canonical repo path.",
+      "ownerRoles": [
+        "Cloud Center"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "analysis/all_app_shared_dependency_hits.json",
+      "normalized": "analysis/all_app_shared_dependency_hits.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "ANALYSIS_ARTIFACT_NOT_LIVE_REPO_NODE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Analysis artifact belongs to prior evidence ZIP.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "config/prisma-visual-os/*",
+      "normalized": "config/prisma-visual-os/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Visual"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/config/prisma-visual-os/ai-doctor-policy-00y.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/doctor-policy-00x.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/final-stabilization-00zf.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/guards",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/presets",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/prisma-visual-controls.active.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/recipes",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/tree-reorg-00za.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/tree-reorg-00zc.json",
+        "apps/terminal-de-venta-system/config/prisma-visual-os/tree-reorg-close-00ze.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/adoption-scorecard.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/archive-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-capability-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-engine-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-governance-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-runtime-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/atlas-source-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/authority-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/chart-lab-usage-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/cleanup-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/component-catalog.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/component-variants.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/context-motors-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/context-motors.map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/context-motors.usage.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/context-packaging-policy.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/domain-contracts.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/generator-contracts.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/layer-budget.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/library-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/migration-tiers.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/mobile-usage-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/pc-usage-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/recipe-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/screen-blueprints.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/surface-adapters.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/tablet-premium-implementation-1006.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/tablet-usage-map.json",
+        "apps/terminal-de-venta-system/config/prisma-visual/visual-debt-map.json"
+      ],
+      "resolvedCount": 40,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Visual"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "docs/atlas/_incoming/mobile/atlas.mobile.json",
+      "normalized": "docs/atlas/_incoming/mobile/atlas.mobile.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Docs",
+        "Mobile"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_TO_CANONICAL_ATLAS_DOC",
+      "resolvedPaths": [
+        "products/mobile/app/docs/atlas/atlas.mobile.json"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "_incoming Atlas reference mapped to canonical atlas file.",
+      "ownerRoles": [
+        "Docs",
+        "Mobile"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "docs/atlas/_incoming/pc",
+      "normalized": "docs/atlas/_incoming/pc",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Docs"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "DOC_OR_INCOMING_REFERENCE_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Documentation/incoming reference is not a live node by default.",
+      "ownerRoles": [
+        "Docs"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "docs/atlas/_incoming/pc/atlas.pc.json",
+      "normalized": "docs/atlas/_incoming/pc/atlas.pc.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Docs",
+        "PC"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_TO_CANONICAL_ATLAS_DOC",
+      "resolvedPaths": [
+        "products/pc/app/docs/atlas/atlas.pc.json"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "_incoming Atlas reference mapped to canonical atlas file.",
+      "ownerRoles": [
+        "Docs",
+        "PC"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "docs/atlas/_incoming/shared-core/atlas.shared-core.json",
+      "normalized": "docs/atlas/_incoming/shared-core/atlas.shared-core.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Docs",
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_TO_CANONICAL_ATLAS_DOC",
+      "resolvedPaths": [
+        "docs/atlas/atlas.shared-core.json"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "_incoming Atlas reference mapped to canonical atlas file.",
+      "ownerRoles": [
+        "Docs",
+        "Shared Core"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "docs/atlas/_incoming/tablet/atlas.tablet.json",
+      "normalized": "docs/atlas/_incoming/tablet/atlas.tablet.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Docs",
+        "Tablet"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_TO_CANONICAL_ATLAS_DOC",
+      "resolvedPaths": [
+        "products/tablet/app/docs/atlas/atlas.tablet.json"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "_incoming Atlas reference mapped to canonical atlas file.",
+      "ownerRoles": [
+        "Docs",
+        "Tablet"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/blackbox_bridge.py",
+      "normalized": "internal/py/blackbox_bridge.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/blackbox_bridge.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/blackbox_command_api.py",
+      "normalized": "internal/py/blackbox_command_api.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/blackbox_command_api.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/cloudflare_supervisor.py",
+      "normalized": "internal/py/cloudflare_supervisor.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Cloudflare"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/cloudflare_supervisor.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloudflare"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/config_loader.py",
+      "normalized": "internal/py/config_loader.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/config_loader.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/health_checks.py",
+      "normalized": "internal/py/health_checks.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/health_checks.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/license_ops_api.py",
+      "normalized": "internal/py/license_ops_api.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Licensing"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/license_ops_api.py",
+        "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/license_ops_api.py"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Licensing"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/local_supervisor.py",
+      "normalized": "internal/py/local_supervisor.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/local_supervisor.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/ops_command_api.py",
+      "normalized": "internal/py/ops_command_api.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/ops_command_api.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/panel_3150.py",
+      "normalized": "internal/py/panel_3150.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/panel_3150.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/ports_inspector.py",
+      "normalized": "internal/py/ports_inspector.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Tests/Verifiers"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/ports_inspector.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Tests/Verifiers"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/prisma_control_center.py",
+      "normalized": "internal/py/prisma_control_center.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/prisma_control_center.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/process_classifier.py",
+      "normalized": "internal/py/process_classifier.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/process_classifier.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/quality_command_api.py",
+      "normalized": "internal/py/quality_command_api.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/quality_command_api.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/release_status_api.py",
+      "normalized": "internal/py/release_status_api.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/release_status_api.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/report_writer.py",
+      "normalized": "internal/py/report_writer.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/report_writer.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/safe_actions.py",
+      "normalized": "internal/py/safe_actions.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/safe_actions.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "file:internal/py/services_registry.py",
+      "normalized": "internal/py/services_registry.py",
+      "itemKind": "file_reference",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_INTERNAL_PY_BY_FILENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/prisma-control-center/internal/py/services_registry.py"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "file:internal/py reference mapped to live file.",
+      "ownerRoles": [
+        "Cloud Center",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "http.server",
+      "normalized": "http.server",
+      "itemKind": "external_import_or_module",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "products/shared-ui/prisma/*",
+      "normalized": "products/shared-ui/prisma/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared UI"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/GOLDEN_VISUAL_SPEC.md",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/README.md",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/adapters",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/brand",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/components",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/effects",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/recipes",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/templates",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/tokens",
+        "apps/terminal-de-venta-system/products/shared-ui/prisma/visual-os"
+      ],
+      "resolvedCount": 10,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Shared UI"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "shared/contracts/*",
+      "normalized": "shared/contracts/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/shared/contracts/api-response-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/error-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/event-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/pc-tablet-catalog-delta.v1.json",
+        "apps/terminal-de-venta-system/shared/contracts/pc-tablet-governance-command.v1.json",
+        "apps/terminal-de-venta-system/shared/contracts/permission-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/prisma-round2-event-map.v1.json",
+        "apps/terminal-de-venta-system/shared/contracts/schema-compatibility-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/screen-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/security-audit-permissions.v1.json",
+        "apps/terminal-de-venta-system/shared/contracts/sync-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/sync-event-contract.v1.json",
+        "apps/terminal-de-venta-system/shared/contracts/ui",
+        "apps/terminal-de-venta-system/shared/contracts/ui-state-contract.md",
+        "apps/terminal-de-venta-system/shared/contracts/verticals",
+        "packages/contracts/README.md",
+        "packages/contracts/package.json",
+        "packages/contracts/schemas",
+        "packages/contracts/src",
+        "packages/contracts/tests",
+        "packages/contracts/tools",
+        "packages/contracts/tsconfig.json",
+        "packages/contracts/tsconfig.tsbuildinfo"
+      ],
+      "resolvedCount": 23,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Shared Core"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "shared/licensing/*",
+      "normalized": "shared/licensing/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Licensing",
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/shared/licensing/adlant4-local-issuer.ts",
+        "apps/terminal-de-venta-system/shared/licensing/canonical-json.ts",
+        "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts",
+        "apps/terminal-de-venta-system/shared/licensing/feature-keys.ts",
+        "apps/terminal-de-venta-system/shared/licensing/feature-resolver.ts",
+        "apps/terminal-de-venta-system/shared/licensing/index.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-audit-events.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-errors.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-gate.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-governor.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-loader.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-normalizer.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-paths.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-public-keys.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-refresh-client.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-refresh-config.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-refresh-state.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-schema.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-signature.ts",
+        "apps/terminal-de-venta-system/shared/licensing/license-types.ts",
+        "apps/terminal-de-venta-system/shared/licensing/licflow2-activation.ts",
+        "apps/terminal-de-venta-system/shared/licensing/licflow3-cloud-contract.ts",
+        "apps/terminal-de-venta-system/shared/licensing/local-license-store.ts",
+        "apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json",
+        "apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts",
+        "apps/terminal-de-venta-system/shared/licensing/signed-license-types.ts"
+      ],
+      "resolvedCount": 26,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Licensing",
+        "Shared Core"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "shared/twin-kernel/src/*",
+      "normalized": "shared/twin-kernel/src/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/data",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/index.ts",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/runtime",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/sync",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/types",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/validation"
+      ],
+      "resolvedCount": 6,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Shared Core"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "styles/prisma-visual-os/*",
+      "normalized": "styles/prisma-visual-os/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Visual"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css",
+        "apps/terminal-de-venta-system/styles/prisma-visual-os/prisma-visual-controls.generated.css",
+        "apps/terminal-de-venta-system/styles/prisma-visual-os/prisma-visual-layers.css"
+      ],
+      "resolvedCount": 3,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Visual"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "templates/prisma-atlas.schema.json",
+      "normalized": "templates/prisma-atlas.schema.json",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "urllib.error",
+      "normalized": "urllib.error",
+      "itemKind": "external_import_or_module",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "urllib.parse",
+      "normalized": "urllib.parse",
+      "itemKind": "external_import_or_module",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_important_entrypoints",
+      "pathOrNode": "urllib.request",
+      "normalized": "urllib.request",
+      "itemKind": "external_import_or_module",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "../../../shared/twin-kernel/src/*",
+      "normalized": "../../../shared/twin-kernel/src/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "Shared Core"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "SQLite schema/migration/seeds/runtime smoke for canonical/backoffice/global model.",
+      "normalized": "SQLite schema/migration/seeds/runtime smoke for canonical/backoffice/global model.",
+      "itemKind": "path_or_node",
+      "roles": [
+        "DB",
+        "Tests/Verifiers"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "DB",
+        "Tests/Verifiers"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "migration-tiers.json",
+      "normalized": "migration-tiers.json",
+      "itemKind": "file_path",
+      "roles": [
+        "DB"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/config/prisma-visual/migration-tiers.json"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "prisma/migrations/*",
+      "normalized": "prisma/migrations/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "DB"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "DB"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "prisma/seeds/*",
+      "normalized": "prisma/seeds/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "DB"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "DB"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "products/pc/app/src/lib/suppliers/**",
+      "normalized": "products/pc/app/src/lib/suppliers/**",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "PC"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "PC"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "products/pc/app/src/modules/**/module.manifest.ts",
+      "normalized": "products/pc/app/src/modules/**/module.manifest.ts",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "PC"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "PC"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "python tools/validate_package.py .",
+      "normalized": "python tools/validate_package.py .",
+      "itemKind": "command_text",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "python tools/validate_package.py . && tsc --noEmit",
+      "normalized": "python tools/validate_package.py . && tsc --noEmit",
+      "itemKind": "command_text",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "UNRESOLVED_CLASSIFIED",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "No live path found; classified so it is no longer an uninspected blocker.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "shared/twin-kernel/src/*",
+      "normalized": "shared/twin-kernel/src/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/data",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/index.ts",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/runtime",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/sync",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/types",
+        "apps/terminal-de-venta-system/shared/twin-kernel/src/validation"
+      ],
+      "resolvedCount": 6,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Shared Core"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "shared/twin-kernel/src/sync/*",
+      "normalized": "shared/twin-kernel/src/sync/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Shared Core"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "Shared Core"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/*",
+      "normalized": "src/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileActionInbox.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileActionInbox.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileActionInbox.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileActionInbox.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileCommandCenter.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileDailyBrief.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Governor/Authority"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileDecisionLedger.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Governor/Authority"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileHealthRadar.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+      ],
+      "resolvedCount": 1,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePulseTimeline.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+      "normalized": "src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+      "itemKind": "file_path",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_FILE_BY_BASENAME",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-salvage/candidates/mobile_command_center_lineage/products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+        "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx"
+      ],
+      "resolvedCount": 2,
+      "resolutionReason": "File basename found.",
+      "ownerRoles": [
+        "Mobile",
+        "Tooling",
+        "DB"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/lib/prisma-app",
+      "normalized": "src/lib/prisma-app",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/server/licensing",
+      "normalized": "src/server/licensing",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Licensing"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Licensing"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/server/local-catalog",
+      "normalized": "src/server/local-catalog",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/server/pos-engine",
+      "normalized": "src/server/pos-engine",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/server/pos-export",
+      "normalized": "src/server/pos-export",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "src/server/pos-outbox",
+      "normalized": "src/server/pos-outbox",
+      "itemKind": "path_or_node",
+      "roles": [
+        "Unknown"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Workspace-relative entry requires parent surface context.",
+      "ownerRoles": [
+        "Unknown"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "tools/*",
+      "normalized": "tools/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Tooling"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "tools/Plawright Mamastrophic",
+        "tools/Plawright Mamastrophic.zip",
+        "tools/README.md",
+        "tools/_dependency_graphs",
+        "tools/_local",
+        "tools/_tmp_factory_invalid_repo_root.config.json",
+        "tools/apps",
+        "tools/code-atlas",
+        "tools/code-atlas.zip",
+        "tools/codex",
+        "tools/create-worker.ts",
+        "tools/datasets",
+        "tools/dev",
+        "tools/dev-console",
+        "tools/docs_governor",
+        "tools/graphviz",
+        "tools/guardian_dasboard.py",
+        "tools/health",
+        "tools/hos",
+        "tools/hydration_sentinel",
+        "tools/infra",
+        "tools/infra.zip",
+        "tools/keystone",
+        "tools/keystone_live_preview_README_UPDATED.md",
+        "tools/keystone_live_preview_UPDATED.bat",
+        "tools/live-scene-composer",
+        "tools/live-scene-composer.zip",
+        "tools/logs",
+        "tools/meta",
+        "tools/obsoletos",
+        "tools/ops",
+        "tools/orchestrator_factory.zip",
+        "tools/prisma_packshots",
+        "tools/qa",
+        "tools/quality",
+        "tools/repo-cleanup",
+        "tools/repo_template",
+        "tools/scripts",
+        "tools/slack-gif-creator",
+        "tools/snapshot",
+        "tools/tests",
+        "tools/ui_map"
+      ],
+      "resolvedCount": 42,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Tooling"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "tools/prisma-visual-os/*",
+      "normalized": "tools/prisma-visual-os/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Tooling",
+        "Visual"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "RESOLVED_GLOB_EXPANDED",
+      "resolvedPaths": [
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/.prisma_tree_backups",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/README_PRISMA_VISUAL_OS_LIVE_STUDIO_00O_00T.md",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/_plans",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/ai_doctor_prisma_show_pos_00y.py",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/config",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/docs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/doctor_prisma_show_pos_scan_00u.py",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/doctor_prisma_show_pos_scan_00x.py",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/doctors",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/gates",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/generators",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/launchers",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/live-preview-server-00q.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-evidence-kind-hotfix-04",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-evidence-kind-hotfix-04-fixed",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-evidence-kind-hotfix-05",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-interface-compiler",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-runtime-injector-01",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-runtime-injector-02",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/pc-uiux-300-ansi-fix-06",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/print_prisma_visual_variant_packs_00m.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/qa",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/realtime",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_show_pos_ai_doctor.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_show_pos_ai_doctor_00y.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_show_pos_doctor.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_show_pos_doctor_00u.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_show_pos_doctor_00x.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_cross_surface_qa_00l.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_os_final_stabilization_00zf.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_os_tree_reorg_00za.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_os_tree_reorg_00zb.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_os_tree_reorg_00zc.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/run_prisma_visual_os_tree_reorg_close_00ze.cmd",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/score_prisma_studio_pro_00s.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/score_prisma_visual_os_00a.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/scoring",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/tablet-light-preset-engine",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/tree",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verifiers",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_light_operational_pos_tokenization_00p.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_show_pos_ai_doctor_00y.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_show_pos_doctor_00u.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_show_pos_doctor_00x.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_control_plane_00a.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_core_00d_00e.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_editing_workbench_00zi.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_live_status_truth_00zl.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_pos_live_binding_00t.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_pro_layer_focus_00zk.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_readme_status_00w.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_route_truth_lan_pos_binding_00zm.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_os_studio_pro_qa_00r_00s.mjs",
+        "apps/terminal-de-venta-system/tools/prisma-visual-os/verify_prisma_visual_qa_release_gate_00l_00m_00n.mjs"
+      ],
+      "resolvedCount": 56,
+      "resolutionReason": "Glob expanded to live repo paths.",
+      "ownerRoles": [
+        "Tooling",
+        "Visual"
+      ],
+      "gateImpact": "RESOLVED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "tools/verticals/*",
+      "normalized": "tools/verticals/*",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Tooling"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "Tooling"
+      ],
+      "gateImpact": "CLASSIFIED"
+    },
+    {
+      "code": "missing_critical_atlas_nodes",
+      "pathOrNode": "tools/verticals/* fixtures",
+      "normalized": "tools/verticals/* fixtures",
+      "itemKind": "glob_pattern",
+      "roles": [
+        "Tooling"
+      ],
+      "status": "MISSING_OR_UNRESOLVED",
+      "nextGate": "DONE",
+      "resolutionStatus": "GLOB_UNRESOLVED_NOT_LIVE",
+      "resolvedPaths": [],
+      "resolvedCount": 0,
+      "resolutionReason": "Glob did not expand; kept as non-live/blocked evidence item.",
+      "ownerRoles": [
+        "Tooling"
+      ],
+      "gateImpact": "CLASSIFIED"
+    }
+  ],
+  "blockersCountBeforeReconciliation": 2,
+  "resolutionCounts": {
+    "RESOLVED_TO_CANONICAL_REPO_PATH": 1,
+    "ANALYSIS_ARTIFACT_NOT_LIVE_REPO_NODE": 1,
+    "RESOLVED_GLOB_EXPANDED": 9,
+    "RESOLVED_TO_CANONICAL_ATLAS_DOC": 4,
+    "DOC_OR_INCOMING_REFERENCE_NOT_LIVE": 1,
+    "RESOLVED_INTERNAL_PY_BY_FILENAME": 17,
+    "UNRESOLVED_CLASSIFIED": 8,
+    "GLOB_UNRESOLVED_NOT_LIVE": 9,
+    "RESOLVED_FILE_BY_BASENAME": 11,
+    "WORKSPACE_RELATIVE_UNRESOLVED_REQUIRES_CONTEXT": 6
+  },
+  "doesNotProve": [
+    "Production readiness",
+    "Runtime/live certification",
+    "All semantic Atlas nodes are complete"
+  ],
+  "nextGate": "DONE_IMPORTANT_FILES_RECONCILIATION",
+  "updatedAt": "2026-07-07T01:11:35"
+}

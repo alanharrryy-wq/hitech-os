@@ -1,0 +1,25 @@
+{
+  "status": "PASS_ATLAS_TRIAD_CLOSED_PRODUCTION_STILL_BLOCKED",
+  "surfaceResolver": "PASS_SURFACE_AWARE_ATLAS_NODE_RESOLVER_BUILT",
+  "dbGhostDecisions": "PASS_DB_GHOST_RELATIONS_CLASSIFIED_DECISION_REQUIRED",
+  "runtimeEvidence": "PASS_RUNTIME_LIVE_EVIDENCE_COLLECTED_FROM_EXISTING_ARTIFACTS",
+  "productionGreenAllowed": false,
+  "registersWritten": [
+    "SURFACE_AWARE_ATLAS_NODE_RESOLVER.json",
+    "ATLAS_NODE_RESOLUTION_REGISTER.json",
+    "DB_GHOST_RELATION_DECISION_REGISTER.json",
+    "RUNTIME_LIVE_EVIDENCE_REGISTER.json",
+    "PRODUCTION_READINESS_BLOCKERS_REGISTER.json",
+    "PRODUCTION_GATE_MATRIX.json",
+    "EVIDENCE_PROVES_DOES_NOT_PROVE.json",
+    "NEXT_GATES_QUEUE.md"
+  ],
+  "summary": {
+    "surfaceTotalResolvedCandidates": 21627,
+    "surfaceUnknownCount": 681,
+    "ghostRelationsClassified": 30,
+    "runtimeZipsInspected": 180,
+    "runtimeLikeEvidenceCount": 3,
+    "dbEvidenceCount": 17
+  }
+}
