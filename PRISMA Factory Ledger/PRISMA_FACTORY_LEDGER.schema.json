@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Factory Ledger Schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "ledgerName",
+    "canonicalRoot",
+    "rules",
+    "statuses",
+    "capabilities"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "ledgerName": {
+      "type": "string"
+    },
+    "canonicalRoot": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "object"
+    },
+    "statuses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "displayName",
+          "domain",
+          "surfaces",
+          "classification",
+          "status",
+          "stateLabel",
+          "doNotRebuild",
+          "nextGate",
+          "evidence",
+          "doesNotProve"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "surfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "classification": {
+            "enum": [
+              "DONE",
+              "VERIFY",
+              "FIX",
+              "BUILD",
+              "EXTERNAL"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "stateLabel": {
+            "type": "string"
+          },
+          "doNotRebuild": {
+            "type": "boolean"
+          },
+          "nextGate": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "doesNotProve": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

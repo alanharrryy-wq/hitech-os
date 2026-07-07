@@ -1,0 +1,459 @@
+{
+  "kind": "OPERATIONAL_EVIDENCE_REGISTRY.v1",
+  "status": "PASS_OPERATIONAL_EVIDENCE_INDEX_CREATED",
+  "manifest": {
+    "createdAt": "2026-07-06T23:11:48.396208",
+    "detectorsConverted": 15,
+    "featureCount": 50,
+    "monolithDependency": false,
+    "placeholdersRemaining": 0,
+    "productionBlockers": [],
+    "productionGate": "NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED",
+    "rawDatabasesIncluded": false,
+    "repo": "F:\\repos\\hitech-os",
+    "status": "SOURCE_READY_NOT_PRODUCTION_CERTIFIED",
+    "tool": "code_atlas_operational_v3"
+  },
+  "zipManifest": {
+    "selected_path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+    "selected_scope": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+    "repo_root": "F:\\repos\\hitech-os",
+    "downloads_root": "F:\\descargasf",
+    "monolith_launcher_only": true,
+    "runner_module": "code_atlas.operational.run_operational_atlas",
+    "zip_base": "dbevid",
+    "runner_result_type": "dict",
+    "runner_result_repr": "{'tool': 'code_atlas_operational_v3', 'createdAt': '2026-07-06T23:11:48.396208', 'repo': 'F:\\\\repos\\\\hitech-os', 'status': 'SOURCE_READY_NOT_PRODUCTION_CERTIFIED', 'productionGate': 'NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED', 'productionBlockers': [], 'featureCount': 50, 'detectorsConverted': 15, 'placeholdersRemaining': 0, 'monolithDependency': False, 'rawDatabasesIncluded': False}",
+    "viewer_refined": {
+      "ok": true,
+      "viewer": "DB Evidence Aurora Glass Visual Final v1",
+      "html_path": "F:\\descargasf\\_dbevid_work_20260706_231137_26708\\operational_output\\operational_evidence_atlas.html",
+      "bytes": 324967
+    },
+    "expected_outputs": [
+      "ATLAS_MANIFEST_PLUS.json",
+      "CAN_PATCH_DECISION.md",
+      "WHY_THIS_IS_RED.md",
+      "operational_evidence_atlas.html",
+      "operational_evidence_atlas.json",
+      "placeholder_ledger.json"
+    ],
+    "missing_expected_outputs": [],
+    "generated_file_count": 36,
+    "kind": "db_evidence_atlas_single_zip_v1",
+    "status": "PASS_DB_EVIDENCE_ATLAS_RESULT_ZIP_CREATED",
+    "final_zip": "F:\\descargasf\\dbevid 0607 2311 result.zip",
+    "output_policy": "single_final_zip_in_downloads_root",
+    "raw_databases_included": false,
+    "generated_at": "2026-07-06T23:11:48"
+  },
+  "sections": [
+    {
+      "section": "auditCompleteness",
+      "rows": 1,
+      "statuses": {
+        "PASS": 1
+      }
+    },
+    {
+      "section": "clientRiskScore",
+      "rows": 2,
+      "statuses": {
+        "PASS": 1,
+        "PASS_SCOPE_AUTHORITY_FOUND": 1
+      }
+    },
+    {
+      "section": "clientSetupJourneyMap",
+      "rows": 3,
+      "statuses": {
+        "PASS": 3
+      }
+    },
+    {
+      "section": "clients",
+      "rows": 12,
+      "statuses": {
+        "NO_STATUS": 12
+      }
+    },
+    {
+      "section": "dataLineageGraph",
+      "rows": 155,
+      "statuses": {
+        "NO_STATUS": 155
+      }
+    },
+    {
+      "section": "dbInventory",
+      "rows": 8,
+      "statuses": {
+        "NO_STATUS": 8
+      }
+    },
+    {
+      "section": "deviceClaimCrosscheck",
+      "rows": 18,
+      "statuses": {
+        "PASS": 18
+      }
+    },
+    {
+      "section": "devices",
+      "rows": 18,
+      "statuses": {
+        "NO_STATUS": 18
+      }
+    },
+    {
+      "section": "duplicates",
+      "rows": 55,
+      "statuses": {
+        "DUPLICATE_ID": 55
+      }
+    },
+    {
+      "section": "goldenPathComparator",
+      "rows": 1,
+      "statuses": {
+        "SOURCE_READY_NOT_PRODUCTION_CERTIFIED": 1
+      }
+    },
+    {
+      "section": "licenses",
+      "rows": 11,
+      "statuses": {
+        "NO_STATUS": 11
+      }
+    },
+    {
+      "section": "manifest",
+      "rows": 1,
+      "statuses": {}
+    },
+    {
+      "section": "multiTenantLeakageGuard",
+      "rows": 1,
+      "statuses": {
+        "PASS_SCOPE_AUTHORITY_FOUND": 1
+      }
+    },
+    {
+      "section": "operationalTimeline",
+      "rows": 1,
+      "statuses": {
+        "BLOCKED_NO_RESULT_ZIPS": 1
+      }
+    },
+    {
+      "section": "orphans",
+      "rows": 7,
+      "statuses": {
+        "ORPHAN_SCOPE_UNKNOWN": 7
+      }
+    },
+    {
+      "section": "payloadJsonIndex",
+      "rows": 402,
+      "statuses": {
+        "NO_STATUS": 402
+      }
+    },
+    {
+      "section": "placeholderLedger",
+      "rows": 15,
+      "statuses": {
+        "implemented_v3_blocked_insufficient_comparable_runs": 1,
+        "implemented_v3_detector": 14
+      }
+    },
+    {
+      "section": "runtimeEvidenceLinks",
+      "rows": 1,
+      "statuses": {
+        "BLOCKED_NO_RESULT_ZIPS": 1
+      }
+    },
+    {
+      "section": "sales",
+      "rows": 137,
+      "statuses": {
+        "NO_STATUS": 137
+      }
+    },
+    {
+      "section": "salesLineage",
+      "rows": 137,
+      "statuses": {
+        "INFERRED_PROVENANCE": 137
+      }
+    },
+    {
+      "section": "schemaDriftGuard",
+      "rows": 125,
+      "statuses": {
+        "DRIFT_FIELD_MISMATCH": 118,
+        "DRIFT_MODEL_WITHOUT_SQLITE_TABLE": 7
+      }
+    },
+    {
+      "section": "snapshotDiffEngine",
+      "rows": 1,
+      "statuses": {
+        "BLOCKED_INSUFFICIENT_COMPARABLE_RUNS": 1
+      }
+    },
+    {
+      "section": "stalenessMonitor",
+      "rows": 24,
+      "statuses": {
+        "STALE_MONITOR_NO_TIMESTAMP_FIELD": 24
+      }
+    },
+    {
+      "section": "surfaceRoleMatrix",
+      "rows": 5,
+      "statuses": {
+        "PASS": 5
+      }
+    },
+    {
+      "section": "tenantScopeResolver",
+      "rows": 1,
+      "statuses": {}
+    }
+  ],
+  "csvCounts": [
+    {
+      "file": "auditCompleteness.csv",
+      "rows": 1,
+      "header": [
+        "auditTableCount",
+        "status"
+      ]
+    },
+    {
+      "file": "clientRiskScore.csv",
+      "rows": 2,
+      "header": [
+        "risk",
+        "count",
+        "status"
+      ]
+    },
+    {
+      "file": "clients.csv",
+      "rows": 12,
+      "header": [
+        "entityId",
+        "sourceDb",
+        "sourceTable",
+        "trustLevel",
+        "sourceLevel",
+        "fields"
+      ]
+    },
+    {
+      "file": "clientSetupJourneyMap.csv",
+      "rows": 3,
+      "header": [
+        "step",
+        "count",
+        "status"
+      ]
+    },
+    {
+      "file": "dataLineageGraph.csv",
+      "rows": 155,
+      "header": [
+        "from",
+        "to",
+        "type"
+      ]
+    },
+    {
+      "file": "dbInventory.csv",
+      "rows": 8,
+      "header": [
+        "path",
+        "sha256Prefix",
+        "tables",
+        "error"
+      ]
+    },
+    {
+      "file": "deviceClaimCrosscheck.csv",
+      "rows": 18,
+      "header": [
+        "deviceId",
+        "sourceTable",
+        "evidenceKeys",
+        "status"
+      ]
+    },
+    {
+      "file": "devices.csv",
+      "rows": 18,
+      "header": [
+        "entityId",
+        "sourceDb",
+        "sourceTable",
+        "trustLevel",
+        "sourceLevel",
+        "fields"
+      ]
+    },
+    {
+      "file": "duplicates.csv",
+      "rows": 55,
+      "header": [
+        "entityKind",
+        "entityId",
+        "status"
+      ]
+    },
+    {
+      "file": "goldenPathComparator.csv",
+      "rows": 1,
+      "header": [
+        "component",
+        "status",
+        "rule"
+      ]
+    },
+    {
+      "file": "licenses.csv",
+      "rows": 11,
+      "header": [
+        "entityId",
+        "sourceDb",
+        "sourceTable",
+        "trustLevel",
+        "sourceLevel",
+        "fields"
+      ]
+    },
+    {
+      "file": "multiTenantLeakageGuard.csv",
+      "rows": 1,
+      "header": [
+        "status",
+        "rule"
+      ]
+    },
+    {
+      "file": "operationalTimeline.csv",
+      "rows": 1,
+      "header": [
+        "source",
+        "event",
+        "status"
+      ]
+    },
+    {
+      "file": "orphans.csv",
+      "rows": 7,
+      "header": [
+        "entityKind",
+        "entityId",
+        "status"
+      ]
+    },
+    {
+      "file": "payloadJsonIndex.csv",
+      "rows": 402,
+      "header": [
+        "db",
+        "table",
+        "column",
+        "payloadParsed",
+        "payloadKeys",
+        "sampleHash",
+        "error"
+      ]
+    },
+    {
+      "file": "placeholderLedger.csv",
+      "rows": 15,
+      "header": [
+        "feature",
+        "placeholder",
+        "status"
+      ]
+    },
+    {
+      "file": "runtimeEvidenceLinks.csv",
+      "rows": 1,
+      "header": [
+        "status"
+      ]
+    },
+    {
+      "file": "sales.csv",
+      "rows": 137,
+      "header": [
+        "entityId",
+        "sourceDb",
+        "sourceTable",
+        "trustLevel",
+        "sourceLevel",
+        "fields"
+      ]
+    },
+    {
+      "file": "salesLineage.csv",
+      "rows": 137,
+      "header": [
+        "saleId",
+        "sourceDb",
+        "sourceTable",
+        "hasRelatedLineage",
+        "hasScopeKeys",
+        "status"
+      ]
+    },
+    {
+      "file": "schemaDriftGuard.csv",
+      "rows": 125,
+      "header": [
+        "model",
+        "db",
+        "table",
+        "status",
+        "missingColumns",
+        "path"
+      ]
+    },
+    {
+      "file": "snapshotDiffEngine.csv",
+      "rows": 1,
+      "header": [
+        "status"
+      ]
+    },
+    {
+      "file": "stalenessMonitor.csv",
+      "rows": 24,
+      "header": [
+        "entityKind",
+        "entityId",
+        "status"
+      ]
+    },
+    {
+      "file": "surfaceRoleMatrix.csv",
+      "rows": 5,
+      "header": [
+        "surface",
+        "path",
+        "exists",
+        "fileCount",
+        "routeCount",
+        "role",
+        "status",
+        "sampleRoutes"
+      ]
+    }
+  ],
+  "qualityNote": "DB Evidence Atlas can prove row-level sanitized evidence and red gates, not live production certification."
+}

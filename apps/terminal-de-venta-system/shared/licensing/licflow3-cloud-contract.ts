@@ -18,6 +18,16 @@ export const LICFLOW3_EXPECTED_UNAUTH_SMOKE = {
 } as const;
 
 export type Licflow3EndpointClassification = "REUSE" | "EXTEND" | "CREATE";
+export type Licflow3EndpointAudience = "public" | "customer" | "admin";
+export type Licflow3EndpointRouteTag =
+  | "public"
+  | "public/customer"
+  | "admin-token-required"
+  | "dry-run-safe"
+  | "confirmed-mutation"
+  | "read-only"
+  | "replacement-flow"
+  | "portal/magic-link";
 export type Licflow3HostedCloudEvidenceStatus = typeof LICFLOW3_CLOUDFLARE_ROUTES_LIVE;
 export type Licflow3LiveDeployment = {
   worker: typeof LICFLOW3_CLOUD_WORKER_NAME;
@@ -38,6 +48,8 @@ export type Licflow3EndpointKey =
   | "licenseActivate"
   | "licenseRefresh"
   | "licenseRevoke"
+  | "licenseRenew"
+  | "licenseCommercialState"
   | "deviceRegister"
   | "integrationReceipt"
   | "supportDiagnostics"
@@ -47,8 +59,13 @@ export type Licflow3EndpointKey =
   | "tenantNotes"
   | "customerSetupCreate"
   | "customerSetupResolve"
+  | "customerPortal"
+  | "customerMagicLink"
   | "customerDeviceClaim"
-  | "customerLicenseStatus";
+  | "customerDeviceReplacementRequest"
+  | "adminCustomerDeviceReplacementApprove"
+  | "customerLicenseStatus"
+  | "customerLicenseRefresh";
 
 export type Licflow3EndpointContract = {
   key: Licflow3EndpointKey;
@@ -63,6 +80,8 @@ export type Licflow3EndpointContract = {
     | "activate"
     | "refresh"
     | "revoke"
+    | "renew"
+    | "commercial_state"
     | "register_device"
     | "integration_receipt"
     | "support_diagnostics"
@@ -72,12 +91,21 @@ export type Licflow3EndpointContract = {
     | "tenant_notes"
     | "customer_setup_create"
     | "customer_setup_resolve"
+    | "customer_portal"
+    | "customer_magic_link"
     | "customer_device_claim"
-    | "customer_license_status";
+    | "customer_device_replacement_request"
+    | "admin_device_replacement_approve"
+    | "customer_license_status"
+    | "customer_license_refresh";
   mutatesCloud: boolean;
   adminRequired: boolean;
   safeSummaryCall: boolean;
   classification: Licflow3EndpointClassification;
+  audience: Licflow3EndpointAudience;
+  routeTags: readonly Licflow3EndpointRouteTag[];
+  dryRunSafe?: boolean;
+  confirmedMutation?: boolean;
 };
 
 export type Licflow3CloudContractStatus = {
@@ -107,7 +135,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "public",
+    routeTags: ["public", "read-only"]
   },
   {
     key: "capabilities",
@@ -118,7 +148,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "public",
+    routeTags: ["public", "read-only"]
   },
   {
     key: "tenantStatus",
@@ -129,7 +161,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "public",
+    routeTags: ["public", "read-only"]
   },
   {
     key: "clientContract",
@@ -140,7 +174,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "public",
+    routeTags: ["public", "read-only"]
   },
   {
     key: "licenseActivate",
@@ -151,7 +187,11 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "admin",
+    dryRunSafe: true,
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"]
   },
   {
     key: "licenseRefresh",
@@ -162,7 +202,11 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "admin",
+    dryRunSafe: true,
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"]
   },
   {
     key: "licenseRevoke",
@@ -173,7 +217,41 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "admin",
+    dryRunSafe: true,
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"]
+  },
+  {
+    key: "licenseRenew",
+    label: "License Renew",
+    method: "POST",
+    path: "/api/licenses/renew",
+    capability: "renew",
+    mutatesCloud: true,
+    adminRequired: true,
+    safeSummaryCall: false,
+    classification: "CREATE",
+    audience: "admin",
+    dryRunSafe: true,
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"]
+  },
+  {
+    key: "licenseCommercialState",
+    label: "License Commercial State",
+    method: "POST",
+    path: "/api/licenses/commercial-state",
+    capability: "commercial_state",
+    mutatesCloud: true,
+    adminRequired: true,
+    safeSummaryCall: false,
+    classification: "CREATE",
+    audience: "admin",
+    dryRunSafe: true,
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"]
   },
   {
     key: "deviceRegister",
@@ -184,7 +262,10 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "EXTEND"
+    classification: "EXTEND",
+    audience: "admin",
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "confirmed-mutation"]
   },
   {
     key: "integrationReceipt",
@@ -195,7 +276,10 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "EXTEND"
+    classification: "EXTEND",
+    audience: "admin",
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "confirmed-mutation"]
   },
   {
     key: "supportDiagnostics",
@@ -206,7 +290,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: true,
     safeSummaryCall: true,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "admin",
+    routeTags: ["admin-token-required", "read-only"]
   },
   {
     key: "adminSelftest",
@@ -217,7 +303,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: true,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "admin",
+    routeTags: ["admin-token-required", "read-only"]
   },
   {
     key: "commercialSummary",
@@ -228,7 +316,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: true,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "admin",
+    routeTags: ["admin-token-required", "read-only"]
   },
   {
     key: "tenantSnapshot",
@@ -239,7 +329,9 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: true,
     safeSummaryCall: true,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "admin",
+    routeTags: ["admin-token-required", "read-only"]
   },
   {
     key: "tenantNotes",
@@ -250,7 +342,10 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "REUSE"
+    classification: "REUSE",
+    audience: "admin",
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "confirmed-mutation"]
   },
   {
     key: "customerSetupCreate",
@@ -261,7 +356,10 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: true,
     safeSummaryCall: false,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "admin",
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "confirmed-mutation"]
   },
   {
     key: "customerSetupResolve",
@@ -272,7 +370,35 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "customer",
+    routeTags: ["public/customer", "read-only"]
+  },
+  {
+    key: "customerPortal",
+    label: "Customer Portal",
+    method: "GET",
+    path: "/api/customer/portal?setupCode=:setupCode",
+    capability: "customer_portal",
+    mutatesCloud: false,
+    adminRequired: false,
+    safeSummaryCall: true,
+    classification: "CREATE",
+    audience: "customer",
+    routeTags: ["public/customer", "read-only", "portal/magic-link"]
+  },
+  {
+    key: "customerMagicLink",
+    label: "Customer Magic Link",
+    method: "GET",
+    path: "/api/customer/magic-link?setupCode=:setupCode",
+    capability: "customer_magic_link",
+    mutatesCloud: false,
+    adminRequired: false,
+    safeSummaryCall: true,
+    classification: "CREATE",
+    audience: "customer",
+    routeTags: ["public/customer", "read-only", "portal/magic-link"]
   },
   {
     key: "customerDeviceClaim",
@@ -283,7 +409,38 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: true,
     adminRequired: false,
     safeSummaryCall: false,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "customer",
+    confirmedMutation: true,
+    routeTags: ["public/customer", "confirmed-mutation"]
+  },
+  {
+    key: "customerDeviceReplacementRequest",
+    label: "Customer Device Replacement Request",
+    method: "POST",
+    path: "/api/customer/devices/replacement/request",
+    capability: "customer_device_replacement_request",
+    mutatesCloud: true,
+    adminRequired: false,
+    safeSummaryCall: false,
+    classification: "CREATE",
+    audience: "customer",
+    confirmedMutation: true,
+    routeTags: ["public/customer", "confirmed-mutation", "replacement-flow"]
+  },
+  {
+    key: "adminCustomerDeviceReplacementApprove",
+    label: "Admin Device Replacement Approve",
+    method: "POST",
+    path: "/api/admin/customer-devices/replacement/approve",
+    capability: "admin_device_replacement_approve",
+    mutatesCloud: true,
+    adminRequired: true,
+    safeSummaryCall: false,
+    classification: "CREATE",
+    audience: "admin",
+    confirmedMutation: true,
+    routeTags: ["admin-token-required", "confirmed-mutation", "replacement-flow"]
   },
   {
     key: "customerLicenseStatus",
@@ -294,7 +451,23 @@ export const LICFLOW3_CLOUD_ENDPOINTS: readonly Licflow3EndpointContract[] = [
     mutatesCloud: false,
     adminRequired: false,
     safeSummaryCall: true,
-    classification: "CREATE"
+    classification: "CREATE",
+    audience: "customer",
+    routeTags: ["public/customer", "read-only"]
+  },
+  {
+    key: "customerLicenseRefresh",
+    label: "Customer License Refresh",
+    method: "POST",
+    path: "/api/customer/license/refresh",
+    capability: "customer_license_refresh",
+    mutatesCloud: true,
+    adminRequired: false,
+    safeSummaryCall: false,
+    classification: "CREATE",
+    audience: "customer",
+    confirmedMutation: true,
+    routeTags: ["public/customer", "confirmed-mutation"]
   }
 ] as const;
 
@@ -302,6 +475,8 @@ export const LICFLOW3_REQUIRED_CAPABILITIES = [
   "activate",
   "refresh",
   "revoke",
+  "renew",
+  "commercial_state",
   "register_device",
   "integration_receipt",
   "tenant_status",
@@ -311,8 +486,13 @@ export const LICFLOW3_REQUIRED_CAPABILITIES = [
   "contract_fetch",
   "customer_setup_create",
   "customer_setup_resolve",
+  "customer_portal",
+  "customer_magic_link",
   "customer_device_claim",
-  "customer_license_status"
+  "customer_device_replacement_request",
+  "admin_device_replacement_approve",
+  "customer_license_status",
+  "customer_license_refresh"
 ] as const;
 
 export const LICFLOW3_CLOUD_CONTRACT = {

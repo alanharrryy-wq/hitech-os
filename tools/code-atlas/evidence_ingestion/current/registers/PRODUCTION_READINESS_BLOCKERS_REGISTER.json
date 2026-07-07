@@ -1,0 +1,17 @@
+{
+  "status": "BLOCKED_PRODUCTION_READINESS_TRUTHFUL_AFTER_TRIAD",
+  "productionGreenAllowed": false,
+  "blockers": [
+    "sales lineage provenance remains inferred/incomplete unless a later DB Evidence report proves otherwise",
+    "runtime/live artifacts are collected but not yet linked to each production gate row",
+    "DB ghost relations require schema/migration decision before green"
+  ],
+  "doesProve": [
+    "source gates triad has been closed/classified",
+    "production block is explicit"
+  ],
+  "doesNotProve": [
+    "live production certification",
+    "complete provenance"
+  ]
+}

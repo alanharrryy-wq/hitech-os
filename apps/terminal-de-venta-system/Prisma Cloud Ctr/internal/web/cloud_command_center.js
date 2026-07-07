@@ -12,6 +12,7 @@
     ["operations", "Reportes", "Clientes activos y operación", "Conteos de clientes, licencias, dispositivos, pendientes y actividad preparada."],
     ["support", "Support", "Soporte", "Paquete de diagnóstico humano con cliente, licencia, contrato, dispositivos y siguiente acción."],
     ["security", "Bajas", "Baja segura", "Suspender, desactivar o preparar baja con motivo homologado, impacto visible y folio automático."],
+    ["tablet-lab", "TABLET LAB", "Laboratorio visual Tablet", "Cápsula portable basada en Entitlements para preparar Tablet Light Cloudglass sin tocar Tablet real."],
     ["system", "System", "Cuarto de máquinas", "Runtime, endpoint matrix, selftest, diagnostics y evidencia técnica encerrada aquí."]
   ];
   const FIRST_CUSTOMER_NAME = "Prisma Original Customer";
@@ -52,6 +53,13 @@
     if (Array.isArray(value)) return `${value.length} items`;
     if (typeof value === "object") return JSON.stringify(value).slice(0, 120);
     return String(value);
+  }
+
+  function formatStatusLabel(value) {
+    return String(value || "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function tone(value) {
@@ -358,7 +366,7 @@
     const data = state.data || {};
     const d = derived();
     const admin = data.admin || {};
-    $("ccMode").textContent = data.mode || "Lectura segura";
+    $("ccMode").textContent = formatStatusLabel(data.mode || "Lectura segura");
     $("ccMode").className = `cc-chip ${tone(data.mode)}`;
     $("ccCloud").textContent = data.ok ? "Cloud en línea" : "Cloud a revisar";
     $("ccCloud").className = `cc-chip ${data.ok ? "ok" : "warn"}`;
@@ -727,7 +735,8 @@
     return {
       confirmAdminLicenseAction: !!root?.querySelector(`[data-bridge-confirm]`)?.checked,
       confirmRevoke: value("confirmRevoke"),
-      licenseKey: value("licenseKey"),
+      licenseId: value("licenseId") || value("licenseKey"),
+      licenseKey: value("licenseKey") || value("licenseId"),
       deviceId: value("deviceId"),
       tenantId: value("tenantId") || FIRST_TENANT_SLUG,
       operatorNote: value("operatorNote"),
@@ -741,7 +750,7 @@
     return `<div class="cc-bridge-form" data-bridge-form="${esc(action)}">
       <h4>${esc(label)}</h4>
       <div class="cc-flow-grid">
-        <label class="cc-field"><span>License key</span><input data-bridge-field="licenseKey" autocomplete="off" placeholder="LIC-..." /></label>
+        <label class="cc-field"><span>License ID / key</span><input data-bridge-field="licenseId" autocomplete="off" placeholder="license-id" /></label>
         <label class="cc-field"><span>Device ID</span><input data-bridge-field="deviceId" autocomplete="off" placeholder="device-id" /></label>
         <label class="cc-field"><span>Tenant</span><input data-bridge-field="tenantId" autocomplete="off" value="${esc(FIRST_TENANT_SLUG)}" /></label>
         <label class="cc-field"><span>${revoke ? "Reason" : "Operator note"}</span><input data-bridge-field="${revoke ? "reason" : "operatorNote"}" autocomplete="off" placeholder="${revoke ? "Motivo requerido" : "Nota opcional"}" /></label>
@@ -799,6 +808,42 @@
     panel("Reglas","Las licencias locales quedan preparadas; activate/refresh/revoke sólo pasan por License Admin Bridge con confirmación.",list([["Estado","pending_cloud_activation / prepared"],["Folio","LIC-YYYY-000001"],["Contrato","CTR-YYYY-000001"],["Cloud","Confirmed License Operation protected by bridge"],["Revoke","requiere REVOKE_LICENSE"]]),{span:12,tag:"REGLAS"}),
     resultPanel()
   ].join(""); }
+
+    // PRISMA TABLET LAB CAPSULE START: dependency-free, portable-first surface capsule.
+  function renderTabletLab() {
+    const escapeLab = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+    const cards = [
+      {k:"01", tag:"LICENCIA", title:"Asignar licencia", body:"Elige cliente y plan desde catálogo. Límites y módulos vienen gobernados.", items:["Cliente", "Plan", "Módulos", "Confirmación"]},
+      {k:"02", tag:"PLANES", title:"Catálogo de planes", body:"Tipos disponibles, límites y módulos incluidos para validar el flujo visual antes de tocar Tablet real.", items:["Starter", "Pro", "Enterprise", "Governed"]},
+      {k:"03", tag:"BRIDGE", title:"License Admin Bridge", body:"Puente conceptual para activate, refresh y revoke sin exponer credenciales ni acoplar UI a dependencias externas.", items:["Activate", "Refresh", "Revoke", "Audit"]},
+      {k:"04", tag:"MESA", title:"Mesa de licencias", body:"Asignaciones preparadas con folio LIC y contrato CTR en una maqueta portable de laboratorio.", items:["LIC-YYYY-000001", "CTR-YYYY-000001", "Prepared", "Cloud-ready"]},
+      {k:"05", tag:"REGLAS", title:"Reglas", body:"La cápsula viaja como HTML, CSS namespaced y JS vanilla. Sin npm nuevo, sin CDN y sin lockfiles.", items:["Dependency-free", "Namespaced", "Rollbackable", "Tablet-safe"]},
+      {k:"06", tag:"SALIDA", title:"Resultado", body:"Superficie aislada para ensayar Tablet Light Cloudglass antes de migrar una piel a la Tablet real.", items:["Lab first", "Mesh first", "Port once", "No fake green"]}
+    ];
+    const cardHtml = cards.map((card) => `
+      <article class="tablet-lab-card" data-tablet-lab-card="${escapeLab(card.k)}">
+        <div class="tablet-lab-card-topline"><span>${escapeLab(card.k)}</span><strong>${escapeLab(card.tag)}</strong></div>
+        <h3>${escapeLab(card.title)}</h3>
+        <p>${escapeLab(card.body)}</p>
+        <div class="tablet-lab-chip-row">${card.items.map((item) => `<span>${escapeLab(item)}</span>`).join("")}</div>
+      </article>`).join("");
+    return `
+      <section class="tablet-lab-capsule" data-tablet-lab-capsule="true" aria-label="PRISMA TABLET LAB Capsule">
+        <div class="tablet-lab-hero">
+          <span class="tablet-lab-kicker">TABLET LAB</span>
+          <h2>Cápsula portable basada en Entitlements</h2>
+          <p>Laboratorio visual aislado para preparar una piel clara Tablet Light Cloudglass sin tocar Tablet real, dependencias, lockfiles, puertos ni Prisma.</p>
+          <div class="tablet-lab-hero-rail"><span>HTML portable</span><span>CSS namespaced</span><span>JS vanilla</span><span>Rollback listo</span></div>
+        </div>
+        <div class="tablet-lab-grid">${cardHtml}</div>
+        <div class="tablet-lab-portability-sentinel" data-portability="cloud-to-tablet-ready">
+          <strong>Portability Gate</strong>
+          <span>Esta surface no depende de Entitlements renderer, npm, CDN ni assets obligatorios raros.</span>
+        </div>
+      </section>`;
+  }
+  // PRISMA TABLET LAB CAPSULE END
+
   function renderFleet() { const d=derived(); const c=localCounts(); return [
     panel("Agregar dispositivo","Selecciona cliente, tipo y uso. El motor genera ID, folio y código de registro.",deviceWizard(),{span:8,tag:"DEVICE"}),
     panel("Dispositivos cloud","Lo que el cloud/snapshot ya reporta.",list(d.devices,"El snapshot no devolvió dispositivos."),{span:4,tag:`${safeCount(d.devices)} cloud`}),
@@ -852,7 +897,12 @@
         ["Admin create", "POST /api/admin/customer-setups/create"],
         ["Resolve setup", "GET /api/customer/setup/:setupCode"],
         ["Device Claim", "POST /api/customer/devices/claim"],
-        ["License status", "GET /api/customer/license/status?setupCode=...&deviceId=..."]
+        ["License status", "GET /api/customer/license/status?setupCode=...&deviceId=..."],
+        ["License refresh", "POST /api/customer/license/refresh"],
+        ["Portal", "GET /api/customer/portal?setupCode=..."],
+        ["Magic link", "GET /api/customer/magic-link?setupCode=..."],
+        ["Replacement request", "POST /api/customer/devices/replacement/request"],
+        ["Replacement approve", "POST /api/admin/customer-devices/replacement/approve"]
       ]), { span: 12, tag: "SOURCE READY" }),
       panel("Operator boundary", "Customer Setup is onboarding. License Admin Bridge remains separate for activate, refresh and revoke.", list([
         ["Customer Setup", "Setup Link, Setup Code, Setup QR, Device Slots"],
@@ -868,6 +918,10 @@
     const d = derived();
     const contract = d.publicContract || {};
     const licflow3 = state.data?.licflow3Contract || {};
+    const routeRows = Array.isArray(licflow3.endpoints) ? licflow3.endpoints.map((item) => [
+      item.label || item.key,
+      `${item.method} ${item.configuredPath || item.path} -> ${(item.routeTags || []).join(", ") || (item.adminRequired ? "admin-token-required" : "read-only")}`
+    ]) : [];
     return [
       panel("Contrato actual", "Estado contractual resumido para operar.", kvGrid([
         ["Estado", contract.status || endpointState("clientContract").code],
@@ -880,11 +934,12 @@
         ["Worker", licflow3.worker || "prisma-cloud-semilla"],
         ["Cloud License Database", licflow3.d1 || "prisma_cloud_semilla"],
         ["Base", licflow3.configuredBaseUrl || state.data?.cloud?.baseUrl || "-"],
-        ["Activate", "POST /api/licenses/activate -> 401 protected-route response"],
-        ["Refresh", "POST /api/licenses/refresh -> 401 protected-route response"],
-        ["Revoke", "POST /api/licenses/revoke -> 401 protected-route response"],
+        ["Activate", "POST /api/licenses/activate -> admin-token-required, dry-run-safe"],
+        ["Refresh", "POST /api/licenses/refresh -> admin-token-required, dry-run-safe"],
+        ["Revoke", "POST /api/licenses/revoke -> admin-token-required, dry-run-safe, REVOKE_LICENSE"],
         ["Admin Token Status", adminTokenPresent() ? "presence-only" : "missing"]
       ]), { span: 7, tag: licflow3LiveStatus() }),
+      panel("License Route Map", "Operator-safe classification mirrors the Worker source; mutating routes are not auto-called.", list(routeRows, "Route map not loaded yet."), { span: 12, tag: "ROUTE MAP" }),
       panel("Acciones de configuración", "Comparar, copiar y saltar a licencias sin ver endpoints.", actions([
         actionButton("refresh", "Actualizar contrato", "primary"),
         actionButton("compare-contract", "Comparar contrato vs capacidades"),
@@ -960,6 +1015,7 @@
     operations: renderOperations,
     support: renderSupport,
     security: renderSecurity,
+    "tablet-lab": renderTabletLab,
     system: renderSystem
   };
 

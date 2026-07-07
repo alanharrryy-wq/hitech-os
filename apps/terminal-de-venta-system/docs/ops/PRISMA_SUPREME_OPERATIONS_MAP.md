@@ -34,7 +34,7 @@ Participating tables and endpoints:
 | Status endpoint | `GET /api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId` |
 | Base setup tables | `customer_setups`, `customer_setup_slots`, `customer_device_claims` |
 | Plan provisioning tables | `license_plans`, `license_assignments`, `customer_setup_bundles`, `customer_device_claim_slots` |
-| Audit event | `customer_setup.plan_based_provision` |
+| Audit events | `customer_setup.create`, `customer_setup.plan_based_provision` |
 
 ## PLAN_PROVISIONING_MATRIX
 
@@ -81,7 +81,8 @@ Flow notes:
 | Claim Tablet | Tablet POS | `POST /api/customer/devices/claim` | claimed tablet slot | Tablet consumes a prepared slot. |
 | Claim PC | PC/Admin | `POST /api/customer/devices/claim` | claimed pc slot | PC consumes a prepared slot only if the plan allows pc. |
 | Claim Mobile | Mobile | `POST /api/customer/devices/claim` | claimed mobile slot | Mobile consumes a prepared slot only if the plan allows mobile. |
-| Audit provisioning | Cloud License Gateway | `recordAudit` | `customer_setup.plan_based_provision` | PASS requires audit evidence. |
+| Audit create | Cloud License Gateway | `recordAudit` | `customer_setup.create` | PASS requires sanitized setup creation evidence. |
+| Audit provisioning | Cloud License Gateway | `recordAudit` | `customer_setup.plan_based_provision` | PASS requires plan/license/bundle audit evidence. |
 
 ## Read-Only Gates
 

@@ -76,7 +76,7 @@ html[data-prisma-surface="pc-backoffice"] .footer-pill {
   background: var(--pcp-glass);
   color: var(--pcp-ink);
   box-shadow: var(--pcp-shadow-float);
-  backdrop-filter: blur(24px) saturate(1.18);
+  backdrop-filter: blur(16px) saturate(1.16);
 }
 
 html[data-prisma-surface="pc-backoffice"] .sidebar {
@@ -330,11 +330,10 @@ html[data-prisma-surface="pc-backoffice"] .pc-premium-footer-actions .footer-chi
 
 @media (min-width: 1181px) {
   html[data-prisma-surface="pc-backoffice"] .sidebar .footer-stack.pc-premium-footer-stack {
-    position: sticky;
-    bottom: 0;
+    position: relative;
+    bottom: auto;
     padding-bottom: 4px;
-    background:
-      linear-gradient(180deg, rgba(248, 252, 255, 0.00), rgba(248, 252, 255, 0.72) 28%, rgba(248, 252, 255, 0.90));
+    background: transparent;
   }
 }
 
@@ -615,27 +614,21 @@ html[data-prisma-surface="pc-backoffice"] :is(.hero, .card, .panel, .topbar, .br
 }
 
 html[data-prisma-surface="pc-backoffice"] .sidebar {
-  position: sticky;
-  top: 18px;
-  height: calc(100vh - 36px);
-  min-height: 680px;
+  position: relative;
+  top: auto;
+  height: auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 14px;
-  overflow: hidden;
+  overflow: visible;
   border-radius: var(--cc-radius-xl);
   background:
     radial-gradient(circle at 8% 6%, rgba(120, 235, 255, 0.080), transparent 32%),
     radial-gradient(circle at 90% 10%, rgba(174, 122, 255, 0.060), transparent 28%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.010) 48%, rgba(255, 255, 255, 0.014)),
     var(--cc-glass-fill);
-}
-
-html[data-prisma-surface="pc-backoffice"] .sidebar-main-scroll {
-  min-height: 0;
-  overflow: auto;
-  padding-right: 2px;
 }
 
 html[data-prisma-surface="pc-backoffice"] .brand-block {
@@ -1136,7 +1129,8 @@ html[data-prisma-surface="pc-backoffice"] :is(input, select, textarea, button, a
 }
 
 html[data-prisma-surface="pc-backoffice"] .table-wrap {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: visible;
   border-radius: var(--cc-radius-lg);
   background:
     linear-gradient(180deg, rgba(17, 35, 56, 0.42), rgba(20, 47, 70, 0.20)),
@@ -1161,11 +1155,11 @@ html[data-prisma-surface="pc-backoffice"] td {
 }
 
 html[data-prisma-surface="pc-backoffice"] th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  position: static;
+  top: auto;
+  z-index: auto;
   color: var(--cc-muted);
-  background: rgba(8, 20, 34, 0.70);
+  background: rgba(8, 20, 34, 0.34);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.10em;
@@ -1211,7 +1205,8 @@ html[data-prisma-surface="pc-backoffice"] .empty-state strong {
 html[data-prisma-surface="pc-backoffice"] :is(.code-block, pre) {
   max-width: 100%;
   max-height: 420px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: visible;
   border: 1px solid rgba(232, 247, 255, 0.14);
   border-radius: var(--cc-radius-md);
   padding: 14px;
@@ -1355,3 +1350,788 @@ html[data-prisma-surface="pc-backoffice"] :is(.card, .metric-card, .hero, .alert
   }
 }
 /* PC_COMMAND_CENTER_MIGRATION_0307_END */
+/* PRISMA_PC_V92_DEMOLITION_FINAL_START
+   Strategy: one final PC layer after removing stacked V3/V4/V9/V92 visual passes.
+   Categories used: Delete, Flatten, Restyle, Keep. JSX deletion is limited to rail-only wrappers.
+*/
+html[data-prisma-surface="pc-backoffice"] {
+  --pc-v92-text-strong: #f7fcff;
+  --pc-v92-text: #dcebf6;
+  --pc-v92-text-muted: #a9bfce;
+  --pc-v92-label: #8ee9ff;
+  --pc-v92-rail-bg: linear-gradient(152deg, rgba(9, 28, 45, 0.38), rgba(6, 18, 31, 0.24));
+  --pc-v92-panel-bg: linear-gradient(150deg, rgba(11, 33, 52, 0.36), rgba(5, 17, 31, 0.22));
+  --pc-v92-panel-soft: linear-gradient(150deg, rgba(22, 57, 78, 0.30), rgba(7, 22, 36, 0.18));
+  --pc-v92-pill-bg: linear-gradient(145deg, rgba(118, 220, 255, 0.16), rgba(10, 33, 52, 0.22));
+  --pc-v92-pill-active: linear-gradient(145deg, rgba(122, 226, 255, 0.34), rgba(91, 117, 255, 0.26));
+  --pc-v92-border: rgba(174, 229, 255, 0.28);
+  --pc-v92-border-soft: rgba(218, 244, 255, 0.16);
+  --pc-v92-specular: rgba(246, 253, 255, 0.14);
+  --pc-v92-shadow: 0 20px 58px rgba(0, 8, 18, 0.22), inset 0 1px 0 rgba(244, 253, 255, 0.08);
+  --pc-v92-shadow-soft: 0 12px 32px rgba(0, 8, 18, 0.16), inset 0 1px 0 rgba(244, 253, 255, 0.07);
+  --pc-v92-radius-xl: 30px;
+  --pc-v92-radius-lg: 26px;
+  --pc-v92-radius-md: 20px;
+  --pc-v92-radius-pill: 999px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .shell,
+html[data-prisma-surface="pc-backoffice"] body[data-prisma-route] .shell,
+html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .shell {
+  width: min(100%, 1580px);
+  grid-template-columns: clamp(224px, 21vw, 284px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(18px, 2vw, 28px);
+  padding: clamp(16px, 2vw, 26px);
+}
+
+html[data-prisma-surface="pc-backoffice"] .main {
+  min-width: 0;
+  gap: clamp(14px, 1.7vw, 22px);
+}
+
+/* Restyle: one in-flow Cloudglass rail. */
+html[data-prisma-surface="pc-backoffice"] .sidebar,
+html[data-prisma-surface="pc-backoffice"] body[data-prisma-route] .sidebar,
+html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .sidebar {
+  position: relative;
+  top: auto;
+  align-self: start;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 14px;
+  overflow: visible;
+  border-radius: var(--pc-v92-radius-xl);
+  border: 1px solid var(--pc-v92-border);
+  background: var(--pc-v92-rail-bg);
+  color: var(--pc-v92-text);
+  box-shadow: var(--pc-v92-shadow);
+  backdrop-filter: blur(14px) saturate(1.12);
+  -webkit-backdrop-filter: blur(14px) saturate(1.12);
+}
+
+html[data-prisma-surface="pc-backoffice"] .sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--pc-v92-radius-xl) - 1px);
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, var(--pc-v92-specular), transparent 24%, transparent 72%, rgba(126, 230, 255, 0.07)),
+    radial-gradient(circle at 14% 5%, rgba(247, 253, 255, 0.13), transparent 28%);
+}
+
+html[data-prisma-surface="pc-backoffice"] .brand-block,
+html[data-prisma-surface="pc-backoffice"] .sidebar-panel,
+html[data-prisma-surface="pc-backoffice"] .nav,
+html[data-prisma-surface="pc-backoffice"] .nav-section,
+html[data-prisma-surface="pc-backoffice"] .footer-stack,
+html[data-prisma-surface="pc-backoffice"] .surface-context-strip,
+html[data-prisma-surface="pc-backoffice"] .surface-context-scroll,
+html[data-prisma-surface="pc-backoffice"] .surface-context-scroll-viewport,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill-row {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .brand-block {
+  min-height: auto;
+  padding: 8px 7px 10px;
+  place-items: start;
+}
+
+html[data-prisma-surface="pc-backoffice"] .brand-row {
+  width: 100%;
+  gap: 10px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .brand-logo-img {
+  width: min(156px, 100%);
+  height: auto;
+  object-fit: contain;
+}
+
+html[data-prisma-surface="pc-backoffice"] .sidebar-panel {
+  padding: 0;
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav-group-title,
+html[data-prisma-surface="pc-backoffice"] .nav-section-title,
+html[data-prisma-surface="pc-backoffice"] .kicker {
+  color: var(--pc-v92-label);
+  letter-spacing: 0;
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav {
+  display: grid;
+  gap: 12px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav-section {
+  display: grid;
+  gap: 7px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav a,
+html[data-prisma-surface="pc-backoffice"] .footer-chip,
+html[data-prisma-surface="pc-backoffice"] .status-chip,
+html[data-prisma-surface="pc-backoffice"] .workflow-chip,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill,
+html[data-prisma-surface="pc-backoffice"] .topbar-brand {
+  position: relative;
+  border-radius: var(--pc-v92-radius-pill);
+  border: 1px solid rgba(190, 236, 255, 0.26);
+  background: var(--pc-v92-pill-bg);
+  color: var(--pc-v92-text);
+  box-shadow: 0 10px 24px rgba(0, 8, 18, 0.14), inset 0 1px 0 rgba(247, 253, 255, 0.10);
+  backdrop-filter: blur(10px) saturate(1.10);
+  -webkit-backdrop-filter: blur(10px) saturate(1.10);
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav a::before,
+html[data-prisma-surface="pc-backoffice"] .footer-chip::before,
+html[data-prisma-surface="pc-backoffice"] .status-chip::before,
+html[data-prisma-surface="pc-backoffice"] .workflow-chip::before,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill::before,
+html[data-prisma-surface="pc-backoffice"] .topbar-brand::before {
+  content: "";
+  position: absolute;
+  inset: 1px auto auto 12px;
+  width: 46%;
+  height: 36%;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(247, 253, 255, 0.18), transparent);
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav a:hover,
+html[data-prisma-surface="pc-backoffice"] .nav a.active,
+html[data-prisma-surface="pc-backoffice"] .nav a[data-active="true"],
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill:hover,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill.is-active,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill[data-active="true"] {
+  border-color: rgba(158, 236, 255, 0.46);
+  background: var(--pc-v92-pill-active);
+  color: var(--pc-v92-text-strong);
+  box-shadow: 0 14px 32px rgba(0, 8, 18, 0.18), 0 0 26px rgba(112, 222, 255, 0.12), inset 0 1px 0 rgba(247, 253, 255, 0.15);
+}
+
+html[data-prisma-surface="pc-backoffice"] .nav-icon,
+html[data-prisma-surface="pc-backoffice"] .brand-mark,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill-dot {
+  color: var(--pc-v92-label);
+  background: rgba(125, 226, 255, 0.18);
+  border-color: rgba(181, 238, 255, 0.30);
+}
+
+/* Flatten: topbar and context strip shells no longer create rear slabs. */
+html[data-prisma-surface="pc-backoffice"] .topbar {
+  min-height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .topbar::before,
+html[data-prisma-surface="pc-backoffice"] .surface-context-strip::before,
+html[data-prisma-surface="pc-backoffice"] .surface-context-strip::after {
+  content: none;
+  display: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .topbar-brand {
+  width: fit-content;
+  min-height: 38px;
+  padding: 8px 13px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  min-height: 38px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-label {
+  color: var(--pc-v92-label);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-scrollbar {
+  height: 5px;
+  background: transparent;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-scroll-thumb {
+  border-radius: var(--pc-v92-radius-pill);
+  background: rgba(161, 232, 255, 0.26);
+}
+
+/* Restyle: real PC cards and panels. */
+html[data-prisma-surface="pc-backoffice"] :where(.hero, .card, .panel, .metric-card, .action-card, .table-wrap, .empty-state, .decision-card, .attention-summary, .next-best-action, .evidence-drawer, .alert-strip, [data-prisma-component="PcModuleShell"], [data-pc-sync-chart-promotion="true"], [class*="heroPanel"], [class*="workflowPanel"], [class*="priorityPanel"], [class*="auditPanel"], [class*="qualityPanel"], [class*="productFicha"], [class*="productLedger"], [class*="timelineCard"], [class*="chartCard"], [class*="stateBox"]) {
+  border-radius: var(--pc-v92-radius-lg);
+  border: 1px solid var(--pc-v92-border-soft);
+  background: var(--pc-v92-panel-bg);
+  color: var(--pc-v92-text);
+  box-shadow: var(--pc-v92-shadow-soft);
+  backdrop-filter: blur(14px) saturate(1.10);
+  -webkit-backdrop-filter: blur(14px) saturate(1.10);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.hero, .card, .panel, .metric-card, .action-card, .table-wrap, .empty-state, .decision-card, .attention-summary, .next-best-action, .evidence-drawer, .alert-strip, [data-pc-sync-chart-promotion="true"], [class*="heroPanel"], [class*="workflowPanel"], [class*="priorityPanel"], [class*="auditPanel"], [class*="qualityPanel"], [class*="productFicha"], [class*="productLedger"], [class*="timelineCard"], [class*="chartCard"], [class*="stateBox"])::before {
+  background:
+    linear-gradient(132deg, rgba(247, 253, 255, 0.12), transparent 30%, transparent 74%, rgba(129, 226, 255, 0.06)),
+    radial-gradient(circle at 11% 8%, rgba(247, 253, 255, 0.10), transparent 24%);
+  opacity: 1;
+}
+
+/* Flatten: layout wrappers that only stack real content. */
+html[data-prisma-surface="pc-backoffice"] :where(.dashboard-grid, .grid, .supplier-main-stack, .supplier-layout, .supplier-layout-tight, .supplier-layout-v07, .recommendation-grid-v07, .order-card-list-v07, .signal-card-grid-v07, .trust-checklist-v07, .calendar-timeline-v07, .audit-roadmap-v07, .mini-section-stack-v07, [class*="masterDetail"], [class*="countConsole"], [class*="auditTimeline"], [class*="priorityQueueLayout"], [class*="workspaceLayout"], [class*="contentGrid"]) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .dashboard-grid,
+html[data-prisma-surface="pc-backoffice"] .grid,
+html[data-prisma-surface="pc-backoffice"] .supplier-summary-grid-v07,
+html[data-prisma-surface="pc-backoffice"] .supplier-decision-strip-v07,
+html[data-prisma-surface="pc-backoffice"] .recommendation-grid-v07,
+html[data-prisma-surface="pc-backoffice"] .inventory-item-grid-v11,
+html[data-prisma-surface="pc-backoffice"] .signal-card-grid-v07 {
+  gap: clamp(12px, 1.45vw, 20px);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.hero-title, .section-title, .card-title, h1, h2, h3, h4, strong, th) {
+  color: var(--pc-v92-text-strong);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.section-copy, .card-copy, .metric-note, p, small, td, li, label, dd, span) {
+  color: var(--pc-v92-text-muted);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(input, select, textarea) {
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(180, 232, 255, 0.26);
+  background: linear-gradient(145deg, rgba(7, 24, 39, 0.38), rgba(5, 17, 30, 0.24));
+  color: var(--pc-v92-text-strong);
+  box-shadow: inset 0 1px 0 rgba(247, 253, 255, 0.08), 0 12px 28px rgba(0, 8, 18, 0.12);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(button, .btn, .button, .action-button, .decision-action, [class*="actionLink"], [class*="quickAction"]) {
+  border-radius: var(--pc-v92-radius-pill);
+  border: 1px solid rgba(159, 232, 255, 0.34);
+  background: var(--pc-v92-pill-bg);
+  color: var(--pc-v92-text-strong);
+  box-shadow: 0 12px 28px rgba(0, 8, 18, 0.16), inset 0 1px 0 rgba(247, 253, 255, 0.10);
+}
+
+/* Restyle: operational tiles keep semantic color without hard rectangles. */
+html[data-prisma-surface="pc-backoffice"] :where(.pc-operational-tile, .metric-card, [class*="kpiCard"], [class*="metricCard"], [class*="stripFact"], .supplier-summary-grid-v07 > *, .supplier-decision-strip-v07 > *, .date-chip-grid-v07 .data-chip-v07, [class*="entityCell"], [class*="miniPill"]) {
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(176, 231, 255, 0.22);
+  background: var(--pc-v92-panel-soft);
+  color: var(--pc-v92-text);
+  box-shadow: 0 10px 24px rgba(0, 8, 18, 0.14), inset 0 1px 0 rgba(247, 253, 255, 0.08);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.tone-ok, .tone-success, .tone-fresh, [data-tone="success"], [data-state="fresh"], [class*="success"], [class*="ok"]) {
+  background: linear-gradient(145deg, rgba(33, 132, 116, 0.34), rgba(9, 31, 43, 0.22));
+  border-color: rgba(83, 226, 186, 0.34);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.tone-warn, .tone-warning, .tone-queued, [data-tone="warning"], [data-state="queued"], [class*="warn"]) {
+  background: linear-gradient(145deg, rgba(160, 112, 31, 0.32), rgba(22, 31, 44, 0.22));
+  border-color: rgba(244, 198, 94, 0.36);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.tone-info, .tone-blue, [data-tone="info"], [class*="info"]) {
+  background: linear-gradient(145deg, rgba(46, 111, 196, 0.30), rgba(8, 28, 48, 0.20));
+  border-color: rgba(126, 190, 255, 0.34);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.tone-danger, .tone-error, .tone-rejected, [data-tone="danger"], [data-state="rejected"], [class*="danger"], [class*="error"]) {
+  background: linear-gradient(145deg, rgba(144, 47, 76, 0.34), rgba(35, 12, 29, 0.22));
+  border-color: rgba(255, 138, 165, 0.36);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(.tone-violet, [data-tone="violet"], [class*="violet"]) {
+  background: linear-gradient(145deg, rgba(102, 79, 198, 0.30), rgba(21, 21, 48, 0.22));
+  border-color: rgba(191, 169, 255, 0.34);
+}
+
+/* Restyle: suppliers calendar and command surfaces. */
+html[data-prisma-surface="pc-backoffice"] .calendar-board-v07 {
+  border-radius: var(--pc-v92-radius-lg);
+  background: var(--pc-v92-panel-bg);
+}
+
+html[data-prisma-surface="pc-backoffice"] .calendar-board-v07 .compact-section-head-v07,
+html[data-prisma-surface="pc-backoffice"] .calendar-board-v07 .section-title {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--pc-v92-text-strong);
+}
+
+html[data-prisma-surface="pc-backoffice"] .calendar-day-label-v07 {
+  position: static;
+  top: auto;
+  background: transparent;
+  border: 0;
+  color: var(--pc-v92-label);
+}
+
+html[data-prisma-surface="pc-backoffice"] .calendar-day-v07 {
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(178, 232, 255, 0.14);
+  background: linear-gradient(145deg, rgba(8, 28, 45, 0.24), rgba(6, 19, 32, 0.14));
+  box-shadow: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .calendar-event-v07,
+html[data-prisma-surface="pc-backoffice"] .order-card-v07,
+html[data-prisma-surface="pc-backoffice"] .supplier-action-command-v12,
+html[data-prisma-surface="pc-backoffice"] .supplier-action-result-v09,
+html[data-prisma-surface="pc-backoffice"] .supplier-action-audit-v09,
+html[data-prisma-surface="pc-backoffice"] .supplier-operation-evidence-v07,
+html[data-prisma-surface="pc-backoffice"] .supplier-persistence-v10,
+html[data-prisma-surface="pc-backoffice"] .supplier-table-card-v07,
+html[data-prisma-surface="pc-backoffice"] .supplier-mini-card {
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(178, 232, 255, 0.18);
+  background: linear-gradient(145deg, rgba(12, 38, 58, 0.28), rgba(5, 18, 31, 0.18));
+  color: var(--pc-v92-text);
+  box-shadow: 0 10px 24px rgba(0, 8, 18, 0.13), inset 0 1px 0 rgba(247, 253, 255, 0.07);
+}
+
+html[data-prisma-surface="pc-backoffice"] .supplier-action-command-v12 span,
+html[data-prisma-surface="pc-backoffice"] .supplier-context-bar-v07 span,
+html[data-prisma-surface="pc-backoffice"] .supplier-action-flow-v09 span {
+  border-radius: var(--pc-v92-radius-pill);
+  border: 1px solid rgba(178, 232, 255, 0.24);
+  background: var(--pc-v92-pill-bg);
+  color: var(--pc-v92-text);
+  box-shadow: inset 0 1px 0 rgba(247, 253, 255, 0.08);
+}
+
+/* Restyle: tables and lists are readable without opaque slabs. */
+html[data-prisma-surface="pc-backoffice"] :where(table, thead, tbody, tr, td, th, [class*="table"], [class*="ledger"], [class*="row"]) {
+  background-color: transparent;
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(th, td) {
+  border-color: rgba(195, 237, 255, 0.14);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where(thead, [class*="headerRow"]) {
+  color: var(--pc-v92-label);
+}
+
+html[data-prisma-surface="pc-backoffice"] :where([data-pc-sync-chart-promotion="true"] [class*="panel"], [data-pc-sync-chart-promotion="true"] [class*="chartCard"], [data-pc-sync-chart-promotion="true"] [class*="freshnessRow"], [data-pc-sync-chart-promotion="true"] [class*="timelineCard"], [data-pc-sync-chart-promotion="true"] [class*="entityCell"], [data-pc-sync-chart-promotion="true"] [class*="stateBox"], [data-pc-sync-chart-promotion="true"] [class*="miniPill"]) {
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(177, 232, 255, 0.18);
+  background: linear-gradient(145deg, rgba(12, 37, 58, 0.26), rgba(5, 17, 30, 0.16));
+  color: var(--pc-v92-text);
+  box-shadow: 0 10px 24px rgba(0, 8, 18, 0.12), inset 0 1px 0 rgba(247, 253, 255, 0.07);
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-tooltip {
+  z-index: 12;
+  border-radius: var(--pc-v92-radius-md);
+  border: 1px solid rgba(174, 229, 255, 0.30);
+  background: linear-gradient(145deg, rgba(8, 28, 45, 0.42), rgba(4, 16, 28, 0.34));
+  color: var(--pc-v92-text-strong);
+  box-shadow: 0 14px 32px rgba(0, 8, 18, 0.18);
+  backdrop-filter: blur(12px) saturate(1.10);
+  -webkit-backdrop-filter: blur(12px) saturate(1.10);
+}
+
+@media (max-width: 1180px) {
+  html[data-prisma-surface="pc-backoffice"] .shell,
+  html[data-prisma-surface="pc-backoffice"] body[data-prisma-route] .shell,
+  html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .shell {
+    grid-template-columns: clamp(210px, 24vw, 268px) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  html[data-prisma-surface="pc-backoffice"] .shell,
+  html[data-prisma-surface="pc-backoffice"] body[data-prisma-route] .shell,
+  html[data-prisma-surface="pc-backoffice"] body:has(.supplier-page) .shell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  html[data-prisma-surface="pc-backoffice"] .sidebar {
+    width: 100%;
+  }
+
+  html[data-prisma-surface="pc-backoffice"] .surface-context-strip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+/* PRISMA_PC_XRAY_CONTEXT_STRIP_GOVERNOR_START
+   Runtime evidence 0707: SurfaceContextStrip was rendering as stacked/ghost secondary surfaces.
+   Purpose: keep secondary views accessible, explicit, and horizontally governed without vertical button soup.
+*/
+html[data-prisma-surface="pc-backoffice"] .surface-context-strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0;
+  overflow: visible;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--pc-v92-label);
+  text-shadow: 0 0 18px rgba(126, 230, 255, 0.18);
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-scroll {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-scroll-viewport {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(161, 232, 255, 0.30) transparent;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: max-content;
+  padding: 2px 2px 7px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  max-width: clamp(138px, 18vw, 224px);
+  padding: 7px 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--pc-v92-text-strong);
+  border: 1px solid rgba(190, 236, 255, 0.34);
+  background: linear-gradient(145deg, rgba(120, 224, 255, 0.22), rgba(20, 42, 64, 0.30));
+  box-shadow: 0 10px 24px rgba(0, 8, 18, 0.14), inset 0 1px 0 rgba(247, 253, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(1.10);
+  -webkit-backdrop-filter: blur(10px) saturate(1.10);
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill-title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill-dot {
+  flex: 0 0 auto;
+}
+
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill:hover,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill.is-active,
+html[data-prisma-surface="pc-backoffice"] .surface-context-pill[data-active="true"] {
+  border-color: rgba(158, 236, 255, 0.50);
+  background: linear-gradient(145deg, rgba(122, 226, 255, 0.36), rgba(134, 116, 255, 0.28));
+  color: var(--pc-v92-text-strong);
+  box-shadow: 0 14px 30px rgba(0, 8, 18, 0.18), 0 0 22px rgba(112, 222, 255, 0.14), inset 0 1px 0 rgba(247, 253, 255, 0.16);
+}
+
+@media (max-width: 760px) {
+  html[data-prisma-surface="pc-backoffice"] .surface-context-strip {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  html[data-prisma-surface="pc-backoffice"] .surface-context-label {
+    padding-left: 2px;
+  }
+
+  html[data-prisma-surface="pc-backoffice"] .surface-context-pill {
+    max-width: 72vw;
+  }
+}
+/* PRISMA_PC_XRAY_CONTEXT_STRIP_GOVERNOR_END */
+
+/* PRISMA_PC_V92_DEMOLITION_FINAL_END */
+
+/* PRISMA_PC_UNBEND_HERO_LAYOUT_GUARD_0707_START
+   Purpose: repair the runtime collapse where DecisionScreen hero/section copy was rendered as one-letter vertical columns.
+   Scope: source-only global PC visual layer; no .next, no generated CSS, no module-local pure-selector risk.
+*/
+html[data-prisma-surface="pc-backoffice"] .main,
+html[data-prisma-surface="pc-backoffice"] main.main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main > .card,
+html[data-prisma-surface="pc-backoffice"] .main > .panel,
+html[data-prisma-surface="pc-backoffice"] .main > .hero,
+html[data-prisma-surface="pc-backoffice"] .main > section,
+html[data-prisma-surface="pc-backoffice"] .main > article,
+html[data-prisma-surface="pc-backoffice"] .main [data-prisma-component="DecisionScreen"],
+html[data-prisma-surface="pc-backoffice"] .main [data-prisma-component="PcModuleShell"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .section-head,
+html[data-prisma-surface="pc-backoffice"] .main .hero-header,
+html[data-prisma-surface="pc-backoffice"] .main [class*="heroHeader"],
+html[data-prisma-surface="pc-backoffice"] .main [class*="sectionHead"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(12px, 1.6vw, 24px);
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .section-head > *,
+html[data-prisma-surface="pc-backoffice"] .main .hero-header > *,
+html[data-prisma-surface="pc-backoffice"] .main [class*="heroHeader"] > *,
+html[data-prisma-surface="pc-backoffice"] .main [class*="sectionHead"] > * {
+  min-width: min(100%, 18rem);
+  max-width: 100%;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .section-head > :first-child,
+html[data-prisma-surface="pc-backoffice"] .main .hero-header > :first-child,
+html[data-prisma-surface="pc-backoffice"] .main [class*="heroHeader"] > :first-child,
+html[data-prisma-surface="pc-backoffice"] .main [class*="sectionHead"] > :first-child {
+  flex: 1 1 34rem;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .kicker,
+html[data-prisma-surface="pc-backoffice"] .main .panel-label,
+html[data-prisma-surface="pc-backoffice"] .main .section-title,
+html[data-prisma-surface="pc-backoffice"] .main .section-copy,
+html[data-prisma-surface="pc-backoffice"] .main .hero-title,
+html[data-prisma-surface="pc-backoffice"] .main .hero-copy,
+html[data-prisma-surface="pc-backoffice"] .main .hero-copy p,
+html[data-prisma-surface="pc-backoffice"] .main h1,
+html[data-prisma-surface="pc-backoffice"] .main h2,
+html[data-prisma-surface="pc-backoffice"] .main h3,
+html[data-prisma-surface="pc-backoffice"] .main h4,
+html[data-prisma-surface="pc-backoffice"] .main p,
+html[data-prisma-surface="pc-backoffice"] .main small,
+html[data-prisma-surface="pc-backoffice"] .main strong,
+html[data-prisma-surface="pc-backoffice"] .main span,
+html[data-prisma-surface="pc-backoffice"] .main li,
+html[data-prisma-surface="pc-backoffice"] .main dd,
+html[data-prisma-surface="pc-backoffice"] .main dt,
+html[data-prisma-surface="pc-backoffice"] .main label {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: manual;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .kicker,
+html[data-prisma-surface="pc-backoffice"] .main .panel-label {
+  width: auto;
+  display: block;
+  line-height: 1.15;
+  letter-spacing: 0.12em;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .section-title,
+html[data-prisma-surface="pc-backoffice"] .main .hero-title,
+html[data-prisma-surface="pc-backoffice"] .main h1,
+html[data-prisma-surface="pc-backoffice"] .main h2 {
+  width: auto;
+  min-width: min(100%, 18rem);
+  max-width: min(100%, 72rem);
+  line-height: 1.02;
+  overflow-wrap: normal;
+  color: var(--pc-v92-text-strong, #f7fcff);
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .section-copy,
+html[data-prisma-surface="pc-backoffice"] .main .hero-copy p,
+html[data-prisma-surface="pc-backoffice"] .main p {
+  max-width: min(100%, 76rem);
+  line-height: 1.45;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .grid,
+html[data-prisma-surface="pc-backoffice"] .main .dashboard-grid,
+html[data-prisma-surface="pc-backoffice"] .main [class*="grid"],
+html[data-prisma-surface="pc-backoffice"] .main [class*="Grid"] {
+  min-width: 0;
+  max-width: 100%;
+}
+
+html[data-prisma-surface="pc-backoffice"] .main .btn,
+html[data-prisma-surface="pc-backoffice"] .main button,
+html[data-prisma-surface="pc-backoffice"] .main a[class*="button"],
+html[data-prisma-surface="pc-backoffice"] .main [class*="action"] {
+  max-width: 100%;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 760px) {
+  html[data-prisma-surface="pc-backoffice"] .main .section-head,
+  html[data-prisma-surface="pc-backoffice"] .main .hero-header,
+  html[data-prisma-surface="pc-backoffice"] .main [class*="heroHeader"],
+  html[data-prisma-surface="pc-backoffice"] .main [class*="sectionHead"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* PRISMA_PC_UNBEND_HERO_LAYOUT_GUARD_0707_END */
+
+/* PRISMA_PC_UNBEND_CANONICAL_SOURCE_ONLY_START */
+/* Source-only rescue for collapsed PC hero / decision center text. No .next, no generated CSS. */
+
+.prisma-app-content .shell > main,
+.prisma-app-content #prisma-main-content,
+.prisma-app-content main#prisma-main-content,
+.prisma-app-content [id="prisma-main-content"],
+.prisma-app-content [data-prisma-main],
+.prisma-app-content [data-pc-main] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  display: block;
+}
+
+.prisma-app-content #prisma-main-content > *,
+.prisma-app-content main#prisma-main-content > *,
+.prisma-app-content .shell > main > *,
+.prisma-app-content [data-prisma-main] > *,
+.prisma-app-content [data-pc-main] > * {
+  min-width: 0;
+  max-width: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.prisma-app-content #prisma-main-content :is([class*="hero" i], [class*="decision" i], [class*="surface" i], [class*="panel" i], [class*="card" i], [class*="summary" i], [class*="header" i]),
+.prisma-app-content .shell > main :is([class*="hero" i], [class*="decision" i], [class*="surface" i], [class*="panel" i], [class*="card" i], [class*="summary" i], [class*="header" i]) {
+  min-width: 0;
+  max-width: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  inline-size: auto;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+}
+
+.prisma-app-content #prisma-main-content :is(h1, h2, h3, h4, p, span, strong, small, li, td, th, label),
+.prisma-app-content .shell > main :is(h1, h2, h3, h4, p, span, strong, small, li, td, th, label) {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: normal;
+  max-inline-size: 100%;
+}
+
+.prisma-app-content #prisma-main-content :is(h1, h2, [class*="title" i], [class*="heading" i]),
+.prisma-app-content .shell > main :is(h1, h2, [class*="title" i], [class*="heading" i]) {
+  display: block;
+  width: auto;
+  min-width: min(100%, 18rem);
+  max-width: min(100%, 72rem);
+  min-inline-size: min(100%, 18rem);
+  max-inline-size: min(100%, 72rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.prisma-app-content #prisma-main-content :is([class*="eyebrow" i], [class*="kicker" i], [class*="label" i]),
+.prisma-app-content .shell > main :is([class*="eyebrow" i], [class*="kicker" i], [class*="label" i]) {
+  display: inline-flex;
+  width: auto;
+  min-width: max-content;
+  max-width: 100%;
+  min-inline-size: max-content;
+  max-inline-size: 100%;
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+}
+
+.prisma-app-content #prisma-main-content :is([class*="actions" i], [class*="toolbar" i], [class*="status" i], [class*="chips" i]),
+.prisma-app-content .shell > main :is([class*="actions" i], [class*="toolbar" i], [class*="status" i], [class*="chips" i]) {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(0.45rem, 0.9vw, 0.8rem);
+}
+
+.prisma-app-content #prisma-main-content :is(button, a, [role="button"]),
+.prisma-app-content .shell > main :is(button, a, [role="button"]) {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* PRISMA_PC_UNBEND_CANONICAL_SOURCE_ONLY_END */

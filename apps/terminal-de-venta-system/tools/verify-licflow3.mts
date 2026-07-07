@@ -87,7 +87,8 @@ function runWorkerRouteContract(action: "activate" | "refresh" | "revoke"): void
     activate: {
       path: "/api/licenses/activate",
       body: {
-        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        licenseId: "DUMMY-LICFLOW3-TEST-LICENSE",
+        licenseKey: "DUMMY-LICFLOW3-TEST-LICENSE",
         deviceId: "dummy-device-id",
         tenantId: "dummy-tenant",
         app: "terminal-de-venta-system"
@@ -96,7 +97,8 @@ function runWorkerRouteContract(action: "activate" | "refresh" | "revoke"): void
     refresh: {
       path: "/api/licenses/refresh",
       body: {
-        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        licenseId: "DUMMY-LICFLOW3-TEST-LICENSE",
+        licenseKey: "DUMMY-LICFLOW3-TEST-LICENSE",
         deviceId: "dummy-device-id",
         tenantId: "dummy-tenant"
       }
@@ -104,7 +106,8 @@ function runWorkerRouteContract(action: "activate" | "refresh" | "revoke"): void
     revoke: {
       path: "/api/licenses/revoke",
       body: {
-        licenseKey: "DUMMY-LICFLOW3-TEST-KEY",
+        licenseId: "DUMMY-LICFLOW3-TEST-LICENSE",
+        licenseKey: "DUMMY-LICFLOW3-TEST-LICENSE",
         deviceId: "dummy-device-id",
         tenantId: "dummy-tenant",
         reason: "dummy-smoke"
@@ -149,6 +152,54 @@ function runWorkerRouteContract(action: "activate" | "refresh" | "revoke"): void
     observedBodyStatus: observed.body.status || null,
     observedReason: observed.body.reason || null,
     bodySha256: observed.bodySha256,
+    liveCloudTouched: false
+  });
+}
+
+function modeRouteMap(): void {
+  const worker = readText("infra/cloudflare/licflow3-worker/src/worker.js");
+  const config = readJson<{ endpoints: Partial<Record<Licflow3EndpointKey, string>> }>("Prisma Cloud Ctr/internal/config/cloud_saas.json");
+  const api = readText("Prisma Cloud Ctr/internal/py/cloud_saas_api.py");
+  const consoleJs = readText("Prisma Cloud Ctr/internal/web/cloud_saas_console.js");
+  const commandCenter = readText("Prisma Cloud Ctr/internal/web/cloud_command_center.js");
+  const required: Array<{ key: Licflow3EndpointKey; path: string; tags: string[] }> = [
+    { key: "licenseActivate", path: "/api/licenses/activate", tags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"] },
+    { key: "licenseRefresh", path: "/api/licenses/refresh", tags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"] },
+    { key: "licenseRevoke", path: "/api/licenses/revoke", tags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"] },
+    { key: "licenseRenew", path: "/api/licenses/renew", tags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"] },
+    { key: "licenseCommercialState", path: "/api/licenses/commercial-state", tags: ["admin-token-required", "dry-run-safe", "confirmed-mutation"] },
+    { key: "customerSetupCreate", path: "/api/admin/customer-setups/create", tags: ["admin-token-required", "confirmed-mutation"] },
+    { key: "customerSetupResolve", path: "/api/customer/setup/:setupCode", tags: ["public/customer", "read-only"] },
+    { key: "customerDeviceClaim", path: "/api/customer/devices/claim", tags: ["public/customer", "confirmed-mutation"] },
+    { key: "customerLicenseStatus", path: "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId", tags: ["public/customer", "read-only"] },
+    { key: "customerLicenseRefresh", path: "/api/customer/license/refresh", tags: ["public/customer", "confirmed-mutation"] },
+    { key: "customerPortal", path: "/api/customer/portal?setupCode=:setupCode", tags: ["public/customer", "read-only", "portal/magic-link"] },
+    { key: "customerMagicLink", path: "/api/customer/magic-link?setupCode=:setupCode", tags: ["public/customer", "read-only", "portal/magic-link"] },
+    { key: "customerDeviceReplacementRequest", path: "/api/customer/devices/replacement/request", tags: ["public/customer", "confirmed-mutation", "replacement-flow"] },
+    { key: "adminCustomerDeviceReplacementApprove", path: "/api/admin/customer-devices/replacement/approve", tags: ["admin-token-required", "confirmed-mutation", "replacement-flow"] },
+    { key: "health", path: "/health", tags: ["public", "read-only"] }
+  ];
+  const status = buildLicflow3CloudContractStatus({ apiBaseUrl: LICFLOW3_CLOUD_CONTRACT.baseUrl, tenantSlug: LICFLOW3_CLOUD_CONTRACT.tenantSlug, endpoints: config.endpoints });
+  assert(status.ok, `Route map contract incomplete: ${JSON.stringify({ missing: status.missing, mismatched: status.mismatched })}`);
+  const endpointByKey = new Map(LICFLOW3_CLOUD_ENDPOINTS.map((endpoint) => [endpoint.key, endpoint]));
+  for (const item of required) {
+    const routePattern = item.path.replace(/\?.*$/, "").replace(":setupCode", "");
+    const regexPattern = routePattern.replace(/\//g, "\\/");
+    assert(worker.includes(routePattern) || worker.includes(regexPattern), `Worker missing route implementation for ${item.path}`);
+    assert(config.endpoints?.[item.key] === item.path, `cloud_saas.json missing ${item.key} -> ${item.path}`);
+    const endpoint = endpointByKey.get(item.key);
+    assert(endpoint, `Shared contract missing endpoint ${item.key}`);
+    for (const tag of item.tags) assert(endpoint.routeTags.includes(tag as never), `${item.key} missing route tag ${tag}`);
+    assert(api.includes(`"${item.key}"`) && api.includes(item.path), `cloud_saas_api route map missing ${item.key}`);
+  }
+  assert(commandCenter.includes("License Route Map"), "Cloud Command Center does not render License Route Map.");
+  assert(consoleJs.includes("routeTags"), "Cloud SaaS console does not expose route tag metadata.");
+  assert(!worker.includes("audit_events.type"), "Worker must not query audit_events.type.");
+  assert(worker.includes("audit_events") && worker.includes("event_type"), "Worker must use audit_events.event_type.");
+  pass("verify:licflow3:route-map", {
+    endpointCount: LICFLOW3_CLOUD_ENDPOINTS.length,
+    requiredRoutes: required.map((item) => item.path),
+    eventTypeColumn: "audit_events.event_type",
     liveCloudTouched: false
   });
 }
@@ -451,6 +502,9 @@ try {
       break;
     case "route-revoke":
       runWorkerRouteContract("revoke");
+      break;
+    case "route-map":
+      modeRouteMap();
       break;
     case "no-secrets":
       modeNoSecrets();

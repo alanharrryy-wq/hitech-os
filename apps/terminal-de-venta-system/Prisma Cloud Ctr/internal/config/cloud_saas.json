@@ -21,14 +21,21 @@
     "licenseActivate": "/api/licenses/activate",
     "licenseRefresh": "/api/licenses/refresh",
     "licenseRevoke": "/api/licenses/revoke",
+    "licenseRenew": "/api/licenses/renew",
+    "licenseCommercialState": "/api/licenses/commercial-state",
     "deviceRegister": "/api/devices/register",
     "integrationReceipt": "/api/client/integration-receipt",
     "supportDiagnostics": "/api/support/diagnostics?tenant=prisma-original-customer",
     "clientContract": "/api/client/contract?tenant=prisma-original-customer",
     "customerSetupCreate": "/api/admin/customer-setups/create",
     "customerSetupResolve": "/api/customer/setup/:setupCode",
+    "customerPortal": "/api/customer/portal?setupCode=:setupCode",
+    "customerMagicLink": "/api/customer/magic-link?setupCode=:setupCode",
     "customerDeviceClaim": "/api/customer/devices/claim",
-    "customerLicenseStatus": "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId"
+    "customerDeviceReplacementRequest": "/api/customer/devices/replacement/request",
+    "adminCustomerDeviceReplacementApprove": "/api/admin/customer-devices/replacement/approve",
+    "customerLicenseStatus": "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId",
+    "customerLicenseRefresh": "/api/customer/license/refresh"
   },
   "licflow3": {
     "contractId": "LICFLOW3_CLOUDFLARE_HOSTED_LICENSING_SUPPORT_BRIDGE",

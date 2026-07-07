@@ -378,6 +378,10 @@ async function licenseById(env, slug, licenseId, schemaMode = null) {
   return null;
 }
 
+function licenseIdentifierFromBody(body) {
+  return String(body.licenseId || body.licenseKey || "").trim();
+}
+
 function auditInsertStatement(auditMode, eventId, slug, eventType, payload) {
   const payloadJson = JSON.stringify(payload || {});
   if (auditMode === "audit_events") {
@@ -945,7 +949,7 @@ async function createCustomerSetup(request, env) {
       now()
     ]);
   }
-  const auditEventId = await recordAudit(env, pass.tenantSlug, "customer_setup.plan_based_provision", {
+  const auditPayload = {
     setupId: pass.setupId,
     setupBundleId: pass.setupBundleId,
     setupCode: pass.setupCode,
@@ -955,8 +959,14 @@ async function createCustomerSetup(request, env) {
     claimSlotsCreated: pass.deviceClaimSlots.length,
     operatorActionCount: 1,
     manualDeviceClaimRequired: false
-  });
+  };
+  const createAuditEventId = await recordAudit(env, pass.tenantSlug, "customer_setup.create", auditPayload);
+  const auditEventId = await recordAudit(env, pass.tenantSlug, "customer_setup.plan_based_provision", auditPayload);
   pass.auditEventId = auditEventId;
+  pass.auditEventIds = {
+    create: createAuditEventId,
+    planBasedProvision: auditEventId
+  };
   pass.deviceClaimSlots = buildDeviceClaimSlotsForPlan(pass, plan, expiresAt, auditEventId);
   const bundleResult = await upsertSetupBundle(env, pass, auditEventId);
   if (!bundleResult.ok) return json({ ...pass, ok: false, status: bundleResult.status, resultCode: "SETUP_BUNDLE_CREATE_FAILED", secretsExposed: false }, 500);
@@ -1445,7 +1455,17 @@ async function activateLicense(request, env, mode) {
   const db = d1(env);
   if (!db) return json({ ok: false, status: "D1_BINDING_REQUIRED", action: mode, signedLicenseIssued: false }, 503);
   const slug = body.tenantSlug || body.tenant || TENANT;
-  const licenseId = body.licenseId || `licflow3-${mode}-${crypto.randomUUID()}`;
+  const providedLicenseId = licenseIdentifierFromBody(body);
+  if (!simulation && !providedLicenseId) {
+    return json(operatorResult(mode, mutationMode, "LICENSE_ID_REQUIRED", {
+      ok: false,
+      safeToMutate: false,
+      operatorMessage: "Confirmed License Operation requiere licenseId. licenseKey se acepta solo como alias de compatibilidad.",
+      nextStep: "Envia licenseId o licenseKey antes de ejecutar la operacion confirmada.",
+      latencyMs: Date.now() - started
+    }), 400);
+  }
+  const licenseId = providedLicenseId || `licflow3-${mode}-${crypto.randomUUID()}`;
   const requestedState = String(body.status || body.commercialStatus || "").trim().toLowerCase();
   const status = mode === "revoke" ? "revoked" : mode === "renew" ? "renewed" : mode === "commercial-state" && COMMERCIAL_STATES.has(requestedState) ? requestedState : mode === "refresh" ? "active" : "active";
   const validUntil = body.validUntil || (mode === "renew" ? addDays(365) : null);

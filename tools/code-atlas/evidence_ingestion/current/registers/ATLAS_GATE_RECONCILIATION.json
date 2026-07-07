@@ -1,0 +1,25 @@
+{
+  "kind": "ATLAS_GATE_RECONCILIATION.v1",
+  "status": "PASS_ATLAS_SOURCE_GATES_RECONCILED_PRODUCTION_STILL_BLOCKED",
+  "createdAt": "2026-07-07T01:11:35",
+  "repo": "F:\\repos\\hitech-os",
+  "gates": {
+    "atlasCoverageAudit": "PASS_ATLAS_COVERAGE_AUDIT_RECONCILED_WITH_KNOWN_GAPS",
+    "importantFilesGate": "PASS_IMPORTANT_FILES_GATE_RECONCILED",
+    "unresolvedImports": "PASS_UNRESOLVED_IMPORTS_VERIFIED_AND_CLASSIFIED",
+    "dbReality": "WARN_DB_REALITY_GHOST_RELATIONS_CLASSIFIED",
+    "productionReadiness": "BLOCKED_PRODUCTION_GATES_RED"
+  },
+  "productionGreenAllowed": false,
+  "warnings": [
+    "Atlas semantic coverage is reconciled but not declared complete.",
+    "DB ghost relations are classified but not schema-fixed.",
+    "Production readiness remains blocked by lineage/runtime evidence."
+  ],
+  "doesNotProve": [
+    "LIVE_CERTIFIED",
+    "PRODUCTION_GREEN",
+    "Complete runtime evidence",
+    "Complete sales/tender/canonical lineage"
+  ]
+}

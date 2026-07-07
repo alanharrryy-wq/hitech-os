@@ -1,0 +1,53 @@
+{
+  "kind": "DO_NOT_REBUILD_MAP.v1",
+  "status": "PASS_DO_NOT_REBUILD_MAP_UPDATED",
+  "rule": "Existing evidenced capabilities are VERIFY/FIX only unless real drift is proven.",
+  "items": [
+    {
+      "capability": "Customer Setup multi-device",
+      "classification": "DO_NOT_REBUILD_SOURCE_READY",
+      "evidence": [
+        "customer_setup_contract",
+        "customer_setup_e2e",
+        "customer_setup_matrices"
+      ]
+    },
+    {
+      "capability": "LICFLOW3 / Licensing source",
+      "classification": "DO_NOT_REBUILD_SOURCE_READY_OR_LIVE_VALIDATED_BY_PRIOR_EVIDENCE",
+      "evidence": [
+        "licensing_context",
+        "licensing_key_source"
+      ]
+    },
+    {
+      "capability": "Factory Ledger root installation",
+      "classification": "DO_NOT_REBUILD_VERIFY_FILL",
+      "evidence": [
+        "factory_ledger_installed_result"
+      ]
+    },
+    {
+      "capability": "Productization contracts",
+      "classification": "DO_NOT_REBUILD_VERIFY_GATES",
+      "evidence": [
+        "productization"
+      ]
+    },
+    {
+      "capability": "DB Evidence Atlas viewer/report",
+      "classification": "VERIFY_CURRENT_REPORT_THEN_FIX",
+      "evidence": [
+        "db_evidence_atlas"
+      ]
+    },
+    {
+      "capability": "Code Atlas gate reconciliation",
+      "status": "SOURCE_READY_REGISTERED",
+      "evidence": "ATLAS_GATE_RECONCILIATION.json",
+      "doNotRebuild": true,
+      "allowedNextGate": "VERIFY_OR_BUILD_SURFACE_AWARE_RESOLVER"
+    }
+  ],
+  "updatedAt": "2026-07-07T01:11:35"
+}

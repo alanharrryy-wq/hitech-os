@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "prisma.factory-ledger.next-gates.patch.v1",
+  "updatedAt": "2026-07-07T02:40:51-06:00",
+  "removeFromPending": [
+    "licensing.admin_token_sync",
+    "licensing.admin_http_mutation_e2e",
+    "licensing.admin_note_mutation_persisted"
+  ],
+  "keepAsVerifyFix": [
+    "licensing.admin_license_refresh_e2e"
+  ],
+  "doNotRebuild": [
+    "licensing.admin_token_sync",
+    "licensing.admin_http_mutation_e2e",
+    "licensing.admin_note_mutation_persisted"
+  ],
+  "nextSuggestedGate": "release bundle sanitization / distribution evidence, unless Code Atlas production gates require DB lineage first"
+}

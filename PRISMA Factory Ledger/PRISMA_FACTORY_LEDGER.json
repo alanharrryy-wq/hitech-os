@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "ledgerName": "PRISMA Factory Ledger",
+  "purpose": "Single anti-rework source of truth for PRISMA capability status, evidence, next gates, and do-not-rebuild rules.",
+  "canonicalRoot": "F:\\repos\\hitech-os\\PRISMA Factory Ledger",
+  "createdBy": "ChatGPT package generator",
+  "rules": {
+    "statusFirst": true,
+    "noCodeBeforeLedgerGate": true,
+    "noRebuildWhenDoNotRebuild": true,
+    "noGreenWithoutEvidence": true,
+    "mustDeclareClassification": [
+      "DONE",
+      "VERIFY",
+      "FIX",
+      "BUILD",
+      "EXTERNAL"
+    ],
+    "mustDeclareSurfaces": true,
+    "mustUpdateEvidenceAfterWork": true
+  },
+  "statuses": [
+    "NOT_STARTED",
+    "DESIGNED",
+    "SOURCE_READY",
+    "LOCAL_VERIFIED",
+    "RUNTIME_VERIFIED",
+    "LIVE_CERTIFIED",
+    "VISUAL_CERTIFIED",
+    "DISTRIBUTABLE_READY",
+    "FROZEN",
+    "EXTERNAL_BLOCKED",
+    "VERIFY_REQUIRED"
+  ],
+  "capabilities": [
+    {
+      "id": "licensing.cloudflare_d1_oauth",
+      "displayName": "LICFLOW3 Cloudflare/D1/OAuth production readiness",
+      "domain": "licensing",
+      "surfaces": [
+        "cloud",
+        "d1",
+        "licflow3"
+      ],
+      "classification": "DONE",
+      "status": "LIVE_CERTIFIED",
+      "stateLabel": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Use as certified baseline; rerun read-only only when evidence is stale or operator requests fresh certification.",
+      "evidence": [
+        "licoauth 0607 191041 result.zip",
+        "PRISMA_CLOUD_CENTER_MANUAL_FACTORY_STANDARD.md"
+      ],
+      "doesNotProve": [
+        "Admin HTTP confirmed operations",
+        "Future deploys",
+        "Future D1 migrations",
+        "Unrelated product release readiness"
+      ],
+      "forbiddenClaims": [
+        "Do not claim Admin HTTP certified from OAuth/D1 PASS."
+      ],
+      "allowedActions": [
+        "read-only recertification",
+        "reference evidence"
+      ]
+    },
+    {
+      "id": "licensing.source_contract_alignment",
+      "displayName": "LICFLOW3 / Cloud Center / Bridge / Customer Setup source contract alignment",
+      "domain": "licensing",
+      "surfaces": [
+        "licflow3",
+        "cloud_center",
+        "admin_bridge",
+        "customer_setup",
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "classification": "DONE",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_SOURCE_LICENSE_CONTRACT_ALIGNMENT_COMPLETE",
+      "doNotRebuild": true,
+      "nextGate": "Admin Bridge token E2E or distribution readiness, not source rebuild.",
+      "evidence": [
+        "Codex licensing alignment report",
+        "verify:licflow3:route-map",
+        "verify:licflow4:confirmations",
+        "verify:customer-setup:multidevice"
+      ],
+      "doesNotProve": [
+        "Live confirmed admin HTTP operation",
+        "Customer hosted/live production flow",
+        "Clean distributable release package"
+      ],
+      "allowedActions": [
+        "run local verifiers",
+        "advance to authorized token gate"
+      ]
+    },
+    {
+      "id": "licensing.customer_setup.plan_based_onboarding",
+      "displayName": "Prisma Customer Setup plan-based Tablet/PC/Mobile onboarding",
+      "domain": "licensing",
+      "surfaces": [
+        "customer_setup",
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "classification": "DONE",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "VERIFY_PLAN_BASED_PROVISIONING_READONLY",
+      "doNotRebuild": true,
+      "nextGate": "Hosted/live customer setup certification only if deploy/migration evidence is required.",
+      "evidence": [
+        "PRISMA_CUSTOMER_SETUP_MULTI_DEVICE_CONTRACT.md",
+        "E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md",
+        "PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md"
+      ],
+      "doesNotProve": [
+        "Hosted/live customer use unless Cloud License Gateway deploy and D1 migration are authorized and verified."
+      ],
+      "forbiddenClaims": [
+        "Do not say Customer Setup is missing. It is source/contract ready."
+      ],
+      "allowedActions": [
+        "verify read-only",
+        "certify hosted/live when authorized"
+      ]
+    },
+    {
+      "id": "licensing.admin_bridge.token_e2e",
+      "displayName": "License Admin Bridge token-backed confirmed operation E2E",
+      "domain": "licensing",
+      "surfaces": [
+        "cloud_center",
+        "admin_bridge",
+        "cloud_license_gateway"
+      ],
+      "classification": "EXTERNAL",
+      "status": "EXTERNAL_BLOCKED",
+      "stateLabel": "NEEDS_EXPLICIT_TOKEN_GATE",
+      "doNotRebuild": true,
+      "nextGate": "PASS_ADMIN_BRIDGE_TOKEN_E2E_CERTIFIED with PRISMA_ADMIN_TOKEN presence-only, dry-run first, confirmed operation, audit, secretsExposed:false.",
+      "evidence": [
+        "Source alignment PASS",
+        "PRISMA_CLOUD_CENTER_MANUAL_FACTORY_STANDARD.md"
+      ],
+      "doesNotProve": [
+        "Cannot be certified without explicit token-safe live/admin E2E authorization."
+      ],
+      "allowedActions": [
+        "prepare token-safe ceremony",
+        "run only after operator authorization"
+      ],
+      "forbiddenActions": [
+        "print token",
+        "store token",
+        "put token in ZIP/logs",
+        "run confirmed mutation without explicit approval"
+      ]
+    },
+    {
+      "id": "productization.release_distribution",
+      "displayName": "PRISMA productization and distribution readiness",
+      "domain": "productization",
+      "surfaces": [
+        "installer",
+        "support_bundle",
+        "diagnostics",
+        "release_package",
+        "update_flow"
+      ],
+      "classification": "VERIFY",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "PRODUCTIZATION_DOCS_PRESENT_VERIFY_RELEASE_PACKAGE",
+      "doNotRebuild": true,
+      "nextGate": "Distribution readiness verification against existing productization docs and clean tree separation.",
+      "evidence": [
+        "productization.zip",
+        "productization docs/contracts"
+      ],
+      "doesNotProve": [
+        "Clean release artifact",
+        "No unrelated dirty files",
+        "Installer/support bundle runtime verification"
+      ],
+      "allowedActions": [
+        "verify",
+        "package",
+        "sanitize",
+        "produce evidence"
+      ]
+    },
+    {
+      "id": "pc.visual.cloudglass",
+      "displayName": "PRISMA PC Cloudglass visual system",
+      "domain": "visual",
+      "surfaces": [
+        "pc"
+      ],
+      "classification": "VERIFY",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "STATIC_PASS_VISUAL_RUNTIME_PENDING",
+      "doNotRebuild": false,
+      "nextGate": "Runtime visual verification with screenshots before VISUAL_CERTIFIED.",
+      "evidence": [
+        "pcv92 demolition report"
+      ],
+      "doesNotProve": [
+        "Visual runtime PASS",
+        "Tablet visual PASS",
+        "Mobile visual PASS"
+      ],
+      "allowedActions": [
+        "runtime visual QA",
+        "source fix only if screenshot shows real defect"
+      ]
+    }
+  ]
+}

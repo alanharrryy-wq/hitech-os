@@ -155,7 +155,7 @@ async function main() {
     businessName,
     plan: "TABLET_PC_MOBILE_MANAGED",
     validUntil: addDays(365)
-  }, { statusCodes: [200], resultCode: "CUSTOMER_SETUP_CREATED" }, { admin: true });
+  }, { statusCodes: [200], resultCode: "PLAN_BASED_CUSTOMER_ONBOARDING_READY" }, { admin: true });
   testData.setupCode = setup.setupCode;
   testData.setupId = setup.setupId;
   testData.licenseId = setup.license?.licenseId || `lic_${setup.setupId}`;

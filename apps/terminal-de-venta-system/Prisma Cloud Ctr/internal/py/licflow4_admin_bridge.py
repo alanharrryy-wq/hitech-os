@@ -203,10 +203,14 @@ def _safe_json(text: str) -> Any:
         return {"textSample": text[:900]}
 
 
+def _license_id(payload: dict[str, Any]) -> str:
+    return str(payload.get("licenseId") or payload.get("licenseKey") or "").strip()
+
+
 def _request_id(action: str, payload: dict[str, Any]) -> str:
     base = json.dumps({
         "action": action,
-        "license": _fingerprint(payload.get("licenseKey")),
+        "license": _fingerprint(_license_id(payload)),
         "device": _fingerprint(payload.get("deviceId")),
         "tenant": payload.get("tenantId") or payload.get("tenantSlug"),
         "time": _now(),
@@ -225,9 +229,10 @@ def _audit(action: str, payload: dict[str, Any], result: dict[str, Any]) -> None
         "dryRun": dry_run,
         "tenantId": payload.get("tenantId") or payload.get("tenantSlug") or _tenant_slug(),
         "deviceIdFingerprint": _fingerprint(payload.get("deviceId")),
+        "licenseIdFingerprint": _fingerprint(_license_id(payload)),
         "licenseKeyFingerprint": _fingerprint(payload.get("licenseKey")),
         "deviceFingerprint": _fingerprint(payload.get("deviceId")),
-        "licenseFingerprint": _fingerprint(payload.get("licenseKey")),
+        "licenseFingerprint": _fingerprint(_license_id(payload)),
         "operatorNote": str(payload.get("operatorNote") or "")[:500] or None,
         "reason": str(payload.get("reason") or "")[:500] or None,
         "resultCode": result.get("code"),
@@ -397,10 +402,12 @@ def _validation_error(code: str, detail: str, http_status: int = 409) -> dict[st
 
 def _validate_payload(action: str, payload: dict[str, Any]) -> dict[str, Any] | None:
     dry_run = payload.get("dryRun") is True
-    required = ["licenseKey", "deviceId", "tenantId"]
+    required = ["deviceId", "tenantId"]
     if action == "revoke":
         required.append("reason")
     missing = [key for key in required if not str(payload.get(key) or "").strip()]
+    if not _license_id(payload):
+        missing.append("licenseId/licenseKey")
     if missing:
         return _validation_error("INVALID_ADMIN_ACTION_PAYLOAD", f"Missing required field(s): {', '.join(missing)}.")
     if dry_run:
@@ -413,16 +420,27 @@ def _validate_payload(action: str, payload: dict[str, Any]) -> dict[str, Any] | 
 
 
 def _outbound_payload(action: str, payload: dict[str, Any]) -> dict[str, Any]:
+    dry_run = payload.get("dryRun") is True
+    license_id = _license_id(payload)
+    license_key = str(payload.get("licenseKey") or "").strip()
     body = {
-        "licenseKey": str(payload.get("licenseKey") or "").strip(),
+        "licenseId": license_id,
         "deviceId": str(payload.get("deviceId") or "").strip(),
         "tenantId": str(payload.get("tenantId") or "").strip(),
         "tenantSlug": str(payload.get("tenantId") or "").strip() or _tenant_slug(),
         "source": SOURCE,
+        "dryRun": dry_run,
+        "mutationMode": "simulation" if dry_run else "confirmed",
         "operatorNote": str(payload.get("operatorNote") or "")[:1000],
     }
+    if license_key:
+        body["licenseKey"] = license_key
+    if not dry_run:
+        body["confirmAdminLicenseAction"] = payload.get("confirmAdminLicenseAction") is True
     if action == "revoke":
         body["reason"] = str(payload.get("reason") or "")[:1000]
+        if not dry_run:
+            body["confirmRevoke"] = str(payload.get("confirmRevoke") or "")
     return body
 
 

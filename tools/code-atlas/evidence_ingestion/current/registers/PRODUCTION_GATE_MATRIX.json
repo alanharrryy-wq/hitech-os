@@ -1,0 +1,98 @@
+{
+  "kind": "PRODUCTION_GATE_MATRIX.v1",
+  "status": "BLOCKED_PRODUCTION_READINESS_TRUTHFUL_AFTER_TRIAD",
+  "productionGreenAllowed": false,
+  "productionGate": "NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED",
+  "sourceStatus": "SOURCE_READY_NOT_PRODUCTION_CERTIFIED",
+  "treeCompleteDoesNotImplyAtlasComplete": true,
+  "sourceReadyDoesNotImplyLiveCertified": true,
+  "gates": [
+    {
+      "gate": "Tree physical inventory",
+      "status": "PASS_TREE_IMPORTED",
+      "proves": [
+        "physical tree imported"
+      ],
+      "doesNotProve": [
+        "Atlas semantic coverage complete",
+        "production readiness",
+        "live runtime certification"
+      ]
+    },
+    {
+      "gate": "Atlas coverage audit",
+      "status": "PASS_ATLAS_COVERAGE_AUDIT_RECONCILED_WITH_KNOWN_GAPS",
+      "coverageComplete": false,
+      "closedAs": "AUDIT_RECONCILED_NOT_SEMANTICALLY_COMPLETE",
+      "doesNotProve": [
+        "Atlas semantic coverage complete",
+        "All workspaces runtime verified",
+        "Production readiness"
+      ]
+    },
+    {
+      "gate": "Important files gate",
+      "status": "PASS_IMPORTANT_FILES_GATE_RECONCILED",
+      "blockersCount": 0,
+      "doesNotProve": [
+        "Production readiness",
+        "Runtime/live certification",
+        "All semantic Atlas nodes are complete"
+      ]
+    },
+    {
+      "gate": "DB reality",
+      "status": "WARN_DB_REALITY_GHOST_RELATIONS_CLASSIFIED",
+      "warnings": [
+        "ghost_relations_classified_not_fixed_in_schema",
+        "ghost_relations_detected"
+      ],
+      "nextGate": "DB_SCHEMA_CONTRACT_DECISION_QUEUE"
+    },
+    {
+      "gate": "Operational evidence",
+      "status": "SOURCE_READY_NOT_PRODUCTION_CERTIFIED",
+      "productionGate": "NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED"
+    },
+    {
+      "gate": "Unresolved imports",
+      "status": "PASS_UNRESOLVED_IMPORTS_VERIFIED_AND_CLASSIFIED",
+      "unclassifiedLiveEdges": 0,
+      "doesNotProve": [
+        "All runtime/bundler aliases are valid",
+        "No missing dependency at app build time"
+      ]
+    },
+    {
+      "gate": "Surface-aware resolver verification",
+      "status": "PASS_SURFACE_RESOLVER_VERIFIED_PRODUCTION_STILL_BLOCKED",
+      "semanticCoverageComplete": false,
+      "noiseExcluded": 129,
+      "surfaceUnknownCountAfterClassification": 6351,
+      "doesNotProve": [
+        "production readiness",
+        "runtime/live certification",
+        "sales/tender/canonical provenance complete"
+      ]
+    }
+  ],
+  "gateReconciliationStatus": "PASS_SOURCE_GATE_RECONCILIATION_PRODUCTION_STILL_BLOCKED",
+  "blockingReasons": [
+    "sales lineage provenance remains inferred/incomplete",
+    "runtime/live evidence is not sufficient for production certification",
+    "DB ghost relations require schema/migration decision before production green"
+  ],
+  "updatedAt": "2026-07-07T03:09:31",
+  "productionCertified": false,
+  "triadClosed": true,
+  "triadBlockers": [
+    "sales lineage provenance remains inferred/incomplete unless a later DB Evidence report proves otherwise",
+    "runtime/live artifacts are collected but not yet linked to each production gate row",
+    "DB ghost relations require schema/migration decision before green"
+  ],
+  "requires": [
+    "complete sales/tender/canonical provenance",
+    "runtime artifacts linked to production gate rows",
+    "DB schema/migration decisions for ghost relations"
+  ]
+}

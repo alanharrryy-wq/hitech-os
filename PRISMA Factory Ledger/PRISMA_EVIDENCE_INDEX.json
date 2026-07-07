@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "indexName": "PRISMA Evidence Index",
+  "rule": "Every evidence artifact must declare what it proves and what it does not prove.",
+  "artifacts": [
+    {
+      "artifact": "licoauth 0607 191041 result.zip",
+      "type": "cloudflare_d1_oauth_certification",
+      "scope": [
+        "licensing",
+        "cloud",
+        "d1"
+      ],
+      "status": "PASS",
+      "proves": [
+        "Cloudflare OAuth through project-local Wrangler",
+        "D1 read-only audit/schema check",
+        "Cloud Bridge health",
+        "Fine secret scan zero findings"
+      ],
+      "doesNotProve": [
+        "Admin HTTP token E2E",
+        "Customer hosted/live onboarding",
+        "Future deploy or migration"
+      ]
+    },
+    {
+      "artifact": "licctx 0607 1949 result.zip",
+      "type": "licensing_context_extraction",
+      "scope": [
+        "licensing"
+      ],
+      "status": "PASS",
+      "proves": [
+        "Licensing files/endpoints/docs discovered",
+        "Secret-like findings zero"
+      ],
+      "doesNotProve": [
+        "Source alignment fixed",
+        "Live admin token E2E",
+        "Customer hosted/live production"
+      ]
+    },
+    {
+      "artifact": "lickey 0607 1958 result.zip",
+      "type": "key_source_extraction",
+      "scope": [
+        "licensing"
+      ],
+      "status": "PASS",
+      "proves": [
+        "Key licensing source files extracted",
+        "No secret redactions found"
+      ],
+      "doesNotProve": [
+        "Contracts aligned after fixes",
+        "Token E2E certified"
+      ]
+    },
+    {
+      "artifact": "Codex PASS_SOURCE_LICENSE_CONTRACT_ALIGNMENT_COMPLETE report",
+      "type": "source_alignment",
+      "scope": [
+        "licensing",
+        "customer_setup",
+        "admin_bridge"
+      ],
+      "status": "PASS",
+      "proves": [
+        "Source contracts aligned",
+        "Local verifiers passed",
+        "No token/deploy/D1 mutation used"
+      ],
+      "doesNotProve": [
+        "Confirmed admin HTTP live operation",
+        "Hosted/live customer setup",
+        "Clean release packaging"
+      ]
+    },
+    {
+      "artifact": "productization.zip",
+      "type": "productization_docs_bundle",
+      "scope": [
+        "productization"
+      ],
+      "status": "PRESENT",
+      "proves": [
+        "Productization documentation bundle exists"
+      ],
+      "doesNotProve": [
+        "Release package is clean",
+        "Installer is runtime verified",
+        "Distribution is ready"
+      ]
+    }
+  ]
+}
