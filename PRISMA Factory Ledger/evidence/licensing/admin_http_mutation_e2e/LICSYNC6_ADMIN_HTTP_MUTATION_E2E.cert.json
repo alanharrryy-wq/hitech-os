@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "prisma.factory-ledger.evidence.registration.v1",
+  "registeredAt": "2026-07-07T02:40:51-06:00",
+  "registeredBy": "licreg 0707 package",
+  "sourceEvidenceZip": "F:\\descargasf\\licsync6 0707 0707 0200 result.zip",
+  "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+  "sourceRunName": "licsync6 0707 0707 0200",
+  "status": "DONE",
+  "decision": "PASS_ADMIN_TOKEN_HTTP_MUTATION_E2E_CERTIFIED_WITH_NOTE_PERSISTENCE",
+  "doNotRebuild": true,
+  "scope": {
+    "adminTokenSync": "DONE",
+    "adminHttpMutationE2E": "DONE",
+    "adminNoteMutationPersisted": "DONE",
+    "adminLicenseRefreshE2E": "VERIFY_FIX_NOT_DONE"
+  },
+  "evidence": {
+    "remoteSecretPutOkPreviously": true,
+    "wranglerWhoamiOkPreviously": true,
+    "localTokenWrittenForBridgePreviously": true,
+    "adminNoteMutationFallback": {
+      "attempted": true,
+      "ok": true,
+      "httpStatus": 200,
+      "status": "created",
+      "tenantSlug": "prisma-rey",
+      "noteId": "note-f5f83fbc-f5bb-4f3f-9f73-b5e1c8774ea8"
+    },
+    "adminNotePersisted": true,
+    "notePersistenceSource": "support_notes",
+    "adminHttpMutationCertified": true,
+    "adminLicenseRefreshCertified": false,
+    "adminLicenseRefreshBlockedPreviously": true,
+    "blockers": [],
+    "warnings": []
+  },
+  "security": {
+    "tokenValuePrinted": false,
+    "tokenValueInZip": false,
+    "authorizationHeaderPrinted": false,
+    "fineSecretScanCount": 0,
+    "tokenFingerprintOnly": true,
+    "tokenValueStoredInLedger": false
+  },
+  "factoryClassification": {
+    "licensing.admin_token_sync": "DONE",
+    "licensing.admin_http_mutation_e2e": "DONE",
+    "licensing.admin_note_mutation_persisted": "DONE",
+    "licensing.admin_license_refresh_e2e": "VERIFY_FIX_NOT_DONE",
+    "licensing.distributable_ready_current_scope": "DONE"
+  },
+  "doNotRebuildKeys": [
+    "licensing.admin_token_sync",
+    "licensing.admin_http_mutation_e2e",
+    "licensing.admin_note_mutation_persisted"
+  ],
+  "notCertifiedKeys": [
+    "licensing.admin_license_refresh_e2e"
+  ]
+}
