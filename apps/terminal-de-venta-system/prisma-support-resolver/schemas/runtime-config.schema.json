@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/runtime-config.schema.json",
+  "title": "PRISMA Support Runtime Config",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["surface", "businessId", "deviceId", "secretsExposed"],
+  "properties": {
+    "surface": { "enum": ["tablet", "pc", "mobile"] },
+    "customerId": { "type": ["string", "null"] },
+    "businessId": { "type": "string" },
+    "storeId": { "type": ["string", "null"] },
+    "deviceId": { "type": "string" },
+    "terminalId": { "type": ["string", "null"] },
+    "runtimeMode": { "type": "string" },
+    "secretsExposed": { "const": false }
+  }
+}

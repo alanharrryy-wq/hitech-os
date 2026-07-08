@@ -16,7 +16,14 @@ export function PrismaCategoryRail() {
   const [activeLabel, setActiveLabel] = useState(categories.find((category) => category.active)?.label ?? categories[0]?.label ?? "");
 
   return (
-    <section className={styles.categoryRail} aria-label="Categorías" data-prisma-hardening="category-actions-260611">
+    <section className={styles.categoryRail} aria-label="Categorías" data-prisma-hardening="category-actions-260611"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="product-grid"
+      data-panel="category-rail"
+      data-target="category-rail"
+      data-kind="panel"
+      data-role="category-filter">
       {categories.map((category) => {
         const isActive = activeLabel === category.label;
         return (

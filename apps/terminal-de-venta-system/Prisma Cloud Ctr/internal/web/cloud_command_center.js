@@ -18,6 +18,41 @@
   const FIRST_CUSTOMER_NAME = "Prisma Original Customer";
   const FIRST_TENANT_SLUG = "prisma-original-customer";
 
+  const SUPPORT_IDENTITY_CONTEXT = {
+    businessId: "biz_prisma_rey_lineage_seed",
+    customerId: "cust_demo",
+    customer: {
+      displayName: "Prisma Original Customer",
+      customerId: "cust_prisma_original_customer",
+      tenantId: "tenant_prisma_original_customer",
+      licenseId: "lic_prisma_original_customer_001",
+      planLabel: "Tablet + PC Managed",
+      businessId: "biz_78b3c840796a4a4dad",
+      storeId: "store_00728649f3804a9e82",
+      storeName: "Sucursal principal",
+      tabletTerminalId: "term_49103c7382d84663a3",
+      tabletTerminalName: "Tablet Caja 1",
+      secondaryTabletTerminalId: "term_064de66650df46e0b2",
+      pcDeviceId: "pc_prisma_original_customer_001",
+      tabletDeviceId: "tablet_prisma_original_customer_001",
+      mobileDeviceId: "mobile_prisma_original_customer_001"
+    },
+    runtime: {
+      businessId: "biz_prisma_rey_lineage_seed",
+      storeId: "store_prisma_rey_centro",
+      terminalId: "term_tablet_pos_001",
+      deviceId: "tablet-pos-source-ready"
+    },
+    license: {
+      businessId: "biz_demo",
+      customerId: "cust_demo",
+      licenseId: "lic_demo_tablet_pro",
+      plan: "TABLET_PRO",
+      state: "active"
+    },
+    technicalSources: ["PC/Admin diagnostic", "runtime.json", "license.json", "POS local DB", "signed activation package"]
+  };
+
   const ADVANCED_SURFACES = new Set(["system"]);
   const state = {
     surface: "command",
@@ -31,6 +66,10 @@
     lastResult: null,
     lastLoadedAt: null,
     commandCenter: null,
+    supportCatalog: null,
+    supportSearch: null,
+    supportDiagnosis: null,
+    supportSimulation: null,
     flow: {},
     openPicker: null
   };
@@ -125,6 +164,12 @@
     return `<div class="cc-actions">${items.join("")}</div>`;
   }
 
+  function table(headers, rows, emptyLabel) {
+    const safeRows = Array.isArray(rows) ? rows : [];
+    if (!safeRows.length) return `<div class="cc-empty">${esc(emptyLabel || "Sin filas")}</div>`;
+    return `<div class="cc-table-wrap"><table class="cc-support-table"><thead><tr>${headers.map((header) => `<th>${esc(header)}</th>`).join("")}</tr></thead><tbody>${safeRows.map((row) => `<tr>${headers.map((header) => `<td>${esc(compact(row[header] ?? row[header.replace(/\s+/g, "")] ?? row[header.toLowerCase()] ?? ""))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+
   function derived() {
     return state.data?.derived || {};
   }
@@ -210,6 +255,14 @@
       return await api(path);
     } catch (error) {
       return { ok: false, path, error: String(error.message || error), payload: error.payload || null };
+    }
+  }
+
+  async function safePost(path, body) {
+    try {
+      return await api(path, { method: "POST", body: JSON.stringify(body || {}) });
+    } catch (error) {
+      return { ok: false, path, error: String(error.message || error), payload: error.payload || null, secretsExposed: false };
     }
   }
 
@@ -319,6 +372,7 @@
     const license = state.license?.runtime?.license || d.license || {};
     const contract = d.publicContract || {};
     const problems = collectProblems();
+    const issue = state.supportDiagnosis?.primaryIssueCode || state.supportSearch?.events?.[0]?.issue || "sin codigo principal";
     return [
       "PAQUETE DE SOPORTE PRISMA",
       `Cliente: ${d.tenant?.displayName || d.tenant?.slug || FIRST_CUSTOMER_NAME}`,
@@ -330,6 +384,7 @@
       `Cloud License Gateway status: ${licflow3LiveStatus()}`,
       `Admin Token Status: ${adminTokenPresent() ? "presence-only" : "missing"}`,
       `Soporte cloud: ${endpointState("supportDiagnostics").code}`,
+      `Issue principal: ${issue}`,
       `Dispositivos: ${safeCount(d.devices)}`,
       `Receipts: ${safeCount(d.receipts)}`,
       `Notas: ${safeCount(d.notes)}`,
@@ -961,24 +1016,265 @@
     panel("Auditoría local","Eventos recientes del motor local.",localDesk("events","Sin eventos locales."),{span:12,tag:`${c.auditEvents||0} audit`}),
     resultPanel()
   ].join(""); }
+  function supportCatalog() {
+    return state.supportCatalog || { codes: [], actions: [] };
+  }
+
+  function selectedSupportCode() {
+    return flowValue("supportCode", state.supportDiagnosis?.primaryIssueCode || state.supportSearch?.events?.[0]?.issue || "CROSS_SOURCE_IDENTITY_SPLIT");
+  }
+
+  function supportCodeSelector() {
+    const codes = supportCatalog().codes || [];
+    const selected = selectedSupportCode();
+    const options = codes.map((item) => `<option value="${esc(item.code)}" ${item.code === selected ? "selected" : ""}>${esc(item.category)} · ${esc(item.code)}</option>`).join("");
+    return `<label class="cc-field"><span>Código</span><select data-flow-field="supportCode">${options}</select></label>`;
+  }
+
+
+  function selectedSupportAuthority() {
+    return flowValue("supportAuthority", state.supportSimulation?.reconciliation?.recommendedAuthority || state.supportSearch?.reconciliation?.recommendedAuthority || "setup_claim_or_refresh");
+  }
+
+  function supportAuthoritySelector() {
+    const rec = state.supportSimulation?.reconciliation || state.supportSearch?.reconciliation || {};
+    const choices = rec.authorityChoices || [
+      { id: "setup_claim_or_refresh", label: "Setup Code / License Refresh" },
+      { id: "use_pos_local_seed", label: "DB POS local seed" },
+      { id: "use_signed_activation_package", label: "Paquete firmado externo" }
+    ];
+    const selected = selectedSupportAuthority();
+    const options = choices.map((item) => `<option value="${esc(item.id)}" ${item.id === selected ? "selected" : ""}>${esc(item.label || item.id)}</option>`).join("");
+    return `<label class="cc-field"><span>Autoridad</span><select data-flow-field="supportAuthority">${options}</select></label>`;
+  }
+
+
+
+
+  function supportSetupCodeField() {
+    const setupCode = flowValue("supportSetupCode", "");
+    return `<label class="cc-field"><span>Setup Code</span><input data-flow-field="supportSetupCode" value="${esc(setupCode)}" placeholder="pegar setup code para preflight" autocomplete="off" /></label>`;
+  }
+
+  function supportRequestPayload(extra = {}) {
+    const selectedAuthority = selectedSupportAuthority();
+    return {
+      ...SUPPORT_IDENTITY_CONTEXT,
+      query: flowValue("supportQuery", FIRST_CUSTOMER_NAME),
+      code: selectedSupportCode(),
+      surface: "tablet",
+      authority: selectedAuthority,
+      selectedAuthority,
+      authorityStrategy: selectedAuthority,
+      identityReconciliationRequested: true,
+      setupCode: flowValue("supportSetupCode", "").trim(),
+      ...extra
+    };
+  }
+
+  function supportFallbackReconciliation() {
+    return {
+      ok: true,
+      splitDetected: true,
+      primaryIssueCode: "CROSS_SOURCE_IDENTITY_SPLIT",
+      worlds: [
+        { id: "pc_admin_customer", label: "Prisma Original Customer", source: "pc-admin-diagnostic", authorityAction: "setup_claim_or_refresh", customerId: "cust_prisma_original_customer", businessId: "biz_78b3c840796a4a4dad", storeId: "store_00728649f3804a9e82", terminalId: "term_49103c7382d84663a3", tabletDeviceId: "tablet_prisma_original_customer_001" },
+        { id: "runtime_local", label: "Runtime local", source: "runtime.json/device-identity", authorityAction: "use_runtime_local_only_after_license_match", businessId: "biz_prisma_rey_lineage_seed", storeId: "store_prisma_rey_centro", terminalId: "term_tablet_pos_001", deviceId: "tablet-pos-source-ready" },
+        { id: "installed_license", label: "Licencia local instalada", source: "license.json", authorityAction: "license_claim_or_refresh_required", customerId: "cust_demo", businessId: "biz_demo", licenseId: "lic_demo_tablet_pro" }
+      ],
+      businessIds: ["biz_78b3c840796a4a4dad", "biz_demo", "biz_prisma_rey_lineage_seed"],
+      customerIds: ["cust_demo", "cust_prisma_original_customer"],
+      licenseIds: ["lic_demo_tablet_pro", "lic_prisma_original_customer_001"],
+      authorityChoices: [
+        { id: "setup_claim_or_refresh", label: "Usar Setup Code / License Refresh", safeToApply: false, recommended: true, reason: "Ruta producto: reclama slot/refresca licencia sin editar license.json." },
+        { id: "use_pos_local_seed", label: "Usar DB POS local seed", safeToApply: false, recommended: false, reason: "Requiere licencia/setup compatible con biz_prisma_rey_lineage_seed." },
+        { id: "use_signed_activation_package", label: "Usar paquete firmado externo", safeToApply: false, recommended: false, reason: "Requiere provisionar POS local al mundo firmado." }
+      ],
+      selectedAuthority: selectedSupportAuthority(),
+      recommendedAuthority: "setup_claim_or_refresh",
+      message: "Hay más de una identidad candidata; elige autoridad antes de mutar.",
+      secretsExposed: false
+    };
+  }
+
+  function normalizeSupportSimulation(result) {
+    const selectedAuthority = selectedSupportAuthority();
+    if (result?.resultCode === "IDENTITY_RECONCILIATION_REQUIRED" || result?.primaryIssueCode === "CROSS_SOURCE_IDENTITY_SPLIT") return result;
+    const diagnosis = result?.diagnosis || state.supportDiagnosis || {};
+    const issueCodes = (diagnosis.issues || []).map((item) => item.code);
+    const looksLikeSplit = issueCodes.includes("LICENSE_ASSIGNMENT_WRONG_BUSINESS") || issueCodes.includes("RUNTIME_IDENTITY_DEMO_MODE") || selectedSupportCode() === "CROSS_SOURCE_IDENTITY_SPLIT";
+    if (!looksLikeSplit) return result;
+    const reconciliation = state.supportSearch?.reconciliation || diagnosis.issues?.find((item) => item.reconciliation)?.reconciliation || supportFallbackReconciliation();
+    return {
+      ...result,
+      ok: true,
+      resultCode: "IDENTITY_RECONCILIATION_REQUIRED",
+      primaryIssueCode: "CROSS_SOURCE_IDENTITY_SPLIT",
+      dryRun: true,
+      wouldMutate: false,
+      safeToApply: false,
+      safeToApplyReason: "Apply remains blocked because multiple authority candidates exist. Choose Setup Code/Refresh, POS local seed, or signed activation package first.",
+      wouldChange: [],
+      touches: [],
+      authorityChoices: reconciliation.authorityChoices || [],
+      selectedAuthority,
+      recommendedAuthority: reconciliation.recommendedAuthority || "setup_claim_or_refresh",
+      candidateWorlds: reconciliation.worlds || [],
+      identityReconciliation: reconciliation,
+      reconciliation,
+      diagnosis: { ...diagnosis, resultCode: "CROSS_SOURCE_IDENTITY_SPLIT", primaryIssueCode: "CROSS_SOURCE_IDENTITY_SPLIT" },
+      clientSideStaleBridge: result?.resultCode === "SIMULATION_READY",
+      secretsExposed: false
+    };
+  }
+
+  function supportCodeDetail() {
+    const selected = selectedSupportCode();
+    const item = (supportCatalog().codes || []).find((code) => code.code === selected) || {};
+    return list([
+      ["Código", item.code || selected],
+      ["Categoría", item.category || "-"],
+      ["Severidad", item.severity || "-"],
+      ["Cliente", item.customerExplanation || "-"],
+      ["Técnico", item.technicalExplanation || "-"],
+      ["Evidencia", (item.requiredEvidence || []).join(", ") || "-"],
+      ["Resolución", item.suggestedResolution || "-"],
+      ["Remoto", item.remoteResolvable ? "sí" : "no"],
+      ["Setup Code", item.requiresSetupCode ? "sí" : "no"],
+      ["Admin token", item.requiresAdminToken ? "presence-only/server-side" : "no"],
+      ["Codex", item.requiresCodex ? "sí" : "no"],
+      ["Presencial", item.requiresOnsite ? "sí" : "no"]
+    ]);
+  }
+
+  function supportSearchControls() {
+    const query = flowValue("supportQuery", FIRST_CUSTOMER_NAME);
+    return `<div class="cc-flow-grid">
+      <label class="cc-field"><span>Buscar</span><input data-flow-field="supportQuery" value="${esc(query)}" placeholder="cliente, licencia, device, terminal, setup, código" /></label>
+      ${supportCodeSelector()}
+      ${supportAuthoritySelector()}
+      ${supportSetupCodeField()}
+    </div>${actions([
+      actionButton("support-search", "Buscar", "primary"),
+      actionButton("support-diagnose", "Diagnosticar"),
+      actionButton("support-simulate", "Simular resolución"),
+      actionButton("support-export-case", "Exportar evidencia"),
+      actionButton("copy-support", "Copiar resumen")
+    ])}`;
+  }
+
+  function supportResultsTables() {
+    const result = state.supportSearch || {};
+    const clients = (result.customers || []).map((row) => ({ Cliente: row.customer, Empresa: row.business, Email: row.email, Teléfono: row.phone, Licencias: row.licenses, Dispositivos: row.devices, Estado: row.status, Issue: row.primaryIssue, Acción: row.action }));
+    const licenses = (result.licenses || []).map((row) => ({ "License ID": row.licenseId, Cliente: row.customer, Negocio: row.business, Plan: row.plan, Estado: row.status, Vigencia: row.validUntil, Assignment: row.assignment, Issue: row.primaryIssue, Acción: row.action }));
+    const devices = (result.devices || []).map((row) => ({ "Device ID": row.deviceId, Surface: row.surface, Slot: row.slot, Estado: row.status, Cliente: row.customer, Negocio: row.business, Store: row.store, Terminal: row.terminal, "Último visto": row.lastSeenAt, Issue: row.primaryIssue, Acción: row.action }));
+    const terminals = (result.terminals || []).map((row) => ({ "Terminal ID": row.terminalId, Nombre: row.name, Sucursal: row.store, Activa: row.active ? "sí" : "no", Device: row.assignedDevice, Caja: row.cashOpen === true ? "abierta" : row.cashOpen === false ? "cerrada" : "sin dato", "Última venta": row.lastSale, Issue: row.issue, Acción: row.action }));
+    const events = (result.events || []).map((row) => ({ Fecha: row.date, Evento: row.event, Cliente: row.customer, Device: row.device, Resultado: row.result, Issue: row.issue, Evidencia: row.evidence }));
+    return [
+      panel("Clientes", "Resultados humanos y técnicos.", table(["Cliente", "Empresa", "Email", "Teléfono", "Licencias", "Dispositivos", "Estado", "Issue", "Acción"], clients, "Ejecuta búsqueda."), { span: 12, tag: result.sourceMode || "SEARCH" }),
+      panel("Licencias", "Asignación, plan y vigencia.", table(["License ID", "Cliente", "Negocio", "Plan", "Estado", "Vigencia", "Assignment", "Issue", "Acción"], licenses, "Sin licencias."), { span: 12, tag: `${licenses.length} filas` }),
+      panel("Dispositivos", "Slots, surface y último estado.", table(["Device ID", "Surface", "Slot", "Estado", "Cliente", "Negocio", "Store", "Terminal", "Último visto", "Issue", "Acción"], devices, "Sin dispositivos."), { span: 12, tag: `${devices.length} filas` }),
+      panel("Terminales y caja", "Terminal local y estado de caja.", table(["Terminal ID", "Nombre", "Sucursal", "Activa", "Device", "Caja", "Última venta", "Issue", "Acción"], terminals, "Sin terminales."), { span: 12, tag: `${terminals.length} filas` }),
+      panel("Auditoría y eventos", "Eventos sanitizados para caso.", table(["Fecha", "Evento", "Cliente", "Device", "Resultado", "Issue", "Evidencia"], events, "Sin eventos."), { span: 12, tag: "AUDIT" })
+    ].join("");
+  }
+
+  function support360Panels() {
+    const result = state.supportSearch || {};
+    const customer = result.customers?.[0] || {};
+    const device = result.devices?.[0] || {};
+    const diagnosis = state.supportDiagnosis || {};
+    const status = diagnosis.surfaceStatus?.[0] || {};
+    return [
+      panel("Customer 360", "Cliente, licencia, slots y acciones disponibles.", list([
+        ["Cliente", customer.customer || FIRST_CUSTOMER_NAME],
+        ["Empresa", customer.business || "Prisma Rey"],
+        ["Licencias", customer.licenses ?? "-"],
+        ["Dispositivos", customer.devices ?? "-"],
+        ["Setup Codes", "redacted-present"],
+        ["Issue principal", diagnosis.primaryIssueCode || customer.primaryIssue || "CROSS_SOURCE_IDENTITY_SPLIT"],
+        ["Siguiente acción", diagnosis.recommendedAction || "Elegir autoridad y simular antes de mutar"]
+      ]), { span: 6, tag: "360" }),
+      panel("Device 360", "Surface, slot, runtime, licencia e issues activos.", list([
+        ["Device ID", device.deviceId || "tablet-pos-source-ready"],
+        ["Surface", device.surface || "tablet"],
+        ["Slot", device.slot || "Tablet POS Slot"],
+        ["Cliente", device.customer || "cust_demo"],
+        ["Negocio", device.business || "biz_demo"],
+        ["Store", device.store || "store_prisma_rey_centro"],
+        ["Terminal", device.terminal || "term_tablet_pos_001"],
+        ["Operación", status.operationStatus || "blocked"],
+        ["Issue principal", status.primaryIssueCode || customer.primaryIssue || "CROSS_SOURCE_IDENTITY_SPLIT"]
+      ]), { span: 6, tag: status.operationStatus || "STATUS" })
+    ].join("");
+  }
+
+  function supportReconciliationPanel() {
+    const rec = state.supportSimulation?.reconciliation || state.supportSearch?.reconciliation || state.supportDiagnosis?.issues?.[0]?.reconciliation || {};
+    const worlds = (rec.worlds || []).map((row) => ({
+      Fuente: row.label || row.id,
+      Cliente: row.customerId || "-",
+      Negocio: row.businessId || "-",
+      Store: row.storeId || "-",
+      Terminal: row.terminalId || "-",
+      Device: row.deviceId || row.tabletDeviceId || "-",
+      Acción: row.authorityAction || "review"
+    }));
+    const choices = (rec.authorityChoices || []).map((row) => `${row.recommended ? "★ " : ""}${row.label || row.id}: ${row.reason || "revisar"}`);
+    return panel("Reconciliación de identidad", "PC/Admin, runtime, licencia, DB POS y activación firmada como fuentes técnicas; ninguna se copia como segunda verdad.", [
+      table(["Fuente", "Cliente", "Negocio", "Store", "Terminal", "Device", "Acción"], worlds, "Ejecuta búsqueda o simulación para ver mundos candidatos."),
+      list([
+        ["Split detectado", rec.splitDetected ? "sí" : "pendiente"],
+        ["Autoridad seleccionada", selectedSupportAuthority()],
+        ["Recomendación", rec.recommendedAuthority || "setup_claim_or_refresh"],
+        ["Opciones", choices.join(" | ") || "Setup Code / Refresh, DB POS local seed, paquete firmado externo"]
+      ])
+    ].join(""), { span: 12, tag: rec.primaryIssueCode || "IDENTITY" });
+  }
+
+
+
+  function supportApplyPlanPanel() {
+    const apply = state.supportApplyPlan || {};
+    const sim = state.supportSimulation || {};
+    const guide = apply.guidedResolution || sim.guidedResolution || {};
+    const plan = apply.applyPlan || {};
+    const required = plan.requiredBeforeMutation || guide.blockedUntil || [];
+    const writes = plan.localWritePlan || [];
+    return panel("Apply seguro / preflight", "Setup Code / License Refresh no escribe hasta licencia firmada, backup y rollback.", [
+      list([
+        ["Resultado", apply.resultCode || guide.resultCode || "pendiente"],
+        ["Setup Code", plan.setupCodePresent ? "presente" : "requerido"],
+        ["Mutación", apply.mutationPerformed === true ? "sí" : "no"],
+        ["SafeToApply", apply.safeToApply === true ? "sí" : "no"],
+        ["Rollback", plan.rollbackAvailable || apply.rollbackAvailable ? "disponible" : "pendiente"],
+        ["Siguiente backend", apply.nextBackendAction || guide.futureApplyAction || "setup_claim_or_refresh_apply_with_backup_rollback"]
+      ]),
+      table(["Path", "Fuente", "Operación"], writes.map((row) => ({ Path: row.path, Fuente: row.source, Operación: row.operation })), "Simula o presiona Resolver problema para generar plan."),
+      `<div class="cc-muted"><strong>Bloqueado hasta:</strong><br>${(required || []).map((x) => esc(String(x))).join("<br>") || "setupCode, licencia firmada, backup y rollback"}</div>`
+    ].join(""), { span: 12, tag: apply.resultCode || "PREFLIGHT" });
+  }
+
   function renderSupport() {
     const d = derived();
     const notes = d.notes || [];
+    const diagnosis = state.supportDiagnosis || {};
     return [
-      panel("License Diagnostics", "Lo necesario para entender el caso sin leer JSON.", list([
-        ["Cliente", d.tenant?.displayName || d.tenant?.slug || FIRST_CUSTOMER_NAME],
-        ["Estado", d.tenant?.status || "Revisar"],
-        ["Licencia", d.license?.status || state.license?.runtime?.license?.status || "Revisar"],
-        ["Problemas", collectProblems().length]
-      ]), { span: 5, tag: "SOPORTE" }),
-      panel("Acciones de soporte", "Crear nota y copiar paquete listo para seguimiento.", `<textarea id="supportNoteText" class="cc-textarea" spellcheck="true">Nota interna desde Prisma Cloud Center.</textarea>${actions([
-        actionButton("create-note", "Agregar nota interna", "primary"),
-        actionButton("copy-support", "Copiar paquete de soporte"),
-        actionButton("show-problems", "Ver problemas"),
-        surfaceButton("customers", "Ver cliente"),
-        surfaceButton("system", "Ir a System")
-      ])}`, { span: 7, tag: state.data?.admin?.enabled ? "LISTO" : "LECTURA" }),
-      panel("Notas recientes", "Contexto rápido del caso.", list(notes, "Sin notas visibles todavía."), { span: 12, tag: `${notes.length} notas` }),
+      panel("Prisma Support Resolver Center", "Buscar, diagnosticar, simular y exportar casos sin exponer secretos.", supportSearchControls(), { span: 7, tag: diagnosis.primaryIssueCode || "CENTER" }),
+      panel("Selector de códigos", "Explicación humana, técnica, evidencia y acción recomendada.", supportCodeDetail(), { span: 5, tag: selectedSupportCode() }),
+      support360Panels(),
+      supportReconciliationPanel(),
+      supportApplyPlanPanel(),
+      supportResultsTables(),
+      panel("Acciones resolutivas", "Resolver problema permanece bloqueado hasta simulación segura, confirmación y rollback.", actions([
+        actionButton("support-diagnose", "Diagnosticar", "primary"),
+        actionButton("support-simulate", "Simular resolución"),
+        actionButton("support-apply", "Resolver problema"),
+        actionButton("support-export-case", "Exportar evidencia"),
+        actionButton("copy-support", "Copiar resumen para soporte"),
+        actionButton("create-note", "Agregar nota interna")
+      ]), { span: 7, tag: state.supportSimulation?.safeToApply ? "READY" : "GUARDED" }),
+      panel("Notas recientes", "Contexto rápido del caso.", list(notes, "Sin notas visibles todavía."), { span: 5, tag: `${notes.length} notas` }),
       resultPanel()
     ].join("");
   }
@@ -1027,14 +1323,16 @@
   }
 
   async function loadAll() {
-    const [data, license, health, runtime, contract, commandCenter, bridge] = await Promise.all([
+    const [data, license, health, runtime, contract, commandCenter, bridge, supportCatalogPayload, supportSearchPayload] = await Promise.all([
       safeApi("/api/cloud-saas/summary"),
       safeApi("/api/license-ops/latest"),
       safeApi("/api/health"),
       safeApi("/api/runtime"),
       safeApi("/api/contract"),
       safeApi("/api/command-center/bootstrap"),
-      safeApi("/api/licflow4/bridge/status")
+      safeApi("/api/licflow4/bridge/status"),
+      safeApi("/api/support/catalog"),
+      safePost("/api/support/search", { query: flowValue("supportQuery", FIRST_CUSTOMER_NAME) })
     ]);
     state.data = data;
     state.license = license;
@@ -1043,6 +1341,8 @@
     state.contract = contract;
     state.commandCenter = commandCenter;
     state.bridge = bridge;
+    state.supportCatalog = supportCatalogPayload;
+    state.supportSearch = supportSearchPayload;
     state.lastLoadedAt = new Date().toLocaleString();
     render();
   }
@@ -1099,6 +1399,42 @@
         const problems = collectProblems();
         setResult("Problemas", problems.length ? `${problems.length} punto(s) para revisar.` : "Sin bloqueadores visibles.", { ok: !problems.length, problems }, { kind: problems.length ? "warn" : "ok" });
         toast(problems.length ? "Hay puntos por revisar" : "Sin bloqueadores visibles");
+      } else if (action === "support-search") {
+        result = await safePost("/api/support/search", supportRequestPayload());
+        state.supportSearch = result;
+        setResult("Búsqueda de soporte", result.ok ? "Resultados de soporte actualizados." : "La búsqueda quedó clasificada para revisión.", result, { kind: result.ok ? "ok" : "warn" });
+        toast(result.ok ? "Búsqueda lista" : "Búsqueda a revisar");
+      } else if (action === "support-diagnose") {
+        result = await safePost("/api/support/diagnose", supportRequestPayload());
+        state.supportDiagnosis = result;
+        setResult("Diagnóstico", result.ok ? `Issue principal: ${result.primaryIssueCode || "OK"}` : "Diagnóstico bloqueado.", result, { kind: result.ok ? "ok" : "warn" });
+        toast(result.ok ? "Diagnóstico listo" : "Diagnóstico a revisar");
+      } else if (action === "support-simulate") {
+        result = normalizeSupportSimulation(await safePost("/api/support/resolve/simulate", supportRequestPayload()));
+        state.supportSimulation = result;
+        state.supportDiagnosis = result.diagnosis || state.supportDiagnosis;
+        const simMessage = result.resultCode === "SETUP_CLAIM_OR_REFRESH_GUIDED"
+          ? "Setup Code / License Refresh guiado: input requerido; no se mutó nada."
+          : (result.resultCode === "IDENTITY_RECONCILIATION_REQUIRED" ? "Reconciliación requerida: hay varias identidades candidatas; no se mutó nada." : (result.ok ? "Dry-run completado sin mutación." : "Simulación bloqueada."));
+        setResult("Simulación", simMessage, result, { kind: result.ok ? "ok" : "warn" });
+        toast(result.ok ? "Simulación lista" : "Simulación a revisar");
+      } else if (action === "support-apply") {
+        result = await safePost("/api/support/resolve/apply", supportRequestPayload({ confirmResolutionAction: true, operatorConfirmation: true }));
+        state.supportApplyPlan = result;
+        const noMutation = result?.mutationPerformed === false;
+        const preflightReady = result?.resultCode === "SETUP_CLAIM_OR_REFRESH_PREFLIGHT_READY";
+        const inputRequired = result?.resultCode === "SETUP_CLAIM_OR_REFRESH_INPUT_REQUIRED";
+        const applyMessage = preflightReady
+          ? "Preflight listo; no se mutó nada. Falta claim/refresh real y licencia firmada verificada."
+          : inputRequired
+            ? "Setup Code requerido; no se mutó nada."
+            : (result.ok && !noMutation ? "Acción aplicada." : `${result.resultCode || "APPLY_BLOCKED"}: no se mutó nada.`);
+        setResult("Resolver problema", applyMessage, result, { kind: preflightReady ? "ok" : "warn" });
+        toast(preflightReady ? "Preflight listo" : (inputRequired ? "Setup Code requerido" : "Resolución bloqueada"));
+      } else if (action === "support-export-case") {
+        result = await safePost("/api/support/export-case", supportRequestPayload());
+        setResult("Exportar evidencia", result.ok ? "Caso de soporte preparado con redacción." : "Exportación bloqueada.", result, { kind: result.ok ? "ok" : "warn" });
+        toast(result.ok ? "Evidencia lista" : "Evidencia a revisar");
       } else if (action === "copy-exec") {
         await copyText(executiveSummary(), "Resumen ejecutivo");
       } else if (action === "copy-customer") {
@@ -1258,3 +1594,67 @@
 
   window.addEventListener("DOMContentLoaded", boot);
 })();
+
+// === PRISMA RECON4 SETUP CLAIM OR REFRESH GUIDE UI START ===
+
+(function prismaRecon4SetupGuideUi(){
+  if (typeof window === "undefined" || window.__PRISMA_RECON4_SETUP_GUIDE_UI__) return;
+  window.__PRISMA_RECON4_SETUP_GUIDE_UI__ = true;
+  function compact(value){ return value === null || value === undefined || value === "" ? "sin dato" : String(value); }
+  function findGuide(value){
+    if (!value || typeof value !== "object") return null;
+    if (value.guidedResolution && value.guidedResolution.id === "setup_claim_or_refresh") return value.guidedResolution;
+    if (value.simulation && value.simulation.guidedResolution) return value.simulation.guidedResolution;
+    if (value.payload) return findGuide(value.payload);
+    return null;
+  }
+  function findJsonGuideFromDom(){
+    var nodes = Array.prototype.slice.call(document.querySelectorAll("pre, code, textarea"));
+    for (var i = 0; i < nodes.length; i++) {
+      var text = nodes[i].value || nodes[i].textContent || "";
+      if (text.indexOf("setup_claim_or_refresh") === -1 || text.indexOf("guidedResolution") === -1) continue;
+      try { var parsed = JSON.parse(text); var guide = findGuide(parsed); if (guide) return guide; } catch (_) {}
+    }
+    return null;
+  }
+  function renderGuide(guide){
+    if (!guide || guide.id !== "setup_claim_or_refresh") return;
+    var root = document.querySelector("#support") || document.querySelector("[data-section='support']") || document.body;
+    if (!root) return;
+    var card = document.getElementById("prisma-recon4-setup-guide");
+    if (!card) {
+      card = document.createElement("section");
+      card.id = "prisma-recon4-setup-guide";
+      card.className = "cc-card support-recon4-guide";
+      card.style.marginTop = "16px";
+      card.style.padding = "14px";
+      card.style.border = "1px solid rgba(148,163,184,.28)";
+      card.style.borderRadius = "18px";
+      card.style.background = "rgba(255,255,255,.72)";
+      root.appendChild(card);
+    }
+    var auth = guide.candidateAuthority || {};
+    var installed = guide.currentlyInstalled || {};
+    card.innerHTML = "" +
+      "<div style='display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap'>" +
+      "<div><strong>Setup Code / License Refresh guiado</strong><p style='margin:.25rem 0 0'>" + compact(guide.humanExplanation) + "</p></div>" +
+      "<span style='font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid rgba(148,163,184,.35)'>" + compact(guide.stage) + "</span>" +
+      "</div>" +
+      "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px'>" +
+      "<div><small>Autoridad candidata</small><br><strong>" + compact(auth.customerId) + "</strong><br><span>" + compact(auth.businessId) + "</span></div>" +
+      "<div><small>Licencia instalada</small><br><strong>" + compact(installed.customerId) + "</strong><br><span>" + compact(installed.businessId) + "</span></div>" +
+      "<div><small>Terminal destino</small><br><strong>" + compact(auth.terminalId) + "</strong><br><span>" + compact(auth.tabletDeviceId) + "</span></div>" +
+      "</div>" +
+      "<div style='margin-top:12px'><strong>Bloqueado hasta</strong><ul>" + (guide.blockedUntil || []).map(function(x){ return "<li>" + compact(x) + "</li>"; }).join("") + "</ul></div>" +
+      "<div style='margin-top:10px'><strong>Checks previos</strong><ul>" + (guide.preflightChecks || []).map(function(x){ return "<li>" + compact(x) + "</li>"; }).join("") + "</ul></div>";
+  }
+  window.PRISMA_RECON4_RENDER_SETUP_GUIDE = renderGuide;
+  document.addEventListener("click", function(){ setTimeout(function(){ var guide = findJsonGuideFromDom(); if (guide) renderGuide(guide); }, 650); }, true);
+  setInterval(function(){ var guide = findJsonGuideFromDom(); if (guide) renderGuide(guide); }, 2000);
+})();
+// === PRISMA RECON4 SETUP CLAIM OR REFRESH GUIDE UI END ===
+
+// === PRISMA RECON5 SETUP CLAIM APPLY PREFLIGHT UI START ===
+// recon5: core Support UI functions patched in-place above.
+// Expected runtime markers: supportSetupCodeField, supportApplyPlanPanel, SETUP_CLAIM_OR_REFRESH_PREFLIGHT_READY.
+// === PRISMA RECON5 SETUP CLAIM APPLY PREFLIGHT UI END ===

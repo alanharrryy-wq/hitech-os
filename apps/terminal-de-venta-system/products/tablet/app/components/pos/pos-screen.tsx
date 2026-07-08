@@ -386,35 +386,106 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
             data-prisma-visual-unit="tablet.pos.turn-opening-card"
             data-prisma-editable-slot="state-panel.layout,state-panel.spacing,state-panel.surface,state-panel.cta"
             role="status"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout"
+            data-panel="pos-screen"
+            data-target="pos-screen-price-381"
+            data-kind="price"
+            data-role="financial-control"
           >
-            <div className={styles.posGateHero}>
-              <span className={styles.posGateIcon} aria-hidden="true">
+            <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-div-1" data-kind="panel" data-role="container" className={styles.posGateHero}>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-2" data-kind="text" data-role="text" className={styles.posGateIcon} aria-hidden="true">
                 <PrismaIcon name="terminal" size={30} />
               </span>
-              <span className={styles.posGateEyebrow}>Tablet vende sola</span>
-              <strong className={styles.posGateTitle}>Caja cerrada</strong>
-              <span className={styles.posGateDetail}>{gate.detail}</span>
+              <span className={styles.posGateEyebrow}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-screen"
+                data-target="pos-screen-table-394"
+                data-kind="table"
+                data-role="data-display"
+              >Tablet vende sola</span>
+              <strong className={styles.posGateTitle}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-screen"
+                data-target="pos-screen-text-395"
+                data-kind="text"
+                data-role="copy"
+              >Caja cerrada</strong>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-3" data-kind="text" data-role="text" className={styles.posGateDetail}>{gate.detail}</span>
             </div>
 
-            <div className={styles.posGateMetaGrid} aria-label="Resumen operativo de caja">
-              <span className={styles.posGateMeta}>
+            <div className={styles.posGateMetaGrid} aria-label="Resumen operativo de caja"
+              data-surface="tablet"
+              data-screen="pos"
+              data-zone="pos"
+              data-panel="pos-screen"
+              data-target="pos-screen-resumen-operativo-de-caja-399"
+              data-kind="text"
+              data-role="copy"
+            >
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-4" data-kind="text" data-role="text" className={styles.posGateMeta}>
                 <small>Sucursal</small>
-                <strong>{runtimeSnapshot.identity.storeName}</strong>
+                <strong
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-screen"
+                  data-target="pos-screen-element-402"
+                  data-kind="element"
+                  data-role="revenue-core"
+                >{runtimeSnapshot.identity.storeName}</strong>
               </span>
-              <span className={styles.posGateMeta}>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-5" data-kind="text" data-role="text" className={styles.posGateMeta}>
                 <small>Terminal</small>
-                <strong>{runtimeSnapshot.identity.terminalName}</strong>
+                <strong
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-screen"
+                  data-target="pos-screen-element-406"
+                  data-kind="element"
+                  data-role="revenue-core"
+                >{runtimeSnapshot.identity.terminalName}</strong>
               </span>
-              <span className={styles.posGateMeta}>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-6" data-kind="text" data-role="text" className={styles.posGateMeta}>
                 <small>Operador</small>
-                <strong>{runtimeSnapshot.identity.operatorName}</strong>
+                <strong
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-screen"
+                  data-target="pos-screen-element-410"
+                  data-kind="element"
+                  data-role="revenue-core"
+                >{runtimeSnapshot.identity.operatorName}</strong>
               </span>
             </div>
 
-            <div className={styles.posGateActions}>
-              <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}>
+            <div className={styles.posGateActions}
+              data-surface="tablet"
+              data-screen="pos"
+              data-zone="pos"
+              data-panel="pos-screen"
+              data-target="pos-screen-button-414"
+              data-kind="button"
+              data-role="action"
+            >
+              <a className={styles.posPremiumBlockedGateAction} href={gate.actionHref}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-screen"
+                data-target="pos-screen-button-415"
+                data-kind="button"
+                data-role="action"
+              >
                 <PrismaIcon name="terminal" size={18} />
-                <span>{gate.actionLabel}</span>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-7" data-kind="text" data-role="text">{gate.actionLabel}</span>
               </a>
               <small>Abre el turno para activar venta, catálogo y cobro.</small>
             </div>
@@ -442,8 +513,16 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         visualState={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
       >
         <PosLiveBinding />
-        <span className={styles.posPremiumSceneGlow} aria-hidden="true" />
-        <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H" />
+        <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_screen" data-target="pos-screen-span-8" data-kind="text" data-role="text" className={styles.posPremiumSceneGlow} aria-hidden="true" />
+        <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-screen"
+          data-target="pos-screen-button-446"
+          data-kind="button"
+          data-role="action"
+        />
         <PosTerminalHeader
           activeCount={activeProductCount}
           cartQty={cartQty}
@@ -484,6 +563,13 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                   data-prisma-zone="tablet-pos-category-chips"
                   data-prisma-role="secondary-action"
                   data-prisma-priority="support"
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-screen"
+                  data-target="pos-screen-button-479"
+                  data-kind="button"
+                  data-role="action"
                 >
                   {categories.map((category, index) => (
                     <motion.button
@@ -503,7 +589,15 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                       data-prisma-state={category === selectedCategory ? "selected" : undefined}
                       data-prisma-motion="press-feedback"
                     >
-                      <strong>{category}</strong>
+                      <strong
+                        data-surface="tablet"
+                        data-screen="pos"
+                        data-zone="pos"
+                        data-panel="pos-screen"
+                        data-target="pos-screen-element-506"
+                        data-kind="element"
+                        data-role="revenue-core"
+                      >{category}</strong>
                     </motion.button>
                   ))}
                 </nav>

@@ -87,13 +87,44 @@ export function PosProductSearch({
       aria-expanded={searchExpanded}
       aria-controls={searchResultsId}
     >
-      <label className={styles.posPremiumSearchLabel} htmlFor={searchInputId}>
-        <span><Sparkles aria-hidden="true" size={15} /> Buscar o escanear</span>
-        <div className={styles.posPremiumSearchInputWrap} data-prisma-qa="tablet-qa-focus">
+      <label className={styles.posPremiumSearchLabel} htmlFor={searchInputId}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-product-search"
+        data-target="pos-product-search-search-90"
+        data-kind="search"
+        data-role="search-control"
+      >
+        <span
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-product-search"
+          data-target="pos-product-search-search-91"
+          data-kind="search"
+          data-role="search-control"
+        ><Sparkles aria-hidden="true" size={15} /> Buscar o escanear</span>
+        <div className={styles.posPremiumSearchInputWrap} data-prisma-qa="tablet-qa-focus"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-product-search"
+          data-target="pos-product-search-search-92"
+          data-kind="search"
+          data-role="search-control"
+        >
           {loading ? <Loader2 className={styles.posPremiumSpin} aria-hidden="true" size={22} /> : <Search aria-hidden="true" size={22} />}
           <input
             id={searchInputId}
             value={query}
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-product-search"
+            data-target="pos-product-search-search-94"
+            data-kind="search"
+            data-role="search-control"
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar producto o escanear código"
             type="search"
@@ -102,12 +133,36 @@ export function PosProductSearch({
         </div>
       </label>
 
-      <div className={styles.posPremiumCatalogInsight} aria-live="polite">
-        <span>{stateCopy(state)}</span>
+      <div className={styles.posPremiumCatalogInsight} aria-live="polite"
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-product-search"
+        data-target="pos-product-search-search-105"
+        data-kind="search"
+        data-role="search-control"
+      >
+        <span
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-product-search"
+          data-target="pos-product-search-search-106"
+          data-kind="search"
+          data-role="search-control"
+        >{stateCopy(state)}</span>
         <small>{resultCount ?? 0} productos</small>
       </div>
 
-      <div className={styles.posPremiumSearchActions}>
+      <div className={styles.posPremiumSearchActions}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-product-search"
+        data-target="pos-product-search-button-110"
+        data-kind="button"
+        data-role="search-control"
+      >
         <motion.button
           className={styles.posPremiumPrimaryButton}
           type="submit"

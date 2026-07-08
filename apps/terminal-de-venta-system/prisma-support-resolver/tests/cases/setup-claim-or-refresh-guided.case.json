@@ -1,0 +1,15 @@
+{
+  "id": "setup-claim-or-refresh-guided",
+  "selectedAuthority": "setup_claim_or_refresh",
+  "expectedResultCode": "SETUP_CLAIM_OR_REFRESH_GUIDED",
+  "expectedPrimaryIssueCode": "CROSS_SOURCE_IDENTITY_SPLIT",
+  "mustNotMutate": true,
+  "requiresSetupCode": true,
+  "requiresRollbackSafePlan": true,
+  "blockedActions": [
+    "edit_signed_license",
+    "blind_manual_license_rewrite",
+    "claim_without_setup_code"
+  ],
+  "secretsExposed": false
+}

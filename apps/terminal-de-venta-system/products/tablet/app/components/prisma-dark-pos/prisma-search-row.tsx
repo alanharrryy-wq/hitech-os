@@ -15,7 +15,14 @@ export function PrismaSearchRow() {
   const [query, setQuery] = useState("");
 
   return (
-    <section className={styles.searchRow} aria-label="Búsqueda de productos" data-prisma-hardening="search-actions-260611">
+    <section className={styles.searchRow} aria-label="Búsqueda de productos" data-prisma-hardening="search-actions-260611"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="search-header"
+      data-panel="search-row"
+      data-target="search-row"
+      data-kind="field"
+      data-role="search">
       <label className={styles.searchBox}>
         <PrismaIcon name="search" className={styles.searchLeadingIcon} size={22} />
         <input

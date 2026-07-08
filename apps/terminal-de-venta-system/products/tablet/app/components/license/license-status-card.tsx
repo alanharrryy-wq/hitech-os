@@ -96,6 +96,12 @@ function featureReasonLabel(reason: string | null | undefined) {
 }
 
 function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext) {
+  if (status.operationalDecision === "deny") {
+    return {
+      title: "Operación bloqueada",
+      copy: "El issue principal debe resolverse desde soporte, Setup Code o refresh autorizado antes de operar."
+    };
+  }
   if (status.state === "active" || status.state === "development") {
     return {
       title: "No requiere acción",
@@ -124,6 +130,27 @@ function supportAction(status: NormalizedLicenseStatus, context: RuntimeContext)
     title: "Avisar al administrador",
     copy: "La activación, importación, renovación y revisión de licencias se hacen fuera de esta Tablet. Esta pantalla sólo informa el estado actual."
   };
+}
+
+function supportIssueCode(status: NormalizedLicenseStatus) {
+  const reason = status.denialReason || status.assignmentState;
+  const labels: Record<string, string> = {
+    license_missing: "LICENSE_LOCAL_MISSING",
+    license_invalid: "LICENSE_LOCAL_INVALID",
+    license_expired: "LICENSE_EXPIRED",
+    license_suspended: "LICENSE_LOCAL_INVALID",
+    license_revoked: "LICENSE_LOCAL_INVALID",
+    wrong_customer: "LICENSE_ASSIGNMENT_WRONG_CUSTOMER",
+    wrong_business: "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+    wrong_store: "LICENSE_ASSIGNMENT_WRONG_STORE",
+    wrong_device: "RUNTIME_DEVICE_ID_MISMATCH",
+    wrong_terminal: "LICENSE_ASSIGNMENT_WRONG_TERMINAL",
+    device_unassigned: "DEVICE_SLOT_FULL",
+    feature_not_entitled: "POS_OPERATION_BLOCKED_BY_LICENSE"
+  };
+  if (status.operationalDecision === "deny") return labels[reason || ""] || "NEEDS_CODEX_FIX";
+  if (status.warnings.length > 0) return status.warnings[0]?.code || "NEEDS_CHATGPT_REVIEW";
+  return "OK";
 }
 
 function issueCopy(status: NormalizedLicenseStatus) {
@@ -171,9 +198,15 @@ function featureLabel(key: string) {
 }
 
 export function LicenseStatusCard({ status, runtimeContext }: { status: NormalizedLicenseStatus; runtimeContext: RuntimeContext }) {
-  const tone = toneForState(status.state);
+  const blocked = status.operationalDecision === "deny";
+  const tone = blocked ? "danger" : toneForState(status.state);
   const action = supportAction(status, runtimeContext);
-  const headline = tone === "ok" ? "Tablet lista para operar" : tone === "warn" ? "Tablet operando con aviso" : "Licencia requiere atención";
+  const issueCode = supportIssueCode(status);
+  const headline = blocked && issueCode === "LICENSE_ASSIGNMENT_WRONG_BUSINESS"
+    ? "Licencia activa, operación bloqueada por asignación de negocio"
+    : blocked
+      ? "Operación bloqueada por licencia"
+      : tone === "ok" ? "Tablet lista para operar" : tone === "warn" ? "Tablet operando con aviso" : "Licencia requiere atención";
 
   return (
     <section className={styles.statusCluster} id="license-status" data-prisma-license-state={status.state} data-prisma-client-license-view="readonly">
@@ -199,6 +232,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       <div className={styles.identityStrip} aria-label="Resumen de licencia y equipo">
         <Metric label="Cliente" value={PRISMA_ORIGINAL_CUSTOMER.displayName} />
         <Metric label="Estado" value={stateLabel(status.state)} tone={tone} />
+        <Metric label="Issue principal" value={issueCode} tone={issueCode === "OK" ? "ok" : "danger"} />
         <Metric label="Plan" value={visibleValue(status.plan, "Sin plan instalado")} />
         <Metric label="Asignación" value={assignmentLabel(status.assignmentState)} />
         <Metric label="Terminal" value={PRISMA_ORIGINAL_CUSTOMER.tabletTerminalName} />
@@ -227,6 +261,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
           <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "No declarado")} />
           <Metric label="Origen" value={sourceLabel(status.source)} />
           <Metric label="Cliente" value={visibleValue(status.customerId, "No declarado")} />
+          <Metric label="Código soporte" value={issueCode} />
           <Metric label="Motivo" value={status.denialReason ? issueCopy(status) : "Sin bloqueo principal"} />
         </div>
       </details>

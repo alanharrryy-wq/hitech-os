@@ -221,9 +221,24 @@ let source: EventSource | null = null;
         backdropFilter: "blur(14px) saturate(1.08)",
       }}
       title={`PRISMA 00T Live POS Binding: ${status}`}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="pos"
+      data-panel="pos-live-binding"
+      data-target="pos-live-binding-badge-198"
+      data-kind="badge"
+      data-role="state-feedback"
     >
-      <strong style={{ letterSpacing: ".08em", color: "#0f67d6" }}>PRISMA Tablet POS</strong>
-      <span>{visibleRealtimeStatus(status)}</span>
+      <strong style={{ letterSpacing: ".08em", color: "#0f67d6" }}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-live-binding"
+        data-target="pos-live-binding-element-225"
+        data-kind="element"
+        data-role="revenue-core"
+      >PRISMA Tablet POS</strong>
+      <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_live_binding" data-target="pos-live-binding-span-1" data-kind="text" data-role="text">{visibleRealtimeStatus(status)}</span>
       <small style={{ opacity: .72 }}>{recipe}{score ? ` · ${score}` : ""}</small>
     </div>
   );

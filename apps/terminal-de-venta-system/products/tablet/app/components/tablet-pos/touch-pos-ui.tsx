@@ -170,15 +170,30 @@ function eventStatusLabel(status: string) {
 }
 
 export function StatusPill({ tone = "neutral", children }: { tone?: "ok" | "warn" | "danger" | "neutral"; children: ReactNode }) {
-  return <span className={[styles.statusPill, styles[`status_${tone}`]].join(" ")}>{children}</span>;
+  return <span className={[styles.statusPill, styles[`status_${tone}`]].join(" ")}
+     data-surface="tablet"
+     data-screen="pos"
+     data-zone="operational-status"
+     data-panel="status-pill"
+     data-target="status-pill"
+     data-kind="badge"
+     data-role="state-indicator">{children}</span>;
 }
 
 export function OperationalError({ error }: { error: unknown }) {
   if (!error) return null;
   return (
-    <div className={styles.operationalError} role="alert">
+    <div className={styles.operationalError} role="alert"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="pos"
+      data-panel="touch-pos-ui"
+      data-target="touch-pos-ui-badge-186"
+      data-kind="badge"
+      data-role="state-feedback"
+    >
       <PrismaIcon name="bell" size={18} />
-      <span>{friendlyError(error)}</span>
+      <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-1" data-kind="text" data-role="text">{friendlyError(error)}</span>
     </div>
   );
 }
@@ -216,7 +231,14 @@ export function RuntimeStatus({
   const failed = report?.failedOutboxCount ?? 0;
 
   return (
-    <div className={styles.runtimeBar} aria-label="Estado de operación">
+    <div className={styles.runtimeBar} aria-label="Estado de operación"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="operational-status"
+      data-panel="runtime-status"
+      data-target="runtime-status"
+      data-kind="badge"
+      data-role="state-indicator">
       <StatusPill tone={online ? "ok" : "warn"}>{online ? "Red disponible" : "Sin red"}</StatusPill>
       <StatusPill tone="ok">{runtime === "standalone" ? tabletVisibleLabels.status.localMode : runtime}</StatusPill>
       <StatusPill tone={pending ? "warn" : "ok"}>{pending} pendientes</StatusPill>
@@ -249,16 +271,48 @@ export function TouchProductSearch({
   }
 
   return (
-    <form className={styles.searchBlock} onSubmit={submit}>
+    <form className={styles.searchBlock} onSubmit={submit}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="pos"
+      data-panel="touch-pos-ui"
+      data-target="touch-pos-ui-button-266"
+      data-kind="button"
+      data-role="search-control"
+    >
       <label className={styles.searchInput}>
         <PrismaIcon name="search" size={22} />
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, SKU o código..." type="search" />
+        <input value={query} onChange={(event) =
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="touch-pos-ui"
+          data-target="touch-pos-ui-search-269"
+          data-kind="search"
+          data-role="search-control"
+        > setQuery(event.target.value)} placeholder="Buscar producto, SKU o código..." type="search" />
       </label>
-      <button className={styles.scanButton} type="button" onClick={onResolve} disabled={loading || !query.trim()}>
+      <button className={styles.scanButton} type="button" onClick={onResolve} disabled={loading || !query.trim()}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="touch-pos-ui"
+        data-target="touch-pos-ui-button-271"
+        data-kind="button"
+        data-role="search-control"
+      >
         <PrismaIcon name="scan" size={20} />
-        <span>Resolver código</span>
+        <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-2" data-kind="text" data-role="text">Resolver código</span>
       </button>
-      <button className={styles.secondaryButton} type="button" onClick={onClear} disabled={loading}>
+      <button className={styles.secondaryButton} type="button" onClick={onClear} disabled={loading}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="touch-pos-ui"
+        data-target="touch-pos-ui-button-275"
+        data-kind="button"
+        data-role="action"
+      >
         Limpiar
       </button>
       {error ? <OperationalError error={error} /> : null}
@@ -290,24 +344,40 @@ export function TouchProductList({
   }
 
   return (
-    <section className={styles.productGrid} aria-label="Productos encontrados">
+    <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-section-3" data-kind="panel" data-role="container" className={styles.productGrid} aria-label="Productos encontrados">
       {products.map((product) => (
-        <article key={product.id} className={styles.productCard}>
-          <div className={styles.productFigure}>
+        <article key={product.id} className={styles.productCard}
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="touch-pos-ui"
+          data-target="touch-pos-ui-panel-309"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-div-4" data-kind="panel" data-role="container" className={styles.productFigure}>
             <PrismaIcon name="package" size={30} />
           </div>
-          <div className={styles.productInfo}>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-div-5" data-kind="panel" data-role="container" className={styles.productInfo}>
             <strong>{product.name}</strong>
-            <span>{product.sku} {product.barcode ? `· ${product.barcode}` : ""}</span>
-            <div className={styles.productSignals}>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-6" data-kind="text" data-role="text">{product.sku} {product.barcode ? `· ${product.barcode}` : ""}</span>
+            <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-div-7" data-kind="panel" data-role="container" className={styles.productSignals}>
               <StatusPill tone={product.isActive ? "ok" : "danger"}>{product.isActive ? "activo" : "inactivo"}</StatusPill>
               <StatusPill tone={product.stockOnHand <= (product.lowStockThreshold ?? 5) ? "warn" : "neutral"}>{product.stockOnHand} existencias</StatusPill>
             </div>
           </div>
-          <footer className={styles.productFooter}>
-            <span>{formatMoney(product.priceCents)}</span>
+          <footer data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-footer-8" data-kind="panel" data-role="container" className={styles.productFooter}>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-9" data-kind="text" data-role="text">{formatMoney(product.priceCents)}</span>
             {onAdd ? (
-              <button type="button" onClick={() => onAdd(product)} disabled={!product.isActive}>
+              <button type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="touch-pos-ui"
+                data-target="touch-pos-ui-button-324"
+                data-kind="button"
+                data-role="action"
+              > onAdd(product)} disabled={!product.isActive}>
                 <PrismaIcon name="plus" size={18} />
                 {actionLabel}
               </button>
@@ -348,10 +418,18 @@ export function TouchCart({
   const totalQty = useMemo(() => lines.reduce((sum, line) => sum + line.qty, 0), [lines]);
 
   return (
-    <aside className={styles.cartPanel} aria-label="Ticket actual">
-      <header className={styles.panelHeader}>
-        <div>
-          <span>ticket activo</span>
+    <aside className={styles.cartPanel} aria-label="Ticket actual"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="pos"
+      data-panel="touch-pos-ui"
+      data-target="touch-pos-ui-ticket-actual-365"
+      data-kind="ticket"
+      data-role="ticket-context"
+    >
+      <header data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-header-10" data-kind="panel" data-role="container" className={styles.panelHeader}>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-div-11" data-kind="panel" data-role="container">
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-12" data-kind="text" data-role="text">ticket activo</span>
           <h2>Carrito</h2>
         </div>
         <StatusPill tone={lines.length ? "ok" : "neutral"}>{totalQty} piezas</StatusPill>
@@ -362,22 +440,62 @@ export function TouchCart({
           <StatePanel icon="cart" title="Ticket vacío" description="Busca o escanea un producto para iniciar la venta." />
         ) : (
           lines.map((line) => (
-            <article key={line.product.id} className={styles.cartLine}>
+            <article key={line.product.id} className={styles.cartLine}
+              data-surface="tablet"
+              data-screen="pos"
+              data-zone="pos"
+              data-panel="touch-pos-ui"
+              data-target="touch-pos-ui-cart-379"
+              data-kind="cart"
+              data-role="revenue-core"
+            >
               <div>
                 <strong>{line.product.name}</strong>
                 <span>{line.product.sku} · {formatMoney(line.product.priceCents)}</span>
               </div>
               <div className={styles.stepper}>
-                <button type="button" aria-label="Restar" onClick={() => onDecrement(line.product.id)}>
+                <button type="button" aria-label="Restar" onClick={() =
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="touch-pos-ui"
+                  data-target="touch-pos-ui-restar-385"
+                  data-kind="button"
+                  data-role="action"
+                > onDecrement(line.product.id)}>
                   <PrismaIcon name="minus" size={16} />
                 </button>
                 <strong>{line.qty}</strong>
-                <button type="button" aria-label="Sumar" onClick={() => onIncrement(line.product.id)}>
+                <button type="button" aria-label="Sumar" onClick={() =
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="touch-pos-ui"
+                  data-target="touch-pos-ui-sumar-389"
+                  data-kind="button"
+                  data-role="action"
+                > onIncrement(line.product.id)}>
                   <PrismaIcon name="plus" size={16} />
                 </button>
               </div>
-              <strong className={styles.lineTotal}>{formatMoney(line.product.priceCents * line.qty)}</strong>
-              <button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea" onClick={() => onRemove(line.product.id)}>
+              <strong className={styles.lineTotal}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="touch-pos-ui"
+                data-target="touch-pos-ui-price-393"
+                data-kind="price"
+                data-role="financial-control"
+              >{formatMoney(line.product.priceCents * line.qty)}</strong>
+              <button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea" onClick={() =
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="touch-pos-ui"
+                data-target="touch-pos-ui-quitar-l-nea-394"
+                data-kind="button"
+                data-role="action"
+              > onRemove(line.product.id)}>
                 <PrismaIcon name="trash" size={17} />
               </button>
             </article>
@@ -385,13 +503,29 @@ export function TouchCart({
         )}
       </div>
 
-      <div className={styles.paymentRow} aria-label="Método de pago">
+      <div className={styles.paymentRow} aria-label="Método de pago"
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="checkout"
+        data-panel="touch-pos-ui"
+        data-target="touch-pos-ui-m-todo-de-pago-402"
+        data-kind="price"
+        data-role="financial-control"
+      >
         {[
           ["cash", "Efectivo"],
           ["card", "Tarjeta"],
           ["mixed", "Mixto"]
         ].map(([value, label]) => (
-          <button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button" onClick={() => onPaymentMethod(value)}>
+          <button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout"
+            data-panel="touch-pos-ui"
+            data-target="touch-pos-ui-price-408"
+            data-kind="price"
+            data-role="financial-control"
+          > onPaymentMethod(value)}>
             {label}
           </button>
         ))}
@@ -403,7 +537,15 @@ export function TouchCart({
       </div>
 
       <CheckoutButton disabled={!lines.length || saleState === "loading"} loading={saleState === "loading"} onClick={onCheckout} />
-      <button className={styles.secondaryWideButton} type="button" onClick={onClear} disabled={!lines.length || saleState === "loading"}>
+      <button className={styles.secondaryWideButton} type="button" onClick={onClear} disabled={!lines.length || saleState === "loading"}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="touch-pos-ui"
+        data-target="touch-pos-ui-button-420"
+        data-kind="button"
+        data-role="action"
+      >
         Limpiar ticket
       </button>
       {saleError ? <OperationalError error={saleError} /> : null}
@@ -413,7 +555,14 @@ export function TouchCart({
 
 export function CheckoutButton({ disabled, loading, onClick }: { disabled: boolean; loading: boolean; onClick: () => void }) {
   return (
-    <button className={styles.checkoutButton} type="button" disabled={disabled} onClick={onClick}>
+    <button className={styles.checkoutButton} type="button" disabled={disabled} onClick={onClick}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="checkout-rail"
+      data-panel="checkout-actions"
+      data-target="checkout-button"
+      data-kind="button"
+      data-role="primary-action">
       <span>{loading ? "Cerrando venta..." : "COBRAR"}</span>
       <strong>F2</strong>
     </button>
@@ -423,14 +572,30 @@ export function CheckoutButton({ disabled, loading, onClick }: { disabled: boole
 export function TicketSummary({ sale, onReset }: { sale: CompletedSale | null; onReset: () => void }) {
   if (!sale) return null;
   return (
-    <section className={styles.ticketSummary} aria-label="Ticket cerrado">
+    <section className={styles.ticketSummary} aria-label="Ticket cerrado"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="checkout"
+      data-panel="touch-pos-ui"
+      data-target="touch-pos-ui-ticket-cerrado-447"
+      data-kind="ticket"
+      data-role="ticket-context"
+    >
       <div>
         <span>venta cerrada</span>
         <h2>{sale.folio}</h2>
         <p>{sale.lines.length} líneas · {sale.events.length} eventos locales</p>
       </div>
       <strong>{formatMoney(sale.totalCents)}</strong>
-      <button className={styles.secondaryButton} type="button" onClick={onReset}>
+      <button className={styles.secondaryButton} type="button" onClick={onReset}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="touch-pos-ui"
+        data-target="touch-pos-ui-button-454"
+        data-kind="button"
+        data-role="action"
+      >
         Nueva venta
       </button>
     </section>
@@ -439,13 +604,20 @@ export function TicketSummary({ sale, onReset }: { sale: CompletedSale | null; o
 
 export function OutboxMiniPanel({ report, state }: { report: OperationalReport | null; state: UiState }) {
   return (
-    <section className={styles.miniPanel} aria-label="Pendientes por enviar">
+    <section className={styles.miniPanel} aria-label="Pendientes por enviar"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="sync-status"
+      data-panel="outbox-mini-panel"
+      data-target="outbox-mini-panel"
+      data-kind="panel"
+      data-role="sync-status">
       <div>
         <span>pendientes por enviar</span>
         <strong>{state === "loading" ? "..." : `${report?.pendingOutboxCount ?? 0} pendientes`}</strong>
       </div>
       <StatusPill tone={(report?.failedOutboxCount ?? 0) > 0 ? "danger" : "ok"}>{report?.failedOutboxCount ?? 0} fallidos</StatusPill>
-      <a href="/events/outbox">Ver pendientes</a>
+      <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-a-13" data-kind="button" data-role="button" href="/events/outbox">Ver pendientes</a>
     </section>
   );
 }
@@ -462,7 +634,14 @@ function StatePanel({
   tone?: "neutral" | "danger";
 }) {
   return (
-    <div className={[styles.statePanel, tone === "danger" ? styles.stateDanger : ""].join(" ")}>
+    <div className={[styles.statePanel, tone === "danger" ? styles.stateDanger : ""].join(" ")}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="operational-status"
+      data-panel="state-panel"
+      data-target="state-panel"
+      data-kind="panel"
+      data-role="state-panel">
       <PrismaIcon name={icon} size={26} />
       <strong>{title}</strong>
       <span>{description}</span>
@@ -593,7 +772,7 @@ export function TouchPosApp({ compatibility = false }: { compatibility?: boolean
       status={<RuntimeStatus report={report} state={reportState} />}
     >
       <div className={styles.posWorkspace}>
-        <section className={styles.catalogPanel}>
+        <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-section-14" data-kind="panel" data-role="container" className={styles.catalogPanel}>
           <TouchProductSearch
             query={query}
             setQuery={setQuery}
@@ -655,7 +834,7 @@ export function CatalogScreen() {
 
   return (
     <AppChrome currentPath="/catalog" title="Catálogo" subtitle="Productos disponibles para vender en Tablet." status={<RuntimeStatus state={state} />}>
-      <section className={styles.singleColumn}>
+      <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-section-15" data-kind="panel" data-role="container" className={styles.singleColumn}>
         <TouchProductSearch query={query} setQuery={setQuery} loading={state === "loading"} error={error} onSearch={() => void load(query)} onResolve={() => void load(query)} onClear={() => { setQuery(""); void load(""); }} />
         <TouchProductList products={products} state={state} error={error} />
       </section>
@@ -690,7 +869,7 @@ export function SalesTodayScreen() {
 
   return (
     <AppChrome currentPath="/sales/today" title="Ventas de hoy" subtitle="Corte operativo local de la Tablet." status={<RuntimeStatus report={report} state={state} />}>
-      <section className={styles.summaryGrid}>
+      <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-section-16" data-kind="panel" data-role="container" className={styles.summaryGrid}>
         <Metric label="Ventas" value={String(summary?.salesCount ?? 0)} note="tickets locales" icon="receipt" />
         <Metric label="Total" value={formatMoney(summary?.totalCents)} note="neto local" icon="wallet" />
         <Metric label="Unidades" value={String(summary?.unitsSold ?? 0)} note="piezas vendidas" icon="package" />
@@ -767,7 +946,7 @@ export function OutboxEventsScreen() {
 
   return (
     <AppChrome currentPath="/events/outbox" title="Pendientes por enviar" subtitle="Movimientos guardados esperando envío." status={<RuntimeStatus state={state} />}>
-      <section className={styles.summaryGrid}>
+      <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-section-17" data-kind="panel" data-role="container" className={styles.summaryGrid}>
         <Metric label="Pendientes" value={String(counts.pending ?? 0)} note="por enviar" icon="chart" />
         <Metric label="Fallidos" value={String(counts.failed ?? 0)} note="requieren atención" icon="bell" />
         <Metric label="Confirmados" value={String(counts.acked ?? 0)} note="ya recibidos" icon="receipt" />
@@ -851,7 +1030,7 @@ export function ExportButton({
 
 function Metric({ label, value, note, icon }: { label: string; value: string; note: string; icon: PrismaIconName }) {
   return (
-    <article className={styles.metricCard}>
+    <article data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-article-18" data-kind="panel" data-role="container" className={styles.metricCard}>
       <span>{label}</span>
       <strong>{value}</strong>
       <small>{note}</small>
@@ -862,7 +1041,14 @@ function Metric({ label, value, note, icon }: { label: string; value: string; no
 
 function DataPanel({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className={styles.dataPanel}>
+    <section className={styles.dataPanel}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="audit-data"
+      data-panel="data-panel"
+      data-target="data-panel"
+      data-kind="table"
+      data-role="audit-surface">
       <h2>{title}</h2>
       <div className={styles.dataRows}>{children}</div>
     </section>
@@ -871,7 +1057,14 @@ function DataPanel({ title, children }: { title: string; children: ReactNode }) 
 
 function DataRow({ title, detail, aside, tone = "neutral" }: { title: string; detail: string; aside: ReactNode; tone?: "neutral" | "warn" | "danger" }) {
   return (
-    <article className={[styles.dataRow, tone === "warn" ? styles.rowWarn : tone === "danger" ? styles.rowDanger : ""].join(" ")}>
+    <article className={[styles.dataRow, tone === "warn" ? styles.rowWarn : tone === "danger" ? styles.rowDanger : ""].join(" ")}
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="audit-data"
+      data-panel="data-panel"
+      data-target="data-row"
+      data-kind="table"
+      data-role="data-row">
       <div>
         <strong>{title}</strong>
         <span>{detail}</span>

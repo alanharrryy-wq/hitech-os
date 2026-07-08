@@ -82,23 +82,103 @@ export function PrismaSurfaceHeader({
   title
 }: Omit<PrismaRouteSurfaceProps, "children" | "emptyState" | "metrics" | "rail">) {
   const actionNode = primaryAction ? (
-    <PrismaLiquidAction icon={<span>{routeGlyph(intent)}</span>} sublabel={primaryAction.sublabel} fullWidth>{primaryAction.label}</PrismaLiquidAction>
+    <PrismaLiquidAction icon={<span
+      data-surface="tablet"
+      data-screen="visual_os"
+      data-zone="pos"
+      data-panel="prisma-route-surface"
+      data-target="prisma-route-surface-panel-85"
+      data-kind="panel"
+      data-role="revenue-core"
+    >{routeGlyph(intent)}</span>} sublabel={primaryAction.sublabel} fullWidth>{primaryAction.label}</PrismaLiquidAction>
   ) : null;
 
   return (
-    <header className={styles.routeHeader} data-prisma-component="PrismaSurfaceHeader" data-prisma-layer="header" data-prisma-effect="softglass-surface rim-light">
-      <div className={styles.routeTitleBlock}>
-        <span className={styles.routeGlyph} aria-hidden="true">{routeGlyph(intent)}</span>
-        <div className={styles.routeCopy}>
-          <div className={styles.routeMeta}>
-            <span className={styles.routeKicker}>Terminal Tablet</span>
+    <header className={styles.routeHeader} data-prisma-component="PrismaSurfaceHeader" data-prisma-layer="header" data-prisma-effect="softglass-surface rim-light"
+      data-surface="tablet"
+      data-screen="visual_os"
+      data-zone="pos"
+      data-panel="prisma-route-surface"
+      data-target="prisma-route-surface-panel-89"
+      data-kind="panel"
+      data-role="revenue-core"
+    >
+      <div className={styles.routeTitleBlock}
+        data-surface="tablet"
+        data-screen="visual_os"
+        data-zone="pos"
+        data-panel="prisma-route-surface"
+        data-target="prisma-route-surface-panel-90"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
+        <span className={styles.routeGlyph} aria-hidden="true"
+          data-surface="tablet"
+          data-screen="visual_os"
+          data-zone="pos"
+          data-panel="prisma-route-surface"
+          data-target="prisma-route-surface-panel-91"
+          data-kind="panel"
+          data-role="revenue-core"
+        >{routeGlyph(intent)}</span>
+        <div className={styles.routeCopy}
+          data-surface="tablet"
+          data-screen="visual_os"
+          data-zone="pos"
+          data-panel="prisma-route-surface"
+          data-target="prisma-route-surface-panel-92"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <div className={styles.routeMeta}
+            data-surface="tablet"
+            data-screen="visual_os"
+            data-zone="pos"
+            data-panel="prisma-route-surface"
+            data-target="prisma-route-surface-panel-93"
+            data-kind="panel"
+            data-role="revenue-core"
+          >
+            <span className={styles.routeKicker}
+              data-surface="tablet"
+              data-screen="visual_os"
+              data-zone="pos"
+              data-panel="prisma-route-surface"
+              data-target="prisma-route-surface-panel-94"
+              data-kind="panel"
+              data-role="revenue-core"
+            >Terminal Tablet</span>
             <PrismaStatusChip>{statusLabel}</PrismaStatusChip>
           </div>
-          <h2 className={styles.routeTitle}>{title}</h2>
-          <p className={styles.routeDescription}>{description}</p>
+          <h2 className={styles.routeTitle}
+            data-surface="tablet"
+            data-screen="visual_os"
+            data-zone="pos"
+            data-panel="prisma-route-surface"
+            data-target="prisma-route-surface-panel-97"
+            data-kind="panel"
+            data-role="revenue-core"
+          >{title}</h2>
+          <p className={styles.routeDescription}
+            data-surface="tablet"
+            data-screen="visual_os"
+            data-zone="pos"
+            data-panel="prisma-route-surface"
+            data-target="prisma-route-surface-panel-98"
+            data-kind="panel"
+            data-role="revenue-core"
+          >{description}</p>
         </div>
       </div>
-      <div className={styles.routeActions} data-prisma-route-owner={routeId}>
+      <div className={styles.routeActions} data-prisma-route-owner={routeId}
+        data-surface="tablet"
+        data-screen="visual_os"
+        data-zone="pos"
+        data-panel="prisma-route-surface"
+        data-target="prisma-route-surface-button-101"
+        data-kind="button"
+        data-role="action"
+      >
         {actions}
         {actionNode}
       </div>
@@ -108,11 +188,27 @@ export function PrismaSurfaceHeader({
 
 export function PrismaSurfacePanel({ children, emptyState, routeId }: { children: ReactNode; emptyState?: ReactNode; routeId: string }) {
   return (
-    <section className={styles.contentPanel} data-prisma-component="PrismaSurfacePanel" data-prisma-route-owner={routeId} data-prisma-layer="content" data-prisma-effect="softglass-surface inner-highlight surface-breathing-glow">
+    <section className={styles.contentPanel} data-prisma-component="PrismaSurfacePanel" data-prisma-route-owner={routeId} data-prisma-layer="content" data-prisma-effect="softglass-surface inner-highlight surface-breathing-glow"
+      data-surface="tablet"
+      data-screen="visual_os"
+      data-zone="pos"
+      data-panel="prisma-route-surface"
+      data-target="prisma-route-surface-panel-111"
+      data-kind="panel"
+      data-role="revenue-core"
+    >
       {children}
       {emptyState ? (
         <PrismaSoftCard className={styles.emptyState} data-prisma-empty-state="true">
-          <div className={styles.emptyStateInner}>{emptyState}</div>
+          <div className={styles.emptyStateInner}
+            data-surface="tablet"
+            data-screen="visual_os"
+            data-zone="pos"
+            data-panel="prisma-route-surface"
+            data-target="prisma-route-surface-panel-115"
+            data-kind="panel"
+            data-role="revenue-core"
+          >{emptyState}</div>
         </PrismaSoftCard>
       ) : null}
     </section>
@@ -145,6 +241,13 @@ export function PrismaRouteSurface({
       data-prisma-layer="surface"
       data-prisma-effect="softglass-surface selected-pulse focus-halo"
       data-intent={intent}
+      data-surface="tablet"
+      data-screen="visual_os"
+      data-zone="pos"
+      data-panel="prisma-route-surface"
+      data-target="prisma-route-surface-panel-139"
+      data-kind="panel"
+      data-role="revenue-core"
     >
       <PrismaSurfaceHeader
         actions={actions}
@@ -155,30 +258,70 @@ export function PrismaRouteSurface({
         statusLabel={statusLabel}
         title={title}
       />
-      <div className={styles.surfaceGrid} data-has-rail={hasRail ? "true" : "false"}>
+      <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_route_surface" data-target="prisma-route-surface-div-1" data-kind="panel" data-role="container" className={styles.surfaceGrid} data-has-rail={hasRail ? "true" : "false"}>
         <PrismaSurfacePanel emptyState={emptyState} routeId={routeId}>
           {children}
         </PrismaSurfacePanel>
         {hasRail ? (
-          <aside className={styles.surfaceRail} data-prisma-layer="surface" data-prisma-effect="softglass-surface selected-pulse">
+          <aside className={styles.surfaceRail} data-prisma-layer="surface" data-prisma-effect="softglass-surface selected-pulse"
+            data-surface="tablet"
+            data-screen="visual_os"
+            data-zone="pos"
+            data-panel="prisma-route-surface"
+            data-target="prisma-route-surface-panel-163"
+            data-kind="panel"
+            data-role="revenue-core"
+          >
             {rail}
             {resolvedMetrics.map((metric) => (
               <PrismaSoftCard key={String(metric.label)} className={styles.metricCard} tone="amount">
-                <span className={styles.metricLabel}>{metric.label}</span>
-                <strong className={styles.metricValue}>{metric.value}</strong>
-                {metric.detail ? <span className={styles.metricDetail}>{metric.detail}</span> : null}
+                <span className={styles.metricLabel}
+                  data-surface="tablet"
+                  data-screen="visual_os"
+                  data-zone="pos"
+                  data-panel="prisma-route-surface"
+                  data-target="prisma-route-surface-panel-167"
+                  data-kind="panel"
+                  data-role="revenue-core"
+                >{metric.label}</span>
+                <strong className={styles.metricValue}
+                  data-surface="tablet"
+                  data-screen="visual_os"
+                  data-zone="pos"
+                  data-panel="prisma-route-surface"
+                  data-target="prisma-route-surface-panel-168"
+                  data-kind="panel"
+                  data-role="revenue-core"
+                >{metric.value}</strong>
+                {metric.detail ? <span className={styles.metricDetail}
+                  data-surface="tablet"
+                  data-screen="visual_os"
+                  data-zone="pos"
+                  data-panel="prisma-route-surface"
+                  data-target="prisma-route-surface-panel-169"
+                  data-kind="panel"
+                  data-role="revenue-core"
+                >{metric.detail}</span> : null}
               </PrismaSoftCard>
             ))}
             <PrismaGlassControl label="Vista activa" hint="Tablet">
-              <input aria-label={`Vista activa ${routeId}`} value={routeId} readOnly />
+              <input aria-label={`Vista activa ${routeId}`} value={routeId} readOnly
+                data-surface="tablet"
+                data-screen="visual_os"
+                data-zone="pos"
+                data-panel="prisma-route-surface"
+                data-target="prisma-route-surface-panel-173"
+                data-kind="panel"
+                data-role="revenue-core"
+              />
             </PrismaGlassControl>
           </aside>
         ) : null}
       </div>
       <PrismaCommandDock className={styles.routeDock} aria-label={`Accesos operativos de ${routeId}`} data-prisma-layer="dock">
-        <a href="/pos">Vender</a>
-        <a href="/stock">Stock</a>
-        <a href="/sync">Pendientes</a>
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_route_surface" data-target="prisma-route-surface-a-2" data-kind="button" data-role="button" href="/pos">Vender</a>
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_route_surface" data-target="prisma-route-surface-a-3" data-kind="button" data-role="button" href="/stock">Stock</a>
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_route_surface" data-target="prisma-route-surface-a-4" data-kind="button" data-role="button" href="/sync">Pendientes</a>
       </PrismaCommandDock>
     </section>
   );

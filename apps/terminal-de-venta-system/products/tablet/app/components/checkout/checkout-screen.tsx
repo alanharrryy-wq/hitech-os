@@ -79,38 +79,150 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
       visualPreset="POS_TOUCH_REFERENCE"
       runtimeSnapshot={runtimeSnapshot}
     >
-      <div className={styles.checkoutGrid} data-prisma-vos-stage="00F_00I" data-prisma-vsurface="tablet-checkout" data-prisma-layer="surface">
+      <div className={styles.checkoutGrid} data-prisma-vos-stage="00F_00I" data-prisma-vsurface="tablet-checkout" data-prisma-layer="surface"
+        data-surface="tablet"
+        data-screen="checkout"
+        data-zone="checkout"
+        data-panel="checkout-screen"
+        data-target="checkout-screen-panel-82"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
         <CheckoutSummary lines={lines} />
-        <section className={styles.paymentCard} aria-label="Cobro del ticket">
-          <div className={styles.totalHero}>
-            <span>Total a cobrar</span>
-            <strong>{formatMoney(totalCents)}</strong>
+        <section className={styles.paymentCard} aria-label="Cobro del ticket"
+          data-surface="tablet"
+          data-screen="checkout"
+          data-zone="checkout"
+          data-panel="checkout-screen"
+          data-target="checkout-screen-cobro-del-ticket-84"
+          data-kind="price"
+          data-role="financial-control"
+        >
+          <div className={styles.totalHero}
+            data-surface="tablet"
+            data-screen="checkout"
+            data-zone="checkout"
+            data-panel="checkout-screen"
+            data-target="checkout-screen-price-85"
+            data-kind="price"
+            data-role="financial-control"
+          >
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-1" data-kind="text" data-role="text">Total a cobrar</span>
+            <strong
+              data-surface="tablet"
+              data-screen="checkout"
+              data-zone="checkout"
+              data-panel="checkout-screen"
+              data-target="checkout-screen-element-87"
+              data-kind="element"
+              data-role="revenue-core"
+            >{formatMoney(totalCents)}</strong>
             <small>{paymentMethodLabel(paymentMethod)}</small>
           </div>
           <CheckoutPaymentMethods value={paymentMethod} onChange={(value) => { setPaymentMethod(value); setShowInsufficientDialog(false); setError(null); }} />
           {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={(value) => { setReceivedCents(value); setShowInsufficientDialog(false); }} /> : null}
           <PosErrorBanner error={error} />
           {!gate.canSell ? <PosErrorBanner error="Caja cerrada. Abre turno antes de cobrar." /> : null}
-          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
-            <span className={styles.visuallyHidden}>Confirmar cobro</span>
-            <span>{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
+          <button className={styles.confirmButton} type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="checkout"
+            data-zone="checkout"
+            data-panel="checkout-screen"
+            data-target="checkout-screen-button-94"
+            data-kind="button"
+            data-role="action"
+          > void completeSale()} disabled={!lines.length || state === "loading" || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-2" data-kind="text" data-role="text" className={styles.visuallyHidden}>Confirmar cobro</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-3" data-kind="text" data-role="text">{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
             <PrismaIcon name="receipt" size={20} />
           </button>
-          {!lines.length ? <a className={styles.backLink} href={gate.actionHref}>{gate.canShowSellNavigation ? "Agregar productos para cobrar" : "Abrir turno para cobrar"}</a> : null}
+          {!lines.length ? <a className={styles.backLink} href={gate.actionHref}
+            data-surface="tablet"
+            data-screen="checkout"
+            data-zone="checkout"
+            data-panel="checkout-screen"
+            data-target="checkout-screen-button-99"
+            data-kind="button"
+            data-role="action"
+          >{gate.canShowSellNavigation ? "Agregar productos para cobrar" : "Abrir turno para cobrar"}</a> : null}
         </section>
       </div>
       {showInsufficientDialog && cashIsShort ? (
-        <section className={styles.insufficientOverlay} role="dialog" aria-modal="true" aria-labelledby="checkout-insufficient-title">
-          <div className={styles.insufficientDialog}>
-            <span>Pago incompleto</span>
-            <h2 id="checkout-insufficient-title">Saldo pendiente: {formatMoney(Math.max(0, totalCents - receivedCents))}</h2>
-            <p>{PAYMENT_INSUFFICIENT_COPY}</p>
-            <div className={styles.insufficientActions}>
-              <button type="button" onClick={() => { setPaymentMethod("card"); setShowInsufficientDialog(false); setError(null); }}>Agregar otro método</button>
-              <button type="button" onClick={() => { setShowInsufficientDialog(false); setError(null); }}>Ajustar importe</button>
-              <button type="button" onClick={() => { setPaymentMethod(paymentMethod === "cash" ? "card" : "cash"); setShowInsufficientDialog(false); setError(null); }}>Cambiar método</button>
-              <a href="/pos">Volver al ticket</a>
-              <button type="button" onClick={() => { setReceivedCents(0); setShowInsufficientDialog(false); setError(null); }}>Cancelar cobro</button>
+        <section className={styles.insufficientOverlay} role="dialog" aria-modal="true" aria-labelledby="checkout-insufficient-title"
+          data-surface="tablet"
+          data-screen="checkout"
+          data-zone="checkout"
+          data-panel="checkout-screen"
+          data-target="checkout-screen-panel-103"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-div-4" data-kind="panel" data-role="container" className={styles.insufficientDialog}>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-5" data-kind="text" data-role="text">Pago incompleto</span>
+            <h2 id="checkout-insufficient-title"
+              data-surface="tablet"
+              data-screen="checkout"
+              data-zone="checkout"
+              data-panel="checkout-screen"
+              data-target="checkout-screen-text-106"
+              data-kind="text"
+              data-role="copy"
+            >Saldo pendiente: {formatMoney(Math.max(0, totalCents - receivedCents))}</h2>
+            <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-p-6" data-kind="text" data-role="text">{PAYMENT_INSUFFICIENT_COPY}</p>
+            <div className={styles.insufficientActions}
+              data-surface="tablet"
+              data-screen="checkout"
+              data-zone="checkout"
+              data-panel="checkout-screen"
+              data-target="checkout-screen-button-108"
+              data-kind="button"
+              data-role="action"
+            >
+              <button type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="checkout"
+                data-zone="checkout"
+                data-panel="checkout-screen"
+                data-target="checkout-screen-button-109"
+                data-kind="button"
+                data-role="action"
+              > { setPaymentMethod("card"); setShowInsufficientDialog(false); setError(null); }}>Agregar otro método</button>
+              <button type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="checkout"
+                data-zone="checkout"
+                data-panel="checkout-screen"
+                data-target="checkout-screen-button-110"
+                data-kind="button"
+                data-role="action"
+              > { setShowInsufficientDialog(false); setError(null); }}>Ajustar importe</button>
+              <button type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="checkout"
+                data-zone="checkout"
+                data-panel="checkout-screen"
+                data-target="checkout-screen-button-111"
+                data-kind="button"
+                data-role="action"
+              > { setPaymentMethod(paymentMethod === "cash" ? "card" : "cash"); setShowInsufficientDialog(false); setError(null); }}>Cambiar método</button>
+              <a href="/pos"
+                data-surface="tablet"
+                data-screen="checkout"
+                data-zone="checkout"
+                data-panel="checkout-screen"
+                data-target="checkout-screen-button-112"
+                data-kind="button"
+                data-role="action"
+              >Volver al ticket</a>
+              <button type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="checkout"
+                data-zone="checkout"
+                data-panel="checkout-screen"
+                data-target="checkout-screen-button-113"
+                data-kind="button"
+                data-role="action"
+              > { setReceivedCents(0); setShowInsufficientDialog(false); setError(null); }}>Cancelar cobro</button>
             </div>
           </div>
         </section>

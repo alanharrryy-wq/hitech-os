@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogId": "PRISMA_SUPPORT_FEATURE_GATES",
+  "canonicalSources": [
+    "shared/licensing/feature-keys.ts",
+    "shared/licensing/feature-resolver.ts",
+    "tooling/productization/catalogs/license-local/feature-key-catalog.full.json"
+  ],
+  "supportMappings": [
+    {
+      "gate": "pos.sale.complete",
+      "blockedIssueCode": "POS_OPERATION_BLOCKED_BY_LICENSE",
+      "surfaces": ["tablet"]
+    },
+    {
+      "gate": "pc.backoffice",
+      "blockedIssueCode": "PC_FEATURES_BLOCKED_BY_LICENSE",
+      "surfaces": ["pc"]
+    },
+    {
+      "gate": "mobile.companion",
+      "blockedIssueCode": "MOBILE_FEATURES_BLOCKED_BY_LICENSE",
+      "surfaces": ["mobile"]
+    }
+  ]
+}

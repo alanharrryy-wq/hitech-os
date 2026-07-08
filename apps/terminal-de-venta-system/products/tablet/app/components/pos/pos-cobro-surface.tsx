@@ -222,43 +222,139 @@ export function PosCobroSurface({
       className={styles.cobroPanel}
       data-prisma-cobro-state={checkoutMood}
     >
-      <header className={styles.topbar}>
-        <div className={styles.titleGroup}>
+      <header className={styles.topbar}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-cobro-surface"
+        data-target="pos-cobro-surface-price-225"
+        data-kind="price"
+        data-role="revenue-core"
+      >
+        <div className={styles.titleGroup}
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-cobro-surface"
+          data-target="pos-cobro-surface-price-226"
+          data-kind="price"
+          data-role="revenue-core"
+        >
           <PrismaStatusChip tone={paymentTone} icon={view.canConfirm ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}>{statusCopy}</PrismaStatusChip>
-          <h2 id="pos-cobro-title" className={styles.title}>Cobro</h2>
-          <p id="pos-cobro-description" className={styles.description}>Recibe, revisa cambio y genera el ticket.</p>
+          <h2 id="pos-cobro-title" className={styles.title}
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-cobro-surface"
+            data-target="pos-cobro-surface-price-228"
+            data-kind="price"
+            data-role="revenue-core"
+          >Cobro</h2>
+          <p id="pos-cobro-description" className={styles.description}
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-cobro-surface"
+            data-target="pos-cobro-surface-price-229"
+            data-kind="price"
+            data-role="revenue-core"
+          >Recibe, revisa cambio y genera el ticket.</p>
         </div>
-        <button ref={closeRef} className={styles.closeButton} type="button" aria-label="Cancelar cobro" onClick={onClose} disabled={busy}>
+        <button ref={closeRef} className={styles.closeButton} type="button" aria-label="Cancelar cobro" onClick={onClose} disabled={busy}
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-cobro-surface"
+          data-target="pos-cobro-surface-cancelar-cobro-231"
+          data-kind="price"
+          data-role="revenue-core"
+        >
           <X aria-hidden="true" size={18} />
           Cancelar
         </button>
       </header>
 
-      <section className={styles.contentGrid}>
-        <div className={styles.methodsColumn} aria-label="Métodos de pago disponibles">
-          <div className={styles.summaryGrid}>
+      <section className={styles.contentGrid}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-cobro-surface"
+        data-target="pos-cobro-surface-price-237"
+        data-kind="price"
+        data-role="revenue-core"
+      >
+        <div className={styles.methodsColumn} aria-label="Métodos de pago disponibles"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-cobro-surface"
+          data-target="pos-cobro-surface-m-todos-de-pago-disponibles-238"
+          data-kind="price"
+          data-role="financial-control"
+        >
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-1" data-kind="layout" data-role="container" className={styles.summaryGrid}>
             <PrismaSoftCard className={styles.amountCard} tone="amount" data-prisma-effect="softglass-surface ticket-total-pulse">
-              <span className={styles.amountLabel}>Total</span>
-              <strong className={styles.amountValue}>{formatMoney(view.totalCents)}</strong>
-              <span className={styles.amountMeta}>{lines.length} producto{lines.length === 1 ? "" : "s"}</span>
+              <span className={styles.amountLabel}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-cobro-surface"
+                data-target="pos-cobro-surface-price-241"
+                data-kind="price"
+                data-role="financial-control"
+              >Total</span>
+              <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-strong-2" data-kind="price" data-role="price" className={styles.amountValue}>{formatMoney(view.totalCents)}</strong>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-3" data-kind="price" data-role="price" className={styles.amountMeta}>{lines.length} producto{lines.length === 1 ? "" : "s"}</span>
             </PrismaSoftCard>
             <PrismaSoftCard className={styles.amountCard} tone={view.remainingCents > 0 ? "warning" : "amount"}>
-              <span className={styles.amountLabel}>{view.remainingCents > 0 ? "Falta" : "Recibido"}</span>
-              <strong className={styles.amountValue}>{formatMoney(view.remainingCents > 0 ? view.remainingCents : view.paidCents)}</strong>
-              <span className={styles.amountMeta}>{view.remainingCents > 0 ? "Completa el saldo" : "Pago cubierto"}</span>
+              <span className={styles.amountLabel}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-cobro-surface"
+                data-target="pos-cobro-surface-price-246"
+                data-kind="price"
+                data-role="financial-control"
+              >{view.remainingCents > 0 ? "Falta" : "Recibido"}</span>
+              <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-strong-4" data-kind="price" data-role="price" className={styles.amountValue}>{formatMoney(view.remainingCents > 0 ? view.remainingCents : view.paidCents)}</strong>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-5" data-kind="price" data-role="price" className={styles.amountMeta}>{view.remainingCents > 0 ? "Completa el saldo" : "Pago cubierto"}</span>
             </PrismaSoftCard>
             <PrismaSoftCard className={styles.amountCard}>
-              <span className={styles.amountLabel}>Cambio</span>
+              <span className={styles.amountLabel}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-cobro-surface"
+                data-target="pos-cobro-surface-price-251"
+                data-kind="price"
+                data-role="financial-control"
+              >Cambio</span>
               <strong className={styles.amountValue}>{formatMoney(view.changeCents)}</strong>
-              <span className={styles.amountMeta}>Entrega al cliente</span>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-6" data-kind="price" data-role="price" className={styles.amountMeta}>Entrega al cliente</span>
             </PrismaSoftCard>
           </div>
 
-          <div className={styles.methodsHeader}>
-            <span className={styles.amountLabel}>Pago recibido</span>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-7" data-kind="panel" data-role="container" className={styles.methodsHeader}>
+            <span className={styles.amountLabel}
+              data-surface="tablet"
+              data-screen="pos"
+              data-zone="pos"
+              data-panel="pos-cobro-surface"
+              data-target="pos-cobro-surface-price-258"
+              data-kind="price"
+              data-role="financial-control"
+            >Pago recibido</span>
           </div>
 
-          <div className={styles.methodsList}>
+          <div className={styles.methodsList}
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-cobro-surface"
+            data-target="pos-cobro-surface-price-261"
+            data-kind="price"
+            data-role="revenue-core"
+          >
             {draftPaymentTenders.map((tender) => {
               const definition = paymentMethodDefinition(tender.method);
               const active = tender.amountCents > 0;
@@ -272,9 +368,9 @@ export function PosCobroSurface({
                   data-active={active ? "true" : "false"}
                   data-prisma-effect={active ? "method-selected-aura softglass-surface" : "softglass-surface"}
                 >
-                  <div className={styles.methodHeader}>
-                    <span className={styles.methodIcon}><PaymentIcon method={tender.method} /></span>
-                    <div className={styles.methodCopy}>
+                  <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-8" data-kind="panel" data-role="container" className={styles.methodHeader}>
+                    <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-9" data-kind="text" data-role="text" className={styles.methodIcon}><PaymentIcon method={tender.method} /></span>
+                    <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-10" data-kind="panel" data-role="container" className={styles.methodCopy}>
                       <strong>{definition.label}</strong>
                       <small>{tender.method === "cash" ? "Efectivo recibido" : "Importe confirmado"}</small>
                     </div>
@@ -290,6 +386,13 @@ export function PosCobroSurface({
                       aria-label={`Importe ${definition.label} en pesos`}
                       value={amountDrafts[tender.method] ?? "0.00"}
                       disabled={busy}
+                      data-surface="tablet"
+                      data-screen="pos"
+                      data-zone="pos"
+                      data-panel="pos-cobro-surface"
+                      data-target="pos-cobro-surface-price-283"
+                      data-kind="price"
+                      data-role="financial-control"
                       onFocus={(event) => {
                         focusTender(tender.method);
                         event.currentTarget.select();
@@ -313,13 +416,37 @@ export function PosCobroSurface({
                         aria-label={`Referencia opcional ${definition.label}`}
                         value={tender.reference ?? ""}
                         disabled={busy}
+                        data-surface="tablet"
+                        data-screen="pos"
+                        data-zone="pos"
+                        data-panel="pos-cobro-surface"
+                        data-target="pos-cobro-surface-price-311"
+                        data-kind="price"
+                        data-role="ticket-context"
                         onChange={(event) => updateTender(tender.method, { reference: event.target.value })}
                       />
                     </PrismaGlassControl>
                   ) : (
-                    <div className={styles.quickRow} aria-label="Efectivo rápido">
+                    <div className={styles.quickRow} aria-label="Efectivo rápido"
+                      data-surface="tablet"
+                      data-screen="pos"
+                      data-zone="pos"
+                      data-panel="pos-cobro-surface"
+                      data-target="pos-cobro-surface-efectivo-r-pido-320"
+                      data-kind="price"
+                      data-role="revenue-core"
+                    >
                       {suggestedCash.map((value) => (
-                        <button key={value} className={styles.quickButton} type="button" disabled={busy} onClick={() => updateTenderAmount("cash", value)}>
+                        <button key={value} className={styles.quickButton} type="button" disabled={busy}
+                          data-surface="tablet"
+                          data-screen="pos"
+                          data-zone="pos"
+                          data-panel="pos-cobro-surface"
+                          data-target="pos-cobro-surface-price-322"
+                          data-kind="price"
+                          data-role="revenue-core"
+                          onClick={() => updateTenderAmount("cash", value)}
+                        >
                           {value === view.totalCents ? "Exacto" : formatMoney(value)}
                         </button>
                       ))}
@@ -331,35 +458,52 @@ export function PosCobroSurface({
           </div>
         </div>
 
-        <aside className={styles.reviewColumn} aria-live="polite">
+        <aside data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-aside-11" data-kind="panel" data-role="container" className={styles.reviewColumn} aria-live="polite">
           <PrismaSoftCard className={styles.reviewCard} data-prisma-effect="softglass-surface ticket-total-pulse">
-            <div className={styles.reviewBody}>
+            <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-12" data-kind="panel" data-role="container" className={styles.reviewBody}>
               <strong>{view.tenderLabel}</strong>
-              <span>{view.canConfirm ? "Todo cubierto. Genera el ticket cuando confirmes el cobro." : canExplainIncompletePayment ? "El importe no cubre el total." : "Captura efectivo, tarjeta o transferencia."}</span>
+              <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-13" data-kind="text" data-role="text">{view.canConfirm ? "Todo cubierto. Genera el ticket cuando confirmes el cobro." : canExplainIncompletePayment ? "El importe no cubre el total." : "Captura efectivo, tarjeta o transferencia."}</span>
             </div>
             {view.remainingCents > 0 ? (
-              <button className={styles.quickButton} type="button" disabled={busy} onClick={() => addRemainingTo("cash")}>
+              <button className={styles.quickButton} type="button" disabled={busy}
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="pos"
+                data-panel="pos-cobro-surface"
+                data-target="pos-cobro-surface-price-341"
+                data-kind="price"
+                data-role="revenue-core"
+                onClick={() => addRemainingTo("cash")}
+              >
                 Cubrir saldo con efectivo
               </button>
             ) : null}
             {canExplainIncompletePayment || showInsufficientDialog ? (
-              <div className={styles.warningCard} role={showInsufficientDialog ? "alert" : "status"}>
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-14" data-kind="badge" data-role="container" className={styles.warningCard} role={showInsufficientDialog ? "alert" : "status"}>
                 <strong>Importe insuficiente</strong>
-                <span>Faltan {formatMoney(view.remainingCents)} para cerrar.</span>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-15" data-kind="text" data-role="text">Faltan {formatMoney(view.remainingCents)} para cerrar.</span>
               </div>
             ) : null}
             {visibleError ? (
-              <div className={styles.warningCard} role="alert">
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-div-16" data-kind="panel" data-role="container" className={styles.warningCard} role="alert">
                 <strong>No se cerró el ticket</strong>
-                <span>{visibleError}</span>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-span-17" data-kind="text" data-role="text">{visibleError}</span>
               </div>
             ) : null}
           </PrismaSoftCard>
         </aside>
       </section>
 
-      <footer className={styles.footer}>
-        <button className={styles.secondaryButton} type="button" disabled={busy} onClick={onClose}>
+      <footer data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_cobro_surface" data-target="pos-cobro-surface-footer-18" data-kind="panel" data-role="container" className={styles.footer}>
+        <button className={styles.secondaryButton} type="button" disabled={busy} onClick={onClose}
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-cobro-surface"
+          data-target="pos-cobro-surface-price-362"
+          data-kind="price"
+          data-role="revenue-core"
+        >
           <ArrowLeft aria-hidden="true" size={18} />
           Volver al ticket
         </button>

@@ -115,11 +115,42 @@ export function PosTicketPanel({
       data-prisma-state={checkoutError ? "error" : lines.length ? "ready" : "empty"}
       data-prisma-motion="reduced-motion-safe"
       data-prisma-qa="tablet-qa-cart"
-    >
-      <header className={styles.posPremiumTicketHeader} data-prisma-component="CartHeader">
-        <div>
-          <span><ReceiptText aria-hidden="true" size={15} /> Ticket actual</span>
-          <h2>{qty} piezas</h2>
+
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="checkout-rail"
+      data-panel="pos-ticket-panel"
+      data-target="pos-ticket-panel"
+      data-kind="panel"
+      data-role="sale-ticket">
+      <header className={styles.posPremiumTicketHeader} data-prisma-component="CartHeader"
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-ticket-panel"
+        data-target="pos-ticket-panel-ticket-126"
+        data-kind="ticket"
+        data-role="ticket-context"
+      >
+        <div
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="pos"
+          data-panel="pos-ticket-panel"
+          data-target="pos-ticket-panel-ticket-127"
+          data-kind="ticket"
+          data-role="ticket-context"
+        >
+          <span
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-ticket-panel"
+            data-target="pos-ticket-panel-ticket-128"
+            data-kind="ticket"
+            data-role="ticket-context"
+          ><ReceiptText aria-hidden="true" size={15} /> Ticket actual</span>
+          <h2 data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-h2-1" data-kind="panel" data-role="panel">{qty} piezas</h2>
         </div>
         <motion.button
           className={styles.posPremiumTicketUtilityButton}
@@ -135,12 +166,27 @@ export function PosTicketPanel({
         </motion.button>
       </header>
 
-      <div className={styles.posPremiumTicketLines}>
+      <div className={styles.posPremiumTicketLines}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-ticket-panel"
+        data-target="pos-ticket-panel-ticket-145"
+        data-kind="ticket"
+        data-role="ticket-context"
+      >
         {!lines.length ? (
-          <div className={styles.posPremiumEmptyTicket} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-qa="tablet-qa-disabled">
+          <div className={styles.posPremiumEmptyTicket} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-qa="tablet-qa-disabled"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout-rail"
+            data-panel="empty-ticket-state"
+            data-target="empty-ticket-state"
+            data-kind="panel"
+            data-role="empty-state">
             <WalletCards aria-hidden="true" size={30} />
-            <strong>Agrega productos para cobrar</strong>
-            <span>El total y el botón de cobro se activan cuando el ticket tiene productos.</span>
+            <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-strong-2" data-kind="panel" data-role="panel">Agrega productos para cobrar</strong>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-3" data-kind="panel" data-role="panel">El total y el botón de cobro se activan cuando el ticket tiene productos.</span>
           </div>
         ) : (
           lines.map((line) => {
@@ -160,7 +206,14 @@ export function PosTicketPanel({
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-              >
+
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="checkout-rail"
+                data-panel="cart-line-list"
+                data-target="cart-line-row"
+                data-kind="table"
+                data-role="sale-line">
                 <span
                   className={cn(
                     styles.posPremiumCartThumb,
@@ -169,6 +222,13 @@ export function PosTicketPanel({
                   )}
                   data-prisma-packshot-host
                   aria-hidden="true"
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-ticket-panel"
+                  data-target="pos-ticket-panel-ticket-185"
+                  data-kind="ticket"
+                  data-role="ticket-context"
                 >
                   {packshot ? (
                     <>
@@ -189,30 +249,93 @@ export function PosTicketPanel({
                           event.currentTarget.closest("[data-prisma-packshot-host]")?.removeAttribute("data-packshot-error");
                         }}
                       />
-                      <span className={styles.posPremiumCartThumbFallback} />
+                      <span className={styles.posPremiumCartThumbFallback}
+                        data-surface="tablet"
+                        data-screen="pos"
+                        data-zone="pos"
+                        data-panel="pos-ticket-panel"
+                        data-target="pos-ticket-panel-ticket-213"
+                        data-kind="ticket"
+                        data-role="ticket-context"
+                      />
                     </>
                   ) : (
-                    <span />
+                    <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-4" data-kind="panel" data-role="panel" />
                   )}
                 </span>
-                <div className={styles.posPremiumTicketLineText}>
-                  <strong>{line.product.name}</strong>
-                  <span>
+                <div className={styles.posPremiumTicketLineText}
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-ticket-panel"
+                  data-target="pos-ticket-panel-ticket-219"
+                  data-kind="ticket"
+                  data-role="ticket-context"
+                >
+                  <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-strong-5" data-kind="panel" data-role="panel">{line.product.name}</strong>
+                  <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-6" data-kind="panel" data-role="panel">
                     {line.product.sku} · {formatMoney(line.product.priceCents)}
                   </span>
                   <small className={stockChipClass(stockSignal.tone)}>{stockSignal.label}</small>
                 </div>
-                <div className={styles.posPremiumStepper} data-prisma-component="QuantityStepper" data-prisma-role="secondary-action" data-prisma-motion="press-feedback">
-                  <button type="button" aria-label={`Restar ${line.product.name}`} onClick={() => onDecrement(line.product.id)} disabled={!canCheckout || checkoutBusy}>
+                <div className={styles.posPremiumStepper} data-prisma-component="QuantityStepper" data-prisma-role="secondary-action" data-prisma-motion="press-feedback"
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="checkout-rail"
+                  data-panel="quantity-stepper"
+                  data-target="quantity-stepper"
+                  data-kind="button"
+                  data-role="quantity-control">
+                  <button type="button" aria-label={`Restar ${line.product.name}`}
+                    data-surface="tablet"
+                    data-screen="pos"
+                    data-zone="pos"
+                    data-panel="pos-ticket-panel"
+                    data-target="pos-ticket-panel-button-234"
+                    data-kind="button"
+                    data-role="ticket-context"
+                    onClick={() => onDecrement(line.product.id)} disabled={!canCheckout || checkoutBusy}
+                  >
                     <Minus aria-hidden="true" size={15} />
                   </button>
-                  <strong>{line.qty}</strong>
-                  <button type="button" aria-label={`Sumar ${line.product.name}`} onClick={() => onIncrement(line.product.id)} disabled={!canCheckout || checkoutBusy}>
+                  <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-strong-7" data-kind="panel" data-role="panel">{line.qty}</strong>
+                  <button type="button" aria-label={`Sumar ${line.product.name}`}
+                    data-surface="tablet"
+                    data-screen="pos"
+                    data-zone="pos"
+                    data-panel="pos-ticket-panel"
+                    data-target="pos-ticket-panel-button-238"
+                    data-kind="button"
+                    data-role="ticket-context"
+                    onClick={() => onIncrement(line.product.id)} disabled={!canCheckout || checkoutBusy}
+                  >
                     <Plus aria-hidden="true" size={15} />
                   </button>
                 </div>
-                <strong className={styles.posPremiumLineTotal}>{formatMoney(line.product.priceCents * line.qty)}</strong>
-                <button className={styles.posPremiumRemoveButton} type="button" aria-label={`Quitar ${line.product.name}`} onClick={() => onRemove(line.product.id)} disabled={!canCheckout || checkoutBusy}>
+                <strong className={styles.posPremiumLineTotal}
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="checkout-rail"
+                  data-panel="cart-line-list"
+                  data-target="line-total"
+                  data-kind="price"
+                  data-role="line-total">{formatMoney(line.product.priceCents * line.qty)}</strong>
+                <button className={styles.posPremiumRemoveButton} type="button" aria-label={`Quitar ${line.product.name}`}
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-ticket-panel"
+                  data-target="pos-ticket-panel-button-250"
+                  data-kind="button"
+                  data-role="ticket-context"
+                  onClick={() => onRemove(line.product.id)} disabled={!canCheckout || checkoutBusy}
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="checkout-rail"
+                  data-panel="cart-line-list"
+                  data-target="remove-line-button"
+                  data-kind="button"
+                  data-role="secondary-action">
                   <Trash2 aria-hidden="true" size={16} />
                 </button>
               </motion.article>
@@ -221,25 +344,68 @@ export function PosTicketPanel({
         )}
       </div>
 
-      <div className={checkoutReady ? styles.posPremiumDiagnosticOk : styles.posPremiumDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-panel="tablet.pos.checkout-diagnostic" data-prisma-surface="tablet" data-prisma-route="/pos" data-prisma-role="status-surface" data-prisma-state={checkoutReady ? "ready" : "disabled"}>
-        <strong>{checkoutReady ? <CheckCircle2 aria-hidden="true" size={16} /> : <Clock3 aria-hidden="true" size={16} />} {checkoutReady ? "Listo para cobrar" : "Prepara el cobro"}</strong>
-        <span>{diagnosticCopy}</span>
+      <div className={checkoutReady ? styles.posPremiumDiagnosticOk : styles.posPremiumDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-panel="tablet.pos.checkout-diagnostic" data-prisma-surface="tablet" data-prisma-route="/pos" data-prisma-role="status-surface" data-prisma-state={checkoutReady ? "ready" : "disabled"}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="checkout-rail"
+        data-panel="checkout-diagnostic"
+        data-target="checkout-diagnostic"
+        data-kind="badge"
+        data-role="state-indicator">
+        <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-strong-8" data-kind="panel" data-role="panel">{checkoutReady ? <CheckCircle2 aria-hidden="true" size={16} /> : <Clock3 aria-hidden="true" size={16} />} {checkoutReady ? "Listo para cobrar" : "Prepara el cobro"}</strong>
+        <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-9" data-kind="panel" data-role="panel">{diagnosticCopy}</span>
       </div>
 
-      <section className={styles.posPremiumCheckoutStack} aria-label="Checkout" data-prisma-zone="tablet-pos-checkout-stack" data-prisma-role="sale-total">
-        <div className={styles.posPremiumTotalsBreakdown} aria-label="Resumen del ticket" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total">
-          <span>Subtotal</span>
-          <strong>{formatMoney(total)}</strong>
-          <span>Impuestos</span>
+      <section className={styles.posPremiumCheckoutStack} aria-label="Checkout" data-prisma-zone="tablet-pos-checkout-stack" data-prisma-role="sale-total"
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="checkout-rail"
+        data-panel="checkout-stack"
+        data-target="checkout-stack"
+        data-kind="panel"
+        data-role="checkout-summary">
+        <div className={styles.posPremiumTotalsBreakdown} aria-label="Resumen del ticket" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="checkout-rail"
+          data-panel="totals-breakdown"
+          data-target="totals-breakdown"
+          data-kind="table"
+          data-role="audit-surface">
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-10" data-kind="panel" data-role="panel">Subtotal</span>
+          <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-strong-11" data-kind="panel" data-role="panel">{formatMoney(total)}</strong>
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-12" data-kind="panel" data-role="panel">Impuestos</span>
           <strong>Incluidos</strong>
         </div>
 
-        <div className={styles.posPremiumTicketTotal} data-prisma-component="TotalsSummary" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total" data-prisma-priority="primary" data-prisma-state={lines.length ? "ready" : "empty"}>
-          <span>Total a cobrar</span>
-          <strong data-total-value="true">{formatMoney(total)}</strong>
+        <div className={styles.posPremiumTicketTotal} data-prisma-component="TotalsSummary" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total" data-prisma-priority="primary" data-prisma-state={lines.length ? "ready" : "empty"}
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="checkout-rail"
+          data-panel="ticket-total-panel"
+          data-target="ticket-total-display"
+          data-kind="price"
+          data-role="primary-total">
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-13" data-kind="panel" data-role="panel">Total a cobrar</span>
+          <strong data-total-value="true"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-ticket-panel"
+            data-target="pos-ticket-panel-price-309"
+            data-kind="price"
+            data-role="financial-control"
+          >{formatMoney(total)}</strong>
         </div>
 
-        {checkoutError ? <div className={styles.posPremiumInlineError} data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback"><AlertTriangle aria-hidden="true" size={16} /> Revisa el cobro antes de continuar.</div> : null}
+        {checkoutError ? <div className={styles.posPremiumInlineError} data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout-rail"
+            data-panel="checkout-inline-error"
+            data-target="checkout-inline-error"
+            data-kind="badge"
+            data-role="status-alert"><AlertTriangle aria-hidden="true" size={16} /> Revisa el cobro antes de continuar.</div> : null}
 
         <PrismaLiquidAction
           className={styles.cobrarReferenceButton}
@@ -268,38 +434,117 @@ export function PosTicketPanel({
           {!canCheckout ? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}
         </PrismaLiquidAction>
       </section>
-      <details className={styles.posPremiumTicketOptions} data-prisma-role="secondary-action">
+      <details className={styles.posPremiumTicketOptions} data-prisma-role="secondary-action"
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="checkout-rail"
+        data-panel="ticket-options"
+        data-target="ticket-options"
+        data-kind="panel"
+        data-role="secondary-actions">
         <summary>Opciones de ticket</summary>
-        <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias">
-          <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
+        <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="checkout"
+          data-panel="pos-ticket-panel"
+          data-target="pos-ticket-panel-acciones-secundarias-357"
+          data-kind="button"
+          data-role="ticket-context"
+        >
+          <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout"
+            data-panel="pos-ticket-panel"
+            data-target="pos-ticket-panel-button-358"
+            data-kind="button"
+            data-role="ticket-context"
+          >
             <Save aria-hidden="true" size={18} />
-            <span>Guardar ticket</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-14" data-kind="panel" data-role="panel">Guardar ticket</span>
           </button>
-          <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="SecondaryActionCard">
+          <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="SecondaryActionCard"
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="checkout"
+            data-panel="pos-ticket-panel"
+            data-target="pos-ticket-panel-button-362"
+            data-kind="button"
+            data-role="ticket-context"
+          >
             <Undo2 aria-hidden="true" size={18} />
-            <span>Cancelar venta</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-15" data-kind="panel" data-role="panel">Cancelar venta</span>
           </button>
         </div>
       </details>
 
       {heldCarts.length ? (
-        <details className={styles.heldCartShelf} aria-label="Tickets en espera" data-prisma-component="HeldCartShelf">
+        <details className={styles.heldCartShelf} aria-label="Tickets en espera" data-prisma-component="HeldCartShelf"
+          data-surface="tablet"
+          data-screen="pos"
+          data-zone="checkout-rail"
+          data-panel="held-cart-shelf"
+          data-target="held-cart-shelf"
+          data-kind="panel"
+          data-role="hold-cart-shelf">
           <summary>
-            <span>Tickets en espera</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-16" data-kind="panel" data-role="panel">Tickets en espera</span>
             <strong>{heldCarts.length}</strong>
           </summary>
-          <div className={styles.heldCartList}>
+          <div className={styles.heldCartList}
+            data-surface="tablet"
+            data-screen="pos"
+            data-zone="pos"
+            data-panel="pos-ticket-panel"
+            data-target="pos-ticket-panel-ticket-382"
+            data-kind="ticket"
+            data-role="ticket-context"
+          >
             {heldCarts.slice(0, 4).map((heldCart, index) => (
-              <article key={heldCart.id} className={styles.heldCartCard} data-prisma-component="HeldCartCard">
-                <div>
+              <article key={heldCart.id} className={styles.heldCartCard} data-prisma-component="HeldCartCard"
+                data-surface="tablet"
+                data-screen="pos"
+                data-zone="checkout-rail"
+                data-panel="held-cart-shelf"
+                data-target="held-cart-card"
+                data-kind="panel"
+                data-role="held-cart-item">
+                <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-div-17" data-kind="panel" data-role="container">
                   <strong>{heldCart.label}</strong>
-                  <span>{heldCartTime(heldCart.createdAt)} · {heldCart.totalQty} pzas · {formatMoney(heldCart.totalCents)}</span>
+                  <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="pos_ticket_panel" data-target="pos-ticket-panel-span-18" data-kind="panel" data-role="panel">{heldCartTime(heldCart.createdAt)} · {heldCart.totalQty} pzas · {formatMoney(heldCart.totalCents)}</span>
                 </div>
-                <div className={styles.heldCartActions}>
-                  <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={!canCheckout || checkoutBusy || lines.length > 0} aria-label={`Recuperar ${heldCart.label}`}>
+                <div className={styles.heldCartActions}
+                  data-surface="tablet"
+                  data-screen="pos"
+                  data-zone="pos"
+                  data-panel="pos-ticket-panel"
+                  data-target="pos-ticket-panel-button-396"
+                  data-kind="button"
+                  data-role="ticket-context"
+                >
+                  <button type="button"
+                    data-surface="tablet"
+                    data-screen="pos"
+                    data-zone="pos"
+                    data-panel="pos-ticket-panel"
+                    data-target="pos-ticket-panel-button-397"
+                    data-kind="button"
+                    data-role="ticket-context"
+                    onClick={() => onRestoreHeldCart(heldCart.id)} disabled={!canCheckout || checkoutBusy || lines.length > 0} aria-label={`Recuperar ${heldCart.label}`}
+                  >
                     Usar
                   </button>
-                  <button type="button" onClick={() => onDiscardHeldCart(heldCart.id)} disabled={checkoutBusy} aria-label={`Descartar ${heldCart.label}`}>
+                  <button type="button"
+                    data-surface="tablet"
+                    data-screen="pos"
+                    data-zone="pos"
+                    data-panel="pos-ticket-panel"
+                    data-target="pos-ticket-panel-button-400"
+                    data-kind="button"
+                    data-role="ticket-context"
+                    onClick={() => onDiscardHeldCart(heldCart.id)} disabled={checkoutBusy} aria-label={`Descartar ${heldCart.label}`}
+                  >
                     Descartar
                   </button>
                 </div>

@@ -516,7 +516,7 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
           <strong>{surfaceLabels[floating.surface]} · {layerLabels[floating.layer]}</strong>
         </div>
         <div className={styles.scoreBadge} data-verdict={score.verdict}><span>{score.verdict}</span><b>{score.overall}</b></div>
-        <div className={styles.windowActions}>
+        <div data-code-atlas-anchor="ca-b538ce2462388437" data-code-atlas-purpose="cleanup-candidate" className={styles.windowActions}>
           {!defaultDetached && <button type="button" onClick={() => setFloating((current) => ({ ...current, minimized: !current.minimized }))}>{floating.minimized ? "Abrir" : "Min"}</button>}
           {!defaultDetached && <button type="button" onClick={openDetached}>Pop-out</button>}
           <button type="button" onClick={reset}>Reset</button>
@@ -617,4 +617,3 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
     </section>
   );
 }
-

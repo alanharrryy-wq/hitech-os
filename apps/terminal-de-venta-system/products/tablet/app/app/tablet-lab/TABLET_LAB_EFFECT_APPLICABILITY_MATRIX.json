@@ -1,6 +1,6 @@
 {
   "kind": "TABLET_LAB_EFFECT_APPLICABILITY_MATRIX",
-  "version": "tabctl7v2-supreme-0707-1918-rollback-guard",
+  "version": "tabctl7v2-tabrcp5-recipe-drawer-0707-2312",
   "principle": "No todos los knobs afectan todos los widgets; un knob se habilita sólo cuando su target actual está declarado en esta matriz. Conserva copy post-Codex y evita reintroducir etiquetas viejas visibles.",
   "widgetGroups": [
     "Panel Set",
@@ -1311,7 +1311,7 @@
       "no Prisma",
       "no process kill",
       "no port touch",
-      "no !important",
+      "no priority CSS overrides",
       "fewest containers possible"
     ],
     "scopeModes": [
@@ -1338,5 +1338,205 @@
     "noImportant": true,
     "noNewDeps": true,
     "noRuntimeProcesses": true
+  },
+  "targetFirstFiltering": {
+    "version": "tabflt1-0707-2137",
+    "principle": "La cabina se filtra por target.kind + intent + role.controls antes de mostrar packs o perillas; lo incompatible desaparece.",
+    "hardFilter": true,
+    "uiRule": "No dejar controles incompatibles visibles/disabled; ocultarlos completamente y sugerir el target correcto.",
+    "validationCases": [
+      {
+        "case": "text + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Shape",
+          "Background",
+          "Tables",
+          "Buttons"
+        ]
+      },
+      {
+        "case": "headingText + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Background",
+          "Shape"
+        ]
+      },
+      {
+        "case": "buttonText + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Buttons",
+          "Background",
+          "Tables"
+        ]
+      },
+      {
+        "case": "button + Botón",
+        "expectedVisible": [
+          "Buttons",
+          "Motion"
+        ],
+        "mustHide": [
+          "Background",
+          "Tables",
+          "Typography"
+        ]
+      },
+      {
+        "case": "panel + Material",
+        "expectedVisible": [
+          "Glass",
+          "Depth"
+        ],
+        "mustHide": [
+          "Typography",
+          "Tables"
+        ]
+      },
+      {
+        "case": "table/tableCell + Tabla",
+        "expectedVisible": [
+          "Tables"
+        ],
+        "mustHide": [
+          "Background",
+          "Buttons"
+        ]
+      },
+      {
+        "case": "background + Fondo",
+        "expectedVisible": [
+          "Background"
+        ],
+        "mustHide": [
+          "Typography",
+          "Buttons",
+          "Tables"
+        ]
+      }
+    ],
+    "scope": {
+      "allowed": [
+        "/tablet-lab"
+      ],
+      "excluded": [
+        "POS real",
+        "checkout real",
+        "carrito real",
+        "PC",
+        "Mobile",
+        "Cloud",
+        "Prisma",
+        "D1",
+        "puertos",
+        "procesos",
+        "package.json",
+        "lockfiles"
+      ]
+    }
+  },
+  "recipeMode": {
+    "version": "tabrcp2-0707-2214",
+    "principle": "Modo Receta muestra sólo recetas compatibles; Modo Pro muestra sólo controles/perillas compatibles. No se mezclan.",
+    "modes": [
+      "Receta",
+      "Pro"
+    ],
+    "defaultMode": "Receta",
+    "uiRules": [
+      "Modo Receta oculta control cloud, effect selector, tone selector y knob panel.",
+      "Modo Pro oculta recipe gallery y muestra control cloud + knob panel filtrado.",
+      "Target, capa, rol, qué cambiar, estado y alcance permanecen disponibles para elegir contexto.",
+      "Las recetas se filtran por target.kind + Qué cambiar + recipe.changeTypes."
+    ],
+    "validationCases": [
+      {
+        "case": "mode=Receta",
+        "mustShow": [
+          "Tabctl7RecipeGallery",
+          "recetas compatibles"
+        ],
+        "mustHide": [
+          "CompactKnobPanel",
+          "Controles aplicables TABCTL7"
+        ]
+      },
+      {
+        "case": "mode=Pro",
+        "mustShow": [
+          "CompactKnobPanel",
+          "Controles aplicables TABCTL7"
+        ],
+        "mustHide": [
+          "Tabctl7RecipeGallery"
+        ]
+      },
+      {
+        "case": "default",
+        "expected": "Receta"
+      }
+    ]
+  },
+  "tabrcp4RecipeBrowserCanvas": {
+    "status": "enabled",
+    "mode": "Receta shows compatible recipes in wide preview canvas; Pro shows fine controls",
+    "noTouch": [
+      "POS real",
+      "PC",
+      "Mobile",
+      "Prisma",
+      "package.json",
+      "lockfiles",
+      "ports",
+      "processes"
+    ]
+  },
+  "tabrcp5RecipeDrawer": {
+    "status": "ready",
+    "intent": "recipe mode uses a right-side drawer instead of a full-width canvas band",
+    "fixes": [
+      "recipe browser no longer covers the full preview width",
+      "preview remains readable on the left",
+      "recipes use a right drawer with one-column readable cards",
+      "actions stay aligned at the bottom of each recipe card",
+      "pro mode remains knob/control focused"
+    ],
+    "scope": {
+      "allowed": [
+        "/tablet-lab"
+      ],
+      "excluded": [
+        "POS real",
+        "checkout real",
+        "carrito real",
+        "PC",
+        "Mobile",
+        "Cloud",
+        "Prisma",
+        "ports",
+        "processes",
+        "package.json",
+        "lockfiles"
+      ]
+    }
+  },
+  "tabrcp9": {
+    "status": "ULTRA_PARAMETRIC_RECIPES_IMPORTED",
+    "source": "PRISMA_ULTRA_PARAMETRIC_PRESET_CODEX_PACK.zip",
+    "importedRecipes": 53,
+    "modes": [
+      "Rápido",
+      "Receta",
+      "Pro"
+    ],
+    "uiPolicy": "Quick shows 6 viable looks; Recipe shows filtered browser; Pro keeps fine controls."
   }
 }

@@ -1,0 +1,2314 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogId": "PRISMA_SUPPORT_ERROR_CODES",
+  "generatedAt": "2026-07-08T00:00:00.000Z",
+  "codes": [
+    {
+      "code": "CROSS_SOURCE_IDENTITY_SPLIT",
+      "category": "identity_reconciliation",
+      "severity": "blocked",
+      "label": "Identidades cruzadas entre fuentes",
+      "customerExplanation": "El soporte detecta datos válidos en más de una fuente, pero no pertenecen al mismo cliente, negocio o dispositivo. Hay que elegir autoridad antes de resolver.",
+      "technicalExplanation": "topLevel/context businessId, runtime/license identity, PC admin customer context, POS local DB and external signed activation candidates disagree.",
+      "detectionCriteria": [
+        "two or more different businessId values across sources",
+        "two or more different customerId values across sources",
+        "installed demo identity coexists with real customer identity",
+        "authority candidate is not selected"
+      ],
+      "requiredEvidence": [
+        "context.businessId",
+        "runtime.businessId",
+        "license.businessId",
+        "license.customerId",
+        "admin.customer.businessId",
+        "admin.customer.customerId",
+        "pos.businessId",
+        "externalActivation.businessId"
+      ],
+      "suggestedResolution": "Elegir autoridad: Setup Code / Refresh, DB POS local seed o paquete firmado externo. No aplicar mutación hasta tener ruta con rollback.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "export_evidence",
+        "choose_authority",
+        "setup_claim",
+        "license_refresh"
+      ],
+      "blockedActions": [
+        "blind_manual_license_rewrite",
+        "edit_signed_license",
+        "apply_without_authority_choice",
+        "merge_worlds_without_pos_db_validation"
+      ],
+      "validationAfterAction": [
+        "exactly one authority selected",
+        "surfaceStatus.operationStatus recomputed",
+        "license/runtime/customer IDs match selected authority",
+        "secretsExposed == false"
+      ]
+    },
+    {
+      "code": "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia asignada a otro negocio",
+      "customerExplanation": "La licencia esta activa, pero pertenece a otro negocio. La operacion queda bloqueada hasta reclamar el dispositivo correcto o refrescar la licencia.",
+      "technicalExplanation": "license.businessId != runtime.businessId",
+      "detectionCriteria": [
+        "license.businessId present",
+        "runtime.businessId present",
+        "values differ"
+      ],
+      "requiredEvidence": [
+        "runtime.businessId",
+        "license.businessId",
+        "licenseId"
+      ],
+      "suggestedResolution": "Ingresar Setup Code del cliente correcto o refrescar licencia desde soporte.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "export_evidence",
+        "setup_claim",
+        "license_refresh"
+      ],
+      "blockedActions": [
+        "blind_manual_license_rewrite",
+        "edit_signed_license"
+      ],
+      "validationAfterAction": [
+        "surfaceStatus.operationStatus != blocked",
+        "assignmentStatus == assigned"
+      ]
+    },
+    {
+      "code": "LICENSE_ASSIGNMENT_WRONG_CUSTOMER",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia asignada a otro cliente",
+      "customerExplanation": "La licencia no corresponde a este cliente.",
+      "technicalExplanation": "license.customerId != runtime.customerId",
+      "detectionCriteria": [
+        "customer ids differ"
+      ],
+      "requiredEvidence": [
+        "runtime.customerId",
+        "license.customerId"
+      ],
+      "suggestedResolution": "Usar Setup Code correcto o refrescar licencia.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "export_evidence",
+        "setup_claim"
+      ],
+      "blockedActions": [
+        "blind_manual_license_rewrite"
+      ],
+      "validationAfterAction": [
+        "customerId matches"
+      ]
+    },
+    {
+      "code": "LICENSE_ASSIGNMENT_WRONG_STORE",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia asignada a otra sucursal",
+      "customerExplanation": "La licencia pertenece a otra sucursal.",
+      "technicalExplanation": "license.storeId != runtime.storeId",
+      "detectionCriteria": [
+        "store ids differ"
+      ],
+      "requiredEvidence": [
+        "runtime.storeId",
+        "license.storeId"
+      ],
+      "suggestedResolution": "Reclamar el equipo en la sucursal correcta o refrescar licencia.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "manual_store_override_without_evidence"
+      ],
+      "validationAfterAction": [
+        "storeId matches"
+      ]
+    },
+    {
+      "code": "LICENSE_ASSIGNMENT_WRONG_TERMINAL",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia asignada a otra terminal",
+      "customerExplanation": "La licencia no corresponde a esta terminal.",
+      "technicalExplanation": "license.terminalId != runtime.terminalId",
+      "detectionCriteria": [
+        "terminal ids differ"
+      ],
+      "requiredEvidence": [
+        "runtime.terminalId",
+        "license.terminalId"
+      ],
+      "suggestedResolution": "Validar terminal local y reclamar el slot correcto.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "manual_terminal_override_without_db_check"
+      ],
+      "validationAfterAction": [
+        "terminalId exists",
+        "terminalId matches"
+      ]
+    },
+    {
+      "code": "LICENSE_LOCAL_MISSING",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia local faltante",
+      "customerExplanation": "Falta instalar una licencia local valida.",
+      "technicalExplanation": "local license file not found",
+      "detectionCriteria": [
+        "license file missing"
+      ],
+      "requiredEvidence": [
+        "expected license path"
+      ],
+      "suggestedResolution": "Usar Setup Code o paquete de activacion autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "copy_unknown_license"
+      ],
+      "validationAfterAction": [
+        "license file exists",
+        "signature verified"
+      ]
+    },
+    {
+      "code": "LICENSE_LOCAL_INVALID",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia local invalida",
+      "customerExplanation": "La licencia instalada no se pudo validar.",
+      "technicalExplanation": "license parse/schema/signature validation failed",
+      "detectionCriteria": [
+        "license parse error or invalid schema"
+      ],
+      "requiredEvidence": [
+        "sanitized validation error"
+      ],
+      "suggestedResolution": "Refrescar licencia o reinstalar paquete autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "license_refresh",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "edit_signed_license"
+      ],
+      "validationAfterAction": [
+        "license schema valid",
+        "signature valid"
+      ]
+    },
+    {
+      "code": "LICENSE_SIGNATURE_UNVERIFIABLE",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Firma de licencia no verificable",
+      "customerExplanation": "No se pudo comprobar que la licencia sea autentica.",
+      "technicalExplanation": "license signature verification failed or public key unavailable",
+      "detectionCriteria": [
+        "signature verification failed"
+      ],
+      "requiredEvidence": [
+        "licenseId",
+        "public key fingerprint"
+      ],
+      "suggestedResolution": "Refrescar desde fuente autorizada.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "license_refresh",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "trust_unsigned_license",
+        "manual_signature_bypass"
+      ],
+      "validationAfterAction": [
+        "signature verified"
+      ]
+    },
+    {
+      "code": "LICENSE_EXPIRED",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Licencia vencida",
+      "customerExplanation": "La vigencia de la licencia termino.",
+      "technicalExplanation": "now > license.validUntil",
+      "detectionCriteria": [
+        "validUntil before now"
+      ],
+      "requiredEvidence": [
+        "validUntil",
+        "current time"
+      ],
+      "suggestedResolution": "Renovar o refrescar licencia.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "license_refresh",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "date_override"
+      ],
+      "validationAfterAction": [
+        "license active",
+        "validUntil future"
+      ]
+    },
+    {
+      "code": "LICENSE_PLAN_SURFACE_NOT_ALLOWED",
+      "category": "license_assignment",
+      "severity": "blocked",
+      "label": "Plan no permite esta superficie",
+      "customerExplanation": "El plan no incluye esta app o dispositivo.",
+      "technicalExplanation": "surface not in plan.allowedSurfaces",
+      "detectionCriteria": [
+        "surface missing from plan"
+      ],
+      "requiredEvidence": [
+        "plan",
+        "surface"
+      ],
+      "suggestedResolution": "Cambiar plan, reclamar slot correcto o contactar soporte.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "enable_surface_without_plan"
+      ],
+      "validationAfterAction": [
+        "surface allowed"
+      ]
+    },
+    {
+      "code": "LICENSE_FEATURE_BLOCKED",
+      "category": "license_assignment",
+      "severity": "warning",
+      "label": "Funcion bloqueada por licencia",
+      "customerExplanation": "El plan instalado no permite esta funcion.",
+      "technicalExplanation": "feature resolver returned denied",
+      "detectionCriteria": [
+        "feature.allowed == false"
+      ],
+      "requiredEvidence": [
+        "feature key",
+        "plan"
+      ],
+      "suggestedResolution": "Usar funcion permitida o actualizar plan.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "bypass_feature_gate"
+      ],
+      "validationAfterAction": [
+        "feature decision explained"
+      ]
+    },
+    {
+      "code": "LICENSE_REFRESH_DISABLED",
+      "category": "license_assignment",
+      "severity": "warning",
+      "label": "Refresh de licencia deshabilitado",
+      "customerExplanation": "El refresco remoto no esta configurado.",
+      "technicalExplanation": "license refresh config disabled",
+      "detectionCriteria": [
+        "refresh state disabled"
+      ],
+      "requiredEvidence": [
+        "refresh config status"
+      ],
+      "suggestedResolution": "Usar Setup Code o paquete local autorizado.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "force_refresh_without_endpoint"
+      ],
+      "validationAfterAction": [
+        "next step visible"
+      ]
+    },
+    {
+      "code": "LICENSE_REFRESH_FAILED",
+      "category": "license_assignment",
+      "severity": "warning",
+      "label": "Refresh de licencia fallo",
+      "customerExplanation": "No se pudo refrescar la licencia.",
+      "technicalExplanation": "license refresh endpoint failed",
+      "detectionCriteria": [
+        "refresh state failed"
+      ],
+      "requiredEvidence": [
+        "sanitized refresh error"
+      ],
+      "suggestedResolution": "Reintentar o exportar evidencia para soporte.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "license_refresh",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "print_token",
+        "manual_license_rewrite"
+      ],
+      "validationAfterAction": [
+        "refresh success or classified failure"
+      ]
+    },
+    {
+      "code": "SETUP_CODE_REQUIRED",
+      "category": "customer_setup",
+      "severity": "warning",
+      "label": "Setup Code requerido",
+      "customerExplanation": "Falta el codigo de configuracion.",
+      "technicalExplanation": "setupCode empty",
+      "detectionCriteria": [
+        "setupCode missing"
+      ],
+      "requiredEvidence": [
+        "surface"
+      ],
+      "suggestedResolution": "Pegar Setup Code o abrir Setup Link.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "copy_support_summary"
+      ],
+      "blockedActions": [
+        "claim_without_setup_code"
+      ],
+      "validationAfterAction": [
+        "setupCode present"
+      ]
+    },
+    {
+      "code": "SETUP_CODE_INVALID",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Setup Code invalido",
+      "customerExplanation": "El codigo no tiene formato valido.",
+      "technicalExplanation": "setupCode normalization failed",
+      "detectionCriteria": [
+        "setupCode invalid"
+      ],
+      "requiredEvidence": [
+        "sanitized setup code fingerprint"
+      ],
+      "suggestedResolution": "Solicitar codigo correcto.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "guess_setup_code"
+      ],
+      "validationAfterAction": [
+        "setupCode resolves"
+      ]
+    },
+    {
+      "code": "SETUP_NOT_FOUND",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Setup no encontrado",
+      "customerExplanation": "No encontramos este setup.",
+      "technicalExplanation": "setup lookup returned empty",
+      "detectionCriteria": [
+        "setup lookup miss"
+      ],
+      "requiredEvidence": [
+        "setup code fingerprint"
+      ],
+      "suggestedResolution": "Revisar codigo o reenviar setup.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "create_parallel_setup"
+      ],
+      "validationAfterAction": [
+        "setup exists"
+      ]
+    },
+    {
+      "code": "SETUP_EXPIRED",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Setup expirado",
+      "customerExplanation": "El Setup Link expiro.",
+      "technicalExplanation": "now > setup.expiresAt",
+      "detectionCriteria": [
+        "setup expired"
+      ],
+      "requiredEvidence": [
+        "expiresAt"
+      ],
+      "suggestedResolution": "Solicitar setup nuevo.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "extend_setup_without_contract"
+      ],
+      "validationAfterAction": [
+        "new setup active"
+      ]
+    },
+    {
+      "code": "DEVICE_SLOT_FULL",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Slot de dispositivo lleno",
+      "customerExplanation": "Ya se uso el cupo para este tipo de dispositivo.",
+      "technicalExplanation": "claimed slots >= allowed slots for surface",
+      "detectionCriteria": [
+        "slot claimed count >= allowed"
+      ],
+      "requiredEvidence": [
+        "surface",
+        "allowed",
+        "claimed"
+      ],
+      "suggestedResolution": "Solicitar reemplazo autorizado o cupo adicional.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "device_replacement",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "force_claim_extra_slot"
+      ],
+      "validationAfterAction": [
+        "slot available or replacement approved"
+      ]
+    },
+    {
+      "code": "DEVICE_ALREADY_CLAIMED",
+      "category": "customer_setup",
+      "severity": "warning",
+      "label": "Dispositivo ya reclamado",
+      "customerExplanation": "Este dispositivo ya esta activado.",
+      "technicalExplanation": "deviceId already claimed",
+      "detectionCriteria": [
+        "claim exists for deviceId"
+      ],
+      "requiredEvidence": [
+        "deviceId",
+        "claim status"
+      ],
+      "suggestedResolution": "Continuar o solicitar reemplazo si cambio de equipo.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "duplicate_claim"
+      ],
+      "validationAfterAction": [
+        "existing claim explained"
+      ]
+    },
+    {
+      "code": "DEVICE_CLAIM_SURFACE_MISMATCH",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Claim de dispositivo en superficie incorrecta",
+      "customerExplanation": "El codigo corresponde a otra app o dispositivo.",
+      "technicalExplanation": "claim.surface != requested surface",
+      "detectionCriteria": [
+        "surface mismatch"
+      ],
+      "requiredEvidence": [
+        "claim surface",
+        "requested surface"
+      ],
+      "suggestedResolution": "Usar el slot correcto.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "cross_surface_claim"
+      ],
+      "validationAfterAction": [
+        "surface matches"
+      ]
+    },
+    {
+      "code": "SURFACE_NOT_ALLOWED",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Superficie no permitida",
+      "customerExplanation": "Este paquete no incluye esta app.",
+      "technicalExplanation": "surface not allowed by plan/setup",
+      "detectionCriteria": [
+        "surface excluded"
+      ],
+      "requiredEvidence": [
+        "plan",
+        "surface"
+      ],
+      "suggestedResolution": "Revisar plan o contactar soporte.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "enable_unlicensed_surface"
+      ],
+      "validationAfterAction": [
+        "surface allowed"
+      ]
+    },
+    {
+      "code": "CUSTOMER_SETUP_INCOMPLETE",
+      "category": "customer_setup",
+      "severity": "warning",
+      "label": "Customer Setup incompleto",
+      "customerExplanation": "Faltan pasos de configuracion.",
+      "technicalExplanation": "setup pass lacks required fields or slots",
+      "detectionCriteria": [
+        "setup missing fields"
+      ],
+      "requiredEvidence": [
+        "missing fields"
+      ],
+      "suggestedResolution": "Completar setup desde contrato canonico.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "use_partial_setup_as_pass"
+      ],
+      "validationAfterAction": [
+        "setup complete"
+      ]
+    },
+    {
+      "code": "DEVICE_REPLACEMENT_REQUIRED",
+      "category": "customer_setup",
+      "severity": "blocked",
+      "label": "Reemplazo de dispositivo requerido",
+      "customerExplanation": "Hay otro dispositivo en ese cupo.",
+      "technicalExplanation": "slot occupied by another device",
+      "detectionCriteria": [
+        "slot occupied",
+        "new device differs"
+      ],
+      "requiredEvidence": [
+        "old deviceId",
+        "new deviceId"
+      ],
+      "suggestedResolution": "Solicitar reemplazo autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "device_replacement",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "overwrite_claim_without_audit"
+      ],
+      "validationAfterAction": [
+        "replacement audited"
+      ]
+    },
+    {
+      "code": "RUNTIME_IDENTITY_DEMO_MODE",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "Runtime en modo demo",
+      "customerExplanation": "El equipo conserva identidad demo y requiere configuracion de cliente.",
+      "technicalExplanation": "runtime or license contains demo markers",
+      "detectionCriteria": [
+        "biz_demo or cust_demo markers"
+      ],
+      "requiredEvidence": [
+        "runtime identity sanitized",
+        "license identity sanitized"
+      ],
+      "suggestedResolution": "Usar Setup Code correcto o provisionar paquete autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "ship_demo_identity"
+      ],
+      "validationAfterAction": [
+        "no demo markers"
+      ]
+    },
+    {
+      "code": "RUNTIME_IDENTITY_MISSING",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "Identidad runtime faltante",
+      "customerExplanation": "El equipo no tiene identidad local completa.",
+      "technicalExplanation": "runtime identity file missing or incomplete",
+      "detectionCriteria": [
+        "identity missing"
+      ],
+      "requiredEvidence": [
+        "expected identity path"
+      ],
+      "suggestedResolution": "Provisionar runtime desde paquete autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "invent_device_id_without_contract"
+      ],
+      "validationAfterAction": [
+        "device identity present"
+      ]
+    },
+    {
+      "code": "RUNTIME_BUSINESS_ID_MISMATCH",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "BusinessId runtime no coincide",
+      "customerExplanation": "La configuracion local apunta a otro negocio.",
+      "technicalExplanation": "runtime.businessId mismatch",
+      "detectionCriteria": [
+        "businessId mismatch"
+      ],
+      "requiredEvidence": [
+        "runtime.businessId",
+        "expected businessId"
+      ],
+      "suggestedResolution": "Alinear runtime con setup/licencia mediante dry-run.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "manual_runtime_edit_without_rollback"
+      ],
+      "validationAfterAction": [
+        "businessId matches"
+      ]
+    },
+    {
+      "code": "RUNTIME_STORE_ID_MISMATCH",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "StoreId runtime no coincide",
+      "customerExplanation": "La configuracion local apunta a otra sucursal.",
+      "technicalExplanation": "runtime.storeId mismatch",
+      "detectionCriteria": [
+        "storeId mismatch"
+      ],
+      "requiredEvidence": [
+        "runtime.storeId",
+        "expected storeId"
+      ],
+      "suggestedResolution": "Alinear runtime con setup/licencia mediante dry-run.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "manual_runtime_edit_without_rollback"
+      ],
+      "validationAfterAction": [
+        "storeId matches"
+      ]
+    },
+    {
+      "code": "RUNTIME_TERMINAL_ID_MISMATCH",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "TerminalId runtime no coincide",
+      "customerExplanation": "La configuracion local apunta a otra terminal.",
+      "technicalExplanation": "runtime.terminalId mismatch",
+      "detectionCriteria": [
+        "terminalId mismatch"
+      ],
+      "requiredEvidence": [
+        "runtime.terminalId",
+        "expected terminalId"
+      ],
+      "suggestedResolution": "Validar terminal y alinear runtime mediante dry-run.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "manual_terminal_override_without_db_check"
+      ],
+      "validationAfterAction": [
+        "terminalId matches"
+      ]
+    },
+    {
+      "code": "RUNTIME_TERMINAL_ID_NOT_IN_DB",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "TerminalId no existe en DB local",
+      "customerExplanation": "La terminal configurada no existe en la base local.",
+      "technicalExplanation": "runtime.terminalId not found in local terminals table",
+      "detectionCriteria": [
+        "terminal lookup miss"
+      ],
+      "requiredEvidence": [
+        "runtime.terminalId",
+        "terminal lookup result"
+      ],
+      "suggestedResolution": "Crear/asignar terminal mediante flujo autorizado o corregir setup.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex"
+      ],
+      "blockedActions": [
+        "insert_terminal_blindly"
+      ],
+      "validationAfterAction": [
+        "terminal lookup success"
+      ]
+    },
+    {
+      "code": "RUNTIME_DEVICE_ID_MISMATCH",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "DeviceId runtime no coincide",
+      "customerExplanation": "Este equipo no coincide con el dispositivo autorizado.",
+      "technicalExplanation": "runtime.deviceId mismatch",
+      "detectionCriteria": [
+        "deviceId mismatch"
+      ],
+      "requiredEvidence": [
+        "runtime.deviceId",
+        "authorized deviceId"
+      ],
+      "suggestedResolution": "Reclamar slot correcto o reemplazar dispositivo.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "device_replacement",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "spoof_device_id"
+      ],
+      "validationAfterAction": [
+        "deviceId authorized"
+      ]
+    },
+    {
+      "code": "RUNTIME_CONFIG_FILE_MISSING",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "Runtime config faltante",
+      "customerExplanation": "Falta el archivo de configuracion local.",
+      "technicalExplanation": "runtime config file missing",
+      "detectionCriteria": [
+        "runtime config path missing"
+      ],
+      "requiredEvidence": [
+        "expected runtime path"
+      ],
+      "suggestedResolution": "Provisionar runtime desde paquete autorizado.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "invent_runtime_without_evidence"
+      ],
+      "validationAfterAction": [
+        "runtime config exists"
+      ]
+    },
+    {
+      "code": "RUNTIME_CONFIG_SCHEMA_INVALID",
+      "category": "runtime_local",
+      "severity": "blocked",
+      "label": "Runtime config invalido",
+      "customerExplanation": "La configuracion local no cumple el contrato esperado.",
+      "technicalExplanation": "runtime config schema validation failed",
+      "detectionCriteria": [
+        "schema validation failed"
+      ],
+      "requiredEvidence": [
+        "schema error sanitized"
+      ],
+      "suggestedResolution": "Alinear runtime con contrato vigente.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "ignore_schema_error"
+      ],
+      "validationAfterAction": [
+        "runtime schema valid"
+      ]
+    },
+    {
+      "code": "TERMINAL_NOT_FOUND",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "Terminal no encontrada",
+      "customerExplanation": "No encontramos esta terminal local.",
+      "technicalExplanation": "terminal id lookup failed",
+      "detectionCriteria": [
+        "terminal missing"
+      ],
+      "requiredEvidence": [
+        "terminalId"
+      ],
+      "suggestedResolution": "Validar terminal local o setup.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex"
+      ],
+      "blockedActions": [
+        "create_terminal_blindly"
+      ],
+      "validationAfterAction": [
+        "terminal found"
+      ]
+    },
+    {
+      "code": "TERMINAL_INACTIVE",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "Terminal inactiva",
+      "customerExplanation": "La terminal esta inactiva.",
+      "technicalExplanation": "terminal.active == false",
+      "detectionCriteria": [
+        "terminal inactive"
+      ],
+      "requiredEvidence": [
+        "terminal status"
+      ],
+      "suggestedResolution": "Reactivar con flujo administrativo o asignar otra terminal.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex"
+      ],
+      "blockedActions": [
+        "force_sale_on_inactive_terminal"
+      ],
+      "validationAfterAction": [
+        "terminal active"
+      ]
+    },
+    {
+      "code": "TERMINAL_NOT_ASSIGNED_TO_DEVICE",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "Terminal no asignada al dispositivo",
+      "customerExplanation": "La terminal no esta asignada a este equipo.",
+      "technicalExplanation": "terminal.deviceId != runtime.deviceId",
+      "detectionCriteria": [
+        "terminal assignment mismatch"
+      ],
+      "requiredEvidence": [
+        "terminalId",
+        "deviceId"
+      ],
+      "suggestedResolution": "Reasignar terminal mediante flujo autorizado.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex"
+      ],
+      "blockedActions": [
+        "manual_assignment_without_audit"
+      ],
+      "validationAfterAction": [
+        "terminal assigned"
+      ]
+    },
+    {
+      "code": "CASH_SESSION_NOT_OPEN",
+      "category": "pos_terminal_cash",
+      "severity": "warning",
+      "label": "Caja no abierta",
+      "customerExplanation": "No hay caja abierta para operar.",
+      "technicalExplanation": "cash session open lookup failed",
+      "detectionCriteria": [
+        "no open cash session"
+      ],
+      "requiredEvidence": [
+        "terminalId",
+        "cash session state"
+      ],
+      "suggestedResolution": "Abrir caja desde Tablet POS.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "mark_onsite",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "force_sale_without_cash_session"
+      ],
+      "validationAfterAction": [
+        "cash session open"
+      ]
+    },
+    {
+      "code": "CASH_SESSION_TERMINAL_MISMATCH",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "Caja abierta en otra terminal",
+      "customerExplanation": "La caja abierta no corresponde a esta terminal.",
+      "technicalExplanation": "cashSession.terminalId != runtime.terminalId",
+      "detectionCriteria": [
+        "cash session terminal mismatch"
+      ],
+      "requiredEvidence": [
+        "cashSession.terminalId",
+        "runtime.terminalId"
+      ],
+      "suggestedResolution": "Cerrar/reabrir caja en terminal correcta.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": true,
+      "safeActions": [
+        "diagnose",
+        "mark_onsite",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "reassign_cash_session_blindly"
+      ],
+      "validationAfterAction": [
+        "cash session terminal matches"
+      ]
+    },
+    {
+      "code": "POS_LOCAL_DB_NOT_FOUND",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "DB local POS no encontrada",
+      "customerExplanation": "No se encontro la base local del POS.",
+      "technicalExplanation": "local db path missing",
+      "detectionCriteria": [
+        "db file missing"
+      ],
+      "requiredEvidence": [
+        "expected db path"
+      ],
+      "suggestedResolution": "Escalar con evidencia; no crear DB vacia a ciegas.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": true,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex",
+        "mark_onsite"
+      ],
+      "blockedActions": [
+        "create_empty_db",
+        "delete_db"
+      ],
+      "validationAfterAction": [
+        "db present",
+        "schema valid"
+      ]
+    },
+    {
+      "code": "POS_LOCAL_DB_SCHEMA_DRIFT",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "Schema local POS divergente",
+      "customerExplanation": "La base local no coincide con el contrato esperado.",
+      "technicalExplanation": "local db schema drift",
+      "detectionCriteria": [
+        "schema drift detected"
+      ],
+      "requiredEvidence": [
+        "sanitized schema diff"
+      ],
+      "suggestedResolution": "Escalar a Codex con evidencia sanitizada.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "send_to_codex"
+      ],
+      "blockedActions": [
+        "run_migration_without_authorization"
+      ],
+      "validationAfterAction": [
+        "schema drift resolved"
+      ]
+    },
+    {
+      "code": "POS_OPERATION_BLOCKED_BY_LICENSE",
+      "category": "pos_terminal_cash",
+      "severity": "blocked",
+      "label": "POS bloqueado por licencia",
+      "customerExplanation": "La operacion POS esta bloqueada por licencia.",
+      "technicalExplanation": "feature gate denied POS operation",
+      "detectionCriteria": [
+        "pos feature denied"
+      ],
+      "requiredEvidence": [
+        "feature decision",
+        "license status"
+      ],
+      "suggestedResolution": "Resolver issue de licencia primario.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "license_refresh",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "bypass_license_gate"
+      ],
+      "validationAfterAction": [
+        "pos feature allowed"
+      ]
+    },
+    {
+      "code": "PC_LICENSE_SURFACE_MISSING",
+      "category": "pc_admin",
+      "severity": "blocked",
+      "label": "Licencia PC faltante",
+      "customerExplanation": "La licencia no incluye PC Admin.",
+      "technicalExplanation": "pc surface missing from license/setup",
+      "detectionCriteria": [
+        "pc surface absent"
+      ],
+      "requiredEvidence": [
+        "plan",
+        "surface"
+      ],
+      "suggestedResolution": "Reclamar PC Admin Slot o actualizar plan.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "enable_pc_without_slot"
+      ],
+      "validationAfterAction": [
+        "pc surface allowed"
+      ]
+    },
+    {
+      "code": "PC_ADMIN_SLOT_NOT_CLAIMED",
+      "category": "pc_admin",
+      "severity": "warning",
+      "label": "PC Admin Slot no reclamado",
+      "customerExplanation": "Esta PC aun no reclamo su cupo.",
+      "technicalExplanation": "pc claim status not claimed",
+      "detectionCriteria": [
+        "pc slot available"
+      ],
+      "requiredEvidence": [
+        "setupCode",
+        "slot status"
+      ],
+      "suggestedResolution": "Ingresar Setup Code en PC.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "admin_token_customer_flow"
+      ],
+      "validationAfterAction": [
+        "pc slot claimed"
+      ]
+    },
+    {
+      "code": "PC_DEVICE_ASSIGNMENT_MISMATCH",
+      "category": "pc_admin",
+      "severity": "blocked",
+      "label": "PC asignada a otro dispositivo",
+      "customerExplanation": "Esta PC no coincide con el dispositivo autorizado.",
+      "technicalExplanation": "pc device assignment mismatch",
+      "detectionCriteria": [
+        "pc deviceId mismatch"
+      ],
+      "requiredEvidence": [
+        "deviceId",
+        "authorized device"
+      ],
+      "suggestedResolution": "Reclamar o reemplazar dispositivo.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "device_replacement",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "spoof_device_id"
+      ],
+      "validationAfterAction": [
+        "pc device authorized"
+      ]
+    },
+    {
+      "code": "PC_FEATURES_BLOCKED_BY_LICENSE",
+      "category": "pc_admin",
+      "severity": "warning",
+      "label": "Funciones PC bloqueadas",
+      "customerExplanation": "Algunas funciones de PC estan bloqueadas por licencia.",
+      "technicalExplanation": "pc feature gates denied",
+      "detectionCriteria": [
+        "pc feature denied"
+      ],
+      "requiredEvidence": [
+        "feature decisions"
+      ],
+      "suggestedResolution": "Revisar plan o licencia.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "bypass_feature_gate"
+      ],
+      "validationAfterAction": [
+        "feature decisions explained"
+      ]
+    },
+    {
+      "code": "PC_SUPPORT_STATUS_CONTRADICTION",
+      "category": "pc_admin",
+      "severity": "blocked",
+      "label": "Estado PC contradictorio",
+      "customerExplanation": "La pantalla muestra mensajes contradictorios.",
+      "technicalExplanation": "visible status conflicts with operation status",
+      "detectionCriteria": [
+        "ready copy with blocked status"
+      ],
+      "requiredEvidence": [
+        "surface status"
+      ],
+      "suggestedResolution": "Usar SurfaceStatus canonico.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "ship_contradictory_copy"
+      ],
+      "validationAfterAction": [
+        "no contradiction"
+      ]
+    },
+    {
+      "code": "MOBILE_LICENSE_SURFACE_MISSING",
+      "category": "mobile_app",
+      "severity": "blocked",
+      "label": "Licencia Mobile faltante",
+      "customerExplanation": "La licencia no incluye Mobile Companion.",
+      "technicalExplanation": "mobile surface missing from license/setup",
+      "detectionCriteria": [
+        "mobile surface absent"
+      ],
+      "requiredEvidence": [
+        "plan",
+        "surface"
+      ],
+      "suggestedResolution": "Reclamar Mobile Companion Slot o actualizar plan.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "enable_mobile_without_slot"
+      ],
+      "validationAfterAction": [
+        "mobile surface allowed"
+      ]
+    },
+    {
+      "code": "MOBILE_COMPANION_SLOT_NOT_CLAIMED",
+      "category": "mobile_app",
+      "severity": "warning",
+      "label": "Mobile Companion Slot no reclamado",
+      "customerExplanation": "El telefono aun no reclamo su cupo.",
+      "technicalExplanation": "mobile claim status not claimed",
+      "detectionCriteria": [
+        "mobile slot available"
+      ],
+      "requiredEvidence": [
+        "setupCode",
+        "slot status"
+      ],
+      "suggestedResolution": "Ingresar Setup Code en Mobile.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "setup_claim",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "admin_token_customer_flow"
+      ],
+      "validationAfterAction": [
+        "mobile slot claimed"
+      ]
+    },
+    {
+      "code": "MOBILE_DEVICE_ASSIGNMENT_MISMATCH",
+      "category": "mobile_app",
+      "severity": "blocked",
+      "label": "Mobile asignado a otro dispositivo",
+      "customerExplanation": "Este telefono no coincide con el dispositivo autorizado.",
+      "technicalExplanation": "mobile device assignment mismatch",
+      "detectionCriteria": [
+        "mobile deviceId mismatch"
+      ],
+      "requiredEvidence": [
+        "deviceId",
+        "authorized device"
+      ],
+      "suggestedResolution": "Reclamar o reemplazar dispositivo.",
+      "remoteResolvable": true,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": true,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "device_replacement",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "spoof_device_id"
+      ],
+      "validationAfterAction": [
+        "mobile device authorized"
+      ]
+    },
+    {
+      "code": "MOBILE_SUPPORT_SURFACE_MISSING",
+      "category": "mobile_app",
+      "severity": "warning",
+      "label": "Superficie Mobile de soporte faltante",
+      "customerExplanation": "La app movil necesita una vista de licencias y dispositivos.",
+      "technicalExplanation": "mobile UI lacks license/devices support surface",
+      "detectionCriteria": [
+        "no Mobile License & Devices route/button"
+      ],
+      "requiredEvidence": [
+        "mobile route scan"
+      ],
+      "suggestedResolution": "Agregar superficie Mobile License & Devices.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "hide_license_state"
+      ],
+      "validationAfterAction": [
+        "mobile route present"
+      ]
+    },
+    {
+      "code": "MOBILE_FEATURES_BLOCKED_BY_LICENSE",
+      "category": "mobile_app",
+      "severity": "warning",
+      "label": "Funciones Mobile bloqueadas",
+      "customerExplanation": "Algunas funciones Mobile estan bloqueadas por licencia.",
+      "technicalExplanation": "mobile feature gates denied",
+      "detectionCriteria": [
+        "mobile feature denied"
+      ],
+      "requiredEvidence": [
+        "feature decisions"
+      ],
+      "suggestedResolution": "Revisar plan o licencia.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "bypass_feature_gate"
+      ],
+      "validationAfterAction": [
+        "feature decisions explained"
+      ]
+    },
+    {
+      "code": "CLOUD_HEALTH_UNREACHABLE",
+      "category": "cloud_gateway_d1",
+      "severity": "warning",
+      "label": "Cloud Health inaccesible",
+      "customerExplanation": "No se pudo contactar el servicio cloud.",
+      "technicalExplanation": "GET /health failed",
+      "detectionCriteria": [
+        "health request failed"
+      ],
+      "requiredEvidence": [
+        "status/error sanitized"
+      ],
+      "suggestedResolution": "Reintentar read-only; no deploy automatico.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "deploy_from_support"
+      ],
+      "validationAfterAction": [
+        "health reachable or classified"
+      ]
+    },
+    {
+      "code": "CLOUD_HEALTH_MARKERS_MISSING",
+      "category": "cloud_gateway_d1",
+      "severity": "warning",
+      "label": "Marcadores cloud faltantes",
+      "customerExplanation": "El servicio cloud respondio, pero falta confirmar su contrato.",
+      "technicalExplanation": "expected health markers missing",
+      "detectionCriteria": [
+        "D1_BOUND or route marker missing"
+      ],
+      "requiredEvidence": [
+        "health body sanitized"
+      ],
+      "suggestedResolution": "Verificar contrato; no reclamar PASS live.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "fake_green"
+      ],
+      "validationAfterAction": [
+        "markers present"
+      ]
+    },
+    {
+      "code": "CLOUD_ROUTE_404",
+      "category": "cloud_gateway_d1",
+      "severity": "blocked",
+      "label": "Ruta cloud 404",
+      "customerExplanation": "La ruta esperada no existe en el servicio cloud actual.",
+      "technicalExplanation": "expected route returned 404",
+      "detectionCriteria": [
+        "route status 404"
+      ],
+      "requiredEvidence": [
+        "route",
+        "status"
+      ],
+      "suggestedResolution": "Corregir fuente/deploy solo con autorizacion.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "deploy_without_authorization"
+      ],
+      "validationAfterAction": [
+        "route non-404"
+      ]
+    },
+    {
+      "code": "CLOUD_GATEWAY_UNCERTIFIED",
+      "category": "cloud_gateway_d1",
+      "severity": "warning",
+      "label": "Cloud Gateway no certificado",
+      "customerExplanation": "El gateway aun no tiene evidencia live suficiente.",
+      "technicalExplanation": "source-ready without live proof",
+      "detectionCriteria": [
+        "no live evidence"
+      ],
+      "requiredEvidence": [
+        "verifier output"
+      ],
+      "suggestedResolution": "Clasificar como partial hasta autorizacion live.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "claim_live_pass"
+      ],
+      "validationAfterAction": [
+        "live evidence captured"
+      ]
+    },
+    {
+      "code": "OAUTH_WRANGLER_BLOCKED",
+      "category": "cloud_gateway_d1",
+      "severity": "warning",
+      "label": "Wrangler OAuth bloqueado",
+      "customerExplanation": "La herramienta cloud requiere autorizacion del operador.",
+      "technicalExplanation": "wrangler oauth/auth unavailable",
+      "detectionCriteria": [
+        "wrangler auth failed"
+      ],
+      "requiredEvidence": [
+        "sanitized wrangler error"
+      ],
+      "suggestedResolution": "Pedir autorizacion, no usar tokens en chat.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "paste_cloudflare_token"
+      ],
+      "validationAfterAction": [
+        "auth available"
+      ]
+    },
+    {
+      "code": "D1_SCHEMA_DRIFT",
+      "category": "cloud_gateway_d1",
+      "severity": "blocked",
+      "label": "D1 schema drift",
+      "customerExplanation": "La base cloud no coincide con la fuente esperada.",
+      "technicalExplanation": "remote D1 schema differs from source assumptions",
+      "detectionCriteria": [
+        "schema inspection mismatch"
+      ],
+      "requiredEvidence": [
+        "sanitized schema diff"
+      ],
+      "suggestedResolution": "Preparar migracion compensatoria solo con autorizacion.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": true,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "d1_migration_from_support",
+        "d1_dump"
+      ],
+      "validationAfterAction": [
+        "schema verified"
+      ]
+    },
+    {
+      "code": "D1_REQUIRED_AUDIT_MISSING",
+      "category": "cloud_gateway_d1",
+      "severity": "blocked",
+      "label": "Auditoria D1 faltante",
+      "customerExplanation": "La operacion cloud no dejo auditoria requerida.",
+      "technicalExplanation": "expected audit_events row missing",
+      "detectionCriteria": [
+        "audit read-after-write missing"
+      ],
+      "requiredEvidence": [
+        "operation id",
+        "audit lookup"
+      ],
+      "suggestedResolution": "No declarar PASS; corregir causa raiz.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": true,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "ignore_missing_audit"
+      ],
+      "validationAfterAction": [
+        "audit present"
+      ]
+    },
+    {
+      "code": "ADMIN_TOKEN_MISSING_FOR_ADMIN_OP",
+      "category": "cloud_gateway_d1",
+      "severity": "blocked",
+      "label": "Admin token requerido",
+      "customerExplanation": "La operacion administrativa requiere autorizacion server-side.",
+      "technicalExplanation": "admin bridge token presence missing",
+      "detectionCriteria": [
+        "admin token absent"
+      ],
+      "requiredEvidence": [
+        "presence-only token status"
+      ],
+      "suggestedResolution": "Ejecutar solo ceremonia autorizada sin imprimir token.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": true,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "simulate",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "print_admin_token",
+        "store_admin_token"
+      ],
+      "validationAfterAction": [
+        "token presence true"
+      ]
+    },
+    {
+      "code": "SECRET_EXPOSURE_RISK",
+      "category": "security",
+      "severity": "critical",
+      "label": "Riesgo de exposicion de secreto",
+      "customerExplanation": "El caso contiene material sensible y fue bloqueado.",
+      "technicalExplanation": "secret-like material detected",
+      "detectionCriteria": [
+        "secret scanner hit"
+      ],
+      "requiredEvidence": [
+        "sanitized finding type"
+      ],
+      "suggestedResolution": "Redactar y excluir del bundle.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "redact",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "copy_secret",
+        "print_secret"
+      ],
+      "validationAfterAction": [
+        "secret scan clean"
+      ]
+    },
+    {
+      "code": "SUPPORT_BUNDLE_UNSANITIZED",
+      "category": "security",
+      "severity": "critical",
+      "label": "Bundle de soporte sin sanitizar",
+      "customerExplanation": "La evidencia no puede exportarse hasta sanitizarse.",
+      "technicalExplanation": "bundle redaction not applied or failed",
+      "detectionCriteria": [
+        "redaction report missing or failed"
+      ],
+      "requiredEvidence": [
+        "redaction report"
+      ],
+      "suggestedResolution": "Aplicar reglas de redaccion y revalidar.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "redact"
+      ],
+      "blockedActions": [
+        "export_raw_bundle"
+      ],
+      "validationAfterAction": [
+        "redaction pass",
+        "secretsExposed false"
+      ]
+    },
+    {
+      "code": "PRIVATE_KEY_PRESENT_IN_SUPPORT_CONTEXT",
+      "category": "security",
+      "severity": "critical",
+      "label": "Private key en contexto de soporte",
+      "customerExplanation": "Se detecto material de firma privado y fue bloqueado.",
+      "technicalExplanation": "private key path/content in support context",
+      "detectionCriteria": [
+        "private-key.pem detected"
+      ],
+      "requiredEvidence": [
+        "sanitized path only"
+      ],
+      "suggestedResolution": "Excluir de evidencia y registrar riesgo sanitizado.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "redact",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "copy_private_key",
+        "print_private_key"
+      ],
+      "validationAfterAction": [
+        "private key absent from output"
+      ]
+    },
+    {
+      "code": "TOKEN_VALUE_EXPOSED",
+      "category": "security",
+      "severity": "critical",
+      "label": "Token expuesto",
+      "customerExplanation": "Se detecto un valor de token y fue bloqueado.",
+      "technicalExplanation": "token value present in frontend/output/log",
+      "detectionCriteria": [
+        "token pattern hit"
+      ],
+      "requiredEvidence": [
+        "token type only"
+      ],
+      "suggestedResolution": "Rotar si fue expuesto y eliminar evidencia cruda.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "redact"
+      ],
+      "blockedActions": [
+        "store_token",
+        "send_token"
+      ],
+      "validationAfterAction": [
+        "no token value present"
+      ]
+    },
+    {
+      "code": "RAW_ENV_EXPOSED",
+      "category": "security",
+      "severity": "critical",
+      "label": "Env crudo expuesto",
+      "customerExplanation": "Se detecto configuracion sensible cruda.",
+      "technicalExplanation": ".env or env dump present",
+      "detectionCriteria": [
+        "env file/output detected"
+      ],
+      "requiredEvidence": [
+        "sanitized env variable names only"
+      ],
+      "suggestedResolution": "Excluir valores y conservar solo nombres necesarios.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "diagnose",
+        "redact"
+      ],
+      "blockedActions": [
+        "export_env_values"
+      ],
+      "validationAfterAction": [
+        "env values absent"
+      ]
+    },
+    {
+      "code": "NEEDS_CODEX_FIX",
+      "category": "escalation",
+      "severity": "warning",
+      "label": "Requiere fix de Codex",
+      "customerExplanation": "El caso requiere cambio de codigo o contrato.",
+      "technicalExplanation": "repo change required",
+      "detectionCriteria": [
+        "no safe runtime action"
+      ],
+      "requiredEvidence": [
+        "issue summary",
+        "affected files"
+      ],
+      "suggestedResolution": "Enviar contexto sanitizado a Codex.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": true,
+      "requiresOnsite": false,
+      "safeActions": [
+        "send_to_codex",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "apply_without_fix"
+      ],
+      "validationAfterAction": [
+        "fix verified"
+      ]
+    },
+    {
+      "code": "NEEDS_CHATGPT_REVIEW",
+      "category": "escalation",
+      "severity": "info",
+      "label": "Requiere revision ChatGPT",
+      "customerExplanation": "El caso necesita analisis antes de cambiar algo.",
+      "technicalExplanation": "support review recommended",
+      "detectionCriteria": [
+        "ambiguous case"
+      ],
+      "requiredEvidence": [
+        "sanitized case"
+      ],
+      "suggestedResolution": "Exportar resumen para revision.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "send_to_chatgpt",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "mutate_without_review"
+      ],
+      "validationAfterAction": [
+        "review complete"
+      ]
+    },
+    {
+      "code": "NEEDS_ONSITE_ACTION",
+      "category": "escalation",
+      "severity": "warning",
+      "label": "Requiere accion presencial",
+      "customerExplanation": "Este caso no es seguro de resolver remotamente.",
+      "technicalExplanation": "onsite action required",
+      "detectionCriteria": [
+        "requires physical intervention"
+      ],
+      "requiredEvidence": [
+        "onsite reason"
+      ],
+      "suggestedResolution": "Marcar presencial y exportar caso.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": false,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": true,
+      "safeActions": [
+        "mark_onsite",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "remote_apply"
+      ],
+      "validationAfterAction": [
+        "onsite ticket created"
+      ]
+    },
+    {
+      "code": "NEEDS_HUMAN_APPROVAL",
+      "category": "escalation",
+      "severity": "warning",
+      "label": "Requiere aprobacion humana",
+      "customerExplanation": "Soporte debe aprobar antes de aplicar cambios.",
+      "technicalExplanation": "human approval required before mutation",
+      "detectionCriteria": [
+        "approval gate missing"
+      ],
+      "requiredEvidence": [
+        "approval reason"
+      ],
+      "suggestedResolution": "Solicitar aprobacion y mantener dry-run.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": false,
+      "safeActions": [
+        "simulate",
+        "export_evidence"
+      ],
+      "blockedActions": [
+        "apply_without_approval"
+      ],
+      "validationAfterAction": [
+        "approval captured"
+      ]
+    },
+    {
+      "code": "RESOLUTION_NOT_SAFE_REMOTE",
+      "category": "escalation",
+      "severity": "blocked",
+      "label": "Resolucion remota no segura",
+      "customerExplanation": "La accion no puede ejecutarse remotamente de forma segura.",
+      "technicalExplanation": "safety gates failed",
+      "detectionCriteria": [
+        "safeToMutate false"
+      ],
+      "requiredEvidence": [
+        "failed safety gates"
+      ],
+      "suggestedResolution": "Exportar caso y escalar.",
+      "remoteResolvable": false,
+      "autoResolvable": false,
+      "requiresDryRun": true,
+      "requiresAdminToken": false,
+      "requiresSetupCode": false,
+      "requiresCodex": false,
+      "requiresOnsite": true,
+      "safeActions": [
+        "diagnose",
+        "export_evidence",
+        "mark_onsite"
+      ],
+      "blockedActions": [
+        "apply"
+      ],
+      "validationAfterAction": [
+        "no remote mutation performed"
+      ]
+    }
+  ]
+}

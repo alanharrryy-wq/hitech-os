@@ -17,7 +17,14 @@ function emitProductAction(action: string, product: Product) {
 
 export function PrismaProductCard({ product }: PrismaProductCardProps) {
   return (
-    <article className={styles.productCard} data-prisma-hardening="product-actions-260611">
+    <article className={styles.productCard} data-prisma-hardening="product-actions-260611"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="product-grid"
+      data-panel="product-card"
+      data-target="product-card"
+      data-kind="panel"
+      data-role="product-card">
       <div className={styles.productCardTop}>
         <button className={product.favorite ? styles.favoriteActive : styles.favoriteButton} type="button" aria-label={`Favorito ${product.name}`} aria-pressed={product.favorite} onClick={() => emitProductAction("toggle-favorite", product)}>
           <PrismaIcon name="star" size={17} />
@@ -49,7 +56,14 @@ export function ProductFigure({ product, compact = false }: { product: Product; 
   ].join(" ");
 
   return (
-    <div className={className} aria-hidden="true">
+    <div className={className} aria-hidden="true"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="product-grid"
+      data-panel="product-figure"
+      data-target="product-figure"
+      data-kind="background"
+      data-role="visual-backplane">
       <span className={styles.productAura} />
       <div className={figureClassName}>
         <span className={styles.figureStripe} />

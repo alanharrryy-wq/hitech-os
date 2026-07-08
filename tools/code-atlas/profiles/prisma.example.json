@@ -1,0 +1,71 @@
+{
+  "profileId": "prisma-example",
+  "projectName": "PRISMA example profile",
+  "projectRoot": "${CODE_ATLAS_PROJECT_ROOT}",
+  "outputRoot": "${CODE_ATLAS_OUTPUT_ROOT}",
+  "apps": [
+    {
+      "id": "tablet",
+      "label": "Tablet",
+      "root": "products/tablet",
+      "routes": [
+        "/pos",
+        "/tablet-lab"
+      ],
+      "defaultUrl": "${PRISMA_TABLET_URL}",
+      "kind": "tablet"
+    },
+    {
+      "id": "pc",
+      "label": "PC Backoffice",
+      "root": "products/pc",
+      "routes": [
+        "/backoffice"
+      ],
+      "defaultUrl": "${PRISMA_PC_URL}",
+      "kind": "pc"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile",
+      "root": "products/mobile",
+      "routes": [
+        "/mobile"
+      ],
+      "defaultUrl": "${PRISMA_MOBILE_URL}",
+      "kind": "mobile"
+    },
+    {
+      "id": "cloud-center",
+      "label": "Cloud Center",
+      "root": "Prisma Cloud Ctr",
+      "routes": [
+        "/"
+      ],
+      "defaultUrl": "${PRISMA_CLOUD_CENTER_URL}",
+      "kind": "cloud"
+    },
+    {
+      "id": "chart-lab",
+      "label": "Chart Lab",
+      "root": "products/chart-lab",
+      "routes": [
+        "/"
+      ],
+      "defaultUrl": "${PRISMA_CHART_LAB_URL}",
+      "kind": "visual-lab"
+    }
+  ],
+  "protectedGlobs": [
+    "**/prisma/**",
+    "**/pnpm-lock.yaml",
+    "**/package-lock.json",
+    "**/.env*",
+    "**/infra/cloudflare/**",
+    "**/worker.js"
+  ],
+  "metadata": {
+    "example": true,
+    "scope": "Project-specific values live here, not in Code Atlas core."
+  }
+}

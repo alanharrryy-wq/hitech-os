@@ -125,14 +125,38 @@ export function OfflineExportAuditScreen() {
       subtitle="No pierdes ventas: la Tablet guarda los movimientos y los envia cuando vuelve la conexión."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
     >
-      <main className={styles.page}>
-        <section className={styles.hero}>
-          <div>
-            <span>Tablet vende sola</span>
-            <h1>Tus movimientos están guardados en esta Tablet.</h1>
-            <p>Ventas, pendientes por enviar, movimientos de existencias, productos bajos y respaldos quedan disponibles aun sin conexión.</p>
+      <main className={styles.page}
+        data-surface="tablet"
+        data-screen="offline"
+        data-zone="pos"
+        data-panel="offline-export-audit-screen"
+        data-target="offline-export-audit-screen-cart-128"
+        data-kind="cart"
+        data-role="revenue-core"
+      >
+        <section className={styles.hero}
+          data-surface="tablet"
+          data-screen="offline"
+          data-zone="pos"
+          data-panel="offline-export-audit-screen"
+          data-target="offline-export-audit-screen-cart-129"
+          data-kind="cart"
+          data-role="revenue-core"
+        >
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-1" data-kind="panel" data-role="container">
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-2" data-kind="text" data-role="text">Tablet vende sola</span>
+            <h1 data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-h1-3" data-kind="text" data-role="text">Tus movimientos están guardados en esta Tablet.</h1>
+            <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-p-4" data-kind="text" data-role="text">Ventas, pendientes por enviar, movimientos de existencias, productos bajos y respaldos quedan disponibles aun sin conexión.</p>
           </div>
-          <button type="button" onClick={() => void load()} disabled={state === "loading"}>
+          <button type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-button-135"
+            data-kind="button"
+            data-role="action"
+          > void load()} disabled={state === "loading"}>
             {state === "loading" ? "Actualizando…" : "Actualizar"}
           </button>
         </section>
@@ -144,22 +168,70 @@ export function OfflineExportAuditScreen() {
           <QuickActionTile title="Sincronizacion" description="Abre el panel de continuidad y conexión." actionLabel="Abrir" icon="arrow-right" tone="primary" href="/sync" owner="sync" />
         </QuickActionStrip>
 
-        {state === "error" ? <div className={styles.alert}>{error}</div> : null}
+        {state === "error" ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-5" data-kind="panel" data-role="container" className={styles.alert}>{error}</div> : null}
 
-        <section className={styles.kpis}>
-          <article><span>Tickets</span><strong>{audit?.report.completedSalesCount ?? 0}</strong><small>cerrados hoy</small></article>
-          <article><span>Vendido</span><strong>{money(audit?.report.grossTotalCents ?? 0)}</strong><small>total local</small></article>
-          <article><span>Pendientes</span><strong>{audit?.outbox.pending ?? 0}</strong><small>por enviar a PC</small></article>
-          <article><span>Existencias bajas</span><strong>{audit?.inventory.lowStockCount ?? 0}</strong><small>productos</small></article>
+        <section className={styles.kpis}
+          data-surface="tablet"
+          data-screen="offline"
+          data-zone="pos"
+          data-panel="offline-export-audit-screen"
+          data-target="offline-export-audit-screen-cart-149"
+          data-kind="cart"
+          data-role="revenue-core"
+        >
+          <article
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-150"
+            data-kind="cart"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-6" data-kind="text" data-role="text">Tickets</span><strong>{audit?.report.completedSalesCount ?? 0}</strong><small>cerrados hoy</small></article>
+          <article
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-151"
+            data-kind="cart"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-7" data-kind="text" data-role="text">Vendido</span><strong>{money(audit?.report.grossTotalCents ?? 0)}</strong><small>total local</small></article>
+          <article
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-152"
+            data-kind="cart"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-8" data-kind="text" data-role="text">Pendientes</span><strong>{audit?.outbox.pending ?? 0}</strong><small>por enviar a PC</small></article>
+          <article
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-153"
+            data-kind="cart"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-9" data-kind="text" data-role="text">Existencias bajas</span><strong>{audit?.inventory.lowStockCount ?? 0}</strong><small>productos</small></article>
         </section>
 
         <details className={styles.exportCard}>
           <summary className={styles.exportSummary} id="respaldo-local">
-            <span>Respaldo</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-10" data-kind="text" data-role="text">Respaldo</span>
             <strong>Descargar archivos</strong>
             <small>Ventas, pendientes y movimientos cuando necesites respaldo manual.</small>
           </summary>
-          <div className={styles.actions}>
+          <div className={styles.actions}
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-button-162"
+            data-kind="button"
+            data-role="action"
+          >
             {audit ? (
               Object.entries({
                 "Ventas CSV": audit.exports.salesCsv,
@@ -168,42 +240,114 @@ export function OfflineExportAuditScreen() {
                 "Pendientes JSON": audit.exports.eventsJson,
                 "Movimientos CSV": audit.exports.inventoryMovementsCsv,
                 "Movimientos JSON": audit.exports.inventoryMovementsJson
-              }).map(([label, href]) => <a key={href} href={href} target="_blank" rel="noreferrer">{label}</a>)
+              }).map(([label, href]) => <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-a-11" data-kind="button" data-role="button" key={href} href={href} target="_blank" rel="noreferrer">{label}</a>)
             ) : (
-              <span className={styles.muted}>Cargando enlaces…</span>
+              <span className={styles.muted}
+                data-surface="tablet"
+                data-screen="offline"
+                data-zone="pos"
+                data-panel="offline-export-audit-screen"
+                data-target="offline-export-audit-screen-cart-173"
+                data-kind="cart"
+                data-role="revenue-core"
+              >Cargando enlaces…</span>
             )}
           </div>
         </details>
 
-        <section className={styles.columns}>
-          <article className={styles.panel}>
+        <section className={styles.columns}
+          data-surface="tablet"
+          data-screen="offline"
+          data-zone="pos"
+          data-panel="offline-export-audit-screen"
+          data-target="offline-export-audit-screen-cart-178"
+          data-kind="cart"
+          data-role="revenue-core"
+        >
+          <article className={styles.panel}
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-179"
+            data-kind="cart"
+            data-role="revenue-core"
+          >
             <h2>Pendientes recientes</h2>
             {audit && audit.outbox.events.length ? audit.outbox.events.map((event) => (
-              <div className={styles.row} key={event.id}>
-                <div><strong>{movementTitle(event.topic)}</strong><span>Creado {new Date(event.createdAt).toLocaleString("es-MX")}. Puedes seguir vendiendo.</span></div>
+              <div className={styles.row} key={event.id}
+                data-surface="tablet"
+                data-screen="offline"
+                data-zone="pos"
+                data-panel="offline-export-audit-screen"
+                data-target="offline-export-audit-screen-cart-182"
+                data-kind="cart"
+                data-role="revenue-core"
+              >
+                <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-12" data-kind="panel" data-role="container"><strong>{movementTitle(event.topic)}</strong><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-13" data-kind="text" data-role="text">Creado {new Date(event.createdAt).toLocaleString("es-MX")}. Puedes seguir vendiendo.</span></div>
                 <em className={styles[statusTone(event.status)]}>{statusCopy(event.status)}</em>
               </div>
-            )) : <p className={styles.empty}>Sin pendientes por enviar. La Tablet está al día.</p>}
+            )) : <p className={styles.empty}
+              data-surface="tablet"
+              data-screen="offline"
+              data-zone="pos"
+              data-panel="offline-export-audit-screen"
+              data-target="offline-export-audit-screen-cart-186"
+              data-kind="cart"
+              data-role="revenue-core"
+            >Sin pendientes por enviar. La Tablet está al día.</p>}
           </article>
 
-          <article className={styles.panel}>
+          <article className={styles.panel}
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-189"
+            data-kind="cart"
+            data-role="revenue-core"
+          >
             <h2>Movimientos recientes</h2>
             {audit && audit.inventory.recentMovements.length ? audit.inventory.recentMovements.map((movement) => (
-              <div className={styles.row} key={movement.id}>
-                <div><strong>{movement.productName}</strong><span>{movement.sku} · {movementReasonCopy(movement.reason)}</span></div>
+              <div className={styles.row} key={movement.id}
+                data-surface="tablet"
+                data-screen="offline"
+                data-zone="pos"
+                data-panel="offline-export-audit-screen"
+                data-target="offline-export-audit-screen-cart-192"
+                data-kind="cart"
+                data-role="revenue-core"
+              >
+                <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-14" data-kind="panel" data-role="container"><strong>{movement.productName}</strong><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-15" data-kind="text" data-role="text">{movement.sku} · {movementReasonCopy(movement.reason)}</span></div>
                 <em>{movement.quantityDelta}</em>
               </div>
-            )) : <p className={styles.empty}>Sin movimientos recientes.</p>}
+            )) : <p className={styles.empty}
+              data-surface="tablet"
+              data-screen="offline"
+              data-zone="pos"
+              data-panel="offline-export-audit-screen"
+              data-target="offline-export-audit-screen-cart-196"
+              data-kind="cart"
+              data-role="revenue-core"
+            >Sin movimientos recientes.</p>}
           </article>
         </section>
 
         <details className={styles.panel}>
           <summary className={styles.exportSummary}>
-            <span>Soporte</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-16" data-kind="text" data-role="text">Soporte</span>
             <strong>Detalle de respaldo</strong>
             <small>Información adicional para revisión administrativa.</small>
           </summary>
-          <div className={styles.diagnostics}>{audit?.diagnostics.map((item) => <span key={item}>{item}</span>) ?? <span>Cargando diagnóstico local...</span>}</div>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-17" data-kind="panel" data-role="container" className={styles.diagnostics}>{audit?.diagnostics.map((item) => <span key={item}
+            data-surface="tablet"
+            data-screen="offline"
+            data-zone="pos"
+            data-panel="offline-export-audit-screen"
+            data-target="offline-export-audit-screen-cart-206"
+            data-kind="cart"
+            data-role="revenue-core"
+          >{item}</span>) ?? <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-span-18" data-kind="text" data-role="text">Cargando diagnóstico local...</span>}</div>
         </details>
       </main>
     </PrismaTabletShellUnified>

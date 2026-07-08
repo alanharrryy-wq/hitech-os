@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/customer-setup.schema.json",
+  "title": "PRISMA Support Customer Setup",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["setupCode", "customerId", "businessId", "slots", "secretsExposed"],
+  "properties": {
+    "setupCode": { "type": "string", "minLength": 1 },
+    "setupLink": { "type": "string" },
+    "setupQr": { "type": "string" },
+    "customerId": { "type": "string" },
+    "businessId": { "type": "string" },
+    "licenseId": { "type": ["string", "null"] },
+    "slots": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "secretsExposed": { "const": false }
+  }
+}

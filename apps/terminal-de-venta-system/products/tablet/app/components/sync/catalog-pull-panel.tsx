@@ -185,80 +185,224 @@ export function CatalogPullPanel() {
   const disabled = Boolean(busyMode);
 
   return (
-    <section className={styles.catalogPull}>
-      <div className={styles.catalogHeader}>
-        <div>
-          <span>PC a Tablet</span>
+    <section className={styles.catalogPull}
+      data-surface="tablet"
+      data-screen="sync"
+      data-zone="pos"
+      data-panel="catalog-pull-panel"
+      data-target="catalog-pull-panel-panel-188"
+      data-kind="panel"
+      data-role="revenue-core"
+    >
+      <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-1" data-kind="panel" data-role="container" className={styles.catalogHeader}>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-2" data-kind="panel" data-role="container">
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-3" data-kind="panel" data-role="panel">PC a Tablet</span>
           <h2>Datos desde PC</h2>
           <p>Productos, precios, impuestos y opciones se actualizan desde PC cuando esta disponible. La venta local no depende de esta actualizacion.</p>
         </div>
-        <div className={styles.catalogActions}>
-          <button type="button" onClick={() => void run("delta", false)} disabled={disabled}>
+        <div className={styles.catalogActions}
+          data-surface="tablet"
+          data-screen="sync"
+          data-zone="pos"
+          data-panel="catalog-pull-panel"
+          data-target="catalog-pull-panel-button-195"
+          data-kind="button"
+          data-role="action"
+        >
+          <button type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-button-196"
+            data-kind="button"
+            data-role="action"
+          > void run("delta", false)} disabled={disabled}>
             {busyMode === "delta" ? "Actualizando" : "Actualizar datos"}
           </button>
-          <button type="button" onClick={() => void run("bootstrap", true)} disabled={disabled}>
+          <button type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-button-199"
+            data-kind="button"
+            data-role="action"
+          > void run("bootstrap", true)} disabled={disabled}>
             {busyMode === "bootstrap" ? "Preparando" : "Primera carga"}
           </button>
-          <button type="button" onClick={() => void run("resync", true)} disabled={disabled}>
+          <button type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-button-202"
+            data-kind="button"
+            data-role="action"
+          > void run("resync", true)} disabled={disabled}>
             {busyMode === "resync" ? "Reparando" : "Reparar datos"}
           </button>
-          <button type="button" onClick={() => void loadStatus()} disabled={disabled}>
+          <button type="button" onClick={() =
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-button-205"
+            data-kind="button"
+            data-role="action"
+          > void loadStatus()} disabled={disabled}>
             {busyMode === "refresh" ? "Actualizando" : "Actualizar"}
           </button>
         </div>
       </div>
 
-      <div className={[styles.dispatchNote, styles[`dispatchNote_${tone}`]].join(" ")} role="status">{resultMessage(result)}</div>
-      {error ? <div className={styles.alert} role="alert">{error}</div> : null}
+      <div className={[styles.dispatchNote, styles[`dispatchNote_${tone}`]].join(" ")} role="status"
+        data-surface="tablet"
+        data-screen="sync"
+        data-zone="pos"
+        data-panel="catalog-pull-panel"
+        data-target="catalog-pull-panel-badge-211"
+        data-kind="badge"
+        data-role="state-feedback"
+      >{resultMessage(result)}</div>
+      {error ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-4" data-kind="panel" data-role="container" className={styles.alert} role="alert">{error}</div> : null}
 
-      <div className={styles.catalogGrid}>
-        <article>
-          <span>Conexion PC</span>
+      <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-5" data-kind="panel" data-role="container" className={styles.catalogGrid}>
+        <article
+          data-surface="tablet"
+          data-screen="sync"
+          data-zone="pos"
+          data-panel="catalog-pull-panel"
+          data-target="catalog-pull-panel-panel-215"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-6" data-kind="panel" data-role="panel">Conexion PC</span>
           <strong>{status?.pc.enabled ? "configurada" : "apagada"}</strong>
           <small>{status?.pc.origin ?? "sin origen PC"}</small>
         </article>
-        <article>
-          <span>Avance</span>
+        <article
+          data-surface="tablet"
+          data-screen="sync"
+          data-zone="pos"
+          data-panel="catalog-pull-panel"
+          data-target="catalog-pull-panel-panel-220"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-7" data-kind="panel" data-role="panel">Avance</span>
           <strong>{checkpoint?.cursorValue ? "registrado" : "pendiente"}</strong>
           <small>{checkpoint?.cursorValue ? "Hay referencia de ultima actualizacion" : "Falta primera carga"}</small>
         </article>
-        <article>
-          <span>Ultimo exito</span>
+        <article
+          data-surface="tablet"
+          data-screen="sync"
+          data-zone="pos"
+          data-panel="catalog-pull-panel"
+          data-target="catalog-pull-panel-panel-225"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-8" data-kind="panel" data-role="panel">Ultimo exito</span>
           <strong>{checkpoint?.lastSuccessfulAt ? "cerrado" : "pendiente"}</strong>
           <small>{shortDate(checkpoint?.lastSuccessfulAt)}</small>
         </article>
-        <article>
-          <span>Ultimo intento</span>
+        <article
+          data-surface="tablet"
+          data-screen="sync"
+          data-zone="pos"
+          data-panel="catalog-pull-panel"
+          data-target="catalog-pull-panel-panel-230"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-9" data-kind="panel" data-role="panel">Ultimo intento</span>
           <strong>{checkpointStatusLabel(checkpoint?.status)}</strong>
           <small>{shortDate(checkpoint?.lastAttemptedAt)}</small>
         </article>
       </div>
 
       {result ? (
-        <div className={styles.catalogResultGrid}>
-          <article><span>Recibidos</span><strong>{result.counts.received}</strong></article>
-          <article><span>Aplicados</span><strong>{result.counts.applied}</strong></article>
-          <article><span>Duplicados</span><strong>{result.counts.duplicate}</strong></article>
-          <article><span>Conflictos</span><strong>{result.counts.conflict}</strong></article>
-          <article><span>Rechazados</span><strong>{result.counts.rejected}</strong></article>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-10" data-kind="panel" data-role="container" className={styles.catalogResultGrid}>
+          <article
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-239"
+            data-kind="panel"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-11" data-kind="panel" data-role="panel">Recibidos</span><strong>{result.counts.received}</strong></article>
+          <article
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-240"
+            data-kind="panel"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-12" data-kind="panel" data-role="panel">Aplicados</span><strong>{result.counts.applied}</strong></article>
+          <article
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-241"
+            data-kind="panel"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-13" data-kind="panel" data-role="panel">Duplicados</span><strong>{result.counts.duplicate}</strong></article>
+          <article
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-242"
+            data-kind="panel"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-14" data-kind="panel" data-role="panel">Conflictos</span><strong>{result.counts.conflict}</strong></article>
+          <article
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-243"
+            data-kind="panel"
+            data-role="revenue-core"
+          ><span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-15" data-kind="panel" data-role="panel">Rechazados</span><strong>{result.counts.rejected}</strong></article>
         </div>
       ) : null}
 
-      <div className={styles.catalogEntityList}>
+      <div className={styles.catalogEntityList}
+        data-surface="tablet"
+        data-screen="sync"
+        data-zone="pos"
+        data-panel="catalog-pull-panel"
+        data-target="catalog-pull-panel-panel-247"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
         {counts.map(([entity, count]) => (
-          <span key={entity}>{entityLabel(entity)}: {count}</span>
+          <span key={entity}
+            data-surface="tablet"
+            data-screen="sync"
+            data-zone="pos"
+            data-panel="catalog-pull-panel"
+            data-target="catalog-pull-panel-panel-249"
+            data-kind="panel"
+            data-role="revenue-core"
+          >{entityLabel(entity)}: {count}</span>
         ))}
       </div>
 
       {result?.findings.length ? (
-        <div className={styles.catalogFindings}>
-          <span>{result.findings.length} dato(s) requieren revision de soporte.</span>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-16" data-kind="panel" data-role="container" className={styles.catalogFindings}>
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-span-17" data-kind="panel" data-role="panel">{result.findings.length} dato(s) requieren revision de soporte.</span>
         </div>
       ) : null}
 
       <details className={styles.supportDetails}>
         <summary>Detalles de soporte</summary>
-        <div className={styles.diagnostics}>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="catalog_pull_panel" data-target="catalog-pull-panel-div-18" data-kind="panel" data-role="container" className={styles.diagnostics}>
           <span>Modo tecnico: {result?.mode ?? "sin ejecucion"}</span>
           <span>Referencia anterior: {result?.cursorBefore ?? checkpoint?.cursorValue ?? "sin registro"}</span>
           <span>Referencia nueva: {result?.cursorAfter ?? "sin cambio"}</span>

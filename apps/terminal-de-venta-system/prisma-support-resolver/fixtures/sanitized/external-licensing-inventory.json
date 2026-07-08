@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": "F:/PRISMA_CTX/LICENSING",
+  "filesObserved": [
+    "activations/prisma-original-customer/activation-receipt.json",
+    "activations/prisma-original-customer/license.signed.json",
+    "activations/prisma-original-customer/runtime/runtime.tablet.json",
+    "activations/prisma-original-customer/runtime/runtime.pc.json",
+    "activations/prisma-original-customer/runtime/runtime.mobile.json",
+    "issuers/adlant4-local/public-key.json"
+  ],
+  "blockedSecretRisk": [
+    {
+      "path": "issuers/adlant4-local/private-key.pem",
+      "decision": "BLOCK_SECRET_RISK",
+      "copied": false,
+      "printed": false
+    }
+  ],
+  "secretsExposed": false
+}

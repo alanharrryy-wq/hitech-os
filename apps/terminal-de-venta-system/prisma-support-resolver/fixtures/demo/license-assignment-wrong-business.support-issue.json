@@ -1,0 +1,44 @@
+{
+  "code": "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+  "category": "license_assignment",
+  "severity": "blocked",
+  "surface": "tablet",
+  "customerId": "cust_demo",
+  "businessId": "biz_demo",
+  "storeId": "store_prisma_rey_centro",
+  "deviceId": "tablet-pos-source-ready",
+  "terminalId": "term_tablet_pos_001",
+  "licenseId": "lic_demo_tablet_pro",
+  "setupCode": null,
+  "humanTitle": "Licencia activa, operacion bloqueada por asignacion de negocio.",
+  "humanExplanation": "La licencia esta activa, pero pertenece a otro negocio. La operacion queda bloqueada hasta reclamar el dispositivo correcto o refrescar la licencia.",
+  "technicalExplanation": "license.businessId != runtime.businessId",
+  "evidence": [
+    {
+      "label": "runtime.businessId",
+      "value": "biz_prisma_rey_lineage_seed",
+      "source": "fixture"
+    },
+    {
+      "label": "license.businessId",
+      "value": "biz_demo",
+      "source": "fixture"
+    }
+  ],
+  "detectedBy": "prisma-support-resolver.fixture",
+  "canAutoResolve": false,
+  "canRemoteResolve": true,
+  "requiresSetupCode": true,
+  "requiresAdminToken": false,
+  "requiresCloudDeploy": false,
+  "requiresD1Migration": false,
+  "requiresCodex": false,
+  "requiresOnsite": false,
+  "safeActions": ["diagnose", "simulate", "export_evidence", "setup_claim", "license_refresh"],
+  "blockedActions": ["blind_manual_license_rewrite", "edit_signed_license"],
+  "recommendedAction": "Usar Setup Code correcto o refrescar licencia desde soporte.",
+  "nextStep": "No editar la licencia firmada a mano; diagnosticar y simular primero.",
+  "operatorMessage": "Caso bloqueado por asignacion de negocio; evidencia sanitizada lista.",
+  "resultCode": "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+  "secretsExposed": false
+}

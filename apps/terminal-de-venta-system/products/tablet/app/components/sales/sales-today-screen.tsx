@@ -32,11 +32,35 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
       status={<TabletShellStatusPill tone="ok">Tickets cerrados</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
     >
-      <main className={styles.salesPage}>
-        <section className={styles.hero}>
-          <span>Ventas de hoy</span>
-          <h1>Resumen de caja operativo</h1>
-          <p>Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p>
+      <main className={styles.salesPage}
+        data-surface="tablet"
+        data-screen="sales"
+        data-zone="pos"
+        data-panel="sales-today-screen"
+        data-target="sales-today-screen-panel-35"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
+        <section className={styles.hero}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-today-screen"
+          data-target="sales-today-screen-panel-36"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_today_screen" data-target="sales-today-screen-span-1" data-kind="text" data-role="text">Ventas de hoy</span>
+          <h1
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-today-screen"
+            data-target="sales-today-screen-text-38"
+            data-kind="text"
+            data-role="copy"
+          >Resumen de caja operativo</h1>
+          <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_today_screen" data-target="sales-today-screen-p-2" data-kind="text" data-role="text">Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p>
         </section>
         <QuickActionStrip label="Acciones rapidas de ventas de hoy">
           <QuickActionTile title="Nueva venta" description={gate.canShowSellNavigation ? "Abre POS para capturar otro ticket." : gate.detail} actionLabel={gate.canShowSellNavigation ? "Vender" : gate.actionLabel} icon="cart" tone={gate.canShowSellNavigation ? "primary" : "warning"} href={gate.actionHref} owner="pos" kind="quick-create" />
@@ -44,10 +68,42 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
           <QuickActionTile title="Exportar ventas" description="Abre exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
           <QuickActionTile title="Nueva devolucion" description="Elige un ticket cerrado para devolver productos." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
         </QuickActionStrip>
-        {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : <div className={styles.empty}>Cargando ventas del día…</div>}
-        <div className={styles.toolbar} id="buscar-ticket">
-          <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Buscar por folio, cajero o producto" />
-          <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Volver a vender" : gate.actionLabel}</a>
+        {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : <div className={styles.empty}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-today-screen"
+          data-target="sales-today-screen-text-47"
+          data-kind="text"
+          data-role="copy"
+        >Cargando ventas del día…</div>}
+        <div className={styles.toolbar} id="buscar-ticket"
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-today-screen"
+          data-target="sales-today-screen-search-48"
+          data-kind="search"
+          data-role="ticket-context"
+        >
+          <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Buscar por folio, cajero o producto"
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-today-screen"
+            data-target="sales-today-screen-search-49"
+            data-kind="search"
+            data-role="search-control"
+          />
+          <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-today-screen"
+            data-target="sales-today-screen-button-50"
+            data-kind="button"
+            data-role="action"
+          >{gate.canShowSellNavigation ? "Volver a vender" : gate.actionLabel}</a>
         </div>
         <ContextualExportActions surface="sales" />
         <SalesTicketList tickets={tickets} />

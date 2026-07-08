@@ -1,0 +1,15 @@
+{
+  "caseId": "cross-source-identity-split",
+  "expectedPrimaryIssueCode": "CROSS_SOURCE_IDENTITY_SPLIT",
+  "contextBusinessId": "biz_prisma_rey_lineage_seed",
+  "installedCustomerId": "cust_demo",
+  "canonicalCustomerId": "cust_prisma_original_customer",
+  "canonicalBusinessId": "biz_78b3c840796a4a4dad",
+  "expectedAuthorityChoices": [
+    "setup_claim_or_refresh",
+    "use_pos_local_seed",
+    "use_signed_activation_package"
+  ],
+  "mustNotMutate": true,
+  "secretsExposed": false
+}

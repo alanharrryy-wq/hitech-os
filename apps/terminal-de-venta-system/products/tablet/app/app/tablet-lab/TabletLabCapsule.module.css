@@ -317,3 +317,652 @@
 .autoStudio[data-tabctl7-material="neon-glass"] .tabctl7TargetPanel,.autoStudio[data-tabctl7-color-mode="neon-accent"] .tabctl7TargetPanel{box-shadow:0 0 0 1px rgb(var(--tabctl3-tint) / .18),0 18px 90px rgb(var(--tabctl3-tint) / calc(.12 + var(--tabctl3-glow,.18)*.28))}.autoStudio[data-tabctl7-material="paper-matte"] .tabctl7TargetPanel,.autoStudio[data-tabctl7-material="ink-plate"] .tabctl7TargetPanel{backdrop-filter:none;-webkit-backdrop-filter:none}.autoStudio[data-tabctl7-zero-blur="off"] .glassCard,.autoStudio[data-tabctl7-zero-blur="off"] .tabctl7TargetPanel,.autoStudio[data-tabctl7-zero-blur="off"] .previewCanvas{backdrop-filter:none;-webkit-backdrop-filter:none}.autoStudio[data-tabctl7-zero-glow="off"] .glassCard,.autoStudio[data-tabctl7-zero-glow="off"] .primaryAction,.autoStudio[data-tabctl7-zero-glow="off"] .tabctl7TargetPanel{box-shadow:none}.autoStudio[data-tabctl7-zero-border="off"] .glassCard,.autoStudio[data-tabctl7-zero-border="off"] .primaryAction,.autoStudio[data-tabctl7-zero-border="off"] .tabctl7TargetPanel,.autoStudio[data-tabctl7-zero-border="off"] .knob{border-color:transparent}.autoStudio[data-tabctl7-kind="button"] .primaryAction,.autoStudio[data-tabctl7-kind="button"] .quickAdd,.autoStudio[data-tabctl7-kind="dock"] .bottomNav a,.autoStudio[data-tabctl7-kind="nav"] .bottomNav a{outline:1px solid rgb(var(--tabctl3-tint) / calc(.18 + var(--tabctl3-row-hover,.24)*.3));outline-offset:2px}.autoStudio[data-tabctl7-kind="numericText"] .totalHero strong,.autoStudio[data-tabctl7-kind="numericText"] .metricRow b,.autoStudio[data-tabctl7-kind="numericText"] .productTile span{text-shadow:0 0 calc(var(--tabctl3-text-glow,.3)*20px) rgb(var(--tabctl3-tint) / .55);transform:scale(calc(1 + var(--tabctl3-numeric-emphasis,.62)*.035))}.autoStudio[data-tabctl7-kind="text"] h3,.autoStudio[data-tabctl7-kind="buttonText"] button,.autoStudio[data-tabctl7-kind="nav"] .bottomNav a{letter-spacing:calc(var(--tabctl3-label-tracking,.1)*.045em)}.autoStudio[data-tabctl7-kind="table"] .tableShell,.autoStudio[data-tabctl7-kind="tableCell"] .tableShell td,.autoStudio[data-tabctl7-kind="matrix"] .effectMatrix{box-shadow:inset 0 0 0 1px rgb(var(--tabctl3-tint) / calc(.08 + var(--tabctl3-header-stickiness,.5)*.12))}
 @media (max-width:980px){.tabctl7TargetGrid,.tabctl7ControlCloud{grid-template-columns:1fr}}@media (prefers-reduced-motion:reduce){.tabctl7ControlChip{transition:none}.tabctl7ControlChip:hover,.tabctl7ControlChip:focus-visible{transform:none}}
 /* TABCTL7V2_SUPREMO_CSS_END */
+
+/* TABRCP1 recipe gallery: target-first recipe mode, no extra canvas containers */
+.tabctl7RecipePanel{border:1px solid rgb(255 255 255 / calc(.12 + var(--tabctl3-border-alpha,.3)*.28));border-radius:24px;padding:clamp(12px,1.45vw,18px);background:linear-gradient(145deg,rgb(255 255 255 / .12),rgb(255 255 255 / .045)),radial-gradient(circle at 0% 0%,rgb(var(--tabctl3-tint) / .16),transparent 42%);box-shadow:0 20px 58px rgb(0 0 0 / .12),inset 0 1px 0 rgb(255 255 255 / .16);display:grid;gap:12px;color:rgb(248 250 252 / .92)}
+.tabctl7RecipeHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.tabctl7RecipeHeader div{display:grid;gap:3px}.tabctl7RecipeHeader strong{font-size:.94rem}.tabctl7RecipeHeader span,.tabctl7RecipeHeader em{font-size:.72rem;color:rgb(226 232 240 / .74);font-style:normal}.tabctl7RecipePreviewBanner{border:1px solid rgb(var(--tabctl3-tint) / .42);border-radius:18px;padding:10px;background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .20),rgb(255 255 255 / .06));display:grid;gap:7px;box-shadow:0 14px 34px rgb(var(--tabctl3-tint) / .12)}
+.tabctl7RecipePreviewBanner strong{font-size:.86rem}.tabctl7RecipePreviewBanner span{font-size:.72rem;color:rgb(241 245 249 / .76)}.tabctl7RecipeGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:420px;overflow:auto;padding-right:2px}.tabctl7RecipeCard{border:1px solid rgb(255 255 255 / .13);border-radius:18px;padding:10px;background:linear-gradient(145deg,rgb(255 255 255 / .10),rgb(255 255 255 / .035));display:grid;gap:7px;min-height:154px;align-content:start;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease}.tabctl7RecipeCard:hover,.tabctl7RecipeCard:focus-within{transform:translateY(-1px);border-color:rgb(var(--tabctl3-tint) / .48);box-shadow:0 16px 34px rgb(var(--tabctl3-tint) / .12)}.tabctl7RecipeCardActive{border-color:rgb(var(--tabctl3-tint) / .70);box-shadow:0 0 0 3px rgb(var(--tabctl3-tint) / .14),0 18px 38px rgb(var(--tabctl3-tint) / .14)}.tabctl7RecipeMeta{display:flex;justify-content:space-between;gap:8px;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:rgb(203 213 225 / .76)}.tabctl7RecipeMeta em{font-style:normal}.tabctl7RecipeCard strong{font-size:.82rem;line-height:1.08}.tabctl7RecipeCard p{margin:0;font-size:.72rem;line-height:1.28;color:rgb(226 232 240 / .80)}.tabctl7RecipeCard small{font-size:.66rem;color:rgb(203 213 225 / .68);line-height:1.22}.tabctl7RecipeTags{display:flex;flex-wrap:wrap;gap:5px}.tabctl7RecipeTags span{border-radius:999px;padding:2px 6px;background:rgb(255 255 255 / .08);border:1px solid rgb(255 255 255 / .10);font-size:.6rem;color:rgb(226 232 240 / .74)}.tabctl7RecipeActions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.tabctl7RecipeActions button{min-height:28px;padding:0 9px;font-size:.68rem}.tabctl7RecipeEmpty{margin:0;color:rgb(252 211 77 / .86);font-size:.82rem}
+@media (max-width: 980px){.tabctl7RecipeGrid{grid-template-columns:1fr;max-height:360px}}
+
+.tabctl7ModeBanner{margin-top:12px;border:1px solid rgb(var(--tabctl3-tint) / .28);border-radius:18px;padding:10px 12px;display:grid;gap:4px;background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .14),rgb(255 255 255 / .055));box-shadow:inset 0 1px 0 rgb(255 255 255 / .12)}
+.tabctl7ModeBanner strong{font-size:.86rem;letter-spacing:.02em;color:rgb(248 250 252 / .94)}
+.tabctl7ModeBanner span{font-size:.73rem;line-height:1.28;color:rgb(226 232 240 / .78)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipePanel{border-color:rgb(var(--tabctl3-tint) / .42);box-shadow:0 22px 70px rgb(var(--tabctl3-tint) / .12),inset 0 1px 0 rgb(255 255 255 / .16)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeGrid{max-height:620px;grid-template-columns:1fr}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard{min-height:132px}
+.autoStudio[data-tabctl7-mode="pro"] .tabctl7TargetPanel{border-color:rgb(255 255 255 / calc(.14 + var(--tabctl3-border-alpha,.3)*.24))}
+
+
+/* TABRCP3_VISIBLE_RECIPE_MODE_START */
+.tabctl7ModeSwitch{position:sticky;top:0;z-index:8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 10px;padding:8px;border:1px solid rgba(113,176,214,.56);border-radius:20px;background:linear-gradient(135deg,rgba(248,253,255,.96),rgba(224,244,255,.86));box-shadow:0 16px 36px rgba(24,74,110,.12),inset 0 1px 0 rgba(255,255,255,.92);backdrop-filter:blur(14px) saturate(116%);-webkit-backdrop-filter:blur(14px) saturate(116%)}
+.tabctl7ModeButton{min-height:54px;border:1px solid rgba(111,175,214,.46);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(235,248,255,.58));color:#123047;display:grid;gap:3px;text-align:left;padding:8px 10px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.78);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease}
+.tabctl7ModeButton:hover,.tabctl7ModeButton:focus-visible{transform:translateY(-1px);border-color:rgba(25,137,199,.72);box-shadow:0 0 0 3px rgba(46,190,255,.16),0 12px 24px rgba(24,74,110,.11)}
+.tabctl7ModeButton strong{font-size:.86rem;line-height:1;color:#0f263a;letter-spacing:-.015em}.tabctl7ModeButton span{font-size:.69rem;line-height:1.15;color:rgba(15,38,58,.68)}
+.tabctl7ModeButtonActive{background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .24),rgba(255,255,255,.9));border-color:rgb(var(--tabctl3-tint) / .76);box-shadow:0 0 0 3px rgb(var(--tabctl3-tint) / .13),0 16px 30px rgb(var(--tabctl3-tint) / .12),inset 0 1px 0 rgba(255,255,255,.92)}
+.autoStudio[data-tabctl7-mode="receta"] .workbench{grid-template-columns:minmax(342px,396px) minmax(0,1fr);gap:12px}.autoStudio[data-tabctl7-mode="receta"] .controlColumn{max-width:396px;background:linear-gradient(180deg,rgba(247,253,255,.94),rgba(229,246,255,.84));border-color:rgba(122,190,228,.78);box-shadow:0 20px 46px rgba(24,74,110,.14),inset 0 1px 0 rgba(255,255,255,.92)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7TargetPanel{padding:12px;border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(232,247,255,.58));border-color:rgba(116,184,224,.54);box-shadow:0 14px 30px rgba(24,74,110,.08),inset 0 1px 0 rgba(255,255,255,.82);color:#102232}.autoStudio[data-tabctl7-mode="receta"] .tabctl7TargetPanel strong,.autoStudio[data-tabctl7-mode="receta"] .tabctl7TargetPanel p,.autoStudio[data-tabctl7-mode="receta"] .tabctl7TargetPanel small{color:#102232}.autoStudio[data-tabctl7-mode="receta"] .tabctl7PanelTitle span,.autoStudio[data-tabctl7-mode="receta"] .tabctl7RoleCard span,.autoStudio[data-tabctl7-mode="receta"] .tabctl7RoleCard small{color:rgba(20,58,84,.72)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RoleCard{background:rgba(255,255,255,.66);border-color:rgba(133,194,230,.46)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7ContextBar span{background:rgba(255,255,255,.7);border-color:rgba(132,194,230,.42);color:rgba(17,44,65,.82)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner{background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .18),rgba(255,255,255,.72));border-color:rgb(var(--tabctl3-tint) / .42)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner strong{color:#0f263a}.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner span{color:rgba(15,38,58,.76)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipePanel{position:relative;border-radius:22px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(232,247,255,.78));border-color:rgba(116,184,224,.64);box-shadow:0 18px 40px rgba(24,74,110,.12),inset 0 1px 0 rgba(255,255,255,.86);color:#102232}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeHeader strong{font-size:1rem;color:#0f263a}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeHeader span,.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeHeader em{color:rgba(15,38,58,.68)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeGrid{grid-template-columns:1fr;max-height:calc(100dvh - 435px);min-height:260px;gap:10px;padding-right:5px}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard{min-height:116px;padding:11px;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.84),rgba(236,249,255,.66));border-color:rgba(119,186,225,.52);box-shadow:0 12px 24px rgba(24,74,110,.08);color:#102232}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard:hover,.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard:focus-within{border-color:rgb(var(--tabctl3-tint) / .72);box-shadow:0 0 0 3px rgb(var(--tabctl3-tint) / .12),0 16px 30px rgba(24,74,110,.12)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCardActive{border-color:rgb(var(--tabctl3-tint) / .82);box-shadow:0 0 0 4px rgb(var(--tabctl3-tint) / .16),0 18px 34px rgba(24,74,110,.14)}
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeMeta{color:rgba(20,58,84,.64)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard strong{font-size:.92rem;color:#102232}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard p{font-size:.76rem;color:rgba(15,38,58,.74)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeCard small{font-size:.68rem;color:rgba(15,38,58,.58)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeTags span{background:rgba(255,255,255,.72);border-color:rgba(120,184,222,.42);color:rgba(15,38,58,.7)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeActions button{min-height:32px;font-size:.74rem}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipePreviewBanner{background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .18),rgba(255,255,255,.78));border-color:rgb(var(--tabctl3-tint) / .52);box-shadow:0 14px 28px rgb(var(--tabctl3-tint) / .11)}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipePreviewBanner strong{color:#0f263a}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipePreviewBanner span{color:rgba(15,38,58,.72)}
+@media (max-width:980px){.autoStudio[data-tabctl7-mode="receta"] .workbench{grid-template-columns:1fr}.autoStudio[data-tabctl7-mode="receta"] .controlColumn{max-width:none}.tabctl7ModeSwitch{position:relative}.autoStudio[data-tabctl7-mode="receta"] .tabctl7RecipeGrid{max-height:420px}}
+/* TABRCP3_VISIBLE_RECIPE_MODE_END */
+
+
+/* TABRCP4_RECIPE_BROWSER_CANVAS_START
+   Recipe Mode uses the canvas as a wide recipe browser. The left rail keeps target selection only.
+   No priority overrides, no extra app surfaces, no process/port/package/lockfile changes. */
+.autoStudio[data-tabctl7-mode="receta"] .workbench{
+  grid-template-columns:minmax(256px,300px) minmax(0,1fr);
+  gap:12px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .controlColumn{
+  max-width:300px;
+  background:linear-gradient(180deg,rgba(247,253,255,.95),rgba(230,247,255,.86));
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+  grid-template-rows:auto auto minmax(0,1fr);
+  gap:0;
+}
+.tabctl7RecipeDockHint{
+  border:1px solid rgba(116,184,224,.56);
+  border-radius:18px;
+  padding:10px 12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(230,247,255,.68));
+  box-shadow:0 12px 28px rgba(24,74,110,.08),inset 0 1px 0 rgba(255,255,255,.9);
+  display:grid;
+  gap:4px;
+  color:#102232;
+}
+.tabctl7RecipeDockHint strong{font-size:.84rem;color:#102232;line-height:1.1}
+.tabctl7RecipeDockHint span{font-size:.7rem;line-height:1.25;color:rgba(15,38,58,.68)}
+.previewCanvas .tabctl7RecipePanel{
+  margin:0 clamp(12px,1vw,18px) 12px;
+  position:relative;
+  z-index:2;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+  border-radius:24px;
+  padding:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(232,247,255,.82));
+  border-color:rgba(116,184,224,.68);
+  box-shadow:0 18px 42px rgba(24,74,110,.14),inset 0 1px 0 rgba(255,255,255,.9);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader{
+  align-items:center;
+  padding-bottom:2px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader strong{
+  font-size:1.05rem;
+  color:#0f263a;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader span,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader em{
+  color:rgba(15,38,58,.7);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;
+  max-height:min(42dvh,420px);
+  min-height:0;
+  overflow:auto;
+  padding:4px 8px 4px 2px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{
+  min-height:168px;
+  padding:13px;
+  border-radius:20px;
+  display:grid;
+  grid-template-rows:auto auto auto auto auto minmax(34px,auto);
+  align-content:stretch;
+  background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(236,249,255,.72));
+  border-color:rgba(119,186,225,.58);
+  box-shadow:0 12px 26px rgba(24,74,110,.09);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard strong{
+  font-size:.98rem;
+  line-height:1.08;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard p{
+  font-size:.78rem;
+  line-height:1.34;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard small{
+  font-size:.68rem;
+  line-height:1.25;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  align-self:end;
+  margin-top:4px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button{
+  width:100%;
+  min-height:34px;
+  padding:0 10px;
+  font-size:.75rem;
+  white-space:nowrap;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .previewScroller{
+  min-height:0;
+}
+@media (max-width:980px){
+  .autoStudio[data-tabctl7-mode="receta"] .workbench{grid-template-columns:1fr}
+  .autoStudio[data-tabctl7-mode="receta"] .controlColumn{max-width:none}
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{grid-template-rows:auto auto minmax(420px,1fr)}
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{grid-template-columns:1fr;max-height:420px}
+}
+/* TABRCP4_RECIPE_BROWSER_CANVAS_END */
+
+
+/* TABRCP5_RECIPE_DRAWER_START
+   Recipe Mode becomes a right-side drawer inside the canvas:
+   - preview stays readable on the left
+   - recipe cards stay legible in one column on the right
+   - no overlay band across the preview
+   - no priority overrides, no new containers, no package/process/port changes */
+.autoStudio[data-tabctl7-mode="receta"] .workbench{
+  grid-template-columns:minmax(238px,292px) minmax(0,1fr);
+  gap:12px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .controlColumn{
+  max-width:292px;
+  overflow:auto;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(360px,30vw,500px);
+  grid-template-rows:auto minmax(0,1fr);
+  gap:0 12px;
+  align-items:stretch;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .previewHeader{
+  grid-column:1 / -1;
+  grid-row:1;
+  min-width:0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .previewScroller{
+  grid-column:1;
+  grid-row:2;
+  min-width:0;
+  min-height:0;
+  overflow:auto;
+  padding:4px 4px 18px 16px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+  grid-column:2;
+  grid-row:2;
+  align-self:stretch;
+  min-height:0;
+  max-height:none;
+  margin:0 14px 14px 0;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+  overflow:hidden;
+  border-radius:24px;
+  padding:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(232,247,255,.86));
+  border-color:rgba(116,184,224,.72);
+  box-shadow:0 18px 42px rgba(24,74,110,.14),inset 0 1px 0 rgba(255,255,255,.92);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:6px;
+  align-items:start;
+  padding:0 0 10px;
+  border-bottom:1px solid rgba(116,184,224,.28);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader strong{
+  font-size:1rem;
+  color:#0f263a;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader span,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader em{
+  font-size:.74rem;
+  line-height:1.28;
+  color:rgba(15,38,58,.68);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner{
+  margin:10px 0;
+  flex:0 0 auto;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  align-content:start;
+  gap:12px;
+  min-height:0;
+  max-height:none;
+  overflow:auto;
+  padding:10px 6px 4px 0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{
+  min-height:150px;
+  padding:14px;
+  border-radius:20px;
+  display:grid;
+  grid-template-rows:auto auto auto auto auto minmax(36px,auto);
+  align-content:stretch;
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(236,249,255,.76));
+  border-color:rgba(119,186,225,.62);
+  box-shadow:0 12px 26px rgba(24,74,110,.09);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard strong{
+  font-size:.98rem;
+  line-height:1.12;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard p{
+  font-size:.8rem;
+  line-height:1.34;
+  margin:0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard small{
+  font-size:.69rem;
+  line-height:1.25;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeTags{
+  min-height:22px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  align-self:end;
+  margin-top:6px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button{
+  width:100%;
+  min-height:36px;
+  padding:0 10px;
+  font-size:.76rem;
+  white-space:nowrap;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+@media (max-width:1240px){
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+    grid-template-columns:minmax(0,1fr) minmax(330px,390px);
+  }
+}
+@media (max-width:980px){
+  .autoStudio[data-tabctl7-mode="receta"] .workbench{grid-template-columns:1fr}
+  .autoStudio[data-tabctl7-mode="receta"] .controlColumn{max-width:none}
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto minmax(420px,1fr);
+  }
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+    grid-column:1;
+    grid-row:2;
+    margin:0 14px 12px;
+    max-height:420px;
+  }
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas .previewScroller{
+    grid-column:1;
+    grid-row:3;
+    padding:4px 16px 18px;
+  }
+}
+/* TABRCP5_RECIPE_DRAWER_END */
+
+/* TABRCP6_RECIPE_CARD_ACTIONS_POLISH_START
+   Recipe drawer polish: actions live inside each card, no floating strips between cards.
+   Uses ordinary cascade only, no priority overrides, no new surfaces. */
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+  grid-template-rows:auto auto minmax(0,1fr);
+  padding:16px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{
+  gap:16px;
+  padding:12px 8px 16px 0;
+  scroll-padding:12px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{
+  min-height:auto;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  overflow:hidden;
+  padding:14px 14px 12px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeMeta{
+  flex:0 0 auto;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard strong,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard p,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard small,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeTags{
+  flex:0 0 auto;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeTags{
+  margin-top:2px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions{
+  position:static;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  width:100%;
+  align-self:stretch;
+  margin-top:auto;
+  padding-top:10px;
+  border-top:1px solid rgba(116,184,224,.22);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button{
+  min-height:32px;
+  height:32px;
+  padding:0 10px;
+  font-size:.74rem;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 6px 14px rgba(24,74,110,.06);
+  transform:none;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button:active{
+  transform:translateY(1px) scale(.99);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:4px;
+  padding-top:8px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader{
+  position:sticky;
+  top:0;
+  z-index:3;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(236,249,255,.88));
+  border-radius:18px;
+  padding:10px 10px 12px;
+  margin:-4px -4px 0;
+}
+@media (max-width:1240px){
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+    grid-template-columns:minmax(0,1fr) minmax(360px,430px);
+  }
+}
+/* TABRCP6_RECIPE_CARD_ACTIONS_POLISH_END */
+
+/* TABRCP7_RECIPE_CARD_VISIBILITY_RESTORE_START
+   Restores full recipe card body after tabrcp6 made cards collapse to meta pills.
+   Scope: Tablet Lab recipe drawer only. No priority overrides, no new surfaces. */
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+  grid-template-rows:auto minmax(0,1fr);
+  overflow:hidden;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  grid-auto-rows:auto;
+  align-items:stretch;
+  align-content:start;
+  gap:14px;
+  min-height:0;
+  overflow:auto;
+  padding:12px 8px 18px 0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{
+  min-height:166px;
+  height:auto;
+  overflow:visible;
+  display:grid;
+  grid-template-rows:auto auto auto auto minmax(22px,auto) auto;
+  align-content:start;
+  row-gap:8px;
+  padding:14px;
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(236,249,255,.78));
+  border-color:rgba(119,186,225,.62);
+  box-shadow:0 12px 26px rgba(24,74,110,.09);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeMeta{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  min-height:16px;
+  color:rgba(20,58,84,.66);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard strong{
+  display:block;
+  opacity:1;
+  visibility:visible;
+  color:#102232;
+  font-size:.98rem;
+  line-height:1.12;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard p{
+  display:block;
+  opacity:1;
+  visibility:visible;
+  margin:0;
+  color:rgba(15,38,58,.76);
+  font-size:.8rem;
+  line-height:1.34;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard small{
+  display:block;
+  opacity:1;
+  visibility:visible;
+  color:rgba(15,38,58,.6);
+  font-size:.69rem;
+  line-height:1.25;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeTags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  min-height:22px;
+  margin-top:0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeTags span{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:2px 7px;
+  background:rgba(255,255,255,.74);
+  border-color:rgba(120,184,222,.42);
+  color:rgba(15,38,58,.7);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  width:100%;
+  align-self:end;
+  margin-top:4px;
+  padding-top:10px;
+  border-top:1px solid rgba(116,184,224,.22);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button{
+  min-height:32px;
+  height:32px;
+  padding:0 10px;
+  font-size:.74rem;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:4px;
+  padding-top:8px;
+}
+@media (max-width:1240px){
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+    grid-template-columns:minmax(0,1fr) minmax(380px,440px);
+  }
+}
+/* TABRCP7_RECIPE_CARD_VISIBILITY_RESTORE_END */
+
+/* TABRCP8_RECIPE_DRAWER_FLOW_FIX_START
+   Fix recipe drawer flow after preview banner overlapped first card.
+   Scope: Tablet Lab recipe mode only. Ordinary cascade, no priority overrides. */
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  overflow:hidden;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader{
+  flex:0 0 auto;
+  position:relative;
+  top:auto;
+  z-index:3;
+  margin:0;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner{
+  flex:0 0 auto;
+  position:relative;
+  z-index:2;
+  display:grid;
+  gap:8px;
+  margin:0;
+  padding:12px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(232,247,255,.86));
+  border:1px solid rgba(116,184,224,.56);
+  box-shadow:0 10px 24px rgba(24,74,110,.10),inset 0 1px 0 rgba(255,255,255,.88);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner strong{
+  display:block;
+  color:#102232;
+  font-size:.9rem;
+  line-height:1.14;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner span{
+  display:block;
+  color:rgba(15,38,58,.68);
+  font-size:.72rem;
+  line-height:1.28;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{
+  position:static;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  width:100%;
+  margin:6px 0 0;
+  padding-top:8px;
+  border-top:1px solid rgba(116,184,224,.22);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-auto-rows:auto;
+  align-content:start;
+  align-items:stretch;
+  gap:16px;
+  padding:4px 8px 18px 0;
+  scroll-padding:12px;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-height:172px;
+  height:auto;
+  overflow:visible;
+  padding:14px;
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(236,249,255,.80));
+  border-color:rgba(119,186,225,.62);
+  box-shadow:0 12px 26px rgba(24,74,110,.09);
+  color:#102232;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard .tabctl7RecipeMeta,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard strong,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard p,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard small,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard .tabctl7RecipeTags{
+  flex:0 0 auto;
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard .tabctl7RecipeActions{
+  flex:0 0 auto;
+  position:static;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  width:100%;
+  margin-top:auto;
+  padding-top:10px;
+  border-top:1px solid rgba(116,184,224,.22);
+}
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeActions button{
+  position:relative;
+  width:100%;
+  min-height:32px;
+  height:32px;
+  padding:0 10px;
+  font-size:.74rem;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  transform:none;
+}
+@media (max-width:1240px){
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas{
+    grid-template-columns:minmax(0,1fr) minmax(390px,450px);
+  }
+}
+@media (max-width:980px){
+  .autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{
+    max-height:520px;
+  }
+}
+/* TABRCP8_RECIPE_DRAWER_FLOW_FIX_END */
+
+
+/* TABRCP9 — Ultra Parametric quick mode and recipe action cleanup.
+   Scope: Tablet Lab recipe drawer only. No priority overrides. */
+.tabctl7ModeSwitch{grid-template-columns:repeat(3,minmax(0,1fr));}
+.autoStudio[data-tabctl7-mode="rapido"] .tabctl7ModeBanner,
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner{background:linear-gradient(135deg,rgb(var(--tabctl3-tint) / .18),rgba(255,255,255,.72));border-color:rgb(var(--tabctl3-tint) / .42);}
+.autoStudio[data-tabctl7-mode="rapido"] .tabctl7ModeBanner strong,
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner strong{color:#0f263a;}
+.autoStudio[data-tabctl7-mode="rapido"] .tabctl7ModeBanner span,
+.autoStudio[data-tabctl7-mode="receta"] .tabctl7ModeBanner span{color:rgba(15,38,58,.76);}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipePanel,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{position:absolute;right:16px;top:118px;bottom:18px;width:min(430px,34vw);display:flex;flex-direction:column;gap:12px;overflow:hidden;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeHeader,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeHeader{flex:0 0 auto;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeGrid,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeGrid{flex:1 1 auto;min-height:0;max-height:none;overflow:auto;display:grid;grid-template-columns:1fr;gap:12px;padding:4px 7px 12px 2px;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeCard,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard{display:grid;grid-template-rows:auto auto auto auto auto auto;gap:8px;min-height:156px;padding:14px 15px;border-radius:20px;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeCard{min-height:170px;border-color:rgb(var(--tabctl3-tint) / .58);box-shadow:0 16px 34px rgba(24,74,110,.11),inset 0 1px 0 rgba(255,255,255,.82);}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeCard strong{font-size:1.02rem;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeCard p{font-size:.82rem;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeCard small{font-size:.7rem;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeActions,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard .tabctl7RecipeActions{position:static;display:grid;grid-template-columns:1fr;margin-top:4px;padding-top:9px;border-top:1px solid rgba(121,186,225,.25);}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipeActions button,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipeCard .tabctl7RecipeActions button{width:100%;min-height:36px;border-radius:999px;font-weight:760;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipePreviewBanner,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner{flex:0 0 auto;position:relative;z-index:2;margin:0;border-radius:20px;padding:12px 13px;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions button,
+.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePreviewBanner .tabctl7RecipeActions button{min-height:34px;}
+@media (max-width:1180px){.autoStudio[data-tabctl7-mode="rapido"] .previewCanvas .tabctl7RecipePanel,.autoStudio[data-tabctl7-mode="receta"] .previewCanvas .tabctl7RecipePanel{position:relative;right:auto;top:auto;bottom:auto;width:auto;max-height:520px}.tabctl7ModeSwitch{grid-template-columns:1fr;}}
