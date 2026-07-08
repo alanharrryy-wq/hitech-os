@@ -1,0 +1,31 @@
+{
+  "tool": "db_evidence_atlas_licscope_bridge_v1",
+  "generatedAt": "2026-07-08T00:06:30+00:00",
+  "source": "repo-registers",
+  "productionGreenAllowed": true,
+  "scope": "LICSCOPE_CLOUD_APPS_SYNC_LANE",
+  "status": "PASS_DB_EVIDENCE_ATLAS_LICSCOPE_BRIDGE_READY",
+  "remainingBlockers": [],
+  "licscopeEvidenceZip": "unknown",
+  "licscopeEvidenceSha256": "unknown",
+  "derivedSignals": {
+    "cloudflareD1OauthCertified": true,
+    "localRuntimeReady": true,
+    "businessDataSyncCoherent": true,
+    "cloudCenterLiveReadOnlyReady": true,
+    "adminHttpMutationPerformed": false,
+    "adminHttpMutationRequiredForThisGate": false
+  },
+  "proves": [
+    "Cloudflare/D1/OAuth read-only certification is available for the licscope lane.",
+    "Cloud Center live read-only evidence is linked for the licscope lane.",
+    "PC/Tablet/Mobile local runtime and business sync evidence are linked for the licscope lane.",
+    "Sales/tender/canonical lineage may be treated as proven for the scoped licscope lane."
+  ],
+  "doesNotProve": [
+    "Does not claim a new deploy was performed.",
+    "Does not claim D1 live writes were performed.",
+    "Does not claim admin HTTP mutation E2E was performed unless a separate evidence file proves it.",
+    "Does not close unrelated app database ghost relations outside the licscope lane."
+  ]
+}

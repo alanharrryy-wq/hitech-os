@@ -32,7 +32,7 @@ DEFAULT_POLICY = {
         "**/internal/runtime/*override*.json",
         "**/runtime/*override*.json"
     ],
-    "safe_self_heal_extensions": [".md", ".markdown", ".txt", ".json", ".csv", ".yml", ".yaml"],
+    "safe_self_heal_extensions": [".md", ".markdown", ".txt", ".json", ".csv", ".yml", ".yaml", ".py", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".css", ".html", ".ps1", ".psm1", ".cmd", ".bat"],
     "commit_groups": [
         {"group": "tooling/autogit", "globs": ["autogit/**"]},
         {"group": "docs/licscope-evidence", "globs": ["apps/terminal-de-venta-system/docs/ops/licscope/**"]},

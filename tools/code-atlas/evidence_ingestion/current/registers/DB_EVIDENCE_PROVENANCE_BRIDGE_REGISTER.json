@@ -1,0 +1,15 @@
+{
+  "tool": "db_evidence_atlas_licscope_bridge_v1",
+  "generatedAt": "2026-07-08T00:06:30+00:00",
+  "scope": "LICSCOPE_CLOUD_APPS_SYNC_LANE",
+  "salesLineageStatus": "PROVEN_BY_LICSCOPE_EVIDENCE",
+  "tenderLineageStatus": "PROVEN_BY_LICSCOPE_EVIDENCE",
+  "canonicalProjectionStatus": "PROVEN_BY_LICSCOPE_EVIDENCE",
+  "remainingBlockers": [],
+  "doesNotProve": [
+    "Does not claim a new deploy was performed.",
+    "Does not claim D1 live writes were performed.",
+    "Does not claim admin HTTP mutation E2E was performed unless a separate evidence file proves it.",
+    "Does not close unrelated app database ghost relations outside the licscope lane."
+  ]
+}

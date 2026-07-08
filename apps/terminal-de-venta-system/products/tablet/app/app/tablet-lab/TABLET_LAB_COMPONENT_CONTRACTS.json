@@ -1,0 +1,62 @@
+{
+  "kind": "TABLET_LAB_COMPONENT_CONTRACTS",
+  "version": "tabctl4-minimal-containers-transparent-zero",
+  "scope": [
+    "/tablet-lab",
+    "local visual lab"
+  ],
+  "no_touch": [
+    "POS real",
+    "checkout real",
+    "carrito real",
+    "Prisma",
+    "lockfiles",
+    "package.json",
+    "PC",
+    "Mobile"
+  ],
+  "contracts": {
+    "topNavRemoval": {
+      "strategy": "route composition without Tablet shell wrapper plus runtime DOM removal guard for shell-injected upper nav only inside /tablet-lab",
+      "mustNotUse": [
+        "!important",
+        "package dependency",
+        "Prisma"
+      ]
+    },
+    "bottomNav": {
+      "labels": [
+        "Vender",
+        "Turno",
+        "Inventario",
+        "Ventas",
+        "Devol.",
+        "Pendientes",
+        "Licencia"
+      ],
+      "role": "main Tablet navigation"
+    },
+    "savedPresets": {
+      "storage": "localStorage",
+      "key": "prisma.tabletLab.tabctl4.savedPresets.v1",
+      "data": "visual mock recipes only"
+    },
+    "traceMarkers": [
+      "data-component",
+      "data-variant",
+      "data-tone",
+      "data-density",
+      "data-viewport",
+      "data-preset",
+      "data-widget-group",
+      "data-effect-group",
+      "data-state-mode",
+      "data-saved-preset"
+    ],
+    "layoutMinimalism": {
+      "rule": "fewest containers possible; no panel-inside-panel nesting unless it creates intentional optical glass/refraction/specular effect",
+      "controls": "control dropdowns and knobs live outside atmospheric canvas in a single left column",
+      "transparentZero": "glass controls can reach zero so preview panels become actually transparent when optical knobs are zero"
+    }
+  }
+}

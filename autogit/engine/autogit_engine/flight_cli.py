@@ -43,6 +43,41 @@ except Exception:
     def ag98_write_ci_decision(*args, **kwargs): return None
 # /AG98_IMPORT_BLOCK_V1
 
+# AG100_IMPORT_BLOCK_V1
+try:
+    from .ag100_learning import (
+        json_text_for_validation as ag100_json_text_for_validation,
+        autofix_staged_whitespace as ag100_autofix_staged_whitespace,
+        capture_failure_context as ag100_capture_failure_context,
+        write_group_checkpoint as ag100_write_group_checkpoint,
+        write_post_run_hygiene_report as ag100_write_post_run_hygiene_report,
+        # AG100_POST_RUN_HYGIENE_V1 marker: post-run hygiene report is wired into apply/merge summaries.
+    )
+except Exception:
+    def ag100_json_text_for_validation(path, max_text_bytes=2 * 1024 * 1024, max_json_bytes=None):
+        p = Path(path)
+        if not p.exists() or not p.is_file():
+            return ""
+        try:
+            limit = max_json_bytes or max(max_text_bytes * 64, 64 * 1024 * 1024)
+            if p.stat().st_size > limit:
+                return ""
+            return p.read_bytes().decode("utf-8-sig")
+        except UnicodeDecodeError:
+            return p.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            return ""
+    def ag100_autofix_staged_whitespace(repo, runner, report, group_paths=None, label=None):
+        return ag98_autofix_staged_whitespace(repo, runner, report, group_paths)
+    def ag100_capture_failure_context(*args, **kwargs):
+        return None
+    def ag100_write_group_checkpoint(*args, **kwargs):
+        return None
+    def ag100_write_post_run_hygiene_report(*args, **kwargs):
+        return None
+# /AG100_IMPORT_BLOCK_V1
+
+
 
 SCHEMA = "autogit.flight_control.v2"
 DEFAULT_OUT = Path(r"F:\descargasf")
@@ -125,23 +160,12 @@ def text_or_empty(p: Path) -> str:
         return ""
 # AG98_JSON_VALIDATION_LARGE_JSON_V1
 def json_text_for_validation(p: Path) -> str:
-    # Read JSON for validation without the small evidence-text cap.
-    # text_or_empty() stays capped for evidence snapshots.
-    if not p.exists() or not p.is_file():
-        return ""
-    try:
-        max_json_bytes = max(int(globals().get("MAX_TEXT_BYTES", 0)) * 64, 64 * 1024 * 1024)
-    except Exception:
-        max_json_bytes = 64 * 1024 * 1024
-    try:
-        if p.stat().st_size > max_json_bytes:
-            return ""
-        return p.read_bytes().decode("utf-8-sig")
-    except UnicodeDecodeError:
-        return p.read_text(encoding="utf-8", errors="replace")
-    except Exception:
-        return ""
-# /AG98_JSON_VALIDATION_LARGE_JSON_V1
+    # AG100_LARGE_JSON_VALIDATION_V1
+    # Validate real working-tree JSON files without the small evidence-text cap.
+    # This prevents false blockers for large Code Atlas registers such as
+    # PATH_ROLE_INDEX.json while keeping text_or_empty() capped for snapshots.
+    return ag100_json_text_for_validation(p, max_text_bytes=MAX_TEXT_BYTES)
+# /AG100_LARGE_JSON_VALIDATION_V1
 
 def is_text_path(rel: str) -> bool:
     return Path(rel).suffix.lower() in TEXT_EXTS or Path(rel).name in {"package.json", "pnpm-lock.yaml", "yarn.lock"}
@@ -589,22 +613,34 @@ def apply_plan(args):
     total=max(1,len(plan.get("commit_groups") or []))
     for idx,g in enumerate(plan.get("commit_groups") or [],1):
         paths=[p for p in g.get("paths",[]) if p]
+        ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="before_reset")
         runner.run(["git","reset"], check=True, timeout=120, name=f"reset_before_{idx}")
-        if not paths: continue
+        if not paths:
+            ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="skipped_empty_paths")
+            continue
         runner.run(["git","add","--",*paths], check=True, timeout=240, name=f"git_add_{idx}_{safe_name(g.get('group','group'))}")
+        ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="after_stage_before_diff")
         diffq=runner.run(["git","diff","--cached","--quiet"], timeout=120, name=f"cached_quiet_{idx}")
         if diffq.returncode == 0:
+            ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="skipped_no_cached_diff")
             continue
-        # AG98_SELF_HEAL_CACHED_CHECK_V1
-        ag98_cached = runner.run(["git","diff","--cached","--check"], timeout=180, name=f"cached_diff_check_{idx}_before_ag98")
-        if ag98_cached.returncode != 0:
-            ag98_fix = ag98_autofix_staged_whitespace(repo, runner, report, paths)
-            if not ag98_fix.get("ok"):
-                runner.run(["git","diff","--cached","--check"], check=True, timeout=180, name=f"cached_diff_check_{idx}_after_ag98")
+        # AG100_SELF_HEAL_CACHED_CHECK_V1
+        ag100_cached = runner.run(["git","diff","--cached","--check"], timeout=180, name=f"cached_diff_check_{idx}_before_ag100")
+        ag100_fix = {"ok": ag100_cached.returncode == 0, "fixed": [], "skipped": [], "not_needed": ag100_cached.returncode == 0}
+        if ag100_cached.returncode != 0:
+            ag100_fix = ag100_autofix_staged_whitespace(repo, runner, report, group_paths=paths, label=f"commit_{idx}_{safe_name(g.get('group','group'))}")
+            if not ag100_fix.get("ok"):
+                # Keep the AG98 bridge as a fallback for older installs.
+                ag98_fix = ag98_autofix_staged_whitespace(repo, runner, report, paths)
+                if not ag98_fix.get("ok"):
+                    runner.run(["git","diff","--cached","--check"], check=True, timeout=180, name=f"cached_diff_check_{idx}_after_ag100")
+        ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="after_self_heal", extra={"self_heal": ag100_fix})
         runner.run(["git","diff","--cached","--check"], check=True, timeout=180, name=f"cached_diff_check_{idx}")
+        ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="before_commit")
         runner.run(["git","commit","-m",g.get("message") or "chore(prisma): update files","-m",g.get("body") or "AutoGit Flight Control commit."], check=True, timeout=600, name=f"git_commit_{idx}")
         sha=runner.run(["git","rev-parse","HEAD"], check=True, name=f"head_after_commit_{idx}").stdout.strip()
         created.append({"group":g.get("group"),"message":g.get("message"),"sha":sha,"paths":paths})
+        ag100_write_group_checkpoint(repo, runner, report, index=idx, total=total, group=g, phase="after_commit", extra={"sha": sha})
         progress(30+int(30*idx/total), f"Commit {idx}/{total}")
     runner.run(["git","reset"], check=True, timeout=120, name="reset_after_commits")
     pr=None; checks=None; merged=None
@@ -641,7 +677,8 @@ def apply_plan(args):
             merged={"returncode":m.returncode,"stdout":m.stdout,"stderr":m.stderr,"ok":m.returncode==0}
             if m.returncode != 0:
                 raise FlightError("PR merge failed")
-    summary={"result":"ok","branch":branch,"created_commits":created,"pr":pr,"checks":checks,"merged":merged,"rollback":"Use generated revert commands; no reset --hard was executed."}
+    hygiene = ag100_write_post_run_hygiene_report(repo, runner, report, context="apply_plan")
+    summary={"result":"ok","branch":branch,"created_commits":created,"pr":pr,"checks":checks,"merged":merged,"post_run_hygiene":hygiene,"rollback":"Use generated revert commands; no reset --hard was executed."}
     # AG98_APPLY_DASHBOARD_HOOK_V1
     try:
         ag98_write_apply_dashboard(report, summary)
@@ -698,6 +735,7 @@ def merge_command(args):
         raise FlightError("Merge requires --wait-checks or --allow-merge-no-checks")
     m=runner.run(["gh","pr","merge",args.pr,"--merge","--delete-branch"], timeout=600, name="gh_pr_merge")
     summary={"result":"ok" if m.returncode==0 else "failed", "returncode":m.returncode, "stdout":m.stdout, "stderr":m.stderr}
+    summary["post_run_hygiene"] = ag100_write_post_run_hygiene_report(repo, runner, report, context="merge_command")
     # AG98_SYNC_LOCAL_MAIN_HOOK_V1
     if m.returncode == 0 and getattr(args, "sync_local_main", False):
         sync_steps = []
@@ -723,6 +761,11 @@ def fail_zip(out: Path, report: Path|None, exc: BaseException):
     stamp=now_stamp(); fail=out/f"autogit flight {stamp} fail"
     fail.mkdir(parents=True, exist_ok=True)
     (fail/"ERROR.txt").write_text(repr(exc), encoding="utf-8")
+    # AG100_FAIL_ZIP_CONTEXT_V1
+    try:
+        ag100_capture_failure_context(Path.cwd(), fail, report=report, exc=exc)
+    except Exception as ag100_exc:
+        (fail/"AG100_FAILURE_CONTEXT_ERROR.txt").write_text(repr(ag100_exc), encoding="utf-8")
     # AG98_FAIL_ZIP_STATUS_HOOK_V1
     try:
         _status = subprocess.run(["git", "status", "--short", "--branch"], cwd=str(Path.cwd()), text=True, encoding="utf-8", errors="replace", stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60)

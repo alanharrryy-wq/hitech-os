@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_RUNTIME_EVIDENCE_LINKED",
+  "links": [
+    {
+      "surface": "Tablet Core",
+      "port": 3120,
+      "evidenceLevel": "LOCAL_RUNTIME_READONLY",
+      "evidence": "live_smoke_outputs/local-runtime-surface-readiness.json",
+      "proves": [
+        "tablet reads operational sale/outbox scope"
+      ],
+      "doesNotProve": [
+        "tablet performed new live mutation in this run"
+      ]
+    },
+    {
+      "surface": "PC Backoffice",
+      "port": 3130,
+      "evidenceLevel": "LOCAL_RUNTIME_READONLY",
+      "evidence": "live_smoke_outputs/local-runtime-surface-readiness.json",
+      "proves": [
+        "pc reads matching canonical sale scope"
+      ],
+      "doesNotProve": [
+        "pc performed new live mutation in this run"
+      ]
+    },
+    {
+      "surface": "Mobile",
+      "port": 3140,
+      "evidenceLevel": "LOCAL_RUNTIME_READONLY",
+      "evidence": "live_smoke_outputs/local-runtime-surface-readiness.json",
+      "proves": [
+        "mobile snapshot reads same operational scope"
+      ],
+      "doesNotProve": [
+        "mobile writes data"
+      ]
+    },
+    {
+      "surface": "Cloud Center",
+      "port": 3160,
+      "evidenceLevel": "LIVE_READONLY",
+      "evidence": "live_smoke_outputs/cloud-center-live-readiness.json",
+      "proves": [
+        "public live health/capabilities/D1_BOUND"
+      ],
+      "doesNotProve": [
+        "admin confirmed mutation"
+      ]
+    },
+    {
+      "surface": "Cloudflare D1",
+      "evidenceLevel": "LIVE_READONLY",
+      "evidence": "live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+      "proves": [
+        "Wrangler OAuth",
+        "D1 schema/read-only queries",
+        "audit event presence",
+        "fine secret scan"
+      ],
+      "doesNotProve": [
+        "deploy or live write was performed"
+      ]
+    }
+  ],
+  "scope": {
+    "businessId": "biz_prisma_rey_lineage_seed",
+    "date": "2026-07-05",
+    "terminalId": "term_tablet_pos_001",
+    "storeId": "store_prisma_rey_centro",
+    "tickets": 12,
+    "totalCents": 36000
+  }
+}

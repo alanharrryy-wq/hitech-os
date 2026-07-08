@@ -1,6 +1,8 @@
 import type { MobileDataPlaneConfig } from "./types";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../../shared/customer/prisma-original-customer";
 
+export type MobileDataPlaneConfigOverrides = Partial<Pick<MobileDataPlaneConfig, "businessId" | "terminalId" | "salesDate">>;
+
 function readInt(name: string, fallback: number, min = 0, max = Number.MAX_SAFE_INTEGER): number {
   const raw = process.env[name];
   if (!raw) return fallback;
@@ -29,10 +31,18 @@ function readOrigin(name: string, fallback: string | null): string | null {
   }
 }
 
-export function getMobileDataPlaneConfig(): MobileDataPlaneConfig {
+function cleanOverride(value: string | null | undefined): string | undefined {
+  const parsed = value?.trim();
+  return parsed || undefined;
+}
+
+export function getMobileDataPlaneConfig(overrides: MobileDataPlaneConfigOverrides = {}): MobileDataPlaneConfig {
+  const businessId = cleanOverride(overrides.businessId) ?? readString("PRISMA_MOBILE_BUSINESS_ID", PRISMA_ORIGINAL_CUSTOMER.businessId);
+  const terminalId = cleanOverride(overrides.terminalId) ?? readString("PRISMA_MOBILE_TERMINAL_ID", PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId);
   return {
-    businessId: readString("PRISMA_MOBILE_BUSINESS_ID", PRISMA_ORIGINAL_CUSTOMER.businessId),
-    terminalId: readString("PRISMA_MOBILE_TERMINAL_ID", PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId),
+    businessId,
+    terminalId,
+    salesDate: cleanOverride(overrides.salesDate) ?? cleanOverride(process.env.PRISMA_MOBILE_SALES_DATE),
     businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", PRISMA_ORIGINAL_CUSTOMER.displayName),
     customerId: readString("PRISMA_MOBILE_CUSTOMER_ID", PRISMA_ORIGINAL_CUSTOMER.customerId),
     tenantId: readString("PRISMA_MOBILE_TENANT_ID", PRISMA_ORIGINAL_CUSTOMER.tenantId),

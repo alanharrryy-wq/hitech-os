@@ -2,7 +2,10 @@ import { prisma } from "../prisma/client";
 import type { SalesHistoryInput, SalesTodayInput } from "./validators";
 
 const MAX_HISTORY_DAYS = 60;
-const CLOSED_SALE_STATUSES = ["PAID", "COMPLETED"];
+
+function sqliteIso(value: Date): string {
+  return value.toISOString().replace(".000Z", "Z");
+}
 
 function toIso(value: unknown): string {
   if (value instanceof Date) return value.toISOString();
@@ -116,27 +119,79 @@ function ticketRows(sales: any[], returns: any[] = []) {
   }));
 }
 
+function sortByIds<T extends { id: string }>(rows: T[], ids: string[]) {
+  const index = new Map(ids.map((id, position) => [id, position]));
+  return [...rows].sort((a, b) => (index.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (index.get(b.id) ?? Number.MAX_SAFE_INTEGER));
+}
+
+async function saleIdsForRange(input: { businessId: string; terminalId?: string }, range: { from: Date; to: Date }, limit?: number) {
+  const terminalId = input.terminalId ?? null;
+  const maxRows = Math.max(1, Math.min(limit ?? 5000, 5000));
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: string }>>(
+    `SELECT id
+       FROM Sale
+      WHERE businessId = ?
+        AND status IN ('PAID', 'COMPLETED')
+        AND createdAt >= ?
+        AND createdAt < ?
+        AND (? IS NULL OR terminalId = ?)
+      ORDER BY createdAt DESC, id DESC
+      LIMIT ?`,
+    input.businessId,
+    sqliteIso(range.from),
+    sqliteIso(range.to),
+    terminalId,
+    terminalId,
+    maxRows
+  );
+  return rows.map((row) => row.id);
+}
+
+async function saleReturnIdsForRange(businessId: string, range: { from: Date; to: Date }, limit?: number) {
+  const maxRows = Math.max(1, Math.min(limit ?? 5000, 5000));
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: string }>>(
+    `SELECT id
+       FROM SaleReturn
+      WHERE businessId = ?
+        AND status <> 'CANCELLED'
+        AND createdAt >= ?
+        AND createdAt < ?
+      ORDER BY createdAt DESC, id DESC
+      LIMIT ?`,
+    businessId,
+    sqliteIso(range.from),
+    sqliteIso(range.to),
+    maxRows
+  );
+  return rows.map((row) => row.id);
+}
+
+async function salesWithLinesByIds(ids: string[], businessId: string) {
+  if (!ids.length) return [];
+  const rows = await prisma.sale.findMany({
+    where: { businessId, id: { in: ids } },
+    include: { lines: true }
+  });
+  return sortByIds(rows, ids);
+}
+
+async function saleReturnsByIds(ids: string[], businessId: string) {
+  if (!ids.length) return [];
+  const rows = await prisma.saleReturn.findMany({
+    where: { businessId, id: { in: ids } }
+  });
+  return sortByIds(rows, ids);
+}
+
 export async function getTodaySalesSummary(input: SalesTodayInput) {
   const { from, to, date } = localDayRange(input.date);
+  const [saleIds, returnIds] = await Promise.all([
+    saleIdsForRange(input, { from, to }),
+    saleReturnIdsForRange(input.businessId, { from, to })
+  ]);
   const [sales, returns] = await Promise.all([
-    prisma.sale.findMany({
-      where: {
-        businessId: input.businessId,
-        status: { in: CLOSED_SALE_STATUSES },
-        createdAt: { gte: from, lt: to },
-        ...(input.terminalId ? { terminalId: input.terminalId } : {})
-      },
-      include: { lines: true },
-      orderBy: { createdAt: "desc" }
-    }),
-    prisma.saleReturn.findMany({
-      where: {
-        businessId: input.businessId,
-        status: { not: "CANCELLED" },
-        createdAt: { gte: from, lt: to }
-      },
-      orderBy: { createdAt: "desc" }
-    })
+    salesWithLinesByIds(saleIds, input.businessId),
+    saleReturnsByIds(returnIds, input.businessId)
   ]);
 
   const grossTotalCents = sales.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
@@ -181,19 +236,8 @@ export async function getTodaySalesSummary(input: SalesTodayInput) {
 export async function getSalesHistorySummary(input: SalesHistoryInput) {
   const range = historyRange(input);
   const query = input.query?.trim().toLowerCase() ?? "";
-  const where: any = {
-    businessId: input.businessId,
-    status: { in: CLOSED_SALE_STATUSES },
-    createdAt: { gte: range.from, lt: range.to },
-    ...(input.terminalId ? { terminalId: input.terminalId } : {})
-  };
-
-  const sales = await prisma.sale.findMany({
-    where,
-    include: { lines: true },
-    orderBy: { createdAt: "desc" },
-    take: input.limit
-  });
+  const saleIds = await saleIdsForRange(input, { from: range.from, to: range.to }, input.limit);
+  const sales = await salesWithLinesByIds(saleIds, input.businessId);
 
   const filtered = query
     ? sales.filter((sale: any) => {
@@ -208,13 +252,8 @@ export async function getSalesHistorySummary(input: SalesHistoryInput) {
         return haystack.includes(query);
       })
     : sales;
-  const returns = await prisma.saleReturn.findMany({
-    where: {
-      businessId: input.businessId,
-      status: { not: "CANCELLED" },
-      createdAt: { gte: range.from, lt: range.to }
-    }
-  });
+  const returnIds = await saleReturnIdsForRange(input.businessId, { from: range.from, to: range.to }, input.limit);
+  const returns = await saleReturnsByIds(returnIds, input.businessId);
   const tickets = ticketRows(filtered, returns).filter((ticket) => ticket.saleId && ticket.saleId !== "undefined");
   const totalCents = tickets.reduce((sum: number, sale: any) => sum + sale.totalCents, 0);
   const returnsTotalCents = returns.reduce((sum: number, row: any) => sum + row.amountCents, 0);

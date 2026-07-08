@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
-  "status": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
-  "finalStatus": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
+  "status": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
+  "finalStatus": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
   "passRequires": [
     {
       "condition": "tenant/scope contract exists",
@@ -64,26 +64,27 @@
       "blocker": ""
     },
     {
-      "condition": "Cloudflare deploy",
-      "status": "BLOCKED",
-      "evidence": "deploy/DEPLOY_BLOCKERS.json",
-      "blocker": "BLOCKED_BY_MISSING_SECRET"
+      "condition": "Cloudflare/D1/OAuth certification",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+      "blocker": ""
     },
     {
-      "condition": "D1 live migrations",
-      "status": "BLOCKED",
-      "evidence": "deploy/DEPLOY_BLOCKERS.json",
-      "blocker": "BLOCKED_BY_MISSING_SECRET"
+      "condition": "D1 remote read-only migrations/schema/audit",
+      "status": "PASS",
+      "evidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+      "blocker": ""
     },
     {
-      "condition": "live smoke certification",
-      "status": "BLOCKED",
+      "condition": "live read-only smoke certification",
+      "status": "PASS",
       "evidence": "deploy/LIVE_SMOKE_BLOCKERS.json",
-      "blocker": "BLOCKED_BY_MISSING_SECRET"
+      "blocker": ""
     }
   ],
   "deployPerformed": false,
   "d1LiveWritePerformed": false,
+  "d1ReadOnlyCertified": true,
   "sourceOnly": false,
-  "liveSafeBlockedWithExactRequirements": true
+  "liveSafeBlockedWithExactRequirements": false
 }

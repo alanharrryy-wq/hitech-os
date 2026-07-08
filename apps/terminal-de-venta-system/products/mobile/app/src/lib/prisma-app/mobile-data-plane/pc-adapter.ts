@@ -1,8 +1,31 @@
 import type { CanonicalPcDashboard } from "./types";
 import { asRecord, readCents, readNonNegativeInt, readNumber, readString, unwrapOkData } from "./extractors";
 
+function centsFromMoneyLabel(value: unknown): number | null {
+  const text = String(value ?? "").trim();
+  if (!text) return null;
+  const numeric = Number(text.replace(/[^\d.-]/g, ""));
+  if (!Number.isFinite(numeric)) return null;
+  return Math.round(numeric * 100);
+}
+
 export function normalizePcDashboard(payload: unknown): CanonicalPcDashboard {
   const data = asRecord(unwrapOkData(payload));
+  const salesControl = asRecord(data.salesControl);
+  if (Object.keys(salesControl).length > 0) {
+    const recentActivity = asRecord(salesControl.recentActivity);
+    const salesCents = centsFromMoneyLabel(salesControl.netLabel ?? salesControl.totalLabel ?? recentActivity.netLabel ?? recentActivity.totalLabel);
+    return {
+      ok: true,
+      branchName: readString(salesControl, ["branchCountLabel"], "PC Sales Control"),
+      branchStatus: "sano",
+      consolidatedSalesCents: salesCents,
+      consolidatedTickets: readNonNegativeInt(salesControl, ["ticketsLabel"], readNonNegativeInt(recentActivity, ["ticketsLabel"], 0)),
+      syncLagMs: null,
+      activeAlerts: 0
+    };
+  }
+
   const branch = asRecord(data.branch ?? data.store ?? data.location);
   const sync = asRecord(data.sync ?? data.syncStatus);
   const sales = asRecord(data.sales ?? data.today ?? data.kpis);

@@ -2,4 +2,4 @@
 
 | blocker | status | requiredExternalInput | secretPrinted | deployPerformed | d1LiveWritePerformed |
 | --- | --- | --- | --- | --- | --- |
-| BLOCKED_BY_MISSING_SECRET | BLOCKED_BY_MISSING_SECRET | Provide Cloudflare non-interactive credentials in the local environment. | false | false | false |
+|  | PASS | No new deploy is required for Cloudflare/D1/OAuth certification; live Worker and D1 were verified read-only. | false | false | false |

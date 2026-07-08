@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
   "links": [
     {
       "domain": "licensing",
@@ -11,7 +11,7 @@
       "table": "licenses,license_assignments,audit_events",
       "verifier": "verify:license-without-client-blocked",
       "sourceOnlyEvidence": "worker source blocks active license mutation without existing client assignment/setup bundle",
-      "runtimeLiveEvidence": "blocked by missing Cloudflare secret",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -25,7 +25,7 @@
       "table": "customer_device_claim_slots,customer_device_claims,devices,audit_events",
       "verifier": "verify:tablet-claim,verify:pc-claim,verify:mobile-claim",
       "sourceOnlyEvidence": "claim consumes prepared slot and blocks surface over limit",
-      "runtimeLiveEvidence": "BLOCKED_BY_MISSING_SECRET",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -39,7 +39,7 @@
       "table": "license_plans,licenses,license_assignments,customer_setup_bundles,customer_device_claim_slots,audit_events",
       "verifier": "verify:customer-setup-full",
       "sourceOnlyEvidence": "one-shot plan provisioning creates license, assignment, setup bundle and claim slots",
-      "runtimeLiveEvidence": "BLOCKED_BY_MISSING_SECRET",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -51,9 +51,9 @@
       "service": "guardTabletFeatureForApi,posEngineRepository.completeLocalSale",
       "DB": "products/tablet/app/data/tablet-pos.db",
       "table": "Sale,SaleLine,SalePaymentTender,CashSession,OutboxEvent",
-      "verifier": "verify:device-without-license-blocked,verify:sales-provenance-lineage",
+      "verifier": "verify:device-without-license-blocked,verify:sales-provenance-lineage,verify:local-runtime:surface-readiness",
       "sourceOnlyEvidence": "sale completion is license-gated before local sale mutation",
-      "runtimeLiveEvidence": "local runtime not launched by this closure",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -65,9 +65,9 @@
       "service": "products/tablet/app/src/server/pos-outbox/index.ts,products/tablet/app/src/server/sync/dispatcher.ts",
       "DB": "products/tablet/app/data/tablet-pos.db",
       "table": "OutboxEvent,SyncCheckpoint",
-      "verifier": "verify:sales-outbox-linking,verify:outbox-sync-canonical",
+      "verifier": "verify:sales-outbox-linking,verify:outbox-sync-canonical,verify:local-runtime:surface-readiness",
       "sourceOnlyEvidence": "outbox and sync services are mapped and payloads indexed",
-      "runtimeLiveEvidence": "local runtime not launched by this closure",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -79,9 +79,9 @@
       "service": "products/pc/app/src/server/services/pc-command-center.service.ts",
       "DB": "products/pc/app/data/canonical.db",
       "table": "Sale,SaleLine,SalePaymentTender,Store,Terminal,Product",
-      "verifier": "verify:data-surface:pc,verify:golden-path-operations",
+      "verifier": "verify:data-surface:pc,verify:golden-path-operations,verify:local-runtime:surface-readiness",
       "sourceOnlyEvidence": "PC loader/API maps to canonical.db and recent activity range",
-      "runtimeLiveEvidence": "browser/runtime not launched by this closure",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -93,9 +93,9 @@
       "service": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/state-loader.ts",
       "DB": "products/tablet/app/data/tablet-pos.db",
       "table": "Sale,Product,StockSnapshot,DeviceHeartbeat",
-      "verifier": "verify:data-surface:mobile,verify:golden-path-operations",
+      "verifier": "verify:data-surface:mobile,verify:golden-path-operations,verify:local-runtime:surface-readiness",
       "sourceOnlyEvidence": "mobile snapshot loader reads local operational data without writing",
-      "runtimeLiveEvidence": "browser/runtime not launched by this closure",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
       "status": "PASS",
       "blocker": ""
     },
@@ -123,7 +123,7 @@
       "table": "customer_setup_bundles,customer_device_claims,licenses",
       "verifier": "verify:customer-setup-full",
       "sourceOnlyEvidence": "portal exposes setup/license/claim status without admin token",
-      "runtimeLiveEvidence": "BLOCKED_BY_MISSING_SECRET",
+      "runtimeLiveEvidence": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
       "status": "PASS",
       "blocker": ""
     }

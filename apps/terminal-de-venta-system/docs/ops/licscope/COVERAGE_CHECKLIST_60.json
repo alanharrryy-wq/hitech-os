@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
   "requiredItemCount": 60,
   "items": [
     {
@@ -630,17 +630,18 @@
     {
       "number": 47,
       "requirement": "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.",
-      "status": "BLOCKED",
+      "status": "PASS",
       "filesProduced": [
-        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
-        "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"
+        "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+        "docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json",
+        "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
+        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json"
       ],
       "evidence": [
-        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
-        "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"
+        "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED; PASS_LOCAL_RUNTIME_READONLY"
       ],
-      "blocker": "BLOCKED_BY_MISSING_SECRET",
-      "nextAction": "Provide live Cloudflare credentials and run governed live smokes."
+      "blocker": "",
+      "nextAction": ""
     },
     {
       "number": 48,

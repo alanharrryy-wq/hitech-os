@@ -1,4 +1,4 @@
-import { getMobileDataPlaneConfig, getMobileDataPlaneConfigDiagnostics } from "./config";
+import { getMobileDataPlaneConfig, getMobileDataPlaneConfigDiagnostics, type MobileDataPlaneConfigOverrides } from "./config";
 import { mobileDataPlaneEndpointRegistry } from "./endpoints";
 import { fetchJsonWithRetry, probeFromFetchResult } from "./http";
 import { deriveCashState } from "./cash-policy";
@@ -31,8 +31,8 @@ function runtimeMode(input: { tabletOk: boolean; pcOk: boolean; staleAfterMs: nu
   return "unknown";
 }
 
-export async function loadMobileDataPlaneState(): Promise<MobileDataPlaneState> {
-  const config = getMobileDataPlaneConfig();
+export async function loadMobileDataPlaneState(overrides: MobileDataPlaneConfigOverrides = {}): Promise<MobileDataPlaneState> {
+  const config = getMobileDataPlaneConfig(overrides);
   const endpoints = mobileDataPlaneEndpointRegistry(config);
   const [
     salesResult,

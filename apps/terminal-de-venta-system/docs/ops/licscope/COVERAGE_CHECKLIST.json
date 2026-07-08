@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
-  "finalStatus": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
+  "finalStatus": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
   "items": [
     {
       "item": "1. Export row-level sanitizado completo de las DBs principales, no sólo samples.",
@@ -477,14 +477,13 @@
     },
     {
       "item": "47. Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.",
-      "status": "BLOCKED",
-      "fileProduced": "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json; docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json",
+      "status": "PASS",
+      "fileProduced": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json; docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json; docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json; docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
       "evidence": [
-        "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json",
-        "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"
+        "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED; PASS_LOCAL_RUNTIME_READONLY"
       ],
-      "blocker": "BLOCKED_BY_MISSING_SECRET",
-      "nextAction": "Provide live Cloudflare credentials and run governed live smokes."
+      "blocker": "",
+      "nextAction": ""
     },
     {
       "item": "48. Contrato de production readiness.",
@@ -618,13 +617,14 @@
     },
     {
       "item": "Final result ZIP",
-      "status": "BLOCKED",
-      "fileProduced": "F:/descargasf/licscope final <DDMM> <HHMM> result.zip",
+      "status": "PASS",
+      "fileProduced": "F:\\descargasf\\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip",
       "evidence": [
-        "ZIP is created after validation and recorded in ZIP_RESULT.json plus sha256 sidecar."
+        "ZIP exists: F:\\descargasf\\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip",
+        "F:\\descargasf\\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip.sha256.txt"
       ],
-      "blocker": "RESULT_ZIP_PENDING_UNTIL_PACKAGE_STEP",
-      "nextAction": "Create ZIP after verifiers/typechecks complete."
+      "blocker": "",
+      "nextAction": ""
     }
   ]
 }

@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_PRODUCTION_GATE_EVIDENCE_LINKED",
+  "productionGreenAllowed": true,
+  "gates": [
+    {
+      "gate": "tenantScope",
+      "status": "PASS",
+      "evidence": "matrices/TENANT_SCOPE_MATRIX.json"
+    },
+    {
+      "gate": "salesProvenance",
+      "status": "PASS",
+      "evidence": "PRODUCTION_READINESS_CONTRACT.json + verifier_outputs/verify:sales-provenance-lineage"
+    },
+    {
+      "gate": "salesOutboxCanonical",
+      "status": "PASS",
+      "evidence": "matrices/OUTBOX_SYNC_CANONICAL_MATRIX.json + verify:outbox-sync-canonical"
+    },
+    {
+      "gate": "businessDataSyncCoherence",
+      "status": "PASS",
+      "evidence": "verifier_outputs/verify-business-data-sync-coherence.json"
+    },
+    {
+      "gate": "localRuntimeSurfaces",
+      "status": "PASS",
+      "evidence": "live_smoke_outputs/local-runtime-surface-readiness.json"
+    },
+    {
+      "gate": "cloudCenterLiveReadOnly",
+      "status": "PASS",
+      "evidence": "live_smoke_outputs/cloud-center-live-readiness.json"
+    },
+    {
+      "gate": "cloudflareD1Oauth",
+      "status": "PASS",
+      "evidence": "live_smoke_outputs/cloudflare-d1-oauth-certification.json"
+    },
+    {
+      "gate": "adminHttpMutation",
+      "status": "SEPARATE_GATE_NOT_REQUIRED_FOR_OAUTH_D1_CERTIFICATION",
+      "evidence": "deploy/LIVE_SMOKE_BLOCKERS.json"
+    }
+  ],
+  "remainingBlockers": []
+}

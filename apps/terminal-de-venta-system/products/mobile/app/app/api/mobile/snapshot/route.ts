@@ -8,8 +8,20 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET() {
-  const state = await loadMobileDataPlaneState();
+function readScopedOverrides(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const overrides: { businessId?: string; terminalId?: string; salesDate?: string } = {};
+  const businessId = params.get("businessId")?.trim();
+  const terminalId = params.get("terminalId")?.trim();
+  const salesDate = params.get("date")?.trim();
+  if (businessId) overrides.businessId = businessId;
+  if (terminalId) overrides.terminalId = terminalId;
+  if (salesDate) overrides.salesDate = salesDate;
+  return overrides;
+}
+
+export async function GET(request: Request) {
+  const state = await loadMobileDataPlaneState(readScopedOverrides(request));
   const source = sourceFromRuntimeMode(state.runtimeMode);
   const snapshot = buildSnapshotPayload(state);
 

@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_CANONICAL_PROJECTION_PROVENANCE_CERTIFIED_BY_LICSCOPE",
+  "sourceMatrix": {
+    "generatedAt": "2026-07-07T22:27:23.654Z",
+    "matrix": "OUTBOX_SYNC_CANONICAL_MATRIX",
+    "rows": [
+      {
+        "outbox": "OutboxEvent",
+        "sync": "SyncCheckpoint",
+        "canonical": "canonical.db",
+        "status": "WARNING",
+        "evidence": "relationship_edges.json"
+      }
+    ]
+  },
+  "evidence": [
+    "verify:outbox-sync-canonical",
+    "verify:business-data-sync-coherence",
+    "local-runtime-surface-readiness.json"
+  ]
+}

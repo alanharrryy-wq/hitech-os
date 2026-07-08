@@ -19,6 +19,7 @@ export type SourceStatusValue = "ok" | "stale" | "offline" | "error" | "unknown"
 export type MobileDataPlaneConfig = {
   businessId: string;
   terminalId: string;
+  salesDate?: string | null;
   businessName: string;
   customerId: string;
   tenantId: string;

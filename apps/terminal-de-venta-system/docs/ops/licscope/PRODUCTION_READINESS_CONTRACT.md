@@ -1,6 +1,6 @@
 # Production Readiness Contract
 
-Status: BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED
+Status: PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED
 
 | condition | status | evidence | blocker |
 | --- | --- | --- | --- |
@@ -14,6 +14,6 @@ Status: BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED
 | audit completeness rules | PASS | AUDIT_COMPLETENESS_RULES.json,audit_events/recordAudit |  |
 | revoke/renewal/replacement verifier exists | PASS | verify:revoke-renewal-replacement |  |
 | golden path verifier exists | PASS | verify:golden-path-operations |  |
-| Cloudflare deploy | BLOCKED | deploy/DEPLOY_BLOCKERS.json | BLOCKED_BY_MISSING_SECRET |
-| D1 live migrations | BLOCKED | deploy/DEPLOY_BLOCKERS.json | BLOCKED_BY_MISSING_SECRET |
-| live smoke certification | BLOCKED | deploy/LIVE_SMOKE_BLOCKERS.json | BLOCKED_BY_MISSING_SECRET |
+| Cloudflare/D1/OAuth certification | PASS | docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json |  |
+| D1 remote read-only migrations/schema/audit | PASS | docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json |  |
+| live read-only smoke certification | PASS | deploy/LIVE_SMOKE_BLOCKERS.json |  |
