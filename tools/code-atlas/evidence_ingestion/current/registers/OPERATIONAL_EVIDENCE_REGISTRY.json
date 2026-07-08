@@ -10,15 +10,15 @@
     "productionBlockers": [],
     "productionGate": "NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED",
     "rawDatabasesIncluded": false,
-    "repo": "F:\\repos\\hitech-os",
+    "repo": "<PROJECT_ROOT>",
     "status": "SOURCE_READY_NOT_PRODUCTION_CERTIFIED",
     "tool": "code_atlas_operational_v3"
   },
   "zipManifest": {
-    "selected_path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-    "selected_scope": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-    "repo_root": "F:\\repos\\hitech-os",
-    "downloads_root": "F:\\descargasf",
+    "selected_path": "<PROJECT_ROOT>\\apps\\terminal-de-venta-system",
+    "selected_scope": "<PROJECT_ROOT>\\apps\\terminal-de-venta-system",
+    "repo_root": "<PROJECT_ROOT>",
+    "downloads_root": "<OUTPUT_ROOT>",
     "monolith_launcher_only": true,
     "runner_module": "code_atlas.operational.run_operational_atlas",
     "zip_base": "dbevid",
@@ -27,7 +27,7 @@
     "viewer_refined": {
       "ok": true,
       "viewer": "DB Evidence Aurora Glass Visual Final v1",
-      "html_path": "F:\\descargasf\\_dbevid_work_20260706_231137_26708\\operational_output\\operational_evidence_atlas.html",
+      "html_path": "<OUTPUT_ROOT>\\_dbevid_work_20260706_231137_26708\\operational_output\\operational_evidence_atlas.html",
       "bytes": 324967
     },
     "expected_outputs": [
@@ -42,7 +42,7 @@
     "generated_file_count": 36,
     "kind": "db_evidence_atlas_single_zip_v1",
     "status": "PASS_DB_EVIDENCE_ATLAS_RESULT_ZIP_CREATED",
-    "final_zip": "F:\\descargasf\\dbevid 0607 2311 result.zip",
+    "final_zip": "<OUTPUT_ROOT>\\dbevid 0607 2311 result.zip",
     "output_policy": "single_final_zip_in_downloads_root",
     "raw_databases_included": false,
     "generated_at": "2026-07-06T23:11:48"

@@ -1,0 +1,64 @@
+{
+  "mode": "app_map",
+  "buttonLabel": "App Map",
+  "selectorLabel": "App a mapear",
+  "readOnly": true,
+  "targets": [
+    {
+      "id": "",
+      "label": "Sin selección"
+    },
+    {
+      "id": "tablet",
+      "label": "Tablet"
+    },
+    {
+      "id": "pc",
+      "label": "PC"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile"
+    },
+    {
+      "id": "web",
+      "label": "Web / EIT"
+    },
+    {
+      "id": "cloud-center",
+      "label": "Cloud Center"
+    },
+    {
+      "id": "control-center",
+      "label": "Control Center"
+    },
+    {
+      "id": "chart-lab",
+      "label": "Chart Lab"
+    },
+    {
+      "id": "all",
+      "label": "Todas"
+    }
+  ],
+  "outputFiles": [
+    "01_SURFACE_REGISTRY.json",
+    "02_ROUTE_COMPONENT_MAP.json",
+    "03_COMPONENT_OWNERSHIP_MAP.json",
+    "04_LAYER_ROLE_KIND_MAP.json",
+    "05_SELECTOR_GRAPH.json",
+    "06_SELECTOR_USAGE.csv",
+    "07_TOKEN_GRAPH.json",
+    "08_LEGACY_TOKEN_ALIAS_MAP.json",
+    "09_STATE_MATRIX.json",
+    "10_CONTROL_APPLICABILITY_MATRIX.json",
+    "11_PRESET_ELIGIBILITY_REGISTRY.json",
+    "12_POS_PROTECTION_MAP.json",
+    "13_ZERO_MEANS_ZERO_AUDIT.json",
+    "14_IMPORTANT_AUDIT_FILTERED.md",
+    "15_ORPHAN_DUPLICATE_SHARED_SELECTORS.md",
+    "16_PRESET_PROMOTION_CONTRACT.md",
+    "17_CONTINUATION.md",
+    "app_map_viewer.html"
+  ]
+}

@@ -56,7 +56,7 @@ NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
 VisibilityPreset = Literal["executive", "engineering", "raw"]
-OutputMode = Literal["svg", "tree", "tree_html", "black_glass", "db_black_glass_erd", "todo_el_show", "db_evidence_atlas"]
+OutputMode = Literal["svg", "tree", "tree_html", "black_glass", "db_black_glass_erd", "todo_el_show", "db_evidence_atlas", "app_map", "surface_target_atlas"]
 
 
 # ----------------------------
@@ -68,6 +68,17 @@ CODE_ATLAS_FRAME_DEPTH_FIX_V1 = "outer-frame-transparent-dynamic-depth"
 
 DEFAULT_THEME_ID = "silver_frost_cyan"
 DEFAULT_VIEW: GraphView = "package"
+APP_MAP_TARGETS: tuple[tuple[str, str], ...] = (
+    ("", "Sin selección"),
+    ("tablet", "Tablet"),
+    ("pc", "PC"),
+    ("mobile", "Mobile"),
+    ("web", "Web / EIT"),
+    ("cloud-center", "Cloud Center"),
+    ("control-center", "Control Center"),
+    ("chart-lab", "Chart Lab"),
+    ("all", "Todas"),
+)
 ENABLE_VISUAL_CONTROL_SIDECAR = (
     os.environ.get("CODE_ATLAS_VISUAL_GUIDE", "1").strip().lower()
     not in {"0", "false", "off", "no"}
@@ -3750,6 +3761,30 @@ def _coerce_output_mode(value: Any) -> OutputMode:
     }:
         return "db_evidence_atlas"
     # /CODE_ATLAS_DB_EVIDENCE_ATLAS_MODE_V01
+    # CODE_ATLAS_SURFACE_TARGET_ATLAS_MODE_V01
+    if cleaned in {
+        "surface_target_atlas",
+        "surface target atlas",
+        "surface atlas",
+        "target atlas",
+        "tabatlas1",
+        "tablet target atlas",
+        "tablet atlas",
+    }:
+        return "surface_target_atlas"
+    # /CODE_ATLAS_SURFACE_TARGET_ATLAS_MODE_V01
+
+    # CODE_ATLAS_APP_MAP_MODE_V01
+    if cleaned in {
+        "app_map",
+        "app map",
+        "appmap",
+        "visual app map",
+        "surface map",
+        "tablet map",
+    }:
+        return "app_map"
+    # /CODE_ATLAS_APP_MAP_MODE_V01
     if cleaned in {
         "db_black_glass_erd",
         "db_erd",
@@ -5413,11 +5448,35 @@ class SelectorDialog(QDialog):
 
     @property
     def selected_focus_target(self) -> str:
-        return _clean_text(self.focus_entry.text())
+        widget = getattr(self, "focus_entry", None)
+        if widget is None:
+            return ""
+        if hasattr(widget, "currentData"):
+            data = widget.currentData()
+            if data is not None:
+                return _clean_text(data)
+        if hasattr(widget, "currentText"):
+            return _clean_text(widget.currentText())
+        if hasattr(widget, "text"):
+            return _clean_text(widget.text())
+        return ""
 
     @selected_focus_target.setter
     def selected_focus_target(self, value: Optional[str]) -> None:
-        self.focus_entry.setText(_clean_text(value))
+        cleaned = _clean_text(value)
+        widget = getattr(self, "focus_entry", None)
+        if widget is None:
+            return
+        if hasattr(widget, "findData") and hasattr(widget, "setCurrentIndex"):
+            index = widget.findData(cleaned)
+            if index >= 0:
+                widget.setCurrentIndex(index)
+                return
+        if hasattr(widget, "setCurrentText"):
+            widget.setCurrentText(cleaned)
+            return
+        if hasattr(widget, "setText"):
+            widget.setText(cleaned)
 
     def apply_theme_stylesheet(self, theme_id: Optional[str] = None) -> None:
         resolved_theme = normalize_theme(theme_id or self.selected_theme or self._theme_catalog.default_id)
@@ -5578,6 +5637,24 @@ class SelectorDialog(QDialog):
         footer_text_stack.addWidget(footer_hint)
 
         self.cancel_button = create_button("Cancelar", "danger", self.cancel, minimum_width=124)
+        self.app_map_button = create_button(
+            "App Map",
+            "secondary",
+            self.confirm_app_map,
+            tooltip="Genera App Map read-only para la app seleccionada sin tocar superficies ni procesos.",
+            minimum_width=124,
+            enabled=False,
+        )
+        # CODE_ATLAS_SURFACE_TARGET_ATLAS_BUTTON_V01
+        self.surface_target_atlas_button = create_button(
+            "Surface Target Atlas",
+            "evidence",
+            self.confirm_surface_target_atlas,
+            tooltip="Genera tabatlas1 read-only para la app/surface seleccionada: targets, rutas, data-* y selectores en un ZIP único.",
+            minimum_width=184,
+            enabled=False,
+        )
+        # /CODE_ATLAS_SURFACE_TARGET_ATLAS_BUTTON_V01
         self.confirm_button = create_button(
             "Generar SVG",
             "primary",
@@ -5646,6 +5723,10 @@ class SelectorDialog(QDialog):
         footer_top_row = QHBoxLayout()
         footer_top_row.setSpacing(10)
         footer_top_row.addWidget(self.cancel_button, 0)
+        footer_top_row.addWidget(self.app_map_button, 0)
+        # CODE_ATLAS_SURFACE_TARGET_ATLAS_FOOTER_V01
+        footer_top_row.addWidget(self.surface_target_atlas_button, 0)
+        # /CODE_ATLAS_SURFACE_TARGET_ATLAS_FOOTER_V01
         footer_top_row.addStretch(1)
         footer_top_row.addWidget(self.tree_button, 0)
         footer_top_row.addWidget(self.tree_html_button, 0)
@@ -5741,13 +5822,14 @@ class SelectorDialog(QDialog):
         self.view_combo.currentIndexChanged.connect(self.on_view_changed)
         grid.addWidget(self.view_combo, 1, 1)
 
-        self.focus_label = QLabel("Objetivo de foco")
+        self.focus_label = QLabel("Surface / App")
         self.focus_label.setProperty("role", "field")
         grid.addWidget(self.focus_label, 2, 0)
 
-        self.focus_entry = QLineEdit()
-        self.focus_entry.setClearButtonEnabled(True)
-        self.focus_entry.textChanged.connect(self.refresh_preview)
+        self.focus_entry = QComboBox()
+        for app_id, app_label in APP_MAP_TARGETS:
+            self.focus_entry.addItem(app_label, app_id)
+        self.focus_entry.currentIndexChanged.connect(lambda _index: self.on_app_map_target_changed())
         grid.addWidget(self.focus_entry, 2, 1)
 
         self.focus_hint = QLabel("")
@@ -5763,7 +5845,7 @@ class SelectorDialog(QDialog):
         layout.setContentsMargins(18, 18, 18, 18)
         layout.setSpacing(14)
 
-        section_title = QLabel("Vista previa")
+        section_title = QLabel("Scope / Output Preview")
         section_title.setProperty("role", "section")
         layout.addWidget(section_title)
 
@@ -5845,25 +5927,51 @@ class SelectorDialog(QDialog):
         repolish(label)
 
     def update_focus_state(self) -> None:
-        is_focus = self.selected_view == "focus"
-        self.focus_entry.setEnabled(is_focus)
+        app_target = self.selected_focus_target
+        app_label = self.focus_entry.currentText() if hasattr(self.focus_entry, "currentText") else app_target
+        has_app_target = bool(app_target)
 
-        if is_focus:
-            self.focus_label.setText("Objetivo de foco")
-            self.focus_entry.setPlaceholderText("Ej. forgeos.core, apps.main, tools.build")
-            self.focus_hint.setText(
-                "Aplica en vista Foco. Déjalo vacío y el sistema podrá inferirlo después si corresponde."
-            )
-            self._set_chip(self.focus_state_chip, "Foco activo", "accent")
-            self.mode_chip.setText("Vista Foco")
-        else:
-            self.focus_label.setText("Objetivo de foco")
-            self.focus_entry.setPlaceholderText("Solo disponible en vista Foco")
-            self.focus_hint.setText(
-                "Este campo no afecta las vistas Paquetes o Módulos."
-            )
-            self._set_chip(self.focus_state_chip, "Foco inactivo", "neutral")
-            self.mode_chip.setText("Selector")
+        self.focus_label.setText("Surface / App")
+        self.focus_hint.setText(
+            "Selecciona una app/surface para activar App Map o Surface Target Atlas. Con app seleccionada, los demás outputs quedan bloqueados."
+        )
+        self._set_chip(
+            self.focus_state_chip,
+            f"Atlas: {app_label}" if has_app_target else "Atlas inactivo",
+            "accent" if has_app_target else "neutral",
+        )
+        self.mode_chip.setText("Selector")
+        self._apply_app_map_output_lock(has_app_target)
+
+    def on_app_map_target_changed(self) -> None:
+        self.update_focus_state()
+        self.refresh_preview()
+
+    def _apply_app_map_output_lock(self, has_app_target: bool) -> None:
+        self.app_map_button.setEnabled(has_app_target)
+        self.app_map_button.setProperty("ghost", not has_app_target)
+        self.app_map_button.style().unpolish(self.app_map_button)
+        self.app_map_button.style().polish(self.app_map_button)
+        # CODE_ATLAS_SURFACE_TARGET_ATLAS_LOCK_V01
+        self.surface_target_atlas_button.setEnabled(has_app_target)
+        self.surface_target_atlas_button.setProperty("ghost", not has_app_target)
+        self.surface_target_atlas_button.style().unpolish(self.surface_target_atlas_button)
+        self.surface_target_atlas_button.style().polish(self.surface_target_atlas_button)
+        # /CODE_ATLAS_SURFACE_TARGET_ATLAS_LOCK_V01
+        for button in (
+            self.tree_button,
+            self.tree_html_button,
+            self.black_glass_button,
+            self.todo_el_show_button,
+            self.db_black_glass_erd_button,
+            self.db_evidence_atlas_button,
+            self.motor_hub_button,
+            self.confirm_button,
+        ):
+            button.setEnabled(not has_app_target)
+            button.setProperty("ghost", bool(has_app_target))
+            button.style().unpolish(button)
+            button.style().polish(button)
 
     def _preview_summary_lines(self, path_state: _PathState) -> list[str]:
         lines = [
@@ -5871,12 +5979,10 @@ class SelectorDialog(QDialog):
             f"Vista: {self.selected_view}",
         ]
 
-        if self.selected_view == "focus":
-            lines.append(
-                f"Foco: {self.selected_focus_target or '(auto si el pipeline lo decide)'}"
-            )
+        if self.selected_focus_target:
+            lines.append(f"Surface/App: {self.focus_entry.currentText()}")
         else:
-            lines.append("Foco: no aplica para la vista actual")
+            lines.append("Surface/App: sin selección")
 
         if path_state.kind == "folder":
             lines.append("Ruta interpretada como: carpeta")
@@ -5897,12 +6003,9 @@ class SelectorDialog(QDialog):
             f"Subcarpeta de salida: {_output_subdir_name()}",
         ]
 
-        if self.selected_view == "focus":
-            lines.append(
-                f"Estado del foco: {'objetivo definido' if self.selected_focus_target else 'sin objetivo explícito'}"
-            )
-        else:
-            lines.append("Estado del foco: ignorado por la vista actual")
+        lines.append(
+            f"Estado Atlas: {'listo para App Map / Surface Target Atlas' if self.selected_focus_target else 'elige una app para habilitar atlas'}"
+        )
 
         return lines
 
@@ -5924,7 +6027,30 @@ class SelectorDialog(QDialog):
         self.summary_value.setText("\n".join(self._preview_summary_lines(path_state)))
         self.detail_value.setText("\n".join(self._preview_detail_lines(path_state)))
 
-        self.confirm_button.setEnabled(bool(self.selected_path))
+        if self.selected_focus_target:
+            self.confirm_button.setEnabled(False)
+            self.app_map_button.setEnabled(True)
+            self.app_map_button.setProperty("ghost", False)
+            self.app_map_button.style().unpolish(self.app_map_button)
+            self.app_map_button.style().polish(self.app_map_button)
+            # CODE_ATLAS_SURFACE_TARGET_ATLAS_REFRESH_V01
+            self.surface_target_atlas_button.setEnabled(True)
+            self.surface_target_atlas_button.setProperty("ghost", False)
+            self.surface_target_atlas_button.style().unpolish(self.surface_target_atlas_button)
+            self.surface_target_atlas_button.style().polish(self.surface_target_atlas_button)
+            # /CODE_ATLAS_SURFACE_TARGET_ATLAS_REFRESH_V01
+        else:
+            self.confirm_button.setEnabled(bool(self.selected_path))
+            self.app_map_button.setEnabled(False)
+            self.app_map_button.setProperty("ghost", True)
+            self.app_map_button.style().unpolish(self.app_map_button)
+            self.app_map_button.style().polish(self.app_map_button)
+            # CODE_ATLAS_SURFACE_TARGET_ATLAS_REFRESH_EMPTY_V01
+            self.surface_target_atlas_button.setEnabled(False)
+            self.surface_target_atlas_button.setProperty("ghost", True)
+            self.surface_target_atlas_button.style().unpolish(self.surface_target_atlas_button)
+            self.surface_target_atlas_button.style().polish(self.surface_target_atlas_button)
+            # /CODE_ATLAS_SURFACE_TARGET_ATLAS_REFRESH_EMPTY_V01
 
     def on_view_changed(self) -> None:
         self.update_focus_state()
@@ -5950,6 +6076,73 @@ class SelectorDialog(QDialog):
         )
         if selected:
             self.path_entry.setText(selected)
+
+    # CODE_ATLAS_SURFACE_TARGET_ATLAS_CONFIRM_V01
+    def confirm_surface_target_atlas(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar Surface Target Atlas",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        app_target = self.selected_focus_target
+        if not app_target:
+            QMessageBox.warning(self, _app_title(), "Selecciona una app/surface.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=app_target,
+            output_mode="surface_target_atlas",
+        )
+        self.accept()
+
+    # /CODE_ATLAS_SURFACE_TARGET_ATLAS_CONFIRM_V01
+
+    def confirm_app_map(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar App Map",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        app_target = self.selected_focus_target
+        if not app_target:
+            QMessageBox.warning(self, _app_title(), "Selecciona una app en App a mapear.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=app_target,
+            output_mode="app_map",
+        )
+        self.accept()
 
     def confirm(self) -> None:
         normalized_path = self.selected_path
@@ -16146,7 +16339,11 @@ def _initial_progress_detail(selection: SelectionResult, selected_path: Path) ->
     ]
 
     focus_target = clean_text(selection.focus_target)
-    if selection.view == "focus":
+    if selection.output_mode == "surface_target_atlas":
+        chunks.append(f"surface target atlas {focus_target or 'all'}")
+    elif selection.output_mode == "app_map":
+        chunks.append(f"app map {focus_target or 'all'}")
+    elif selection.view == "focus":
         chunks.append(f"foco {focus_target or '(auto)'}")
 
     return " | ".join(chunks)
@@ -20957,6 +21154,66 @@ def _db_evidence_atlas_refine_viewer(output_dir: Path, logs_root: Path, manifest
 # /CODE_ATLAS_DB_EVIDENCE_VIEWER_REFINED_HOOK_V01
 
 
+# CODE_ATLAS_APP_MAP_RUNNER_V01
+def run_app_map_atlas(
+    selected_path: str,
+    *,
+    target_app: str = "",
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para App Map no existe:\n\n{selected_scope}")
+
+    tools_root = Path(__file__).resolve().parent
+    tools_src = tools_root / "src"
+    if str(tools_src) not in sys.path:
+        sys.path.insert(0, str(tools_src))
+
+    from code_atlas.app_map.runner import run_app_map
+
+    downloads_root = Path(os.environ.get("CODE_ATLAS_OUTPUT_ROOT", r"F:\descargasf"))
+    return Path(
+        run_app_map(
+            selected_path=str(selected_scope),
+            target_app=target_app or "all",
+            output_root=str(downloads_root),
+            notify=notify,
+        )
+    )
+# /CODE_ATLAS_APP_MAP_RUNNER_V01
+
+
+# CODE_ATLAS_SURFACE_TARGET_ATLAS_RUNNER_V01
+def run_surface_target_atlas(
+    selected_path: str,
+    *,
+    target_app: str = "",
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para Surface Target Atlas no existe:\n\n{selected_scope}")
+
+    tools_root = Path(__file__).resolve().parent
+    tools_src = tools_root / "src"
+    if str(tools_src) not in sys.path:
+        sys.path.insert(0, str(tools_src))
+
+    from code_atlas.surface_target_atlas.runner import run_surface_target_atlas as _run_surface_target_atlas
+
+    downloads_root = Path(os.environ.get("CODE_ATLAS_OUTPUT_ROOT", r"F:\descargasf"))
+    return Path(
+        _run_surface_target_atlas(
+            selected_path=str(selected_scope),
+            target_app=target_app or "tablet",
+            output_root=str(downloads_root),
+            notify=notify,
+        )
+    )
+# /CODE_ATLAS_SURFACE_TARGET_ATLAS_RUNNER_V01
+
+
 def run_db_evidence_atlas(
     selected_path: str,
     *,
@@ -21367,6 +21624,76 @@ def main() -> int:
                 destroy_progress_ui(progress)
                 progress = None
                 continue
+
+            # CODE_ATLAS_SURFACE_TARGET_ATLAS_DISPATCH_V01
+            if output_mode == "surface_target_atlas":
+                target_app = state.focus_target or selection.focus_target or "tablet"
+                notify("Preparando Surface Target Atlas...", f"target={target_app} | {Path(state.project_root)}")
+                output_path = run_surface_target_atlas(
+                    state.selected_path,
+                    target_app=target_app,
+                    notify=notify,
+                )
+                notify("Validando Surface Target Atlas...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el ZIP Surface Target Atlas generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "Surface Target Atlas listo.",
+                    "\n".join(
+                        [
+                            "ZIP único generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            f"Surface/App: {target_app}",
+                            "Salida: F:\\descargasf",
+                        ]
+                    ),
+                )
+                _set_progress_footer(progress, f"Surface Target Atlas generado: {output_path}")
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+            # /CODE_ATLAS_SURFACE_TARGET_ATLAS_DISPATCH_V01
+
+            # CODE_ATLAS_APP_MAP_DISPATCH_V01
+            if output_mode == "app_map":
+                target_app = state.focus_target or selection.focus_target or "all"
+                notify("Preparando App Map...", f"target={target_app} | {Path(state.project_root)}")
+                output_path = run_app_map_atlas(
+                    state.selected_path,
+                    target_app=target_app,
+                    notify=notify,
+                )
+                notify("Validando App Map...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el ZIP App Map generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "App Map listo.",
+                    "\n".join(
+                        [
+                            "ZIP único generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            f"App: {target_app}",
+                            "Salida: F:\\descargasf",
+                        ]
+                    ),
+                )
+                _set_progress_footer(progress, f"App Map generado: {output_path}")
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+            # /CODE_ATLAS_APP_MAP_DISPATCH_V01
 
             # CODE_ATLAS_DB_EVIDENCE_ATLAS_DISPATCH_V01
             if output_mode == "db_evidence_atlas":

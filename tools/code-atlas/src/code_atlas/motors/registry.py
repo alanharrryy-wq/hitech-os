@@ -72,6 +72,25 @@ def build_motor_registry() -> list[MotorSpec]:
         )
     )
 
+
+    # CATLAS3_APPBRAIN_WORKBENCH_MOTOR_BEGIN
+    appbrain_cmd = _powershell_script(
+        atlas,
+        atlas / "scripts" / "RUN_APPBRAIN_WORKBENCH.ps1",
+    )
+    specs.append(
+        MotorSpec(
+            motor_id="atlas.appbrain_workbench",
+            group="Atlas",
+            label="AppBrain Workbench",
+            description="Importa el último appbrain1 tri-app result.zip y genera dashboard, batch explorer, mesh requests y next package plan read-only.",
+            root=appbrain_cmd.root,
+            program=appbrain_cmd.program,
+            args=appbrain_cmd.args,
+        )
+    )
+    # CATLAS3_APPBRAIN_WORKBENCH_MOTOR_END
+
     playwright_run = playwright / "RUN.ps1"
     for mode, label in (
         ("discovery", "Discovery"),

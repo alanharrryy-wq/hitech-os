@@ -1,0 +1,20 @@
+{
+  "id": "appbrain_batch_packager",
+  "label": "AppBrain Batch Packager",
+  "description": "Genera mesh + paquete instrumentation-only desde AppBrain Workbench, con hash gate, backups y rollback.",
+  "launcher": "tools/code-atlas/scripts/RUN_APPBRAIN_BATCH_PACKAGER.ps1",
+  "inputs": [
+    "appbrain-workbench result.zip"
+  ],
+  "outputs": [
+    "appbrain-batch-packager <fecha hora> result.zip",
+    "generated_packages/<batch>_tabmarks_pkg.zip"
+  ],
+  "safety": {
+    "modifiesTabletPcMobileDuringGeneration": false,
+    "generatedPackageModifiesOnlyTsxJsxRuntimeUi": true,
+    "noCss": true,
+    "noLogic": true,
+    "rollbackRequired": true
+  }
+}

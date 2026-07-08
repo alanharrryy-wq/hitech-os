@@ -1,0 +1,38 @@
+{
+  "profileId": "generic",
+  "projectName": "Generic Project",
+  "projectRoot": "${CODE_ATLAS_PROJECT_ROOT}",
+  "outputRoot": "${CODE_ATLAS_OUTPUT_ROOT}",
+  "apps": [
+    {
+      "id": "web",
+      "label": "Web App",
+      "root": "apps/web",
+      "routes": [
+        "/"
+      ],
+      "defaultUrl": "${CODE_ATLAS_WEB_URL}",
+      "kind": "web"
+    },
+    {
+      "id": "admin",
+      "label": "Admin App",
+      "root": "apps/admin",
+      "routes": [
+        "/admin"
+      ],
+      "defaultUrl": "${CODE_ATLAS_ADMIN_URL}",
+      "kind": "admin"
+    }
+  ],
+  "protectedGlobs": [
+    "**/package-lock.json",
+    "**/pnpm-lock.yaml",
+    "**/prisma/**",
+    "**/.env*"
+  ],
+  "metadata": {
+    "example": true,
+    "description": "Neutral profile template. Replace env vars outside Code Atlas core."
+  }
+}

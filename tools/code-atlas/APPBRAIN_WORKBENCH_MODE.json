@@ -1,0 +1,37 @@
+{
+  "id": "appbrain_workbench",
+  "label": "AppBrain Workbench",
+  "version": "catlas3.appbrain_workbench.v1",
+  "description": "Imports latest appbrain1 tri-app result ZIP and builds a read-only workbench: dashboard, batch explorer, mesh requests, next package plan, and diff readiness.",
+  "readOnly": true,
+  "authorizesPatch": false,
+  "input": {
+    "defaultSourcePattern": "F:\\descargasf\\appbrain1 * result.zip",
+    "apps": ["03_TABLET", "04_PC", "05_APP_MOVIL"]
+  },
+  "outputs": [
+    "PRISMA_APPBRAIN_WORKBENCH.json",
+    "PRISMA_APPBRAIN_WORKBENCH.md",
+    "PRISMA_TRI_APP_DASHBOARD.json",
+    "PRISMA_APPBRAIN_BATCH_EXPLORER.json",
+    "PRISMA_APPBRAIN_IMPORT_SUMMARY.json",
+    "PRISMA_APPBRAIN_MESH_REQUESTS.json",
+    "PRISMA_APPBRAIN_MESH_REQUESTS.md",
+    "PRISMA_APPBRAIN_NEXT_PACKAGE_PLAN.json",
+    "PRISMA_APPBRAIN_NEXT_PACKAGE_PLAN.md",
+    "PRISMA_APPBRAIN_DIFF_READINESS.json",
+    "PRISMA_APPBRAIN_SOURCE_INDEX.json",
+    "SUMMARY_FOR_CHAT.md",
+    "CONTINUATION.md",
+    "reports/validation.json"
+  ],
+  "guards": [
+    "No repo writes during workbench run",
+    "No Git writes",
+    "No Prisma",
+    "No process kill",
+    "No port freeing",
+    "No package/lockfile changes",
+    "No visual patch"
+  ]
+}

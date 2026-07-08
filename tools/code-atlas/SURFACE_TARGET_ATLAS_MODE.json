@@ -1,0 +1,32 @@
+{
+  "id": "surface_target_atlas",
+  "label": "Surface Target Atlas",
+  "packageBase": "tabatlas1",
+  "readOnly": true,
+  "defaultOutputRoot": "F:\\descargasf",
+  "requiredOutputs": [
+    "SUMMARY_FOR_CHAT.md",
+    "CONTINUATION.md",
+    "PRISMA_SURFACE_TARGET_ATLAS.json",
+    "PRISMA_SURFACE_TARGET_ATLAS.md",
+    "TARGET_REGISTRY_DRAFT.json",
+    "SCREEN_ROUTE_MAP.json",
+    "COMPONENT_PANEL_MAP.json",
+    "DATA_ATTRIBUTE_MAP.json",
+    "CSS_SELECTOR_MAP.json",
+    "RECIPE_COMPATIBILITY_DRAFT.json",
+    "UNMAPPED_TARGETS.md",
+    "LOW_CONFIDENCE_TARGETS.md",
+    "SURFACE_SCOPE_GUARD.md",
+    "reports/git_status.txt",
+    "reports/files_scanned.json",
+    "reports/validation.json"
+  ],
+  "evidencePriority": [
+    "data attributes",
+    "TSX components",
+    "CSS modules",
+    "TABCTL7 JSON/models",
+    "Markdown specs as weak support"
+  ]
+}
