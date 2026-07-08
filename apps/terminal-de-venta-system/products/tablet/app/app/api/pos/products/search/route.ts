@@ -3,6 +3,7 @@ import { searchProducts } from "@/server/pos-api/product-queries.prisma";
 import { fail, ok } from "@/server/pos-api/responses";
 import { readProductSearchInput } from "@/server/pos-api/validators";
 import { listLocalCatalogProducts } from "@/server/local-catalog";
+import { guardTabletFeatureForApi } from "@/server/licensing/tablet-license-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +33,9 @@ async function searchLocalFallback(input: ReturnType<typeof readProductSearchInp
 }
 
 export async function GET(request: Request) {
+  const licenseGate = await guardTabletFeatureForApi("pos.product.search");
+  if (licenseGate) return licenseGate;
+
   try {
     const input = readProductSearchInput(new URL(request.url).searchParams);
     let products = await searchProducts(input);
