@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/support-case.schema.json",
+  "title": "PRISMA Support Case",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["caseId", "createdAt", "issues", "surfaceStatus", "secretsExposed"],
+  "properties": {
+    "caseId": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "minLength": 1 },
+    "customerId": { "type": ["string", "null"] },
+    "businessId": { "type": ["string", "null"] },
+    "issues": { "type": "array", "items": { "$ref": "support-issue.schema.json" } },
+    "surfaceStatus": { "type": "array", "items": { "$ref": "surface-status.schema.json" } },
+    "secretsExposed": { "const": false }
+  }
+}

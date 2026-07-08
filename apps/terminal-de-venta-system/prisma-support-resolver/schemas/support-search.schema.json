@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/support-search.schema.json",
+  "title": "PRISMA Support Search Request",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "query": { "type": "string" },
+    "surface": { "enum": ["tablet", "pc", "mobile", "cloud-center", "cloud-gateway", "local-runtime", "all"] },
+    "category": { "type": "string" },
+    "code": { "type": "string" }
+  }
+}

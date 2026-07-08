@@ -9,7 +9,7 @@ import styles from "./prisma-mobile-dashboard.module.css";
 
 type LoadState = "idle" | "loading" | "ready" | "refreshing" | "error";
 
-type PremiumTabId = "inicio" | "ventas" | "operacion" | "alertas" | "stock" | "sistema";
+type PremiumTabId = "inicio" | "ventas" | "operacion" | "licencias" | "alertas" | "stock" | "sistema";
 
 type OperationItem = {
   readonly label: string;
@@ -26,7 +26,7 @@ type Props = {
   onClearCache: () => void;
 };
 
-const TAB_ORDER: PremiumTabId[] = ["inicio", "ventas", "operacion", "alertas", "stock", "sistema"];
+const TAB_ORDER: PremiumTabId[] = ["inicio", "ventas", "operacion", "licencias", "alertas", "stock", "sistema"];
 
 const toneClass: Record<PrismaMobileHealthTone, string> = {
   sano: styles.healthOk,
@@ -159,6 +159,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
     { id: "inicio" as const, label: "Inicio", eyebrow: "INICIO", title: "Pulso móvil del negocio", detail: `${sourceLabel(clientSnapshot.source)} · ${readiness.sourceSummary}`, badge: snapshot.summary.urgentAlerts > 0 ? snapshot.summary.urgentAlerts.toString() : "ok" },
     { id: "ventas" as const, label: "Ventas", eyebrow: "VENTAS", title: "Ventas visibles", detail: snapshot.salesToday.tickets > 0 ? "Actividad disponible en el periodo actual." : recent && recent.tickets > 0 ? `Hoy sin tickets; ${recent.label} con actividad.` : "Sin ventas cerradas en la lectura disponible.", badge: snapshot.salesToday.tickets > 0 ? snapshot.salesToday.tickets.toString() : recent?.tickets?.toString() ?? "0" },
     { id: "operacion" as const, label: "Operación", eyebrow: "OPERACIÓN", title: "Operación", detail: "Tablet, PC, Mobile y sync en una matriz corta.", badge: operations.filter((item) => item.tone !== "sano").length > 0 ? operations.filter((item) => item.tone !== "sano").length.toString() : "ok" },
+    { id: "licencias" as const, label: "Licencias", eyebrow: "LICENCIAS", title: "Licencias y dispositivos", detail: `${snapshot.summary.account.setupSlotLabel} · ${snapshot.summary.account.licenseStateLabel}`, badge: snapshot.summary.account.authorizationLabel.toLowerCase().includes("vinculado") ? "ok" : "setup" },
     { id: "alertas" as const, label: "Alertas", eyebrow: "ALERTAS", title: "Alertas", detail: snapshot.alerts.counts.total > 0 ? "Priorizadas por severidad y siguiente acción." : "Sin alertas activas.", badge: snapshot.alerts.counts.total > 0 ? snapshot.alerts.counts.total.toString() : "ok" },
     { id: "stock" as const, label: "Stock", eyebrow: "STOCK", title: "Stock operativo", detail: visibleStock.length > 0 ? "Señales de inventario disponibles." : "Stock móvil pendiente de fuente operativa.", badge: urgentStock.toString() },
     { id: "sistema" as const, label: "Sistema", eyebrow: "SISTEMA", title: "Sistema", detail: "Fuente, estado y diagnóstico subordinados.", badge: syncSignals > 0 ? syncSignals.toString() : "ok" }
@@ -214,6 +215,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
             </section>
             <section className={styles.quickActionPills}>
               <button type="button" onClick={onRefresh}>{loadState === "refreshing" ? "Actualizando..." : "Actualizar"}</button>
+              <button type="button" onClick={() => selectTab("licencias")}>Licencias y dispositivos</button>
               <button type="button" onClick={() => selectTab("alertas")}>Ver alertas</button>
               <button type="button" onClick={() => selectTab("sistema")}>Sistema</button>
             </section>
@@ -281,6 +283,33 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
                   <p>El snapshot no trae excepciones para revisar.</p>
                 </article>
               )}
+            </section>
+          </div>
+        ) : null}
+
+        {activeTab === "licencias" ? (
+          <div className={styles.screenGrid}>
+            <section className={styles.metricStrip} data-prisma-zone="mobile-license-devices">
+              <CompactMetric primary label="Licencia" value={snapshot.summary.account.licenseStateLabel} detail={snapshot.summary.account.planLabel} />
+              <CompactMetric label="Mobile" value={snapshot.summary.account.mobileDeviceLabel} detail={snapshot.summary.account.setupSlotLabel} />
+              <CompactMetric label="Tablet" value={snapshot.summary.account.tabletDeviceLabel} detail="Tablet POS Slot" />
+              <CompactMetric label="PC" value={snapshot.summary.account.pcDeviceLabel} detail="PC Admin Slot" />
+            </section>
+            <section className={styles.sourceSummaryCard}>
+              <span>{snapshot.summary.account.customerSetupLabel}</span>
+              <strong>{snapshot.summary.account.authorizationLabel}</strong>
+              <p>{snapshot.summary.account.customerId} · {snapshot.summary.account.tenantId} · {snapshot.summary.account.licenseId}</p>
+            </section>
+            <section className={styles.statusMatrix}>
+              <article><span>Plan</span><strong>{snapshot.summary.account.planLabel}</strong><small>{snapshot.summary.account.activationModeLabel}</small></article>
+              <article><span>Último refresh</span><strong>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}</strong><small>{sourceLabel(clientSnapshot.source)}</small></article>
+              <article><span>Issues activos</span><strong>{clientSnapshot.errors.length + badUpstreams}</strong><small>{readiness.level === "blocked" ? "requiere soporte" : "sin bloqueo principal"}</small></article>
+              <article><span>Setup Code</span><strong>{snapshot.summary.account.setupSlotLabel}</strong><small>claim desde Prisma Customer Setup</small></article>
+            </section>
+            <section className={styles.quickActionPills}>
+              <a href="/prisma-app/setup">Ingresar Setup Code</a>
+              <button type="button" onClick={() => navigator.clipboard?.writeText(`${snapshot.summary.account.customerName} · ${snapshot.summary.account.licenseId} · ${snapshot.summary.account.mobileDeviceLabel}`)}>Copiar detalle</button>
+              <button type="button" onClick={onRefresh}>{loadState === "refreshing" ? "Actualizando..." : "Actualizar licencia"}</button>
             </section>
           </div>
         ) : null}

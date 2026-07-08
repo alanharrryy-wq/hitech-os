@@ -18,7 +18,14 @@ export function PosTerminalSurface({ children, cartState, paymentOpen, visualSta
       data-prisma-payment-open={paymentOpen ? "true" : "false"}
       data-prisma-visual-state={visualState}
       data-prisma-canonical-pos="softglass-reference-2606"
-    >
+
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="terminal-shell"
+      data-panel="pos-terminal-surface"
+      data-target="pos-terminal-surface"
+      data-kind="background"
+      data-role="visual-backplane">
       {children}
     </div>
   );
@@ -40,9 +47,32 @@ export function PosTerminalHeader({
   terminalName: string;
 }) {
   return (
-    <header className={styles.header} data-prisma-component="PosTerminalHeader" data-prisma-layer="context">
-      <span>{storeName}</span>
-      <strong>{statusLabel}</strong>
+    <header className={styles.header} data-prisma-component="PosTerminalHeader" data-prisma-layer="context"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="terminal-header"
+      data-panel="pos-terminal-header"
+      data-target="pos-terminal-header"
+      data-kind="background"
+      data-role="visual-backplane">
+      <span
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-terminal-surface"
+        data-target="pos-terminal-surface-panel-58"
+        data-kind="panel"
+        data-role="revenue-core"
+      >{storeName}</span>
+      <strong
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-terminal-surface"
+        data-target="pos-terminal-surface-panel-59"
+        data-kind="panel"
+        data-role="revenue-core"
+      >{statusLabel}</strong>
       <small>{terminalName} · {cartQty} pzas · {cartTotal} · {activeCount} activos</small>
     </header>
   );
@@ -50,7 +80,14 @@ export function PosTerminalHeader({
 
 export function PosProductCanvas({ children }: { children: ReactNode }) {
   return (
-    <section className={styles.canvas} data-prisma-component="PosProductCanvas" data-prisma-layer="content">
+    <section className={styles.canvas} data-prisma-component="PosProductCanvas" data-prisma-layer="content"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="product-grid"
+      data-panel="pos-product-canvas"
+      data-target="pos-product-canvas"
+      data-kind="layout"
+      data-role="product-canvas">
       {children}
     </section>
   );
@@ -58,7 +95,14 @@ export function PosProductCanvas({ children }: { children: ReactNode }) {
 
 export function PosTicketRail({ children }: { children: ReactNode }) {
   return (
-    <aside className={styles.ticketRail} data-prisma-component="PosTicketRail" data-prisma-layer="ticket">
+    <aside className={styles.ticketRail} data-prisma-component="PosTicketRail" data-prisma-layer="ticket"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="checkout-rail"
+      data-panel="pos-ticket-rail"
+      data-target="pos-ticket-rail"
+      data-kind="panel"
+      data-role="sale-ticket">
       {children}
     </aside>
   );
@@ -66,12 +110,34 @@ export function PosTicketRail({ children }: { children: ReactNode }) {
 
 export function PosCommandDock({ children }: { children: ReactNode }) {
   return (
-    <nav className={styles.commandDock} data-prisma-component="PosCommandDock" data-prisma-layer="filter-dock" aria-label="Categorías y comandos de venta">
-      <div className={styles.commandDockInner}>{children}</div>
+    <nav className={styles.commandDock} data-prisma-component="PosCommandDock" data-prisma-layer="filter-dock" aria-label="Categorías y comandos de venta"
+      data-surface="tablet"
+      data-screen="pos"
+      data-zone="command-dock"
+      data-panel="pos-command-dock"
+      data-target="pos-command-dock"
+      data-kind="layout"
+      data-role="navigation">
+      <div className={styles.commandDockInner}
+        data-surface="tablet"
+        data-screen="pos"
+        data-zone="pos"
+        data-panel="pos-terminal-surface"
+        data-target="pos-terminal-surface-panel-105"
+        data-kind="panel"
+        data-role="revenue-core"
+      >{children}</div>
     </nav>
   );
 }
 
 export function PosTerminalBody({ children }: { children: ReactNode }) {
-  return <div className={styles.body}>{children}</div>;
+  return <div className={styles.body}
+     data-surface="tablet"
+     data-screen="pos"
+     data-zone="terminal-body"
+     data-panel="pos-terminal-body"
+     data-target="pos-terminal-body"
+     data-kind="layout"
+     data-role="layout">{children}</div>;
 }

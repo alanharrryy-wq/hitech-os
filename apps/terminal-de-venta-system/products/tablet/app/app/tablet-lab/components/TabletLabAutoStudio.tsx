@@ -120,7 +120,7 @@ type Knobs = {
 };
 
 /* TABCTL7V2_SUPREMO_MODEL_START */
-const TABCTL7V2_MODEL_VERSION = "tabctl7v2-supreme-0707-1918-rollback-guard";
+const TABCTL7V2_MODEL_VERSION = "tabctl7v2-tabrcp9-ultra-quick-recipes-0807-0039";
 
 type Tabctl7RoleKind = "panel" | "text" | "numericText" | "button" | "buttonText" | "chip" | "input" | "table" | "tableCell" | "background" | "icon" | "modal" | "toast" | "chart" | "nav" | "dock" | "skeleton" | "qr" | "timeline" | "matrix";
 type Tabctl7RoleSpec = { role: string; part: string; kind: Tabctl7RoleKind; states: string[]; changeTypes: string[]; controls: Array<keyof Knobs>; help: string };
@@ -128,6 +128,25 @@ type Tabctl7LayerSpec = { layer: string; roles: Tabctl7RoleSpec[] };
 type Tabctl7GroupSpec = { group: string; components: string[]; layers: Tabctl7LayerSpec[]; presets: string[] };
 type Tabctl7MaterialSpec = { id: string; label: string; description: string; alpha: number; frost: number; blurDelta: number; glow: number; border: number };
 type Tabctl7ControlSpec = { key: keyof Knobs; label: string; effectGroup: string; kinds: Tabctl7RoleKind[]; changeTypes: string[]; states: string[]; zeroOff?: boolean; help: string };
+type Tabctl7RecipeRisk = "bajo" | "medio" | "alto";
+type Tabctl7RecipeSpec = {
+  id: string;
+  label: string;
+  family: string;
+  description: string;
+  appliesToKinds: Tabctl7RoleKind[];
+  changeTypes: string[];
+  effectGroup: string;
+  tone?: PresetTone;
+  backgroundMode?: string;
+  scopeHint: string;
+  risk: Tabctl7RecipeRisk;
+  tags: string[];
+  changes: Partial<Knobs>;
+};
+
+type Tabctl7StudioMode = "Rápido" | "Receta" | "Pro";
+const tabctl7StudioModes: Tabctl7StudioMode[] = ["Rápido", "Receta", "Pro"];
 
 const tabctl7AllStates = ["Default", "Hover", "Focus", "Focus visible", "Pressed", "Selected", "Disabled", "Loading", "Empty", "Success", "Warning", "Danger", "Critical", "Offline", "Dragging", "Dirty", "Locked", "Expanded", "Collapsed", "Error"];
 const tabctl7ChangeTypes = ["Material", "Color", "Texto", "Número/precio", "Botón", "Borde y luz", "Sombra y profundidad", "Forma y espacio", "Fondo", "Tabla", "Estado", "Movimiento", "Accesibilidad", "Override local"];
@@ -192,6 +211,4388 @@ const tabctl7Controls: Tabctl7ControlSpec[] = [
   { key: "dividerAlpha", label: "Divider alpha", effectGroup: "Tables", kinds: ["table","tableCell","matrix"], changeTypes: ["Tabla","Borde y luz"], states: tabctl7AllStates, zeroOff: true, help: "Separadores." },
   { key: "inspectorDensity", label: "Inspector density", effectGroup: "Density", kinds: ["matrix","panel","table"], changeTypes: ["Accesibilidad","Forma y espacio","Override local"], states: tabctl7AllStates, help: "Densidad del inspector." },
 ];
+
+/* TABCTL7_RECIPE_REGISTRY_START */
+const tabctl7RecipeRegistry: Tabctl7RecipeSpec[] = [
+  {
+    "id": "text-premium-compact",
+    "label": "Texto premium compacto",
+    "family": "Texto",
+    "description": "Más peso y tracking fino, sin gritar.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 76,
+      "inkContrast": 90,
+      "labelTracking": 14,
+      "textGlow": 18,
+      "microcopyOpacity": 82
+    }
+  },
+  {
+    "id": "text-caja-rapida",
+    "label": "Texto caja rápida",
+    "family": "Texto",
+    "description": "Lectura inmediata para operación táctil.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 68,
+      "inkContrast": 94,
+      "labelTracking": 6,
+      "textGlow": 4,
+      "microcopyOpacity": 90
+    }
+  },
+  {
+    "id": "text-secundario-suave",
+    "label": "Texto secundario suave",
+    "family": "Texto",
+    "description": "Baja jerarquía sin volverse invisible.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "mutedContrast": 64,
+      "microcopyOpacity": 70,
+      "textGlow": 0,
+      "labelTracking": 8
+    }
+  },
+  {
+    "id": "text-alto-contraste",
+    "label": "Texto alto contraste",
+    "family": "Texto",
+    "description": "Cuando el glass se traga las letras.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 100,
+      "mutedContrast": 86,
+      "textGlow": 10,
+      "microcopyOpacity": 92
+    }
+  },
+  {
+    "id": "text-glow-elegante",
+    "label": "Glow elegante",
+    "family": "Texto",
+    "description": "Halo ligero para títulos o labels activos.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "textGlow": 32,
+      "inkContrast": 92,
+      "headingWeight": 72,
+      "labelTracking": 10
+    }
+  },
+  {
+    "id": "text-titulo-protagonista",
+    "label": "Título protagonista",
+    "family": "Texto",
+    "description": "Encabezado fuerte sin mover paneles.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 86,
+      "inkContrast": 96,
+      "textGlow": 24,
+      "labelTracking": 12
+    }
+  },
+  {
+    "id": "text-admin-denso",
+    "label": "Texto admin denso",
+    "family": "Texto",
+    "description": "Más datos con legibilidad operativa.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 62,
+      "inkContrast": 88,
+      "mutedContrast": 76,
+      "labelTracking": 4,
+      "microcopyOpacity": 88
+    }
+  },
+  {
+    "id": "text-apagado-real",
+    "label": "Texto apagado real",
+    "family": "Texto",
+    "description": "Quita glow y ruido para lectura limpia.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "textGlow": 0,
+      "mutedContrast": 58,
+      "microcopyOpacity": 64,
+      "labelTracking": 2
+    }
+  },
+  {
+    "id": "text-kiosk-grande",
+    "label": "Texto kiosk grande",
+    "family": "Texto",
+    "description": "Más presencia para uso público o touch.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 82,
+      "inkContrast": 98,
+      "textGlow": 16,
+      "microcopyOpacity": 94
+    }
+  },
+  {
+    "id": "text-minimal-ink",
+    "label": "Ink minimal",
+    "family": "Texto",
+    "description": "Negro/azul tinta limpio, cero show.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 92,
+      "mutedContrast": 70,
+      "textGlow": 0,
+      "labelTracking": 6
+    }
+  },
+  {
+    "id": "text-label-micro",
+    "label": "Microcopy legible",
+    "family": "Texto",
+    "description": "Notas pequeñas con respiración y contraste.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "microcopyOpacity": 88,
+      "mutedContrast": 78,
+      "labelTracking": 16,
+      "textGlow": 0
+    }
+  },
+  {
+    "id": "text-focus-visible",
+    "label": "Focus textual claro",
+    "family": "Texto",
+    "description": "Texto con estado focus más evidente.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 96,
+      "selectionHalo": 42,
+      "textGlow": 18,
+      "labelTracking": 10
+    }
+  },
+  {
+    "id": "text-selected-claro",
+    "label": "Selected textual claro",
+    "family": "Texto",
+    "description": "Estado elegido visible sin cambiar shell.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 98,
+      "activeGlow": 34,
+      "textGlow": 28,
+      "selectionHalo": 36
+    }
+  },
+  {
+    "id": "text-danger-calm",
+    "label": "Texto danger calmado",
+    "family": "Texto",
+    "description": "Riesgo legible sin sirena visual.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 96,
+      "warningToneStrength": 58,
+      "textGlow": 10,
+      "microcopyOpacity": 88
+    }
+  },
+  {
+    "id": "text-warning-operativo",
+    "label": "Warning operativo",
+    "family": "Texto",
+    "description": "Advertencia amable, no histriónica.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "amber",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 94,
+      "warningToneStrength": 48,
+      "textGlow": 14,
+      "microcopyOpacity": 90
+    }
+  },
+  {
+    "id": "text-success-mint",
+    "label": "Success mint",
+    "family": "Texto",
+    "description": "Confirmación verde limpia.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "inkContrast": 94,
+      "accentStrength": 52,
+      "textGlow": 18,
+      "microcopyOpacity": 90
+    }
+  },
+  {
+    "id": "text-quiet-premium",
+    "label": "Quiet premium",
+    "family": "Texto",
+    "description": "Sutil, elegante, sin efecto barato.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "headingWeight": 66,
+      "inkContrast": 82,
+      "mutedContrast": 68,
+      "textGlow": 6,
+      "labelTracking": 12
+    }
+  },
+  {
+    "id": "text-neon-moderado",
+    "label": "Neon moderado",
+    "family": "Texto",
+    "description": "Acento nocturno controlado para demo.",
+    "appliesToKinds": [
+      "text",
+      "buttonText",
+      "nav"
+    ],
+    "changeTypes": [
+      "Texto",
+      "Color",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Typography",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "texto",
+      "compatible",
+      "sin shell"
+    ],
+    "changes": {
+      "textGlow": 46,
+      "inkContrast": 96,
+      "accentStrength": 58,
+      "labelTracking": 10
+    }
+  },
+  {
+    "id": "price-protagonist",
+    "label": "Precio protagonista",
+    "family": "Número/precio",
+    "description": "Hace que el precio mande sin tocar el panel.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 86,
+      "inkContrast": 98,
+      "textGlow": 24,
+      "labelTracking": 6
+    }
+  },
+  {
+    "id": "price-discreto",
+    "label": "Precio discreto",
+    "family": "Número/precio",
+    "description": "Baja presencia del número sin perder lectura.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 48,
+      "inkContrast": 82,
+      "textGlow": 0,
+      "mutedContrast": 70
+    }
+  },
+  {
+    "id": "price-promo-mint",
+    "label": "Precio promo mint glow",
+    "family": "Número/precio",
+    "description": "Promo verde con brillo medido.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 90,
+      "inkContrast": 98,
+      "textGlow": 38,
+      "accentStrength": 64
+    }
+  },
+  {
+    "id": "price-auditoria-tabular",
+    "label": "Auditoría tabular",
+    "family": "Número/precio",
+    "description": "Números serios, alineados y sin ruido.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 70,
+      "inkContrast": 92,
+      "textGlow": 0,
+      "columnPressure": 8
+    }
+  },
+  {
+    "id": "price-total-fuerte",
+    "label": "Total fuerte",
+    "family": "Número/precio",
+    "description": "Total de checkout con peso de cierre.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 92,
+      "headingWeight": 86,
+      "inkContrast": 100,
+      "textGlow": 22
+    }
+  },
+  {
+    "id": "price-negative-coral",
+    "label": "Negativo coral controlado",
+    "family": "Número/precio",
+    "description": "Diferencia o devolución visible.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 84,
+      "warningToneStrength": 62,
+      "textGlow": 18,
+      "inkContrast": 98
+    }
+  },
+  {
+    "id": "price-centavos-suaves",
+    "label": "Centavos suaves",
+    "family": "Número/precio",
+    "description": "Quita protagonismo a decimales/menudos.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 68,
+      "mutedContrast": 68,
+      "microcopyOpacity": 62,
+      "textGlow": 8
+    }
+  },
+  {
+    "id": "price-low-stock",
+    "label": "Número low stock",
+    "family": "Número/precio",
+    "description": "Alerta de inventario con tono ámbar.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "amber",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 78,
+      "warningToneStrength": 54,
+      "textGlow": 18,
+      "inkContrast": 96
+    }
+  },
+  {
+    "id": "price-no-glow",
+    "label": "Número limpio sin glow",
+    "family": "Número/precio",
+    "description": "Apaga halos para claridad bancaria.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 74,
+      "inkContrast": 94,
+      "textGlow": 0,
+      "mutedContrast": 76
+    }
+  },
+  {
+    "id": "price-kpi-hero",
+    "label": "KPI hero",
+    "family": "Número/precio",
+    "description": "Métrica grande para tablero operativo.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "metricEmphasis": 86,
+      "numericEmphasis": 88,
+      "inkContrast": 98,
+      "textGlow": 28
+    }
+  },
+  {
+    "id": "price-sync-calm",
+    "label": "Sync calm",
+    "family": "Número/precio",
+    "description": "Número de sincronía calmado y confiable.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "metricEmphasis": 72,
+      "numericEmphasis": 70,
+      "textGlow": 8,
+      "inkContrast": 90
+    }
+  },
+  {
+    "id": "price-danger-audit",
+    "label": "Danger audit number",
+    "family": "Número/precio",
+    "description": "Número crítico con control de riesgo.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 90,
+      "dangerWarmth": 66,
+      "warningToneStrength": 72,
+      "textGlow": 24
+    }
+  },
+  {
+    "id": "price-compact-total",
+    "label": "Total compacto",
+    "family": "Número/precio",
+    "description": "Total visible en rail compacto.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 82,
+      "inkContrast": 96,
+      "textGlow": 12,
+      "columnPressure": 7
+    }
+  },
+  {
+    "id": "price-muted-ledger",
+    "label": "Ledger muted number",
+    "family": "Número/precio",
+    "description": "Números de tabla sin protagonismo barato.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 58,
+      "inkContrast": 86,
+      "textGlow": 0,
+      "mutedContrast": 74
+    }
+  },
+  {
+    "id": "price-success-delta",
+    "label": "Delta success",
+    "family": "Número/precio",
+    "description": "Variación positiva con lectura rápida.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 80,
+      "accentStrength": 54,
+      "activeGlow": 22,
+      "inkContrast": 94
+    }
+  },
+  {
+    "id": "price-warning-delta",
+    "label": "Delta warning",
+    "family": "Número/precio",
+    "description": "Variación preventiva sin escándalo.",
+    "appliesToKinds": [
+      "numericText",
+      "tableCell"
+    ],
+    "changeTypes": [
+      "Número/precio",
+      "Tabla",
+      "Estado",
+      "Color"
+    ],
+    "effectGroup": "Typography",
+    "tone": "amber",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "numero",
+      "precio",
+      "tabular"
+    ],
+    "changes": {
+      "numericEmphasis": 78,
+      "warningToneStrength": 52,
+      "activeGlow": 20,
+      "inkContrast": 94
+    }
+  },
+  {
+    "id": "panel-frosted-claro",
+    "label": "Frosted claro legible",
+    "family": "Panel/material",
+    "description": "Vidrio claro con lectura segura.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 28,
+      "blur": 18,
+      "frostVeil": 34,
+      "borderAlpha": 30,
+      "edgeShine": 24,
+      "shadow": 22
+    }
+  },
+  {
+    "id": "panel-ceramic-premium",
+    "label": "Ceramic premium",
+    "family": "Panel/material",
+    "description": "Superficie más sólida, menos nebulosa.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 42,
+      "blur": 10,
+      "frostVeil": 54,
+      "borderAlpha": 20,
+      "shadow": 18,
+      "edgeShine": 12
+    }
+  },
+  {
+    "id": "panel-liquid-edge",
+    "label": "Liquid edge only",
+    "family": "Panel/material",
+    "description": "Borde óptico sin panel encima.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 18,
+      "blur": 22,
+      "frostVeil": 18,
+      "borderAlpha": 42,
+      "edgeShine": 56,
+      "innerHighlight": 38
+    }
+  },
+  {
+    "id": "panel-transparente-real",
+    "label": "Transparente real",
+    "family": "Panel/material",
+    "description": "Apaga material y halos de verdad.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 0,
+      "blur": 0,
+      "frostVeil": 0,
+      "borderAlpha": 0,
+      "edgeShine": 0,
+      "shadow": 0
+    }
+  },
+  {
+    "id": "panel-admin-paper",
+    "label": "Admin paper",
+    "family": "Panel/material",
+    "description": "Panel denso, legible y operativo.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 58,
+      "blur": 6,
+      "frostVeil": 64,
+      "borderAlpha": 18,
+      "shadow": 12,
+      "cardDensity": 62
+    }
+  },
+  {
+    "id": "panel-flotante-suave",
+    "label": "Panel flotante suave",
+    "family": "Panel/material",
+    "description": "Sombra y distancia sin pesado visual.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "shadow": 36,
+      "elevation": 48,
+      "contactShadow": 28,
+      "panelLift": 16,
+      "borderAlpha": 26
+    }
+  },
+  {
+    "id": "panel-glass-menos-invasivo",
+    "label": "Glass menos invasivo",
+    "family": "Panel/material",
+    "description": "Baja blur/frost para que respire.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 16,
+      "blur": 8,
+      "frostVeil": 12,
+      "borderAlpha": 18,
+      "edgeShine": 16
+    }
+  },
+  {
+    "id": "panel-borde-especular",
+    "label": "Borde especular",
+    "family": "Panel/material",
+    "description": "Mejora canto y highlight solamente.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "borderAlpha": 40,
+      "edgeShine": 62,
+      "innerHighlight": 44,
+      "specularGlow": 22
+    }
+  },
+  {
+    "id": "panel-warning-suave",
+    "label": "Warning panel suave",
+    "family": "Panel/material",
+    "description": "Ámbar controlado para estado preventivo.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "amber",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "warningToneStrength": 46,
+      "borderAlpha": 36,
+      "frostVeil": 30,
+      "shadow": 20
+    }
+  },
+  {
+    "id": "panel-danger-controlado",
+    "label": "Danger panel controlado",
+    "family": "Panel/material",
+    "description": "Coral visible, sin patrulla visual.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "dangerWarmth": 56,
+      "warningToneStrength": 62,
+      "borderAlpha": 42,
+      "shadow": 24
+    }
+  },
+  {
+    "id": "panel-metric-hero",
+    "label": "Metric hero panel",
+    "family": "Panel/material",
+    "description": "Tarjeta de métrica con énfasis.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "metricEmphasis": 86,
+      "glassAlpha": 30,
+      "shadow": 30,
+      "edgeShine": 24
+    }
+  },
+  {
+    "id": "panel-rail-solido",
+    "label": "Rail sólido",
+    "family": "Panel/material",
+    "description": "Checkout rail más firme y legible.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "railTranslucency": 66,
+      "railWidth": 326,
+      "blur": 12,
+      "borderAlpha": 30,
+      "shadow": 32
+    }
+  },
+  {
+    "id": "panel-modal-calm",
+    "label": "Modal calm",
+    "family": "Panel/material",
+    "description": "Modal con prioridad de lectura.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "modalGlassStrength": 58,
+      "blur": 10,
+      "shadow": 38,
+      "borderAlpha": 26,
+      "frostVeil": 40
+    }
+  },
+  {
+    "id": "panel-card-air",
+    "label": "Card con aire",
+    "family": "Panel/material",
+    "description": "Más espacio y menos ruido.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "panelGap": 20,
+      "cardDensity": 42,
+      "glassAlpha": 24,
+      "shadow": 20
+    }
+  },
+  {
+    "id": "panel-tight-admin",
+    "label": "Panel compacto admin",
+    "family": "Panel/material",
+    "description": "Compacta sin meter otro contenedor.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "panelGap": 10,
+      "cardDensity": 68,
+      "inspectorDensity": 72,
+      "shadow": 12
+    }
+  },
+  {
+    "id": "panel-zero-noise",
+    "label": "Panel sin ruido",
+    "family": "Panel/material",
+    "description": "Material limpio, cero glow.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "specularGlow": 0,
+      "edgeShine": 0,
+      "innerHighlight": 0,
+      "shadow": 10,
+      "borderAlpha": 16
+    }
+  },
+  {
+    "id": "panel-soft-plastic",
+    "label": "Soft plastic táctil",
+    "family": "Panel/material",
+    "description": "Superficie amable para touch.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "bajo",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 44,
+      "frostVeil": 46,
+      "blur": 8,
+      "buttonRadius": 22,
+      "shadow": 18
+    }
+  },
+  {
+    "id": "panel-ink-plate",
+    "label": "Ink plate legible",
+    "family": "Panel/material",
+    "description": "Placa oscura controlada para contraste.",
+    "appliesToKinds": [
+      "panel",
+      "modal",
+      "dock",
+      "input",
+      "table"
+    ],
+    "changeTypes": [
+      "Material",
+      "Borde y luz",
+      "Sombra y profundidad",
+      "Forma y espacio",
+      "Estado",
+      "Accesibilidad"
+    ],
+    "effectGroup": "Glass",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "panel",
+      "material",
+      "glass"
+    ],
+    "changes": {
+      "glassAlpha": 70,
+      "blur": 0,
+      "frostVeil": 12,
+      "borderAlpha": 20,
+      "shadow": 28
+    }
+  },
+  {
+    "id": "btn-cta-mint-poderoso",
+    "label": "CTA mint poderoso",
+    "family": "Botón/acción",
+    "description": "Botón principal con autoridad.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 50,
+      "buttonRadius": 24,
+      "buttonGlow": 54,
+      "primarySaturation": 88,
+      "pressDepth": 12
+    }
+  },
+  {
+    "id": "btn-ghost-elegante",
+    "label": "Ghost elegante",
+    "family": "Botón/acción",
+    "description": "Secundario sobre glass, ligero.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 42,
+      "buttonRadius": 20,
+      "buttonGlow": 8,
+      "borderBrightness": 38,
+      "glassAlpha": 12
+    }
+  },
+  {
+    "id": "btn-danger-coral",
+    "label": "Danger coral controlado",
+    "family": "Botón/acción",
+    "description": "Destructivo claro y sobrio.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "dangerWarmth": 68,
+      "buttonGlow": 26,
+      "borderBrightness": 56,
+      "pressDepth": 10
+    }
+  },
+  {
+    "id": "btn-disabled-explicado",
+    "label": "Disabled explicado",
+    "family": "Botón/acción",
+    "description": "Apagado visible sin parecer activo.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "disabledFrost": 76,
+      "buttonGlow": 0,
+      "primarySaturation": 34,
+      "borderBrightness": 22
+    }
+  },
+  {
+    "id": "btn-pressed-tactil",
+    "label": "Pressed táctil",
+    "family": "Botón/acción",
+    "description": "Sensación de hundimiento real.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "pressDepth": 16,
+      "pressInset": 14,
+      "buttonGlow": 24,
+      "hoverLift": 4
+    }
+  },
+  {
+    "id": "btn-hover-vivo",
+    "label": "Hover vivo",
+    "family": "Botón/acción",
+    "description": "Respuesta clara al pasar encima.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "hoverLift": 10,
+      "buttonGlow": 42,
+      "activeGlow": 38,
+      "primarySaturation": 82
+    }
+  },
+  {
+    "id": "btn-compacto",
+    "label": "Botón compacto",
+    "family": "Botón/acción",
+    "description": "Menos altura sin perder toque.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 40,
+      "buttonRadius": 16,
+      "buttonGlow": 14,
+      "pressDepth": 8
+    }
+  },
+  {
+    "id": "btn-kiosk-grande",
+    "label": "Botón kiosk grande",
+    "family": "Botón/acción",
+    "description": "Touch grande y obvio.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 56,
+      "buttonRadius": 26,
+      "buttonGlow": 36,
+      "primarySaturation": 92
+    }
+  },
+  {
+    "id": "btn-segmented-selected",
+    "label": "Segmented selected",
+    "family": "Botón/acción",
+    "description": "Selected claro para grupos.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "selectionHalo": 58,
+      "activeGlow": 46,
+      "buttonRadius": 18,
+      "borderBrightness": 46
+    }
+  },
+  {
+    "id": "btn-payment-hero",
+    "label": "Payment hero",
+    "family": "Botón/acción",
+    "description": "Botón de cobro protagonista.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 56,
+      "buttonGlow": 62,
+      "primarySaturation": 96,
+      "pressDepth": 12
+    }
+  },
+  {
+    "id": "btn-void-soft",
+    "label": "Void soft",
+    "family": "Botón/acción",
+    "description": "Acción peligrosa sin alarma falsa.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "dangerWarmth": 54,
+      "buttonGlow": 12,
+      "disabledFrost": 46,
+      "borderBrightness": 44
+    }
+  },
+  {
+    "id": "btn-icon-crisp",
+    "label": "Icon crisp",
+    "family": "Botón/acción",
+    "description": "Icon button pequeño y nítido.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonHeight": 42,
+      "buttonRadius": 18,
+      "buttonGlow": 18,
+      "borderBrightness": 42
+    }
+  },
+  {
+    "id": "btn-loading-calm",
+    "label": "Loading calm",
+    "family": "Botón/acción",
+    "description": "Carga sin shimmer histérico.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonGlow": 18,
+      "motionIntensity": 10,
+      "disabledFrost": 64,
+      "primarySaturation": 66
+    }
+  },
+  {
+    "id": "btn-success-confirm",
+    "label": "Success confirm",
+    "family": "Botón/acción",
+    "description": "Confirmación verde tranquila.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonGlow": 34,
+      "activeGlow": 34,
+      "primarySaturation": 78,
+      "pressDepth": 8
+    }
+  },
+  {
+    "id": "btn-neon-demo",
+    "label": "Neon demo moderado",
+    "family": "Botón/acción",
+    "description": "Look demo con límites.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "alto",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonGlow": 70,
+      "specularGlow": 42,
+      "primarySaturation": 100,
+      "edgeShine": 44
+    }
+  },
+  {
+    "id": "btn-flat-admin",
+    "label": "Flat admin",
+    "family": "Botón/acción",
+    "description": "Botón administrativo sin show.",
+    "appliesToKinds": [
+      "button",
+      "chip",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Botón",
+      "Movimiento",
+      "Estado",
+      "Forma y espacio",
+      "Color",
+      "Borde y luz"
+    ],
+    "effectGroup": "Buttons",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "boton",
+      "accion",
+      "touch"
+    ],
+    "changes": {
+      "buttonGlow": 0,
+      "buttonHeight": 42,
+      "buttonRadius": 14,
+      "borderBrightness": 26
+    }
+  },
+  {
+    "id": "table-comoda",
+    "label": "Tabla cómoda",
+    "family": "Tabla",
+    "description": "Filas respiradas para lectura casual.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHeight": 56,
+      "dividerAlpha": 24,
+      "zebraSoftness": 18,
+      "tableTone": 34
+    }
+  },
+  {
+    "id": "table-admin-compacta",
+    "label": "Tabla admin compacta",
+    "family": "Tabla",
+    "description": "Más datos sin mugrero.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHeight": 42,
+      "columnPressure": 9,
+      "zebraSoftness": 12,
+      "dividerAlpha": 34
+    }
+  },
+  {
+    "id": "table-auditoria-densa",
+    "label": "Auditoría densa",
+    "family": "Tabla",
+    "description": "Logs y eventos apretados pero legibles.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHeight": 38,
+      "columnPressure": 11,
+      "dividerAlpha": 42,
+      "tableTone": 30
+    }
+  },
+  {
+    "id": "table-selected-claro",
+    "label": "Selected claro",
+    "family": "Tabla",
+    "description": "Fila elegida evidente.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "selectionHalo": 52,
+      "rowHoverGlow": 34,
+      "dividerAlpha": 38,
+      "tableTone": 44
+    }
+  },
+  {
+    "id": "table-hover-suave",
+    "label": "Hover suave",
+    "family": "Tabla",
+    "description": "Interacción visible sin brincar.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHoverGlow": 24,
+      "hoverLift": 0,
+      "zebraSoftness": 20,
+      "dividerAlpha": 26
+    }
+  },
+  {
+    "id": "table-divisores-limpios",
+    "label": "Divisores limpios",
+    "family": "Tabla",
+    "description": "Estructura clara sin cuadriculado pesado.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "dividerAlpha": 44,
+      "zebraSoftness": 8,
+      "tableTone": 28
+    }
+  },
+  {
+    "id": "table-acciones-discretas",
+    "label": "Acciones discretas",
+    "family": "Tabla",
+    "description": "Action column visible pero tranquila.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "actionColumnVisibility": 58,
+      "buttonGlow": 4,
+      "buttonHeight": 40,
+      "rowHeight": 46
+    }
+  },
+  {
+    "id": "table-numeros-tabulares",
+    "label": "Números tabulares",
+    "family": "Tabla",
+    "description": "Celdas numéricas alineadas.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "numericEmphasis": 72,
+      "columnPressure": 8,
+      "inkContrast": 92,
+      "rowHeight": 44
+    }
+  },
+  {
+    "id": "table-exception-red",
+    "label": "Exception red",
+    "family": "Tabla",
+    "description": "Errores claros en tabla.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "coral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "dangerWarmth": 62,
+      "warningToneStrength": 64,
+      "dividerAlpha": 46,
+      "rowHoverGlow": 28
+    }
+  },
+  {
+    "id": "table-ledger-blue",
+    "label": "Ledger blue",
+    "family": "Tabla",
+    "description": "Tabla contable fría y limpia.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "tableTone": 48,
+      "columnPressure": 10,
+      "dividerAlpha": 38,
+      "zebraSoftness": 16
+    }
+  },
+  {
+    "id": "table-keyvalue",
+    "label": "Key-value simple",
+    "family": "Tabla",
+    "description": "Pares clave/valor sin ruido.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHeight": 48,
+      "dividerAlpha": 22,
+      "tableTone": 24,
+      "numericEmphasis": 62
+    }
+  },
+  {
+    "id": "table-sticky-header",
+    "label": "Header sticky claro",
+    "family": "Tabla",
+    "description": "Encabezado fijo más legible.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "headerStickiness": 82,
+      "headerHeight": 86,
+      "dividerAlpha": 38,
+      "tableTone": 42
+    }
+  },
+  {
+    "id": "table-touch-large",
+    "label": "Tabla touch large",
+    "family": "Tabla",
+    "description": "Más altura para dedo.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "rowHeight": 62,
+      "buttonHeight": 50,
+      "actionColumnVisibility": 82,
+      "dividerAlpha": 24
+    }
+  },
+  {
+    "id": "table-overflow-safe",
+    "label": "Overflow safe",
+    "family": "Tabla",
+    "description": "Compresión de columnas sin pánico.",
+    "appliesToKinds": [
+      "table",
+      "tableCell",
+      "matrix",
+      "numericText",
+      "button"
+    ],
+    "changeTypes": [
+      "Tabla",
+      "Estado",
+      "Accesibilidad",
+      "Número/precio",
+      "Botón"
+    ],
+    "effectGroup": "Tables",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "tabla",
+      "densidad",
+      "filas"
+    ],
+    "changes": {
+      "columnPressure": 12,
+      "actionColumnVisibility": 66,
+      "rowHeight": 42,
+      "microcopyOpacity": 82
+    }
+  },
+  {
+    "id": "bg-aurora-suave",
+    "label": "Aurora suave",
+    "family": "Fondo/canvas",
+    "description": "Atmósfera premium ligera.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "cyan",
+    "backgroundMode": "Frozen atmospheric",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "backgroundFreeze": 92,
+      "backgroundScale": 106,
+      "backgroundBlur": 0,
+      "atmosphericVeil": 18,
+      "vignetteSoft": 10,
+      "lightLeak": 30
+    }
+  },
+  {
+    "id": "bg-foto-legible",
+    "label": "Foto legible",
+    "family": "Fondo/canvas",
+    "description": "Imagen/fondo con velo correcto.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "blue",
+    "backgroundMode": "Soft washed",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "backgroundScale": 104,
+      "backgroundBlur": 1,
+      "atmosphericVeil": 34,
+      "vignetteSoft": 22,
+      "lightLeak": 18
+    }
+  },
+  {
+    "id": "bg-congelado",
+    "label": "Fondo congelado",
+    "family": "Fondo/canvas",
+    "description": "Background estable para evaluar UI.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "neutral",
+    "backgroundMode": "Frozen atmospheric",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "backgroundFreeze": 100,
+      "parallaxMax": 0,
+      "parallaxTiny": 0,
+      "backgroundBlur": 0
+    }
+  },
+  {
+    "id": "bg-transparente-real",
+    "label": "Fondo transparente real",
+    "family": "Fondo/canvas",
+    "description": "Apaga atmósfera y capas.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "neutral",
+    "backgroundMode": "Frozen atmospheric",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "atmosphericVeil": 0,
+      "vignetteSoft": 0,
+      "lightLeak": 0,
+      "backgroundBlur": 0,
+      "parallaxMax": 0
+    }
+  },
+  {
+    "id": "bg-vineta-suave",
+    "label": "Viñeta suave",
+    "family": "Fondo/canvas",
+    "description": "Enfoca contenido sin oscurecer demasiado.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "lavender",
+    "backgroundMode": "Glass contrast",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "vignetteSoft": 34,
+      "atmosphericVeil": 20,
+      "lightLeak": 22
+    }
+  },
+  {
+    "id": "bg-light-leak-min",
+    "label": "Light leak mínimo",
+    "family": "Fondo/canvas",
+    "description": "Detalle premium casi invisible.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "cyan",
+    "backgroundMode": "Tiny parallax",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "lightLeak": 18,
+      "vignetteSoft": 10,
+      "atmosphericVeil": 16
+    }
+  },
+  {
+    "id": "bg-mas-aire",
+    "label": "Más aire visual",
+    "family": "Fondo/canvas",
+    "description": "Menos saturación y ruido.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "mint",
+    "backgroundMode": "Soft washed",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "backgroundScale": 102,
+      "backgroundBlur": 0,
+      "atmosphericVeil": 10,
+      "vignetteSoft": 4,
+      "lightLeak": 10
+    }
+  },
+  {
+    "id": "bg-alto-contraste",
+    "label": "Canvas alto contraste",
+    "family": "Fondo/canvas",
+    "description": "Hace legible contenido sobre fondo.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "blue",
+    "backgroundMode": "Glass contrast",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "atmosphericVeil": 42,
+      "vignetteSoft": 30,
+      "backgroundBlur": 2,
+      "lightLeak": 8
+    }
+  },
+  {
+    "id": "bg-parallax-tiny",
+    "label": "Parallax tiny",
+    "family": "Fondo/canvas",
+    "description": "Movimiento mínimo, sin mareo.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "cyan",
+    "backgroundMode": "Tiny parallax",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "parallaxTiny": 1,
+      "parallaxMax": 2,
+      "motionIntensity": 10,
+      "backgroundFreeze": 70
+    }
+  },
+  {
+    "id": "bg-pastel-wash",
+    "label": "Pastel wash",
+    "family": "Fondo/canvas",
+    "description": "Lavado suave para demo claro.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "lavender",
+    "backgroundMode": "Soft washed",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "atmosphericVeil": 24,
+      "lightLeak": 38,
+      "vignetteSoft": 8,
+      "backgroundScale": 106
+    }
+  },
+  {
+    "id": "bg-operativo-calmo",
+    "label": "Operativo calmo",
+    "family": "Fondo/canvas",
+    "description": "Fondo neutral para caja real.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "neutral",
+    "backgroundMode": "Frozen atmospheric",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "atmosphericVeil": 16,
+      "lightLeak": 12,
+      "vignetteSoft": 8,
+      "backgroundFreeze": 96
+    }
+  },
+  {
+    "id": "bg-warning-mood",
+    "label": "Warning mood",
+    "family": "Fondo/canvas",
+    "description": "Ámbar suave para estados preventivos.",
+    "appliesToKinds": [
+      "background",
+      "modal",
+      "panel"
+    ],
+    "changeTypes": [
+      "Fondo",
+      "Accesibilidad",
+      "Color",
+      "Material"
+    ],
+    "effectGroup": "Background",
+    "tone": "amber",
+    "backgroundMode": "Veil heavy",
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "fondo",
+      "canvas",
+      "atmósfera"
+    ],
+    "changes": {
+      "atmosphericVeil": 28,
+      "lightLeak": 28,
+      "vignetteSoft": 18,
+      "warningToneStrength": 48
+    }
+  },
+  {
+    "id": "scope-target-halo",
+    "label": "Halo de target",
+    "family": "Estado/accesibilidad",
+    "description": "Marca el target elegido sin modificar todo.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "selectionHalo": 56,
+      "activeGlow": 26,
+      "borderAlpha": 36
+    }
+  },
+  {
+    "id": "scope-safe-minimal",
+    "label": "Scope seguro minimal",
+    "family": "Estado/accesibilidad",
+    "description": "Pocas señales, cero ruido.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "selectionHalo": 22,
+      "activeGlow": 10,
+      "borderAlpha": 18,
+      "inspectorDensity": 60
+    }
+  },
+  {
+    "id": "scope-forense",
+    "label": "Forense visible",
+    "family": "Estado/accesibilidad",
+    "description": "Más densidad e identificación de origen.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "inspectorDensity": 82,
+      "rowHeight": 42,
+      "dividerAlpha": 46,
+      "inkContrast": 96
+    }
+  },
+  {
+    "id": "access-contrast-pass",
+    "label": "Contraste PASS",
+    "family": "Estado/accesibilidad",
+    "description": "Sube legibilidad y límites no-texto.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "inkContrast": 100,
+      "mutedContrast": 86,
+      "borderAlpha": 44,
+      "selectionHalo": 46
+    }
+  },
+  {
+    "id": "access-reduced-motion",
+    "label": "Reduced motion",
+    "family": "Estado/accesibilidad",
+    "description": "Baja movimiento y parallax.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "motionIntensity": 0,
+      "parallaxTiny": 0,
+      "parallaxMax": 0,
+      "hoverLift": 0
+    }
+  },
+  {
+    "id": "access-touch-safe",
+    "label": "Touch safe",
+    "family": "Estado/accesibilidad",
+    "description": "Más alto y claro para interacción.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "mint",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "buttonHeight": 52,
+      "rowHeight": 56,
+      "panelGap": 16,
+      "selectionHalo": 44
+    }
+  },
+  {
+    "id": "state-selected-premium",
+    "label": "Selected premium",
+    "family": "Estado/accesibilidad",
+    "description": "Estado seleccionado con halo medido.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "lavender",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "selectionHalo": 64,
+      "activeGlow": 38,
+      "borderAlpha": 44,
+      "edgeShine": 34
+    }
+  },
+  {
+    "id": "state-hover-calm",
+    "label": "Hover calm",
+    "family": "Estado/accesibilidad",
+    "description": "Hover visible sin saltitos.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "cyan",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "hoverLift": 4,
+      "rowHoverGlow": 22,
+      "activeGlow": 20,
+      "motionIntensity": 8
+    }
+  },
+  {
+    "id": "state-loading-soft",
+    "label": "Loading soft",
+    "family": "Estado/accesibilidad",
+    "description": "Carga tranquila sin feria.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "blue",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "motionIntensity": 12,
+      "backgroundBlur": 1,
+      "disabledFrost": 48,
+      "microcopyOpacity": 82
+    }
+  },
+  {
+    "id": "state-locked-clear",
+    "label": "Locked clear",
+    "family": "Estado/accesibilidad",
+    "description": "Bloqueado evidente y legible.",
+    "appliesToKinds": [
+      "panel",
+      "button",
+      "table",
+      "tableCell",
+      "matrix",
+      "text",
+      "numericText",
+      "nav",
+      "dock"
+    ],
+    "changeTypes": [
+      "Estado",
+      "Accesibilidad",
+      "Override local",
+      "Movimiento",
+      "Forma y espacio"
+    ],
+    "effectGroup": "Scope",
+    "tone": "neutral",
+    "backgroundMode": null,
+    "scopeHint": "Sólo esta parte",
+    "risk": "medio",
+    "tags": [
+      "estado",
+      "seguro",
+      "scope"
+    ],
+    "changes": {
+      "disabledFrost": 78,
+      "mutedContrast": 74,
+      "borderAlpha": 34,
+      "textGlow": 0
+    }
+  },
+  /* TABRCP9_ULTRA_PARAMETRIC_RECIPES_START */
+  {
+    id: "ultra.bg.layer_background_graphite_icefield_layer_stack",
+    label: "Ultra · Graphite Icefield Layer Stack",
+    family: "Ultra fondo",
+    description: "Full layered image background with base/fractures/mist/scrim. Best house style.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Frozen atmospheric",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 30, backgroundScale: 59, backgroundBlur: 17, atmosphericVeil: 46, vignetteSoft: 32, lightLeak: 20, parallaxTiny: 21, parallaxMax: 33, contrast: 74},
+  },
+  {
+    id: "ultra.bg.layer_background_executive_mineral_calm",
+    label: "Ultra · Executive Mineral Calm",
+    family: "Ultra fondo",
+    description: "A calmer graphite background for dense backoffice.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Glass contrast",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 22, backgroundScale: 65, backgroundBlur: 21, atmosphericVeil: 54, vignetteSoft: 39, lightLeak: 27, parallaxTiny: 42, parallaxMax: 66, contrast: 76},
+  },
+  {
+    id: "ultra.bg.layer_background_chart_lab_deep_studio",
+    label: "Ultra · Chart Lab Deep Studio",
+    family: "Ultra fondo",
+    description: "High-contrast workbench background tuned for data canvas.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Glass contrast",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 14, backgroundScale: 70, backgroundBlur: 24, atmosphericVeil: 62, vignetteSoft: 46, lightLeak: 34, parallaxTiny: 42, parallaxMax: 66, contrast: 78},
+  },
+  {
+    id: "ultra.bg.layer_background_pos_low_noise_slate",
+    label: "Ultra · POS Low Noise Slate",
+    family: "Ultra fondo",
+    description: "Reduced detail for tablet/POS so touch UI wins.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Frozen atmospheric",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 33, backgroundScale: 57, backgroundBlur: 15, atmosphericVeil: 44, vignetteSoft: 29, lightLeak: 18, parallaxTiny: 21, parallaxMax: 33, contrast: 74},
+  },
+  {
+    id: "ultra.bg.layer_background_audit_quiet_vault",
+    label: "Ultra · Audit Quiet Vault",
+    family: "Ultra fondo",
+    description: "Almost still, low contrast, audit-safe.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Frozen atmospheric",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 92, backgroundScale: 53, backgroundBlur: 12, atmosphericVeil: 37, vignetteSoft: 23, lightLeak: 13, parallaxTiny: 21, parallaxMax: 33, contrast: 72},
+  },
+  {
+    id: "ultra.bg.layer_background_mobile_thin_mist",
+    label: "Ultra · Mobile Thin Mist",
+    family: "Ultra fondo",
+    description: "Battery-friendly and reduced motion by default.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Frozen atmospheric",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 37, backgroundScale: 54, backgroundBlur: 13, atmosphericVeil: 39, vignetteSoft: 25, lightLeak: 14, parallaxTiny: 21, parallaxMax: 33, contrast: 72},
+  },
+  {
+    id: "ultra.bg.layer_background_reference_visual_gallery",
+    label: "Ultra · Reference Visual Gallery",
+    family: "Ultra fondo",
+    description: "Designed for visual reference screen with high material visibility.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Glass contrast",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "medio",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 5, backgroundScale: 76, backgroundBlur: 28, atmosphericVeil: 71, vignetteSoft: 53, lightLeak: 40, parallaxTiny: 42, parallaxMax: 66, contrast: 81},
+  },
+  {
+    id: "ultra.bg.layer_background_settings_matte_graphite",
+    label: "Ultra · Settings Matte Graphite",
+    family: "Ultra fondo",
+    description: "Minimal background behind forms and controls.",
+    appliesToKinds: ["background"],
+    changeTypes: ["Fondo","Color","Accesibilidad"],
+    effectGroup: "Background",
+    backgroundMode: "Frozen atmospheric",
+    scopeHint: "Look paramétrico seguro para canvas; no toca paneles ni texto.",
+    risk: "bajo",
+    tags: ["ultra","fondo","paramétrico"],
+    changes: {backgroundFreeze: 36, backgroundScale: 55, backgroundBlur: 14, atmosphericVeil: 41, vignetteSoft: 27, lightLeak: 16, parallaxTiny: 21, parallaxMax: 33, contrast: 73},
+  },
+  {
+    id: "ultra.cmp.component_surfaceshell_graphite_operations_frame",
+    label: "Ultra · Graphite Operations Frame",
+    family: "Ultra SurfaceShell",
+    description: "Route-level frame with density budgets.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","surfaceshell","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 20, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_topbar_glass_chrome_command_bar",
+    label: "Ultra · Glass Chrome Command Bar",
+    family: "Ultra Topbar",
+    description: "Context, sync, command, account.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","topbar","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 34, panelGap: 26, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_navitem_prism_capsule_nav_item",
+    label: "Ultra · Prism Capsule Nav Item",
+    family: "Ultra NavItem",
+    description: "Hover and active navigation capsule.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","navitem","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 29, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_pagegrid_twelve_column_fog_grid",
+    label: "Ultra · Twelve Column Fog Grid",
+    family: "Ultra PageGrid",
+    description: "Responsive content matrix.",
+    appliesToKinds: ["table","tableCell"],
+    changeTypes: ["Tabla","Estado","Accesibilidad"],
+    effectGroup: "Tables",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","pagegrid","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 18, panelGap: 17, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_decisionheader_oracle_glass_decision_header",
+    label: "Ultra · Oracle Glass Decision Header",
+    family: "Ultra DecisionHeader",
+    description: "Human title, state, update, primary decision.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","decisionheader","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 22, panelGap: 20, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_heropanel_executive_iceberg_hero",
+    label: "Ultra · Executive Iceberg Hero",
+    family: "Ultra HeroPanel",
+    description: "Main cinematic/readable hero module.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","heropanel","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 26, panelGap: 23, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_attentionsummary_signal_triage_strip",
+    label: "Ultra · Signal Triage Strip",
+    family: "Ultra AttentionSummary",
+    description: "Urgent/review/ok grouped signals.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","attentionsummary","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 30, panelGap: 26, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_prismacard_executive_card_base",
+    label: "Ultra · Executive Card Base",
+    family: "Ultra PrismaCard",
+    description: "Base card across system.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","prismacard","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 14, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_statuscard_live_status_lens",
+    label: "Ultra · Live Status Lens",
+    family: "Ultra StatusCard",
+    description: "Sync/health state card.",
+    appliesToKinds: ["panel","numericText"],
+    changeTypes: ["Material","Número/precio","Estado"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","statuscard","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 18, panelGap: 20, cardDensity: 58, buttonGlow: 32, textGlow: 17, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_evidencecard_evidence_vault_tile",
+    label: "Ultra · Evidence Vault Tile",
+    family: "Ultra EvidenceCard",
+    description: "Source/confidence/timestamp card.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","evidencecard","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 22, panelGap: 23, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_insightcard_insight_prism_reader",
+    label: "Ultra · Insight Prism Reader",
+    family: "Ultra InsightCard",
+    description: "Question, reading, action, confidence.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","insightcard","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 26, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_actioncard_action_glass_tile",
+    label: "Ultra · Action Glass Tile",
+    family: "Ultra ActionCard",
+    description: "Click-heavy action surface.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","actioncard","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 30, panelGap: 29, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_operationaltable_glass_ledger_grid",
+    label: "Ultra · Glass Ledger Grid",
+    family: "Ultra OperationalTable",
+    description: "Readable dense table with semantic highlights.",
+    appliesToKinds: ["table","tableCell"],
+    changeTypes: ["Tabla","Estado","Accesibilidad"],
+    effectGroup: "Tables",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","operationaltable","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 34, panelGap: 14, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_tabletoolbar_filter_bridge_toolbar",
+    label: "Ultra · Filter Bridge Toolbar",
+    family: "Ultra TableToolbar",
+    description: "Search/filter/export/density controls.",
+    appliesToKinds: ["table","tableCell"],
+    changeTypes: ["Tabla","Estado","Accesibilidad"],
+    effectGroup: "Tables",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","tabletoolbar","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 38, panelGap: 17, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_formshell_matte_glass_form_bay",
+    label: "Ultra · Matte Glass Form Bay",
+    family: "Ultra FormShell",
+    description: "Form container with clear validation.",
+    appliesToKinds: ["input","text"],
+    changeTypes: ["Texto","Estado","Accesibilidad"],
+    effectGroup: "Typography",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","formshell","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 18, panelGap: 23, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_input_quiet_frost_input",
+    label: "Ultra · Quiet Frost Input",
+    family: "Ultra Input",
+    description: "Input/textarea/search controls.",
+    appliesToKinds: ["input","text"],
+    changeTypes: ["Texto","Estado","Accesibilidad"],
+    effectGroup: "Typography",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","input","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 22, panelGap: 26, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_selectdropdown_radix_crystal_select",
+    label: "Ultra · Radix Crystal Select",
+    family: "Ultra SelectDropdown",
+    description: "Select/dropdown recipe.",
+    appliesToKinds: ["input","text"],
+    changeTypes: ["Texto","Estado","Accesibilidad"],
+    effectGroup: "Typography",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","selectdropdown","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 29, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_daterangepicker_temporal_glass_picker",
+    label: "Ultra · Temporal Glass Picker",
+    family: "Ultra DateRangePicker",
+    description: "Date picker and range control.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","daterangepicker","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 30, panelGap: 14, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_buttonprimary_blue_core_primary_button",
+    label: "Ultra · Blue Core Primary Button",
+    family: "Ultra ButtonPrimary",
+    description: "Primary action CTA.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","buttonprimary","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 34, panelGap: 17, cardDensity: 46, buttonGlow: 32, textGlow: 17, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_buttonsecondary_frost_capsule_secondary",
+    label: "Ultra · Frost Capsule Secondary",
+    family: "Ultra ButtonSecondary",
+    description: "Secondary action.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","buttonsecondary","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 20, cardDensity: 58, buttonGlow: 32, textGlow: 17, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_iconbutton_round_glass_icon_button",
+    label: "Ultra · Round Glass Icon Button",
+    family: "Ultra IconButton",
+    description: "Toolbar/icon action.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","iconbutton","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 18, panelGap: 26, cardDensity: 34, buttonGlow: 32, textGlow: 17, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_tabs_liquid_segment_tabs",
+    label: "Ultra · Liquid Segment Tabs",
+    family: "Ultra Tabs",
+    description: "Tabs with active indicator.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","tabs","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 22, panelGap: 29, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_accordion_compact_evidence_accordion",
+    label: "Ultra · Compact Evidence Accordion",
+    family: "Ultra Accordion",
+    description: "Advanced/details collapsed content.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","accordion","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 26, panelGap: 14, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_tooltip_soft_glass_tooltip",
+    label: "Ultra · Soft Glass Tooltip",
+    family: "Ultra Tooltip",
+    description: "Short help/accessibility copy.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","tooltip","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 30, panelGap: 17, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_popover_floating_glass_popover",
+    label: "Ultra · Floating Glass Popover",
+    family: "Ultra Popover",
+    description: "Filters/context detail.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","popover","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 34, panelGap: 20, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_modal_premium_decision_modal",
+    label: "Ultra · Premium Decision Modal",
+    family: "Ultra Modal",
+    description: "Important dialog/confirmation.",
+    appliesToKinds: ["modal","panel"],
+    changeTypes: ["Material","Estado","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","modal","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 38, panelGap: 23, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_drawerdesktop_side_evidence_drawer",
+    label: "Ultra · Side Evidence Drawer",
+    family: "Ultra DrawerDesktop",
+    description: "Evidence/technical side drawer.",
+    appliesToKinds: ["modal","panel"],
+    changeTypes: ["Material","Estado","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","drawerdesktop","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 18, panelGap: 29, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_drawermobile_vaul_bottom_ice_sheet",
+    label: "Ultra · Vaul Bottom Ice Sheet",
+    family: "Ultra DrawerMobile",
+    description: "Mobile/tablet bottom sheet.",
+    appliesToKinds: ["modal","panel"],
+    changeTypes: ["Material","Estado","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","drawermobile","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 22, panelGap: 14, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_toast_sonner_glass_beacon",
+    label: "Ultra · Sonner Glass Beacon",
+    family: "Ultra Toast",
+    description: "Transient feedback.",
+    appliesToKinds: ["toast","panel"],
+    changeTypes: ["Estado","Color","Accesibilidad"],
+    effectGroup: "State",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","toast","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 17, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_chartframe_hydrograph_chart_chamber",
+    label: "Ultra · Hydrograph Chart Chamber",
+    family: "Ultra ChartFrame",
+    description: "Important chart wrapper.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","chartframe","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 30, panelGap: 20, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_charttoolbar_chart_instrument_rail",
+    label: "Ultra · Chart Instrument Rail",
+    family: "Ultra ChartToolbar",
+    description: "Chart controls.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","charttoolbar","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 34, panelGap: 23, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_charttooltip_human_chart_tooltip",
+    label: "Ultra · Human Chart Tooltip",
+    family: "Ultra ChartTooltip",
+    description: "Human chart reading tooltip.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","charttooltip","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 26, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_resizablepanel_workbench_split_glass",
+    label: "Ultra · Workbench Split Glass",
+    family: "Ultra ResizablePanel",
+    description: "Resizable panels.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","resizablepanel","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 18, panelGap: 14, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 9, pressDepth: 11, motionIntensity: 52},
+  },
+  {
+    id: "ultra.cmp.component_activityfeed_soft_pulse_activity_feed",
+    label: "Ultra · Soft Pulse Activity Feed",
+    family: "Ultra ActivityFeed",
+    description: "Recent events.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","activityfeed","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 22, panelGap: 17, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_timeline_glass_timeline_thread",
+    label: "Ultra · Glass Timeline Thread",
+    family: "Ultra Timeline",
+    description: "Event sequence timeline.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","timeline","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 20, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_audittrail_quiet_audit_vault",
+    label: "Ultra · Quiet Audit Vault",
+    family: "Ultra AuditTrail",
+    description: "Audit rows and details.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","audittrail","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 30, panelGap: 23, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 3, pressDepth: 4, motionIntensity: 14},
+  },
+  {
+    id: "ultra.cmp.component_emptystate_quiet_empty_crystal",
+    label: "Ultra · Quiet Empty Crystal",
+    family: "Ultra EmptyState",
+    description: "No data state.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","emptystate","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 34, panelGap: 26, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_errorstate_human_error_prism",
+    label: "Ultra · Human Error Prism",
+    family: "Ultra ErrorState",
+    description: "Recoverable error state.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","errorstate","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 29, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_dashboardhoy_hoy_premium_command_center",
+    label: "Ultra · Hoy Premium Command Center",
+    family: "Ultra DashboardHoy",
+    description: "Fullscreen operational home.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "alto",
+    tags: ["ultra","dashboardhoy","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 18, panelGap: 17, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 9, pressDepth: 11, motionIntensity: 52},
+  },
+  {
+    id: "ultra.cmp.component_poshome_touch_calm_pos_surface",
+    label: "Ultra · Touch Calm POS Surface",
+    family: "Ultra POSHome",
+    description: "Tablet touch operational surface.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","poshome","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 26, panelGap: 23, cardDensity: 70, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_mobileshell_pocket_graphite_shell",
+    label: "Ultra · Pocket Graphite Shell",
+    family: "Ultra MobileShell",
+    description: "Mobile surface.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","mobileshell","paramétrico"],
+    changes: {glassAlpha: 32, blur: 34, frostVeil: 35, borderAlpha: 21, edgeShine: 21, shadow: 24, buttonRadius: 30, panelGap: 26, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_settingslicense_license_control_vault",
+    label: "Ultra · License Control Vault",
+    family: "Ultra SettingsLicense",
+    description: "Licensing/settings page.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","settingslicense","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 34, panelGap: 29, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_prismainsights_insight_observatory",
+    label: "Ultra · Insight Observatory",
+    family: "Ultra PrismaInsights",
+    description: "Insights page.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","prismainsights","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 38, panelGap: 14, cardDensity: 58, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_bulkactions_mass_action_control_deck",
+    label: "Ultra · Mass Action Control Deck",
+    family: "Ultra BulkActions",
+    description: "Bulk operations with guardrails.",
+    appliesToKinds: ["button","nav"],
+    changeTypes: ["Botón","Estado","Movimiento","Color"],
+    effectGroup: "Buttons",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "medio",
+    tags: ["ultra","bulkactions","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 21, edgeShine: 21, shadow: 38, buttonRadius: 18, panelGap: 20, cardDensity: 34, buttonGlow: 13, textGlow: 7, hoverLift: 6, pressDepth: 7, motionIntensity: 32},
+  },
+  {
+    id: "ultra.cmp.component_referencevisual_visual_reference_museum",
+    label: "Ultra · Visual Reference Museum",
+    family: "Ultra ReferenceVisual",
+    description: "Reference screen to audit visual style.",
+    appliesToKinds: ["panel"],
+    changeTypes: ["Material","Borde y luz","Sombra y profundidad","Forma y espacio"],
+    effectGroup: "Panels",
+    scopeHint: "Look paramétrico del Codex Ultra; aplica sólo a target compatible.",
+    risk: "alto",
+    tags: ["ultra","referencevisual","paramétrico"],
+    changes: {glassAlpha: 56, blur: 34, frostVeil: 54, borderAlpha: 52, edgeShine: 57, shadow: 38, buttonRadius: 22, panelGap: 23, cardDensity: 46, buttonGlow: 13, textGlow: 7, hoverLift: 9, pressDepth: 11, motionIntensity: 52},
+  },
+  /* TABRCP9_ULTRA_PARAMETRIC_RECIPES_END */
+
+];
+
+function tabctl7RecipeCompatible(recipe: Tabctl7RecipeSpec, roleSpec: Tabctl7RoleSpec, changeType: string) {
+  return recipe.appliesToKinds.includes(roleSpec.kind) && (recipe.changeTypes.includes(changeType) || recipe.changeTypes.includes("Cualquiera") || recipe.changeTypes.some((item) => roleSpec.changeTypes.includes(item)));
+}
+/* TABCTL7_RECIPE_REGISTRY_END */
+
 function tabctl7GroupFor(group: string) { return tabctl7Taxonomy[group] ?? tabctl7Taxonomy["POS Product Set"] ?? Object.values(tabctl7Taxonomy)[0]; }
 function tabctl7Slug(value: string) { return value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "default"; }
 /* TABCTL7V2_SUPREMO_MODEL_END */
@@ -1928,6 +6329,8 @@ export function TabletLabAutoStudio() {
   const [tabctl7ColorMode, setTabctl7ColorMode] = useState(tabctl7ColorModes[1]);
   const [tabctl7Scope, setTabctl7Scope] = useState(tabctl7Scopes[0]);
   const [tabctl7Inheritance, setTabctl7Inheritance] = useState(tabctl7InheritanceModes[0]);
+  const [tabctl7PreviewRecipeId, setTabctl7PreviewRecipeId] = useState<string | null>(null);
+  const [tabctl7StudioMode, setTabctl7StudioMode] = useState<Tabctl7StudioMode>("Rápido");
 
   const tabctl7Group = tabctl7GroupFor(widgetGroup);
   const tabctl7Layers = tabctl7Group.layers.map((item) => item.layer);
@@ -1935,9 +6338,60 @@ export function TabletLabAutoStudio() {
   const tabctl7Roles = tabctl7CurrentLayer.roles.map((item) => item.role);
   const tabctl7CurrentRole = tabctl7CurrentLayer.roles.find((item) => item.role === tabctl7Role) ?? tabctl7CurrentLayer.roles[0];
   const tabctl7MaterialSpec = tabctl7Materials.find((item) => item.id === tabctl7Material) ?? tabctl7Materials[0];
-  const tabctl7VisibleControls = tabctl7Controls.filter((control) => control.kinds.includes(tabctl7CurrentRole.kind) && control.changeTypes.includes(tabctl7Change));
+  const tabctl7ChangeOptions = tabctl7CurrentRole.changeTypes.length ? tabctl7CurrentRole.changeTypes : tabctl7ChangeTypes;
+  const tabctl7EffectiveChange = tabctl7ChangeOptions.includes(tabctl7Change) ? tabctl7Change : (tabctl7ChangeOptions[0] ?? "Material");
+  const tabctl7VisibleControls = tabctl7Controls.filter((control) =>
+    tabctl7CurrentRole.controls.includes(control.key) &&
+    control.kinds.includes(tabctl7CurrentRole.kind) &&
+    control.changeTypes.includes(tabctl7EffectiveChange)
+  );
+  const tabctl7VisibleControlKeys = useMemo(() => new Set(tabctl7VisibleControls.map((control) => control.key)), [tabctl7VisibleControls]);
   const tabctl7SuggestedEffects = Array.from(new Set(tabctl7VisibleControls.map((control) => control.effectGroup)));
-  const tabctl7ZeroSummary = [knobs.blur === 0 ? "blur off" : null, knobs.borderAlpha === 0 ? "border off" : null, knobs.buttonGlow === 0 && knobs.textGlow === 0 && knobs.specularGlow === 0 ? "glow off" : null, knobs.glassAlpha === 0 ? "alpha off" : null].filter(Boolean).join(" · ") || "ceros con apagado real";
+  const tabctl7EffectOptions = tabctl7SuggestedEffects.length ? tabctl7SuggestedEffects : ["Scope"];
+  const tabctl7EffectiveEffectGroup = tabctl7EffectOptions.includes(effectGroup) ? effectGroup : (tabctl7EffectOptions[0] ?? "Scope");
+  const tabctl7CanEditMaterial = tabctl7VisibleControls.some((control) => ["Glass", "Depth", "Material"].includes(control.effectGroup)) || tabctl7EffectiveChange === "Material";
+  const tabctl7CanEditColor = tabctl7VisibleControls.some((control) => ["Color", "Typography", "Buttons"].includes(control.effectGroup)) || ["Color", "Texto", "Número/precio"].includes(tabctl7EffectiveChange);
+  const tabctl7CanEditBackground = tabctl7CurrentRole.kind === "background" || tabctl7EffectiveChange === "Fondo";
+  const tabctl7CompatibleRecipes = useMemo(() => tabctl7RecipeRegistry.filter((recipe) => tabctl7RecipeCompatible(recipe, tabctl7CurrentRole, tabctl7EffectiveChange)), [tabctl7CurrentRole, tabctl7EffectiveChange]);
+  const tabctl7QuickRecipes = useMemo(() => {
+    const riskRank: Record<Tabctl7RecipeRisk, number> = { bajo: 0, medio: 1, alto: 2 };
+    const familyRank = (recipe: Tabctl7RecipeSpec) => {
+      if (recipe.family.toLowerCase().includes("ultra")) return 0;
+      if (recipe.tags.includes("premium") || recipe.tags.includes("operativo")) return 1;
+      return 2;
+    };
+    const pool = [...tabctl7CompatibleRecipes].sort((a, b) => familyRank(a) - familyRank(b) || riskRank[a.risk] - riskRank[b.risk] || Object.keys(b.changes).length - Object.keys(a.changes).length);
+    const picked: Tabctl7RecipeSpec[] = [];
+    const seenFamilies = new Set<string>();
+    for (const recipe of pool) {
+      const fam = recipe.family.split(" ").slice(0, 2).join(" ");
+      if (picked.length < 6 && (!seenFamilies.has(fam) || picked.length < 3)) {
+        picked.push(recipe);
+        seenFamilies.add(fam);
+      }
+    }
+    return picked.length ? picked.slice(0, 6) : pool.slice(0, 6);
+  }, [tabctl7CompatibleRecipes]);
+  const tabctl7IsQuickMode = tabctl7StudioMode === "Rápido";
+  const tabctl7IsRecipeMode = tabctl7StudioMode === "Receta";
+  const tabctl7IsProMode = tabctl7StudioMode === "Pro";
+  const tabctl7ShowsRecipePanel = tabctl7IsQuickMode || tabctl7IsRecipeMode;
+  const tabctl7VisibleRecipes = tabctl7IsQuickMode ? tabctl7QuickRecipes : tabctl7CompatibleRecipes.slice(0, 72);
+  const tabctl7PreviewRecipe = tabctl7CompatibleRecipes.find((recipe) => recipe.id === tabctl7PreviewRecipeId) ?? null;
+  const tabctl7LiveKnobs = useMemo<Knobs>(() => (tabctl7PreviewRecipe ? ({ ...knobs, ...tabctl7PreviewRecipe.changes } as Knobs) : knobs), [knobs, tabctl7PreviewRecipe]);
+  const tabctl7RecipeFamilies = Array.from(new Set(tabctl7VisibleRecipes.map((recipe) => recipe.family)));
+  const tabctl7RecipeDelta = tabctl7PreviewRecipe ? Object.keys(tabctl7PreviewRecipe.changes).slice(0, 8).join(" · ") : "sin preview activo";
+  const tabctl7ZeroSummary = [tabctl7LiveKnobs.blur === 0 ? "blur off" : null, tabctl7LiveKnobs.borderAlpha === 0 ? "border off" : null, tabctl7LiveKnobs.buttonGlow === 0 && tabctl7LiveKnobs.textGlow === 0 && tabctl7LiveKnobs.specularGlow === 0 ? "glow off" : null, tabctl7LiveKnobs.glassAlpha === 0 ? "alpha off" : null].filter(Boolean).join(" · ") || "ceros con apagado real";
+  const tabctl7ChangeOptionKey = tabctl7ChangeOptions.join("|");
+  const tabctl7EffectOptionKey = tabctl7EffectOptions.join("|");
+
+  useEffect(() => {
+    if (!tabctl7ChangeOptions.includes(tabctl7Change)) setTabctl7Change(tabctl7ChangeOptions[0] ?? "Material");
+  }, [tabctl7Change, tabctl7ChangeOptionKey]);
+
+  useEffect(() => {
+    if (!tabctl7EffectOptions.includes(effectGroup)) setEffectGroup(tabctl7EffectOptions[0] ?? "Scope");
+  }, [effectGroup, tabctl7EffectOptionKey]);
 
   useEffect(() => {
     const group = tabctl7GroupFor(widgetGroup);
@@ -1955,65 +6409,65 @@ export function TabletLabAutoStudio() {
   }, []);
 
   const styleVars = useMemo(() => ({
-    "--tabctl3-alpha": `${knobs.glassAlpha / 100}`,
-    "--tabctl3-blur": `${knobs.blur}px`,
-    "--tabctl3-saturate": `${knobs.saturate}%`,
-    "--tabctl3-contrast": `${knobs.contrast}%`,
-    "--tabctl3-border-alpha": `${knobs.borderAlpha / 100}`,
-    "--tabctl3-highlight": `${knobs.innerHighlight / 100}`,
-    "--tabctl3-edge": `${knobs.edgeShine / 100}`,
-    "--tabctl3-glow": `${knobs.specularGlow / 100}`,
+    "--tabctl3-alpha": `${tabctl7LiveKnobs.glassAlpha / 100}`,
+    "--tabctl3-blur": `${tabctl7LiveKnobs.blur}px`,
+    "--tabctl3-saturate": `${tabctl7LiveKnobs.saturate}%`,
+    "--tabctl3-contrast": `${tabctl7LiveKnobs.contrast}%`,
+    "--tabctl3-border-alpha": `${tabctl7LiveKnobs.borderAlpha / 100}`,
+    "--tabctl3-highlight": `${tabctl7LiveKnobs.innerHighlight / 100}`,
+    "--tabctl3-edge": `${tabctl7LiveKnobs.edgeShine / 100}`,
+    "--tabctl3-glow": `${tabctl7LiveKnobs.specularGlow / 100}`,
     "--tabctl3-tint": toneSeed[tone],
-    "--tabctl3-tint-strength": `${knobs.tintStrength / 100}`,
-    "--tabctl3-angle": `${knobs.gradientAngle}deg`,
-    "--tabctl3-shadow": `${knobs.shadow / 100}`,
-    "--tabctl3-frost": `${knobs.frostVeil / 100}`,
-    "--tabctl3-light-leak": `${knobs.lightLeak / 100}`,
-    "--tabctl3-radius": `${knobs.buttonRadius + 8}px`,
-    "--tabctl3-gap": `${knobs.panelGap}px`,
-    "--tabctl3-row": `${knobs.rowHeight}px`,
-    "--tabctl3-columns": String(knobs.gridColumns),
-    "--tabctl3-rail": `${knobs.railWidth}px`,
-    "--tabctl3-text-glow": `${knobs.textGlow / 100}`,
-    "--tabctl3-bg-scale": `${knobs.backgroundScale / 100}`,
-    "--tabctl3-bg-blur": `${knobs.backgroundBlur}px`,
-    "--tabctl3-veil": `${knobs.atmosphericVeil / 100}`,
-    "--tabctl3-vignette": `${knobs.vignetteSoft / 100}`,
-    "--tabctl3-header": `${knobs.headerHeight}px`,
-    "--tabctl3-button-height": `${knobs.buttonHeight}px`,
-    "--tabctl3-button-glow": `${knobs.buttonGlow / 100}`,
-    "--tabctl3-border-brightness": `${knobs.borderBrightness / 100}`,
-    "--tabctl3-press-inset": `${knobs.pressInset}px`,
-    "--tabctl3-disabled-frost": `${knobs.disabledFrost / 100}`,
-    "--tabctl3-danger-warmth": `${knobs.dangerWarmth / 100}`,
-    "--tabctl3-primary-saturation": `${knobs.primarySaturation}%`,
-    "--tabctl3-table-tone": `${knobs.tableTone / 100}`,
-    "--tabctl3-column-pressure": `${knobs.columnPressure}`,
-    "--tabctl3-header-stickiness": `${knobs.headerStickiness / 100}`,
-    "--tabctl3-zebra": `${knobs.zebraSoftness / 100}`,
-    "--tabctl3-divider-alpha": `${knobs.dividerAlpha / 100}`,
-    "--tabctl3-row-hover": `${knobs.rowHoverGlow / 100}`,
-    "--tabctl3-action-column": `${knobs.actionColumnVisibility / 100}`,
-    "--tabctl3-card-density": `${knobs.cardDensity / 100}`,
-    "--tabctl3-chip-compression": `${knobs.chipCompression / 100}`,
-    "--tabctl3-toolbar-compactness": `${knobs.toolbarCompactness / 100}`,
-    "--tabctl3-ink-contrast": `${knobs.inkContrast / 100}`,
-    "--tabctl3-muted-contrast": `${knobs.mutedContrast / 100}`,
-    "--tabctl3-label-tracking": `${knobs.labelTracking / 100}`,
-    "--tabctl3-numeric-emphasis": `${knobs.numericEmphasis / 100}`,
-    "--tabctl3-microcopy": `${knobs.microcopyOpacity / 100}`,
-    "--tabctl3-heading-weight": `${Math.round(400 + knobs.headingWeight * 5)}`,
-    "--tabctl3-card-translucency": `${knobs.cardTranslucency / 100}`,
-    "--tabctl3-rail-translucency": `${knobs.railTranslucency / 100}`,
-    "--tabctl3-modal-glass": `${knobs.modalGlassStrength / 100}`,
-    "--tabctl3-warning-tone": `${knobs.warningToneStrength / 100}`,
-    "--tabctl3-metric-emphasis": `${knobs.metricEmphasis / 100}`,
+    "--tabctl3-tint-strength": `${tabctl7LiveKnobs.tintStrength / 100}`,
+    "--tabctl3-angle": `${tabctl7LiveKnobs.gradientAngle}deg`,
+    "--tabctl3-shadow": `${tabctl7LiveKnobs.shadow / 100}`,
+    "--tabctl3-frost": `${tabctl7LiveKnobs.frostVeil / 100}`,
+    "--tabctl3-light-leak": `${tabctl7LiveKnobs.lightLeak / 100}`,
+    "--tabctl3-radius": `${tabctl7LiveKnobs.buttonRadius + 8}px`,
+    "--tabctl3-gap": `${tabctl7LiveKnobs.panelGap}px`,
+    "--tabctl3-row": `${tabctl7LiveKnobs.rowHeight}px`,
+    "--tabctl3-columns": String(tabctl7LiveKnobs.gridColumns),
+    "--tabctl3-rail": `${tabctl7LiveKnobs.railWidth}px`,
+    "--tabctl3-text-glow": `${tabctl7LiveKnobs.textGlow / 100}`,
+    "--tabctl3-bg-scale": `${tabctl7LiveKnobs.backgroundScale / 100}`,
+    "--tabctl3-bg-blur": `${tabctl7LiveKnobs.backgroundBlur}px`,
+    "--tabctl3-veil": `${tabctl7LiveKnobs.atmosphericVeil / 100}`,
+    "--tabctl3-vignette": `${tabctl7LiveKnobs.vignetteSoft / 100}`,
+    "--tabctl3-header": `${tabctl7LiveKnobs.headerHeight}px`,
+    "--tabctl3-button-height": `${tabctl7LiveKnobs.buttonHeight}px`,
+    "--tabctl3-button-glow": `${tabctl7LiveKnobs.buttonGlow / 100}`,
+    "--tabctl3-border-brightness": `${tabctl7LiveKnobs.borderBrightness / 100}`,
+    "--tabctl3-press-inset": `${tabctl7LiveKnobs.pressInset}px`,
+    "--tabctl3-disabled-frost": `${tabctl7LiveKnobs.disabledFrost / 100}`,
+    "--tabctl3-danger-warmth": `${tabctl7LiveKnobs.dangerWarmth / 100}`,
+    "--tabctl3-primary-saturation": `${tabctl7LiveKnobs.primarySaturation}%`,
+    "--tabctl3-table-tone": `${tabctl7LiveKnobs.tableTone / 100}`,
+    "--tabctl3-column-pressure": `${tabctl7LiveKnobs.columnPressure}`,
+    "--tabctl3-header-stickiness": `${tabctl7LiveKnobs.headerStickiness / 100}`,
+    "--tabctl3-zebra": `${tabctl7LiveKnobs.zebraSoftness / 100}`,
+    "--tabctl3-divider-alpha": `${tabctl7LiveKnobs.dividerAlpha / 100}`,
+    "--tabctl3-row-hover": `${tabctl7LiveKnobs.rowHoverGlow / 100}`,
+    "--tabctl3-action-column": `${tabctl7LiveKnobs.actionColumnVisibility / 100}`,
+    "--tabctl3-card-density": `${tabctl7LiveKnobs.cardDensity / 100}`,
+    "--tabctl3-chip-compression": `${tabctl7LiveKnobs.chipCompression / 100}`,
+    "--tabctl3-toolbar-compactness": `${tabctl7LiveKnobs.toolbarCompactness / 100}`,
+    "--tabctl3-ink-contrast": `${tabctl7LiveKnobs.inkContrast / 100}`,
+    "--tabctl3-muted-contrast": `${tabctl7LiveKnobs.mutedContrast / 100}`,
+    "--tabctl3-label-tracking": `${tabctl7LiveKnobs.labelTracking / 100}`,
+    "--tabctl3-numeric-emphasis": `${tabctl7LiveKnobs.numericEmphasis / 100}`,
+    "--tabctl3-microcopy": `${tabctl7LiveKnobs.microcopyOpacity / 100}`,
+    "--tabctl3-heading-weight": `${Math.round(400 + tabctl7LiveKnobs.headingWeight * 5)}`,
+    "--tabctl3-card-translucency": `${tabctl7LiveKnobs.cardTranslucency / 100}`,
+    "--tabctl3-rail-translucency": `${tabctl7LiveKnobs.railTranslucency / 100}`,
+    "--tabctl3-modal-glass": `${tabctl7LiveKnobs.modalGlassStrength / 100}`,
+    "--tabctl3-warning-tone": `${tabctl7LiveKnobs.warningToneStrength / 100}`,
+    "--tabctl3-metric-emphasis": `${tabctl7LiveKnobs.metricEmphasis / 100}`,
     "--tabctl7-material-alpha": `${tabctl7MaterialSpec.alpha}`,
     "--tabctl7-material-frost": `${tabctl7MaterialSpec.frost}`,
     "--tabctl7-material-blur-delta": `${tabctl7MaterialSpec.blurDelta}px`,
     "--tabctl7-material-glow": `${tabctl7MaterialSpec.glow}`,
     "--tabctl7-material-border": `${tabctl7MaterialSpec.border}`,
-  }) as CSSProperties, [knobs, tone, tabctl7MaterialSpec]);
+  }) as CSSProperties, [tabctl7LiveKnobs, tone, tabctl7MaterialSpec]);
 
   const currentRecipe = useMemo<PresetRecord>(() => ({
     id: "draft",
@@ -2021,27 +6475,27 @@ export function TabletLabAutoStudio() {
     basePreset: preset,
     section,
     widgetGroup,
-    effectGroup,
+    effectGroup: tabctl7EffectiveEffectGroup,
     viewport,
     stateMode,
     tone,
-    glassAlpha: knobs.glassAlpha,
-    blur: knobs.blur,
-    saturate: knobs.saturate,
-    contrast: knobs.contrast,
-    tintStrength: knobs.tintStrength,
-    glow: knobs.specularGlow,
-    radius: knobs.buttonRadius + 8,
-    shadow: knobs.shadow,
-    density: knobs.cardDensity,
-    columns: knobs.gridColumns,
+    glassAlpha: tabctl7LiveKnobs.glassAlpha,
+    blur: tabctl7LiveKnobs.blur,
+    saturate: tabctl7LiveKnobs.saturate,
+    contrast: tabctl7LiveKnobs.contrast,
+    tintStrength: tabctl7LiveKnobs.tintStrength,
+    glow: tabctl7LiveKnobs.specularGlow,
+    radius: tabctl7LiveKnobs.buttonRadius + 8,
+    shadow: tabctl7LiveKnobs.shadow,
+    density: tabctl7LiveKnobs.cardDensity,
+    columns: tabctl7LiveKnobs.gridColumns,
     backgroundMode,
     tabctl7ModelVersion: TABCTL7V2_MODEL_VERSION,
     tabctl7Layer: tabctl7CurrentLayer.layer,
     tabctl7Role: tabctl7CurrentRole.role,
     tabctl7Part: tabctl7CurrentRole.part,
     tabctl7Kind: tabctl7CurrentRole.kind,
-    tabctl7Change,
+    tabctl7Change: tabctl7EffectiveChange,
     tabctl7Material,
     tabctl7MaterialLabel: tabctl7MaterialSpec.label,
     tabctl7ColorMode,
@@ -2051,12 +6505,42 @@ export function TabletLabAutoStudio() {
     tabctl7ZeroPolicy: "zero-means-off",
     createdAt: isoNow(),
     updatedAt: isoNow(),
-  }), [preset, section, widgetGroup, effectGroup, viewport, stateMode, tone, knobs, backgroundMode, tabctl7CurrentLayer.layer, tabctl7CurrentRole, tabctl7Change, tabctl7Material, tabctl7MaterialSpec, tabctl7ColorMode, tabctl7Scope, tabctl7Inheritance, tabctl7VisibleControls]);
+  }), [preset, section, widgetGroup, tabctl7EffectiveEffectGroup, viewport, stateMode, tone, tabctl7LiveKnobs, backgroundMode, tabctl7CurrentLayer.layer, tabctl7CurrentRole, tabctl7EffectiveChange, tabctl7Material, tabctl7MaterialSpec, tabctl7ColorMode, tabctl7Scope, tabctl7Inheritance, tabctl7VisibleControls]);
 
-  const updateKnob = (key: keyof Knobs, value: number) => setKnobs((prev) => ({ ...prev, [key]: value }));
+  const updateKnob = (key: keyof Knobs, value: number) => {
+    setTabctl7PreviewRecipeId(null);
+    setKnobs((prev) => ({ ...prev, [key]: value }));
+  };
 
-  const currentKnobItems = knobGroups[effectGroup] ?? [];
-  const activeKnobCount = currentKnobItems.filter((item) => knobAppliesToWidget(item.key, widgetGroup)).length;
+  const previewTabctl7Recipe = (recipe: Tabctl7RecipeSpec) => {
+    setTabctl7PreviewRecipeId(recipe.id);
+    if (recipe.tone) setTone(recipe.tone);
+    if (recipe.backgroundMode) setBackgroundMode(recipe.backgroundMode);
+    setEffectGroup(recipe.effectGroup);
+    setStorageStatus(`Preview activo: ${recipe.label}`);
+  };
+
+  const applyTabctl7Recipe = (recipe: Tabctl7RecipeSpec) => {
+    setKnobs((prev) => ({ ...prev, ...recipe.changes }));
+    if (recipe.tone) setTone(recipe.tone);
+    if (recipe.backgroundMode) setBackgroundMode(recipe.backgroundMode);
+    setEffectGroup(recipe.effectGroup);
+    setTabctl7PreviewRecipeId(null);
+    setStorageStatus(`Sí, así: ${recipe.label}`);
+  };
+
+  const confirmTabctl7Preview = () => {
+    if (!tabctl7PreviewRecipe) return;
+    applyTabctl7Recipe(tabctl7PreviewRecipe);
+  };
+
+  const cancelTabctl7Preview = () => {
+    setTabctl7PreviewRecipeId(null);
+    setStorageStatus("Preview cancelado; no se guardó nada");
+  };
+
+  const currentKnobItems = (knobGroups[tabctl7EffectiveEffectGroup] ?? []).filter((item) => tabctl7VisibleControlKeys.has(item.key));
+  const activeKnobCount = currentKnobItems.length;
 
   const savePreset = () => {
     const name = safePresetName(window.prompt("Nombre del preset visual", currentRecipe.name), currentRecipe.name);
@@ -2131,7 +6615,7 @@ export function TabletLabAutoStudio() {
   };
 
   return (
-    <section className={styles.autoStudio} style={styleVars} data-component="TabletLabAutoStudio" data-preset={preset} data-widget-group={widgetGroup} data-effect-group={effectGroup} data-state-mode={stateMode} data-viewport={viewport} data-layout="tabctl7v2-supreme-role-state-material-scope" data-tabctl7-version={TABCTL7V2_MODEL_VERSION} data-tabctl7-layer={tabctl7Slug(tabctl7CurrentLayer.layer)} data-tabctl7-role={tabctl7Slug(tabctl7CurrentRole.role)} data-tabctl7-kind={tabctl7CurrentRole.kind} data-tabctl7-change={tabctl7Slug(tabctl7Change)} data-tabctl7-material={tabctl7Material} data-tabctl7-color-mode={tabctl7Slug(tabctl7ColorMode)} data-tabctl7-scope={tabctl7Slug(tabctl7Scope)} data-tabctl7-inheritance={tabctl7Slug(tabctl7Inheritance)} data-tabctl7-zero-blur={knobs.blur === 0 ? "off" : "on"} data-tabctl7-zero-glow={(knobs.buttonGlow === 0 && knobs.textGlow === 0 && knobs.specularGlow === 0) ? "off" : "on"} data-tabctl7-zero-border={knobs.borderAlpha === 0 ? "off" : "on"}>
+    <section className={styles.autoStudio} style={styleVars} data-component="TabletLabAutoStudio" data-preset={preset} data-widget-group={widgetGroup} data-effect-group={tabctl7EffectiveEffectGroup} data-state-mode={stateMode} data-viewport={viewport} data-layout="tabctl7v2-supreme-role-state-material-scope" data-tabctl7-version={TABCTL7V2_MODEL_VERSION} data-tabctl7-layer={tabctl7Slug(tabctl7CurrentLayer.layer)} data-tabctl7-role={tabctl7Slug(tabctl7CurrentRole.role)} data-tabctl7-kind={tabctl7CurrentRole.kind} data-tabctl7-change={tabctl7Slug(tabctl7EffectiveChange)} data-tabctl7-material={tabctl7Material} data-tabctl7-color-mode={tabctl7Slug(tabctl7ColorMode)} data-tabctl7-scope={tabctl7Slug(tabctl7Scope)} data-tabctl7-inheritance={tabctl7Slug(tabctl7Inheritance)} data-tabctl7-zero-blur={tabctl7LiveKnobs.blur === 0 ? "off" : "on"} data-tabctl7-zero-glow={(tabctl7LiveKnobs.buttonGlow === 0 && tabctl7LiveKnobs.textGlow === 0 && tabctl7LiveKnobs.specularGlow === 0) ? "off" : "on"} data-tabctl7-zero-border={tabctl7LiveKnobs.borderAlpha === 0 ? "off" : "on"} data-tabctl7-recipe-preview={tabctl7PreviewRecipe?.id ?? "none"} data-tabctl7-compatible-recipes={tabctl7CompatibleRecipes.length} data-tabctl7-mode={tabctl7Slug(tabctl7StudioMode)}>
       <header className={styles.slimHeader} data-component="SlimAtlasHeader">
         <div className={styles.logoLine}>
           <div className={styles.logoMark} aria-hidden="true">P</div>
@@ -2151,66 +6635,98 @@ export function TabletLabAutoStudio() {
             }} />
             <ControlSelect label="Section" value={section} options={sections} onChange={setSection} />
             <ControlSelect label="Widget group" value={widgetGroup} options={widgetGroups} onChange={setWidgetGroup} />
-            <ControlSelect label="Effects" value={effectGroup} options={effectGroups} onChange={setEffectGroup} />
+            {tabctl7IsProMode && <ControlSelect label="Effects" value={tabctl7EffectiveEffectGroup} options={tabctl7EffectOptions} onChange={setEffectGroup} />}
             <ControlSelect label="Viewport" value={viewport} options={viewports} onChange={setViewport} />
             <ControlSelect label="State" value={stateMode} options={states} onChange={setStateMode} />
-            <ControlSelect label="Tone" value={tone} options={tones} onChange={(value) => setTone(value as PresetTone)} />
+            {tabctl7IsProMode && <ControlSelect label="Tone" value={tone} options={tones} onChange={(value) => setTone(value as PresetTone)} />}
           </div>
 
 
+
+          <div className={styles.tabctl7ModeSwitch} data-component="Tabctl7ModeSwitch" role="group" aria-label="Modo de edición TABCTL7">
+            {tabctl7StudioModes.map((mode) => {
+              const active = tabctl7StudioMode === mode;
+              const count = mode === "Rápido" ? tabctl7QuickRecipes.length : mode === "Receta" ? tabctl7CompatibleRecipes.length : tabctl7VisibleControls.length;
+              return (
+                <button
+                  key={mode}
+                  type="button"
+                  className={`${styles.tabctl7ModeButton} ${active ? styles.tabctl7ModeButtonActive : ""}`}
+                  aria-pressed={active}
+                  onClick={() => setTabctl7StudioMode(mode)}
+                >
+                  <strong>{mode === "Rápido" ? "Modo Rápido" : mode === "Receta" ? "Modo Receta" : "Modo Pro"}</strong>
+                  <span>{mode === "Rápido" ? `${count} mejores` : mode === "Receta" ? `${count} looks listos` : `${count} controles finos`}</span>
+                </button>
+              );
+            })}
+          </div>
 
           <div className={styles.tabctl7TargetPanel} data-component="Tabctl7V2TargetStudio" data-tabctl7-kind={tabctl7CurrentRole.kind}>
             <div className={styles.tabctl7PanelTitle}><strong>Target TABCTL7 v2</strong><span>{TABCTL7V2_MODEL_VERSION}</span></div>
             <div className={styles.tabctl7TargetGrid}>
               <ControlSelect label="Capa" value={tabctl7CurrentLayer.layer} options={tabctl7Layers} onChange={(next) => { const layer = tabctl7Group.layers.find((item) => item.layer === next); setTabctl7Layer(next); setTabctl7Role(layer?.roles[0]?.role ?? ""); }} />
               <ControlSelect label="Rol / parte" value={tabctl7CurrentRole.role} options={tabctl7Roles} onChange={setTabctl7Role} />
-              <ControlSelect label="Qué cambiar" value={tabctl7Change} options={tabctl7ChangeTypes} onChange={setTabctl7Change} />
-              <ControlSelect label="Material" value={tabctl7Material} options={tabctl7Materials.map((item) => item.id)} onChange={setTabctl7Material} />
-              <ControlSelect label="Color mode" value={tabctl7ColorMode} options={tabctl7ColorModes} onChange={setTabctl7ColorMode} />
+              <ControlSelect label="Qué cambiar" value={tabctl7EffectiveChange} options={tabctl7ChangeOptions} onChange={setTabctl7Change} />
+              {tabctl7IsProMode && tabctl7CanEditMaterial && <ControlSelect label="Material" value={tabctl7Material} options={tabctl7Materials.map((item) => item.id)} onChange={setTabctl7Material} />}
+              {tabctl7IsProMode && tabctl7CanEditColor && <ControlSelect label="Color mode" value={tabctl7ColorMode} options={tabctl7ColorModes} onChange={setTabctl7ColorMode} />}
               <ControlSelect label="Alcance" value={tabctl7Scope} options={tabctl7Scopes} onChange={setTabctl7Scope} />
-              <ControlSelect label="Herencia" value={tabctl7Inheritance} options={tabctl7InheritanceModes} onChange={setTabctl7Inheritance} />
+              {tabctl7IsProMode && <ControlSelect label="Herencia" value={tabctl7Inheritance} options={tabctl7InheritanceModes} onChange={setTabctl7Inheritance} />}
             </div>
             <div className={styles.tabctl7RoleCard}><strong>{tabctl7CurrentRole.role}</strong><span>{tabctl7CurrentRole.kind} · {tabctl7CurrentRole.part}</span><p>{tabctl7CurrentRole.help}</p><small>{tabctl7MaterialSpec.label}: {tabctl7MaterialSpec.description}</small></div>
-            <div className={styles.tabctl7ContextBar} aria-label="Resumen de target TABCTL7"><span>{tabctl7CurrentLayer.layer}</span><span>{tabctl7CurrentRole.kind}</span><span>{tabctl7Change}</span><span>{tabctl7Scope}</span><span>{tabctl7ZeroSummary}</span></div>
-            <div className={styles.tabctl7ControlCloud} aria-label="Controles aplicables TABCTL7">
-              {tabctl7VisibleControls.length === 0 ? <em>Este cambio no aplica a este rol; cambia rol o tipo de cambio.</em> : tabctl7VisibleControls.slice(0, 14).map((control) => (<button key={`${control.key}-${control.effectGroup}`} type="button" className={styles.tabctl7ControlChip} onClick={() => setEffectGroup(control.effectGroup)} title={control.help}>{control.label}<small>{control.effectGroup}</small></button>))}
+            <div className={styles.tabctl7ContextBar} aria-label="Resumen de target TABCTL7"><span>{tabctl7CurrentLayer.layer}</span><span>{tabctl7CurrentRole.kind}</span><span>{tabctl7EffectiveChange}</span><span>{tabctl7Scope}</span><span>{tabctl7ZeroSummary}</span></div>
+            <div className={styles.tabctl7ModeBanner} data-mode={tabctl7StudioMode}>
+              <strong>{tabctl7IsQuickMode ? "Modo Rápido" : tabctl7IsRecipeMode ? "Modo Receta" : "Modo Pro"}</strong>
+              <span>{tabctl7IsQuickMode ? `${tabctl7QuickRecipes.length} recomendaciones viables. Pocas opciones, cambios más notorios.` : tabctl7IsRecipeMode ? `${tabctl7CompatibleRecipes.length} recetas compatibles. Navegador completo filtrado por target.` : `${tabctl7VisibleControls.length} controles aplicables. Perillas filtradas por kind/intención.`}</span>
             </div>
-            <div className={styles.tabctl7SuggestionRow}><span>{tabctl7VisibleControls.length} controles aplicables</span><span>{tabctl7SuggestedEffects.length ? `packs: ${tabctl7SuggestedEffects.join(" · ")}` : "sin pack activo"}</span></div>
+            {tabctl7IsProMode && (
+              <>
+                <div className={styles.tabctl7ControlCloud} aria-label="Controles aplicables TABCTL7">
+                  {tabctl7VisibleControls.length === 0 ? <em>Este cambio no aplica a este rol; cambia rol o tipo de cambio.</em> : tabctl7VisibleControls.slice(0, 14).map((control) => (<button key={`${control.key}-${control.effectGroup}`} type="button" className={styles.tabctl7ControlChip} onClick={() => setEffectGroup(control.effectGroup)} title={control.help}>{control.label}<small>{control.effectGroup}</small></button>))}
+                </div>
+                <div className={styles.tabctl7SuggestionRow}><span>{tabctl7VisibleControls.length} controles aplicables</span><span>{tabctl7SuggestedEffects.length ? `packs: ${tabctl7SuggestedEffects.join(" · ")}` : "sin pack activo"}</span></div>
+              </>
+            )}
           </div>
 
-          <div className={styles.knobPanel} data-component="CompactKnobPanel" data-effect-group={effectGroup}>
+          {tabctl7ShowsRecipePanel && <div className={styles.tabctl7RecipeDockHint} data-component="Tabctl7RecipeDockHint">
+            <strong>{tabctl7IsQuickMode ? "Modo rápido activo" : "Recetas en panel derecho"}</strong>
+            <span>{tabctl7VisibleRecipes.length} visibles de {tabctl7CompatibleRecipes.length} compatibles para {tabctl7CurrentRole.kind} · {tabctl7EffectiveChange}</span>
+          </div>}
+
+          {tabctl7IsProMode && <div className={styles.knobPanel} data-component="CompactKnobPanel" data-effect-group={tabctl7EffectiveEffectGroup}>
             <div className={styles.panelHeader}>
-              <strong>{effectGroup} controls</strong>
-              <span>{activeKnobCount}/{currentKnobItems.length} activas · {storageStatus}</span>
+              <strong>{tabctl7EffectiveEffectGroup} controls</strong>
+              <span>{activeKnobCount}/{currentKnobItems.length} aplicables · {storageStatus}</span>
             </div>
             <div className={styles.applicabilityHint} data-component="EffectApplicabilityHint">
-              <strong>{widgetGroup}</strong>
-              <span>{effectGroup}</span>
-              <small>Las perillas sin target declarado quedan visibles pero no editables para evitar controles de humo.</small>
+              <strong>{tabctl7CurrentRole.kind}</strong>
+              <span>{tabctl7EffectiveChange} · {tabctl7EffectiveEffectGroup}</span>
+              <small>Filtro duro: sólo aparecen perillas compatibles con target, tipo, intención, estado y alcance.</small>
             </div>
             <div className={styles.knobGrid}>
               {currentKnobItems.map((item) => {
-                const active = knobAppliesToWidget(item.key, widgetGroup);
-                const targets = knobRule(item.key)?.targets ?? [];
+                const active = tabctl7VisibleControlKeys.has(item.key);
+                const targets = tabctl7CurrentRole.controls;
                 return (
                   <Knob
                     key={item.key}
                     item={item}
                     value={knobs[item.key]}
                     active={active}
-                    scope={active ? `Aplica a ${widgetGroup}` : `Sin impacto en ${widgetGroup}. Targets: ${targets.join(", ")}`}
+                    scope={active ? `Aplica a ${tabctl7CurrentRole.kind} · ${tabctl7EffectiveChange}` : `Oculto por contrato del target. Controles: ${targets.join(", ")}`}
                     onChange={(value) => updateKnob(item.key, value)}
                   />
                 );
               })}
             </div>
             <ControlSelect label="Widget preview" value={widgetGroup} options={widgetGroups} onChange={setWidgetGroup} />
-            <ControlSelect label="Background" value={backgroundMode} options={["Frozen atmospheric", "Tiny parallax", "Soft washed", "Veil heavy", "Glass contrast"]} onChange={setBackgroundMode} />
+            {tabctl7CanEditBackground && <ControlSelect label="Background" value={backgroundMode} options={["Frozen atmospheric", "Tiny parallax", "Soft washed", "Veil heavy", "Glass contrast"]} onChange={setBackgroundMode} />}
             <div className={styles.knobActions}>
               <button className={styles.primaryAction} onClick={savePreset}>Guardar preset</button>
               <button className={styles.ghostAction} onClick={() => copyRecipe()}>Copiar JSON</button>
             </div>
-          </div>
+          </div>}
         </aside>
 
         <section className={styles.previewCanvas} data-component="AtmosphericFixedCanvas" data-background-mode={backgroundMode} data-widget-group={widgetGroup}>
@@ -2219,6 +6735,41 @@ export function TabletLabAutoStudio() {
             <div><span>{section}</span><h2>{widgetGroup}</h2></div>
             <p>{viewport} · {stateMode} · tone {tone}</p>
           </div>
+          {tabctl7ShowsRecipePanel && <div className={styles.tabctl7RecipePanel} data-component="Tabctl7RecipeGallery" data-placement="canvas" data-compatible-recipes={tabctl7CompatibleRecipes.length} data-preview-recipe={tabctl7PreviewRecipe?.id ?? "none"}>
+            <div className={styles.tabctl7RecipeHeader}>
+              <div data-code-atlas-anchor="ca-f985445c6b86f408" data-code-atlas-purpose="cleanup-candidate">
+                <strong>{tabctl7IsQuickMode ? "Recomendaciones rápidas" : "Navegador de recetas compatibles"}</strong>
+                <span>{tabctl7VisibleRecipes.length} visibles de {tabctl7CompatibleRecipes.length} para {tabctl7CurrentRole.kind} · {tabctl7EffectiveChange}. Probar no guarda; aplica desde el banner.</span>
+              </div>
+              <em>{tabctl7RecipeFamilies.slice(0, 5).join(" · ") || "sin familia"}</em>
+            </div>
+            {tabctl7PreviewRecipe && (
+              <div className={styles.tabctl7RecipePreviewBanner} data-component="Tabctl7RecipePreviewBanner">
+                <strong>Probando: {tabctl7PreviewRecipe.label}</strong>
+                <span>{tabctl7RecipeDelta}</span>
+                <div className={styles.tabctl7RecipeActions}>
+                  <button type="button" className={styles.primaryAction} onClick={confirmTabctl7Preview}>Sí, así</button>
+                  <button type="button" className={styles.ghostAction} onClick={cancelTabctl7Preview}>Cancelar</button>
+                  <button type="button" className={styles.ghostAction} onClick={savePreset}>Guardar preset</button>
+                </div>
+              </div>
+            )}
+            <div className={styles.tabctl7RecipeGrid}>
+              {tabctl7VisibleRecipes.map((recipe) => (
+                <article key={recipe.id} className={`${styles.tabctl7RecipeCard} ${tabctl7PreviewRecipe?.id === recipe.id ? styles.tabctl7RecipeCardActive : ""}`} data-recipe-id={recipe.id} data-risk={recipe.risk}>
+                  <div className={styles.tabctl7RecipeMeta}><span>{recipe.family}</span><em>riesgo {recipe.risk}</em></div>
+                  <strong>{recipe.label}</strong>
+                  <p>{recipe.description}</p>
+                  <small>{recipe.scopeHint} · toca {Object.keys(recipe.changes).slice(0, 4).join(" · ")}</small>
+                  <div className={styles.tabctl7RecipeTags}>{recipe.tags.slice(0, 3).map((tag) => <span key={`${recipe.id}-${tag}`}>{tag}</span>)}</div>
+                  <div className={styles.tabctl7RecipeActions}>
+                    <button type="button" className={styles.primaryAction} onClick={() => previewTabctl7Recipe(recipe)}>Probar look</button>
+                  </div>
+                </article>
+              ))}
+            </div>
+            {tabctl7CompatibleRecipes.length === 0 && <p className={styles.tabctl7RecipeEmpty}>No hay recetas compatibles para este target. Cambia rol o “Qué cambiar”.</p>}
+          </div>}
           <div className={styles.previewScroller}><WidgetPreview group={widgetGroup} /></div>
         </section>
       </div>

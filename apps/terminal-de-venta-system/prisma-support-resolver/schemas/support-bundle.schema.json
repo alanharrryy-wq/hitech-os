@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/support-bundle.schema.json",
+  "title": "PRISMA Support Bundle Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["bundleId", "createdAt", "files", "redaction", "secretsExposed"],
+  "properties": {
+    "bundleId": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "minLength": 1 },
+    "files": { "type": "array", "items": { "type": "string" } },
+    "redaction": { "type": "object", "additionalProperties": true },
+    "secretsExposed": { "const": false }
+  }
+}

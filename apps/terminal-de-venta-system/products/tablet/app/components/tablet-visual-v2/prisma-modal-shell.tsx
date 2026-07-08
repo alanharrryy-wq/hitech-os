@@ -31,9 +31,32 @@ export function PrismaModalShell({ children, className, onOverlayMouseDown, over
       className={overlayClasses}
       onMouseDown={onOverlayMouseDown}
       role="presentation"
+      data-surface="tablet"
+      data-screen="visual_os"
+      data-zone="checkout"
+      data-panel="prisma-modal-shell"
+      data-target="prisma-modal-shell-price-20"
+      data-kind="price"
+      data-role="financial-control"
     >
-      <span className={styles.atmosphere} aria-hidden="true" />
-      <article {...props} ref={panelRef} className={panelClasses} data-prisma-layer="modal" data-prisma-effect="softglass-surface modal-depth-dim focus-halo">
+      <span className={styles.atmosphere} aria-hidden="true"
+        data-surface="tablet"
+        data-screen="visual_os"
+        data-zone="pos"
+        data-panel="prisma-modal-shell"
+        data-target="prisma-modal-shell-panel-35"
+        data-kind="panel"
+        data-role="revenue-core"
+      />
+      <article {...props} ref={panelRef} className={panelClasses} data-prisma-layer="modal" data-prisma-effect="softglass-surface modal-depth-dim focus-halo"
+        data-surface="tablet"
+        data-screen="visual_os"
+        data-zone="pos"
+        data-panel="prisma-modal-shell"
+        data-target="prisma-modal-shell-panel-36"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
         {children}
       </article>
     </section>

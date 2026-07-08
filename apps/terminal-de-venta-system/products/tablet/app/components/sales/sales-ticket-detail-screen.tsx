@@ -208,13 +208,45 @@ function returnStockCopy(line: NonNullable<TicketDetail["returns"]>[number]["lin
 
 function DetailStateCard({ title, message, canSell, backHref, onRetry }: { title: string; message: string; canSell: boolean; backHref: string; onRetry?: () => void }) {
   return (
-    <section className={styles.stateCard}>
+    <section className={styles.stateCard}
+      data-surface="tablet"
+      data-screen="sales"
+      data-zone="pos"
+      data-panel="sales-ticket-detail-screen"
+      data-target="sales-ticket-detail-screen-ticket-211"
+      data-kind="ticket"
+      data-role="ticket-context"
+    >
       <h2>{title}</h2>
       <p>{message}</p>
-      <div className={styles.actionsRow}>
-        {onRetry ? <button className={styles.primary} type="button" onClick={onRetry}>Reintentar lectura</button> : null}
-        <a className={styles.secondary} href={backHref}>Volver a ventas</a>
-        <a className={onRetry ? styles.secondary : styles.primary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
+      <div className={styles.actionsRow}
+        data-surface="tablet"
+        data-screen="sales"
+        data-zone="pos"
+        data-panel="sales-ticket-detail-screen"
+        data-target="sales-ticket-detail-screen-button-214"
+        data-kind="button"
+        data-role="ticket-context"
+      >
+        {onRetry ? <button className={styles.primary} type="button" onClick={onRetry}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-ticket-detail-screen"
+          data-target="sales-ticket-detail-screen-button-215"
+          data-kind="button"
+          data-role="ticket-context"
+        >Reintentar lectura</button> : null}
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-a-1" data-kind="button" data-role="button" className={styles.secondary} href={backHref}>Volver a ventas</a>
+        <a className={onRetry ? styles.secondary : styles.primary} href={canSell ? "/pos" : "/shift"}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-ticket-detail-screen"
+          data-target="sales-ticket-detail-screen-button-217"
+          data-kind="button"
+          data-role="ticket-context"
+        >{canSell ? "Nueva venta" : "Abrir turno"}</a>
       </div>
     </section>
   );
@@ -222,19 +254,27 @@ function DetailStateCard({ title, message, canSell, backHref, onRetry }: { title
 
 function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRetry }: { message: string; diagnostic?: TicketLookupDiagnostic; canSell: boolean; backHref: string; onRetry: () => void }) {
   return (
-    <section className={styles.stateCard} data-prisma-ticket-resolution="not-found-diagnostic">
-      <div className={styles.diagnosticHeader}>
-        <div>
+    <section className={styles.stateCard} data-prisma-ticket-resolution="not-found-diagnostic"
+      data-surface="tablet"
+      data-screen="sales"
+      data-zone="pos"
+      data-panel="sales-ticket-detail-screen"
+      data-target="sales-ticket-detail-screen-ticket-225"
+      data-kind="ticket"
+      data-role="ticket-context"
+    >
+      <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-2" data-kind="panel" data-role="container" className={styles.diagnosticHeader}>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-3" data-kind="panel" data-role="container">
           <h2>No encontramos ese ticket en esta Tablet</h2>
           <p>{message}</p>
           <p>Puede ser un folio de otra terminal, una venta aún no sincronizada o un identificador incompleto. La devolución necesita el ticket correcto para no afectar caja ni inventario.</p>
         </div>
-        <span>Soporte puede revisar evidencia</span>
+        <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-4" data-kind="text" data-role="text">Soporte puede revisar evidencia</span>
       </div>
 
       {diagnostic ? (
         <>
-          <div className={styles.diagnosticGrid}>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-5" data-kind="layout" data-role="container" className={styles.diagnosticGrid}>
             <DiagnosticMetric label="Búsqueda local" value="sin coincidencia" />
             <DiagnosticMetric label="Campos revisados" value={String(diagnostic.attemptedFields.length)} />
             <DiagnosticMetric label="Tickets negocio" value={String(diagnostic.scopedTicketCount)} />
@@ -247,16 +287,32 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRe
           </details>
         </>
       ) : (
-        <div className={styles.diagnosticSection}>
+        <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-6" data-kind="panel" data-role="container" className={styles.diagnosticSection}>
           <strong>Detalle protegido</strong>
-          <span>No se muestran IDs internos ni errores crudos en caja. Reintenta, vuelve a ventas o comparte este caso con soporte.</span>
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-7" data-kind="text" data-role="text">No se muestran IDs internos ni errores crudos en caja. Reintenta, vuelve a ventas o comparte este caso con soporte.</span>
         </div>
       )}
 
-      <div className={styles.actionsRow}>
-        <button className={styles.primary} type="button" onClick={onRetry}>Reintentar lectura</button>
-        <a className={styles.secondary} href={backHref}>Volver a ventas</a>
-        <a className={styles.secondary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
+      <div className={styles.actionsRow}
+        data-surface="tablet"
+        data-screen="sales"
+        data-zone="pos"
+        data-panel="sales-ticket-detail-screen"
+        data-target="sales-ticket-detail-screen-button-256"
+        data-kind="button"
+        data-role="ticket-context"
+      >
+        <button className={styles.primary} type="button" onClick={onRetry}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-ticket-detail-screen"
+          data-target="sales-ticket-detail-screen-button-257"
+          data-kind="button"
+          data-role="ticket-context"
+        >Reintentar lectura</button>
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-a-8" data-kind="button" data-role="button" className={styles.secondary} href={backHref}>Volver a ventas</a>
+        <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-a-9" data-kind="button" data-role="button" className={styles.secondary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
       </div>
     </section>
   );
@@ -264,7 +320,7 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRe
 
 function DiagnosticMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className={styles.diagnosticMetric}>
+    <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-10" data-kind="panel" data-role="container" className={styles.diagnosticMetric}>
       <small>{label}</small>
       <strong>{value || "-"}</strong>
     </div>
@@ -317,7 +373,15 @@ export function SalesTicketDetailScreen({
       status={<TabletShellStatusPill tone="ok">Ticket cerrado</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
     >
-      <main className={styles.salesPage}>
+      <main className={styles.salesPage}
+        data-surface="tablet"
+        data-screen="sales"
+        data-zone="pos"
+        data-panel="sales-ticket-detail-screen"
+        data-target="sales-ticket-detail-screen-ticket-320"
+        data-kind="ticket"
+        data-role="ticket-context"
+      >
         {state.status === "loading" ? (
           <DetailStateCard title="Cargando detalle…" message="Estoy buscando el ticket en la base local de Tablet." canSell={gate.canShowSellNavigation} backHref={backHref} />
         ) : null}
@@ -331,26 +395,58 @@ export function SalesTicketDetailScreen({
         ) : null}
 
         {state.status === "ready" ? (
-          <section className={styles.detailGrid}>
-            <article className={styles.panel}>
-              <div className={styles.detailHeader}>
-                <span>Ticket cerrado</span>
+          <section className={styles.detailGrid}
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-ticket-detail-screen"
+            data-target="sales-ticket-detail-screen-ticket-334"
+            data-kind="ticket"
+            data-role="ticket-context"
+          >
+            <article className={styles.panel}
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-ticket-detail-screen"
+              data-target="sales-ticket-detail-screen-ticket-335"
+              data-kind="ticket"
+              data-role="ticket-context"
+            >
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-11" data-kind="panel" data-role="container" className={styles.detailHeader}>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-12" data-kind="text" data-role="text">Ticket cerrado</span>
                 <h1>{state.ticket.folio}</h1>
                 <p>{formatDateTime(state.ticket.completedAt || state.ticket.createdAt)}</p>
               </div>
-              <div className={styles.metaGrid}>
-                <span>Folio: {state.ticket.folio}</span>
-                <span>Estado: {ticketStatusCopy(state.ticket.status)}</span>
-                <span>Guardado en esta Tablet</span>
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-div-13" data-kind="layout" data-role="container" className={styles.metaGrid}>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-14" data-kind="text" data-role="text">Folio: {state.ticket.folio}</span>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-15" data-kind="text" data-role="text">Estado: {ticketStatusCopy(state.ticket.status)}</span>
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-span-16" data-kind="text" data-role="text">Guardado en esta Tablet</span>
                 <span>Sincronización: {ticketSyncSummary(state.ticket)}</span>
               </div>
 
               {state.ticket.lines.length ? (
-                <div className={styles.linesList}>
+                <div className={styles.linesList}
+                  data-surface="tablet"
+                  data-screen="sales"
+                  data-zone="pos"
+                  data-panel="sales-ticket-detail-screen"
+                  data-target="sales-ticket-detail-screen-ticket-349"
+                  data-kind="ticket"
+                  data-role="ticket-context"
+                >
                   {state.ticket.lines.map((line) => {
                     const returnedCopy = returnedLineCopy(line);
                     return (
-                      <div className={styles.line} key={line.id}>
+                      <div className={styles.line} key={line.id}
+                        data-surface="tablet"
+                        data-screen="sales"
+                        data-zone="pos"
+                        data-panel="sales-ticket-detail-screen"
+                        data-target="sales-ticket-detail-screen-ticket-353"
+                        data-kind="ticket"
+                        data-role="ticket-context"
+                      >
                         <div>
                           <strong>{line.productName}</strong>
                           <span>
@@ -368,13 +464,29 @@ export function SalesTicketDetailScreen({
               )}
 
               {state.ticket.returns?.length ? (
-                <section className={styles.returnSummary} aria-label="Devoluciones relacionadas">
+                <section className={styles.returnSummary} aria-label="Devoluciones relacionadas"
+                  data-surface="tablet"
+                  data-screen="sales"
+                  data-zone="checkout"
+                  data-panel="sales-ticket-detail-screen"
+                  data-target="sales-ticket-detail-screen-devoluciones-relacionadas-371"
+                  data-kind="ticket"
+                  data-role="ticket-context"
+                >
                   <div className={styles.returnSummaryHeader}>
                     <span>Devolución relacionada</span>
                     <strong>{formatMoney(state.ticket.returns.reduce((sum, item) => sum + item.amountCents, 0))}</strong>
                   </div>
                   {state.ticket.returns.map((saleReturn) => (
-                    <article className={styles.returnCard} key={saleReturn.id}>
+                    <article className={styles.returnCard} key={saleReturn.id}
+                      data-surface="tablet"
+                      data-screen="sales"
+                      data-zone="pos"
+                      data-panel="sales-ticket-detail-screen"
+                      data-target="sales-ticket-detail-screen-ticket-377"
+                      data-kind="ticket"
+                      data-role="ticket-context"
+                    >
                       <div>
                         <strong>{returnStatusCopy(saleReturn.status)} · {formatMoney(saleReturn.amountCents)}</strong>
                         <span>Motivo: {saleReturn.reason}. Referencia: {saleReturn.id.slice(0, 12)}. Registró: {saleReturn.cashier}.</span>
@@ -382,7 +494,15 @@ export function SalesTicketDetailScreen({
                       </div>
                       <div className={styles.returnLines}>
                         {saleReturn.lines.map((line) => (
-                          <span key={line.id}>
+                          <span key={line.id}
+                            data-surface="tablet"
+                            data-screen="sales"
+                            data-zone="pos"
+                            data-panel="sales-ticket-detail-screen"
+                            data-target="sales-ticket-detail-screen-ticket-385"
+                            data-kind="ticket"
+                            data-role="ticket-context"
+                          >
                             {line.productName} · {line.qty} pzas · {formatMoney(line.amountCents)} · {returnStockCopy(line)}
                           </span>
                         ))}
@@ -393,8 +513,24 @@ export function SalesTicketDetailScreen({
               ) : null}
             </article>
 
-            <aside className={styles.panel}>
-              <span className={styles.panelEyebrow}>Total cobrado</span>
+            <aside className={styles.panel}
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-ticket-detail-screen"
+              data-target="sales-ticket-detail-screen-ticket-396"
+              data-kind="ticket"
+              data-role="ticket-context"
+            >
+              <span className={styles.panelEyebrow}
+                data-surface="tablet"
+                data-screen="sales"
+                data-zone="pos"
+                data-panel="sales-ticket-detail-screen"
+                data-target="sales-ticket-detail-screen-ticket-397"
+                data-kind="ticket"
+                data-role="ticket-context"
+              >Total cobrado</span>
               <h2>{formatMoney(state.ticket.totalCents)}</h2>
               <p>Operador: {state.ticket.cashier}</p>
               <p>Negocio: {state.ticket.businessName ?? "Negocio local"}</p>
@@ -425,9 +561,17 @@ export function SalesTicketDetailScreen({
                 </div>
               ) : null}
               <div className={styles.actionsStack}>
-                <a className={styles.primary} href={`/sales/today/${encodeURIComponent(state.ticket.saleId)}/return`}>Hacer devolución</a>
-                <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Nueva venta" : gate.actionLabel}</a>
-                <a className={styles.secondary} href={backHref}>Volver</a>
+                <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-a-17" data-kind="button" data-role="button" className={styles.primary} href={`/sales/today/${encodeURIComponent(state.ticket.saleId)}/return`}>Hacer devolución</a>
+                <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}
+                  data-surface="tablet"
+                  data-screen="sales"
+                  data-zone="pos"
+                  data-panel="sales-ticket-detail-screen"
+                  data-target="sales-ticket-detail-screen-button-429"
+                  data-kind="button"
+                  data-role="ticket-context"
+                >{gate.canShowSellNavigation ? "Nueva venta" : gate.actionLabel}</a>
+                <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_ticket_detail_screen" data-target="sales-ticket-detail-screen-a-18" data-kind="button" data-role="button" className={styles.secondary} href={backHref}>Volver</a>
               </div>
             </aside>
           </section>

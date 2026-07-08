@@ -111,42 +111,114 @@ export function SalesResetPanel({ preview }: Props) {
   }
 
   return (
-    <section className={styles.card}>
-      <p className={styles.eyebrow}>Herramienta bloqueada</p>
-      <h2 className={styles.title}>Reset seguro de ventas locales</h2>
-      <p className={styles.copy}>
+    <section className={styles.card}
+      data-surface="tablet"
+      data-screen="settings"
+      data-zone="pos"
+      data-panel="sales-reset-panel"
+      data-target="sales-reset-panel-button-114"
+      data-kind="button"
+      data-role="action"
+    >
+      <p className={styles.eyebrow}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-115"
+        data-kind="button"
+        data-role="action"
+      >Herramienta bloqueada</p>
+      <h2 className={styles.title}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-116"
+        data-kind="button"
+        data-role="action"
+      >Reset seguro de ventas locales</h2>
+      <p className={styles.copy}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-117"
+        data-kind="button"
+        data-role="action"
+      >
         Borra únicamente ventas, caja y outbox de ventas de esta Tablet. No toca licencia, catálogo, inventario, usuarios ni configuración de runtime.
       </p>
 
-      <div className={styles.metricGrid}>
+      <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-1" data-kind="panel" data-role="container" className={styles.metricGrid}>
         <Metric label="Negocio" value={preview.businessId} />
         <Metric label="Alcance" value="ventas + caja + outbox de ventas" />
         <Metric label="Seguridad" value={configured ? "pregunta + PIN admin" : "configuración inicial requerida"} />
         <Metric label="Vista previa" value={preview.generatedAt} />
       </div>
 
-      <div className={styles.warningList}>
+      <div className={styles.warningList}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-128"
+        data-kind="button"
+        data-role="state-feedback"
+      >
         {activeCounts.length ? activeCounts.map(([key, value]) => (
-          <div key={key} className={styles.warning}>
-            <strong>{key}</strong>: {value}
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-2" data-kind="panel" data-role="container" key={key} className={styles.warning}>
+            <strong data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-strong-3" data-kind="panel" data-role="panel">{key}</strong>: {value}
           </div>
         )) : (
-          <div className={styles.warning}>No hay ventas/caja locales que borrar en este momento.</div>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-4" data-kind="panel" data-role="container" className={styles.warning}>No hay ventas/caja locales que borrar en este momento.</div>
         )}
       </div>
 
-      <div className={styles.warningList}>
+      <div className={styles.warningList}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-138"
+        data-kind="button"
+        data-role="state-feedback"
+      >
         {preview.preserves.map((item) => (
-          <div key={item} className={styles.metric}>
-            <span className={styles.metricLabel}>Se conserva</span>
-            <span className={styles.metricValue}>{item}</span>
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-5" data-kind="panel" data-role="container" key={item} className={styles.metric}>
+            <span className={styles.metricLabel}
+              data-surface="tablet"
+              data-screen="settings"
+              data-zone="pos"
+              data-panel="sales-reset-panel"
+              data-target="sales-reset-panel-button-141"
+              data-kind="button"
+              data-role="action"
+            >Se conserva</span>
+            <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-span-6" data-kind="panel" data-role="panel" className={styles.metricValue}>{item}</span>
           </div>
         ))}
       </div>
 
       {!configured ? (
-        <form className={styles.refreshForm} onSubmit={configureSecurity}>
-          <label className={styles.metricLabel} htmlFor="sales-reset-question-setup">Pregunta de seguridad</label>
+        <form className={styles.refreshForm} onSubmit={configureSecurity}
+          data-surface="tablet"
+          data-screen="settings"
+          data-zone="pos"
+          data-panel="sales-reset-panel"
+          data-target="sales-reset-panel-button-148"
+          data-kind="button"
+          data-role="action"
+        >
+          <label className={styles.metricLabel} htmlFor="sales-reset-question-setup"
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-149"
+            data-kind="button"
+            data-role="action"
+          >Pregunta de seguridad</label>
           <select
             id="sales-reset-question-setup"
             value={questionId}
@@ -154,10 +226,18 @@ export function SalesResetPanel({ preview }: Props) {
             style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
           >
             {preview.securityQuestions.map((question) => (
-              <option key={question.id} value={question.id}>{question.label}</option>
+              <option data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-option-7" data-kind="panel" data-role="panel" key={question.id} value={question.id}>{question.label}</option>
             ))}
           </select>
-          <label className={styles.metricLabel} htmlFor="sales-reset-answer-setup">Respuesta de una palabra</label>
+          <label className={styles.metricLabel} htmlFor="sales-reset-answer-setup"
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-160"
+            data-kind="button"
+            data-role="action"
+          >Respuesta de una palabra</label>
           <input
             id="sales-reset-answer-setup"
             value={securityAnswer}
@@ -166,7 +246,15 @@ export function SalesResetPanel({ preview }: Props) {
             autoComplete="off"
             style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
           />
-          <label className={styles.metricLabel} htmlFor="sales-reset-pin-setup">PIN admin de 6 dígitos</label>
+          <label className={styles.metricLabel} htmlFor="sales-reset-pin-setup"
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-169"
+            data-kind="button"
+            data-role="action"
+          >PIN admin de 6 dígitos</label>
           <input
             id="sales-reset-pin-setup"
             value={adminPin}
@@ -177,7 +265,15 @@ export function SalesResetPanel({ preview }: Props) {
             placeholder="000000"
             style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
           />
-          <label className={styles.metricLabel} htmlFor="sales-reset-note-setup">Nota operativa</label>
+          <label className={styles.metricLabel} htmlFor="sales-reset-note-setup"
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-180"
+            data-kind="button"
+            data-role="action"
+          >Nota operativa</label>
           <textarea
             id="sales-reset-note-setup"
             value={operatorNote}
@@ -185,15 +281,46 @@ export function SalesResetPanel({ preview }: Props) {
             placeholder="Quién configuró esta protección y por qué"
             rows={3}
             style={{ width: "100%", margin: "8px 0 12px", padding: 12 }}
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-181"
+            data-kind="button"
+            data-role="action"
           />
-          <button className={styles.primaryButton} type="submit" disabled={!canConfigure} aria-disabled={!canConfigure}>
+          <button className={styles.primaryButton} type="submit" disabled={!canConfigure} aria-disabled={!canConfigure}
+            data-surface="tablet"
+            data-screen="settings"
+            data-zone="pos"
+            data-panel="sales-reset-panel"
+            data-target="sales-reset-panel-button-189"
+            data-kind="button"
+            data-role="action"
+          >
             {busy ? "Configurando..." : "Configurar seguridad local"}
           </button>
-          <p className={styles.helper}>El PIN y la respuesta se guardan como hash local; no se escribe la respuesta ni el PIN en auditoría.</p>
+          <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-p-8" data-kind="panel" data-role="panel" className={styles.helper}>El PIN y la respuesta se guardan como hash local; no se escribe la respuesta ni el PIN en auditoría.</p>
         </form>
       ) : (
-      <form className={styles.refreshForm} onSubmit={submit}>
-        <label className={styles.metricLabel} htmlFor="sales-reset-question">Pregunta de seguridad</label>
+      <form className={styles.refreshForm} onSubmit={submit}
+        data-surface="tablet"
+        data-screen="settings"
+        data-zone="pos"
+        data-panel="sales-reset-panel"
+        data-target="sales-reset-panel-button-195"
+        data-kind="button"
+        data-role="action"
+      >
+        <label className={styles.metricLabel} htmlFor="sales-reset-question"
+          data-surface="tablet"
+          data-screen="settings"
+          data-zone="pos"
+          data-panel="sales-reset-panel"
+          data-target="sales-reset-panel-button-196"
+          data-kind="button"
+          data-role="action"
+        >Pregunta de seguridad</label>
         <select
           id="sales-reset-question"
           value={questionId}
@@ -201,10 +328,10 @@ export function SalesResetPanel({ preview }: Props) {
           style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
         >
           {preview.securityQuestions.map((question) => (
-            <option key={question.id} value={question.id}>{question.label}</option>
+            <option data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-option-9" data-kind="panel" data-role="panel" key={question.id} value={question.id}>{question.label}</option>
           ))}
         </select>
-        <label className={styles.metricLabel} htmlFor="sales-reset-answer">Respuesta de una palabra</label>
+        <label data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-label-10" data-kind="panel" data-role="panel" className={styles.metricLabel} htmlFor="sales-reset-answer">Respuesta de una palabra</label>
         <input
           id="sales-reset-answer"
           value={securityAnswer}
@@ -213,7 +340,7 @@ export function SalesResetPanel({ preview }: Props) {
           autoComplete="off"
           style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
         />
-        <label className={styles.metricLabel} htmlFor="sales-reset-pin">PIN admin</label>
+        <label data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-label-11" data-kind="panel" data-role="panel" className={styles.metricLabel} htmlFor="sales-reset-pin">PIN admin</label>
         <input
           id="sales-reset-pin"
           value={adminPin}
@@ -224,7 +351,7 @@ export function SalesResetPanel({ preview }: Props) {
           placeholder="6 dígitos"
           style={{ width: "100%", minHeight: 46, margin: "8px 0 12px", padding: "0 12px" }}
         />
-        <label className={styles.metricLabel} htmlFor="sales-reset-note">Nota operativa</label>
+        <label data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-label-12" data-kind="panel" data-role="panel" className={styles.metricLabel} htmlFor="sales-reset-note">Nota operativa</label>
         <textarea
           id="sales-reset-note"
           value={operatorNote}
@@ -232,18 +359,33 @@ export function SalesResetPanel({ preview }: Props) {
           placeholder="Motivo del reset para auditoría local"
           rows={3}
           style={{ width: "100%", margin: "8px 0 12px", padding: 12 }}
+          data-surface="tablet"
+          data-screen="settings"
+          data-zone="pos"
+          data-panel="sales-reset-panel"
+          data-target="sales-reset-panel-button-228"
+          data-kind="button"
+          data-role="action"
         />
-        <button className={styles.primaryButton} type="submit" disabled={!canSubmit} aria-disabled={!canSubmit}>
+        <button className={styles.primaryButton} type="submit" disabled={!canSubmit} aria-disabled={!canSubmit}
+          data-surface="tablet"
+          data-screen="settings"
+          data-zone="pos"
+          data-panel="sales-reset-panel"
+          data-target="sales-reset-panel-button-236"
+          data-kind="button"
+          data-role="action"
+        >
           {busy ? "Ejecutando..." : "Ejecutar reset seguro"}
         </button>
-        <p className={styles.helper}>
+        <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-p-13" data-kind="panel" data-role="panel" className={styles.helper}>
           El botón queda bloqueado hasta validar pregunta de seguridad y PIN admin. Esta acción genera auditoría local y alerta silenciosa para soporte.
         </p>
       </form>
       )}
 
-      {message ? <div className={styles.warning}>{message}</div> : null}
-      {configuredAt ? <div className={styles.warning}>Configuración aplicada: {configuredAt}</div> : null}
+      {message ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-14" data-kind="panel" data-role="container" className={styles.warning}>{message}</div> : null}
+      {configuredAt ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-15" data-kind="panel" data-role="container" className={styles.warning}>Configuración aplicada: {configuredAt}</div> : null}
       {result ? (
         <details className={styles.metric}>
           <summary>Resumen auditado del reset</summary>
@@ -256,9 +398,9 @@ export function SalesResetPanel({ preview }: Props) {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className={styles.metric}>
-      <span className={styles.metricLabel}>{label}</span>
-      <span className={styles.metricValue}>{value}</span>
+    <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-div-16" data-kind="panel" data-role="container" className={styles.metric}>
+      <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-span-17" data-kind="panel" data-role="panel" className={styles.metricLabel}>{label}</span>
+      <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_reset_panel" data-target="sales-reset-panel-span-18" data-kind="panel" data-role="panel" className={styles.metricValue}>{value}</span>
     </div>
   );
 }

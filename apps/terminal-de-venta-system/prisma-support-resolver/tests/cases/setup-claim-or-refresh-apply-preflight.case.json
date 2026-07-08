@@ -1,0 +1,51 @@
+{
+  "caseId": "setup-claim-or-refresh-apply-preflight",
+  "resultCode": "SETUP_CLAIM_OR_REFRESH_PREFLIGHT_READY",
+  "primaryIssueCode": "CROSS_SOURCE_IDENTITY_SPLIT",
+  "selectedAuthority": "setup_claim_or_refresh",
+  "setupCodePresent": true,
+  "mutationPerformed": false,
+  "wouldMutate": false,
+  "safeToApply": false,
+  "rollbackAvailable": false,
+  "safeToApplyReason": "Setup Code/License Refresh preflight is ready, but mutation remains blocked until signed refreshed license, backup, rollback-safe write plan and post-checks are available.",
+  "applyPlan": {
+    "id": "setup_claim_or_refresh_apply_preflight",
+    "stage": "preflight_ready",
+    "futureApplyAction": "setup_claim_or_refresh_apply_with_backup_rollback",
+    "localWritePlan": [
+      "backup current license.json, runtime.json and device-identity.json",
+      "install only a refreshed signed license that verifies before write",
+      "write runtime/device identity derived from verified claim result"
+    ],
+    "rollbackPlan": [
+      "restore backed-up license.json",
+      "restore backed-up runtime.json",
+      "restore backed-up device-identity.json"
+    ],
+    "postChecks": [
+      "signed refreshed license verifies",
+      "runtime/license/POS IDs match selected authority",
+      "surface status recomputes to non-split state",
+      "Tablet POS remains blocked until POS local DB alignment validates"
+    ],
+    "requiredBeforeMutation": [
+      "setup code or refresh source is provided",
+      "signed refreshed license verifies",
+      "rollback-safe local write plan exists",
+      "post-action surface status recompute is available"
+    ],
+    "mutationPerformed": false,
+    "wouldMutate": false,
+    "safeToApply": false,
+    "rollbackAvailable": false,
+    "secretsExposed": false
+  },
+  "requiredBeforeMutation": [
+    "setup code or refresh source is provided",
+    "signed refreshed license verifies",
+    "rollback-safe local write plan exists",
+    "post-action surface status recompute is available"
+  ],
+  "secretsExposed": false
+}

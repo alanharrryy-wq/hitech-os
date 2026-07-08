@@ -10,6 +10,7 @@ runtime and diagnostic APIs through a local-only command surface.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import os
 import re
@@ -33,6 +34,17 @@ import cloud_saas_api
 import license_ops_api
 import command_center_store
 import licflow4_admin_bridge
+import support_resolver_api
+
+SUPPORT_RESOLVER_RELOAD_LOCK = threading.Lock()
+
+def support_resolver_payload(path: str, method: str = "GET", body: Dict[str, Any] | None = None, local_request: bool = False) -> Dict[str, Any]:
+    """Reload support_resolver_api per request so Cloud Center support fixes are visible without stale module state."""
+    global support_resolver_api
+    with SUPPORT_RESOLVER_RELOAD_LOCK:
+        support_resolver_api = importlib.reload(support_resolver_api)
+    return support_resolver_api.support_payload(path, method=method, body=body, local_request=local_request)
+
 
 APP_VERSION = "4.3.0-prisma-cloud-center-operator-readiness"
 DEFAULT_PORT = 3160
@@ -802,6 +814,20 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             except Exception as exc:
                 self.json_response({"ok": False, "code": "LICFLOW4_BRIDGE_ERROR", "error": str(exc), "secretsExposed": False}, code=400)
             return
+        if path.startswith("/api/support"):
+            try:
+                body = self.read_json_body()
+                payload = support_resolver_payload(
+                    self.path,
+                    method="POST",
+                    body=body,
+                    local_request=self.is_local_operator_request(),
+                )
+                code = int(payload.pop("_httpStatus", 200 if payload.get("ok") else 409))
+                self.json_response(payload, code=code)
+            except Exception as exc:
+                self.json_response({"ok": False, "code": "SUPPORT_RESOLVER_ERROR", "error": str(exc), "secretsExposed": False}, code=400)
+            return
         if path.startswith("/api/cloud-saas"):
             try:
                 body = self.read_json_body()
@@ -838,6 +864,11 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             return
         if path.startswith("/api/licflow4/bridge"):
             payload = licflow4_admin_bridge.bridge_payload(self.path, method="GET", local_request=self.is_local_operator_request())
+            code = int(payload.pop("_httpStatus", 200 if payload.get("ok") else 409))
+            self.json_response(payload, code=code)
+            return
+        if path.startswith("/api/support"):
+            payload = support_resolver_payload(self.path, method="GET", local_request=self.is_local_operator_request())
             code = int(payload.pop("_httpStatus", 200 if payload.get("ok") else 409))
             self.json_response(payload, code=code)
             return
@@ -971,6 +1002,7 @@ def self_test(lab_root: Path, protected_current: Path, out_dir: Path) -> int:
         lab_root / "internal" / "py" / "cloud_saas_api.py",
         lab_root / "internal" / "py" / "license_ops_api.py",
         lab_root / "internal" / "py" / "licflow4_admin_bridge.py",
+        lab_root / "internal" / "py" / "support_resolver_api.py",
         lab_root / "internal" / "web" / "cloud_command_center.html",
         lab_root / "internal" / "web" / "cloud_command_center.js",
         lab_root / "internal" / "web" / "cloud_command_center.css",

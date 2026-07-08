@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogId": "PRISMA_SUPPORT_SURFACE_STATUS_CATALOG",
+  "operationStatuses": ["ready", "warning", "blocked", "needs_setup", "needs_support", "unknown"],
+  "surfaceIssueDefaults": {
+    "tablet": {
+      "ready": "Tablet lista para operar.",
+      "blocked": "Tablet bloqueada por issue principal.",
+      "needs_setup": "Tablet requiere Setup Code o activacion."
+    },
+    "pc": {
+      "ready": "PC lista para administracion.",
+      "blocked": "PC bloqueada por issue principal.",
+      "needs_setup": "PC requiere PC Admin Slot."
+    },
+    "mobile": {
+      "ready": "Mobile listo para acompanamiento.",
+      "blocked": "Mobile bloqueado por issue principal.",
+      "needs_setup": "Mobile requiere Mobile Companion Slot."
+    }
+  },
+  "forbiddenContradictions": [
+    ["ready", "blocked"],
+    ["No requiere accion", "operationStatus:block"],
+    ["Lista para operar", "operationStatus:block"],
+    ["Funciones disponibles", "featuresAllowed:0"]
+  ]
+}

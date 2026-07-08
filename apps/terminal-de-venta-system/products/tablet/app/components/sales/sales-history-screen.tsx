@@ -90,11 +90,35 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
       status={<TabletShellStatusPill tone="ok">Consulta local</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
     >
-      <main className={styles.salesPage}>
-        <section className={styles.hero}>
-          <span>Historial local</span>
-          <h1>Ventas anteriores en esta Tablet</h1>
-          <p>Busca tickets locales por rangos acotados. La Tablet consulta su propia base y sigue vendiendo aunque PC no esté disponible.</p>
+      <main className={styles.salesPage}
+        data-surface="tablet"
+        data-screen="sales"
+        data-zone="pos"
+        data-panel="sales-history-screen"
+        data-target="sales-history-screen-panel-93"
+        data-kind="panel"
+        data-role="revenue-core"
+      >
+        <section className={styles.hero}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-history-screen"
+          data-target="sales-history-screen-panel-94"
+          data-kind="panel"
+          data-role="revenue-core"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_history_screen" data-target="sales-history-screen-span-1" data-kind="text" data-role="text">Historial local</span>
+          <h1
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-text-96"
+            data-kind="text"
+            data-role="copy"
+          >Ventas anteriores en esta Tablet</h1>
+          <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_history_screen" data-target="sales-history-screen-p-2" data-kind="text" data-role="text">Busca tickets locales por rangos acotados. La Tablet consulta su propia base y sigue vendiendo aunque PC no esté disponible.</p>
         </section>
 
         <QuickActionStrip label="Acciones rapidas de historial">
@@ -104,45 +128,149 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
           <QuickActionTile title="Crear devolucion" description="Abre devoluciones desde tickets cerrados." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
         </QuickActionStrip>
 
-        <div className={styles.rangeBar} id="rango-ventas" role="tablist" aria-label="Rangos de historial">
+        <div className={styles.rangeBar} id="rango-ventas" role="tablist" aria-label="Rangos de historial"
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-history-screen"
+          data-target="sales-history-screen-rangos-de-historial-107"
+          data-kind="table"
+          data-role="data-display"
+        >
           {PRESETS.map((item) => (
             <button
               key={item.key}
               type="button"
               className={preset === item.key ? styles.primary : styles.secondary}
               aria-pressed={preset === item.key}
-              onClick={() => setPreset(item.key)}
+              onClick={() =
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-history-screen"
+              data-target="sales-history-screen-button-109"
+              data-kind="button"
+              data-role="action"
+            > setPreset(item.key)}
             >
               {item.label}
             </button>
           ))}
         </div>
 
-        <form className={styles.historyFilters} id="buscar-ticket-historial" onSubmit={applyCustomRange}>
-          <label>
+        <form className={styles.historyFilters} id="buscar-ticket-historial" onSubmit={applyCustomRange}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-history-screen"
+          data-target="sales-history-screen-button-121"
+          data-kind="button"
+          data-role="search-control"
+        >
+          <label
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-text-122"
+            data-kind="text"
+            data-role="copy"
+          >
             Buscar
-            <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Folio, cajero, SKU o producto" />
+            <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Folio, cajero, SKU o producto"
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-history-screen"
+              data-target="sales-history-screen-search-124"
+              data-kind="search"
+              data-role="search-control"
+            />
           </label>
-          <label>
+          <label
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-text-126"
+            data-kind="text"
+            data-role="copy"
+          >
             Desde
-            <input type="date" value={from} onChange={(event: ChangeEvent<HTMLInputElement>) => setFrom(event.target.value)} />
+            <input type="date" value={from} onChange={(event: ChangeEvent<HTMLInputElement>) => setFrom(event.target.value)}
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-history-screen"
+              data-target="sales-history-screen-field-128"
+              data-kind="field"
+              data-role="input"
+            />
           </label>
-          <label>
+          <label
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-text-130"
+            data-kind="text"
+            data-role="copy"
+          >
             Hasta
-            <input type="date" value={to} onChange={(event: ChangeEvent<HTMLInputElement>) => setTo(event.target.value)} />
+            <input type="date" value={to} onChange={(event: ChangeEvent<HTMLInputElement>) => setTo(event.target.value)}
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-history-screen"
+              data-target="sales-history-screen-field-132"
+              data-kind="field"
+              data-role="input"
+            />
           </label>
-          <button className={styles.primary} type="submit">Aplicar rango</button>
+          <button className={styles.primary} type="submit"
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-button-134"
+            data-kind="button"
+            data-role="action"
+          >Aplicar rango</button>
         </form>
 
         {error ? (
-          <section className={styles.stateCard}>
-            <h2>Rango bloqueado</h2>
-            <p>{error}</p>
-            <p>Usa un rango de hasta 60 días para proteger rendimiento de caja.</p>
+          <section className={styles.stateCard}
+            data-surface="tablet"
+            data-screen="sales"
+            data-zone="pos"
+            data-panel="sales-history-screen"
+            data-target="sales-history-screen-panel-138"
+            data-kind="panel"
+            data-role="revenue-core"
+          >
+            <h2
+              data-surface="tablet"
+              data-screen="sales"
+              data-zone="pos"
+              data-panel="sales-history-screen"
+              data-target="sales-history-screen-text-139"
+              data-kind="text"
+              data-role="copy"
+            >Rango bloqueado</h2>
+            <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_history_screen" data-target="sales-history-screen-p-3" data-kind="text" data-role="text">{error}</p>
+            <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_history_screen" data-target="sales-history-screen-p-4" data-kind="text" data-role="text">Usa un rango de hasta 60 días para proteger rendimiento de caja.</p>
           </section>
         ) : null}
 
-        {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : !error ? <div className={styles.empty}>Cargando historial local…</div> : null}
+        {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : !error ? <div className={styles.empty}
+          data-surface="tablet"
+          data-screen="sales"
+          data-zone="pos"
+          data-panel="sales-history-screen"
+          data-target="sales-history-screen-text-145"
+          data-kind="text"
+          data-role="copy"
+        >Cargando historial local…</div> : null}
         {summary ? <SalesTicketList tickets={tickets} basePath="/sales/history" emptyMessage="No hay tickets en este rango local." /> : null}
       </main>
     </PrismaTabletShellUnified>

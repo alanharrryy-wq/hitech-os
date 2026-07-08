@@ -625,6 +625,42 @@ h1 {
   resize: vertical;
 }
 
+.cc-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(173, 218, 255, .14);
+  border-radius: 16px;
+  background: rgba(3, 11, 22, .24);
+}
+
+.cc-support-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  color: rgba(244, 250, 255, .9);
+  font-size: .84rem;
+}
+
+.cc-support-table th,
+.cc-support-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(173, 218, 255, .1);
+  vertical-align: top;
+}
+
+.cc-support-table th {
+  color: rgba(190, 226, 255, .9);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: rgba(133, 204, 255, .07);
+}
+
+.cc-support-table tr:last-child td {
+  border-bottom: 0;
+}
+
 .cc-result,
 pre.cc-result {
   max-height: 420px;

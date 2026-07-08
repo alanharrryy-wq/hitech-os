@@ -16,15 +16,47 @@ function stateLabel(state: string) {
   return state;
 }
 
+function supportIssueCode(status: NormalizedLicenseStatus) {
+  const reason = status.denialReason || status.assignmentState;
+  const map: Record<string, string> = {
+    license_missing: "LICENSE_LOCAL_MISSING",
+    license_invalid: "LICENSE_LOCAL_INVALID",
+    license_expired: "LICENSE_EXPIRED",
+    license_suspended: "LICENSE_LOCAL_INVALID",
+    license_revoked: "LICENSE_LOCAL_INVALID",
+    wrong_customer: "LICENSE_ASSIGNMENT_WRONG_CUSTOMER",
+    wrong_business: "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+    wrong_store: "LICENSE_ASSIGNMENT_WRONG_STORE",
+    wrong_device: "PC_DEVICE_ASSIGNMENT_MISMATCH",
+    wrong_terminal: "LICENSE_ASSIGNMENT_WRONG_TERMINAL",
+    feature_not_entitled: "PC_FEATURES_BLOCKED_BY_LICENSE",
+    device_unassigned: "PC_ADMIN_SLOT_NOT_CLAIMED"
+  };
+  if (status.operationalDecision === "deny") return map[reason || ""] || "PC_SUPPORT_STATUS_CONTRADICTION";
+  if (status.warnings.length > 0) return status.warnings[0]?.code || "PC_SUPPORT_STATUS_CONTRADICTION";
+  return "OK";
+}
+
+function supportIssueCopy(status: NormalizedLicenseStatus) {
+  const code = supportIssueCode(status);
+  if (code === "LICENSE_ASSIGNMENT_WRONG_BUSINESS") {
+    return "La licencia esta activa, pero pertenece a otro negocio. La operacion queda bloqueada hasta reclamar el dispositivo correcto o refrescar la licencia.";
+  }
+  if (code === "OK") return "Sin bloqueo principal detectado.";
+  return "Revisar el codigo canonico en Prisma Support Resolver Center.";
+}
+
 export function LicenseStatusCard({ status }: { status: NormalizedLicenseStatus }) {
   const tone = toneClassForState(status.state);
+  const issueCode = supportIssueCode(status);
   return (
     <section className="card">
       <div className="kicker">Licencia local</div>
       <h2 className="section-title">Plan {status.plan}</h2>
-      <p className="section-copy">Estado de licenciamiento y continuidad operativa.</p>
+      <p className="section-copy">{supportIssueCopy(status)}</p>
       <div className="dashboard-actions">
         <Metric label="Estado" value={stateLabel(status.state)} tone={tone} />
+        <Metric label="Issue principal" value={issueCode} tone={issueCode === "OK" ? "tone-ok" : "tone-danger"} />
         <Metric label="Cliente" value={status.customerId ?? "sin licencia"} />
         <Metric label="Negocio" value={status.businessId ?? "respaldo local"} />
         <Metric label="Vence" value={status.validUntil ?? "no disponible"} />

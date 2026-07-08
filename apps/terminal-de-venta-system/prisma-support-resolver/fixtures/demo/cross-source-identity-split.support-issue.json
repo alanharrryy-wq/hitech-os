@@ -1,0 +1,32 @@
+{
+  "code": "CROSS_SOURCE_IDENTITY_SPLIT",
+  "category": "identity_reconciliation",
+  "severity": "blocked",
+  "surface": "tablet",
+  "humanTitle": "Identidades cruzadas entre fuentes",
+  "technicalExplanation": "context, runtime/license, PC admin customer context and external activation candidates disagree.",
+  "evidence": [
+    {
+      "label": "context.businessId",
+      "value": "biz_prisma_rey_lineage_seed",
+      "source": "pc-admin-diagnostic"
+    },
+    {
+      "label": "admin.customer.businessId",
+      "value": "biz_78b3c840796a4a4dad",
+      "source": "pc-admin-diagnostic"
+    },
+    {
+      "label": "installed.customerId",
+      "value": "cust_demo",
+      "source": "local-license"
+    },
+    {
+      "label": "admin.customer.customerId",
+      "value": "cust_prisma_original_customer",
+      "source": "pc-admin-diagnostic"
+    }
+  ],
+  "recommendedAction": "Elegir autoridad antes de aplicar cualquier mutación.",
+  "secretsExposed": false
+}

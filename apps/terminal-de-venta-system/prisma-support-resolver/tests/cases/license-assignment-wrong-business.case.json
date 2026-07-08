@@ -1,0 +1,23 @@
+{
+  "name": "detects license business assignment mismatch",
+  "runtime": {
+    "businessId": "biz_prisma_rey_lineage_seed",
+    "storeId": "store_prisma_rey_centro",
+    "terminalId": "term_tablet_pos_001",
+    "secretsExposed": false
+  },
+  "license": {
+    "businessId": "biz_demo",
+    "customerId": "cust_demo",
+    "plan": "TABLET_PRO",
+    "secretsExposed": false
+  },
+  "expected": {
+    "primaryIssueCode": "LICENSE_ASSIGNMENT_WRONG_BUSINESS",
+    "secondaryIssueCodes": ["RUNTIME_IDENTITY_DEMO_MODE"],
+    "operationStatus": "blocked",
+    "safeActions": ["diagnose", "export_evidence", "setup_claim", "license_refresh"],
+    "unsafeActions": ["blind_manual_license_rewrite"],
+    "secretsExposed": false
+  }
+}

@@ -106,14 +106,46 @@ export function ReturnsLandingScreen({
       status={<HeaderState tone={state.status === "error" ? "danger" : tickets.length ? "ok" : "warn"}>{state.status === "error" ? "Revisar lectura" : `${tickets.length} tickets elegibles`}</HeaderState>}
       runtimeSnapshot={runtimeSnapshot}
     >
-      <main className={styles.returnPage}>
-        <section className={styles.heroPanel}>
-          <span className={styles.eyebrow}>Devolución contextual</span>
+      <main className={styles.returnPage}
+        data-surface="tablet"
+        data-screen="returns"
+        data-zone="pos"
+        data-panel="return-from-ticket-screen"
+        data-target="return-from-ticket-screen-ticket-109"
+        data-kind="ticket"
+        data-role="ticket-context"
+      >
+        <section className={styles.heroPanel}
+          data-surface="tablet"
+          data-screen="returns"
+          data-zone="pos"
+          data-panel="return-from-ticket-screen"
+          data-target="return-from-ticket-screen-ticket-110"
+          data-kind="ticket"
+          data-role="ticket-context"
+        >
+          <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-span-1" data-kind="layout" data-role="layout" className={styles.eyebrow}>Devolución contextual</span>
           <h1>Selecciona el ticket origen</h1>
           <p>Las devoluciones se crean desde ventas cerradas para conservar folio, líneas, importe, stock y evidencia local.</p>
-          <div className={styles.actionsRow}>
-            <button className={styles.secondaryButton} type="button" onClick={() => setReloadToken((value) => value + 1)}>Actualizar tickets</button>
-            <a className={styles.secondaryButton} href="/sales/today">Ver ventas de hoy</a>
+          <div className={styles.actionsRow}
+            data-surface="tablet"
+            data-screen="returns"
+            data-zone="pos"
+            data-panel="return-from-ticket-screen"
+            data-target="return-from-ticket-screen-button-114"
+            data-kind="button"
+            data-role="ticket-context"
+          >
+            <button className={styles.secondaryButton} type="button" onClick={() =
+              data-surface="tablet"
+              data-screen="returns"
+              data-zone="pos"
+              data-panel="return-from-ticket-screen"
+              data-target="return-from-ticket-screen-button-115"
+              data-kind="button"
+              data-role="ticket-context"
+            > setReloadToken((value) => value + 1)}>Actualizar tickets</button>
+            <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-2" data-kind="button" data-role="button" className={styles.secondaryButton} href="/sales/today">Ver ventas de hoy</a>
           </div>
         </section>
 
@@ -125,41 +157,81 @@ export function ReturnsLandingScreen({
         </QuickActionStrip>
 
         {returnFlash ? (
-          <div className={styles.success} role="status" aria-live="polite">
+          <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-3" data-kind="badge" data-role="container" className={styles.success} role="status" aria-live="polite">
             Devolución {returnFlash.returnId} registrada. Importe {formatMoney(returnFlash.amountCents)} · {returnFlash.lineCount} líneas. La operación quedó lista para caja, reportes e inventario local.
           </div>
         ) : null}
 
-        {state.status === "loading" ? <section className={styles.panel}>Cargando tickets cerrados…</section> : null}
+        {state.status === "loading" ? <section className={styles.panel}
+          data-surface="tablet"
+          data-screen="returns"
+          data-zone="pos"
+          data-panel="return-from-ticket-screen"
+          data-target="return-from-ticket-screen-ticket-133"
+          data-kind="ticket"
+          data-role="ticket-context"
+        >Cargando tickets cerrados…</section> : null}
 
         {state.status === "error" ? (
-          <section className={styles.panel}>
+          <section className={styles.panel}
+            data-surface="tablet"
+            data-screen="returns"
+            data-zone="pos"
+            data-panel="return-from-ticket-screen"
+            data-target="return-from-ticket-screen-ticket-136"
+            data-kind="ticket"
+            data-role="ticket-context"
+          >
             <h2>No pude cargar devoluciones</h2>
             <p className={styles.error}>{state.message}</p>
-            <button className={styles.primary} type="button" onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
+            <button className={styles.primary} type="button" onClick={() =
+              data-surface="tablet"
+              data-screen="returns"
+              data-zone="pos"
+              data-panel="return-from-ticket-screen"
+              data-target="return-from-ticket-screen-button-139"
+              data-kind="button"
+              data-role="ticket-context"
+            > setReloadToken((value) => value + 1)}>Reintentar</button>
           </section>
         ) : null}
 
         {state.status === "ready" ? (
-          <section className={styles.panel} id="tickets-devolucion">
-            <div className={styles.panelHeader}>
-              <div>
-                <span className={styles.eyebrow}>Tickets cerrados</span>
+          <section className={styles.panel} id="tickets-devolucion"
+            data-surface="tablet"
+            data-screen="returns"
+            data-zone="pos"
+            data-panel="return-from-ticket-screen"
+            data-target="return-from-ticket-screen-ticket-144"
+            data-kind="ticket"
+            data-role="ticket-context"
+          >
+            <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-4" data-kind="panel" data-role="container" className={styles.panelHeader}>
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-5" data-kind="panel" data-role="container">
+                <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-span-6" data-kind="layout" data-role="layout" className={styles.eyebrow}>Tickets cerrados</span>
                 <h2>{tickets.length ? "Listos para devolución" : "Sin tickets elegibles"}</h2>
               </div>
               <strong>{formatMoney(state.summary.totalCents)}</strong>
             </div>
 
             {tickets.length ? (
-              <div className={styles.ticketList}>
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-7" data-kind="layout" data-role="container" className={styles.ticketList}>
                 {tickets.map((ticket) => (
-                  <a className={styles.ticketRow} href={ticketReturnHref(ticket)} key={ticket.saleId}>
-                    <div>
+                  <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-8" data-kind="layout" data-role="layout" className={styles.ticketRow} href={ticketReturnHref(ticket)} key={ticket.saleId}>
+                    <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-9" data-kind="panel" data-role="container">
                       <strong>{ticket.folio}</strong>
-                      <span>{ticket.cashier} · {ticket.lineCount} líneas · {ticket.unitsSold} pzas</span>
+                      <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-span-10" data-kind="text" data-role="text">{ticket.cashier} · {ticket.lineCount} líneas · {ticket.unitsSold} pzas</span>
                     </div>
                     <strong>{formatMoney(ticket.totalCents)}</strong>
-                    <span className={styles.rowAction}>Hacer devolución</span>
+                    <span className={styles.rowAction}
+                      data-surface="tablet"
+                      data-screen="returns"
+                      data-zone="pos"
+                      data-panel="return-from-ticket-screen"
+                      data-target="return-from-ticket-screen-button-162"
+                      data-kind="button"
+                      data-role="ticket-context"
+                    >Hacer devolución</span>
                   </a>
                 ))}
               </div>
@@ -253,32 +325,64 @@ export function ReturnFromTicketScreen({
       status={<HeaderState tone={done ? "ok" : amount > 0 ? "warn" : state.status === "error" ? "danger" : "neutral"}>{done || (amount > 0 ? `${qty} pzas · ${formatMoney(amount)}` : "Selecciona productos")}</HeaderState>}
       runtimeSnapshot={runtimeSnapshot}
     >
-      <main className={styles.returnPage}>
-        {done ? <div className={styles.success}>{done}</div> : null}
+      <main data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-main-11" data-kind="panel" data-role="container" className={styles.returnPage}>
+        {done ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-12" data-kind="panel" data-role="container" className={styles.success}>{done}</div> : null}
 
-        {state.status === "loading" ? <section className={styles.panel}>Cargando ticket origen…</section> : null}
+        {state.status === "loading" ? <section className={styles.panel}
+          data-surface="tablet"
+          data-screen="returns"
+          data-zone="pos"
+          data-panel="return-from-ticket-screen"
+          data-target="return-from-ticket-screen-ticket-259"
+          data-kind="ticket"
+          data-role="ticket-context"
+        >Cargando ticket origen…</section> : null}
 
         {state.status === "error" ? (
-          <section className={styles.panel}>
+          <section className={styles.panel}
+            data-surface="tablet"
+            data-screen="returns"
+            data-zone="pos"
+            data-panel="return-from-ticket-screen"
+            data-target="return-from-ticket-screen-ticket-262"
+            data-kind="ticket"
+            data-role="ticket-context"
+          >
             <h1>No pude abrir la devolución</h1>
             <p className={styles.error}>{state.message}</p>
-            <div className={styles.actionsRow}>
-              <button className={styles.primary} type="button" onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
-              <a className={styles.secondaryButton} href="/returns">Volver a devoluciones</a>
+            <div className={styles.actionsRow}
+              data-surface="tablet"
+              data-screen="returns"
+              data-zone="pos"
+              data-panel="return-from-ticket-screen"
+              data-target="return-from-ticket-screen-button-265"
+              data-kind="button"
+              data-role="ticket-context"
+            >
+              <button className={styles.primary} type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="returns"
+                data-zone="pos"
+                data-panel="return-from-ticket-screen"
+                data-target="return-from-ticket-screen-button-266"
+                data-kind="button"
+                data-role="ticket-context"
+              > setReloadToken((value) => value + 1)}>Reintentar</button>
+              <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-13" data-kind="button" data-role="button" className={styles.secondaryButton} href="/returns">Volver a devoluciones</a>
             </div>
           </section>
         ) : null}
 
         {ticket ? (
-          <section className={styles.returnGrid}>
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
+          <section data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-section-14" data-kind="panel" data-role="container" className={styles.returnGrid}>
+            <article data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-article-15" data-kind="panel" data-role="container" className={styles.panel}>
+              <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-16" data-kind="panel" data-role="container" className={styles.panelHeader}>
                 <div>
                   <span className={styles.eyebrow}>Ticket origen</span>
                   <h1>{ticket.folio}</h1>
                   <p>{ticket.cashier} · {ticket.lineCount} líneas · {formatMoney(ticket.totalCents)}</p>
                 </div>
-                <a className={styles.secondaryButton} href="/returns">Cambiar ticket</a>
+                <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-17" data-kind="button" data-role="button" className={styles.secondaryButton} href="/returns">Cambiar ticket</a>
               </div>
 
               <div className={styles.ticketList}>
@@ -292,7 +396,15 @@ export function ReturnFromTicketScreen({
                   return (
                     <div className={lineClassName} key={line.id} aria-disabled={fullyReturned}>
                       <div>
-                        <div className={styles.lineTitleRow}>
+                        <div className={styles.lineTitleRow}
+                          data-surface="tablet"
+                          data-screen="returns"
+                          data-zone="pos"
+                          data-panel="return-from-ticket-screen"
+                          data-target="return-from-ticket-screen-ticket-295"
+                          data-kind="ticket"
+                          data-role="ticket-context"
+                        >
                           <strong>{line.productName}</strong>
                           {fullyReturned ? <span className={styles.returnedBadge}>Devuelto completo</span> : null}
                           {partiallyReturned ? <span className={styles.partialBadge}>Parcialmente devuelto</span> : null}
@@ -305,9 +417,25 @@ export function ReturnFromTicketScreen({
                         )}
                       </div>
                       <div className={styles.qtyControls}>
-                        <button className={styles.qtyButton} type="button" onClick={() => setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}>−</button>
+                        <button className={styles.qtyButton} type="button" onClick={() =
+                          data-surface="tablet"
+                          data-screen="returns"
+                          data-zone="pos"
+                          data-panel="return-from-ticket-screen"
+                          data-target="return-from-ticket-screen-button-308"
+                          data-kind="button"
+                          data-role="ticket-context"
+                        > setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}>−</button>
                         <strong>{currentQty}</strong>
-                        <button className={styles.qtyButton} type="button" onClick={() => setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}>+</button>
+                        <button className={styles.qtyButton} type="button" onClick={() =
+                          data-surface="tablet"
+                          data-screen="returns"
+                          data-zone="pos"
+                          data-panel="return-from-ticket-screen"
+                          data-target="return-from-ticket-screen-button-310"
+                          data-kind="button"
+                          data-role="ticket-context"
+                        > setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}>+</button>
                       </div>
                     </div>
                   );
@@ -315,7 +443,7 @@ export function ReturnFromTicketScreen({
               </div>
             </article>
 
-            <aside className={styles.panel}>
+            <aside data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-aside-18" data-kind="panel" data-role="container" className={styles.panel}>
               <span className={styles.eyebrow}>Motivo</span>
               <div className={styles.reasonGrid}>
                 {RETURN_REASONS.map((item) => (
@@ -323,7 +451,15 @@ export function ReturnFromTicketScreen({
                     className={item.id === reason ? styles.reasonActive : styles.reasonButton}
                     key={item.id}
                     type="button"
-                    onClick={() => setReason(item.id)}
+                    onClick={() =
+                    data-surface="tablet"
+                    data-screen="returns"
+                    data-zone="pos"
+                    data-panel="return-from-ticket-screen"
+                    data-target="return-from-ticket-screen-button-322"
+                    data-kind="button"
+                    data-role="ticket-context"
+                  > setReason(item.id)}
                   >
                     {item.label}
                   </button>
@@ -341,7 +477,15 @@ export function ReturnFromTicketScreen({
                 <small>{qty} piezas seleccionadas</small>
               </div>
 
-              <button className={styles.primary} type="button" onClick={() => void confirm()} disabled={amount <= 0 || submitting}>
+              <button className={styles.primary} type="button" onClick={() =
+                data-surface="tablet"
+                data-screen="returns"
+                data-zone="pos"
+                data-panel="return-from-ticket-screen"
+                data-target="return-from-ticket-screen-button-344"
+                data-kind="button"
+                data-role="ticket-context"
+              > void confirm()} disabled={amount <= 0 || submitting}>
                 {submitting ? "Registrando…" : "Confirmar devolución"}
               </button>
             </aside>

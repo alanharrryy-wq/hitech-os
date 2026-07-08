@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogId": "PRISMA_SUPPORT_RESOLVER_ACTIONS",
+  "actions": [
+    {
+      "id": "diagnose",
+      "label": "Diagnosticar",
+      "mode": "diagnose",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "secret_exposure"
+      ]
+    },
+    {
+      "id": "simulate_runtime_alignment",
+      "label": "Simular alineacion runtime",
+      "mode": "simulate",
+      "mutates": false,
+      "requiresDryRun": true,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "secret_exposure"
+      ]
+    },
+    {
+      "id": "apply_runtime_alignment",
+      "label": "Resolver problema",
+      "mode": "apply",
+      "mutates": true,
+      "requiresDryRun": true,
+      "requiresConfirmation": true,
+      "safeByDefault": false,
+      "blockedWhen": [
+        "no_prior_simulation",
+        "no_rollback",
+        "secret_exposure",
+        "requires_deploy",
+        "requires_d1_migration",
+        "signed_license_rewrite"
+      ]
+    },
+    {
+      "id": "choose_authority",
+      "label": "Elegir autoridad",
+      "mode": "reconcile",
+      "mutates": false,
+      "requiresDryRun": true,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "secret_exposure",
+        "missing_authority_candidates"
+      ]
+    },
+    {
+      "id": "simulate_identity_reconciliation",
+      "label": "Simular reconciliación de identidad",
+      "mode": "simulate",
+      "mutates": false,
+      "requiresDryRun": true,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "secret_exposure"
+      ]
+    },
+    {
+      "id": "setup_claim",
+      "label": "Reclamar slot con Setup Code",
+      "mode": "apply",
+      "mutates": true,
+      "requiresDryRun": true,
+      "requiresConfirmation": true,
+      "safeByDefault": false,
+      "blockedWhen": [
+        "setup_code_missing",
+        "surface_not_allowed",
+        "slot_full",
+        "secret_exposure"
+      ]
+    },
+    {
+      "id": "license_refresh",
+      "label": "Refrescar licencia",
+      "mode": "apply",
+      "mutates": true,
+      "requiresDryRun": true,
+      "requiresConfirmation": true,
+      "safeByDefault": false,
+      "blockedWhen": [
+        "refresh_disabled",
+        "secret_exposure",
+        "admin_token_value_requested"
+      ]
+    },
+    {
+      "id": "export_evidence",
+      "label": "Exportar evidencia",
+      "mode": "export",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "redaction_failed",
+        "secret_exposure"
+      ]
+    },
+    {
+      "id": "send_to_chatgpt",
+      "label": "Mandar a ChatGPT",
+      "mode": "handoff",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "unsanitized_context"
+      ]
+    },
+    {
+      "id": "send_to_codex",
+      "label": "Mandar a Codex",
+      "mode": "handoff",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "unsanitized_context"
+      ]
+    },
+    {
+      "id": "mark_onsite",
+      "label": "Marcar como presencial",
+      "mode": "onsite",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "none"
+      ]
+    },
+    {
+      "id": "copy_support_summary",
+      "label": "Copiar resumen para soporte",
+      "mode": "export",
+      "mutates": false,
+      "requiresDryRun": false,
+      "requiresConfirmation": false,
+      "safeByDefault": true,
+      "blockedWhen": [
+        "unsanitized_context"
+      ]
+    },
+    {
+      "id": "setup_claim_or_refresh_guided",
+      "label": "Setup Code / License Refresh guiado",
+      "authority": "setup_claim_or_refresh",
+      "wouldMutate": false,
+      "safeToApply": false,
+      "requiresSetupCode": true,
+      "requiresRollbackSafePlan": true,
+      "blockedActions": [
+        "edit_signed_license",
+        "blind_manual_license_rewrite",
+        "claim_without_setup_code"
+      ],
+      "description": "Ruta producto guiada para reclamar slot/refrescar licencia sin editar license.json firmado a mano."
+    }
+  ]
+}
