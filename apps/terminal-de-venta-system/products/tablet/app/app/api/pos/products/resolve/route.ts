@@ -3,6 +3,7 @@ import { resolveProduct } from "@/server/pos-api/product-queries.prisma";
 import { fail, ok } from "@/server/pos-api/responses";
 import { readProductResolveInput, validatorErrorToMessage } from "@/server/pos-api/validators";
 import { resolveLocalCatalogProduct } from "@/server/local-catalog";
+import { guardTabletFeatureForApi } from "@/server/licensing/tablet-license-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,6 +29,9 @@ function toApiProduct(product: NonNullable<Awaited<ReturnType<typeof resolveLoca
 }
 
 export async function GET(request: Request) {
+  const licenseGate = await guardTabletFeatureForApi("pos.product.search");
+  if (licenseGate) return licenseGate;
+
   try {
     const input = readProductResolveInput(new URL(request.url).searchParams);
     const product = await resolveProduct(input);
