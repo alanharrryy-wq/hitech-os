@@ -139,6 +139,7 @@
     "verify:customer-setup:cloud-source": "node tools/verify-customer-setup-multidevice.mjs cloud-source",
     "verify:customer-setup:plan-provisioning": "node tools/verify-customer-setup-multidevice.mjs plan-provisioning",
     "e2e:012:plan-based-client-onboarding": "node tools/verify-customer-setup-multidevice.mjs e2e-012-plan-based-client-onboarding",
+    "verify:support-resolver": "node tools/verify-support-resolver.mjs",
     "verify:code-atlas-boundaries": "node tools/verify-code-atlas-boundaries.mjs",
     "verify:outbox-integrity": "node scripts/verify-outbox-integrity.mjs",
     "verify:promotion-readiness": "pnpm -C products/chart-lab/app verify:promotion-readiness",
@@ -207,7 +208,9 @@
     "ui:visual-control:certify": "node tools/quality/ui-certainty.mjs visual-control:certify --strict",
     "ui:premium-mise:self-test": "node tools/quality/ui-premium-mise-en-place.mjs self-test --strict",
     "ui:premium-mise:report": "node tools/quality/ui-premium-mise-en-place.mjs report --strict",
-    "ui:premium-mise:certify": "node tools/quality/ui-premium-mise-en-place.mjs certify --strict"
+    "ui:premium-mise:certify": "node tools/quality/ui-premium-mise-en-place.mjs certify --strict",
+    "verify:support-resolver:recon4": "node tools/verify-support-resolver-recon4.mjs",
+    "verify:support-resolver-recon5": "node tools/verify-support-resolver-recon5.mjs"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
