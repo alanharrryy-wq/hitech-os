@@ -10,3 +10,4 @@ Status: PASS
 - PASS: SALES_PROVENANCE_CONTRACT.json exists
 - PASS: payload_json_index.json exists
 - PASS: COVERAGE_CHECKLIST_60.json exists
+- PASS: business data sync coherence verifier

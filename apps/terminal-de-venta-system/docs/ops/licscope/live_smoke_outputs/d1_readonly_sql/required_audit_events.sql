@@ -1,0 +1,1 @@
+SELECT event_type, COUNT(*) AS count FROM audit_events WHERE event_type IN ('customer_setup.create','customer_setup.plan_based_provision','customer_device.claim','customer_license.refresh','license.revoke','license.renew','license.commercial-state','customer_device.replacement.request','customer_device.replacement.approve') GROUP BY event_type ORDER BY event_type;

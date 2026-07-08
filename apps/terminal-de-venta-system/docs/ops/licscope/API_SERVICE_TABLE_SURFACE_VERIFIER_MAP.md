@@ -138,7 +138,7 @@
 | /api/mobile/pulse-timeline | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/pulse-timeline/route.ts | loadMobileDataPlaneState | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
 | /api/mobile/reports/daily | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/reports/daily/route.ts |  | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
 | /api/mobile/sales/today | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/sales/today/route.ts |  | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
-| /api/mobile/snapshot | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/snapshot/route.ts | loadMobileDataPlaneState | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
+| /api/mobile/snapshot | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/snapshot/route.ts | loadMobileDataPlaneState | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | YES | verify:golden-path-operations | PASS |
 | /api/mobile/summary | GET/NO_CONFIRMADO | products/mobile/app/app/api/mobile/summary/route.ts |  | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
 | /api/reports | GET/NO_CONFIRMADO | products/mobile/app/app/api/reports/route.ts |  | Mobile supervisor | NO_CONFIRMADO | NO_CONFIRMADO | NO_CONFIRMADO | verify:golden-path-operations | PASS |
 | /api/admin/customer-setups/create | POST | infra/cloudflare/licflow3-worker/src/worker.js | createCustomerSetup | Cloud licensing worker | YES | NO | YES | verify:customer-setup-full | PASS |

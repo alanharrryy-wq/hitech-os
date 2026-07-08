@@ -237,11 +237,11 @@
 | products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx | service/repository | read/write | client | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/alerts-policy.ts | service/repository | read/no_confirmado | device,sale,outbox,sync,audit | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/cash-policy.ts | service/repository | read/no_confirmado | sale,canonical | PASS |
-| products/mobile/app/src/lib/prisma-app/mobile-data-plane/config.ts | service/repository | read/no_confirmado | tenant,business,license,device,audit | PASS |
+| products/mobile/app/src/lib/prisma-app/mobile-data-plane/config.ts | service/repository | read/no_confirmado | tenant,business,license,device,sale,audit | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/data-readiness.ts | service/repository | read/no_confirmado | sale,outbox,sync | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/diagnostics.ts | service/repository | read/no_confirmado | sale,outbox,sync,audit | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/endpoint-handlers.ts | service/repository | read/no_confirmado | sale,sync | PASS |
-| products/mobile/app/src/lib/prisma-app/mobile-data-plane/endpoints.ts | service/repository | read/no_confirmado | sale,outbox,sync | PASS |
+| products/mobile/app/src/lib/prisma-app/mobile-data-plane/endpoints.ts | service/repository | read/no_confirmado | business,sale,outbox,sync | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/http.ts | service/repository | read/no_confirmado | sync | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/inventory-adapter.ts | service/repository | read/no_confirmado | canonical | PASS |
 | products/mobile/app/src/lib/prisma-app/mobile-data-plane/local-db-snapshot.ts | service/repository | read/no_confirmado | business,sale,sale line,cash session,outbox,sync,canonical | PASS |

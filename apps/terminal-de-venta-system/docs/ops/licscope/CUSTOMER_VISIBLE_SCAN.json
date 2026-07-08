@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
   "status": "PASS",
   "releaseBlockingCount": 0,
-  "totalHits": 77,
+  "totalHits": 78,
   "blockedWords": [
     "demo",
     "test",
@@ -58,6 +58,15 @@
       "token": "demo",
       "status": "PASS",
       "lineText": "<div className=\"referencia-visual-demo\">",
+      "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
+      "releaseBlocking": false
+    },
+    {
+      "file": "products/tablet/app/app/tablet-lab/components/TabletLabAutoStudio.tsx",
+      "line": 505,
+      "token": "mock",
+      "status": "PASS",
+      "lineText": "return <div className={styles.previewGrid}>{['MoneyMetric', 'CountMetric', 'StockMetric', 'LicenseStatus', 'SyncStatus', 'OperatorBadge', 'TerminalBadge'].map((item, index) => <GlassCard key={item} title={item} subtitle=",
       "classification": "INTERNAL_OR_TECHNICAL_REFERENCE",
       "releaseBlocking": false
     },
@@ -270,7 +279,7 @@
     },
     {
       "file": "products/pc/app/app/globals.css",
-      "line": 822,
+      "line": 818,
       "token": "demo",
       "status": "PASS",
       "lineText": ".referencia-visual-demo {",

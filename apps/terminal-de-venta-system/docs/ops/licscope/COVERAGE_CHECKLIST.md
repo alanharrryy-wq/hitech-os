@@ -1,6 +1,6 @@
 # LICSCOPE Coverage Checklist
 
-Status: BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED
+Status: PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED
 
 | item | status | fileProduced | evidence | blocker | nextAction |
 | --- | --- | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ Status: BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED
 | 44. Verifiers exactos que certifican venta completa. | PASS | docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json; tools/verify-data-surface-connections.mjs | docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json,tools/verify-data-surface-connections.mjs |  |  |
 | 45. Verifiers exactos que certifican outbox/sync/canonical. | PASS | docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json | docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json |  |  |
 | 46. Verifiers exactos que certifican revoke/renewal/device replacement. | PASS | docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json | docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json |  |  |
-| 47. Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile. | BLOCKED | docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json; docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json | docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json,docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json | BLOCKED_BY_MISSING_SECRET | Provide live Cloudflare credentials and run governed live smokes. |
+| 47. Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile. | PASS | docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json; docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json; docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json; docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json | PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED; PASS_LOCAL_RUNTIME_READONLY |  |  |
 | 48. Contrato de production readiness. | PASS | docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json | docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json |  |  |
 | 49. Reglas para orphan detector. | PASS | docs/ops/licscope/ORPHAN_DETECTOR_RULES.json | docs/ops/licscope/ORPHAN_DETECTOR_RULES.json |  |  |
 | 50. Reglas para duplicate detector. | PASS | docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json | docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json |  |  |
@@ -64,4 +64,4 @@ Status: BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED
 | 58. Definición de canonical projection. | PASS | docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md | docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md |  |  |
 | 59. Definición de sync checkpoint correcto. | PASS | docs/ops/licscope/SYNC_CHECKPOINT_DEFINITION.md | docs/ops/licscope/SYNC_CHECKPOINT_DEFINITION.md |  |  |
 | 60. Cualquier .env.example, config sanitizada o docs que expliquen nombres de DB, sin secretos reales. | PASS | docs/ops/licscope/SANITIZED_CONFIG_INDEX.json | docs/ops/licscope/SANITIZED_CONFIG_INDEX.json |  |  |
-| Final result ZIP | BLOCKED | F:/descargasf/licscope final <DDMM> <HHMM> result.zip | ZIP is created after validation and recorded in ZIP_RESULT.json plus sha256 sidecar. | RESULT_ZIP_PENDING_UNTIL_PACKAGE_STEP | Create ZIP after verifiers/typechecks complete. |
+| Final result ZIP | PASS | F:\descargasf\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip | ZIP exists: F:\descargasf\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip,F:\descargasf\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip.sha256.txt |  |  |

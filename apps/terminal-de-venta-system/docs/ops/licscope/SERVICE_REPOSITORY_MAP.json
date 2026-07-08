@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
   "services": [
     {
       "file": "products/tablet/app/src/composition/module-registry.ts",
@@ -2556,6 +2556,7 @@
         "business",
         "license",
         "device",
+        "sale",
         "audit"
       ],
       "status": "PASS"
@@ -2598,6 +2599,7 @@
       "kind": "service/repository",
       "readsOrWrites": "read/no_confirmado",
       "entities": [
+        "business",
         "sale",
         "outbox",
         "sync"

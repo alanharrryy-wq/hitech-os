@@ -1,0 +1,667 @@
+{
+  "ok": true,
+  "status": "PASS_LOCAL_RUNTIME_READONLY",
+  "checkedAt": "2026-07-07T22:29:28.136Z",
+  "scope": {
+    "businessId": "biz_prisma_rey_lineage_seed",
+    "date": "2026-07-05",
+    "terminalId": "term_tablet_pos_001",
+    "storeId": "store_prisma_rey_centro",
+    "tickets": 12,
+    "totalCents": 36000
+  },
+  "readOnly": true,
+  "mutationsPerformed": false,
+  "db": {
+    "pc": "products/pc/app/data/canonical.db",
+    "tablet": "products/tablet/app/data/tablet-pos.db",
+    "pcAll": {
+      "tickets": 12,
+      "totalCents": 36000
+    },
+    "tabletAll": {
+      "tickets": 12,
+      "totalCents": 36000
+    },
+    "pcTerminal": {
+      "tickets": 6,
+      "totalCents": 18000
+    },
+    "tabletTerminal": {
+      "tickets": 6,
+      "totalCents": 18000
+    },
+    "pcOutbox": 12,
+    "tabletOutbox": 12
+  },
+  "runtime": {
+    "ports": {
+      "chartLab": {
+        "port": 3000,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3000/",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "rawText": "<!DOCTYPE html><html lang=\"es-MX\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1783463368192\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPr"
+          }
+        }
+      },
+      "prismaWeb": {
+        "port": 3110,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3110/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "prisma-web",
+            "status": "ok"
+          }
+        }
+      },
+      "tablet": {
+        "port": 3120,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3120/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "tablet",
+            "status": "ok",
+            "version": "6.1.1",
+            "readyFor": [
+              "preview-shell",
+              "domain-iteration",
+              "prisma-wiring"
+            ]
+          }
+        }
+      },
+      "pc": {
+        "port": 3130,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3130/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "pc-backoffice",
+            "status": "ok"
+          }
+        }
+      },
+      "mobile": {
+        "port": 3140,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3140/",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "rawText": "<!DOCTYPE html><html lang=\"es-MX\" data-theme=\"prisma-light\" data-prisma-surface=\"mobile-pulse\" data-prisma-visual-os=\"MOBILE_PULSE\" data-prisma-vos-binding=\"00K\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover\"/><li"
+          }
+        }
+      },
+      "controlCenter": {
+        "port": 3150,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3150/",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "rawText": "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n<title>CONTROL CENTER PRISMA</title>\n<style>\n:root{\n  --bg:#07111d; --bg2:#0d1829; --text:#eef6ff; --muted:#a8b8cb;\n  --panel:rgba(14,24,42,.44); --"
+          }
+        }
+      },
+      "cloudCenter": {
+        "port": 3160,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3160/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "generatedAt": "2026-07-07T16:29:32",
+            "overall": "OK",
+            "blockers": 0,
+            "warnings": 0,
+            "modules": [
+              {
+                "id": "cloud-saas",
+                "name": "Prisma Cloud Center",
+                "role": "Cloud License Gateway + License Operations",
+                "port": 3160,
+                "status": "CLOUD_LIVE",
+                "directUrl": "https://app.hitechrts.com",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+                  "version": "0.2.0-prisma-cloud-semilla-routing",
+                  "error": null
+                }
+              },
+              {
+                "id": "control",
+                "name": "Control Center bueno",
+                "role": "Protegido / torre actual",
+                "port": 3150,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3150",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "chart",
+                "name": "Chart Analytics",
+                "role": "Analytics / lectura visual",
+                "port": 3000,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3000",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "web",
+                "name": "Web/EIT",
+                "role": "Web Control local",
+                "port": 3110,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3110",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "tablet",
+                "name": "Tablet",
+                "role": "Opera sola",
+                "port": 3120,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3120",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "pc",
+                "name": "PC",
+                "role": "Gobierna si existe",
+                "port": 3130,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3130",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "mobile",
+                "name": "Mobile",
+                "role": "Supervisa, no vende",
+                "port": 3140,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3140",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "addon",
+                "name": "Nuevo Añadido",
+                "role": "Slot listo para conectar",
+                "port": 3165,
+                "status": "SLOT_READY",
+                "directUrl": "http://127.0.0.1:3165",
+                "http": {
+                  "ok": false,
+                  "statusCode": null,
+                  "service": null,
+                  "version": null,
+                  "error": "port closed"
+                }
+              }
+            ],
+            "canonicalRule": "Tablet opera sola. PC gobierna si existe. Mobile supervisa. Core registra. Control audita."
+          }
+        }
+      }
+    },
+    "tabletRuntimeAll": {
+      "tickets": 12,
+      "totalCents": 36000
+    },
+    "tabletRuntimeTerminal": {
+      "tickets": 6,
+      "totalCents": 18000
+    },
+    "pcRuntimeAll": {
+      "tickets": 12,
+      "totalCents": 36000
+    },
+    "mobileRuntimeTerminal": {
+      "tickets": 6,
+      "totalCents": 18000,
+      "runtimeMode": "partial",
+      "source": "connected-data-plane",
+      "pcProbeOk": true,
+      "tabletProbeOk": true
+    }
+  },
+  "checks": [
+    {
+      "name": "PC and Tablet expose the same business ids",
+      "status": "PASS",
+      "evidence": {
+        "pc": [
+          "biz_prisma_rey_lineage_seed"
+        ],
+        "tablet": [
+          "biz_prisma_rey_lineage_seed"
+        ]
+      }
+    },
+    {
+      "name": "PC and Tablet resolve the same operational business/date scope",
+      "status": "PASS",
+      "evidence": {
+        "pc": {
+          "businessId": "biz_prisma_rey_lineage_seed",
+          "date": "2026-07-05",
+          "terminalId": "term_tablet_pos_001",
+          "storeId": "store_prisma_rey_centro",
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "tablet": {
+          "businessId": "biz_prisma_rey_lineage_seed",
+          "date": "2026-07-05",
+          "terminalId": "term_tablet_pos_001",
+          "storeId": "store_prisma_rey_centro",
+          "tickets": 12,
+          "totalCents": 36000
+        }
+      }
+    },
+    {
+      "name": "PC and Tablet DB sales match for operational date",
+      "status": "PASS",
+      "evidence": {
+        "pcAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "tabletAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        }
+      }
+    },
+    {
+      "name": "PC and Tablet DB sales match for registered terminal",
+      "status": "PASS",
+      "evidence": {
+        "pcTerminal": {
+          "tickets": 6,
+          "totalCents": 18000
+        },
+        "tabletTerminal": {
+          "tickets": 6,
+          "totalCents": 18000
+        }
+      }
+    },
+    {
+      "name": "PC and Tablet outbox rows match for business",
+      "status": "PASS",
+      "evidence": {
+        "pcOutbox": 12,
+        "tabletOutbox": 12
+      }
+    },
+    {
+      "name": "PRISMA Web 3110 health is reachable",
+      "status": "PASS",
+      "evidence": {
+        "port": 3110,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3110/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "prisma-web",
+            "status": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "Tablet 3120 health is reachable",
+      "status": "PASS",
+      "evidence": {
+        "port": 3120,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3120/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "tablet",
+            "status": "ok",
+            "version": "6.1.1",
+            "readyFor": [
+              "preview-shell",
+              "domain-iteration",
+              "prisma-wiring"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "PC 3130 health is reachable",
+      "status": "PASS",
+      "evidence": {
+        "port": 3130,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3130/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "system": "PRISMA",
+            "app": "pc-backoffice",
+            "status": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "Mobile 3140 app is reachable",
+      "status": "PASS",
+      "evidence": {
+        "port": 3140,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3140/",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "rawText": "<!DOCTYPE html><html lang=\"es-MX\" data-theme=\"prisma-light\" data-prisma-surface=\"mobile-pulse\" data-prisma-visual-os=\"MOBILE_PULSE\" data-prisma-vos-binding=\"00K\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover\"/><li"
+          }
+        }
+      }
+    },
+    {
+      "name": "Cloud Center 3160 local health has no blockers and Cloud module is live",
+      "status": "PASS",
+      "evidence": {
+        "port": 3160,
+        "open": true,
+        "health": {
+          "url": "http://127.0.0.1:3160/api/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "generatedAt": "2026-07-07T16:29:32",
+            "overall": "OK",
+            "blockers": 0,
+            "warnings": 0,
+            "modules": [
+              {
+                "id": "cloud-saas",
+                "name": "Prisma Cloud Center",
+                "role": "Cloud License Gateway + License Operations",
+                "port": 3160,
+                "status": "CLOUD_LIVE",
+                "directUrl": "https://app.hitechrts.com",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+                  "version": "0.2.0-prisma-cloud-semilla-routing",
+                  "error": null
+                }
+              },
+              {
+                "id": "control",
+                "name": "Control Center bueno",
+                "role": "Protegido / torre actual",
+                "port": 3150,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3150",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "chart",
+                "name": "Chart Analytics",
+                "role": "Analytics / lectura visual",
+                "port": 3000,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3000",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "web",
+                "name": "Web/EIT",
+                "role": "Web Control local",
+                "port": 3110,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3110",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "tablet",
+                "name": "Tablet",
+                "role": "Opera sola",
+                "port": 3120,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3120",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "pc",
+                "name": "PC",
+                "role": "Gobierna si existe",
+                "port": 3130,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3130",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "mobile",
+                "name": "Mobile",
+                "role": "Supervisa, no vende",
+                "port": 3140,
+                "status": "LIVE",
+                "directUrl": "http://127.0.0.1:3140",
+                "http": {
+                  "ok": true,
+                  "statusCode": 200,
+                  "service": null,
+                  "version": null,
+                  "error": null
+                }
+              },
+              {
+                "id": "addon",
+                "name": "Nuevo Añadido",
+                "role": "Slot listo para conectar",
+                "port": 3165,
+                "status": "SLOT_READY",
+                "directUrl": "http://127.0.0.1:3165",
+                "http": {
+                  "ok": false,
+                  "statusCode": null,
+                  "service": null,
+                  "version": null,
+                  "error": "port closed"
+                }
+              }
+            ],
+            "canonicalRule": "Tablet opera sola. PC gobierna si existe. Mobile supervisa. Core registra. Control audita."
+          }
+        }
+      }
+    },
+    {
+      "name": "Tablet runtime reads the same all-terminal sales as Tablet DB",
+      "status": "PASS",
+      "evidence": {
+        "tabletRuntimeAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "tabletAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "route": "http://127.0.0.1:3120/api/pos/sales/today?businessId=biz_prisma_rey_lineage_seed&date=2026-07-05"
+      }
+    },
+    {
+      "name": "Tablet runtime reads the same terminal sales as Tablet DB",
+      "status": "PASS",
+      "evidence": {
+        "tabletRuntimeTerminal": {
+          "tickets": 6,
+          "totalCents": 18000
+        },
+        "tabletTerminal": {
+          "tickets": 6,
+          "totalCents": 18000
+        },
+        "route": "http://127.0.0.1:3120/api/pos/sales/today?businessId=biz_prisma_rey_lineage_seed&terminalId=term_tablet_pos_001&date=2026-07-05"
+      }
+    },
+    {
+      "name": "Tablet runtime outbox count matches Tablet DB",
+      "status": "PASS",
+      "evidence": {
+        "routeCount": 12,
+        "tabletOutbox": 12
+      }
+    },
+    {
+      "name": "PC runtime sales-control reads the same sales as PC DB",
+      "status": "PASS",
+      "evidence": {
+        "pcRuntimeAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "pcAll": {
+          "tickets": 12,
+          "totalCents": 36000
+        },
+        "route": "http://127.0.0.1:3130/api/backoffice/sales-control?businessId=biz_prisma_rey_lineage_seed&preset=custom&from=2026-07-05&to=2026-07-05"
+      }
+    },
+    {
+      "name": "PC catalog delta export is reachable for the same business",
+      "status": "PASS",
+      "evidence": {
+        "status": 200,
+        "count": 4,
+        "businessId": "biz_prisma_rey_lineage_seed"
+      }
+    },
+    {
+      "name": "Mobile snapshot reads the same terminal sales as Tablet runtime",
+      "status": "PASS",
+      "evidence": {
+        "mobileRuntimeTerminal": {
+          "tickets": 6,
+          "totalCents": 18000,
+          "runtimeMode": "partial",
+          "source": "connected-data-plane",
+          "pcProbeOk": true,
+          "tabletProbeOk": true
+        },
+        "tabletRuntimeTerminal": {
+          "tickets": 6,
+          "totalCents": 18000
+        },
+        "route": "http://127.0.0.1:3140/api/mobile/snapshot?businessId=biz_prisma_rey_lineage_seed&terminalId=term_tablet_pos_001&date=2026-07-05"
+      }
+    },
+    {
+      "name": "Mobile snapshot reaches Tablet and PC upstreams",
+      "status": "PASS",
+      "evidence": {
+        "tickets": 6,
+        "totalCents": 18000,
+        "runtimeMode": "partial",
+        "source": "connected-data-plane",
+        "pcProbeOk": true,
+        "tabletProbeOk": true
+      }
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,330 @@
+{
+  "ok": true,
+  "status": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
+  "checkedAt": "2026-07-07T22:29:09.078Z",
+  "liveBase": "https://app.hitechrts.com",
+  "workerRoot": "infra/cloudflare/licflow3-worker",
+  "d1Name": "prisma_cloud_semilla",
+  "certificationScope": "Cloudflare/D1/OAuth read-only certification; admin HTTP mutations and customer onboarding production run are separate gates.",
+  "adminTokenRequired": false,
+  "deployPerformed": false,
+  "d1LiveWritePerformed": false,
+  "d1ReadOnlyQueriesPerformed": true,
+  "secretsPrinted": false,
+  "checks": [
+    {
+      "name": "project-local Wrangler version passes",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdout": "4.93.0\n"
+      }
+    },
+    {
+      "name": "Cloudflare OAuth through Wrangler passes",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\nGetting User settings...\n👋 You are logged in with an OAuth Token, associated with the email [EMAIL_REDACTED].\n┌─────────────────────────────────┬──────────────────────────────────┐\n│ Account Name                    │ Account ID                       │\n├─────────────────────────────────┼──────────────────────────────────┤\n│ [EMAIL_REDACTED]'s Account │ [HEX_ID_REDACTED] │\n└─────────────────────────────────┴──────────────────────────────────┘\n🔓 Token Permissions:\nScope (Access)\n- account (read)\n- user (read)\n- workers (write)\n- workers_kv (write)\n- workers_routes (write)\n- workers_scripts (write)\n- workers_tail (read)\n- d1 (write)\n- pages (write)\n- zone (read)\n- ssl_certs (write)\n- ai (write)\n- ai-search (write)\n- ai-search (run)\n- queues (write)\n- pipelines (write)\n- secrets_store (write)\n- artifacts (write)\n- flagship (write)\n- containers (write)\n- cloudchamber (write)\n- connectivity (admin)\n- email_routing (write)\n- email_sending (write)\n- browser (write)\n- offline_access \n",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "live Cloud Bridge health returns HTTP 200 ok",
+      "status": "PASS",
+      "evidence": {
+        "route": "/health",
+        "status": 200,
+        "ok": true,
+        "json": {
+          "ok": true,
+          "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+          "version": "0.2.0-prisma-cloud-semilla-routing",
+          "generatedAt": "2026-07-07T22:29:09.931Z",
+          "dbHealth": "D1_BOUND",
+          "counts": {
+            "tenants": 6,
+            "devices": 16,
+            "receipts": 1
+          },
+          "hostedCloudEvidence": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"
+        }
+      }
+    },
+    {
+      "name": "health includes LICFLOW3, D1_BOUND and Cloud Licensing markers",
+      "status": "PASS",
+      "evidence": {
+        "health": {
+          "route": "/health",
+          "status": 200,
+          "ok": true,
+          "json": {
+            "ok": true,
+            "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+            "version": "0.2.0-prisma-cloud-semilla-routing",
+            "generatedAt": "2026-07-07T22:29:09.931Z",
+            "dbHealth": "D1_BOUND",
+            "counts": {
+              "tenants": 6,
+              "devices": 16,
+              "receipts": 1
+            },
+            "hostedCloudEvidence": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"
+          }
+        }
+      }
+    },
+    {
+      "name": "D1 list includes prisma_cloud_semilla",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\n┌──────────────────────────────────────┬──────────────────────┬──────────────────────────┬────────────┬────────────┬───────────┬──────────────┐\n│ uuid                                 │ name                 │ created_at               │ version    │ num_tables │ file_size │ jurisdiction │\n├──────────────────────────────────────┼──────────────────────┼──────────────────────────┼────────────┼────────────┼───────────┼──────────────┤\n│ [UUID_REDACTED] │ prisma_cloud_semilla │ 2026-06-23T21:20:16.642Z │ production │ 0          │ 716800    │              │\n└──────────────────────────────────────┴──────────────────────┴──────────────────────────┴────────────┴────────────┴───────────┴──────────────┘\n"
+      }
+    },
+    {
+      "name": "D1 remote migrations list passes",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\nResource location: remote \n\n✅ No migrations to apply!\n",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "D1 remote schema read-only query passes",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdoutSha256": "d92943538f5bf93535663c8b945e6a9d777d049dd5d8c07e00f814e0ea948395"
+      }
+    },
+    {
+      "name": "legacy broken trigger NEW.license_id is absent",
+      "status": "PASS",
+      "evidence": {
+        "stdoutSha256": "d92943538f5bf93535663c8b945e6a9d777d049dd5d8c07e00f814e0ea948395"
+      }
+    },
+    {
+      "name": "licenses table exposes expected legacy-compatible columns",
+      "status": "PASS",
+      "evidence": {
+        "columns": [
+          "id",
+          "tenant_id",
+          "plan",
+          "status",
+          "max_devices",
+          "starts_at",
+          "expires_at",
+          "created_at",
+          "updated_at"
+        ],
+        "missingLicenseColumns": []
+      }
+    },
+    {
+      "name": "license status counts are readable",
+      "status": "PASS",
+      "evidence": {
+        "rows": [
+          {
+            "status": "active",
+            "count": 2
+          },
+          {
+            "status": "revoked",
+            "count": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "audit_events.event_type column is readable",
+      "status": "PASS",
+      "evidence": {
+        "columns": [
+          "event_id",
+          "tenant_slug",
+          "event_type",
+          "payload_json",
+          "created_at"
+        ]
+      }
+    },
+    {
+      "name": "audit event counts are readable",
+      "status": "PASS",
+      "evidence": {
+        "exitCode": 0,
+        "stdoutSha256": "551f6de23be952a3bc77ba3b23fe6c72945020dcf93a17af55c67045b9807877"
+      }
+    },
+    {
+      "name": "required audit event evidence is present",
+      "status": "PASS",
+      "evidence": {
+        "requiredAuditEvents": [
+          "customer_setup.create",
+          "customer_setup.plan_based_provision",
+          "customer_device.claim",
+          "customer_license.refresh",
+          "license.revoke",
+          "license.renew",
+          "license.commercial-state",
+          "customer_device.replacement.request",
+          "customer_device.replacement.approve"
+        ],
+        "foundAuditEvents": [
+          "customer_device.claim",
+          "customer_device.replacement.approve",
+          "customer_device.replacement.request",
+          "customer_license.refresh",
+          "customer_setup.create",
+          "customer_setup.plan_based_provision",
+          "license.commercial-state",
+          "license.renew",
+          "license.revoke"
+        ],
+        "missingAuditEvents": []
+      }
+    },
+    {
+      "name": "fine secret scan has zero findings",
+      "status": "PASS",
+      "evidence": {
+        "scannedRoots": [
+          "infra/cloudflare/licflow3-worker",
+          "Prisma Cloud Ctr/internal/config",
+          "Prisma Cloud Ctr/internal/py",
+          "Prisma Cloud Ctr/internal/web",
+          "Prisma Cloud Ctr/PRISMA_CLOUD_CENTER_MANUAL_FACTORY_STANDARD.md",
+          "shared/licensing",
+          "docs/ops/LICFLOW3_CLOUDFLARE_RUNBOOK.md",
+          "docs/ops/licscope/LICFLOW3_CLOUDFLARE_WRANGLER_D1_RUNBOOK.md",
+          "tools/verify-cloud-center-live-readiness.mjs",
+          "tools/verify-cloudflare-d1-oauth-certification.mjs",
+          "tools/licscope-closure.mjs"
+        ],
+        "scannedFiles": 51,
+        "findingsCount": 0,
+        "findings": []
+      }
+    }
+  ],
+  "commandEvidence": {
+    "wranglerVersion": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler --version",
+      "startedAt": "2026-07-07T22:29:09.080Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "4.93.0\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "8627797c2a719c9a06fcbf6325b12ab1f927a6514232da06045d002c73da2339",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "whoami": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler whoami",
+      "startedAt": "2026-07-07T22:29:10.676Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\nGetting User settings...\n👋 You are logged in with an OAuth Token, associated with the email [EMAIL_REDACTED].\n┌─────────────────────────────────┬──────────────────────────────────┐\n│ Account Name                    │ Account ID                       │\n├─────────────────────────────────┼──────────────────────────────────┤\n│ [EMAIL_REDACTED]'s Account │ [HEX_ID_REDACTED] │\n└─────────────────────────────────┴──────────────────────────────────┘\n🔓 Token Permissions:\nScope (Access)\n- account (read)\n- user (read)\n- workers (write)\n- workers_kv (write)\n- workers_routes (write)\n- workers_scripts (write)\n- workers_tail (read)\n- d1 (write)\n- pages (write)\n- zone (read)\n- ssl_certs (write)\n- ai (write)\n- ai-search (write)\n- ai-search (run)\n- queues (write)\n- pipelines (write)\n- secrets_store (write)\n- artifacts (write)\n- flagship (write)\n- containers (write)\n- cloudchamber (write)\n- connectivity (admin)\n- email_routing (write)\n- email_sending (write)\n- browser (write)\n- offline_access \n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "32ff3d82e38acb5a014c78ffcd3c5f8202e4f3c92b612b18d18efba8088413d8",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "d1List": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 list",
+      "startedAt": "2026-07-07T22:29:13.525Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\n┌──────────────────────────────────────┬──────────────────────┬──────────────────────────┬────────────┬────────────┬───────────┬──────────────┐\n│ uuid                                 │ name                 │ created_at               │ version    │ num_tables │ file_size │ jurisdiction │\n├──────────────────────────────────────┼──────────────────────┼──────────────────────────┼────────────┼────────────┼───────────┼──────────────┤\n│ [UUID_REDACTED] │ prisma_cloud_semilla │ 2026-06-23T21:20:16.642Z │ production │ 0          │ 716800    │              │\n└──────────────────────────────────────┴──────────────────────┴──────────────────────────┴────────────┴────────────┴───────────┴──────────────┘\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "5fd22c45e894520b327caf265d064c945319a931abee4c7ff2bf36b6c1608216",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "migrations": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 migrations list prisma_cloud_semilla --remote",
+      "startedAt": "2026-07-07T22:29:15.436Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "\n ⛅️ wrangler 4.93.0 (update available 4.108.0)\n──────────────────────────────────────────────\nResource location: remote \n\n✅ No migrations to apply!\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "99d8df4ec4b86835af7f24b8671cd0e3fd6cf3ad217fadda3862138627822790",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "schema": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command SELECT type,name,tbl_name,sql FROM sqlite_schema WHERE type IN ('table','index','trigger','view') ORDER BY type,name;",
+      "startedAt": "2026-07-07T22:29:17.536Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[SANITIZED_HASH_ONLY]",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "d92943538f5bf93535663c8b945e6a9d777d049dd5d8c07e00f814e0ea948395",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "licensesInfo": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command PRAGMA table_info(licenses);",
+      "startedAt": "2026-07-07T22:29:19.278Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[\n  {\n    \"results\": [\n      {\n        \"cid\": 0,\n        \"name\": \"id\",\n        \"type\": \"TEXT\",\n        \"notnull\": 0,\n        \"dflt_value\": null,\n        \"pk\": 1\n      },\n      {\n        \"cid\": 1,\n        \"name\": \"tenant_id\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": null,\n        \"pk\": 0\n      },\n      {\n        \"cid\": 2,\n        \"name\": \"plan\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"'starter'\",\n        \"pk\": 0\n      },\n      {\n        \"cid\": 3,\n        \"name\": \"status\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"'active'\",\n        \"pk\": 0\n      },\n      {\n        \"cid\": 4,\n        \"name\": \"max_devices\",\n        \"type\": \"INTEGER\",\n        \"notnull\": 1,\n        \"dflt_value\": \"3\",\n        \"pk\": 0\n      },\n      {\n        \"cid\": 5,\n        \"name\": \"starts_at\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"CURRENT_TIMESTAMP\",\n        \"pk\": 0\n      },\n      {\n        \"cid\": 6,\n        \"name\": \"expires_at\",\n        \"type\": \"TEXT\",\n        \"notnull\": 0,\n        \"dflt_value\": null,\n        \"pk\": 0\n      },\n      {\n        \"cid\": 7,\n        \"name\": \"created_at\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"CURRENT_TIMESTAMP\",\n        \"pk\": 0\n      },\n      {\n        \"cid\": 8,\n        \"name\": \"updated_at\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"CURRENT_TIMESTAMP\",\n        \"pk\": 0\n      }\n    ],\n    \"success\": true,\n    \"meta\": {\n      \"served_by\": \"v3-prod\",\n      \"served_by_region\": \"WNAM\",\n      \"served_by_colo\": \"DFW\",\n      \"served_by_primary\": true,\n      \"timings\": {\n        \"sql_duration_ms\": 0.1988\n      },\n      \"duration\": 0.1988,\n      \"changes\": 0,\n      \"last_row_id\": 0,\n      \"changed_db\": false,\n      \"size_after\": 716800,\n      \"rows_read\": 0,\n      \"rows_written\": 0,\n      \"total_attempts\": 1\n    }\n  }\n]\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "7f2642b19af960b56d31a6aae8773e9efdac74afa3dfe5c4561572d8eadd44e7",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "licenseStatusCounts": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command SELECT status, COUNT(*) AS count FROM licenses GROUP BY status ORDER BY status;",
+      "startedAt": "2026-07-07T22:29:21.014Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[\n  {\n    \"results\": [\n      {\n        \"status\": \"active\",\n        \"count\": 2\n      },\n      {\n        \"status\": \"revoked\",\n        \"count\": 2\n      }\n    ],\n    \"success\": true,\n    \"meta\": {\n      \"served_by\": \"v3-prod\",\n      \"served_by_region\": \"WNAM\",\n      \"served_by_colo\": \"DFW\",\n      \"served_by_primary\": true,\n      \"timings\": {\n        \"sql_duration_ms\": 0.2395\n      },\n      \"duration\": 0.2395,\n      \"changes\": 0,\n      \"last_row_id\": 0,\n      \"changed_db\": false,\n      \"size_after\": 716800,\n      \"rows_read\": 8,\n      \"rows_written\": 0,\n      \"total_attempts\": 1\n    }\n  }\n]\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "eb508b387a3c0a7accb21c111de66ed30512ba77ac41ce45fd3d9b485f8a2ae4",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auditInfo": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command PRAGMA table_info(audit_events);",
+      "startedAt": "2026-07-07T22:29:22.820Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[\n  {\n    \"results\": [\n      {\n        \"cid\": 0,\n        \"name\": \"event_id\",\n        \"type\": \"TEXT\",\n        \"notnull\": 0,\n        \"dflt_value\": null,\n        \"pk\": 1\n      },\n      {\n        \"cid\": 1,\n        \"name\": \"tenant_slug\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": null,\n        \"pk\": 0\n      },\n      {\n        \"cid\": 2,\n        \"name\": \"event_type\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": null,\n        \"pk\": 0\n      },\n      {\n        \"cid\": 3,\n        \"name\": \"payload_json\",\n        \"type\": \"TEXT\",\n        \"notnull\": 0,\n        \"dflt_value\": null,\n        \"pk\": 0\n      },\n      {\n        \"cid\": 4,\n        \"name\": \"created_at\",\n        \"type\": \"TEXT\",\n        \"notnull\": 1,\n        \"dflt_value\": \"CURRENT_TIMESTAMP\",\n        \"pk\": 0\n      }\n    ],\n    \"success\": true,\n    \"meta\": {\n      \"served_by\": \"v3-prod\",\n      \"served_by_region\": \"WNAM\",\n      \"served_by_colo\": \"DFW\",\n      \"served_by_primary\": true,\n      \"timings\": {\n        \"sql_duration_ms\": 0.1398\n      },\n      \"duration\": 0.1398,\n      \"changes\": 0,\n      \"last_row_id\": 0,\n      \"changed_db\": false,\n      \"size_after\": 716800,\n      \"rows_read\": 0,\n      \"rows_written\": 0,\n      \"total_attempts\": 1\n    }\n  }\n]\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "9160411422e030e7421e1d0c0892d9eb3fe1e9800adc06eefca938163b86ee9a",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auditCounts": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command SELECT event_type, COUNT(*) AS count FROM audit_events GROUP BY event_type ORDER BY count DESC LIMIT 50;",
+      "startedAt": "2026-07-07T22:29:24.566Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[SANITIZED_HASH_ONLY]",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "551f6de23be952a3bc77ba3b23fe6c72945020dcf93a17af55c67045b9807877",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "requiredAudit": {
+      "command": "pnpm -C apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker exec wrangler d1 execute prisma_cloud_semilla --remote --json --command SELECT event_type, COUNT(*) AS count FROM audit_events WHERE event_type IN ('customer_setup.create','customer_setup.plan_based_provision','customer_device.claim','customer_license.refresh','license.revoke','license.renew','license.commercial-state','customer_device.replacement.request','customer_device.replacement.approve') GROUP BY event_type ORDER BY event_type;",
+      "startedAt": "2026-07-07T22:29:26.282Z",
+      "exitCode": 0,
+      "ok": true,
+      "stdout": "[\n  {\n    \"results\": [\n      {\n        \"event_type\": \"customer_device.claim\",\n        \"count\": 16\n      },\n      {\n        \"event_type\": \"customer_device.replacement.approve\",\n        \"count\": 1\n      },\n      {\n        \"event_type\": \"customer_device.replacement.request\",\n        \"count\": 1\n      },\n      {\n        \"event_type\": \"customer_license.refresh\",\n        \"count\": 12\n      },\n      {\n        \"event_type\": \"customer_setup.create\",\n        \"count\": 3\n      },\n      {\n        \"event_type\": \"customer_setup.plan_based_provision\",\n        \"count\": 2\n      },\n      {\n        \"event_type\": \"license.commercial-state\",\n        \"count\": 2\n      },\n      {\n        \"event_type\": \"license.renew\",\n        \"count\": 1\n      },\n      {\n        \"event_type\": \"license.revoke\",\n        \"count\": 3\n      }\n    ],\n    \"success\": true,\n    \"meta\": {\n      \"served_by\": \"v3-prod\",\n      \"served_by_region\": \"WNAM\",\n      \"served_by_colo\": \"DFW\",\n      \"served_by_primary\": true,\n      \"timings\": {\n        \"sql_duration_ms\": 0.269\n      },\n      \"duration\": 0.269,\n      \"changes\": 0,\n      \"last_row_id\": 0,\n      \"changed_db\": false,\n      \"size_after\": 716800,\n      \"rows_read\": 86,\n      \"rows_written\": 0,\n      \"total_attempts\": 1\n    }\n  }\n]\n",
+      "stderr": "",
+      "error": "",
+      "stdoutSha256": "49aab926dfd15ae2c21260ca7415dbb8e7d676e83885a1c8537f4a2cb79607db",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "failures": []
+}

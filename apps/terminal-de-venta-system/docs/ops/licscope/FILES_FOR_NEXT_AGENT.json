@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-06T08:25:37.727Z",
-  "finalStatus": "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
+  "generatedAt": "2026-07-07T22:29:07.271Z",
+  "finalStatus": "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
   "files": [
     {
       "path": "docs/ops/licscope/API_SERVICE_TABLE_SURFACE_VERIFIER_MAP.json",
@@ -66,6 +66,15 @@
       "sourceOfTruth": true
     },
     {
+      "path": "docs/ops/licscope/backups_from_HEAD/infra_cloudflare_licflow3-worker_migrations_0004_license_client_integrity.sql.HEAD.txt",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
       "path": "docs/ops/licscope/backups_from_HEAD/infra_cloudflare_licflow3-worker_src_worker.js.HEAD.txt",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
@@ -111,6 +120,15 @@
       "sourceOfTruth": true
     },
     {
+      "path": "docs/ops/licscope/backups_from_HEAD/tools_licscope-closure.mjs.HEAD.txt",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
       "path": "docs/ops/licscope/backups_from_HEAD/tools_verify-customer-setup-multidevice.mjs.HEAD.txt",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
@@ -139,6 +157,186 @@
     },
     {
       "path": "docs/ops/licscope/CANONICAL_PROJECTION_DEFINITION.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker/migrations/0004_license_client_integrity.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker/src/worker.js",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-data-plane/runtime-mode.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-data-plane/state-loader.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-data-plane/types.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-intelligence/contracts.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-intelligence/data-quality-engine.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/prisma-app-api-contracts.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-contract.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/pc/app/app/ajustes-inventario/page.tsx",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/pc/app/app/laboratorio-pc/page.tsx",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/tablet/app/src/lib/pos-ui/pos-error-copy.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/products/tablet/app/src/lib/services/returns.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/shared/licensing/feature-resolver.ts",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/tools/licscope-closure.mjs",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/tools/verify-data-surface-connections.mjs",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/CHANGED_FILES_MANIFEST.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/changed_files/CHANGED_FILES_MANIFEST.md",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
       "requiredForNextAgent": true,
@@ -597,6 +795,15 @@
       "sourceOfTruth": true
     },
     {
+      "path": "docs/ops/licscope/LICFLOW3_CLOUDFLARE_WRANGLER_D1_RUNBOOK.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
       "path": "docs/ops/licscope/LICSCOPE_HANDOFF.json",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
@@ -607,6 +814,132 @@
     },
     {
       "path": "docs/ops/licscope/LICSCOPE_HANDOFF.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/audit_events_table_info.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/audit_event_counts.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/licenses_table_info.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/license_status_counts.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/required_audit_events.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/d1_readonly_sql/schema.sql",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-admin-http-mutation-e2e.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-admin-http-mutation-e2e.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-cloud-center-public-readonly.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-cloud-center-public-readonly.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-cloudflare-d1-oauth-certification.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/live-cloudflare-d1-oauth-certification.md",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
       "requiredForNextAgent": true,
@@ -805,6 +1138,51 @@
     },
     {
       "path": "docs/ops/licscope/live_smoke_outputs/live-tablet-claim.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/logs/DEPLOY_PREFLIGHT.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/logs/DEPLOY_PREFLIGHT.md",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/logs/VALIDATION_RESULTS.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/logs/VALIDATION_RESULTS.md",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
       "requiredForNextAgent": true,
@@ -3855,6 +4233,42 @@
       "sourceOfTruth": true
     },
     {
+      "path": "docs/ops/licscope/verifier_outputs/verify-business-data-sync-coherence.json",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-business-data-sync-coherence.md",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-cloudflare-d1-oauth-certification.json",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-cloudflare-d1-oauth-certification.md",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
       "path": "docs/ops/licscope/verifier_outputs/verify-customer-setup-full.json",
       "kind": "verifier-output",
       "purpose": "Final LICSCOPE closure evidence",
@@ -3982,6 +4396,24 @@
     },
     {
       "path": "docs/ops/licscope/verifier_outputs/verify-license-without-client-blocked.md",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-local-runtime-surface-readiness.json",
+      "kind": "verifier-output",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/verifier_outputs/verify-local-runtime-surface-readiness.md",
       "kind": "verifier-output",
       "purpose": "Final LICSCOPE closure evidence",
       "requiredForNextAgent": true,
@@ -4216,6 +4648,15 @@
     },
     {
       "path": "docs/ops/licscope/ZIP_RESULT.json",
+      "kind": "licscope-artifact",
+      "purpose": "Final LICSCOPE closure evidence",
+      "requiredForNextAgent": true,
+      "status": "PASS",
+      "producedByThisRun": true,
+      "sourceOfTruth": true
+    },
+    {
+      "path": "docs/ops/licscope/ZIP_RESULT.md",
       "kind": "licscope-artifact",
       "purpose": "Final LICSCOPE closure evidence",
       "requiredForNextAgent": true,

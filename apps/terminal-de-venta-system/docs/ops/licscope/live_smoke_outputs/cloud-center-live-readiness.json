@@ -1,0 +1,356 @@
+{
+  "ok": true,
+  "status": "PASS_PUBLIC_LIVE_READONLY",
+  "checkedAt": "2026-07-07T22:23:51.318Z",
+  "baseUrl": "https://app.hitechrts.com",
+  "authenticated": false,
+  "adminMutationPerformed": false,
+  "d1MutationPerformed": false,
+  "secretsPrinted": false,
+  "checks": [
+    {
+      "name": "live health returns 200 ok",
+      "status": "PASS",
+      "evidence": {
+        "route": "/health",
+        "method": "GET",
+        "status": 200,
+        "ok": true,
+        "json": {
+          "ok": true,
+          "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+          "version": "0.2.0-prisma-cloud-semilla-routing",
+          "generatedAt": "2026-07-07T22:23:48.050Z",
+          "dbHealth": "D1_BOUND",
+          "counts": {
+            "tenants": 6,
+            "devices": 16,
+            "receipts": 1
+          },
+          "hostedCloudEvidence": "LICFLOW3_CLOUDFLARE_ROUTES_LIVE"
+        }
+      }
+    },
+    {
+      "name": "live D1 binding is reported",
+      "status": "PASS",
+      "evidence": {
+        "dbHealth": "D1_BOUND",
+        "counts": {
+          "tenants": 6,
+          "devices": 16,
+          "receipts": 1
+        }
+      }
+    },
+    {
+      "name": "live capabilities returns 200 ok",
+      "status": "PASS",
+      "evidence": {
+        "route": "/api/public/capabilities",
+        "method": "GET",
+        "status": 200,
+        "ok": true,
+        "json": {
+          "ok": true,
+          "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+          "version": "0.2.0-prisma-cloud-semilla-routing",
+          "mode": "worker-d1",
+          "capabilities": {
+            "activate": true,
+            "refresh": true,
+            "revoke": true,
+            "registerDevice": true,
+            "integrationReceipt": true,
+            "tenantStatus": true,
+            "supportDiagnostics": true,
+            "commercialSummary": true,
+            "contractFetch": true,
+            "customerSetup": true,
+            "setupLink": true,
+            "setupQr": true,
+            "planBasedProvisioning": true,
+            "autoGenerateClaimSlots": true,
+            "deviceClaim": true,
+            "multiDeviceSlots": true,
+            "deviceReplacement": true,
+            "customerPortal": true,
+            "magicLink": true,
+            "customerLicenseRefresh": true,
+            "billingRenewal": true,
+            "gracePeriod": true,
+            "signedLicenseIssuance": false,
+            "deployClaim": false
+          },
+          "safety": {
+            "noDeployByDefault": true,
+            "noSecretValuesInRepo": true,
+            "tabletOfflineStillValid": true,
+            "licflow2LocalActivationStillCanonical": true
+          },
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/health",
+              "capability": "health",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/capabilities",
+              "capability": "capabilities",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/tenants/prisma-original-customer/status",
+              "capability": "tenant_status",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/client/contract?tenant=prisma-original-customer",
+              "capability": "contract_fetch",
+              "mutatesCloud": false
+            },
+            {
+              "method": "POST",
+              "path": "/api/licenses/activate",
+              "capability": "activate",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/licenses/refresh",
+              "capability": "refresh",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/licenses/revoke",
+              "capability": "revoke",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/devices/register",
+              "capability": "register_device",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/client/integration-receipt",
+              "capability": "integration_receipt",
+              "mutatesCloud": true
+            },
+            {
+              "method": "GET",
+              "path": "/api/support/diagnostics?tenant=prisma-original-customer",
+              "capability": "support_diagnostics",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/admin/selftest",
+              "capability": "admin_selftest",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/admin/commercial-summary",
+              "capability": "commercial_summary",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/admin/tenants/prisma-original-customer/snapshot",
+              "capability": "tenant_snapshot",
+              "mutatesCloud": false
+            },
+            {
+              "method": "POST",
+              "path": "/api/admin/tenants/prisma-original-customer/notes",
+              "capability": "tenant_notes",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/admin/customer-setups/create",
+              "capability": "customer_setup_create",
+              "mutatesCloud": true
+            },
+            {
+              "method": "GET",
+              "path": "/api/customer/setup/:setupCode",
+              "capability": "customer_setup_resolve",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/customer/portal?setupCode=:setupCode",
+              "capability": "customer_portal",
+              "mutatesCloud": false
+            },
+            {
+              "method": "GET",
+              "path": "/api/customer/magic-link?setupCode=:setupCode",
+              "capability": "customer_magic_link",
+              "mutatesCloud": false
+            },
+            {
+              "method": "POST",
+              "path": "/api/customer/devices/claim",
+              "capability": "customer_device_claim",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/customer/devices/replacement/request",
+              "capability": "customer_device_replacement_request",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/admin/customer-devices/replacement/approve",
+              "capability": "admin_device_replacement_approve",
+              "mutatesCloud": true
+            },
+            {
+              "method": "GET",
+              "path": "/api/customer/license/status?setupCode=:setupCode&deviceId=:deviceId",
+              "capability": "customer_license_status",
+              "mutatesCloud": false
+            },
+            {
+              "method": "POST",
+              "path": "/api/customer/license/refresh",
+              "capability": "customer_license_refresh",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/licenses/renew",
+              "capability": "renew",
+              "mutatesCloud": true
+            },
+            {
+              "method": "POST",
+              "path": "/api/licenses/commercial-state",
+              "capability": "commercial_state",
+              "mutatesCloud": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "live capabilities include customer setup, slots, claims and renewal",
+      "status": "PASS",
+      "evidence": {
+        "requiredCapabilities": [
+          "customerSetup",
+          "setupLink",
+          "setupQr",
+          "planBasedProvisioning",
+          "autoGenerateClaimSlots",
+          "deviceClaim",
+          "multiDeviceSlots",
+          "deviceReplacement",
+          "customerPortal",
+          "customerLicenseRefresh",
+          "billingRenewal",
+          "gracePeriod"
+        ],
+        "capabilities": {
+          "activate": true,
+          "refresh": true,
+          "revoke": true,
+          "registerDevice": true,
+          "integrationReceipt": true,
+          "tenantStatus": true,
+          "supportDiagnostics": true,
+          "commercialSummary": true,
+          "contractFetch": true,
+          "customerSetup": true,
+          "setupLink": true,
+          "setupQr": true,
+          "planBasedProvisioning": true,
+          "autoGenerateClaimSlots": true,
+          "deviceClaim": true,
+          "multiDeviceSlots": true,
+          "deviceReplacement": true,
+          "customerPortal": true,
+          "magicLink": true,
+          "customerLicenseRefresh": true,
+          "billingRenewal": true,
+          "gracePeriod": true,
+          "signedLicenseIssuance": false,
+          "deployClaim": false
+        }
+      }
+    },
+    {
+      "name": "admin customer setup is blocked or simulation-only without token",
+      "status": "PASS",
+      "evidence": {
+        "route": "/api/admin/customer-setups/create",
+        "method": "POST",
+        "status": 401,
+        "ok": false,
+        "json": {
+          "ok": false,
+          "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+          "status": "ADMIN_TOKEN_REQUIRED",
+          "reason": "Configure PRISMA_ADMIN_TOKEN outside the repo and send it in an admin header."
+        }
+      }
+    },
+    {
+      "name": "admin license activation is blocked or simulation-only without token",
+      "status": "PASS",
+      "evidence": {
+        "route": "/api/licenses/activate",
+        "method": "POST",
+        "status": 200,
+        "ok": true,
+        "json": {
+          "ok": true,
+          "service": "PRISMA LICFLOW3 Cloud Licensing Support Bridge",
+          "action": "activate",
+          "status": "ACTIVATE_SIMULATION_READY",
+          "resultCode": "ACTIVATE_SIMULATION_READY",
+          "tokenMode": "not_required_for_simulation",
+          "mutationMode": "simulation",
+          "lastDryRunAt": "2026-07-07T22:23:48.350Z",
+          "lastSimulationAt": "2026-07-07T22:23:48.350Z",
+          "lastRealActionAt": null,
+          "lastConfirmedOperationAt": null,
+          "lastResultCode": "ACTIVATE_SIMULATION_READY",
+          "upstreamReachable": true,
+          "operatorChecklist": [
+            "Admin Token Status: presence-only",
+            "Simulation (Dry Run) before confirmed mutation",
+            "No secret values returned to frontend or reports"
+          ],
+          "safeToMutate": false,
+          "safeToMutateReason": "Simulation does not mutate Cloud License Database.",
+          "safeToMutateChecks": {
+            "adminToken": "not_required",
+            "confirmation": "not_required",
+            "revokePhrase": "not_required",
+            "reason": "not_required"
+          },
+          "operatorMessage": "Simulation (Dry Run) evaluated without mutating Cloud License Database.",
+          "nextStep": "Review safeToMutateChecks, then run Confirmed License Operation if intended.",
+          "requestId": "licops_97275b33-7f63-4490-a86e-082a9fd3fdfb",
+          "latencyMs": 0,
+          "secretsExposed": false,
+          "tenantSlug": "codex-live-readonly-guard",
+          "licenseId": "codex-live-readonly-guard",
+          "plannedStatus": "active"
+        }
+      }
+    }
+  ],
+  "failures": []
+}
