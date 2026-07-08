@@ -12,11 +12,15 @@ function mustNotInclude(rel, needle) { if (read(rel).includes(needle)) failures.
 
 const required = [
   "src/lib/operational-gate/can-sell.ts",
+  "src/lib/tablet-runtime-snapshot/shell-contract.ts",
+  "src/server/tablet-runtime-snapshot/build.ts",
   "components/tablet-shell/tablet-nav.ts",
   "src/lib/tablet-home/home-view-model.ts",
   "components/tablet-home/tablet-home-screen.tsx",
   "app/pos/page.tsx",
   "app/checkout/page.tsx",
+  "app/api/pos/products/search/route.ts",
+  "app/api/pos/products/resolve/route.ts",
   "components/pos/pos-screen.tsx",
   "components/pos/pos-product-list.tsx",
   "components/pos/pos-ticket-panel.tsx",
@@ -32,6 +36,15 @@ if (!failures.length) {
   mustInclude("src/lib/operational-gate/can-sell.ts", "canAddProduct");
   mustInclude("src/lib/operational-gate/can-sell.ts", "canCheckout");
   mustInclude("src/lib/operational-gate/can-sell.ts", "SHIFT_NOT_OPEN");
+  mustInclude("src/lib/operational-gate/can-sell.ts", "LICENSE_BLOCKED");
+  mustInclude("src/lib/operational-gate/can-sell.ts", "buildLicenseBlockedDecision");
+  mustInclude("src/lib/operational-gate/can-sell.ts", "license.canUseLocalPos");
+  mustInclude("src/lib/tablet-runtime-snapshot/shell-contract.ts", "TabletRuntimeLicense");
+  mustInclude("src/lib/tablet-runtime-snapshot/shell-contract.ts", "license: TabletRuntimeLicense");
+  mustInclude("src/server/tablet-runtime-snapshot/build.ts", "getTabletLicenseGovernor");
+  mustInclude("src/server/tablet-runtime-snapshot/build.ts", "licenseGovernor.canUseLocalPos");
+  mustInclude("app/api/pos/products/search/route.ts", "guardTabletFeatureForApi(\"pos.product.search\")");
+  mustInclude("app/api/pos/products/resolve/route.ts", "guardTabletFeatureForApi(\"pos.product.search\")");
   mustInclude("components/tablet-shell/tablet-nav.ts", "Devoluciones");
   mustInclude("components/tablet-shell/tablet-nav.ts", "la pantalla /pos ya decide si permite cobrar");
   mustInclude("components/tablet-shell/tablet-nav.ts", "return TABLET_NAV_ITEMS");
@@ -70,4 +83,4 @@ if (failures.length) {
 }
 
 console.log("PASS PRISMA_TABLET_OPERATIONAL_GATE_01");
-console.log("Closed cash keeps navigation understandable while POS blocks product add, checkout, and SHIFT_NOT_OPEN no longer auto-opens a shift.");
+console.log("Closed cash and license state both gate Tablet POS before product add, lookup, checkout and sale completion.");
