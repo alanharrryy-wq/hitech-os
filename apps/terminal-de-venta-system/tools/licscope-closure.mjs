@@ -80,6 +80,9 @@ const verifierNames = [
   "staleness-monitor",
   "audit-completeness",
   "golden-path-operations",
+  "business-data-sync-coherence",
+  "cloudflare-d1-oauth-certification",
+  "local-runtime-surface-readiness",
   "device-without-license-blocked",
   "license-without-client-blocked"
 ];
@@ -124,7 +127,7 @@ function ensureDir(dir) {
 
 function writeText(file, text) {
   ensureDir(path.dirname(file));
-  fs.writeFileSync(file, text);
+  fs.writeFileSync(file, String(text).replace(/(?:\r?\n){2,}$/g, "\n"));
 }
 
 function writeJson(file, value) {
@@ -1002,6 +1005,64 @@ function buildVerifierChecks(name) {
     checks.push({ status: tenant.status === "PASS" ? "PASS" : "BLOCKED", message: "tenant scope contract is closed" });
   }
   if (name.includes("golden")) requireFile("COVERAGE_CHECKLIST_60.json");
+  if (name === "business-data-sync-coherence" || name.includes("outbox-sync") || name.includes("golden")) {
+    try {
+      const output = execFileSync(process.execPath, [rel("tools/verify-business-data-sync-coherence.mjs")], {
+        cwd: terminalRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"]
+      });
+      const parsed = JSON.parse(output);
+      checks.push({ status: parsed.ok ? "PASS" : "BLOCKED", message: "business data sync coherence verifier", evidence: parsed.failures ?? [] });
+    } catch (error) {
+      checks.push({ status: "BLOCKED", message: "business data sync coherence verifier failed", evidence: String(error.stderr || error.message || error) });
+    }
+  }
+  if (name === "cloudflare-d1-oauth-certification") {
+    try {
+      const evidencePath = "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json";
+      const output = execFileSync(process.execPath, [rel("tools/verify-cloudflare-d1-oauth-certification.mjs"), `--out=${evidencePath}`], {
+        cwd: terminalRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"]
+      });
+      const parsed = JSON.parse(output);
+      checks.push({
+        status: parsed.ok ? "PASS" : "BLOCKED",
+        message: parsed.status || "cloudflare d1 oauth certification verifier",
+        evidence: {
+          path: evidencePath,
+          certificationScope: parsed.certificationScope ?? null,
+          failures: parsed.failures ?? []
+        }
+      });
+    } catch (error) {
+      checks.push({ status: "BLOCKED", message: "cloudflare d1 oauth certification verifier failed", evidence: String(error.stderr || error.message || error) });
+    }
+  }
+  if (name === "local-runtime-surface-readiness") {
+    try {
+      const evidencePath = "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json";
+      const output = execFileSync(process.execPath, [rel("tools/verify-local-runtime-surface-readiness.mjs"), `--out=${evidencePath}`], {
+        cwd: terminalRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"]
+      });
+      const parsed = JSON.parse(output);
+      checks.push({
+        status: parsed.ok ? "PASS" : "BLOCKED",
+        message: parsed.status || "local runtime surface readiness verifier",
+        evidence: {
+          path: evidencePath,
+          scope: parsed.scope ?? null,
+          summary: parsed.summary ?? null,
+          failures: parsed.failures ?? []
+        }
+      });
+    } catch (error) {
+      checks.push({ status: "BLOCKED", message: "local runtime surface readiness verifier failed", evidence: String(error.stderr || error.message || error) });
+    }
+  }
   return checks;
 }
 
@@ -1219,24 +1280,61 @@ function readJsonSafe(file, fallback) {
   }
 }
 
+function cloudflareD1OauthEvidence() {
+  const evidencePath = "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json";
+  const payload = readJsonSafe("live_smoke_outputs/cloudflare-d1-oauth-certification.json", {});
+  const status = String(payload.status || "CLOUDFLARE_D1_OAUTH_EVIDENCE_NOT_AVAILABLE");
+  return {
+    evidencePath,
+    payload,
+    ready: payload.ok === true && status === "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED",
+    status
+  };
+}
+
+function localRuntimeSurfaceEvidence() {
+  const evidencePath = "docs/ops/licscope/live_smoke_outputs/local-runtime-surface-readiness.json";
+  const payload = readJsonSafe("live_smoke_outputs/local-runtime-surface-readiness.json", {});
+  const status = String(payload.status || "LOCAL_RUNTIME_EVIDENCE_NOT_AVAILABLE");
+  return {
+    evidencePath,
+    payload,
+    ready: payload.ok === true && status === "PASS_LOCAL_RUNTIME_READONLY",
+    status
+  };
+}
+
 function closureStatus() {
+  const cloudflareOauth = cloudflareD1OauthEvidence();
+  const localRuntime = localRuntimeSurfaceEvidence();
+  const publicLive = readJsonSafe("live_smoke_outputs/cloud-center-live-readiness.json", {});
+  const publicLiveStatus = String(publicLive.status || "PUBLIC_LIVE_READONLY_EVIDENCE_NOT_AVAILABLE");
   const hasCloudflareSecret = Boolean(
     process.env.CLOUDFLARE_API_TOKEN
       || process.env.CF_API_TOKEN
       || (process.env.CLOUDFLARE_API_KEY && process.env.CLOUDFLARE_EMAIL)
   );
   return {
-    finalStatus: hasCloudflareSecret
-      ? "PASS_FULLY_CERTIFIED_SOURCE_AND_LIVE_SAFE_RESULT_ZIP_CREATED"
+    finalStatus: cloudflareOauth.ready
+      ? "PASS_OAUTH_D1_AUDIT_SECRETSCAN_CLOUD_BRIDGE_CERTIFIED"
       : "BLOCKED_WITH_EXACT_EXTERNAL_REQUIREMENTS_RESULT_ZIP_CREATED",
     hasCloudflareSecret,
+    cloudflareD1OauthCertified: cloudflareOauth.ready,
+    cloudflareD1OauthStatus: cloudflareOauth.status,
+    cloudflareD1OauthEvidence: cloudflareOauth.evidencePath,
+    publicLiveReadOnlyStatus: publicLiveStatus,
+    publicLiveReadOnlyEvidence: "docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json",
+    localRuntimeReady: localRuntime.ready,
+    localRuntimeStatus: localRuntime.status,
+    localRuntimeEvidence: localRuntime.evidencePath,
     deployPerformed: false,
     d1LiveWritePerformed: false,
+    d1ReadOnlyCertified: cloudflareOauth.ready,
     migrationsApplied: false,
     runtimeTouched: false,
     secretsPrinted: false,
-    liveSmokeStatus: hasCloudflareSecret ? "BLOCKED_BY_GOVERNED_DEPLOY_NOT_EXECUTED_IN_GENERATOR" : "BLOCKED_BY_MISSING_SECRET",
-    deployBlocker: hasCloudflareSecret ? "GOVERNED_DEPLOY_NOT_EXECUTED_IN_THIS_LOCAL_GENERATOR_RUN" : "BLOCKED_BY_MISSING_SECRET"
+    liveSmokeStatus: cloudflareOauth.ready ? cloudflareOauth.status : "BLOCKED_BY_MISSING_CLOUDFLARE_OAUTH_D1_EVIDENCE",
+    deployBlocker: cloudflareOauth.ready ? "" : "BLOCKED_BY_MISSING_CLOUDFLARE_OAUTH_D1_EVIDENCE"
   };
 }
 
@@ -1272,6 +1370,12 @@ function closeRelationshipEdges() {
 }
 
 function closeRuntimeEvidence(statusInfo) {
+  const localRuntimeEvidencePath = statusInfo.localRuntimeEvidence;
+  const localRuntimeReady = statusInfo.localRuntimeReady;
+  const localRuntimeStatus = statusInfo.localRuntimeStatus;
+  const localRuntimeBlocker = localRuntimeReady ? "" : "RUN_VERIFY_LOCAL_RUNTIME_SURFACE_READINESS";
+  const cloudflareRuntimeEvidence = statusInfo.cloudflareD1OauthCertified ? statusInfo.cloudflareD1OauthEvidence : statusInfo.liveSmokeStatus;
+  const cloudflareRuntimeBlocker = statusInfo.cloudflareD1OauthCertified ? "" : statusInfo.liveSmokeStatus;
   const links = [
     {
       domain: "licensing",
@@ -1283,9 +1387,9 @@ function closeRuntimeEvidence(statusInfo) {
       table: "licenses,license_assignments,audit_events",
       verifier: "verify:license-without-client-blocked",
       sourceOnlyEvidence: "worker source blocks active license mutation without existing client assignment/setup bundle",
-      runtimeLiveEvidence: statusInfo.hasCloudflareSecret ? "not executed by generator" : "blocked by missing Cloudflare secret",
-      status: "PASS",
-      blocker: statusInfo.hasCloudflareSecret ? "GOVERNED_DEPLOY_NOT_EXECUTED_IN_GENERATOR" : ""
+      runtimeLiveEvidence: cloudflareRuntimeEvidence,
+      status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED",
+      blocker: cloudflareRuntimeBlocker
     },
     {
       domain: "devices",
@@ -1297,9 +1401,9 @@ function closeRuntimeEvidence(statusInfo) {
       table: "customer_device_claim_slots,customer_device_claims,devices,audit_events",
       verifier: "verify:tablet-claim,verify:pc-claim,verify:mobile-claim",
       sourceOnlyEvidence: "claim consumes prepared slot and blocks surface over limit",
-      runtimeLiveEvidence: statusInfo.liveSmokeStatus,
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: cloudflareRuntimeEvidence,
+      status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED",
+      blocker: cloudflareRuntimeBlocker
     },
     {
       domain: "setup",
@@ -1311,9 +1415,9 @@ function closeRuntimeEvidence(statusInfo) {
       table: "license_plans,licenses,license_assignments,customer_setup_bundles,customer_device_claim_slots,audit_events",
       verifier: "verify:customer-setup-full",
       sourceOnlyEvidence: "one-shot plan provisioning creates license, assignment, setup bundle and claim slots",
-      runtimeLiveEvidence: statusInfo.liveSmokeStatus,
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: cloudflareRuntimeEvidence,
+      status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED",
+      blocker: cloudflareRuntimeBlocker
     },
     {
       domain: "sales",
@@ -1323,11 +1427,11 @@ function closeRuntimeEvidence(statusInfo) {
       service: "guardTabletFeatureForApi,posEngineRepository.completeLocalSale",
       DB: "products/tablet/app/data/tablet-pos.db",
       table: "Sale,SaleLine,SalePaymentTender,CashSession,OutboxEvent",
-      verifier: "verify:device-without-license-blocked,verify:sales-provenance-lineage",
+      verifier: "verify:device-without-license-blocked,verify:sales-provenance-lineage,verify:local-runtime:surface-readiness",
       sourceOnlyEvidence: "sale completion is license-gated before local sale mutation",
-      runtimeLiveEvidence: "local runtime not launched by this closure",
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: localRuntimeReady ? localRuntimeEvidencePath : localRuntimeStatus,
+      status: localRuntimeReady ? "PASS" : "BLOCKED",
+      blocker: localRuntimeBlocker
     },
     {
       domain: "outbox",
@@ -1337,11 +1441,11 @@ function closeRuntimeEvidence(statusInfo) {
       service: "products/tablet/app/src/server/pos-outbox/index.ts,products/tablet/app/src/server/sync/dispatcher.ts",
       DB: "products/tablet/app/data/tablet-pos.db",
       table: "OutboxEvent,SyncCheckpoint",
-      verifier: "verify:sales-outbox-linking,verify:outbox-sync-canonical",
+      verifier: "verify:sales-outbox-linking,verify:outbox-sync-canonical,verify:local-runtime:surface-readiness",
       sourceOnlyEvidence: "outbox and sync services are mapped and payloads indexed",
-      runtimeLiveEvidence: "local runtime not launched by this closure",
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: localRuntimeReady ? localRuntimeEvidencePath : localRuntimeStatus,
+      status: localRuntimeReady ? "PASS" : "BLOCKED",
+      blocker: localRuntimeBlocker
     },
     {
       domain: "canonical",
@@ -1351,11 +1455,11 @@ function closeRuntimeEvidence(statusInfo) {
       service: "products/pc/app/src/server/services/pc-command-center.service.ts",
       DB: "products/pc/app/data/canonical.db",
       table: "Sale,SaleLine,SalePaymentTender,Store,Terminal,Product",
-      verifier: "verify:data-surface:pc,verify:golden-path-operations",
+      verifier: "verify:data-surface:pc,verify:golden-path-operations,verify:local-runtime:surface-readiness",
       sourceOnlyEvidence: "PC loader/API maps to canonical.db and recent activity range",
-      runtimeLiveEvidence: "browser/runtime not launched by this closure",
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: localRuntimeReady ? localRuntimeEvidencePath : localRuntimeStatus,
+      status: localRuntimeReady ? "PASS" : "BLOCKED",
+      blocker: localRuntimeBlocker
     },
     {
       domain: "Mobile",
@@ -1365,11 +1469,11 @@ function closeRuntimeEvidence(statusInfo) {
       service: "products/mobile/app/src/lib/prisma-app/mobile-data-plane/state-loader.ts",
       DB: "products/tablet/app/data/tablet-pos.db",
       table: "Sale,Product,StockSnapshot,DeviceHeartbeat",
-      verifier: "verify:data-surface:mobile,verify:golden-path-operations",
+      verifier: "verify:data-surface:mobile,verify:golden-path-operations,verify:local-runtime:surface-readiness",
       sourceOnlyEvidence: "mobile snapshot loader reads local operational data without writing",
-      runtimeLiveEvidence: "browser/runtime not launched by this closure",
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: localRuntimeReady ? localRuntimeEvidencePath : localRuntimeStatus,
+      status: localRuntimeReady ? "PASS" : "BLOCKED",
+      blocker: localRuntimeBlocker
     },
     {
       domain: "Chart Lab",
@@ -1395,9 +1499,9 @@ function closeRuntimeEvidence(statusInfo) {
       table: "customer_setup_bundles,customer_device_claims,licenses",
       verifier: "verify:customer-setup-full",
       sourceOnlyEvidence: "portal exposes setup/license/claim status without admin token",
-      runtimeLiveEvidence: statusInfo.liveSmokeStatus,
-      status: "PASS",
-      blocker: ""
+      runtimeLiveEvidence: cloudflareRuntimeEvidence,
+      status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED",
+      blocker: cloudflareRuntimeBlocker
     }
   ];
   writeJson(path.join(outRoot, "RUNTIME_EVIDENCE_LINKS.json"), { generatedAt, links });
@@ -1407,9 +1511,10 @@ function closeRuntimeEvidence(statusInfo) {
     status: statusInfo.finalStatus,
     sourceLinksClosed: links.length,
     noConfirmadoRemaining: links.filter((link) => Object.values(link).includes("NO_CONFIRMADO")).length,
+    localRuntimeStatus,
     liveSmokeStatus: statusInfo.liveSmokeStatus
   });
-  writeText(path.join(outRoot, "RUNTIME_EVIDENCE_CLOSURE_REPORT.md"), `# Runtime Evidence Closure Report\n\nStatus: ${statusInfo.finalStatus}\n\nAll source/runtime links have explicit route, component/API, service, DB/table and verifier mapping. Live Cloudflare/D1 smoke remains ${statusInfo.liveSmokeStatus}.\n`);
+  writeText(path.join(outRoot, "RUNTIME_EVIDENCE_CLOSURE_REPORT.md"), `# Runtime Evidence Closure Report\n\nStatus: ${statusInfo.finalStatus}\n\nAll source/runtime links have explicit route, component/API, service, DB/table and verifier mapping. Local runtime surface evidence is ${localRuntimeStatus}. Live Cloudflare/D1 smoke remains ${statusInfo.liveSmokeStatus}.\n`);
   return links;
 }
 
@@ -1418,19 +1523,47 @@ function writeDeployAndLiveSmokeBlockers(statusInfo) {
   const smokeDir = path.join(outRoot, "live_smoke_outputs");
   ensureDir(deployDir);
   ensureDir(smokeDir);
-  const blockers = [
+  const blockers = statusInfo.cloudflareD1OauthCertified ? [
+    {
+      blocker: "",
+      status: "PASS",
+      requiredExternalInput: "No new deploy is required for Cloudflare/D1/OAuth certification; live Worker and D1 were verified read-only.",
+      secretPrinted: false,
+      deployPerformed: false,
+      d1LiveWritePerformed: false
+    }
+  ] : [
     {
       blocker: statusInfo.deployBlocker,
-      status: statusInfo.hasCloudflareSecret ? "BLOCKED" : "BLOCKED_BY_MISSING_SECRET",
-      requiredExternalInput: statusInfo.hasCloudflareSecret ? "Run governed deploy outside generator after preflight." : "Provide Cloudflare non-interactive credentials in the local environment.",
+      status: "BLOCKED",
+      requiredExternalInput: "Run project-local Wrangler OAuth/D1 read-only certification from PRISMA_CLOUD_CENTER_MANUAL_FACTORY_STANDARD.md.",
       secretPrinted: false,
       deployPerformed: false,
       d1LiveWritePerformed: false
     }
   ];
-  writeJson(path.join(deployDir, "DEPLOY_BLOCKERS.json"), { generatedAt, blockers });
+  writeJson(path.join(deployDir, "DEPLOY_BLOCKERS.json"), { generatedAt, status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED", blockers });
   writeText(path.join(deployDir, "DEPLOY_BLOCKERS.md"), `# Deploy Blockers\n\n${tableMarkdown(blockers, ["blocker", "status", "requiredExternalInput", "secretPrinted", "deployPerformed", "d1LiveWritePerformed"])}\n`);
-  const liveSmokes = [
+  const liveSmokes = statusInfo.cloudflareD1OauthCertified ? [
+    {
+      name: "live:cloudflare-d1-oauth-certification",
+      status: "PASS",
+      blocker: "",
+      output: statusInfo.cloudflareD1OauthEvidence
+    },
+    {
+      name: "live:cloud-center-public-readonly",
+      status: statusInfo.publicLiveReadOnlyStatus.startsWith("PASS") ? "PASS" : "WARNING",
+      blocker: statusInfo.publicLiveReadOnlyStatus.startsWith("PASS") ? "" : statusInfo.publicLiveReadOnlyStatus,
+      output: statusInfo.publicLiveReadOnlyEvidence
+    },
+    {
+      name: "live:admin-http-mutation-e2e",
+      status: "SEPARATE_GATE_NOT_REQUIRED_FOR_OAUTH_D1_CERTIFICATION",
+      blocker: "PRISMA_ADMIN_TOKEN_ONLY_REQUIRED_FOR_ADMIN_HTTP_CONFIRMED_OPERATIONS",
+      output: "docs/ops/licscope/live_smoke_outputs/cloudflare-d1-oauth-certification.json"
+    }
+  ] : [
     "live:customer-setup",
     "live:plan-provisioning",
     "live:tablet-claim",
@@ -1444,7 +1577,7 @@ function writeDeployAndLiveSmokeBlockers(statusInfo) {
     "live:pii-secret-safety"
   ].map((name) => ({
     name,
-    status: statusInfo.hasCloudflareSecret ? "BLOCKED" : "BLOCKED_BY_MISSING_SECRET",
+    status: "BLOCKED",
     blocker: statusInfo.liveSmokeStatus,
     output: `docs/ops/licscope/live_smoke_outputs/${name.replace(/[:]/g, "-")}.json`
   }));
@@ -1588,9 +1721,9 @@ function writeProductionReadiness(statusInfo, visibleScan) {
     { condition: "audit completeness rules", status: "PASS", evidence: "AUDIT_COMPLETENESS_RULES.json,audit_events/recordAudit", blocker: "" },
     { condition: "revoke/renewal/replacement verifier exists", status: "PASS", evidence: "verify:revoke-renewal-replacement", blocker: "" },
     { condition: "golden path verifier exists", status: "PASS", evidence: "verify:golden-path-operations", blocker: "" },
-    { condition: "Cloudflare deploy", status: statusInfo.deployPerformed ? "PASS" : "BLOCKED", evidence: "deploy/DEPLOY_BLOCKERS.json", blocker: statusInfo.deployBlocker },
-    { condition: "D1 live migrations", status: statusInfo.d1LiveWritePerformed ? "PASS" : "BLOCKED", evidence: "deploy/DEPLOY_BLOCKERS.json", blocker: statusInfo.deployBlocker },
-    { condition: "live smoke certification", status: "BLOCKED", evidence: "deploy/LIVE_SMOKE_BLOCKERS.json", blocker: statusInfo.liveSmokeStatus }
+    { condition: "Cloudflare/D1/OAuth certification", status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED", evidence: statusInfo.cloudflareD1OauthEvidence, blocker: statusInfo.cloudflareD1OauthCertified ? "" : statusInfo.liveSmokeStatus },
+    { condition: "D1 remote read-only migrations/schema/audit", status: statusInfo.d1ReadOnlyCertified ? "PASS" : "BLOCKED", evidence: statusInfo.cloudflareD1OauthEvidence, blocker: statusInfo.d1ReadOnlyCertified ? "" : statusInfo.liveSmokeStatus },
+    { condition: "live read-only smoke certification", status: statusInfo.cloudflareD1OauthCertified ? "PASS" : "BLOCKED", evidence: "deploy/LIVE_SMOKE_BLOCKERS.json", blocker: statusInfo.cloudflareD1OauthCertified ? "" : statusInfo.liveSmokeStatus }
   ];
   writeJson(path.join(outRoot, "PRODUCTION_READINESS_CONTRACT.json"), {
     generatedAt,
@@ -1599,13 +1732,16 @@ function writeProductionReadiness(statusInfo, visibleScan) {
     passRequires: conditions,
     deployPerformed: statusInfo.deployPerformed,
     d1LiveWritePerformed: statusInfo.d1LiveWritePerformed,
+    d1ReadOnlyCertified: statusInfo.d1ReadOnlyCertified,
     sourceOnly: false,
-    liveSafeBlockedWithExactRequirements: !statusInfo.deployPerformed
+    liveSafeBlockedWithExactRequirements: !statusInfo.cloudflareD1OauthCertified
   });
   writeText(path.join(outRoot, "PRODUCTION_READINESS_CONTRACT.md"), `# Production Readiness Contract\n\nStatus: ${statusInfo.finalStatus}\n\n${tableMarkdown(conditions, ["condition", "status", "evidence", "blocker"])}\n`);
   writeJson(path.join(outRoot, "PRODUCTION_READINESS_MATRIX.json"), { generatedAt, rows: conditions });
   writeText(path.join(outRoot, "PRODUCTION_READINESS_MATRIX.md"), `# Production Readiness Matrix\n\n${tableMarkdown(conditions, ["condition", "status", "evidence", "blocker"])}\n`);
-  writeText(path.join(outRoot, "WHY_THIS_IS_RED.md"), `# Why This Is Blocked\n\nStatus: ${statusInfo.finalStatus}\n\nInternal source blockers were corrected or classified. Live deploy/D1/live-smoke certification is blocked by: ${statusInfo.deployBlocker}. No deploy, D1 live write, browser, server launch, process kill, or secret print occurred in this run.\n`);
+  writeText(path.join(outRoot, "WHY_THIS_IS_RED.md"), statusInfo.cloudflareD1OauthCertified
+    ? `# Why This Is Pass\n\nStatus: ${statusInfo.finalStatus}\n\nCloudflare/D1/OAuth certification passed through project-local Wrangler OAuth, live health, D1 remote read-only schema, license counts, required audit evidence, and fine secret scan. No deploy, D1 live write, admin HTTP mutation, browser launch, process kill, or secret print occurred in this run.\n`
+    : `# Why This Is Blocked\n\nStatus: ${statusInfo.finalStatus}\n\nInternal source blockers were corrected or classified. Cloudflare/D1/OAuth certification is blocked by: ${statusInfo.deployBlocker}. No deploy, D1 live write, browser, server launch, process kill, or secret print occurred in this run.\n`);
 }
 
 function syncMatrixAliases() {
@@ -1706,6 +1842,7 @@ function writeSurfaceDataReports(statusInfo) {
 function checklist60Items(statusInfo, visibleScan) {
   const pass = (number, requirement, files, evidence = files) => ({ number, requirement, status: "PASS", filesProduced: files, evidence, blocker: "", nextAction: "" });
   const blocked = (number, requirement, files, blocker, nextAction) => ({ number, requirement, status: "BLOCKED", filesProduced: files, evidence: files, blocker, nextAction });
+  const visibleBlockingCount = Number(visibleScan.releaseBlockingCount || 0);
   return [
     pass(1, "Export row-level sanitizado completo de las DBs principales, no sólo samples.", ["docs/ops/licscope/row_exports_sanitized"]),
     pass(2, "Todas las filas sanitizadas de estas tablas: CommandClient, LicenseAssignment, LicensePlan, ManagedDevice, ProvisioningDraft, CommandAuditEvent, Business, Store, Terminal, User, CashSession, Sale, SaleLine, SalePaymentTender, OutboxEvent, SyncCheckpoint, DeviceHeartbeat, AuditEvent.", ["docs/ops/licscope/row_exports_sanitized", "docs/ops/licscope/row_counts.json"]),
@@ -1737,7 +1874,9 @@ function checklist60Items(statusInfo, visibleScan) {
     pass(28, "Regla dura de qué surface puede administrar licencias/devices.", ["docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"]),
     pass(29, "Regla dura de qué surface sólo puede leer o supervisar.", ["docs/ops/licscope/SURFACE_SCOPE_PERMISSION_CONTRACT.json"]),
     pass(30, "Reglas customer-visible.", ["docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"]),
-    pass(31, "Reglas para palabras demo/test/mock/dummy/smoke/prueba/fixture/pilot/piloto.", ["docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md", "docs/ops/licscope/CUSTOMER_VISIBLE_SCAN.json"], [`releaseBlockingCount=${visibleScan.releaseBlockingCount}`]),
+    visibleBlockingCount === 0
+      ? pass(31, "Reglas para palabras demo/test/mock/dummy/smoke/prueba/fixture/pilot/piloto.", ["docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md", "docs/ops/licscope/CUSTOMER_VISIBLE_SCAN.json"], [`releaseBlockingCount=${visibleBlockingCount}`])
+      : blocked(31, "Reglas para palabras demo/test/mock/dummy/smoke/prueba/fixture/pilot/piloto.", ["docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md", "docs/ops/licscope/CUSTOMER_VISIBLE_SCAN.json"], `RELEASE_BLOCKING_VISIBLE_COPY:${visibleBlockingCount}`, "Remove or reclassify customer-visible blocked copy."),
     pass(32, "Lista de clientes/nombres de prueba permitidos.", ["docs/ops/licscope/ENTITY_DEFINITIONS.json", "docs/ops/licscope/CUSTOMER_VISIBLE_RULES.md"]),
     pass(33, "Lista de nombres o datos que bloquean release.", ["docs/ops/licscope/RELEASE_BLOCKING_VISIBLE_DATA.md"]),
     pass(34, "Reglas de PII.", ["docs/ops/licscope/PII_REDACTION_RULES.md"]),
@@ -1753,7 +1892,9 @@ function checklist60Items(statusInfo, visibleScan) {
     pass(44, "Verifiers exactos que certifican venta completa.", ["docs/ops/licscope/verifier_outputs/verify-device-without-license-blocked.json", "tools/verify-data-surface-connections.mjs"]),
     pass(45, "Verifiers exactos que certifican outbox/sync/canonical.", ["docs/ops/licscope/verifier_outputs/verify-outbox-sync-canonical.json"]),
     pass(46, "Verifiers exactos que certifican revoke/renewal/device replacement.", ["docs/ops/licscope/verifier_outputs/verify-revoke-renewal-replacement.json"]),
-    statusInfo.deployPerformed ? pass(47, "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.", ["docs/ops/licscope/deploy/LIVE_SMOKE_REPORT.json"]) : blocked(47, "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.", ["docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json", "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"], statusInfo.liveSmokeStatus, "Provide live Cloudflare credentials and run governed live smokes."),
+    statusInfo.cloudflareD1OauthCertified && statusInfo.localRuntimeReady
+      ? pass(47, "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.", [statusInfo.cloudflareD1OauthEvidence, statusInfo.publicLiveReadOnlyEvidence, statusInfo.localRuntimeEvidence, "docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json"], [`${statusInfo.cloudflareD1OauthStatus}; ${statusInfo.localRuntimeStatus}`])
+      : blocked(47, "Evidencia runtime relacionada con licensing, devices, sales, sync, PC, Tablet y Mobile.", ["docs/ops/licscope/RUNTIME_EVIDENCE_LINKS.json", "docs/ops/licscope/deploy/LIVE_SMOKE_BLOCKERS.json"], `${statusInfo.liveSmokeStatus}; ${statusInfo.localRuntimeStatus}`, "Run Cloudflare/D1/OAuth certification and local runtime surface readiness verifier."),
     pass(48, "Contrato de production readiness.", ["docs/ops/licscope/PRODUCTION_READINESS_CONTRACT.json"]),
     pass(49, "Reglas para orphan detector.", ["docs/ops/licscope/ORPHAN_DETECTOR_RULES.json"]),
     pass(50, "Reglas para duplicate detector.", ["docs/ops/licscope/DUPLICATE_DETECTOR_RULES.json"]),
@@ -1786,13 +1927,18 @@ function writeCoverageChecklist(statusInfo, checklist60) {
     blocker: item.blocker,
     nextAction: item.nextAction
   }));
+  const zipResult = readJsonSafe("ZIP_RESULT.json", {});
+  const zipPath = zipResult.zip || zipResult.resultZipPath || "";
+  const zipExists = Boolean(zipPath && fs.existsSync(zipPath));
   items.push({
     item: "Final result ZIP",
-    status: "BLOCKED",
-    fileProduced: "F:/descargasf/licscope final <DDMM> <HHMM> result.zip",
-    evidence: ["ZIP is created after validation and recorded in ZIP_RESULT.json plus sha256 sidecar."],
-    blocker: "RESULT_ZIP_PENDING_UNTIL_PACKAGE_STEP",
-    nextAction: "Create ZIP after verifiers/typechecks complete."
+    status: zipExists ? "PASS" : "BLOCKED",
+    fileProduced: zipPath || "F:/descargasf/licscope final <DDMM> <HHMM> result.zip",
+    evidence: zipExists
+      ? [`ZIP exists: ${zipPath}`, zipResult.sha256SidecarPath || "sha256 sidecar recorded externally"]
+      : ["ZIP is created after validation and recorded in ZIP_RESULT.json plus sha256 sidecar."],
+    blocker: zipExists ? "" : "RESULT_ZIP_PENDING_UNTIL_PACKAGE_STEP",
+    nextAction: zipExists ? "" : "Create ZIP after verifiers/typechecks complete."
   });
   writeJson(path.join(outRoot, "COVERAGE_CHECKLIST.json"), { generatedAt, finalStatus: statusInfo.finalStatus, items });
   writeText(path.join(outRoot, "COVERAGE_CHECKLIST.md"), `# LICSCOPE Coverage Checklist\n\nStatus: ${statusInfo.finalStatus}\n\n${tableMarkdown(items, ["item", "status", "fileProduced", "evidence", "blocker", "nextAction"])}\n`);
@@ -1867,15 +2013,26 @@ function writeFinalHandoff(statusInfo, verifierOutputs) {
   writeJson(path.join(outRoot, "LICSCOPE_HANDOFF.json"), {
     generatedAt,
     status: statusInfo.finalStatus,
+    cloudflareD1OauthCertified: statusInfo.cloudflareD1OauthCertified,
+    cloudflareD1OauthEvidence: statusInfo.cloudflareD1OauthEvidence,
+    localRuntimeReady: statusInfo.localRuntimeReady,
+    localRuntimeEvidence: statusInfo.localRuntimeEvidence,
     deployPerformed: statusInfo.deployPerformed,
     d1LiveWritePerformed: statusInfo.d1LiveWritePerformed,
+    d1ReadOnlyCertified: statusInfo.d1ReadOnlyCertified,
     runtimeTouched: statusInfo.runtimeTouched,
     secretsPrinted: false,
     verifierOutputs: verifierOutputs.map((item) => item.verifier)
   });
-  writeText(path.join(outRoot, "LICSCOPE_HANDOFF.md"), `# LICSCOPE Handoff\n\nStatus: ${statusInfo.finalStatus}\n\nInternal licensing, tenant/scope, customer setup, claim slot, device gate, sales provenance, surface, PII and checklist evidence is generated under \`docs/ops/licscope\`. Deploy/live smoke remains blocked by exact external requirements when credentials/environment are absent. No secrets were printed.\n`);
-  writeText(path.join(outRoot, "CONTINUATION.md"), `# LICSCOPE Continuation\n\nStart with \`COVERAGE_CHECKLIST_60.json\`, \`PRODUCTION_READINESS_CONTRACT.json\`, and \`deploy/DEPLOY_BLOCKERS.json\`. If Cloudflare credentials are provided, run governed deploy preflight, apply additive migrations only, then run live smokes and regenerate the ZIP.\n`);
-  writeText(path.join(outRoot, "NEXT_BEST_ACTIONS.md"), "# Next Best Actions\n\n1. Provide Cloudflare non-interactive credentials if live deploy is required.\n2. Run governed worker deploy and D1 migrations only after preflight passes.\n3. Run live smokes and replace deploy blockers with deploy reports.\n4. Re-run all verifiers and package a fresh result ZIP.\n");
+  writeText(path.join(outRoot, "LICSCOPE_HANDOFF.md"), statusInfo.cloudflareD1OauthCertified
+    ? `# LICSCOPE Handoff\n\nStatus: ${statusInfo.finalStatus}\n\nInternal licensing, tenant/scope, customer setup, claim slot, device gate, sales provenance, surface, PII, local runtime, and Cloudflare/D1/OAuth evidence is generated under \`docs/ops/licscope\`. Admin HTTP confirmed mutations remain a separate gate and were not required for this certification. No secrets were printed.\n`
+    : `# LICSCOPE Handoff\n\nStatus: ${statusInfo.finalStatus}\n\nInternal licensing, tenant/scope, customer setup, claim slot, device gate, sales provenance, surface, PII and checklist evidence is generated under \`docs/ops/licscope\`. Cloudflare/D1/OAuth certification remains blocked until the manual read-only gates pass. No secrets were printed.\n`);
+  writeText(path.join(outRoot, "CONTINUATION.md"), statusInfo.cloudflareD1OauthCertified
+    ? `# LICSCOPE Continuation\n\nStart with \`COVERAGE_CHECKLIST_60.json\`, \`PRODUCTION_READINESS_CONTRACT.json\`, \`live_smoke_outputs/cloudflare-d1-oauth-certification.json\`, and \`live_smoke_outputs/local-runtime-surface-readiness.json\`. Only run admin HTTP confirmed operations if that separate gate is explicitly requested and \`PRISMA_ADMIN_TOKEN\` is available server-side.\n`
+    : `# LICSCOPE Continuation\n\nStart with \`COVERAGE_CHECKLIST_60.json\`, \`PRODUCTION_READINESS_CONTRACT.json\`, and \`deploy/DEPLOY_BLOCKERS.json\`. Run the Cloudflare/D1/OAuth read-only certification from \`PRISMA_CLOUD_CENTER_MANUAL_FACTORY_STANDARD.md\`, then regenerate licscope.\n`);
+  writeText(path.join(outRoot, "NEXT_BEST_ACTIONS.md"), statusInfo.cloudflareD1OauthCertified
+    ? "# Next Best Actions\n\n1. Keep Cloudflare/D1/OAuth evidence current with the project-local Wrangler verifier.\n2. Run admin HTTP mutation certification only when that separate gate is explicitly needed.\n3. Do not rotate or print PRISMA_ADMIN_TOKEN unless an admin operation requires it.\n4. Re-run local runtime surface readiness after port/app changes.\n"
+    : "# Next Best Actions\n\n1. Run project-local Wrangler OAuth verification.\n2. Run D1 remote read-only schema/license/audit checks.\n3. Run fine secret scan.\n4. Re-run all verifiers and package a fresh result ZIP.\n");
 }
 
 function writeFinalManifest(statusInfo, verifierOutputs) {

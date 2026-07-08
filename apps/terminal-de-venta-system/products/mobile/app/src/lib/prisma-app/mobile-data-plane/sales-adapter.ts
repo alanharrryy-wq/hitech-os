@@ -63,10 +63,11 @@ function topCategory(sales: CanonicalSale[]): string {
 export function normalizeSalesToday(payload: unknown, config: MobileDataPlaneConfig): CanonicalSalesToday {
   const data = unwrapOkData(payload);
   const record = asRecord(data);
-  const salesArray = pickArray(data, ["sales", "tickets", "items", "rows", "transactions"]);
+  const summary = asRecord(record.summary ?? data);
+  const salesArray = pickArray(summary, ["sales", "tickets", "items", "rows", "transactions"]);
   const sales = salesArray.map((item, index) => normalizeSale(item, index, config));
-  const totalSalesCents = readCents(record, ["totalSalesCents", "netSalesCents", "totalCents", "amountCents"], sales.reduce((sum, sale) => sum + sale.totalCents, 0));
-  const tickets = readNonNegativeInt(record, ["tickets", "ticketCount", "transactions"], sales.length);
+  const totalSalesCents = readCents(summary, ["totalSalesCents", "grossTotalCents", "netSalesCents", "totalCents", "amountCents"], sales.reduce((sum, sale) => sum + sale.totalCents, 0));
+  const tickets = readNonNegativeInt(summary, ["salesCount", "ticketsClosed", "ticketCount", "transactions"], sales.length);
   const averageTicketCents = tickets > 0 ? Math.round(totalSalesCents / tickets) : 0;
   return { sales, totalSalesCents, tickets, averageTicketCents, hourlyBuckets: buildHourlyBuckets(sales), topCategory: topCategory(sales), sourceLabel: "Tablet POS", recentActivity: null };
 }

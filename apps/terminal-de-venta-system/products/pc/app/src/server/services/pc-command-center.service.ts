@@ -160,6 +160,7 @@ function readParam(params: SearchLike, key: string) {
 }
 
 function clampLimit(value: string, fallback = DEFAULT_LIMIT) {
+  if (!value.trim()) return fallback;
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.max(1, Math.min(Math.trunc(parsed), 200));
@@ -260,6 +261,10 @@ function lastThirtyDayRange() {
     toExclusive: addDays(today, 1),
     label: "Últimos 30 días"
   };
+}
+
+function sqliteIso(value: Date): string {
+  return value.toISOString().replace(".000Z", "Z");
 }
 
 function normalizeStatus(value: string | null | undefined) {
@@ -372,12 +377,71 @@ async function safe<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
   }
 }
 
-async function resolveBusinessId() {
+async function resolveBusinessId(explicit?: string | null) {
+  const requested = explicit?.trim();
+  if (requested) return requested;
   const db = prisma as any;
   const preferred = await safe<any | null>(() => db.business.findUnique({ where: { id: PRISMA_ORIGINAL_CUSTOMER.businessId }, select: { id: true } }), null);
   if (preferred?.id) return preferred.id;
   const business = await safe<any | null>(() => db.business.findFirst({ where: { terminals: { some: {} } }, select: { id: true }, orderBy: { createdAt: "asc" } }), null);
   return business?.id ?? DEFAULT_BUSINESS_ID;
+}
+
+function sortByIds(rows: any[], ids: string[]) {
+  const index = new Map(ids.map((id, position) => [id, position]));
+  return [...rows].sort((a, b) => (index.get(String(a.id)) ?? Number.MAX_SAFE_INTEGER) - (index.get(String(b.id)) ?? Number.MAX_SAFE_INTEGER));
+}
+
+async function saleIdsForRange(db: any, input: { businessId: string; from: Date; toExclusive: Date; limit: number }) {
+  const rows = await db.$queryRawUnsafe(
+    `SELECT id
+       FROM Sale
+      WHERE businessId = ?
+        AND createdAt >= ?
+        AND createdAt < ?
+      ORDER BY createdAt DESC, id DESC
+      LIMIT ?`,
+    input.businessId,
+    sqliteIso(input.from),
+    sqliteIso(input.toExclusive),
+    input.limit
+  ) as Array<{ id: string }>;
+  return rows.map((row: { id: string }) => row.id);
+}
+
+async function saleReturnIdsForRange(db: any, input: { businessId: string; from: Date; toExclusive: Date; limit: number }) {
+  const rows = await db.$queryRawUnsafe(
+    `SELECT id
+       FROM SaleReturn
+      WHERE businessId = ?
+        AND createdAt >= ?
+        AND createdAt < ?
+      ORDER BY createdAt DESC, id DESC
+      LIMIT ?`,
+    input.businessId,
+    sqliteIso(input.from),
+    sqliteIso(input.toExclusive),
+    input.limit
+  ) as Array<{ id: string }>;
+  return rows.map((row: { id: string }) => row.id);
+}
+
+async function salesByIds(db: any, businessId: string, ids: string[]) {
+  if (!ids.length) return [];
+  const rows = await db.sale.findMany({
+    where: { businessId, id: { in: ids } },
+    include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } }
+  });
+  return sortByIds(rows, ids);
+}
+
+async function saleReturnsByIds(db: any, businessId: string, ids: string[]) {
+  if (!ids.length) return [];
+  const rows = await db.saleReturn.findMany({
+    where: { businessId, id: { in: ids } },
+    include: { lines: true }
+  });
+  return sortByIds(rows, ids);
 }
 
 function filterByQuery(rows: any[], query: string) {
@@ -747,48 +811,34 @@ function buildSalesControlView(input: {
 
 export async function getPcSalesControl(params?: SearchLike): Promise<CommandCenterModel> {
   const db = prisma as any;
-  const businessId = await resolveBusinessId();
+  const businessId = await resolveBusinessId(readParam(params, "businessId"));
   const limit = clampLimit(readParam(params, "limit"), 120);
   const query = readParam(params, "q").toLowerCase();
   const range = resolveDateRange(params);
   const recentRange = lastThirtyDayRange();
   const blockedPanel = range.blocked ? [{ title: "Rango bloqueado", body: range.blocked, tone: "warn" as const }] : [];
-  const where = range.blocked
-    ? { businessId, id: "__blocked__" }
-    : { businessId, createdAt: { gte: range.from, lt: range.toExclusive } };
-  const recentWhere = { businessId, createdAt: { gte: recentRange.from, lt: recentRange.toExclusive } };
 
-  const [salesRaw, returns, recentSalesRaw, recentReturnsRaw, triDb, terminalsRaw, storesRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
-    safe(() => db.sale.findMany({
-      where,
-      include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    }), [] as any[]),
-    safe(() => db.saleReturn.findMany({
-      where,
-      include: { lines: true },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    }), [] as any[]),
-    safe(() => db.sale.findMany({
-      where: recentWhere,
-      include: { lines: true, paymentTenders: true, cashSession: true, terminal: { include: { store: true } } },
-      orderBy: { createdAt: "desc" },
-      take: Math.max(limit, 500)
-    }), [] as any[]),
-    safe(() => db.saleReturn.findMany({
-      where: recentWhere,
-      include: { lines: true },
-      orderBy: { createdAt: "desc" },
-      take: Math.max(limit, 500)
-    }), [] as any[]),
+  const [saleIds, returnIds, recentSaleIds, recentReturnIds, triDb, terminalsRaw, storesRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
+    range.blocked
+      ? Promise.resolve([] as string[])
+      : safe(() => saleIdsForRange(db, { businessId, from: range.from, toExclusive: range.toExclusive, limit }), [] as string[]),
+    range.blocked
+      ? Promise.resolve([] as string[])
+      : safe(() => saleReturnIdsForRange(db, { businessId, from: range.from, toExclusive: range.toExclusive, limit }), [] as string[]),
+    safe(() => saleIdsForRange(db, { businessId, from: recentRange.from, toExclusive: recentRange.toExclusive, limit: Math.max(limit, 500) }), [] as string[]),
+    safe(() => saleReturnIdsForRange(db, { businessId, from: recentRange.from, toExclusive: recentRange.toExclusive, limit: Math.max(limit, 500) }), [] as string[]),
     getTriDbStatusCard(),
     safe(() => db.terminal.findMany({ where: { businessId, isActive: true }, include: { store: true }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
     safe(() => db.store.findMany({ where: { businessId }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
     safe(() => db.cashSession.findMany({ where: { businessId }, include: { terminal: true, sales: true }, orderBy: { openedAt: "desc" }, take: 160 }), [] as any[]),
     safe(() => db.deviceHeartbeat.findMany({ where: { businessId }, orderBy: { lastSeenAt: "desc" }, take: 120 }), [] as any[]),
     safe(() => db.syncOutboxStatusBucket.findMany({ where: { businessId }, orderBy: { bucketStartAt: "desc" }, take: 160 }), [] as any[])
+  ]);
+  const [salesRaw, returns, recentSalesRaw, recentReturnsRaw] = await Promise.all([
+    salesByIds(db, businessId, saleIds),
+    saleReturnsByIds(db, businessId, returnIds),
+    salesByIds(db, businessId, recentSaleIds),
+    saleReturnsByIds(db, businessId, recentReturnIds)
   ]);
   const sales = filterByQuery(salesRaw, query);
   const recentSales = filterByQuery(recentSalesRaw, query);
@@ -1005,7 +1055,23 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
         emptyMessage: "Sin cajeros registrados en PC."
       }
     ],
-    diagnostics: { businessId, query, range, recentRange, recentActivity: salesControlView.recentActivity, triDbSource: triDb.sourcePath, exportFormats: ["json", "csv"] },
+    diagnostics: {
+      businessId,
+      query,
+      range,
+      recentRange,
+      resolvedSetCounts: {
+        saleIds: saleIds.length,
+        sales: sales.length,
+        returnIds: returnIds.length,
+        returns: returns.length,
+        recentSaleIds: recentSaleIds.length,
+        recentSales: recentSales.length
+      },
+      recentActivity: salesControlView.recentActivity,
+      triDbSource: triDb.sourcePath,
+      exportFormats: ["json", "csv"]
+    },
     actions: [
       { label: "Exportar JSON", href: "/api/backoffice/sales-control?format=json" },
       { label: "Exportar CSV", href: "/api/backoffice/sales-control?format=csv" }
