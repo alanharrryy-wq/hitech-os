@@ -1,9 +1,34 @@
 {
   "schema": "autogit.ag98_policy.v1",
-  "version": "2026-07-06.ag98",
+  "version": "2026-07-07.ag100",
   "notes": [
     "Repo-specific policy for PRISMA/hitech-os AutoGit 98 upgrade.",
     "Secret-looking evidence files are allowed by exact licscope paths but still content-scanned.",
-    "Runtime/generated noise is excluded from commit planning, not deleted."
+    "Runtime/generated noise is excluded from commit planning, not deleted.",
+    "AG100: staged whitespace/EOF self-heal is allowlisted for safe text extensions.",
+    "AG100: large JSON validation must not use capped evidence readers.",
+    "AG100: runtime/generated noise remains excluded from commit planning, not deleted."
+  ],
+  "safe_self_heal_extensions": [
+    ".md",
+    ".markdown",
+    ".txt",
+    ".json",
+    ".csv",
+    ".yml",
+    ".yaml",
+    ".py",
+    ".js",
+    ".mjs",
+    ".cjs",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".css",
+    ".html",
+    ".ps1",
+    ".psm1",
+    ".cmd",
+    ".bat"
   ]
 }
