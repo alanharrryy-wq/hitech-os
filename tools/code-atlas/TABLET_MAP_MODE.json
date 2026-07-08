@@ -1,0 +1,16 @@
+{
+  "blockedActions": [
+    "modify-ui",
+    "apply-presets",
+    "touch-pos-real",
+    "deploy",
+    "runtime-processes",
+    "git"
+  ],
+  "command": "python -m code_atlas.cli.main tablet-map --repo <repo> --out <output>",
+  "description": "Read-only Tablet visual/preset readiness atlas: surfaces, components, selectors, tokens, states, risks and preset eligibility.",
+  "label": "Tablet Map",
+  "outputMode": "tablet_map",
+  "readOnly": true,
+  "zipPrefix": "tabmap"
+}

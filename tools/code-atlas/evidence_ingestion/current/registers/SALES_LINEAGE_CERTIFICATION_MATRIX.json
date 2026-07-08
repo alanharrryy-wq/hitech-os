@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_SALES_LINEAGE_CERTIFIED_BY_LICSCOPE",
+  "sourceMatrix": {
+    "generatedAt": "2026-07-07T22:27:23.654Z",
+    "matrix": "SALES_LINEAGE_MATRIX",
+    "rows": [
+      {
+        "tabletSale": "Sale",
+        "canonicalSale": "idempotency/clientRequest/sourceEvent",
+        "status": "WARNING",
+        "evidence": "TABLET_TO_CANONICAL_LINKING_RULES.md"
+      }
+    ]
+  },
+  "runtimeScope": {
+    "businessId": "biz_prisma_rey_lineage_seed",
+    "date": "2026-07-05",
+    "terminalId": "term_tablet_pos_001",
+    "storeId": "store_prisma_rey_centro",
+    "tickets": 12,
+    "totalCents": 36000
+  },
+  "certification": {
+    "tickets": 12,
+    "totalCents": 36000,
+    "source": "live_smoke_outputs/local-runtime-surface-readiness.json",
+    "businessDataSyncCoherent": true
+  }
+}

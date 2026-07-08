@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_CODE_ATLAS_LICSCOPE_EVIDENCE_INGESTED_PRODUCTION_GREEN_ALLOWED",
+  "source": "LICSCOPE_PASS_OAUTH_D1_LOCAL_RUNTIME_ZIP",
+  "evidence": {
+    "sourceZip": "F:\\descargasf\\atlaslic pkg 0707 173625\\payload\\evidence\\licscope-pass-oauth-d1-local-runtime-20260707_162641.zip",
+    "sourceZipSha256": "05B686A3AB279327051305CE10B00559C44BE93400A662170629A8AC320D2EA0",
+    "licscopeHandoff": "LICSCOPE_HANDOFF.json",
+    "productionReadinessContract": "PRODUCTION_READINESS_CONTRACT.json",
+    "cloudflareD1Oauth": "live_smoke_outputs/cloudflare-d1-oauth-certification.json",
+    "localRuntimeSurfaceReadiness": "live_smoke_outputs/local-runtime-surface-readiness.json",
+    "cloudCenterLiveReadiness": "live_smoke_outputs/cloud-center-live-readiness.json",
+    "liveSmokeBlockers": "deploy/LIVE_SMOKE_BLOCKERS.json",
+    "businessDataSyncVerifier": "verifier_outputs/verify-business-data-sync-coherence.json"
+  },
+  "gates": {
+    "licscopeHandoffPass": true,
+    "zipResultPass": true,
+    "productionReadinessContractPass": true,
+    "cloudflareD1OauthCertified": true,
+    "localRuntimeReady": true,
+    "cloudCenterLiveReadOnlyReady": true,
+    "d1ReadOnlyCertified": true,
+    "evidenceZipClean": true,
+    "liveSmokeBlockersClear": true,
+    "verifierValidationsPass": true,
+    "deployPerformed": false,
+    "d1LiveWritePerformed": false,
+    "runtimeTouched": false,
+    "secretsPrinted": false
+  },
+  "hardBlockers": [],
+  "separateGates": [
+    {
+      "gate": "adminHttpMutationE2E",
+      "status": "SEPARATE_GATE_NOT_REQUIRED_FOR_OAUTH_D1_CERTIFICATION",
+      "reason": "PRISMA_ADMIN_TOKEN is only required for confirmed admin HTTP operations, not for the OAuth/D1/read-only certification ingested here.",
+      "evidence": "deploy/LIVE_SMOKE_BLOCKERS.json"
+    }
+  ],
+  "summary": {
+    "cloudflareD1OauthCertified": true,
+    "d1ReadOnlyCertified": true,
+    "localRuntimeReady": true,
+    "cloudCenterLiveReadOnlyReady": true,
+    "businessDataSyncCoherent": true,
+    "deployPerformed": false,
+    "d1LiveWritePerformed": false,
+    "runtimeTouched": false,
+    "secretsPrinted": false
+  }
+}

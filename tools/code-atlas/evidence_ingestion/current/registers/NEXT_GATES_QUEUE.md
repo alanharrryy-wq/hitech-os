@@ -1,29 +1,8 @@
 # NEXT GATES QUEUE
 
-## Closed by atlastriad
+Status: PASS_CODE_ATLAS_LICSCOPE_EVIDENCE_INGESTED_PRODUCTION_GREEN_ALLOWED
 
-- DONE: BUILD surface-aware Atlas node resolver
-- DONE: DECIDE/CLASSIFY DB schema/migration treatment for ghost relations
-- DONE: COLLECT existing runtime/live evidence artifacts without launching runtime
-- BLOCKED: Production readiness remains red until provenance/runtime/schema decisions close
-
-## Remaining gates
-
-1. VERIFY surface resolver reduces missing atlas nodes by owner and excludes docs/cache noise.
-2. HUMAN DECISION: approve DB schema/migration treatment for ghost relations.
-3. LINK runtime artifacts to production gate rows; collect missing live evidence only if explicitly approved.
-4. CLOSE sales/tender/canonical provenance before any production green claim.
-
-## Closed by atlassurf2
-
-- DONE: VERIFY surface resolver reduces missing atlas nodes by owner and excludes docs/cache/generated noise.
-- STATUS: `PASS_SURFACE_RESOLVER_VERIFIED_PRODUCTION_STILL_BLOCKED`
-- Noise/non-live classified: `129`
-- Resolved existing/source paths: `537`
-- Needs owner decision/context: `6351`
-
-## Remaining gates after atlassurf
-
-1. HUMAN DECISION: approve DB schema/migration treatment for ghost relations.
-2. LINK runtime artifacts to production gate rows; collect missing live evidence only if explicitly approved.
-3. CLOSE sales/tender/canonical provenance before any production green claim.
+- No LICSCOPE Cloud Center / D1 OAuth / local runtime data-plane blocker remains for this Code Atlas lane.
+- Do not rebuild licscope, Cloud Center, business-data-sync, or local runtime verifiers unless new evidence fails.
+- Admin HTTP confirmed mutation E2E is a separate operational gate and is not required for this OAuth/D1/read-only production green decision.
+- Next recommended action: run Code Atlas UI/report generation so the new registers appear in the visual Atlas.

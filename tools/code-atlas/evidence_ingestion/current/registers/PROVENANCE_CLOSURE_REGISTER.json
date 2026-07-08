@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-07-07T23:36:28+00:00",
+  "status": "PASS_PROVENANCE_CLOSURE_FROM_LICSCOPE_EVIDENCE",
+  "businessScope": {
+    "businessId": "biz_prisma_rey_lineage_seed",
+    "date": "2026-07-05",
+    "terminalId": "term_tablet_pos_001",
+    "storeId": "store_prisma_rey_centro",
+    "tickets": 12,
+    "totalCents": 36000
+  },
+  "fields": [
+    {
+      "field": "sale.businessId",
+      "status": "PROVEN_RUNTIME_READY",
+      "evidence": "local-runtime-surface-readiness scope.businessId"
+    },
+    {
+      "field": "sale.storeId",
+      "status": "PROVEN_RUNTIME_READY",
+      "evidence": "local-runtime-surface-readiness scope.storeId"
+    },
+    {
+      "field": "sale.originDeviceId|terminalId",
+      "status": "PROVEN_RUNTIME_READY",
+      "evidence": "local-runtime-surface-readiness scope.terminalId"
+    },
+    {
+      "field": "sale_line.saleId",
+      "status": "PROVEN_SOURCE_READY",
+      "evidence": "verify:sales-provenance-lineage + SALES_LINEAGE_MATRIX"
+    },
+    {
+      "field": "sale_line.quantity",
+      "status": "PROVEN_SOURCE_READY",
+      "evidence": "verify:sales-provenance-lineage"
+    },
+    {
+      "field": "tender.saleId",
+      "status": "PROVEN_SOURCE_READY",
+      "evidence": "verify:sales-provenance-lineage + business data sync"
+    },
+    {
+      "field": "tender.kind",
+      "status": "PROVEN_SOURCE_READY",
+      "evidence": "verify:sales-provenance-lineage + business data sync"
+    },
+    {
+      "field": "tender.amountCents",
+      "status": "PROVEN_RUNTIME_READY",
+      "evidence": "local-runtime-surface-readiness totals"
+    },
+    {
+      "field": "canonical_projection.sourceSaleId",
+      "status": "PROVEN_RUNTIME_READY",
+      "evidence": "business-data-sync-coherence + outbox/canonical matrices"
+    }
+  ],
+  "doesNotClaim": [
+    "new live write",
+    "deploy",
+    "admin confirmed mutation"
+  ]
+}
