@@ -65,6 +65,18 @@ export type TabletRuntimeCapability = {
   reason: string;
 };
 
+export type TabletRuntimeLicense = {
+  state: string;
+  label: string;
+  tone: TabletRuntimeTone;
+  operationalDecision: string;
+  canUseLocalPos: boolean;
+  denialReason: string | null;
+  assignmentState: string;
+  actionHref: string;
+  actionLabel: string;
+};
+
 export type TabletRuntimeSnapshot = {
   schemaVersion: "tablet-runtime-snapshot.03b";
   generatedAt: string;
@@ -77,6 +89,7 @@ export type TabletRuntimeSnapshot = {
   catalog: TabletRuntimeCatalog;
   sales: TabletRuntimeSales;
   capabilities: TabletRuntimeCapability[];
+  license: TabletRuntimeLicense;
   warnings: string[];
 };
 
@@ -137,5 +150,16 @@ export const DEFAULT_TABLET_RUNTIME_SNAPSHOT: TabletRuntimeSnapshot = {
     { key: "local_catalog", label: "Catalogo local", enabled: true, reason: "La busqueda usa los productos locales de la terminal." },
     { key: "pending_events", label: "Pendientes visibles", enabled: true, reason: "Los eventos pendientes se muestran sin lenguaje tecnico." }
   ],
+  license: {
+    state: "development",
+    label: "Licencia activa",
+    tone: "ok",
+    operationalDecision: "allow",
+    canUseLocalPos: true,
+    denialReason: null,
+    assignmentState: "assigned",
+    actionHref: "/settings/license",
+    actionLabel: "Ver licencia"
+  },
   warnings: []
 };

@@ -16,7 +16,7 @@ export function CheckoutPaymentMethods({ value, onChange }: { value: PaymentMeth
       data-role="financial-control"
     >
       {PAYMENT_METHODS.map((method) => (
-        <button key={method.id} className={value === method.id ? styles.paymentActive : styles.paymentButton} type="button" onClick={() =
+        <button key={method.id} className={value === method.id ? styles.paymentActive : styles.paymentButton} type="button"
           data-surface="tablet"
           data-screen="checkout"
           data-zone="checkout"
@@ -24,7 +24,7 @@ export function CheckoutPaymentMethods({ value, onChange }: { value: PaymentMeth
           data-target="checkout-payment-methods-price-11"
           data-kind="price"
           data-role="financial-control"
-        > onChange(method.id)}>
+          onClick={() => onChange(method.id)}>
           <strong
             data-surface="tablet"
             data-screen="checkout"

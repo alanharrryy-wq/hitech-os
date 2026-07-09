@@ -1,4 +1,5 @@
 import { getTabletRuntimeInfo } from "@/server/pos-runtime";
+import { getTabletLicenseGovernor } from "@/server/licensing/tablet-license-service";
 import type { TabletCatalogState, TabletConnectionState, TabletRuntimeSnapshot, TabletRuntimeTone } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { TABLET_RUNTIME_VISIBLE_COPY } from "@/lib/tablet-runtime-snapshot/visible-copy";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
@@ -24,6 +25,27 @@ function catalogTone(state: TabletCatalogState): TabletRuntimeTone {
   return "ok";
 }
 
+function licenseLabel(state: string) {
+  const labels: Record<string, string> = {
+    active: "Licencia activa",
+    development: "Licencia activa",
+    offline_grace: "Licencia en gracia offline",
+    missing: "Licencia pendiente",
+    invalid: "Licencia inválida",
+    expired: "Licencia vencida",
+    suspended: "Licencia suspendida",
+    revoked: "Licencia revocada"
+  };
+  return labels[state] ?? "Licencia por revisar";
+}
+
+function licenseTone(state: string, canUseLocalPos: boolean): TabletRuntimeTone {
+  if (!canUseLocalPos) return "danger";
+  if (state === "offline_grace") return "warn";
+  if (state === "active" || state === "development") return "ok";
+  return "neutral";
+}
+
 function resolveConnectionState(result: RuntimeSnapshotQueryResult): TabletConnectionState {
   const override = getRuntimeConnectionOverride();
   if (override) return override;
@@ -40,6 +62,8 @@ function resolveCatalogState(result: RuntimeSnapshotQueryResult): TabletCatalogS
 
 export function buildTabletRuntimeSnapshot(input: RuntimeSnapshotInput, result: RuntimeSnapshotQueryResult): TabletRuntimeSnapshot {
   const runtime = getTabletRuntimeInfo();
+  const licenseGovernor = getTabletLicenseGovernor();
+  const licenseStatus = licenseGovernor.status;
   const connectionState = resolveConnectionState(result);
   const catalogState = resolveCatalogState(result);
   const shiftOpen = Boolean(result.openShift);
@@ -92,11 +116,22 @@ export function buildTabletRuntimeSnapshot(input: RuntimeSnapshotInput, result: 
     },
     sales: result.sales,
     capabilities: [
-      { key: "local_sale", label: "Venta local", enabled: true, reason: "La Tablet puede vender sin depender de PC." },
+      { key: "local_sale", label: "Venta local", enabled: licenseGovernor.canUseLocalPos, reason: licenseGovernor.canUseLocalPos ? "La Tablet puede vender sin depender de PC." : "La licencia actual no permite completar ventas locales." },
       { key: "local_stock", label: "Stock local", enabled: true, reason: "Las existencias operativas viven en la terminal." },
       { key: "pending_events", label: "Pendientes visibles", enabled: true, reason: "La conexion y los pendientes se muestran como estado operativo." },
       { key: "contextual_export", label: "Exportacion contextual", enabled: true, reason: "Exportar vive en pantallas con datos, no como pestana principal." }
     ],
+    license: {
+      state: licenseStatus.state,
+      label: licenseLabel(licenseStatus.state),
+      tone: licenseTone(licenseStatus.state, licenseGovernor.canUseLocalPos),
+      operationalDecision: licenseGovernor.operationalDecision,
+      canUseLocalPos: licenseGovernor.canUseLocalPos,
+      denialReason: licenseGovernor.denialReason,
+      assignmentState: licenseStatus.assignmentState,
+      actionHref: "/settings/license",
+      actionLabel: licenseGovernor.canUseLocalPos ? "Ver licencia" : "Revisar licencia"
+    },
     warnings: [runtime.warning].filter((warning): warning is string => Boolean(warning))
   };
 }
