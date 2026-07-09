@@ -3,6 +3,8 @@ import { searchProducts } from "@/server/pos-api/product-queries.prisma";
 import { fail, ok } from "@/server/pos-api/responses";
 import { readProductSearchInput } from "@/server/pos-api/validators";
 import { listLocalCatalogProducts } from "@/server/local-catalog";
+import { guardTabletLocalPosForApi } from "@/server/licensing/tablet-license-api";
+import { guardTabletFeatureForApi } from "@/server/licensing/tablet-license-api"; // PRISMA_LICENSE_SENTINEL_IMPORT
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +34,13 @@ async function searchLocalFallback(input: ReturnType<typeof readProductSearchInp
 }
 
 export async function GET(request: Request) {
+  // PRISMA_LICENSE_SENTINEL_BEGIN:pos.product.search
+  const prismaLicenseGate = await guardTabletFeatureForApi("pos.product.search");
+  if (prismaLicenseGate) return prismaLicenseGate;
+  // PRISMA_LICENSE_SENTINEL_END:pos.product.search
+  const licenseGate = await guardTabletLocalPosForApi();
+  if (licenseGate) return licenseGate;
+
   try {
     const input = readProductSearchInput(new URL(request.url).searchParams);
     let products = await searchProducts(input);

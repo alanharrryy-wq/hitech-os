@@ -21,7 +21,7 @@ export function PrismaTopActionBar() {
       data-kind="button"
       data-role="action"
     >
-      <button className={styles.iconButton} type="button" aria-label="Cambiar tema" onClick={() =
+      <button className={styles.iconButton} type="button" aria-label="Cambiar tema"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -29,10 +29,10 @@ export function PrismaTopActionBar() {
         data-target="prisma-top-action-bar-cambiar-tema-16"
         data-kind="button"
         data-role="action"
-      > emitTopAction("theme") }>
+        onClick={() => emitTopAction("theme")}>
         <PrismaIcon name="sun" size={20} />
       </button>
-      <button className={styles.iconButtonBadge} type="button" aria-label="Notificaciones" onClick={() =
+      <button className={styles.iconButtonBadge} type="button" aria-label="Notificaciones"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -40,7 +40,7 @@ export function PrismaTopActionBar() {
         data-target="prisma-top-action-bar-notificaciones-19"
         data-kind="button"
         data-role="action"
-      > emitTopAction("notifications") }>
+        onClick={() => emitTopAction("notifications")}>
         <PrismaIcon name="bell" size={20} />
         <span
           data-surface="tablet"
@@ -52,7 +52,7 @@ export function PrismaTopActionBar() {
           data-role="action"
         >3</span>
       </button>
-      <button className={styles.adminChip} type="button" onClick={() =
+      <button className={styles.adminChip} type="button"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -60,7 +60,7 @@ export function PrismaTopActionBar() {
         data-target="prisma-top-action-bar-button-23"
         data-kind="button"
         data-role="action"
-      > emitTopAction("profile") }>
+        onClick={() => emitTopAction("profile")}>
         <span className={styles.adminAvatar}
           data-surface="tablet"
           data-screen="pos"

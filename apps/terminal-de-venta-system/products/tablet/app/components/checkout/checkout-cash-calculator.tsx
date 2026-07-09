@@ -39,7 +39,6 @@ export function CheckoutCashCalculator({ totalCents, receivedCents, onReceivedCe
           min="0"
           step="0.01"
           value={receivedCents ? String(receivedCents / 100) : ""}
-          onChange={(event) =
           data-surface="tablet"
           data-screen="checkout"
           data-zone="checkout"
@@ -47,8 +46,8 @@ export function CheckoutCashCalculator({ totalCents, receivedCents, onReceivedCe
           data-target="checkout-cash-calculator-price-12"
           data-kind="price"
           data-role="financial-control"
-        > onReceivedCents(Math.round(Number(event.target.value || 0) * 100))}
-          placeholder="0.00"
+            onChange={(event) => onReceivedCents(Math.round(Number(event.target.value || 0) * 100))}
+            placeholder="0.00"
         />
       </label>
       <div

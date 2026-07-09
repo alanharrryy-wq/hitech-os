@@ -209,7 +209,10 @@ export function CatalogPullPanel() {
           data-kind="button"
           data-role="action"
         >
-          <button type="button" onClick={() =
+          <button
+            type="button"
+            onClick={() => void run("delta", false)}
+            disabled={disabled}
             data-surface="tablet"
             data-screen="sync"
             data-zone="pos"
@@ -217,10 +220,13 @@ export function CatalogPullPanel() {
             data-target="catalog-pull-panel-button-196"
             data-kind="button"
             data-role="action"
-          > void run("delta", false)} disabled={disabled}>
+          >
             {busyMode === "delta" ? "Actualizando" : "Actualizar datos"}
           </button>
-          <button type="button" onClick={() =
+          <button
+            type="button"
+            onClick={() => void run("bootstrap", true)}
+            disabled={disabled}
             data-surface="tablet"
             data-screen="sync"
             data-zone="pos"
@@ -228,10 +234,13 @@ export function CatalogPullPanel() {
             data-target="catalog-pull-panel-button-199"
             data-kind="button"
             data-role="action"
-          > void run("bootstrap", true)} disabled={disabled}>
+          >
             {busyMode === "bootstrap" ? "Preparando" : "Primera carga"}
           </button>
-          <button type="button" onClick={() =
+          <button
+            type="button"
+            onClick={() => void run("resync", true)}
+            disabled={disabled}
             data-surface="tablet"
             data-screen="sync"
             data-zone="pos"
@@ -239,10 +248,13 @@ export function CatalogPullPanel() {
             data-target="catalog-pull-panel-button-202"
             data-kind="button"
             data-role="action"
-          > void run("resync", true)} disabled={disabled}>
+          >
             {busyMode === "resync" ? "Reparando" : "Reparar datos"}
           </button>
-          <button type="button" onClick={() =
+          <button
+            type="button"
+            onClick={() => void loadStatus()}
+            disabled={disabled}
             data-surface="tablet"
             data-screen="sync"
             data-zone="pos"
@@ -250,7 +262,7 @@ export function CatalogPullPanel() {
             data-target="catalog-pull-panel-button-205"
             data-kind="button"
             data-role="action"
-          > void loadStatus()} disabled={disabled}>
+          >
             {busyMode === "refresh" ? "Actualizando" : "Actualizar"}
           </button>
         </div>
