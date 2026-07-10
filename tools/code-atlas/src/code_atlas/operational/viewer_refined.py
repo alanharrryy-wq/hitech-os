@@ -411,6 +411,18 @@ def build_refined_operational_html(report_root: str | Path) -> str:
         _section("Data Lineage", "dataLineageGraph", root, "⟐"),
         _section("Scope Guard", "multiTenantLeakageGuard", root, "◎"),
         _section("Golden Path", "goldenPathComparator", root, "✓"),
+        # SUPPORT_RESOLVER_VIEWER_SECTIONS_START
+        _section("Support Summary", "supportResolverSummary", root, "SR"),
+        _section("Support Capabilities", "supportCapabilityMatrix", root, "SC"),
+        _section("Support Error Codes", "supportErrorCodeCoverage", root, "68"),
+        _section("Support Actions", "supportActionCoverage", root, "SA"),
+        _section("Support UI Routes", "supportUiRouteMap", root, "UI"),
+        _section("Support E2E", "supportE2eCoverage", root, "E2E"),
+        _section("Support Duplicates", "supportDuplicateImplementations", root, "DUP"),
+        _section("Support Do Not Rebuild", "supportDoNotRebuildMap", root, "DNR"),
+        _section("Support Contracts", "supportContractCoverage", root, "CT"),
+        _section("Support Security", "supportSecurityRisks", root, "SEC"),
+        # SUPPORT_RESOLVER_VIEWER_SECTIONS_END
     ]
     sections = [s for s in sections if s["source"] or s["totalRows"] > 0]
     if not sections:

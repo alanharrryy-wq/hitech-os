@@ -5478,6 +5478,98 @@ class SelectorDialog(QDialog):
         if hasattr(widget, "setText"):
             widget.setText(cleaned)
 
+    # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+    @property
+    def selected_smart_mesh_intent(self) -> str:
+        widget = getattr(self, "smart_mesh_intent_combo", None)
+        if widget is None:
+            return "auto"
+        if hasattr(widget, "currentData"):
+            data = widget.currentData()
+            if data:
+                return _clean_text(data)
+        return "auto"
+
+    def on_smart_mesh_intent_changed(self) -> None:
+        self.refresh_preview()
+
+    def confirm_smart_allmesh(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta raíz para Smart AllMesh",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        try:
+            import shutil as _smart_allmesh_shutil
+            import subprocess as _smart_allmesh_subprocess
+
+            app_root = Path(__file__).resolve().parent
+            runner = app_root / "scripts" / "RUN_SMART_ALLMESH.ps1"
+            if not runner.exists():
+                QMessageBox.warning(
+                    self,
+                    _app_title(),
+                    "No existe el runner Smart AllMesh:\n{0}".format(runner),
+                )
+                return
+
+            ps_exe = (
+                _smart_allmesh_shutil.which("pwsh")
+                or _smart_allmesh_shutil.which("powershell")
+                or _smart_allmesh_shutil.which("powershell.exe")
+            )
+            if not ps_exe:
+                QMessageBox.warning(self, _app_title(), "No encontré pwsh/powershell para lanzar Smart AllMesh.")
+                return
+
+            surface = self.selected_focus_target or "auto"
+            intent = self.selected_smart_mesh_intent or "auto"
+            cmd = [
+                ps_exe,
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(runner),
+                "-RootPath",
+                str(normalized_path),
+                "-Surface",
+                str(surface),
+                "-Intent",
+                str(intent),
+            ]
+            kwargs = {"cwd": str(app_root)}
+            creation_flags = getattr(_smart_allmesh_subprocess, "CREATE_NEW_CONSOLE", 0)
+            if creation_flags:
+                kwargs["creationflags"] = creation_flags
+            _smart_allmesh_subprocess.Popen(cmd, **kwargs)
+            QMessageBox.information(
+                self,
+                _app_title(),
+                "Smart AllMesh arrancó.\n\nRevisa F:\\descargasf para el ZIP allmesh result/fail.",
+            )
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                _app_title(),
+                "No pude lanzar Smart AllMesh:\n{0}".format(exc),
+            )
+
+    # CODE_ATLAS_SMART_ALLMESH_UI6_END
+
+
     def apply_theme_stylesheet(self, theme_id: Optional[str] = None) -> None:
         resolved_theme = normalize_theme(theme_id or self.selected_theme or self._theme_catalog.default_id)
         if resolved_theme == self._applied_theme_id:
@@ -5716,6 +5808,16 @@ class SelectorDialog(QDialog):
         )
         # /CODE_ATLAS_MOTOR_HUB_BUTTON_V01
 
+        # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+        self.smart_allmesh_button = create_button(
+            "AllMesh Inteligente",
+            "evidence",
+            self.confirm_smart_allmesh,
+            tooltip="Genera Smart AllMesh read-only con un solo dropdown: Auto filtra UI, Authority, Licencias, Data PRISMA, OCR, Evidence y NDC.",
+            minimum_width=176,
+        )
+        # CODE_ATLAS_SMART_ALLMESH_UI6_END
+
         footer_actions_stack = QVBoxLayout()
         footer_actions_stack.setSpacing(8)
         footer_layout.addLayout(footer_actions_stack, 1, 0, 1, 3)
@@ -5727,6 +5829,9 @@ class SelectorDialog(QDialog):
         # CODE_ATLAS_SURFACE_TARGET_ATLAS_FOOTER_V01
         footer_top_row.addWidget(self.surface_target_atlas_button, 0)
         # /CODE_ATLAS_SURFACE_TARGET_ATLAS_FOOTER_V01
+        # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+        footer_top_row.addWidget(self.smart_allmesh_button, 0)
+        # CODE_ATLAS_SMART_ALLMESH_UI6_END
         footer_top_row.addStretch(1)
         footer_top_row.addWidget(self.tree_button, 0)
         footer_top_row.addWidget(self.tree_html_button, 0)
@@ -5836,6 +5941,31 @@ class SelectorDialog(QDialog):
         self.focus_hint.setProperty("role", "hint")
         self.focus_hint.setWordWrap(True)
         grid.addWidget(self.focus_hint, 3, 1)
+
+        # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+        self.smart_mesh_intent_label = QLabel("Mesh / Intención")
+        self.smart_mesh_intent_label.setProperty("role", "field")
+        grid.addWidget(self.smart_mesh_intent_label, 4, 0)
+
+        self.smart_mesh_intent_combo = QComboBox()
+        self.smart_mesh_intent_combo.addItem("Auto: tú filtras todo", "auto")
+        self.smart_mesh_intent_combo.addItem("Authority Mesh", "authority")
+        self.smart_mesh_intent_combo.addItem("Licencias / Data / OCR", "data_ocr_licenses")
+        self.smart_mesh_intent_combo.addItem("Operational Evidence", "operational")
+        self.smart_mesh_intent_combo.addItem("UI / Surface Target", "ui_surface")
+        self.smart_mesh_intent_combo.addItem("NDC / Canon / Lineage", "ndc_canon")
+        self.smart_mesh_intent_combo.currentIndexChanged.connect(
+            lambda _index: self.on_smart_mesh_intent_changed()
+        )
+        grid.addWidget(self.smart_mesh_intent_combo, 4, 1)
+
+        self.smart_mesh_intent_hint = QLabel(
+            "Un solo selector: deja Auto y el motor filtra UI, Authority, Licencias, Data PRISMA, OCR, Evidence y NDC."
+        )
+        self.smart_mesh_intent_hint.setProperty("role", "hint")
+        self.smart_mesh_intent_hint.setWordWrap(True)
+        grid.addWidget(self.smart_mesh_intent_hint, 5, 1)
+        # CODE_ATLAS_SMART_ALLMESH_UI6_END
 
         grid.setColumnStretch(1, 1)
         layout.addStretch(1)
@@ -5984,6 +6114,12 @@ class SelectorDialog(QDialog):
         else:
             lines.append("Surface/App: sin selección")
 
+        # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+        mesh_combo = getattr(self, "smart_mesh_intent_combo", None)
+        if mesh_combo is not None:
+            lines.append(f"Mesh/Intención: {mesh_combo.currentText()}")
+        # CODE_ATLAS_SMART_ALLMESH_UI6_END
+
         if path_state.kind == "folder":
             lines.append("Ruta interpretada como: carpeta")
         elif path_state.kind == "file":
@@ -6006,6 +6142,10 @@ class SelectorDialog(QDialog):
         lines.append(
             f"Estado Atlas: {'listo para App Map / Surface Target Atlas' if self.selected_focus_target else 'elige una app para habilitar atlas'}"
         )
+
+        # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
+        lines.append("Smart AllMesh: listo; usa Auto para filtrar Data/OCR/Licencias/NDC por dentro")
+        # CODE_ATLAS_SMART_ALLMESH_UI6_END
 
         return lines
 

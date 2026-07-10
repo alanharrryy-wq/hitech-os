@@ -209,6 +209,28 @@ def run_operational_atlas(repo_root:str, output_dir:str, result_root:Optional[st
     for db in dbs(repo):
         meta=inspect_db(repo,db); inventory.append(meta); tables.extend(meta.get('tables',[]))
     mapped=mappers(repo,tables); payload_rows=payload_parser(repo,tables); cross=device_cross(mapped); lineage=sales_lineage(mapped,tables); scope=tenant_scope(repo,tables); drift=schema_drift(repo,tables); runtime=runtime_links(repo,rr); surface=surface_matrix(repo); snap=snapshot_diff(rr); extra=extra_detectors(mapped,lineage,cross,scope,tables,runtime)
+    # SUPPORT_RESOLVER_ATLAS_RUN_START
+    try:
+        from .support_resolver import run_support_resolver_atlas as _run_support_resolver_atlas
+        support_result = _run_support_resolver_atlas(repo, out, rr)
+    except Exception as _support_exc:
+        support_result = {
+            'summary': {
+                'status': 'BLOCKED_SUPPORT_CONSUMER_ERROR',
+                'decision': 'VERIFY_ADAPTER',
+                'doNotRebuild': True,
+                'blockers': [f'{type(_support_exc).__name__}: {_support_exc}'],
+            },
+            'payload': {
+                'supportResolverSummary': [{
+                    'status': 'BLOCKED_SUPPORT_CONSUMER_ERROR',
+                    'error': f'{type(_support_exc).__name__}: {_support_exc}',
+                    'doNotRebuild': True,
+                }],
+            },
+            'exports': {},
+        }
+    # SUPPORT_RESOLVER_ATLAS_RUN_END
     blockers=[]
     if any(x.get('status')=='unknown_missing_provenance' for x in lineage): blockers.append('unknown_missing_provenance')
     if scope.get('status')=='blocked-by-missing-scope-contract': blockers.append('blocked-by-missing-scope-contract')
@@ -220,7 +242,16 @@ def run_operational_atlas(repo_root:str, output_dir:str, result_root:Optional[st
         if name=='snapshot_diff_engine' and any(x.get('status')=='BLOCKED_INSUFFICIENT_COMPARABLE_RUNS' for x in snap): status='implemented_v3_blocked_insufficient_comparable_runs'
         ledger.append({'feature':name,'placeholder':False,'status':status})
     manifest={'tool':'code_atlas_operational_v3','createdAt':dt.datetime.now().isoformat(),'repo':str(repo),'status':'BLOCKED_FOR_PRODUCTION' if blockers else 'SOURCE_READY_NOT_PRODUCTION_CERTIFIED','productionGate':'NO_PASS_PRODUCTION_MULTI_DEVICE_SALES_LINEAGE_CERTIFIED','productionBlockers':blockers,'featureCount':50,'detectorsConverted':len(ledger),'placeholdersRemaining':0,'monolithDependency':False,'rawDatabasesIncluded':False}
+    # SUPPORT_RESOLVER_ATLAS_MANIFEST_START
+    manifest['supportResolverStatus'] = support_result.get('summary', {}).get('status', 'BLOCKED_SUPPORT_CONSUMER_UNKNOWN')
+    manifest['supportResolverDecision'] = support_result.get('summary', {}).get('decision', 'VERIFY_ADAPTER')
+    manifest['supportResolverDoNotRebuild'] = bool(support_result.get('summary', {}).get('doNotRebuild', True))
+    manifest['supportResolverBlockers'] = support_result.get('summary', {}).get('blockers', [])
+    # SUPPORT_RESOLVER_ATLAS_MANIFEST_END
     payload={'manifest':manifest,'dbInventory':inventory,'payloadJsonIndex':payload_rows,'clients':mapped['clients'],'licenses':mapped['licenses'],'devices':mapped['devices'],'sales':mapped['sales'],'deviceClaimCrosscheck':cross,'salesLineage':lineage,'tenantScopeResolver':scope,'schemaDriftGuard':drift,'runtimeEvidenceLinks':runtime,'surfaceRoleMatrix':surface,'snapshotDiffEngine':snap,'placeholderLedger':ledger,'multiTenantLeakageGuard':[{'status':scope.get('status'),'rule':'certify only if real tenant/scope contract exists'}],'goldenPathComparator':[{'component':'production_gate','status':'BLOCKED_FOR_PRODUCTION' if blockers else 'SOURCE_READY_NOT_PRODUCTION_CERTIFIED','rule':'unknown_missing_provenance = no green'}]}
+    # SUPPORT_RESOLVER_ATLAS_PAYLOAD_START
+    payload.update(support_result.get('payload', {}))
+    # SUPPORT_RESOLVER_ATLAS_PAYLOAD_END
     payload.update(extra)
     write_json(out/'ATLAS_MANIFEST_PLUS.json',manifest); write_json(out/'operational_evidence_atlas.json',payload); write_json(out/'placeholder_ledger.json',ledger); write_csv(out/'placeholder_ledger.csv',ledger)
     for k,v in payload.items():

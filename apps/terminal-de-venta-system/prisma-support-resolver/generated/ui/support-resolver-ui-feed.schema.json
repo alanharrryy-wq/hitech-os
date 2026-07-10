@@ -1,0 +1,69 @@
+{
+  "$id": "PRISMA_SUPPORT_RESOLVER_UI_FEED_V1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "minItems": 13,
+      "type": "array"
+    },
+    "authority": {
+      "type": "object"
+    },
+    "capabilities": {
+      "type": "array"
+    },
+    "errorCodes": {
+      "minItems": 68,
+      "type": "array"
+    },
+    "featureGates": {
+      "type": "object"
+    },
+    "gaps": {
+      "type": "array"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "navigation": {
+      "type": "array"
+    },
+    "routes": {
+      "type": "array"
+    },
+    "safety": {
+      "type": "object"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "screens": {
+      "type": "array"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "surfaces": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "authority",
+    "summary",
+    "navigation",
+    "screens",
+    "errorCodes",
+    "actions",
+    "surfaces",
+    "featureGates",
+    "routes",
+    "capabilities",
+    "gaps",
+    "safety"
+  ],
+  "title": "PRISMA Support Resolver UI Feed",
+  "type": "object"
+}

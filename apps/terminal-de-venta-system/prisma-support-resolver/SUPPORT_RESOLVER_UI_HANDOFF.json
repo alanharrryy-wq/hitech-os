@@ -1,0 +1,242 @@
+{
+  "codexRules": [
+    "Do not invent business logic",
+    "Do not rebuild Support Resolver",
+    "Render gaps honestly",
+    "Disable mutating actions unless feed safety permits",
+    "Keep executable tests distinct from documentation evidence",
+    "Use API/UI route map as integration evidence, not as a command to duplicate routes"
+  ],
+  "feedPath": "generated/ui/support-resolver-ui-feed.json",
+  "generatedAt": "2026-07-10T09:31:33.391986+00:00",
+  "navigation": [
+    {
+      "dataKeys": [
+        "summary",
+        "capabilities",
+        "gaps"
+      ],
+      "id": "overview",
+      "label": "Resumen",
+      "screen": "support-overview"
+    },
+    {
+      "dataKeys": [
+        "errorCodes",
+        "actions",
+        "surfaces"
+      ],
+      "id": "diagnose",
+      "label": "Diagnóstico",
+      "screen": "support-diagnose"
+    },
+    {
+      "dataKeys": [
+        "schemas",
+        "routes",
+        "actions"
+      ],
+      "id": "cases",
+      "label": "Casos",
+      "screen": "support-cases"
+    },
+    {
+      "dataKeys": [
+        "errorCodes"
+      ],
+      "id": "catalog",
+      "label": "Códigos",
+      "screen": "support-error-catalog"
+    },
+    {
+      "dataKeys": [
+        "actions",
+        "safety"
+      ],
+      "id": "actions",
+      "label": "Acciones",
+      "screen": "support-actions"
+    },
+    {
+      "dataKeys": [
+        "surfaces",
+        "featureGates",
+        "routes"
+      ],
+      "id": "surfaces",
+      "label": "Superficies",
+      "screen": "support-surfaces"
+    },
+    {
+      "dataKeys": [
+        "authority",
+        "capabilities",
+        "gaps",
+        "safety"
+      ],
+      "id": "evidence",
+      "label": "Evidencia",
+      "screen": "support-evidence"
+    }
+  ],
+  "schemaPath": "generated/ui/support-resolver-ui-feed.schema.json",
+  "schemaVersion": "1.0.0",
+  "screens": [
+    {
+      "actions": [
+        "diagnose",
+        "export_evidence",
+        "copy_support_summary"
+      ],
+      "dataKeys": [
+        "summary",
+        "capabilities",
+        "gaps"
+      ],
+      "id": "support-overview",
+      "purpose": "Mostrar salud, cobertura, bloqueadores y próximos pasos sin declarar green falso.",
+      "states": [
+        "ready",
+        "partial",
+        "blocked",
+        "unknown"
+      ],
+      "title": "Support Command Center"
+    },
+    {
+      "actions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "choose_authority",
+        "simulate_identity_reconciliation"
+      ],
+      "dataKeys": [
+        "errorCodes",
+        "actions",
+        "surfaces"
+      ],
+      "id": "support-diagnose",
+      "purpose": "Convertir evidencia de identidad, licencia y runtime en issue codes y acciones seguras.",
+      "states": [
+        "idle",
+        "collecting",
+        "diagnosed",
+        "blocked"
+      ],
+      "title": "Diagnóstico guiado"
+    },
+    {
+      "actions": [
+        "export_evidence",
+        "send_to_chatgpt",
+        "send_to_codex",
+        "mark_onsite"
+      ],
+      "dataKeys": [
+        "schemas",
+        "routes",
+        "actions"
+      ],
+      "id": "support-cases",
+      "purpose": "Buscar, abrir y seguir casos con evidencia, estado y resolución.",
+      "states": [
+        "empty",
+        "loading",
+        "open",
+        "resolved",
+        "blocked"
+      ],
+      "title": "Casos y timeline"
+    },
+    {
+      "actions": [
+        "copy_support_summary"
+      ],
+      "dataKeys": [
+        "errorCodes"
+      ],
+      "id": "support-error-catalog",
+      "purpose": "Explorar los 68 códigos canónicos y su cobertura viva.",
+      "states": [
+        "ready",
+        "filtered",
+        "no_results"
+      ],
+      "title": "Catálogo de errores"
+    },
+    {
+      "actions": [
+        "diagnose",
+        "simulate_runtime_alignment",
+        "apply_runtime_alignment",
+        "choose_authority",
+        "simulate_identity_reconciliation",
+        "setup_claim",
+        "license_refresh",
+        "export_evidence",
+        "send_to_chatgpt",
+        "send_to_codex",
+        "mark_onsite",
+        "copy_support_summary",
+        "setup_claim_or_refresh_guided"
+      ],
+      "dataKeys": [
+        "actions",
+        "safety"
+      ],
+      "id": "support-actions",
+      "purpose": "Mostrar seguridad, dry-run, confirmación y cobertura de las 13 acciones.",
+      "states": [
+        "safe",
+        "requires_simulation",
+        "requires_confirmation",
+        "blocked"
+      ],
+      "title": "Acciones resolutivas"
+    },
+    {
+      "actions": [
+        "diagnose",
+        "setup_claim",
+        "license_refresh"
+      ],
+      "dataKeys": [
+        "surfaces",
+        "featureGates",
+        "routes"
+      ],
+      "id": "support-surfaces",
+      "purpose": "Comparar Tablet, PC y Mobile sin contradicciones visuales.",
+      "states": [
+        "ready",
+        "warning",
+        "blocked",
+        "needs_setup",
+        "needs_support",
+        "unknown"
+      ],
+      "title": "Estado por superficie"
+    },
+    {
+      "actions": [
+        "export_evidence",
+        "copy_support_summary"
+      ],
+      "dataKeys": [
+        "authority",
+        "capabilities",
+        "gaps",
+        "safety"
+      ],
+      "id": "support-evidence",
+      "purpose": "Mostrar fuentes, contratos, pruebas, gaps y exportación sanitizada.",
+      "states": [
+        "ready",
+        "partial",
+        "blocked"
+      ],
+      "title": "Evidencia y autoridad"
+    }
+  ],
+  "typesPath": "generated/ui/support-resolver-ui-types.ts"
+}
