@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "decision_id",
+    "decision_type",
+    "target",
+    "reason",
+    "reviewer"
+  ],
+  "properties": {
+    "decision_type": {
+      "enum": [
+        "alias",
+        "override",
+        "promote",
+        "reject",
+        "split",
+        "merge",
+        "dispute",
+        "note"
+      ]
+    }
+  }
+}

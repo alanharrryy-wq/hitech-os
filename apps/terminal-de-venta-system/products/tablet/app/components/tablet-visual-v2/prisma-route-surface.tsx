@@ -82,7 +82,7 @@ export function PrismaSurfaceHeader({
   title
 }: Omit<PrismaRouteSurfaceProps, "children" | "emptyState" | "metrics" | "rail">) {
   const actionNode = primaryAction ? (
-    <PrismaLiquidAction icon={<span
+    <PrismaLiquidAction
       data-surface="tablet"
       data-screen="visual_os"
       data-zone="pos"
@@ -90,7 +90,7 @@ export function PrismaSurfaceHeader({
       data-target="prisma-route-surface-panel-85"
       data-kind="panel"
       data-role="revenue-core"
-    >{routeGlyph(intent)}</span>} sublabel={primaryAction.sublabel} fullWidth>{primaryAction.label}</PrismaLiquidAction>
+      icon={<span > {routeGlyph(intent)}</span>} sublabel={primaryAction.sublabel} fullWidth>{primaryAction.label}</PrismaLiquidAction>
   ) : null;
 
   return (

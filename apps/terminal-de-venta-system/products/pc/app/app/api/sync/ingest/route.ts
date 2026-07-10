@@ -5,7 +5,8 @@ export const runtime = "nodejs";
 
 function statusFrom(result: { summary: { rejected: number; conflict: number; duplicate: number } }) {
   if (result.summary.rejected > 0) return 207;
-  if (result.summary.conflict > 0 || result.summary.duplicate > 0) return 202;
+  if (result.summary.conflict > 0) return 202;
+  // Idempotent duplicates are a successful acknowledgement for Tablet retry/reconciliation.
   return 200;
 }
 

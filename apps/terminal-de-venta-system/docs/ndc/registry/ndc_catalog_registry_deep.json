@@ -1,0 +1,4823 @@
+{
+  "version": "1.0.0",
+  "catalogs": [
+    {
+      "catalog_id": "CAT.scope.Scope_Registry",
+      "name": "Scope_Registry",
+      "group": "scope",
+      "description": "identidades operativas de tenant, business, store, terminal, device, user, role, plan, license, slot, session",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Scope_Registry.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Scope_Registry_must_have_scope_ref",
+          "Scope_Registry_must_have_evidence_policy",
+          "Scope_Registry_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.scope.Tenant_Master",
+      "name": "Tenant_Master",
+      "group": "scope",
+      "description": "tenant comercial, límites, estado, owners, aislamiento",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Tenant_Master.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Tenant_Master_must_have_scope_ref",
+          "Tenant_Master_must_have_evidence_policy",
+          "Tenant_Master_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.scope.Business_Site_Map",
+      "name": "Business_Site_Map",
+      "group": "scope",
+      "description": "negocios, sucursales, sitios, terminales y jerarquía",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Business_Site_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Business_Site_Map_must_have_scope_ref",
+          "Business_Site_Map_must_have_evidence_policy",
+          "Business_Site_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.scope.Device_License_Map",
+      "name": "Device_License_Map",
+      "group": "scope",
+      "description": "licencias, slots, devices, surfaces autorizadas",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Device_License_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Device_License_Map_must_have_scope_ref",
+          "Device_License_Map_must_have_evidence_policy",
+          "Device_License_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.scope.Role_Module_Map",
+      "name": "Role_Module_Map",
+      "group": "scope",
+      "description": "roles, módulos, grants y capabilities visibles",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Role_Module_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Role_Module_Map_must_have_scope_ref",
+          "Role_Module_Map_must_have_evidence_policy",
+          "Role_Module_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.scope.Session_Context_Map",
+      "name": "Session_Context_Map",
+      "group": "scope",
+      "description": "sesiones de caja, turno, login y device context",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Session_Context_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Session_Context_Map_must_have_scope_ref",
+          "Session_Context_Map_must_have_evidence_policy",
+          "Session_Context_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.neutral.Neutral_Object_Registry",
+      "name": "Neutral_Object_Registry",
+      "group": "neutral",
+      "description": "ENT/EVT/ACT/STA/MET/ALT/EVD/CAP/CAN",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Neutral_Object_Registry.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Neutral_Object_Registry_must_have_scope_ref",
+          "Neutral_Object_Registry_must_have_evidence_policy",
+          "Neutral_Object_Registry_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.neutral.Entity_Master",
+      "name": "Entity_Master",
+      "group": "neutral",
+      "description": "sale, sale_line, payment, item, inventory_position, cash_session",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Entity_Master.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Entity_Master_must_have_scope_ref",
+          "Entity_Master_must_have_evidence_policy",
+          "Entity_Master_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.event.Event_Provenance_Log",
+      "name": "Event_Provenance_Log",
+      "group": "event",
+      "description": "eventos con origen, actor, device, surface, timestamp y evidence",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Event_Provenance_Log.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Event_Provenance_Log_must_have_scope_ref",
+          "Event_Provenance_Log_must_have_evidence_policy",
+          "Event_Provenance_Log_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.event.Action_Event_Map",
+      "name": "Action_Event_Map",
+      "group": "event",
+      "description": "acciones que emiten eventos y escriben entidades",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Action_Event_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Action_Event_Map_must_have_scope_ref",
+          "Action_Event_Map_must_have_evidence_policy",
+          "Action_Event_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.event.State_Transition_Map",
+      "name": "State_Transition_Map",
+      "group": "event",
+      "description": "transiciones de estado y reglas",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "State_Transition_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "State_Transition_Map_must_have_scope_ref",
+          "State_Transition_Map_must_have_evidence_policy",
+          "State_Transition_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.lineage.Sync_Outbox_Map",
+      "name": "Sync_Outbox_Map",
+      "group": "lineage",
+      "description": "outbox, retry, ack, rejection, duplicate",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Sync_Outbox_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Sync_Outbox_Map_must_have_scope_ref",
+          "Sync_Outbox_Map_must_have_evidence_policy",
+          "Sync_Outbox_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.canonical.Canonical_Projection_Map",
+      "name": "Canonical_Projection_Map",
+      "group": "canonical",
+      "description": "proyecciones canónicas y reglas",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Canonical_Projection_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Canonical_Projection_Map_must_have_scope_ref",
+          "Canonical_Projection_Map_must_have_evidence_policy",
+          "Canonical_Projection_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.canonical.Canonical_Status_Map",
+      "name": "Canonical_Status_Map",
+      "group": "canonical",
+      "description": "accepted, pending, duplicate, rejected, stale, disputed",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Canonical_Status_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Canonical_Status_Map_must_have_scope_ref",
+          "Canonical_Status_Map_must_have_evidence_policy",
+          "Canonical_Status_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.lineage.Data_Lineage_Map",
+      "name": "Data_Lineage_Map",
+      "group": "lineage",
+      "description": "linaje de event/source a canonical, metric, surface y widget",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Data_Lineage_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Data_Lineage_Map_must_have_scope_ref",
+          "Data_Lineage_Map_must_have_evidence_policy",
+          "Data_Lineage_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.lineage.Provenance_Agent_Map",
+      "name": "Provenance_Agent_Map",
+      "group": "lineage",
+      "description": "agentes, devices, tools y runtimes responsables",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Provenance_Agent_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Provenance_Agent_Map_must_have_scope_ref",
+          "Provenance_Agent_Map_must_have_evidence_policy",
+          "Provenance_Agent_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.projection.Surface_Projection_Map",
+      "name": "Surface_Projection_Map",
+      "group": "projection",
+      "description": "superficies que muestran/escriben/auditan neutrales",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Surface_Projection_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Surface_Projection_Map_must_have_scope_ref",
+          "Surface_Projection_Map_must_have_evidence_policy",
+          "Surface_Projection_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.projection.Runtime_Surface_Catalog",
+      "name": "Runtime_Surface_Catalog",
+      "group": "projection",
+      "description": "runtimes 3000-3160, visibilidad y boundaries",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Runtime_Surface_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Runtime_Surface_Catalog_must_have_scope_ref",
+          "Runtime_Surface_Catalog_must_have_evidence_policy",
+          "Runtime_Surface_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.UI_Component_Atlas",
+      "name": "UI_Component_Atlas",
+      "group": "ui",
+      "description": "surface, zone, panel, widget, table, form, chart, action",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "UI_Component_Atlas.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "UI_Component_Atlas_must_have_scope_ref",
+          "UI_Component_Atlas_must_have_evidence_policy",
+          "UI_Component_Atlas_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.Panel_Insight_Catalog",
+      "name": "Panel_Insight_Catalog",
+      "group": "ui",
+      "description": "paneles de KPI, acción, auditoría, alerta, evidencia y licensing",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Panel_Insight_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Panel_Insight_Catalog_must_have_scope_ref",
+          "Panel_Insight_Catalog_must_have_evidence_policy",
+          "Panel_Insight_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.Widget_Interaction_Catalog",
+      "name": "Widget_Interaction_Catalog",
+      "group": "ui",
+      "description": "click, filter, submit, approve, export, drilldown, warning",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Widget_Interaction_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Widget_Interaction_Catalog_must_have_scope_ref",
+          "Widget_Interaction_Catalog_must_have_evidence_policy",
+          "Widget_Interaction_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.Table_View_Catalog",
+      "name": "Table_View_Catalog",
+      "group": "ui",
+      "description": "tablas, columnas, filtros, empty/error states",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Table_View_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Table_View_Catalog_must_have_scope_ref",
+          "Table_View_Catalog_must_have_evidence_policy",
+          "Table_View_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.Form_Field_Catalog",
+      "name": "Form_Field_Catalog",
+      "group": "ui",
+      "description": "formularios, campos, validaciones, entidades impactadas",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Form_Field_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Form_Field_Catalog_must_have_scope_ref",
+          "Form_Field_Catalog_must_have_evidence_policy",
+          "Form_Field_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ui.Button_Action_Catalog",
+      "name": "Button_Action_Catalog",
+      "group": "ui",
+      "description": "botones ligados a ACT/EVT, permissions y audit",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Button_Action_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Button_Action_Catalog_must_have_scope_ref",
+          "Button_Action_Catalog_must_have_evidence_policy",
+          "Button_Action_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.chart.Chart_Metric_Catalog",
+      "name": "Chart_Metric_Catalog",
+      "group": "chart",
+      "description": "charts, fórmulas, datasets, destino, rol, licencia",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Chart_Metric_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Chart_Metric_Catalog_must_have_scope_ref",
+          "Chart_Metric_Catalog_must_have_evidence_policy",
+          "Chart_Metric_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.chart.ChartLab_Opportunity_Catalog",
+      "name": "ChartLab_Opportunity_Catalog",
+      "group": "chart",
+      "description": "oportunidades analytics, valor, destino, pricing",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "ChartLab_Opportunity_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "ChartLab_Opportunity_Catalog_must_have_scope_ref",
+          "ChartLab_Opportunity_Catalog_must_have_evidence_policy",
+          "ChartLab_Opportunity_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.chart.Metric_Formula_Catalog",
+      "name": "Metric_Formula_Catalog",
+      "group": "chart",
+      "description": "MET.*, granularidad, ventana, filtros, dependencies",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Metric_Formula_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Metric_Formula_Catalog_must_have_scope_ref",
+          "Metric_Formula_Catalog_must_have_evidence_policy",
+          "Metric_Formula_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.data.Dataset_Contract_Catalog",
+      "name": "Dataset_Contract_Catalog",
+      "group": "data",
+      "description": "DS.*, productores, consumidores, freshness, quality",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Dataset_Contract_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Dataset_Contract_Catalog_must_have_scope_ref",
+          "Dataset_Contract_Catalog_must_have_evidence_policy",
+          "Dataset_Contract_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.data.Data_Binding_Map",
+      "name": "Data_Binding_Map",
+      "group": "data",
+      "description": "binding neutral ↔ API/DB/DS/UI",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Data_Binding_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Data_Binding_Map_must_have_scope_ref",
+          "Data_Binding_Map_must_have_evidence_policy",
+          "Data_Binding_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.implementation.API_Endpoint_Map",
+      "name": "API_Endpoint_Map",
+      "group": "implementation",
+      "description": "endpoints, scopes, eventos, auth/licensing",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "API_Endpoint_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "API_Endpoint_Map_must_have_scope_ref",
+          "API_Endpoint_Map_must_have_evidence_policy",
+          "API_Endpoint_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.implementation.DB_Implementation_Map",
+      "name": "DB_Implementation_Map",
+      "group": "implementation",
+      "description": "tablas actuales/futuras y semantic mapping",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "DB_Implementation_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "DB_Implementation_Map_must_have_scope_ref",
+          "DB_Implementation_Map_must_have_evidence_policy",
+          "DB_Implementation_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.implementation.File_Component_Map",
+      "name": "File_Component_Map",
+      "group": "implementation",
+      "description": "rutas, componentes, assets y owners técnicos",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "File_Component_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "File_Component_Map_must_have_scope_ref",
+          "File_Component_Map_must_have_evidence_policy",
+          "File_Component_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.capability.Capability_Registry",
+      "name": "Capability_Registry",
+      "group": "capability",
+      "description": "CAP.*, valor, users, surfaces, events, license",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Capability_Registry.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Capability_Registry_must_have_scope_ref",
+          "Capability_Registry_must_have_evidence_policy",
+          "Capability_Registry_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.capability.Module_Registry",
+      "name": "Module_Registry",
+      "group": "capability",
+      "description": "MOD.*, origen, destinos, grants, status",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Module_Registry.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Module_Registry_must_have_scope_ref",
+          "Module_Registry_must_have_evidence_policy",
+          "Module_Registry_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.capability.Capability_Pack_Catalog",
+      "name": "Capability_Pack_Catalog",
+      "group": "capability",
+      "description": "packs base/pro/premium/custom/enterprise",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Capability_Pack_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Capability_Pack_Catalog_must_have_scope_ref",
+          "Capability_Pack_Catalog_must_have_evidence_policy",
+          "Capability_Pack_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.commercial.License_Grant_Map",
+      "name": "License_Grant_Map",
+      "group": "commercial",
+      "description": "planes, licencias, add-ons, grants y límites",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "License_Grant_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "License_Grant_Map_must_have_scope_ref",
+          "License_Grant_Map_must_have_evidence_policy",
+          "License_Grant_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.commercial.Commercial_Readiness_Map",
+      "name": "Commercial_Readiness_Map",
+      "group": "commercial",
+      "description": "readiness comercial de claims/capabilities",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Commercial_Readiness_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Commercial_Readiness_Map_must_have_scope_ref",
+          "Commercial_Readiness_Map_must_have_evidence_policy",
+          "Commercial_Readiness_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.commercial.No_Humo_Claims_Ledger",
+      "name": "No_Humo_Claims_Ledger",
+      "group": "commercial",
+      "description": "claims permitidos/prohibidos con evidencia",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "No_Humo_Claims_Ledger.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "No_Humo_Claims_Ledger_must_have_scope_ref",
+          "No_Humo_Claims_Ledger_must_have_evidence_policy",
+          "No_Humo_Claims_Ledger_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.evidence.Evidence_Index",
+      "name": "Evidence_Index",
+      "group": "evidence",
+      "description": "EVD.*, source_tool, artifact, targets, freshness",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Evidence_Index.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Evidence_Index_must_have_scope_ref",
+          "Evidence_Index_must_have_evidence_policy",
+          "Evidence_Index_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.evidence.Evidence_Readiness_Map",
+      "name": "Evidence_Readiness_Map",
+      "group": "evidence",
+      "description": "ready/needs_review/blocked/partial/stale/orphan/conflict",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Evidence_Readiness_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Evidence_Readiness_Map_must_have_scope_ref",
+          "Evidence_Readiness_Map_must_have_evidence_policy",
+          "Evidence_Readiness_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.evidence.Runtime_Evidence_Map",
+      "name": "Runtime_Evidence_Map",
+      "group": "evidence",
+      "description": "screenshots, DOM, traces, API, DB, tests",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Runtime_Evidence_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Runtime_Evidence_Map_must_have_scope_ref",
+          "Runtime_Evidence_Map_must_have_evidence_policy",
+          "Runtime_Evidence_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.curation.Curation_Decision_Log",
+      "name": "Curation_Decision_Log",
+      "group": "curation",
+      "description": "alias, override, promotion, rejection, dispute",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Curation_Decision_Log.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Curation_Decision_Log_must_have_scope_ref",
+          "Curation_Decision_Log_must_have_evidence_policy",
+          "Curation_Decision_Log_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.curation.Alias_Map",
+      "name": "Alias_Map",
+      "group": "curation",
+      "description": "alias de nombres detectados a neutral IDs",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Alias_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Alias_Map_must_have_scope_ref",
+          "Alias_Map_must_have_evidence_policy",
+          "Alias_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.curation.Override_Map",
+      "name": "Override_Map",
+      "group": "curation",
+      "description": "correcciones explícitas de mapping/readiness",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Override_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Override_Map_must_have_scope_ref",
+          "Override_Map_must_have_evidence_policy",
+          "Override_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.curation.Canonical_Promotion_Log",
+      "name": "Canonical_Promotion_Log",
+      "group": "curation",
+      "description": "promociones a canonical",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Canonical_Promotion_Log.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Canonical_Promotion_Log_must_have_scope_ref",
+          "Canonical_Promotion_Log_must_have_evidence_policy",
+          "Canonical_Promotion_Log_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.curation.Review_Notes_Index",
+      "name": "Review_Notes_Index",
+      "group": "curation",
+      "description": "notas humanas y pendientes",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Review_Notes_Index.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Review_Notes_Index_must_have_scope_ref",
+          "Review_Notes_Index_must_have_evidence_policy",
+          "Review_Notes_Index_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.drift.Drift_And_Reconciliation_Map",
+      "name": "Drift_And_Reconciliation_Map",
+      "group": "drift",
+      "description": "discrepancias 231 vs 228 por scope/status/sync",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Drift_And_Reconciliation_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Drift_And_Reconciliation_Map_must_have_scope_ref",
+          "Drift_And_Reconciliation_Map_must_have_evidence_policy",
+          "Drift_And_Reconciliation_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.drift.Conflict_Register",
+      "name": "Conflict_Register",
+      "group": "drift",
+      "description": "conflictos entre fuentes",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Conflict_Register.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Conflict_Register_must_have_scope_ref",
+          "Conflict_Register_must_have_evidence_policy",
+          "Conflict_Register_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.drift.Orphan_Evidence_Register",
+      "name": "Orphan_Evidence_Register",
+      "group": "drift",
+      "description": "evidencias sin target claro",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Orphan_Evidence_Register.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Orphan_Evidence_Register_must_have_scope_ref",
+          "Orphan_Evidence_Register_must_have_evidence_policy",
+          "Orphan_Evidence_Register_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.governance.Quality_Rule_Catalog",
+      "name": "Quality_Rule_Catalog",
+      "group": "governance",
+      "description": "reglas de calidad",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Quality_Rule_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Quality_Rule_Catalog_must_have_scope_ref",
+          "Quality_Rule_Catalog_must_have_evidence_policy",
+          "Quality_Rule_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.governance.Validation_Gate_Catalog",
+      "name": "Validation_Gate_Catalog",
+      "group": "governance",
+      "description": "gates de scope, neutral, evidence, lineage, projection",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Validation_Gate_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Validation_Gate_Catalog_must_have_scope_ref",
+          "Validation_Gate_Catalog_must_have_evidence_policy",
+          "Validation_Gate_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.governance.Authority_Source_Map",
+      "name": "Authority_Source_Map",
+      "group": "governance",
+      "description": "orden de autoridad",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Authority_Source_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Authority_Source_Map_must_have_scope_ref",
+          "Authority_Source_Map_must_have_evidence_policy",
+          "Authority_Source_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.tooling.Tool_Input_Slot_Catalog",
+      "name": "Tool_Input_Slot_Catalog",
+      "group": "tooling",
+      "description": "slots raw_inputs por herramienta",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Tool_Input_Slot_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Tool_Input_Slot_Catalog_must_have_scope_ref",
+          "Tool_Input_Slot_Catalog_must_have_evidence_policy",
+          "Tool_Input_Slot_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.tooling.Normalizer_Contract_Map",
+      "name": "Normalizer_Contract_Map",
+      "group": "tooling",
+      "description": "contrato input→candidate→record/edge/evidence",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Normalizer_Contract_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Normalizer_Contract_Map_must_have_scope_ref",
+          "Normalizer_Contract_Map_must_have_evidence_policy",
+          "Normalizer_Contract_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.matrix.Matrix_View_Catalog",
+      "name": "Matrix_View_Catalog",
+      "group": "matrix",
+      "description": "definición de matrices generadas",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Matrix_View_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Matrix_View_Catalog_must_have_scope_ref",
+          "Matrix_View_Catalog_must_have_evidence_policy",
+          "Matrix_View_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.matrix.Dashboard_Query_Catalog",
+      "name": "Dashboard_Query_Catalog",
+      "group": "matrix",
+      "description": "consultas/dashboards de revisión",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Dashboard_Query_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Dashboard_Query_Catalog_must_have_scope_ref",
+          "Dashboard_Query_Catalog_must_have_evidence_policy",
+          "Dashboard_Query_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.db_handoff.Prisma_OCR_Entity_Blueprint",
+      "name": "Prisma_OCR_Entity_Blueprint",
+      "group": "db_handoff",
+      "description": "blueprint futuro entidades DB",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Prisma_OCR_Entity_Blueprint.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Prisma_OCR_Entity_Blueprint_must_have_scope_ref",
+          "Prisma_OCR_Entity_Blueprint_must_have_evidence_policy",
+          "Prisma_OCR_Entity_Blueprint_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.db_handoff.Prisma_OCR_Relationship_Blueprint",
+      "name": "Prisma_OCR_Relationship_Blueprint",
+      "group": "db_handoff",
+      "description": "blueprint futuro relaciones DB",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Prisma_OCR_Relationship_Blueprint.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Prisma_OCR_Relationship_Blueprint_must_have_scope_ref",
+          "Prisma_OCR_Relationship_Blueprint_must_have_evidence_policy",
+          "Prisma_OCR_Relationship_Blueprint_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.db_handoff.Prisma_OCR_Seed_Strategy",
+      "name": "Prisma_OCR_Seed_Strategy",
+      "group": "db_handoff",
+      "description": "seeds futuros desde registries/curation",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Prisma_OCR_Seed_Strategy.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Prisma_OCR_Seed_Strategy_must_have_scope_ref",
+          "Prisma_OCR_Seed_Strategy_must_have_evidence_policy",
+          "Prisma_OCR_Seed_Strategy_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.db_handoff.Migration_Readiness_Checklist",
+      "name": "Migration_Readiness_Checklist",
+      "group": "db_handoff",
+      "description": "checklist para permitir db1",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Migration_Readiness_Checklist.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Migration_Readiness_Checklist_must_have_scope_ref",
+          "Migration_Readiness_Checklist_must_have_evidence_policy",
+          "Migration_Readiness_Checklist_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.vertical.Vertical_Translation_Catalog",
+      "name": "Vertical_Translation_Catalog",
+      "group": "vertical",
+      "description": "traducción a abarrotes/restaurante/taller/bodega/renta",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Vertical_Translation_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Vertical_Translation_Catalog_must_have_scope_ref",
+          "Vertical_Translation_Catalog_must_have_evidence_policy",
+          "Vertical_Translation_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.vertical.Abarrotes_RC1_Trace_Map",
+      "name": "Abarrotes_RC1_Trace_Map",
+      "group": "vertical",
+      "description": "trazabilidad abarrotes RC1",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Abarrotes_RC1_Trace_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Abarrotes_RC1_Trace_Map_must_have_scope_ref",
+          "Abarrotes_RC1_Trace_Map_must_have_evidence_policy",
+          "Abarrotes_RC1_Trace_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ops.Support_Ticket_Catalog",
+      "name": "Support_Ticket_Catalog",
+      "group": "ops",
+      "description": "tickets desde drift/evidence/readiness",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Support_Ticket_Catalog.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Support_Ticket_Catalog_must_have_scope_ref",
+          "Support_Ticket_Catalog_must_have_evidence_policy",
+          "Support_Ticket_Catalog_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ops.Owner_Accountability_Map",
+      "name": "Owner_Accountability_Map",
+      "group": "ops",
+      "description": "owners de decisiones/datos/capabilities",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Owner_Accountability_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Owner_Accountability_Map_must_have_scope_ref",
+          "Owner_Accountability_Map_must_have_evidence_policy",
+          "Owner_Accountability_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ops.Risk_Score_Map",
+      "name": "Risk_Score_Map",
+      "group": "ops",
+      "description": "riesgo por huecos/conflicts/stale/claims",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Risk_Score_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Risk_Score_Map_must_have_scope_ref",
+          "Risk_Score_Map_must_have_evidence_policy",
+          "Risk_Score_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "catalog_id": "CAT.ops.Change_Impact_Map",
+      "name": "Change_Impact_Map",
+      "group": "ops",
+      "description": "impacto de cambios entity/capability/surface/widget/API/DB",
+      "grain": "one row per governed object or relation in this catalog",
+      "primary_keys": [
+        "id",
+        "scope_ref",
+        "source_ref"
+      ],
+      "minimum_fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "scope_ref",
+        "source_ref",
+        "evidence_ref",
+        "status",
+        "confidence",
+        "owner",
+        "updated_at"
+      ],
+      "extension_fields": [
+        "vertical",
+        "license_ref",
+        "surface_ref",
+        "canonical_ref",
+        "lineage_ref",
+        "curation_ref",
+        "risk_score",
+        "notes"
+      ],
+      "generated_matrix": "Change_Impact_Map.csv",
+      "status": "defined_for_doc1",
+      "deep_spec": {
+        "required_joins": [
+          "Evidence_Index",
+          "Curation_Decision_Log",
+          "Data_Lineage_Map"
+        ],
+        "state_policy": [
+          "candidate",
+          "defined",
+          "ready",
+          "needs_review",
+          "blocked",
+          "deprecated"
+        ],
+        "quality_rules": [
+          "Change_Impact_Map_must_have_scope_ref",
+          "Change_Impact_Map_must_have_evidence_policy",
+          "Change_Impact_Map_must_not_be_manual_csv_truth"
+        ],
+        "example_columns": [
+          "id",
+          "type",
+          "name",
+          "scope_ref",
+          "neutral_ref",
+          "surface_ref",
+          "canonical_ref",
+          "evidence_ref",
+          "source_ref",
+          "owner",
+          "status",
+          "confidence",
+          "risk_score",
+          "updated_at"
+        ]
+      }
+    }
+  ]
+}

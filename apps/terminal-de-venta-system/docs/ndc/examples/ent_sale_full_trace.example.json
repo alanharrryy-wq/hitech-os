@@ -1,0 +1,23 @@
+{
+  "neutral_entity": "ENT.sale",
+  "event": "EVT.sale.created",
+  "action": "ACT.sale.checkout",
+  "scope": {
+    "tenant": "TEN.prisma_rey",
+    "business": "BIZ.prisma_rey.main",
+    "store": "STO.prisma_rey.centro",
+    "source_device": "DEV.tb.pos.01",
+    "source_surface": "SURF.tb.pos"
+  },
+  "canonical": {
+    "projection": "CAN.sale",
+    "status": "accepted",
+    "sync_status": "synced"
+  },
+  "visible_in": [
+    "SURF.tb.pos.ticket",
+    "SURF.pc.sales_control",
+    "SURF.mb.owner_home",
+    "SURF.cl.sales_trend"
+  ]
+}

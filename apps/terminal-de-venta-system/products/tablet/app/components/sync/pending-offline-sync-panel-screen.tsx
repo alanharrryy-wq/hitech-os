@@ -11,7 +11,7 @@ import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../shared/customer/prisma-
 import styles from "./pending-offline-sync-panel.module.css";
 
 type FilterMode = "all" | "needs_attention" | PendingSendStatus;
-type ActionMode = "loading" | "refreshing" | "sending" | "retrying" | null;
+type ActionMode = "loading" | "refreshing" | "sending" | "retrying" | "reconciling" | null;
 
 type DispatchResult = {
   ok: boolean;
@@ -20,6 +20,16 @@ type DispatchResult = {
   batchId?: string | null;
   error?: string;
   forced?: boolean;
+  reconciliation?: {
+    ok?: boolean;
+    reason?: string;
+    counts?: {
+      acked?: number;
+      conflict?: number;
+      failed?: number;
+      skipped?: number;
+    };
+  } | null;
   health?: {
     ok?: boolean;
     enabled?: boolean;
@@ -56,8 +66,10 @@ const QUEUE_PREVIEW_LIMIT = 8;
 const FILTERS: { key: FilterMode; label: string }[] = [
   { key: "needs_attention", label: "Por atender" },
   { key: "pending", label: "Pendientes" },
+  { key: "sent", label: "Enviados" },
   { key: "failed", label: "Fallidos" },
   { key: "conflict", label: "Revisión" },
+  { key: "acked", label: "Confirmados" },
   { key: "all", label: "Todo" }
 ];
 
@@ -102,8 +114,10 @@ function dispatchMessage(result: DispatchResult | null) {
   if (!result) return "Sin intento de envío todavía.";
   const targetUrl = result.health?.url ? ` Destino: ${result.health.url}.` : "";
   const lastError = result.health?.error ? ` ${visibleSyncError(result.health.error)}` : result.error ? ` ${visibleSyncError(result.error)}` : "";
+  const ackedByReconciliation = result.reconciliation?.counts?.acked ?? 0;
+  if (ackedByReconciliation > 0) return `PC confirmó ${ackedByReconciliation} movimiento(s) que estaban enviados; Tablet los marcó como confirmados.`;
   if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} pendiente(s) mandado(s) a PC.`;
-  if (result.ok && result.reason === "empty") return "No había pendientes listos para enviar.";
+  if (result.ok && result.reason === "empty") return "No había pendientes nuevos; se revisó si había enviados esperando confirmación.";
   if (result.reason === "partial") return `PC recibió ${result.dispatched} pendiente(s), pero respondió con avisos. Revisa la lista: lo aceptado se confirma y lo pendiente queda protegido para reintento.`;
   if (result.reason === "remote_results_applied_from_non_ok_response") return "PC respondió con rechazo o aviso. La Tablet conservó los pendientes que no quedaron confirmados.";
   if (result.reason === "pc_sync_disabled") return `Envío a PC apagado por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
@@ -213,7 +227,7 @@ export function PendingOfflineSyncPanelScreen() {
     try {
       const result = await plainJson<DispatchResult>("/api/pos/sync/dispatch", {
         method: "POST",
-        body: JSON.stringify({ force, source: "sync-panel" })
+        body: JSON.stringify({ force, reconcileSent: true, source: "sync-panel" })
       });
       setDispatchResult(result);
       await Promise.all([loadPanelOnly(), loadOperationalContext()]);
@@ -241,7 +255,7 @@ export function PendingOfflineSyncPanelScreen() {
       });
       const result = await plainJson<DispatchResult>("/api/pos/sync/dispatch", {
         method: "POST",
-        body: JSON.stringify({ force: true, source: "sync-panel-retry" })
+        body: JSON.stringify({ force: true, reconcileSent: true, source: "sync-panel-retry" })
       });
       setDispatchResult(result);
       await Promise.all([loadPanelOnly(), loadOperationalContext()]);
@@ -278,8 +292,11 @@ export function PendingOfflineSyncPanelScreen() {
   const visibleItems = useMemo(() => showAll ? items : items.slice(0, QUEUE_PREVIEW_LIMIT), [items, showAll]);
   const hiddenItems = Math.max(0, items.length - visibleItems.length);
   const tone = panel?.summary.risk === "danger" ? "danger" : panel?.summary.risk === "warn" ? "warn" : "ok";
-  const sendableCount = panel ? panel.summary.pending + panel.summary.failed : 0;
+  const pendingOrFailedCount = panel ? panel.summary.pending + panel.summary.failed : 0;
+  const sentAwaitingAckCount = panel?.summary.sent ?? 0;
+  const sendableCount = pendingOrFailedCount + sentAwaitingAckCount;
   const retryableCount = panel ? panel.summary.failed + panel.summary.conflict : 0;
+  const primaryActionLabel = pendingOrFailedCount > 0 ? "Enviar pendientes" : sentAwaitingAckCount > 0 ? "Confirmar enviados" : "Enviar pendientes";
   const noteTone = dispatchTone(dispatchResult);
   const pcTone = pcConnectionTone(pcHealth);
   const licenseStatus = license?.status;
@@ -315,7 +332,7 @@ export function PendingOfflineSyncPanelScreen() {
           </div>
           <div className={styles.heroActions}>
             <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0}>
-              {actionMode === "sending" ? "Enviando..." : "Enviar pendientes"}
+              {actionMode === "sending" ? "Enviando..." : primaryActionLabel}
             </button>
             <button className={styles.secondaryAction} type="button" onClick={() => void load()} disabled={busy}>
               {actionMode === "refreshing" || actionMode === "loading" ? "Actualizando..." : "Actualizar estado"}
@@ -327,7 +344,7 @@ export function PendingOfflineSyncPanelScreen() {
         </section>
 
         <QuickActionStrip label="Acciones rapidas de pendientes">
-          <QuickActionTile title="Enviar pendientes" description="Usa el dispatcher real hacia PC si hay destino disponible." actionLabel={actionMode === "sending" ? "Enviando" : "Enviar"} icon="bell" tone="primary" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0} owner="sync" />
+          <QuickActionTile title={sentAwaitingAckCount > 0 && pendingOrFailedCount === 0 ? "Confirmar enviados" : "Enviar pendientes"} description="Envía pendientes y confirma enviados contra PC sin duplicar ventas." actionLabel={actionMode === "sending" ? "Enviando" : sentAwaitingAckCount > 0 && pendingOrFailedCount === 0 ? "Confirmar" : "Enviar"} icon="bell" tone="primary" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0} owner="sync" />
           <QuickActionTile title="Reintentar pendientes" description="Prepara fallidos y ejecuta reintento protegido." actionLabel={actionMode === "retrying" ? "Reintentando" : "Reintentar"} icon="arrow-right" tone="warning" onClick={() => void retryFailed()} disabled={busy || retryableCount === 0} owner="sync" />
           <QuickActionTile title="Exportar respaldo" description="Abre el respaldo offline de la cola local." actionLabel="Respaldo" icon="save" tone="sync" href="/offline" owner="offline" />
           <QuickActionTile title="Modo offline" description="Revisa ventas y movimientos guardados en esta Tablet." actionLabel="Ver" icon="dashboard" tone="license" href="/offline" owner="offline" />
