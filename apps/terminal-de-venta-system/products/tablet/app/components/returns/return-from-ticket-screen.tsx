@@ -136,7 +136,7 @@ export function ReturnsLandingScreen({
             data-kind="button"
             data-role="ticket-context"
           >
-            <button className={styles.secondaryButton} type="button" onClick={() =
+<button className={styles.secondaryButton} type="button"
               data-surface="tablet"
               data-screen="returns"
               data-zone="pos"
@@ -144,7 +144,7 @@ export function ReturnsLandingScreen({
               data-target="return-from-ticket-screen-button-115"
               data-kind="button"
               data-role="ticket-context"
-            > setReloadToken((value) => value + 1)}>Actualizar tickets</button>
+              onClick={() => setReloadToken((value) => value + 1)}>Actualizar tickets</button>
             <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-2" data-kind="button" data-role="button" className={styles.secondaryButton} href="/sales/today">Ver ventas de hoy</a>
           </div>
         </section>
@@ -184,7 +184,7 @@ export function ReturnsLandingScreen({
           >
             <h2>No pude cargar devoluciones</h2>
             <p className={styles.error}>{state.message}</p>
-            <button className={styles.primary} type="button" onClick={() =
+<button className={styles.primary} type="button"
               data-surface="tablet"
               data-screen="returns"
               data-zone="pos"
@@ -192,7 +192,7 @@ export function ReturnsLandingScreen({
               data-target="return-from-ticket-screen-button-139"
               data-kind="button"
               data-role="ticket-context"
-            > setReloadToken((value) => value + 1)}>Reintentar</button>
+              onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
           </section>
         ) : null}
 
@@ -359,7 +359,7 @@ export function ReturnFromTicketScreen({
               data-kind="button"
               data-role="ticket-context"
             >
-              <button className={styles.primary} type="button" onClick={() =
+<button className={styles.primary} type="button"
                 data-surface="tablet"
                 data-screen="returns"
                 data-zone="pos"
@@ -367,7 +367,7 @@ export function ReturnFromTicketScreen({
                 data-target="return-from-ticket-screen-button-266"
                 data-kind="button"
                 data-role="ticket-context"
-              > setReloadToken((value) => value + 1)}>Reintentar</button>
+                onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
               <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-13" data-kind="button" data-role="button" className={styles.secondaryButton} href="/returns">Volver a devoluciones</a>
             </div>
           </section>
@@ -417,7 +417,7 @@ export function ReturnFromTicketScreen({
                         )}
                       </div>
                       <div className={styles.qtyControls}>
-                        <button className={styles.qtyButton} type="button" onClick={() =
+<button className={styles.qtyButton} type="button"
                           data-surface="tablet"
                           data-screen="returns"
                           data-zone="pos"
@@ -425,9 +425,9 @@ export function ReturnFromTicketScreen({
                           data-target="return-from-ticket-screen-button-308"
                           data-kind="button"
                           data-role="ticket-context"
-                        > setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}>−</button>
+                          onClick={() => setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}>−</button>
                         <strong>{currentQty}</strong>
-                        <button className={styles.qtyButton} type="button" onClick={() =
+<button className={styles.qtyButton} type="button"
                           data-surface="tablet"
                           data-screen="returns"
                           data-zone="pos"
@@ -435,7 +435,7 @@ export function ReturnFromTicketScreen({
                           data-target="return-from-ticket-screen-button-310"
                           data-kind="button"
                           data-role="ticket-context"
-                        > setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}>+</button>
+                          onClick={() => setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}>+</button>
                       </div>
                     </div>
                   );
@@ -451,7 +451,6 @@ export function ReturnFromTicketScreen({
                     className={item.id === reason ? styles.reasonActive : styles.reasonButton}
                     key={item.id}
                     type="button"
-                    onClick={() =
                     data-surface="tablet"
                     data-screen="returns"
                     data-zone="pos"
@@ -459,7 +458,7 @@ export function ReturnFromTicketScreen({
                     data-target="return-from-ticket-screen-button-322"
                     data-kind="button"
                     data-role="ticket-context"
-                  > setReason(item.id)}
+                    onClick={() => setReason(item.id)}
                   >
                     {item.label}
                   </button>
@@ -477,7 +476,7 @@ export function ReturnFromTicketScreen({
                 <small>{qty} piezas seleccionadas</small>
               </div>
 
-              <button className={styles.primary} type="button" onClick={() =
+<button className={styles.primary} type="button"
                 data-surface="tablet"
                 data-screen="returns"
                 data-zone="pos"
@@ -485,7 +484,7 @@ export function ReturnFromTicketScreen({
                 data-target="return-from-ticket-screen-button-344"
                 data-kind="button"
                 data-role="ticket-context"
-              > void confirm()} disabled={amount <= 0 || submitting}>
+                onClick={() => void confirm()} disabled={amount <= 0 || submitting}>
                 {submitting ? "Registrando…" : "Confirmar devolución"}
               </button>
             </aside>

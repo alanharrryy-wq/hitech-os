@@ -123,7 +123,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
           {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={(value) => { setReceivedCents(value); setShowInsufficientDialog(false); }} /> : null}
           <PosErrorBanner error={error} />
           {!gate.canSell ? <PosErrorBanner error="Caja cerrada. Abre turno antes de cobrar." /> : null}
-          <button className={styles.confirmButton} type="button" onClick={() =
+<button className={styles.confirmButton} type="button"
             data-surface="tablet"
             data-screen="checkout"
             data-zone="checkout"
@@ -131,7 +131,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
             data-target="checkout-screen-button-94"
             data-kind="button"
             data-role="action"
-          > void completeSale()} disabled={!lines.length || state === "loading" || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
+            onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
             <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-2" data-kind="text" data-role="text" className={styles.visuallyHidden}>Confirmar cobro</span>
             <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="checkout_screen" data-target="checkout-screen-span-3" data-kind="text" data-role="text">{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
             <PrismaIcon name="receipt" size={20} />
@@ -178,7 +178,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
               data-kind="button"
               data-role="action"
             >
-              <button type="button" onClick={() =
+<button type="button"
                 data-surface="tablet"
                 data-screen="checkout"
                 data-zone="checkout"
@@ -186,8 +186,8 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                 data-target="checkout-screen-button-109"
                 data-kind="button"
                 data-role="action"
-              > { setPaymentMethod("card"); setShowInsufficientDialog(false); setError(null); }}>Agregar otro método</button>
-              <button type="button" onClick={() =
+                onClick={() => { setPaymentMethod("card"); setShowInsufficientDialog(false); setError(null);}}>Agregar otro método</button>
+<button type="button"
                 data-surface="tablet"
                 data-screen="checkout"
                 data-zone="checkout"
@@ -195,8 +195,8 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                 data-target="checkout-screen-button-110"
                 data-kind="button"
                 data-role="action"
-              > { setShowInsufficientDialog(false); setError(null); }}>Ajustar importe</button>
-              <button type="button" onClick={() =
+                onClick={() => { setShowInsufficientDialog(false); setError(null);}}>Ajustar importe</button>
+<button type="button"
                 data-surface="tablet"
                 data-screen="checkout"
                 data-zone="checkout"
@@ -204,7 +204,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                 data-target="checkout-screen-button-111"
                 data-kind="button"
                 data-role="action"
-              > { setPaymentMethod(paymentMethod === "cash" ? "card" : "cash"); setShowInsufficientDialog(false); setError(null); }}>Cambiar método</button>
+                onClick={() => { setPaymentMethod(paymentMethod === "cash" ? "card" : "cash"); setShowInsufficientDialog(false); setError(null);}}>Cambiar método</button>
               <a href="/pos"
                 data-surface="tablet"
                 data-screen="checkout"
@@ -214,7 +214,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                 data-kind="button"
                 data-role="action"
               >Volver al ticket</a>
-              <button type="button" onClick={() =
+<button type="button"
                 data-surface="tablet"
                 data-screen="checkout"
                 data-zone="checkout"
@@ -222,7 +222,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                 data-target="checkout-screen-button-113"
                 data-kind="button"
                 data-role="action"
-              > { setReceivedCents(0); setShowInsufficientDialog(false); setError(null); }}>Cancelar cobro</button>
+                onClick={() => { setReceivedCents(0); setShowInsufficientDialog(false); setError(null);}}>Cancelar cobro</button>
             </div>
           </div>
         </section>

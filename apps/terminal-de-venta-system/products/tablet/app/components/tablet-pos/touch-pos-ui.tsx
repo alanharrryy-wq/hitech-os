@@ -282,7 +282,7 @@ export function TouchProductSearch({
     >
       <label className={styles.searchInput}>
         <PrismaIcon name="search" size={22} />
-        <input value={query} onChange={(event) =
+<input value={query}
           data-surface="tablet"
           data-screen="pos"
           data-zone="pos"
@@ -290,7 +290,7 @@ export function TouchProductSearch({
           data-target="touch-pos-ui-search-269"
           data-kind="search"
           data-role="search-control"
-        > setQuery(event.target.value)} placeholder="Buscar producto, SKU o código..." type="search" />
+          onChange={(event) => setQuery(event.target.value)} placeholder="Buscar producto, SKU o código..." type="search" />
       </label>
       <button className={styles.scanButton} type="button" onClick={onResolve} disabled={loading || !query.trim()}
         data-surface="tablet"
@@ -369,7 +369,7 @@ export function TouchProductList({
           <footer data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-footer-8" data-kind="panel" data-role="container" className={styles.productFooter}>
             <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-9" data-kind="text" data-role="text">{formatMoney(product.priceCents)}</span>
             {onAdd ? (
-              <button type="button" onClick={() =
+<button type="button"
                 data-surface="tablet"
                 data-screen="pos"
                 data-zone="pos"
@@ -377,7 +377,7 @@ export function TouchProductList({
                 data-target="touch-pos-ui-button-324"
                 data-kind="button"
                 data-role="action"
-              > onAdd(product)} disabled={!product.isActive}>
+                onClick={() => onAdd(product)} disabled={!product.isActive}>
                 <PrismaIcon name="plus" size={18} />
                 {actionLabel}
               </button>
@@ -454,7 +454,7 @@ export function TouchCart({
                 <span>{line.product.sku} · {formatMoney(line.product.priceCents)}</span>
               </div>
               <div className={styles.stepper}>
-                <button type="button" aria-label="Restar" onClick={() =
+<button type="button" aria-label="Restar"
                   data-surface="tablet"
                   data-screen="pos"
                   data-zone="pos"
@@ -462,11 +462,11 @@ export function TouchCart({
                   data-target="touch-pos-ui-restar-385"
                   data-kind="button"
                   data-role="action"
-                > onDecrement(line.product.id)}>
+                  onClick={() => onDecrement(line.product.id)}>
                   <PrismaIcon name="minus" size={16} />
                 </button>
                 <strong>{line.qty}</strong>
-                <button type="button" aria-label="Sumar" onClick={() =
+<button type="button" aria-label="Sumar"
                   data-surface="tablet"
                   data-screen="pos"
                   data-zone="pos"
@@ -474,7 +474,7 @@ export function TouchCart({
                   data-target="touch-pos-ui-sumar-389"
                   data-kind="button"
                   data-role="action"
-                > onIncrement(line.product.id)}>
+                  onClick={() => onIncrement(line.product.id)}>
                   <PrismaIcon name="plus" size={16} />
                 </button>
               </div>
@@ -487,7 +487,7 @@ export function TouchCart({
                 data-kind="price"
                 data-role="financial-control"
               >{formatMoney(line.product.priceCents * line.qty)}</strong>
-              <button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea" onClick={() =
+<button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea"
                 data-surface="tablet"
                 data-screen="pos"
                 data-zone="pos"
@@ -495,7 +495,7 @@ export function TouchCart({
                 data-target="touch-pos-ui-quitar-l-nea-394"
                 data-kind="button"
                 data-role="action"
-              > onRemove(line.product.id)}>
+                onClick={() => onRemove(line.product.id)}>
                 <PrismaIcon name="trash" size={17} />
               </button>
             </article>
@@ -517,7 +517,7 @@ export function TouchCart({
           ["card", "Tarjeta"],
           ["mixed", "Mixto"]
         ].map(([value, label]) => (
-          <button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button" onClick={() =
+<button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button"
             data-surface="tablet"
             data-screen="pos"
             data-zone="checkout"
@@ -525,7 +525,7 @@ export function TouchCart({
             data-target="touch-pos-ui-price-408"
             data-kind="price"
             data-role="financial-control"
-          > onPaymentMethod(value)}>
+            onClick={() => onPaymentMethod(value)}>
             {label}
           </button>
         ))}

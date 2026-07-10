@@ -143,7 +143,6 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
               type="button"
               className={preset === item.key ? styles.primary : styles.secondary}
               aria-pressed={preset === item.key}
-              onClick={() =
               data-surface="tablet"
               data-screen="sales"
               data-zone="pos"
@@ -151,7 +150,7 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
               data-target="sales-history-screen-button-109"
               data-kind="button"
               data-role="action"
-            > setPreset(item.key)}
+              onClick={() => setPreset(item.key)}
             >
               {item.label}
             </button>
