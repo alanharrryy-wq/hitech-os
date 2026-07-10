@@ -1,0 +1,596 @@
+{
+  "count": 50,
+  "gaps": [
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "LICENSE_SIGNATURE_UNVERIFIABLE",
+      "kind": "ERROR_CODE",
+      "label": "Firma de licencia no verificable",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "LICENSE_PLAN_SURFACE_NOT_ALLOWED",
+      "kind": "ERROR_CODE",
+      "label": "Plan no permite esta superficie",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "LICENSE_FEATURE_BLOCKED",
+      "kind": "ERROR_CODE",
+      "label": "Funcion bloqueada por licencia",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "LICENSE_REFRESH_DISABLED",
+      "kind": "ERROR_CODE",
+      "label": "Refresh de licencia deshabilitado",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "LICENSE_REFRESH_FAILED",
+      "kind": "ERROR_CODE",
+      "label": "Refresh de licencia fallo",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "SETUP_CODE_INVALID",
+      "kind": "ERROR_CODE",
+      "label": "Setup Code invalido",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "DEVICE_CLAIM_SURFACE_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "Claim de dispositivo en superficie incorrecta",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CUSTOMER_SETUP_INCOMPLETE",
+      "kind": "ERROR_CODE",
+      "label": "Customer Setup incompleto",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_IDENTITY_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Identidad runtime faltante",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_BUSINESS_ID_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "BusinessId runtime no coincide",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_STORE_ID_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "StoreId runtime no coincide",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_TERMINAL_ID_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "TerminalId runtime no coincide",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_CONFIG_FILE_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Runtime config faltante",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RUNTIME_CONFIG_SCHEMA_INVALID",
+      "kind": "ERROR_CODE",
+      "label": "Runtime config invalido",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "TERMINAL_INACTIVE",
+      "kind": "ERROR_CODE",
+      "label": "Terminal inactiva",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "TERMINAL_NOT_ASSIGNED_TO_DEVICE",
+      "kind": "ERROR_CODE",
+      "label": "Terminal no asignada al dispositivo",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CASH_SESSION_NOT_OPEN",
+      "kind": "ERROR_CODE",
+      "label": "Caja no abierta",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CASH_SESSION_TERMINAL_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "Caja abierta en otra terminal",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "POS_LOCAL_DB_NOT_FOUND",
+      "kind": "ERROR_CODE",
+      "label": "DB local POS no encontrada",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "POS_LOCAL_DB_SCHEMA_DRIFT",
+      "kind": "ERROR_CODE",
+      "label": "Schema local POS divergente",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "PC_LICENSE_SURFACE_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Licencia PC faltante",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "MOBILE_LICENSE_SURFACE_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Licencia Mobile faltante",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "MOBILE_COMPANION_SLOT_NOT_CLAIMED",
+      "kind": "ERROR_CODE",
+      "label": "Mobile Companion Slot no reclamado",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "MOBILE_DEVICE_ASSIGNMENT_MISMATCH",
+      "kind": "ERROR_CODE",
+      "label": "Mobile asignado a otro dispositivo",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "MOBILE_SUPPORT_SURFACE_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Superficie Mobile de soporte faltante",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "MOBILE_FEATURES_BLOCKED_BY_LICENSE",
+      "kind": "ERROR_CODE",
+      "label": "Funciones Mobile bloqueadas",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CLOUD_HEALTH_UNREACHABLE",
+      "kind": "ERROR_CODE",
+      "label": "Cloud Health inaccesible",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CLOUD_HEALTH_MARKERS_MISSING",
+      "kind": "ERROR_CODE",
+      "label": "Marcadores cloud faltantes",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CLOUD_ROUTE_404",
+      "kind": "ERROR_CODE",
+      "label": "Ruta cloud 404",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "CLOUD_GATEWAY_UNCERTIFIED",
+      "kind": "ERROR_CODE",
+      "label": "Cloud Gateway no certificado",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "OAUTH_WRANGLER_BLOCKED",
+      "kind": "ERROR_CODE",
+      "label": "Wrangler OAuth bloqueado",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "ADMIN_TOKEN_MISSING_FOR_ADMIN_OP",
+      "kind": "ERROR_CODE",
+      "label": "Admin token requerido",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "SECRET_EXPOSURE_RISK",
+      "kind": "ERROR_CODE",
+      "label": "Riesgo de exposicion de secreto",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "SUPPORT_BUNDLE_UNSANITIZED",
+      "kind": "ERROR_CODE",
+      "label": "Bundle de soporte sin sanitizar",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "PRIVATE_KEY_PRESENT_IN_SUPPORT_CONTEXT",
+      "kind": "ERROR_CODE",
+      "label": "Private key en contexto de soporte",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "TOKEN_VALUE_EXPOSED",
+      "kind": "ERROR_CODE",
+      "label": "Token expuesto",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "RAW_ENV_EXPOSED",
+      "kind": "ERROR_CODE",
+      "label": "Env crudo expuesto",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "NEEDS_ONSITE_ACTION",
+      "kind": "ERROR_CODE",
+      "label": "Requiere accion presencial",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "NEEDS_HUMAN_APPROVAL",
+      "kind": "ERROR_CODE",
+      "label": "Requiere aprobacion humana",
+      "recommendedAction": "KEEP_CONTRACT_VISIBLE_TO_UI",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "simulate_runtime_alignment",
+      "kind": "ACTION",
+      "label": "Simular alineacion runtime",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": true,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/tools/verify-support-resolver.mjs"
+      ],
+      "id": "apply_runtime_alignment",
+      "kind": "ACTION",
+      "label": "Resolver problema",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "choose_authority",
+      "kind": "ACTION",
+      "label": "Elegir autoridad",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "simulate_identity_reconciliation",
+      "kind": "ACTION",
+      "label": "Simular reconciliación de identidad",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "IMPLEMENTED_SAME_NAME",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/docs/ops/licscope/live_smoke_outputs/cloud-center-live-readiness.json",
+        "apps/terminal-de-venta-system/infra/cloudflare/licflow3-worker/src/worker.js",
+        "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/cloud_saas_api.py",
+        "apps/terminal-de-venta-system/shared/licensing/licflow3-cloud-contract.ts"
+      ],
+      "id": "license_refresh",
+      "kind": "ACTION",
+      "label": "Refrescar licencia",
+      "recommendedAction": "ADD_DIRECT_EXECUTABLE_TEST",
+      "status": "IMPLEMENTED_UNTESTED"
+    },
+    {
+      "blocking": false,
+      "classification": "IMPLEMENTED_SAME_NAME",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/support_resolver_api.py"
+      ],
+      "id": "export_evidence",
+      "kind": "ACTION",
+      "label": "Exportar evidencia",
+      "recommendedAction": "ADD_DIRECT_EXECUTABLE_TEST",
+      "status": "IMPLEMENTED_UNTESTED"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "send_to_chatgpt",
+      "kind": "ACTION",
+      "label": "Mandar a ChatGPT",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "send_to_codex",
+      "kind": "ACTION",
+      "label": "Mandar a Codex",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "mark_onsite",
+      "kind": "ACTION",
+      "label": "Marcar como presencial",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    },
+    {
+      "blocking": false,
+      "classification": "IMPLEMENTED_SAME_NAME",
+      "evidencePaths": [
+        "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/support_resolver_api.py"
+      ],
+      "id": "copy_support_summary",
+      "kind": "ACTION",
+      "label": "Copiar resumen para soporte",
+      "recommendedAction": "ADD_DIRECT_EXECUTABLE_TEST",
+      "status": "IMPLEMENTED_UNTESTED"
+    },
+    {
+      "blocking": false,
+      "classification": "CONTRACT_ONLY",
+      "evidencePaths": [],
+      "id": "setup_claim_or_refresh_guided",
+      "kind": "ACTION",
+      "label": "Setup Code / License Refresh guiado",
+      "recommendedAction": "EXTEND_EXISTING_ONLY_AFTER_AUTHORITY",
+      "status": "DOC_ONLY"
+    }
+  ],
+  "generatedAt": "2026-07-10T09:31:33.389996+00:00",
+  "schemaVersion": "1.0.0"
+}

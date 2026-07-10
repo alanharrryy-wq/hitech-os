@@ -1,10 +1,10 @@
 # PRISMA Licencias - README operacional
 
-**ID:** `PRISMA_LICENSES_README_12C`  
-**Proyecto:** Terminal de Venta / PRISMA POS  
-**Ruta esperada:** `docs/productization/PRISMA_LICENSES_README.md`  
-**Estado:** guia canonica de lectura y operacion  
-**Idioma visible:** es-MX  
+**ID:** `PRISMA_LICENSES_README_12C`
+**Proyecto:** Terminal de Venta / PRISMA POS
+**Ruta esperada:** `docs/productization/PRISMA_LICENSES_README.md`
+**Estado:** guia canonica de lectura y operacion
+**Idioma visible:** es-MX
 **Objetivo:** explicar, sin humo ni magia negra de pasillo, como debe funcionar el sistema de licencias de PRISMA y que documento se debe consultar para cada decision.
 
 ---
@@ -836,3 +836,35 @@ Contrato operativo canonico:
 `refresh_disabled` significa configuracion informativa: no hay refresh remoto configurado. Por si solo no niega venta local. La venta local se decide por licencia local/fallback/desarrollo/continuidad, capacidades de `pos.*` y caja/turno abierto.
 
 `TABLET_PC_REQUIRED` queda como alias legado de documentos/fixtures viejos. El nombre canonico para runtime nuevo es `TABLET_PC_MANAGED`. Ninguno de los dos convierte a Tablet en terminal tonta ni vuelve PC requisito silencioso para venta local basica.
+
+<!-- PRISMA_LICENSING_CANON_GUARD:START -->
+## Canon anti-retrabajo de licensing/productization
+
+No copiar `licensing.zip` nuevamente dentro de `tooling`.
+
+Mapa oficial de flujo:
+
+`docs/productization/PRISMA_LICENSE_PRODUCTIZATION_FLOW.md`
+
+Rutas canónicas:
+
+- Tooling técnico: `tooling/licensing`
+- Productización, schemas, examples, test-cases: `tooling/productization`
+- Contratos: `docs/productization`
+- Scope neutral: `docs/ndc`
+- Runtime cloud: `infra/cloudflare/licflow3-worker`
+- Operación local / DB viva: `Prisma Cloud Ctr`
+
+Regla madre:
+
+```text
+Si es significado, va a docs/ndc.
+Si es contrato, va a docs/productization.
+Si es herramienta técnica, va a tooling/licensing.
+Si es schema/example/test-case, va a tooling/productization.
+Si es runtime cloud, va a infra/cloudflare/licflow3-worker.
+Si es operación/DB local viva, va a Prisma Cloud Ctr.
+```
+
+Última actualización por paquete: `licdoc3 1007 1001`.
+<!-- PRISMA_LICENSING_CANON_GUARD:END -->
