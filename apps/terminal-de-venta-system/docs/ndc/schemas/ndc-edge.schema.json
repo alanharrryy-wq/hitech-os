@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "edge_id",
+    "from_id",
+    "to_id",
+    "edge_type"
+  ],
+  "properties": {
+    "edge_id": {
+      "type": "string"
+    },
+    "from_id": {
+      "type": "string"
+    },
+    "to_id": {
+      "type": "string"
+    },
+    "edge_type": {
+      "type": "string"
+    }
+  }
+}

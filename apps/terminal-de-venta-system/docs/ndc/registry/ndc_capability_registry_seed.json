@@ -1,0 +1,42 @@
+{
+  "capabilities": [
+    {
+      "capability_id": "CAP.pos.sale",
+      "class": "base",
+      "required_events": [
+        "EVT.sale.created",
+        "EVT.payment.recorded"
+      ]
+    },
+    {
+      "capability_id": "CAP.cash.close",
+      "class": "base",
+      "required_events": [
+        "EVT.cash_session.closed"
+      ]
+    },
+    {
+      "capability_id": "CAP.analytics.merma",
+      "class": "pro",
+      "required_events": [
+        "EVT.inventory.waste.recorded"
+      ]
+    },
+    {
+      "capability_id": "CAP.analytics.margin_dashboard",
+      "class": "premium",
+      "required_events": [
+        "EVT.sale.created",
+        "EVT.item.cost.updated"
+      ]
+    },
+    {
+      "capability_id": "CAP.saas.device_replacement",
+      "class": "base_pro",
+      "required_events": [
+        "EVT.device.revoked",
+        "EVT.device.claimed"
+      ]
+    }
+  ]
+}
