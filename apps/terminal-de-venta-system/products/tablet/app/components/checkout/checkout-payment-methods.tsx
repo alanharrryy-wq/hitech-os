@@ -16,7 +16,7 @@ export function CheckoutPaymentMethods({ value, onChange }: { value: PaymentMeth
       data-role="financial-control"
     >
       {PAYMENT_METHODS.map((method) => (
-<button key={method.id} className={value === method.id ? styles.paymentActive : styles.paymentButton} type="button"
+        <button key={method.id} className={value === method.id ? styles.paymentActive : styles.paymentButton} type="button"
           data-surface="tablet"
           data-screen="checkout"
           data-zone="checkout"

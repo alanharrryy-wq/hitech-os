@@ -1,6 +1,6 @@
 import type { TabletRuntimeSnapshot, TabletRuntimeTone } from "@/lib/tablet-runtime-snapshot/shell-contract";
 
-export type OperationalGateCode = "OPEN_CASH_SESSION" | "SHIFT_NOT_OPEN";
+export type OperationalGateCode = "OPEN_CASH_SESSION" | "SHIFT_NOT_OPEN" | "LICENSE_BLOCKED";
 
 export type CanSellDecision = {
   canSell: boolean;
@@ -48,12 +48,33 @@ function buildDecision(open: boolean): CanSellDecision {
   };
 }
 
+function buildLicenseBlockedDecision(snapshot: TabletRuntimeSnapshot): CanSellDecision | null {
+  const license = snapshot.license;
+  if (license.canUseLocalPos) return null;
+
+  return {
+    canSell: false,
+    canOperatePos: false,
+    canShowSellNavigation: false,
+    canAddProduct: false,
+    canCheckout: false,
+    code: "LICENSE_BLOCKED",
+    tone: license.tone === "danger" ? "danger" : "warn",
+    title: license.label || "Licencia requiere atención",
+    detail: license.denialReason
+      ? `La licencia bloquea venta local (${license.denialReason}). Revisa Licencia y equipo antes de vender.`
+      : "La licencia actual no permite completar ventas locales. Revisa Licencia y equipo antes de vender.",
+    actionHref: license.actionHref || "/settings/license",
+    actionLabel: license.actionLabel || "Revisar licencia"
+  };
+}
+
 export function hasOpenShiftOrCashSession(snapshot: Pick<TabletRuntimeSnapshot, "shift">): boolean {
   return snapshot.shift.state === "open" || Boolean(snapshot.shift.cashSessionId);
 }
 
 export function decideCanSellFromRuntimeSnapshot(snapshot: TabletRuntimeSnapshot): CanSellDecision {
-  return buildDecision(hasOpenShiftOrCashSession(snapshot));
+  return buildLicenseBlockedDecision(snapshot) ?? buildDecision(hasOpenShiftOrCashSession(snapshot));
 }
 
 export function decideCanSellFromShiftSummary(shift: { status?: string | null; canSell?: boolean | null; id?: string | null } | null | undefined): CanSellDecision {

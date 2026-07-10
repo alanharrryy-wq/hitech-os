@@ -150,8 +150,8 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
               data-target="sales-history-screen-button-109"
               data-kind="button"
               data-role="action"
-              onClick={() => setPreset(item.key)}
-            >
+                onClick={() => setPreset(item.key)}
+              >
               {item.label}
             </button>
           ))}

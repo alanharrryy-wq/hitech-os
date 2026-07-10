@@ -144,7 +144,8 @@ export function ReturnsLandingScreen({
               data-target="return-from-ticket-screen-button-115"
               data-kind="button"
               data-role="ticket-context"
-              onClick={() => setReloadToken((value) => value + 1)}>Actualizar tickets</button>
+              onClick={() => setReloadToken((value) => value + 1)}
+              >Actualizar tickets</button>
             <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-2" data-kind="button" data-role="button" className={styles.secondaryButton} href="/sales/today">Ver ventas de hoy</a>
           </div>
         </section>
@@ -192,7 +193,8 @@ export function ReturnsLandingScreen({
               data-target="return-from-ticket-screen-button-139"
               data-kind="button"
               data-role="ticket-context"
-              onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
+              onClick={() => setReloadToken((value) => value + 1)}
+              >Reintentar</button>
           </section>
         ) : null}
 
@@ -367,7 +369,8 @@ export function ReturnFromTicketScreen({
                 data-target="return-from-ticket-screen-button-266"
                 data-kind="button"
                 data-role="ticket-context"
-                onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
+                onClick={() => setReloadToken((value) => value + 1)}
+                >Reintentar</button>
               <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-13" data-kind="button" data-role="button" className={styles.secondaryButton} href="/returns">Volver a devoluciones</a>
             </div>
           </section>
@@ -425,7 +428,8 @@ export function ReturnFromTicketScreen({
                           data-target="return-from-ticket-screen-button-308"
                           data-kind="button"
                           data-role="ticket-context"
-                          onClick={() => setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}>−</button>
+                          onClick={() => setLineQty(line.id, availableQty, currentQty - 1)} disabled={fullyReturned || currentQty <= 0}
+                          >−</button>
                         <strong>{currentQty}</strong>
 <button className={styles.qtyButton} type="button"
                           data-surface="tablet"
@@ -435,7 +439,8 @@ export function ReturnFromTicketScreen({
                           data-target="return-from-ticket-screen-button-310"
                           data-kind="button"
                           data-role="ticket-context"
-                          onClick={() => setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}>+</button>
+                          onClick={() => setLineQty(line.id, availableQty, currentQty + 1)} disabled={fullyReturned || currentQty >= availableQty}
+                          >+</button>
                       </div>
                     </div>
                   );
@@ -458,8 +463,8 @@ export function ReturnFromTicketScreen({
                     data-target="return-from-ticket-screen-button-322"
                     data-kind="button"
                     data-role="ticket-context"
-                    onClick={() => setReason(item.id)}
-                  >
+                      onClick={() => setReason(item.id)}
+                    >
                     {item.label}
                   </button>
                 ))}
@@ -476,7 +481,7 @@ export function ReturnFromTicketScreen({
                 <small>{qty} piezas seleccionadas</small>
               </div>
 
-<button className={styles.primary} type="button"
+              <button className={styles.primary} type="button"
                 data-surface="tablet"
                 data-screen="returns"
                 data-zone="pos"

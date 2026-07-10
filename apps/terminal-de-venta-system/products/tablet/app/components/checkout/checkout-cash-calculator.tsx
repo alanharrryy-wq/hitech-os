@@ -46,8 +46,8 @@ export function CheckoutCashCalculator({ totalCents, receivedCents, onReceivedCe
           data-target="checkout-cash-calculator-price-12"
           data-kind="price"
           data-role="financial-control"
-          onChange={(event) => onReceivedCents(Math.round(Number(event.target.value || 0) * 100))}
-          placeholder="0.00"
+            onChange={(event) => onReceivedCents(Math.round(Number(event.target.value || 0) * 100))}
+            placeholder="0.00"
         />
       </label>
       <div

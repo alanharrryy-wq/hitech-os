@@ -54,7 +54,7 @@ export function PrismaCartPanel() {
           data-role="action"
         >
           <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-span-3" data-kind="panel" data-role="panel" className={styles.itemCount}>{cartItems.length} artículos</span>
-<button className={styles.trashButton} type="button" aria-label="Vaciar carrito"
+          <button className={styles.trashButton} type="button" aria-label="Vaciar carrito"
             data-surface="tablet"
             data-screen="pos"
             data-zone="pos"
@@ -91,7 +91,7 @@ export function PrismaCartPanel() {
               <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-div-7" data-kind="panel" data-role="container" className={styles.cartItemMain}>
                 <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-div-8" data-kind="panel" data-role="container" className={styles.cartItemTitle}>
                   <strong>{item.name}</strong>
-<button type="button" aria-label={`Quitar ${item.name}`}
+                  <button type="button" aria-label={`Quitar ${item.name}`}
                     data-surface="tablet"
                     data-screen="pos"
                     data-zone="pos"
@@ -99,7 +99,7 @@ export function PrismaCartPanel() {
                     data-target="prisma-cart-panel-button-54"
                     data-kind="button"
                     data-role="action"
-                    onClick={() => emitCartAction("remove-line", { productId: item.productId, productName: item.name})}>
+                    onClick={() => emitCartAction("remove-line", { productId: item.productId, productName: item.name} )}>
                     <PrismaIcon name="x" size={15} />
                   </button>
                 </div>
@@ -114,7 +114,7 @@ export function PrismaCartPanel() {
                 >{item.unitPrice}</span>
                 <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-div-9" data-kind="panel" data-role="container" className={styles.cartItemBottom}>
                   <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-div-10" data-kind="panel" data-role="container" className={styles.quantityStepper} aria-label={`Cantidad ${item.quantity}`}>
-<button type="button" aria-label={`Restar ${item.name}`}
+                    <button type="button" aria-label={`Restar ${item.name}`}
                       data-surface="tablet"
                       data-screen="pos"
                       data-zone="pos"
@@ -122,11 +122,11 @@ export function PrismaCartPanel() {
                       data-target="prisma-cart-panel-button-61"
                       data-kind="button"
                       data-role="action"
-                      onClick={() => emitCartAction("decrement-line", { productId: item.productId, productName: item.name})}>
+                      onClick={() => emitCartAction("decrement-line", { productId: item.productId, productName: item.name} )}>
                       <PrismaIcon name="minus" size={13} />
                     </button>
                     <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-span-11" data-kind="panel" data-role="panel">{item.quantity}</span>
-<button type="button" aria-label={`Sumar ${item.name}`}
+                    <button type="button" aria-label={`Sumar ${item.name}`}
                       data-surface="tablet"
                       data-screen="pos"
                       data-zone="pos"
@@ -134,7 +134,7 @@ export function PrismaCartPanel() {
                       data-target="prisma-cart-panel-button-65"
                       data-kind="button"
                       data-role="action"
-                      onClick={() => emitCartAction("increment-line", { productId: item.productId, productName: item.name})}>
+                      onClick={() => emitCartAction("increment-line", { productId: item.productId, productName: item.name} )}>
                       <PrismaIcon name="plus" size={13} />
                     </button>
                   </div>
@@ -193,7 +193,7 @@ export function PrismaCartPanel() {
         </div>
       </section>
 
-<button className={styles.chargeButton} type="button"
+      <button className={styles.chargeButton} type="button"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -215,7 +215,7 @@ export function PrismaCartPanel() {
         data-kind="button"
         data-role="action"
       >
-<button type="button"
+        <button type="button"
           data-surface="tablet"
           data-screen="pos"
           data-zone="pos"
@@ -228,7 +228,7 @@ export function PrismaCartPanel() {
           <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-span-17" data-kind="panel" data-role="panel">COTIZACIÓN</span>
           <strong>Pronto</strong>
         </button>
-<button type="button"
+        <button type="button"
           data-surface="tablet"
           data-screen="pos"
           data-zone="pos"
@@ -241,7 +241,7 @@ export function PrismaCartPanel() {
           <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="prisma_cart_panel" data-target="prisma-cart-panel-span-18" data-kind="panel" data-role="panel">GUARDAR</span>
           <strong>Ticket</strong>
         </button>
-<button type="button"
+        <button type="button"
           data-surface="tablet"
           data-screen="pos"
           data-zone="pos"

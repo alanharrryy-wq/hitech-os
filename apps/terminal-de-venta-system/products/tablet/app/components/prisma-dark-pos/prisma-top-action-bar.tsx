@@ -21,7 +21,7 @@ export function PrismaTopActionBar() {
       data-kind="button"
       data-role="action"
     >
-<button className={styles.iconButton} type="button" aria-label="Cambiar tema"
+      <button className={styles.iconButton} type="button" aria-label="Cambiar tema"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -32,7 +32,7 @@ export function PrismaTopActionBar() {
         onClick={() => emitTopAction("theme")}>
         <PrismaIcon name="sun" size={20} />
       </button>
-<button className={styles.iconButtonBadge} type="button" aria-label="Notificaciones"
+      <button className={styles.iconButtonBadge} type="button" aria-label="Notificaciones"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"
@@ -52,7 +52,7 @@ export function PrismaTopActionBar() {
           data-role="action"
         >3</span>
       </button>
-<button className={styles.adminChip} type="button"
+      <button className={styles.adminChip} type="button"
         data-surface="tablet"
         data-screen="pos"
         data-zone="pos"

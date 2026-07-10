@@ -282,7 +282,7 @@ export function TouchProductSearch({
     >
       <label className={styles.searchInput}>
         <PrismaIcon name="search" size={22} />
-<input value={query}
+        <input value={query}
           data-surface="tablet"
           data-screen="pos"
           data-zone="pos"
@@ -369,7 +369,7 @@ export function TouchProductList({
           <footer data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-footer-8" data-kind="panel" data-role="container" className={styles.productFooter}>
             <span data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="touch_pos_ui" data-target="touch-pos-ui-span-9" data-kind="text" data-role="text">{formatMoney(product.priceCents)}</span>
             {onAdd ? (
-<button type="button"
+              <button type="button"
                 data-surface="tablet"
                 data-screen="pos"
                 data-zone="pos"
@@ -454,7 +454,7 @@ export function TouchCart({
                 <span>{line.product.sku} · {formatMoney(line.product.priceCents)}</span>
               </div>
               <div className={styles.stepper}>
-<button type="button" aria-label="Restar"
+                <button type="button" aria-label="Restar"
                   data-surface="tablet"
                   data-screen="pos"
                   data-zone="pos"
@@ -466,7 +466,7 @@ export function TouchCart({
                   <PrismaIcon name="minus" size={16} />
                 </button>
                 <strong>{line.qty}</strong>
-<button type="button" aria-label="Sumar"
+                <button type="button" aria-label="Sumar"
                   data-surface="tablet"
                   data-screen="pos"
                   data-zone="pos"
@@ -487,7 +487,7 @@ export function TouchCart({
                 data-kind="price"
                 data-role="financial-control"
               >{formatMoney(line.product.priceCents * line.qty)}</strong>
-<button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea"
+              <button className={styles.iconOnlyButton} type="button" aria-label="Quitar línea"
                 data-surface="tablet"
                 data-screen="pos"
                 data-zone="pos"
@@ -517,7 +517,7 @@ export function TouchCart({
           ["card", "Tarjeta"],
           ["mixed", "Mixto"]
         ].map(([value, label]) => (
-<button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button"
+          <button key={value} className={paymentMethod === value ? styles.paymentActive : styles.paymentButton} type="button"
             data-surface="tablet"
             data-screen="pos"
             data-zone="checkout"

@@ -148,7 +148,7 @@ export function OfflineExportAuditScreen() {
             <h1 data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-h1-3" data-kind="text" data-role="text">Tus movimientos están guardados en esta Tablet.</h1>
             <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-p-4" data-kind="text" data-role="text">Ventas, pendientes por enviar, movimientos de existencias, productos bajos y respaldos quedan disponibles aun sin conexión.</p>
           </div>
-<button type="button"
+          <button type="button"
             data-surface="tablet"
             data-screen="offline"
             data-zone="pos"
