@@ -1,0 +1,218 @@
+<!doctype html>
+<!--
+PRISMA · PÁGINA 3 · POR QUÉ ELEGIR PRISMA
+
+ARCHIVOS DE ESTA PÁGINA
+- index.html  = estructura y contenido
+- pagina.css  = composición y estilos exclusivos
+- pagina.js   = selector interactivo de casos
+
+REGLA DE TRABAJO
+La página consume el sistema UI central y conserva aquí únicamente su estructura,
+composición particular e interacción específica.
+-->
+<html lang="es" data-prisma-page="why-prisma">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f2f5f8" />
+  <title>Por qué elegir PRISMA</title>
+  <meta
+    name="description"
+    content="Casos breves que muestran cómo PRISMA convierte la operación cotidiana en evidencia, verdad compartida y decisiones útiles."
+  />
+  <link rel="stylesheet" href="../../sistema-ui/css/prisma-ui.css" />
+  <link rel="stylesheet" href="pagina.css" />
+</head>
+<body data-prisma-theme="prisma" data-prisma-page="why-prisma">
+  <main class="why-page">
+    <nav class="why-nav" aria-label="Navegación de la página">
+      <a class="why-brand" href="../../index.html" aria-label="Volver al inicio de PRISMA">
+        <span class="why-wordmark">PRISMA</span>
+      </a>
+      <div class="why-nav-actions">
+        <a class="prisma-button prisma-button--quiet" href="../../index.html">Volver al índice</a>
+        <a class="prisma-button prisma-button--primary" href="#casos">Ver los casos</a>
+      </div>
+    </nav>
+
+    <section class="why-hero prisma-hero" aria-labelledby="why-title">
+      <div class="why-hero-copy prisma-hero__copy">
+        <p class="prisma-eyebrow">POR QUÉ ELEGIR PRISMA</p>
+        <h1 id="why-title" class="why-title prisma-hero__title">
+          Porque el negocio cambia.
+          <span>Su patrón operativo no.</span>
+        </h1>
+        <p class="why-lede prisma-hero__lede">
+          PRISMA conecta personas, acciones y evidencia para que cada negocio opere,
+          se explique y crezca desde una misma verdad, sin importar cuántas pantallas use.
+        </p>
+        <div class="why-actions prisma-hero__actions">
+          <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#casos">Verlo en la vida real</a>
+          <a class="prisma-button" href="#razones">Cuatro razones concretas</a>
+        </div>
+      </div>
+
+      <div class="why-hero-visual" aria-hidden="true">
+        <div class="why-prism">
+          <span class="why-prism-label">OPERACIÓN</span>
+          <svg viewBox="0 0 360 360" role="presentation">
+            <defs>
+              <linearGradient id="whyStroke" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#8bb9f2" />
+                <stop offset="1" stop-color="#2868c7" />
+              </linearGradient>
+            </defs>
+            <circle cx="180" cy="180" r="118" />
+            <path d="M86 180h188M180 86v188" />
+            <path d="M116 116l128 128M244 116L116 244" />
+            <circle class="why-prism-core" cx="180" cy="180" r="43" />
+          </svg>
+          <strong>PRISMA</strong>
+          <span class="why-prism-outcome">VERDAD ÚTIL</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="why-section" id="casos" aria-labelledby="cases-title">
+      <header class="why-section-heading prisma-section-heading">
+        <div>
+          <p class="prisma-eyebrow">PRISMA, VISTO EN LA VIDA REAL</p>
+          <h2 id="cases-title">Tres negocios. El mismo esqueleto.</h2>
+        </div>
+        <p>
+          El producto, el lenguaje y los roles cambian. La operación siempre deja una secuencia
+          que puede ubicarse, probarse y convertirse en decisión.
+        </p>
+      </header>
+
+      <div class="case-tabs" role="tablist" aria-label="Seleccionar caso de negocio">
+        <button class="case-tab" role="tab" aria-selected="true" data-case="restaurant">Restaurante</button>
+        <button class="case-tab" role="tab" aria-selected="false" data-case="retail">Tienda</button>
+        <button class="case-tab" role="tab" aria-selected="false" data-case="services">Servicios</button>
+      </div>
+
+      <article class="case-stage prisma-glass" aria-live="polite">
+        <div class="case-illustration" data-case-illustration>
+          <svg viewBox="0 0 360 280" aria-hidden="true">
+            <g data-scene="restaurant">
+              <ellipse cx="178" cy="224" rx="126" ry="18" />
+              <path d="M94 127h166M177 127v91M133 218h89" />
+              <circle cx="177" cy="93" r="34" />
+              <path d="M151 93h52M177 67v52" />
+              <path d="M62 107h54v72H62zM75 88h28v19" />
+              <path d="M254 105c24 0 43 19 43 43s-19 43-43 43" />
+              <path d="M254 127h36M254 148h43M254 169h36" />
+            </g>
+            <g data-scene="retail" hidden>
+              <ellipse cx="181" cy="228" rx="129" ry="18" />
+              <path d="M72 98h214l-18 110H91z" />
+              <path d="M102 98l14-35h128l14 35" />
+              <path d="M121 127h116M114 155h130M108 182h142" />
+              <circle cx="119" cy="222" r="15" /><circle cx="240" cy="222" r="15" />
+              <path d="M292 75l26 26-54 54-26-26zM278 89l26 26" />
+            </g>
+            <g data-scene="services" hidden>
+              <ellipse cx="180" cy="228" rx="126" ry="18" />
+              <rect x="84" y="56" width="192" height="156" rx="22" />
+              <path d="M84 98h192M128 39v35M232 39v35" />
+              <path d="M122 132h45M194 132h45M122 166h45M194 166h45" />
+              <circle cx="276" cy="183" r="42" />
+              <path d="M258 184l13 13 25-32" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="case-copy">
+          <p class="case-kicker" data-case-kicker>RESTAURANTE</p>
+          <h3 data-case-title>La orden nace en la mesa y conserva su historia.</h3>
+          <p data-case-description>
+            El mesero registra; cocina sabe qué preparar; caja conoce qué cobrar; administración recibe el mismo estado.
+          </p>
+          <div class="case-flow" aria-label="Flujo del caso seleccionado">
+            <span data-flow-person>Mesero</span>
+            <i aria-hidden="true">→</i>
+            <span data-flow-action>Toma una orden</span>
+            <i aria-hidden="true">→</i>
+            <span data-flow-evidence>Comanda</span>
+            <i aria-hidden="true">→</i>
+            <span data-flow-decision>Preparar y cobrar</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="why-section universal-section" aria-labelledby="pattern-title">
+      <header class="pattern-heading">
+        <p class="prisma-eyebrow">EL PATRÓN QUE TODOS COMPARTEN</p>
+        <h2 id="pattern-title">No importa si vendes productos, alimentos, tiempo o conocimiento.</h2>
+        <p>Siempre existe una persona, un contexto, una acción, evidencia y una decisión.</p>
+      </header>
+
+      <div class="universal-flow" aria-label="Gramática universal de la operación">
+        <div><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="7"/><path d="M11 40c2-10 7-15 13-15s11 5 13 15"/></svg><strong>Persona</strong></div>
+        <i aria-hidden="true">→</i>
+        <div><svg viewBox="0 0 48 48"><path d="M9 39V17l15-8 15 8v22z"/><path d="M17 39V27h14v12"/></svg><strong>Contexto</strong></div>
+        <i aria-hidden="true">→</i>
+        <div><svg viewBox="0 0 48 48"><path d="M11 34l12-12 6 6 9-14"/><path d="M31 14h7v7"/></svg><strong>Acción</strong></div>
+        <i aria-hidden="true">→</i>
+        <div><svg viewBox="0 0 48 48"><path d="M13 7h18l5 5v29H13z"/><path d="M31 7v7h7"/><path d="M18 27l4 4 8-10"/></svg><strong>Evidencia</strong></div>
+        <i aria-hidden="true">→</i>
+        <div><svg viewBox="0 0 48 48"><path d="M9 24s6-10 15-10 15 10 15 10-6 10-15 10S9 24 9 24z"/><circle cx="24" cy="24" r="4"/></svg><strong>Decisión</strong></div>
+      </div>
+
+      <p class="pattern-conclusion">PRISMA no cambia este patrón. <strong>Lo vuelve trazable y compartido.</strong></p>
+    </section>
+
+    <section class="why-section reasons-section" id="razones" aria-labelledby="reasons-title">
+      <header class="why-section-heading prisma-section-heading">
+        <div>
+          <p class="prisma-eyebrow">CUATRO RAZONES, NO VEINTE PROMESAS</p>
+          <h2 id="reasons-title">Menos discurso. Más operación explicable.</h2>
+        </div>
+        <p>PRISMA busca resolver cuatro problemas estructurales sin convertir cada negocio en un proyecto de software eterno.</p>
+      </header>
+
+      <div class="reason-grid">
+        <article class="reason-item">
+          <span class="reason-icon" aria-hidden="true">⌁</span>
+          <h3>Opera incluso cuando la conexión falla</h3>
+          <p>La superficie operativa conserva la continuidad autorizada y sincroniza después.</p>
+        </article>
+        <article class="reason-item">
+          <span class="reason-icon" aria-hidden="true">◎</span>
+          <h3>Cada rol ve lo necesario</h3>
+          <p>Quien opera, administra o decide recibe una proyección distinta de la misma verdad.</p>
+        </article>
+        <article class="reason-item">
+          <span class="reason-icon" aria-hidden="true">◇</span>
+          <h3>Toda afirmación tiene evidencia</h3>
+          <p>Sin evento, historial o procedencia, una cifra no se presenta como certeza.</p>
+        </article>
+        <article class="reason-item">
+          <span class="reason-icon" aria-hidden="true">⑂</span>
+          <h3>Crece sin reconstruir el negocio</h3>
+          <p>Nuevas superficies y capacidades reutilizan el núcleo en lugar de inventar otra verdad.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="why-closing prisma-glass" aria-labelledby="closing-title">
+      <p class="prisma-eyebrow">LA IDEA EN UNA FRASE</p>
+      <h2 id="closing-title">Las pantallas cambian. <span>La verdad operacional permanece.</span></h2>
+      <p>Cada persona ve lo que necesita. Todo el negocio comparte lo que realmente ocurrió.</p>
+      <div class="why-closing-actions">
+        <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#casos">Revisar los casos</a>
+        <a class="prisma-button" href="../../index.html">Volver al índice</a>
+      </div>
+    </section>
+
+    <footer class="why-footer">
+      <span>PRISMA · operación → evidencia → verdad → decisión</span>
+      <a href="../../index.html">Volver al índice</a>
+    </footer>
+  </main>
+
+  <script type="module" src="pagina.js"></script>
+</body>
+</html>
