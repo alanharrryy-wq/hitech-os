@@ -11,14 +11,23 @@ Rama de trabajo aislada para el sitio HTML modular de PRISMA, el deck para inver
 - Merge: bloqueado hasta aprobación explícita
 - Superficies operativas PRISMA: excluidas
 
-## Checkpoint remoto actual
+## Preview móvil
 
-El área `prisma-html/` ya contiene un checkpoint ejecutable y navegable para desarrollar desde GitHub sin tocar las aplicaciones existentes:
+Página 3, **Por qué elegir PRISMA**:
+
+`https://raw.githack.com/alanharrryy-wq/hitech-os/feature/prisma-html-investor-site/prisma-html/preview/pagina-3.html`
+
+El preview usa los CSS y JavaScript reales de la rama e incorpora el logotipo oficial como asset independiente. Sirve para revisión desde teléfono; no es un despliegue de producción.
+
+## Checkpoint remoto actual
 
 - `index.html`: índice remoto de trabajo.
 - `sistema-ui/css/prisma-ui.css`: baseline compartido compacto.
-- `paginas/pagina-3-por-que-prisma/`: Página 3 funcional.
-- `reports/page3-validation.json`: validación estática honesta.
+- `paginas/pagina-3-por-que-prisma/`: Página 3 modular.
+- `assets/images/prisma-logo-oficial.svg`: logotipo oficial sin figura posterior.
+- `preview/pagina-3.html`: preview móvil navegable.
+- `reports/page3-validation.json`: validación estática de la página.
+- `reports/page3-mobile-preview.json`: estado honesto del preview.
 - `BRANCH-CONTEXT.md`: alcance, exclusiones y siguientes gates.
 
 ## Página 3 · Por qué elegir PRISMA
@@ -36,19 +45,18 @@ Incluye:
 
 ## Estado de validación
 
-`PASS_STATIC` para referencias locales, estructura JavaScript, tabs por teclado, responsive y ausencia de parches prohibidos.
+`PASS_STATIC_PREVIEW_READY`.
 
-No se declara todavía `VISUAL_CERTIFIED`: faltan revisión alojada desde móvil, capturas y comparación visual.
+No se declara todavía `VISUAL_CERTIFIED`: falta revisión en un dispositivo móvil real, capturas y aprobación visual del usuario.
 
 ## Próximos checkpoints
 
-1. Importar el baseline modular completo del último ZIP validado.
-2. Incorporar el logo oficial como asset normal.
-3. Publicar un preview móvil automático.
-4. Añadir la portada y el deck de inversionistas.
-5. Construir la demo guiada.
-6. Sustituir placeholders financieros únicamente por evidencia verificada.
+1. Revisar el preview móvil y corregir observaciones.
+2. Importar el baseline modular completo del último ZIP validado.
+3. Añadir la portada y el deck de inversionistas.
+4. Construir la demo guiada.
+5. Sustituir placeholders financieros únicamente por evidencia verificada.
 
 ## Regla de rama
 
-Cada avance debe entrar mediante commits temáticos y verificables. No se hará merge, deploy ni cambio sobre `main` sin autorización explícita.
+Cada avance entra mediante commits temáticos y verificables. No se hará merge, deploy de producción ni cambio sobre `main` sin autorización explícita.
