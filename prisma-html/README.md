@@ -1,20 +1,54 @@
 # PRISMA HTML
 
-Rama de trabajo aislada para el sitio HTML modular de PRISMA, el deck para inversionistas y las páginas futuras.
+Rama de trabajo aislada para el sitio HTML modular de PRISMA, el deck para inversionistas y las páginas visuales futuras.
 
 ## Estado
 
-- Rama de trabajo: `feature/prisma-html-investor-site`
+- Rama: `feature/prisma-html-investor-site`
 - Base: `main`
-- No se integra a producción ni modifica las aplicaciones existentes.
-- Cada avance debe entrar mediante commits temáticos y verificables.
+- Clasificación Factory Ledger: `BUILD`
+- Producción: no desplegada
+- Merge: bloqueado hasta aprobación explícita
+- Superficies operativas PRISMA: excluidas
 
-## Contenido previsto
+## Checkpoint remoto actual
 
-- Página 1: portada conceptual PRISMA.
-- Página 2: deck interactivo para inversionistas.
-- Página 3: por qué elegir PRISMA.
-- Página 4: demo guiada.
-- Sistema UI compartido, catálogo, documentación y validaciones.
+El área `prisma-html/` ya contiene un checkpoint ejecutable y navegable para desarrollar desde GitHub sin tocar las aplicaciones existentes:
 
-> Este archivo inicial reserva el área de trabajo. El proyecto fuente completo se incorpora como el siguiente checkpoint sin tocar `main`.
+- `index.html`: índice remoto de trabajo.
+- `sistema-ui/css/prisma-ui.css`: baseline compartido compacto.
+- `paginas/pagina-3-por-que-prisma/`: Página 3 funcional.
+- `reports/page3-validation.json`: validación estática honesta.
+- `BRANCH-CONTEXT.md`: alcance, exclusiones y siguientes gates.
+
+## Página 3 · Por qué elegir PRISMA
+
+Incluye:
+
+- hero Clear Pearl Glass;
+- tres casos interactivos: restaurante, tienda y servicios;
+- flujo universal de operación;
+- cuatro razones concretas;
+- navegación mediante ratón, toque y teclado;
+- composición responsive;
+- cero `!important`;
+- cero `document.write()`.
+
+## Estado de validación
+
+`PASS_STATIC` para referencias locales, estructura JavaScript, tabs por teclado, responsive y ausencia de parches prohibidos.
+
+No se declara todavía `VISUAL_CERTIFIED`: faltan revisión alojada desde móvil, capturas y comparación visual.
+
+## Próximos checkpoints
+
+1. Importar el baseline modular completo del último ZIP validado.
+2. Incorporar el logo oficial como asset normal.
+3. Publicar un preview móvil automático.
+4. Añadir la portada y el deck de inversionistas.
+5. Construir la demo guiada.
+6. Sustituir placeholders financieros únicamente por evidencia verificada.
+
+## Regla de rama
+
+Cada avance debe entrar mediante commits temáticos y verificables. No se hará merge, deploy ni cambio sobre `main` sin autorización explícita.
