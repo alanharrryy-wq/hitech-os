@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.0.1",
   "change_id": "PRISMA_HTML_PAGE3_WHY_PRISMA_V2",
   "classification": "BUILD",
   "surface": "prisma-html static investor/product site",
@@ -39,7 +39,8 @@
   },
   "rollback": {
     "stash_branch": "stash/prisma-html-page3-before-clean-baseline-20260713",
-    "method": "revert the Page 3 commits or restore the pre-Page-3 branch SHA",
+    "pre_page3_head": "28ac713aa47579c07db15126cb5978ee04413837",
+    "method": "revert Page 3 commits or restore the pre-Page-3 branch SHA",
     "tested": false
   },
   "evidence": [
