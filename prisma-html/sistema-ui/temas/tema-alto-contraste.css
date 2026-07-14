@@ -1,0 +1,16 @@
+[data-prisma-theme="alto-contraste"], [data-prisma-contrast="high"] {
+  --prisma-color-text-primary: #4e5864;
+  --prisma-color-text-strong: #505b68;
+  --prisma-color-text-secondary: #626c78;
+  --prisma-color-border-subtle: rgba(48,64,88,.36);
+  --prisma-glass-border: rgba(48,64,88,.36);
+}
+@media (prefers-contrast: more) {
+  [data-prisma-theme] {
+    --prisma-color-text-primary: #59636f;
+    --prisma-color-text-strong: #5f6976;
+    --prisma-color-border-subtle: rgba(62,80,107,.28);
+    --prisma-glass-border: rgba(62,80,107,.28);
+  }
+  .prisma-glass { border-width: 1.5px; }
+}

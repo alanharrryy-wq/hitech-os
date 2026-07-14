@@ -1,0 +1,49 @@
+
+.prisma-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  color: var(--prisma-color-brand-primary);
+  font-size: .76rem;
+  font-weight: 820;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+
+  &::before {
+    content: "";
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--prisma-color-brand-primary));
+  }
+}
+
+.prisma-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+  gap: 42px;
+  align-items: end;
+  margin-bottom: 62px;
+
+  h2 {
+    margin: 12px 0 0;
+    max-width: 950px;
+    color: var(--prisma-color-text-strong);
+    font-size: clamp(2.4rem, 5.6vw, 5.6rem);
+    line-height: .96;
+    letter-spacing: -.064em;
+    text-wrap: balance;
+  }
+
+  > p {
+    margin: 0;
+    color: var(--prisma-color-text-primary);
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 780px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

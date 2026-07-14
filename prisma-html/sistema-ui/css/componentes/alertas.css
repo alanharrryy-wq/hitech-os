@@ -1,0 +1,5 @@
+.prisma-alert { display: grid; grid-template-columns: auto 1fr; gap: .8rem; padding: 1rem; border: 1px solid var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-md); background: rgba(255,255,255,.10); }
+.prisma-alert--info { border-color: rgba(40,104,199,.22); }
+.prisma-alert--success { border-color: rgba(47,143,107,.28); }
+.prisma-alert--warning { border-color: rgba(199,116,40,.28); }
+.prisma-alert--danger { border-color: rgba(198,79,101,.28); }

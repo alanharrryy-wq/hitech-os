@@ -1,0 +1,6 @@
+.prisma-navbar { display: flex; align-items: center; justify-content: space-between; gap: var(--prisma-space-md); }
+.prisma-navbar__links { display: flex; align-items: center; gap: var(--prisma-space-xs); }
+.prisma-breadcrumbs { display: flex; flex-wrap: wrap; gap: .4rem; color: var(--prisma-color-text-secondary); font-size: var(--prisma-text-sm); }
+.prisma-breadcrumbs a { color: var(--prisma-color-brand-primary-deep); }
+.prisma-pagination { display: flex; gap: .4rem; align-items: center; }
+.prisma-pagination a, .prisma-pagination button { min-width: 38px; min-height: 38px; display: grid; place-items: center; border: 1px solid var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-pill); background: rgba(255,255,255,.08); text-decoration: none; }

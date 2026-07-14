@@ -3,24 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PRISMA HTML · Workbench</title>
+  <title>PRISMA · Proyecto HTML</title>
   <link rel="stylesheet" href="sistema-ui/css/prisma-ui.css" />
-  <style>
-    main{width:min(1000px,calc(100% - 28px));margin:0 auto;padding:80px 0}
-    h1{color:var(--prisma-color-text-strong);font-size:clamp(2.5rem,7vw,6rem);letter-spacing:-.065em}
-    p{margin-top:16px;line-height:1.7}
-    .pages{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:40px}
-    .pages a{min-height:210px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;border-radius:28px;color:var(--prisma-color-text-primary);text-decoration:none;background:linear-gradient(145deg,rgba(255,255,255,.52),rgba(255,255,255,.08));border:1px solid var(--prisma-color-border-subtle);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 24px 60px rgba(57,73,99,.12);backdrop-filter:blur(28px)}
-    .pages strong{color:var(--prisma-color-brand-primary-deep);font-size:1.3rem}.pages span{margin-top:8px;line-height:1.5}
-  </style>
+  <link rel="stylesheet" href="index.css" />
+  <script type="module" src="sistema-ui/js/prisma-ui.js"></script>
 </head>
-<body>
-  <main>
-    <p class="prisma-eyebrow">RAMA DE TRABAJO AISLADA</p>
-    <h1>PRISMA HTML</h1>
-    <p>Checkpoint remoto para construir y revisar las páginas visuales sin tocar <code>main</code>.</p>
-    <section class="pages">
-      <a href="paginas/pagina-3-por-que-prisma/index.html"><strong>Página 3 · Por qué elegir PRISMA</strong><span>Casos visuales, patrón universal y cuatro razones concretas.</span></a>
+<body data-prisma-theme="prisma" class="inicio-body">
+  <main class="inicio prisma-container">
+    <header class="inicio-header">
+      <img src="assets/images/prisma-logo.svg" alt="PRISMA" />
+      <h1>Proyecto HTML de PRISMA</h1>
+      <p>Abre una página para revisar su versión actual. <a class="inicio-catalogo-link" href="sistema-ui/catalogo/index.html">Abrir catálogo UI</a>.</p>
+    </header>
+    <section class="inicio-grid">
+      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-1-prisma/index.html"><strong>Página 1 · Portada conceptual</strong><span>Qué es PRISMA, cómo funciona y la gramática universal de la operación.</span></a>
+      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-2-inversionistas/index.html"><strong>Página 2 · Investor Deck</strong><span>Presentación interactiva de 10 slides para inversionistas.</span></a>
     </section>
   </main>
 </body>

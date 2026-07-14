@@ -1,0 +1,5 @@
+.prisma-card { border: 1px solid var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-lg); padding: var(--prisma-space-lg); background: rgba(255,255,255,.075); box-shadow: var(--prisma-shadow-soft); }
+.prisma-card--interactive { transition: transform var(--prisma-motion-normal), border-color var(--prisma-motion-normal), box-shadow var(--prisma-motion-normal); }
+@media (hover:hover) and (pointer:fine) { .prisma-card--interactive:hover { transform: translateY(-3px); border-color: rgba(40,104,199,.28); box-shadow: 0 24px 54px rgba(40,104,199,.14); } }
+.prisma-card__title { color: var(--prisma-color-brand-primary-deep); font-weight: var(--prisma-font-weight-bold); }
+.prisma-card__body { margin-top: .5rem; color: var(--prisma-color-text-secondary); line-height: var(--prisma-line-body); }

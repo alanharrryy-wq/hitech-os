@@ -1,0 +1,122 @@
+
+.prisma-operational-flow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  position: relative;
+  gap: clamp(12px, 1.8vw, 28px);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 59px;
+    left: 6%;
+    right: 6%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(40, 104, 199, .42), transparent);
+  }
+
+  @media (max-width: 1160px) {
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 48px;
+
+    &::before { display: none; }
+  }
+
+  @media (max-width: 780px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.prisma-operational-step {
+  min-height: 270px;
+  padding: 0 4px;
+  position: relative;
+  z-index: var(--prisma-layer-content);
+  cursor: default;
+
+  h3 {
+    margin: 24px 0 0;
+    color: var(--prisma-color-text-strong);
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: -.02em;
+  }
+
+  p {
+    margin: 9px auto 0;
+    max-width: 190px;
+    color: var(--prisma-color-text-secondary);
+    text-align: center;
+    font-size: .78rem;
+    line-height: 1.52;
+  }
+
+  @media (max-width: 520px) {
+    min-height: auto;
+    padding: 10px 0 26px;
+  }
+}
+
+.prisma-operational-icon {
+  width: 118px;
+  height: 118px;
+  display: grid;
+  place-items: center;
+  margin-inline: auto;
+  border-radius: 50%;
+  color: var(--prisma-color-brand-primary);
+  background:
+    radial-gradient(circle at 34% 25%, rgba(255, 255, 255, .9), transparent 24%),
+    rgba(255, 255, 255, .055);
+  border: 1px solid rgba(40, 104, 199, .14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .86),
+    0 24px 54px rgba(68, 91, 123, .11);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  transition:
+    translate var(--prisma-motion-normal),
+    color var(--prisma-motion-normal),
+    border-color var(--prisma-motion-normal),
+    box-shadow var(--prisma-motion-normal);
+
+  svg {
+    width: 58px;
+    height: 58px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .prisma-operational-step:hover & {
+      translate: 0 -4px;
+      color: var(--prisma-color-brand-primary-deep);
+      border-color: rgba(40, 104, 199, .34);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .92),
+        0 30px 62px rgba(40, 104, 199, .16);
+    }
+  }
+
+  @media (max-width: 520px) {
+    width: 104px;
+    height: 104px;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    background: rgba(248, 250, 252, .94);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    border-width: 1.5px;
+  }
+}

@@ -1,0 +1,18 @@
+@layer pages {
+  html[data-prisma-page="investors"],
+  body[data-prisma-page="investors"] {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @media (max-width: 960px) {
+    html[data-prisma-page="investors"] {
+      height: auto;
+    }
+
+    body[data-prisma-page="investors"] {
+      height: auto;
+      overflow: auto;
+    }
+  }
+}

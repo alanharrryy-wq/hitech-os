@@ -1,0 +1,48 @@
+
+.prisma-main-nav {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 10px 12px 10px 18px;
+  border-radius: var(--prisma-radius-pill);
+
+  .brand {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .brand-copy :is(strong, span) {
+    display: block;
+  }
+
+  .brand-copy strong {
+    color: var(--prisma-color-brand-primary-deep);
+    font-size: .88rem;
+    font-weight: 840;
+    letter-spacing: .17em;
+  }
+
+  .brand-copy span {
+    margin-top: 3px;
+    color: var(--prisma-color-text-secondary);
+    font-size: .7rem;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (max-width: 780px) {
+    border-radius: 22px;
+
+    .brand-copy span,
+    .prisma-button--quiet {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 728" role="img" aria-labelledby="title desc">
+  <title id="title">PRISMA</title>
+  <desc id="desc">Símbolo prismático y logotipo PRISMA</desc>
+  <defs>
+    <linearGradient id="faceL" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fbff"/><stop offset=".52" stop-color="#b9c8dc"/><stop offset="1" stop-color="#586a86"/></linearGradient>
+    <linearGradient id="faceR" x1="1" y1="0" x2="0" y2="1"><stop stop-color="#f7fbff"/><stop offset=".5" stop-color="#a8b9d1"/><stop offset="1" stop-color="#3b4d69"/></linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7ef3ff"/><stop offset=".45" stop-color="#3185ff"/><stop offset="1" stop-color="#6448ff"/></linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#68d8ff"/><stop offset=".55" stop-color="#2779eb"/><stop offset="1" stop-color="#163b97"/></linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <g transform="translate(95 18)">
+    <path d="M255 0 0 333l255-95z" fill="url(#faceL)" stroke="#e8f0fb" stroke-width="3"/>
+    <path d="M255 0 510 333 255 238z" fill="url(#faceR)" stroke="#e8f0fb" stroke-width="3"/>
+    <path d="M255 0 255 238 173 302z" fill="#1e2b45" opacity=".9"/>
+    <path d="M255 0 337 302 255 238z" fill="#334461" opacity=".92"/>
+    <path d="M0 333 255 238 510 333 255 492z" fill="url(#core)" stroke="#dff8ff" stroke-width="3"/>
+    <path d="M0 333 173 302 255 238 255 333z" fill="#d7ecff" opacity=".78"/>
+    <path d="M510 333 337 302 255 238 255 333z" fill="#95b7ee" opacity=".72"/>
+    <path d="M255 238V492M0 333h510" stroke="#aaf4ff" stroke-width="4" filter="url(#glow)"/>
+    <circle cx="255" cy="238" r="11" fill="#eaffff" filter="url(#glow)"/>
+  </g>
+  <text x="350" y="606" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="88" letter-spacing="24" fill="url(#word)">PRISMA</text>
+  <text x="350" y="670" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="2.2" fill="#1b2535">SISTEMA INTELIGENTE DE GESTIÓN OPERATIVA</text>
+</svg>

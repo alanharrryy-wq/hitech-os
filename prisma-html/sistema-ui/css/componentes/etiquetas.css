@@ -1,0 +1,4 @@
+.prisma-badge, .prisma-chip { display: inline-flex; align-items: center; gap: .35rem; min-height: 28px; padding-inline: .65rem; border-radius: var(--prisma-radius-pill); border: 1px solid rgba(40,104,199,.14); color: var(--prisma-color-brand-primary-deep); background: rgba(255,255,255,.12); font-size: var(--prisma-text-xs); font-weight: var(--prisma-font-weight-semibold); }
+.prisma-badge--success { color: var(--prisma-color-success); border-color: color-mix(in srgb,var(--prisma-color-success),transparent 70%); }
+.prisma-badge--warning { color: var(--prisma-color-warning); border-color: color-mix(in srgb,var(--prisma-color-warning),transparent 70%); }
+.prisma-badge--danger { color: var(--prisma-color-danger); border-color: color-mix(in srgb,var(--prisma-color-danger),transparent 70%); }

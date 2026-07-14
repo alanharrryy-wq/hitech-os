@@ -1,0 +1,5 @@
+.prisma-field { display: grid; gap: .45rem; }
+.prisma-field label { color: var(--prisma-color-text-strong); font-size: var(--prisma-text-sm); font-weight: var(--prisma-font-weight-semibold); }
+:is(.prisma-input, .prisma-select, .prisma-textarea) { width: 100%; min-height: 44px; border: 1px solid var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-md); padding: .7rem .85rem; color: var(--prisma-color-text-primary); background: rgba(255,255,255,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.prisma-textarea { min-height: 110px; resize: vertical; }
+.prisma-field__help { color: var(--prisma-color-text-secondary); font-size: var(--prisma-text-xs); }

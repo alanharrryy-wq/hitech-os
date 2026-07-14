@@ -1,0 +1,8 @@
+.prisma-status { display: inline-flex; align-items: center; gap: .45rem; }
+.prisma-status::before { content: ""; width: .6rem; height: .6rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb,currentColor,transparent 82%); }
+.prisma-status--success { color: var(--prisma-color-success); }
+.prisma-status--warning { color: var(--prisma-color-warning); }
+.prisma-status--danger { color: var(--prisma-color-danger); }
+.prisma-skeleton { min-height: 1rem; border-radius: var(--prisma-radius-sm); background: linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.35),rgba(255,255,255,.08)); background-size: 200% 100%; animation: prisma-shimmer 1.4s linear infinite; }
+@keyframes prisma-shimmer { to { background-position: -200% 0; } }
+.prisma-empty { padding: 2rem; text-align: center; color: var(--prisma-color-text-secondary); border: 1px dashed var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-lg); }

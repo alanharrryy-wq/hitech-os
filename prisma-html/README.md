@@ -1,62 +1,54 @@
-# PRISMA HTML
+# PRISMA HTML · Baseline limpio para GitHub
 
-Rama de trabajo aislada para el sitio HTML modular de PRISMA, el deck para inversionistas y las páginas visuales futuras.
+Baseline funcional extraído de `prismaui clean1 1307 1943`.
 
-## Estado
+Este paquete conserva únicamente el proyecto activo necesario para renderizar, desarrollar y validar:
 
-- Rama: `feature/prisma-html-investor-site`
-- Base: `main`
-- Clasificación Factory Ledger: `BUILD`
-- Producción: no desplegada
-- Merge: bloqueado hasta aprobación explícita
-- Superficies operativas PRISMA: excluidas
+- portada PRISMA;
+- deck de inversionistas;
+- catálogo del sistema UI;
+- tokens, temas, layouts, componentes y patrones compartidos;
+- módulos JavaScript ES;
+- logo oficial;
+- configuración ligera de VS Code;
+- servidor y validador local.
 
-## Preview móvil
+## Entradas
 
-Página 3, **Por qué elegir PRISMA**:
+- Índice: `index.html`
+- Página 1: `paginas/pagina-1-prisma/index.html`
+- Página 2: `paginas/pagina-2-inversionistas/index.html`
+- Catálogo UI: `sistema-ui/catalogo/index.html`
 
-`https://raw.githack.com/alanharrryy-wq/hitech-os/feature/prisma-html-investor-site/prisma-html/preview/pagina-3.html`
+## Previsualización
 
-El preview usa los CSS y JavaScript reales de la rama e incorpora el logotipo oficial como asset independiente. Sirve para revisión desde teléfono; no es un despliegue de producción.
+Abre `PRISMA-HTML.code-workspace` en VS Code y utiliza Live Preview, o ejecuta:
 
-## Checkpoint remoto actual
+```text
+PREVISUALIZAR.cmd
+```
 
-- `index.html`: índice remoto de trabajo.
-- `sistema-ui/css/prisma-ui.css`: baseline compartido compacto.
-- `paginas/pagina-3-por-que-prisma/`: Página 3 modular.
-- `assets/images/prisma-logo-oficial.svg`: logotipo oficial sin figura posterior.
-- `preview/pagina-3.html`: preview móvil navegable.
-- `reports/page3-validation.json`: validación estática de la página.
-- `reports/page3-mobile-preview.json`: estado honesto del preview.
-- `BRANCH-CONTEXT.md`: alcance, exclusiones y siguientes gates.
+El servidor local abre `http://127.0.0.1:8010/`.
 
-## Página 3 · Por qué elegir PRISMA
+## Validación
 
-Incluye:
+```powershell
+python -m pip install -r requirements-dev.txt
+python tools\validate_project.py --root . --report validation.json
+```
 
-- hero Clear Pearl Glass;
-- tres casos interactivos: restaurante, tienda y servicios;
-- flujo universal de operación;
-- cuatro razones concretas;
-- navegación mediante ratón, toque y teclado;
-- composición responsive;
-- cero `!important`;
-- cero `document.write()`.
+## Alcance de este checkpoint
 
-## Estado de validación
+- Página 3 no está incluida.
+- No contiene backups.
+- No contiene capturas, comparaciones visuales ni históricos.
+- No contiene wrappers de instalación ni rollback del ZIP original.
+- No reemplaza la rama-stash donde se conserva Página 3.
 
-`PASS_STATIC_PREVIEW_READY`.
+## Reglas activas
 
-No se declara todavía `VISUAL_CERTIFIED`: falta revisión en un dispositivo móvil real, capturas y aprobación visual del usuario.
-
-## Próximos checkpoints
-
-1. Revisar el preview móvil y corregir observaciones.
-2. Importar el baseline modular completo del último ZIP validado.
-3. Añadir la portada y el deck de inversionistas.
-4. Construir la demo guiada.
-5. Sustituir placeholders financieros únicamente por evidencia verificada.
-
-## Regla de rama
-
-Cada avance entra mediante commits temáticos y verificables. No se hará merge, deploy de producción ni cambio sobre `main` sin autorización explícita.
+- Sin `document.write()`.
+- Sin `!important`.
+- Sin imágenes Base64 activas.
+- JavaScript compartido mediante ES Modules.
+- CSS de página reservado para composición exclusiva.
