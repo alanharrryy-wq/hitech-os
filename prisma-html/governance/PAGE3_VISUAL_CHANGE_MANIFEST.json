@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "change_id": "PRISMA_HTML_PAGE3_WHY_PRISMA_V2",
+  "classification": "BUILD",
+  "surface": "prisma-html static investor/product site",
+  "affected": [
+    "Page 3: Por qué PRISMA",
+    "project index card",
+    "compatibility logo alias consumed by Page 1 and Page 2"
+  ],
+  "excluded": [
+    "Tablet POS",
+    "PC Admin runtime",
+    "Mobile Companion runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "databases",
+    "Prisma schema",
+    "processes and ports",
+    "main branch"
+  ],
+  "purpose": "Responder por qué PRISMA es estructuralmente diferente a POS, ERP, dashboards e integraciones aisladas.",
+  "interaction": [
+    "category comparison tabs",
+    "reconciliation range control",
+    "role lens tabs"
+  ],
+  "shared_ui_policy": {
+    "shared_files_modified": false,
+    "page_css_only": true,
+    "uses_existing_tokens_components": true,
+    "important_declarations": 0,
+    "base64_images": 0
+  },
+  "identity": {
+    "asset": "assets/images/prisma-logo-approved-baseline.png",
+    "compatibility_alias": "assets/images/prisma-logo.svg",
+    "source": "CLEAN1 approved transparent PNG"
+  },
+  "rollback": {
+    "stash_branch": "stash/prisma-html-page3-before-clean-baseline-20260713",
+    "method": "revert the Page 3 commits or restore the pre-Page-3 branch SHA",
+    "tested": false
+  },
+  "evidence": [
+    "reports/page3-static-validation.json",
+    "commit-pinned raw.githack mobile preview"
+  ],
+  "status": "PASS_STATIC_PREVIEW_PENDING",
+  "visual_certified": false,
+  "factory_ledger_update": {
+    "global_ledger_modified": false,
+    "reason": "The work remains isolated in an unmerged Draft PR; promote to the global ledger only after user visual approval and merge candidacy."
+  }
+}
