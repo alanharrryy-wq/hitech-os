@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "tool": "PRISMA HTML scoped authority readset",
+  "generated_at": "2026-07-14",
+  "task": "Reintroducir Página 3 como comparador estratégico Por qué PRISMA, refactorizada contra el sistema UI modular real.",
+  "classification": "BUILD",
+  "branch": "feature/prisma-html-investor-site",
+  "base_branch": "main",
+  "global_authority_lock": {
+    "path": ".governance/current/AUTHORITY_READSET.lock.json",
+    "applicable": false,
+    "reason": "El lock global corresponde a Tablet Visual Surface V2 y no gobierna el árbol aislado prisma-html."
+  },
+  "authorities_read": [
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+    "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "prisma-html/BASELINE-MANIFEST.json",
+    "prisma-html/paginas/pagina-1-prisma/index.html",
+    "prisma-html/paginas/pagina-2-inversionistas/index.html",
+    "prisma-html/sistema-ui/css/prisma-ui.css",
+    "stash/prisma-html-page3-before-clean-baseline-20260713"
+  ],
+  "allowed_paths": [
+    "prisma-html/paginas/pagina-3-por-que-prisma/**",
+    "prisma-html/index.html",
+    "prisma-html/assets/images/prisma-logo.svg",
+    "prisma-html/README.md",
+    "prisma-html/TREE.md",
+    "prisma-html/BASELINE-MANIFEST.json",
+    "prisma-html/governance/**",
+    "prisma-html/reports/page3-static-validation.json"
+  ],
+  "excluded_surfaces": [
+    "Tablet POS",
+    "PC Admin runtime",
+    "Mobile Companion runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "databases",
+    "Prisma schema",
+    "processes and ports",
+    "main branch"
+  ],
+  "status": "PASS_SCOPED_READSET"
+}
