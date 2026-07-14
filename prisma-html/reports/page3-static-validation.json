@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "change_id": "PRISMA_HTML_PAGE3_WHY_PRISMA_V2",
+  "classification": "BUILD",
+  "status": "PASS_STATIC_PREVIEW_PENDING",
+  "validation": {
+    "full_project_validator_pass": true,
+    "full_project_checks": 330,
+    "full_project_errors": 0,
+    "page3_files_present": true,
+    "approved_logo_reference": true,
+    "shared_ui_reference": true,
+    "category_tabs": true,
+    "role_tabs": true,
+    "reconciliation_range": true,
+    "keyboard_tab_navigation": true,
+    "no_important": true,
+    "no_document_write": true,
+    "no_base64_images": true,
+    "no_shared_ui_mutation": true,
+    "iphone_se_breakpoint": true,
+    "page3_index_linked": true
+  },
+  "hashes": {
+    "index.html": "1fea749e747f3532e3353894726c49d069180794f3d1e6c727b75f9c08f7bbbd",
+    "pagina.css": "1fab99bc833412ea8e269e545494c649b1f730606f01e750fae5e7eaf06f5030",
+    "pagina.js": "75418e023d0ed623103858a30d66dd3df18d63c5c7c5ba44b18d27360928bec5",
+    "logo": "a32cd68845da467cdce973ba8287452292f8a2bcfa7e5bafb7d24422c6eb21e3"
+  },
+  "scope": {
+    "affected": [
+      "prisma-html page 3",
+      "prisma-html index",
+      "approved logo compatibility alias"
+    ],
+    "excluded": [
+      "Tablet",
+      "PC runtime",
+      "Mobile runtime",
+      "Chart Lab",
+      "databases",
+      "Prisma schema",
+      "processes",
+      "ports",
+      "main"
+    ]
+  },
+  "visual_certified": false,
+  "mobile_review": "pending",
+  "notes": [
+    "Static validation does not prove visual perception.",
+    "Use commit-pinned preview for iPhone SE review.",
+    "Previous Page 3 remains preserved in the stash branch."
+  ]
+}
