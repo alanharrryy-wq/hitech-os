@@ -1,0 +1,227 @@
+<!doctype html>
+<!--
+PRISMA · PÁGINA 2 · INVESTOR DECK · ARCHIVO DE ESTRUCTURA
+
+ARCHIVOS DE ESTA PÁGINA
+- index.html  = estructura y contenido
+- pagina.css = composición y estilos exclusivos de esta página
+- pagina.js  = navegación, teclado, PDF y narrativa
+
+REGLA DE TRABAJO
+En cada iteración se reemplazan completos los tres archivos.
+No se aplican fragmentos manuales ni parches sueltos.
+-->
+
+
+
+<html lang="es" data-prisma-page="investors">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#f4f6f8" />
+<title>PRISMA · Investor Deck HTML</title>
+
+  <link rel="stylesheet" href="../../sistema-ui/css/prisma-ui.css" />
+  <link rel="stylesheet" href="pagina.css" />
+</head>
+<body data-prisma-theme="inversionistas" data-prisma-page="investors">
+<!-- ==================== 03. APLICACIÓN PRINCIPAL ==================== -->
+<main class="deck prisma-investor-deck">
+  <!-- =========================================================
+     04. CABECERA FLOTANTE
+     Sin panel, sin óvalo y sin fondo envolvente.
+     ========================================================= -->
+  <header class="floating-toolbar prisma-investor-toolbar" aria-label="Controles de presentación">
+    <div class="floating-brand">
+      <img src="../../assets/images/prisma-logo.svg" alt="PRISMA" />
+      <div class="floating-brand-copy">
+        <strong>INVESTOR DECK</strong>
+        <span>Clear Pearl Glass · HTML interactivo</span>
+      </div>
+    </div>
+
+    <div class="floating-actions">
+      <button class="prisma-button prisma-button--quiet" id="notesBtn" type="button">Narrativa 2 min</button>
+      <button class="prisma-button prisma-button--quiet" id="printBtn" type="button">Exportar PDF</button>
+      <button class="prisma-button prisma-button--primary" data-goto="0" type="button">Inicio</button>
+    </div>
+  </header>
+
+  <!-- ==================== 05. ESCENARIO DE SLIDES ==================== -->
+  <section class="stage prisma-glass prisma-deck-stage" aria-live="polite">
+    <section class="slide prisma-deck-slide active" data-index="0" aria-label="Slide 1: 01 · Investor overview">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">01 · Investor overview</p>
+        <h1>PRISMA es la capa de verdad operativa para negocios multi-superficie.</h1>
+        <p class="lede prisma-deck-lede">Tablet opera. PC gobierna. Mobile resume. Chart Lab explica. Control Center escala. Todo apunta a una misma realidad.</p>
+        <p class="tagline prisma-deck-tagline">Operación → Evento → Evidencia → Decisión</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="cover-visual prisma-deck-cover">
+          <img src="../../assets/images/prisma-logo.svg" alt="PRISMA" />
+          <button class="prisma-button prisma-button--primary prisma-neon-cta" data-goto="1">POR QUÉ PRISMA AHORA</button>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="1" aria-label="Slide 2: 02 · Por qué ahora">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">02 · Por qué ahora</p>
+        <h1>El negocio moderno ya no ocurre en una sola pantalla.</h1>
+        <p class="lede prisma-deck-lede">Los roles, dispositivos, licencias, reportes y decisiones viven en momentos distintos. El problema no es falta de software; es falta de verdad compartida.</p>
+        <p class="tagline prisma-deck-tagline">Timing: operación distribuida + modernización tecnológica</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="axis prisma-deck-stack"><div class="prisma-deck-card"><b>Antes</b><span>Una terminal</span></div>
+          <div class="prisma-deck-card"><b>Ahora</b><span>Roles + devices + licencias + datos</span></div>
+          <div class="prisma-deck-card"><b>Necesidad</b><span>Una verdad común</span></div>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="2" aria-label="Slide 3: 03 · Problema">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">03 · Problema</p>
+        <h1>Muchas apps. Ninguna verdad común.</h1>
+        <p class="lede prisma-deck-lede">Cuando cada superficie conserva su propio estado, el negocio termina operando con versiones contradictorias de lo que ocurrió.</p>
+        <p class="tagline prisma-deck-tagline">La fricción real: estados distintos, evidencia dispersa, reportes tardíos</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="fracture prisma-fracture">
+          <span>POS<br><small>venta local</small></span>
+          <span>Excel<br><small>ajustes</small></span>
+          <span>Mensajes<br><small>decisiones</small></span>
+          <span>Dashboard<br><small>tarde</small></span>
+          <span>Licencia<br><small>separada</small></span>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="3" aria-label="Slide 4: 04 · Solución">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">04 · Solución</p>
+        <h1>PRISMA convierte operaciones reales en verdad trazable.</h1>
+        <p class="lede prisma-deck-lede">No reemplaza cada superficie. Las organiza alrededor de un lenguaje común: scope, evento, evidencia, procedencia y proyección.</p>
+        <p class="tagline prisma-deck-tagline">Neutral Operational Core</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="core-map prisma-core-map">
+          <div class="core-center prisma-core-map__center">PRISMA<br><small>Scope · Evento · Evidencia</small></div>
+          <div class="orbit-label prisma-orbit-label top">Tablet</div><div class="orbit-label prisma-orbit-label right">PC</div>
+          <div class="orbit-label prisma-orbit-label bottom">Mobile</div><div class="orbit-label prisma-orbit-label left">Chart Lab</div>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="4" aria-label="Slide 5: 05 · Producto">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">05 · Producto</p>
+        <h1>Una plataforma. Cinco experiencias iniciales.</h1>
+        <p class="lede prisma-deck-lede">Cada superficie tiene una responsabilidad distinta, pero todas comparten el mismo núcleo de eventos y evidencia.</p>
+        <p class="tagline prisma-deck-tagline">Tablet · PC · Mobile · Chart Lab · Control Center</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="surface-grid prisma-surface-grid">
+          <article class="prisma-deck-card"><b>Tablet POS</b><span>Opera</span></article>
+          <article class="prisma-deck-card"><b>PC Admin</b><span>Gobierna</span></article>
+          <article class="prisma-deck-card"><b>Mobile</b><span>Resume</span></article>
+          <article class="prisma-deck-card"><b>Chart Lab</b><span>Explica</span></article>
+          <article class="prisma-deck-card"><b>Control</b><span>Escala SaaS</span></article>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="5" aria-label="Slide 6: 06 · Cómo funciona">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">06 · Cómo funciona</p>
+        <h1>La gramática universal de la operación.</h1>
+        <p class="lede prisma-deck-lede">Cambian las industrias, pero el patrón operacional permanece: persona, contexto, acción, evento, evidencia, verdad y decisión.</p>
+        <p class="tagline prisma-deck-tagline">Cajero → Caja 2 → Cobra → Venta aceptada → Ticket → Venta canónica</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="grammar-line prisma-deck-grammar">
+          <span>Persona</span><span>Contexto</span><span>Acción</span><span>Evento</span><span>Evidencia</span><span>Verdad</span><span>Decisión</span>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="6" aria-label="Slide 7: 07 · Go-to-market">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">07 · Go-to-market</p>
+        <h1>Entrar por operación diaria. Expandir por verdad compartida.</h1>
+        <p class="lede prisma-deck-lede">La cuña inicial debe resolver un flujo frecuente y doloroso. La expansión ocurre cuando el cliente quiere más superficies y módulos sobre la misma verdad.</p>
+        <p class="tagline prisma-deck-tagline">Land with operations. Expand with evidence.</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="ladder prisma-deck-stack"><div class="prisma-deck-card"><b>Wedge</b><span>Operación diaria</span></div>
+          <div class="prisma-deck-card"><b>Expansion</b><span>PC + Mobile + Analytics</span></div>
+          <div class="prisma-deck-card"><b>Platform</b><span>Licencias + módulos</span></div>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="7" aria-label="Slide 8: 08 · Modelo">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">08 · Modelo</p>
+        <h1>Ingresos por tenant, dispositivos, módulos y capacidades premium.</h1>
+        <p class="lede prisma-deck-lede">El modelo es simple al inicio y extensible conforme el cliente agrega superficies, usuarios, devices, verticales y analítica.</p>
+        <p class="tagline prisma-deck-tagline">Base + slots + modules + premium</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="money-map prisma-money-map">
+          <div class="prisma-deck-card">Tenant base</div><div class="prisma-deck-card">Device slots</div><div class="prisma-deck-card">Módulos</div><div class="prisma-deck-card">Premium</div>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="8" aria-label="Slide 9: 09 · Evidencia">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">09 · Evidencia</p>
+        <h1>Separar progreso real de promesa.</h1>
+        <p class="lede prisma-deck-lede">El deck debe mostrar producto, validaciones internas y huecos comerciales pendientes sin maquillar. El inversionista compra claridad, no confeti.</p>
+        <p class="tagline prisma-deck-tagline">Completar: pilotos, LOIs, clientes, MRR, retención o pipeline</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="proof-grid prisma-proof-grid">
+          <div class="prisma-deck-card"><b>Producto</b><span>Multi-superficie definido</span></div>
+          <div class="prisma-deck-card"><b>Operación</b><span>Licensing E2E interno</span></div>
+          <div class="prisma-deck-card"><b>Calidad</b><span>Smokes + verifiers</span></div>
+          <div class="prisma-deck-card warn prisma-deck-warning"><b>Completar</b><span>Pilotos, MRR, retención</span></div>
+        </div></div>
+    </section>
+<section class="slide prisma-deck-slide" data-index="9" aria-label="Slide 10: 10 · Ask">
+      <div class="slide-copy">
+        <p class="kicker prisma-deck-kicker">10 · Ask</p>
+        <h1>Financiar 18 meses para convertir producto validado en tracción repetible.</h1>
+        <p class="lede prisma-deck-lede">Cerrar con monto, runway, uso de fondos y tres hitos verificables: pilotos, clientes pagados e instrumentación de métricas.</p>
+        <p class="tagline prisma-deck-tagline">ASK: $[monto] · [runway] meses · producto + GTM + implementación</p>
+      </div>
+      <div class="slide-visual prisma-deck-visual">
+        <div class="milestones prisma-deck-stack"><div class="prisma-deck-card"><b>0–3</b><span>Pilotos controlados</span></div>
+          <div class="prisma-deck-card"><b>3–9</b><span>Clientes pagados</span></div>
+          <div class="prisma-deck-card"><b>9–18</b><span>Expansión modular</span></div>
+        </div></div>
+    </section>
+    <div class="progress prisma-deck-progress" id="progress"></div>
+  </section>
+
+  <!-- ==================== 06. NAVEGACIÓN INFERIOR ==================== -->
+  <footer class="bottombar prisma-glass prisma-deck-navigation">
+    <button class="prisma-button" id="prevBtn">←</button>
+    <div class="dots"><button class="dot active" data-goto="0" aria-label="Ir a slide 1"></button>
+<button class="dot" data-goto="1" aria-label="Ir a slide 2"></button>
+<button class="dot" data-goto="2" aria-label="Ir a slide 3"></button>
+<button class="dot" data-goto="3" aria-label="Ir a slide 4"></button>
+<button class="dot" data-goto="4" aria-label="Ir a slide 5"></button>
+<button class="dot" data-goto="5" aria-label="Ir a slide 6"></button>
+<button class="dot" data-goto="6" aria-label="Ir a slide 7"></button>
+<button class="dot" data-goto="7" aria-label="Ir a slide 8"></button>
+<button class="dot" data-goto="8" aria-label="Ir a slide 9"></button>
+<button class="dot" data-goto="9" aria-label="Ir a slide 10"></button></div>
+    <button class="prisma-button" id="nextBtn">→</button>
+    <div class="counter"><span id="current">01</span> / 10</div>
+  </footer>
+</main>
+
+<!-- ==================== 07. PANEL DE NARRATIVA ==================== -->
+<aside class="notes prisma-glass prisma-deck-notes" id="notesPanel" aria-label="Narrativa verbal de dos minutos">
+  <h2>Narrativa verbal de 2 minutos</h2>
+  <p>PRISMA nace de una observación simple: los negocios ya no operan desde una sola pantalla. Un cajero vende en Tablet, un administrador corrige desde PC, el dueño consulta desde Mobile, la analítica explica patrones y el control SaaS decide qué licencias, dispositivos y módulos están activos. El problema no es que falten aplicaciones. El problema es que cada aplicación suele conservar una versión distinta de la operación.</p><p>PRISMA resuelve eso creando una capa neutral de verdad operativa. Cada acción se ubica dentro de un scope: persona, negocio, tienda, terminal, dispositivo, rol y licencia. Después se convierte en evento, deja evidencia y se proyecta a la superficie correcta. Tablet opera. PC gobierna. Mobile resume. Chart Lab explica. Control Center escala.</p><p>La entrada comercial es la operación diaria: venta, caja, inventario, turnos o servicios. Una vez que PRISMA captura la operación, el cliente naturalmente pide más superficies, más reportes, más módulos y más automatización sobre la misma verdad.</p><p>El modelo monetiza por tenant, dispositivos, módulos y capacidades premium. La tesis es que más operación produce más evidencia; más evidencia produce mejores decisiones; y mejores decisiones aumentan el valor por cliente.</p><p>Lo que buscamos financiar son 18 meses para convertir producto validado en tracción repetible: primeros pilotos controlados, clientes pagados, métricas instrumentadas y expansión modular. PRISMA no es otro dashboard. Es la memoria operativa neutral del negocio.</p>
+  <h2>Fuentes guía</h2>
+  <ul>
+    <li>Sequoia recomienda iniciar con propósito, problema, solución, por qué ahora, mercado, producto/modelo y visión.</li><li>YC recomienda claridad brutal: qué haces, mercado, progreso, insight, modelo, equipo y petición.</li><li>DocSend reporta que los inversionistas revisan decks muy rápido; el HTML debe leerse como historia compacta.</li><li>Gartner proyectó $5.43T de gasto mundial en IT en 2025, +7.9% vs 2024, como señal de presión de modernización tecnológica.</li>
+  </ul>
+  <small>Usa esta narrativa como base verbal, no como texto para leer robóticamente.</small>
+</aside>
+
+<!-- ==================== 08. JAVASCRIPT ==================== -->
+
+
+  <script type="module" src="../../sistema-ui/js/prisma-ui.js"></script>
+<script type="module" src="pagina.js"></script>
+</body>
+</html>
