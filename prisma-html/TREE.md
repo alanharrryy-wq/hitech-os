@@ -7,13 +7,19 @@ prisma-html/
 ├── assets/
 │   ├── fonts/
 │   ├── icons/
-│   └── images/prisma-logo.svg
+│   └── images/
+│       ├── prisma-logo-approved-baseline.png
+│       └── prisma-logo.svg
 ├── paginas/
 │   ├── pagina-1-prisma/
 │   │   ├── index.html
 │   │   ├── pagina.css
 │   │   └── pagina.js
-│   └── pagina-2-inversionistas/
+│   ├── pagina-2-inversionistas/
+│   │   ├── index.html
+│   │   ├── pagina.css
+│   │   └── pagina.js
+│   └── pagina-3-por-que-prisma/
 │       ├── index.html
 │       ├── pagina.css
 │       └── pagina.js
@@ -33,6 +39,11 @@ prisma-html/
 │   │   ├── utilidades/
 │   │   └── prisma-ui.js
 │   └── temas/
+├── governance/
+│   ├── PAGE3_AUTHORITY_READSET.lock.json
+│   └── PAGE3_VISUAL_CHANGE_MANIFEST.json
+├── reports/
+│   └── page3-static-validation.json
 ├── tools/
 ├── .vscode/
 ├── PRISMA-HTML.code-workspace
@@ -42,4 +53,4 @@ prisma-html/
 └── README.md
 ```
 
-Este tree es el baseline que debe entrar primero al Draft PR. Página 3 permanece fuera hasta que el baseline sea revisado y aprobado.
+Página 3 vuelve como implementación nueva y refactorizada. La versión previa continúa preservada en la rama stash.
