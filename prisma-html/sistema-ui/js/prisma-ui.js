@@ -8,6 +8,7 @@ import { initMenu } from './comportamientos/menu.js';
 import { initScroll } from './comportamientos/scroll.js';
 import { initNavigation } from './comportamientos/navegacion.js';
 import { initForms } from './comportamientos/formularios.js';
+import { initPrismaNarrative } from './componentes/prisma-narrative.js';
 
 export function initPrismaUI(root = document) {
   initNavbar(root);
@@ -16,6 +17,7 @@ export function initPrismaUI(root = document) {
   initScroll(root);
   initNavigation(root);
   initForms(root);
+  initPrismaNarrative(root);
   document.documentElement.dataset.prismaUiReady = 'true';
   document.dispatchEvent(new CustomEvent('prisma-ui:ready'));
 }

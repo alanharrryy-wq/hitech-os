@@ -1,228 +1,121 @@
 <!doctype html>
-<!--
-PRISMA · PÁGINA 4 · ECOSISTEMA DEL PRODUCTO
-
-PROPÓSITO
-Mostrar que PRISMA no es una colección de aplicaciones, sino un núcleo operativo neutral
-que proyecta la superficie correcta para cada persona, momento y responsabilidad.
-
-ARCHIVOS
-- index.html = narrativa y estructura
-- pagina.css = composición exclusiva
-- pagina.js = selector de superficies y recorrido de una operación
-
-GOBIERNO
-Consume el sistema UI central. No redefine tokens ni componentes globales.
--->
 <html lang="es" data-prisma-page="product-ecosystem">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#f2f5f8" />
+  <meta name="theme-color" content="#08111a" />
   <title>Ecosistema PRISMA · Un núcleo, múltiples superficies</title>
-  <meta
-    name="description"
-    content="Mapa interactivo del núcleo operativo de PRISMA, sus superficies, roles, eventos, evidencia y proyecciones."
-  />
+  <meta name="description" content="PRISMA proyecta un núcleo neutral en Tablet, PC, Mobile, Chart Lab, Control Center y Web." />
   <link rel="stylesheet" href="../../sistema-ui/css/prisma-ui.css" />
   <link rel="stylesheet" href="pagina.css" />
 </head>
-
-<body data-prisma-theme="prisma" data-prisma-page="product-ecosystem">
-  <main class="ecosystem-shell">
-    <nav class="ecosystem-nav prisma-glass" aria-label="Navegación del ecosistema PRISMA">
-      <a class="ecosystem-brand" href="../../index.html" aria-label="Volver al índice de PRISMA">
-        <img src="../../assets/images/prisma-logo-approved-baseline.png" alt="" width="160" height="166" />
-        <span>
-          <strong>PRISMA</strong>
-          <small>Ecosistema del producto</small>
-        </span>
+<body data-prisma-theme="prisma" data-prisma-narrative="aurora" data-prisma-page="product-ecosystem">
+  <main class="prisma-narrative">
+    <nav class="prisma-narrative-nav" aria-label="Navegación de la página">
+      <a class="prisma-narrative-brand" href="../../index.html">
+        <img src="../../assets/images/prisma-logo.png" alt="PRISMA" width="160" height="166" />
+        <span><strong>PRISMA</strong><small>Ecosistema del producto</small></span>
       </a>
-      <div class="ecosystem-nav-actions">
-        <a class="prisma-button prisma-button--quiet" href="../pagina-3-por-que-prisma/index.html">Por qué PRISMA</a>
-        <a class="prisma-button prisma-button--primary" href="#superficies">Explorar superficies</a>
+      <div class="prisma-narrative-location">
+        <strong>03 / 04</strong>
+        <div class="prisma-narrative-progress" aria-label="Escena actual"><i aria-current="step"></i><i></i><i></i></div>
+      </div>
+      <div class="prisma-narrative-nav-actions">
+        <a class="prisma-button prisma-button--quiet" href="../pagina-3-por-que-prisma/index.html">Anterior</a>
+        <a class="prisma-button prisma-button--primary" href="../../index.html">Índice</a>
       </div>
     </nav>
 
-    <section class="ecosystem-hero" aria-labelledby="ecosystem-title">
-      <div class="ecosystem-hero-copy">
-        <p class="prisma-eyebrow">ECOSISTEMA DEL PRODUCTO</p>
-        <h1 id="ecosystem-title">
-          Un núcleo operativo.
-          <span>La superficie correcta para cada persona.</span>
-        </h1>
-        <p class="ecosystem-hero-lede">
-          Tablet opera. PC gobierna. Mobile supervisa. Chart Lab explica. Control Center administra la plataforma.
-          Web abre la puerta. Ninguna superficie posee la verdad: <strong>todas la proyectan desde el mismo núcleo.</strong>
-        </p>
-        <div class="ecosystem-hero-actions">
-          <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#superficies">Abrir el mapa</a>
-          <a class="prisma-button" href="#recorrido">Seguir una venta</a>
-        </div>
-        <div class="ecosystem-principle" aria-label="Principio del ecosistema">
-          <span>Scope</span><i>→</i><span>Evento</span><i>→</i><span>Evidencia</span><i>→</i><span>Proyección</span>
-        </div>
-      </div>
-
-      <div class="ecosystem-orbit" aria-label="Superficies conectadas al núcleo PRISMA">
-        <div class="orbit-lines" aria-hidden="true"></div>
-        <button class="orbit-node orbit-node--tablet is-active" type="button" data-surface-target="tablet"><b>Tablet</b><span>Opera</span></button>
-        <button class="orbit-node orbit-node--pc" type="button" data-surface-target="pc"><b>PC</b><span>Gobierna</span></button>
-        <button class="orbit-node orbit-node--mobile" type="button" data-surface-target="mobile"><b>Mobile</b><span>Supervisa</span></button>
-        <button class="orbit-node orbit-node--chart" type="button" data-surface-target="chart"><b>Chart Lab</b><span>Explica</span></button>
-        <button class="orbit-node orbit-node--control" type="button" data-surface-target="control"><b>Control</b><span>Administra</span></button>
-        <button class="orbit-node orbit-node--web" type="button" data-surface-target="web"><b>Web</b><span>Conecta</span></button>
-        <div class="orbit-core">
-          <img src="../../assets/images/prisma-logo-approved-baseline.png" alt="" width="160" height="166" />
-          <strong>NÚCLEO NEUTRAL</strong>
-          <span>scope · eventos · evidencia</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecosystem-section" id="superficies" aria-labelledby="surfaces-title">
-      <header class="ecosystem-heading">
-        <div>
-          <p class="prisma-eyebrow">SEIS SUPERFICIES, SEIS RESPONSABILIDADES</p>
-          <h2 id="surfaces-title">No son versiones pequeñas o grandes de la misma pantalla.</h2>
-        </div>
-        <p>
-          Cada superficie existe para un rol y un momento operacional. Selecciona una para ver qué hace,
-          qué información consume, qué evidencia presenta y qué resultado debe producir.
-        </p>
-      </header>
-
-      <div class="surface-selector" role="tablist" aria-label="Superficies PRISMA">
-        <button class="surface-tab" role="tab" aria-selected="true" data-surface="tablet">Tablet POS</button>
-        <button class="surface-tab" role="tab" aria-selected="false" data-surface="pc">PC Admin</button>
-        <button class="surface-tab" role="tab" aria-selected="false" data-surface="mobile">Mobile</button>
-        <button class="surface-tab" role="tab" aria-selected="false" data-surface="chart">Chart Lab</button>
-        <button class="surface-tab" role="tab" aria-selected="false" data-surface="control">Control Center</button>
-        <button class="surface-tab" role="tab" aria-selected="false" data-surface="web">Web / Portal</button>
-      </div>
-
-      <article class="surface-stage prisma-glass" aria-live="polite">
-        <div class="surface-identity">
-          <p class="surface-kicker" data-surface-kicker>TABLET POS · OPERACIÓN INMEDIATA</p>
-          <h3 data-surface-title>La acción debe terminarse con claridad, velocidad y continuidad.</h3>
-          <p data-surface-description>
-            Es la superficie táctil donde la operación sucede. Reduce la complejidad visible sin perder trazabilidad.
-          </p>
-          <div class="surface-outcome">
-            <small>RESULTADO ESPERADO</small>
-            <strong data-surface-outcome>Vender rápido sin romper la historia de la venta.</strong>
+    <section class="prisma-scene" data-scene-label="01 · ECOSISTEMA" id="ecosistema">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">UN NÚCLEO · SEIS RESPONSABILIDADES</p>
+          <h1>Un núcleo. <span>Seis superficies.</span></h1>
+          <p>Tablet opera. PC gobierna. Mobile supervisa. Chart Lab explica. Control administra.</p>
+          <div class="prisma-scene-actions">
+            <a class="prisma-button prisma-button--primary" href="#superficies">Explorar superficies</a>
+            <a class="prisma-button" href="#recorrido">Seguir una operación</a>
           </div>
         </div>
-
-        <dl class="surface-contract">
-          <div><dt>Responsabilidad</dt><dd data-surface-responsibility>Operar ventas, pagos, tickets y continuidad de caja.</dd></div>
-          <div><dt>Rol principal</dt><dd data-surface-role>Cajero u operador de piso.</dd></div>
-          <div><dt>Consume</dt><dd data-surface-consumes>Catálogo, precios, permisos, sesión, inventario disponible.</dd></div>
-          <div><dt>Emite</dt><dd data-surface-emits>Venta, líneas, pago, ticket, movimiento y estado de sincronización.</dd></div>
-          <div><dt>Evidencia visible</dt><dd data-surface-evidence>Ticket, pago registrado, sesión y procedencia del dispositivo.</dd></div>
-          <div><dt>Gobierno</dt><dd data-surface-governance>Licencia de dispositivo, rol operativo y módulos habilitados.</dd></div>
-        </dl>
-      </article>
-    </section>
-
-    <section class="ecosystem-section operation-section" id="recorrido" aria-labelledby="operation-title">
-      <header class="ecosystem-heading">
-        <div>
-          <p class="prisma-eyebrow">UNA VENTA, TODO EL ECOSISTEMA</p>
-          <h2 id="operation-title">La acción ocurre una vez. El valor aparece donde corresponde.</h2>
+        <div class="ecosystem-map" aria-label="Superficies conectadas al núcleo PRISMA">
+          <div class="ecosystem-core">
+            <img src="../../assets/images/prisma-logo.png" alt="" width="160" height="166" />
+            <strong>NÚCLEO NEUTRAL</strong>
+            <span>scope · eventos · evidencia</span>
+          </div>
+          <div class="ecosystem-surface-grid">
+            <button type="button" data-surface-select="surface-tab-1"><b>Tablet</b><span>Opera</span></button>
+            <button type="button" data-surface-select="surface-tab-2"><b>PC</b><span>Gobierna</span></button>
+            <button type="button" data-surface-select="surface-tab-3"><b>Mobile</b><span>Supervisa</span></button>
+            <button type="button" data-surface-select="surface-tab-4"><b>Chart Lab</b><span>Explica</span></button>
+            <button type="button" data-surface-select="surface-tab-5"><b>Control</b><span>Administra</span></button>
+            <button type="button" data-surface-select="surface-tab-6"><b>Web</b><span>Conecta</span></button>
+          </div>
         </div>
-        <p>
-          Recorre las capas. El objetivo no es copiar la misma pantalla en todas partes, sino conservar significado
-          y producir una representación útil para cada superficie.
-        </p>
-      </header>
-
-      <div class="journey-controls" role="tablist" aria-label="Capas de una operación PRISMA">
-        <button class="journey-tab" role="tab" aria-selected="true" data-journey="scope"><span>01</span>Scope</button>
-        <button class="journey-tab" role="tab" aria-selected="false" data-journey="event"><span>02</span>Evento</button>
-        <button class="journey-tab" role="tab" aria-selected="false" data-journey="evidence"><span>03</span>Evidencia</button>
-        <button class="journey-tab" role="tab" aria-selected="false" data-journey="canonical"><span>04</span>Canonical</button>
-        <button class="journey-tab" role="tab" aria-selected="false" data-journey="projection"><span>05</span>Proyección</button>
-        <button class="journey-tab" role="tab" aria-selected="false" data-journey="ui"><span>06</span>UI</button>
-      </div>
-
-      <article class="journey-stage">
-        <div class="journey-copy">
-          <p class="journey-kicker" data-journey-kicker>CAPA 01 · SCOPE</p>
-          <h3 data-journey-title>Antes de contar la venta, PRISMA sabe a quién y a dónde pertenece.</h3>
-          <p data-journey-description>
-            Tenant, negocio, tienda, terminal, dispositivo, usuario, rol, licencia y sesión forman el contexto mínimo.
-          </p>
-          <code data-journey-code>TEN.prisma_rey · STO.centro · DEV.tb.pos.01 · USR.cashier.01</code>
-        </div>
-        <div class="journey-signal" aria-label="Estado de la operación seleccionada">
-          <div class="journey-pulse"><span data-journey-icon>01</span></div>
-          <strong data-journey-status>La venta ya tiene domicilio operacional.</strong>
-          <small data-journey-proof>No existe todavía una cifra; existe contexto verificable.</small>
-        </div>
-      </article>
-    </section>
-
-    <section class="ecosystem-section capability-section" aria-labelledby="capabilities-title">
-      <header class="ecosystem-heading">
-        <div>
-          <p class="prisma-eyebrow">CAPACIDADES, NO APLICACIONES ENJAULADAS</p>
-          <h2 id="capabilities-title">Los módulos se habilitan sobre el núcleo y se proyectan donde aportan valor.</h2>
-        </div>
-        <p>
-          Una capacidad puede aparecer en varias superficies sin duplicar su significado. La licencia y el rol
-          determinan qué se puede hacer; el contexto determina cómo debe mostrarse.
-        </p>
-      </header>
-
-      <div class="capability-map">
-        <article>
-          <span>OPERACIÓN</span>
-          <h3>Ventas, caja, inventario y servicios</h3>
-          <p>Capacidades que registran acciones reales y generan eventos desde el origen.</p>
-          <div><b>Tablet</b><b>PC</b><b>Web</b></div>
-        </article>
-        <article>
-          <span>GOBIERNO</span>
-          <h3>Usuarios, roles, configuración y excepciones</h3>
-          <p>Capacidades que autorizan, corrigen y explican sin borrar la procedencia.</p>
-          <div><b>PC</b><b>Control</b></div>
-        </article>
-        <article>
-          <span>OBSERVABILIDAD</span>
-          <h3>Métricas, tendencias, alertas y reconciliación</h3>
-          <p>Capacidades que convierten eventos en señales y mantienen el camino de regreso a la evidencia.</p>
-          <div><b>Chart Lab</b><b>Mobile</b><b>PC</b></div>
-        </article>
-        <article>
-          <span>PLATAFORMA</span>
-          <h3>Tenants, licencias, dispositivos y módulos</h3>
-          <p>Capacidades que administran quién puede usar qué, dónde y bajo qué condiciones.</p>
-          <div><b>Control</b><b>Web</b></div>
-        </article>
       </div>
     </section>
 
-    <section class="ecosystem-closing prisma-glass" aria-labelledby="closing-title">
-      <p class="prisma-eyebrow">LA IDEA EN UNA FRASE</p>
-      <h2 id="closing-title">Las aplicaciones muestran. <span>El núcleo recuerda.</span></h2>
-      <p>
-        PRISMA no depende conceptualmente de una pantalla. Cada dato visible conserva tenant, scope, procedencia,
-        estado canónico y la superficie que lo está representando.
-      </p>
-      <div class="ecosystem-closing-actions">
-        <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#recorrido">Repetir el recorrido</a>
-        <a class="prisma-button" href="../pagina-3-por-que-prisma/index.html">Volver a Por qué PRISMA</a>
+    <section class="prisma-scene" data-scene-label="02 · SUPERFICIES" id="superficies">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">UNA RESPONSABILIDAD POR SUPERFICIE</p>
+          <h2>Cada superficie tiene <span>una responsabilidad.</span></h2>
+          <p>Selecciona una superficie y revisa su rol, datos y evidencia.</p>
+        </div>
+        <div class="prisma-scene-card" data-prisma-tabs id="surfaceTabs">
+          <span class="prisma-interaction-hint">Selecciona una superficie</span>
+          <div class="prisma-tablist" role="tablist" aria-label="Superficies PRISMA">
+            <button class="prisma-tab" id="surface-tab-1" role="tab" aria-selected="true" aria-controls="surface-panel-1">Tablet</button>
+            <button class="prisma-tab" id="surface-tab-2" role="tab" aria-selected="false" aria-controls="surface-panel-2">PC</button>
+            <button class="prisma-tab" id="surface-tab-3" role="tab" aria-selected="false" aria-controls="surface-panel-3">Mobile</button>
+            <button class="prisma-tab" id="surface-tab-4" role="tab" aria-selected="false" aria-controls="surface-panel-4">Chart Lab</button>
+            <button class="prisma-tab" id="surface-tab-5" role="tab" aria-selected="false" aria-controls="surface-panel-5">Control</button>
+            <button class="prisma-tab" id="surface-tab-6" role="tab" aria-selected="false" aria-controls="surface-panel-6">Web</button>
+          </div>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-1" role="tabpanel" aria-labelledby="surface-tab-1"><p class="prisma-panel-kicker">TABLET POS · OPERA</p><h3 class="prisma-panel-title">Termina la acción con velocidad y continuidad.</h3><dl><div><dt>Rol</dt><dd>Cajero u operador</dd></div><div><dt>Consume</dt><dd>Catálogo, precios, permisos, sesión e inventario</dd></div><div><dt>Emite</dt><dd>Venta, líneas, pago, ticket y sincronización</dd></div><div><dt>Evidencia</dt><dd>Ticket, pago, dispositivo y sesión</dd></div></dl></section>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-2" role="tabpanel" aria-labelledby="surface-tab-2" hidden><p class="prisma-panel-kicker">PC ADMIN · GOBIERNA</p><h3 class="prisma-panel-title">Explica excepciones y autoriza correcciones.</h3><dl><div><dt>Rol</dt><dd>Administrador</dd></div><div><dt>Consume</dt><dd>Eventos canónicos, inventario, usuarios y configuración</dd></div><div><dt>Emite</dt><dd>Ajustes, permisos, conciliaciones y auditoría</dd></div><div><dt>Evidencia</dt><dd>Historial, procedencia y responsabilidad</dd></div></dl></section>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-3" role="tabpanel" aria-labelledby="surface-tab-3" hidden><p class="prisma-panel-kicker">MOBILE · SUPERVISA</p><h3 class="prisma-panel-title">Entrega síntesis, riesgo y siguiente acción.</h3><dl><div><dt>Rol</dt><dd>Dueño o supervisor</dd></div><div><dt>Consume</dt><dd>Métricas, alertas, estado de tiendas y dispositivos</dd></div><div><dt>Emite</dt><dd>Reconocimientos, decisiones y seguimientos</dd></div><div><dt>Evidencia</dt><dd>Contexto resumido con ruta al origen</dd></div></dl></section>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-4" role="tabpanel" aria-labelledby="surface-tab-4" hidden><p class="prisma-panel-kicker">CHART LAB · EXPLICA</p><h3 class="prisma-panel-title">Convierte eventos en patrones verificables.</h3><dl><div><dt>Rol</dt><dd>Analista u operador de negocio</dd></div><div><dt>Consume</dt><dd>Eventos, métricas, periodos y dimensiones</dd></div><div><dt>Emite</dt><dd>Tendencias, comparaciones y alertas analíticas</dd></div><div><dt>Evidencia</dt><dd>Lineage desde la visualización hasta el dato</dd></div></dl></section>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-5" role="tabpanel" aria-labelledby="surface-tab-5" hidden><p class="prisma-panel-kicker">CONTROL CENTER · ADMINISTRA</p><h3 class="prisma-panel-title">Gobierna tenants, licencias y dispositivos.</h3><dl><div><dt>Rol</dt><dd>Operador de plataforma</dd></div><div><dt>Consume</dt><dd>Clientes, planes, claims, estado y auditoría</dd></div><div><dt>Emite</dt><dd>Activaciones, revocaciones y capacidades</dd></div><div><dt>Evidencia</dt><dd>Licencia, device claim y evento administrativo</dd></div></dl></section>
+          <section class="prisma-tabpanel surface-panel" id="surface-panel-6" role="tabpanel" aria-labelledby="surface-tab-6" hidden><p class="prisma-panel-kicker">WEB · CONECTA</p><h3 class="prisma-panel-title">Abre la entrada comercial y operativa.</h3><dl><div><dt>Rol</dt><dd>Cliente, prospecto o usuario externo</dd></div><div><dt>Consume</dt><dd>Oferta, configuración, estado y servicios autorizados</dd></div><div><dt>Emite</dt><dd>Solicitudes, altas, configuración y seguimiento</dd></div><div><dt>Evidencia</dt><dd>Consentimiento, estado y referencia de operación</dd></div></dl></section>
+        </div>
       </div>
-      <small>La siguiente página seguirá una operación completa de principio a fin.</small>
     </section>
 
-    <footer class="ecosystem-footer">
-      <span>PRISMA · núcleo neutral → proyección por superficie → experiencia por rol</span>
-      <a href="../../index.html">Volver al índice</a>
-    </footer>
+    <section class="prisma-scene" data-scene-label="03 · RECORRIDO" id="recorrido">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">UNA ACCIÓN · TODO EL ECOSISTEMA</p>
+          <h2>Una venta. <span>Todo el ecosistema.</span></h2>
+          <p>Cada capa conserva significado y proyecta el resultado correcto.</p>
+          <div class="capability-strip" aria-label="Familias de capacidades"><span>Operación</span><span>Gobierno</span><span>Observabilidad</span><span>Plataforma</span></div>
+        </div>
+        <div class="prisma-scene-card" data-prisma-stepper>
+          <span class="prisma-interaction-hint">Sigue las capas</span>
+          <div class="prisma-stepper" role="tablist" aria-label="Capas de una operación">
+            <button class="prisma-step" id="journey-tab-1" role="tab" aria-selected="true" aria-controls="journey-panel-1">01 Scope</button>
+            <button class="prisma-step" id="journey-tab-2" role="tab" aria-selected="false" aria-controls="journey-panel-2">02 Evento</button>
+            <button class="prisma-step" id="journey-tab-3" role="tab" aria-selected="false" aria-controls="journey-panel-3">03 Evidencia</button>
+            <button class="prisma-step" id="journey-tab-4" role="tab" aria-selected="false" aria-controls="journey-panel-4">04 Canonical</button>
+            <button class="prisma-step" id="journey-tab-5" role="tab" aria-selected="false" aria-controls="journey-panel-5">05 Proyección</button>
+            <button class="prisma-step" id="journey-tab-6" role="tab" aria-selected="false" aria-controls="journey-panel-6">06 UI</button>
+          </div>
+          <section class="prisma-step-panel" id="journey-panel-1" role="tabpanel" aria-labelledby="journey-tab-1"><p class="prisma-panel-kicker">SCOPE</p><h3 class="prisma-panel-title">La venta recibe domicilio operacional.</h3><p class="prisma-panel-text">Tenant, negocio, tienda, terminal, dispositivo, usuario, rol, licencia y sesión definen pertenencia y autoridad.</p><code class="journey-code">TEN.prisma_rey · STO.centro · DEV.tb.pos.01 · USR.cashier.01</code></section>
+          <section class="prisma-step-panel" id="journey-panel-2" role="tabpanel" aria-labelledby="journey-tab-2" hidden><p class="prisma-panel-kicker">EVENTO</p><h3 class="prisma-panel-title">La acción se registra una vez.</h3><p class="prisma-panel-text">`EVT.sale.created` conserva entidad, acción, origen, fecha, estado y dispositivo emisor.</p><code class="journey-code">ENT.sale · ACT.sale.checkout · SRC.tablet</code></section>
+          <section class="prisma-step-panel" id="journey-panel-3" role="tabpanel" aria-labelledby="journey-tab-3" hidden><p class="prisma-panel-kicker">EVIDENCIA</p><h3 class="prisma-panel-title">Pago y ticket demuestran lo ocurrido.</h3><p class="prisma-panel-text">La venta conserva referencia de pago, ticket, outbox y auditoría con procedencia verificable.</p><code class="journey-code">EVD.receipt · EVD.payment · EVD.audit</code></section>
+          <section class="prisma-step-panel" id="journey-panel-4" role="tabpanel" aria-labelledby="journey-tab-4" hidden><p class="prisma-panel-kicker">CANONICAL</p><h3 class="prisma-panel-title">El núcleo declara el estado aceptado.</h3><p class="prisma-panel-text">La proyección canónica consolida estado, sincronización y lineage sin borrar el origen local.</p><code class="journey-code">CAN.sale · status=accepted · sync=synced</code></section>
+          <section class="prisma-step-panel" id="journey-panel-5" role="tabpanel" aria-labelledby="journey-tab-5" hidden><p class="prisma-panel-kicker">PROYECCIÓN</p><h3 class="prisma-panel-title">Cada superficie recibe el dato que necesita.</h3><p class="prisma-panel-text">Tablet cierra la venta. PC gobierna. Mobile resume. Chart Lab incorpora la tendencia. Control verifica capacidad.</p><code class="journey-code">SURF.tb.pos · SURF.pc.sales · SURF.mb.owner · SURF.cl.trend</code></section>
+          <section class="prisma-step-panel" id="journey-panel-6" role="tabpanel" aria-labelledby="journey-tab-6" hidden><p class="prisma-panel-kicker">UI</p><h3 class="prisma-panel-title">La interfaz muestra. El núcleo recuerda.</h3><p class="prisma-panel-text">Cada componente localiza la representación correcta. Ningún componente gobierna el significado de la venta.</p><code class="journey-code">TB-POS-PAY-BTN-01 · PC-SALES-MAIN-TBL-01 · MB-HOME-KPI-01</code></section>
+
+          <nav class="prisma-page-transition" aria-label="Transición entre páginas">
+            <a class="prisma-page-transition__link" data-direction="prev" href="../pagina-3-por-que-prisma/index.html"><span>←</span><span><small>Anterior</small><strong>Por qué PRISMA</strong></span></a>
+            <span class="prisma-page-transition__count">03 / 04</span>
+            <a class="prisma-page-transition__link" data-direction="next" href="../../index.html"><span><small>Recorrido</small><strong>Volver al índice</strong></span><span>→</span></a>
+          </nav>
+        </div>
+      </div>
+    </section>
   </main>
-
   <script type="module" src="../../sistema-ui/js/prisma-ui.js"></script>
   <script type="module" src="pagina.js"></script>
 </body>

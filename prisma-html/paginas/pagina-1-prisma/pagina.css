@@ -1,144 +1,21 @@
-
 @layer pages {
-  body[data-prisma-page="prisma-home"] {
-    min-height: 100vh;
-    overflow-x: hidden;
-
-    &::after {
-      content: "";
-      position: fixed;
-      z-index: -2;
-      width: 42rem;
-      height: 42rem;
-      top: 16%;
-      left: 50%;
-      translate: -50% 0;
-      border-radius: 50%;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 38% 30%, rgba(255, 255, 255, .96), transparent 18%),
-        radial-gradient(circle, rgba(114, 165, 236, .22), rgba(255, 255, 255, .02) 60%, transparent 72%);
-      filter: blur(30px);
-      opacity: .92;
-    }
+  body[data-prisma-page="prisma-home"]::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 72% 38%, rgba(82, 190, 255, .13), transparent 28rem);
   }
 
-  .page {
-    width: min(var(--prisma-content-max), calc(100% - 28px));
-    margin-inline: auto;
-    padding: 14px 0 54px;
-    position: relative;
-    z-index: var(--prisma-layer-content);
-
-    @media (max-width: 780px) {
-      width: min(100% - 16px, var(--prisma-content-max));
-      padding-top: 8px;
-    }
-  }
-
-  .hero {
-    min-height: min(860px, calc(100vh - 90px));
-    grid-template-columns: minmax(320px, 1.05fr) minmax(470px, .95fr);
-    padding: clamp(72px, 9vw, 132px) clamp(12px, 4vw, 58px) 72px;
-
-    @media (max-width: 1160px) {
-      grid-template-columns: 1fr;
-      padding-top: 86px;
-    }
-
-    @media (max-width: 780px) {
-      min-height: auto;
-      padding: 64px 8px 36px;
-    }
-  }
-
-  .hero-copy {
-    @media (max-width: 1160px) {
-      max-width: 970px;
-    }
-  }
-
-  .logo-stage {
-    position: relative;
-    min-height: 610px;
-    display: grid;
-    place-items: center;
-    isolation: isolate;
-    background: transparent;
-
-    &::before,
-    &::after {
-      content: none;
+  @media (max-width: 560px) {
+    body[data-prisma-page="prisma-home"] .prisma-scene:first-of-type .prisma-scene-actions .prisma-button:not(.prisma-button--primary) {
       display: none;
     }
 
-    @media (max-width: 1160px) { min-height: 560px; }
-    @media (max-width: 780px) { min-height: 490px; margin: 0; scale: 1; }
-    @media (max-width: 520px) { min-height: 420px; }
-  }
-
-  .hero-logo {
-    display: block;
-    width: min(100%, 610px);
-    height: auto;
-    max-height: 650px;
-    object-fit: contain;
-    object-position: center;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    filter:
-      drop-shadow(0 1px 0 rgba(98, 107, 120, .42))
-      drop-shadow(0 20px 34px rgba(53, 80, 122, .10));
-    user-select: none;
-    -webkit-user-drag: none;
-
-    @media (max-width: 1160px) { width: min(82vw, 590px); }
-    @media (max-width: 780px) { width: min(92vw, 500px); max-height: 540px; }
-    @media (max-width: 520px) { width: min(96vw, 430px); max-height: 470px; }
-  }
-
-  .section {
-    padding: 96px clamp(10px, 3.8vw, 56px);
-
-    @media (max-width: 780px) {
-      padding: 76px 8px;
-    }
-  }
-
-  .closing {
-    padding: 120px clamp(12px, 4vw, 60px) 70px;
-    text-align: center;
-
-    p {
-      max-width: 1050px;
-      margin: 0 auto;
-      color: var(--prisma-color-text-strong);
-      font-size: clamp(2rem, 5.4vw, 5.2rem);
-      line-height: 1;
-      letter-spacing: -.062em;
-      text-wrap: balance;
-
-      span { color: var(--prisma-color-brand-primary); }
-    }
-
-    @media (max-width: 520px) {
-      padding-top: 84px;
-    }
-  }
-
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 18px;
-    margin-top: 70px;
-    padding-top: 18px;
-    border-top: 1px solid rgba(77, 96, 124, .12);
-    color: var(--prisma-color-text-secondary);
-    font-size: .72rem;
-
-    @media (max-width: 780px) {
-      flex-direction: column;
+    body[data-prisma-page="prisma-home"] .prisma-tabpanel,
+    body[data-prisma-page="prisma-home"] .prisma-step-panel {
+      min-height: 0;
     }
   }
 }

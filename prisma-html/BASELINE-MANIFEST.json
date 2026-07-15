@@ -1,29 +1,44 @@
 {
-  "schema_version": "1.3.0",
-  "name": "PRISMA HTML modular narrative baseline",
-  "source_archive": "prismacode clean.zip",
-  "source_sha256": "B6D69B4E7D9824E56E57E8B6625DEC60BA4438EEC816915298F131C67579E476",
-  "scope": "active render and development tree only",
-  "pages": {
-    "page1": "present",
-    "page2": "present",
-    "page3": "present_refactored"
-  },
-  "page3_stash_branch": "stash/prisma-html-page3-before-clean-baseline-20260713",
-  "logo_asset": "assets/images/prisma-logo-approved-baseline.png",
-  "logo_compatibility_alias": "assets/images/prisma-logo.svg",
-  "logo_note": "Exact approved transparent PNG from CLEAN1 baseline.",
-  "classification": "BUILD",
-  "status": "PASS_STATIC_PREVIEW_PENDING",
-  "checks": 330,
-  "errors": 0,
+  "schema_version": "2.0.0",
+  "name": "PRISMA HTML narrative system",
+  "classification": "FIX",
+  "status": "PASS_BROWSER_HARNESS_USER_VISUAL_REVIEW_PENDING",
   "visual_certified": false,
+  "master_entry": "index.html",
+  "pages": {
+    "page1": "paginas/pagina-1-prisma/index.html",
+    "page2": "paginas/pagina-2-inversionistas/index.html",
+    "page3": "paginas/pagina-3-por-que-prisma/index.html",
+    "page4": "paginas/pagina-4-ecosistema-producto/index.html",
+    "catalog": "sistema-ui/catalogo/index.html"
+  },
+  "identity_asset": "assets/images/prisma-logo.png",
+  "shared_narrative_css": "sistema-ui/css/patrones/narrative-page.css",
+  "shared_narrative_js": "sistema-ui/js/componentes/prisma-narrative.js",
+  "governed_atmospheres": [
+    "assets/atmosphere/aurora-slate-veil.svg",
+    "assets/atmosphere/liquid-operations-smoke.svg"
+  ],
+  "static_checks": 382,
+  "static_errors": 0,
+  "browser_harness": "PASS",
+  "rollback_branch": "stash/prisma-html-before-narrative-sweep-20260715",
   "excluded": [
-    "backup_original/",
-    "historical screenshots and diffs",
-    "operational product surfaces",
-    "databases",
-    "runtime processes",
-    "main branch mutation"
+    "main merge",
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "pending": [
+    "direct Safari iPhone review",
+    "user visual approval",
+    "merge decision"
   ]
 }

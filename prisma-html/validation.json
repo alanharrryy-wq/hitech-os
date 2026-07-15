@@ -1,10 +1,30 @@
 {
-  "status": "PASS",
-  "validator": "tools/validate_project.py",
-  "scope": "clean GitHub baseline without Page 3",
-  "checks": 305,
-  "errors": 0,
-  "warnings": 0,
+  "status": "PASS_BROWSER_HARNESS_USER_VISUAL_REVIEW_PENDING",
   "visual_certified": false,
-  "note": "Static validation passed locally before import. Mobile and visual approval remain pending."
+  "static_validator": {
+    "status": "PASS",
+    "checks": 382,
+    "errors": 0,
+    "warnings": 0
+  },
+  "browser_harness": {
+    "status": "PASS",
+    "engine": "Chromium headless",
+    "viewports": [
+      "320x568",
+      "375x667",
+      "1440x900"
+    ],
+    "errors": 0
+  },
+  "mobile_contract": {
+    "max_viewport_ratio": 3.0,
+    "horizontal_overflow": 0,
+    "min_target_css_px": 44
+  },
+  "pending": [
+    "direct Safari iPhone review",
+    "user visual approval"
+  ],
+  "report": "reports/full-surface-sweep.json"
 }

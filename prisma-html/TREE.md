@@ -1,15 +1,15 @@
-# Tree activo
+# PRISMA HTML · Tree activo
 
 ```text
 prisma-html/
 ├── index.html
 ├── index.css
 ├── assets/
-│   ├── fonts/
-│   ├── icons/
+│   ├── atmosphere/
+│   │   ├── aurora-slate-veil.svg
+│   │   └── liquid-operations-smoke.svg
 │   └── images/
-│       ├── prisma-logo-approved-baseline.png
-│       └── prisma-logo.svg
+│       └── prisma-logo.png
 ├── paginas/
 │   ├── pagina-1-prisma/
 │   │   ├── index.html
@@ -29,35 +29,37 @@ prisma-html/
 │       └── pagina.js
 ├── sistema-ui/
 │   ├── catalogo/
+│   │   ├── index.html
+│   │   ├── catalogo.css
+│   │   └── catalogo.js
 │   ├── css/
 │   │   ├── tokens/
 │   │   ├── base/
 │   │   ├── layouts/
 │   │   ├── componentes/
 │   │   ├── patrones/
+│   │   │   └── narrative-page.css
 │   │   ├── utilidades/
 │   │   └── prisma-ui.css
 │   ├── js/
 │   │   ├── componentes/
+│   │   │   └── prisma-narrative.js
 │   │   ├── comportamientos/
 │   │   ├── utilidades/
 │   │   └── prisma-ui.js
 │   └── temas/
 ├── governance/
-│   ├── PAGE3_AUTHORITY_READSET.lock.json
-│   ├── PAGE3_VISUAL_CHANGE_MANIFEST.json
-│   ├── PAGE4_AUTHORITY_READSET.lock.json
-│   └── PAGE4_VISUAL_CHANGE_MANIFEST.json
+│   └── PRISMA_HTML_NARRATIVE_SWEEP_MANIFEST.json
 ├── reports/
-│   ├── page3-static-validation.json
-│   └── page4-static-validation.json
+│   ├── FULL_SURFACE_SWEEP.md
+│   └── full-surface-sweep.json
 ├── tools/
-├── .vscode/
-├── PRISMA-HTML.code-workspace
-├── PREVISUALIZAR.cmd
-├── ABRIR-EN-VSCODE.cmd
+│   ├── servidor_local.py
+│   └── validate_project.py
 ├── BASELINE-MANIFEST.json
+├── SOURCE-INTEGRITY.json
+├── validation.json
 └── README.md
 ```
 
-Página 3 conserva su respaldo histórico en la rama stash. Página 4 introduce el mapa del ecosistema sin modificar el sistema UI compartido ni las superficies operativas reales.
+No contiene backups ni evidencia visual pesada. El rollback vive en la rama remota indicada por el manifiesto.

@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0.0",
+  "generated_on": "2026-07-15",
+  "task": "PRISMA HTML full narrative surface sweep",
+  "classification": "FIX",
+  "status": "PASS_BROWSER_HARNESS_USER_VISUAL_REVIEW_PENDING",
+  "visual_certified": false,
+  "repository": "alanharrryy-wq/hitech-os",
+  "pull_request": 178,
+  "branch": "feature/prisma-html-investor-site",
+  "rollback_branch": "stash/prisma-html-before-narrative-sweep-20260715",
+  "scope": [
+    "index.html",
+    "paginas/pagina-1-prisma/index.html",
+    "paginas/pagina-2-inversionistas/index.html",
+    "paginas/pagina-3-por-que-prisma/index.html",
+    "paginas/pagina-4-ecosistema-producto/index.html",
+    "sistema-ui/catalogo/index.html",
+    "sistema-ui/css/patrones/narrative-page.css",
+    "sistema-ui/js/componentes/prisma-narrative.js",
+    "assets/atmosphere/aurora-slate-veil.svg",
+    "assets/atmosphere/liquid-operations-smoke.svg"
+  ],
+  "excluded": [
+    "main merge",
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "contracts": {
+    "narrative_scenes_per_page": 3,
+    "mobile_scroll_budget_max_viewport_ratio": 3.0,
+    "mobile_min_target_css_px": 44,
+    "horizontal_overflow_allowed": false,
+    "one_official_logo_path": "assets/images/prisma-logo.png",
+    "mobile_interaction": "native select plus previous and next buttons",
+    "transition_navigation_required": true,
+    "no_important": true,
+    "no_document_write": true,
+    "no_active_base64_images": true
+  },
+  "static_validation": {
+    "status": "PASS",
+    "checks": 382,
+    "warnings": 0,
+    "errors": 0
+  },
+  "browser_harness": {
+    "engine": "Chromium headless",
+    "status": "PASS",
+    "viewports": {
+      "iphone-se": {
+        "index": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 1096,
+          "viewport_ratio": 1.93,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page1": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 1600,
+          "viewport_ratio": 2.817,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page2": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 568,
+          "viewport_ratio": 1,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page3": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 1600,
+          "viewport_ratio": 2.817,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page4": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 1600,
+          "viewport_ratio": 2.817,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "catalog": {
+          "viewport_width": 320,
+          "scroll_width": 320,
+          "scroll_height": 1376,
+          "viewport_ratio": 2.423,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        }
+      },
+      "mobile": {
+        "index": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 1294,
+          "viewport_ratio": 1.94,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page1": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 1897,
+          "viewport_ratio": 2.844,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page2": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 667,
+          "viewport_ratio": 1,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page3": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 1897,
+          "viewport_ratio": 2.844,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page4": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 1897,
+          "viewport_ratio": 2.844,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "catalog": {
+          "viewport_width": 375,
+          "scroll_width": 375,
+          "scroll_height": 1385,
+          "viewport_ratio": 2.076,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        }
+      },
+      "desktop": {
+        "index": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 1777,
+          "viewport_ratio": 1.974,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page1": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 2556,
+          "viewport_ratio": 2.84,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page2": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 900,
+          "viewport_ratio": 1,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page3": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 2536,
+          "viewport_ratio": 2.818,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "page4": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 2536,
+          "viewport_ratio": 2.818,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        },
+        "catalog": {
+          "viewport_width": 1440,
+          "scroll_width": 1440,
+          "scroll_height": 1337,
+          "viewport_ratio": 1.486,
+          "ui_ready": true,
+          "logo_loaded": true,
+          "logo_visible": true,
+          "interaction_pass": true,
+          "console_errors": 0,
+          "page_errors": 0,
+          "target_size_issues": 0
+        }
+      }
+    },
+    "errors": []
+  },
+  "governed_assets": [
+    {
+      "path": "assets/atmosphere/aurora-slate-veil.svg",
+      "source": "apps/terminal-de-venta-system/products/0.backgrounds/assets/aurora-slate-veil-7eacb016.svg",
+      "source_blob_sha": "fb21932a46bcd3cbf7572ac0008fc743afb52892"
+    },
+    {
+      "path": "assets/atmosphere/liquid-operations-smoke.svg",
+      "source": "apps/terminal-de-venta-system/products/0.backgrounds/assets/liquid-operations-smoke-6ddc58de.svg",
+      "source_blob_sha": "acf76ca6cbbe2b7042330f3c00c6b0f5e8f9fdec"
+    }
+  ],
+  "surface_hashes": {
+    "index": {
+      "path": "index.html",
+      "sha256": "88aab0adb2c0d0f31193e095acd5fa2d017658c802da72da3eff936299336a89"
+    },
+    "page1": {
+      "path": "paginas/pagina-1-prisma/index.html",
+      "sha256": "00be4c65dd851bfcfc33c10862ac1576a141396b1a860e3c8e93f30a71cf2f16"
+    },
+    "page2": {
+      "path": "paginas/pagina-2-inversionistas/index.html",
+      "sha256": "f7dd42dae8abe45d3faa873872b7846e3751e9efc2abf736c08ea182de81824d"
+    },
+    "page3": {
+      "path": "paginas/pagina-3-por-que-prisma/index.html",
+      "sha256": "4272f8869b37a9b52ad35f0da400bc650de64f13608314b04a1e07a40a5be81a"
+    },
+    "page4": {
+      "path": "paginas/pagina-4-ecosistema-producto/index.html",
+      "sha256": "a6b672fbb533aa5ca0b5bf2839192579bd281b60bd3d5c6024dc84c3ae6dbe7b"
+    },
+    "catalog": {
+      "path": "sistema-ui/catalogo/index.html",
+      "sha256": "4a6dbe06a3b587c82f322e6f3940d17b9d6d7a9b221d4fece4e243000619f4a8"
+    }
+  },
+  "pending": [
+    "direct Safari iPhone review",
+    "user visual approval",
+    "merge decision"
+  ],
+  "factory_ledger_update": "not_applied: isolated Draft capability remains pending user visual approval and is not merged or frozen"
+}

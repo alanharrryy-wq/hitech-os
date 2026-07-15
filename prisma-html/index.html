@@ -1,25 +1,69 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-prisma-page="site-index">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PRISMA · Proyecto HTML</title>
+  <meta name="theme-color" content="#08111a" />
+  <title>PRISMA · Recorrido completo</title>
+  <meta name="description" content="Recorrido completo de PRISMA: tesis, diferenciación, ecosistema, inversión y sistema visual." />
   <link rel="stylesheet" href="sistema-ui/css/prisma-ui.css" />
   <link rel="stylesheet" href="index.css" />
   <script type="module" src="sistema-ui/js/prisma-ui.js"></script>
 </head>
-<body data-prisma-theme="prisma" class="inicio-body">
-  <main class="inicio prisma-container">
-    <header class="inicio-header">
-      <img src="assets/images/prisma-logo-approved-baseline.png" alt="PRISMA" />
-      <h1>Proyecto HTML de PRISMA</h1>
-      <p>Abre una página para revisar su versión actual. <a class="inicio-catalogo-link" href="sistema-ui/catalogo/index.html">Abrir catálogo UI</a>.</p>
-    </header>
-    <section class="inicio-grid">
-      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-1-prisma/index.html"><strong>Página 1 · Portada conceptual</strong><span>Qué es PRISMA, cómo funciona y la gramática universal de la operación.</span></a>
-      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-2-inversionistas/index.html"><strong>Página 2 · Investor Deck</strong><span>Presentación interactiva de 10 slides para inversionistas.</span></a>
-      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-3-por-que-prisma/index.html"><strong>Página 3 · Por qué PRISMA</strong><span>Comparador estratégico: qué resuelven otras categorías y qué significado conserva PRISMA.</span></a>
-      <a class="prisma-card prisma-card--interactive" href="paginas/pagina-4-ecosistema-producto/index.html"><strong>Página 4 · Ecosistema del producto</strong><span>Mapa interactivo del núcleo neutral, las seis superficies y el recorrido completo de una venta.</span></a>
+<body data-prisma-theme="prisma" data-prisma-narrative="aurora">
+  <main class="prisma-narrative site-index">
+    <nav class="prisma-narrative-nav" aria-label="Navegación principal">
+      <a class="prisma-narrative-brand" href="index.html">
+        <img src="assets/images/prisma-logo.png" alt="PRISMA" width="160" height="166" />
+        <span><strong>PRISMA</strong><small>Recorrido completo</small></span>
+      </a>
+      <div class="prisma-narrative-location"><strong>INICIO</strong><span>00 / 04</span></div>
+      <div class="prisma-narrative-nav-actions">
+        <a class="prisma-button prisma-button--quiet" href="sistema-ui/catalogo/index.html">Sistema UI</a>
+        <a class="prisma-button prisma-button--primary" href="paginas/pagina-1-prisma/index.html">Comenzar</a>
+      </div>
+    </nav>
+
+    <section class="prisma-scene index-hero" data-scene-label="RECORRIDO PRINCIPAL">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">UNA VERDAD OPERATIVA · TODAS LAS SUPERFICIES</p>
+          <h1>PRISMA convierte operación en <span>verdad útil.</span></h1>
+          <p>Este recorrido explica qué es PRISMA, por qué es diferente y cómo organiza Tablet, PC, Mobile, Chart Lab, Control Center y Web alrededor de un núcleo neutral.</p>
+          <div class="prisma-scene-actions">
+            <a class="prisma-button prisma-button--primary" href="paginas/pagina-1-prisma/index.html">Iniciar recorrido</a>
+            <a class="prisma-button" href="paginas/pagina-2-inversionistas/index.html">Ruta de inversión</a>
+          </div>
+        </div>
+        <div class="index-hero-visual">
+          <img class="prisma-brand-watermark" src="assets/images/prisma-logo.png" alt="PRISMA · Sistema Inteligente de Gestión Operativa" width="160" height="166" />
+          <div class="index-route-signal"><span>01</span><b>Qué es</b><i>→</i><span>03</span><b>Por qué</b><i>→</i><span>04</span><b>Ecosistema</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="prisma-scene" data-scene-label="ELIGE LA RUTA">
+      <div class="index-routes">
+        <article class="index-route index-route--primary">
+          <span>RECORRIDO PRINCIPAL</span>
+          <h2>Conocer PRISMA</h2>
+          <p>Tesis, diferenciación y ecosistema en tres páginas compactas.</p>
+          <ol><li>Qué es PRISMA</li><li>Por qué PRISMA</li><li>Ecosistema del producto</li></ol>
+          <a class="prisma-button prisma-button--primary" href="paginas/pagina-1-prisma/index.html">Entrar</a>
+        </article>
+        <article class="index-route">
+          <span>INVERSIÓN</span>
+          <h2>Investor Deck</h2>
+          <p>Problema, producto, modelo, evidencia y siguiente hito en formato por capítulos.</p>
+          <a class="prisma-button" href="paginas/pagina-2-inversionistas/index.html">Abrir deck</a>
+        </article>
+        <article class="index-route">
+          <span>SISTEMA VISUAL</span>
+          <h2>Catálogo UI</h2>
+          <p>Fundamentos, componentes, patrones y materialidad gobernada en una vista por categoría.</p>
+          <a class="prisma-button" href="sistema-ui/catalogo/index.html">Abrir catálogo</a>
+        </article>
+      </div>
     </section>
   </main>
 </body>

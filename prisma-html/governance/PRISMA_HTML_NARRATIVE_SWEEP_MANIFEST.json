@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "classification": "FIX",
+  "task": "Compress and standardize all PRISMA HTML surfaces",
+  "status": "PASS_BROWSER_HARNESS_USER_VISUAL_REVIEW_PENDING",
+  "visual_certified": false,
+  "rollback_branch": "stash/prisma-html-before-narrative-sweep-20260715",
+  "authorities_read": [
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+    "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "apps/terminal-de-venta-system/.governance/current/VISUAL_CAPABILITY_MATRIX.json"
+  ],
+  "shared_authority": {
+    "css": "sistema-ui/css/patrones/narrative-page.css",
+    "js": "sistema-ui/js/componentes/prisma-narrative.js",
+    "entry_css": "sistema-ui/css/prisma-ui.css",
+    "entry_js": "sistema-ui/js/prisma-ui.js"
+  },
+  "surfaces": {
+    "index": "index.html",
+    "page1": "paginas/pagina-1-prisma/index.html",
+    "page2": "paginas/pagina-2-inversionistas/index.html",
+    "page3": "paginas/pagina-3-por-que-prisma/index.html",
+    "page4": "paginas/pagina-4-ecosistema-producto/index.html",
+    "catalog": "sistema-ui/catalogo/index.html"
+  },
+  "assets": {
+    "logo": "assets/images/prisma-logo.png",
+    "aurora": "assets/atmosphere/aurora-slate-veil.svg",
+    "liquid": "assets/atmosphere/liquid-operations-smoke.svg"
+  },
+  "removed_stale_paths": [
+    "assets/images/prisma-logo.svg",
+    "assets/images/prisma-mark.png",
+    "assets/images/LOGO-SOURCE.md",
+    "governance/PAGE3_AUTHORITY_READSET.lock.json",
+    "governance/PAGE3_VISUAL_CHANGE_MANIFEST.json",
+    "governance/PAGE4_AUTHORITY_READSET.lock.json",
+    "governance/PAGE4_VISUAL_CHANGE_MANIFEST.json",
+    "reports/page3-static-validation.json",
+    "reports/page4-static-validation.json"
+  ],
+  "gates": {
+    "narrative_scenes_per_page": 3,
+    "mobile_scroll_budget_max_viewport_ratio": 3.0,
+    "mobile_min_target_css_px": 44,
+    "horizontal_overflow_allowed": false,
+    "one_official_logo_path": "assets/images/prisma-logo.png",
+    "mobile_interaction": "native select plus previous and next buttons",
+    "transition_navigation_required": true,
+    "no_important": true,
+    "no_document_write": true,
+    "no_active_base64_images": true
+  },
+  "validation": {
+    "status": "PASS",
+    "checks": 382,
+    "warnings": 0,
+    "errors": 0
+  },
+  "browser": {
+    "status": "PASS",
+    "viewports": [
+      "iphone-se",
+      "mobile",
+      "desktop"
+    ]
+  },
+  "excluded": [
+    "main merge",
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "pending": [
+    "direct Safari iPhone review",
+    "user visual approval",
+    "merge decision"
+  ]
+}

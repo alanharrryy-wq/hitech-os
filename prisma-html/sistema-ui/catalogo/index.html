@@ -3,321 +3,101 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#f4f7fb" />
-  <title>PRISMA UI · Visual System Workbench</title>
-  <meta name="description" content="Catálogo interactivo de tokens, componentes, patrones y superficies Clear Pearl Glass de PRISMA." />
+  <meta name="theme-color" content="#08111a" />
+  <title>PRISMA UI · Sistema visual</title>
+  <meta name="description" content="Fundamentos, componentes, patrones y materialidad gobernada del sistema visual PRISMA." />
   <link rel="stylesheet" href="../css/prisma-ui.css" />
   <link rel="stylesheet" href="catalogo.css" />
+</head>
+<body data-prisma-theme="prisma" data-prisma-narrative="aurora" data-prisma-page="ui-catalog">
+  <main class="prisma-narrative catalog-shell">
+    <nav class="prisma-narrative-nav" aria-label="Navegación del catálogo">
+      <a class="prisma-narrative-brand" href="../../index.html">
+        <img src="../../assets/images/prisma-logo.png" alt="PRISMA" width="160" height="166" />
+        <span><strong>PRISMA UI</strong><small>Sistema visual gobernado</small></span>
+      </a>
+      <div class="prisma-narrative-location"><strong>CATÁLOGO</strong><span>4 vistas</span></div>
+      <div class="prisma-narrative-nav-actions">
+        <a class="prisma-button prisma-button--quiet" href="../../index.html">Índice</a>
+        <a class="prisma-button prisma-button--primary" href="../../paginas/pagina-1-prisma/index.html">Recorrido</a>
+      </div>
+    </nav>
+
+    <header class="catalog-hero">
+      <div>
+        <p class="prisma-eyebrow--dark">SISTEMA VISUAL OPERATIVO</p>
+        <h1>Una identidad. <span>Cuatro vistas de trabajo.</span></h1>
+        <p>Fundamentos, componentes, patrones y materialidad viven en una sola autoridad. Selecciona una vista. El catálogo muestra una categoría a la vez.</p>
+      </div>
+      <img src="../../assets/images/prisma-logo.png" alt="PRISMA · Sistema Inteligente de Gestión Operativa" width="160" height="166" />
+    </header>
+
+    <section class="catalog-workspace prisma-scene-card" data-prisma-tabs>
+      <div class="catalog-toolbar">
+        <div>
+          <span class="prisma-interaction-hint">Selecciona una vista</span>
+          <div class="prisma-tablist" role="tablist" aria-label="Vistas del catálogo">
+            <button class="prisma-tab" id="catalog-tab-1" role="tab" aria-selected="true" aria-controls="catalog-panel-1">Fundamentos</button>
+            <button class="prisma-tab" id="catalog-tab-2" role="tab" aria-selected="false" aria-controls="catalog-panel-2">Componentes</button>
+            <button class="prisma-tab" id="catalog-tab-3" role="tab" aria-selected="false" aria-controls="catalog-panel-3">Patrones</button>
+            <button class="prisma-tab" id="catalog-tab-4" role="tab" aria-selected="false" aria-controls="catalog-panel-4">Materialidad</button>
+          </div>
+        </div>
+        <label class="catalog-theme"><span>Tema</span><select class="prisma-select" id="themeSelect"><option value="prisma">PRISMA</option><option value="inversionistas">Inversionistas</option><option value="alto-contraste">Alto contraste</option></select></label>
+      </div>
+
+      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-1" role="tabpanel" aria-labelledby="catalog-tab-1">
+        <header><p class="prisma-panel-kicker">FUNDAMENTOS</p><h2>Color, tipografía, espacio y atmósfera.</h2></header>
+        <div class="catalog-foundations">
+          <article class="catalog-palette"><span style="--swatch:#2868c7"><i></i><b>Primary</b><small>#2868C7</small></span><span style="--swatch:#1d4f9c"><i></i><b>Deep</b><small>#1D4F9C</small></span><span style="--swatch:#75c6ff"><i></i><b>Signal</b><small>#75C6FF</small></span><span style="--swatch:#bba8ff"><i></i><b>Prismatic</b><small>#BBA8FF</small></span></article>
+          <article class="catalog-type"><small>DISPLAY</small><strong>Una verdad.<br>Muchas superficies.</strong><p>El cuerpo explica decisiones con contraste, ritmo y ancho de lectura controlado.</p></article>
+          <article class="catalog-scale"><small>ESCALA</small><div><span>8</span><span>16</span><span>24</span><span>34</span><span>48</span></div><p>Espacio y radio forman una progresión estable.</p></article>
+        </div>
+      </section>
+
+      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-2" role="tabpanel" aria-labelledby="catalog-tab-2" hidden>
+        <header><p class="prisma-panel-kicker">COMPONENTES</p><h2>Acciones, superficies, datos y estados.</h2></header>
+        <div class="catalog-components">
+          <article><small>ACCIONES</small><div class="catalog-buttons"><button class="prisma-button prisma-button--primary">Confirmar</button><button class="prisma-button">Ver evidencia</button><button class="prisma-button prisma-button--danger">Revocar</button></div></article>
+          <article class="catalog-glass-card"><small>SUPERFICIE</small><h3>Clear Pearl Glass</h3><p>Una superficie focal, un borde óptico y un contenido dominante.</p><span class="prisma-status-chip">OPERATIVO</span></article>
+          <article><small>ESTADOS</small><div class="catalog-states"><span class="prisma-status-chip">OPERATIVO</span><span class="prisma-status-chip">VALIDADO</span><span class="prisma-status-chip" data-status="construction">EN CONSTRUCCIÓN</span><span class="prisma-status-chip" data-status="roadmap">ROADMAP</span></div></article>
+          <article><small>DATOS</small><div class="catalog-metrics"><span><b>228</b><small>aceptadas</small></span><span><b>2</b><small>pendientes</small></span><span><b>1</b><small>rechazada</small></span></div></article>
+        </div>
+      </section>
+
+      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-3" role="tabpanel" aria-labelledby="catalog-tab-3" hidden>
+        <header><p class="prisma-panel-kicker">PATRONES</p><h2>Tres escenas, una interacción y una transición.</h2></header>
+        <div class="catalog-patterns">
+          <article><span>01</span><h3>Impacto</h3><p>Una tesis central y una prueba visual.</p></article>
+          <article><span>02</span><h3>Comprensión</h3><p>Tabs o stepper con instrucción visible y respuesta inmediata.</p></article>
+          <article><span>03</span><h3>Resultado</h3><p>Evidencia, cierre y transición a la siguiente página.</p></article>
+        </div>
+        <nav class="catalog-transition-example" aria-label="Ejemplo de transición"><button type="button">← Qué es PRISMA</button><span>02 / 04</span><button type="button">Ecosistema →</button></nav>
+      </section>
+
+      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-4" role="tabpanel" aria-labelledby="catalog-tab-4" hidden>
+        <header><p class="prisma-panel-kicker">MATERIALIDAD GOBERNADA</p><h2>Atmósfera, vidrio y presupuesto de capas.</h2></header>
+        <div class="catalog-material">
+          <div class="catalog-lab" id="catalogLab">
+            <div class="catalog-lab-surface"><img src="../../assets/images/prisma-logo.png" alt="PRISMA" width="160" height="166" /><strong>Una superficie focal</strong><span id="labReadout">Aurora · alpha 58 · blur 24</span></div>
+          </div>
+          <form class="catalog-controls" aria-label="Controles de materialidad">
+            <label>Atmósfera<select id="atmosphereSelect" class="prisma-select"><option value="aurora">Aurora Slate Veil</option><option value="liquid">Liquid Operations Smoke</option></select></label>
+            <label>Opacidad <output id="alphaOutput">58</output><input id="alphaRange" type="range" min="0" max="90" value="58" step="1" /></label>
+            <label>Blur <output id="blurOutput">24</output><input id="blurRange" type="range" min="0" max="40" value="24" step="1" /></label>
+            <p>Capas visibles: fondo atmosférico, halo, superficie, contenido y estado activo. Máximo cinco.</p>
+          </form>
+        </div>
+      </section>
+
+      <nav class="prisma-page-transition" aria-label="Transición del catálogo">
+        <a class="prisma-page-transition__link" data-direction="prev" href="../../index.html"><span>←</span><span><small>Volver</small><strong>Índice completo</strong></span></a>
+        <span class="prisma-page-transition__count">UI / 04</span>
+        <a class="prisma-page-transition__link" data-direction="next" href="../../paginas/pagina-1-prisma/index.html"><span><small>Recorrido</small><strong>Qué es PRISMA</strong></span><span>→</span></a>
+      </nav>
+    </section>
+  </main>
   <script type="module" src="../js/prisma-ui.js"></script>
   <script type="module" src="catalogo.js"></script>
-</head>
-<body data-prisma-theme="prisma" data-prisma-page="ui-catalog" class="catalogo-body">
-  <div class="catalogo-scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
-
-  <header class="catalogo-nav prisma-glass">
-    <a class="catalogo-brand" href="../../index.html" aria-label="Volver al inicio de PRISMA">
-      <img src="../../assets/images/prisma-mark.png" alt="" aria-hidden="true" />
-      <span><strong>PRISMA UI</strong><small>Visual System Workbench</small></span>
-    </a>
-
-    <div class="catalogo-nav-status" aria-label="Estado del sistema UI">
-      <span><i></i> Baseline activo</span>
-      <span>ES Modules</span>
-      <span>Clear Pearl Glass</span>
-    </div>
-
-    <div class="catalogo-nav-controls">
-      <label class="catalogo-select-wrap">
-        <span>Tema</span>
-        <select id="themeSelect" class="prisma-select" aria-label="Seleccionar tema visual">
-          <option value="prisma">PRISMA</option>
-          <option value="inversionistas">Inversionistas</option>
-          <option value="alto-contraste">Alto contraste</option>
-        </select>
-      </label>
-      <div class="catalogo-density" role="group" aria-label="Densidad del catálogo">
-        <button type="button" data-density="comfortable" aria-pressed="true">Aire</button>
-        <button type="button" data-density="compact" aria-pressed="false">Compacto</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="catalogo prisma-container">
-    <section class="catalogo-hero" aria-labelledby="catalog-title">
-      <div class="catalogo-hero-copy">
-        <p class="prisma-eyebrow">Sistema visual operativo</p>
-        <h1 id="catalog-title">No es una vitrina de botones. <span>Es el taller donde PRISMA aprende a verse como una sola cosa.</span></h1>
-        <p class="catalogo-hero-lede">Tokens, superficies, datos e interacción reunidos en un workbench vivo. Cada espécimen usa el código real de <code>sistema-ui/</code>, sin maquetas paralelas ni decoración de cartón.</p>
-        <div class="catalogo-hero-actions">
-          <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#explorador">Explorar componentes</a>
-          <a class="prisma-button" href="#glass-lab">Abrir Glass Lab</a>
-        </div>
-        <div class="catalogo-hero-metrics" aria-label="Resumen del catálogo">
-          <div><strong>12</strong><span>familias visuales</span></div>
-          <div><strong>3</strong><span>temas activos</span></div>
-          <div><strong>0</strong><span>dependencias externas</span></div>
-          <div><strong>1</strong><span>lenguaje compartido</span></div>
-        </div>
-      </div>
-
-      <div class="catalogo-hero-visual" aria-label="Identidad oficial de PRISMA">
-        <div class="catalogo-logo-aura" aria-hidden="true"></div>
-        <img class="catalogo-logo-lockup" src="../../assets/images/prisma-logo.png" alt="PRISMA · Sistema Inteligente de Gestión Operativa" />
-        <span class="catalogo-orbit catalogo-orbit--tokens">TOKENS</span>
-        <span class="catalogo-orbit catalogo-orbit--components">COMPONENTES</span>
-        <span class="catalogo-orbit catalogo-orbit--patterns">PATRONES</span>
-        <span class="catalogo-orbit catalogo-orbit--evidence">EVIDENCIA</span>
-      </div>
-    </section>
-
-    <section class="catalogo-command prisma-glass" id="explorador" aria-label="Explorador de componentes">
-      <div class="catalogo-search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-        <input id="catalogSearch" type="search" placeholder="Buscar botones, glass, tablas, estados…" autocomplete="off" />
-        <kbd>/</kbd>
-      </div>
-      <div class="catalogo-filters" role="group" aria-label="Filtrar familias">
-        <button type="button" data-filter="all" aria-pressed="true">Todo</button>
-        <button type="button" data-filter="foundation" aria-pressed="false">Fundamentos</button>
-        <button type="button" data-filter="component" aria-pressed="false">Componentes</button>
-        <button type="button" data-filter="data" aria-pressed="false">Datos</button>
-        <button type="button" data-filter="pattern" aria-pressed="false">Patrones</button>
-      </div>
-      <p class="catalogo-result-count" aria-live="polite"><strong id="visibleCount">12</strong> familias visibles</p>
-    </section>
-
-    <div class="catalogo-workbench">
-      <aside class="catalogo-rail" aria-label="Índice del sistema UI">
-        <p>Mapa</p>
-        <a href="#tokens">01 · Tokens</a>
-        <a href="#tipografia">02 · Tipografía</a>
-        <a href="#botones">03 · Acciones</a>
-        <a href="#superficies">04 · Superficies</a>
-        <a href="#formularios">05 · Formularios</a>
-        <a href="#feedback">06 · Feedback</a>
-        <a href="#navegacion">07 · Navegación</a>
-        <a href="#datos">08 · Datos</a>
-        <a href="#interaccion">09 · Interacción</a>
-        <a href="#flujo">10 · Flujo</a>
-        <a href="#glass-lab">11 · Glass Lab</a>
-        <a href="#patrones">12 · Patrones</a>
-      </aside>
-
-      <div class="catalogo-canvas">
-        <section id="tokens" class="catalogo-section" data-catalog-item data-category="foundation" data-tags="tokens colores palette brand fondo borde">
-          <header class="catalogo-section-head">
-            <div><span>01 · Fundamentos</span><h2>Color con oficio, no con confeti.</h2></div>
-            <p>La paleta concentra identidad, jerarquía y estados. Los acentos brillan; las superficies respiran.</p>
-          </header>
-          <div class="catalogo-color-grid">
-            <article style="--swatch:#2868c7"><i></i><strong>Primary</strong><code>#2868C7</code><small>Acción y foco</small></article>
-            <article style="--swatch:#1d4f9c"><i></i><strong>Deep</strong><code>#1D4F9C</code><small>Autoridad visual</small></article>
-            <article style="--swatch:#dce9ff"><i></i><strong>Air</strong><code>#DCE9FF</code><small>Atmósfera</small></article>
-            <article style="--swatch:#66717e"><i></i><strong>Graphite</strong><code>#66717E</code><small>Texto fuerte</small></article>
-            <article style="--swatch:#eef3f8"><i></i><strong>Cool</strong><code>#EEF3F8</code><small>Fondo base</small></article>
-            <article class="catalogo-swatch-spectrum"><i></i><strong>Prismatic</strong><code>brand spectrum</code><small>Momentos premium</small></article>
-          </div>
-        </section>
-
-        <section id="tipografia" class="catalogo-section" data-catalog-item data-category="foundation" data-tags="tipografia escala títulos texto spacing radius shadow">
-          <header class="catalogo-section-head">
-            <div><span>02 · Fundamentos</span><h2>La voz también tiene arquitectura.</h2></div>
-            <p>Escalas grandes para ideas; ritmos tranquilos para lectura operativa; microcopy compacto para evidencia.</p>
-          </header>
-          <div class="catalogo-type-specimen">
-            <div class="catalogo-type-display"><span>Display / 88</span><strong>Una verdad.<br>Muchas superficies.</strong></div>
-            <div class="catalogo-type-stack">
-              <p class="catalogo-type-h2">Título de sección</p>
-              <p class="catalogo-type-lede">Texto introductorio que explica una decisión sin convertirla en conferencia.</p>
-              <p class="catalogo-type-body">El cuerpo de lectura prioriza claridad, contraste suave y un ancho cómodo para decisiones reales.</p>
-              <p class="catalogo-type-meta">EVIDENCIA · DEVICE-02 · 13 JUL 2026</p>
-            </div>
-          </div>
-          <div class="catalogo-token-strip" aria-label="Escala de radios y espacios">
-            <span style="--size:8px">XS</span><span style="--size:16px">SM</span><span style="--size:24px">MD</span><span style="--size:34px">LG</span><span style="--size:48px">XL</span>
-          </div>
-        </section>
-
-        <section id="botones" class="catalogo-section" data-catalog-item data-category="component" data-tags="botones actions primary secondary danger disabled loading">
-          <header class="catalogo-section-head">
-            <div><span>03 · Componentes</span><h2>Acciones que se sienten accionables.</h2></div>
-            <p>Jerarquía visible, halo contenido y estados completos. Nada de botones que parecen etiquetas con ansiedad.</p>
-          </header>
-          <div class="catalogo-specimen catalogo-actions-specimen">
-            <div class="catalogo-specimen-toolbar"><span>Action family</span><span class="prisma-status prisma-status--success">Estable</span></div>
-            <div class="catalogo-button-stage">
-              <button class="prisma-button prisma-button--primary">Confirmar operación</button>
-              <button class="prisma-button">Ver evidencia</button>
-              <button class="prisma-button prisma-button--quiet">Acción secundaria</button>
-              <button class="prisma-button prisma-button--danger">Revocar</button>
-              <button class="prisma-button prisma-button--sm">Compacto</button>
-              <button class="prisma-button prisma-button--lg">Gran CTA</button>
-              <button class="prisma-button" disabled>Sin permiso</button>
-            </div>
-            <div class="catalogo-code-row">
-              <code>&lt;button class=&quot;prisma-button prisma-button--primary&quot;&gt;Confirmar&lt;/button&gt;</code>
-              <button type="button" class="catalogo-copy" data-copy-text="&lt;button class=&quot;prisma-button prisma-button--primary&quot;&gt;Confirmar&lt;/button&gt;">Copiar</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="superficies" class="catalogo-section" data-catalog-item data-category="component" data-tags="glass surfaces panel cards clear pearl transparency">
-          <header class="catalogo-section-head">
-            <div><span>04 · Componentes</span><h2>Clear Pearl Glass, con menos peceras.</h2></div>
-            <p>Las superficies aparecen sólo cuando organizan significado. Cero panel dentro de panel dentro de panel.</p>
-          </header>
-          <div class="catalogo-surface-grid">
-            <article class="catalogo-glass-feature prisma-glass">
-              <span class="catalogo-card-kicker">SUPERFICIE FOCAL</span>
-              <h3>El vidrio organiza la atención.</h3>
-              <p>Reflejo superior, borde óptico y profundidad suave. El contenido sigue mandando.</p>
-              <div><span class="prisma-badge prisma-badge--success">Live</span><span class="prisma-badge">Pearl 30</span></div>
-            </article>
-            <article class="prisma-card"><span class="catalogo-card-kicker">INFORMATIVA</span><h3 class="prisma-card__title">Estado de licencia</h3><p class="prisma-card__body">Activa · 4 dispositivos autorizados · sincronización reciente.</p></article>
-            <article class="prisma-card prisma-card--interactive"><span class="catalogo-card-kicker">INTERACTIVA</span><h3 class="prisma-card__title">Abrir evidencia</h3><p class="prisma-card__body">Eleva porque existe una acción real, no por decoración.</p></article>
-          </div>
-        </section>
-
-        <section id="formularios" class="catalogo-section" data-catalog-item data-category="component" data-tags="forms inputs select textarea validation fields">
-          <header class="catalogo-section-head">
-            <div><span>05 · Componentes</span><h2>Captura limpia, sin burocracia visual.</h2></div>
-            <p>Campos claros, ayuda breve y una jerarquía que funciona tanto con teclado como con pulgar.</p>
-          </header>
-          <form class="catalogo-form" data-prisma-form id="catalogDemoForm">
-            <label class="prisma-field"><span>Nombre del negocio</span><input required class="prisma-input" placeholder="Ej. Café Aurora" /><small class="prisma-field__help">Identidad visible para el operador.</small></label>
-            <label class="prisma-field"><span>Plan</span><select class="prisma-select"><option>Base operativo</option><option>Multi-superficie</option><option>Intelligence</option></select></label>
-            <label class="prisma-field"><span>Terminal</span><input class="prisma-input" value="POS-TB-02" /></label>
-            <label class="prisma-field"><span>Estado</span><select class="prisma-select"><option>Activo</option><option>Pendiente</option><option>Revocado</option></select></label>
-            <label class="prisma-field catalogo-form-wide"><span>Nota operacional</span><textarea class="prisma-textarea" placeholder="Describe el contexto que debe conservarse…"></textarea></label>
-            <div class="catalogo-form-actions"><button class="prisma-button prisma-button--primary" type="submit">Guardar configuración</button><button class="prisma-button" type="reset">Limpiar</button></div>
-          </form>
-        </section>
-
-        <section id="feedback" class="catalogo-section" data-catalog-item data-category="component" data-tags="feedback status badges alerts success warning error empty skeleton">
-          <header class="catalogo-section-head">
-            <div><span>06 · Componentes</span><h2>Estados que no obligan a adivinar.</h2></div>
-            <p>Color, icono y lenguaje trabajan juntos. El rojo nunca es el único mensajero.</p>
-          </header>
-          <div class="catalogo-feedback-grid">
-            <div class="catalogo-status-wall"><span class="prisma-status prisma-status--success">Sincronizado</span><span class="prisma-status prisma-status--warning">Revisión pendiente</span><span class="prisma-status prisma-status--danger">Evidencia faltante</span><span class="prisma-badge">Neutral</span><span class="prisma-badge prisma-badge--success">PASS</span><span class="prisma-badge prisma-badge--warning">VERIFY</span><span class="prisma-badge prisma-badge--danger">BLOCKED</span></div>
-            <div class="catalogo-alert-stack"><div class="prisma-alert prisma-alert--info"><span>ℹ</span><span>La cifra proviene de la proyección canónica.</span></div><div class="prisma-alert prisma-alert--success"><span>✓</span><span>La operación quedó registrada con evidencia.</span></div><div class="prisma-alert prisma-alert--warning"><span>△</span><span>Existe drift entre dispositivo y servidor.</span></div><div class="prisma-alert prisma-alert--danger"><span>×</span><span>No hay procedencia suficiente para declarar verde.</span></div></div>
-          </div>
-        </section>
-
-        <section id="navegacion" class="catalogo-section" data-catalog-item data-category="component" data-tags="navigation breadcrumbs pagination tabs nav">
-          <header class="catalogo-section-head">
-            <div><span>07 · Componentes</span><h2>Ubicación visible, recorrido tranquilo.</h2></div>
-            <p>La navegación explica dónde estás y qué sigue. No compite con el trabajo.</p>
-          </header>
-          <div class="catalogo-navigation-stage">
-            <nav class="prisma-breadcrumbs" aria-label="Ruta de ejemplo"><a href="#">PRISMA</a><span>/</span><a href="#">Clientes</a><span>/</span><span aria-current="page">Café Aurora</span></nav>
-            <div class="catalogo-segmented" role="group" aria-label="Vista de ejemplo"><button aria-pressed="true">Operación</button><button aria-pressed="false">Evidencia</button><button aria-pressed="false">Riesgo</button></div>
-            <div class="prisma-pagination"><button aria-label="Anterior">←</button><button>1</button><button aria-current="page">2</button><button>3</button><button aria-label="Siguiente">→</button></div>
-          </div>
-        </section>
-
-        <section id="datos" class="catalogo-section" data-catalog-item data-category="data" data-tags="data metrics tables rows evidence lineage">
-          <header class="catalogo-section-head">
-            <div><span>08 · Datos</span><h2>Datos con procedencia, no numeritos flotando.</h2></div>
-            <p>Cada métrica necesita contexto. Cada fila debe poder explicar de dónde salió.</p>
-          </header>
-          <div class="catalogo-metrics">
-            <article><span>Ventas hoy</span><strong>$48,260</strong><small>+12.4% vs ayer</small></article>
-            <article><span>Devices activos</span><strong>18/20</strong><small>2 pendientes</small></article>
-            <article><span>Sync health</span><strong>99.8%</strong><small>Últimas 24 h</small></article>
-            <article><span>Evidencia</span><strong>96%</strong><small>4% requiere revisión</small></article>
-          </div>
-          <div class="prisma-table-wrap catalogo-table-wrap">
-            <table class="prisma-table">
-              <thead><tr><th>Evento</th><th>Scope</th><th>Evidencia</th><th>Estado</th><th>Hace</th></tr></thead>
-              <tbody>
-                <tr><td><strong>EVT.SALE.CREATED</strong><small>Venta #A-1842</small></td><td>STORE.MX-02</td><td>Ticket + tender</td><td><span class="prisma-status prisma-status--success">Canónico</span></td><td>2 min</td></tr>
-                <tr><td><strong>EVT.DEVICE.CLAIMED</strong><small>POS-TB-02</small></td><td>TENANT.AURORA</td><td>Audit event</td><td><span class="prisma-status prisma-status--success">Verificado</span></td><td>18 min</td></tr>
-                <tr><td><strong>EVT.SYNC.DRIFT</strong><small>Outbox checkpoint</small></td><td>DEVICE.07</td><td>Checkpoint</td><td><span class="prisma-status prisma-status--warning">Revisar</span></td><td>41 min</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section id="interaccion" class="catalogo-section" data-catalog-item data-category="component" data-tags="interaction modal tabs accordion tooltip keyboard">
-          <header class="catalogo-section-head">
-            <div><span>09 · Componentes</span><h2>Interacción que deja huella, no ruido.</h2></div>
-            <p>Modal, tabs, acordeón y tooltip con teclado, foco y retorno al disparador.</p>
-          </header>
-          <div class="catalogo-interaction-stage">
-            <div class="catalogo-interaction-actions"><button class="prisma-button prisma-button--primary" data-prisma-modal-open="demoModal">Abrir detalle</button><button class="prisma-button" data-prisma-tooltip="Ayuda breve, visible con hover y foco">Probar tooltip</button></div>
-            <prisma-tabs>
-              <div class="prisma-tabs-list" role="tablist"><button class="prisma-tab" role="tab" aria-selected="true">Operación</button><button class="prisma-tab" role="tab">Evidencia</button><button class="prisma-tab" role="tab">Decisión</button></div>
-              <section class="prisma-tab-panel" role="tabpanel"><strong>La acción sucede.</strong><p>El usuario completa una tarea dentro de un scope autorizado.</p></section>
-              <section class="prisma-tab-panel" role="tabpanel"><strong>La acción se prueba.</strong><p>Ticket, auditoría o historial explican qué ocurrió.</p></section>
-              <section class="prisma-tab-panel" role="tabpanel"><strong>La acción se vuelve útil.</strong><p>La evidencia habilita una decisión o automatización.</p></section>
-            </prisma-tabs>
-            <prisma-accordion>
-              <div class="prisma-accordion-item"><button class="prisma-accordion-trigger" aria-expanded="false" aria-controls="acc1">¿Cuándo usar un acordeón?<span>+</span></button><div class="prisma-accordion-panel" id="acc1" hidden>Cuando varias respuestas comparten contexto y no necesitan leerse al mismo tiempo.</div></div>
-              <div class="prisma-accordion-item"><button class="prisma-accordion-trigger" aria-expanded="false" aria-controls="acc2">¿Cuándo no usarlo?<span>+</span></button><div class="prisma-accordion-panel" id="acc2" hidden>Cuando ocultar contenido impide comparar decisiones o estados críticos.</div></div>
-            </prisma-accordion>
-          </div>
-          <prisma-modal id="demoModal"><div class="prisma-modal-dialog prisma-glass"><p class="prisma-eyebrow">Detalle de evidencia</p><h3>Venta #A-1842</h3><p>Registrada por CAJERO.04 en STORE.MX-02. Ticket y tender conciliados.</p><div class="catalogo-modal-facts"><span><small>Estado</small><strong>Canónico</strong></span><span><small>Confianza</small><strong>100%</strong></span></div><button class="prisma-button" data-prisma-modal-close>Cerrar</button></div></prisma-modal>
-        </section>
-
-        <section id="flujo" class="catalogo-section" data-catalog-item data-category="pattern" data-tags="flow operational grammar person context action event evidence decision">
-          <header class="catalogo-section-head">
-            <div><span>10 · Patrones</span><h2>Una gramática para cualquier operación.</h2></div>
-            <p>Lo neutral define significado. Lo específico define ubicación.</p>
-          </header>
-          <div class="catalogo-flow" aria-label="Flujo operativo de ejemplo">
-            <div><span>01</span><strong>Persona</strong><small>Cajero</small></div><i>→</i>
-            <div><span>02</span><strong>Contexto</strong><small>Caja 2</small></div><i>→</i>
-            <div><span>03</span><strong>Acción</strong><small>Cobra</small></div><i>→</i>
-            <div><span>04</span><strong>Evento</strong><small>Venta creada</small></div><i>→</i>
-            <div><span>05</span><strong>Evidencia</strong><small>Ticket</small></div><i>→</i>
-            <div><span>06</span><strong>Decisión</strong><small>Reportar</small></div>
-          </div>
-        </section>
-
-        <section id="glass-lab" class="catalogo-section" data-catalog-item data-category="foundation" data-tags="glass lab blur opacity radius highlight live controls">
-          <header class="catalogo-section-head">
-            <div><span>11 · Laboratorio</span><h2>Glass Lab, sin humo alquímico.</h2></div>
-            <p>Ajusta materialidad en vivo. Cuando la opacidad llega a cero, la superficie queda realmente transparente.</p>
-          </header>
-          <div class="catalogo-glass-lab">
-            <div class="catalogo-lab-controls">
-              <label><span>Opacidad <output id="alphaValue">12%</output></span><input id="alphaRange" type="range" min="0" max="30" value="12" /></label>
-              <label><span>Blur <output id="blurValue">30px</output></span><input id="blurRange" type="range" min="0" max="54" value="30" /></label>
-              <label><span>Radio <output id="radiusValue">34px</output></span><input id="radiusRange" type="range" min="0" max="56" value="34" /></label>
-              <label><span>Reflejo <output id="shineValue">50%</output></span><input id="shineRange" type="range" min="0" max="100" value="50" /></label>
-              <button type="button" class="prisma-button" id="resetLab">Restablecer</button>
-            </div>
-            <div class="catalogo-lab-stage">
-              <article id="glassSpecimen" class="catalogo-lab-specimen">
-                <span class="catalogo-card-kicker">LIVE MATERIAL</span>
-                <h3>Clear Pearl Glass</h3>
-                <p>Una superficie óptica que aparece sólo cuando ayuda a leer, decidir o actuar.</p>
-                <div><span class="prisma-badge prisma-badge--success">Responsive</span><span class="prisma-badge">A11y-aware</span></div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section id="patrones" class="catalogo-section" data-catalog-item data-category="pattern" data-tags="patterns cta hero metrics pricing testimonial page composition">
-          <header class="catalogo-section-head">
-            <div><span>12 · Patrones</span><h2>Piezas listas para contar una historia completa.</h2></div>
-            <p>Los patrones reúnen tokens y componentes sin crear una segunda autoridad visual.</p>
-          </header>
-          <article class="catalogo-final-cta prisma-glass">
-            <div><p class="prisma-eyebrow">Sistema listo para crecer</p><h3>Diseña una nueva página sin inventar otro PRISMA.</h3><p>Empieza con significado neutral, elige la proyección correcta y compón con piezas ya gobernadas.</p></div>
-            <div class="catalogo-final-actions"><a class="prisma-button prisma-button--primary prisma-neon-cta" href="../../paginas/pagina-1-prisma/index.html">Ver portada PRISMA</a><a class="prisma-button" href="../../paginas/pagina-2-inversionistas/index.html">Abrir Investor Deck</a></div>
-          </article>
-        </section>
-      </div>
-    </div>
-
-    <footer class="catalogo-footer">
-      <div><img src="../../assets/images/prisma-mark.png" alt="" aria-hidden="true" /><span><strong>PRISMA UI</strong><small>Tokens → Base → Layouts → Componentes → Patrones → Página</small></span></div>
-      <a href="#catalog-title">Volver arriba ↑</a>
-    </footer>
-  </main>
-
-  <div class="catalogo-toast" id="catalogToast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>

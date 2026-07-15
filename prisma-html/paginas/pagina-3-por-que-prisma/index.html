@@ -1,317 +1,113 @@
 <!doctype html>
-<!--
-PRISMA · PÁGINA 3 · POR QUÉ PRISMA · COMPARADOR ESTRATÉGICO
-
-PROPÓSITO
-Responder una sola pregunta: ¿por qué PRISMA y no otro POS, ERP, dashboard
-o conjunto de integraciones?
-
-ARCHIVOS
-- index.html = narrativa y estructura
-- pagina.css = composición exclusiva de esta página
-- pagina.js = comparación, reconciliación y lentes por rol
-
-GOBIERNO
-La página consume el sistema UI central. No redefine tokens ni componentes globales.
--->
-<html lang="es" data-prisma-page="why-prisma-v2">
+<html lang="es" data-prisma-page="why-prisma">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#f2f5f8" />
-  <title>Por qué PRISMA · No otra pantalla</title>
-  <meta
-    name="description"
-    content="Comparador estratégico: qué resuelven las herramientas tradicionales, qué dejan fragmentado y cómo PRISMA conserva una verdad operacional compartida."
-  />
+  <meta name="theme-color" content="#08111a" />
+  <title>Por qué PRISMA · La verdad sobrevive a cada superficie</title>
+  <meta name="description" content="PRISMA conserva significado, procedencia y evidencia donde otras categorías sólo procesan fragmentos." />
   <link rel="stylesheet" href="../../sistema-ui/css/prisma-ui.css" />
   <link rel="stylesheet" href="pagina.css" />
 </head>
-
-<body data-prisma-theme="prisma" data-prisma-page="why-prisma-v2">
-  <main class="why-shell">
-    <nav class="why-nav prisma-glass" aria-label="Navegación de Por qué PRISMA">
-      <a class="why-brand" href="../../index.html" aria-label="Volver al índice de PRISMA">
-        <img
-          src="../../assets/images/prisma-logo-approved-baseline.png"
-          alt=""
-          width="160"
-          height="166"
-        />
-        <span>
-          <strong>PRISMA</strong>
-          <small>Por qué es diferente</small>
-        </span>
+<body data-prisma-theme="prisma" data-prisma-narrative="liquid" data-prisma-page="why-prisma">
+  <main class="prisma-narrative">
+    <nav class="prisma-narrative-nav" aria-label="Navegación de la página">
+      <a class="prisma-narrative-brand" href="../../index.html">
+        <img src="../../assets/images/prisma-logo.png" alt="PRISMA" width="160" height="166" />
+        <span><strong>PRISMA</strong><small>Por qué PRISMA</small></span>
       </a>
-
-      <div class="why-nav-actions">
-        <a class="prisma-button prisma-button--quiet" href="../pagina-1-prisma/index.html">Qué es PRISMA</a>
-        <a class="prisma-button prisma-button--primary" href="#comparador">Comparar</a>
+      <div class="prisma-narrative-location">
+        <strong>02 / 04</strong>
+        <div class="prisma-narrative-progress" aria-label="Escena actual"><i aria-current="step"></i><i></i><i></i></div>
+      </div>
+      <div class="prisma-narrative-nav-actions">
+        <a class="prisma-button prisma-button--quiet" href="../pagina-1-prisma/index.html">Anterior</a>
+        <a class="prisma-button prisma-button--primary" href="../pagina-4-ecosistema-producto/index.html">Siguiente</a>
       </div>
     </nav>
 
-    <section class="why-hero" aria-labelledby="why-title">
-      <div class="why-hero-copy">
-        <p class="prisma-eyebrow">POR QUÉ PRISMA</p>
-        <h1 id="why-title">
-          No necesitas otra pantalla.
-          <span>Necesitas una verdad que sobreviva a todas.</span>
-        </h1>
-        <p class="why-hero-lede">
-          Un POS cobra. Un ERP administra. Un dashboard resume. Una integración mueve datos.
-          PRISMA conserva <strong>quién actuó, dónde ocurrió, qué cambió, qué lo demuestra
-          y qué decisión habilita</strong>.
-        </p>
-        <div class="why-hero-actions">
-          <a class="prisma-button prisma-button--primary prisma-neon-cta" href="#comparador">Ver la diferencia</a>
-          <a class="prisma-button" href="#reconciliacion">Ver una discrepancia explicada</a>
-        </div>
-        <p class="why-hero-note">
-          La diferencia no está en tener más módulos. Está en impedir que cada módulo invente su propia realidad.
-        </p>
-      </div>
-
-      <div class="why-hero-signal" aria-label="Una operación fragmentada convertida en verdad compartida">
-        <div class="signal-fragments" aria-hidden="true">
-          <span class="signal-chip signal-chip--tablet">Tablet <b>231</b></span>
-          <span class="signal-chip signal-chip--pc">PC <b>228</b></span>
-          <span class="signal-chip signal-chip--mobile">Mobile <b>228</b></span>
-          <span class="signal-chip signal-chip--sheet">Excel <b>230</b></span>
-        </div>
-        <div class="signal-core">
-          <span>PRISMA</span>
-          <strong>228 aceptadas</strong>
-          <small>2 pendientes · 1 rechazada · procedencia visible</small>
-        </div>
-        <p>La cifra deja de ser una pelea entre pantallas y se convierte en una explicación.</p>
-      </div>
-    </section>
-
-    <section class="why-section" id="comparador" aria-labelledby="compare-title">
-      <header class="why-section-heading">
-        <div>
-          <p class="prisma-eyebrow">HERRAMIENTAS ÚTILES · VERDAD INCOMPLETA</p>
-          <h2 id="compare-title">Cada categoría resuelve algo. PRISMA evita que lo resuelto quede aislado.</h2>
-        </div>
-        <p>
-          El objetivo no es declarar inútiles a las herramientas existentes. Es mostrar el hueco
-          estructural que aparece cuando cada una conoce sólo su parte de la historia.
-        </p>
-      </header>
-
-      <div class="category-tabs" role="tablist" aria-label="Comparar categorías de software">
-        <button class="category-tab" role="tab" aria-selected="true" data-category="pos">POS</button>
-        <button class="category-tab" role="tab" aria-selected="false" data-category="erp">ERP</button>
-        <button class="category-tab" role="tab" aria-selected="false" data-category="dashboard">Dashboard</button>
-        <button class="category-tab" role="tab" aria-selected="false" data-category="integrations">Integraciones</button>
-      </div>
-
-      <article class="category-stage prisma-glass" aria-live="polite">
-        <div class="category-column category-column--solves">
-          <span class="category-label">LO QUE RESUELVE</span>
-          <h3 data-category-title>POS</h3>
-          <p data-category-solves>Registra productos, cobra y emite el ticket.</p>
-        </div>
-
-        <div class="category-divider" aria-hidden="true">
-          <span>pero</span>
-        </div>
-
-        <div class="category-column category-column--loses">
-          <span class="category-label">LO QUE PUEDE PERDER</span>
-          <p data-category-loses>
-            El contexto posterior: sincronización, procedencia, decisiones administrativas y otras superficies.
-          </p>
-        </div>
-
-        <div class="category-arrow" aria-hidden="true">→</div>
-
-        <div class="category-column category-column--prisma">
-          <span class="category-label">LO QUE PRISMA CONSERVA</span>
-          <p data-category-prisma>
-            La venta como evento trazable, asociada a persona, caja, dispositivo, evidencia y estado canónico.
-          </p>
-        </div>
-      </article>
-
-      <p class="category-conclusion" data-category-conclusion>
-        PRISMA no sustituye el acto de cobrar. Impide que el cobro pierda su historia al salir del POS.
-      </p>
-    </section>
-
-    <section class="why-section reconcile-section" id="reconciliacion" aria-labelledby="reconcile-title">
-      <header class="why-section-heading">
-        <div>
-          <p class="prisma-eyebrow">DE DISCREPANCIA A EXPLICACIÓN</p>
-          <h2 id="reconcile-title">Cuando dos pantallas no coinciden, el problema no se arregla eligiendo tu cifra favorita.</h2>
-        </div>
-        <p>
-          Arrastra el control. PRISMA añade scope, eventos, evidencia y estado hasta convertir
-          números contradictorios en una verdad operativamente defendible.
-        </p>
-      </header>
-
-      <article class="reconcile-stage prisma-glass" style="--compare-progress: 0%">
-        <div class="reconcile-toolbar">
-          <label for="truthRange">
-            <span>Fragmentos</span>
-            <input
-              id="truthRange"
-              type="range"
-              min="0"
-              max="100"
-              step="25"
-              value="0"
-              aria-describedby="truthStatus"
-            />
-            <span>Verdad explicada</span>
-          </label>
-          <output id="truthStatus" for="truthRange">0% · cifras sin contexto común</output>
-        </div>
-
-        <div class="reconcile-canvas">
-          <section class="fragment-view" aria-label="Vista fragmentada">
-            <p class="canvas-kicker">ANTES</p>
-            <h3>Cuatro cifras. Cero explicación.</h3>
-            <div class="fragment-metrics">
-              <div><span>Tablet</span><strong>231</strong><small>ventas locales</small></div>
-              <div><span>PC</span><strong>228</strong><small>ventas recibidas</small></div>
-              <div><span>Mobile</span><strong>228</strong><small>resumen visible</small></div>
-              <div><span>Excel</span><strong>230</strong><small>ajuste manual</small></div>
-            </div>
-            <p>La organización discute cuál número “es el bueno”.</p>
-          </section>
-
-          <section class="explained-view" aria-label="Vista reconciliada">
-            <p class="canvas-kicker">CON PRISMA</p>
-            <h3>La diferencia conserva causa, estado y procedencia.</h3>
-            <div class="truth-total">
-              <strong>228</strong>
-              <span>ventas aceptadas</span>
-            </div>
-            <ul>
-              <li><b>2 pendientes</b><span>capturadas offline; esperan sincronización autorizada</span></li>
-              <li><b>1 rechazada</b><span>pago no confirmado; no entra a la venta canónica</span></li>
-              <li><b>230 en Excel</b><span>incluye dos ajustes manuales sin evidencia operacional</span></li>
-            </ul>
-            <p>La organización decide con una cifra y conserva la explicación completa.</p>
-          </section>
-
-          <div class="reconcile-handle" aria-hidden="true">
-            <span>PRISMA</span>
+    <section class="prisma-scene" data-scene-label="01 · DIFERENCIA" id="diferencia">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">NO OTRA PANTALLA · UNA VERDAD COMPLETA</p>
+          <h1>PRISMA conserva <span>la historia completa.</span></h1>
+          <p>POS, ERP, dashboards e integraciones procesan partes. PRISMA conserva origen, evidencia y decisión.</p>
+          <div class="prisma-scene-actions">
+            <a class="prisma-button prisma-button--primary" href="#comparador">Comparar categorías</a>
+            <a class="prisma-button" href="#reconciliacion">Ver una diferencia explicada</a>
           </div>
         </div>
-
-        <div class="reconcile-steps" aria-label="Capas que construyen la explicación">
-          <span data-step="scope">Scope</span>
-          <span data-step="events">Eventos</span>
-          <span data-step="evidence">Evidencia</span>
-          <span data-step="canonical">Estado canónico</span>
+        <div class="prisma-scene-card" data-prisma-tabs id="comparador">
+          <span class="prisma-interaction-hint">Toca una categoría</span>
+          <div class="prisma-tablist" role="tablist" aria-label="Categorías comparadas">
+            <button class="prisma-tab" id="category-tab-1" role="tab" aria-selected="true" aria-controls="category-panel-1">POS</button>
+            <button class="prisma-tab" id="category-tab-2" role="tab" aria-selected="false" aria-controls="category-panel-2">ERP</button>
+            <button class="prisma-tab" id="category-tab-3" role="tab" aria-selected="false" aria-controls="category-panel-3">Dashboard</button>
+            <button class="prisma-tab" id="category-tab-4" role="tab" aria-selected="false" aria-controls="category-panel-4">Integraciones</button>
+          </div>
+          <section class="prisma-tabpanel" id="category-panel-1" role="tabpanel" aria-labelledby="category-tab-1"><p class="prisma-panel-kicker">POS</p><h3 class="prisma-panel-title">Cobra y emite ticket.</h3><p class="prisma-panel-text">PRISMA conserva la venta como evento trazable, asociada a persona, caja, dispositivo, evidencia y estado canónico.</p><div class="why-verdict"><span>El POS termina el cobro.</span><strong>PRISMA conserva su historia completa.</strong></div></section>
+          <section class="prisma-tabpanel" id="category-panel-2" role="tabpanel" aria-labelledby="category-tab-2" hidden><p class="prisma-panel-kicker">ERP</p><h3 class="prisma-panel-title">Centraliza administración.</h3><p class="prisma-panel-text">PRISMA conecta la acción cotidiana con el gobierno central sin convertir cada operación en un trámite administrativo.</p><div class="why-verdict"><span>El ERP organiza procesos.</span><strong>PRISMA conserva el origen operacional.</strong></div></section>
+          <section class="prisma-tabpanel" id="category-panel-3" role="tabpanel" aria-labelledby="category-tab-3" hidden><p class="prisma-panel-kicker">DASHBOARD</p><h3 class="prisma-panel-title">Resume indicadores.</h3><p class="prisma-panel-text">PRISMA mantiene la ruta desde cada métrica hasta el evento, la evidencia y la superficie que la produjo.</p><div class="why-verdict"><span>El dashboard muestra el cambio.</span><strong>PRISMA explica por qué ocurrió.</strong></div></section>
+          <section class="prisma-tabpanel" id="category-panel-4" role="tabpanel" aria-labelledby="category-tab-4" hidden><p class="prisma-panel-kicker">INTEGRACIONES</p><h3 class="prisma-panel-title">Mueven datos.</h3><p class="prisma-panel-text">PRISMA define el significado neutral que viaja entre sistemas y evita falsas equivalencias entre entidades y estados.</p><div class="why-verdict"><span>La integración conecta tuberías.</span><strong>PRISMA gobierna lo que circula por ellas.</strong></div></section>
         </div>
-      </article>
-    </section>
-
-    <section class="why-section structure-section" aria-labelledby="structure-title">
-      <header class="why-section-heading">
-        <div>
-          <p class="prisma-eyebrow">DIFERENCIAS ESTRUCTURALES</p>
-          <h2 id="structure-title">No son veinte promesas. Son cuatro decisiones de arquitectura.</h2>
-        </div>
-        <p>
-          Estas decisiones permiten que PRISMA crezca en superficies y verticales
-          sin volver a fabricar una versión distinta de la realidad.
-        </p>
-      </header>
-
-      <div class="structure-grid">
-        <article>
-          <span>01</span>
-          <h3>Significado neutral</h3>
-          <p>La venta, el evento y la evidencia pertenecen a PRISMA, no a una pantalla específica.</p>
-          <small>ENT.SALE · EVT.SALE.CREATED · EVD.RECEIPT</small>
-        </article>
-        <article>
-          <span>02</span>
-          <h3>Procedencia obligatoria</h3>
-          <p>Una cifra conserva quién, dónde, cuándo, desde qué dispositivo y bajo qué licencia.</p>
-          <small>Sin procedencia, no se presenta como certeza.</small>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>Proyección por rol</h3>
-          <p>Operador, administrador y dueño reciben vistas distintas de la misma verdad.</p>
-          <small>No son tres bases de datos maquilladas.</small>
-        </article>
-        <article>
-          <span>04</span>
-          <h3>Continuidad reconciliable</h3>
-          <p>La operación puede continuar autorizadamente y explicar después qué sincronizó, qué falló y por qué.</p>
-          <small>Offline no significa opaco.</small>
-        </article>
       </div>
     </section>
 
-    <section class="why-section role-section" aria-labelledby="role-title">
-      <header class="why-section-heading">
-        <div>
-          <p class="prisma-eyebrow">UNA VERDAD · TRES LENTES</p>
-          <h2 id="role-title">La misma operación debe ayudar a personas distintas sin contradecirse.</h2>
+    <section class="prisma-scene" data-scene-label="02 · RECONCILIACIÓN" id="reconciliacion">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">CUATRO CIFRAS · UNA EXPLICACIÓN</p>
+          <h2>Cuatro cifras. <span>Una explicación verificable.</span></h2>
+          <p>Tablet registra 231. PC y Mobile muestran 228. Excel conserva 230. PRISMA explica cada diferencia.</p>
         </div>
-        <p>
-          Cambia el nivel de detalle y la acción disponible. No cambia lo que realmente ocurrió.
-        </p>
-      </header>
-
-      <div class="role-tabs" role="tablist" aria-label="Seleccionar lente por rol">
-        <button class="role-tab" role="tab" aria-selected="true" data-role="operator">Operador</button>
-        <button class="role-tab" role="tab" aria-selected="false" data-role="admin">Administrador</button>
-        <button class="role-tab" role="tab" aria-selected="false" data-role="owner">Dueño</button>
+        <div class="prisma-scene-card reconcile-card" data-prisma-stepper>
+          <span class="prisma-interaction-hint">Toca cada capa</span>
+          <div class="prisma-stepper" role="tablist" aria-label="Capas de reconciliación">
+            <button class="prisma-step" id="truth-tab-1" role="tab" aria-selected="true" aria-controls="truth-panel-1">1 Fragmentos</button>
+            <button class="prisma-step" id="truth-tab-2" role="tab" aria-selected="false" aria-controls="truth-panel-2">2 Scope</button>
+            <button class="prisma-step" id="truth-tab-3" role="tab" aria-selected="false" aria-controls="truth-panel-3">3 Eventos</button>
+            <button class="prisma-step" id="truth-tab-4" role="tab" aria-selected="false" aria-controls="truth-panel-4">4 Evidencia</button>
+            <button class="prisma-step" id="truth-tab-5" role="tab" aria-selected="false" aria-controls="truth-panel-5">5 Verdad</button>
+          </div>
+          <section class="prisma-step-panel" id="truth-panel-1" role="tabpanel" aria-labelledby="truth-tab-1"><div class="reconcile-metrics"><div><span>Tablet</span><strong>231</strong><small>ventas locales</small></div><div><span>PC</span><strong>228</strong><small>ventas recibidas</small></div><div><span>Mobile</span><strong>228</strong><small>resumen visible</small></div><div><span>Excel</span><strong>230</strong><small>ajuste manual</small></div></div><p class="reconcile-result">Cuatro cifras. Cero explicación común.</p></section>
+          <section class="prisma-step-panel" id="truth-panel-2" role="tabpanel" aria-labelledby="truth-tab-2" hidden><p class="prisma-panel-kicker">SCOPE IDENTIFICADO</p><h3 class="prisma-panel-title">Misma tienda, mismo turno, misma zona horaria.</h3><p class="prisma-panel-text">PRISMA descarta diferencias de sede, fecha y terminal antes de comparar resultados.</p></section>
+          <section class="prisma-step-panel" id="truth-panel-3" role="tabpanel" aria-labelledby="truth-tab-3" hidden><p class="prisma-panel-kicker">EVENTOS ALINEADOS</p><h3 class="prisma-panel-title">231 ventas nacieron en Tablet.</h3><p class="prisma-panel-text">228 llegaron al estado aceptado. Dos siguen pendientes de sincronización. Una venta recibió rechazo canónico.</p></section>
+          <section class="prisma-step-panel" id="truth-panel-4" role="tabpanel" aria-labelledby="truth-tab-4" hidden><p class="prisma-panel-kicker">EVIDENCIA RECONCILIADA</p><h3 class="prisma-panel-title">Pago, ticket, outbox y auditoría explican cada caso.</h3><p class="prisma-panel-text">La evidencia separa una venta pendiente de una venta perdida y un rechazo real de un retraso de red.</p></section>
+          <section class="prisma-step-panel" id="truth-panel-5" role="tabpanel" aria-labelledby="truth-tab-5" hidden><p class="prisma-panel-kicker">ESTADO CANÓNICO</p><h3 class="prisma-panel-title">228 aceptadas. 2 pendientes. 1 rechazada.</h3><p class="prisma-panel-text">Excel muestra 230 por dos ajustes manuales. La organización deja de discutir cuál cifra es “la buena” y entiende qué representa cada una.</p><div class="reconcile-final"><span>228</span><strong>ventas aceptadas con procedencia verificable</strong></div></section>
+        </div>
       </div>
-
-      <article class="role-stage">
-        <div class="role-identity">
-          <span data-role-kicker>TABLET · ACCIÓN INMEDIATA</span>
-          <h3 data-role-title>Necesita terminar la venta sin interpretar un sistema entero.</h3>
-        </div>
-        <div class="role-content">
-          <p data-role-description>
-            Ve productos, pago, ticket y estado de continuidad. La complejidad queda detrás.
-          </p>
-          <ul>
-            <li data-role-point="0">Acción clara y táctil</li>
-            <li data-role-point="1">Estado de pago visible</li>
-            <li data-role-point="2">Continuidad autorizada</li>
-          </ul>
-        </div>
-        <div class="role-outcome">
-          <span>RESULTADO</span>
-          <strong data-role-outcome>Opera rápido sin romper la trazabilidad.</strong>
-        </div>
-      </article>
     </section>
 
-    <section class="why-closing prisma-glass" aria-labelledby="closing-title">
-      <p class="prisma-eyebrow">LA DIFERENCIA EN UNA FRASE</p>
-      <h2 id="closing-title">
-        Otras herramientas conservan una parte.
-        <span>PRISMA conserva el significado completo.</span>
-      </h2>
-      <p>
-        Ésa es la base para operar, explicar, auditar y crecer sin multiplicar versiones de la verdad.
-      </p>
-      <div class="why-closing-actions">
-        <a class="prisma-button prisma-button--primary prisma-neon-cta" href="../../sistema-ui/catalogo/index.html">Explorar el sistema UI</a>
-        <a class="prisma-button" href="../pagina-1-prisma/index.html">Volver a qué es PRISMA</a>
-      </div>
-      <small>La siguiente página del plan será: Ecosistema del producto.</small>
-    </section>
+    <section class="prisma-scene" data-scene-label="03 · RESULTADO" id="resultado">
+      <div class="prisma-scene-grid">
+        <div class="prisma-scene-copy">
+          <p class="prisma-eyebrow--dark">UNA VERDAD · TRES RESPONSABILIDADES</p>
+          <h2>Cada rol recibe <span>la vista correcta.</span></h2>
+          <p>Operador, administrador y dueño actúan sobre la misma verdad.</p>
+          <div class="why-pillars" aria-label="Diferenciadores estructurales">
+            <span>Significado neutral</span><span>Procedencia obligatoria</span><span>Proyección por rol</span><span>Continuidad reconciliable</span>
+          </div>
+        </div>
+        <div class="prisma-scene-card" data-prisma-tabs>
+          <span class="prisma-interaction-hint">Selecciona un rol</span>
+          <div class="prisma-tablist" role="tablist" aria-label="Roles">
+            <button class="prisma-tab" id="role-tab-1" role="tab" aria-selected="true" aria-controls="role-panel-1">Operador</button>
+            <button class="prisma-tab" id="role-tab-2" role="tab" aria-selected="false" aria-controls="role-panel-2">Administrador</button>
+            <button class="prisma-tab" id="role-tab-3" role="tab" aria-selected="false" aria-controls="role-panel-3">Dueño</button>
+          </div>
+          <section class="prisma-tabpanel" id="role-panel-1" role="tabpanel" aria-labelledby="role-tab-1"><p class="prisma-panel-kicker">TABLET · ACCIÓN INMEDIATA</p><h3 class="prisma-panel-title">Vende rápido sin romper la trazabilidad.</h3><p class="prisma-panel-text">Productos, pago, ticket y continuidad aparecen con claridad táctil. La complejidad permanece detrás.</p></section>
+          <section class="prisma-tabpanel" id="role-panel-2" role="tabpanel" aria-labelledby="role-tab-2" hidden><p class="prisma-panel-kicker">PC · GOBIERNO OPERACIONAL</p><h3 class="prisma-panel-title">Gobierna sin reconstruir la historia.</h3><p class="prisma-panel-text">Excepciones, procedencia, auditoría, inventario y permisos aparecen con contexto suficiente.</p></section>
+          <section class="prisma-tabpanel" id="role-panel-3" role="tabpanel" aria-labelledby="role-tab-3" hidden><p class="prisma-panel-kicker">MOBILE · DECISIÓN EJECUTIVA</p><h3 class="prisma-panel-title">Decide con síntesis y evidencia.</h3><p class="prisma-panel-text">Resumen, riesgo, tendencia y alertas accionables nacen de la misma verdad canónica.</p></section>
 
-    <footer class="why-footer">
-      <span>PRISMA · significado neutral → evidencia → proyección → decisión</span>
-      <a href="../../index.html">Índice del proyecto</a>
-    </footer>
+          <nav class="prisma-page-transition" aria-label="Transición entre páginas">
+            <a class="prisma-page-transition__link" data-direction="prev" href="../pagina-1-prisma/index.html"><span>←</span><span><small>Anterior</small><strong>Qué es PRISMA</strong></span></a>
+            <span class="prisma-page-transition__count">02 / 04</span>
+            <a class="prisma-page-transition__link" data-direction="next" href="../pagina-4-ecosistema-producto/index.html"><span><small>Siguiente</small><strong>Ecosistema</strong></span><span>→</span></a>
+          </nav>
+        </div>
+      </div>
+    </section>
   </main>
-
   <script type="module" src="../../sistema-ui/js/prisma-ui.js"></script>
   <script type="module" src="pagina.js"></script>
 </body>
