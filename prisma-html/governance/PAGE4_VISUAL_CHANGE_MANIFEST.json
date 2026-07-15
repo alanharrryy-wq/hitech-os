@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "change_id": "PRISMA_HTML_PAGE4_PRODUCT_ECOSYSTEM",
+  "classification": "BUILD",
+  "surface": "prisma-html static product narrative site",
+  "purpose": "Explicar que PRISMA es un núcleo neutral que proyecta capacidades hacia superficies especializadas por rol y responsabilidad.",
+  "affected": [
+    "Page 4: Ecosistema del producto",
+    "project index card",
+    "README and active tree documentation"
+  ],
+  "excluded": [
+    "Tablet POS runtime",
+    "PC Admin runtime",
+    "Mobile Companion runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "databases",
+    "Prisma schema",
+    "processes and ports",
+    "main branch"
+  ],
+  "narrative_contract": {
+    "audience": "prospect, customer, partner or investor seeking product clarity",
+    "question": "What products and surfaces compose PRISMA, and why are they not separate sources of truth?",
+    "promise": "One neutral operational core projects the right experience for each role.",
+    "primary_objection": "PRISMA might be only a collection of unrelated applications.",
+    "primary_cta": "Explore surfaces and follow one sale through the system."
+  },
+  "interaction": [
+    "six-surface orbit selector",
+    "surface responsibility tabs",
+    "six-step operational journey",
+    "keyboard navigation for both tab groups"
+  ],
+  "shared_ui_policy": {
+    "shared_files_modified": false,
+    "page_css_only": true,
+    "uses_existing_tokens_components": true,
+    "important_declarations": 0,
+    "base64_images": 0,
+    "fewest_containers_rule": true
+  },
+  "identity": {
+    "asset": "assets/images/prisma-logo-approved-baseline.png",
+    "source": "CLEAN1 approved transparent PNG"
+  },
+  "mobile": {
+    "target": "iPhone SE",
+    "breakpoints": [780, 520, 375],
+    "horizontal_tab_overflow": "intentional scroll rail",
+    "nested_panel_reduction": true
+  },
+  "evidence": [
+    "reports/page4-static-validation.json",
+    "commit-pinned raw.githack preview"
+  ],
+  "rollback": {
+    "method": "Revert Page 4 commits or restore the branch SHA before Page 4.",
+    "previous_page_state_preserved": true,
+    "tested": false
+  },
+  "status": "PASS_SOURCE_PREVIEW_PENDING",
+  "visual_certified": false
+}
