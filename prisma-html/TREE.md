@@ -19,7 +19,11 @@ prisma-html/
 │   │   ├── index.html
 │   │   ├── pagina.css
 │   │   └── pagina.js
-│   └── pagina-3-por-que-prisma/
+│   ├── pagina-3-por-que-prisma/
+│   │   ├── index.html
+│   │   ├── pagina.css
+│   │   └── pagina.js
+│   └── pagina-4-ecosistema-producto/
 │       ├── index.html
 │       ├── pagina.css
 │       └── pagina.js
@@ -41,9 +45,12 @@ prisma-html/
 │   └── temas/
 ├── governance/
 │   ├── PAGE3_AUTHORITY_READSET.lock.json
-│   └── PAGE3_VISUAL_CHANGE_MANIFEST.json
+│   ├── PAGE3_VISUAL_CHANGE_MANIFEST.json
+│   ├── PAGE4_AUTHORITY_READSET.lock.json
+│   └── PAGE4_VISUAL_CHANGE_MANIFEST.json
 ├── reports/
-│   └── page3-static-validation.json
+│   ├── page3-static-validation.json
+│   └── page4-static-validation.json
 ├── tools/
 ├── .vscode/
 ├── PRISMA-HTML.code-workspace
@@ -53,4 +60,4 @@ prisma-html/
 └── README.md
 ```
 
-Página 3 vuelve como implementación nueva y refactorizada. La versión previa continúa preservada en la rama stash.
+Página 3 conserva su respaldo histórico en la rama stash. Página 4 introduce el mapa del ecosistema sin modificar el sistema UI compartido ni las superficies operativas reales.
