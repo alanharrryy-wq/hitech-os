@@ -1,5 +1,9 @@
 import { TABLET_FINAL_NAVIGATION, TABLET_PAGE_CONTRACTS, type TabletPageContract } from "@/navigation/tablet-page-contracts";
 
+/**
+ * CUSTOMER_SURFACE_REDUCTION_1507
+ * Runtime navigation is derived only from active customer contracts.
+ */
 export type TabletNavigationItem = {
   href: string;
   title: string;
@@ -60,7 +64,7 @@ export function getTabletSecondaryNavigationForPath(currentPath: string): Tablet
   const current = getTabletRouteContract(currentPath);
   return TABLET_PAGE_CONTRACTS
     .filter((contract) => contract.module === current.module)
-    .filter((contract) => ["submenu", "step", "internal-support"].includes(contract.visibility))
+    .filter((contract) => ["submenu", "step"].includes(contract.visibility))
     .filter((contract) => !contract.route.includes(":"))
     .sort((a, b) => a.order - b.order)
     .map(contractToNavigationItem);

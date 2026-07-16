@@ -5,6 +5,10 @@ import {
   type TabletPageContract
 } from "@/navigation/tablet-page-contracts";
 
+/**
+ * CUSTOMER_SURFACE_REDUCTION_1507
+ * Final shell navigation contains product routes only.
+ */
 type TabletNavSnapshot = {
   shift: { state: string };
   connection: { pendingEvents: number; failedEvents: number; conflictEvents: number };
@@ -111,7 +115,7 @@ export function isTabletNavActive(currentPath: string, href: string) {
 
   if (href === "/pos") return normalizedPath === href || normalizedPath.startsWith("/pos/") || normalizedPath === "/checkout" || normalizedPath.startsWith("/checkout/");
   if (href === "/stock") return normalizedPath === href || normalizedPath === "/inventory" || normalizedPath === "/existencias" || normalizedPath === "/inventory/low-stock";
-  if (href === "/sync") return normalizedPath === href || normalizedPath === "/offline" || normalizedPath === "/events/outbox";
+  if (href === "/sync") return normalizedPath === href || normalizedPath === "/offline";
   if (href === "/settings/license") return normalizedPath === href || normalizedPath === "/settings/data" || normalizedPath === "/settings/export";
   if (href === "/sales/today") return normalizedPath === href || normalizedPath.startsWith("/sales/today") || normalizedPath === "/sales";
   if (href === "/returns") return normalizedPath === href || normalizedPath.includes("/return");
@@ -125,7 +129,7 @@ export function getTabletFlowStage(currentPath: string): TabletFlowStage {
 
   const contract = getTabletContractForPath(normalizedPath);
   if (contract.module === "Inventario" || contract.module === "Ventas" || contract.module === "Devoluciones") return "consulta";
-  if (contract.module === "Sync y offline" || contract.module === "Configuración" || contract.module === "Soporte interno") return "soporte";
+  if (contract.module === "Sync y offline" || contract.module === "Configuración") return "soporte";
   if (contract.module === "Turno y caja") return "operacion";
   return "operacion";
 }
@@ -166,7 +170,5 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSna
 }
 
 export function getVisibleTabletNavItems(_currentPath: string, _snapshot: TabletNavSnapshot) {
-  // La navegación de venta debe seguir visible aun con turno cerrado:
-  // la pantalla /pos ya decide si permite cobrar, abrir turno o mostrar bloqueo operativo.
   return TABLET_NAV_ITEMS;
 }

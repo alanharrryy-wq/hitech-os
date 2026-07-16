@@ -115,51 +115,58 @@ export function PrismaTabletShellUnified({
           </span>
         </a>
 
-        {!compactSellingSurface ? (
-          <div className={styles.contextChips} aria-label="Contexto de venta">
-            <a className={styles.contextChip} href="/stock">
-              <PrismaIcon name="tag" size={17} />
-              <span>{runtimeSnapshot.identity.storeName}</span>
-            </a>
-            <a className={styles.contextChip} href="/shift">
-              <PrismaIcon name="terminal" size={17} />
-              <span>{runtimeSnapshot.identity.terminalName}</span>
-            </a>
-            <span className={styles.contextChip}>
-              <PrismaIcon name="dashboard" size={17} />
-              <span>{runtimeSnapshot.identity.operatorName}</span>
-            </span>
-          </div>
-        ) : null}
-
-        <div className={styles.topStatus} data-prisma-role="status-surface">
-          <a className={styles.saleStateChip} href="/pos" aria-label={flowCopy.helper}>
-            <PrismaIcon name="cart" size={18} />
-            <span>{flowCopy.label}</span>
-          </a>
-          <a className={joinClasses(styles.syncChip, pendingCount > 0 && styles.syncChipWarn)} href="/sync">
-            <PrismaIcon name="bell" size={17} />
+        {compactSellingSurface ? (
+          <div className={styles.sellingMeta} aria-label="Estado operativo de venta">
+            <strong>{flowCopy.label}</strong>
             <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
-          </a>
-          <details className={styles.moreMenu} data-prisma-component="TabletMoreMenu">
-            <summary aria-label="Abrir mas acciones de Tablet">
-              <PrismaIcon name="more" size={18} />
-              <span>Mas</span>
-            </summary>
-            <div className={styles.moreMenuPanel}>
-              {moreLinks.map((item) => (
-                <a className={styles.moreMenuItem} href={item.href} key={item.href}>
-                  <PrismaIcon name={item.icon} size={18} />
-                  <span>
-                    <strong>{item.label}</strong>
-                    <small>{item.description}</small>
-                  </span>
-                </a>
-              ))}
+          </div>
+        ) : (
+          <>
+            <div className={styles.contextChips} aria-label="Contexto de venta">
+              <a className={styles.contextChip} href="/stock">
+                <PrismaIcon name="tag" size={17} />
+                <span>{runtimeSnapshot.identity.storeName}</span>
+              </a>
+              <a className={styles.contextChip} href="/shift">
+                <PrismaIcon name="terminal" size={17} />
+                <span>{runtimeSnapshot.identity.terminalName}</span>
+              </a>
+              <span className={styles.contextChip}>
+                <PrismaIcon name="dashboard" size={17} />
+                <span>{runtimeSnapshot.identity.operatorName}</span>
+              </span>
             </div>
-          </details>
-          {status ? <div className={styles.statusArea}>{status}</div> : null}
-        </div>
+
+            <div className={styles.topStatus} data-prisma-role="status-surface">
+              <a className={styles.saleStateChip} href="/pos" aria-label={flowCopy.helper}>
+                <PrismaIcon name="cart" size={18} />
+                <span>{flowCopy.label}</span>
+              </a>
+              <a className={joinClasses(styles.syncChip, pendingCount > 0 && styles.syncChipWarn)} href="/sync">
+                <PrismaIcon name="bell" size={17} />
+                <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
+              </a>
+              <details className={styles.moreMenu} data-prisma-component="TabletMoreMenu">
+                <summary aria-label="Abrir mas acciones de Tablet">
+                  <PrismaIcon name="more" size={18} />
+                  <span>Mas</span>
+                </summary>
+                <div className={styles.moreMenuPanel}>
+                  {moreLinks.map((item) => (
+                    <a className={styles.moreMenuItem} href={item.href} key={item.href}>
+                      <PrismaIcon name={item.icon} size={18} />
+                      <span>
+                        <strong>{item.label}</strong>
+                        <small>{item.description}</small>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </details>
+              {status ? <div className={styles.statusArea}>{status}</div> : null}
+            </div>
+          </>
+        )}
       </header>
 
       <main id="contenido-principal" className={styles.main} data-prisma-component="SoftglassMain">
