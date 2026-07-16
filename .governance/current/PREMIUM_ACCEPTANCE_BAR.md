@@ -1,6 +1,6 @@
 # PRISMA Premium Acceptance Bar
 
-- Task: `Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.`
+- Task: `Construir y certificar PRISMA Support Resolver Operational Cockpit y modernizar todas las superficies afectadas del Prisma Cloud Command Center 3160, fusionando old + new, actualizando motores, adapters, contratos, endpoints y stores, garantizando consistencia multidispositivo, coherencia de licencias, datos sincronizados entre PC, Tablet, Mobile y 3160, y simplificando todas las operaciones de licencias sin regresiones.`
 
 ## Minimum bar
 

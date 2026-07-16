@@ -18,6 +18,9 @@ export interface SupportResolverUiFeed {
   featureGates: Record<string, unknown>;
   routes: Array<Record<string, unknown>>;
   capabilities: Array<Record<string, unknown>>;
+  duplicates: Array<Record<string, unknown>>;
+  e2eCoverage: Array<Record<string, unknown>>;
+  schemas: Array<Record<string, unknown>>;
   gaps: Array<Record<string, unknown>>;
   safety: Record<string, unknown>;
 }

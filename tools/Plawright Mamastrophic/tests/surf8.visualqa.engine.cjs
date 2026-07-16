@@ -14,6 +14,7 @@ function registerSurf8VisualQaTests(test, expect) {
   const captureScreenshots = String(process.env.PRISMA_SURF_SCREENSHOTS || "1") !== "0";
   const fullPage = String(process.env.PRISMA_SURF_FULLPAGE || "1") === "1";
   const deepCaptureOptions = envDeepCaptureOptions({ fullPage });
+  const deepCaptureBudget = captureScreenshots ? Number(deepCaptureOptions.captureBudgetMs || 240000) : 0;
   const settleMs = Number(process.env.PRISMA_SURF_SETTLE_MS || 220);
   const gotoTimeout = Number(process.env.PRISMA_SURF_GOTO_TIMEOUT_MS || 45000);
   const gotoRetries = Number(process.env.PRISMA_SURF_GOTO_RETRIES || 2);
@@ -21,8 +22,8 @@ function registerSurf8VisualQaTests(test, expect) {
   const screenshotTimeout = Number(process.env.PRISMA_SURF_SCREENSHOT_TIMEOUT_MS || 15000);
   const probeTimeout = Number(process.env.PRISMA_SURF_PROBE_TIMEOUT_MS || 1400);
   const defaultTestTimeout = Math.max(
-    180000,
-    (gotoTimeout * (gotoRetries + 1)) + screenshotTimeout + (clickTimeout * 3) + 55000
+    240000,
+    (gotoTimeout * (gotoRetries + 1)) + deepCaptureBudget + (screenshotTimeout * 2) + (clickTimeout * 3) + 60000
   );
   const testTimeout = Number(process.env.PRISMA_SURF_TEST_TIMEOUT_MS || defaultTestTimeout);
   const onlinePorts = new Set(String(process.env.PRISMA_SURF_ONLINE_PORTS || "").split(",").map(s => s.trim()).filter(Boolean));
@@ -49,6 +50,9 @@ function registerSurf8VisualQaTests(test, expect) {
     gpuMode,
     chromiumArgs: gpuArgs,
     launchOptionsEnabled: useGpuLaunchOptions,
+    testTimeout,
+    deepCaptureBudget,
+    deepCaptureOptions,
     capturedAt: new Date().toISOString()
   }, null, 2));
 
@@ -84,10 +88,16 @@ function registerSurf8VisualQaTests(test, expect) {
   }
 
   function bounded(promise, ms, fallback) {
+    let timer = null;
+    const timeoutPromise = new Promise(resolve => {
+      timer = setTimeout(() => resolve(fallback), ms);
+    });
     return Promise.race([
       Promise.resolve(promise).catch(() => fallback),
-      new Promise(resolve => setTimeout(() => resolve(fallback), ms))
-    ]);
+      timeoutPromise
+    ]).finally(() => {
+      if (timer) clearTimeout(timer);
+    });
   }
 
   function urlPathMatches(currentUrl, expectedUrl) {
@@ -288,13 +298,14 @@ function registerSurf8VisualQaTests(test, expect) {
       function selectorGuess(el) {
         if (!el || !el.tagName) return "";
         const tag = el.tagName.toLowerCase();
+        const quoteCss = value => String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
         const dataAttrs = ["data-prisma-shell", "data-prisma-background", "data-prisma-cloudglass", "data-prisma-route", "data-testid", "data-test-id", "data-prisma-interface-target"];
         for (const attr of dataAttrs) {
           const val = el.getAttribute(attr);
-          if (val !== null) return val === "" ? `${tag}[${attr}]` : `${tag}[${attr}="${String(val).slice(0, 80)}"]`;
+          if (val !== null) return val === "" ? `${tag}[${attr}]` : `${tag}[${attr}="${quoteCss(String(val).slice(0, 80))}"]`;
         }
-        if (el.id) return `${tag}#${String(el.id).slice(0, 80)}`;
-        const cls = classText(el).split(/\s+/).filter(Boolean).slice(0, 3);
+        if (el.id) return `${tag}#${CSS.escape(String(el.id).slice(0, 80))}`;
+        const cls = classText(el).split(/\s+/).filter(Boolean).slice(0, 3).map(value => CSS.escape(value));
         if (cls.length) return `${tag}.${cls.join(".")}`;
         const parent = el.parentElement;
         if (!parent) return tag;

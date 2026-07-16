@@ -22,7 +22,8 @@ Este paquete define el mapa de datos para que nuevos giros entren como extension
 1. Proteger el nucleo comun POS/backoffice.
 2. Permitir que cada giro agregue entidades propias sin contaminar `Product`, `Sale`, `SaleLine`, `Payment` o `StockMovement`.
 3. Definir que vive en Tablet, que vive en PC y que debe compartirse.
-4. Definir reglas para migraciones futuras sin romper instalaciones existentes.
+4. Definir reglas para migraciones futuras sin romper instalaciones existentes
+.
 5. Dejar criterios claros para validar nuevos modelos de datos verticales.
 
 ## 2. Reglas madre

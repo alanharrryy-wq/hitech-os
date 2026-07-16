@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import sqlite3
 import uuid
@@ -15,7 +16,7 @@ DATA_DIR = LAB_ROOT / "internal" / "data"
 DB_PATH = DATA_DIR / "prisma-command-center.db"
 PLAN_CATALOG_PATH = TERMINAL_ROOT / "shared" / "licensing" / "plan-catalog.canonical.json"
 
-PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","item":"ID"}
+PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","case":"CAS","evidence":"EVD","backup":"BKP","rollback":"RBK","item":"ID"}
 FIRST_CUSTOMER = {
     "displayName": "Prisma Original Customer",
     "tenantSlug": "prisma-original-customer",
@@ -137,6 +138,15 @@ def _exec_schema(con):
         "CREATE TABLE IF NOT EXISTS CommandAuditEvent(id TEXT PRIMARY KEY, eventType TEXT NOT NULL, actor TEXT DEFAULT 'local_operator', entityKind TEXT, entityCode TEXT, summary TEXT NOT NULL, payload TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)",
         "CREATE TABLE IF NOT EXISTS CommandCenterSettings(id TEXT PRIMARY KEY, key TEXT NOT NULL UNIQUE, value TEXT NOT NULL, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)",
         "CREATE TABLE IF NOT EXISTS CloudBridgeStatus(id TEXT PRIMARY KEY, mode TEXT DEFAULT 'local_prepared', cloudOrigin TEXT DEFAULT 'https://app.hitechrts.com', tokenState TEXT DEFAULT 'unknown', lastCheckedAt TEXT, payload TEXT)"
+        ,"CREATE TABLE IF NOT EXISTS SupportCase(id TEXT PRIMARY KEY, caseCode TEXT NOT NULL UNIQUE, clientRequestId TEXT UNIQUE, title TEXT NOT NULL, supportCode TEXT, severity TEXT NOT NULL DEFAULT 'warning', status TEXT NOT NULL DEFAULT 'CASE_OPEN', stage TEXT NOT NULL DEFAULT 'SCOPE_RESOLVING', assignedTo TEXT, scope TEXT NOT NULL DEFAULT '{}', expectedSourceRevision TEXT, revision INTEGER NOT NULL DEFAULT 1, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP, closedAt TEXT)"
+        ,"CREATE TABLE IF NOT EXISTS SupportCaseEvent(id TEXT PRIMARY KEY, caseId TEXT NOT NULL, eventType TEXT NOT NULL, fromState TEXT, toState TEXT, correlationId TEXT NOT NULL, summary TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
+        ,"CREATE INDEX IF NOT EXISTS idx_support_case_status_updated ON SupportCase(status, updatedAt DESC)"
+        ,"CREATE INDEX IF NOT EXISTS idx_support_case_event_case_created ON SupportCaseEvent(caseId, createdAt DESC)"
+        ,"CREATE TABLE IF NOT EXISTS SupportCommandRun(id TEXT PRIMARY KEY, caseId TEXT, commandId TEXT NOT NULL, idempotencyKey TEXT NOT NULL UNIQUE, expectedRevision INTEGER, beforeRevision INTEGER, afterRevision INTEGER, status TEXT NOT NULL, backupId TEXT, rollbackId TEXT, correlationId TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', result TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)"
+        ,"CREATE INDEX IF NOT EXISTS idx_support_command_case_created ON SupportCommandRun(caseId, createdAt DESC)"
+        ,"CREATE TABLE IF NOT EXISTS SupportEvidence(id TEXT PRIMARY KEY, evidenceCode TEXT NOT NULL UNIQUE, caseId TEXT, evidenceType TEXT NOT NULL, source TEXT NOT NULL, sourceRevision TEXT, correlationId TEXT NOT NULL, sha256 TEXT NOT NULL, redacted INTEGER NOT NULL DEFAULT 1, payload TEXT NOT NULL DEFAULT '{}', observedAt TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
+        ,"CREATE INDEX IF NOT EXISTS idx_support_evidence_case_created ON SupportEvidence(caseId, createdAt DESC)"
+        ,"CREATE TABLE IF NOT EXISTS SupportRollbackSnapshot(id TEXT PRIMARY KEY, backupCode TEXT NOT NULL UNIQUE, caseId TEXT, commandId TEXT NOT NULL, correlationId TEXT NOT NULL, sourceRevision INTEGER, sha256 TEXT NOT NULL, snapshot TEXT NOT NULL, restoredAt TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
     ]
     for sql in statements:
         con.execute(sql)
@@ -581,9 +591,234 @@ def draft_deactivation(con, b):
     add_event(con, "deactivation_prepared", "deactivation", ids["deactivation"]["humanCode"], f"Baja preparada: {target_kind} {target_code or ''}", payload)
     return {"ok": True, "mode": "prepared", "message": "Baja preparada localmente; no ejecuta cloud real todavía.", **payload, "counts": _counts(con)}
 
+
+def _support_case_dict(row):
+    if not row:
+        return None
+    item = dict(row)
+    item["scope"] = jl(item.get("scope"))
+    item["revision"] = int(item.get("revision") or 0)
+    return item
+
+
+def _support_command_dict(row):
+    if not row:
+        return None
+    item = dict(row)
+    item["payload"] = jl(item.get("payload"))
+    item["result"] = jl(item.get("result"))
+    return item
+
+
+def support_case_snapshot(con, case_id=None):
+    cases = [_support_case_dict(row) for row in con.execute(
+        "SELECT * FROM SupportCase ORDER BY updatedAt DESC LIMIT 100"
+    ).fetchall()]
+    current = None
+    if case_id:
+        current = _support_case_dict(con.execute(
+            "SELECT * FROM SupportCase WHERE id=? OR caseCode=?",
+            (case_id, case_id),
+        ).fetchone())
+    if current is None:
+        current = next((item for item in cases if item.get("status") not in {"RESOLVED", "CLOSED"}), cases[0] if cases else None)
+    events = []
+    evidence = []
+    commands = []
+    if current:
+        current_id = current["id"]
+        events = [
+            {**dict(row), "payload": jl(row["payload"])}
+            for row in con.execute(
+                "SELECT * FROM SupportCaseEvent WHERE caseId=? ORDER BY createdAt DESC LIMIT 200",
+                (current_id,),
+            ).fetchall()
+        ]
+        evidence = [
+            {**dict(row), "payload": jl(row["payload"]), "redacted": bool(row["redacted"])}
+            for row in con.execute(
+                "SELECT * FROM SupportEvidence WHERE caseId=? ORDER BY createdAt DESC LIMIT 200",
+                (current_id,),
+            ).fetchall()
+        ]
+        commands = [
+            _support_command_dict(row)
+            for row in con.execute(
+                "SELECT * FROM SupportCommandRun WHERE caseId=? ORDER BY createdAt DESC LIMIT 100",
+                (current_id,),
+            ).fetchall()
+        ]
+    return {
+        "currentCase": current,
+        "cases": cases,
+        "events": events,
+        "evidence": evidence,
+        "commands": commands,
+        "counts": {
+            "all": len(cases),
+            "critical": sum(1 for item in cases if item.get("severity") == "critical"),
+            "blocked": sum(1 for item in cases if item.get("status") == "BLOCKED"),
+            "resolvedToday": sum(1 for item in cases if item.get("status") in {"RESOLVED", "CLOSED"} and str(item.get("updatedAt") or "")[:10] == datetime.now(timezone.utc).date().isoformat()),
+        },
+    }
+
+
+def create_support_case(con, body):
+    client_request_id = str(body.get("clientRequestId") or body.get("idempotencyKey") or "").strip() or None
+    if client_request_id:
+        existing = con.execute("SELECT * FROM SupportCase WHERE clientRequestId=?", (client_request_id,)).fetchone()
+        if existing:
+            return {"ok": True, "idempotent": True, "case": _support_case_dict(existing)}
+    title = str(body.get("title") or body.get("summary") or body.get("query") or "").strip()
+    if not title:
+        return {"ok": False, "resultCode": "SUPPORT_CASE_TITLE_REQUIRED", "message": "El caso necesita un título humano."}
+    title = title[:240]
+    code = gen(con, "case", {"title": title})
+    case_id = uid()
+    correlation_id = str(body.get("correlationId") or f"support-{uid()}")
+    scope = body.get("scope") if isinstance(body.get("scope"), dict) else {}
+    con.execute(
+        "INSERT INTO SupportCase(id,caseCode,clientRequestId,title,supportCode,severity,status,stage,assignedTo,scope,expectedSourceRevision,revision) VALUES(?,?,?,?,?,?,?,?,?,?,?,1)",
+        (
+            case_id,
+            code["humanCode"],
+            client_request_id,
+            title,
+            body.get("supportCode"),
+            body.get("severity") if body.get("severity") in {"info", "warning", "blocked", "critical"} else "warning",
+            "CASE_OPEN",
+            "SCOPE_RESOLVING",
+            body.get("assignedTo"),
+            jd(scope),
+            body.get("expectedSourceRevision"),
+        ),
+    )
+    con.execute(
+        "INSERT INTO SupportCaseEvent(id,caseId,eventType,fromState,toState,correlationId,summary,payload) VALUES(?,?,?,?,?,?,?,?)",
+        (uid(), case_id, "case.created", None, "CASE_OPEN", correlation_id, "Caso creado", jd({"scope": scope, "supportCode": body.get("supportCode")})),
+    )
+    return {
+        "ok": True,
+        "idempotent": False,
+        "correlationId": correlation_id,
+        "case": _support_case_dict(con.execute("SELECT * FROM SupportCase WHERE id=?", (case_id,)).fetchone()),
+    }
+
+
+def transition_support_case(con, case_id, expected_revision, *, status=None, stage=None, assigned_to=None, scope=None, event_type="case.transition", summary="Estado actualizado", correlation_id=None, payload=None):
+    row = con.execute("SELECT * FROM SupportCase WHERE id=? OR caseCode=?", (case_id, case_id)).fetchone()
+    if not row:
+        return {"ok": False, "resultCode": "SUPPORT_CASE_NOT_FOUND", "_httpStatus": 404}
+    before = _support_case_dict(row)
+    current_revision = int(before["revision"])
+    if expected_revision is None or int(expected_revision) != current_revision:
+        return {
+            "ok": False,
+            "resultCode": "REVISION_CONFLICT",
+            "_httpStatus": 409,
+            "expectedRevision": expected_revision,
+            "canonicalRevision": current_revision,
+            "case": before,
+        }
+    new_status = status or before["status"]
+    new_stage = stage or before["stage"]
+    new_scope = scope if isinstance(scope, dict) else before["scope"]
+    closed_at = now_iso() if new_status in {"RESOLVED", "CLOSED"} else before.get("closedAt")
+    changed = con.execute(
+        "UPDATE SupportCase SET status=?,stage=?,assignedTo=?,scope=?,revision=revision+1,updatedAt=CURRENT_TIMESTAMP,closedAt=? WHERE id=? AND revision=?",
+        (new_status, new_stage, assigned_to if assigned_to is not None else before.get("assignedTo"), jd(new_scope), closed_at, before["id"], current_revision),
+    ).rowcount
+    if changed != 1:
+        return {"ok": False, "resultCode": "REVISION_CONFLICT", "_httpStatus": 409}
+    correlation_id = str(correlation_id or f"support-{uid()}")
+    con.execute(
+        "INSERT INTO SupportCaseEvent(id,caseId,eventType,fromState,toState,correlationId,summary,payload) VALUES(?,?,?,?,?,?,?,?)",
+        (uid(), before["id"], event_type, before["stage"], new_stage, correlation_id, summary[:300], jd(payload or {})),
+    )
+    after = _support_case_dict(con.execute("SELECT * FROM SupportCase WHERE id=?", (before["id"],)).fetchone())
+    return {"ok": True, "correlationId": correlation_id, "beforeRevision": current_revision, "afterRevision": after["revision"], "case": after}
+
+
+def support_command_by_idempotency(con, idempotency_key):
+    if not idempotency_key:
+        return None
+    return _support_command_dict(con.execute(
+        "SELECT * FROM SupportCommandRun WHERE idempotencyKey=?",
+        (str(idempotency_key),),
+    ).fetchone())
+
+
+def begin_support_command(con, *, case_id, command_id, idempotency_key, expected_revision, correlation_id, payload, backup_id=None, rollback_id=None):
+    previous = support_command_by_idempotency(con, idempotency_key)
+    if previous:
+        return {"ok": True, "idempotent": True, "commandRun": previous}
+    case = None
+    if case_id:
+        case = _support_case_dict(con.execute("SELECT * FROM SupportCase WHERE id=? OR caseCode=?", (case_id, case_id)).fetchone())
+        if not case:
+            return {"ok": False, "resultCode": "SUPPORT_CASE_NOT_FOUND", "_httpStatus": 404}
+        if expected_revision is None or int(expected_revision) != int(case["revision"]):
+            return {"ok": False, "resultCode": "REVISION_CONFLICT", "_httpStatus": 409, "expectedRevision": expected_revision, "canonicalRevision": case["revision"]}
+    command_run_id = uid()
+    con.execute(
+        "INSERT INTO SupportCommandRun(id,caseId,commandId,idempotencyKey,expectedRevision,beforeRevision,status,backupId,rollbackId,correlationId,payload,result) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        (command_run_id, case["id"] if case else None, command_id, idempotency_key, expected_revision, case["revision"] if case else None, "RUNNING", backup_id, rollback_id, correlation_id, jd(payload), jd({})),
+    )
+    return {"ok": True, "idempotent": False, "commandRun": _support_command_dict(con.execute("SELECT * FROM SupportCommandRun WHERE id=?", (command_run_id,)).fetchone())}
+
+
+def complete_support_command(con, command_run_id, *, status, result, after_revision=None):
+    con.execute(
+        "UPDATE SupportCommandRun SET status=?,result=?,afterRevision=?,updatedAt=CURRENT_TIMESTAMP WHERE id=?",
+        (status, jd(result), after_revision, command_run_id),
+    )
+    return _support_command_dict(con.execute("SELECT * FROM SupportCommandRun WHERE id=?", (command_run_id,)).fetchone())
+
+
+def create_support_backup(con, *, case_id, command_id, correlation_id, snapshot, source_revision=None):
+    canonical = jd(snapshot)
+    digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    backup_id = uid()
+    code = gen(con, "backup", {"caseId": case_id, "commandId": command_id})
+    con.execute(
+        "INSERT INTO SupportRollbackSnapshot(id,backupCode,caseId,commandId,correlationId,sourceRevision,sha256,snapshot) VALUES(?,?,?,?,?,?,?,?)",
+        (backup_id, code["humanCode"], case_id, command_id, correlation_id, source_revision, digest, canonical),
+    )
+    return {"backupId": backup_id, "backupCode": code["humanCode"], "sha256": digest, "rollbackId": f"rollback:{backup_id}"}
+
+
+def append_support_evidence(con, *, case_id, evidence_type, source, source_revision, correlation_id, payload, observed_at=None):
+    canonical = jd(payload)
+    digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    evidence_id = uid()
+    code = gen(con, "evidence", {"caseId": case_id, "type": evidence_type})
+    con.execute(
+        "INSERT INTO SupportEvidence(id,evidenceCode,caseId,evidenceType,source,sourceRevision,correlationId,sha256,redacted,payload,observedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+        (evidence_id, code["humanCode"], case_id, evidence_type, source, source_revision, correlation_id, digest, 1, canonical, observed_at or now_iso()),
+    )
+    return {"evidenceId": evidence_id, "evidenceCode": code["humanCode"], "sha256": digest, "redacted": True}
+
+
+def support_store_payload(raw_path, method="GET", body=None):
+    ensure_initialized()
+    path = urlparse(raw_path).path.rstrip("/")
+    payload = body if isinstance(body, dict) else {}
+    with db() as con:
+        if method == "GET" and path in {"/api/command-center/support/cases", "/api/command-center/support/workspace"}:
+            query = parse_qs(urlparse(raw_path).query or "")
+            case_id = (query.get("caseId") or [None])[0]
+            return {"ok": True, **support_case_snapshot(con, case_id)}
+        if method == "POST" and path == "/api/command-center/support/cases":
+            out = create_support_case(con, payload)
+            con.commit()
+            return out
+    return {"ok": False, "resultCode": "SUPPORT_STORE_ROUTE_NOT_FOUND", "path": path, "method": method}
+
 def command_center_payload(raw_path, method="GET", body=None):
     ensure_initialized()
     path = urlparse(raw_path).path
+    if path.startswith("/api/command-center/support"):
+        return support_store_payload(raw_path, method=method, body=body)
     with db() as con:
         if method == "GET" and path in ("/api/command-center", "/api/command-center/bootstrap"):
             return bootstrap(con)
