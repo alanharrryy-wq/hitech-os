@@ -12,6 +12,7 @@ function registerSurf8Tests(test, expect) {
   const captureScreenshots = String(process.env.PRISMA_SURF_SCREENSHOTS || "1") !== "0";
   const fullPage = String(process.env.PRISMA_SURF_FULLPAGE || "1") === "1";
   const deepCaptureOptions = envDeepCaptureOptions({ fullPage });
+  const deepCaptureBudget = captureScreenshots ? Number(deepCaptureOptions.captureBudgetMs || 240000) : 0;
   const settleMs = Number(process.env.PRISMA_SURF_SETTLE_MS || 180);
   const gotoTimeout = Number(process.env.PRISMA_SURF_GOTO_TIMEOUT_MS || 45000);
   const gotoRetries = Number(process.env.PRISMA_SURF_GOTO_RETRIES || 2);
@@ -19,8 +20,8 @@ function registerSurf8Tests(test, expect) {
   const screenshotTimeout = Number(process.env.PRISMA_SURF_SCREENSHOT_TIMEOUT_MS || 15000);
   const probeTimeout = Number(process.env.PRISMA_SURF_PROBE_TIMEOUT_MS || 1400);
   const defaultTestTimeout = Math.max(
-    150000,
-    (gotoTimeout * (gotoRetries + 1)) + screenshotTimeout + (clickTimeout * 3) + 35000
+    210000,
+    (gotoTimeout * (gotoRetries + 1)) + deepCaptureBudget + (screenshotTimeout * 2) + (clickTimeout * 3) + 45000
   );
   const testTimeout = Number(process.env.PRISMA_SURF_TEST_TIMEOUT_MS || defaultTestTimeout);
   const onlinePorts = new Set(String(process.env.PRISMA_SURF_ONLINE_PORTS || "").split(",").map(s => s.trim()).filter(Boolean));
@@ -35,7 +36,7 @@ function registerSurf8Tests(test, expect) {
   }
   const useGpuLaunchOptions = gpuMode !== "off" && gpuArgs.length > 0;
   const launchOptions = useGpuLaunchOptions ? { args: gpuArgs } : undefined;
-  fs.writeFileSync(path.join(outDir, "gpu-runtime.json"), JSON.stringify({ gpuMode, chromiumArgs: gpuArgs, launchOptionsEnabled: useGpuLaunchOptions, capturedAt: new Date().toISOString() }, null, 2));
+  fs.writeFileSync(path.join(outDir, "gpu-runtime.json"), JSON.stringify({ gpuMode, chromiumArgs: gpuArgs, launchOptionsEnabled: useGpuLaunchOptions, testTimeout, deepCaptureBudget, deepCaptureOptions, capturedAt: new Date().toISOString() }, null, 2));
 
   test.describe.configure({ mode: "parallel" });
   test.use({ trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
@@ -69,10 +70,16 @@ function registerSurf8Tests(test, expect) {
     return onlinePorts.size > 0 && !onlinePorts.has(String(target.port || target.macro));
   }
   function bounded(promise, ms, fallback) {
+    let timer = null;
+    const timeoutPromise = new Promise(resolve => {
+      timer = setTimeout(() => resolve(fallback), ms);
+    });
     return Promise.race([
       Promise.resolve(promise).catch(() => fallback),
-      new Promise(resolve => setTimeout(() => resolve(fallback), ms))
-    ]);
+      timeoutPromise
+    ]).finally(() => {
+      if (timer) clearTimeout(timer);
+    });
   }
   function urlPathMatches(currentUrl, expectedUrl) {
     try {
@@ -239,7 +246,10 @@ function registerSurf8Tests(test, expect) {
   }
   async function captureChart(page, target) {
     const nav = await gotoAndSettle(page, target, target.route || "/");
-    const selected = await page.locator("[data-selected-chart], [data-chart-id]").first().evaluate(el => el.getAttribute("data-selected-chart") || el.getAttribute("data-chart-id") || el.textContent).catch(() => null);
+    const selected = await bounded(page.evaluate(() => {
+      const el = document.querySelector("[data-selected-chart], [data-chart-id]");
+      return el ? (el.getAttribute("data-selected-chart") || el.getAttribute("data-chart-id") || el.textContent) : null;
+    }), probeTimeout, null);
     await capture(page, target, target.chartId || "chart", { chartId: target.chartId, selectedChart: selected, navigation: nav });
   }
   async function captureChartTab(page, target) {

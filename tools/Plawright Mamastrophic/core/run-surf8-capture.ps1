@@ -21,6 +21,13 @@ param(
   [int]$ViewportWidth = 1365,
   [int]$ViewportHeight = 768,
   [int]$SettleMs = 700,
+  [int]$TileSettleMs = 220,
+  [int]$CaptureBudgetMs = 240000,
+  [int]$ContainerOperationTimeoutMs = 5000,
+  [int]$NavigationRetries = 3,
+  [int]$NavigationQuietMs = 1000,
+  [int]$NavigationQuietMaxMs = 10000,
+  [int]$MaxContainerErrors = 2,
   [string]$ArtifactRoot = '',
   [switch]$NoZip
 )
@@ -809,6 +816,13 @@ try {
   $env:PRISMA_SURF_VIEWPORT_WIDTH = [string]$ViewportWidth
   $env:PRISMA_SURF_VIEWPORT_HEIGHT = [string]$ViewportHeight
   $env:PRISMA_SURF_SETTLE_MS = [string]$SettleMs
+  $env:PRISMA_SURF_TILE_SETTLE_MS = [string]$TileSettleMs
+  $env:PRISMA_SURF_CAPTURE_BUDGET_MS = [string]$CaptureBudgetMs
+  $env:PRISMA_SURF_CONTAINER_OPERATION_TIMEOUT_MS = [string]$ContainerOperationTimeoutMs
+  $env:PRISMA_SURF_NAVIGATION_RETRIES = [string]$NavigationRetries
+  $env:PRISMA_SURF_NAVIGATION_QUIET_MS = [string]$NavigationQuietMs
+  $env:PRISMA_SURF_NAVIGATION_QUIET_MAX_MS = [string]$NavigationQuietMaxMs
+  $env:PRISMA_SURF_MAX_CONTAINER_ERRORS = [string]$MaxContainerErrors
   $env:PRISMA_SURF_ONLINE_PORTS = ($onlinePorts -join ',')
   $env:PRISMA_SURF_WORKERS = [string]$Workers
   $env:PRISMA_SURF_SURFACE = $SurfaceKey
@@ -823,8 +837,8 @@ try {
   $env:PRISMA_SURF_GOTO_RETRIES = [string]$GotoRetries
   $env:PRISMA_SURF_SCREENSHOT_TIMEOUT_MS = [string]$ScreenshotTimeoutMs
   $env:PRISMA_SURF_PROBE_TIMEOUT_MS = [string]$ProbeTimeoutMs
-  Add-RunLog "viewport=$ViewportWidth x $ViewportHeight settleMs=$SettleMs"
-  Add-RunLog "timeouts test=$TestTimeoutMs goto=$GotoTimeoutMs retries=$GotoRetries screenshot=$ScreenshotTimeoutMs probe=$ProbeTimeoutMs deepScroll=$EffectiveDeepScroll fullPage=$EffectiveFullPage maxPageTiles=$MaxPageTiles maxScrollContainers=$MaxScrollContainers maxContainerTiles=$MaxContainerTiles"
+  Add-RunLog "viewport=$ViewportWidth x $ViewportHeight settleMs=$SettleMs tileSettleMs=$TileSettleMs"
+  Add-RunLog "timeouts test=$TestTimeoutMs goto=$GotoTimeoutMs retries=$GotoRetries screenshot=$ScreenshotTimeoutMs probe=$ProbeTimeoutMs deepScroll=$EffectiveDeepScroll fullPage=$EffectiveFullPage maxPageTiles=$MaxPageTiles maxScrollContainers=$MaxScrollContainers maxContainerTiles=$MaxContainerTiles captureBudgetMs=$CaptureBudgetMs containerOperationTimeoutMs=$ContainerOperationTimeoutMs navigationRetries=$NavigationRetries navigationQuietMs=$NavigationQuietMs navigationQuietMaxMs=$NavigationQuietMaxMs maxContainerErrors=$MaxContainerErrors"
   if ($visualQaMode) {
     $env:PRISMA_VISUALQA_OUT_DIR = $outDir
     $env:PRISMA_VISUALQA_REPORTS_DIR = $reports
@@ -975,6 +989,14 @@ try {
       maxScrollContainers = $MaxScrollContainers
       maxContainerTiles = $MaxContainerTiles
       tileOverlapPx = $TileOverlapPx
+      settleMs = $SettleMs
+      tileSettleMs = $TileSettleMs
+      captureBudgetMs = $CaptureBudgetMs
+      containerOperationTimeoutMs = $ContainerOperationTimeoutMs
+      navigationRetries = $NavigationRetries
+      navigationQuietMs = $NavigationQuietMs
+      navigationQuietMaxMs = $NavigationQuietMaxMs
+      maxContainerErrors = $MaxContainerErrors
     }
     gpuAggressive = [bool]$GpuProfile.aggressive
     chromiumArgs = @($GpuProfile.chromiumArgs)
