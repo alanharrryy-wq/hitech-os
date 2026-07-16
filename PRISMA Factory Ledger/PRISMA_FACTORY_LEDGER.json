@@ -218,6 +218,40 @@
         "runtime visual QA",
         "source fix only if screenshot shows real defect"
       ]
+    },
+    {
+      "id": "tablet.customer_surface_reduction",
+      "displayName": "Tablet customer surface reduction with Chart Lab protection",
+      "domain": "productization",
+      "surfaces": [
+        "tablet",
+        "chart_lab",
+        "shared_ui"
+      ],
+      "classification": "FIX",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_TABLET_CUSTOMER_SURFACES_REDUCED_CHART_LAB_PRESERVED",
+      "doNotRebuild": true,
+      "nextGate": "Run fresh Tablet ScreensQA against customer routes, then certify a clean distributable package.",
+      "evidence": [
+        "custsurf 1507 185809 result.zip",
+        "verify_tablet_customer_surface_reduction_1507.mjs",
+        "dbevid 1507 1826 result.zip"
+      ],
+      "doesNotProve": [
+        "Hosted production deployment",
+        "Fresh runtime ScreensQA",
+        "Distribution-ready installer"
+      ],
+      "allowedActions": [
+        "runtime ScreensQA",
+        "release packaging",
+        "read-only verification"
+      ],
+      "forbiddenActions": [
+        "re-expose retired internal routes in final navigation",
+        "modify Chart Lab as part of Tablet cleanup"
+      ]
     }
   ]
 }

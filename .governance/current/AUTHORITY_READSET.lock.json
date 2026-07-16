@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
   "tool": "PRISMA Authority Mesh",
-  "generated_at": "2026-06-24T14:00:50-06:00",
+  "generated_at": "2026-07-10T13:05:21-06:00",
   "repo": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-  "task": "Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.",
-  "full_mode": false,
+  "task": "Construir y certificar PRISMA Support Resolver Operational Cockpit y modernizar todas las superficies afectadas del Prisma Cloud Command Center 3160, fusionando old + new, actualizando motores, adapters, contratos, endpoints y stores, garantizando consistencia multidispositivo, coherencia de licencias, datos sincronizados entre PC, Tablet, Mobile y 3160, y simplificando todas las operaciones de licencias sin regresiones.",
+  "full_mode": true,
   "status": "PASS",
   "apps_detected": [
     "backgrounds",
@@ -24,7 +24,7 @@
     "data_sync",
     "visual"
   ],
-  "authority_file_count": 979,
+  "authority_file_count": 983,
   "readset": [
     {
       "path": "config/prisma-visual-os/ai-doctor-policy-00y.json",
@@ -1532,8 +1532,8 @@
     },
     {
       "path": "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
-      "bytes": 23107,
-      "sha256": "a839c82ebaa446c6cb53a3fe58203b0541999631da74d5058b6b38bed565d8e6",
+      "bytes": 35288,
+      "sha256": "58a929225c2d4ac12ef42a4e2c2b57338d09c8e12de53ff9a3eee1612941fd1d",
       "extension": ".md",
       "source_id": "field_manual",
       "reason": "global_required"
@@ -1747,6 +1747,14 @@
       "reason": "database-sync_authority"
     },
     {
+      "path": "docs/productization/E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md",
+      "bytes": 2302,
+      "sha256": "062c0e1e830fba83309bdae92e1d70487bed57c22e62713245f42600e201e5f2",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
       "path": "docs/productization/PRISMA_AI_READY_SUPPORT_CONTRACT.md",
       "bytes": 2186,
       "sha256": "1e9b913e7bfe01699e3d30ad90583ae5c2ab6465345d66e480be536044608b75",
@@ -1828,8 +1836,8 @@
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_INSTALLATION_MODES.md",
-      "bytes": 1285,
-      "sha256": "1423ef16826b7b66d2549d6ec3295110ba366f3b2fc153ac6133095c33f8838d",
+      "bytes": 1812,
+      "sha256": "4496656baa2bb48d993e7d0db90946040f734ca74e9f359ed80134038613a0c3",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1844,16 +1852,24 @@
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_LAYOUT_CONTRACT.md",
-      "bytes": 2266,
-      "sha256": "9d82f042989311580973428326ac4495b867099dfef3e267b7ea3a6aafb7d008",
+      "bytes": 2712,
+      "sha256": "53836fa496ac2a0068bb43899714a0068a17f821a6858f8f9271e351325dec1f",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_TOUCHPOINTS.md",
-      "bytes": 1676,
-      "sha256": "aeefc3baec268fc1a5f04ca17cad628a2894525a90ecbdc261bdedfc45401f89",
+      "bytes": 2292,
+      "sha256": "e47a1d644296336cfb0aa85d5319462cdaaa8daa9d34326531843a8fe75e0897",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
+      "path": "docs/productization/PRISMA_CUSTOMER_SETUP_MULTI_DEVICE_CONTRACT.md",
+      "bytes": 3993,
+      "sha256": "2c42435db96a980870706fac822ec18051927bc6889f50b31ce164b69900d20a",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1868,8 +1884,8 @@
     },
     {
       "path": "docs/productization/PRISMA_DEVICE_ACTIVATION_CONTRACT_05.md",
-      "bytes": 1608,
-      "sha256": "b4e26ee8258217a7848f68aa02815ff5a1eecb2e83a920e9b80dfd67e8d7e031",
+      "bytes": 2170,
+      "sha256": "43a1f9b6167b3aed96134f5c3bd59c7e211ee6630771ae2724301af0f07f8db6",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1924,16 +1940,16 @@
     },
     {
       "path": "docs/productization/PRISMA_LICENSES_README.md",
-      "bytes": 26344,
-      "sha256": "7811fa7a8fa8eec84852263d718d48d87d651afaba7d4502e8fc4e46282dccb1",
+      "bytes": 27315,
+      "sha256": "50d8c0d077e4a82d43bc0fbdc1bff5735251d643fe02ce5da5b8c842a5305051",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
     },
     {
       "path": "docs/productization/PRISMA_LICENSE_ADMIN_PORTAL_CONTRACT_05.md",
-      "bytes": 1589,
-      "sha256": "9d8731ee932c4b187a86b88e6b3a81bd7d8d2727ae33690c2a5153dce99a55e9",
+      "bytes": 2014,
+      "sha256": "eb722bd3835ee7002787c4e214c806e25919984735026837b0e9814e53fc0921",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1995,6 +2011,14 @@
       "reason": "productization_authority"
     },
     {
+      "path": "docs/productization/PRISMA_LICENSE_PRODUCTIZATION_FLOW.md",
+      "bytes": 4834,
+      "sha256": "01c04e2f1f82555d60e7fc050611e4b2b89485297cd689b8f495fb64641a1817",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
       "path": "docs/productization/PRISMA_LICENSE_RUNTIME_OPERATOR_FLOW.md",
       "bytes": 6920,
       "sha256": "055a4812165f452631a3983825f3ad269a8efcca7c7f020e7d49afcb91ee9516",
@@ -2004,8 +2028,8 @@
     },
     {
       "path": "docs/productization/PRISMA_LICENSE_SERVER_CONTRACT_05.md",
-      "bytes": 2996,
-      "sha256": "d57c315cb4791d5d21a65f106334bd9fc5e1ec09f2e0a342990304fcfad19ae7",
+      "bytes": 3628,
+      "sha256": "a80668aeee92ff36047734ad4804ab4d7623f153ef1223b855ef37eea303ef2a",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -2070,6 +2094,14 @@
       "path": "docs/productization/PRISMA_OFFLINE_GRACE_POLICY.md",
       "bytes": 2484,
       "sha256": "edfeb9b1a1007e0764a25f291e697340002a76be66fdff5b584af54014e8faeb",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
+      "path": "docs/productization/PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md",
+      "bytes": 6158,
+      "sha256": "fde57545fd83d4b6750d5c51232c7247eec3ba1274c8302153803bfcf86f5b99",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -3643,14 +3675,6 @@
       "reason": "backgrounds_authority"
     },
     {
-      "path": "products/0.backgrounds/archive-index/checksums.sha256",
-      "bytes": 6838,
-      "sha256": "35a02206b85e4ef7661f6589883bb0d905f5d083ffd0b5494e9115cf84eb7cba",
-      "extension": ".sha256",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
       "path": "products/0.backgrounds/archive-index/imported-zips.json",
       "bytes": 108,
       "sha256": "9712a105a50b6619d821d96d49b3ee1f728bd450b4a7fd310167105f96753097",
@@ -4131,14 +4155,6 @@
       "reason": "backgrounds_authority"
     },
     {
-      "path": "products/0.backgrounds/dawid-zawila-prjYWL-sAww-unsplash.zip",
-      "bytes": 149311325,
-      "sha256": "88115d21f0d49ccddf141eb2e73c05d5c05a018b3d982e3f2287c5b1e6a154da",
-      "extension": ".zip",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
       "path": "products/0.backgrounds/manifests/chart-lab.backgrounds.json",
       "bytes": 56572,
       "sha256": "dfaf7e0f98ea0eaf414b4742ffc8238091f64997a79e67f035ceb851b785e01c",
@@ -4299,9 +4315,25 @@
       "reason": "mobile_authority"
     },
     {
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_OPTIONAL_ADDER_BOUNDARY_ROLLBACK.md",
+      "bytes": 728,
+      "sha256": "af9b8ff62e42a82457eebc034be5be4ec259708ee4fff0bb72533f42ebcd1d4d",
+      "extension": ".md",
+      "source_id": "app:mobile",
+      "reason": "mobile_authority"
+    },
+    {
       "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_PREMIUM_POLISH_V12_ADDENDUM.md",
       "bytes": 648,
       "sha256": "1ca60c5e1acef8f10c7ba78feae9b3d612159bfe595221745786306c3990d9f7",
+      "extension": ".md",
+      "source_id": "app:mobile",
+      "reason": "mobile_authority"
+    },
+    {
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_PREMIUM_POLISH_V12_ROLLBACK.md",
+      "bytes": 952,
+      "sha256": "20a23d9681d1e6c634e5487153982b204894ef833cff0f9fa65790299bb814e7",
       "extension": ".md",
       "source_id": "app:mobile",
       "reason": "mobile_authority"
@@ -7865,8 +7897,8 @@
     "candidate_files": [
       {
         "path": ".governance/current/MISSING_OR_UNMAPPED_RISK.md",
-        "bytes": 645,
-        "sha256": "27acef3f1843e0e5af491ff7f931e402b7fd66aa854028212353373c5b09b3d3",
+        "bytes": 665,
+        "sha256": "8dd05893d94aeb7c87413e31e90e501913b294d657c95c4cd48a0a302ce11518",
         "sample_items": [
           "- Status: `PASS`",
           "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
@@ -7879,7 +7911,7 @@
           "- Status: `PASS`",
           "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
           "- Status: `PASS`",
-          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈68"
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12"
         ],
         "item_count_estimate": 12
       }
@@ -7907,204 +7939,204 @@
     ],
     "candidate_target_files": [
       {
-        "path": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
-        "score": 110,
-        "bytes": 1730
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts",
-        "score": 110,
-        "bytes": 543
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/sync/project-tablet-to-pc/route.ts",
-        "score": 110,
-        "bytes": 549
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/tablet-communication/governance-command/route.ts",
-        "score": 110,
-        "bytes": 1354
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/tablet-communication/route.ts",
-        "score": 110,
-        "bytes": 531
-      },
-      {
-        "path": "products/pc/app/app/api/charts/pc/tablet-catalog-freshness-grid/route.ts",
-        "score": 110,
-        "bytes": 902
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/error.tsx",
-        "score": 110,
-        "bytes": 538
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/loading.tsx",
-        "score": 110,
-        "bytes": 341
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/page.tsx",
-        "score": 110,
-        "bytes": 370
-      },
-      {
         "path": "products/tablet/app/app/api/pos/sync/health/pc/route.ts",
-        "score": 110,
+        "score": 160,
         "bytes": 3648
       },
       {
-        "path": "products/tablet/app/src/server/sync/pc-origin.ts",
-        "score": 110,
-        "bytes": 4915
+        "path": "products/tablet/app/components/pos/pos-cobro-surface.tsx",
+        "score": 130,
+        "bytes": 26802
       },
       {
-        "path": "products/pc/app/docs/PC_TABLET_CATALOG_MIRROR_04D.md",
-        "score": 100,
-        "bytes": 1030
+        "path": "products/tablet/app/components/pos/pos-error-banner.tsx",
+        "score": 130,
+        "bytes": 1033
       },
       {
-        "path": "products/pc/app/docs/PC_TABLET_COMMUNICATION_NOTES.md",
-        "score": 100,
-        "bytes": 1822
+        "path": "products/tablet/app/components/pos/pos-live-binding.tsx",
+        "score": 130,
+        "bytes": 8118
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileActionInbox.tsx",
-        "score": 80,
-        "bytes": 4763
+        "path": "products/tablet/app/components/pos/pos-packshots.ts",
+        "score": 130,
+        "bytes": 30607
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileCommandCenter.tsx",
-        "score": 80,
-        "bytes": 5114
+        "path": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+        "score": 130,
+        "bytes": 33420
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileCrystalCommand.tsx",
-        "score": 80,
-        "bytes": 16178
+        "path": "products/tablet/app/components/pos/pos-payment-risk-banner.tsx",
+        "score": 130,
+        "bytes": 1309
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDailyBrief.tsx",
-        "score": 80,
-        "bytes": 3178
+        "path": "products/tablet/app/components/pos/pos-product-list.tsx",
+        "score": 130,
+        "bytes": 14747
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
-        "score": 80,
-        "bytes": 15679
+        "path": "products/tablet/app/components/pos/pos-product-search.tsx",
+        "score": 130,
+        "bytes": 6756
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
-        "score": 80,
-        "bytes": 2684
+        "path": "products/tablet/app/components/pos/pos-sale-success.tsx",
+        "score": 130,
+        "bytes": 4699
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileHealthRadar.tsx",
-        "score": 80,
-        "bytes": 3797
+        "path": "products/tablet/app/components/pos/pos-screen.tsx",
+        "score": 130,
+        "bytes": 27852
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMetricCard.tsx",
-        "score": 80,
-        "bytes": 691
+        "path": "products/tablet/app/components/pos/pos-shortcuts.tsx",
+        "score": 130,
+        "bytes": 670
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx",
-        "score": 80,
-        "bytes": 12858
+        "path": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "score": 130,
+        "bytes": 27364
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePanels.tsx",
-        "score": 80,
-        "bytes": 9786
+        "path": "products/tablet/app/components/pos/terminal-v2/index.ts",
+        "score": 130,
+        "bytes": 146
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
-        "score": 80,
-        "bytes": 15016
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-command-dock.tsx",
+        "score": 130,
+        "bytes": 57
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
-        "score": 80,
-        "bytes": 3162
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-product-canvas.tsx",
+        "score": 130,
+        "bytes": 59
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
-        "score": 80,
-        "bytes": 10592
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-header.tsx",
+        "score": 130,
+        "bytes": 60
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallPage.tsx",
-        "score": 80,
-        "bytes": 2266
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.tsx",
+        "score": 130,
+        "bytes": 4410
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
-        "score": 80,
-        "bytes": 2320
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-ticket-rail.tsx",
+        "score": 130,
+        "bytes": 56
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/index.ts",
-        "score": 80,
-        "bytes": 877
+        "path": "products/tablet/app/components/pos/use-prisma-packshot-skin.ts",
+        "score": 130,
+        "bytes": 1316
       },
       {
-        "path": "products/pc/app/app/components/PrismaAtmosphericBackground.tsx",
-        "score": 80,
-        "bytes": 1906
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-cart-panel.tsx",
+        "score": 130,
+        "bytes": 12887
       },
       {
-        "path": "products/pc/app/components/backoffice/data-table.tsx",
-        "score": 80,
-        "bytes": 3234
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-category-rail.tsx",
+        "score": 130,
+        "bytes": 1981
       },
       {
-        "path": "products/pc/app/components/backoffice/empty-state.tsx",
-        "score": 80,
-        "bytes": 270
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-data.ts",
+        "score": 130,
+        "bytes": 4511
       },
       {
-        "path": "products/pc/app/components/backoffice/executive-dashboard.tsx",
-        "score": 80,
-        "bytes": 4270
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx",
+        "score": 130,
+        "bytes": 6898
       },
       {
-        "path": "products/pc/app/components/backoffice/ingest-event-panel.tsx",
-        "score": 80,
-        "bytes": 1489
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx",
+        "score": 130,
+        "bytes": 2326
       },
       {
-        "path": "products/pc/app/components/backoffice/kpi-card.tsx",
-        "score": 80,
-        "bytes": 692
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx",
+        "score": 130,
+        "bytes": 2606
       },
       {
-        "path": "products/pc/app/components/backoffice/module-overview-page.tsx",
-        "score": 80,
-        "bytes": 3316
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-grid.tsx",
+        "score": 130,
+        "bytes": 628
       },
       {
-        "path": "products/pc/app/components/backoffice/status-badge.tsx",
-        "score": 80,
-        "bytes": 527
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-route-ui.tsx",
+        "score": 130,
+        "bytes": 8299
       },
       {
-        "path": "products/pc/app/components/catalog/catalog-dashboard.tsx",
-        "score": 80,
-        "bytes": 11579
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-search-row.tsx",
+        "score": 130,
+        "bytes": 1924
       },
       {
-        "path": "products/pc/app/components/control/cash-sessions-operational-view.tsx",
-        "score": 80,
-        "bytes": 7388
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-sidebar.tsx",
+        "score": 130,
+        "bytes": 4436
       },
       {
-        "path": "products/pc/app/components/control/pc-command-actions.tsx",
-        "score": 80,
-        "bytes": 2811
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-top-action-bar.tsx",
+        "score": 130,
+        "bytes": 3331
+      },
+      {
+        "path": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx",
+        "score": 130,
+        "bytes": 42067
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos-cobro-surface.module.css",
+        "score": 120,
+        "bytes": 17461
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.module.css",
+        "score": 120,
+        "bytes": 290197
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.visual.presets.json",
+        "score": 120,
+        "bytes": 6169
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.visual.schema.json",
+        "score": 120,
+        "bytes": 2086
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.visual.tokens.css",
+        "score": 120,
+        "bytes": 2919
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.visual.tokens.generated.css",
+        "score": 120,
+        "bytes": 8264
+      },
+      {
+        "path": "products/tablet/app/components/pos/pos.visual.tokens.json",
+        "score": 120,
+        "bytes": 41916
+      },
+      {
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css",
+        "score": 120,
+        "bytes": 1878
       }
     ],
     "govmesh3_outputs": [
