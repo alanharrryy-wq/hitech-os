@@ -1,0 +1,37 @@
+@layer prisma.tokens, prisma.atmosphere, prisma.states;
+
+@layer prisma.tokens {
+  html[data-prisma-canonical-shell="nocturne-reference-1607"] {
+    color-scheme: dark;
+    --prisma-canonical-surface-count: 2;
+    --prisma-canonical-backdrop-count: 2;
+    --prisma-canonical-card-backdrop-count: 0;
+    --prisma-canonical-opacity-normal: 0.756;
+    --prisma-canonical-opacity-info: 0.849;
+  }
+
+  html[data-prisma-reduced-transparency="true"] {
+    --prisma-surface-shell: rgba(5, 17, 29, 0.86);
+    --prisma-surface-panel: rgba(8, 27, 44, 0.82);
+    --prisma-surface-rail: rgba(8, 27, 44, 0.80);
+    --prisma-surface-card: rgba(13, 37, 57, 0.78);
+    --prisma-surface-info: rgba(15, 42, 64, 0.86);
+    --prisma-surface-control: rgba(17, 45, 67, 0.74);
+  }
+}
+
+@layer prisma.atmosphere {
+  html[data-prisma-canonical-shell="nocturne-reference-1607"],
+  html[data-prisma-canonical-shell="nocturne-reference-1607"] body {
+    min-height: 100%;
+    background-color: var(--prisma-night-950);
+  }
+}
+
+@layer prisma.states {
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    html[data-prisma-canonical-shell="nocturne-reference-1607"] {
+      --prisma-surface-shell: rgba(5, 17, 29, 0.78);
+    }
+  }
+}

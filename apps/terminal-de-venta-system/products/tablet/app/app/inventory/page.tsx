@@ -1,2 +1,10 @@
-import { redirect } from "next/navigation";
-export default function AliasPage() { redirect("/stock"); }
+import { InventoryWorkspace } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";
+import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
+import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
+
+export const dynamic = "force-dynamic";
+
+export default async function InventoryPage() {
+  const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
+  return <InventoryWorkspace currentPath="/inventory" runtimeSnapshot={runtimeSnapshot} />;
+}

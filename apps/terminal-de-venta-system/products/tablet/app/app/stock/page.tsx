@@ -1,4 +1,4 @@
-import { CatalogStockSellingAssistScreen } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";
+import { InventoryWorkspace } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -7,5 +7,5 @@ export const metadata = { title: "Existencias para vender - PRISMA Tablet", desc
 
 export default async function StockPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <CatalogStockSellingAssistScreen mode="stock" runtimeSnapshot={runtimeSnapshot} />;
+  return <InventoryWorkspace currentPath="/stock" runtimeSnapshot={runtimeSnapshot} />;
 }

@@ -1,0 +1,130 @@
+@layer prisma.routes {
+  .workspace {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    grid-template-columns: minmax(180px, 0.24fr) minmax(0, 1fr);
+    gap: 16px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+  }
+
+  .sectionNav {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .sectionLink,
+  .sectionLinkActive {
+    min-height: var(--prisma-touch-target);
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    color: var(--prisma-text-muted);
+    border: 1px solid transparent;
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .sectionLink:hover,
+  .sectionLinkActive {
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-control);
+    border-color: var(--prisma-line-soft);
+  }
+
+  .sectionLinkActive {
+    box-shadow: inset 3px 0 0 var(--prisma-cyan-300);
+  }
+
+  .content,
+  .dataOverview {
+    min-width: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .dataHero {
+    min-height: 190px;
+    padding: clamp(18px, 3vw, 30px);
+    display: grid;
+    align-content: center;
+    gap: 9px;
+    background: radial-gradient(circle at 85% 20%, rgba(84, 151, 255, 0.18), transparent 38%), var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+  }
+
+  .dataHero span {
+    color: var(--prisma-cyan-300);
+    font-size: 0.72rem;
+    font-weight: 820;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .dataHero h2,
+  .dataHero p {
+    margin: 0;
+  }
+
+  .dataHero h2 {
+    max-width: 26ch;
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-size: clamp(1.45rem, 3vw, 2.4rem);
+    font-weight: 620;
+  }
+
+  .dataHero p {
+    max-width: 62ch;
+    color: var(--prisma-text-secondary);
+    line-height: 1.5;
+  }
+
+  .dataActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    min-height: 92px;
+    padding: 16px;
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    text-decoration: none;
+  }
+
+  .primaryAction {
+    background: linear-gradient(135deg, rgba(62, 138, 255, 0.28), rgba(17, 44, 67, 0.76));
+    border-color: rgba(120, 221, 255, 0.32);
+  }
+
+  .primaryAction span,
+  .secondaryAction span {
+    color: var(--prisma-text-secondary);
+  }
+
+  @media (max-width: 820px) {
+    .workspace { grid-template-columns: 1fr; }
+    .sectionNav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sectionLink, .sectionLinkActive { justify-content: center; }
+    .sectionLinkActive { box-shadow: inset 0 -3px 0 var(--prisma-cyan-300); }
+  }
+
+  @media (max-width: 620px) {
+    .dataActions { grid-template-columns: 1fr; }
+  }
+}

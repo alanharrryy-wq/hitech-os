@@ -28,7 +28,7 @@ function SurfaceAdapter({
       routeId={routeId}
       intent={intent}
       title={title ?? routeId}
-      description={description ?? "Superficie Tablet operativa con paneles softglass, controles táctiles y jerarquía clara."}
+      description={description ?? "Superficie Tablet operativa nocturna, táctil y translúcida con jerarquía clara."}
     >
       {children}
     </PrismaRouteSurface>

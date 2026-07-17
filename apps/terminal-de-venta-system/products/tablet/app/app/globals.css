@@ -1,990 +1,197 @@
-@import "../../../shared-ui/prisma/tokens/prisma-theme.css";
-@import "../../../shared-ui/prisma/components/prisma-components.css";
-@import "../../../../styles/prisma-visual-os/prisma-visual-layers.css";
-@import "../../../../styles/prisma-visual-os/prisma-visual-controls.generated.css";
-@import "../../../../styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css";
+@layer prisma.reset, prisma.tokens, prisma.atmosphere, prisma.shell, prisma.materials, prisma.components, prisma.routes, prisma.states, prisma.utilities;
 
-:root {
-  --prisma-ref-bg: #050706;
-  --prisma-ref-surface: #282b2a;
-  --prisma-ref-text: #00ff41;
-  --prisma-ref-chevron: #8a8f8b;
-  --prisma-ref-border: rgba(255, 255, 255, 0.04);
-}
+@layer prisma.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-* {
-  box-sizing: border-box;
-}
+  html {
+    min-width: 320px;
+    min-height: 100%;
+    color-scheme: dark;
+    background: #02070d;
+    text-size-adjust: 100%;
+  }
 
-html,
-body {
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-}
+  body {
+    min-height: 100dvh;
+    margin: 0;
+  }
 
-body {
-  min-height: 100vh;
-  color: var(--prisma-text-primary);
-  font-family: var(--prisma-font-family);
-  overflow-x: hidden;
-}
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: "Aptos", "Segoe UI Variable Text", sans-serif;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
 
-button,
-input {
-  font: inherit;
-}
+  button,
+  a,
+  summary,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
+  }
 
-.shell {
-  max-width: 1460px;
-  margin: 0 auto;
-  padding: 24px;
-  display: grid;
-  grid-template-columns: 246px minmax(0, 1fr);
-  gap: 20px;
-}
+  button,
+  summary {
+    cursor: pointer;
+  }
 
-.sidebar {
-  position: sticky;
-  top: 20px;
-  height: calc(100vh - 40px);
-  padding: 18px;
-  border-radius: var(--prisma-radius-xl);
-  background: var(--prisma-sidebar-surface);
-  border: 1px solid var(--prisma-border-soft);
-  box-shadow: var(--prisma-shadow-glass);
-  backdrop-filter: blur(22px);
-}
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    cursor: not-allowed;
+  }
 
-.brand {
-  margin-bottom: 8px;
-  color: var(--prisma-text-primary);
-  font-size: 20px;
-  font-weight: 880;
-}
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
 
-.subtle {
-  color: var(--prisma-text-muted);
-}
-
-.nav {
-  display: grid;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.nav a {
-  padding: 11px 12px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid transparent;
-  color: var(--prisma-text-secondary);
-}
-
-.nav a.active,
-.nav a:hover {
-  color: var(--prisma-accent-gold-soft);
-  background: var(--prisma-active-surface);
-  border-color: var(--prisma-border-gold);
-}
-
-[data-theme="prisma-light"] .nav a:not(.active):hover {
-  color: var(--prisma-accent-gold-strong);
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-.main {
-  display: grid;
-  gap: 20px;
-}
-
-.hero,
-.panel,
-.card {
-  position: relative;
-  overflow: hidden;
-  background: var(--prisma-panel-gradient);
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-xl);
-  box-shadow: var(--prisma-shadow-glass);
-  backdrop-filter: blur(20px);
-}
-
-.hero {
-  display: grid;
-  gap: 10px;
-  padding: 22px;
-}
-
-.hero-split {
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: start;
-}
-
-.hero-side,
-.grid,
-.list,
-.stack-list {
-  display: grid;
-  gap: 14px;
-}
-
-.grid.cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid.cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.card {
-  padding: 18px;
-}
-
-.metric {
-  margin-top: 6px;
-  color: var(--prisma-accent-gold-soft);
-  font-size: 30px;
-  font-weight: 880;
-}
-
-.kicker,
-.mini-stat-label,
-.action-chip-meta {
-  color: var(--prisma-accent-gold);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 12px;
-  font-weight: 820;
-}
-
-.table-wrap {
-  overflow: auto;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-surface);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--prisma-border-soft);
-  text-align: left;
-  vertical-align: top;
-  font-size: 14px;
-}
-
-th {
-  color: var(--prisma-accent-gold);
-  font-weight: 760;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 11px;
-}
-
-.badge,
-.pill {
-  display: inline-flex;
-  align-items: center;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid var(--prisma-border-soft);
-  font-size: 12px;
-  font-weight: 780;
-}
-
-.badge {
-  padding: 4px 8px;
-}
-
-.badge.ok {
-  background: color-mix(in srgb, var(--prisma-success) 14%, transparent);
-  color: var(--prisma-success);
-  border-color: color-mix(in srgb, var(--prisma-success) 28%, transparent);
-}
-
-.badge.warn {
-  background: color-mix(in srgb, var(--prisma-warning) 14%, transparent);
-  color: var(--prisma-warning);
-  border-color: color-mix(in srgb, var(--prisma-warning) 28%, transparent);
-}
-
-.badge.danger,
-.pill-danger {
-  background: color-mix(in srgb, var(--prisma-danger) 13%, transparent);
-  color: var(--prisma-danger);
-  border-color: color-mix(in srgb, var(--prisma-danger) 28%, transparent);
-}
-
-.code {
-  color: var(--prisma-accent-gold-soft);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 13px;
-}
-
-.list-item,
-.stack-item,
-.mini-stat,
-.inline-alert,
-.action-chip,
-.flow-step,
-.mini-progress {
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  border-radius: var(--prisma-radius-lg);
-  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
-}
-
-.list-item,
-.stack-item,
-.mini-stat,
-.inline-alert,
-.action-chip,
-.flow-step,
-.mini-progress {
-  padding: 14px;
-}
-
-.footer-note,
-.mini-stat-label,
-.action-chip-meta {
-  color: var(--prisma-text-muted);
-}
-
-.stack-list.compact {
-  gap: 10px;
-}
-
-.stack-item-head,
-.compact-row,
-.action-chip-head,
-.mini-progress-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-}
-
-.mix-right,
-.pill-set {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.metric-inline {
-  font-size: 18px;
-}
-
-.inline-alert.ok,
-.tone-ok {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--prisma-success) 22%, transparent);
-}
-
-.inline-alert.warn,
-.tone-warn {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--prisma-warning) 24%, transparent);
-}
-
-.inline-alert.danger,
-.tone-danger {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--prisma-danger) 24%, transparent);
-}
-
-.chip-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.action-chip-tail {
-  padding-top: 4px;
-}
-
-.pill {
-  padding: 10px 12px;
-  color: var(--prisma-text-primary);
-  background: var(--prisma-frosted-accent-gradient);
-}
-
-.flow-step {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 12px;
-  align-items: start;
-}
-
-.flow-step-badge {
-  min-width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--prisma-radius-pill);
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  font-weight: 850;
-}
-
-.flow-step-aside {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-
-.mini-progress {
-  display: grid;
-  gap: 8px;
-}
-
-.mini-progress-track {
-  height: 10px;
-  overflow: hidden;
-  border-radius: var(--prisma-radius-pill);
-  background: color-mix(in srgb, var(--prisma-text-muted) 14%, transparent);
-}
-
-.mini-progress-fill {
-  height: 100%;
-  border-radius: var(--prisma-radius-pill);
-  background: var(--prisma-gold-gradient);
-}
-
-.mini-progress-fill.tone-warn {
-  background: var(--prisma-warning);
-}
-
-.mini-progress-fill.tone-danger {
-  background: var(--prisma-danger);
-}
-
-/* Prisma Dark Selector Component */
-.prisma-dark-selector {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  height: 52px;
-  min-height: 44px;
-  padding: 0 14px;
-  border-radius: 2px;
-  background: var(--prisma-ref-surface);
-  border: 1px solid var(--prisma-ref-border);
-  box-shadow: none;
-}
-
-.prisma-dark-selector-text {
-  color: var(--prisma-ref-text);
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.prisma-dark-selector-chevron {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  color: var(--prisma-ref-chevron);
-}
-
-/* Referencia Visual Page */
-.referencia-visual-container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--prisma-ref-bg);
-}
-
-.referencia-visual-canvas {
-  padding: 40px;
-  text-align: left;
-}
-
-.referencia-visual-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.referencia-visual-label {
-  margin: 0;
-  color: #a0a0a0;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-@media (max-width: 1100px) {
-  .hero-split,
-  .chip-grid {
-    grid-template-columns: 1fr;
+  table {
+    border-collapse: collapse;
   }
 }
 
-@media (max-width: 980px) {
-  .shell {
-    grid-template-columns: 1fr;
-  }
+@layer prisma.tokens {
+  :root {
+    --prisma-night-950: #02070d;
+    --prisma-night-900: #040c15;
+    --prisma-night-850: #071421;
+    --prisma-petroleum-800: #0a1c2d;
+    --prisma-petroleum-700: #0d263b;
+    --prisma-petroleum-600: #12334d;
+    --prisma-cyan-300: #8ce8ff;
+    --prisma-cyan-400: #62d8ff;
+    --prisma-blue-400: #6aa5ff;
+    --prisma-blue-500: #4d86f7;
+    --prisma-violet-400: #aa9cff;
+    --prisma-success-400: #63e6ad;
+    --prisma-warning-400: #ffd27d;
+    --prisma-danger-400: #ff8e9c;
+    --prisma-text-primary: #f4f9ff;
+    --prisma-text-secondary: #c4d0de;
+    --prisma-text-muted: #8ea0b4;
+    --prisma-text-faint: #6d8197;
+    --prisma-line-soft: rgba(161, 211, 255, 0.16);
+    --prisma-line-medium: rgba(161, 211, 255, 0.26);
+    --prisma-line-strong: rgba(174, 224, 255, 0.42);
+    --prisma-surface-shell: rgba(5, 17, 29, 0.60);
+    --prisma-surface-panel: rgba(8, 27, 44, 0.58);
+    --prisma-surface-rail: rgba(8, 27, 44, 0.54);
+    --prisma-surface-card: rgba(13, 37, 57, 0.42);
+    --prisma-surface-card-hover: rgba(16, 47, 72, 0.52);
+    --prisma-surface-info: rgba(15, 42, 64, 0.74);
+    --prisma-surface-control: rgba(17, 45, 67, 0.38);
+    --prisma-surface-control-hover: rgba(23, 61, 89, 0.52);
+    --prisma-surface-transient: rgba(5, 20, 34, 0.76);
+    --prisma-gradient-primary: linear-gradient(125deg, rgba(66, 151, 255, 0.92), rgba(53, 116, 232, 0.86) 54%, rgba(95, 220, 255, 0.78));
+    --prisma-gradient-panel: linear-gradient(145deg, rgba(17, 51, 77, 0.30), rgba(4, 17, 29, 0.08));
+    --prisma-focus-ring: #8ce8ff;
+    --prisma-shadow-shell: 0 28px 80px rgba(0, 5, 12, 0.34), inset 0 1px 0 rgba(214, 241, 255, 0.08);
+    --prisma-shadow-card: 0 16px 34px rgba(0, 7, 16, 0.20), inset 0 1px 0 rgba(214, 241, 255, 0.06);
+    --prisma-shadow-primary: 0 16px 40px rgba(39, 113, 238, 0.30), inset 0 1px 0 rgba(226, 247, 255, 0.32);
+    --prisma-radius-control: 16px;
+    --prisma-radius-card: 20px;
+    --prisma-radius-panel: 28px;
+    --prisma-touch-target: 48px;
+    --prisma-motion-fast: 140ms;
+    --prisma-motion-base: 220ms;
+    --prisma-z-scene: -1;
+    --prisma-z-shell: 0;
+    --prisma-z-content: 10;
+    --prisma-z-sticky: 20;
+    --prisma-z-navigation: 30;
+    --prisma-z-popover: 40;
+    --prisma-z-modal: 50;
+    --prisma-z-toast: 60;
 
-  .sidebar {
-    position: relative;
-    top: 0;
-    height: auto;
-  }
-
-  .grid.cols-4,
-  .grid.cols-2 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* PRISMA_LAYER_DISCIPLINE_PASS_01C: app globals guardrail */
-body {
-  background:
-    var(--prisma-living-noise),
-    var(--prisma-living-scene-base);
-}
-
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
-   Tablet globals: root scene delegates to shared tokens; no extra weather systems. */
-body {
-  background: var(--prisma-visual-scene-base);
-  background-size: 132% 132%;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before {
-    animation: none;
-    transform: none;
-  }
-}
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D END */
-
-/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::START */
-
-body {
-  background-attachment: fixed;
-}
-
-::selection {
-  background: rgba(232, 189, 103, 0.24);
-  color: var(--prisma-text-primary);
-}
-/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::END */
-
-/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_GLOBALS::START */
-:root {
-  --prisma-living-bg-1: #f6f9ff;
-  --prisma-living-bg-2: #eef4ff;
-  --prisma-living-bg-3: #edf6ff;
-  --prisma-living-blue: rgba(62, 122, 255, 0.18);
-  --prisma-living-cyan: rgba(63, 210, 255, 0.11);
-  --prisma-living-mint: rgba(79, 240, 182, 0.14);
-  --prisma-living-violet: rgba(123, 122, 255, 0.10);
-  --prisma-living-shadow: 0 14px 32px rgba(89, 120, 168, 0.10);
-  --prisma-living-shadow-tight: 0 8px 20px rgba(102, 132, 178, 0.10);
-  --prisma-living-border: rgba(196, 214, 240, 0.84);
-  --prisma-living-border-strong: rgba(154, 196, 244, 0.95);
-  --prisma-living-glass: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(246,250,255,0.46));
-  --prisma-living-glass-strong: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(243,248,255,0.56));
-  --prisma-living-sheen: linear-gradient(120deg, rgba(255,255,255,0.72), rgba(255,255,255,0.16) 38%, rgba(255,255,255,0) 64%);
-  --prisma-living-grid: rgba(129, 157, 195, 0.08);
-  --prisma-living-text-soft: #54657f;
-  --prisma-living-text-strong: #0f1735;
-  --prisma-living-success: #15a06b;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body {
-  position: relative;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 10% 15%, rgba(90, 150, 255, 0.18), transparent 20%),
-    radial-gradient(circle at 84% 12%, rgba(71, 224, 189, 0.12), transparent 18%),
-    radial-gradient(circle at 82% 78%, rgba(132, 162, 255, 0.10), transparent 24%),
-    linear-gradient(180deg, var(--prisma-living-bg-1) 0%, var(--prisma-living-bg-2) 45%, #eaf1fb 100%);
-  background-attachment: fixed;
-  color: var(--prisma-living-text-strong);
-  isolation: isolate;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before {
-  background:
-    radial-gradient(circle at 18% 18%, rgba(70, 130, 255, 0.20), transparent 18%),
-    radial-gradient(circle at 72% 16%, rgba(88, 247, 190, 0.16), transparent 16%),
-    radial-gradient(circle at 62% 74%, rgba(151, 145, 255, 0.10), transparent 18%),
-    radial-gradient(circle at 26% 78%, rgba(101, 206, 255, 0.12), transparent 16%);
-  filter: blur(58px);
-  opacity: 0.92;
-  animation: prisma-living-aurora 30s ease-in-out infinite alternate;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 74px,
-      rgba(129, 157, 195, 0.045) 74px 75px
-    ),
-    repeating-linear-gradient(
-      180deg,
-      transparent 0 74px,
-      rgba(129, 157, 195, 0.035) 74px 75px
-    );
-  opacity: 0.62;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.82), rgba(0,0,0,0.32));
-  animation: prisma-living-grid-drift 46s linear infinite;
-}
-
-@keyframes prisma-living-aurora {
-  0% {
-    transform: translate3d(-1.4%, -1.1%, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(1.2%, 0.8%, 0) scale(1.04);
-  }
-  100% {
-    transform: translate3d(-0.8%, 1.4%, 0) scale(1.02);
+    --prisma-v2-pearl: var(--prisma-text-primary);
+    --prisma-v2-mist: var(--prisma-text-secondary);
+    --prisma-v2-frost: var(--prisma-surface-panel);
+    --prisma-v2-silver: var(--prisma-text-muted);
+    --prisma-v2-cyan: var(--prisma-cyan-400);
+    --prisma-v2-blue: var(--prisma-blue-400);
+    --prisma-v2-lavender: var(--prisma-violet-400);
+    --prisma-v2-champagne: var(--prisma-warning-400);
+    --prisma-v2-graphite: var(--prisma-text-primary);
+    --prisma-v2-muted: var(--prisma-text-muted);
+    --prisma-v2-border: var(--prisma-line-soft);
+    --prisma-v2-border-strong: var(--prisma-line-medium);
+    --prisma-v2-focus: rgba(140, 232, 255, 0.28);
+    --prisma-v2-shadow-panel: var(--prisma-shadow-shell);
+    --prisma-v2-shadow-card: var(--prisma-shadow-card);
+    --prisma-v2-touch-target: var(--prisma-touch-target);
   }
 }
 
-@keyframes prisma-living-grid-drift {
-  0% {
-    transform: translate3d(0, 0, 0);
+@layer prisma.atmosphere {
+  html,
+  body {
+    color: var(--prisma-text-primary);
+    background: var(--prisma-night-950);
   }
-  100% {
-    transform: translate3d(14px, 10px, 0);
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
-  html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-    animation: none;
-  }
-}
-/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_GLOBALS::END */
-
-/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::GLOBALS_START */
-/*
- * 09B Debox pass.
- * Moves Tablet light surfaces away from pure black text and hard nested rectangles.
- * This is intentionally CSS-only: no TSX, no routing, no business logic.
- */
-html[data-prisma-skin="light"] {
-  --prisma-ink-strong: #233044;
-  --prisma-ink-main: #2d394d;
-  --prisma-ink-soft: #536176;
-  --prisma-ink-muted: #6b7890;
-  --prisma-blue-title: #176df2;
-  --prisma-blue-title-deep: #1059d6;
-  --prisma-blue-soft: rgba(23, 109, 242, 0.12);
-  --prisma-blue-line: rgba(132, 180, 246, 0.64);
-  --prisma-glass-open: rgba(255, 255, 255, 0.36);
-  --prisma-glass-open-strong: rgba(255, 255, 255, 0.54);
-  --prisma-glass-hairline: rgba(190, 212, 242, 0.68);
-  --prisma-glass-hairline-soft: rgba(205, 221, 244, 0.42);
-  --prisma-floating-shadow: 0 10px 24px rgba(92, 125, 172, 0.085);
-  --prisma-floating-shadow-hover: 0 14px 30px rgba(92, 125, 172, 0.13);
-  --prisma-text-primary: var(--prisma-ink-strong);
-  --prisma-text-secondary: var(--prisma-ink-soft);
-  --prisma-text-muted: var(--prisma-ink-muted);
-}
-
-html[data-prisma-skin="light"] body {
-  color: var(--prisma-ink-main);
-}
-
-html[data-prisma-skin="light"] :where(h1, h2, h3, h4, h5, h6) {
-  color: var(--prisma-ink-strong);
-}
-
-html[data-prisma-skin="light"] :where(p, small, li, dt, dd, label, input, textarea, select) {
-  color: var(--prisma-ink-soft);
-}
-
-html[data-prisma-skin="light"] ::selection {
-  color: #ffffff;
-  background: rgba(23, 109, 242, 0.72);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before {
-  opacity: 0.72;
-  filter: blur(64px) saturate(1.08);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
-  opacity: 0.38;
-}
-/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::GLOBALS_END */
-
-/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::GLOBALS_START */
-/* 09C: debox + runtime strip horizontal + estado/alertas sin caja madre + botones cobalt liquid */
-html[data-prisma-skin="light"] {
-  --prisma-ink-strong: #243247;
-  --prisma-ink-main: #2f3d52;
-  --prisma-ink-soft: #5c6b82;
-  --prisma-ink-muted: #73819a;
-
-  --prisma-title-blue: #176cf2;
-  --prisma-title-blue-deep: #0f58da;
-
-  --prisma-cobalt-hi: #72c3ff;
-  --prisma-cobalt-mid: #2f88ff;
-  --prisma-cobalt-low: #1658db;
-  --prisma-cobalt-edge: rgba(109, 178, 255, 0.82);
-  --prisma-cobalt-edge-soft: rgba(166, 207, 255, 0.72);
-  --prisma-cobalt-shadow: 0 16px 34px rgba(35, 95, 224, 0.24);
-  --prisma-cobalt-shadow-hover: 0 20px 42px rgba(35, 95, 224, 0.32);
-
-  --prisma-frost-border: rgba(188, 213, 244, 0.82);
-  --prisma-frost-border-soft: rgba(203, 221, 246, 0.56);
-  --prisma-frost-surface: linear-gradient(180deg, rgba(255,255,255,0.56), rgba(246,250,255,0.28));
-  --prisma-frost-surface-strong: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34));
-  --prisma-frost-shadow: 0 10px 22px rgba(96, 126, 171, 0.08);
-  --prisma-frost-shadow-hover: 0 14px 28px rgba(96, 126, 171, 0.12);
-}
-
-html[data-prisma-skin="light"] body {
-  color: var(--prisma-ink-main);
-}
-
-html[data-prisma-skin="light"] :where(h1, h2, h3, h4, h5, h6) {
-  color: var(--prisma-ink-strong);
-}
-
-html[data-prisma-skin="light"] :where(p, small, li, dt, dd, label, input, textarea, select) {
-  color: var(--prisma-ink-soft);
-}
-
-html[data-prisma-skin="light"] ::selection {
-  color: #ffffff;
-  background: rgba(23, 108, 242, 0.74);
-}
-/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::GLOBALS_END */
-
-/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::TOKENS_START */
-html[data-prisma-skin="light"] {
-  --prisma-ink-strong: #243247;
-  --prisma-ink-main: #2f3d52;
-  --prisma-ink-soft: #5c6b82;
-  --prisma-ink-muted: #73819a;
-  --prisma-title-blue: #176cf2;
-  --prisma-title-blue-deep: #0f58da;
-  --prisma-cobalt-hi: #72c3ff;
-  --prisma-cobalt-mid: #2f88ff;
-  --prisma-cobalt-low: #1658db;
-  --prisma-cobalt-edge: rgba(109, 178, 255, 0.82);
-}
-/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::TOKENS_END */
-
-/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_START */
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  background:
-    radial-gradient(circle at 14% 8%, rgba(255,255,255,.96), transparent 28%),
-    radial-gradient(circle at 92% 0%, rgba(210,226,248,.62), transparent 34%),
-    linear-gradient(135deg, #f7faff 0%, #eef4fb 54%, #f9fbff 100%);
-  color: var(--prisma-tablet-ink);
-}
-
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-shell],
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-panel],
-.prisma-tablet-light-shell,
-.tablet-light-shell {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,250,255,.72)),
-    radial-gradient(circle at 12% 0%, rgba(255,255,255,.88), transparent 28%);
-  border: 1px solid var(--prisma-tablet-line);
-  box-shadow: 0 14px 34px rgba(31,51,77,.10);
-  color: var(--prisma-tablet-ink);
-}
-
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-card] {
-  background: var(--prisma-tablet-card);
-  border: 1px solid var(--prisma-tablet-line);
-  box-shadow: 0 10px 24px rgba(31,51,77,.08);
-}
-
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"]) {
-  min-height: 42px;
-  touch-action: manipulation;
-}
-
-[data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, a, input, select, textarea):focus-visible {
-  outline: 3px solid var(--prisma-tablet-focus);
-  outline-offset: 2px;
-}
-
-
-.card {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.card :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.card :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.panel {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.panel :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.panel :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.shell {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.shell :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.shell :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.action-chip {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.action-chip :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.action-chip :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.action-chip-head {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.action-chip-head :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.action-chip-head :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.action-chip-meta {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.action-chip-meta :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.action-chip-meta :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.action-chip-tail {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.action-chip-tail :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.action-chip-tail :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-.active {
-  --prisma-tablet-bg-base: #f6f9fd;
-  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
-  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
-  --prisma-tablet-ink: #132033;
-  --prisma-tablet-muted: #607089;
-  --prisma-tablet-line: rgba(39,62,92,.13);
-  --prisma-tablet-card: rgba(255,255,255,.82);
-  --prisma-tablet-card-strong: rgba(255,255,255,.92);
-  --prisma-tablet-focus: rgba(41,117,209,.24);
-  color: var(--prisma-tablet-ink);
-}
-
-.active :where(section, article, aside, header, main, [data-prisma-card], [data-surface-card]) {
-  border-color: var(--prisma-tablet-line);
-}
-
-.active :where(button, a, input, select, textarea, [role="button"]) {
-  -webkit-tap-highlight-color: rgba(41,117,209,.16);
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  [data-prisma-surface="tablet"] *,
-  .prisma-tablet-light-shell *,
-  .tablet-light-shell * {
-    animation-duration: .001ms;
-    animation-iteration-count: 1;
-    transition-duration: .001ms;
-    scroll-behavior: auto;
+  body {
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-@media (hover: hover) {
-  [data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"]):hover {
-    transform: translateY(-1px);
+@layer prisma.states {
+  :where(button, a, summary, input, select, textarea, [role="button"]):focus-visible {
+    outline: 3px solid var(--prisma-focus-ring);
+    outline-offset: 3px;
+  }
+
+  :where(button, input, select, textarea):disabled,
+  [aria-disabled="true"] {
+    opacity: 0.48;
+  }
+
+  ::selection {
+    color: #02070d;
+    background: var(--prisma-cyan-300);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto;
+      animation-duration: 1ms;
+      animation-iteration-count: 1;
+      transition-duration: 1ms;
+    }
   }
 }
-/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_END */
 
-/* PRISMA_TABLET_STATIC_FUJI_ALL_START */
-:root {
-  --tablet-active-background-image: url('/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg');
-  --prisma-tablet-static-fuji-bg: var(--tablet-active-background-image);
-  --prisma-tablet-static-fuji-overlay:
-    linear-gradient(180deg, rgba(255,255,255,.78), rgba(244,250,255,.28) 38%, rgba(8,42,68,.20)),
-    radial-gradient(circle at 50% 28%, rgba(255,255,255,.18), transparent 36%);
-}
-
-html,
-body {
-  min-height: 100%;
-  background:
-    var(--prisma-tablet-static-fuji-overlay),
-    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat fixed,
-    #eaf4ff;
-}
-
-body {
-  background-attachment: fixed, fixed, scroll;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    var(--prisma-tablet-static-fuji-overlay),
-    var(--prisma-tablet-static-fuji-bg) center 45% / cover no-repeat;
-  transform: translateZ(0);
-  will-change: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before {
-    animation: none;
-    transition: none;
+@layer prisma.utilities {
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
-/* PRISMA_TABLET_STATIC_FUJI_ALL_END */
-
-/* PRISMA_TABLET_LAYERMAP_TRANSPARENT_BG_1006_2138::MODULE_START
-   Fuente: layer map + VisualQA. Clases locales detectadas: 1.
-*/
-html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"] .referencia-visual-container {
-  background: transparent;
-  background-image: none;
-  background-color: transparent;
-  box-shadow: none;
-  text-shadow: none;
-  filter: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-/* PRISMA_TABLET_LAYERMAP_TRANSPARENT_BG_1006_2138::MODULE_END */

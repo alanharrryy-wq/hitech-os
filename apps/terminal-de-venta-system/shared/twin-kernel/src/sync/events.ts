@@ -11,6 +11,7 @@ export const SHARED_SYNC_EVENTS = [
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
+  "inventory.operation.recorded",
   "catalog.product.created",
   "catalog.product.updated",
   "sync.event.sent",

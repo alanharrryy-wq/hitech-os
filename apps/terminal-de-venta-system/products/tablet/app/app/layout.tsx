@@ -1,5 +1,5 @@
 import "./globals.css";
-import "./prisma-tablet-softglass-canonical.css";
+import "./prisma-tablet-nocturne-canonical.css";
 import { headers } from "next/headers";
 import { PRISMA_TABLET_VISUAL_V2 } from "../components/tablet-visual-v2/tablet-visual-tokens";
 import visualRootStyles from "../components/tablet-visual-v2/tablet-visual-v2-root.module.css";
@@ -27,19 +27,19 @@ export default async function RootLayout({ children }: { children: any }) {
   return (
     <html
       lang="es-MX"
-      data-prisma-skin="light"
-      data-prisma-surface="tablet-softglass"
-      data-theme="prisma-light"
-      data-prisma-visual-mode="softglass-reference"
+      data-prisma-skin="dark"
+      data-prisma-surface="tablet-nocturne"
+      data-theme="prisma-nocturne"
+      data-prisma-visual-mode="nocturnal-translucent"
       data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
       data-prisma-canonical-viewport={canonicalViewport}
-      data-prisma-canonical-shell="softglass-reference-2606"
+      data-prisma-canonical-shell="nocturne-reference-1607"
       suppressHydrationWarning
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var root=document.documentElement;root.dataset.prismaSkin="light";root.dataset.theme="prisma-light";root.dataset.prismaSurface="tablet-softglass";root.dataset.prismaVisualMode="softglass-reference";root.dataset.prismaVisualV2="${PRISMA_TABLET_VISUAL_V2.dataAttribute}";root.dataset.prismaCanonicalViewport="${canonicalViewport}";root.dataset.prismaCanonicalShell="softglass-reference-2606";}catch(e){}})();`
+            __html: `(function(){try{var root=document.documentElement;root.dataset.prismaSkin="dark";root.dataset.theme="prisma-nocturne";root.dataset.prismaSurface="tablet-nocturne";root.dataset.prismaVisualMode="nocturnal-translucent";root.dataset.prismaVisualV2="${PRISMA_TABLET_VISUAL_V2.dataAttribute}";root.dataset.prismaCanonicalViewport="${canonicalViewport}";root.dataset.prismaCanonicalShell="nocturne-reference-1607";}catch(e){}})();`
           }}
         />
       </head>
@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: any }) {
         data-prisma-panel={prismaRoutePanelId(route)}
         data-prisma-surface="tablet"
         data-prisma-route={route}
-        data-prisma-softglass-canonical="true"
+        data-prisma-nocturne-canonical="true"
         data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
         data-prisma-canonical-viewport={canonicalViewport}
       >

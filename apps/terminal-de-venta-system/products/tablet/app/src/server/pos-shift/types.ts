@@ -2,4 +2,27 @@ export const SHIFT_STATUS_OPEN = "OPEN"; export const SHIFT_STATUS_CLOSED = "CLO
 export type ShiftCashSummary = { id:string; businessId:string; storeId:string; terminalId:string; cashierId:string; cashier:string; status:"OPEN"|"CLOSED"; openedAt:string; closedAt:string|null; cashStartCents:number; cashEndCents:number|null; expectedCashCents:number; varianceCents:number|null; salesCount:number; salesTotalCents:number; movementCount:number; canSell:boolean; canClose:boolean; operatorMessage:string; };
 export type OpenShiftInput = { businessId:string; terminalId:string; cashierId:string; cashier:string; cashStartCents:number; };
 export type CloseShiftInput = { businessId:string; terminalId:string; countedCashCents:number; note?:string; };
+export type ManualCashMovementKind = "CASH_IN" | "CASH_OUT";
+export type RecordCashMovementInput = {
+  businessId: string;
+  terminalId: string;
+  actorId: string;
+  clientRequestId: string;
+  movement: ManualCashMovementKind;
+  amountCents: number;
+  reason: string;
+};
+export type RecordedCashMovement = {
+  id: string;
+  cashSessionId: string;
+  movement: ManualCashMovementKind;
+  amountCents: number;
+  reason: string;
+  createdAt: string;
+  adjustmentId: string | null;
+  actorId: string;
+  clientRequestId: string;
+  deduplicated: boolean;
+};
+export type RecordCashMovementResult = { movement: RecordedCashMovement; shift: ShiftCashSummary };
 export class ShiftError extends Error { readonly code:string; readonly status:number; readonly details:Record<string,unknown>; constructor(code:string,message:string,status=400,details:Record<string,unknown>={}){super(message);this.name="ShiftError";this.code=code;this.status=status;this.details=details;} }

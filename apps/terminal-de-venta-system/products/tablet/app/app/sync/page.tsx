@@ -1,4 +1,4 @@
-import { PendingOfflineSyncPanelScreen } from "@components/sync/pending-offline-sync-panel-screen";
+import { SyncWorkspace } from "@components/sync/pending-offline-sync-panel-screen";
 
 export const dynamic = "force-dynamic";
 
@@ -8,5 +8,5 @@ export const metadata = {
 };
 
 export default function SyncPage() {
-  return <PendingOfflineSyncPanelScreen />;
+  return <SyncWorkspace />;
 }

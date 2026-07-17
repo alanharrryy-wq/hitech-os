@@ -1,83 +1,57 @@
 "use client";
 
 import { formatMoney } from "@/lib/pos/cart-state";
+import { suggestedCashTenderCents } from "@/lib/pos/payment-tender";
 import styles from "./checkout.module.css";
 
-export function CheckoutCashCalculator({ totalCents, receivedCents, onReceivedCents }: { totalCents: number; receivedCents: number; onReceivedCents: (value: number) => void }) {
-  const changeCents = Math.max(0, receivedCents - totalCents);
+export function CheckoutCashCalculator({
+  targetCents,
+  receivedCents,
+  changeCents,
+  onReceivedCents,
+  disabled = false
+}: {
+  targetCents: number;
+  receivedCents: number;
+  changeCents: number;
+  onReceivedCents: (value: number) => void;
+  disabled?: boolean;
+}) {
+  const suggestions = suggestedCashTenderCents(Math.max(0, targetCents)).slice(0, 4);
+  const calculatedChangeCents = Math.max(0, changeCents);
+
   return (
-    <section className={styles.cashBox} aria-label="Cálculo de efectivo"
-      data-surface="tablet"
-      data-screen="checkout"
-      data-zone="checkout"
-      data-panel="checkout-cash-calculator"
-      data-target="checkout-cash-calculator-c-lculo-de-efectivo-9"
-      data-kind="price"
-      data-role="financial-control"
-    >
-      <label
-        data-surface="tablet"
-        data-screen="checkout"
-        data-zone="checkout"
-        data-panel="checkout-cash-calculator"
-        data-target="checkout-cash-calculator-price-10"
-        data-kind="price"
-        data-role="financial-control"
-      >
-        <span
-          data-surface="tablet"
-          data-screen="checkout"
-          data-zone="checkout"
-          data-panel="checkout-cash-calculator"
-          data-target="checkout-cash-calculator-price-11"
-          data-kind="price"
-          data-role="financial-control"
-        >Recibido en efectivo</span>
-        <input
-          inputMode="decimal"
-          type="number"
-          min="0"
-          step="0.01"
-          value={receivedCents ? String(receivedCents / 100) : ""}
-          data-surface="tablet"
-          data-screen="checkout"
-          data-zone="checkout"
-          data-panel="checkout-cash-calculator"
-          data-target="checkout-cash-calculator-price-12"
-          data-kind="price"
-          data-role="financial-control"
-            onChange={(event) => onReceivedCents(Math.round(Number(event.target.value || 0) * 100))}
+    <div className={styles.cashCapture}>
+      <label className={styles.field} htmlFor="checkout-cash-amount">
+        <span>Importe recibido</span>
+        <span className={styles.moneyInput}>
+          <i aria-hidden="true">$</i>
+          <input
+            id="checkout-cash-amount"
+            inputMode="decimal"
+            type="number"
+            min="0"
+            step="0.01"
+            value={receivedCents ? String(receivedCents / 100) : ""}
+            onChange={(event) => onReceivedCents(Math.max(0, Math.round(Number(event.target.value || 0) * 100)))}
             placeholder="0.00"
-        />
+            disabled={disabled}
+            aria-describedby="checkout-cash-help"
+          />
+        </span>
       </label>
-      <div
-        data-surface="tablet"
-        data-screen="checkout"
-        data-zone="checkout"
-        data-panel="checkout-cash-calculator"
-        data-target="checkout-cash-calculator-price-22"
-        data-kind="price"
-        data-role="financial-control"
-      >
-        <span
-          data-surface="tablet"
-          data-screen="checkout"
-          data-zone="checkout"
-          data-panel="checkout-cash-calculator"
-          data-target="checkout-cash-calculator-price-23"
-          data-kind="price"
-          data-role="financial-control"
-        >Cambio</span>
-        <strong
-          data-surface="tablet"
-          data-screen="checkout"
-          data-zone="checkout"
-          data-panel="checkout-cash-calculator"
-          data-target="checkout-cash-calculator-price-24"
-          data-kind="price"
-          data-role="financial-control"
-        >{formatMoney(changeCents)}</strong>
+      <div className={styles.quickCash} aria-label="Denominaciones rápidas">
+        {suggestions.map((value) => (
+          <button key={value} type="button" onClick={() => onReceivedCents(value)} disabled={disabled}>
+            {value === targetCents ? "Exacto" : formatMoney(value)}
+          </button>
+        ))}
       </div>
-    </section>
+      <small id="checkout-cash-help" className={styles.fieldHelp}>Selecciona una cantidad o captura el efectivo entregado.</small>
+      <div className={styles.cashOutcome} data-tone={calculatedChangeCents > 0 ? "change" : "neutral"} aria-live="polite">
+        <span>Cambio calculado</span>
+        <strong>{formatMoney(calculatedChangeCents)}</strong>
+      </div>
+    </div>
   );
 }

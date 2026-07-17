@@ -965,7 +965,7 @@ export function OutboxEventsScreen() {
   );
 }
 
-export function ExportSettingsScreen() {
+export function ExportSettingsScreen({ embedded = false }: { embedded?: boolean } = {}) {
   const [status, setStatus] = useState<string | null>(null);
   const endpoints: Array<{ label: string; description: string; href: string; icon: PrismaIconName; tone: QuickActionTone; owner: string }> = [
     { label: "Ventas CSV", description: "Tickets cerrados de hoy en formato hoja de cálculo.", href: "/api/pos/export/sales-today?format=csv", icon: "receipt", tone: "primary", owner: "sales" },
@@ -976,8 +976,8 @@ export function ExportSettingsScreen() {
     { label: "Movimientos JSON", description: "Movimientos de inventario estructurados.", href: "/api/pos/export/inventory-movements?format=json", icon: "package", tone: "success", owner: "stock" }
   ];
 
-  return (
-    <AppChrome currentPath="/settings/export" title="Exportaciones locales" subtitle="Salidas operativas desde la base local de Tablet." status={<RuntimeStatus state={status ? "success" : "ready"} />}>
+  const content = (
+    <>
       <ExportPanel>
         {endpoints.map((endpoint) => (
           <ExportButton key={endpoint.href} {...endpoint} onDone={setStatus} />
@@ -986,6 +986,13 @@ export function ExportSettingsScreen() {
         <QuickActionTile title="Turno y caja" description="No hay endpoint confirmado de corte directo en esta pantalla." icon="wallet" tone="neutral" deferredReason="Pendiente: exportación de turno requiere dueño confirmado." owner="shift" kind="deferred-create" />
       </ExportPanel>
       {status ? <div className={styles.successLine}>{status}</div> : null}
+    </>
+  );
+
+  if (embedded) return content;
+  return (
+    <AppChrome currentPath="/settings/export" title="Exportaciones locales" subtitle="Salidas operativas desde la base local de Tablet." status={<RuntimeStatus state={status ? "success" : "ready"} />}>
+      {content}
     </AppChrome>
   );
 }

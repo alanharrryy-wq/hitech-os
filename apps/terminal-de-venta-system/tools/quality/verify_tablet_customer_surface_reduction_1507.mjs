@@ -10,7 +10,6 @@ const RETIRED_ROUTE_DIRS = [
   "referencia-visual",
   "release-gate",
   "screen-standard-preview",
-  "tablet-lab",
   "visual-os"
 ];
 
@@ -86,6 +85,13 @@ for (const rel of RETIRED_ROUTE_DIRS) {
   check(`retired route directory absent: /${rel}`, !fs.existsSync(target), target);
 }
 
+// TABLET_LAB_LOCAL_GATE_1607: source is restored for localhost development, while middleware
+// and navigation contracts keep it unavailable to customers.
+const tabletLabPage = path.join(appRoot, "tablet-lab", "page.tsx");
+const tabletLabMarker = path.join(appRoot, "tablet-lab", ".prisma-internal-lab.json");
+check("internal Tablet Lab source restored", fs.existsSync(tabletLabPage) && fs.statSync(tabletLabPage).isFile(), tabletLabPage);
+check("internal Tablet Lab marker present", fs.existsSync(tabletLabMarker) && fs.statSync(tabletLabMarker).isFile(), tabletLabMarker);
+
 for (const rel of REQUIRED_CUSTOMER_PAGES) {
   const target = path.join(appRoot, ...rel.split("/"));
   check(`customer page preserved: ${rel}`, fs.existsSync(target) && fs.statSync(target).isFile(), target);
@@ -125,6 +131,9 @@ check("outbox removed from shell active aliases", !nav.includes('normalizedPath 
 
 const middlewareSource = read(middlewarePath);
 check("middleware returns 404", middlewareSource.includes("status: 404"), middlewarePath);
+check("Tablet Lab local gate marker present", middlewareSource.includes("TABLET_LAB_LOCAL_GATE_1607"), middlewarePath);
+check("Tablet Lab blocked in production", middlewareSource.includes('process.env.NODE_ENV === "production"'), middlewarePath);
+check("Tablet Lab restricted to localhost", middlewareSource.includes('"localhost"') && middlewareSource.includes('"127.0.0.1"'), middlewarePath);
 for (const prefix of ["/events/outbox", "/prisma-pulse", "/tablet-lab", "/visual-os"]) {
   check(`middleware guards ${prefix}`, middlewareSource.includes(`"${prefix}"`), middlewarePath);
 }

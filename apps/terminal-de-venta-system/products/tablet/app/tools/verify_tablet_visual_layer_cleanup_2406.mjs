@@ -144,7 +144,7 @@ function routeImports(pageText, pageFile) {
 
 function routeIssues(record) {
   const issues = [];
-  if (record.routeType === "technical-redirect") return issues;
+  if (record.routeType !== "visible") return issues;
   if (record.shellsPresent.length !== 1) issues.push("expected exactly one visible Tablet shell");
   if (record.legacyShellsPresent.length > 0) issues.push("legacy shell is mounted inside the visible route");
   if (record.pageV2Wrappers.length > 0 && record.childShellSources.length > 0) issues.push("page V2 wrapper surrounds an owner shell");
@@ -164,6 +164,7 @@ function classifyRoute(file) {
   const pageFile = rel(file);
   const pageText = readAbsolute(file);
   const isRedirectOnly = /\bredirect\(/.test(pageText) && !/<[A-Z][A-Za-z0-9_]*\b/.test(pageText);
+  const isInternalLab = route === "/tablet-lab";
   const imports = routeImports(pageText, file);
   const ownerFiles = [...new Map(imports.map((item) => [rel(item.file), item])).values()];
   const ownerTexts = ownerFiles.map((item) => ({ ...item, text: readAbsolute(item.file) }));
@@ -196,7 +197,7 @@ function classifyRoute(file) {
     : usesPosScreen
       ? "PosScreen"
       : ownerShells[0]?.localName ?? (pageShell ? "page.tsx" : ownerFiles[0]?.localName ?? "unknown");
-  const routeType = isRedirectOnly ? "technical-redirect" : "visible";
+  const routeType = isRedirectOnly ? "technical-redirect" : isInternalLab ? "internal-lab" : "visible";
   const pageSurfaceCount = pageV2Wrappers.length > 0 ? 1 : 0;
   const ownerSurfaceCount = ownerShells.length > 0 && pageV2Wrappers.length === 0 ? 1 : 0;
   const posSurfaceMain = usesPosScreen && posSurfaceCount > 0 && pageV2Wrappers.length === 0 && ownerV2Wrappers.length === 0;
@@ -231,8 +232,10 @@ function classifyRoute(file) {
   record.status = issues.length === 0 ? "saneada" : "requires-cleanup";
   record.actionRequired = issues.length > 0
     ? issues.join("; ")
-    : routeType === "technical-redirect"
-      ? "technical redirect kept; no visible Tablet shell"
+    : routeType !== "visible"
+      ? routeType === "internal-lab"
+        ? "internal development lab excluded from the customer Tablet surface contract"
+        : "technical redirect kept; no visible Tablet shell"
       : posSurfaceMain
         ? "saneada: PosTerminalSurface owns the visible POS surface; shell bottom dock disabled"
         : pageV2Wrappers.length > 0
@@ -297,7 +300,8 @@ const report = {
   summary: {
     routeCount: routeCoverage.length,
     visibleRouteCount: visibleRoutes.length,
-    technicalRedirectCount: routeCoverage.length - visibleRoutes.length,
+    technicalRedirectCount: routeCoverage.filter((route) => route.routeType === "technical-redirect").length,
+    internalLabCount: routeCoverage.filter((route) => route.routeType === "internal-lab").length,
     saneadaCount: visibleRoutes.filter((route) => route.status === "saneada").length,
     failingRouteCount: failingRoutes.length
   },

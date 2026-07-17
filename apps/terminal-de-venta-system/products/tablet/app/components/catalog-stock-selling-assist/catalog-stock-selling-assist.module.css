@@ -1,993 +1,250 @@
-.screen {
-  display: grid;
-  gap: 18px;
-}
-
-.onlineStrip,
-.offlineStrip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid var(--prisma-border-soft);
-  padding: 10px 14px;
-  font-weight: 850;
-  color: var(--prisma-text-secondary);
-  background: var(--prisma-glass-gradient);
-  box-shadow: var(--prisma-shadow-glass);
-}
-
-.onlineStrip svg,
-.offlineStrip svg {
-  flex: 0 0 auto;
-}
-
-.onlineStrip {
-  color: var(--prisma-success);
-  border-color: color-mix(in srgb, var(--prisma-success) 30%, transparent);
-  background: color-mix(in srgb, var(--prisma-success) 10%, transparent);
-}
-
-.offlineStrip {
-  color: var(--prisma-warning);
-  border-color: color-mix(in srgb, var(--prisma-warning) 32%, transparent);
-  background: color-mix(in srgb, var(--prisma-warning) 11%, transparent);
-}
-
-.heroCard,
-.mainPanel,
-.detailPanel,
-.metricCard {
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-xl);
-  background:
-    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--prisma-accent-gold) 13%, transparent), transparent 34%),
-    var(--prisma-panel-gradient);
-  box-shadow: var(--prisma-shadow-glass);
-  backdrop-filter: blur(24px);
-}
-
-[data-theme="prisma-light"] .heroCard,
-[data-theme="prisma-light"] .mainPanel,
-[data-theme="prisma-light"] .detailPanel,
-[data-theme="prisma-light"] .metricCard,
-[data-theme="prisma-light"] .onlineStrip,
-[data-theme="prisma-light"] .offlineStrip {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 252, 254, 0.76)),
-    var(--prisma-frosted-accent-gradient);
-}
-
-.heroCard {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-  padding: 22px;
-  overflow: hidden;
-  position: relative;
-}
-
-.heroCard::after {
-  content: "";
-  position: absolute;
-  inset: auto -80px -120px auto;
-  width: 260px;
-  height: 260px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--prisma-accent-cool) 28%, transparent);
-  filter: blur(46px);
-  opacity: 0.48;
-  pointer-events: none;
-}
-
-.kicker,
-.detailKicker {
-  display: block;
-  color: var(--prisma-accent-gold);
-  font-size: 0.76rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.heroCard h1,
-.detailPanel h2 {
-  color: var(--prisma-text-primary);
-  margin: 5px 0 8px;
-  letter-spacing: -0.03em;
-}
-
-.heroCard h1 {
-  font-size: clamp(1.5rem, 2vw, 2.35rem);
-}
-
-.heroCard p,
-.detailPanel p,
-.statePanel span,
-.productTextBlock small,
-.metricCard small,
-.filterButton span,
-.filterActive span {
-  color: var(--prisma-text-secondary);
-}
-
-.cartChip {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  min-width: 210px;
-  gap: 8px;
-  justify-items: end;
-  color: var(--prisma-text-primary);
-  font-weight: 900;
-}
-
-.cartChip a {
-  color: var(--prisma-accent-gold);
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--prisma-accent-gold) 45%, transparent);
-}
-
-.metricGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.metricCard {
-  display: grid;
-  gap: 5px;
-  padding: 16px;
-  min-height: 126px;
-}
-
-.metricCard span {
-  color: var(--prisma-text-secondary);
-  font-weight: 850;
-}
-
-.metricCard strong {
-  color: var(--prisma-text-primary);
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.metricOk {
-  border-color: color-mix(in srgb, var(--prisma-success) 24%, var(--prisma-border-soft));
-}
-
-.metricWarn {
-  border-color: color-mix(in srgb, var(--prisma-warning) 30%, var(--prisma-border-soft));
-}
-
-.metricDanger {
-  border-color: color-mix(in srgb, var(--prisma-danger) 30%, var(--prisma-border-soft));
-}
-
-.metricNeutral {
-  border-color: var(--prisma-border-soft);
-}
-
-.workspace {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
-  gap: 18px;
-  align-items: start;
-}
-
-.mainPanel {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.searchPanel {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) auto;
-  gap: 14px;
-  padding: 18px;
-  border-bottom: 1px solid var(--prisma-border-soft);
-}
-
-.searchPanel label {
-  display: grid;
-  gap: 8px;
-  color: var(--prisma-text-primary);
-  font-weight: 900;
-}
-
-.searchInputWrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 50px;
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-lg);
-  background: var(--prisma-glass-gradient);
-  padding: 0 14px;
-}
-
-.searchInputWrap input {
-  width: 100%;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--prisma-text-primary);
-  font-size: 1rem;
-}
-
-.searchInputWrap input::placeholder {
-  color: var(--prisma-text-muted);
-}
-
-.searchActions,
-.detailActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.primaryAction,
-.secondaryAction,
-.ghostAction,
-.exportMenu summary,
-.exportMenuBody a,
-.rowAddButton,
-.filterButton,
-.filterActive,
-.productMainButton {
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-md);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.primaryAction {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 0 16px;
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  border-color: var(--prisma-border-gold);
-  box-shadow: var(--prisma-shadow-gold);
-  text-decoration: none;
-}
-
-.secondaryAction,
-.ghostAction {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 14px;
-  text-decoration: none;
-}
-
-.secondaryAction {
-  color: var(--prisma-accent-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 13%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-accent-gold) 25%, transparent);
-}
-
-.ghostAction {
-  color: var(--prisma-text-secondary);
-  background: transparent;
-}
-
-.exportMenu {
-  position: relative;
-}
-
-.exportMenu summary {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 14px;
-  color: var(--prisma-text-secondary);
-  background: transparent;
-  list-style: none;
-}
-
-.exportMenu summary::-webkit-details-marker {
-  display: none;
-}
-
-.exportMenuBody {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  z-index: 12;
-  min-width: 190px;
-  display: grid;
-  gap: 6px;
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-lg);
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: var(--prisma-shadow-glass);
-}
-
-.exportMenuBody a {
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  color: var(--prisma-text-primary);
-  background: var(--prisma-glass-gradient);
-  text-decoration: none;
-}
-
-.primaryAction:disabled,
-.secondaryAction:disabled,
-.ghostAction:disabled,
-.rowAddButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.52;
-  box-shadow: none;
-}
-
-.filterRail {
-  display: flex;
-  gap: 10px;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--prisma-border-soft);
-  overflow-x: auto;
-}
-
-.filterButton,
-.filterActive {
-  min-width: 150px;
-  display: grid;
-  gap: 4px;
-  text-align: left;
-  padding: 12px;
-}
-
-.filterButton {
-  color: var(--prisma-text-primary);
-  background: var(--prisma-glass-gradient);
-}
-
-.filterActive {
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  border-color: var(--prisma-border-gold);
-}
-
-.filterActive span {
-  color: color-mix(in srgb, var(--prisma-text-on-gold) 78%, transparent);
-}
-
-.errorBox,
-.blockedMessage,
-.cartNotice {
-  margin: 14px 18px 0;
-  border-radius: var(--prisma-radius-md);
-  padding: 12px 14px;
-  font-weight: 850;
-}
-
-.errorBox,
-.blockedMessage {
-  color: var(--prisma-danger);
-  background: color-mix(in srgb, var(--prisma-danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-danger) 26%, transparent);
-}
-
-.cartNotice {
-  color: var(--prisma-success);
-  background: color-mix(in srgb, var(--prisma-success) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-success) 26%, transparent);
-}
-
-.productList {
-  display: grid;
-  gap: 10px;
-  padding: 18px;
-}
-
-.productRow {
-  display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(92px, auto) minmax(84px, auto) minmax(102px, auto) minmax(118px, auto);
-  gap: 10px;
-  align-items: center;
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-lg);
-  background: var(--prisma-glass-gradient);
-  padding: 10px;
-}
-
-.productRowSelected {
-  border-color: var(--prisma-border-gold);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent);
-}
-
-.productMainButton {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  text-align: left;
-  color: var(--prisma-text-primary);
-  background: transparent;
-  border: 0;
-  padding: 0;
-}
-
-.productGlyph {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 18px;
-  color: var(--prisma-text-primary);
-  font-weight: 950;
-  letter-spacing: 0.04em;
-  background: color-mix(in srgb, var(--prisma-text-muted) 16%, transparent);
-}
-
-.productTextBlock {
-  display: grid;
-  gap: 3px;
-}
-
-.productTextBlock strong {
-  color: var(--prisma-text-primary);
-}
-
-.priceCell,
-.stockCell {
-  color: var(--prisma-text-primary);
-  font-weight: 950;
-}
-
-.stockCell {
-  text-align: right;
-}
-
-.statusBadge {
-  display: inline-flex;
-  justify-content: center;
-  border-radius: var(--prisma-radius-pill);
-  padding: 7px 10px;
-  font-size: 0.78rem;
-  font-weight: 950;
-  white-space: nowrap;
-}
-
-.toneOk {
-  color: var(--prisma-success);
-  background: color-mix(in srgb, var(--prisma-success) 13%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-success) 28%, transparent);
-}
-
-.toneWarn {
-  color: var(--prisma-warning);
-  background: color-mix(in srgb, var(--prisma-warning) 13%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-warning) 30%, transparent);
-}
-
-.toneDanger {
-  color: var(--prisma-danger);
-  background: color-mix(in srgb, var(--prisma-danger) 13%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-danger) 30%, transparent);
-}
-
-.toneNeutral {
-  color: var(--prisma-text-secondary);
-  background: color-mix(in srgb, var(--prisma-text-muted) 13%, transparent);
-}
-
-.rowAddButton {
-  min-height: 40px;
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: center;
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  border-color: var(--prisma-border-gold);
-}
-
-.detailPanel {
-  position: sticky;
-  top: 18px;
-  padding: 18px;
-  display: grid;
-  gap: 14px;
-}
-
-.detailHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-}
-
-.detailGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0;
-}
-
-.detailGrid div {
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-md);
-  padding: 10px;
-  background: var(--prisma-glass-gradient);
-}
-
-.detailGrid dt {
-  color: var(--prisma-text-muted);
-  font-size: 0.76rem;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.detailGrid dd {
-  margin: 4px 0 0;
-  color: var(--prisma-text-primary);
-  font-weight: 950;
-}
-
-.detailEmpty,
-.statePanel {
-  min-height: 220px;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 8px;
-  text-align: center;
-  color: var(--prisma-text-primary);
-}
-
-.statePanel {
-  border: 1px dashed var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-lg);
-  background: color-mix(in srgb, var(--prisma-text-muted) 8%, transparent);
-}
-
-@media (max-width: 1180px) {
-  .workspace,
-  .searchPanel {
-    grid-template-columns: 1fr;
-  }
-
-  .detailPanel {
-    position: static;
-  }
-
-  .metricGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 760px) {
-  .heroCard,
-  .productRow {
-    grid-template-columns: 1fr;
+@layer prisma.routes {
+  .screen {
+    min-width: 0;
+    display: grid;
+    gap: 14px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
   .heroCard {
+    padding: 4px 2px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .kicker,
+  .detailKicker {
+    color: var(--prisma-cyan-300);
+    font-size: 0.72rem;
+    font-weight: 820;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .heroCard h2,
+  .detailHeader h3 {
+    margin: 4px 0 0;
+    color: var(--prisma-text-primary);
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-weight: 620;
+  }
+
+  .workspace {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 0.34fr);
+    gap: 14px;
     align-items: start;
   }
 
-  .cartChip {
-    justify-items: start;
+  .mainPanel,
+  .detailPanel {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
   }
 
-  .metricGrid,
-  .detailGrid {
-    grid-template-columns: 1fr;
+  .detailPanel {
+    position: sticky;
+    top: 96px;
+    background: var(--prisma-surface-rail);
   }
 
+  .searchPanel,
   .searchActions,
-  .detailActions {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
+  .detailHeader,
+  .detailActions,
   .exportMenuBody {
-    position: static;
-    margin-top: 8px;
-  }
-}
-
-/* PRISMA_LIGHT_STOCK_TACTILE_POLISH_00R */
-@keyframes prismaStockSkeletonSweep {
-  from { transform: translateX(-110%); }
-  to { transform: translateX(110%); }
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid div,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap {
-  transition:
-    transform var(--prisma-motion-base) var(--prisma-ease-premium),
-    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
-    border-color var(--prisma-motion-fast) ease,
-    background var(--prisma-motion-base) ease,
-    opacity var(--prisma-motion-fast) ease;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid div:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip:hover {
-  transform: translateY(-2px);
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:hover {
-  transform: translateY(-1px);
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: var(--prisma-light-shadow-card);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productMainButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap:focus-within {
-  outline: none;
-  border-color: var(--prisma-action-primary);
-  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton:disabled {
-  color: var(--prisma-disabled-text);
-  background: var(--prisma-disabled-surface);
-  border-color: var(--prisma-border-soft);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
-  position: relative;
-  overflow: hidden;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--prisma-skeleton-surface);
-  opacity: 0.25;
-  transform: translateX(-110%);
-  animation: prismaStockSkeletonSweep 1.2s var(--prisma-ease-premium) infinite;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid div,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInputWrap,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
-    animation: none;
-    transition: none;
-    transform: none;
-  }
-}
-
-/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_START */
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .screen {
-  gap: 10px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .onlineStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .offlineStrip {
-  border-color: rgba(217, 235, 252, 0.58);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.52), rgba(224, 242, 255, 0.24));
-  box-shadow:
-    0 12px 28px rgba(31, 65, 105, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.74);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard {
-  padding: 14px;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, auto);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricGrid {
-  gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard {
-  min-height: 84px;
-  padding: 10px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace {
-  gap: 10px;
-  grid-template-columns: minmax(0, 1fr) minmax(286px, 350px);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel {
-  padding: 10px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchPanel {
-  gap: 8px;
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterRail {
-  gap: 7px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterActive {
-  min-width: 132px;
-  min-height: 42px;
-  padding: 8px 10px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow {
-  grid-template-columns: minmax(170px, 1fr) minmax(68px, auto) minmax(64px, auto) minmax(88px, auto) minmax(92px, auto);
-  gap: 7px;
-  padding: 7px;
-  border-color: rgba(217, 235, 252, 0.52);
-  background: rgba(255, 255, 255, 0.58);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailGrid {
-  gap: 7px;
-}
-
-@media (max-width: 1180px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchPanel {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 760px) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow {
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
   }
 
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .rowAddButton {
-    grid-column: 1 / -1;
-  }
-}
-/* PRISMA_TABLET_ADAPTIVE_VISUAL_CLEANUP_0605::CATALOG_STOCK_END */
-
-/* PRISMA_TABLET_PREMIUM_VISUAL_1006::START
-   Screen modules final: Operational Card, Liquid Panel, Glass Pill, Action Button.
-*/
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .screen,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace {
-  gap: 12px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .blockedCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .gateBanner,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .identityStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .evidenceDisclosure,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .refreshPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featurePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogPull,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alert,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .operatorNotice,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warning {
-  border: 1px solid var(--prisma-tablet-border);
-  background: var(--prisma-tablet-liquid-panel);
-  box-shadow: var(--prisma-tablet-shadow-panel);
-  backdrop-filter: blur(var(--prisma-tablet-blur-panel)) saturate(1.14);
-  -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-panel)) saturate(1.14);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metric,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpiCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featureItem,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryTile,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
-  border: 1px solid var(--prisma-tablet-border);
-  background: var(--prisma-tablet-glass-card);
-  box-shadow: var(--prisma-tablet-shadow-card);
-  backdrop-filter: blur(var(--prisma-tablet-blur-card)) saturate(1.08);
-  -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-card)) saturate(1.08);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton {
-  border-color: rgba(93, 169, 255, 0.72);
-  background: var(--prisma-tablet-action);
-  box-shadow: 0 14px 28px rgba(31, 110, 255, 0.24), inset 0 1px 0 rgba(255,255,255,0.44);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featurePill,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statusBadge,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readonlyPill,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warningBadge {
-  border-color: var(--prisma-tablet-border);
-  background: var(--prisma-tablet-glass-pill);
-  box-shadow: var(--prisma-tablet-shadow-card);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ok,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_ok,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricOk,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneOk {
-  background: var(--prisma-tablet-success-soft);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_warn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricWarn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneWarn {
-  background: var(--prisma-tablet-warning-soft);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .danger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_danger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricDanger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneDanger {
-  background: var(--prisma-tablet-danger-soft);
-}
-/* PRISMA_TABLET_PREMIUM_VISUAL_1006::END */
-
-/* TABLET_MAMASTROPHIC_STOCK_SEARCH_COLLAPSE_0207 */
-.searchPanel {
-  transition: grid-template-columns 170ms ease, padding 170ms ease, background 170ms ease;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] {
-  grid-template-columns: minmax(190px, 340px) auto;
-  align-items: center;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] label {
-  gap: 0;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] label > span {
-  width: 1px;
-  height: 1px;
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] .searchInputWrap {
-  min-height: 46px;
-  border-radius: 999px;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] .searchActions {
-  max-width: 132px;
-  overflow: hidden;
-  justify-content: flex-end;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] .searchActions > :not(:first-child) {
-  width: 1px;
-  min-width: 0;
-  max-width: 0;
-  padding-inline: 0;
-  border-width: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.searchPanel[data-prisma-search-expanded="false"] .primaryAction {
-  min-height: 44px;
-  padding-inline: 14px;
-  border-radius: 999px;
-}
-
-.searchPanel[data-prisma-search-expanded="true"] {
-  grid-template-columns: minmax(240px, 1fr) auto;
-}
-
-@media (max-width: 760px) {
-  .searchPanel[data-prisma-search-expanded="false"],
-  .searchPanel[data-prisma-search-expanded="true"] {
-    grid-template-columns: 1fr;
+  .searchInputWrap {
+    min-width: min(100%, 280px);
+    min-height: var(--prisma-touch-target);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    flex: 1 1 280px;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
   }
 
-  .searchPanel[data-prisma-search-expanded="false"] .searchActions {
-    max-width: 100%;
-    justify-content: flex-start;
+  .searchInputWrap input { min-width: 0; flex: 1; color: var(--prisma-text-primary); background: transparent; border: 0; outline: 0; }
+
+  .primaryAction,
+  .secondaryAction,
+  .ghostAction,
+  .rowAddButton,
+  .productMainButton,
+  .filterButton,
+  .filterActive,
+  .cartChip,
+  .exportMenu summary {
+    min-height: var(--prisma-touch-target);
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .primaryAction,
+  .rowAddButton,
+  .productMainButton {
+    color: #f8fcff;
+    background: var(--prisma-gradient-primary);
+    border-color: rgba(187, 231, 255, 0.44);
+    box-shadow: var(--prisma-shadow-primary);
+  }
+
+  .filterActive { color: var(--prisma-cyan-300); border-color: var(--prisma-line-strong); }
+  .filterRail { display: flex; gap: 7px; overflow-x: auto; }
+
+  .metricGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .metricCard,
+  .statePanel,
+  .errorBox,
+  .cartNotice,
+  .blockedMessage,
+  .detailEmpty {
+    min-width: 0;
+    min-height: 76px;
+    padding: 13px;
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+  }
+
+  .metricOk,
+  .toneOk { border-color: rgba(99, 230, 173, 0.28); }
+  .metricWarn,
+  .toneWarn { border-color: rgba(255, 210, 125, 0.30); }
+  .metricDanger,
+  .toneDanger,
+  .errorBox { border-color: rgba(255, 142, 156, 0.30); }
+  .metricNeutral,
+  .toneNeutral { border-color: var(--prisma-line-soft); }
+
+  .onlineStrip,
+  .offlineStrip {
+    min-height: 44px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-info);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: 14px;
+  }
+
+  .onlineStrip { color: var(--prisma-success-400); }
+  .offlineStrip { color: var(--prisma-warning-400); }
+
+  .productList {
+    display: grid;
+    gap: 7px;
+  }
+
+  .productRow,
+  .productRowSelected {
+    min-width: 0;
+    min-height: 64px;
+    padding: 9px 10px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    gap: 10px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid transparent;
+    border-radius: 16px;
+  }
+
+  .productRowSelected { border-color: var(--prisma-line-strong); background: var(--prisma-surface-card-hover); }
+  .productGlyph { width: 42px; height: 42px; display: grid; place-items: center; color: var(--prisma-cyan-300); background: var(--prisma-surface-control); border-radius: 13px; }
+  .productTextBlock { min-width: 0; display: grid; gap: 3px; }
+  .priceCell { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; }
+  .stockCell { color: var(--prisma-text-muted); }
+  .statusBadge { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); }
+  .detailGrid { display: grid; gap: 10px; }
+  .exportMenu { position: relative; }
+  .exportMenuBody { margin-top: 8px; }
+
+  .operationsSurface {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-panel);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+  }
+
+  .operationsHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .operationsHeader > div { display: grid; gap: 4px; }
+  .operationsHeader small { color: var(--prisma-text-muted); }
+  .operationsGrid,
+  .operationForm { min-width: 0; display: grid; gap: 10px; }
+  .operationsTabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .operationForm { grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; }
+  .operationField { min-width: 0; display: grid; gap: 6px; }
+  .operationField :where(input, select) { width: 100%; min-width: 0; min-height: var(--prisma-touch-target); padding: 9px 11px; color: var(--prisma-text-primary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); }
+  .operationStatus { min-height: 44px; padding: 10px 12px; display: flex; align-items: center; color: var(--prisma-success-400); background: var(--prisma-surface-info); border: 1px solid rgba(99, 230, 173, 0.28); border-radius: var(--prisma-radius-control); }
+  .operationStatus[data-state="error"] { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+
+  @media (max-width: 980px) {
+    .workspace { grid-template-columns: 1fr; }
+    .detailPanel { position: relative; top: auto; }
+    .operationForm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 680px) {
+    .metricGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .productRow,
+    .productRowSelected { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .stockCell,
+    .priceCell { grid-column: 2; }
+    .operationForm { grid-template-columns: 1fr; }
   }
 }

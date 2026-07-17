@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
@@ -13,6 +12,8 @@ import styles from "./shift-cash-closure.module.css";
 type ApiCurrent = { shift: ShiftCashSummary | null };
 type ApiShift = { shift: ShiftCashSummary };
 type UiState = "idle" | "loading" | "ready" | "error" | "success";
+type ShiftWorkspaceMode = "overview" | "open" | "movement" | "close";
+type CashMovementKind = "CASH_IN" | "CASH_OUT";
 
 const DEFAULT_CASHIER = "Cajero principal";
 
@@ -54,7 +55,7 @@ function snapshotWithShift(runtimeSnapshot: TabletRuntimeSnapshot, shift: ShiftC
   };
 }
 
-export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
+export function ShiftWorkspace({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
   const [shift, setShift] = useState<ShiftCashSummary | null>(null);
   const [state, setState] = useState<UiState>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -62,6 +63,11 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
   const [cashStart, setCashStart] = useState("500.00");
   const [cashCounted, setCashCounted] = useState("");
   const [closeNote, setCloseNote] = useState("");
+  const [movementKind, setMovementKind] = useState<CashMovementKind>("CASH_IN");
+  const [movementAmount, setMovementAmount] = useState("");
+  const [movementReason, setMovementReason] = useState("");
+  const [workspaceMode, setWorkspaceMode] = useState<ShiftWorkspaceMode>("overview");
+  const movementRequestIdRef = useRef<string | null>(null);
 
   async function loadCurrentShift() {
     setState("loading");
@@ -91,6 +97,7 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
       setShift(response.data.shift);
       setCashCounted("");
       setState("success");
+      setWorkspaceMode("overview");
     } catch (caught) {
       setError(readError(caught));
       setState("error");
@@ -107,6 +114,38 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
       });
       setShift(response.data.shift);
       setState("success");
+      setWorkspaceMode("overview");
+    } catch (caught) {
+      setError(readError(caught));
+      setState("error");
+    }
+  }
+
+  async function recordCashMovement() {
+    if (!shift) return;
+    setState("loading");
+    setError(null);
+    try {
+      const clientRequestId = movementRequestIdRef.current ?? (typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `cash_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+      movementRequestIdRef.current = clientRequestId;
+      const response = await requestJson<ApiShift>("/api/pos/cash/movements", {
+        method: "POST",
+        body: JSON.stringify({
+          actorId: shift.cashierId,
+          clientRequestId,
+          movement: movementKind,
+          amountCents: cashInputToCents(movementAmount),
+          reason: movementReason
+        })
+      });
+      setShift(response.data.shift);
+      setMovementAmount("");
+      setMovementReason("");
+      movementRequestIdRef.current = null;
+      setState("success");
+      setWorkspaceMode("overview");
     } catch (caught) {
       setError(readError(caught));
       setState("error");
@@ -121,17 +160,20 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
   const canOpen = !shift || shift.status === "CLOSED";
   const canClose = Boolean(shift?.canClose && cashCounted.trim());
   const closePanelActive = shift?.status === "OPEN";
+  const canRecordMovement = Boolean(shift?.status === "OPEN" && movementAmount.trim() && movementReason.trim().length >= 3);
   const statusTone = shift?.status === "OPEN" ? "ok" : error ? "danger" : "neutral";
 
   return (
     <PrismaTabletShellUnified
       currentPath="/shift"
       title="Turno y caja"
-      subtitle="Abre caja, controla venta del turno, captura conteo y cierra con diferencia visible."
+      subtitle="Abre caja, registra entradas o salidas, controla ventas y cierra con diferencia visible."
       status={<TabletShellStatusPill tone={statusTone}>{copy.badge}</TabletShellStatusPill>}
       runtimeSnapshot={shellSnapshot}
       visualSurface="tablet-shift"
       visualPreset="shift-direct-workbench"
+      showRouteHeader={false}
+      showBottomDock={workspaceMode === "overview"}
     >
       <main className={styles.page} data-prisma-shift-layer="root" data-prisma-shift-workbench="route-1006-1535">
         <section className={styles.hero} data-prisma-shift-layer="hero">
@@ -141,26 +183,34 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
             <p>{copy.detail}</p>
           </div>
           <div className={styles.heroActions} data-prisma-shift-layer="hero-actions">
-            {gate.canShowSellNavigation ? <a className={styles.secondaryLink} data-prisma-shift-layer="secondary-action" href={gate.actionHref}>Ir a vender</a> : <span className={styles.secondaryLink} data-prisma-shift-layer="secondary-action" aria-disabled="true">Abre turno para vender</span>}
+            {workspaceMode !== "overview" ? <button type="button" className={styles.secondaryLink} onClick={() => setWorkspaceMode("overview")}>Volver al resumen</button> : gate.canShowSellNavigation ? <a className={styles.secondaryLink} data-prisma-shift-layer="secondary-action" href={gate.actionHref}>Ir a vender</a> : <span className={styles.secondaryLink} data-prisma-shift-layer="secondary-action" aria-disabled="true">Abre turno para vender</span>}
             <button type="button" className={styles.ghostButton} data-prisma-shift-layer="secondary-action" onClick={() => void loadCurrentShift()} disabled={state === "loading"}>Actualizar</button>
           </div>
         </section>
 
-        <QuickActionStrip label="Acciones rapidas de turno">
-          <QuickActionTile title="Abrir turno" description="Lleva al formulario real para iniciar caja." actionLabel="Abrir" icon="terminal" tone="primary" href="#abrir-turno" owner="shift" />
-          <QuickActionTile title="Cerrar turno" description="Lleva al conteo físico y cierre de caja." actionLabel="Cerrar" icon="wallet" tone="warning" href="#cerrar-turno" owner="shift" />
-          <QuickActionTile title="Ir a vender" description={gate.canShowSellNavigation ? "Regresa al POS con el turno actual." : gate.detail} actionLabel={gate.canShowSellNavigation ? "Vender" : gate.actionLabel} icon="cart" tone={gate.canShowSellNavigation ? "success" : "warning"} href={gate.actionHref} owner="pos" />
-          <QuickActionTile title="Actualizar caja" description="Relee el turno actual sin cambiar datos." actionLabel="Actualizar" icon="bell" tone="sync" onClick={() => void loadCurrentShift()} disabled={state === "loading"} owner="shift" />
-          <QuickActionTile title="Exportar corte" description="El endpoint de corte directo no está confirmado." icon="save" tone="neutral" deferredReason="Pendiente: exportación de turno requiere dueño confirmado." owner="shift" kind="deferred-create" />
-        </QuickActionStrip>
-
         {error ? <div className={styles.errorBanner} role="alert">{error}</div> : null}
 
-        <section className={styles.kpiGrid} aria-label="Resumen del turno" data-prisma-shift-layer="kpi-grid">
-          {kpis.map((item) => <article className={styles.kpiCard} key={item.label} data-prisma-shift-layer="kpi-card"><span>{item.label}</span><strong>{item.value}</strong><small>{item.hint}</small></article>)}
-        </section>
+        {workspaceMode === "overview" ? (
+          <section className={styles.kpiGrid} aria-label="Resumen del turno" data-prisma-shift-layer="kpi-grid">
+            {kpis.map((item) => <article className={styles.kpiCard} key={item.label} data-prisma-shift-layer="kpi-card"><span>{item.label}</span><strong>{item.value}</strong><small>{item.hint}</small></article>)}
+          </section>
+        ) : null}
 
-        <section className={styles.workspace} data-prisma-shift-layer="workspace">
+        {workspaceMode === "overview" ? (
+          <section className={styles.modeChooser} aria-label="Siguiente acción de turno">
+            <button type="button" className={styles.modeCard} onClick={() => setWorkspaceMode("open")} disabled={!canOpen}>
+              <span>Apertura</span><strong>Abrir turno</strong><small>{canOpen ? "Captura cajero y caja inicial." : "Ya existe un turno abierto."}</small>
+            </button>
+            <button type="button" className={styles.modeCard} onClick={() => setWorkspaceMode("close")} disabled={!closePanelActive}>
+              <span>Cierre</span><strong>Contar y cerrar caja</strong><small>{closePanelActive ? "Compara efectivo contado contra esperado." : "No hay un turno abierto."}</small>
+            </button>
+            <button type="button" className={styles.modeCard} onClick={() => setWorkspaceMode("movement")} disabled={!closePanelActive}>
+              <span>Movimiento</span><strong>Entrada o salida</strong><small>{closePanelActive ? "Registra importe, motivo y responsable." : "Abre turno para mover caja."}</small>
+            </button>
+          </section>
+        ) : null}
+
+        {workspaceMode === "open" ? <section className={styles.workspace} data-prisma-shift-layer="workspace">
           <article id="abrir-turno" className={styles.panel} data-current={canOpen ? "true" : "false"} data-prisma-shift-layer="panel-open">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Abrir turno</span><strong>{canOpen ? "Caja lista para iniciar" : "Ya hay turno abierto"}</strong></header>
             <label className={styles.field} data-prisma-shift-layer="field"><span>Cajero</span><input value={cashier} onChange={(event: ChangeEvent<HTMLInputElement>) => setCashier(event.target.value)} disabled={!canOpen || state === "loading"} /></label>
@@ -168,7 +218,20 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
             <button type="button" className={styles.primaryButton} data-prisma-shift-layer="primary-action" onClick={() => void openShift()} disabled={!canOpen || state === "loading" || !cashier.trim()}>Abrir turno</button>
             {!canOpen ? <p className={styles.note}>Para iniciar otro turno, primero cierra el turno abierto.</p> : null}
           </article>
+        </section> : null}
 
+        {workspaceMode === "movement" ? <section className={styles.workspace} data-prisma-shift-layer="workspace">
+          <article className={styles.panel} data-current={closePanelActive ? "true" : "false"} data-prisma-shift-layer="panel-movement">
+            <header className={styles.panelHeader}><span>Movimiento de caja</span><strong>{shift?.status === "OPEN" ? `Responsable: ${shift.cashier}` : "Sin turno abierto"}</strong></header>
+            <label className={styles.field}><span>Tipo</span><select value={movementKind} onChange={(event) => { setMovementKind(event.target.value as CashMovementKind); movementRequestIdRef.current = null; }} disabled={!closePanelActive || state === "loading"}><option value="CASH_IN">Entrada de efectivo</option><option value="CASH_OUT">Salida de efectivo</option></select></label>
+            <label className={styles.field}><span>Importe</span><input inputMode="decimal" value={movementAmount} onChange={(event: ChangeEvent<HTMLInputElement>) => { setMovementAmount(event.target.value); movementRequestIdRef.current = null; }} disabled={!closePanelActive || state === "loading"} /></label>
+            <label className={styles.field}><span>Motivo</span><textarea value={movementReason} onChange={(event: ChangeEvent<HTMLTextAreaElement>) => { setMovementReason(event.target.value); movementRequestIdRef.current = null; }} maxLength={180} disabled={!closePanelActive || state === "loading"} /></label>
+            <p className={styles.note}>El movimiento queda ligado al turno, cajero, auditoría y cola de sincronización. Repetir la misma solicitud no duplica el importe.</p>
+            <button type="button" className={styles.primaryButton} onClick={() => void recordCashMovement()} disabled={!canRecordMovement || state === "loading"}>{state === "loading" ? "Registrando..." : "Registrar movimiento"}</button>
+          </article>
+        </section> : null}
+
+        {workspaceMode === "close" ? <section className={styles.workspace} data-prisma-shift-layer="workspace">
           <article id="cerrar-turno" className={styles.panel} data-current={closePanelActive ? "true" : "false"} data-prisma-shift-layer="panel-close">
             <header className={styles.panelHeader} data-prisma-shift-layer="panel-header"><span>Cerrar turno</span><strong>{shift?.status === "OPEN" ? "Conteo requerido" : "Sin turno abierto"}</strong></header>
             <div className={styles.cashBreakdown} data-prisma-shift-layer="cash-breakdown">
@@ -181,13 +244,15 @@ export function ShiftCashClosureScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIM
             <div className={styles.varianceBox} data-prisma-shift-layer="variance" data-tone={varianceTone(closePreview.varianceCents)}><span>Diferencia estimada</span><strong>{formatMoney(closePreview.varianceCents)}</strong><small>{closePreview.copy}</small></div>
             <button type="button" className={styles.dangerButton} data-prisma-shift-layer="danger-action" onClick={() => void closeShift()} disabled={!canClose || state === "loading"}>Cerrar turno</button>
           </article>
-        </section>
+        </section> : null}
 
-        <section className={styles.flowGuard} data-prisma-shift-layer="flow-guard">
+        {workspaceMode === "overview" ? <section className={styles.flowGuard} data-prisma-shift-layer="flow-guard">
           <strong>{gate.canSell ? "Venta habilitada" : "Venta bloqueada hasta abrir turno"}</strong>
           <p>{gate.canSell ? "Los tickets nuevos quedarán ligados al turno abierto." : "Abre turno para que cada venta quede ligada a caja, ticket y corte."}</p>
-        </section>
+        </section> : null}
       </main>
     </PrismaTabletShellUnified>
   );
 }
+
+export const ShiftCashClosureScreen = ShiftWorkspace;

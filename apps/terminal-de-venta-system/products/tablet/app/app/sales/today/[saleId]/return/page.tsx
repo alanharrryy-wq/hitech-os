@@ -1,4 +1,4 @@
-import { ReturnFromTicketScreen } from "@components/returns/return-from-ticket-screen";
+import { ReturnsWorkspace } from "@components/returns/return-from-ticket-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -37,7 +37,8 @@ export default async function Page({
   const businessId = typeof resolvedSearchParams.businessId === "string" ? resolvedSearchParams.businessId : runtimeInput.businessId;
 
   return (
-    <ReturnFromTicketScreen
+    <ReturnsWorkspace
+      mode="ticket"
       saleId={decodeURIComponent(resolvedParams.saleId)}
       businessId={businessId}
       runtimeSnapshot={runtimeSnapshot}

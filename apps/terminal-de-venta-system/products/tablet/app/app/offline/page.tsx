@@ -1,4 +1,4 @@
-import { OfflineExportAuditScreen } from "@components/offline/offline-export-audit-screen";
+import { OfflineResilienceWorkspace } from "@components/offline/offline-export-audit-screen";
 
 export const metadata = {
   title: "Sin conexión y respaldo - PRISMA Tablet",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function OfflineAuditPage() {
-  return <OfflineExportAuditScreen />;
+  return <OfflineResilienceWorkspace />;
 }

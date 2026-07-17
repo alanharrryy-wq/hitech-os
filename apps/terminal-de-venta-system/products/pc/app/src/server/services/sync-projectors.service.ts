@@ -90,11 +90,18 @@ function unsupported(event: SyncEventEnvelope): SyncProjectionResult {
 async function ensureBusinessAndTerminal(tx: TxClient, event: SyncEventEnvelope): Promise<SyncConflictFinding[]> {
   const [business, terminal] = await Promise.all([
     tx.business.findUnique({ where: { id: event.businessId } }),
-    tx.terminal.findFirst({ where: { id: event.terminalId, businessId: event.businessId, isActive: true } })
+    tx.terminal.findFirst({
+      where: { id: event.terminalId, businessId: event.businessId, isActive: true },
+      select: { id: true, storeId: true }
+    })
   ]);
   const conflicts: SyncConflictFinding[] = [];
   if (!business) conflicts.push(conflict("invalid_schema", `Business ${event.businessId} does not exist in canonical Prisma DB.`, "rejected"));
-  if (!terminal) conflicts.push(conflict("terminal_not_registered", `Terminal ${event.terminalId} is not registered for business ${event.businessId}.`));
+  if (!terminal) {
+    conflicts.push(conflict("terminal_not_registered", `Terminal ${event.terminalId} is not registered for business ${event.businessId}.`));
+  } else if (terminal.storeId !== event.storeId) {
+    conflicts.push(conflict("invalid_schema", `Store ${event.storeId} does not own terminal ${event.terminalId}; canonical store is ${terminal.storeId}.`, "rejected"));
+  }
   return conflicts;
 }
 
@@ -369,6 +376,43 @@ async function projectStockAdjusted(tx: TxClient, event: SyncEventEnvelope): Pro
   }
   await tx.product.update({ where: { id: productId }, data: { stockOnHand: after } });
   return { status: existing ? "reconciled" : "projected", conflicts: [], diagnostics: ["STOCK_ADJUSTMENT_PROJECTED"], touchedModels: ["Product", "StockMovement"] };
+}
+
+async function projectInventoryOperationRecorded(tx: TxClient, event: SyncEventEnvelope): Promise<SyncProjectionResult> {
+  const payload = event.payload;
+  const result = asRecord(payload.result);
+  const operationId = asString(result.operationId) || event.aggregateId;
+  const action = asString(payload.action || result.action);
+  if (!operationId || !["adjust", "count", "receive"].includes(action)) {
+    return {
+      status: "dead_letter",
+      conflicts: [conflict("invalid_schema", "inventory.operation.recorded requires operationId and action adjust/count/receive.", "rejected")],
+      diagnostics: ["INVENTORY_OPERATION_PAYLOAD_INCOMPLETE"],
+      touchedModels: ["AuditEvent"]
+    };
+  }
+  const existing = await tx.auditEvent.findUnique({ where: { id: event.eventId } }).catch(() => null);
+  if (existing) {
+    return { status: "reconciled", conflicts: [], diagnostics: ["INVENTORY_OPERATION_ALREADY_PROJECTED"], touchedModels: ["AuditEvent"] };
+  }
+  const actor = event.actorId
+    ? await tx.user.findFirst({ where: { id: event.actorId, businessId: event.businessId, status: "ACTIVE" }, select: { id: true } })
+    : null;
+  await tx.auditEvent.create({
+    data: {
+      id: event.eventId,
+      businessId: event.businessId,
+      actorId: actor?.id ?? null,
+      topic: "inventory.operation.recorded",
+      entityType: "inventory_operation",
+      entityId: operationId,
+      summary: `Operación de inventario ${action} recibida desde Tablet.`,
+      afterJson: JSON.stringify(result),
+      metadataJson: JSON.stringify({ sourceEventId: event.eventId, terminalId: event.terminalId, idempotencyKey: event.idempotencyKey, contract: asString(payload.contract) }),
+      createdAt: asDate(result.createdAt, event.occurredAt)
+    }
+  });
+  return { status: "projected", conflicts: [], diagnostics: ["INVENTORY_OPERATION_AUDIT_PROJECTED"], touchedModels: ["AuditEvent"] };
 }
 
 async function projectCashSessionOpened(tx: TxClient, event: SyncEventEnvelope): Promise<SyncProjectionResult> {
@@ -818,6 +862,7 @@ export async function projectAcceptedSyncEvent(tx: TxClient, event: SyncEventEnv
   if (event.topic === "ticket.closed") return projectTicketClosed(tx, event);
   if (event.topic === "stock.decremented") return projectStockDecremented(tx, event);
   if (event.topic === "stock.adjusted") return projectStockAdjusted(tx, event);
+  if (event.topic === "inventory.operation.recorded") return projectInventoryOperationRecorded(tx, event);
   if (event.topic === "cash.session.opened" || event.topic === "shift.opened") return projectCashSessionOpened(tx, event);
   if (event.topic === "cash.movement.recorded" || event.topic === "shift.closed") return projectCashMovementRecorded(tx, event);
   if (event.topic === "inventory.low_stock_detected") return projectLowStockDetected(tx, event);

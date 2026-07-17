@@ -690,3 +690,18 @@ F:\descargasf\status refresh diag 0507 090852 result.zip
 - No usar `INSERT OR REPLACE` en `licenses` si puede borrar/reinsertar y activar FKs/triggers peligrosos; preferir update/insert explicito.
 
 **Cierre esperado:** `0005_fix_license_revoke_legacy_schema_triggers.sql` aplicado remotamente, Worker deployado, schema remoto sin triggers incompatibles, `/health` y capabilities PASS, smoke live PASS o FAIL documentado sin fake green.
+
+## PRISMA_SYNCSEQ_SEQUENCE_FIX_CERT_20260717
+
+- Fecha: 2026-07-16.
+- Clasificación Factory Ledger: VERIFY / cierre operativo.
+- Arquitectura: shadow-first, procesos hijos con entorno allowlist, journal reanudable y promoción tardía.
+- Authority Mesh: automesh-v5.1 validado antes de cualquier escritura viva.
+- Respaldo: SQLite Online Backup API en `F:\Trash-old\syncseq-inner 1707 020628`.
+- Reset: datos operativos históricos de ventas, pagos, devoluciones, caja, catálogo, inventario, outbox, intentos, conflictos, checkpoints, heartbeats y freshness.
+- Preservado: migraciones, usuarios, roles, permisos, auditoría, Business existentes, secretos locales y Support Resolver.
+- Certificación: dos tenants, dos negocios, dos tiendas, tres terminales/dispositivos, 24 eventos ACK, seis ventas/líneas/tenders, caja e inventario.
+- Negativos: duplicate replay, idempotency payload mismatch, wrong scope, stale sequence y bad batch checksum.
+- Runtime: transporte in-process; el puerto PC no fue requerido ni modificado.
+- Gates: 10/10 bloqueantes PASS, dos lectores PC read-only sin multiplicación y ausencia de IDs históricos.
+- Regla: una anomalía desconocida bloquea y restaura; nunca se borra por inferencia.

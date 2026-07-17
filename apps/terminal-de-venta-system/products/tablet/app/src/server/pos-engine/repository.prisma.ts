@@ -363,7 +363,16 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         lines: lineResults
       };
 
-      const eventContext = { businessId, terminalId, actorId: cashier, occurredAt: now };
+      // PRISMA_SYNC_DEFINITIVE_1607_EVENT_SCOPE
+      const eventContext = {
+        tenantId: process.env.PRISMA_TENANT_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TENANT_ID?.trim() || "",
+        businessId,
+        storeId: terminal.storeId,
+        terminalId,
+        deviceId: process.env.PRISMA_TABLET_DEVICE_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_TABLET_DEVICE_ID?.trim() || terminalId,
+        actorId: cashier,
+        occurredAt: now
+      };
       const events: PosEngineEvent[] = [
         saleCreatedEvent(saleId, folio, eventContext),
         saleCompletedEvent(resultWithoutEvents, eventContext),
