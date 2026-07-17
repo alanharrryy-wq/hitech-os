@@ -1,4 +1,4 @@
-import { ShiftCashClosureScreen } from "@components/shift/shift-cash-closure-screen";
+import { ShiftWorkspace } from "@components/shift/shift-cash-closure-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -7,5 +7,5 @@ export const metadata = { title: "Turno y caja - PRISMA Tablet", description: "A
 
 export default async function ShiftPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <ShiftCashClosureScreen runtimeSnapshot={runtimeSnapshot} />;
+  return <ShiftWorkspace runtimeSnapshot={runtimeSnapshot} />;
 }

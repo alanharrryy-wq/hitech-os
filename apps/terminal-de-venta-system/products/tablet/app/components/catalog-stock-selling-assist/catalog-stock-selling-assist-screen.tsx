@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot, type CanSellDecision } from "@/lib/operational-gate/can-sell";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
+import { InventoryOperationsWorkspace } from "@components/inventory/inventory-operations-workspace";
 import type {
   CatalogStockFilter,
   CatalogStockSearchState,
@@ -40,6 +40,8 @@ type ProductSearchResponse = { products: CatalogStockSellingAssistProduct[]; cou
 type Props = {
   actions?: ReactNode;
   mode: CatalogStockSellingAssistMode;
+  currentPath?: string;
+  initialFilter?: CatalogStockFilter;
   runtimeSnapshot?: TabletRuntimeSnapshot;
 };
 
@@ -219,11 +221,11 @@ function ProductDetailPanel({
   );
 }
 
-export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: Props) {
+export function CatalogStockSellingAssistScreen({ actions, mode, currentPath, initialFilter, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: Props) {
   const copy = CATALOG_STOCK_SCREEN_COPY[mode];
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<CatalogStockFilter>(mode === "stock" ? "low_stock" : "all");
+  const [filter, setFilter] = useState<CatalogStockFilter>(initialFilter ?? "all");
   const [products, setProducts] = useState<CatalogStockSellingAssistProduct[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [state, setState] = useState<CatalogStockSearchState>("idle");
@@ -343,12 +345,13 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
 
   return (
     <PrismaTabletShellUnified
-      currentPath={copy.currentPath}
+      currentPath={currentPath ?? copy.currentPath}
       title={copy.title}
       subtitle={copy.subtitle}
       status={<TabletShellStatusPill tone={gate.canSell ? statusTone(state, products) : "warn"}>{gate.canSell ? statusText(state, products) : "Caja cerrada"}</TabletShellStatusPill>}
       actions={actions}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <div className={styles.screen} data-prisma-screen={`catalog-stock-selling-assist-${mode}`}>
         <OfflineStrip online={online} cachedCount={products.length} />
@@ -366,17 +369,11 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
           </div>
         </section>
 
-        <QuickActionStrip label={mode === "stock" ? "Acciones rapidas de inventario" : "Acciones rapidas de catalogo operativo"}>
-          <QuickActionTile title="Nuevo producto" description="Registra producto vendible en el catálogo real." actionLabel="Crear" icon="plus" tone="inventory" href="/catalog?new=1" owner="catalog" kind="quick-create" />
-          <QuickActionTile title="Ajustar stock" description="El ajuste directo requiere dueño confirmado." icon="settings" tone="neutral" deferredReason="Pendiente: no hay flujo local confirmado de ajuste." owner="stock" kind="deferred-create" />
-          <QuickActionTile title="Stock bajo" description="Ver productos que piden reposición." actionLabel="Ver" icon="package" tone="warning" href="/inventory/low-stock" owner="stock" />
-          <QuickActionTile title="Exportar inventario" description="Descarga movimientos de inventario desde exportaciones." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
-          <QuickActionTile title="Importar catalogo" description="Usa el panel de sincronización cuando haya fuente PC autorizada." icon="truck" tone="neutral" deferredReason="Pendiente: importación requiere origen autorizado." owner="sync" kind="deferred-create" />
-        </QuickActionStrip>
-
         <section className={styles.metricGrid} aria-label="Resumen catálogo y existencias">
           {metrics.map((metric) => <MetricCard key={metric.id} metric={metric} />)}
         </section>
+
+        {mode === "stock" ? <InventoryOperationsWorkspace products={products} actorId={runtimeSnapshot.identity.operatorId} onCompleted={() => void loadProducts(queryRef.current.trim())} /> : null}
 
         <section className={styles.workspace}>
           <div className={styles.mainPanel}>
@@ -457,5 +454,24 @@ export function CatalogStockSellingAssistScreen({ actions, mode, runtimeSnapshot
         </section>
       </div>
     </PrismaTabletShellUnified>
+  );
+}
+
+export function InventoryWorkspace({
+  currentPath = "/stock",
+  intent = "overview",
+  runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT
+}: {
+  currentPath?: "/stock" | "/inventory" | "/existencias" | "/inventory/low-stock";
+  intent?: "overview" | "low-stock";
+  runtimeSnapshot?: TabletRuntimeSnapshot;
+}) {
+  return (
+    <CatalogStockSellingAssistScreen
+      mode="stock"
+      currentPath={currentPath}
+      initialFilter={intent === "low-stock" ? "low_stock" : "all"}
+      runtimeSnapshot={runtimeSnapshot}
+    />
   );
 }

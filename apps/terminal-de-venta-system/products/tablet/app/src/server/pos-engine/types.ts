@@ -60,17 +60,29 @@ export type PosSaleLineResult = {
 
 export type PosEngineEvent = {
   eventId: string;
+  source: string;
+  subject: string;
   eventType: string;
   topic: string;
-  idempotencyKey: string;
-  businessId: string;
-  terminalId: string;
-  actorId: string;
-  source: string;
-  occurredAt: string;
-  aggregateId: string;
+  eventVersion: string;
   schemaVersion: string;
-  correlationId?: string;
+  tenantId: string;
+  customerId?: string;
+  businessId: string;
+  storeId: string;
+  terminalId: string;
+  deviceId: string;
+  actorId: string;
+  aggregateId: string;
+  originRecordId: string;
+  idempotencyKey: string;
+  sequence: number;
+  correlationId: string;
+  causationId: string;
+  traceId: string;
+  occurredAt: string;
+  capturedAt: string;
+  payloadHash: string;
   payload: Record<string, unknown>;
 };
 

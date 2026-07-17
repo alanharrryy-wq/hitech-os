@@ -1,0 +1,1542 @@
+{
+  "kind": "TABLET_LAB_EFFECT_APPLICABILITY_MATRIX",
+  "version": "tabctl7v2-tabrcp5-recipe-drawer-0707-2312",
+  "principle": "No todos los knobs afectan todos los widgets; un knob se habilita sólo cuando su target actual está declarado en esta matriz. Conserva copy post-Codex y evita reintroducir etiquetas viejas visibles.",
+  "widgetGroups": [
+    "Panel Set",
+    "Button Set",
+    "Table Set",
+    "POS Product Set",
+    "Checkout Rail Set",
+    "Turno/Caja Set",
+    "Metric Widgets",
+    "Form Widgets",
+    "Modal States",
+    "Navigation/Dock",
+    "Carga mixta",
+    "Matriz de efectos"
+  ],
+  "effectGroups": [
+    "Glass",
+    "Color",
+    "Depth",
+    "Motion",
+    "Background",
+    "Density",
+    "Typography",
+    "Tables",
+    "Buttons",
+    "Panels"
+  ],
+  "rules": {
+    "glassAlpha": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "blur": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "saturate": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "contrast": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "frostVeil": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "borderAlpha": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "innerHighlight": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "edgeShine": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "specularGlow": {
+      "effectGroup": "Glass",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "material/transparency/backdrop/border/highlight controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "tintStrength": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "gradientAngle": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "accentStrength": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "warmth": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "coolness": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "mutedInk": {
+      "effectGroup": "Color",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "tone/tint/temperature/ink controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "elevation": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta",
+        "Button Set",
+        "POS Product Set",
+        "Form Widgets",
+        "Navigation/Dock"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "shadow": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta",
+        "Button Set",
+        "POS Product Set",
+        "Form Widgets",
+        "Navigation/Dock"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "contactShadow": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta",
+        "Button Set",
+        "POS Product Set",
+        "Form Widgets",
+        "Navigation/Dock"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "layerDistance": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Modal States",
+        "Checkout Rail Set",
+        "Carga mixta"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "stackOffset": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Modal States",
+        "Checkout Rail Set",
+        "Carga mixta"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "panelLift": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta",
+        "Button Set",
+        "POS Product Set",
+        "Form Widgets",
+        "Navigation/Dock"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "modalDepth": {
+      "effectGroup": "Depth",
+      "targets": [
+        "Panel Set",
+        "Modal States",
+        "Checkout Rail Set",
+        "Carga mixta"
+      ],
+      "description": "elevation/shadow/layer-distance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "hoverLift": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "pressDepth": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "activeGlow": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "selectionHalo": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "motionIntensity": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "parallaxTiny": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "reducedMotion": {
+      "effectGroup": "Motion",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "interactive motion and focus affordance controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "backgroundFreeze": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "backgroundScale": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "backgroundBlur": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "atmosphericVeil": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "vignetteSoft": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "lightLeak": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "horizonPosition": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "parallaxMax": {
+      "effectGroup": "Background",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "canvas atmospheric image/veil controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "panelGap": {
+      "effectGroup": "Density",
+      "targets": [
+        "Panel Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "cardDensity": {
+      "effectGroup": "Density",
+      "targets": [
+        "Panel Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "rowHeight": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "chipCompression": {
+      "effectGroup": "Density",
+      "targets": [
+        "Panel Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "toolbarCompactness": {
+      "effectGroup": "Density",
+      "targets": [
+        "Panel Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "gridColumns": {
+      "effectGroup": "Density",
+      "targets": [
+        "POS Product Set",
+        "Panel Set",
+        "Metric Widgets",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "railWidth": {
+      "effectGroup": "Density",
+      "targets": [
+        "Checkout Rail Set",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "headerHeight": {
+      "effectGroup": "Density",
+      "targets": [
+        "Panel Set",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "spacing/row/grid/rail/header controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "textGlow": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "inkContrast": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "mutedContrast": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "labelTracking": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "numericEmphasis": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "microcopyOpacity": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "headingWeight": {
+      "effectGroup": "Typography",
+      "targets": [
+        "Panel Set",
+        "Button Set",
+        "Table Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "ink/microcopy/numerical emphasis controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "tableTone": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "columnPressure": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "headerStickiness": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "zebraSoftness": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "dividerAlpha": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "rowHoverGlow": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "actionColumnVisibility": {
+      "effectGroup": "Tables",
+      "targets": [
+        "Table Set",
+        "Carga mixta"
+      ],
+      "description": "CloudTable-only row/column/action controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "buttonHeight": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "buttonRadius": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "buttonGlow": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "borderBrightness": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "pressInset": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "disabledFrost": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "dangerWarmth": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "primarySaturation": {
+      "effectGroup": "Buttons",
+      "targets": [
+        "Button Set",
+        "POS Product Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Form Widgets",
+        "Modal States",
+        "Navigation/Dock",
+        "Carga mixta"
+      ],
+      "description": "action/button-only touch and state controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "heroCompactness": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "cardTranslucency": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "railTranslucency": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "modalGlassStrength": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "warningToneStrength": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "inspectorDensity": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    },
+    "metricEmphasis": {
+      "effectGroup": "Panels",
+      "targets": [
+        "Panel Set",
+        "Checkout Rail Set",
+        "Turno/Caja Set",
+        "Metric Widgets",
+        "Modal States",
+        "Carga mixta"
+      ],
+      "description": "panel-family-only compactness/translucency/semantics controls",
+      "inactiveBehavior": "disabled in UI with 'sin impacto aquí' hint; value is preserved for other widget groups"
+    }
+  },
+  "tabctl7V2Supreme": {
+    "modelVersion": "tabctl7v2-supreme-0707-1918-rollback-guard",
+    "route": "/tablet-lab",
+    "source": "TABCTL7_V2_MODEL.json",
+    "grammar": [
+      "visualGroup",
+      "component",
+      "layer",
+      "role",
+      "part",
+      "kind",
+      "state",
+      "variant",
+      "material",
+      "colorMode",
+      "control",
+      "scope",
+      "inheritance",
+      "preset"
+    ],
+    "materials": [
+      "frosted-glass",
+      "liquid-glass",
+      "neon-glass",
+      "ceramic-soft",
+      "paper-matte",
+      "brushed-metal",
+      "carbon-satin",
+      "holographic-veil",
+      "ghost-surface",
+      "danger-glass",
+      "warm-acrylic",
+      "cold-acrylic",
+      "ink-plate",
+      "soft-plastic"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focus",
+      "focus-visible",
+      "pressed",
+      "selected",
+      "disabled",
+      "loading",
+      "empty",
+      "success",
+      "warning",
+      "danger",
+      "critical",
+      "offline",
+      "dragging",
+      "dirty",
+      "locked",
+      "expanded",
+      "collapsed",
+      "error"
+    ],
+    "controlsByPack": {
+      "material": [
+        "glassAlpha",
+        "blur",
+        "frostVeil",
+        "saturate",
+        "contrast",
+        "tintStrength",
+        "edgeShine",
+        "innerHighlight",
+        "specularGlow",
+        "borderBrightness"
+      ],
+      "text": [
+        "inkContrast",
+        "mutedContrast",
+        "textGlow",
+        "labelTracking",
+        "headingWeight",
+        "microcopyOpacity",
+        "numericEmphasis"
+      ],
+      "shape": [
+        "buttonRadius",
+        "panelGap",
+        "cardDensity",
+        "rowHeight",
+        "chipCompression",
+        "toolbarCompactness",
+        "railWidth",
+        "headerHeight"
+      ],
+      "motionState": [
+        "hoverLift",
+        "pressDepth",
+        "pressInset",
+        "activeGlow",
+        "selectionHalo",
+        "motionIntensity",
+        "parallaxTiny",
+        "reducedMotion"
+      ],
+      "background": [
+        "backgroundFreeze",
+        "backgroundScale",
+        "backgroundBlur",
+        "atmosphericVeil",
+        "vignetteSoft",
+        "lightLeak",
+        "horizonPosition",
+        "parallaxMax"
+      ],
+      "table": [
+        "tableTone",
+        "columnPressure",
+        "headerStickiness",
+        "zebraSoftness",
+        "dividerAlpha",
+        "rowHoverGlow",
+        "actionColumnVisibility"
+      ],
+      "button": [
+        "buttonHeight",
+        "buttonRadius",
+        "buttonGlow",
+        "pressDepth",
+        "disabledFrost",
+        "dangerWarmth",
+        "primarySaturation"
+      ]
+    },
+    "zeroMeansOff": [
+      "glassAlpha",
+      "blur",
+      "borderAlpha",
+      "buttonGlow",
+      "textGlow",
+      "specularGlow",
+      "backgroundBlur",
+      "selectionHalo",
+      "activeGlow"
+    ],
+    "guards": [
+      "no package.json",
+      "no lockfiles",
+      "no Prisma",
+      "no process kill",
+      "no port touch",
+      "no priority CSS overrides",
+      "fewest containers possible"
+    ],
+    "scopeModes": [
+      "part",
+      "kind",
+      "layer",
+      "component",
+      "group",
+      "preset",
+      "current-state",
+      "compatible-states"
+    ],
+    "inheritanceModes": [
+      "inherit",
+      "override",
+      "copy",
+      "paste",
+      "reset-role",
+      "reset-layer",
+      "lock",
+      "unlock"
+    ],
+    "fewestContainersPossible": true,
+    "noImportant": true,
+    "noNewDeps": true,
+    "noRuntimeProcesses": true
+  },
+  "targetFirstFiltering": {
+    "version": "tabflt1-0707-2137",
+    "principle": "La cabina se filtra por target.kind + intent + role.controls antes de mostrar packs o perillas; lo incompatible desaparece.",
+    "hardFilter": true,
+    "uiRule": "No dejar controles incompatibles visibles/disabled; ocultarlos completamente y sugerir el target correcto.",
+    "validationCases": [
+      {
+        "case": "text + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Shape",
+          "Background",
+          "Tables",
+          "Buttons"
+        ]
+      },
+      {
+        "case": "headingText + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Background",
+          "Shape"
+        ]
+      },
+      {
+        "case": "buttonText + Texto",
+        "expectedVisible": [
+          "Typography"
+        ],
+        "mustHide": [
+          "Buttons",
+          "Background",
+          "Tables"
+        ]
+      },
+      {
+        "case": "button + Botón",
+        "expectedVisible": [
+          "Buttons",
+          "Motion"
+        ],
+        "mustHide": [
+          "Background",
+          "Tables",
+          "Typography"
+        ]
+      },
+      {
+        "case": "panel + Material",
+        "expectedVisible": [
+          "Glass",
+          "Depth"
+        ],
+        "mustHide": [
+          "Typography",
+          "Tables"
+        ]
+      },
+      {
+        "case": "table/tableCell + Tabla",
+        "expectedVisible": [
+          "Tables"
+        ],
+        "mustHide": [
+          "Background",
+          "Buttons"
+        ]
+      },
+      {
+        "case": "background + Fondo",
+        "expectedVisible": [
+          "Background"
+        ],
+        "mustHide": [
+          "Typography",
+          "Buttons",
+          "Tables"
+        ]
+      }
+    ],
+    "scope": {
+      "allowed": [
+        "/tablet-lab"
+      ],
+      "excluded": [
+        "POS real",
+        "checkout real",
+        "carrito real",
+        "PC",
+        "Mobile",
+        "Cloud",
+        "Prisma",
+        "D1",
+        "puertos",
+        "procesos",
+        "package.json",
+        "lockfiles"
+      ]
+    }
+  },
+  "recipeMode": {
+    "version": "tabrcp2-0707-2214",
+    "principle": "Modo Receta muestra sólo recetas compatibles; Modo Pro muestra sólo controles/perillas compatibles. No se mezclan.",
+    "modes": [
+      "Receta",
+      "Pro"
+    ],
+    "defaultMode": "Receta",
+    "uiRules": [
+      "Modo Receta oculta control cloud, effect selector, tone selector y knob panel.",
+      "Modo Pro oculta recipe gallery y muestra control cloud + knob panel filtrado.",
+      "Target, capa, rol, qué cambiar, estado y alcance permanecen disponibles para elegir contexto.",
+      "Las recetas se filtran por target.kind + Qué cambiar + recipe.changeTypes."
+    ],
+    "validationCases": [
+      {
+        "case": "mode=Receta",
+        "mustShow": [
+          "Tabctl7RecipeGallery",
+          "recetas compatibles"
+        ],
+        "mustHide": [
+          "CompactKnobPanel",
+          "Controles aplicables TABCTL7"
+        ]
+      },
+      {
+        "case": "mode=Pro",
+        "mustShow": [
+          "CompactKnobPanel",
+          "Controles aplicables TABCTL7"
+        ],
+        "mustHide": [
+          "Tabctl7RecipeGallery"
+        ]
+      },
+      {
+        "case": "default",
+        "expected": "Receta"
+      }
+    ]
+  },
+  "tabrcp4RecipeBrowserCanvas": {
+    "status": "enabled",
+    "mode": "Receta shows compatible recipes in wide preview canvas; Pro shows fine controls",
+    "noTouch": [
+      "POS real",
+      "PC",
+      "Mobile",
+      "Prisma",
+      "package.json",
+      "lockfiles",
+      "ports",
+      "processes"
+    ]
+  },
+  "tabrcp5RecipeDrawer": {
+    "status": "ready",
+    "intent": "recipe mode uses a right-side drawer instead of a full-width canvas band",
+    "fixes": [
+      "recipe browser no longer covers the full preview width",
+      "preview remains readable on the left",
+      "recipes use a right drawer with one-column readable cards",
+      "actions stay aligned at the bottom of each recipe card",
+      "pro mode remains knob/control focused"
+    ],
+    "scope": {
+      "allowed": [
+        "/tablet-lab"
+      ],
+      "excluded": [
+        "POS real",
+        "checkout real",
+        "carrito real",
+        "PC",
+        "Mobile",
+        "Cloud",
+        "Prisma",
+        "ports",
+        "processes",
+        "package.json",
+        "lockfiles"
+      ]
+    }
+  },
+  "tabrcp9": {
+    "status": "ULTRA_PARAMETRIC_RECIPES_IMPORTED",
+    "source": "PRISMA_ULTRA_PARAMETRIC_PRESET_CODEX_PACK.zip",
+    "importedRecipes": 53,
+    "modes": [
+      "Rápido",
+      "Receta",
+      "Pro"
+    ],
+    "uiPolicy": "Quick shows 6 viable looks; Recipe shows filtered browser; Pro keeps fine controls."
+  }
+}

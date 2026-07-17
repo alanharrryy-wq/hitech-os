@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { RECOGNIZED_SYNC_TOPICS, REQUIRED_SYNC_EVENT_FIELDS, SUPPORTED_SYNC_SCHEMA_VERSIONS } from "@/server/validators/sync-event-contract";
-import { persistSyncIngestPayload } from "@/server/services/sync-ingest.service";
+import { persistIngestPayload } from "@/lib/backoffice/sync-ingest-store";
 import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api"; // PRISMA_LICENSE_02AB_PC_IMPORT
 
 export const runtime = "nodejs";
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await persistSyncIngestPayload(body);
+    const result = await persistIngestPayload(body);
     return NextResponse.json({
       ok: result.summary.rejected === 0,
       data: result,

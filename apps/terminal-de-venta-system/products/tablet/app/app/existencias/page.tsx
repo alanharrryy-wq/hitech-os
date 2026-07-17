@@ -1,4 +1,4 @@
-import { CatalogStockSellingAssistScreen } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";
+import { InventoryWorkspace } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -11,5 +11,5 @@ export const metadata = {
 
 export default async function ExistenciasPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <CatalogStockSellingAssistScreen mode="stock" runtimeSnapshot={runtimeSnapshot} />;
+  return <InventoryWorkspace currentPath="/existencias" runtimeSnapshot={runtimeSnapshot} />;
 }

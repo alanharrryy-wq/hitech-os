@@ -7,8 +7,10 @@ import {
   getTabletFlowStage,
   getTabletPendingCount,
   getVisibleTabletNavItems,
+  isTabletMoreActive,
   isTabletNavActive
 } from "./tablet-nav";
+import { TABLET_MORE_ITEMS } from "./tablet-nav";
 import styles from "./prisma-tablet-shell.module.css";
 
 type Tone = "ok" | "warn" | "danger" | "neutral";
@@ -49,6 +51,7 @@ export function PrismaTabletShellUnified({
   runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT,
   visualSurface,
   visualPreset,
+  showRouteHeader = true,
   showBottomDock = true,
   dockMode = "sticky",
   children
@@ -62,6 +65,7 @@ export function PrismaTabletShellUnified({
   runtimeSnapshot?: TabletRuntimeSnapshot;
   visualSurface?: string;
   visualPreset?: string;
+  showRouteHeader?: boolean;
   showBottomDock?: boolean;
   dockMode?: "sticky" | "inline";
   children: ReactNode;
@@ -70,21 +74,10 @@ export function PrismaTabletShellUnified({
   const flowCopy = getTabletFlowCopy(flowStage, runtimeSnapshot);
   const visibleNavItems = getVisibleTabletNavItems(currentPath, runtimeSnapshot);
   const pendingCount = getTabletPendingCount(runtimeSnapshot);
-  const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos" : "tablet-softglass");
-  const resolvedVisualPreset = visualPreset ?? "PRISMA_SOFTGLASS_REFERENCE_2606";
+  const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos-nocturne" : "tablet-nocturne");
+  const resolvedVisualPreset = visualPreset ?? "PRISMA_NOCTURNE_REFERENCE_1607";
   const compactSellingSurface = currentPath === "/pos" || currentPath === "/checkout";
-  const dockItems = visibleNavItems.filter((item) =>
-    ["/pos", "/shift", "/stock", "/sales/today", "/returns", "/sync", "/settings/license"].includes(item.href)
-  );
-  const moreLinks = [
-    { href: "/settings/license", label: "Configuracion", description: "Licencia, equipo y continuidad", icon: "settings" as const },
-    { href: "/settings/export", label: "Exportaciones", description: "Ventas, pendientes y movimientos", icon: "save" as const },
-    { href: "/offline", label: "Modo offline", description: "Respaldo local y auditoria", icon: "bell" as const },
-    { href: "/prisma-pulse", label: "Estado operativo", description: "Lectura de salud de la Tablet", icon: "dashboard" as const },
-    { href: "/settings/license#license-support", label: "Soporte", description: "Detalle visible para soporte", icon: "users" as const },
-    { href: "/inventory/low-stock", label: "Stock bajo", description: "Productos que requieren atencion", icon: "package" as const },
-    { href: "/sales/history", label: "Historial", description: "Tickets locales anteriores", icon: "chart" as const }
-  ];
+  const moreActive = isTabletMoreActive(currentPath);
 
   return (
     <div
@@ -97,15 +90,15 @@ export function PrismaTabletShellUnified({
       data-prisma-preset={resolvedVisualPreset}
       data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
       data-prisma-canonical-viewport={TABLET_VISUAL_V2_CANONICAL}
-      data-prisma-canonical-shell="softglass-reference-2606"
-      data-prisma-visible-upgrade="tablet-softglass-canonical-2606"
-      data-prisma-background="softglass-reference-image"
+      data-prisma-canonical-shell="nocturne-reference-1607"
+      data-prisma-visible-upgrade="tablet-nocturne-canonical-1607"
+      data-prisma-background="nocturne-atmosphere"
     >
       <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>
       <span className={styles.scene} aria-hidden="true" />
 
       <header className={styles.topbar} data-prisma-component="TopCommandBar" data-prisma-role="app-owner" data-prisma-layer="header">
-        <a className={styles.brand} href="/pos" aria-label="Ir a vender en PRISMA POS">
+        <a className={styles.brand} href="/" aria-label="Ir al inicio de PRISMA Tablet">
           <span className={styles.brandMark} aria-hidden="true">
             <img className={styles.brandImage} src="/prisma/logo-prisma-mark-transparent.png" alt="" />
           </span>
@@ -146,31 +139,14 @@ export function PrismaTabletShellUnified({
                 <PrismaIcon name="bell" size={17} />
                 <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
               </a>
-              <details className={styles.moreMenu} data-prisma-component="TabletMoreMenu">
-                <summary aria-label="Abrir mas acciones de Tablet">
-                  <PrismaIcon name="more" size={18} />
-                  <span>Mas</span>
-                </summary>
-                <div className={styles.moreMenuPanel}>
-                  {moreLinks.map((item) => (
-                    <a className={styles.moreMenuItem} href={item.href} key={item.href}>
-                      <PrismaIcon name={item.icon} size={18} />
-                      <span>
-                        <strong>{item.label}</strong>
-                        <small>{item.description}</small>
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </details>
               {status ? <div className={styles.statusArea}>{status}</div> : null}
             </div>
           </>
         )}
       </header>
 
-      <main id="contenido-principal" className={styles.main} data-prisma-component="SoftglassMain">
-        {!compactSellingSurface ? (
+      <main id="contenido-principal" className={styles.main} data-prisma-component="NocturneMain">
+        {!compactSellingSurface && showRouteHeader ? (
           <section className={styles.titleHeader} aria-label="Pantalla actual">
             <div className={styles.titleGroup}>
               <span className={styles.kicker}>{kicker}</span>
@@ -197,9 +173,8 @@ export function PrismaTabletShellUnified({
       {showBottomDock ? (
         <nav className={joinClasses(styles.bottomDock, dockMode === "inline" && styles.bottomDockInline)} aria-label="Dock principal Tablet" data-prisma-component="TabletBottomNav" data-prisma-layer="dock">
           <div className={styles.bottomDockInner}>
-            {dockItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const active = isTabletNavActive(currentPath, item.href);
-              const showPendingBadge = item.href === "/sync" && pendingCount > 0;
               return (
                 <a
                   key={`dock-${item.href}`}
@@ -209,14 +184,35 @@ export function PrismaTabletShellUnified({
                   title={item.description}
                   data-prisma-component="BottomNavItem"
                   data-active={active ? "true" : undefined}
-                  data-attention={showPendingBadge ? "true" : undefined}
                 >
                   <PrismaIcon name={item.icon} size={20} />
                   <span>{item.shortLabel}</span>
-                  {showPendingBadge ? <strong>{pendingCount}</strong> : null}
                 </a>
               );
             })}
+            <details className={styles.bottomDockMore} data-active={moreActive ? "true" : undefined} data-prisma-component="TabletMoreSheet">
+              <summary className={moreActive ? styles.bottomDockItemActive : styles.bottomDockItem} aria-label="Abrir más secciones de Tablet">
+                <PrismaIcon name="more" size={20} />
+                <span>Más</span>
+                {pendingCount > 0 ? <strong>{pendingCount}</strong> : null}
+              </summary>
+              <div className={styles.bottomDockMorePanel} aria-label="Secciones adicionales">
+                <div className={styles.bottomDockMoreHeading}>
+                  <span>Más secciones</span>
+                  <small>Operación, continuidad y configuración</small>
+                </div>
+                {TABLET_MORE_ITEMS.map((item) => {
+                  const active = isTabletNavActive(currentPath, item.href);
+                  return (
+                    <a className={active ? styles.moreMenuItemActive : styles.moreMenuItem} href={item.href} key={item.href} aria-current={active ? "page" : undefined}>
+                      <PrismaIcon name={item.icon} size={19} />
+                      <span><strong>{item.label}</strong><small>{item.description}</small></span>
+                      {item.href === "/sync" && pendingCount > 0 ? <b>{pendingCount}</b> : null}
+                    </a>
+                  );
+                })}
+              </div>
+            </details>
           </div>
         </nav>
       ) : null}

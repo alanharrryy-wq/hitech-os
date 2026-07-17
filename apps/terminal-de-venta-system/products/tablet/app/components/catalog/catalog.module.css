@@ -1,687 +1,172 @@
-.catalogLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
-  gap: 18px;
-  align-items: start;
-}
-
-.catalogMain,
-.drawer {
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-xl);
-  background: var(--prisma-panel-gradient);
-  box-shadow: var(--prisma-shadow-glass);
-  backdrop-filter: blur(22px);
-}
-
-[data-theme="prisma-light"] .catalogMain,
-[data-theme="prisma-light"] .drawer {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 252, 254, 0.76)),
-    var(--prisma-frosted-accent-gradient);
-}
-
-.catalogMain {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.toolbar {
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) minmax(280px, 440px) auto;
-  gap: 14px;
-  align-items: end;
-  padding: 18px;
-  border-bottom: 1px solid var(--prisma-border-soft);
-}
-
-.kicker {
-  display: block;
-  color: var(--prisma-accent-gold);
-  font-size: 0.78rem;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.toolbar h2 {
-  margin: 4px 0 0;
-  color: var(--prisma-text-primary);
-  font-size: 1.35rem;
-}
-
-.searchBox {
-  display: flex;
-  gap: 10px;
-}
-
-.searchBox input,
-.field input {
-  width: 100%;
-  min-height: 46px;
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-md);
-  background: var(--prisma-glass-gradient);
-  color: var(--prisma-text-primary);
-  padding: 0 14px;
-  outline: none;
-}
-
-[data-theme="prisma-light"] .searchBox input,
-[data-theme="prisma-light"] .field input {
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-.searchBox input:focus,
-.field input:focus {
-  border-color: var(--prisma-border-gold);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--prisma-accent-gold) 16%, transparent);
-}
-
-.searchBox button,
-.saveButton,
-.tableAction,
-.linkButton {
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.searchBox button,
-.saveButton {
-  min-height: 46px;
-  padding: 0 18px;
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  border-color: var(--prisma-border-gold);
-  box-shadow: var(--prisma-shadow-gold);
-}
-
-.searchBox button:disabled,
-.saveButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.62;
-}
-
-.compactCheck,
-.toggleField {
-  display: inline-flex;
-  gap: 10px;
-  align-items: center;
-  color: var(--prisma-text-secondary);
-  font-weight: 750;
-}
-
-.notice,
-.errorBox {
-  margin: 16px 18px 0;
-  border-radius: var(--prisma-radius-md);
-  padding: 12px 14px;
-  font-weight: 850;
-}
-
-.notice {
-  color: var(--prisma-success);
-  background: color-mix(in srgb, var(--prisma-success) 13%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-success) 28%, transparent);
-}
-
-.errorBox {
-  color: var(--prisma-danger);
-  background: color-mix(in srgb, var(--prisma-danger) 13%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-danger) 28%, transparent);
-}
-
-.tableWrap {
-  overflow-x: auto;
-  padding: 18px;
-}
-
-.productTable {
-  width: 100%;
-  min-width: 760px;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-}
-
-.productTable th {
-  color: var(--prisma-accent-gold);
-  font-size: 0.78rem;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  padding: 0 12px;
-}
-
-.productTable td {
-  color: var(--prisma-text-primary);
-  padding: 14px 12px;
-  background: var(--prisma-glass-gradient);
-  border-top: 1px solid var(--prisma-border-soft);
-  border-bottom: 1px solid var(--prisma-border-soft);
-}
-
-[data-theme="prisma-light"] .productTable td {
-  background: var(--prisma-frosted-accent-gradient);
-}
-
-.productTable td:first-child {
-  border-left: 1px solid var(--prisma-border-soft);
-  border-radius: var(--prisma-radius-md) 0 0 var(--prisma-radius-md);
-}
-
-.productTable td:last-child {
-  border-right: 1px solid var(--prisma-border-soft);
-  border-radius: 0 var(--prisma-radius-md) var(--prisma-radius-md) 0;
-}
-
-.productTable strong,
-.productTable small {
-  display: block;
-}
-
-.productTable small {
-  color: var(--prisma-text-muted);
-  margin-top: 4px;
-}
-
-.selectedRow td {
-  border-color: var(--prisma-border-gold);
-  background:
-    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--prisma-accent-gold) 14%, transparent), transparent 54%),
-    var(--prisma-glass-gradient);
-}
-
-[data-theme="prisma-light"] .selectedRow td {
-  background: var(--prisma-frosted-accent-gradient);
-}
-
-.badgeOk,
-.badgeMuted {
-  display: inline-flex;
-  border-radius: var(--prisma-radius-pill);
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  font-weight: 900;
-}
-
-.badgeOk {
-  color: var(--prisma-success);
-  background: color-mix(in srgb, var(--prisma-success) 13%, transparent);
-}
-
-.badgeMuted {
-  color: var(--prisma-text-secondary);
-  background: color-mix(in srgb, var(--prisma-text-muted) 16%, transparent);
-}
-
-.tableAction {
-  color: var(--prisma-accent-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 13%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-gold) 26%, transparent);
-  padding: 10px 12px;
-}
-
-[data-theme="prisma-light"] .tableAction {
-  color: var(--prisma-accent-gold-strong);
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-.drawer {
-  position: sticky;
-  top: 18px;
-  padding: 18px;
-}
-
-.form {
-  display: grid;
-  gap: 14px;
-}
-
-.formHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  align-items: start;
-}
-
-.formHeader strong,
-.formHeader span {
-  display: block;
-}
-
-.formHeader strong {
-  color: var(--prisma-text-primary);
-  font-size: 1.15rem;
-}
-
-.formHeader span,
-.field small,
-.drawerNote span {
-  color: var(--prisma-text-muted);
-  font-size: 0.88rem;
-  line-height: 1.45;
-}
-
-.field {
-  display: grid;
-  gap: 7px;
-  color: var(--prisma-text-primary);
-  font-weight: 850;
-}
-
-.twoCols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.linkButton {
-  background: var(--prisma-glass-gradient);
-  color: var(--prisma-text-secondary);
-  padding: 9px 12px;
-}
-
-[data-theme="prisma-light"] .linkButton {
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-.saveButton {
-  margin-top: 4px;
-  width: 100%;
-}
-
-.formActions {
-  display: grid;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.secondarySaveButton,
-.ghostSaveButton,
-.cancelButton {
-  min-height: 46px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.secondarySaveButton {
-  color: var(--prisma-accent-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 12%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-accent-gold) 26%, transparent);
-}
-
-.ghostSaveButton,
-.cancelButton {
-  color: var(--prisma-text-secondary);
-  background: var(--prisma-glass-gradient);
-}
-
-.secondarySaveButton:disabled,
-.ghostSaveButton:disabled,
-.cancelButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.62;
-}
-
-.drawerNote,
-.emptyState {
-  margin-top: 16px;
-  padding: 14px;
-  border: 1px dashed var(--prisma-border-gold);
-  border-radius: var(--prisma-radius-lg);
-  background: var(--prisma-glass-gradient);
-}
-
-[data-theme="prisma-light"] .drawerNote,
-[data-theme="prisma-light"] .emptyState {
-  background: var(--prisma-frosted-accent-gradient);
-}
-
-.drawerNote strong,
-.drawerNote span,
-.emptyState strong,
-.emptyState span {
-  display: block;
-}
-
-.emptyState {
-  margin: 18px;
-  color: var(--prisma-text-secondary);
-}
-
-.emptyState strong {
-  color: var(--prisma-text-primary);
-  font-size: 1.05rem;
-  margin-bottom: 5px;
-}
-
-.stockOk {
-  color: var(--prisma-success);
-}
-
-.stockWarn {
-  color: var(--prisma-warning);
-}
-
-.stockDanger {
-  color: var(--prisma-danger);
-}
-
-@media (max-width: 1100px) {
+@layer prisma.routes {
   .catalogLayout {
-    grid-template-columns: 1fr;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.36fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .catalogMain,
+  .drawer {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
   }
 
   .drawer {
-    position: static;
-  }
-}
-
-@media (max-width: 820px) {
-  .toolbar {
-    grid-template-columns: 1fr;
+    position: sticky;
+    top: 96px;
+    max-height: calc(100dvh - 122px);
+    overflow: auto;
+    background: var(--prisma-surface-rail);
   }
 
-  .searchBox {
-    flex-direction: column;
+  .toolbar,
+  .formHeader,
+  .formTitleLine,
+  .formActions,
+  .drawerDock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 9px;
   }
 
+  .kicker {
+    color: var(--prisma-cyan-300);
+    font-size: 0.72rem;
+    font-weight: 820;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .searchBox,
+  .field,
+  .toggleField {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+    color: var(--prisma-text-secondary);
+  }
+
+  .searchBox input,
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: var(--prisma-touch-target);
+    padding: 10px 12px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    outline: 0;
+  }
+
+  .form,
   .twoCols {
-    grid-template-columns: 1fr;
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .twoCols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .tableWrap {
+    min-width: 0;
+    overflow: auto;
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+  }
+
+  .productTable {
+    width: 100%;
+    min-width: 720px;
+    color: var(--prisma-text-secondary);
+  }
+
+  .productTable th,
+  .productTable td {
+    padding: 12px 13px;
+    text-align: left;
+    border-bottom: 1px solid var(--prisma-line-soft);
+  }
+
+  .productTable th {
+    position: sticky;
+    top: 0;
+    z-index: var(--prisma-z-sticky);
+    color: var(--prisma-text-muted);
+    background: rgba(7, 23, 38, 0.92);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .productTable tr:hover td,
+  .selectedRow td { background: rgba(22, 58, 84, 0.34); }
+
+  .saveButton,
+  .secondarySaveButton,
+  .ghostSaveButton,
+  .cancelButton,
+  .linkButton,
+  .tableAction {
+    min-height: var(--prisma-touch-target);
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .saveButton {
+    color: #f8fcff;
+    background: var(--prisma-gradient-primary);
+    border-color: rgba(187, 231, 255, 0.44);
+    box-shadow: var(--prisma-shadow-primary);
+  }
+
+  .notice,
+  .errorBox,
+  .emptyState,
+  .drawerNote { padding: 12px 14px; color: var(--prisma-text-secondary); background: var(--prisma-surface-card); border: 1px solid var(--prisma-line-soft); border-radius: 16px; }
+  .errorBox { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .badgeOk,
+  .badgeMuted,
+  .stockOk,
+  .stockWarn,
+  .stockDanger,
+  .createModeBadge,
+  .editModeBadge { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); font-size: 0.76rem; font-weight: 780; }
+  .badgeOk,
+  .stockOk { color: var(--prisma-success-400); }
+  .stockWarn { color: var(--prisma-warning-400); }
+  .stockDanger { color: var(--prisma-danger-400); }
+  .compactCheck { min-width: var(--prisma-touch-target); min-height: var(--prisma-touch-target); }
+
+  @media (max-width: 980px) {
+    .catalogLayout { grid-template-columns: 1fr; }
+    .drawer { position: relative; top: auto; max-height: none; }
+  }
+
+  @media (max-width: 620px) {
+    .twoCols { grid-template-columns: 1fr; }
   }
 }
-
-/* PRISMA_LIGHT_CATALOG_TACTILE_POLISH_00R */
-@keyframes prismaCatalogSkeletonSweep {
-  from { transform: translateX(-110%); }
-  to { transform: translateX(110%); }
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input {
-  transition:
-    transform var(--prisma-motion-base) var(--prisma-ease-premium),
-    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
-    border-color var(--prisma-motion-fast) ease,
-    background var(--prisma-motion-base) ease,
-    opacity var(--prisma-motion-fast) ease;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable tbody tr:hover td,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState:hover {
-  transform: translateY(-2px);
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:not(:disabled):hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:hover,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:hover {
-  transform: translateY(-1px);
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:active,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: var(--prisma-light-shadow-card);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:focus-visible,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .compactCheck:focus-within,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toggleField:focus-within {
-  outline: none;
-  border-color: var(--prisma-action-primary);
-  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:disabled,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:disabled {
-  color: var(--prisma-disabled-text);
-  background: var(--prisma-disabled-surface);
-  border-color: var(--prisma-border-soft);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState {
-  position: relative;
-  overflow: hidden;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--prisma-skeleton-surface);
-  opacity: 0.18;
-  transform: translateX(-110%);
-  animation: prismaCatalogSkeletonSweep 1.25s var(--prisma-ease-premium) infinite;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input,
-  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
-    animation: none;
-    transition: none;
-    transform: none;
-  }
-}
-
-/* PRISMA_TABLET_CATALOG_EDIT_DRAWER_FIX_01
-   Makes Edit visibly activate the right-side drawer instead of feeling like a dead button. */
-.drawerDock {
-  min-width: 0;
-  scroll-margin: 18px;
-}
-
-.drawerDock[data-editing="true"] .drawer {
-  border-color: var(--prisma-border-action);
-  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
-}
-
-.drawerDock[data-editing="true"] .drawer::before {
-  content: "Producto en edición";
-  display: inline-flex;
-  width: fit-content;
-  margin-bottom: 12px;
-  border: 1px solid var(--prisma-border-action);
-  border-radius: var(--prisma-radius-pill);
-  padding: 6px 10px;
-  color: var(--prisma-action-primary);
-  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
-  font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.formTitleLine {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.editModeBadge,
-.createModeBadge {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  border-radius: var(--prisma-radius-pill);
-  padding: 4px 8px;
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.07em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.editModeBadge {
-  color: var(--prisma-action-primary);
-  border: 1px solid var(--prisma-border-action);
-  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
-}
-
-.createModeBadge {
-  color: var(--prisma-text-secondary);
-  border: 1px solid var(--prisma-border-soft);
-  background: color-mix(in srgb, var(--prisma-text-muted) 10%, transparent);
-}
-
-.tableAction[aria-pressed="true"] {
-  color: white;
-  border-color: var(--prisma-action-primary);
-  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
-  box-shadow: var(--prisma-focus-ring-strong), 0 12px 26px rgba(10, 92, 215, 0.24);
-}
-
-[data-theme="prisma-light"] .tableAction[aria-pressed="true"],
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction[aria-pressed="true"] {
-  color: white;
-  border-color: var(--prisma-action-primary);
-  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
-}
-
-/* PRISMA_TABLET_PREMIUM_VISUAL_1006::START
-   Screen modules final: Operational Card, Liquid Panel, Glass Pill, Action Button.
-*/
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .screen,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workspace {
-  gap: 12px;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .blockedCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .gateBanner,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .identityStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .evidenceDisclosure,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .refreshPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featurePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogPull,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alert,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .operatorNotice,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warning {
-  border: 1px solid var(--prisma-tablet-border);
-  background: var(--prisma-tablet-liquid-panel);
-  box-shadow: var(--prisma-tablet-shadow-panel);
-  backdrop-filter: blur(var(--prisma-tablet-blur-panel)) saturate(1.14);
-  -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-panel)) saturate(1.14);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metric,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpiCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featureItem,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryTile,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productRow,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
-  border: 1px solid var(--prisma-tablet-border);
-  background: var(--prisma-tablet-glass-card);
-  box-shadow: var(--prisma-tablet-shadow-card);
-  backdrop-filter: blur(var(--prisma-tablet-blur-card)) saturate(1.08);
-  -webkit-backdrop-filter: blur(var(--prisma-tablet-blur-card)) saturate(1.08);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .addButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton {
-  border-color: rgba(93, 169, 255, 0.72);
-  background: var(--prisma-tablet-action);
-  box-shadow: 0 14px 28px rgba(31, 110, 255, 0.24), inset 0 1px 0 rgba(255,255,255,0.44);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featurePill,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statusBadge,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readonlyPill,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warningBadge {
-  border-color: var(--prisma-tablet-border);
-  background: var(--prisma-tablet-glass-pill);
-  box-shadow: var(--prisma-tablet-shadow-card);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ok,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_ok,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricOk,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneOk {
-  background: var(--prisma-tablet-success-soft);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_warn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricWarn,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneWarn {
-  background: var(--prisma-tablet-warning-soft);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .danger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_danger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricDanger,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toneDanger {
-  background: var(--prisma-tablet-danger-soft);
-}
-/* PRISMA_TABLET_PREMIUM_VISUAL_1006::END */

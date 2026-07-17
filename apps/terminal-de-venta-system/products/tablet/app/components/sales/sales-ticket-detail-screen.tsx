@@ -372,6 +372,7 @@ export function SalesTicketDetailScreen({
       subtitle="Detalle operativo del ticket cerrado."
       status={<TabletShellStatusPill tone="ok">Ticket cerrado</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <main className={styles.salesPage}
         data-surface="tablet"

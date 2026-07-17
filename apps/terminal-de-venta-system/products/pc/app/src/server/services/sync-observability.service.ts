@@ -31,8 +31,17 @@ function sourceFor(event: SyncEventEnvelope | null) {
   return event?.source || "pc.sync.ingest";
 }
 
+export function canonicalSyncCheckpointSource(event: SyncEventEnvelope | null) {
+  return sourceFor(event);
+}
+
 function deviceFor(event: SyncEventEnvelope | null) {
-  return event?.terminalId || null;
+  return event?.deviceId || event?.terminalId || null;
+}
+
+function shouldAdvanceCheckpoint(result: SyncIngestResult) {
+  return result.status === "accepted" || result.status === "duplicate" ||
+    result.lifecycleStatus === "projected" || result.lifecycleStatus === "reconciled";
 }
 
 function statusFor(result: SyncIngestResult) {
@@ -141,7 +150,7 @@ export async function advanceSyncCheckpoint(input: {
   const model = delegate(input.tx, "syncCheckpoint");
   if (!model?.findFirst || !model?.create || !model?.update) return;
 
-  const source = sourceFor(event);
+  const source = canonicalSyncCheckpointSource(event);
   const deviceId = deviceFor(event);
   const stream = event.topic || "sync.ingest";
   const now = new Date();
@@ -149,15 +158,30 @@ export async function advanceSyncCheckpoint(input: {
     where: { businessId: event.businessId, source, deviceId, stream },
     orderBy: { updatedAt: "desc" }
   }));
+  if (!shouldAdvanceCheckpoint(input.result)) return;
+
   const data = {
-    cursorValue: event.occurredAt || event.eventId,
+    cursorValue: String(event.sequence),
     lastEventId: event.eventId,
     lastIdempotencyKey: event.idempotencyKey,
     lastAttemptId: input.attempt?.id ?? null,
     status: input.result.status,
     lifecycleStatus: input.result.lifecycleStatus ?? null,
     checkpointAt: now,
-    metadataJson: safeJson({ topic: event.topic, aggregateId: event.aggregateId ?? null, diagnostics: input.result.diagnostics ?? [] })
+    metadataJson: safeJson({
+      tenantId: event.tenantId,
+      customerId: event.customerId ?? null,
+      businessId: event.businessId,
+      storeId: event.storeId,
+      terminalId: event.terminalId,
+      deviceId: event.deviceId,
+      topic: event.topic,
+      aggregateId: event.aggregateId,
+      originRecordId: event.originRecordId,
+      sequence: event.sequence,
+      traceId: event.traceId,
+      diagnostics: input.result.diagnostics ?? []
+    })
   };
 
   if (existing?.id) {
@@ -199,7 +223,7 @@ export async function refreshSyncOutboxStatusBuckets(input: { tx: TxClient; even
     const status = row.status ?? "unknown";
     const lifecycleStatus = row.lifecycleStatus ?? null;
     const existing = await bestEffort(() => model.findFirst({
-      where: { businessId: event.businessId, source: event.source, deviceId: event.terminalId, status, lifecycleStatus, bucketStartAt },
+      where: { businessId: event.businessId, source: event.source, deviceId: event.deviceId, status, lifecycleStatus, bucketStartAt },
       orderBy: { updatedAt: "desc" }
     }));
     const data = {
@@ -215,7 +239,7 @@ export async function refreshSyncOutboxStatusBuckets(input: { tx: TxClient; even
         id: `sync_bucket_${randomUUID()}`,
         businessId: event.businessId,
         source: event.source,
-        deviceId: event.terminalId,
+        deviceId: event.deviceId,
         terminalId: event.terminalId,
         status,
         lifecycleStatus,
@@ -239,7 +263,7 @@ export async function markDataSourceFreshness(input: { tx: TxClient; event: Sync
   const status = input.result.status === "rejected" ? "error" : freshnessSeconds > OBSERVABILITY_STALE_AFTER_SECONDS ? "stale" : input.result.status === "conflict" ? "partial" : "ok";
   const confidence = status === "ok" ? 1 : status === "partial" ? 0.72 : status === "stale" ? 0.58 : 0.25;
   const existing = await bestEffort(() => model.findFirst({
-    where: { businessId: event.businessId, source: event.source, deviceId: event.terminalId },
+    where: { businessId: event.businessId, source: event.source, deviceId: event.deviceId },
     orderBy: { updatedAt: "desc" }
   }));
   const data = {
@@ -264,7 +288,58 @@ export async function markDataSourceFreshness(input: { tx: TxClient; event: Sync
       id: `data_fresh_${randomUUID()}`,
       businessId: event.businessId,
       source: event.source,
-      deviceId: event.terminalId,
+      deviceId: event.deviceId,
+      ...data
+    }
+  }));
+}
+
+export async function recordDeviceHeartbeat(input: {
+  tx: TxClient;
+  event: SyncEventEnvelope | null;
+  result: SyncIngestResult;
+}) {
+  const event = input.event;
+  if (!event) return;
+  const model = delegate(input.tx, "deviceHeartbeat");
+  if (!model?.findFirst || !model?.create || !model?.update) return;
+
+  const now = new Date();
+  const existing = await bestEffort(() => model.findFirst({
+    where: { businessId: event.businessId, deviceId: event.deviceId },
+    orderBy: { updatedAt: "desc" }
+  }));
+  const data = {
+    source: event.source,
+    surface: event.source.includes("tablet") ? "tablet" : "pc",
+    runtimeMode: "sync-ingest",
+    appVersion: typeof event.payload.appVersion === "string" ? event.payload.appVersion : "unknown",
+    schemaVersion: event.schemaVersion,
+    licenseStatus: typeof event.payload.licenseStatus === "string" ? event.payload.licenseStatus : null,
+    syncStatus: input.result.status,
+    health: input.result.status === "rejected" ? "degraded" : input.result.status === "conflict" ? "warning" : "healthy",
+    status: input.result.lifecycleStatus ?? input.result.status,
+    outboxCount: typeof event.payload.outboxCount === "number" ? Math.max(0, Math.trunc(event.payload.outboxCount)) : null,
+    lastSaleAt: event.topic.startsWith("sale.") ? new Date(event.occurredAt) : null,
+    lastDiagnosticAt: input.result.errors.length || input.result.conflicts.length ? now : null,
+    lastSeenAt: now,
+    observedAt: now,
+    metadataJson: safeJson({
+      tenantId: event.tenantId,
+      storeId: event.storeId,
+      terminalId: event.terminalId,
+      deviceId: event.deviceId,
+      traceId: event.traceId,
+      sequence: event.sequence
+    })
+  };
+
+  if (existing?.id) await bestEffort(() => model.update({ where: { id: existing.id }, data }));
+  else await bestEffort(() => model.create({
+    data: {
+      id: `device_heartbeat_${randomUUID()}`,
+      businessId: event.businessId,
+      deviceId: event.deviceId,
       ...data
     }
   }));
@@ -285,4 +360,5 @@ export async function recordSyncObservability(input: {
   await advanceSyncCheckpoint({ tx: input.tx, event: input.event, result: input.result, attempt });
   await refreshSyncOutboxStatusBuckets({ tx: input.tx, event: input.event });
   await markDataSourceFreshness({ tx: input.tx, event: input.event, result: input.result });
+  await recordDeviceHeartbeat({ tx: input.tx, event: input.event, result: input.result });
 }

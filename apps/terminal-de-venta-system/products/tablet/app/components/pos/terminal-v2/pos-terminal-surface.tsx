@@ -9,15 +9,15 @@ export function PosTerminalSurface({ children, cartState, paymentOpen, visualSta
       className={styles.surface}
       data-prisma-component="PosTerminalSurface"
       data-prisma-surface-component="PosTerminalSurface"
-      data-prisma-panel="tablet.pos.terminal-softglass-reference"
+      data-prisma-panel="tablet.pos.terminal-nocturne-reference"
       data-prisma-surface="tablet"
       data-prisma-route="/pos"
       data-prisma-layer="surface"
-      data-prisma-effect="softglass-reference-canvas"
+      data-prisma-effect="nocturne-translucent-canvas"
       data-prisma-cart-state={cartState}
       data-prisma-payment-open={paymentOpen ? "true" : "false"}
       data-prisma-visual-state={visualState}
-      data-prisma-canonical-pos="softglass-reference-2606"
+      data-prisma-canonical-pos="nocturne-reference-1607"
 
       data-surface="tablet"
       data-screen="pos"

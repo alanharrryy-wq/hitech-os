@@ -1,4 +1,4 @@
-import { ReturnsLandingScreen } from "@components/returns/return-from-ticket-screen";
+import { ReturnsWorkspace } from "@components/returns/return-from-ticket-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -30,6 +30,6 @@ export default async function ReturnsPage({ searchParams }: { searchParams?: Pro
   const businessId = typeof resolvedSearchParams.businessId === "string" ? resolvedSearchParams.businessId : runtimeInput.businessId;
 
   return (
-    <ReturnsLandingScreen businessId={businessId} runtimeSnapshot={runtimeSnapshot} />
+    <ReturnsWorkspace mode="landing" businessId={businessId} runtimeSnapshot={runtimeSnapshot} />
   );
 }

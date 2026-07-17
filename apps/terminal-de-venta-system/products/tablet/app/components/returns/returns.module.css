@@ -1,436 +1,80 @@
-.returnPage {
-  display: grid;
-  gap: 18px;
-  color: #111827;
-  max-width: min(1180px, calc(100vw - 32px));
-  margin: 0 auto;
-}
-
-.heroPanel,
-.panel {
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  border-radius: 24px;
-  padding: clamp(16px, 2vw, 24px);
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
-  backdrop-filter: blur(18px) saturate(1.08);
-}
-
-.heroPanel {
-  display: grid;
-  gap: 10px;
-}
-
-.heroPanel h1,
-.panel h1,
-.panel h2 {
-  margin: 0;
-  color: #0f172a;
-}
-
-.heroPanel p,
-.panel p,
-.line span,
-.ticketRow span,
-.totalBox small {
-  color: #475569;
-}
-
-.eyebrow {
-  color: #0f766e;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.returnGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
-  gap: 18px;
-  align-items: start;
-}
-
-.panelHeader,
-.line,
-.ticketRow,
-.actionsRow {
-  display: grid;
-  gap: 12px;
-  align-items: center;
-}
-
-.panelHeader {
-  grid-template-columns: minmax(0, 1fr) auto;
-  margin-bottom: 16px;
-}
-
-.ticketList {
-  display: grid;
-  gap: 10px;
-}
-
-.ticketRow,
-.line {
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 18px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.54);
-}
-
-.line {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-
-.line > div:first-child,
-.ticketRow > div:first-child {
-  display: grid;
-  gap: 3px;
-  min-width: 0;
-}
-
-.rowAction {
-  border-radius: 999px;
-  background: rgba(20, 184, 166, 0.14);
-  color: #0f766e;
-  font-weight: 800;
-  padding: 8px 12px;
-}
-
-.qtyControls,
-.reasonGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.qtyButton,
-.reasonButton,
-.reasonActive,
-.primary,
-.secondaryButton {
-  border: 0;
-  border-radius: 14px;
-  min-height: 42px;
-  padding: 10px 14px;
-  font: inherit;
-  font-weight: 800;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-}
-
-.qtyButton {
-  width: 42px;
-  padding: 0;
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.qtyButton:disabled,
-.primary:disabled {
-  cursor: not-allowed;
-  opacity: 0.48;
-}
-
-.reasonButton,
-.secondaryButton {
-  background: rgba(15, 23, 42, 0.08);
-  color: #334155;
-}
-
-.reasonActive,
-.primary {
-  background: linear-gradient(135deg, #0f766e, #14b8a6);
-  color: #ffffff;
-  box-shadow: 0 12px 30px rgba(15, 118, 110, 0.22);
-}
-
-.actionsRow {
-  grid-template-columns: repeat(auto-fit, minmax(160px, max-content));
-}
-
-.notesLabel {
-  display: grid;
-  gap: 8px;
-  color: #334155;
-  font-weight: 800;
-  margin-top: 14px;
-}
-
-.notes {
-  width: 100%;
-  min-height: 92px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: 16px;
-  padding: 12px;
-  color: #0f172a;
-  background: rgba(255, 255, 255, 0.72);
-  resize: vertical;
-}
-
-.totalBox {
-  display: grid;
-  gap: 4px;
-  margin: 16px 0;
-  border-radius: 20px;
-  padding: 16px;
-  background: rgba(240, 253, 250, 0.92);
-  border: 1px solid rgba(20, 184, 166, 0.2);
-}
-
-.totalBox strong {
-  color: #0f766e;
-  font-size: clamp(1.55rem, 3vw, 2.4rem);
-}
-
-.error {
-  color: #b91c1c;
-  font-weight: 800;
-}
-
-.success {
-  border: 1px solid rgba(22, 163, 74, 0.22);
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: rgba(240, 253, 244, 0.92);
-  color: #166534;
-  font-weight: 900;
-}
-
-.empty {
-  border-radius: 16px;
-  padding: 14px;
-  background: rgba(241, 245, 249, 0.82);
-  color: #475569;
-}
-
-@media (max-width: 980px) {
-  .returnGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .ticketRow {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .rowAction {
-    grid-column: 1 / -1;
-    justify-self: start;
-  }
-}
-
-@media (max-width: 720px) {
+@layer prisma.routes {
   .returnPage {
-    max-width: calc(100vw - 18px);
-    gap: 12px;
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
   }
 
+  .heroPanel {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .eyebrow { color: var(--prisma-cyan-300); font-size: 0.72rem; font-weight: 820; letter-spacing: 0.14em; text-transform: uppercase; }
+  .returnGrid { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr); gap: 12px; align-items: start; }
+
+  .panel,
+  .success,
+  .error,
+  .empty {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .success { color: var(--prisma-success-400); border-color: rgba(99, 230, 173, 0.28); }
+  .error { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
   .panelHeader,
-  .line,
-  .ticketRow {
-    grid-template-columns: 1fr;
-  }
+  .lineTitleRow,
+  .actionsRow,
+  .qtyControls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .ticketList { display: grid; gap: 7px; }
+  .ticketRow,
+  .line { min-width: 0; min-height: 58px; padding: 10px 11px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid transparent; border-radius: 15px; }
+  .ticketRow:hover { border-color: var(--prisma-line-medium); }
+  .lineReturned { opacity: 0.58; }
+  .linePartialReturned { border-color: rgba(255, 210, 125, 0.26); }
+  .returnedBadge,
+  .partialBadge,
+  .returnedGhost,
+  .availableGhost { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); font-size: 0.76rem; font-weight: 780; }
+  .returnedBadge { color: var(--prisma-success-400); }
+  .partialBadge { color: var(--prisma-warning-400); }
+  .reasonGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .reasonButton,
+  .reasonActive,
+  .qtyButton,
+  .rowAction,
+  .primary,
+  .secondaryButton { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+  .reasonActive { color: var(--prisma-cyan-300); border-color: var(--prisma-line-strong); }
+  .primary { color: #f8fcff; background: var(--prisma-gradient-primary); border-color: rgba(187, 231, 255, 0.44); box-shadow: var(--prisma-shadow-primary); }
+  .qtyButton { min-width: var(--prisma-touch-target); padding: 0; }
+  .notes,
+  .notesLabel { min-width: 0; display: grid; gap: 6px; }
+  .notes textarea { width: 100%; min-height: 100px; padding: 11px 12px; color: var(--prisma-text-primary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); }
+  .totalBox { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; color: var(--prisma-text-primary); background: var(--prisma-surface-info); border-radius: 15px; }
 
-  .qtyControls {
-    justify-content: flex-start;
-  }
+  @media (max-width: 900px) { .returnGrid { grid-template-columns: 1fr; } }
+  @media (max-width: 620px) { .reasonGrid { grid-template-columns: 1fr; } }
 }
-
-.lineTitleRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.lineReturned {
-  opacity: 0.64;
-  background:
-    linear-gradient(135deg, rgba(241, 245, 249, 0.88), rgba(226, 232, 240, 0.58)),
-    rgba(255, 255, 255, 0.46);
-  border-style: dashed;
-}
-
-.linePartialReturned {
-  background:
-    linear-gradient(135deg, rgba(240, 253, 250, 0.74), rgba(255, 255, 255, 0.56)),
-    rgba(255, 255, 255, 0.54);
-  border-color: rgba(20, 184, 166, 0.22);
-}
-
-.returnedBadge,
-.partialBadge {
-  border-radius: 999px;
-  padding: 4px 9px;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-}
-
-.returnedBadge {
-  color: #64748b;
-  background: rgba(100, 116, 139, 0.12);
-  border: 1px solid rgba(100, 116, 139, 0.18);
-}
-
-.partialBadge {
-  color: #0f766e;
-  background: rgba(20, 184, 166, 0.12);
-  border: 1px solid rgba(20, 184, 166, 0.2);
-}
-
-.returnedGhost,
-.availableGhost {
-  margin-top: 3px;
-  display: block;
-  font-size: 0.86rem;
-  font-weight: 800;
-}
-
-.returnedGhost {
-  color: #64748b;
-}
-
-.availableGhost {
-  color: #0f766e;
-}
-
-.lineReturned .qtyButton {
-  background: rgba(148, 163, 184, 0.24);
-  color: #94a3b8;
-}
-
-/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::START */
-/* Background-preserving CSS-module override generated from visual_layer_map + current CSS. */
-.returnPage {
-  background-color: transparent;
-  box-shadow: none;
-  filter: none;
-  text-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.empty,
-.eyebrow,
-.heroPanel,
-.lineTitleRow,
-.panel,
-.panelHeader,
-.reasonGrid,
-.returnGrid,
-.ticketList,
-.ticketRow,
-.totalBox {
-  background: rgba(255,255,255,.36);
-  border-color: rgba(86,125,170,.17);
-  box-shadow: none;
-  filter: none;
-  text-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.actionsRow,
-.partialBadge,
-.qtyButton,
-.reasonButton,
-.returnedBadge,
-.rowAction,
-.secondaryButton {
-  box-shadow: none;
-  filter: none;
-  text-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-/* PRISMA_TABLET_BACKGROUND_WORKBENCH_1006::END */
-
-/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_START
-   Módulos de pantalla: superficies transparentes premium con relleno legible.
-*/
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .screen,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .page,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .workspace,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutGrid,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .posShell {
-  background: transparent;
-  background-image: none;
-  box-shadow: none;
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .heroCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .mainPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .detailPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .summaryCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .successCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .catalogArea,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ticketPanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .panel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .flowGuard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .varianceBox,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBreakdown {
-  color: var(--prisma-prem-ink);
-  border-color: var(--prisma-prem-edge);
-  background: var(--prisma-prem-panel-gradient);
-  box-shadow: var(--prisma-prem-shadow);
-  backdrop-filter: blur(20px) saturate(1.20);
-  -webkit-backdrop-filter: blur(20px) saturate(1.20);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .metricCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .kpiCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .statePanel,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .productCard,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .summaryLines article,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .onlineStrip,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .offlineStrip {
-  color: var(--prisma-prem-ink);
-  border-color: var(--prisma-prem-edge);
-  background: var(--prisma-prem-card-gradient);
-  box-shadow: var(--prisma-prem-shadow-card);
-  backdrop-filter: blur(18px) saturate(1.18);
-  -webkit-backdrop-filter: blur(18px) saturate(1.18);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .searchInputWrap,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .cashBox,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .secondaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .filterButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .filterActive,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .secondaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .ghostButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButton {
-  color: var(--prisma-prem-ink);
-  border-color: var(--prisma-prem-edge-strong);
-  background: var(--prisma-prem-control-gradient);
-  box-shadow: var(--prisma-prem-shadow-control);
-}
-
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryAction,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .rowAddButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .productMainButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .primaryButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .addButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .checkoutLink,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .paymentActive,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .confirmButton,
-:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"][data-prisma-visual-mode="background-workbench"]) .categoryButtonActive {
-  color: #ffffff;
-  border-color: rgba(189, 222, 255, .78);
-  background: var(--prisma-prem-blue-gradient);
-  box-shadow: var(--prisma-prem-shadow-blue);
-  text-shadow: 0 1px 1px rgba(3, 30, 72, .24);
-}
-/* PRISMA_TABLET_PREMIUM_CLOUDBACK_1006_2247::SCREEN_MODULE_END */

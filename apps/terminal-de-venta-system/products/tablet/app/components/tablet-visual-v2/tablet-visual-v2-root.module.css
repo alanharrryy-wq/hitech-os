@@ -1,58 +1,25 @@
-.visualRoot {
-  --prisma-v2-pearl: #fbfdff;
-  --prisma-v2-mist: #eaf2fa;
-  --prisma-v2-frost: rgba(255, 255, 255, 0.74);
-  --prisma-v2-silver: #cdd9e7;
-  --prisma-v2-cyan: #34d6ff;
-  --prisma-v2-blue: #2f82ff;
-  --prisma-v2-lavender: #9b8cff;
-  --prisma-v2-champagne: #ead7a2;
-  --prisma-v2-graphite: #142033;
-  --prisma-v2-muted: #5f6f84;
-  --prisma-v2-border: rgba(83, 117, 154, 0.18);
-  --prisma-v2-border-strong: rgba(67, 112, 164, 0.28);
-  --prisma-v2-focus: rgba(47, 130, 255, 0.28);
-  --prisma-v2-shadow-panel: 0 24px 80px rgba(31, 64, 104, 0.14);
-  --prisma-v2-shadow-card: 0 14px 38px rgba(50, 84, 128, 0.12);
-  --prisma-v2-blur: 20px;
-  --prisma-v2-touch-target: 48px;
-  --prisma-v2-canonical-width: 1180;
-  --prisma-v2-canonical-height: 820;
-  --prisma-v2-canonical-zoom: 0.75;
+@layer prisma.atmosphere {
+  .visualRoot {
+    position: relative;
+    isolation: isolate;
+    min-height: 100dvh;
+    margin: 0;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-night-950);
+  }
 
-  min-height: 100dvh;
-  margin: 0;
-  color: var(--prisma-v2-graphite);
-  background:
-    radial-gradient(circle at 16% 0%, rgba(52, 214, 255, 0.18), transparent 34rem),
-    radial-gradient(circle at 86% 6%, rgba(155, 140, 255, 0.12), transparent 30rem),
-    radial-gradient(circle at 60% 102%, rgba(234, 215, 162, 0.15), transparent 34rem),
-    linear-gradient(180deg, var(--prisma-v2-pearl) 0%, var(--prisma-v2-mist) 58%, #dde9f5 100%);
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
-}
-
-.visualRoot::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(47, 130, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(rgba(52, 214, 255, 0.026) 1px, transparent 1px);
-  background-size: clamp(44px, 4vw, 64px) clamp(44px, 4vw, 64px);
-  mask-image: radial-gradient(circle at 50% 20%, black, transparent 76%);
-  opacity: 0.48;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .visualRoot *,
-  .visualRoot *::before,
-  .visualRoot *::after {
-    scroll-behavior: auto;
-    animation-duration: 1ms;
-    animation-iteration-count: 1;
-    transition-duration: 1ms;
+  .visualRoot::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--prisma-z-scene);
+    pointer-events: none;
+    background:
+      linear-gradient(115deg, rgba(1, 7, 14, 0.78), rgba(3, 15, 27, 0.52) 46%, rgba(2, 7, 13, 0.82)),
+      radial-gradient(circle at 16% 18%, rgba(58, 151, 255, 0.20), transparent 33%),
+      radial-gradient(circle at 84% 12%, rgba(56, 207, 255, 0.12), transparent 30%),
+      url("/assets/tablet-lab/prisma-pos-cafe-premium.png") center / cover no-repeat fixed;
+    filter: saturate(0.82) contrast(1.08) brightness(0.72);
+    transform: translateZ(0);
   }
 }

@@ -274,10 +274,10 @@ export function PosTicketPanel({
           <summary>Opciones de ticket</summary>
           <div className={styles.posPremiumSecondaryCheckoutActions} aria-label="Acciones secundarias">
             <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
-              <Save aria-hidden="true" size={17} /> Guardar
+              <Save aria-hidden="true" size={17} /> Suspender
             </button>
             <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy}>
-              <Undo2 aria-hidden="true" size={17} /> Cancelar
+              <Undo2 aria-hidden="true" size={17} /> Vaciar carrito
             </button>
           </div>
         </details>
@@ -293,7 +293,7 @@ export function PosTicketPanel({
                     <span>{heldCartTime(heldCart.createdAt)} · {heldCart.totalQty} pzas · {formatMoney(heldCart.totalCents)}</span>
                   </div>
                   <div className={styles.heldCartActions}>
-                    <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={Boolean(checkoutBusy)}>Recuperar</button>
+                    <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={Boolean(checkoutBusy)}>Reanudar</button>
                     <button type="button" onClick={() => onDiscardHeldCart(heldCart.id)} disabled={Boolean(checkoutBusy)} aria-label={`Eliminar ${heldCart.label}`}>
                       <Trash2 aria-hidden="true" size={15} />
                     </button>

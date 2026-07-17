@@ -36,10 +36,10 @@ export interface TabletRetiredInternalRoute {
 }
 
 export const TABLET_PAGE_CONTRACTS: TabletPageContract[] = [
-  { route: '/', label: 'Inicio Tablet', module: 'Home Tablet', roles: ['cajero', 'supervisor'], visibility: 'final', canonicalRoute: '/pos', finalMenu: false, order: 0, rationale: 'Home selecciona el siguiente trabajo operativo sin exponer rutas técnicas.' },
+  { route: '/', label: 'Inicio Tablet', module: 'Home Tablet', roles: ['cajero', 'supervisor'], visibility: 'final', canonicalRoute: '/', finalMenu: true, order: 0, rationale: 'Resumen operativo y siguiente trabajo sin exponer rutas técnicas.' },
   { route: '/pos', label: 'Vender', module: 'Venta', roles: ['cajero'], visibility: 'final', canonicalRoute: '/pos', finalMenu: true, order: 10, rationale: 'Entrada principal del cajero.' },
   { route: '/checkout', label: 'Cobro', module: 'Venta', roles: ['cajero'], visibility: 'step', canonicalRoute: '/pos', finalMenu: false, order: 20, rationale: 'Paso contextual del flujo de venta; conserva sus propiedades y no aparece como módulo raíz.' },
-  { route: '/shift', label: 'Turno y caja', module: 'Turno y caja', roles: ['cajero', 'supervisor'], visibility: 'final', canonicalRoute: '/shift', finalMenu: true, order: 30, rationale: 'Módulo operativo de turno.' },
+  { route: '/shift', label: 'Turno y caja', module: 'Turno y caja', roles: ['cajero', 'supervisor'], visibility: 'submenu', canonicalRoute: '/shift', finalMenu: false, order: 30, rationale: 'Espacio operativo accesible desde Más.' },
   { route: '/stock', label: 'Inventario para vender', module: 'Inventario', roles: ['cajero', 'supervisor'], visibility: 'final', canonicalRoute: '/stock', finalMenu: true, order: 40, rationale: 'Canonical de inventario vendible.' },
   { route: '/catalog', label: 'Catálogo', module: 'Inventario', roles: ['supervisor', 'admin'], visibility: 'submenu', canonicalRoute: '/catalog', finalMenu: false, order: 41, rationale: 'Administración secundaria del catálogo.' },
   { route: '/existencias', label: 'Existencias', module: 'Inventario', roles: ['supervisor'], visibility: 'submenu', canonicalRoute: '/stock', finalMenu: false, order: 42, rationale: 'Vista avanzada bajo Inventario; se conserva para no perder propiedades.' },
@@ -50,13 +50,14 @@ export const TABLET_PAGE_CONTRACTS: TabletPageContract[] = [
   { route: '/sales', label: 'Ventas', module: 'Ventas', roles: ['cajero', 'supervisor'], visibility: 'alias', canonicalRoute: '/sales/today', finalMenu: false, order: 52, rationale: 'Alias compatible a Ventas de hoy.' },
   { route: '/sales/today/:saleId', label: 'Detalle de venta de hoy', module: 'Ventas', roles: ['cajero', 'supervisor'], visibility: 'dynamic', canonicalRoute: '/sales/today', finalMenu: false, order: 53, rationale: 'Detalle abierto desde listas; nunca botón raíz.' },
   { route: '/sales/history/:saleId', label: 'Detalle histórico de venta', module: 'Ventas', roles: ['supervisor'], visibility: 'dynamic', canonicalRoute: '/sales/history', finalMenu: false, order: 54, rationale: 'Detalle abierto desde historial.' },
-  { route: '/returns', label: 'Devoluciones', module: 'Devoluciones', roles: ['cajero', 'supervisor'], visibility: 'final', canonicalRoute: '/returns', finalMenu: true, order: 60, rationale: 'Módulo final de devolución.' },
+  { route: '/returns', label: 'Devoluciones', module: 'Devoluciones', roles: ['cajero', 'supervisor'], visibility: 'submenu', canonicalRoute: '/returns', finalMenu: false, order: 60, rationale: 'Espacio contextual accesible desde Más.' },
   { route: '/sales/today/:saleId/return', label: 'Devolución desde ticket', module: 'Devoluciones', roles: ['cajero', 'supervisor'], visibility: 'dynamic', canonicalRoute: '/returns', finalMenu: false, order: 61, rationale: 'Flujo contextual desde ticket.' },
-  { route: '/sync', label: 'Sincronización', module: 'Sync y offline', roles: ['cajero', 'supervisor', 'soporte'], visibility: 'final', canonicalRoute: '/sync', finalMenu: true, order: 70, rationale: 'Pendientes, conexión y continuidad operativa.' },
+  { route: '/sync', label: 'Sincronización', module: 'Sync y offline', roles: ['cajero', 'supervisor', 'soporte'], visibility: 'submenu', canonicalRoute: '/sync', finalMenu: false, order: 70, rationale: 'Pendientes y continuidad operativa accesibles desde Más.' },
   { route: '/offline', label: 'Offline y export', module: 'Sync y offline', roles: ['cajero', 'supervisor'], visibility: 'submenu', canonicalRoute: '/sync', finalMenu: false, order: 71, rationale: 'Secundaria dentro de Sync.' },
-  { route: '/settings/license', label: 'Licencia', module: 'Configuración', roles: ['supervisor', 'admin'], visibility: 'final', canonicalRoute: '/settings/license', finalMenu: true, order: 80, rationale: 'Configuración operativa visible para supervisor/admin.' },
+  { route: '/settings/license', label: 'Licencia', module: 'Configuración', roles: ['supervisor', 'admin'], visibility: 'submenu', canonicalRoute: '/settings/license', finalMenu: false, order: 80, rationale: 'Configuración operativa accesible desde Más.' },
   { route: '/settings/export', label: 'Exportaciones', module: 'Configuración', roles: ['supervisor', 'admin'], visibility: 'submenu', canonicalRoute: '/settings/export', finalMenu: false, order: 81, rationale: 'Secundaria de configuración.' },
-  { route: '/settings/data', label: 'Datos', module: 'Configuración', roles: ['admin'], visibility: 'alias', canonicalRoute: '/settings/license', finalMenu: false, order: 82, rationale: 'Alias actual; futura Datos/backup sólo con implementación real.' }
+  { route: '/settings/data', label: 'Datos', module: 'Configuración', roles: ['admin'], visibility: 'submenu', canonicalRoute: '/settings/data', finalMenu: false, order: 82, rationale: 'Resumen de respaldo y datos con implementación existente.' },
+  { route: '/setup', label: 'Configuración inicial', module: 'Configuración', roles: ['admin'], visibility: 'step', canonicalRoute: '/setup', finalMenu: false, order: 90, rationale: 'Flujo inmersivo de preparación inicial; nunca aparece en el dock.' }
 ];
 
 export const TABLET_RETIRED_INTERNAL_ROUTES: TabletRetiredInternalRoute[] = [

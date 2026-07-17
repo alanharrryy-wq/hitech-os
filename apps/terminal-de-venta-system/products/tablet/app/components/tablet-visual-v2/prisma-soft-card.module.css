@@ -1,65 +1,17 @@
-.card {
-  min-width: 0;
-  position: relative;
-  display: grid;
-  gap: clamp(9px, 1vw, 13px);
-  padding: clamp(14px, 1.6vw, 20px);
-  border: 1px solid var(--prisma-v2-border, rgba(83, 117, 154, 0.18));
-  border-radius: clamp(18px, 2vw, 26px);
-  color: var(--prisma-v2-graphite, #142033);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.80), rgba(244, 249, 255, 0.58)),
-    radial-gradient(circle at 18% 0%, rgba(52, 214, 255, 0.14), transparent 42%);
-  box-shadow:
-    var(--prisma-v2-shadow-card, 0 14px 38px rgba(50, 84, 128, 0.12)),
-    inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
-  -webkit-backdrop-filter: blur(var(--prisma-v2-blur, 20px)) saturate(1.10);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 1px 1px auto;
-  height: 44%;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.44), transparent);
-  z-index: -1;
-}
-
-.card[data-tone="amount"] {
-  border-color: rgba(52, 214, 255, 0.28);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(239, 248, 255, 0.64)),
-    radial-gradient(circle at 12% 10%, rgba(52, 214, 255, 0.25), transparent 48%);
-}
-
-.card[data-tone="warning"] {
-  border-color: rgba(245, 158, 11, 0.28);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(255, 250, 232, 0.70)),
-    radial-gradient(circle at 8% 8%, rgba(245, 158, 11, 0.17), transparent 42%);
-}
-
-.card[data-tone="selected"] {
-  border-color: rgba(47, 130, 255, 0.40);
-  box-shadow:
-    0 18px 44px rgba(47, 130, 255, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92);
-}
-
-.card:focus-within {
-  border-color: rgba(47, 130, 255, 0.42);
-  box-shadow:
-    0 0 0 3px var(--prisma-v2-focus, rgba(47, 130, 255, 0.28)),
-    var(--prisma-v2-shadow-card, 0 14px 38px rgba(50, 84, 128, 0.12));
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer prisma.materials {
   .card {
-    transition-duration: 1ms;
+    min-width: 0;
+    padding: 16px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
   }
+
+  .card[data-tone="warning"] { border-color: rgba(255, 210, 125, 0.30); }
+  .card[data-tone="danger"] { border-color: rgba(255, 142, 156, 0.30); }
+  .card[data-tone="success"] { border-color: rgba(99, 230, 173, 0.28); }
+  .card[data-tone="amount"] { background: var(--prisma-surface-info); }
 }

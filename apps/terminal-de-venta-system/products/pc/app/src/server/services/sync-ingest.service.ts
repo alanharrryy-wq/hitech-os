@@ -1,6 +1,6 @@
 import { prisma } from "@/server/prisma/client";
 import { projectAcceptedSyncEvent } from "@/server/services/sync-projectors.service";
-import { recordSyncObservability } from "@/server/services/sync-observability.service";
+import { canonicalSyncCheckpointSource, recordSyncObservability } from "@/server/services/sync-observability.service";
 import {
   extractSyncEvents,
   validateSyncEventEnvelope,
@@ -31,7 +31,7 @@ async function ensureLedgerBusiness(tx: any, businessId: string) {
   });
 }
 
-function aggregateIdFor(event: SyncEventEnvelope) {
+function aggregateIdFor(event: { payload: Record<string, unknown>; eventId: string; aggregateId?: string }) {
   const payload = event.payload;
   const pick = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : "");
   return event.aggregateId || pick(payload.saleId) || pick(payload.productSupplierId) || pick(payload.linkId) || pick(payload.supplierId) || pick(payload.productId) || pick(payload.ticketId) || event.eventId;
@@ -57,6 +57,60 @@ function candidateString(candidate: unknown, key: string) {
   if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return "";
   const value = (candidate as Record<string, unknown>)[key];
   return typeof value === "string" && value.trim() ? value.trim() : "";
+}
+
+function canonicalProjectionSource(event: SyncEventEnvelope) {
+  return `pc-canonical-projection:${event.source}`;
+}
+
+function storedPayloadHash(existing: any) {
+  try {
+    const parsed = JSON.parse(existing?.payloadJson ?? "{}");
+    if (typeof parsed?.payloadHash === "string" && parsed.payloadHash.trim()) return parsed.payloadHash.trim().toLowerCase();
+    if (parsed?.payload && typeof parsed.payload === "object") return syncPayloadFingerprint(parsed.payload);
+  } catch {
+    // Treat unreadable historical payload as unknown instead of inventing equality.
+  }
+  return "";
+}
+
+function batchConflict(detail: string): SyncConflictFinding {
+  return {
+    code: "batch_checksum_mismatch",
+    label: "Checksum de lote inválido",
+    severity: "rejected",
+    detail
+  };
+}
+
+function batchValidationErrors(input: unknown, candidates: unknown[]) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) return [];
+  const record = input as Record<string, unknown>;
+  if (!Array.isArray(record.events)) return [];
+  const batchId = candidateString(record, "batchId");
+  const batchChecksum = candidateString(record, "batchChecksum").toLowerCase();
+  const fingerprints = candidates.map((candidate) => {
+    const event = candidate && typeof candidate === "object" && !Array.isArray(candidate)
+      ? candidate as Record<string, unknown>
+      : {};
+    return {
+      eventId: candidateString(event, "eventId"),
+      payloadHash: candidateString(event, "payloadHash").toLowerCase(),
+      sequence: typeof event.sequence === "number" ? event.sequence : Number(event.sequence)
+    };
+  });
+  const expected = syncPayloadFingerprint(fingerprints);
+  const errors: string[] = [];
+  if (!batchId) errors.push("batchId debe ser texto no vacío.");
+  if (!batchChecksum) errors.push("batchChecksum debe ser texto no vacío.");
+  if (batchChecksum && batchChecksum !== expected) errors.push(`batchChecksum no coincide; expected=${expected}.`);
+  for (const candidate of candidates) {
+    if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) continue;
+    const event = candidate as Record<string, unknown>;
+    if (candidateString(event, "batchId") !== batchId) errors.push(`Evento ${candidateString(event, "eventId")} no pertenece al batchId recibido.`);
+    if (candidateString(event, "batchChecksum").toLowerCase() !== batchChecksum) errors.push(`Evento ${candidateString(event, "eventId")} no conserva batchChecksum.`);
+  }
+  return [...new Set(errors)];
 }
 
 function resultSummary(results: SyncIngestResult[]): Record<SyncEventStatus, number> {
@@ -92,6 +146,23 @@ async function findExistingEvent(tx: any, event: SyncEventEnvelope) {
 }
 
 function duplicateResult(event: SyncEventEnvelope, existing: any): SyncIngestResult {
+  const priorHash = storedPayloadHash(existing);
+  if (priorHash && priorHash !== event.payloadHash) {
+    return {
+      eventId: event.eventId,
+      topic: event.topic,
+      status: "conflict",
+      lifecycleStatus: "conflict",
+      conflicts: [{
+        code: "idempotency_payload_mismatch",
+        label: "Idempotencia con payload distinto",
+        severity: "conflict",
+        detail: "PC ya recibió el mismo businessId + idempotencyKey con un payloadHash distinto."
+      }],
+      errors: [],
+      diagnostics: ["IDEMPOTENCY_PAYLOAD_MISMATCH", `REMOTE_LEDGER_ID:${existing.id}`]
+    };
+  }
   return {
     eventId: event.eventId,
     topic: event.topic,
@@ -99,8 +170,42 @@ function duplicateResult(event: SyncEventEnvelope, existing: any): SyncIngestRes
     lifecycleStatus: existing.lifecycleStatus ?? "reconciled",
     conflicts: [{ code: "duplicate_event", label: "Evento duplicado", severity: "warning", detail: "PC ya procesó este businessId + idempotencyKey o eventId; no se crea otro ledger." }],
     errors: [],
-    diagnostics: ["ALREADY_PROCESSED", event.idempotencyKey ? "DUPLICATE_IDEMPOTENCY_KEY" : "DUPLICATE_EVENT_ID"]
+    diagnostics: ["ALREADY_PROCESSED", event.idempotencyKey ? "DUPLICATE_IDEMPOTENCY_KEY" : "DUPLICATE_EVENT_ID", `REMOTE_LEDGER_ID:${existing.id}`]
   };
+}
+
+async function sequenceConflict(tx: any, event: SyncEventEnvelope): Promise<SyncConflictFinding | null> {
+  const model = tx?.syncCheckpoint;
+  if (!model?.findFirst) return null;
+  const existing = await model.findFirst({
+    where: {
+      businessId: event.businessId,
+      source: canonicalSyncCheckpointSource(event),
+      deviceId: event.deviceId,
+      stream: event.topic
+    },
+    orderBy: { updatedAt: "desc" }
+  }).catch(() => null);
+  if (!existing?.cursorValue) return null;
+  const prior = Number(existing.cursorValue);
+  if (!Number.isSafeInteger(prior)) return null;
+  if (event.sequence < prior) {
+    return {
+      code: "stale_sequence",
+      label: "Secuencia vencida",
+      severity: "conflict",
+      detail: `sequence=${event.sequence} es menor que checkpoint=${prior}.`
+    };
+  }
+  if (event.sequence === prior && existing.lastEventId && existing.lastEventId !== event.eventId) {
+    return {
+      code: "inconsistent_sequence",
+      label: "Secuencia inconsistente",
+      severity: "conflict",
+      detail: `sequence=${event.sequence} ya pertenece a ${existing.lastEventId}.`
+    };
+  }
+  return null;
 }
 
 async function persistRejected(tx: any, candidate: unknown, errors: string[], conflicts: SyncConflictFinding[]): Promise<SyncIngestResult> {
@@ -154,7 +259,7 @@ async function persistConflict(tx: any, event: SyncEventEnvelope, conflicts: Syn
       idempotencyKey: event.idempotencyKey,
       correlationId: event.correlationId ?? null,
       payloadJson: JSON.stringify(event),
-      source: event.source,
+      source: canonicalProjectionSource(event),
       schemaVersion: event.schemaVersion,
       status: "conflict",
       lifecycleStatus: "conflict",
@@ -174,6 +279,19 @@ async function persistAndProjectEvent(tx: any, event: SyncEventEnvelope): Promis
   const existing = await findExistingEvent(tx, event);
   if (existing) return duplicateResult(event, existing);
 
+  const sequenceFinding = await sequenceConflict(tx, event);
+  if (sequenceFinding) {
+    return {
+      eventId: event.eventId,
+      topic: event.topic,
+      status: "conflict",
+      lifecycleStatus: "conflict",
+      conflicts: [sequenceFinding],
+      errors: [],
+      diagnostics: ["SEQUENCE_CHECKPOINT_CONFLICT"]
+    };
+  }
+
   const now = new Date();
   const projection = await projectAcceptedSyncEvent(tx, event);
   await ensureLedgerBusiness(tx, event.businessId);
@@ -191,7 +309,7 @@ async function persistAndProjectEvent(tx: any, event: SyncEventEnvelope): Promis
       idempotencyKey: event.idempotencyKey,
       correlationId: event.correlationId ?? null,
       payloadJson: JSON.stringify(event),
-      source: event.source,
+      source: canonicalProjectionSource(event),
       schemaVersion: event.schemaVersion,
       status: storageStatus,
       lifecycleStatus,
@@ -266,19 +384,7 @@ async function persistUnexpectedFailure(candidate: unknown, error: unknown): Pro
           terminalId: event?.terminalId || candidateString(candidate, "terminalId") || null,
           topic,
           eventType: topic,
-          aggregateId: event?.aggregateId || aggregateIdFor(event ?? {
-            eventId,
-            eventType: topic,
-            topic,
-            idempotencyKey: candidateString(candidate, "idempotencyKey") || eventId,
-            businessId,
-            terminalId: candidateString(candidate, "terminalId") || "unknown-terminal",
-            actorId: candidateString(candidate, "actorId") || "unknown-actor",
-            source: candidateString(candidate, "source") || "pc.sync.ingest",
-            occurredAt: now.toISOString(),
-            payload: {},
-            schemaVersion: candidateString(candidate, "schemaVersion") || SUPPORTED_SYNC_SCHEMA_VERSIONS[0]
-          }),
+          aggregateId: event?.aggregateId || aggregateIdFor(event ?? { eventId, payload: {} }),
           idempotencyKey: event?.idempotencyKey || candidateString(candidate, "idempotencyKey") || eventId,
           correlationId: event?.correlationId ?? null,
           payloadJson: JSON.stringify({ failed: candidate }),
@@ -354,6 +460,32 @@ export async function persistSyncIngestPayload(input: unknown): Promise<SyncInge
   const candidates = extractSyncEvents(input);
   const seenInBatch = new Set<string>();
   const results: SyncIngestResult[] = [];
+  const batchErrors = batchValidationErrors(input, candidates);
+
+  if (batchErrors.length) {
+    for (const candidate of candidates) {
+      const result = await (prisma as any).$transaction(async (tx: any) =>
+        persistRejected(tx, candidate, batchErrors, [batchConflict(batchErrors.join(" "))])
+      );
+      results.push(result);
+    }
+    const rejectedSummary = resultSummary(results);
+    return {
+      status: topStatus(rejectedSummary),
+      eventsReceived: candidates.length,
+      results,
+      summary: rejectedSummary,
+      meta: {
+        persistence: "outbox_event",
+        durable: true,
+        storageModel: "OutboxEvent",
+        idempotencyKey: "idempotencyKey",
+        recognizedTopics: RECOGNIZED_SYNC_TOPICS,
+        supportedSchemaVersions: SUPPORTED_SYNC_SCHEMA_VERSIONS,
+        note: "El lote fue rechazado y persistido como dead-letter porque batchId/batchChecksum no probaron integridad."
+      }
+    };
+  }
 
   for (const candidate of candidates) {
     try {

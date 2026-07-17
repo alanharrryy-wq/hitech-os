@@ -1,4 +1,4 @@
-import { PosScreen } from "@components/pos/pos-screen";
+import { SellingWorkspace } from "@components/pos/pos-screen";
 import { getTabletRuntimeSnapshot } from "@/server/tablet-runtime-snapshot";
 import { readRuntimeSnapshotInput } from "@/server/tablet-runtime-snapshot/env";
 
@@ -11,5 +11,5 @@ export const metadata = {
 
 export default async function PosPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <PosScreen runtimeSnapshot={runtimeSnapshot} />;
+  return <SellingWorkspace runtimeSnapshot={runtimeSnapshot} />;
 }
