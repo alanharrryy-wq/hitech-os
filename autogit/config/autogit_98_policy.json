@@ -7,7 +7,8 @@
     "Runtime/generated noise is excluded from commit planning, not deleted.",
     "AG100: staged whitespace/EOF self-heal is allowlisted for safe text extensions.",
     "AG100: large JSON validation must not use capped evidence readers.",
-    "AG100: runtime/generated noise remains excluded from commit planning, not deleted."
+    "AG100: runtime/generated noise remains excluded from commit planning, not deleted.",
+    "Exact visual-design token source paths may bypass the filename-only blocker, but remain subject to the full content secret scan."
   ],
   "safe_self_heal_extensions": [
     ".md",
@@ -30,5 +31,13 @@
     ".psm1",
     ".cmd",
     ".bat"
+  ],
+  "allow_sensitive_named_evidence_globs": [
+    "apps/terminal-de-venta-system/docs/ops/licscope/PII_SECRET_SAFETY_MATRIX.*",
+    "apps/terminal-de-venta-system/docs/ops/licscope/SECRET_EXPOSURE_RULES.md",
+    "apps/terminal-de-venta-system/docs/ops/licscope/live_smoke_outputs/live-pii-secret-safety.*",
+    "apps/terminal-de-venta-system/docs/ops/licscope/matrices/PII_SECRET_SAFETY_MATRIX.*",
+    "apps/terminal-de-venta-system/docs/ops/licscope/verifier_outputs/verify-pii-secret-safety.*",
+    "apps/terminal-de-venta-system/products/tablet/app/components/tablet-visual-v2/tablet-visual-tokens.ts"
   ]
 }
