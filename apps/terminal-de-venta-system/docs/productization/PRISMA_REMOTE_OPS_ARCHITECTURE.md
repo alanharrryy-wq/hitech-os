@@ -123,3 +123,47 @@ Razón: evita configuración de router, NAT, firewall y soporte infernal de mód
 ## 10. Criterio de aceptación
 
 Remote Ops está bien diseñado si el cliente puede vender sin internet, el proveedor puede administrar sin invadir, y cualquier intervención deja rastro, validación y rollback.
+
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:BEGIN -->
+## 11. Frontera de datos y custodia
+
+La autoridad canónica es `PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md`.
+
+Remote Ops administra licencia, plan, entitlements, versiones, mensajes administrativos y estado técnico mínimo. No es un lago de datos del negocio.
+
+### Heartbeat permitido
+
+```text
+licenseId
+plan
+entitlements
+licenseStatus
+appVersion
+releaseChannel
+technicalDeviceId
+declaredSurface
+minimalHealthSummary
+```
+
+### Payload prohibido por defecto
+
+```text
+sales
+customers
+employees
+inventory details
+tickets
+receipts
+outbox payloads
+database files or rows
+backups
+raw logs
+screenshots
+attachments
+fiscal identifiers from operations
+```
+
+El diagnóstico profundo es excepcional, explícitamente autorizado, revisable por el cliente, saneado y auditable. La existencia de Remote Ops no autoriza acceso permanente a las bases locales.
+
+Estado: `SOURCE_READY`. La ausencia real de egreso operativo debe certificarse por runtime y superficie.
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:END -->

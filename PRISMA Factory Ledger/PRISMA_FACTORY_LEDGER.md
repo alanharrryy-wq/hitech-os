@@ -26,3 +26,14 @@ The PRISMA Factory Ledger prevents rework across the whole project by recording 
 ## Anti-rework law
 
 If the ledger says `doNotRebuild: true`, the next agent must not rebuild that capability. The only legal moves are to verify, certify, package, cite evidence, or fix a real demonstrated drift.
+
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:BEGIN -->
+## Local-first data custody
+
+- Capability: `productization.local_first_data_custody`.
+- Classification after this package: `DONE` for the canonical source contract.
+- Status: `SOURCE_READY`.
+- State: `PASS_LOCAL_FIRST_CUSTODY_CONTRACT_SOURCE_READY`.
+- Do not rebuild the doctrine. Advance to runtime data-egress and support-bundle certification.
+- This does not prove zero network egress or legal compliance.
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:END -->

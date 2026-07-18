@@ -114,6 +114,31 @@
         "Hosted production deployment",
         "Clean distributable release artifact"
       ]
+    },
+    {
+      "artifact": "custodia 1707 1927 result.zip",
+      "type": "local_first_data_custody_contract",
+      "scope": [
+        "productization",
+        "privacy_boundary",
+        "remote_ops",
+        "support"
+      ],
+      "status": "PASS_SOURCE_READY",
+      "proves": [
+        "Canonical local-first custody contract installed",
+        "Machine-readable contract installed",
+        "Security/privacy and Remote Ops docs reference the contract",
+        "Factory Ledger and evidence indices registered",
+        "Changed files validated and rollback created"
+      ],
+      "doesNotProve": [
+        "Runtime zero egress",
+        "Production no-telemetry configuration",
+        "Every third-party integration complies",
+        "Legal compliance certification"
+      ]
     }
-  ]
+  ],
+  "updatedAt": "2026-07-17T19:27:40.449684-06:00"
 }
