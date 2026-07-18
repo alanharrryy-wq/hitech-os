@@ -3,7 +3,9 @@ import { getPcSyncCommandCenter } from "@/server/services/pc-command-center.serv
 
 export const dynamic = "force-dynamic";
 
-export default async function SyncPage() {
-  const model = await getPcSyncCommandCenter();
+type SearchParams = Record<string, string | string[] | undefined>;
+
+export default async function SyncPage({ searchParams }: { searchParams?: SearchParams | Promise<SearchParams> }) {
+  const model = await getPcSyncCommandCenter(searchParams ? await searchParams : undefined);
   return <PcCommandCenterPage model={model} />;
 }

@@ -19,6 +19,9 @@ const ENTITY_ORDER: CatalogDeltaEntityType[] = [
   "Brand",
   "Supplier",
   "Product",
+  "ModifierGroup",
+  "ModifierOption",
+  "ProductModifierGroup",
   "ProductSupplier",
   "PriceList",
   "PriceListItem",
@@ -156,6 +159,7 @@ function mapProduct(row: any) {
     category: row.category,
     brandId: row.brandId,
     taxRateId: row.taxRateId,
+    mediaRef: row.mediaRef,
     priceCents: row.priceCents,
     costCents: row.costCents,
     stockOnHand: row.stockOnHand,
@@ -163,6 +167,30 @@ function mapProduct(row: any) {
     barcodes: Array.isArray(row.barcodes) ? row.barcodes.map((item: any) => String(item.code)).filter(Boolean).sort() : [],
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapModifierGroup(row: any) {
+  return mapRecord("ModifierGroup", row, cleanObject({
+    id: row.id, businessId: row.businessId, name: row.name,
+    minSelections: row.minSelections, maxSelections: row.maxSelections, status: row.status,
+    sortOrder: row.sortOrder, version: row.version, createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapModifierOption(row: any) {
+  return mapRecord("ModifierOption", row, cleanObject({
+    id: row.id, businessId: row.businessId, modifierGroupId: row.modifierGroupId, name: row.name,
+    priceDeltaCents: row.priceDeltaCents, isDefault: Boolean(row.isDefault), status: row.status,
+    sortOrder: row.sortOrder, version: row.version, createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapProductModifierGroup(row: any) {
+  return mapRecord("ProductModifierGroup", row, cleanObject({
+    id: row.id, businessId: row.businessId, productId: row.productId, modifierGroupId: row.modifierGroupId,
+    required: Boolean(row.required), status: row.status, sortOrder: row.sortOrder, version: row.version,
+    createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
   }));
 }
 
@@ -253,6 +281,9 @@ async function collectCatalogRecords(businessId: string): Promise<CatalogDeltaRe
     brands,
     suppliers,
     products,
+    modifierGroups,
+    modifierOptions,
+    productModifierGroups,
     productSuppliers,
     priceLists,
     priceListItems,
@@ -263,18 +294,28 @@ async function collectCatalogRecords(businessId: string): Promise<CatalogDeltaRe
     db.brand.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.supplier.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.product.findMany({ where: { businessId }, include: { barcodes: true }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
+    db.$queryRawUnsafe('SELECT * FROM "ModifierGroup" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
+    db.$queryRawUnsafe('SELECT * FROM "ModifierOption" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
+    db.$queryRawUnsafe('SELECT * FROM "ProductModifierGroup" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
     db.productSupplier.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.priceList.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.priceListItem.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.dropdownCatalog.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.dropdownOption.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] })
   ]);
+  const mediaRows = await db.$queryRaw<Array<{ id: string; mediaRef: string | null }>>`
+    SELECT "id", "mediaRef" FROM "Product" WHERE "businessId" = ${businessId}
+  `;
+  const mediaRefByProductId = new Map(mediaRows.map((row: { id: string; mediaRef: string | null }) => [row.id, row.mediaRef]));
 
   return [
     ...taxRates.map(mapTaxRate),
     ...brands.map(mapBrand),
     ...suppliers.map(mapSupplier),
-    ...products.map(mapProduct),
+    ...products.map((product: any) => mapProduct({ ...product, mediaRef: mediaRefByProductId.get(product.id) ?? null })),
+    ...modifierGroups.map(mapModifierGroup),
+    ...modifierOptions.map(mapModifierOption),
+    ...productModifierGroups.map(mapProductModifierGroup),
     ...productSuppliers.map(mapProductSupplier),
     ...priceLists.map(mapPriceList),
     ...priceListItems.map(mapPriceListItem),

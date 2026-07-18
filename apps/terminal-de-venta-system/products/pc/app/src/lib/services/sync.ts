@@ -1,5 +1,6 @@
 import { OutboxRepositoryPrisma } from "@/server/repositories/outbox-repository.prisma";
 import { StockRepositoryPrisma } from "@/server/repositories/stock-repository.prisma";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 
 const outbox = new OutboxRepositoryPrisma();
 const stock = new StockRepositoryPrisma();
@@ -12,7 +13,8 @@ function ageLabel(value: Date | string) {
 }
 
 export async function getOutboxConsole() {
-  const pending = await outbox.listPending(50);
+  const businessId = await resolvePcBusinessScope();
+  const pending = await outbox.listPending(businessId, 50);
   const statusSummary = new Map<string, number>();
   for (const row of pending) {
     statusSummary.set(row.status, (statusSummary.get(row.status) ?? 0) + 1);
@@ -30,7 +32,8 @@ export async function getOutboxConsole() {
 }
 
 export async function getReplenishmentConsole() {
-  const signals = await stock.listReplenishmentSignals(25);
+  const businessId = await resolvePcBusinessScope();
+  const signals = await stock.listReplenishmentSignals(businessId, 25);
   const summary = new Map<string, { total: number; qty: number }>();
   for (const signal of signals) {
     const current = summary.get(signal.priority) ?? { total: 0, qty: 0 };

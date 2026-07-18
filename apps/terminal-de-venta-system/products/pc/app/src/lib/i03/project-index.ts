@@ -13,10 +13,10 @@ export const projectIterationIndex = [
   },
   {
     "id": "pc_i02",
-    "scope": "catalogo y stock, rutas /catalogo-activo /existencias-criticas /salud-barcodes",
+    "scope": "catalogo y stock, rutas /catalogo-activo /stock?state=critical /salud-barcodes",
     "routes": [
       "/catalogo-activo",
-      "/existencias-criticas",
+      "/stock?state=critical",
       "/salud-barcodes"
     ],
     "depends_on": [

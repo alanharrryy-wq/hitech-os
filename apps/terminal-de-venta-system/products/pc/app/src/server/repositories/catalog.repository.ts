@@ -15,8 +15,8 @@ function toIso(value: Date | string | null | undefined) {
   return date.toISOString();
 }
 
-function whereFromFilters(filters: CatalogFilters) {
-  const where: Record<string, unknown> = {};
+function whereFromFilters(businessId: string, filters: CatalogFilters) {
+  const where: Record<string, unknown> = { businessId };
   if (filters.status === "active") where.isActive = true;
   if (filters.status === "inactive") where.isActive = false;
   if (filters.category && filters.category !== "all") where.category = filters.category;
@@ -33,10 +33,10 @@ function whereFromFilters(filters: CatalogFilters) {
 }
 
 export class CatalogRepository {
-  async listProducts(filters: CatalogFilters, limit = 250): Promise<CatalogProductRecord[]> {
+  async listProducts(businessId: string, filters: CatalogFilters, limit = 250): Promise<CatalogProductRecord[]> {
     const db = prisma as any;
     const rows = await db.product.findMany({
-      where: whereFromFilters(filters),
+      where: whereFromFilters(businessId, filters),
       include: {
         barcodes: true,
         stockSnapshots: { orderBy: { daysCover: "asc" }, take: 1 }
@@ -66,9 +66,10 @@ export class CatalogRepository {
     });
   }
 
-  async listCategories(): Promise<string[]> {
+  async listCategories(businessId: string): Promise<string[]> {
     const db = prisma as any;
     const rows = await db.product.findMany({
+      where: { businessId },
       select: { category: true },
       distinct: ["category"],
       orderBy: { category: "asc" },
