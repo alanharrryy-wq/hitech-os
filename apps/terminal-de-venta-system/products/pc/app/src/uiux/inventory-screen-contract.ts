@@ -27,7 +27,7 @@ export const inventoryScreenContract = {
     title: "Revisar productos críticos primero.",
     motive: "tienen ventas recientes y quedan pocas piezas.",
     actions: [
-      { label: "Revisar críticos", href: "/existencias-criticas", primary: true },
+      { label: "Revisar críticos", href: "/stock?state=critical", primary: true },
       { label: "Sugerir compra", href: "/replenishment" },
       { label: "Descargar tabla", href: "/exportables" }
     ]

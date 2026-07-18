@@ -18,7 +18,7 @@ export default async function SaludBarcodesPage() {
           <div>
             <span className={styles.kicker}>mesa de corrección</span>
             <h1>Salud de barcodes</h1>
-            <p>Buscar código o producto, ver problema y corregir con evidencia. No se necesita dock de selectores para esto.</p>
+            <p>Cobertura real de códigos por categoría. La corrección se mantiene bloqueada hasta que exista un comando auditable.</p>
           </div>
           <div className={styles.miniStats}>
             <span><strong>{totalProducts}</strong> productos</span>
@@ -26,19 +26,8 @@ export default async function SaludBarcodesPage() {
           </div>
         </section>
 
-        <section className={styles.intentBar} data-pcinv-search-first="barcodes">
-          <form className={styles.searchBox} action="/salud-barcodes">
-            <label htmlFor="barcode-q">Buscar producto o código</label>
-            <input id="barcode-q" name="q" placeholder="SKU, nombre o código de barras..." />
-            <button type="submit">Buscar</button>
-          </form>
-          <div className={styles.chipStack} data-pcinv-chip-controls="barcode-problems">
-            <a href="/salud-barcodes">Todos</a>
-            <a href="/salud-barcodes?problem=missing">Sin código</a>
-            <a href="/salud-barcodes?problem=duplicate">Duplicados</a>
-            <a href="/salud-barcodes?problem=invalid">Inválidos</a>
-            <a href="/salud-barcodes?problem=multiple">Múltiples</a>
-          </div>
+        <section className={styles.intentBar} data-pcinv-barcode-health="aggregate">
+          <span className={styles.subtle}>Esta vista es una agregación de lecturas canónicas; no simula búsquedas, filtros ni guardados sin un owner durable.</span>
         </section>
 
         {notice ? <div className={styles.honestBlock}><strong>{notice.title}</strong><p>{notice.detail}</p></div> : null}
@@ -51,7 +40,7 @@ export default async function SaludBarcodesPage() {
             </div>
           </section>
           <section className={styles.productFicha} data-pcinv-correction-panel="barcode">
-            <div className={styles.fichaHeader}><div><span className={styles.kicker}>corrección</span><h2>Agregar o reemplazar código</h2></div></div>
+            <div className={styles.fichaHeader}><div><span className={styles.kicker}>siguiente paso</span><h2>Corrección gobernada pendiente</h2></div></div>
             <div className={styles.fichaStack}>
               <div className={styles.fichaRow}><span>Validación</span><strong>duplicados</strong></div>
               <div className={styles.fichaRow}><span>Motivo</span><strong>obligatorio</strong></div>

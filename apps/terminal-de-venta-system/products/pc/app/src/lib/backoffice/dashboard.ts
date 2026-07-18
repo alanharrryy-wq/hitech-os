@@ -1,4 +1,5 @@
 import { prisma } from "@/server/prisma/client";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 
 export type BackofficeKpi = {
   key: string;
@@ -111,6 +112,7 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
   const { start, end } = dayRange();
 
   try {
+    const businessId = await resolvePcBusinessScope();
     const [
       salesAggregate,
       ticketCount,
@@ -130,30 +132,30 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
       outboxStatusBuckets
     ] = await Promise.all([
       prisma.sale.aggregate({
-        where: { status: { in: normalizeStatus("COMPLETED") }, createdAt: { gte: start, lt: end } },
+        where: { businessId, status: { in: normalizeStatus("COMPLETED") }, createdAt: { gte: start, lt: end } },
         _sum: { totalCents: true }
       }),
       prisma.sale.count({
-        where: { status: { in: normalizeStatus("COMPLETED") }, createdAt: { gte: start, lt: end } }
+        where: { businessId, status: { in: normalizeStatus("COMPLETED") }, createdAt: { gte: start, lt: end } }
       }),
       prisma.saleLine.findMany({
-        where: { createdAt: { gte: start, lt: end } },
+        where: { businessId, createdAt: { gte: start, lt: end } },
         orderBy: { createdAt: "desc" },
         take: 500
       }),
-      prisma.stockSnapshot.count({ where: { daysCover: { lt: 2 } } }),
-      prisma.outboxEvent.count({ where: { status: { in: normalizeStatus("pending") } } }),
-      prisma.outboxEvent.count({ where: { status: { in: normalizeStatus("failed") } } }),
-      prisma.outboxEvent.count({ where: { status: { in: normalizeStatus("conflict") } } }),
-      prisma.outboxEvent.findFirst({ orderBy: { createdAt: "desc" } }),
-      prisma.saleReturn.count({ where: { createdAt: { gte: start, lt: end } } }),
-      prisma.sale.count({ where: { status: { in: normalizeStatus("CANCELLED") }, createdAt: { gte: start, lt: end } } }),
-      prisma.auditCount.findMany({ orderBy: { countedAt: "desc" }, take: 100 }),
-      prisma.purchaseOrderLine.aggregate({ _sum: { qtyOrdered: true } }),
-      prisma.goodsReceiptLine.aggregate({ _sum: { qtyReceived: true } }),
-      prisma.outboxEvent.findMany({ where: { sentAt: { not: null } }, orderBy: { sentAt: "desc" }, take: 100 }),
-      readManyIfAvailable("dataSourceFreshness", { orderBy: { updatedAt: "desc" }, take: 10 }),
-      readManyIfAvailable("syncOutboxStatusBucket", { orderBy: { bucketStartAt: "desc" }, take: 20 })
+      prisma.stockSnapshot.count({ where: { businessId, daysCover: { lt: 2 } } }),
+      prisma.outboxEvent.count({ where: { businessId, status: { in: normalizeStatus("pending") } } }),
+      prisma.outboxEvent.count({ where: { businessId, status: { in: normalizeStatus("failed") } } }),
+      prisma.outboxEvent.count({ where: { businessId, status: { in: normalizeStatus("conflict") } } }),
+      prisma.outboxEvent.findFirst({ where: { businessId }, orderBy: { createdAt: "desc" } }),
+      prisma.saleReturn.count({ where: { businessId, createdAt: { gte: start, lt: end } } }),
+      prisma.sale.count({ where: { businessId, status: { in: normalizeStatus("CANCELLED") }, createdAt: { gte: start, lt: end } } }),
+      prisma.auditCount.findMany({ where: { businessId }, orderBy: { countedAt: "desc" }, take: 100 }),
+      prisma.purchaseOrderLine.aggregate({ where: { businessId }, _sum: { qtyOrdered: true } }),
+      prisma.goodsReceiptLine.aggregate({ where: { businessId }, _sum: { qtyReceived: true } }),
+      prisma.outboxEvent.findMany({ where: { businessId, sentAt: { not: null } }, orderBy: { sentAt: "desc" }, take: 100 }),
+      readManyIfAvailable("dataSourceFreshness", { where: { businessId }, orderBy: { updatedAt: "desc" }, take: 10 }),
+      readManyIfAvailable("syncOutboxStatusBucket", { where: { businessId }, orderBy: { bucketStartAt: "desc" }, take: 20 })
     ]);
 
     const skuMap = new Map<string, { sku: string; productName: string; qty: number; totalCents: number }>();

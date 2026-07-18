@@ -35,7 +35,7 @@ export const PC_PRODUCT_ROUTES: PcProductRoute[] = [
   { route: '/movements', label: 'Movimientos', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/movements', finalMenu: false, order: 23 },
   { route: '/counts', label: 'Conteos', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/counts', finalMenu: false, order: 24 },
   { route: '/conteos-operativos', label: 'Conteos operativos', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/conteos-operativos', finalMenu: false, order: 25 },
-  { route: '/existencias-criticas', label: 'Existencias críticas', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/existencias-criticas', finalMenu: false, order: 26 },
+  { route: '/stock?state=critical', label: 'Existencias críticas', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/stock', finalMenu: false, order: 26 },
   { route: '/validacion-catalogo', label: 'Validación de catálogo', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/validacion-catalogo', finalMenu: false, order: 27 },
   { route: '/salud-barcodes', label: 'Salud de códigos', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/salud-barcodes', finalMenu: false, order: 28 },
   { route: '/politica-precios', label: 'Política de precios', module: 'Inventario', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/politica-precios', finalMenu: false, order: 29 },
@@ -56,6 +56,7 @@ export const PC_PRODUCT_ROUTES: PcProductRoute[] = [
   { route: '/sales-control', label: 'Ventas y caja', module: 'Ventas y caja', roles: BUSINESS_ROLES, visibility: 'final', canonicalRoute: '/sales-control', finalMenu: true, order: 50 },
   { route: '/cash-sessions', label: 'Sesiones de caja', module: 'Ventas y caja', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/cash-sessions', finalMenu: false, order: 51 },
   { route: '/metricas-dia', label: 'Métricas del día', module: 'Ventas y caja', roles: BUSINESS_ROLES, visibility: 'submenu', canonicalRoute: '/metricas-dia', finalMenu: false, order: 52 },
+  { route: '/clientes', label: 'Clientes', module: 'Ventas y caja', roles: BUSINESS_ROLES, visibility: 'final', canonicalRoute: '/clientes', finalMenu: true, order: 53 },
 
   { route: '/sync', label: 'Sincronización', module: 'Sync y Tablet Ops', roles: BUSINESS_ROLES, visibility: 'final', canonicalRoute: '/sync', finalMenu: true, order: 60 },
   { route: '/devices', label: 'Equipos', module: 'Sync y Tablet Ops', roles: ['soporte', 'gerente'], visibility: 'final', canonicalRoute: '/devices', finalMenu: true, order: 61 },

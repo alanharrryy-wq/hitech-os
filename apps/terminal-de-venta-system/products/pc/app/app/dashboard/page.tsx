@@ -1,171 +1,134 @@
 import { DecisionScreen } from "@components/uiux/decision-screen";
 import type { EvidenceItem, RecommendedAction, SummaryCard } from "@components/uiux/decision-types";
+import { OperationalTaskWorkspace } from "@components/dashboard/operational-task-workspace";
+import { getBackofficeDashboard, type BackofficeDashboard } from "@/lib/backoffice/dashboard";
+import { getOperationalTaskWorkspace } from "@/server/services/operational-task.service";
 
 export const dynamic = "force-dynamic";
 
-const dashboardSummaryCards: SummaryCard[] = [
-  {
-    title: "3 frentes vivos",
-    eyebrow: "qué pide atención",
-    tone: "warn",
-    lines: [
-      "Inventario crítico, sincronización y caja ya aparecen como trabajo accionable.",
-      "El usuario ve causa, impacto y ruta de resolución sin brincar a pantallas nuevas."
-    ]
-  },
-  {
-    title: "Filtros listos",
-    eyebrow: "dropdowns inteligentes",
-    tone: "ok",
-    lines: [
-      "La superficie Hoy usa el dock global para sucursal, periodo y responsable.",
-      "Los catálogos DB-backed se usan cuando existen y los fallback quedan declarados."
-    ]
-  },
-  {
-    title: "Acción honesta",
-    eyebrow: "sin botones de utilería",
-    tone: "info",
-    lines: [
-      "Resolver abre la superficie operativa correcta.",
-      "Marcar revisado y posponer quedan bloqueados hasta existir endpoint auditable."
-    ]
-  }
-];
-
-const dashboardRecommendedAction: RecommendedAction = {
-  title: "Resolver primero lo que puede costar venta",
-  motive: "Hoy debe ordenar pendientes por impacto operativo: quiebre de stock, sincronización atrasada y diferencias de caja.",
-  actions: [
-    { label: "Atender productos críticos", href: "/existencias-criticas", primary: true },
-    { label: "Revisar sincronización", href: "/sync-operativo" },
-    { label: "Validar caja", href: "/sales-control" }
-  ]
+type DashboardTask = {
+  priority: "Alta" | "Media" | "Baja";
+  area: string;
+  title: string;
+  status: string;
+  impact: string;
+  cause: string;
+  action: string;
+  href: string;
 };
 
-const dashboardTasks = [
-  {
-    priority: "Alta",
-    area: "Inventario",
-    title: "Productos críticos antes de vender",
-    status: "Revisar",
-    impact: "Evita quiebres y ventas perdidas en productos de alta rotación.",
-    cause: "Stock bajo mínimo, productos sin proveedor o cobertura menor a la venta esperada.",
-    action: "Abrir existencias críticas",
-    href: "/existencias-criticas",
-    evidence: "Fuente operativa: inventario, stock mínimo, ventas recientes y proveedor preferido."
-  },
-  {
-    priority: "Media",
-    area: "Sincronización",
-    title: "Cambios PC-tablet pendientes",
-    status: "Vigilar",
-    impact: "Evita que una tablet venda con catálogo, precios o cortes desfasados.",
-    cause: "Eventos pendientes, fallidos o sin confirmación final desde tablets.",
-    action: "Abrir sync operativo",
-    href: "/sync-operativo",
-    evidence: "Fuente operativa: outbox, heartbeat, delta de catálogo y estado de confirmación."
-  },
-  {
-    priority: "Media",
-    area: "Caja",
-    title: "Cortes y movimientos sensibles",
-    status: "Operativo",
-    impact: "Reduce diferencias de efectivo, retiros sin motivo y cierres incompletos.",
-    cause: "Caja abierta, movimientos sensibles o tickets que requieren revisión.",
-    action: "Abrir ventas y caja",
-    href: "/sales-control",
-    evidence: "Fuente operativa: ventas, sesiones de caja, terminal, cajero y método de pago."
+function dashboardValue(dashboard: BackofficeDashboard, key: string) {
+  return dashboard.kpis.find((item) => item.key === key)?.value ?? "Sin dato";
+}
+
+function formatUpdated(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Lectura sin hora registrada";
+
+  return new Intl.DateTimeFormat("es-MX", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(date);
+}
+
+function buildTasks(dashboard: BackofficeDashboard): DashboardTask[] {
+  const tasks: DashboardTask[] = [];
+
+  if (dashboard.sync.conflictCount > 0) {
+    tasks.push({
+      priority: "Alta",
+      area: "Sincronización",
+      title: "Conflictos por resolver",
+      status: `${dashboard.sync.conflictCount} pendiente(s)`,
+      impact: "Puede dejar información operativa distinta entre equipos.",
+      cause: "Existen eventos que requieren una resolución supervisada.",
+      action: "Revisar sincronización",
+      href: "/sync-operativo"
+    });
   }
-];
 
-const dashboardRows = dashboardTasks.map((task) => ({
-  Prioridad: task.priority,
-  Área: task.area,
-  Estado: task.status,
-  Impacto: task.impact,
-  "Qué hacer": task.action
-}));
-
-const dashboardEvidence: EvidenceItem[] = [
-  {
-    kind: "operational",
-    label: "Función de Hoy",
-    value: "Mostrar qué resolver ahora: inventario, sync, caja, compras, proveedores y tareas del día."
-  },
-  {
-    kind: "operational",
-    label: "Dropdowns",
-    value: "La pantalla usa SmartDropdownDock con sucursal, periodo, responsable, severidad y estado operativo."
-  },
-  {
-    kind: "operational",
-    label: "Acciones",
-    value: "Las acciones principales abren rutas existentes para resolver; las acciones sin backend quedan bloqueadas con explicación."
-  },
-  {
-    kind: "technical",
-    label: "Sin pantallas nuevas",
-    value: "El cambio se concentra en /dashboard/page.tsx y aprovecha DecisionScreen, NextBestAction, ActionableTable y EvidenceDrawer."
-  },
-  {
-    kind: "governance",
-    label: "Criterio",
-    value: "Cero botones decorativos: cada control resuelve, abre detalle o declara por qué todavía no puede ejecutar."
+  if (dashboard.sync.failedEvents > 0 || dashboard.sync.pendingEvents > 0) {
+    const total = dashboard.sync.failedEvents + dashboard.sync.pendingEvents;
+    tasks.push({
+      priority: dashboard.sync.failedEvents > 0 ? "Alta" : "Media",
+      area: "Sincronización",
+      title: "Movimientos por enviar o revisar",
+      status: `${total} pendiente(s)`,
+      impact: "La información pendiente puede llegar tarde a los demás equipos.",
+      cause: dashboard.sync.failedEvents > 0 ? "Hay intentos que no se completaron." : "Hay movimientos en espera de entrega.",
+      action: "Abrir cola operativa",
+      href: "/sync-operativo"
+    });
   }
-];
 
-function TaskActionBoard() {
+  const lowStockCount = Number(dashboardValue(dashboard, "lowStockCount"));
+  if (Number.isFinite(lowStockCount) && lowStockCount > 0) {
+    tasks.push({
+      priority: "Alta",
+      area: "Inventario",
+      title: "Productos con cobertura baja",
+      status: `${lowStockCount} por revisar`,
+      impact: "Puede provocar faltantes durante la venta.",
+      cause: "La cobertura calculada está por debajo del umbral operativo.",
+      action: "Revisar existencias",
+      href: "/stock"
+    });
+  }
+
+  const tickets = Number(dashboardValue(dashboard, "ticketCountToday"));
+  if (Number.isFinite(tickets) && tickets > 0) {
+    tasks.push({
+      priority: "Baja",
+      area: "Ventas",
+      title: "Ventas del día disponibles",
+      status: `${tickets} ticket(s)`,
+      impact: "Permite revisar ventas y conciliación antes del cierre.",
+      cause: "Hay actividad operativa registrada para el día actual.",
+      action: "Revisar ventas",
+      href: "/sales-control"
+    });
+  }
+
+  if (!tasks.length) {
+    tasks.push({
+      priority: "Baja",
+      area: "Operación",
+      title: "Sin pendientes críticos detectados",
+      status: "Al día",
+      impact: "No hay alertas operativas en esta lectura.",
+      cause: "La lectura actual no detectó faltantes, conflictos ni eventos pendientes.",
+      action: "Revisar ventas",
+      href: "/sales-control"
+    });
+  }
+
+  return tasks;
+}
+
+function TaskActionBoard({ tasks }: { tasks: DashboardTask[] }) {
   return (
     <section className="card" data-prisma-component="DashboardTaskBoard" data-prisma-surface="pc.hoy">
       <div className="section-head">
         <div>
           <div className="kicker">tareas del día</div>
-          <h2 className="section-title">Qué hacer ahorita</h2>
-          <div className="section-copy">
-            Cada pendiente explica causa, impacto y siguiente acción. Marcar revisado o posponer queda bloqueado hasta tener endpoint auditable.
-          </div>
+          <h2 className="section-title">Qué atender ahora</h2>
+          <div className="section-copy">Cada pendiente se calcula desde la lectura operativa actual y abre su superficie de seguimiento.</div>
         </div>
       </div>
 
       <div className="dashboard-grid" aria-label="Tareas accionables del día">
-        {dashboardTasks.map((task) => (
+        {tasks.map((task) => (
           <article className="card metric-card" key={`${task.area}-${task.title}`} data-dashboard-task={task.area.toLowerCase()}>
             <div className="kicker">{task.priority} · {task.area}</div>
             <div className="card-title">{task.title}</div>
             <div className="list" style={{ marginTop: 12 }}>
               <div className="list-item"><strong>Estado:</strong> {task.status}</div>
               <div className="list-item"><strong>Impacto:</strong> {task.impact}</div>
-              <div className="list-item"><strong>Causa:</strong> {task.cause}</div>
+              <div className="list-item"><strong>Motivo:</strong> {task.cause}</div>
             </div>
-
             <div className="inline-list" style={{ marginTop: 16 }}>
               <a className="btn btn-primary" href={task.href}>{task.action}</a>
-              <button
-                className="btn btn-secondary"
-                type="button"
-                disabled
-                aria-disabled="true"
-                title="Pendiente de endpoint auditable para registrar revisión."
-              >
-                Marcar revisado
-              </button>
-              <button
-                className="btn btn-secondary"
-                type="button"
-                disabled
-                aria-disabled="true"
-                title="Pendiente de endpoint auditable para posponer con motivo."
-              >
-                Posponer
-              </button>
             </div>
-
-            <details style={{ marginTop: 14 }}>
-              <summary>Evidencia y criterio</summary>
-              <p>{task.evidence}</p>
-              <p>Si se ignora, PRISMA mantiene el pendiente visible para no fabricar verde falso.</p>
-            </details>
           </article>
         ))}
       </div>
@@ -174,22 +137,75 @@ function TaskActionBoard() {
 }
 
 export default async function DashboardPage() {
+  const [dashboard, operationalTaskWorkspace] = await Promise.all([getBackofficeDashboard(), getOperationalTaskWorkspace()]);
+  const tasks = buildTasks(dashboard);
+  const primaryTask = tasks[0];
+  const ticketCount = dashboardValue(dashboard, "ticketCountToday");
+  const netSales = dashboardValue(dashboard, "netSalesTodayCents");
+  const syncPending = dashboard.sync.pendingEvents + dashboard.sync.failedEvents + dashboard.sync.conflictCount;
+
+  const summaryCards: SummaryCard[] = [
+    {
+      title: `${tasks.length} señal(es)`,
+      eyebrow: "qué requiere atención",
+      tone: dashboard.sync.conflictCount > 0 || dashboard.sync.failedEvents > 0 ? "danger" : tasks[0]?.priority === "Alta" ? "warn" : "ok",
+      lines: [primaryTask.title, primaryTask.cause]
+    },
+    {
+      title: syncPending ? `${syncPending} pendiente(s)` : "Sin pendientes",
+      eyebrow: "sincronización",
+      tone: dashboard.sync.conflictCount > 0 || dashboard.sync.failedEvents > 0 ? "warn" : "ok",
+      lines: [dashboard.sync.healthLabel, syncPending ? "Revisa la cola antes de cerrar la operación." : "No hay movimientos pendientes en esta lectura."]
+    },
+    {
+      title: netSales,
+      eyebrow: `${ticketCount} ticket(s) hoy`,
+      tone: "info",
+      lines: ["Resumen calculado con las ventas registradas hoy.", "Abre ventas para revisar el detalle y la conciliación."]
+    }
+  ];
+
+  const recommendedAction: RecommendedAction = {
+    title: primaryTask.action,
+    motive: primaryTask.impact,
+    actions: tasks.slice(0, 3).map((task, index) => ({
+      label: task.action,
+      href: task.href,
+      primary: index === 0
+    }))
+  };
+
+  const rows = tasks.map((task) => ({
+    Prioridad: task.priority,
+    Área: task.area,
+    Estado: task.status,
+    Impacto: task.impact,
+    "Qué hacer": task.action
+  }));
+
+  const evidence: EvidenceItem[] = [
+    { kind: "operational", label: "Lectura", value: "Ventas, existencias y pendientes operativos disponibles para esta sucursal." },
+    { kind: "operational", label: "Actualización", value: formatUpdated(dashboard.meta.generatedAt) },
+    { kind: "governance", label: "Acciones", value: "Cada acción abre una superficie operativa existente; no se muestran confirmaciones sin resultado." }
+  ];
+
   return (
     <DecisionScreen
       currentPath="/dashboard"
       title="Hoy"
-      subtitle="Resumen accionable de lo que necesita atención antes de vender, comprar o cerrar caja."
-      status="3 prioridades listas para operar"
-      lastUpdated="Lectura operativa local"
-      summaryCards={dashboardSummaryCards}
-      recommendedAction={dashboardRecommendedAction}
+      subtitle="Prioridades operativas calculadas desde ventas, existencias y sincronización actual."
+      status={primaryTask.status}
+      lastUpdated={formatUpdated(dashboard.meta.generatedAt)}
+      summaryCards={summaryCards}
+      recommendedAction={recommendedAction}
       tableTitle="Prioridades del día"
-      tableSubtitle="Pendientes entendibles para dueño, gerente, caja, almacén y soporte."
+      tableSubtitle="Pendientes entendibles para operación y enlazados a su seguimiento real."
       columns={["Prioridad", "Área", "Estado", "Impacto", "Qué hacer"]}
-      rows={dashboardRows}
-      evidence={dashboardEvidence}
+      rows={rows}
+      evidence={evidence}
     >
-      <TaskActionBoard />
+      <OperationalTaskWorkspace initialWorkspace={operationalTaskWorkspace} />
+      <TaskActionBoard tasks={tasks} />
     </DecisionScreen>
   );
 }

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 import { getTriDbStatusCard } from "@/server/services/tri-db-status.service";
 import { getPcCatalogDeltaStatus } from "@/server/services/catalog-delta-export.service";
-import { getPcFeatureList, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
+import { getPcFeatureList, getPcLicenseReadiness, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
 import { getPcLicenseRefreshStatus } from "@/server/licensing/pc-license-refresh";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../shared/customer/prisma-original-customer";
 
@@ -385,6 +385,10 @@ async function resolveBusinessId(explicit?: string | null) {
   if (preferred?.id) return preferred.id;
   const business = await safe<any | null>(() => db.business.findFirst({ where: { terminals: { some: {} } }, select: { id: true }, orderBy: { createdAt: "asc" } }), null);
   return business?.id ?? DEFAULT_BUSINESS_ID;
+}
+
+export async function resolvePcBusinessScope(explicit?: string | null) {
+  return resolveBusinessId(explicit);
 }
 
 function sortByIds(rows: any[], ids: string[]) {
@@ -1563,13 +1567,20 @@ export async function getPcDataQuality(): Promise<CommandCenterModel> {
 export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> {
   const db = prisma as any;
   const businessId = await resolveBusinessId();
-  const [license, refresh, features, heartbeats] = await Promise.all([
+  const [license, readiness, refresh, features, heartbeats] = await Promise.all([
     Promise.resolve(getPcLicenseStatus()),
+    Promise.resolve(getPcLicenseReadiness()),
     Promise.resolve(getPcLicenseRefreshStatus()),
     Promise.resolve(getPcFeatureList()),
     safe(() => db.deviceHeartbeat.findMany({ where: { businessId }, orderBy: { lastSeenAt: "desc" }, take: 120 }), [] as any[])
   ]);
   const blockedFeatures = features.filter((feature: any) => !feature.allowed);
+  const readinessTone = readiness.state === "ready" ? "ok" : readiness.state === "blocked" ? "danger" : "warn";
+  const deviceAuthorization = readiness.deviceScope.currentDeviceAuthorization === "confirmed"
+    ? "confirmada"
+    : readiness.deviceScope.currentDeviceAuthorization === "not_confirmed"
+      ? "sin confirmación"
+      : "no evaluable";
   const tabletLicenses = new Map<string, number>();
   for (const heartbeat of heartbeats) {
     const key = normalizeStatus(heartbeat.licenseStatus);
@@ -1586,24 +1597,29 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     independenceLine: "La licencia local de Tablet sigue siendo fuente valida para operacion offline.",
     metrics: [
       { label: "Cliente", value: PRISMA_ORIGINAL_CUSTOMER.displayName, note: `Cuenta ${PRISMA_ORIGINAL_CUSTOMER.tenantId}` },
-      { label: "Estado PC", value: normalizeStatus(license.state), note: `Plan ${license.plan}`, tone: license.state === "active" || license.state === "development" ? "ok" : "warn" },
+      { label: "Estado PC", value: readiness.label, note: `Handoff ${readiness.handoff.code}`, tone: readinessTone },
       { label: "Dias restantes", value: license.daysRemaining === null ? "n/d" : String(license.daysRemaining), note: "Umbral visible" },
       { label: "Refresh remoto", value: refresh.enabled ? "configurado" : "no configurado", note: refresh.state, tone: refresh.enabled ? "ok" : "warn" },
       { label: "Funciones bloqueadas", value: numberLabel(blockedFeatures.length), note: "Permisos PC", tone: blockedFeatures.length ? "warn" : "ok" },
-      { label: "Tablets con licencia", value: numberLabel(heartbeats.length), note: "Reportadas por equipos" }
+      { label: "Dispositivos autorizados", value: numberLabel(readiness.deviceScope.authorizedPcDevices), note: `Equipo actual: ${deviceAuthorization}` }
     ],
     panels: [
       {
-        title: refresh.enabled ? "Refresh remoto disponible" : "Refresh remoto no configurado",
-        body: refresh.enabled
-          ? "PC puede intentar refrescar licencia sin bloquear Tablet."
-          : "Usa importacion local/firma existente; no se inventa exito remoto sin servidor.",
-        tone: refresh.enabled ? "ok" : "warn"
+        title: readiness.label,
+        body: readiness.blockers[0] ?? readiness.warnings[0] ?? "La decisión local de licencia no reporta bloqueos.",
+        tone: readinessTone
       },
       {
-        title: "Sin secretos expuestos",
-        body: "No se muestra blob de licencia, llaves privadas ni material de firma en la UI normal.",
-        tone: "ok"
+        title: "Claims canónicos sin proyección local",
+        body: readiness.deviceScope.note,
+        tone: "warn"
+      },
+      {
+        title: refresh.enabled ? "Refresh remoto disponible" : "Refresh remoto no configurado",
+        body: refresh.enabled
+          ? "PC puede solicitar un refresh sin bloquear Tablet; el resultado se valida por el flujo canónico."
+          : "Usa importación local o la firma existente; esta pantalla no inventa éxito remoto.",
+        tone: refresh.enabled ? "ok" : "warn"
       }
     ],
     tables: [
@@ -1627,14 +1643,15 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
       },
       {
         title: "Preparacion operativa",
-        caption: "Chequeo operativo de PC.",
+        caption: "La licencia se lee del snapshot local; sincronización y rutas requieren su propia evidencia.",
         columns: ["Componente", "Estado", "Detalle"],
         rows: [
-          { Componente: "Base local", Estado: "activo", Detalle: "Lectura operativa configurada" },
-          { Componente: "Licencia PC", Estado: normalizeStatus(license.state), Detalle: `Plan ${license.plan}` },
-          { Componente: "Sincronizacion", Estado: "activo", Detalle: "Rutas de backoffice disponibles" },
-          { Componente: "Equipos", Estado: heartbeats.length ? "activo" : "pendiente", Detalle: `${heartbeats.length} reportado(s)` },
-          { Componente: "Rutas", Estado: "activo", Detalle: "Shell PC expone modulos principales" }
+          { Componente: "Base local", Estado: "pendiente", Detalle: "Esta vista no ejecuta una comprobación de base." },
+          { Componente: "Licencia PC", Estado: normalizeStatus(readiness.state), Detalle: readiness.label },
+          { Componente: "Sincronización", Estado: "pendiente", Detalle: "Consulta Sync operativo para evidencia de ACK y checkpoint." },
+          { Componente: "Equipos", Estado: deviceAuthorization, Detalle: `${readiness.deviceScope.authorizedPcDevices} autorizado(s) por el documento local` },
+          { Componente: "Claims de dispositivo", Estado: "consulta requerida", Detalle: "Customer Setup consulta el Cloud License Gateway con Setup Code." },
+          { Componente: "Rutas", Estado: "pendiente", Detalle: "Esta vista no certifica HTTP ni navegación." }
         ],
         emptyMessage: "Runtime no disponible."
       }
@@ -1643,6 +1660,11 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
       businessId,
       customer: PRISMA_ORIGINAL_CUSTOMER,
       customerId: license.customerId ?? null,
+      readiness: {
+        state: readiness.state,
+        handoff: readiness.handoff.code,
+        claimState: readiness.deviceScope.claimState
+      },
       lastRefreshAt: refresh.lastRefreshAt,
       lastSuccessAt: refresh.lastSuccessAt,
       lastFailureAt: refresh.lastFailureAt,

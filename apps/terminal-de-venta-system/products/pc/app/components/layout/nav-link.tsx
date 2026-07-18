@@ -1,3 +1,6 @@
+import { clsx } from "clsx";
+import styles from "./nav-link.module.css";
+
 export function NavLink({
   href,
   title,
@@ -12,14 +15,22 @@ export function NavLink({
   icon?: string;
 }) {
   return (
-    <a href={href} className={active ? "active" : ""} aria-current={active ? "page" : undefined} data-prisma-component="NavItem" data-active={active ? "true" : undefined}>
-      <span className="nav-icon" aria-hidden="true">
+    <a
+      href={href}
+      className={clsx("nav-link", styles.link, active && "active", active && styles.active)}
+      aria-current={active ? "page" : undefined}
+      aria-label={description ? `${title}. ${description}` : title}
+      data-prisma-component="NavItem"
+      data-active={active ? "true" : "false"}
+    >
+      <span className={clsx("nav-icon", styles.icon)} aria-hidden="true">
         {icon ?? "•"}
       </span>
-      <span className="nav-copy">
-        <span className="nav-title">{title}</span>
-        {description ? <span className="nav-desc">{description}</span> : null}
+      <span className={clsx("nav-copy", styles.copy)}>
+        <span className={clsx("nav-title", styles.title)}>{title}</span>
+        {description ? <span className={clsx("nav-desc", styles.description)}>{description}</span> : null}
       </span>
+      <span className={styles.activeRail} aria-hidden="true" />
     </a>
   );
 }

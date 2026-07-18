@@ -1,4 +1,5 @@
 import { fail, ok, toBackofficeError } from "@/lib/backoffice/api-response";
+import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api";
 import { buildPcCatalogDelta, exportPcCatalogDelta } from "@/server/services/catalog-delta-export.service";
 
 export const runtime = "nodejs";
@@ -31,6 +32,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const licenseGate = await guardPcFeatureForApi("export.advanced");
+    if (licenseGate) return licenseGate;
     const body = await request.json().catch(() => ({}));
     const result = await exportPcCatalogDelta({
       businessId: typeof body?.businessId === "string" ? body.businessId : null,

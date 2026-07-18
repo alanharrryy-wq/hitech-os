@@ -1,4 +1,5 @@
 import { PurchaseOrderRepositoryPrisma } from "@/server/repositories/purchase-order-repository.prisma";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 
 const procurement = new PurchaseOrderRepositoryPrisma();
 
@@ -7,9 +8,10 @@ function pesos(cents: number) {
 }
 
 export async function getProcurementConsole() {
+  const businessId = await resolvePcBusinessScope();
   const [orders, receipts] = await Promise.all([
-    procurement.listOpen(25),
-    procurement.listRecentReceipts(25)
+    procurement.listOpen(businessId, 25),
+    procurement.listRecentReceipts(businessId, 25)
   ]);
   const suppliers = new Map<string, { total: number; partial: number; received: number }>();
   for (const order of orders) {

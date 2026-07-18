@@ -1,0 +1,595 @@
+.shell {
+  --pc-shell-gutter: clamp(14px, 1.7vw, 26px);
+  --pc-shell-sidebar: clamp(248px, 19vw, 296px);
+  --pc-shell-topbar-height: 72px;
+  --pc-shell-z-background: 0;
+  --pc-shell-z-content: 10;
+  --pc-shell-z-sticky: 30;
+  --pc-shell-z-tooltip: 80;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: var(--pc-shell-sidebar) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--pc-shell-gutter);
+  width: min(100%, 1680px);
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: var(--pc-shell-gutter);
+}
+
+.skipLink {
+  position: fixed;
+  inset-block-start: 10px;
+  inset-inline-start: 10px;
+  z-index: 2000;
+  translate: 0 -180%;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid rgba(144, 229, 255, 0.52);
+  border-radius: 14px;
+  color: var(--prisma-text-primary, #f4f8fc);
+  background: rgba(6, 16, 27, 0.96);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+  transition: translate 160ms ease;
+}
+
+.skipLink:focus-visible {
+  translate: 0;
+}
+
+.sidebar {
+  position: sticky;
+  inset-block-start: var(--pc-shell-gutter);
+  z-index: var(--pc-shell-z-sticky);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  max-height: calc(100dvh - (var(--pc-shell-gutter) * 2));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  border: 1px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 18%, rgba(255, 255, 255, 0.1));
+  border-radius: clamp(22px, 2vw, 30px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 22%),
+    color-mix(in srgb, var(--prisma-sidebar-surface, #0c141f) 82%, transparent);
+  box-shadow:
+    0 26px 74px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
+}
+
+.brandBlock {
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+  padding: 18px;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brandLogo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 8px 20px rgba(103, 211, 255, 0.2));
+}
+
+.brandCopy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.brandCopy strong {
+  color: var(--prisma-text-primary, #f5f8fb);
+  font-size: 15px;
+  letter-spacing: 0.025em;
+}
+
+.brandSubtitle {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.brandSignals,
+.topbarSignals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.brandSignals span,
+.topbarSignals span,
+.routeIntentBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding-inline: 10px;
+  border: 1px solid rgba(171, 231, 255, 0.18);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--prisma-text-secondary, #c8d4df) 86%, white 8%);
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.brandSignals span:first-child,
+.topbarSignals span:first-child {
+  border-color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 38%, transparent);
+  color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 82%, white 12%);
+}
+
+.navPanel {
+  min-height: 0;
+  padding: 0 10px 14px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.navHeading {
+  margin: 0 8px 10px;
+  font-size: 10px;
+}
+
+.nav {
+  display: grid;
+  gap: 14px;
+}
+
+.navSection {
+  display: grid;
+  gap: 6px;
+}
+
+.navSectionTitle {
+  padding-inline: 9px;
+  color: color-mix(in srgb, var(--prisma-text-secondary, #c8d4df) 68%, transparent);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.navItems {
+  display: grid;
+  gap: 4px;
+}
+
+.main {
+  position: relative;
+  z-index: var(--pc-shell-z-content);
+  display: grid;
+  align-content: start;
+  gap: clamp(14px, 1.4vw, 20px);
+  min-width: 0;
+  padding-block-end: var(--pc-shell-gutter);
+  container: pc-route / inline-size;
+  scroll-margin-block-start: calc(var(--pc-shell-topbar-height) + 18px);
+  outline: none;
+}
+
+.main:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 78%, white 8%);
+  outline-offset: 4px;
+  border-radius: 20px;
+}
+
+.topbar {
+  position: sticky;
+  inset-block-start: var(--pc-shell-gutter);
+  z-index: var(--pc-shell-z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: var(--pc-shell-topbar-height);
+  padding: 12px 16px;
+  border: 1px solid rgba(199, 229, 247, 0.13);
+  border-radius: clamp(20px, 1.8vw, 28px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012)),
+    color-mix(in srgb, var(--prisma-panel-surface, #0a121d) 78%, transparent);
+  box-shadow:
+    0 22px 58px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
+}
+
+.topbarIdentity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.topbarMark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 28%, transparent);
+  border-radius: 13px;
+  color: var(--prisma-accent-cyan, #75ddff);
+  background: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 8%, transparent);
+}
+
+.topbarCopy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.topbarEyebrow {
+  color: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 82%, white 8%);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.topbarTitle {
+  overflow: hidden;
+  color: var(--prisma-text-primary, #f5f8fb);
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 850;
+  letter-spacing: -0.018em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextStrip {
+  position: relative;
+  z-index: calc(var(--pc-shell-z-sticky) - 2);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 9px 12px;
+  overflow: visible;
+  border: 1px solid rgba(195, 224, 243, 0.1);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--prisma-panel-surface, #0b1521) 68%, transparent);
+  backdrop-filter: blur(14px) saturate(112%);
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+}
+
+.contextLabel {
+  color: color-mix(in srgb, var(--prisma-text-secondary, #c8d4df) 76%, white 6%);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.contextScroll,
+.contextViewport {
+  min-width: 0;
+  width: 100%;
+}
+
+.contextViewport {
+  overflow: hidden;
+}
+
+.contextRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.contextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--prisma-text-secondary, #c8d4df) 82%, white 6%);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 12px;
+  font-weight: 780;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, translate 140ms ease;
+}
+
+.contextLink:hover {
+  translate: 0 -1px;
+  border-color: rgba(170, 226, 255, 0.18);
+  color: var(--prisma-text-primary, #f5f8fb);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.contextLinkActive {
+  border-color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 38%, transparent);
+  color: var(--prisma-text-primary, #f5f8fb);
+  background: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 11%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.contextDot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.56;
+}
+
+.contextLinkActive .contextDot {
+  color: var(--prisma-accent-cyan, #75ddff);
+  opacity: 1;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.contextTitle {
+  overflow: hidden;
+  max-width: 230px;
+  text-overflow: ellipsis;
+}
+
+.contextScrollbar {
+  display: flex;
+  height: 7px;
+  padding-top: 3px;
+  touch-action: none;
+  user-select: none;
+}
+
+.contextThumb {
+  position: relative;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(175, 222, 247, 0.28);
+}
+
+.contextTooltip {
+  z-index: var(--pc-shell-z-tooltip);
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 9px 11px;
+  border: 1px solid rgba(176, 225, 250, 0.2);
+  border-radius: 12px;
+  color: var(--prisma-text-primary, #f5f8fb);
+  background: rgba(5, 13, 23, 0.96);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.38);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.contextTooltipArrow {
+  fill: rgba(5, 13, 23, 0.96);
+}
+
+.routeIntent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  padding: clamp(18px, 2vw, 26px);
+  overflow: hidden;
+  border: 1px solid rgba(191, 223, 244, 0.13);
+  border-radius: clamp(22px, 2vw, 30px);
+  background:
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 10%, transparent), transparent 40%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
+    color-mix(in srgb, var(--prisma-panel-surface, #0b1521) 72%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(114%);
+  -webkit-backdrop-filter: blur(16px) saturate(114%);
+}
+
+.routeIntentCopy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.routeIntentKicker {
+  font-size: 10px;
+}
+
+.routeIntentTitle {
+  margin: 0;
+  max-width: 980px;
+  color: var(--prisma-text-primary, #f5f8fb);
+  font-size: clamp(22px, 2.35vw, 36px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.routeIntentDescription {
+  max-width: 900px;
+  margin: 0;
+  color: color-mix(in srgb, var(--prisma-text-secondary, #c8d4df) 82%, white 4%);
+  line-height: 1.55;
+}
+
+.routeIntentBadge {
+  border-color: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 32%, transparent);
+  color: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 84%, white 8%);
+}
+
+@container pc-route (max-width: 760px) {
+  .routeIntent {
+    grid-template-columns: 1fr;
+  }
+
+  .routeIntentBadge {
+    width: max-content;
+  }
+}
+
+@media (max-width: 1180px) {
+  .shell {
+    --pc-shell-sidebar: 236px;
+    --pc-shell-gutter: 16px;
+  }
+
+  .brandSignals span:last-child,
+  .topbarSignals span:last-child,
+  .navSectionTitle {
+    display: none;
+  }
+
+  .nav {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 920px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+    padding: 12px;
+  }
+
+  .sidebar {
+    position: relative;
+    inset-block-start: auto;
+    max-height: none;
+    overflow: visible;
+    border-radius: 24px;
+  }
+
+  .brandBlock {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 12px 14px;
+  }
+
+  .brandLogo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navPanel {
+    padding: 0 10px 10px;
+  }
+
+  .navHeading {
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    scrollbar-width: thin;
+  }
+
+  .navSection {
+    display: contents;
+  }
+
+  .navItems {
+    display: flex;
+    gap: 8px;
+  }
+
+  .main {
+    gap: 14px;
+  }
+
+  .topbar {
+    inset-block-start: 8px;
+  }
+}
+
+@media (max-width: 620px) {
+  .shell {
+    padding: 8px;
+  }
+
+  .brandSignals,
+  .topbarSignals,
+  .routeIntentBadge,
+  .contextLabel {
+    display: none;
+  }
+
+  .brandBlock {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    min-height: 62px;
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .topbarTitle {
+    max-width: 68vw;
+  }
+
+  .contextStrip {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px;
+  }
+
+  .routeIntent {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .routeIntentTitle {
+    font-size: clamp(21px, 7vw, 30px);
+  }
+}
+
+@media (max-height: 760px) and (min-width: 921px) {
+  .sidebar {
+    max-height: calc(100dvh - 20px);
+    inset-block-start: 10px;
+  }
+
+  .topbar {
+    inset-block-start: 10px;
+  }
+
+  .brandBlock {
+    padding-block: 12px;
+  }
+
+  .brandSignals {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipLink,
+  .contextLink {
+    transition: none;
+  }
+}

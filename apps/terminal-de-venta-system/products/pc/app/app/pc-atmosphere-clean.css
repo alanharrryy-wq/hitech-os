@@ -1,0 +1,89 @@
+/*
+ * PCSTRIP single-atmosphere contract.
+ * Exactly three optical children are rendered by PrismaAtmosphericBackground:
+ * base, mist and vignette. Zero means genuinely transparent.
+ */
+
+:root {
+  --pc-strip-photo: var(
+    --prisma-bg-image-pc,
+    url("/backgrounds/prisma/01_prisma_base_graphite_cloudglass.png")
+  );
+  --pc-strip-photo-opacity: 0.78;
+  --pc-strip-mist-opacity: 0.16;
+  --pc-strip-vignette-opacity: 0.72;
+}
+
+html[data-prisma-surface="pc-backoffice"] {
+  min-height: 100%;
+  background: #071019;
+}
+
+html[data-prisma-surface="pc-backoffice"] body {
+  min-height: 100dvh;
+  background: transparent;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: paint;
+  background: #071019;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-base {
+  background-image: var(--pc-strip-photo);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: var(--pc-strip-photo-opacity);
+  filter: saturate(0.94) contrast(0.98) brightness(0.72);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-mist {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(78, 219, 255, 0.18), transparent 35%),
+    radial-gradient(circle at 82% 4%, rgba(180, 137, 255, 0.13), transparent 36%),
+    radial-gradient(circle at 52% 88%, rgba(255, 174, 94, 0.10), transparent 42%);
+  opacity: var(--pc-strip-mist-opacity);
+  filter: blur(32px);
+}
+
+html[data-prisma-surface="pc-backoffice"] .prisma-bg-vignette {
+  background:
+    linear-gradient(180deg, rgba(2, 8, 14, 0.12), rgba(2, 8, 14, 0.48)),
+    radial-gradient(ellipse at center, transparent 30%, rgba(0, 5, 10, 0.62) 100%);
+  opacity: var(--pc-strip-vignette-opacity);
+}
+
+html[data-prisma-surface="pc-backoffice"][style*="--pc-strip-photo-opacity: 0"]
+  .prisma-bg-base,
+html[data-prisma-surface="pc-backoffice"][style*="--pc-strip-mist-opacity: 0"]
+  .prisma-bg-mist,
+html[data-prisma-surface="pc-backoffice"][style*="--pc-strip-vignette-opacity: 0"]
+  .prisma-bg-vignette {
+  background: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-prisma-surface="pc-backoffice"] .prisma-bg-layer {
+    transition: none;
+  }
+}
+
+@media print {
+  html[data-prisma-surface="pc-backoffice"] .prisma-atmosphere {
+    display: none;
+  }
+}

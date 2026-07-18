@@ -1,8 +1,8 @@
 import { DecisionScreen } from "@components/uiux/decision-screen";
-import { FeatureList, LicenseStatusCard } from "@components/license/license-status-card";
+import { FeatureList, LicenseReadinessCard, LicenseStatusCard } from "@components/license/license-status-card";
 import { LicenseRefreshPanel } from "@components/license/license-refresh-panel";
 import { settingsLicenseScreenContract } from "@/uiux/settings-screen-contract";
-import { getPcFeatureList, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
+import { getPcFeatureList, getPcLicenseReadiness, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
 import { getPcLicenseRefreshStatus } from "@/server/licensing/pc-license-refresh";
 
 export const dynamic = "force-dynamic";
@@ -11,6 +11,7 @@ export default async function PcLicensePage() {
   const status = getPcLicenseStatus();
   const refreshStatus = getPcLicenseRefreshStatus();
   const features = getPcFeatureList();
+  const readiness = getPcLicenseReadiness();
 
   return (
     <DecisionScreen {...settingsLicenseScreenContract} currentPath="/settings/license">
@@ -26,6 +27,7 @@ export default async function PcLicensePage() {
         </div>
         <div className="grid cols-2">
           <LicenseStatusCard status={status} />
+          <LicenseReadinessCard readiness={readiness} />
           <LicenseRefreshPanel initialStatus={refreshStatus} />
         </div>
       </section>

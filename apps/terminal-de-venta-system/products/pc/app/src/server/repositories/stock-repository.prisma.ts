@@ -1,17 +1,18 @@
 import { prisma } from "@/server/prisma/client";
 
 export class StockRepositoryPrisma {
-  listCritical(limit = 25): Promise<any[]> {
+  listCritical(businessId: string, limit = 25, maxDaysCover = 2): Promise<any[]> {
     return prisma.stockSnapshot.findMany({
-      where: { daysCover: { lt: 2 } },
+      where: { businessId, daysCover: { lt: maxDaysCover } },
       include: { product: true },
       orderBy: { daysCover: "asc" },
       take: limit
     });
   }
 
-  listReplenishmentSignals(limit = 25): Promise<any[]> {
+  listReplenishmentSignals(businessId: string, limit = 25): Promise<any[]> {
     return prisma.replenishmentSignal.findMany({
+      where: { businessId },
       include: { product: true },
       orderBy: [{ priority: "asc" }, { createdAt: "desc" }],
       take: limit

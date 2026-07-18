@@ -6,7 +6,6 @@ import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/s
 import { PcCommandActions } from "./pc-command-actions";
 import { SalesControlBranchView } from "./sales-control-branch-view";
 import { CashSessionsOperationalView } from "./cash-sessions-operational-view";
-import { SmartDropdownDock } from "@components/uiux/smart-dropdown-dock";
 
 function toneClass(tone?: CommandMetric["tone"]) {
   if (tone === "danger") return "tone-danger";
@@ -64,8 +63,6 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
         </div>
       </section>
 
-      <SmartDropdownDock currentPath={model.currentPath} />
-
       {model.actions?.length ? (
         <section className="card">
           <div className="section-head">
@@ -104,13 +101,6 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
       )) : (
         <EmptyState title="Sin datos disponibles." description="La pantalla queda honesta: no usa datos fake ni estados de exito inventados." />
       )}
-
-      <section className="card">
-        <details>
-          <summary>Diagnostico admin sanitizado</summary>
-          <pre>{JSON.stringify(model.diagnostics, null, 2)}</pre>
-        </details>
-      </section>
     </AppShell>
   );
 }
