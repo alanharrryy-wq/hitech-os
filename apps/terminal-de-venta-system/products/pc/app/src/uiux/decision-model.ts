@@ -37,6 +37,7 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   ],
   "ventas-caja": [
     { label: "Resumen", href: "/sales-control", kind: "standard" },
+    { label: "Clientes", href: "/clientes", kind: "standard" },
     { label: "Pendientes", href: "/cash-sessions", kind: "standard" },
     { label: "Historial", href: "/metricas-dia", kind: "standard" },
     { label: "Exportar", href: "/exportables", kind: "optional" },
@@ -44,7 +45,7 @@ export const PC_STANDARD_SUBNAV: Record<PcUiuxGroup, PcSubnavItem[]> = {
   ],
   inventario: [
     { label: "Resumen", href: "/catalog", kind: "standard" },
-    { label: "Pendientes", href: "/existencias-criticas", kind: "standard" },
+    { label: "Pendientes", href: "/stock?state=critical", kind: "standard" },
     { label: "Historial", href: "/movements", kind: "standard" },
     { label: "Configurar", href: "/politica-precios", kind: "standard" },
     { label: "Evidencia", href: "/auditoria-inventario", kind: "optional" }

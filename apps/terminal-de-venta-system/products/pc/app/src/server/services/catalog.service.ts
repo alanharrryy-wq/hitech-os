@@ -1,4 +1,5 @@
 import { CatalogRepository } from "@/server/repositories/catalog.repository";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 import { buildCatalogIssues } from "@/server/validators/catalog-quality";
 import type { CatalogFilters, CatalogIssueFilter, CatalogStatusFilter, CatalogWorkspace } from "@/modules/catalog/types";
 
@@ -46,9 +47,10 @@ export async function getCatalogWorkspace(input: Partial<Record<keyof CatalogFil
   const generatedAt = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date());
 
   try {
+    const businessId = await resolvePcBusinessScope();
     const [rawProducts, categories] = await Promise.all([
-      repository.listProducts(filters, 250),
-      repository.listCategories()
+      repository.listProducts(businessId, filters, 250),
+      repository.listCategories(businessId)
     ]);
 
     const issues = buildCatalogIssues(rawProducts);

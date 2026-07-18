@@ -6,7 +6,7 @@ import { getOutboxConsole } from "@/lib/services/sync";
 export async function getPcDashboard() {
   const [catalog, criticalStock, procurement, outbox] = await Promise.all([
     getCatalogActiveSnapshot(),
-    getCriticalStockRows(5),
+    getCriticalStockRows({ limit: 5 }),
     getProcurementConsole(),
     getOutboxConsole()
   ]);

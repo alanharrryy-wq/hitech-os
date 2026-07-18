@@ -12,15 +12,17 @@ function containsFilter(filters: InventoryFilters) {
 }
 
 export class InventoryRepository {
-  async listSnapshots(filters: InventoryFilters, limit = 300): Promise<any[]> {
+  async listSnapshots(businessId: string, filters: InventoryFilters, limit = 300): Promise<any[]> {
     const db = prisma as any;
-    const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = { businessId };
+    const conditions: Record<string, unknown>[] = [];
     const or = containsFilter(filters);
-    if (or) where.OR = or;
-    if (filters.location !== "all") where.location = filters.location;
-    if (filters.state === "critical") where.OR = [...(Array.isArray(where.OR) ? where.OR : []), { available: { lte: 0 } }, { daysCover: { lt: 2 } }];
-    if (filters.state === "low") where.daysCover = { gte: 2, lt: 5 };
-    if (filters.state === "ok") where.daysCover = { gte: 5 };
+    if (or) conditions.push({ OR: or });
+    if (filters.location !== "all") conditions.push({ location: filters.location });
+    if (filters.state === "critical") conditions.push({ OR: [{ available: { lte: 0 } }, { daysCover: { lt: 2 } }] });
+    if (filters.state === "low") conditions.push({ daysCover: { gte: 2, lt: 5 } });
+    if (filters.state === "ok") conditions.push({ daysCover: { gte: 5 } });
+    if (conditions.length > 0) where.AND = conditions;
 
     return db.stockSnapshot.findMany({
       where,
@@ -30,9 +32,9 @@ export class InventoryRepository {
     });
   }
 
-  async listMovements(filters: InventoryFilters, limit = 300): Promise<any[]> {
+  async listMovements(businessId: string, filters: InventoryFilters, limit = 300): Promise<any[]> {
     const db = prisma as any;
-    const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = { businessId };
     const q = filters.q.trim();
     if (q) {
       where.OR = [
@@ -72,9 +74,9 @@ export class InventoryRepository {
     }
   }
 
-  async listCounts(filters: InventoryFilters, limit = 250): Promise<any[]> {
+  async listCounts(businessId: string, filters: InventoryFilters, limit = 250): Promise<any[]> {
     const db = prisma as any;
-    const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = { businessId };
     const q = filters.q.trim();
     if (q) {
       where.OR = [

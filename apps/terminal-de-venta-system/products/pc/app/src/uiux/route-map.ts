@@ -61,6 +61,12 @@ export const PC_ROUTE_MAP = [
     "status": "secondary"
   },
   {
+    "route": "/clientes",
+    "humanName": "Clientes",
+    "group": "ventas-caja",
+    "status": "primary"
+  },
+  {
     "route": "/catalog",
     "humanName": "Catálogo",
     "group": "inventario",
@@ -121,7 +127,7 @@ export const PC_ROUTE_MAP = [
     "status": "secondary"
   },
   {
-    "route": "/existencias-criticas",
+    "route": "/stock?state=critical",
     "humanName": "Productos críticos",
     "group": "inventario",
     "status": "secondary"
