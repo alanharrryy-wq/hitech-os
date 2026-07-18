@@ -1,0 +1,48 @@
+{
+  "schema": "CODE_ATLAS_LEGAL_PIPELINE_PROFILE_V1",
+  "version": "catlgl1-v1.0.0",
+  "external_concurrency": 1,
+  "internal_workers_default": 6,
+  "internal_workers_max": 18,
+  "internal_shards_default": 1,
+  "profiles": {
+    "plan": {
+      "stages": [],
+      "runtime": false
+    },
+    "static": {
+      "stages": [
+        "ctx-static-baseline"
+      ],
+      "runtime": false
+    },
+    "full": {
+      "stages": [
+        "ctx-static-baseline",
+        "mamastrophic-runtime-evidence"
+      ],
+      "runtime": true
+    },
+    "runtime-only": {
+      "stages": [
+        "mamastrophic-runtime-evidence"
+      ],
+      "runtime": true
+    }
+  },
+  "no_touch": [
+    "no process kill",
+    "no port free",
+    "no server start by Code Atlas backend",
+    "no DB write",
+    "no Git write",
+    "no Prisma generate",
+    "no dependency install"
+  ],
+  "stage_artifact_policy": {
+    "discovery": "before/after output snapshot plus expected prefix",
+    "manifest_required": true,
+    "hash": "SHA-256",
+    "nested_stage_zips_in_coordinator": false
+  }
+}
