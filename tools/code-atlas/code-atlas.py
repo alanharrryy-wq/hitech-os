@@ -5808,6 +5808,16 @@ class SelectorDialog(QDialog):
         )
         # /CODE_ATLAS_MOTOR_HUB_BUTTON_V01
 
+        # CODE_ATLAS_LEGAL_READINESS_BUTTON_V01
+        self.legal_readiness_button = create_button(
+            "Legal / Inversionista",
+            "evidence",
+            self.open_legal_readiness,
+            tooltip="Abre el pipeline Legal / Investor Readiness con autoridad, ejecución secuencial, progreso y ZIP final en F:\\descargasf.",
+            minimum_width=188,
+        )
+        # /CODE_ATLAS_LEGAL_READINESS_BUTTON_V01
+
         # CODE_ATLAS_SMART_ALLMESH_UI6_BEGIN
         self.smart_allmesh_button = create_button(
             "AllMesh Inteligente",
@@ -5848,6 +5858,9 @@ class SelectorDialog(QDialog):
         # CODE_ATLAS_MOTOR_HUB_FOOTER_V01
         footer_bottom_row.addWidget(self.motor_hub_button, 0)
         # /CODE_ATLAS_MOTOR_HUB_FOOTER_V01
+        # CODE_ATLAS_LEGAL_READINESS_FOOTER_V01
+        footer_bottom_row.addWidget(self.legal_readiness_button, 0)
+        # /CODE_ATLAS_LEGAL_READINESS_FOOTER_V01
         footer_bottom_row.addWidget(self.confirm_button, 0)
 
         footer_actions_stack.addLayout(footer_top_row)
@@ -6096,6 +6109,7 @@ class SelectorDialog(QDialog):
             self.db_black_glass_erd_button,
             self.db_evidence_atlas_button,
             self.motor_hub_button,
+            self.legal_readiness_button,
             self.confirm_button,
         ):
             button.setEnabled(not has_app_target)
@@ -6486,6 +6500,29 @@ class SelectorDialog(QDialog):
             )
 
     # /CODE_ATLAS_MOTOR_HUB_METHOD_V01
+
+    # CODE_ATLAS_LEGAL_READINESS_METHOD_V01
+    def open_legal_readiness(self) -> None:
+        try:
+            import sys as _code_atlas_legal_sys
+
+            _code_atlas_src = Path(__file__).resolve().parent / "src"
+            _code_atlas_src_text = str(_code_atlas_src)
+            if _code_atlas_src_text not in _code_atlas_legal_sys.path:
+                _code_atlas_legal_sys.path.insert(0, _code_atlas_src_text)
+
+            from code_atlas.ui.legal_readiness import LegalReadinessDialog
+
+            dialog = LegalReadinessDialog(self)
+            dialog.exec()
+        except Exception as exc:
+            QMessageBox.critical(
+                self,
+                _app_title(),
+                "No pude abrir Legal / Investor Readiness:\n{0}".format(exc),
+            )
+
+    # /CODE_ATLAS_LEGAL_READINESS_METHOD_V01
 
     def cancel(self) -> None:
         self._selection_result = _make_selection_result(
