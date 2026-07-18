@@ -1,16 +1,16 @@
 import { prisma } from "@/server/prisma/client";
 
 export class ProductRepositoryPrisma {
-  listActive(limit = 25): Promise<any[]> {
+  listActive(businessId: string, limit = 25): Promise<any[]> {
     return prisma.product.findMany({
-      where: { isActive: true },
+      where: { businessId, isActive: true },
       include: { barcodes: true, stockSnapshots: true },
       orderBy: { updatedAt: "desc" },
       take: limit
     });
   }
 
-  countActive(): Promise<number> {
-    return prisma.product.count({ where: { isActive: true } });
+  countActive(businessId: string): Promise<number> {
+    return prisma.product.count({ where: { businessId, isActive: true } });
   }
 }

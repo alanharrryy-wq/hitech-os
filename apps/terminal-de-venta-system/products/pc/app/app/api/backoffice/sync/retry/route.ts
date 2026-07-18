@@ -1,4 +1,5 @@
 import { fail, ok, toBackofficeError } from "@/lib/backoffice/api-response";
+import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api";
 import { retryFailedSyncEvent } from "@/server/services/pc-command-center.service";
 
 export const runtime = "nodejs";
@@ -6,6 +7,8 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    const licenseGate = await guardPcFeatureForApi("sync.managed");
+    if (licenseGate) return licenseGate;
     const body = await request.json().catch(() => ({}));
     const eventId = typeof body?.eventId === "string" ? body.eventId.trim() : "";
     if (!eventId) return fail("SYNC_EVENT_ID_REQUIRED", "Falta eventId para reintentar.", 400);

@@ -1,5 +1,6 @@
 import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../shared/licensing";
 import type { ReactNode } from "react";
+import type { PcLicenseReadiness } from "@/server/licensing/pc-license-service";
 
 function toneClassForState(state: string) {
   if (state === "active" || state === "development") return "tone-ok";
@@ -72,6 +73,43 @@ export function LicenseStatusCard({ status }: { status: NormalizedLicenseStatus 
           ))}
         </div>
       ) : null}
+    </section>
+  );
+}
+
+export function LicenseReadinessCard({ readiness }: { readiness: PcLicenseReadiness }) {
+  const tone = readiness.state === "ready" ? "tone-ok" : readiness.state === "warning" ? "tone-warn" : "tone-danger";
+  const authorization = readiness.deviceScope.currentDeviceAuthorization === "confirmed"
+    ? "confirmada"
+    : readiness.deviceScope.currentDeviceAuthorization === "not_confirmed"
+      ? "sin confirmar"
+      : "sin identidad local";
+
+  return (
+    <section className="card" data-prisma-component="LicenseReadiness">
+      <div className="kicker">readiness y handoff</div>
+      <h2 className="section-title">{readiness.label}</h2>
+      <div className="dashboard-actions">
+        <Metric label="Estado" value={readiness.label} tone={tone} />
+        <Metric label="Capacidades" value={`${readiness.features.allowed} permitidas · ${readiness.features.blocked} restringidas`} />
+        <Metric label="Dispositivo actual" value={authorization} tone={authorization === "confirmada" ? "tone-ok" : "tone-warn"} />
+        <Metric label="Límite documental" value={readiness.deviceScope.documentedLimit === null ? "no declarado" : String(readiness.deviceScope.documentedLimit)} />
+        <Metric label="PC autorizados" value={String(readiness.deviceScope.authorizedPcDevices)} />
+      </div>
+      {readiness.blockers.length > 0 ? (
+        <div className="list">
+          {readiness.blockers.map((blocker) => <div className="alert-strip" key={blocker}>{blocker}</div>)}
+        </div>
+      ) : null}
+      {readiness.warnings.length > 0 ? (
+        <div className="list">
+          {readiness.warnings.map((warning) => <div className="list-item" key={warning}>{warning}</div>)}
+        </div>
+      ) : null}
+      <div className="section-copy">
+        <strong>Handoff:</strong> {readiness.handoff.code} · {readiness.handoff.nextStep}
+      </div>
+      <div className="subtle">Evidencia: {readiness.handoff.evidenceTopic} · {readiness.handoff.recordedAt}. {readiness.deviceScope.note}</div>
     </section>
   );
 }

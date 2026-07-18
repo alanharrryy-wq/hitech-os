@@ -3,7 +3,9 @@ import { getPcCashSessions } from "@/server/services/pc-command-center.service";
 
 export const dynamic = "force-dynamic";
 
-export default async function CashSessionsPage() {
-  const model = await getPcCashSessions();
+type SearchParams = Record<string, string | string[] | undefined>;
+
+export default async function CashSessionsPage({ searchParams }: { searchParams?: SearchParams | Promise<SearchParams> }) {
+  const model = await getPcCashSessions(searchParams ? await searchParams : undefined);
   return <PcCommandCenterPage model={model} />;
 }

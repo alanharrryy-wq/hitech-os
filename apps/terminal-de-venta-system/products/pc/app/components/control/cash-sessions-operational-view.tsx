@@ -74,42 +74,11 @@ function CashGuidedAction() {
   return (
     <section className={styles.guidedAction} data-prisma-component="PcCashGuidedClose">
       <div>
-        <span className={styles.kicker}>acción sensible</span>
-        <h2>Cierre guiado</h2>
-        <p>Antes de confirmar, PRISMA exige esperado, contado, diferencia, motivo y responsable.</p>
+        <span className={styles.kicker}>cierre controlado</span>
+        <h2>Revisión antes de cerrar</h2>
+        <p>Compara esperado, contado, diferencia, motivo y responsable antes de abrir un command owner auditable.</p>
       </div>
-
-      <form className={styles.actionForm} action="/cash-sessions" method="get">
-        <label>
-          Acción de caja
-          <select name="cashAction" defaultValue="close">
-            <option value="withdrawal">Registrar retiro</option>
-            <option value="deposit">Registrar ingreso</option>
-            <option value="close">Cerrar caja</option>
-            <option value="reopen">Reabrir con permiso</option>
-            <option value="markVarianceReviewed">Marcar diferencia revisada</option>
-          </select>
-        </label>
-        <label>
-          Motivo obligatorio
-          <select name="reason" defaultValue="cash-count">
-            <option value="cash-count">Conteo de efectivo</option>
-            <option value="variance">Faltante o sobrante</option>
-            <option value="manager-approval">Aprobación de gerente</option>
-            <option value="sync-review">Revisión por sync</option>
-          </select>
-        </label>
-        <label>
-          Responsable
-          <input name="responsible" placeholder="Cajero, gerente o auditor" />
-        </label>
-        <div className={styles.formActions}>
-          <button type="submit">Preparar acción</button>
-          <span title="La mutación queda bloqueada hasta existir endpoint auditable.">
-            Confirmar cierre requiere endpoint auditable
-          </span>
-        </div>
-      </form>
+      <p className={styles.sectionCopy}>Esta vista no registra retiros, ingresos, cierres ni reaperturas hasta contar con permiso, motivo, auditoría e idempotencia reales.</p>
     </section>
   );
 }

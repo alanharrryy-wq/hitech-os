@@ -2,7 +2,11 @@ import { DataTable } from "@components/backoffice/data-table";
 import { EmptyState } from "@components/backoffice/empty-state";
 import { StatusBadge } from "@components/backoffice/status-badge";
 import { AppShell } from "@components/layout/app-shell";
+import { ProductVariantWorkspace } from "@components/catalog/product-variant-workspace";
+import { ProductMediaWorkspace } from "@components/catalog/product-media-workspace";
 import type { CatalogProductRecord, CatalogWorkspace } from "@/modules/catalog/types";
+import type { getProductVariantWorkspace } from "@/server/services/product-variant.service";
+import type { getProductMediaWorkspace } from "@/server/services/product-media.service";
 import styles from "../inventory/pc-inventory-master-detail.module.css";
 
 function money(cents: number) {
@@ -85,7 +89,7 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
         <a href={queryHref("/stock", { q: product.sku, state: "all" })}>Ajustar stock</a>
         <a href={queryHref("/salud-barcodes", { q: product.sku })}>Agregar barcode</a>
         <a href={queryHref("/counts", { q: product.sku })}>Crear conteo</a>
-        <a href={queryHref("/existencias-criticas", { q: product.sku })}>Mandar a reabasto</a>
+        <a href={queryHref("/stock", { q: product.sku, state: "critical" })}>Mandar a reabasto</a>
         <span aria-disabled="true" title="Editar producto requiere endpoint auditable con rol, motivo y before/after.">Editar bloqueado hasta auditoría</span>
       </div>
 
@@ -104,7 +108,7 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
   );
 }
 
-export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace }) {
+export function CatalogDashboard({ workspace, productVariantWorkspace, productMediaWorkspace }: { workspace: CatalogWorkspace; productVariantWorkspace: Awaited<ReturnType<typeof getProductVariantWorkspace>>; productMediaWorkspace: Awaited<ReturnType<typeof getProductMediaWorkspace>> }) {
   const selected = workspace.selectedProduct ?? workspace.products[0] ?? null;
   const issueChips = [
     { label: "Todos", href: queryHref("/catalog", { ...workspace.filters, issue: "all" }) },
@@ -232,6 +236,9 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
             />
           </div>
         </section>
+
+        <ProductVariantWorkspace initialWorkspace={productVariantWorkspace} />
+        <ProductMediaWorkspace initialWorkspace={productMediaWorkspace} />
       </main>
     </AppShell>
   );

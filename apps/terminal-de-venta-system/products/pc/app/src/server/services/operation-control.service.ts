@@ -1,5 +1,6 @@
 import type { OperationMode, OperationWorkspace, PurchaseRow, ReceiptRow, ReplenishmentRow, KpiRow } from "@/modules/operations/types";
 import { OperationRepository } from "@/server/repositories/operation.repository";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 import { buildOperationAlerts, classifyPurchaseRisk, classifyReceiptDiscrepancy, suggestedReplenishment, validateReplenishmentSignal } from "@/server/validators/procurement-integrity";
 import { fillRate, formatKpiMoney, formatKpiNumber, netSales, safeAverage } from "@/server/services/kpi-formulas";
 
@@ -136,13 +137,14 @@ export async function getOperationWorkspace(mode: OperationMode): Promise<Operat
   const labels = modeText(mode);
   const generatedAt = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date());
   try {
+    const businessId = await resolvePcBusinessScope();
     const [orders, receiptsRaw, signalsRaw, sales, returns, snapshots] = await Promise.all([
-      repository.listPurchaseOrders(50),
-      repository.listGoodsReceipts(50),
-      repository.listReplenishmentSignals(50),
-      repository.listSales(250),
-      repository.listReturns(250),
-      repository.listStockSnapshots(250)
+      repository.listPurchaseOrders(businessId, 50),
+      repository.listGoodsReceipts(businessId, 50),
+      repository.listReplenishmentSignals(businessId, 50),
+      repository.listSales(businessId, 250),
+      repository.listReturns(businessId, 250),
+      repository.listStockSnapshots(businessId, 250)
     ]);
     const purchases = purchaseRows(orders);
     const receipts = receiptRows(receiptsRaw);

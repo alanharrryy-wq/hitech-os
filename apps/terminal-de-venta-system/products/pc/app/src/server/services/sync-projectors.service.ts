@@ -216,6 +216,42 @@ async function projectSaleCreated(tx: TxClient, event: SyncEventEnvelope): Promi
   return { status: "projected", conflicts: [], diagnostics: ["SALE_CREATED_PROJECTED_AS_DRAFT"], touchedModels: ["Sale"] };
 }
 
+async function projectCustomerCreated(tx: TxClient, event: SyncEventEnvelope): Promise<SyncProjectionResult> {
+  const payload = event.payload;
+  const customerId = asString(payload.retailCustomerId);
+  const displayName = asString(payload.displayName);
+  const version = asInt(payload.version);
+  if (!customerId || !displayName || version === null || version < 1) {
+    return { status: "dead_letter", conflicts: [conflict("invalid_schema", "customer.created requires retailCustomerId, displayName and version.", "rejected")], diagnostics: ["CUSTOMER_CREATE_PAYLOAD_INCOMPLETE"], touchedModels: ["Customer"] };
+  }
+  const existing = await tx.$queryRaw<Array<{ id: string; businessId: string; displayName: string; version: number }>>`
+    SELECT "id", "businessId", "displayName", "version" FROM "Customer" WHERE "id" = ${customerId} LIMIT 1
+  `;
+  const prior = existing[0];
+  if (prior && prior.businessId !== event.businessId) {
+    return { status: "conflict", conflicts: [conflict("invalid_schema", `Customer ${customerId} belongs to another business scope.`, "rejected")], diagnostics: ["CUSTOMER_CREATE_SCOPE_CONFLICT"], touchedModels: ["Customer"] };
+  }
+  if (prior && (prior.displayName !== displayName || Number(prior.version) !== version)) {
+    return { status: "conflict", conflicts: [conflict("duplicate_event", `Customer ${customerId} already exists with another version or name.`)], diagnostics: ["CUSTOMER_CREATE_DUPLICATE_CONFLICT"], touchedModels: ["Customer"] };
+  }
+  if (prior) return { status: "reconciled", conflicts: [], diagnostics: ["CUSTOMER_CREATE_ALREADY_PROJECTED"], touchedModels: ["Customer"] };
+  const duplicateName = await tx.$queryRaw<Array<{ id: string }>>`
+    SELECT "id" FROM "Customer"
+    WHERE "businessId" = ${event.businessId} AND "isActive" = true AND LOWER("displayName") = LOWER(${displayName})
+    LIMIT 1
+  `;
+  if (duplicateName[0]) {
+    return { status: "conflict", conflicts: [conflict("duplicate_event", `Customer name ${displayName} already belongs to customer ${duplicateName[0].id}.`)], diagnostics: ["CUSTOMER_CREATE_NAME_COLLISION"], touchedModels: ["Customer"] };
+  }
+  const occurredAt = asDate(payload.updatedAt, event.occurredAt);
+  await tx.$executeRaw`
+    INSERT INTO "Customer" ("id", "businessId", "displayName", "creditCents", "isActive", "version", "sourceSurface", "createdAt", "updatedAt")
+    VALUES (${customerId}, ${event.businessId}, ${displayName}, 0, true, ${version}, 'tablet', ${occurredAt}, ${occurredAt})
+  `;
+  await tx.auditEvent.create({ data: { id: `${event.eventId}_customer_audit`, businessId: event.businessId, actorId: null, topic: "customer.created", entityType: "Customer", entityId: customerId, summary: "Cliente mínimo creado desde Tablet.", afterJson: json({ id: customerId, displayName, version, source: "tablet" }), metadataJson: json({ sourceEventId: event.eventId, privacy: "minimal_pos_projection" }), createdAt: occurredAt } });
+  return { status: "projected", conflicts: [], diagnostics: ["CUSTOMER_CREATE_PROJECTED"], touchedModels: ["Customer", "AuditEvent"] };
+}
+
 async function projectSaleCompleted(tx: TxClient, event: SyncEventEnvelope): Promise<SyncProjectionResult> {
   const baseConflicts = await ensureBusinessAndTerminal(tx, event);
   if (baseConflicts.length) return { status: "conflict", conflicts: baseConflicts, diagnostics: ["SALE_PROJECTOR_PRECONDITION_FAILED"], touchedModels: ["Sale"] };
@@ -230,6 +266,7 @@ async function projectSaleCompleted(tx: TxClient, event: SyncEventEnvelope): Pro
   }
 
   const cashSessionId = asOptionalString(payload.cashSessionId);
+  const saleCustomerId = asOptionalString(payload.saleCustomerId);
   if (cashSessionId) {
     const cashSession = await tx.cashSession.findFirst({ where: { id: cashSessionId, businessId: event.businessId } });
     if (!cashSession) {
@@ -264,6 +301,7 @@ async function projectSaleCompleted(tx: TxClient, event: SyncEventEnvelope): Pro
         where: { id: saleId },
         data: {
           cashSessionId,
+          customerId: saleCustomerId,
           cashier,
           totalCents,
           status: asString(payload.status) || "COMPLETED",
@@ -282,6 +320,7 @@ async function projectSaleCompleted(tx: TxClient, event: SyncEventEnvelope): Pro
       businessId: event.businessId,
       terminalId: event.terminalId,
       cashSessionId,
+      customerId: saleCustomerId,
       folio,
       cashier,
       totalCents,
@@ -858,6 +897,7 @@ async function projectProductSupplier(tx: TxClient, event: SyncEventEnvelope): P
 
 export async function projectAcceptedSyncEvent(tx: TxClient, event: SyncEventEnvelope): Promise<SyncProjectionResult> {
   if (event.topic === "sale.created") return projectSaleCreated(tx, event);
+  if (event.topic === "customer.created") return projectCustomerCreated(tx, event);
   if (event.topic === "sale.completed") return projectSaleCompleted(tx, event);
   if (event.topic === "ticket.closed") return projectTicketClosed(tx, event);
   if (event.topic === "stock.decremented") return projectStockDecremented(tx, event);

@@ -3,7 +3,9 @@ import { getPcDeviceFleet } from "@/server/services/pc-command-center.service";
 
 export const dynamic = "force-dynamic";
 
-export default async function DevicesPage() {
-  const model = await getPcDeviceFleet();
+type SearchParams = Record<string, string | string[] | undefined>;
+
+export default async function DevicesPage({ searchParams }: { searchParams?: SearchParams | Promise<SearchParams> }) {
+  const model = await getPcDeviceFleet(searchParams ? await searchParams : undefined);
   return <PcCommandCenterPage model={model} />;
 }
