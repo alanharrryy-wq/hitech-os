@@ -14,6 +14,7 @@ export const SHARED_SYNC_EVENTS = [
   "inventory.operation.recorded",
   "catalog.product.created",
   "catalog.product.updated",
+  "customer.created",
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",
