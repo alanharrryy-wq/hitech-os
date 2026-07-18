@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { legalEvidenceEnabled, applyLegalRedaction, sanitizeText, sanitizeUrl, sanitizeObject, sanitizeConsoleEntry, sanitizeNetworkEntry } = require('./surf8.legal-evidence.cjs');
 const { createRequire } = require('module');
 
 function arg(name, fallback = '') { const i = process.argv.indexOf(name); return (i >= 0 && i + 1 < process.argv.length) ? process.argv[i + 1] : fallback; }
@@ -162,11 +163,12 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
     const { chromium } = resolved;
     browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({ viewport: { width: viewportW, height: viewportH } });
-    page.on('console', msg => consoleMessages.push({ type: msg.type(), text: msg.text().slice(0, 800) }));
-    page.on('requestfailed', req => networkFailures.push({ url: req.url(), failure: req.failure() ? req.failure().errorText : 'unknown' }));
+    page.on('console', msg => consoleMessages.push(sanitizeConsoleEntry({ type: msg.type(), text: msg.text().slice(0, 800) })));
+    page.on('requestfailed', req => networkFailures.push(sanitizeNetworkEntry({ url: sanitizeUrl(req.url()), failure: req.failure() ? req.failure().errorText : 'unknown' })));
     const nav = await gotoWithRetry(page);
-    if (!nav.ok && !allowPartial) throw new Error(`Navigation failed ${url}: ${nav.error ? nav.error.message : 'unknown'}`);
-    const capture = await page.evaluate(({ point, surface, route, url }) => {
+    if (!nav.ok && !allowPartial) throw new Error(`Navigation failed ${sanitizeUrl(url)}: ${nav.error ? sanitizeText(nav.error.message) : 'unknown'}`);
+    const legalRedaction = await applyLegalRedaction(page).catch(error => ({ enabled: true, status: 'BLOCKED_UNREDACTED', error: sanitizeText(error && error.message ? error.message : String(error)) }));
+    let capture = await page.evaluate(({ point, surface, route, url }) => {
       function rectOf(el) { const r = el.getBoundingClientRect(); return { x:r.x,y:r.y,left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height }; }
       function dataAttrs(el) { const out={}; for (const a of Array.from(el.attributes || [])) if (a.name.startsWith('data-')) out[a.name]=a.value; return out; }
       function selectorGuess(el) {
@@ -208,7 +210,7 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
     const md = [];
     md.push(`# Point probe ${surface} ${route}`);
     md.push('');
-    md.push(`- URL: ${url}`);
+    md.push(`- URL: ${sanitizeUrl(url)}`);
     md.push(`- Point: ${point.x}, ${point.y} (${point.reason})`);
     md.push(`- Playwright: ${resolved.moduleName} via ${resolved.method}`);
     md.push(`- Screenshot: ${screenshotPath || 'NoScreenshots'}`);
@@ -220,13 +222,13 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
       md.push(`| ${row.rank} | ${mdEscape(row.selectorGuess)} | ${mdEscape(cs.position)} | ${mdEscape(cs.zIndex)} | ${mdEscape((cs.background || cs.backgroundColor || '').slice(0,90))} | ${Math.round(r.x)},${Math.round(r.y)} ${Math.round(r.width)}x${Math.round(r.height)} | ${mdEscape(row.textSample).slice(0,90)} |`);
     }
     fs.writeFileSync(path.join(reportsDir, 'point-stack.md'), md.join('\n'), 'utf8');
-    writeJson(path.join(reportsDir, 'point-summary.json'), { status: 'PASS', surface, route, url, point, stackCount: capture.stack.length, suspiciousCount: capture.suspiciousLayers.length, screenshot: screenshotPath, resolution: capture.resolution, startedAt, finishedAt:new Date().toISOString() });
+    writeJson(path.join(reportsDir, 'point-summary.json'), { status: 'PASS', surface, route, url: sanitizeUrl(url), point, stackCount: capture.stack.length, suspiciousCount: capture.suspiciousLayers.length, screenshot: screenshotPath, resolution: capture.resolution, legalRedaction, startedAt, finishedAt:new Date().toISOString() });
     console.log(`POINT_PROBE_PASS surface=${surface} route=${route} x=${point.x} y=${point.y}`);
     await browser.close();
     process.exit(0);
   } catch (e) {
     if (browser) await browser.close().catch(() => {});
-    writeJson(path.join(reportsDir, 'point-summary.json'), { status: allowPartial ? 'PARTIAL' : 'FAIL', surface, route, url, point, error: formatError(e), console: consoleMessages, networkFailures, startedAt, finishedAt:new Date().toISOString() });
+    writeJson(path.join(reportsDir, 'point-summary.json'), { status: allowPartial ? 'PARTIAL' : 'FAIL', surface, route, url: sanitizeUrl(url), point, error: sanitizeObject(formatError(e)), console: consoleMessages, networkFailures, startedAt, finishedAt:new Date().toISOString() });
     console.error(e && e.stack ? e.stack : String(e));
     process.exit(allowPartial ? 0 : 2);
   }
