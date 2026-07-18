@@ -1,0 +1,75 @@
+{
+  "schema": "CODE_ATLAS_LEGAL_UI1_MANIFEST_V1",
+  "version": "legui1-v1.0.0",
+  "target_root": "F:\\repos\\hitech-os\\tools\\code-atlas",
+  "authority_required": [
+    "legmesh1 PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
+    "ndclgl1 PASS_NDC_LEGAL_EXTENSION_INSTALLED",
+    "motlgl1 PASS_MOTOR_LEGAL_ADAPTER_INSTALLED",
+    "mamlegal1 PASS_MAM_LEGAL_ADAPTER_INSTALLED",
+    "catlgl1 PASS_CODE_ATLAS_LEGAL_BACKEND_INSTALLED"
+  ],
+  "execution": {
+    "external_concurrency": 1,
+    "internal_workers_max": 18,
+    "internal_shards_max": 18,
+    "qprocess": true,
+    "cooperative_cancel_between_stages": true
+  },
+  "managed_files": {
+    "code-atlas.py": {
+      "post_sha256": "E24E5C8873E83D4259F37D95A23745FA2AD284C07F6338790FB842440CF312D3",
+      "pre_sha256": "A22BA658905AEBEEAC30F221593F86A38D61BE712E37DACF1B7D0FA766A9D93A",
+      "mode": "replace"
+    },
+    "docs/README_legal_readiness_ui.md": {
+      "post_sha256": "B9218D0CE0076D0DD36835796BC6506DDADB9EA0C2285D036A6957121FC6D75B",
+      "pre_sha256": null,
+      "mode": "create"
+    },
+    "scripts/RUN_LEGAL_READINESS_BACKEND.ps1": {
+      "post_sha256": "B4C480676B8CADBA00AE3D9B06F2B3DC11FF990133973215F60AA6F3F9D18FEB",
+      "pre_sha256": "9CD357F8188B1B79DDB44944146EC4BE6D812381CC4D508D31E55E86A47A6B93",
+      "mode": "replace"
+    },
+    "src/code_atlas/legal_readiness/cli.py": {
+      "post_sha256": "7F9340D6821A628F2F92CB4F997D3A71B05535EC96C77F5308C164E7EFAD8947",
+      "pre_sha256": "BAEE73AFF4D74A008F0EDEFEB2550C9737974A643DFEC2CEF957856E9A62993D",
+      "mode": "replace"
+    },
+    "src/code_atlas/legal_readiness/contracts.py": {
+      "post_sha256": "26A832783F8B2B6E3EED5A84ACB4B005BAD15D53A6577C21A7869EEC8164FF41",
+      "pre_sha256": "A2424E013E94402A8FA8BEC9F348E98176C571C1E44EFCF26F2495E23C8FC8F4",
+      "mode": "replace"
+    },
+    "src/code_atlas/legal_readiness/pipeline.py": {
+      "post_sha256": "714942E450923AB602DC5227D871A4F3E9AE27DB92CB6C454E2C0F38621525A1",
+      "pre_sha256": "81333225C7D7E81D36E26996CAA25EEDF114EE67C4C91A517B210670515F1B05",
+      "mode": "replace"
+    },
+    "src/code_atlas/ui/__init__.py": {
+      "post_sha256": "BC57C439A4C63BC52BD0D80A8E97D3D1401AA88319AF5466DEF111C78DDC269F",
+      "pre_sha256": "000E19ACA0E50E95322100671E684B1806A839CE5866DBB65B0DD3520EBA0457",
+      "mode": "replace"
+    },
+    "src/code_atlas/ui/legal_readiness.py": {
+      "post_sha256": "CCFE9CDFA55DA4D4E4941EF20810165A993F0DD8003A88B406B0D534B7DC257D",
+      "pre_sha256": null,
+      "mode": "create"
+    },
+    "tests/test_legal_readiness_ui.py": {
+      "post_sha256": "164AED66544858D6AD49EFB8140F6074799A2D1550AF765D4FA1FA77B48D5126",
+      "pre_sha256": null,
+      "mode": "create"
+    }
+  },
+  "generated_cache_cleanup": [
+    "src/code_atlas/legal_readiness/__pycache__"
+  ],
+  "does_not_certify": [
+    "legal compliance",
+    "IP ownership",
+    "open-source obligation resolution",
+    "production readiness"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "CODE_ATLAS_LEGAL_UI1_INSTALL_STATE_V1",
+  "version": "legui1-v1.0.0",
+  "installed_at": "2026-07-17T11:55:01-06:00",
+  "target_root": "F:\\repos\\hitech-os\\tools\\code-atlas",
+  "backup_root": "F:\\Trash-old\\legui1 backup 1707 115450",
+  "modified_files": [
+    "code-atlas.py",
+    "scripts/RUN_LEGAL_READINESS_BACKEND.ps1",
+    "src/code_atlas/legal_readiness/cli.py",
+    "src/code_atlas/legal_readiness/contracts.py",
+    "src/code_atlas/legal_readiness/pipeline.py",
+    "src/code_atlas/ui/__init__.py"
+  ],
+  "created_files": [
+    "CODE_ATLAS_LEGAL_UI1_INSTALL_STATE.json",
+    "CODE_ATLAS_LEGAL_UI1_MANIFEST.json",
+    "docs/README_legal_readiness_ui.md",
+    "src/code_atlas/ui/legal_readiness.py",
+    "tests/test_legal_readiness_ui.py"
+  ],
+  "managed_files": {
+    "code-atlas.py": {
+      "sha256": "E24E5C8873E83D4259F37D95A23745FA2AD284C07F6338790FB842440CF312D3",
+      "mode": "modified"
+    },
+    "CODE_ATLAS_LEGAL_UI1_MANIFEST.json": {
+      "sha256": "B1733616A736FB0B0156A88C290E962EBE291CB5F138F83C88BC50324174577D",
+      "mode": "created"
+    },
+    "docs/README_legal_readiness_ui.md": {
+      "sha256": "B9218D0CE0076D0DD36835796BC6506DDADB9EA0C2285D036A6957121FC6D75B",
+      "mode": "created"
+    },
+    "scripts/RUN_LEGAL_READINESS_BACKEND.ps1": {
+      "sha256": "B4C480676B8CADBA00AE3D9B06F2B3DC11FF990133973215F60AA6F3F9D18FEB",
+      "mode": "modified"
+    },
+    "src/code_atlas/legal_readiness/cli.py": {
+      "sha256": "7F9340D6821A628F2F92CB4F997D3A71B05535EC96C77F5308C164E7EFAD8947",
+      "mode": "modified"
+    },
+    "src/code_atlas/legal_readiness/contracts.py": {
+      "sha256": "26A832783F8B2B6E3EED5A84ACB4B005BAD15D53A6577C21A7869EEC8164FF41",
+      "mode": "modified"
+    },
+    "src/code_atlas/legal_readiness/pipeline.py": {
+      "sha256": "714942E450923AB602DC5227D871A4F3E9AE27DB92CB6C454E2C0F38621525A1",
+      "mode": "modified"
+    },
+    "src/code_atlas/ui/__init__.py": {
+      "sha256": "BC57C439A4C63BC52BD0D80A8E97D3D1401AA88319AF5466DEF111C78DDC269F",
+      "mode": "modified"
+    },
+    "src/code_atlas/ui/legal_readiness.py": {
+      "sha256": "CCFE9CDFA55DA4D4E4941EF20810165A993F0DD8003A88B406B0D534B7DC257D",
+      "mode": "created"
+    },
+    "tests/test_legal_readiness_ui.py": {
+      "sha256": "164AED66544858D6AD49EFB8140F6074799A2D1550AF765D4FA1FA77B48D5126",
+      "mode": "created"
+    }
+  },
+  "authority": {
+    "status": "PASS",
+    "rows": [
+      {
+        "prefix": "legmesh1",
+        "expected_status": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
+        "path": "F:\\descargasf\\legmesh1 1707 094158 result.zip",
+        "sha256": "03C5C5B2D3925140A29ED9B4D504441BC49C22082ED18D45F159D87EE75BEB09",
+        "actual_status": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
+        "match": true
+      },
+      {
+        "prefix": "ndclgl1",
+        "expected_status": "PASS_NDC_LEGAL_EXTENSION_INSTALLED",
+        "path": "F:\\descargasf\\ndclgl1 1707 100257 result.zip",
+        "sha256": "AFE1D671FB7862D3C1843382C86DC2AE22D648B0D03EEBDE11558B367706E71B",
+        "actual_status": "PASS_NDC_LEGAL_EXTENSION_INSTALLED",
+        "match": true
+      },
+      {
+        "prefix": "motlgl1",
+        "expected_status": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED",
+        "path": "F:\\descargasf\\motlgl1 1707 103427 result.zip",
+        "sha256": "16B1341F47C1956D980F38E1DE32ECB35E426F57DAC93BE8D21E40BC989C8B87",
+        "actual_status": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED",
+        "match": true
+      },
+      {
+        "prefix": "mamlegal1",
+        "expected_status": "PASS_MAM_LEGAL_ADAPTER_INSTALLED",
+        "path": "F:\\descargasf\\mamlegal1 1707 110009 result.zip",
+        "sha256": "787D059DEEB533C1A21E85D98EF291A0D1C6562CC403F5899C7B00354B173E66",
+        "actual_status": "PASS_MAM_LEGAL_ADAPTER_INSTALLED",
+        "match": true
+      },
+      {
+        "prefix": "catlgl1",
+        "expected_status": "PASS_CODE_ATLAS_LEGAL_BACKEND_INSTALLED",
+        "path": "F:\\descargasf\\catlgl1 1707 111825 result.zip",
+        "sha256": "A11015C6F507B49374DB34CFDCF8F5BC32E2364722900D4DB9A197E1D1D96B6A",
+        "actual_status": "PASS_CODE_ATLAS_LEGAL_BACKEND_INSTALLED",
+        "match": true
+      }
+    ],
+    "errors": []
+  },
+  "external_concurrency": 1,
+  "cooperative_cancel": true
+}
