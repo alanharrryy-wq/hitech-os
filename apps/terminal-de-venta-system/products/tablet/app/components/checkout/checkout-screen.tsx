@@ -17,6 +17,7 @@ import { buildTicketSuccessViewModel } from "@/lib/pos/ticket-success-view-model
 import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { SellingWorkspace } from "@components/pos/pos-screen";
+import { PosCustomerBinding } from "@components/pos/pos-customer-binding";
 import { CheckoutCashCalculator } from "./checkout-cash-calculator";
 import { CheckoutPaymentMethods } from "./checkout-payment-methods";
 import { CheckoutSummary } from "./checkout-summary";
@@ -67,6 +68,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
   const [error, setError] = useState<unknown>(null);
   const [lastSale, setLastSale] = useState<CompletedSaleReceipt | null>(null);
   const [clientRequestId, setClientRequestId] = useState("");
+  const [customerId, setCustomerId] = useState<string | null>(null);
   const submittingRef = useRef(false);
   const busyRef = useRef(false);
   const dialogRef = useRef<HTMLElement | null>(null);
@@ -249,7 +251,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
     try {
       const requestId = clientRequestId || await getOrCreatePaymentRequestId(lines);
       setClientRequestId(requestId);
-      const sale = await completeCartSale({ lines, paymentTenders: effectiveTenders, clientRequestId: requestId });
+      const sale = await completeCartSale({ lines, paymentTenders: effectiveTenders, customerId, clientRequestId: requestId });
       setLastSale(sale);
       setLines([]);
       clearCartStorage();
@@ -323,6 +325,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
             <section className={styles.sheetWorkspace}>
               <section className={styles.captureColumn} aria-labelledby="checkout-method-title">
                 <div className={styles.columnHeading}><span>Paso 1</span><h2 id="checkout-method-title">Método de pago</h2></div>
+                <PosCustomerBinding customerId={customerId} onChange={setCustomerId} disabled={busy} />
                 <CheckoutPaymentMethods value={paymentMode} onChange={selectPaymentMode} disabled={busy} />
 
                 {paymentMode === "mixed" ? (
