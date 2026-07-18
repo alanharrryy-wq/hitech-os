@@ -1209,14 +1209,14 @@ export const PC_PAGE_CONTRACTS = [
       "title": "Sin pendientes en Productos críticos",
       "explanation": "No se detectaron elementos que requieran atención inmediata.",
       "actionLabel": "Ver detalle",
-      "actionHref": "/existencias-criticas"
+      "actionHref": "/stock?state=critical"
     },
     "errorState": {
       "title": "No se pudo cargar Productos críticos",
       "explanation": "La información necesaria no estuvo disponible en esta lectura.",
       "recovery": "Reintenta y revisa la evidencia técnica si vuelve a fallar.",
       "actionLabel": "Reintentar",
-      "actionHref": "/existencias-criticas"
+      "actionHref": "/stock?state=critical"
     }
   },
   {
@@ -3902,5 +3902,37 @@ export const PC_PAGE_CONTRACTS = [
           "actionLabel": "Reintentar",
           "actionHref": "/referencia-visual/liquid-glass-capsules"
       }
+  },
+  {
+    "route": "/clientes",
+    "humanName": "Clientes",
+    "group": "ventas-caja",
+    "status": "primary",
+    "primaryQuestion": "¿Qué cliente se asociará a la venta y con qué datos?",
+    "routeIntent": "¿Qué cliente se asociará a la venta y con qué datos?",
+    "subtitle": "Fichas canónicas de cliente, datos fiscales e historial de ventas identificadas.",
+    "userRoles": ["dueno", "gerente", "auditor", "soporte"],
+    "requiredBlocks": ["decisionHeader", "attentionSummary", "nextBestAction", "actionableTable", "evidenceDrawer", "emptyState", "errorState"],
+    "primaryAction": "Buscar cliente",
+    "secondaryActions": ["Ver ficha", "Ver evidencia"],
+    "dataSourceKind": "real",
+    "allowsTechnicalTermsOnlyInsideEvidence": true,
+    "evidence": [
+      { "label": "Fuente", "value": "Customer canónico en PC", "kind": "operational" },
+      { "label": "POS", "value": "Tablet sólo asocia un cliente previamente proyectado", "kind": "technical" }
+    ],
+    "emptyState": {
+      "title": "Sin clientes registrados",
+      "explanation": "Aún no hay fichas disponibles o falta aplicar la migración local de clientes.",
+      "actionLabel": "Crear cliente",
+      "actionHref": "/clientes"
+    },
+    "errorState": {
+      "title": "No se pudo cargar Clientes",
+      "explanation": "La fuente canónica no estuvo disponible en esta lectura.",
+      "recovery": "Verifica la migración local y vuelve a intentar.",
+      "actionLabel": "Reintentar",
+      "actionHref": "/clientes"
+    }
   }
 ] as const satisfies readonly PcPageContract[];

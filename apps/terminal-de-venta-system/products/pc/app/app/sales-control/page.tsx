@@ -3,7 +3,9 @@ import { getPcSalesControl } from "@/server/services/pc-command-center.service";
 
 export const dynamic = "force-dynamic";
 
-export default async function SalesControlPage() {
-  const model = await getPcSalesControl();
+type SearchParams = Record<string, string | string[] | undefined>;
+
+export default async function SalesControlPage({ searchParams }: { searchParams?: SearchParams | Promise<SearchParams> }) {
+  const model = await getPcSalesControl(searchParams ? await searchParams : undefined);
   return <PcCommandCenterPage model={model} />;
 }

@@ -1,6 +1,7 @@
 import { BarcodeRepositoryPrisma } from "@/server/repositories/barcode-repository.prisma";
 import { ProductRepositoryPrisma } from "@/server/repositories/product-repository.prisma";
 import { StockRepositoryPrisma } from "@/server/repositories/stock-repository.prisma";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 
 const products = new ProductRepositoryPrisma();
 const barcodes = new BarcodeRepositoryPrisma();
@@ -34,7 +35,8 @@ function buildDataNotice(error: unknown): PcDataNotice {
 
 export async function getCatalogActiveSnapshot() {
   try {
-    const activeProducts = await products.listActive(100);
+    const businessId = await resolvePcBusinessScope();
+    const activeProducts = await products.listActive(businessId, 100);
     const categories = new Map<string, { skus: number; activos: number; price: number; cost: number; barcodes: number }>();
     for (const product of activeProducts) {
       const current = categories.get(product.category) ?? { skus: 0, activos: 0, price: 0, cost: 0, barcodes: 0 };
@@ -77,9 +79,12 @@ export async function getCatalogActiveSnapshot() {
   }
 }
 
-export async function getCriticalStockRows(limit = 25) {
+export async function getCriticalStockRows(input: { limit?: number; urgency?: string } = {}) {
   try {
-    const rows = await stock.listCritical(limit);
+    const businessId = await resolvePcBusinessScope();
+    const urgency = input.urgency === "today" || input.urgency === "3days" || input.urgency === "week" ? input.urgency : "all";
+    const maxDaysCover = urgency === "today" ? 1 : urgency === "3days" ? 3 : urgency === "week" ? 7 : 2;
+    const rows = await stock.listCritical(businessId, input.limit ?? 25, maxDaysCover);
     return {
       rows: rows.map((row) => ({
         sku: row.product.sku,
@@ -101,7 +106,8 @@ export async function getCriticalStockRows(limit = 25) {
 
 export async function getBarcodeHealthRows() {
   try {
-    const rows = await barcodes.listRecent(100);
+    const businessId = await resolvePcBusinessScope();
+    const rows = await barcodes.listRecent(businessId, 100);
     const byCategory = new Map<string, { productos: Set<string>; barcodes: number; activos: number }>();
     for (const barcode of rows) {
       const category = barcode.product.category;

@@ -1,9 +1,10 @@
 import { prisma } from "@/server/prisma/client";
 
 export class OperationRepository {
-  async listPurchaseOrders(limit = 50): Promise<any[]> {
+  async listPurchaseOrders(businessId: string, limit = 50): Promise<any[]> {
     const db = prisma as any;
     return db.purchaseOrder.findMany({
+      where: { businessId },
       include: {
         supplier: true,
         lines: true,
@@ -14,9 +15,10 @@ export class OperationRepository {
     });
   }
 
-  async listGoodsReceipts(limit = 50): Promise<any[]> {
+  async listGoodsReceipts(businessId: string, limit = 50): Promise<any[]> {
     const db = prisma as any;
     return db.goodsReceipt.findMany({
+      where: { businessId },
       include: {
         supplier: true,
         lines: true,
@@ -27,21 +29,23 @@ export class OperationRepository {
     });
   }
 
-  async listReplenishmentSignals(limit = 50): Promise<any[]> {
+  async listReplenishmentSignals(businessId: string, limit = 50): Promise<any[]> {
     const db = prisma as any;
     return db.replenishmentSignal.findMany({
+      where: { businessId },
       include: { product: { include: { stockSnapshots: true } } },
       orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
       take: limit
     });
   }
 
-  async listSales(limit = 250): Promise<any[]> {
+  async listSales(businessId: string, limit = 250): Promise<any[]> {
     const db = prisma as any;
     const safeLimit = Math.max(1, Math.min(Number(limit) || 250, 500));
 
     try {
       return await db.sale.findMany({
+        where: { businessId },
         select: {
           id: true,
           businessId: true,
@@ -63,22 +67,25 @@ export class OperationRepository {
       if (!isSchemaDrift) throw error;
 
       return await db.$queryRawUnsafe(
-        `SELECT id, businessId, terminalId, cashSessionId, folio, cashier, totalCents, status, createdAt FROM Sale ORDER BY createdAt DESC LIMIT ${safeLimit}`
+        `SELECT id, businessId, terminalId, cashSessionId, folio, cashier, totalCents, status, createdAt FROM Sale WHERE businessId = ? ORDER BY createdAt DESC LIMIT ${safeLimit}`,
+        businessId
       );
     }
   }
 
-  async listReturns(limit = 250): Promise<any[]> {
+  async listReturns(businessId: string, limit = 250): Promise<any[]> {
     const db = prisma as any;
     return db.saleReturn.findMany({
+      where: { businessId },
       orderBy: { createdAt: "desc" },
       take: limit
     });
   }
 
-  async listStockSnapshots(limit = 250): Promise<any[]> {
+  async listStockSnapshots(businessId: string, limit = 250): Promise<any[]> {
     const db = prisma as any;
     return db.stockSnapshot.findMany({
+      where: { businessId },
       include: { product: true },
       orderBy: { daysCover: "asc" },
       take: limit

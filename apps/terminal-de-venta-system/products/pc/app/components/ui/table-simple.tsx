@@ -8,12 +8,17 @@ export function TableSimple({
   emptyMessage?: string;
 }) {
   return (
-    <div className="table-wrap">
+    <div
+      className="table-wrap pc-foundation-table"
+      data-prisma-component="TableSimple"
+      data-row-count={rows.length}
+      data-state={rows.length > 0 ? "populated" : "empty"}
+    >
       <table>
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column}>{column}</th>
+              <th key={column} scope="col">{column}</th>
             ))}
           </tr>
         </thead>
@@ -28,7 +33,9 @@ export function TableSimple({
             ))
           ) : (
             <tr>
-              <td colSpan={Math.max(columns.length, 1)}>{emptyMessage}</td>
+              <td className="pc-foundation-table__empty" colSpan={Math.max(columns.length, 1)}>
+                {emptyMessage}
+              </td>
             </tr>
           )}
         </tbody>

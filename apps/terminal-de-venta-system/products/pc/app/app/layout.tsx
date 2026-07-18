@@ -1,14 +1,12 @@
+import type { ReactNode } from "react";
 import "./globals.css";
+import "./pc-atmosphere-clean.css";
 import "./suppliers-ux-v08.css";
-import "./prisma-visual-os-pc-binding.css";
-import "./prisma-atmospheric-background.css";
-import "./prisma-pc-premium-visual-system.css";
 import { headers } from "next/headers";
 import { PrismaAtmosphericBackground } from "./components/PrismaAtmosphericBackground";
 import { pcMessages } from "@/lib/i18n/messages/es";
-import { PrismaSurfFix6LifecycleRuntime } from "./prisma-surf-fix6-lifecycle-runtime";
 import { PrismaDevIssueBadgeCleaner } from "./prisma-dev-issue-badge-cleaner";
-import { PrismaPcPremiumRuntime } from "./components/PrismaPcPremiumRuntime";
+import styles from "./layout.module.css";
 
 export const metadata = {
   title: pcMessages.metadata.title,
@@ -42,7 +40,7 @@ function prismaRoutePanelId(route: string) {
   return `pc.${route.slice(1).replace(/[^A-Za-z0-9]+/g, ".").replace(/^\.|\.$/g, "")}.route`;
 }
 
-export default async function RootLayout({ children }: { children: any }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
 
   return (
@@ -54,16 +52,27 @@ export default async function RootLayout({ children }: { children: any }) {
       data-prisma-surface="pc-backoffice"
       data-prisma-visual-os="PC_UNIFIED_COMMAND_CENTER_0307"
       data-prisma-vos-binding="UCC-0307"
+      suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: prismaSkinBootstrap }} />
       </head>
-      <body data-prisma-panel={prismaRoutePanelId(route)} data-prisma-surface="pc" data-prisma-route={route}>
-        <PrismaDevIssueBadgeCleaner />
-        <PrismaSurfFix6LifecycleRuntime />
-        <PrismaAtmosphericBackground />
-        <PrismaPcPremiumRuntime />
-        <div className="prisma-app-content">{children}</div>
+      <body
+        className={styles.body}
+        data-prisma-panel={prismaRoutePanelId(route)}
+        data-prisma-surface="pc"
+        data-prisma-route={route}
+      >
+        <div className={styles.runtimeHost} data-prisma-layer="runtime">
+          <PrismaDevIssueBadgeCleaner />
+        </div>
+        <div className={styles.backgroundHost} data-prisma-layer="background" aria-hidden="true">
+          <PrismaAtmosphericBackground />
+        </div>
+        <div className={`prisma-app-content ${styles.appContent}`} data-prisma-layer="content">
+          {children}
+        </div>
+        <div id="prisma-overlay-root" className={styles.overlayRoot} data-prisma-layer="overlay-root" aria-live="polite" />
       </body>
     </html>
   );

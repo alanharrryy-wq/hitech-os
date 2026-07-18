@@ -1,0 +1,424 @@
+/*
+ * PCSWARM W1 candidate foundation.
+ * Scope: PRISMA PC only. It deliberately avoids Tablet, Mobile, Chart Lab and shared-ui.
+ * The file exposes stable optical tokens and opt-in primitives instead of becoming a new
+ * late-file override stack. No route geometry or business behavior is encoded here.
+ */
+
+html[data-prisma-surface="pc-backoffice"] {
+  color-scheme: dark;
+
+  --pcv-ink-strong: #f7fbff;
+  --pcv-ink: #e7f1f7;
+  --pcv-ink-muted: #bfd0da;
+  --pcv-ink-faint: #91a6b3;
+  --pcv-canvas: #071019;
+  --pcv-canvas-elevated: #0b1722;
+  --pcv-panel-solid: #101e29;
+  --pcv-panel-glass: rgba(10, 24, 34, 0.78);
+  --pcv-card-glass: rgba(13, 30, 41, 0.70);
+  --pcv-control-glass: rgba(17, 36, 48, 0.68);
+  --pcv-scrim: rgba(3, 10, 16, 0.48);
+
+  --pcv-accent-cyan: #69e7ff;
+  --pcv-accent-green: #70efb1;
+  --pcv-accent-amber: #ffc66d;
+  --pcv-accent-violet: #bca2ff;
+  --pcv-accent-pink: #ff91c9;
+  --pcv-accent-blue: #83b8ff;
+
+  --pcv-success: #70efb1;
+  --pcv-warning: #ffc66d;
+  --pcv-danger: #ff9a9a;
+  --pcv-info: #69e7ff;
+
+  --pcv-border-hairline: rgba(205, 235, 247, 0.14);
+  --pcv-border-soft: rgba(190, 226, 240, 0.22);
+  --pcv-border-strong: rgba(207, 239, 250, 0.36);
+  --pcv-highlight: rgba(255, 255, 255, 0.16);
+  --pcv-shadow-panel: 0 28px 72px rgba(0, 8, 16, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --pcv-shadow-card: 0 18px 46px rgba(0, 7, 14, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --pcv-shadow-focus: 0 0 0 3px rgba(105, 231, 255, 0.24), 0 0 0 6px rgba(105, 231, 255, 0.08);
+
+  --pcv-blur-panel: 22px;
+  --pcv-blur-card: 14px;
+  --pcv-blur-control: 9px;
+  --pcv-saturate: 1.12;
+
+  --pcv-radius-xs: 10px;
+  --pcv-radius-sm: 14px;
+  --pcv-radius-md: 18px;
+  --pcv-radius-lg: 24px;
+  --pcv-radius-xl: 30px;
+  --pcv-radius-pill: 999px;
+
+  --pcv-space-1: 4px;
+  --pcv-space-2: 8px;
+  --pcv-space-3: 12px;
+  --pcv-space-4: 16px;
+  --pcv-space-5: 20px;
+  --pcv-space-6: 24px;
+  --pcv-space-8: 32px;
+  --pcv-space-10: 40px;
+
+  --pcv-duration-fast: 140ms;
+  --pcv-duration-standard: 220ms;
+  --pcv-ease: cubic-bezier(0.2, 0.78, 0.2, 1);
+
+  --pcv-atmosphere-photo: var(--prisma-bg-image-pc, none);
+  --pcv-atmosphere-photo-opacity: 0.76;
+  --pcv-atmosphere-warm: rgba(255, 163, 76, 0.16);
+  --pcv-atmosphere-cool: rgba(72, 203, 255, 0.18);
+  --pcv-atmosphere-vignette: rgba(0, 7, 13, 0.72);
+  --pcv-atmosphere-grain-opacity: 0.035;
+}
+
+html[data-prisma-surface="pc-backoffice"][data-prisma-skin="light"] {
+  color-scheme: light;
+
+  --pcv-ink-strong: #071626;
+  --pcv-ink: #14283b;
+  --pcv-ink-muted: #425a6e;
+  --pcv-ink-faint: #6f8393;
+  --pcv-canvas: #eaf3f8;
+  --pcv-canvas-elevated: #f5fafc;
+  --pcv-panel-solid: #f7fbfd;
+  --pcv-panel-glass: rgba(247, 252, 255, 0.86);
+  --pcv-card-glass: rgba(249, 253, 255, 0.82);
+  --pcv-control-glass: rgba(255, 255, 255, 0.78);
+  --pcv-scrim: rgba(225, 240, 247, 0.34);
+  --pcv-border-hairline: rgba(35, 76, 102, 0.12);
+  --pcv-border-soft: rgba(35, 76, 102, 0.20);
+  --pcv-border-strong: rgba(20, 84, 122, 0.34);
+  --pcv-highlight: rgba(255, 255, 255, 0.82);
+  --pcv-shadow-panel: 0 24px 62px rgba(35, 78, 105, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  --pcv-shadow-card: 0 16px 38px rgba(35, 78, 105, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material {
+  position: relative;
+  isolation: isolate;
+  color: var(--pcv-ink);
+  border: 1px solid var(--pcv-border-soft);
+  border-radius: var(--pcv-radius-lg);
+  overflow: clip;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--pcv-highlight), transparent 18%);
+  opacity: 0.58;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-material="glass"] {
+  background:
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--pcv-accent-cyan) 9%, transparent), transparent 38%),
+    linear-gradient(145deg, color-mix(in srgb, var(--pcv-panel-glass) 94%, white 6%), var(--pcv-panel-glass));
+  box-shadow: var(--pcv-shadow-panel);
+  backdrop-filter: blur(var(--pcv-blur-panel)) saturate(var(--pcv-saturate));
+  -webkit-backdrop-filter: blur(var(--pcv-blur-panel)) saturate(var(--pcv-saturate));
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-material="solid"] {
+  background: var(--pcv-panel-solid);
+  box-shadow: var(--pcv-shadow-card);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-material="translucent"] {
+  background: var(--pcv-card-glass);
+  box-shadow: var(--pcv-shadow-card);
+  backdrop-filter: blur(var(--pcv-blur-card)) saturate(1.06);
+  -webkit-backdrop-filter: blur(var(--pcv-blur-card)) saturate(1.06);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-optics="off"] {
+  background: var(--pcv-panel-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--pcv-success) 38%, var(--pcv-border-soft));
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-tone="warning"] {
+  border-color: color-mix(in srgb, var(--pcv-warning) 40%, var(--pcv-border-soft));
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-tone="danger"] {
+  border-color: color-mix(in srgb, var(--pcv-danger) 40%, var(--pcv-border-soft));
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-material[data-tone="info"] {
+  border-color: color-mix(in srgb, var(--pcv-info) 38%, var(--pcv-border-soft));
+}
+
+html[data-prisma-surface="pc-backoffice"] .card.pc-foundation-card {
+  position: relative;
+  display: grid;
+  gap: var(--pcv-space-5);
+  min-width: 0;
+  color: var(--pcv-ink);
+  border: 1px solid var(--pcv-border-soft);
+  border-radius: var(--pcv-radius-lg);
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--pcv-accent-cyan) 8%, transparent), transparent 36%),
+    linear-gradient(155deg, color-mix(in srgb, var(--pcv-card-glass) 94%, white 6%), var(--pcv-card-glass));
+  box-shadow: var(--pcv-shadow-card);
+  backdrop-filter: blur(var(--pcv-blur-card)) saturate(1.08);
+  -webkit-backdrop-filter: blur(var(--pcv-blur-card)) saturate(1.08);
+}
+
+html[data-prisma-surface="pc-backoffice"] .card.pc-foundation-card::before {
+  opacity: 0.48;
+  mix-blend-mode: normal;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pcv-space-4);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-card__eyebrow {
+  margin: 0 0 var(--pcv-space-2);
+  color: var(--pcv-accent-cyan);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-card__title {
+  margin: 0;
+  color: var(--pcv-ink-strong);
+  font-size: clamp(1.15rem, 1.55vw, 1.55rem);
+  font-weight: 820;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-card__subtitle {
+  max-width: 72ch;
+  margin: var(--pcv-space-2) 0 0;
+  color: var(--pcv-ink-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-card__body {
+  min-width: 0;
+}
+
+html[data-prisma-surface="pc-backoffice"] .card.pc-foundation-stat {
+  align-content: start;
+  min-height: 172px;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-stat__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pcv-space-4);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-stat__label {
+  color: var(--pcv-ink-strong);
+  font-size: 1rem;
+  font-weight: 760;
+  line-height: 1.25;
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-stat__icon {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--pcv-accent-amber);
+  border: 1px solid color-mix(in srgb, var(--pcv-accent-amber) 30%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--pcv-accent-amber) 11%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--pcv-accent-amber) 14%, transparent);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-stat__value {
+  color: var(--pcv-ink-strong);
+  font-size: clamp(2rem, 3.4vw, 3.75rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 860;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+  text-shadow: 0 12px 26px rgba(0, 8, 14, 0.26);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-stat__note {
+  color: var(--pcv-ink-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 10px;
+  color: var(--pcv-ink-strong);
+  border: 1px solid var(--pcv-border-soft);
+  border-radius: var(--pcv-radius-pill);
+  background: var(--pcv-control-glass);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  font-size: 0.76rem;
+  font-weight: 760;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  backdrop-filter: blur(var(--pcv-blur-control)) saturate(1.05);
+  -webkit-backdrop-filter: blur(var(--pcv-blur-control)) saturate(1.05);
+}
+
+html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+
+html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge--ok {
+  color: var(--pcv-success);
+  border-color: color-mix(in srgb, var(--pcv-success) 34%, var(--pcv-border-soft));
+  background: color-mix(in srgb, var(--pcv-success) 11%, var(--pcv-control-glass));
+}
+
+html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge--warn {
+  color: var(--pcv-warning);
+  border-color: color-mix(in srgb, var(--pcv-warning) 34%, var(--pcv-border-soft));
+  background: color-mix(in srgb, var(--pcv-warning) 11%, var(--pcv-control-glass));
+}
+
+html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge--danger {
+  color: var(--pcv-danger);
+  border-color: color-mix(in srgb, var(--pcv-danger) 36%, var(--pcv-border-soft));
+  background: color-mix(in srgb, var(--pcv-danger) 11%, var(--pcv-control-glass));
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table {
+  max-width: 100%;
+  border: 1px solid var(--pcv-border-soft);
+  border-radius: var(--pcv-radius-md);
+  background: color-mix(in srgb, var(--pcv-panel-solid) 88%, transparent);
+  box-shadow: var(--pcv-shadow-card);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--pcv-ink);
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 13px 16px;
+  color: var(--pcv-ink-strong);
+  border-bottom: 1px solid var(--pcv-border-strong);
+  background: color-mix(in srgb, var(--pcv-panel-solid) 94%, transparent);
+  font-size: 0.72rem;
+  font-weight: 830;
+  letter-spacing: 0.09em;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+  backdrop-filter: blur(var(--pcv-blur-control));
+  -webkit-backdrop-filter: blur(var(--pcv-blur-control));
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table td {
+  padding: 13px 16px;
+  color: var(--pcv-ink);
+  border-bottom: 1px solid var(--pcv-border-hairline);
+  background: transparent;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table tbody tr:hover td,
+html[data-prisma-surface="pc-backoffice"] .table-wrap.pc-foundation-table tbody tr:focus-within td {
+  background: color-mix(in srgb, var(--pcv-accent-cyan) 8%, transparent);
+}
+
+html[data-prisma-surface="pc-backoffice"] .pc-foundation-table__empty {
+  min-height: 96px;
+  color: var(--pcv-ink-muted);
+  text-align: center;
+  vertical-align: middle;
+}
+
+html[data-prisma-surface="pc-backoffice"] :is(.pc-material, .pc-foundation-card, .pc-foundation-badge, .pc-foundation-table) :is(a, button, input, select, textarea, summary):focus-visible,
+html[data-prisma-surface="pc-backoffice"] :is(a, button, input, select, textarea, summary).pc-foundation-focus:focus-visible {
+  outline: 0;
+  box-shadow: var(--pcv-shadow-focus);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material[data-material="glass"], .pc-material[data-material="translucent"], .card.pc-foundation-card, .badge.pc-foundation-badge) {
+    background: var(--pcv-panel-solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material[data-material="glass"], .pc-material[data-material="translucent"], .card.pc-foundation-card, .badge.pc-foundation-badge, .table-wrap.pc-foundation-table th) {
+    background: var(--pcv-panel-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material, .pc-foundation-card, .pc-foundation-badge, .pc-foundation-table, .pc-foundation-focus),
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material, .pc-foundation-card, .pc-foundation-badge, .pc-foundation-table, .pc-foundation-focus)::before,
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material, .pc-foundation-card, .pc-foundation-badge, .pc-foundation-table, .pc-foundation-focus)::after {
+    scroll-behavior: auto;
+    transition-duration: 0.001ms;
+    animation-duration: 0.001ms;
+    animation-iteration-count: 1;
+  }
+}
+
+@media (forced-colors: active) {
+  html[data-prisma-surface="pc-backoffice"] :is(.pc-material, .card.pc-foundation-card, .badge.pc-foundation-badge, .table-wrap.pc-foundation-table) {
+    color: CanvasText;
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  html[data-prisma-surface="pc-backoffice"] .badge.pc-foundation-badge::before {
+    box-shadow: none;
+  }
+}

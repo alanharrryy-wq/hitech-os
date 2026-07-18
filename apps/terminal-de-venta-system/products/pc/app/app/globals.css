@@ -1,5 +1,7 @@
+/* PCSTRIP_1707: legacy root shell globals removed by PostCSS AST. Shell/chrome is owned exclusively by CSS Modules. */
 @import "../../../shared-ui/prisma/tokens/prisma-theme.css";
 @import "../../../shared-ui/prisma/components/prisma-components.css";
+@import "../styles/pc-visual-foundation.css";
 
 :root {
   --prisma-ref-bg: #050706;
@@ -35,88 +37,6 @@ a {
 button,
 input {
   font: inherit;
-}
-
-.shell {
-  width: min(100%, 1520px);
-  margin: 0 auto;
-  padding: clamp(12px, 1.7vw, 26px);
-  display: grid;
-  grid-template-columns: clamp(198px, 20vw, 282px) minmax(0, 1fr);
-  gap: clamp(10px, 1.4vw, 24px);
-  align-items: start;
-}
-
-.sidebar {
-  position: sticky;
-  top: clamp(10px, 1.4vw, 22px);
-  height: calc(100dvh - clamp(20px, 2.8vw, 44px));
-  min-height: 0;
-  max-height: calc(100dvh - clamp(20px, 2.8vw, 44px));
-  padding: clamp(10px, 1.15vw, 18px);
-  border-radius: clamp(20px, 2.1vw, var(--prisma-radius-xl));
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1vw, 16px);
-  overflow: hidden;
-  align-self: start;
-}
-
-.brand-block,
-.sidebar-panel {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
-}
-
-[data-theme="prisma-light"] .brand-block,
-[data-theme="prisma-light"] .sidebar-panel {
-  background:
-    var(--prisma-frosted-accent-gradient),
-    var(--prisma-glass-gradient);
-}
-
-.brand-block {
-  min-height: 172px;
-  display: grid;
-  place-items: center;
-  padding: 18px 10px;
-  background:
-    radial-gradient(circle at 50% 8%, rgba(232, 189, 103, 0.14), transparent 36%),
-    var(--prisma-glass-gradient);
-}
-
-.brand-row {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  box-shadow: 0 16px 34px var(--prisma-accent-gold-glow);
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.brand-mark.prisma-mark {
-  width: 74px;
-  height: 94px;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
 }
 
 .prisma-shard {
@@ -155,55 +75,14 @@ input {
   color: var(--prisma-text-muted);
 }
 
-.brand-row .subtle {
-  max-width: 170px;
-  margin: 4px auto 0;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.sidebar-panel {
-  padding: 14px;
-}
-
 .panel-label,
-.kicker,
-.nav-group-title {
+.kicker {
   margin: 0;
   color: var(--prisma-accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 850;
-}
-
-.nav-group-title {
-  margin-bottom: 10px;
-}
-
-.nav {
-  display: grid;
-  gap: 9px;
-}
-
-.nav a {
-  min-height: 48px;
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  align-items: center;
-  gap: 11px;
-  padding: 9px 11px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid transparent;
-  color: var(--prisma-text-secondary);
-  background: color-mix(in srgb, var(--prisma-glass-surface) 44%, transparent);
-}
-
-.nav a:hover {
-  color: var(--prisma-text-primary);
-  border-color: var(--prisma-border-medium);
-  background: var(--prisma-hover-surface);
-  transform: translateY(-1px);
 }
 
 .nav-icon {
@@ -278,14 +157,6 @@ input {
   border-color: var(--prisma-accent-cool-frosted-strong);
 }
 
-.main {
-  min-width: 0;
-  display: grid;
-  gap: 18px;
-  align-content: start;
-}
-
-.topbar,
 .hero,
 .card,
 .panel {
@@ -298,7 +169,6 @@ input {
   backdrop-filter: blur(22px);
 }
 
-.topbar::before,
 .hero::before,
 .card::before,
 .panel::before {
@@ -312,16 +182,6 @@ input {
   opacity: 0.72;
 }
 
-.topbar {
-  min-height: 76px;
-  display: grid;
-  grid-template-columns: auto minmax(260px, 1fr) auto;
-  gap: 14px;
-  align-items: center;
-  padding: 14px 18px;
-}
-
-.topbar-brand,
 .search-shell,
 .user-shell,
 .chip,
@@ -333,18 +193,6 @@ input {
 .table-meta {
   position: relative;
   z-index: 1;
-}
-
-.topbar-brand {
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px 8px 8px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  font-weight: 800;
 }
 
 .search-shell {
@@ -829,16 +677,6 @@ tr:hover td {
 }
 
 @media (max-width: 1180px) {
-  .shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: relative;
-    top: 0;
-    height: auto;
-    min-height: auto;
-  }
 
   .dashboard-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -852,13 +690,6 @@ tr:hover td {
 }
 
 @media (max-width: 780px) {
-  .shell {
-    padding: 18px;
-  }
-
-  .topbar {
-    grid-template-columns: 1fr;
-  }
 
   .user-shell,
   .hero-header,
@@ -890,26 +721,10 @@ body {
     var(--prisma-app-background-radial);
 }
 
-.sidebar {
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 30%, var(--prisma-border-soft));
-  background:
-    radial-gradient(circle at 50% -4%, rgba(245, 209, 131, 0.18), transparent 32%),
-    linear-gradient(180deg, var(--prisma-sidebar-surface), var(--prisma-cart-panel-surface));
-  box-shadow:
-    var(--prisma-shadow-glass),
-    0 0 64px rgba(232, 189, 103, 0.035);
-  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
-}
-
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar,
 .hero,
 .card,
 .panel,
-.topbar-brand,
 .search-shell,
 .user-shell,
 .metric-detail,
@@ -931,12 +746,9 @@ body {
   -webkit-backdrop-filter: blur(calc(var(--prisma-glass-blur) * 0.78)) saturate(var(--prisma-glass-saturate));
 }
 
-.topbar::before,
 .hero::before,
 .card::before,
 .panel::before,
-.brand-block::before,
-.sidebar-panel::before,
 .footer-stack > *::before,
 .action-card::before {
   background:
@@ -946,12 +758,9 @@ body {
   mix-blend-mode: screen;
 }
 
-.topbar::after,
 .hero::after,
 .card::after,
 .panel::after,
-.brand-block::after,
-.sidebar-panel::after,
 .footer-stack > *::after,
 .action-card::after {
   content: "";
@@ -976,14 +785,10 @@ body {
     0 16px 34px rgba(0, 0, 0, 0.28);
 }
 
-[data-theme="prisma-light"] .brand-block,
-[data-theme="prisma-light"] .sidebar-panel,
 [data-theme="prisma-light"] .footer-stack > *,
-[data-theme="prisma-light"] .topbar,
 [data-theme="prisma-light"] .hero,
 [data-theme="prisma-light"] .card,
 [data-theme="prisma-light"] .panel,
-[data-theme="prisma-light"] .topbar-brand,
 [data-theme="prisma-light"] .search-shell,
 [data-theme="prisma-light"] .user-shell,
 [data-theme="prisma-light"] .metric-detail,
@@ -998,36 +803,11 @@ body {
 }
 
 /* PRISMA_LIVING_BACKGROUND_PASS_01B: PC visible living scene pass */
-.shell {
-  position: relative;
-  isolation: isolate;
-  background: transparent;
-}
 
-.shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    linear-gradient(104deg, transparent 9%, rgba(255,255,255,0.07) 34%, transparent 46%),
-    radial-gradient(ellipse at 58% 2%, rgba(255,230,165,0.20), transparent 24%),
-    radial-gradient(ellipse at 74% 18%, rgba(150,206,235,0.14), transparent 28%);
-  filter: blur(10px) saturate(1.15);
-  opacity: 0.78;
-  animation: prismaLivingSceneDriftA 40s ease-in-out infinite alternate;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .card,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell,
 .metric-detail,
@@ -1066,28 +846,11 @@ body {
     linear-gradient(180deg, rgba(26,39,53,0.32), rgba(4,11,18,0.34));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .shell::before { animation: none; }
-}
-
 /* PRISMA_LAYER_DISCIPLINE_PASS_01C: PC layer discipline */
-.shell {
-  background: transparent;
-  animation: none;
-}
 
-.shell::before {
-  display: none;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
   background: var(--prisma-layer-panel-surface);
@@ -1115,23 +878,10 @@ body {
 /* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
 /* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
    PC backoffice: governed premium surfaces; no local duplicated scene. */
-.shell {
-  background: transparent;
-  animation: none;
-}
 
-.shell::before {
-  display: none;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
   background: var(--prisma-glass-panel-governed);
@@ -1157,9 +907,7 @@ body {
 }
 
 .hero::before,
-.panel::before,
-.sidebar::before,
-.topbar::before {
+.panel::before {
   opacity: 0.62;
   mix-blend-mode: screen;
 }
@@ -1187,15 +935,7 @@ html[data-layer-profile="perf"] .metric-card {
 
 /* PRISMA_BLACK_VISUAL_REFINEMENT_01G::START */
 
-.shell {
-  width: min(100%, 1548px);
-  gap: 28px;
-}
-
-.sidebar,
 .hero,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
 .metric-card,
 .card,
@@ -1235,14 +975,9 @@ body {
     linear-gradient(180deg, #101b26 0%, #06101b 44%, #01050a 100%);
 }
 
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
   background:
@@ -1307,19 +1042,11 @@ body {
   text-shadow: 0 0 24px rgba(239,196,111,0.25);
 }
 
-.avatar,
-.brand-mark:not(.prisma-mark) {
+.avatar {
   background:
     radial-gradient(ellipse at 50% 0%, rgba(255,250,229,0.78), transparent 44%),
     linear-gradient(180deg, #ffe7ab 0%, #efc46f 42%, #b97831 100%);
   box-shadow: 0 0 32px rgba(239,196,111,0.28);
-}
-
-.nav a.active,
-.nav a[aria-current="page"],
-.nav a:hover {
-  border-color: rgba(255,221,153,0.52);
-  box-shadow: 0 0 26px rgba(239,196,111,0.18), inset 0 1px 0 rgba(255,246,218,0.18);
 }
 /* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */
 
@@ -1330,99 +1057,20 @@ html,
 body {
   overflow-y: auto;
 }
-
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 50;
-  transform: translateY(-140%);
-  padding: 10px 14px;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid rgba(255, 221, 153, 0.52);
-  background: rgba(5, 12, 20, 0.94);
-  color: var(--prisma-accent-gold);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.42);
-  transition: transform 140ms ease;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-  outline: 2px solid rgba(255, 221, 153, 0.66);
-  outline-offset: 2px;
-}
-
-.shell {
-  min-height: 100vh;
-  padding-block: clamp(14px, 2vw, 26px);
-}
-
-.sidebar {
-  min-height: 0;
-  max-height: calc(100dvh - 44px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-  -webkit-overflow-scrolling: touch;
-}
-
-.sidebar::-webkit-scrollbar { width: 9px; }
-.sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.025); border-radius: 999px; }
-.sidebar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(255,220,148,0.46), rgba(83,126,162,0.32));
-  border: 2px solid rgba(2,8,14,0.84);
-  border-radius: 999px;
-}
-.sidebar { scrollbar-color: rgba(255,220,148,0.48) rgba(255,255,255,0.035); scrollbar-width: thin; }
 .sidebar-spacer { flex: 1 0 18px; min-height: 18px; }
-.main, .topbar, .search-shell { min-width: 0; }
+.search-shell { min-width: 0; }
 
 @media (max-height: 820px) and (min-width: 1181px) {
-  .shell { padding-block: 14px; }
-  .sidebar { top: 14px; max-height: calc(100dvh - 28px); gap: 12px; padding: 14px; }
-  .brand-block { min-height: 128px; padding: 12px 10px; }
-  .brand-mark.prisma-mark { width: 58px; height: 72px; }
   .prisma-shard { width: 46px; height: 70px; }
   .brand { font-size: 20px; }
-  .nav a { min-height: 44px; padding: 8px 10px; }
   .footer-pill { min-height: 42px; padding-block: 10px; }
 }
 
-@media (max-width: 1180px) {
-  .sidebar { max-height: none; overflow-y: visible; }
-}
-
 @media (max-width: 980px) {
-  .shell {
-    grid-template-columns: clamp(166px, 25vw, 218px) minmax(0, 1fr);
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .sidebar {
-    top: 10px;
-    height: calc(100dvh - 20px);
-    max-height: calc(100dvh - 20px);
-    padding: 10px;
-    gap: 8px;
-  }
-
-  .brand-block {
-    min-height: 104px;
-    padding: 10px 6px;
-  }
 
   .brand {
     font-size: clamp(13px, 2vw, 18px);
     letter-spacing: 0.12em;
-  }
-
-  .nav a {
-    min-height: 40px;
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 8px;
-    padding: 7px 8px;
   }
 
   .nav-title {
@@ -1434,56 +1082,22 @@ body {
     font-size: 10px;
     line-height: 1.15;
   }
-
-  .sidebar-panel {
-    padding: 10px;
-  }
-
-  .topbar { grid-template-columns: 1fr; }
   .user-shell { flex-wrap: wrap; }
 }
 /* PRISMA_PC_SHELL_ZOOM_SCROLL_TRACE_03 END */
 
 
 /* PRISMA_PC_READABILITY_SCROLL_ESMX_04 START */
-.sidebar { height: auto; max-height: none; overflow: visible; display: flex; flex-direction: column; min-height: 0; }
-.brand-block, .footer-stack { flex: 0 0 auto; }
+.footer-stack { flex: 0 0 auto; }
 .sidebar-nav-panel, .sidebar-utility-panel { overflow: visible; }
 #contenido-principal:focus { outline: 2px solid rgba(255, 216, 143, 0.58); outline-offset: 10px; }
-@media (max-width: 1180px) { .sidebar { height: auto; max-height: none; overflow: visible; } }
 /* PRISMA_PC_READABILITY_SCROLL_ESMX_04 END */
 
 /* PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 START */
 @media (min-width: 1181px) {
-  .shell {
-    align-items: start;
-  }
 
-  .sidebar {
-    position: relative;
-    top: auto;
-    height: auto;
-    max-height: none;
-    min-height: 0;
-    overflow: visible;
-    display: block;
-    padding-bottom: 18px;
-    scrollbar-gutter: stable both-edges;
-  }
-
-  .brand-block,
-  .sidebar-panel,
   .footer-stack {
     margin-bottom: 14px;
-  }
-
-  .brand-block {
-    min-height: clamp(112px, 18vh, 160px);
-  }
-
-  .brand-mark.prisma-mark {
-    width: clamp(44px, 7vh, 64px);
-    height: clamp(58px, 9vh, 82px);
   }
 
   .prisma-shard {
@@ -1493,10 +1107,6 @@ body {
 
   .brand {
     font-size: clamp(18px, 2.2vh, 22px);
-  }
-
-  .nav a {
-    min-height: 42px;
   }
 }
 
@@ -1653,32 +1263,14 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] body::befor
   animation: prismaPcPearlDrift 34s ease-in-out infinite alternate;
 }
 
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .shell,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .shell {
-  width: min(100%, 1580px);
-  gap: clamp(18px, 2vw, 28px);
-  background: transparent;
-  isolation: isolate;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .hero,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .panel,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-block,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .search-shell,
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .user-shell,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .hero,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .panel,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-block,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .search-shell,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .user-shell {
   color: var(--prisma-pc-light-ink);
@@ -1767,48 +1359,11 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] tr:hover td
     linear-gradient(90deg, rgba(21, 87, 255, 0.10), rgba(255, 255, 255, 0.54));
 }
 
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
-  transition:
-    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 140ms ease,
-    background 180ms ease,
-    color 140ms ease;
-}
-
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover {
   transform: translateY(-2px);
   border-color: rgba(21, 87, 255, 0.28);
   box-shadow: var(--prisma-pc-light-shadow-card-hover);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a {
-  color: var(--prisma-pc-light-text-secondary);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(238, 246, 255, 0.38));
-  border-color: rgba(198, 213, 235, 0.60);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a:hover,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a:hover {
-  color: var(--prisma-pc-light-ink);
-  background: var(--prisma-pc-light-selected-gradient);
-  border-color: rgba(21, 87, 255, 0.30);
-  box-shadow: 0 12px 26px rgba(21, 87, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"],
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] {
-  color: #ffffff;
-  background: var(--prisma-pc-light-primary-gradient);
-  border-color: rgba(21, 87, 255, 0.56);
-  box-shadow: var(--prisma-pc-light-shadow-blue);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav-icon,
@@ -1818,18 +1373,7 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav-icon {
   border-color: rgba(21, 87, 255, 0.18);
 }
 
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.24);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .avatar,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .avatar {
   color: #ffffff;
   background: var(--prisma-pc-light-primary-gradient);
@@ -1850,12 +1394,6 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-sha
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after,
 html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after {
   background: linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(21, 87, 255, 0.08));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip) {
-  color: var(--prisma-pc-light-blue-deep);
-  text-shadow: none;
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric,
@@ -1904,14 +1442,6 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.dang
   color: #9f2f2f;
   border-color: rgba(196, 61, 61, 0.30);
   background: rgba(196, 61, 61, 0.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .skip-link,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .skip-link {
-  color: #ffffff;
-  border-color: rgba(21, 87, 255, 0.42);
-  background: var(--prisma-pc-light-primary-gradient);
-  box-shadow: var(--prisma-pc-light-shadow-blue);
 }
 
 html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-appearance-selector,
@@ -1970,16 +1500,8 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-app
   box-shadow: 0 10px 24px rgba(21, 87, 255, 0.22), inset 0 1px 0 rgba(255,255,255,0.28);
 }
 
-.prisma-appearance-option:active,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active {
+.prisma-appearance-option:active {
   transform: translateY(1px) scale(0.992);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(21, 87, 255, 0.42), rgba(115, 154, 230, 0.24));
-  border-color: rgba(248, 251, 255, 0.86);
 }
 
 @keyframes prismaPcPearlDrift {
@@ -1988,8 +1510,7 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html[data-prisma-surface="pc-backoffice"] body::before,
-  html[data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
+  html[data-prisma-surface="pc-backoffice"] body::before {
     animation: none;
     transition-duration: 1ms;
   }
@@ -2024,22 +1545,12 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-
   background-clip: padding-box;
 }
 
-.sidebar,
 .app-sidebar,
 nav[aria-label="Navegación principal"] {
   scrollbar-gutter: auto;
 }
 
-.sidebar::before,
-.sidebar::after,
-.sidebar-panel::before,
-.sidebar-panel::after {
-  pointer-events: none;
-}
-
 .nav-link,
-.sidebar a,
-.sidebar button,
 .card,
 .metric-card,
 .hero,
@@ -2062,15 +1573,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 /* PRISMA_PC_HOME_BUSINESS_OVERVIEW_01_CLOSE_THE_DEAL_BRAND */
-.brand-logo-img {
-  width: min(184px, 86%);
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 26px;
-  object-fit: contain;
-  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
-}
 
 .prisma-home {
   display: grid;
@@ -2474,19 +1976,15 @@ nav[aria-label="Navegación principal"] {
 }
 
 html,
-body,
-.shell,
-.sidebar {
+body {
   scrollbar-color: rgba(55, 118, 224, 0.3) transparent;
 }
 
-*::-webkit-scrollbar-track,
-.sidebar::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-*::-webkit-scrollbar-thumb,
-.sidebar::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: rgba(55, 118, 224, 0.28);
   border-radius: 999px;
   border: 2px solid transparent;
@@ -2612,14 +2110,6 @@ body,
 
 .prisma-multistore-photo img {
   object-position: center;
-}
-
-.brand-logo-img {
-  width: min(194px, 86%);
-  height: auto;
-  object-fit: contain;
-  border-radius: 18px;
-  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
 }
 
 @media (max-width: 1280px) {
@@ -2928,78 +2418,6 @@ html[data-prisma-surface="pc-backoffice"] {
   --prisma-sidebar-surface: rgba(8, 18, 30, 0.82);
   --prisma-cart-panel-surface: rgba(9, 20, 34, 0.76);
 }
-
-html[data-prisma-surface="pc-backoffice"] :is(
-  .sidebar,
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .supplier-page section,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-) {
-  background: rgba(255, 255, 255, 0.60);
-  border-color: rgba(89, 130, 171, 0.18);
-  box-shadow: 0 8px 22px rgba(31, 68, 105, 0.07);
-  backdrop-filter: blur(8px) saturate(1.02);
-  -webkit-backdrop-filter: blur(8px) saturate(1.02);
-}
-
-html[data-prisma-surface="pc-backoffice"] :is(
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-)::before,
-html[data-prisma-surface="pc-backoffice"] :is(
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-)::after {
-  opacity: 0.12;
-  filter: none;
-}
-
-html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-secondary, .chip, .inline-chip, .data-chip-v07, .workflow-pill) {
-  background: rgba(255, 255, 255, 0.44);
-  box-shadow: none;
-}
 /* PRISMA_DELAYER_01_END */
 
 /* PRISMA_PC_LEFT_RAIL_SAFE_BRAND_NAV_0807_BEGIN
@@ -3010,193 +2428,6 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
    - neutralize only the inner navigation panel appearance;
    - no global PC material/button/card changes, no forced priority.
 */
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar {
-  position: relative;
-  isolation: isolate;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset-inline: 0;
-  top: clamp(270px, 29vh, 330px);
-  bottom: clamp(8px, 1vw, 14px);
-  pointer-events: none;
-  border: 1px solid rgba(132, 220, 246, 0.22);
-  border-radius: clamp(22px, 2vw, 34px);
-  background:
-    radial-gradient(ellipse at 16% 0%, rgba(255, 255, 255, 0.085), transparent 36%),
-    linear-gradient(180deg, rgba(17, 45, 66, 0.46), rgba(6, 22, 38, 0.36));
-  box-shadow: 0 18px 42px rgba(0, 10, 22, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(12px) saturate(1.06);
-  -webkit-backdrop-filter: blur(12px) saturate(1.06);
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar > * {
-  position: relative;
-  z-index: 1;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block {
-  min-height: clamp(232px, 27vh, 304px);
-  padding: clamp(18px, 2.1vw, 30px) clamp(10px, 1.4vw, 18px) clamp(14px, 1.8vw, 24px);
-  display: grid;
-  place-items: center;
-  text-align: center;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-block, .brand-row, .brand)::before,
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-block, .brand-row, .brand)::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-row, .brand) {
-  width: 100%;
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  gap: clamp(11px, 1.15vw, 18px);
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block :is(.brand-logo-img, .prisma-shard, .prisma-home-logo, .prisma-home-inline-logo, img[class*="logo" i], svg[class*="logo" i]) {
-  width: min(86%, 190px);
-  max-width: clamp(132px, 12.8vw, 190px);
-  height: auto;
-  max-height: clamp(122px, 15.5vh, 184px);
-  object-fit: contain;
-  box-shadow: none;
-  filter: drop-shadow(0 18px 30px rgba(55, 182, 255, 0.24));
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block :is(.subtle, small, p) {
-  max-width: min(96%, 250px);
-  margin-inline: auto;
-  text-align: center;
-  color: rgba(249, 253, 255, 0.98);
-  font-size: clamp(13px, 0.94vw, 16px);
-  font-weight: 920;
-  line-height: 1.16;
-  letter-spacing: 0.155em;
-  text-transform: uppercase;
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.96),
-    0 0 8px rgba(126, 235, 255, 0.58),
-    0 0 20px rgba(58, 173, 255, 0.28);
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel) {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel)::before,
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel)::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .sidebar-nav-panel > :is(.panel-label, .panel-title, .kicker, .nav-heading, .nav-section-title, h2, h3):first-child {
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.nav-section-title, .nav-group-title, .sidebar-section-title, [data-nav-section-title]) {
-  color: rgba(250, 253, 255, 0.98);
-  font-size: clamp(12px, 0.84vw, 14px);
-  font-weight: 930;
-  letter-spacing: 0.125em;
-  line-height: 1.2;
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.88),
-    0 0 7px rgba(126, 235, 255, 0.34),
-    0 0 14px rgba(58, 173, 255, 0.14);
-}
 /* PRISMA_PC_LEFT_RAIL_SAFE_BRAND_NAV_0807_END */
 
 /* PRISMA_PC_NAV_ONLY_RAIL_PANEL_0807_BEGIN */
@@ -3206,99 +2437,6 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
   Keeps AppShell/Sidebar/BrandBlock/PrimaryHumanNavigation structure intact.
   No global cards, pills, tables, buttons, Prisma, ports, processes, Git, Tablet, Mobile or Chart Lab.
 */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::before,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::after {
-  content: none;
-  opacity: 0;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row > div {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block {
-  padding-block: clamp(18px, 3.2vh, 34px) clamp(14px, 2.4vh, 24px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-logo-img {
-  width: clamp(122px, 9.4vw, 168px);
-  height: auto;
-  max-width: 72%;
-  box-shadow: none;
-  filter: drop-shadow(0 14px 26px rgba(55, 182, 255, 0.23));
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-block .subtle {
-  color: rgba(250, 254, 255, 0.96);
-  font-size: clamp(14px, 0.92vw, 17px);
-  letter-spacing: 0.24em;
-  text-align: center;
-  text-transform: uppercase;
-  text-shadow:
-    0 0 9px rgba(137, 239, 255, 0.38),
-    0 0 18px rgba(137, 239, 255, 0.18),
-    0 1px 8px rgba(0, 10, 24, 0.52);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel {
-  align-self: stretch;
-  width: 100%;
-  margin-top: clamp(10px, 1.35vh, 18px);
-  padding: clamp(18px, 2.1vh, 24px) clamp(16px, 1.3vw, 22px) clamp(20px, 2.25vh, 28px);
-  border: 1px solid rgba(129, 218, 246, 0.26);
-  border-radius: clamp(24px, 2vw, 32px);
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(137, 239, 255, 0.055), transparent 34%),
-    linear-gradient(165deg, rgba(18, 55, 76, 0.48), rgba(5, 22, 38, 0.42) 62%, rgba(3, 14, 27, 0.38));
-  box-shadow:
-    0 16px 36px rgba(0, 8, 20, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(12px) saturate(1.06);
-  -webkit-backdrop-filter: blur(12px) saturate(1.06);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-group-title {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav {
-  gap: clamp(11px, 1.15vh, 15px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-section {
-  margin-block: 0 clamp(10px, 1.15vh, 15px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-section-title {
-  color: rgba(250, 254, 255, 0.95);
-  font-size: clamp(12px, 0.82vw, 14px);
-  letter-spacing: 0.045em;
-  text-shadow:
-    0 0 8px rgba(137, 239, 255, 0.24),
-    0 1px 8px rgba(0, 10, 24, 0.45);
-}
 /* PRISMA_PC_NAV_ONLY_RAIL_PANEL_0807_END */
 
 /* PRISMA_PC_REMOVE_ROUTE_INTENT_AND_SMART_FILTERS_0807_BEGIN
@@ -3306,16 +2444,6 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
    Scope: .shell[data-prisma-surface="pc"] only.
    This intentionally does not touch top context strips, navigation rail, cards, tables, global materials, Tablet, Mobile, Chart Lab, Git, Prisma, ports, or processes.
 */
-.shell[data-prisma-surface="pc"] :is(
-  [data-prisma-component="RouteIntentStrip"],
-  [data-prisma-component="SmartDropdownDock"],
-  [aria-label^="Filtros inteligentes"],
-  [class*="smart-dropdown-dock_dock"],
-  [class*="smart-dropdown-dock__dock"],
-  [class*="smart-dropdown-dock"]
-) {
-  display: none;
-}
 /* PRISMA_PC_REMOVE_ROUTE_INTENT_AND_SMART_FILTERS_0807_END */
 
 /* PRISMA_PC_LEFT_RAIL_COMPACT_LOGO_NAV_0807_BEGIN
@@ -3324,575 +2452,49 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
    Scope: .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar only.
    Guardrails: no global PC materials, no top pills, no cards/tables/buttons outside rail, no processes/ports/Prisma/Git, no forced-priority declarations.
 */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  padding-top: clamp(16px, 2.1vh, 26px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-block {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  min-height: auto;
-  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 24px) clamp(14px, 2.1vh, 24px);
-  display: grid;
-  place-items: center;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  gap: clamp(10px, 1.2vh, 16px);
-  text-align: center;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-logo-img {
-  width: clamp(176px, 12vw, 220px);
-  max-width: 84%;
-  height: auto;
-  object-fit: contain;
-  box-shadow: none;
-  filter: drop-shadow(0 16px 28px rgba(44, 174, 255, 0.18));
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row .subtle {
-  color: rgba(255, 255, 255, 0.96);
-  font-size: clamp(14px, 0.92vw, 16px);
-  line-height: 1.14;
-  letter-spacing: 0.18em;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-align: center;
-  text-shadow:
-    0 0 7px rgba(255, 255, 255, 0.54),
-    0 0 18px rgba(119, 230, 255, 0.22),
-    0 2px 8px rgba(0, 8, 18, 0.32);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel.sidebar-panel {
-  width: 100%;
-  box-sizing: border-box;
-  margin: clamp(10px, 1.6vh, 18px) 0 0;
-  padding: clamp(16px, 1.8vw, 22px) clamp(14px, 1.5vw, 20px) clamp(20px, 2.2vw, 28px);
-  border-radius: clamp(24px, 2.6vw, 34px) clamp(24px, 2.6vw, 34px) 0 0;
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(143, 236, 255, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(14, 50, 72, 0.58), rgba(5, 23, 38, 0.52));
-  border: 1px solid rgba(137, 224, 247, 0.24);
-  border-bottom-color: rgba(137, 224, 247, 0.10);
-  box-shadow: 0 16px 34px rgba(0, 10, 22, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px) saturate(1.08);
-  -webkit-backdrop-filter: blur(12px) saturate(1.08);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-group-title {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav {
-  display: grid;
-  gap: clamp(12px, 1.7vh, 18px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  display: grid;
-  gap: clamp(7px, 0.9vh, 10px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-  color: rgba(255, 255, 255, 0.96);
-  font-size: clamp(13px, 0.86vw, 15px);
-  line-height: 1.05;
-  letter-spacing: 0.055em;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(148, 235, 255, 0.30), 0 1px 6px rgba(0, 8, 18, 0.28);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a {
-  width: calc(100% - clamp(16px, 1.8vw, 28px));
-  max-width: 100%;
-  min-height: clamp(46px, 4.8vh, 56px);
-  margin-inline: auto;
-  padding: clamp(7px, 0.75vw, 10px) clamp(12px, 1vw, 16px);
-  border-radius: 999px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: clamp(9px, 0.75vw, 12px);
-  white-space: normal;
-  overflow: hidden;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-icon {
-  width: clamp(32px, 2vw, 38px);
-  height: clamp(32px, 2vw, 38px);
-  min-width: clamp(32px, 2vw, 38px);
-  flex: 0 0 clamp(32px, 2vw, 38px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-copy {
-  min-width: 0;
-  display: grid;
-  gap: 2px;
-  text-align: left;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-title {
-  font-size: clamp(14px, 0.92vw, 16px);
-  line-height: 1.08;
-  overflow-wrap: anywhere;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-desc {
-  font-size: clamp(11px, 0.72vw, 13px);
-  line-height: 1.14;
-  overflow-wrap: anywhere;
-}
 /* PRISMA_PC_LEFT_RAIL_COMPACT_LOGO_NAV_0807_END */
 
 /* PRISMA_PC_NAV_OVAL_SLIM_0808_BEGIN */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  min-height: 44px;
-  padding-block: 7px;
-  padding-inline: 12px 14px;
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  border-radius: 999px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-icon {
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
-  min-height: 30px;
-  display: grid;
-  place-items: center;
-  line-height: 1;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-copy {
-  min-width: 0;
-  display: grid;
-  align-content: center;
-  gap: 1px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-title {
-  line-height: 1.05;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-desc {
-  max-width: 100%;
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  gap: 8px;
-}
 /* PRISMA_PC_NAV_OVAL_SLIM_0808_END */
 
 /* PRISMA_PC_PURCHASING_MATERIAL_FIX_0808_BEGIN */
 
 /* Rail: baja blur y opacidad sin cambiar layout */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: linear-gradient(180deg, rgba(36, 63, 82, 0.055), rgba(9, 26, 40, 0.045));
-  border-color: rgba(153, 211, 236, 0.085);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-panel.sidebar-nav-panel {
-  background: linear-gradient(180deg, rgba(10, 39, 58, 0.105), rgba(7, 29, 46, 0.075));
-  border-color: rgba(142, 214, 238, 0.105);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(5px) saturate(1.01);
-  -webkit-backdrop-filter: blur(5px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  background: linear-gradient(180deg, rgba(33, 76, 103, 0.13), rgba(18, 47, 68, 0.09));
-  border-color: rgba(136, 208, 235, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][aria-current="page"] {
-  background: linear-gradient(180deg, rgba(59, 120, 168, 0.17), rgba(31, 66, 103, 0.12));
-  border-color: rgba(154, 222, 245, 0.18);
-}
 
 /* Compras: scope exacto, nada global */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"] {
-  background: linear-gradient(180deg, rgba(10, 29, 45, 0.28), rgba(5, 17, 30, 0.22));
-  border-color: rgba(128, 211, 239, 0.14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(5px) saturate(1.01);
-  -webkit-backdrop-filter: blur(5px) saturate(1.01);
-}
 
 /* Baja los subpaneles: menos caja sobre caja */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.card, .metric-card, details.card) {
-  background: linear-gradient(180deg, rgba(11, 32, 50, 0.20), rgba(5, 17, 30, 0.16));
-  border-color: rgba(128, 211, 239, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(3px) saturate(1.005);
-  -webkit-backdrop-filter: blur(3px) saturate(1.005);
-}
 
 /* Evita mini-cajones dentro de métricas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  .metric-card .list-item {
-  background: rgba(255, 255, 255, 0.018);
-  border-color: rgba(128, 211, 239, 0.10);
-  box-shadow: none;
-}
 
 /* Tabla menos ataúd azul marino */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  .table-wrap {
-  background: rgba(8, 25, 40, 0.16);
-  border-color: rgba(128, 211, 239, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(table, thead, tbody, tr) {
-  background: transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  tbody tr {
-  border-color: rgba(128, 211, 239, 0.09);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  tbody tr:hover {
-  background: rgba(128, 211, 239, 0.055);
-}
 
 /* Botones de compras: quitar gris muerto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn, .footer-chip) {
-  background: linear-gradient(180deg, rgba(45, 113, 144, 0.28), rgba(14, 50, 72, 0.18));
-  border-color: rgba(137, 230, 255, 0.28);
-  color: rgba(244, 252, 255, 0.96);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 0 14px rgba(98, 212, 246, 0.045);
-  backdrop-filter: blur(3px) saturate(1.01);
-  -webkit-backdrop-filter: blur(3px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn-primary, .footer-chip.is-active, .footer-chip[aria-current="page"]) {
-  background: linear-gradient(180deg, rgba(75, 158, 190, 0.34), rgba(21, 72, 96, 0.24));
-  border-color: rgba(137, 230, 255, 0.38);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 0 16px rgba(98, 212, 246, 0.07);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn:hover, .footer-chip:hover) {
-  background: linear-gradient(180deg, rgba(83, 174, 206, 0.38), rgba(24, 82, 107, 0.27));
-  border-color: rgba(158, 238, 255, 0.42);
-}
 
 /* Evidencia técnica menos bloque sólido */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  details.card[data-prisma-component="EvidenceDrawer"] {
-  background: rgba(8, 25, 40, 0.18);
-}
 
 /* PRISMA_PC_PURCHASING_MATERIAL_FIX_0808_END */
 
 /* PRISMA_PC_SUBNAV_CHIPS_FIX_0808_BEGIN */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-block: 12px 14px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  overflow: visible;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip {
-  min-height: 32px;
-  min-width: 0;
-  max-width: min(190px, 100%);
-  padding: 8px 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 1 auto;
-  border-radius: 999px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
-  line-height: 1;
-  font-size: clamp(0.72rem, 0.68rem + 0.12vw, 0.82rem);
-  color: rgba(238, 249, 255, 0.94);
-  background: linear-gradient(180deg, rgba(43, 104, 132, 0.20), rgba(12, 41, 62, 0.13));
-  border: 1px solid rgba(136, 220, 246, 0.20);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-  text-shadow: 0 1px 7px rgba(0, 8, 18, 0.32);
-  backdrop-filter: blur(2px) saturate(1.01);
-  -webkit-backdrop-filter: blur(2px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip.is-active,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip[aria-current="page"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip[data-active="true"] {
-  color: rgba(255, 255, 255, 0.98);
-  background: linear-gradient(180deg, rgba(72, 160, 192, 0.29), rgba(17, 67, 91, 0.20));
-  border-color: rgba(147, 234, 255, 0.34);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055), 0 0 12px rgba(99, 217, 249, 0.055);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip:hover {
-  color: #ffffff;
-  background: linear-gradient(180deg, rgba(84, 180, 210, 0.32), rgba(20, 78, 103, 0.23));
-  border-color: rgba(160, 239, 255, 0.40);
-}
 /* PRISMA_PC_SUBNAV_CHIPS_FIX_0808_END */
 
 /* PRISMA_PC_DASHBOARD_FLATTEN_0808_BEGIN */
 
 /* Scope exacto: Dashboard/Hoy dentro de PcModuleShell */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"] {
-  background: linear-gradient(180deg, rgba(8, 25, 40, 0.24), rgba(4, 15, 28, 0.18));
-  border-color: rgba(128, 211, 239, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.022);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
 
 /* Grids más respirables para que no se encime texto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is([data-prisma-component="AttentionSummary"], [data-prisma-component="DashboardTaskBoard"] .dashboard-grid) {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-  gap: 16px;
-  align-items: start;
-}
 
 /* Quitar efecto panel-sobre-panel en cards internas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  ) {
-  position: relative;
-  background: rgba(255, 255, 255, 0.012);
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
 
 /* Divisor ornamental: centro 4px, lados finitos, sin caja extra */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  )::before {
-  content: "";
-  position: absolute;
-  left: clamp(12px, 2.2vw, 28px);
-  right: clamp(12px, 2.2vw, 28px);
-  top: 0;
-  height: 4px;
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg,
-      transparent 0%,
-      rgba(135, 225, 250, 0.08) 16%,
-      rgba(135, 225, 250, 0.50) 46%,
-      rgba(236, 252, 255, 0.72) 50%,
-      rgba(135, 225, 250, 0.50) 54%,
-      rgba(135, 225, 250, 0.08) 84%,
-      transparent 100%);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  )::after {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translateX(-50%) rotate(45deg);
-  border-radius: 2px;
-  background: rgba(218, 249, 255, 0.58);
-  box-shadow: 0 0 10px rgba(126, 222, 250, 0.22);
-}
 
 /* Lista: ya no cajas internas pesadas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list {
-  display: grid;
-  gap: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item {
-  display: block;
-  min-height: auto;
-  padding: 9px 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  text-align: left;
-  line-height: 1.28;
-  overflow-wrap: anywhere;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item + .list-item {
-  border-top: 1px solid rgba(135, 225, 250, 0.105);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item strong {
-  display: inline-block;
-  margin-right: 6px;
-  white-space: nowrap;
-  color: rgba(246, 253, 255, 0.96);
-}
 
 /* Botones: texto centrado, sin encimarse, sin gris muerto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(.btn, button) {
-  min-height: 34px;
-  max-width: 100%;
-  padding: 8px 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  line-height: 1.08;
-  border-radius: 999px;
-  color: rgba(242, 251, 255, 0.96);
-  background: linear-gradient(180deg, rgba(44, 110, 140, 0.22), rgba(13, 45, 66, 0.15));
-  border-color: rgba(135, 225, 250, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(.btn-primary, a.btn[aria-current="page"]) {
-  background: linear-gradient(180deg, rgba(70, 155, 188, 0.30), rgba(18, 67, 92, 0.21));
-  border-color: rgba(144, 234, 255, 0.34);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(button[disabled], button[aria-disabled="true"]) {
-  opacity: 0.72;
-  color: rgba(220, 236, 245, 0.72);
-  background: rgba(255,255,255,0.035);
-  border-color: rgba(180, 215, 230, 0.10);
-}
 
 /* Acciones más ordenadas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .inline-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 9px;
-}
 
 /* Tabla en dashboard también baja peso visual */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .table-wrap {
-  background: rgba(8, 25, 40, 0.14);
-  border-color: rgba(128, 211, 239, 0.12);
-  box-shadow: none;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(table, thead, tbody, tr) {
-  background: transparent;
-}
 
 /* PRISMA_PC_DASHBOARD_FLATTEN_0808_END */
 
@@ -3916,83 +2518,6 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
     height: 100%;
     min-height: 0;
     overflow: hidden;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] {
-    height: 100%;
-    min-height: 0;
-    max-height: 100dvh;
-    display: grid;
-    grid-template-columns: clamp(242px, 31vw, 276px) minmax(0, 1fr);
-    align-items: stretch;
-    gap: clamp(6px, 0.8vw, 12px);
-    padding: 10px;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] > aside.sidebar[data-prisma-component="Sidebar"] {
-    position: relative;
-    inset: auto;
-    align-self: stretch;
-    block-size: 100%;
-    height: 100%;
-    min-height: 0;
-    max-height: none;
-    inline-size: 100%;
-    max-inline-size: none;
-    margin: 0;
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] > main.main {
-    block-size: 100%;
-    height: 100%;
-    min-height: 0;
-    max-height: none;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scroll-padding-top: 128px;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > header.topbar[data-prisma-component="TopBar"] {
-    position: sticky;
-    top: 0;
-    z-index: 80;
-    margin-top: 0;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > header.topbar[data-prisma-component="TopBar"]::after {
-    content: "JEFE PC";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 0.66rem;
-    line-height: 1;
-    letter-spacing: 0.08em;
-    color: rgba(247, 252, 255, 0.92);
-    background: rgba(76, 180, 210, 0.20);
-    border: 1px solid rgba(150, 238, 255, 0.30);
-    box-shadow: 0 0 12px rgba(95, 218, 250, 0.14);
-    pointer-events: none;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > nav.surface-context-strip[data-prisma-component="SurfaceContextStrip"] {
-    position: sticky;
-    top: 58px;
-    z-index: 79;
   }
 }
 
@@ -4032,118 +2557,6 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
     min-block-size: 100dvh;
     overflow: hidden;
   }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    block-size: 100dvh;
-    min-block-size: 100dvh;
-    max-block-size: 100dvh;
-    overflow: hidden;
-    column-gap: clamp(12px, 1.15vw, 20px);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-    position: relative;
-    top: auto;
-    align-self: stretch;
-    flex: 0 0 clamp(232px, 16.4vw, 276px);
-    inline-size: clamp(232px, 16.4vw, 276px);
-    block-size: auto;
-    max-block-size: none;
-    min-block-size: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(205, 235, 245, 0.22) transparent;
-    z-index: 24;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar:hover,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar:focus-within {
-    scrollbar-color: rgba(225, 245, 255, 0.38) transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-track,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-thumb,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(230, 244, 252, 0.14), rgba(230, 244, 252, 0.30));
-    border-radius: 999px;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-    block-size: 100%;
-    min-block-size: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(205, 235, 245, 0.22) transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 34;
-    isolation: isolate;
-    backdrop-filter: blur(14px) saturate(1.08);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .surface-context-strip {
-    position: sticky;
-    top: calc(62px + clamp(6px, 0.8vh, 10px));
-    z-index: 33;
-    isolation: isolate;
-    backdrop-filter: blur(12px) saturate(1.05);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row .subtle {
-    display: none;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-    block-size: 0;
-    margin: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-    min-block-size: 44px;
-    margin-block: 6px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(22, 48, 60, 0.28), rgba(45, 82, 94, 0.15));
-    border-color: rgba(224, 245, 255, 0.18);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 10px 24px rgba(0, 0, 0, 0.12);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:hover,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:focus-visible {
-    background: radial-gradient(circle at 18% 28%, rgba(226, 247, 255, 0.24), transparent 34%), linear-gradient(135deg, rgba(35, 74, 88, 0.34), rgba(71, 112, 124, 0.18));
-    border-color: rgba(232, 248, 255, 0.36);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 0 1px rgba(221, 244, 255, 0.12), 0 0 22px rgba(210, 240, 255, 0.16);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"].active,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"] {
-    background: radial-gradient(circle at 18% 28%, rgba(238, 250, 255, 0.32), transparent 38%), linear-gradient(135deg, rgba(42, 88, 102, 0.46), rgba(85, 130, 143, 0.24));
-    border-color: rgba(240, 252, 255, 0.48);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20), 0 0 0 1px rgba(232, 248, 255, 0.16), 0 0 26px rgba(220, 245, 255, 0.20);
-  }
 }
 /* PRISMA_PC_SCROLL_OWNER_0807_END */
 
@@ -4164,244 +2577,4 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
   .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] and keep all selectors scoped
   to that shell. Do not split rail sizing into route pages.
 */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-  --pc-rail-fit-width: clamp(214px, 14.2vw, 232px);
-  --pc-rail-fit-gap: clamp(12px, 0.9vw, 18px);
-  --pc-rail-fit-item-width: min(100%, 194px);
-  --pc-rail-fit-item-height: 40px;
-  --pc-rail-fit-icon: 28px;
-  --pc-rail-fit-copy-title: clamp(12px, 0.78vw, 13.5px);
-  --pc-rail-fit-copy-desc: clamp(10px, 0.64vw, 11px);
-  column-gap: var(--pc-rail-fit-gap);
-  align-items: stretch;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  inline-size: var(--pc-rail-fit-width);
-  flex: 0 0 var(--pc-rail-fit-width);
-  padding-block: clamp(8px, 1.05vh, 14px);
-  padding-inline: clamp(8px, 0.65vw, 12px);
-  gap: clamp(10px, 1.1vh, 14px);
-  background: linear-gradient(180deg, rgba(36, 63, 82, 0.052), rgba(9, 26, 40, 0.036));
-  border-color: rgba(153, 211, 236, 0.075);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(5px) saturate(1.02);
-  -webkit-backdrop-filter: blur(5px) saturate(1.02);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.20) transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-thumb,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar-thumb {
-  background: rgba(190, 228, 247, 0.20);
-  border-radius: 999px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-track,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block {
-  min-height: auto;
-  margin: 0;
-  padding: clamp(3px, 0.8vh, 7px) 0 clamp(4px, 0.85vh, 8px);
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row {
-  display: grid;
-  justify-items: center;
-  gap: 5px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-logo-img {
-  inline-size: clamp(80px, 7.2vw, 104px);
-  block-size: auto;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .subtle {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel {
-  align-self: stretch;
-  width: 100%;
-  margin: 0;
-  padding: clamp(10px, 1.18vh, 14px) clamp(8px, 0.72vw, 10px);
-  border-radius: clamp(20px, 1.55vw, 25px);
-  background: linear-gradient(180deg, rgba(10, 39, 58, 0.088), rgba(7, 29, 46, 0.062));
-  border-color: rgba(142, 214, 238, 0.105);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.022),
-    0 16px 30px rgba(0, 10, 24, 0.10);
-  backdrop-filter: blur(6px) saturate(1.03);
-  -webkit-backdrop-filter: blur(6px) saturate(1.03);
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-gutter: stable both-edges;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.18) transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-group-title,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  display: grid;
-  gap: 8px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  margin: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  min-height: var(--pc-rail-fit-item-height);
-  width: var(--pc-rail-fit-item-width);
-  max-width: 194px;
-  justify-self: center;
-  display: grid;
-  grid-template-columns: var(--pc-rail-fit-icon) minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-  padding-block: 5px;
-  padding-inline: 9px 10px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(33, 76, 103, 0.105), rgba(18, 47, 68, 0.075));
-  border: 1px solid rgba(136, 208, 235, 0.125);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.026),
-    0 8px 18px rgba(0, 8, 18, 0.085);
-  backdrop-filter: blur(5px) saturate(1.02);
-  -webkit-backdrop-filter: blur(5px) saturate(1.02);
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:hover,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:focus-visible {
-  background: linear-gradient(180deg, rgba(58, 121, 157, 0.145), rgba(20, 58, 84, 0.095));
-  border-color: rgba(152, 230, 252, 0.245);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 18px rgba(116, 223, 255, 0.16),
-    0 10px 20px rgba(0, 8, 18, 0.11);
-  transform: translateX(1px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][aria-current="page"] {
-  background: linear-gradient(180deg, rgba(73, 145, 190, 0.185), rgba(31, 75, 111, 0.128));
-  border-color: rgba(157, 232, 255, 0.32);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    0 0 22px rgba(126, 235, 255, 0.22),
-    0 12px 24px rgba(0, 8, 18, 0.13);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-icon {
-  inline-size: var(--pc-rail-fit-icon);
-  block-size: var(--pc-rail-fit-icon);
-  min-inline-size: var(--pc-rail-fit-icon);
-  min-block-size: var(--pc-rail-fit-icon);
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(104, 187, 218, 0.14), rgba(48, 112, 143, 0.10));
-  border: 1px solid rgba(154, 222, 245, 0.18);
-  color: rgba(222, 250, 255, 0.94);
-  font-size: clamp(10px, 0.63vw, 11px);
-  font-weight: 850;
-  line-height: 1;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-copy {
-  min-width: 0;
-  display: grid;
-  align-content: center;
-  gap: 1px;
-  overflow: hidden;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-title {
-  font-size: var(--pc-rail-fit-copy-title);
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-desc {
-  max-width: 100%;
-  font-size: var(--pc-rail-fit-copy-desc);
-  line-height: 1.05;
-  opacity: 0.82;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar {
-  min-height: 52px;
-  padding-block: 7px;
-  padding-inline: clamp(12px, 1.05vw, 18px);
-  border-radius: clamp(22px, 1.8vw, 30px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar .topbar-brand {
-  min-height: 34px;
-  padding-block: 5px;
-  padding-inline: 10px 13px;
-  border-radius: 999px;
-  font-size: clamp(12px, 0.82vw, 14px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .surface-context-strip {
-  min-height: 42px;
-  padding-block: 5px;
-  padding-inline: clamp(8px, 0.8vw, 12px);
-  border-radius: clamp(18px, 1.55vw, 24px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main .surface-context-pill {
-  min-height: 31px;
-  padding-block: 5px;
-  padding-inline: 11px;
-  border-radius: 999px;
-  font-size: clamp(12px, 0.8vw, 13px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main .surface-context-scroll-viewport {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.18) transparent;
-}
-
-@media (max-width: 960px) {
-  .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-    --pc-rail-fit-width: clamp(186px, 28vw, 212px);
-    --pc-rail-fit-item-width: min(100%, 174px);
-    --pc-rail-fit-gap: 10px;
-  }
-
-  .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-    max-width: 174px;
-  }
-}
 /* PRISMA_PC_RAIL_SIZE_UNIFIER_0807_END */

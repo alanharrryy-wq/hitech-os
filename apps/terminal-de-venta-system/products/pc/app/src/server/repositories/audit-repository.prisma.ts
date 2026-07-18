@@ -1,9 +1,9 @@
 import { prisma } from "@/server/prisma/client";
 
 export class AuditRepositoryPrisma {
-  listOpen(limit = 25) {
+  listOpen(businessId: string, limit = 25) {
     return prisma.auditCount.findMany({
-      where: { status: { in: ["open", "review"] } },
+      where: { businessId, status: { in: ["open", "review"] } },
       orderBy: { countedAt: "desc" },
       take: limit
     });
