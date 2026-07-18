@@ -83,6 +83,19 @@ function productStageTone(product: PosProduct) {
   return styles.stageGold;
 }
 
+function portableMediaRef(value: unknown) {
+  if (typeof value !== "string") return null;
+  const ref = value.trim();
+  if (!ref) return null;
+  if (ref.startsWith("/product-media/") && !ref.startsWith("//")) return ref;
+  try {
+    const url = new URL(ref);
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 function productStockState(product: PosProduct) {
   if (!product.isActive) return "inactive";
   if (product.stockOnHand <= 0) return "empty";
@@ -102,18 +115,20 @@ function ProductMedia({ product }: { product: PosProduct }) {
   const visual = productVisual(product);
   const packshotSkin = usePrismaPackshotSkin();
   const packshot = resolveProductPackshot(product.name, product.category, product.sku, { skin: packshotSkin });
+  const mediaRef = portableMediaRef(product.mediaRef);
+  const mediaSrc = mediaRef ?? packshot?.src ?? null;
   const stageTone = productStageTone(product);
 
   return (
     <div
       className={cn(styles.posPremiumProductStage, stageTone, packshot && styles.stageHasPackshot)}
       data-prisma-component="ProductImageStage"
-      data-prisma-packshot-host={packshot ? "true" : undefined}
+      data-prisma-packshot-host={mediaSrc ? "true" : undefined}
       aria-hidden="true"
     >
       <span className={styles.productAura} />
       <span className={styles.productPedestal} />
-      {packshot ? (
+      {mediaSrc ? (
         <>
           <span className={cn(styles.productFigure, styles.productFigureFallback, visual.shape)} aria-hidden="true">
             <span className={styles.figureStripe} />
@@ -121,13 +136,13 @@ function ProductMedia({ product }: { product: PosProduct }) {
             <small>{visual.detail}</small>
           </span>
           <img
-            className={cn(styles.productPackshot, styles[`productPackshot_${packshot.kind}`])}
-            src={packshot.src}
+            className={cn(styles.productPackshot, packshot && styles[`productPackshot_${packshot.kind}`])}
+            src={mediaSrc}
             alt=""
             loading="lazy"
             draggable={false}
             onError={(event: { currentTarget: HTMLImageElement }) => {
-              const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot.fallbackSrcs);
+              const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot?.fallbackSrcs ?? []);
               if (nextSrc) {
                 event.currentTarget.src = nextSrc;
                 return;
