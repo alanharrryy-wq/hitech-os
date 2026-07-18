@@ -1,0 +1,38 @@
+{
+  "schema": "CODE_ATLAS_LEGAL_BACKEND_MANIFEST_V1",
+  "version": "catlgl1-v1.0.0",
+  "target": "F:\\repos\\hitech-os\\tools\\code-atlas",
+  "managed_files": [
+    "LEGAL_PIPELINE_PROFILE.json",
+    "scripts/RUN_LEGAL_READINESS_BACKEND.ps1",
+    "src/code_atlas/legal_readiness/__init__.py",
+    "src/code_atlas/legal_readiness/artifacts.py",
+    "src/code_atlas/legal_readiness/authority.py",
+    "src/code_atlas/legal_readiness/cli.py",
+    "src/code_atlas/legal_readiness/contracts.py",
+    "src/code_atlas/legal_readiness/io_utils.py",
+    "src/code_atlas/legal_readiness/paths.py",
+    "src/code_atlas/legal_readiness/pipeline.py",
+    "src/code_atlas/legal_readiness/qt_controller.py",
+    "src/code_atlas/legal_readiness/registry.py",
+    "src/code_atlas/legal_readiness/selftest.py",
+    "CODE_ATLAS_LEGAL1_INSTALL_STATE.json",
+    "CODE_ATLAS_LEGAL1_MANIFEST.json"
+  ],
+  "preconditions": {
+    "code-atlas.py": "A22BA658905AEBEEAC30F221593F86A38D61BE712E37DACF1B7D0FA766A9D93A",
+    "pyproject.toml": "FD5544AC023DADC30E15054968F6BB4D614077CF2C7F8061F6D197CB4AF1F189",
+    "src/code_atlas/motors/specs.py": "1F90F573A7D97812936C096586B3BD482B9C0BD86BD3FE85DA44463719FBD0DB",
+    "src/code_atlas/motors/runner.py": "4DA14D67129F4DB7CF6232661B447D68DBFC8C2F409648952A8046B68096CC17",
+    "src/code_atlas/motors/registry.py": "A617ED1DB629FBF0294816EB7FE3D8F1A9A96D9777153F56C30D1608961F5286",
+    "src/code_atlas/motors/results.py": "7AF8A67C3F62A15E5DE3E785F5BA2311BA15797B7EA58D0159429A46E5DCF311",
+    "src/code_atlas/ui/motor_hub.py": "392D84D4E4D072112CA663C105B52B3F3F1D6E322AF11E99604950E372E59C37"
+  },
+  "authority_required": {
+    "legmesh1": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
+    "ndclgl1": "PASS_NDC_LEGAL_EXTENSION_INSTALLED",
+    "motlgl1": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED",
+    "mamlegal1": "PASS_MAM_LEGAL_ADAPTER_INSTALLED"
+  },
+  "next_package": "legui1"
+}
