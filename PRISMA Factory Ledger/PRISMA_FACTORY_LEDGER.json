@@ -252,6 +252,47 @@
         "re-expose retired internal routes in final navigation",
         "modify Chart Lab as part of Tablet cleanup"
       ]
+    },
+    {
+      "id": "productization.local_first_data_custody",
+      "displayName": "PRISMA local-first customer operational data custody contract",
+      "domain": "productization",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "local_agent",
+        "remote_ops",
+        "licensing",
+        "diagnostics"
+      ],
+      "classification": "DONE",
+      "status": "SOURCE_READY",
+      "stateLabel": "PASS_LOCAL_FIRST_CUSTODY_CONTRACT_SOURCE_READY",
+      "doNotRebuild": true,
+      "nextGate": "Run runtime data-egress, endpoint payload and support-bundle certification before claiming zero custody certified.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md",
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.json",
+        "custodia 1707 1927 result.zip"
+      ],
+      "doesNotProve": [
+        "No operational payload leaves every runtime",
+        "All telemetry is disabled",
+        "Production configuration matches the contract",
+        "Legal compliance certification"
+      ],
+      "allowedActions": [
+        "read-only verification",
+        "runtime network egress certification",
+        "support bundle certification",
+        "legal review"
+      ],
+      "forbiddenClaims": [
+        "Do not claim zero custody certified from source documentation alone.",
+        "Do not claim full legal compliance."
+      ]
     }
-  ]
+  ],
+  "updatedAt": "2026-07-17T19:27:40.449684-06:00"
 }
