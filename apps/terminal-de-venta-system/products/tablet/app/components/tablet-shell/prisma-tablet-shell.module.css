@@ -19,8 +19,10 @@
   .compactSellingShell {
     height: 100dvh;
     min-height: 0;
-    grid-template-rows: auto minmax(0, 1fr) auto;
     max-width: none;
+    padding: clamp(10px, 1vw, 14px) clamp(12px, 1.25vw, 18px);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(7px, 0.8vw, 10px);
     overflow: hidden;
   }
 
@@ -35,6 +37,20 @@
   .compactSellingShell .bottomDock {
     position: relative;
     bottom: auto;
+    width: min(900px, 82vw);
+    min-height: 58px;
+    justify-self: center;
+    padding: 5px 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+      rgba(7, 10, 15, 0.42);
+    border-color: rgba(235, 244, 255, 0.17);
+    border-radius: 22px;
+    box-shadow:
+      0 18px 48px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px) saturate(1.06);
+    -webkit-backdrop-filter: blur(18px) saturate(1.06);
   }
 
   .scene {
@@ -89,8 +105,18 @@
   }
 
   .compactSellingShell .topbar {
+    position: relative;
+    top: auto;
+    min-height: 52px;
+    padding: 0 5px;
     grid-template-columns: auto minmax(0, 1fr);
-    min-height: 64px;
+    color: var(--prisma-text-primary);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .brand {
@@ -106,6 +132,24 @@
 
   .brand:hover {
     background: var(--prisma-surface-control);
+  }
+
+  .compactSellingShell .brand {
+    padding-left: 2px;
+  }
+
+  .compactSellingShell .brand:hover {
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .compactSellingShell .brandMark {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .compactSellingShell .brandText small {
+    color: rgba(211, 221, 232, 0.56);
   }
 
   .brandMark {
@@ -150,6 +194,12 @@
     align-items: center;
     gap: 12px;
     color: var(--prisma-text-secondary);
+  }
+
+  .compactSellingShell .sellingMeta {
+    gap: 10px;
+    color: rgba(224, 232, 241, 0.72);
+    font-size: 0.82rem;
   }
 
   .sellingMeta strong {
@@ -414,6 +464,18 @@
     color: #eaf8ff;
   }
 
+  .compactSellingShell .bottomDockItem,
+  .compactSellingShell .bottomDockItemActive {
+    min-height: 46px;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-radius: 14px;
+  }
+
+  .compactSellingShell .bottomDockItem:hover {
+    background: rgba(255, 255, 255, 0.045);
+  }
+
   .bottomDockItemActive::after {
     content: "";
     position: absolute;
@@ -557,6 +619,15 @@
       padding: 8px;
     }
 
+    .compactSellingShell {
+      padding: 8px;
+      gap: 7px;
+    }
+
+    .compactSellingShell .bottomDock {
+      width: 100%;
+    }
+
     .brandText,
     .sellingMeta span,
     .saleStateChip span,
@@ -575,6 +646,464 @@
 
     .bottomDockInner {
       grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+}
+
+/* PRISMA_TABLET_SETTINGS_POLISH_V3_CANONICAL */
+@layer prisma.shell {
+  .supportShell {
+    --support-cyan: 103, 225, 255;
+    --support-emerald: 102, 236, 177;
+    --support-violet: 177, 151, 255;
+    --support-amber: 255, 198, 112;
+    --support-magenta: 255, 137, 207;
+    max-width: none;
+    padding-inline: clamp(12px, 1.5vw, 24px);
+  }
+
+  .supportShell .topbar {
+    position: sticky;
+    top: 9px;
+    z-index: calc(var(--prisma-z-sticky) + 3);
+    min-height: 78px;
+    padding: 8px 14px;
+    grid-template-columns: minmax(170px, auto) minmax(0, 1fr) auto;
+    gap: clamp(16px, 2vw, 30px);
+    overflow: visible;
+    color: var(--prisma-text-primary);
+    background:
+      radial-gradient(circle at 12% 18%, rgba(var(--support-cyan), 0.10), transparent 30%),
+      radial-gradient(circle at 88% 0%, rgba(var(--support-amber), 0.09), transparent 26%),
+      linear-gradient(148deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012)),
+      rgba(4, 9, 15, 0.62);
+    border: 1px solid rgba(226, 243, 252, 0.20);
+    border-radius: 25px;
+    box-shadow:
+      0 22px 58px rgba(0, 0, 0, 0.34),
+      0 0 40px rgba(65, 184, 255, 0.045),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(25px) saturate(1.42) contrast(1.05);
+    -webkit-backdrop-filter: blur(25px) saturate(1.42) contrast(1.05);
+  }
+
+  .supportShell .topbar::before {
+    content: "";
+    position: absolute;
+    inset: 0 11% auto;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(238, 249, 255, 0.72), transparent);
+    opacity: 0.56;
+  }
+
+  .supportShell .topbar::after {
+    content: "";
+    position: absolute;
+    right: 5%;
+    bottom: -1px;
+    left: 5%;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--support-cyan), 0.26),
+      rgba(var(--support-violet), 0.16),
+      rgba(var(--support-amber), 0.20),
+      transparent
+    );
+  }
+
+  .supportShell .brand {
+    min-width: 170px;
+    min-height: 62px;
+    padding: 0 5px 0 2px;
+    gap: 11px;
+    overflow: visible;
+    border-radius: 0;
+    cursor: default;
+    user-select: none;
+  }
+
+  .supportShell .brand:hover {
+    background: transparent;
+  }
+
+  .supportShell .brandMark {
+    width: 60px;
+    height: 60px;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .supportShell .brandImage {
+    width: 54px;
+    height: 54px;
+    max-width: none;
+    object-fit: contain;
+    filter:
+      drop-shadow(0 11px 20px rgba(0, 0, 0, 0.42))
+      drop-shadow(0 0 17px rgba(var(--support-cyan), 0.18));
+  }
+
+  .supportShell .brandText {
+    min-width: 0;
+  }
+
+  .supportShell .brandText strong {
+    font-size: 1.22rem;
+    letter-spacing: 0.11em;
+  }
+
+  .supportShell .brandText small {
+    color: rgba(220, 233, 242, 0.62);
+    font-size: 0.69rem;
+  }
+
+  .supportShell .contextChips,
+  .supportShell .topStatus {
+    gap: 0;
+  }
+
+  .supportShell .contextChips {
+    justify-content: center;
+  }
+
+  .supportShell .contextChip,
+  .supportShell .saleStateChip {
+    min-height: 40px;
+    padding: 4px 13px;
+    gap: 7px;
+    color: rgba(226, 237, 245, 0.74);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: default;
+    font-size: 0.79rem;
+  }
+
+  .supportShell .contextChip + .contextChip,
+  .supportShell .saleStateChip,
+  .supportShell .statusArea {
+    border-left: 1px solid rgba(222, 242, 252, 0.14);
+  }
+
+  .supportShell .contextChip:nth-child(1) svg {
+    color: rgb(var(--support-cyan));
+  }
+
+  .supportShell .contextChip:nth-child(2) svg {
+    color: rgb(var(--support-violet));
+  }
+
+  .supportShell .contextChip:nth-child(3) svg {
+    color: rgb(var(--support-amber));
+  }
+
+  .supportShell .saleStateChip svg {
+    color: rgb(var(--support-emerald));
+  }
+
+  .supportShell .contextChip:hover,
+  .supportShell .saleStateChip:hover {
+    color: rgba(226, 237, 245, 0.74);
+    background: transparent;
+    border-color: rgba(222, 242, 252, 0.14);
+  }
+
+  .supportShell .statusArea {
+    min-height: 40px;
+    padding: 0 13px;
+  }
+
+  .supportShell .statusPill {
+    min-height: auto;
+    padding: 0;
+    gap: 7px;
+    color: rgba(226, 237, 245, 0.74);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 0.74rem;
+  }
+
+  .supportShell .statusPill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 13px currentColor;
+  }
+
+  .supportShell .syncChip {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    margin-left: 8px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(225, 239, 248, 0.82);
+    background:
+      radial-gradient(circle at 32% 22%, rgba(var(--support-cyan), 0.12), transparent 42%),
+      rgba(5, 10, 16, 0.54);
+    border: 1px solid rgba(226, 243, 252, 0.18);
+    border-radius: 50%;
+    box-shadow:
+      0 14px 34px rgba(0, 0, 0, 0.26),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(17px) saturate(1.16);
+    -webkit-backdrop-filter: blur(17px) saturate(1.16);
+  }
+
+  .supportShell .syncChip span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .supportShell .syncChip:hover,
+  .supportShell .syncChip:focus-visible {
+    color: rgb(var(--support-cyan));
+    background:
+      radial-gradient(circle at 32% 22%, rgba(var(--support-cyan), 0.20), transparent 46%),
+      rgba(5, 11, 18, 0.68);
+    border-color: rgba(var(--support-cyan), 0.42);
+    outline: 2px solid rgba(var(--support-cyan), 0.82);
+    outline-offset: 3px;
+  }
+
+  .supportShell .titleHeader {
+    min-height: 102px;
+    padding: clamp(15px, 2vw, 25px) 5px 8px;
+  }
+
+  .supportShell .titleGroup {
+    gap: 7px;
+  }
+
+  .supportShell .titleGroup h1 {
+    font-size: clamp(1.9rem, 3.3vw, 3.05rem);
+  }
+
+  .supportShell .bottomDock {
+    z-index: calc(var(--prisma-z-navigation) + 2);
+    background:
+      radial-gradient(circle at 80% 0%, rgba(var(--support-amber), 0.065), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.036), rgba(255, 255, 255, 0.009)),
+      rgba(4, 9, 15, 0.56);
+    border-color: rgba(226, 243, 252, 0.18);
+    box-shadow:
+      0 21px 54px rgba(0, 0, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.075);
+    backdrop-filter: blur(21px) saturate(1.18);
+    -webkit-backdrop-filter: blur(21px) saturate(1.18);
+  }
+
+  .supportShell .bottomDockMorePanel {
+    right: 0;
+    bottom: calc(100% + 14px);
+    z-index: calc(var(--prisma-z-popover) + 5);
+    width: min(410px, calc(100vw - 30px));
+    max-height: min(68dvh, 610px);
+    padding: 11px;
+    gap: 5px;
+    color: var(--prisma-text-primary);
+    background:
+      radial-gradient(circle at 14% 0%, rgba(var(--support-violet), 0.10), transparent 33%),
+      radial-gradient(circle at 90% 18%, rgba(var(--support-cyan), 0.075), transparent 30%),
+      linear-gradient(148deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.009)),
+      rgba(3, 7, 12, 0.80);
+    border: 1px solid rgba(230, 244, 252, 0.20);
+    border-radius: 24px;
+    box-shadow:
+      0 30px 85px rgba(0, 0, 0, 0.52),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(27px) saturate(1.30);
+    -webkit-backdrop-filter: blur(27px) saturate(1.30);
+  }
+
+  .supportShell .bottomDockMoreHeading {
+    padding: 12px 13px 10px;
+    border-bottom-color: rgba(222, 242, 252, 0.13);
+  }
+
+  .supportShell .bottomDockMoreHeading span {
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .supportShell .moreMenuItem,
+  .supportShell .moreMenuItemActive {
+    --menu-accent: var(--support-cyan);
+    position: relative;
+    min-height: 60px;
+    padding: 10px 12px 10px 15px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 11px;
+    overflow: hidden;
+    color: rgba(221, 235, 244, 0.74);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 16px;
+  }
+
+  .supportShell [data-prisma-accent="emerald"] {
+    --menu-accent: var(--support-emerald);
+  }
+
+  .supportShell [data-prisma-accent="violet"] {
+    --menu-accent: var(--support-violet);
+  }
+
+  .supportShell [data-prisma-accent="amber"] {
+    --menu-accent: var(--support-amber);
+  }
+
+  .supportShell [data-prisma-accent="magenta"] {
+    --menu-accent: var(--support-magenta);
+  }
+
+  .supportShell [data-prisma-accent="silver"] {
+    --menu-accent: 226, 239, 247;
+  }
+
+  .supportShell .moreMenuItem::before,
+  .supportShell .moreMenuItemActive::before {
+    content: "";
+    position: absolute;
+    top: 11px;
+    bottom: 11px;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: rgb(var(--menu-accent));
+    box-shadow: 0 0 13px rgba(var(--menu-accent), 0.66);
+    opacity: 0;
+  }
+
+  .supportShell .moreMenuItem svg,
+  .supportShell .moreMenuItemActive svg {
+    color: rgba(var(--menu-accent), 0.88);
+  }
+
+  .supportShell .moreMenuItem:hover,
+  .supportShell .moreMenuItem:focus-visible,
+  .supportShell .moreMenuItemActive {
+    color: #f4fbff;
+    background:
+      linear-gradient(90deg, rgba(var(--menu-accent), 0.11), rgba(255, 255, 255, 0.018) 62%, transparent);
+    border-color: rgba(var(--menu-accent), 0.20);
+    outline: none;
+  }
+
+  .supportShell .moreMenuItem:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(var(--menu-accent), 0.72);
+  }
+
+  .supportShell .moreMenuItem:hover::before,
+  .supportShell .moreMenuItem:focus-visible::before,
+  .supportShell .moreMenuItemActive::before {
+    opacity: 1;
+  }
+
+  .supportShell .moreMenuItem span,
+  .supportShell .moreMenuItemActive span {
+    display: grid;
+    gap: 3px;
+  }
+
+  .supportShell .moreMenuItem small,
+  .supportShell .moreMenuItemActive small {
+    color: rgba(199, 218, 231, 0.60);
+  }
+
+  @media (max-width: 1040px) {
+    .supportShell .topbar {
+      grid-template-columns: minmax(150px, auto) minmax(0, 1fr) auto;
+      gap: 12px;
+    }
+
+    .supportShell .contextChip {
+      padding-inline: 8px;
+    }
+
+    .supportShell .contextChip span,
+    .supportShell .saleStateChip span {
+      max-width: 116px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .supportShell .topbar {
+      grid-template-columns: minmax(150px, auto) auto;
+    }
+
+    .supportShell .contextChips {
+      display: none;
+    }
+
+    .supportShell .topStatus {
+      justify-self: end;
+    }
+
+    .supportShell .saleStateChip {
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .supportShell .topbar {
+      min-height: 70px;
+      padding-inline: 10px;
+    }
+
+    .supportShell .brand {
+      min-width: 0;
+    }
+
+    .supportShell .brandMark {
+      width: 50px;
+      height: 50px;
+    }
+
+    .supportShell .brandImage {
+      width: 46px;
+      height: 46px;
+    }
+
+    .supportShell .brandText {
+      display: none;
+    }
+
+    .supportShell .saleStateChip,
+    .supportShell .statusArea {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .supportShell .topbar,
+    .supportShell .bottomDock,
+    .supportShell .bottomDockMorePanel {
+      background: rgb(7, 13, 20);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
 }

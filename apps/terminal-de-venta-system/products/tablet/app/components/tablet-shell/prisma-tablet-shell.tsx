@@ -41,6 +41,16 @@ function screenZoneFromPath(currentPath: string) {
   return "tablet-reference-root";
 }
 
+function moreAccentFromHref(href: string) {
+  if (href === "/catalog" || href === "/stock") return "amber";
+  if (href === "/returns") return "magenta";
+  if (href === "/shift") return "emerald";
+  if (href === "/sync" || href === "/events/outbox") return "violet";
+  if (href === "/offline") return "cyan";
+  if (href.startsWith("/settings")) return "silver";
+  return "cyan";
+}
+
 export function PrismaTabletShellUnified({
   currentPath,
   title,
@@ -77,11 +87,12 @@ export function PrismaTabletShellUnified({
   const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos-nocturne" : "tablet-nocturne");
   const resolvedVisualPreset = visualPreset ?? "PRISMA_NOCTURNE_REFERENCE_1607";
   const compactSellingSurface = currentPath === "/pos" || currentPath === "/checkout";
+  const supportSurface = currentPath === "/settings/data" || currentPath === "/settings/export" || currentPath === "/settings/license";
   const moreActive = isTabletMoreActive(currentPath);
 
   return (
     <div
-      className={joinClasses(styles.shell, compactSellingSurface && styles.compactSellingShell)}
+      className={joinClasses(styles.shell, compactSellingSurface && styles.compactSellingShell, supportSurface && styles.supportShell)}
       data-prisma-component="AppShell"
       data-prisma-product="tablet"
       data-prisma-flow-stage={flowStage}
@@ -93,20 +104,33 @@ export function PrismaTabletShellUnified({
       data-prisma-canonical-shell="nocturne-reference-1607"
       data-prisma-visible-upgrade="tablet-nocturne-canonical-1607"
       data-prisma-background="nocturne-atmosphere"
+      data-prisma-support-surface={supportSurface ? "true" : undefined}
     >
       <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>
       <span className={styles.scene} aria-hidden="true" />
 
       <header className={styles.topbar} data-prisma-component="TopCommandBar" data-prisma-role="app-owner" data-prisma-layer="header">
-        <a className={styles.brand} href="/" aria-label="Ir al inicio de PRISMA Tablet">
-          <span className={styles.brandMark} aria-hidden="true">
-            <img className={styles.brandImage} src="/prisma/logo-prisma-mark-transparent.png" alt="" />
-          </span>
-          <span className={styles.brandText}>
-            <strong>PRISMA</strong>
-            <small>Tablet</small>
-          </span>
-        </a>
+        {supportSurface ? (
+          <div className={styles.brand} aria-label="PRISMA Tablet">
+            <span className={styles.brandMark} aria-hidden="true">
+              <img className={styles.brandImage} src="/prisma/logo-prisma-mark-transparent.png" alt="" />
+            </span>
+            <span className={styles.brandText}>
+              <strong>PRISMA</strong>
+              <small>Tablet</small>
+            </span>
+          </div>
+        ) : (
+          <a className={styles.brand} href="/" aria-label="Ir al inicio de PRISMA Tablet">
+            <span className={styles.brandMark} aria-hidden="true">
+              <img className={styles.brandImage} src="/prisma/logo-prisma-mark-transparent.png" alt="" />
+            </span>
+            <span className={styles.brandText}>
+              <strong>PRISMA</strong>
+              <small>Tablet</small>
+            </span>
+          </a>
+        )}
 
         {compactSellingSurface ? (
           <div className={styles.sellingMeta} aria-label="Estado operativo de venta">
@@ -114,34 +138,70 @@ export function PrismaTabletShellUnified({
             <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
           </div>
         ) : (
-          <>
-            <div className={styles.contextChips} aria-label="Contexto de venta">
-              <a className={styles.contextChip} href="/stock">
-                <PrismaIcon name="tag" size={17} />
-                <span>{runtimeSnapshot.identity.storeName}</span>
-              </a>
-              <a className={styles.contextChip} href="/shift">
-                <PrismaIcon name="terminal" size={17} />
-                <span>{runtimeSnapshot.identity.terminalName}</span>
-              </a>
-              <span className={styles.contextChip}>
-                <PrismaIcon name="dashboard" size={17} />
-                <span>{runtimeSnapshot.identity.operatorName}</span>
-              </span>
-            </div>
+          supportSurface ? (
+            <>
+              <div className={styles.contextChips} aria-label="Contexto informativo de la Tablet">
+                <span className={styles.contextChip}>
+                  <PrismaIcon name="tag" size={16} />
+                  <span>{runtimeSnapshot.identity.storeName}</span>
+                </span>
+                <span className={styles.contextChip}>
+                  <PrismaIcon name="terminal" size={16} />
+                  <span>{runtimeSnapshot.identity.terminalName}</span>
+                </span>
+                <span className={styles.contextChip}>
+                  <PrismaIcon name="dashboard" size={16} />
+                  <span>{runtimeSnapshot.identity.operatorName}</span>
+                </span>
+              </div>
 
-            <div className={styles.topStatus} data-prisma-role="status-surface">
-              <a className={styles.saleStateChip} href="/pos" aria-label={flowCopy.helper}>
-                <PrismaIcon name="cart" size={18} />
-                <span>{flowCopy.label}</span>
-              </a>
-              <a className={joinClasses(styles.syncChip, pendingCount > 0 && styles.syncChipWarn)} href="/sync">
-                <PrismaIcon name="bell" size={17} />
-                <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
-              </a>
-              {status ? <div className={styles.statusArea}>{status}</div> : null}
-            </div>
-          </>
+              <div className={styles.topStatus} data-prisma-role="status-surface">
+                <span className={styles.saleStateChip} aria-label={flowCopy.helper}>
+                  <PrismaIcon name="cart" size={16} />
+                  <span>{flowCopy.label}</span>
+                </span>
+                {status ? <div className={styles.statusArea}>{status}</div> : null}
+                <a
+                  className={joinClasses(styles.syncChip, pendingCount > 0 && styles.syncChipWarn)}
+                  href="/sync"
+                  aria-label={pendingCount > 0 ? `Abrir sincronización: ${pendingCount} pendientes` : "Abrir sincronización y notificaciones"}
+                  title="Abrir sincronización y notificaciones"
+                >
+                  <PrismaIcon name="bell" size={18} />
+                  <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
+                </a>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.contextChips} aria-label="Contexto de venta">
+                <a className={styles.contextChip} href="/stock">
+                  <PrismaIcon name="tag" size={17} />
+                  <span>{runtimeSnapshot.identity.storeName}</span>
+                </a>
+                <a className={styles.contextChip} href="/shift">
+                  <PrismaIcon name="terminal" size={17} />
+                  <span>{runtimeSnapshot.identity.terminalName}</span>
+                </a>
+                <span className={styles.contextChip}>
+                  <PrismaIcon name="dashboard" size={17} />
+                  <span>{runtimeSnapshot.identity.operatorName}</span>
+                </span>
+              </div>
+
+              <div className={styles.topStatus} data-prisma-role="status-surface">
+                <a className={styles.saleStateChip} href="/pos" aria-label={flowCopy.helper}>
+                  <PrismaIcon name="cart" size={18} />
+                  <span>{flowCopy.label}</span>
+                </a>
+                <a className={joinClasses(styles.syncChip, pendingCount > 0 && styles.syncChipWarn)} href="/sync">
+                  <PrismaIcon name="bell" size={17} />
+                  <span>{pendingCount > 0 ? `${pendingCount} pendientes` : runtimeSnapshot.connection.label}</span>
+                </a>
+                {status ? <div className={styles.statusArea}>{status}</div> : null}
+              </div>
+            </>
+          )
         )}
       </header>
 
@@ -204,7 +264,13 @@ export function PrismaTabletShellUnified({
                 {TABLET_MORE_ITEMS.map((item) => {
                   const active = isTabletNavActive(currentPath, item.href);
                   return (
-                    <a className={active ? styles.moreMenuItemActive : styles.moreMenuItem} href={item.href} key={item.href} aria-current={active ? "page" : undefined}>
+                    <a
+                      className={active ? styles.moreMenuItemActive : styles.moreMenuItem}
+                      href={item.href}
+                      key={item.href}
+                      aria-current={active ? "page" : undefined}
+                      data-prisma-accent={moreAccentFromHref(item.href)}
+                    >
                       <PrismaIcon name={item.icon} size={19} />
                       <span><strong>{item.label}</strong><small>{item.description}</small></span>
                       {item.href === "/sync" && pendingCount > 0 ? <b>{pendingCount}</b> : null}

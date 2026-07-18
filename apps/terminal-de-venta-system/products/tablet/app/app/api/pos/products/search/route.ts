@@ -16,6 +16,7 @@ function toApiProduct(product: Awaited<ReturnType<typeof listLocalCatalogProduct
     sku: product.sku,
     name: product.name,
     category: product.category || "Local",
+    mediaRef: null,
     barcode: product.barcode,
     barcodes: product.barcode ? [product.barcode] : [],
     priceCents: product.priceCents,
