@@ -1,7 +1,7 @@
 # PRISMA Visual Stack Decision
 
-- Task: `Construir y certificar PRISMA Support Resolver Operational Cockpit y modernizar todas las superficies afectadas del Prisma Cloud Command Center 3160, fusionando old + new, actualizando motores, adapters, contratos, endpoints y stores, garantizando consistencia multidispositivo, coherencia de licencias, datos sincronizados entre PC, Tablet, Mobile y 3160, y simplificando todas las operaciones de licencias sin regresiones.`
-- Visual required: `True`
+- Task: `PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.`
+- Visual required: `False`
 
 ## Principle
 
@@ -29,6 +29,18 @@ Exploit the maximum safe/governed visual stack per app/surface, not every librar
 ## Candidate target files
 
 - score=160 `products/tablet/app/app/api/pos/sync/health/pc/route.ts`
+- score=150 `products/tablet/app/docs/pos/PRISMA_POS_VISUAL_04_CART_CHECKOUT_HIERARCHY.md`
+- score=150 `products/tablet/app/docs/pos/PRISMA_TABLET_CHECKOUT_FINALIZATION_FIX_31.md`
+- score=150 `products/tablet/app/docs/pos/PRISMA_TABLET_SELL_CHECKOUT_PAYMENT_FLOW_04A.md`
+- score=150 `products/tablet/app/docs/qa/pos-checkout-02/acceptance.md`
+- score=150 `products/tablet/app/docs/qa/pos-checkout-02/smoke-tests.md`
+- score=130 `products/tablet/app/components/checkout/checkout-cash-calculator.tsx`
+- score=130 `products/tablet/app/components/checkout/checkout-payment-methods.tsx`
+- score=130 `products/tablet/app/components/checkout/checkout-screen.tsx`
+- score=130 `products/tablet/app/components/checkout/checkout-summary-card.tsx`
+- score=130 `products/tablet/app/components/checkout/checkout-summary.tsx`
+- score=130 `products/tablet/app/components/checkout/payment-method-selector.tsx`
+- score=130 `products/tablet/app/components/checkout/ticket-confirmation.tsx`
 - score=130 `products/tablet/app/components/pos/pos-cobro-surface.tsx`
 - score=130 `products/tablet/app/components/pos/pos-error-banner.tsx`
 - score=130 `products/tablet/app/components/pos/pos-live-binding.tsx`
@@ -56,18 +68,6 @@ Exploit the maximum safe/governed visual stack per app/surface, not every librar
 - score=130 `products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx`
 - score=130 `products/tablet/app/components/prisma-dark-pos/prisma-product-grid.tsx`
 - score=130 `products/tablet/app/components/prisma-dark-pos/prisma-route-ui.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-search-row.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-sidebar.tsx`
-- score=130 `products/tablet/app/components/prisma-dark-pos/prisma-top-action-bar.tsx`
-- score=130 `products/tablet/app/components/tablet-pos/touch-pos-ui.tsx`
-- score=120 `products/tablet/app/components/pos/pos-cobro-surface.module.css`
-- score=120 `products/tablet/app/components/pos/pos.module.css`
-- score=120 `products/tablet/app/components/pos/pos.visual.presets.json`
-- score=120 `products/tablet/app/components/pos/pos.visual.schema.json`
-- score=120 `products/tablet/app/components/pos/pos.visual.tokens.css`
-- score=120 `products/tablet/app/components/pos/pos.visual.tokens.generated.css`
-- score=120 `products/tablet/app/components/pos/pos.visual.tokens.json`
-- score=120 `products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css`
 
 ## GovMesh3 escalation
 

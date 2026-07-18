@@ -1,13 +1,13 @@
 # PRISMA Authority Mesh Report
 
 - Status: `PASS`
-- Task: `Construir y certificar PRISMA Support Resolver Operational Cockpit y modernizar todas las superficies afectadas del Prisma Cloud Command Center 3160, fusionando old + new, actualizando motores, adapters, contratos, endpoints y stores, garantizando consistencia multidispositivo, coherencia de licencias, datos sincronizados entre PC, Tablet, Mobile y 3160, y simplificando todas las operaciones de licencias sin regresiones.`
+- Task: `PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.`
 - Repo: `F:\repos\hitech-os\apps\terminal-de-venta-system`
-- Authority files found: `983`
+- Authority files found: `509`
 - Missing patterns: `0`
 - Critical missing: `0`
-- Apps: `backgrounds, chart-lab, control-center, database-sync, mobile, pc, productization, quality, shared-kernel, shared-ui, tablet, web`
-- Change types: `data_sync, visual`
+- Apps: `database-sync, pc, productization, quality, shared-kernel, tablet`
+- Change types: `data_sync`
 
 ## Generated files
 
