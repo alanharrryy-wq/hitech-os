@@ -1,0 +1,99 @@
+{
+  "schema": "PRISMA_MAM_LEGAL1_MANIFEST_V1",
+  "version": "mamlegal1-v1.0.0",
+  "purpose": "Legal-safe runtime evidence profile for Plawright Mamastrophic",
+  "target_root": "F:\\repos\\hitech-os\\tools\\Plawright Mamastrophic",
+  "authority_required": {
+    "legmesh1": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
+    "ndclgl1": "PASS_NDC_LEGAL_EXTENSION_INSTALLED",
+    "motlgl1": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED"
+  },
+  "preconditions": [
+    {
+      "path": "tests/surf8.visualqa.engine.cjs",
+      "expected_sha256": "064F64490CD4171AD05E120A4D350E7924B1C37DD030F567F76227C29EA192AE",
+      "action": "replace_existing"
+    },
+    {
+      "path": "tests/surf8.all-surfaces.engine.cjs",
+      "expected_sha256": "4F6330735EC940A313BAE2A99C50DA15BABB0F56CBF30D508F2261B9F2210911",
+      "action": "replace_existing"
+    },
+    {
+      "path": "tests/surf8.point-probe.cjs",
+      "expected_sha256": "DE1E5F18D95EEAF22460DE9A21861F5820549B79E4BB4EB52EC351DFBAF36BD3",
+      "action": "replace_existing"
+    }
+  ],
+  "managed_files": [
+    {
+      "path": "LEGAL_RUN.ps1",
+      "sha256": "D726E9DF0419E5BB3233CA9D1DC12E4A5CF958C26DB754FB0AC2EAA85E5AD8FD",
+      "bytes": 11492,
+      "existing": false
+    },
+    {
+      "path": "MAM_LEGAL_PROFILE.json",
+      "sha256": "FD8DA91ACF132327602D794681D1475BDE724120020F1DBB7395A404363FD7CF",
+      "bytes": 891,
+      "existing": false
+    },
+    {
+      "path": "docs/README_legal_evidence.md",
+      "sha256": "9E9EB83285E8B086561741EEB22D7E41A586527A62D1277C143229BE0896ADBF",
+      "bytes": 1726,
+      "existing": false
+    },
+    {
+      "path": "legal_evidence/mam_legal_authority.py",
+      "sha256": "D3AA3AB72EB39AF8482A0C8700E285A0B4802E525855B8EB4DA7E80111534797",
+      "bytes": 3844,
+      "existing": false
+    },
+    {
+      "path": "legal_evidence/mam_legal_postprocess.py",
+      "sha256": "D6AA75E68EC6718D7C74189CD7A30589392D42B076CC7C71269D9367CEF2B288",
+      "bytes": 23194,
+      "existing": false
+    },
+    {
+      "path": "tests/surf8.all-surfaces.engine.cjs",
+      "sha256": "87F9DBA73618F7118D581ECAD5986682EF465E33D9DC3EA8D5F9CA1FE5D6F32A",
+      "bytes": 21396,
+      "existing": true
+    },
+    {
+      "path": "tests/surf8.legal-evidence.cjs",
+      "sha256": "7C075DB4A8467DBD78C6A107E94BB93335AA885B77EBD491B4461CDE4CBED296",
+      "bytes": 7686,
+      "existing": false
+    },
+    {
+      "path": "tests/surf8.legal-evidence.test.cjs",
+      "sha256": "A5BC29051B3D94B41BD887B3CDE3CEE5C5CB214D295DA6594541B2DA6BEB05EC",
+      "bytes": 1204,
+      "existing": false
+    },
+    {
+      "path": "tests/surf8.point-probe.cjs",
+      "sha256": "313141A077D59AA2B9C4E2614D76742197BBE9EA18956FB0B3BC7C3843155E0C",
+      "bytes": 16275,
+      "existing": true
+    },
+    {
+      "path": "tests/surf8.visualqa.engine.cjs",
+      "sha256": "E5B3F45F39083E27ADDDA2AFC96C1659C0C5BE4119128D10E53445192EF9A2A6",
+      "bytes": 28070,
+      "existing": true
+    }
+  ],
+  "legacy_entrypoint_untouched": "RUN.ps1",
+  "new_entrypoint": "LEGAL_RUN.ps1",
+  "non_claims": [
+    "Does not certify legal compliance",
+    "Does not prove IP ownership",
+    "Does not resolve OSS obligations",
+    "Does not certify production readiness"
+  ],
+  "next_package": "catlgl1"
+}

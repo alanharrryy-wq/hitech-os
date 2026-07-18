@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { captureDeepScreenshots, envDeepCaptureOptions, emitProgress } = require("./surf8.deep-capture.cjs");
+const { legalEvidenceEnabled, applyLegalRedaction, sanitizeText, sanitizeUrl, sanitizeObject } = require("./surf8.legal-evidence.cjs");
 
 function registerSurf8Tests(test, expect) {
   const planPath = process.env.PRISMA_SURF_PLAN_JSON;
@@ -39,7 +40,8 @@ function registerSurf8Tests(test, expect) {
   fs.writeFileSync(path.join(outDir, "gpu-runtime.json"), JSON.stringify({ gpuMode, chromiumArgs: gpuArgs, launchOptionsEnabled: useGpuLaunchOptions, testTimeout, deepCaptureBudget, deepCaptureOptions, capturedAt: new Date().toISOString() }, null, 2));
 
   test.describe.configure({ mode: "parallel" });
-  test.use({ trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
+  const legalMode = legalEvidenceEnabled();
+  test.use({ trace: legalMode ? "off" : "retain-on-failure", screenshot: legalMode ? "off" : "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
   test.setTimeout(testTimeout);
 
   function safeName(value) {
@@ -114,6 +116,8 @@ function registerSurf8Tests(test, expect) {
   }
   async function capture(page, target, label, extra = {}) {
     const fileBase = `${safeName(target.macro)}-${safeName(target.id)}-${safeName(label)}`;
+    const legalRedaction = await applyLegalRedaction(page).catch(error => ({ enabled: true, status: "BLOCKED_UNREDACTED", error: sanitizeText(error && error.message ? error.message : String(error)) }));
+    extra = sanitizeObject(extra);
     const record = {
       status: extra.status || "captured",
       targetId: target.id,
@@ -121,12 +125,13 @@ function registerSurf8Tests(test, expect) {
       port: target.port,
       kind: target.kind,
       label,
-      url: page.url(),
-      title: await bounded(page.title(), probeTimeout, null),
-      h1: await bounded(page.locator("h1").first().textContent({ timeout: 600 }), probeTimeout, null),
+      url: sanitizeUrl(page.url()),
+      title: sanitizeText(await bounded(page.title(), probeTimeout, null)),
+      h1: sanitizeText(await bounded(page.locator("h1").first().textContent({ timeout: 600 }), probeTimeout, null)),
       capturedAt: new Date().toISOString(),
       gpuMode,
       chromiumArgs: gpuArgs,
+      legalRedaction,
       ...extra,
     };
     if (captureScreenshots) {
@@ -170,6 +175,8 @@ function registerSurf8Tests(test, expect) {
     });
   }
   async function captureFailure(page, target, label, error, extra = {}) {
+    const legalRedaction = page ? await applyLegalRedaction(page).catch(redactionError => ({ enabled: true, status: "BLOCKED_UNREDACTED", error: sanitizeText(redactionError && redactionError.message ? redactionError.message : String(redactionError)) })) : { enabled: true, status: "BLOCKED_UNREDACTED", error: "page unavailable" };
+    extra = sanitizeObject(extra);
     const fileBase = `${safeName(target.macro)}-${safeName(target.id)}-${safeName(label || "failed")}-failed`;
     const record = {
       status: "failed",
@@ -186,7 +193,8 @@ function registerSurf8Tests(test, expect) {
       capturedAt: new Date().toISOString(),
       gpuMode,
       chromiumArgs: gpuArgs,
-      error: formatError(error),
+      error: sanitizeObject(formatError(error)),
+      legalRedaction,
       ...extra,
     };
     if (captureScreenshots && page) {
