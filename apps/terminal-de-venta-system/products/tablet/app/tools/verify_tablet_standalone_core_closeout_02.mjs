@@ -292,6 +292,7 @@ async function bootstrapSchema(prisma) {
       businessId TEXT NOT NULL,
       terminalId TEXT NOT NULL,
       cashSessionId TEXT,
+      customerId TEXT,
       clientRequestId TEXT,
       folio TEXT NOT NULL,
       cashier TEXT NOT NULL,

@@ -12,11 +12,14 @@
   .posPremiumSceneGlow {
     position: fixed;
     z-index: var(--prisma-z-scene);
-    inset: 12% 8% auto auto;
-    width: min(38vw, 520px);
+    inset: 10% 6% auto auto;
+    width: min(46vw, 620px);
     aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(56, 184, 255, 0.16), rgba(83, 72, 218, 0.04) 52%, transparent 72%);
+    background:
+      radial-gradient(circle at 62% 34%, rgba(111, 220, 255, 0.13), transparent 36%),
+      radial-gradient(circle at 44% 66%, rgba(255, 187, 109, 0.09), transparent 44%);
+    filter: blur(16px);
     pointer-events: none;
   }
 
@@ -24,7 +27,7 @@
     position: relative;
     display: grid;
     align-content: start;
-    gap: 14px;
+    gap: 12px;
     min-width: 0;
     background: transparent;
   }
@@ -34,11 +37,17 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
-    padding: 10px 12px;
-    border: 1px solid var(--prisma-line-medium);
-    border-radius: var(--prisma-radius-card);
-    background: var(--prisma-surface-control);
-    box-shadow: var(--prisma-shadow-card);
+    padding: 8px 11px;
+    border: 1px solid rgba(235, 244, 255, 0.18);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+      rgba(8, 12, 18, 0.30);
+    box-shadow:
+      0 16px 36px rgba(0, 0, 0, 0.17),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px) saturate(1.04);
+    -webkit-backdrop-filter: blur(18px) saturate(1.04);
     transition:
       border-color var(--prisma-motion-fast),
       background var(--prisma-motion-fast),
@@ -46,9 +55,13 @@
   }
 
   .posPremiumSearchCard:focus-within {
-    border-color: var(--prisma-cyan-400);
-    background: var(--prisma-surface-control-hover);
-    box-shadow: var(--prisma-focus-ring);
+    border-color: rgba(112, 224, 255, 0.58);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018)),
+      rgba(8, 14, 21, 0.38);
+    box-shadow:
+      0 0 0 3px rgba(104, 222, 255, 0.14),
+      0 18px 42px rgba(0, 0, 0, 0.22);
   }
 
   .posPremiumSearchCardError {
@@ -162,9 +175,11 @@
   }
 
   .posPremiumCategoryButtonActive {
-    border-color: rgba(76, 212, 255, 0.24);
-    background: linear-gradient(180deg, rgba(8, 83, 117, 0.24), rgba(2, 22, 37, 0.1));
-    color: var(--prisma-cyan-300);
+    border-color: rgba(112, 224, 255, 0.28);
+    background:
+      linear-gradient(180deg, rgba(112, 224, 255, 0.10), rgba(112, 224, 255, 0.025)),
+      rgba(255, 255, 255, 0.018);
+    color: #c8f4ff;
   }
 
   .posPremiumCategoryButtonActive::after {
@@ -181,33 +196,43 @@
 
   .posPremiumProductGrid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
     min-width: 0;
   }
 
   .posPremiumProductCard {
     position: relative;
     display: grid;
-    grid-template-rows: minmax(176px, 1fr) auto auto;
-    min-height: 326px;
+    grid-template-rows: minmax(150px, 1fr) auto auto;
+    min-height: 286px;
     min-width: 0;
     overflow: hidden;
-    border: 1px solid var(--prisma-line-soft);
-    border-radius: var(--prisma-radius-card);
-    background: var(--prisma-surface-card);
-    box-shadow: var(--prisma-shadow-card);
+    border: 1px solid rgba(235, 244, 255, 0.16);
+    border-radius: 22px;
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 52%),
+      rgba(11, 16, 22, 0.34);
+    box-shadow:
+      0 18px 42px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
     color: var(--prisma-text-primary);
     transition:
       border-color var(--prisma-motion-base),
       background var(--prisma-motion-base),
-      transform var(--prisma-motion-base);
+      transform var(--prisma-motion-base),
+      box-shadow var(--prisma-motion-base);
   }
 
   .posPremiumProductCard:hover {
-    border-color: var(--prisma-line-strong);
-    background: var(--prisma-surface-card-hover);
-    transform: translateY(-2px);
+    border-color: rgba(152, 229, 255, 0.34);
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018) 52%),
+      rgba(12, 19, 26, 0.42);
+    box-shadow:
+      0 22px 52px rgba(0, 0, 0, 0.23),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    transform: translateY(-3px);
   }
 
   .posPremiumProductCardDisabled {
@@ -227,36 +252,36 @@
   .posPremiumProductStage {
     position: relative;
     display: grid;
-    min-height: 176px;
+    min-height: 150px;
     overflow: hidden;
     place-items: center;
     background:
-      radial-gradient(circle at 50% 38%, rgba(76, 212, 255, 0.16), transparent 48%),
-      linear-gradient(145deg, rgba(14, 57, 81, 0.32), rgba(3, 15, 28, 0.08));
+      radial-gradient(circle at 50% 42%, rgba(116, 221, 255, 0.12), transparent 44%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 194, 118, 0.07), transparent 45%);
   }
 
   .stageCool {
     background:
-      radial-gradient(circle at 50% 36%, rgba(85, 196, 255, 0.24), transparent 49%),
-      linear-gradient(145deg, rgba(10, 69, 101, 0.34), rgba(3, 15, 28, 0.08));
+      radial-gradient(circle at 50% 40%, rgba(101, 205, 255, 0.16), transparent 46%),
+      radial-gradient(ellipse at 50% 100%, rgba(105, 151, 255, 0.06), transparent 48%);
   }
 
   .stageClean {
     background:
-      radial-gradient(circle at 50% 36%, rgba(116, 240, 223, 0.17), transparent 49%),
-      linear-gradient(145deg, rgba(6, 76, 79, 0.28), rgba(3, 15, 28, 0.08));
+      radial-gradient(circle at 50% 40%, rgba(119, 238, 221, 0.12), transparent 46%),
+      radial-gradient(ellipse at 50% 100%, rgba(119, 238, 221, 0.05), transparent 48%);
   }
 
   .stageGold {
     background:
-      radial-gradient(circle at 50% 36%, rgba(255, 190, 87, 0.2), transparent 49%),
-      linear-gradient(145deg, rgba(77, 48, 12, 0.3), rgba(3, 15, 28, 0.08));
+      radial-gradient(circle at 50% 40%, rgba(255, 196, 111, 0.15), transparent 46%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 184, 92, 0.06), transparent 48%);
   }
 
   .stageWarm {
     background:
-      radial-gradient(circle at 50% 36%, rgba(255, 139, 100, 0.18), transparent 49%),
-      linear-gradient(145deg, rgba(77, 32, 25, 0.28), rgba(3, 15, 28, 0.08));
+      radial-gradient(circle at 50% 40%, rgba(255, 151, 113, 0.13), transparent 46%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 151, 113, 0.05), transparent 48%);
   }
 
   .stageHasPackshot .productFigureFallback {
@@ -273,21 +298,23 @@
 
   .productAura {
     position: absolute;
-    width: 76%;
+    width: 72%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(103, 219, 255, 0.18), transparent 68%);
+    background: radial-gradient(circle, rgba(126, 222, 255, 0.12), transparent 67%);
+    filter: blur(2px);
   }
 
   .productPedestal {
     position: absolute;
-    right: 20%;
-    bottom: 10px;
-    left: 20%;
-    height: 13px;
+    right: 22%;
+    bottom: 8px;
+    left: 22%;
+    height: 10px;
     border-radius: 50%;
-    background: rgba(1, 9, 18, 0.46);
-    box-shadow: 0 7px 18px rgba(1, 8, 17, 0.42);
+    background: rgba(0, 0, 0, 0.34);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.30);
+    filter: blur(1px);
   }
 
   .productPackshot {
@@ -295,10 +322,13 @@
     z-index: var(--prisma-z-content);
     display: block;
     width: auto;
-    max-width: 78%;
-    height: 142px;
+    max-width: 80%;
+    height: 132px;
     object-fit: contain;
-    filter: drop-shadow(0 13px 12px rgba(1, 7, 15, 0.48));
+    filter:
+      saturate(1.06)
+      contrast(1.04)
+      drop-shadow(0 14px 13px rgba(0, 0, 0, 0.42));
     transition: opacity var(--prisma-motion-fast), transform var(--prisma-motion-base);
   }
 
@@ -308,8 +338,8 @@
 
   .productPackshot_bottle,
   .productPackshot_water {
-    height: 154px;
-    max-width: 58%;
+    height: 142px;
+    max-width: 60%;
   }
 
   .productPackshot_bag,
@@ -434,7 +464,7 @@
     display: grid;
     gap: 5px;
     min-width: 0;
-    padding: 14px 15px 8px;
+    padding: 12px 14px 7px;
   }
 
   .posPremiumProductMetaRail,
@@ -470,16 +500,17 @@
   .posPremiumProductAside {
     justify-content: space-between;
     gap: 8px;
-    padding: 4px 15px 14px;
+    padding: 4px 14px 13px;
   }
 
   .posPremiumProductPrice {
     display: grid;
     gap: 1px;
-    color: var(--prisma-cyan-300);
-    font-size: 1.3rem;
+    color: #f7fbff;
+    font-size: 1.28rem;
     font-weight: 850;
     letter-spacing: -0.03em;
+    text-shadow: 0 0 18px rgba(128, 220, 255, 0.10);
   }
 
   .posPremiumProductPrice small {
@@ -533,16 +564,19 @@
     height: var(--prisma-touch-target);
     min-height: var(--prisma-touch-target);
     padding: 0;
-    border: 1px solid rgba(76, 212, 255, 0.4);
+    border: 1px solid rgba(126, 225, 255, 0.32);
     border-radius: 50%;
-    background: rgba(8, 83, 117, 0.44);
-    color: var(--prisma-cyan-300);
+    background: rgba(104, 213, 255, 0.10);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #bfefff;
     cursor: pointer;
     font-size: 0;
   }
 
   .posPremiumAddButton:hover {
-    background: rgba(12, 112, 153, 0.58);
+    border-color: rgba(145, 231, 255, 0.54);
+    background: rgba(104, 213, 255, 0.17);
+    box-shadow: 0 0 22px rgba(91, 204, 255, 0.16);
   }
 
   .posPremiumAddButtonDisabled {
@@ -713,9 +747,12 @@
     grid-template-columns: 48px minmax(0, 1fr) auto;
     gap: 9px 10px;
     padding: 10px;
-    border: 1px solid var(--prisma-line-soft);
-    border-radius: 15px;
-    background: var(--prisma-surface-control);
+    border: 1px solid rgba(235, 244, 255, 0.14);
+    border-radius: 16px;
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.010)),
+      rgba(255, 255, 255, 0.018);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .posPremiumTicketLineText {
@@ -743,9 +780,11 @@
     height: 54px;
     place-items: center;
     overflow: hidden;
-    border: 1px solid var(--prisma-line-soft);
+    border: 1px solid rgba(235, 244, 255, 0.14);
     border-radius: 13px;
-    background: linear-gradient(145deg, #245f82, #102942);
+    background:
+      radial-gradient(circle at 52% 28%, rgba(127, 221, 255, 0.12), transparent 46%),
+      rgba(255, 255, 255, 0.025);
   }
 
   .posPremiumCartThumb > span {
@@ -842,9 +881,9 @@
     grid-template-columns: var(--prisma-touch-target) minmax(34px, auto) var(--prisma-touch-target);
     align-items: center;
     overflow: hidden;
-    border: 1px solid var(--prisma-line-soft);
-    border-radius: 11px;
-    background: rgba(2, 17, 30, 0.3);
+    border: 1px solid rgba(235, 244, 255, 0.14);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025);
   }
 
   .posPremiumStepper button {
@@ -938,10 +977,10 @@
     align-items: end;
     justify-content: space-between;
     gap: 12px;
-    padding: 13px 14px;
-    border: 1px solid rgba(76, 212, 255, 0.3);
-    border-radius: 15px;
-    background: var(--prisma-surface-info);
+    padding: 10px 2px 8px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
   }
 
   .posPremiumTicketTotal span {
@@ -950,32 +989,65 @@
   }
 
   .posPremiumTicketTotal strong {
-    color: var(--prisma-cyan-300);
-    font-size: clamp(1.45rem, 3.4vw, 2.05rem);
+    color: #f7fbff;
+    font-size: clamp(1.55rem, 3.4vw, 2.2rem);
     letter-spacing: -0.05em;
+    text-shadow: 0 0 24px rgba(101, 210, 255, 0.14);
   }
 
   .cobrarReferenceButton {
+    position: relative;
     display: grid;
     grid-template-columns: 42px minmax(0, 1fr) auto;
     align-items: center;
     gap: 10px;
-    min-height: 66px;
+    min-height: 68px;
     padding: 9px 14px;
-    border: 1px solid rgba(102, 229, 255, 0.65);
-    border-radius: 17px;
-    background: var(--prisma-gradient-primary);
-    box-shadow: var(--prisma-shadow-primary);
-    color: #03111e;
+    overflow: hidden;
+    border: 1px solid rgba(138, 231, 255, 0.72);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(129, 235, 255, 0.58), transparent 30%),
+      linear-gradient(112deg, #287df5, #2153d2 54%, #3ac7f0);
+    box-shadow:
+      0 20px 46px rgba(30, 92, 226, 0.34),
+      0 0 0 1px rgba(112, 224, 255, 0.13),
+      inset 0 1px 0 rgba(255, 255, 255, 0.34);
+    color: #ffffff;
     cursor: pointer;
     font: inherit;
     text-align: left;
-    transition: transform var(--prisma-motion-fast), filter var(--prisma-motion-fast);
+    text-shadow: 0 1px 10px rgba(0, 31, 84, 0.34);
+    transition:
+      transform var(--prisma-motion-fast),
+      filter var(--prisma-motion-fast),
+      box-shadow var(--prisma-motion-fast);
+  }
+
+  .cobrarReferenceButton::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    bottom: -30%;
+    left: -38%;
+    width: 28%;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+    transform: skewX(-18deg);
+    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .cobrarReferenceButton:hover {
-    filter: saturate(1.08) brightness(1.04);
-    transform: translateY(-1px);
+    filter: saturate(1.04) brightness(1.03);
+    box-shadow:
+      0 24px 54px rgba(30, 92, 226, 0.40),
+      0 0 28px rgba(70, 202, 255, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
+    transform: translateY(-2px);
+  }
+
+  .cobrarReferenceButton:hover::before {
+    left: 112%;
   }
 
   .cobrarReferenceButton:disabled {
@@ -1035,6 +1107,11 @@
     gap: 8px;
   }
 
+  .posGateActions {
+    justify-content: center;
+    align-items: center;
+  }
+
   .heldCartList {
     display: grid;
     gap: 7px;
@@ -1081,23 +1158,31 @@
 
   .posGateDeck {
     display: grid;
-    gap: 18px;
-    min-height: min(660px, calc(100dvh - 160px));
-    padding: clamp(22px, 4vw, 46px);
-    border: 1px solid var(--prisma-line-medium);
-    border-radius: var(--prisma-radius-panel);
+    width: min(760px, calc(100% - 24px));
+    min-height: auto;
+    place-self: center;
+    gap: 20px;
+    padding: clamp(26px, 4vw, 42px);
+    border: 1px solid rgba(235, 244, 255, 0.20);
+    border-radius: 30px;
     background:
-      radial-gradient(circle at 86% 14%, rgba(66, 178, 255, 0.17), transparent 35%),
-      var(--prisma-surface-panel);
-    box-shadow: var(--prisma-shadow-shell);
+      radial-gradient(circle at 88% 12%, rgba(255, 194, 115, 0.10), transparent 30%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012)),
+      rgba(8, 12, 17, 0.46);
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.36),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(24px) saturate(1.06);
+    -webkit-backdrop-filter: blur(24px) saturate(1.06);
   }
 
   .posGateHero {
     display: grid;
     align-content: center;
-    justify-items: start;
+    justify-items: center;
     gap: 10px;
     max-width: 720px;
+    text-align: center;
   }
 
   .posGateIcon {
@@ -1135,18 +1220,26 @@
 
   .posGateMetaGrid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, auto));
+    justify-content: center;
+    gap: 0;
   }
 
   .posGateMeta {
     display: grid;
     gap: 5px;
-    padding: 13px;
-    border: 1px solid var(--prisma-line-soft);
-    border-radius: var(--prisma-radius-card);
-    background: var(--prisma-surface-card);
+    min-width: 150px;
+    padding: 4px 20px;
+    border: 0;
+    border-left: 1px solid rgba(235, 244, 255, 0.13);
+    border-radius: 0;
+    background: transparent;
     color: var(--prisma-text-muted);
+    text-align: center;
+  }
+
+  .posGateMeta:first-child {
+    border-left: 0;
   }
 
   .posGateMeta strong {
@@ -1174,10 +1267,15 @@
   .posPremiumBlockedGateAction,
   .posPremiumPrimaryButton,
   .primaryButton {
-    border: 1px solid rgba(102, 229, 255, 0.58);
-    background: var(--prisma-gradient-primary);
-    box-shadow: var(--prisma-shadow-primary);
-    color: #03111e;
+    border: 1px solid rgba(132, 230, 255, 0.62);
+    background:
+      radial-gradient(circle at 18% 12%, rgba(144, 237, 255, 0.36), transparent 34%),
+      linear-gradient(112deg, #2c83f5, #2457d0 58%, #48c5e8);
+    box-shadow:
+      0 16px 38px rgba(35, 96, 224, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    text-shadow: 0 1px 8px rgba(0, 29, 76, 0.30);
   }
 
   .posPremiumSecondaryButton,
@@ -1291,6 +1389,16 @@
   @keyframes prisma-pos-spin {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .posPremiumSearchCard,
+    .posPremiumProductCard,
+    .posGateDeck {
+      background: rgba(8, 14, 21, 0.92);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
 
