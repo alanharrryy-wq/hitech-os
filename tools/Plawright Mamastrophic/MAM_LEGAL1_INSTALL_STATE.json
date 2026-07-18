@@ -1,0 +1,104 @@
+{
+  "schema": "PRISMA_MAM_LEGAL1_INSTALL_STATE_V1",
+  "version": "mamlegal1-v1.0.0",
+  "status": "INSTALLED",
+  "installed_at": "2026-07-17T11:00:08-06:00",
+  "target_root": "F:\\repos\\hitech-os\\tools\\Plawright Mamastrophic",
+  "backup_root": "F:\\Trash-old\\mamlegal1 backup 1707 110007",
+  "managed_files": [
+    {
+      "path": "LEGAL_RUN.ps1",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "D726E9DF0419E5BB3233CA9D1DC12E4A5CF958C26DB754FB0AC2EAA85E5AD8FD"
+    },
+    {
+      "path": "MAM_LEGAL_PROFILE.json",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "FD8DA91ACF132327602D794681D1475BDE724120020F1DBB7395A404363FD7CF"
+    },
+    {
+      "path": "docs/README_legal_evidence.md",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "9E9EB83285E8B086561741EEB22D7E41A586527A62D1277C143229BE0896ADBF"
+    },
+    {
+      "path": "legal_evidence/mam_legal_authority.py",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "D3AA3AB72EB39AF8482A0C8700E285A0B4802E525855B8EB4DA7E80111534797"
+    },
+    {
+      "path": "legal_evidence/mam_legal_postprocess.py",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "D6AA75E68EC6718D7C74189CD7A30589392D42B076CC7C71269D9367CEF2B288"
+    },
+    {
+      "path": "tests/surf8.all-surfaces.engine.cjs",
+      "existed_before": true,
+      "before_sha256": "4F6330735EC940A313BAE2A99C50DA15BABB0F56CBF30D508F2261B9F2210911",
+      "after_sha256": "87F9DBA73618F7118D581ECAD5986682EF465E33D9DC3EA8D5F9CA1FE5D6F32A"
+    },
+    {
+      "path": "tests/surf8.legal-evidence.cjs",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "7C075DB4A8467DBD78C6A107E94BB93335AA885B77EBD491B4461CDE4CBED296"
+    },
+    {
+      "path": "tests/surf8.legal-evidence.test.cjs",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "A5BC29051B3D94B41BD887B3CDE3CEE5C5CB214D295DA6594541B2DA6BEB05EC"
+    },
+    {
+      "path": "tests/surf8.point-probe.cjs",
+      "existed_before": true,
+      "before_sha256": "DE1E5F18D95EEAF22460DE9A21861F5820549B79E4BB4EB52EC351DFBAF36BD3",
+      "after_sha256": "313141A077D59AA2B9C4E2614D76742197BBE9EA18956FB0B3BC7C3843155E0C"
+    },
+    {
+      "path": "tests/surf8.visualqa.engine.cjs",
+      "existed_before": true,
+      "before_sha256": "064F64490CD4171AD05E120A4D350E7924B1C37DD030F567F76227C29EA192AE",
+      "after_sha256": "E5B3F45F39083E27ADDDA2AFC96C1659C0C5BE4119128D10E53445192EF9A2A6"
+    },
+    {
+      "path": "MAM_LEGAL1_MANIFEST.json",
+      "existed_before": false,
+      "before_sha256": null,
+      "after_sha256": "76B965122F6D31B5F5747626B3BF4B27BFCCF8CE27DAACDDFDF706AB72FBAA10"
+    }
+  ],
+  "created_files": [
+    "LEGAL_RUN.ps1",
+    "MAM_LEGAL_PROFILE.json",
+    "docs/README_legal_evidence.md",
+    "legal_evidence/mam_legal_authority.py",
+    "legal_evidence/mam_legal_postprocess.py",
+    "tests/surf8.legal-evidence.cjs",
+    "tests/surf8.legal-evidence.test.cjs",
+    "MAM_LEGAL1_MANIFEST.json"
+  ],
+  "authority": {
+    "legmesh1": {
+      "path": "F:\\descargasf\\legmesh1 1707 094158 result.zip",
+      "sha256": "03C5C5B2D3925140A29ED9B4D504441BC49C22082ED18D45F159D87EE75BEB09",
+      "status": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN"
+    },
+    "ndclgl1": {
+      "path": "F:\\descargasf\\ndclgl1 1707 100257 result.zip",
+      "sha256": "AFE1D671FB7862D3C1843382C86DC2AE22D648B0D03EEBDE11558B367706E71B",
+      "status": "PASS_NDC_LEGAL_EXTENSION_INSTALLED"
+    },
+    "motlgl1": {
+      "path": "F:\\descargasf\\motlgl1 1707 103427 result.zip",
+      "sha256": "16B1341F47C1956D980F38E1DE32ECB35E426F57DAC93BE8D21E40BC989C8B87",
+      "status": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED"
+    }
+  },
+  "rollback_policy": "Restore backups and move package-created files to F:\\Trash-old; never permanently delete."
+}

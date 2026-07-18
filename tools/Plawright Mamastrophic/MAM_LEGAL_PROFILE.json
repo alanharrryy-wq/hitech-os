@@ -1,0 +1,38 @@
+{
+  "schema": "PRISMA_MAM_LEGAL_PROFILE_V1",
+  "version": "mamlegal1-v1.0.0",
+  "profile": "legal-evidence",
+  "entrypoint": "LEGAL_RUN.ps1",
+  "external_process_concurrency": 1,
+  "internal_workers_max": 18,
+  "internal_shards_max": 18,
+  "surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "redaction_policy": "mamlegal1-strict-v1",
+  "trace_in_legal_mode": "off",
+  "automatic_failure_screenshot_in_legal_mode": "off",
+  "final_zip_count": 1,
+  "output_root": "F:\\descargasf",
+  "no_touch": {
+    "db_write": false,
+    "git_write": false,
+    "process_kill": false,
+    "port_free": false,
+    "server_start": false,
+    "dependency_install": false,
+    "deploy": false
+  },
+  "does_not_prove": [
+    "Legal compliance",
+    "IP ownership",
+    "OSS compliance",
+    "Production readiness",
+    "Absence of vulnerabilities"
+  ]
+}

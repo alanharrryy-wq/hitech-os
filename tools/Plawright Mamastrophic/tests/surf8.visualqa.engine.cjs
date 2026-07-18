@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { captureDeepScreenshots, envDeepCaptureOptions, emitProgress } = require("./surf8.deep-capture.cjs");
+const { legalEvidenceEnabled, applyLegalRedaction, sanitizeText, sanitizeUrl, sanitizeObject, sanitizeConsoleEntry, sanitizeNetworkEntry } = require("./surf8.legal-evidence.cjs");
 
 function registerSurf8VisualQaTests(test, expect) {
   const planPath = process.env.PRISMA_SURF_PLAN_JSON;
@@ -57,7 +58,8 @@ function registerSurf8VisualQaTests(test, expect) {
   }, null, 2));
 
   test.describe.configure({ mode: "parallel" });
-  test.use({ viewport, trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
+  const legalMode = legalEvidenceEnabled();
+  test.use({ viewport, trace: legalMode ? "off" : "retain-on-failure", screenshot: legalMode ? "off" : "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
   test.setTimeout(testTimeout);
 
   function safeName(value) {
@@ -212,9 +214,11 @@ function registerSurf8VisualQaTests(test, expect) {
 
   async function captureComputed(page, target, status, extra = {}) {
     const paths = targetPaths(target);
+    const legalRedaction = await applyLegalRedaction(page).catch(error => ({ enabled: true, status: "BLOCKED_UNREDACTED", error: sanitizeText(error && error.message ? error.message : String(error)) }));
+    extra = sanitizeObject(extra);
     const viewport = page.viewportSize() || { width: 0, height: 0 };
-    const title = await bounded(page.title(), probeTimeout, null);
-    const url = page.url();
+    const title = sanitizeText(await bounded(page.title(), probeTimeout, null));
+    const url = sanitizeUrl(page.url());
     const capturedAt = new Date().toISOString();
 
     const visual = await page.evaluate(({ targetMeta }) => {
@@ -485,7 +489,8 @@ function registerSurf8VisualQaTests(test, expect) {
       title,
       viewport: visual.viewport || viewport,
       document: visual.document || {},
-      domSnapshot: visual.domSnapshot || null
+      domSnapshot: visual.domSnapshot || null,
+      legalRedaction
     };
 
     if (captureScreenshots) {
@@ -571,21 +576,21 @@ function registerSurf8VisualQaTests(test, expect) {
         if (type === "error" || type === "warning" || type === "warn") {
           consoleEntries.push({
             type,
-            text: msg.text(),
-            location: msg.location ? msg.location() : null
+            text: sanitizeText(msg.text()),
+            location: sanitizeObject(msg.location ? msg.location() : null)
           });
         }
       });
       page.on("pageerror", error => {
-        consoleEntries.push({ type: "pageerror", text: error && error.message ? error.message : String(error), location: null });
+        consoleEntries.push(sanitizeConsoleEntry({ type: "pageerror", text: error && error.message ? error.message : String(error), location: null }));
       });
       page.on("requestfailed", request => {
         networkFailures.push({
           type: "requestfailed",
-          url: request.url(),
+          url: sanitizeUrl(request.url()),
           method: request.method(),
           resourceType: request.resourceType(),
-          failure: request.failure(),
+          failure: sanitizeObject(request.failure()),
         });
       });
       page.on("response", response => {
@@ -593,7 +598,7 @@ function registerSurf8VisualQaTests(test, expect) {
         if (status >= 400) {
           networkFailures.push({
             type: "http_error",
-            url: response.url(),
+            url: sanitizeUrl(response.url()),
             status,
             statusText: response.statusText(),
             requestMethod: response.request().method(),
