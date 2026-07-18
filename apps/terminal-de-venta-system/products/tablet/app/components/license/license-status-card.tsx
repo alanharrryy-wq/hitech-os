@@ -197,6 +197,15 @@ function featureLabel(key: string) {
   return raw ? raw.replace(/\b\w/g, (ch) => ch.toUpperCase()) : "Función";
 }
 
+function accentForCategory(category: string) {
+  if (category === "Ventas") return "cyan";
+  if (category === "Turno y caja") return "amber";
+  if (category === "Inventario local") return "emerald";
+  if (category === "Pendientes y respaldos") return "violet";
+  if (category === "Reportes") return "magenta";
+  return "silver";
+}
+
 export function LicenseStatusCard({ status, runtimeContext }: { status: NormalizedLicenseStatus; runtimeContext: RuntimeContext }) {
   const blocked = status.operationalDecision === "deny";
   const tone = blocked ? "danger" : toneForState(status.state);
@@ -209,7 +218,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
       : tone === "ok" ? "Tablet lista para operar" : tone === "warn" ? "Tablet operando con aviso" : "Licencia requiere atención";
 
   return (
-    <section className={styles.statusCluster} id="license-status" data-prisma-license-state={status.state} data-prisma-client-license-view="readonly">
+    <section className={styles.statusCluster} id="license-status" data-prisma-license-state={status.state} data-prisma-client-license-view="readonly" data-accent={tone}>
       <div className={styles.heroCard}>
         <div className={`${styles.statusMark} ${styles[tone]}`} aria-hidden="true">✓</div>
         <div className={styles.heroBody}>
@@ -251,7 +260,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
         </div>
       ) : null}
 
-      <details className={styles.evidenceDisclosure}>
+      <details className={styles.evidenceDisclosure} data-accent="violet">
         <summary id="license-support">Ver detalle para soporte</summary>
         <div className={styles.compactMetricGrid}>
           <Metric label="Modo de operación" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
@@ -290,7 +299,7 @@ export function FeatureList({ features }: { features: FeatureResolution[] }) {
   const blocked = Math.max(features.length - allowed, 0);
 
   return (
-    <section className={`${styles.card} ${styles.featurePanel}`} id="license-features">
+    <section className={`${styles.card} ${styles.featurePanel}`} id="license-features" data-accent="emerald">
       <div className={styles.sectionHeader}>
         <div>
           <p className={styles.eyebrow}>Funciones disponibles</p>
@@ -310,7 +319,7 @@ export function FeatureList({ features }: { features: FeatureResolution[] }) {
         {categories.map(([category, group]) => {
           const groupAllowed = group.filter((feature) => feature.allowed).length;
           return (
-            <details key={category} className={styles.featureGroup}>
+            <details key={category} className={styles.featureGroup} data-accent={accentForCategory(category)}>
               <summary>
                 <span>{category}</span>
                 <em>{groupAllowed}/{group.length} permitidas</em>

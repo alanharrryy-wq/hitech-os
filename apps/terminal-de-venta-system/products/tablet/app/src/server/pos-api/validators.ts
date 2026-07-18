@@ -1,5 +1,5 @@
 
-import type { CompleteLocalSaleInput, PosCartLineInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
+import type { CompleteLocalSaleInput, PosCartLineInput, PosModifierSelectionInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
 import { PRISMA_ORIGINAL_CUSTOMER, normalizePrismaOriginalBusinessId, normalizePrismaOriginalTerminalId } from "../../../../../../shared/customer/prisma-original-customer";
 
 export const DEFAULT_POS_API_BUSINESS_ID = process.env.PRISMA_SYNC_BUSINESS_ID?.trim() || process.env.PRISMA_TABLET_BUSINESS_ID?.trim() || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim() || PRISMA_ORIGINAL_CUSTOMER.businessId;
@@ -72,6 +72,13 @@ function asOptionalNonNegativeInteger(value: unknown) {
   const parsed = Number(value);
   if (!Number.isInteger(parsed) || parsed < 0) throw new Error("INVALID_PAYMENT_AMOUNT");
   return parsed;
+}
+
+function asOptionalCustomerId(value: unknown) {
+  const customerId = asString(value);
+  if (!customerId) return null;
+  if (customerId.length > 160) throw new Error("INVALID_SALE_CUSTOMER_ID");
+  return customerId;
 }
 
 function asBoolean(value: unknown, fallback = false) {
@@ -159,6 +166,24 @@ export function readPosExportInput(searchParams: URLSearchParams): PosExportInpu
   return { ...readPosListInput(searchParams, 500, 1000), format };
 }
 
+function readModifierSelections(value: unknown, index: number): PosModifierSelectionInput[] | undefined {
+  if (value === null || value === undefined) return undefined;
+  if (!Array.isArray(value)) throw new Error(`INVALID_LINE_MODIFIERS:${index}`);
+  const seenGroups = new Set<string>();
+  const selections = value.map((raw: any, selectionIndex: number) => {
+    const modifierGroupId = asString(raw?.modifierGroupId);
+    const optionSource: unknown[] = Array.isArray(raw?.optionIds) ? raw.optionIds : Array.isArray(raw?.options) ? raw.options : [];
+    const optionIds: string[] = Array.from(new Set<string>(optionSource.map((optionId) => asString(optionId)).filter((optionId): optionId is string => Boolean(optionId))));
+    if (!modifierGroupId || modifierGroupId.length > 160 || !optionIds.length || optionIds.length > 24 || optionIds.some((optionId) => optionId.length > 160)) {
+      throw new Error(`INVALID_LINE_MODIFIERS:${index}:${selectionIndex}`);
+    }
+    if (seenGroups.has(modifierGroupId)) throw new Error(`DUPLICATE_LINE_MODIFIER_GROUP:${index}`);
+    seenGroups.add(modifierGroupId);
+    return { modifierGroupId, optionIds };
+  });
+  return selections.length ? selections : undefined;
+}
+
 function normalizeLine(raw: any, index: number): PosCartLineInput {
   const qty = Number(raw?.qty ?? raw?.quantity);
   if (!Number.isInteger(qty) || qty <= 0) throw new Error(`INVALID_LINE_QUANTITY:${index}`);
@@ -168,7 +193,8 @@ function normalizeLine(raw: any, index: number): PosCartLineInput {
   const barcode = asString(raw?.barcode ?? raw?.code);
 
   if (!productId && !sku && !barcode) throw new Error(`MISSING_LINE_PRODUCT_REF:${index}`);
-  return { ...(productId ? { productId } : {}), ...(sku ? { sku } : {}), ...(barcode ? { barcode } : {}), qty };
+  const modifierSelections = readModifierSelections(raw?.modifierSelections ?? raw?.modifiers, index);
+  return { ...(productId ? { productId } : {}), ...(sku ? { sku } : {}), ...(barcode ? { barcode } : {}), qty, ...(modifierSelections ? { modifierSelections } : {}) };
 }
 
 export async function readCompleteSaleInput(request: Request): Promise<CompleteLocalSaleInput> {
@@ -190,6 +216,7 @@ export async function readCompleteSaleInput(request: Request): Promise<CompleteL
     businessId: normalizeBusinessId(body?.businessId),
     terminalId: normalizeTerminalId(body?.terminalId),
     cashSessionId: asString(body?.cashSessionId, "") || null,
+    customerId: asOptionalCustomerId(body?.customerId),
     cashier: asString(body?.cashier ?? body?.operatorId, DEFAULT_POS_API_CASHIER),
     location: asString(body?.location, "tablet-floor"),
     allowNegativeStock: asBoolean(body?.allowNegativeStock, false),
@@ -215,7 +242,10 @@ export function validatorErrorToMessage(error: unknown) {
   if (message.startsWith("INVALID_PAYMENT_TENDER_METHOD:")) return { code: "INVALID_PAYMENT_METHOD", message: "Cada pago debe usar efectivo, tarjeta o transferencia." };
   if (message.startsWith("INVALID_PAYMENT_TENDER_AMOUNT:")) return { code: "INVALID_PAYMENT_AMOUNT", message: "Cada pago debe traer importe válido." };
   if (message === "CASH_RECEIVED_REQUIRED") return { code: "CASH_RECEIVED_REQUIRED", message: "Captura efectivo recibido para cerrar pago en efectivo." };
+  if (message === "INVALID_SALE_CUSTOMER_ID") return { code: "INVALID_SALE_CUSTOMER_ID", message: "El cliente seleccionado no es válido." };
   if (message.startsWith("INVALID_LINE_QUANTITY:")) return { code: "INVALID_QUANTITY", message: "Cada línea debe traer cantidad entera mayor a cero." };
   if (message.startsWith("MISSING_LINE_PRODUCT_REF:")) return { code: "PRODUCT_REF_REQUIRED", message: "Cada línea debe traer productId, sku o barcode." };
+  if (message.startsWith("INVALID_LINE_MODIFIERS:")) return { code: "INVALID_LINE_MODIFIERS", message: "Los modificadores de la línea no son válidos." };
+  if (message.startsWith("DUPLICATE_LINE_MODIFIER_GROUP:")) return { code: "DUPLICATE_LINE_MODIFIER_GROUP", message: "Una línea no puede repetir el mismo grupo de modificadores." };
   return { code: "POS_API_VALIDATION_ERROR", message: "Solicitud POS inválida." };
 }
