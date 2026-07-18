@@ -3,6 +3,18 @@ export type PosCartLineInput = {
   sku?: string;
   barcode?: string;
   qty: number;
+  modifierSelections?: PosModifierSelectionInput[];
+};
+
+export type PosModifierSelectionInput = {
+  modifierGroupId: string;
+  optionIds: string[];
+};
+
+export type PosModifierSelectionSnapshot = {
+  modifierGroupId: string;
+  groupName: string;
+  options: Array<{ optionId: string; name: string; priceDeltaCents: number }>;
 };
 
 export type PosPaymentMethod = "cash" | "card" | "transfer";
@@ -23,6 +35,7 @@ export type CompleteLocalSaleInput = {
   businessId?: string;
   terminalId?: string;
   cashSessionId?: string | null;
+  customerId?: string | null;
   cashier?: string;
   location?: string;
   allowNegativeStock?: boolean;
@@ -56,6 +69,7 @@ export type PosSaleLineResult = {
   totalCents: number;
   stockBefore: number;
   stockAfter: number;
+  modifierSelections: PosModifierSelectionSnapshot[];
 };
 
 export type PosEngineEvent = {
@@ -92,6 +106,7 @@ export type CompleteLocalSaleResult = {
   businessId: string;
   terminalId: string;
   cashSessionId: string | null;
+  customerId: string | null;
   clientRequestId: string | null;
   cashier: string;
   subtotalCents: number;

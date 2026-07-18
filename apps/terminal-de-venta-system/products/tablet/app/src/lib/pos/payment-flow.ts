@@ -12,6 +12,7 @@ export async function completeCartSale(input: {
   paymentMethod?: PaymentMethod;
   cashReceivedCents?: number;
   paymentTenders?: PaymentTenderInput[];
+  customerId?: string | null;
   clientRequestId: string;
 }): Promise<CompletedSaleReceipt> {
   const session = resolvePaymentSessionContext(input.lines);
@@ -41,6 +42,7 @@ export async function completeCartSale(input: {
     terminalId: checkout.terminalId,
     cashier: checkout.cashier,
     clientRequestId: input.clientRequestId,
+    customerId: input.customerId ?? null,
     paymentMethod: review.paymentMethod,
     cashReceivedCents: review.cashReceivedCents,
     changeCents: review.changeCents,

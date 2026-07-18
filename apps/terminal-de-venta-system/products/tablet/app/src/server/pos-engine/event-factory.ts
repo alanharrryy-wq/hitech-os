@@ -146,6 +146,7 @@ export function saleCompletedEvent(result: Omit<CompleteLocalSaleResult, "events
     businessId: result.businessId,
     terminalId: result.terminalId,
     cashSessionId: result.cashSessionId,
+    ...(result.customerId ? { saleCustomerId: result.customerId } : {}),
     cashier: result.cashier,
     totalCents: result.totalCents,
     paymentMethod: result.paymentMethod,

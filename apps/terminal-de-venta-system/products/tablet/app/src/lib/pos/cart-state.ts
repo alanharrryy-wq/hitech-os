@@ -10,6 +10,7 @@ export type PosProduct = {
   sku: string;
   name: string;
   category?: string;
+  mediaRef?: string | null;
   barcode?: string | null;
   barcodes?: string[];
   priceCents: number;
@@ -37,6 +38,7 @@ export type CompletedSale = {
   businessId: string;
   terminalId: string;
   cashSessionId?: string | null;
+  customerId?: string | null;
   clientRequestId?: string | null;
   cashier: string;
   subtotalCents?: number;
@@ -62,6 +64,7 @@ export type TicketEvidence = {
   businessId: string;
   terminalId: string;
   cashSessionId?: string | null;
+  customerId?: string | null;
   clientRequestId?: string | null;
   status: string;
   completedAt: string;

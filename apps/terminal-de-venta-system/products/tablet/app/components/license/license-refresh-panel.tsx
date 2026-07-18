@@ -43,7 +43,7 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
     : "La Tablet muestra la autorización instalada y conserva una lectura clara para el cliente. Las acciones avanzadas quedan para soporte.";
 
   return (
-    <section className={`${styles.card} ${styles.refreshPanel}`} id="license-refresh" data-prisma-license-refresh-view="readonly">
+    <section className={`${styles.card} ${styles.refreshPanel}`} id="license-refresh" data-prisma-license-refresh-view="readonly" data-accent="amber">
       <div className={styles.sectionHeader}>
         <div>
           <p className={styles.eyebrow}>Actualización</p>
