@@ -42,6 +42,7 @@ const PC_PRODUCT_NAV_PRESENTATION: Record<string, { description: string; group: 
   "/purchasing": { description: "Pedidos, recepción y reabasto", group: "compras", icon: "CO" },
   "/proveedores": { description: "Proveedores, compras y decisiones de abasto", group: "proveedores", icon: "PR" },
   "/sales-control": { description: "Venta, dinero, tickets y cortes", group: "ventas-caja", icon: "VE" },
+  "/clientes": { description: "Clientes, datos fiscales e historial de venta", group: "ventas-caja", icon: "CL" },
   "/sync": { description: "Cambios entre PC y Tablet", group: "sincronizacion", icon: "SI" },
   "/devices": { description: "Equipos, conexión y operación Tablet", group: "sistema", icon: "EQ" },
   "/exportables": { description: "Descargas, contratos y evidencia", group: "reportes", icon: "RE" },

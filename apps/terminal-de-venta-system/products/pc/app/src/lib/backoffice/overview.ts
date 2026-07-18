@@ -1,4 +1,5 @@
 import { prisma } from "@/server/prisma/client";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 import { getConflictCatalog } from "./conflicts";
 
 export type BackofficeModuleKey =
@@ -406,27 +407,39 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       };
     }
 
-    const overview = baseOverview("settings");
+    const businessId = await resolvePcBusinessScope();
+    const [users, roleCount, permissionCount, storeCount, terminalCount] = await Promise.all([
+      prisma.user.findMany({ where: { businessId }, include: { roles: true }, orderBy: { updatedAt: "desc" }, take: 100 }),
+      prisma.role.count({ where: { businessId } }),
+      prisma.permission.count({ where: { businessId } }),
+      prisma.store.count({ where: { businessId } }),
+      prisma.terminal.count({ where: { businessId } })
+    ]) as [Array<{ displayName: string; email: string | null; status: string; roles: Array<{ label: string }> }>, number, number, number, number];
+
     return {
-      ...overview,
+      ...baseOverview("settings"),
       metrics: [
-        { label: "Modo offline", value: "permitido", note: "Venta local Tablet no depende de PC." },
-        { label: "Recepción", value: "explícita", note: "Sin observadores automáticos de archivos." },
-        { label: "Referencia visual", value: "separada", note: "/prisma-dark-pos-reference no es POS operativo." }
+        { label: "Usuarios", value: String(users.length), note: "Usuarios canónicos visibles en la muestra." },
+        { label: "Roles", value: String(roleCount), note: "Roles configurados para el negocio." },
+        { label: "Permisos", value: String(permissionCount), note: "Permisos canónicos disponibles." },
+        { label: "Tiendas", value: String(storeCount), note: "Alcances operativos configurados." },
+        { label: "Terminales", value: String(terminalCount), note: "Terminales canónicas registradas." }
       ],
       table: {
-        title: "Políticas activas",
-        columns: ["Política", "Estado", "Nota"],
-        rows: [
-          { Política: "Tablet vende sola", Estado: "obligatoria", Nota: "PC no bloquea venta local." },
-          { Política: "Eventos son verdad", Estado: "obligatoria", Nota: "Sincronización valida y reconcilia." },
-          { Política: "Recepción explícita", Estado: "base lista", Nota: "API acepta lotes JSON." },
-          { Política: "Permisos sensibles offline", Estado: "pendiente de motor", Nota: "No se finge persistencia." }
-        ],
-        emptyMessage: "No hay políticas configuradas."
+        title: "Usuarios y roles canónicos",
+        columns: ["Usuario", "Correo", "Roles", "Estado"],
+        rows: users.map((user) => ({
+          Usuario: user.displayName,
+          Correo: user.email ?? "Sin correo",
+          Roles: user.roles.length ? user.roles.map((role) => role.label).join(", ") : "Sin rol asignado",
+          Estado: user.status
+        })),
+        emptyMessage: "No hay usuarios canónicos registrados todavía."
       },
-      notes: ["Ajustes es marco de gobierno; cambios reales de permisos quedan para etapa posterior."],
-      meta: { ...overview.meta, source: "policy_contract", persistence: "not_required" }
+      notes: [
+        "La administración muestra identidad, roles, permisos y alcance persistidos; no simula altas ni cambios de autorización.",
+        "Los cambios de permisos siguen siendo una operación sensible y requieren un command owner con actor, motivo y auditoría."
+      ]
     };
   } catch (error) {
     return unavailable(key, error);

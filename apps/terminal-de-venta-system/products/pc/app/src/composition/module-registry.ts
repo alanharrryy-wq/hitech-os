@@ -34,6 +34,14 @@ const CashSessionsModule: TwinModuleManifest = {
   navGroup: "control"
 };
 
+const CustomersModule: TwinModuleManifest = {
+  key: "customers",
+  route: "/clientes",
+  title: "Clientes",
+  description: "Fichas de cliente, datos fiscales e historial de ventas asociadas.",
+  navGroup: "control"
+};
+
 const DevicesModule: TwinModuleManifest = {
   key: "devices",
   route: "/devices",
@@ -77,6 +85,7 @@ const SettingsModule: TwinModuleManifest = {
 export const pcModuleRegistry: TwinModuleManifest[] = sortModules([
   SalesControlModule,
   CashSessionsModule,
+  CustomersModule,
   CatalogModule,
   StockModule,
   MovementsModule,

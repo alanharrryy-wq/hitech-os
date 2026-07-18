@@ -1,9 +1,9 @@
 import { prisma } from "@/server/prisma/client";
 
 export class OutboxRepositoryPrisma {
-  listPending(limit = 50): Promise<any[]> {
+  listPending(businessId: string, limit = 50): Promise<any[]> {
     return prisma.outboxEvent.findMany({
-      where: { status: { in: ["pending", "failed"] } },
+      where: { businessId, status: { in: ["pending", "failed"] } },
       orderBy: { createdAt: "asc" },
       take: limit
     });

@@ -21,14 +21,14 @@ function currentPath(mode: OperationWorkspaceModel["mode"]) {
   return "/dashboard";
 }
 
-export function OperationWorkspace({ workspace }: { workspace: OperationWorkspaceModel }) {
+export function OperationWorkspace({ workspace, currentPath: selectedPath }: { workspace: OperationWorkspaceModel; currentPath?: string }) {
   const showPurchasing = workspace.mode === "purchasing" || workspace.mode === "dashboard";
   const showReceiving = workspace.mode === "receiving" || workspace.mode === "dashboard";
   const showReplenishment = workspace.mode === "replenishment" || workspace.mode === "dashboard";
   const showKpis = workspace.mode === "dashboard";
 
   return (
-    <AppShell currentPath={currentPath(workspace.mode)}>
+    <AppShell currentPath={selectedPath ?? currentPath(workspace.mode)}>
       <section className="hero">
         <div className="hero-header">
           <div className="hero-copy">

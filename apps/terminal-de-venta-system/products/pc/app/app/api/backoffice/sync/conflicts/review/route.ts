@@ -1,4 +1,5 @@
 import { fail, ok, toBackofficeError } from "@/lib/backoffice/api-response";
+import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api";
 import { markSyncConflictReviewed } from "@/server/services/pc-command-center.service";
 
 export const runtime = "nodejs";
@@ -6,6 +7,8 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    const licenseGate = await guardPcFeatureForApi("sync.conflict.resolve");
+    if (licenseGate) return licenseGate;
     const body = await request.json().catch(() => ({}));
     const conflictId = typeof body?.conflictId === "string" ? body.conflictId.trim() : "";
     if (!conflictId) return fail("SYNC_CONFLICT_ID_REQUIRED", "Falta conflictId para marcar revision.", 400);

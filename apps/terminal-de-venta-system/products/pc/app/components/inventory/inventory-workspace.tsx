@@ -91,7 +91,7 @@ function StockFicha({ snapshot }: { snapshot: StockSnapshotView | null }) {
       <div className={styles.actionRail} data-pcinv-action-rail="stock">
         <a href={queryHref("/counts", { q: snapshot.sku })}>Crear conteo</a>
         <a href={queryHref("/ajustes-inventario", { q: snapshot.sku })}>Preparar ajuste</a>
-        <a href={queryHref("/existencias-criticas", { q: snapshot.sku })}>Mandar a reabasto</a>
+        <a href={queryHref("/stock", { q: snapshot.sku, state: "critical" })}>Mandar a reabasto</a>
         <a href={queryHref("/auditoria-inventario", { q: snapshot.sku })}>Auditoría</a>
         <span aria-disabled="true" title="Ajustar stock requiere endpoint auditable con actor, motivo y before/after.">Ajuste directo bloqueado</span>
       </div>
