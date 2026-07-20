@@ -292,7 +292,48 @@
         "Do not claim zero custody certified from source documentation alone.",
         "Do not claim full legal compliance."
       ]
+    },
+    {
+      "id": "mobile.secure_projection_gateway_phase1",
+      "displayName": "PRISMA Mobile secure read-only projection gateway phase 1",
+      "domain": "mobile",
+      "surfaces": [
+        "mobile",
+        "tablet",
+        "pc",
+        "licensing"
+      ],
+      "classification": "VERIFY",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_LOCAL_VERIFIED",
+      "doNotRebuild": false,
+      "nextGate": "Runtime signed-session auth/context/license/device E2E and negative cross-context certification; do not enable mutations.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/ops/mobile/PRISMA_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1.md",
+        "verify:secure-projection-gateway",
+        "mobproj1 focused validation reports"
+      ],
+      "doesNotProve": [
+        "Hosted live session issuance",
+        "LAN or cloud reachability",
+        "Production device claim",
+        "Offline read or queued commands",
+        "Mobile mutations",
+        "Runtime zero-egress certification"
+      ],
+      "allowedActions": [
+        "runtime read-only auth E2E",
+        "negative tenant/business/branch/terminal tests",
+        "Customer Setup hosted session integration",
+        "Phase 1 read-model UI binding"
+      ],
+      "forbiddenActions": [
+        "enable Mobile mutations",
+        "trust query parameters or localStorage as authority",
+        "claim offline support",
+        "claim live production auth from local verification"
+      ]
     }
   ],
-  "updatedAt": "2026-07-17T19:27:40.449684-06:00"
+  "updatedAt": "2026-07-20T15:30:00-06:00"
 }

@@ -75,6 +75,7 @@ export function buildTabletRuntimeSnapshot(input: RuntimeSnapshotInput, result: 
     mode: runtime.mode,
     localSalesAllowed: true,
     pcRequiredForBasicSale: false,
+    terminalRegistered: result.terminalRegistered,
     identity: {
       businessId: input.businessId,
       businessName: PRISMA_ORIGINAL_CUSTOMER.displayName,
@@ -141,6 +142,7 @@ export function buildEmptyRuntimeQueryResult(date = todayText()): RuntimeSnapsho
     businessName: null,
     storeName: null,
     terminalName: null,
+    terminalRegistered: false,
     openShift: null,
     pendingEvents: 0,
     failedEvents: 0,

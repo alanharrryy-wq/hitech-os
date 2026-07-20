@@ -83,6 +83,7 @@ export type TabletRuntimeSnapshot = {
   mode: TabletRuntimeModeVisible;
   localSalesAllowed: true;
   pcRequiredForBasicSale: false;
+  terminalRegistered: boolean;
   identity: TabletRuntimeIdentity;
   shift: TabletRuntimeShift;
   connection: TabletRuntimeConnection;
@@ -99,6 +100,7 @@ export const DEFAULT_TABLET_RUNTIME_SNAPSHOT: TabletRuntimeSnapshot = {
   mode: "standalone",
   localSalesAllowed: true,
   pcRequiredForBasicSale: false,
+  terminalRegistered: true,
   identity: {
     businessId: PRISMA_ORIGINAL_CUSTOMER.businessId,
     businessName: PRISMA_ORIGINAL_CUSTOMER.displayName,

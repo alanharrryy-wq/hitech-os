@@ -1,255 +1,53 @@
 .root {
-  --pgc-height: 46px;
-  --pgc-min-width: 136px;
-  --pgc-padding-inline: 22px;
-  --pgc-radius: 999px;
-  --pgc-frame-gap: 3px;
-  --pgc-lens-inset: 6px;
-  --pgc-blur: 1.5px;
-  --pgc-saturate: 1.04;
-  --pgc-brightness: 1.04;
-  --pgc-contrast: 1.16;
-  --pgc-text: rgba(255, 255, 255, 0.97);
-  --pgc-border: rgba(255, 255, 255, 0.28);
-  --pgc-border-strong: rgba(255, 255, 255, 0.58);
-  --pgc-dark-core: rgba(5, 8, 16, 0.34);
-
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-width: var(--pgc-min-width);
-  min-height: var(--pgc-height);
-  padding: 0 var(--pgc-padding-inline);
+  min-width: 136px;
+  min-height: 46px;
+  padding: 0 22px;
   display: inline-grid;
   place-items: center;
-  border: 0;
-  border-radius: var(--pgc-radius);
-  color: var(--pgc-text);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.050), rgba(255,255,255,.014) 30%, rgba(4,6,14,.215) 100%),
-    rgba(4, 6, 14, .34);
-  box-shadow:
-    0 12px 30px rgba(0,0,0,.31),
-    inset 0 1px 0 rgba(255,255,255,.145),
-    inset 0 -1px 0 rgba(0,0,0,.22);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  transform: translateZ(0);
-  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
 }
 
-.root::before,
-.root::after {
-  content: "";
-  position: absolute;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.root::before {
-  inset: 0;
-  z-index: 2;
-  padding: 2px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.54), rgba(255,255,255,.135) 20%, rgba(255,255,255,.030) 58%, rgba(255,255,255,.19)),
-    rgba(255,255,255,.034);
-  -webkit-backdrop-filter: saturate(2.36) brightness(1.74) contrast(1.18);
-  backdrop-filter: saturate(2.36) brightness(1.74) contrast(1.18);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: .98;
-}
-
-.root::after {
-  inset: var(--pgc-frame-gap);
-  z-index: 3;
-  padding: 1px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.245), rgba(255,255,255,.062) 34%, rgba(0,0,0,.165) 73%, rgba(255,255,255,.105)),
-    rgba(0,0,0,.125);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: .62;
-}
-
-.root:hover:not(:disabled):not([data-variant="disabled"]),
 .root:focus-visible {
-  transform: translateY(-1px) scale(1.01);
-  box-shadow:
-    0 16px 36px rgba(0,0,0,.36),
-    inset 0 1px 0 rgba(255,255,255,.19),
-    inset 0 -1px 0 rgba(0,0,0,.24);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
-
-.root:active:not(:disabled):not([data-variant="disabled"]) {
-  transform: translateY(0) scale(0.985);
-  box-shadow:
-    0 8px 22px rgba(0,0,0,.30),
-    inset 0 1px 0 rgba(255,255,255,.13),
-    inset 0 -1px 0 rgba(0,0,0,.19);
-}
-
-.root:focus-visible { outline: none; }
 
 .root[data-shape="circle"] {
-  --pgc-height: 52px;
-  --pgc-min-width: 52px;
-  --pgc-padding-inline: 0;
+  min-width: 52px;
+  min-height: 52px;
+  padding-inline: 0;
   aspect-ratio: 1;
 }
 
-.root[data-shape="rounded"] { --pgc-radius: 18px; }
-.root[data-density="compact"] { --pgc-height: 40px; --pgc-min-width: 112px; --pgc-padding-inline: 18px; }
-.root[data-density="regular"] { --pgc-height: 46px; --pgc-min-width: 136px; --pgc-padding-inline: 22px; }
-.root[data-density="spacious"] { --pgc-height: 46px; --pgc-min-width: 152px; --pgc-padding-inline: 26px; }
+.root[data-density="compact"] {
+  min-width: 112px;
+  min-height: 40px;
+  padding: 0 18px;
+}
+
+.root[data-density="regular"] {
+  min-width: 136px;
+  min-height: 46px;
+  padding: 0 22px;
+}
+
+.root[data-density="spacious"] {
+  min-width: 152px;
+  min-height: 46px;
+  padding: 0 26px;
+}
+
 .root[data-shape="circle"][data-density="regular"],
-.root[data-shape="circle"][data-density="spacious"] { --pgc-height: 52px; --pgc-min-width: 52px; --pgc-padding-inline: 0; }
-
-.root[data-tone="graphite"],
-.root[data-tone="blue"],
-.root[data-tone="violet"],
-.root[data-tone="rose"],
-.root[data-tone="adaptive"],
-.root[data-variant="neutral"],
-.root[data-variant="thinking"],
-.root[data-variant="active"],
-.root[data-variant="danger"],
-.root[data-variant="tinted"] {
-  --pgc-border: rgba(255,255,255,.28);
-  --pgc-border-strong: rgba(255,255,255,.58);
+.root[data-shape="circle"][data-density="spacious"] {
+  min-width: 52px;
+  min-height: 52px;
+  padding-inline: 0;
 }
+
 .root[data-variant="disabled"],
-.root:disabled { cursor: not-allowed; opacity: 0.58; filter: grayscale(0.3); }
-
-.refraction,
-.underGlow,
-.lobeLens,
-.edgeFrame,
-.volumeFrame,
-.innerFrame,
-.specular,
-.liquidSheen {
-  position: absolute;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.refraction {
-  inset: var(--pgc-lens-inset);
-  z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,.040), rgba(255,255,255,.010) 36%, rgba(4,7,18,.088) 72%, rgba(255,255,255,.030)),
-    rgba(3,6,14,.070);
-  box-shadow:
-    inset 1px 0 0 rgba(255,255,255,.065),
-    inset -1px 0 0 rgba(255,255,255,.048),
-    inset 0 1px 0 rgba(255,255,255,.070),
-    inset 0 -5px 10px rgba(0,0,0,.090);
-  -webkit-backdrop-filter: blur(var(--pgc-blur)) saturate(var(--pgc-saturate)) brightness(var(--pgc-brightness)) contrast(var(--pgc-contrast));
-  backdrop-filter: blur(var(--pgc-blur)) saturate(var(--pgc-saturate)) brightness(var(--pgc-brightness)) contrast(var(--pgc-contrast));
-}
-
-.underGlow {
-  inset: 0;
-  z-index: 4;
-  background:
-    radial-gradient(circle at 16% 24%, rgba(255,255,255,.26), transparent 28%),
-    radial-gradient(circle at 84% 76%, rgba(110,231,255,.20), transparent 34%),
-    linear-gradient(90deg, rgba(255,61,145,.10), rgba(110,231,255,.08));
-  mix-blend-mode: screen;
-  opacity: .42;
-  filter: blur(3px);
-}
-
-.lobeLens {
-  inset: 2px auto 2px 2px;
-  z-index: 2;
-  width: min(42%, 5.9rem);
-  border-radius: inherit;
-  background:
-    radial-gradient(ellipse 68% 94% at 36% 47%, rgba(255,255,255,.090), transparent 52%),
-    radial-gradient(ellipse 74% 100% at 24% 76%, rgba(255,255,255,.040), transparent 68%);
-  box-shadow:
-    inset 1px 0 0 rgba(255,255,255,.17),
-    inset -7px 0 16px rgba(0,0,0,.13),
-    inset 0 0 0 1px rgba(255,255,255,.076);
-  -webkit-backdrop-filter: blur(.08px) saturate(1.92) brightness(1.22) contrast(1.24);
-  backdrop-filter: blur(.08px) saturate(1.92) brightness(1.22) contrast(1.24);
-}
-
-.edgeFrame {
-  inset: 0;
-  z-index: 3;
-  padding: 2px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.54), rgba(255,255,255,.135) 20%, rgba(255,255,255,.030) 58%, rgba(255,255,255,.19)),
-    rgba(255,255,255,.034);
-  -webkit-backdrop-filter: saturate(2.36) brightness(1.74) contrast(1.18);
-  backdrop-filter: saturate(2.36) brightness(1.74) contrast(1.18);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: .98;
-}
-
-.volumeFrame {
-  inset: 2px;
-  z-index: 4;
-  padding: 1px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.245), rgba(255,255,255,.062) 34%, rgba(0,0,0,.165) 73%, rgba(255,255,255,.105)),
-    rgba(0,0,0,.125);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: .62;
-}
-
-.innerFrame {
-  inset: 5px;
-  z-index: 5;
-  border: 1px solid rgba(255,255,255,.118);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.17),
-    inset 0 -1px 0 rgba(0,0,0,.22),
-    inset 9px 0 16px rgba(255,255,255,.032),
-    0 0 0 1px rgba(255,255,255,.026);
-  background: linear-gradient(180deg, rgba(255,255,255,.032), rgba(0,0,0,.030));
-}
-
-.specular {
-  inset: 4px 6px auto 6px;
-  z-index: 5;
-  height: 46%;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.082) 28%, transparent 84%),
-    radial-gradient(ellipse 64% 80% at 22% 0%, rgba(255,255,255,.245), transparent 62%);
-  opacity: .78;
-}
-
-.liquidSheen {
-  inset: -45%;
-  z-index: 6;
-  opacity: 0;
-  background: linear-gradient(110deg, transparent 32%, rgba(255,255,255,.155), rgba(255,255,255,.038) 55%, transparent 70%);
-  transform: translateX(-34%) rotate(4deg);
-}
-
-.root:not([data-variant="disabled"]):not(:disabled) .liquidSheen {
-  opacity: .12;
-  animation: prismaGlassSweep 6.8s cubic-bezier(.42, 0, .25, 1) infinite;
-}
-
-.root[data-variant="thinking"] .liquidSheen {
-  opacity: .34;
-  animation: prismaGlassSweep 4.1s cubic-bezier(.42, 0, .25, 1) infinite;
-}
+.root:disabled { cursor: not-allowed; }
 
 .content {
   position: relative;
@@ -260,7 +58,6 @@
   justify-content: center;
   gap: .56rem;
   line-height: 1;
-  text-shadow: 0 1px 10px rgba(0,0,0,.50), 0 0 12px rgba(255,255,255,.070);
 }
 
 .topDock {
@@ -279,101 +76,36 @@
 
 .topDock > * { pointer-events: auto; }
 .statusPill { min-width: 184px; }
-.statusText { color: rgba(255,255,255,.97); font-weight: 760; letter-spacing: 0.01em; }
-.actionGroup { --pgc-padding-inline: 0.72rem; --pgc-min-width: 8.25rem; }
+.statusText { font-weight: 760; letter-spacing: 0.01em; }
+.actionGroup {
+  min-width: 8.25rem;
+  padding-inline: 0.72rem;
+}
 .actionGroup .content { gap: 0.08rem; }
 
 .actionButton {
   width: 2.35rem;
   height: 2.35rem;
-  border: 0;
-  border-radius: 999px;
-  color: currentColor;
-  background: transparent;
   display: inline-grid;
   place-items: center;
   cursor: pointer;
-  transition: background 160ms ease, transform 160ms ease;
 }
 
-.actionButton:hover { background: rgba(255,255,255,.12); }
-.actionButton:active { transform: scale(0.94); }
+.actionButton:hover { }
+.actionButton:active { }
 
 .menuGlyph { width: 1.42rem; display: grid; gap: 0.42rem; }
 .menuGlyph i {
   display: block;
   height: 2px;
-  border-radius: 999px;
-  background: currentColor;
-  box-shadow: 0 0 14px rgba(255,255,255,.30);
 }
 
 .editGlyph { width: 1.24rem; height: 1.24rem; position: relative; display: block; }
-.editGlyph::before,
-.editGlyph::after { content: ""; position: absolute; border-radius: 999px; background: currentColor; }
-.editGlyph::before { width: 1.1rem; height: 0.18rem; top: 0.55rem; left: 0.04rem; transform: rotate(-45deg); }
-.editGlyph::after { width: 0.42rem; height: 0.42rem; right: 0.02rem; top: 0.06rem; box-shadow: -0.72rem 0.72rem 0 -0.12rem currentColor; }
 
 .dotsGlyph { display: inline-grid; grid-auto-flow: column; gap: 0.22rem; align-items: center; }
-.dotsGlyph i { width: 0.28rem; height: 0.28rem; border-radius: 50%; background: currentColor; }
-
-@keyframes prismaGlassSweep {
-  0% { transform: translateX(-42%) rotate(4deg); }
-  54% { transform: translateX(42%) rotate(4deg); }
-  100% { transform: translateX(42%) rotate(4deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .root,
-  .actionButton,
-  .liquidSheen { animation: none; transition: none; }
-}
-
-@media (prefers-contrast: more) {
-  .root { --pgc-border: rgba(255,255,255,.42); --pgc-border-strong: rgba(255,255,255,.70); --pgc-text: rgba(255,255,255,1); }
-  .content { text-shadow: 0 1px 3px rgba(0,0,0,.78), 0 0 0 transparent; }
-  .innerFrame { border-color: rgba(255,255,255,.20); }
-}
-
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .root { background: linear-gradient(180deg, rgba(35,39,58,.42), rgba(10,12,24,.50)); }
-  .edgeFrame { background: linear-gradient(180deg, rgba(255,255,255,.46), rgba(255,255,255,.10), rgba(255,255,255,.20)); }
-  .lobeLens { background: radial-gradient(ellipse 70% 95% at 38% 47%, rgba(255,255,255,.10), transparent 58%); }
-}
+.dotsGlyph i { width: 0.28rem; height: 0.28rem; }
 
 @media (max-width: 680px) {
   .topDock { grid-template-columns: auto auto auto; gap: 0.56rem; }
   .statusPill { min-width: 7.2rem; }
 }
-
-/* PRISMA_DELAYER_01_BEGIN
-   Glass Capsule: collapse decorative inner frames to avoid every pill pretending to be a submarine window.
-*/
-.root {
-  --pgc-blur: 0.35px;
-  --pgc-saturate: 1.02;
-  --pgc-brightness: 1.02;
-  --pgc-contrast: 1.04;
-  background: rgba(4, 6, 14, 0.34);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,.10);
-}
-
-.root::before,
-.root::after,
-.refraction,
-.underGlow,
-.lobeLens,
-.edgeFrame,
-.volumeFrame,
-.innerFrame,
-.specular {
-  opacity: 0.12;
-  filter: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.liquidSheen {
-  display: none;
-}
-/* PRISMA_DELAYER_01_END */

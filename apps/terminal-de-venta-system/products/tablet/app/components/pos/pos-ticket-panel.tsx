@@ -41,6 +41,7 @@ export function PosTicketPanel({
   checkoutReason,
   canCheckout = true,
   checkoutBlockedReason,
+  blockedActionLabel,
   onIncrement,
   onDecrement,
   onRemove,
@@ -57,6 +58,7 @@ export function PosTicketPanel({
   checkoutReason?: string;
   canCheckout?: boolean;
   checkoutBlockedReason?: string;
+  blockedActionLabel?: string;
   onIncrement: (productId: string) => void;
   onDecrement: (productId: string) => void;
   onRemove: (productId: string) => void;
@@ -253,7 +255,7 @@ export function PosTicketPanel({
           id="prisma-cobrar-prismplate-button"
           disabled={checkoutDisabled}
           aria-disabled={checkoutDisabled}
-          aria-label={!canCheckout ? "Abrir turno antes de cobrar" : checkoutBusy ? "Cobro en proceso" : "Abrir cobro"}
+          aria-label={!canCheckout ? blockedActionLabel ?? "Abrir turno antes de cobrar" : checkoutBusy ? "Cobro en proceso" : "Abrir cobro"}
           data-prisma-component="CheckoutButton"
           data-prisma-zone="tablet-pos-cobrar-cta"
           data-prisma-role="primary-action"
@@ -264,7 +266,7 @@ export function PosTicketPanel({
         >
           <span className={styles.cobrarIcon}><Gem aria-hidden="true" size={21} /></span>
           <span className={styles.cobrarCopy}>
-            <strong>{!canCheckout ? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}</strong>
+            <strong>{!canCheckout ? blockedActionLabel ?? "Abrir turno" : checkoutBusy ? "Cobrando" : "Cobrar"}</strong>
             <small>{checkoutReady ? "Listo para cerrar" : "Revisar ticket"}</small>
           </span>
           <strong className={styles.cobrarAmount}>{formatMoney(total)}</strong>

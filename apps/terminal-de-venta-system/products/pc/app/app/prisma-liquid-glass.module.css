@@ -1,31 +1,8 @@
 .surface {
-  --lg-bg: #05070d;
-  --lg-ink: #eef5ff;
-  --lg-muted: rgba(235, 244, 255, 0.78);
-  --family-aurora-night-image: url('/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg');
-  --family-alpine-crystal-image: url('/surface-visual-governor/liquid-glass/families/alpine-crystal/alpine-crystal.jpg');
-  --family-ocean-vapor-image: url('/surface-visual-governor/liquid-glass/families/ocean-vapor/ocean-vapor.jpg');
-  --family-fog-forest-image: url('/surface-visual-governor/liquid-glass/families/fog-forest/fog-forest.jpg');
-  --active-family-image: url('/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg');
-  --active-family-accent: #ff7aa8;
-  --active-family-ring: #aaf7ff;
-  --active-family-accent-rgb: 255, 122, 168;
-  --active-family-ring-rgb: 170, 247, 255;
   min-height: 100dvh;
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  color: var(--lg-ink);
-  background: #05070d;
-}
-
-/* PRISMA Liquid Glass · Radix Vanilla OGL Fix7 */
-.surface::before,
-.surface::after {
-  content: none;
-  display: none;
-  animation: none;
-  background: none;
 }
 
 .fixedBackground,
@@ -38,32 +15,16 @@
 
 .fixedBackground {
   z-index: 0;
-  background-image:
-    linear-gradient(180deg, rgba(5, 7, 11, 0.12), rgba(5, 7, 11, 0.76)),
-    radial-gradient(circle at 18% 12%, rgba(var(--active-family-accent-rgb), 0.16), transparent 32%),
-    radial-gradient(circle at 82% 22%, rgba(var(--active-family-ring-rgb), 0.10), transparent 30%),
-    var(--active-family-image);
-  background-size: cover, cover, cover, cover;
-  background-position: center, center, center, center;
-  background-repeat: no-repeat;
-  filter: saturate(1.06) contrast(1.04) brightness(0.9);
-  transform: scale(1.02);
 }
 
 .oglAura {
   z-index: 1;
   width: 100%;
   height: 100%;
-  mix-blend-mode: screen;
-  opacity: 0.72;
 }
 
 .fixedAmbient {
   z-index: 2;
-  background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.08), transparent 20%),
-    radial-gradient(circle at 72% 14%, rgba(var(--active-family-accent-rgb), 0.10), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0) 24%, rgba(0, 0, 0, 0.18) 100%);
 }
 
 .tabsRoot {
@@ -83,7 +44,6 @@
 .shellViewport {
   width: 100%;
   height: 100%;
-  border-radius: inherit;
 }
 
 .shellContent {
@@ -99,15 +59,11 @@
   touch-action: none;
   padding: 4px;
   width: 14px;
-  background: rgba(255, 255, 255, 0.03);
   z-index: 5;
 }
 
 .scrollThumb {
   flex: 1;
-  border-radius: 999px;
-  background: rgba(var(--active-family-ring-rgb), 0.32);
-  box-shadow: 0 0 18px rgba(var(--active-family-accent-rgb), 0.20);
 }
 
 .svgFilters {
@@ -130,44 +86,10 @@
 .familyCardAction {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(var(--active-family-ring-rgb), 0.20);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.028)),
-    linear-gradient(135deg, rgba(var(--active-family-accent-rgb), 0.055), rgba(4, 8, 14, 0.24)),
-    rgba(8, 12, 20, 0.10);
-  backdrop-filter: blur(22px) saturate(1.16);
-  -webkit-backdrop-filter: blur(22px) saturate(1.16);
-  box-shadow:
-    0 16px 42px rgba(0, 0, 0, 0.30),
-    0 0 34px rgba(var(--active-family-accent-rgb), 0.10),
-    inset 0 1px rgba(255, 255, 255, 0.14);
-}
-
-.directorTopbar::before,
-.directorHero::before,
-.familyCard::before,
-.warningBand::before,
-.posterGlass::before,
-.familySelectTrigger::before,
-.selectContent::before,
-.glassAction::before,
-.familyCardAction::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    linear-gradient(125deg, rgba(255,255,255,0.22), transparent 26%, transparent 74%, rgba(var(--active-family-accent-rgb), 0.12)),
-    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.13), transparent 32%);
-  mask-composite: add;
-  mix-blend-mode: screen;
-  opacity: 0.68;
 }
 
 .directorTopbar {
   min-height: 74px;
-  border-radius: 30px;
   padding: 14px 18px;
   display: flex;
   align-items: center;
@@ -186,15 +108,7 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 22% 18%, rgba(255,255,255,0.54), transparent 34%),
-    linear-gradient(135deg, rgba(var(--active-family-ring-rgb), 0.54), rgba(var(--active-family-accent-rgb), 0.28));
-  color: #041119;
   font-weight: 900;
-  box-shadow:
-    0 10px 28px rgba(var(--active-family-accent-rgb), 0.20),
-    inset 0 1px rgba(255,255,255,0.5);
 }
 
 .brandText {
@@ -208,7 +122,6 @@
 
 .brandText span,
 .status span span {
-  color: rgba(236, 243, 255, 0.82);
 }
 
 .controlCluster {
@@ -220,7 +133,6 @@
 }
 
 .status {
-  border-radius: 24px;
   padding: 12px 18px;
   display: inline-flex;
   align-items: center;
@@ -230,44 +142,33 @@
 .liveDot {
   width: 10px;
   height: 10px;
-  border-radius: 999px;
-  background: rgba(var(--active-family-ring-rgb), 0.84);
-  box-shadow:
-    0 0 0 4px rgba(var(--active-family-ring-rgb), 0.15),
-    0 0 24px rgba(var(--active-family-ring-rgb), 0.32);
 }
 
 .familySelectTrigger {
   min-width: 210px;
   min-height: 48px;
-  border-radius: 999px;
   padding: 0 16px;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   cursor: pointer;
-  outline: none;
 }
 
 .familySelectTrigger:focus-visible,
 .familyPill:focus-visible,
 .glassAction:focus-visible,
 .familyCardAction:focus-visible {
-  outline: 3px solid rgba(var(--active-family-ring-rgb), 0.50);
   outline-offset: 3px;
 }
 
 .selectIcon {
-  color: rgba(var(--active-family-ring-rgb), 0.86);
 }
 
 .selectContent {
   z-index: 90;
-  border-radius: 22px;
   padding: 8px;
   min-width: 230px;
-  color: var(--lg-ink);
 }
 
 .selectViewport {
@@ -277,17 +178,12 @@
 
 .selectItem {
   position: relative;
-  border-radius: 14px;
   padding: 10px 12px;
-  outline: none;
   cursor: pointer;
-  color: rgba(239, 244, 255, 0.88);
 }
 
 .selectItem[data-highlighted],
 .selectItem[data-state="checked"] {
-  background: rgba(var(--active-family-ring-rgb), 0.14);
-  color: #fff;
 }
 
 .directorHero {
@@ -296,7 +192,6 @@
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
   gap: clamp(20px, 3vw, 38px);
   align-items: stretch;
-  border-radius: 40px;
   padding: clamp(24px, 4vw, 54px);
 }
 
@@ -304,14 +199,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    linear-gradient(90deg, rgba(4, 8, 14, 0.66), rgba(4, 8, 14, 0.16) 52%, rgba(4, 8, 14, 0.38)),
-    radial-gradient(circle at 82% 18%, rgba(var(--active-family-accent-rgb), 0.10), transparent 32%),
-    var(--active-family-image);
-  background-size: cover;
-  background-position: center;
-  opacity: 0.92;
-  filter: saturate(1.05) brightness(0.94);
 }
 
 .heroCopy,
@@ -327,7 +214,6 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 900;
-  color: rgba(var(--active-family-ring-rgb), 0.88);
 }
 
 .directorTitle {
@@ -338,7 +224,6 @@
   line-height: 0.82;
   letter-spacing: -0.095em;
   font-weight: 950;
-  text-shadow: 0 16px 44px rgba(0,0,0,0.28), 0 0 22px rgba(var(--active-family-accent-rgb), 0.10);
 }
 
 .lead {
@@ -346,7 +231,6 @@
   margin-top: 1.15rem;
   font-size: clamp(1rem, 1.3vw, 1.26rem);
   line-height: 1.72;
-  color: rgba(239, 244, 255, 0.88);
 }
 
 .directorPills {
@@ -358,79 +242,24 @@
 }
 
 .familyPill {
-  --family-accent: var(--active-family-accent);
-  --family-ring: var(--active-family-ring);
-  --family-accent-rgb: var(--active-family-accent-rgb);
-  --family-ring-rgb: var(--active-family-ring-rgb);
   position: relative;
   display: grid;
   align-content: center;
   text-align: left;
   min-height: 88px;
-  border-radius: 26px;
   padding: 14px 16px;
   cursor: pointer;
   user-select: none;
-  outline: none;
-  border: 1px solid rgba(var(--family-ring-rgb), 0.22);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.025)),
-    radial-gradient(circle at 18% 0%, rgba(var(--family-ring-rgb), 0.12), transparent 34%),
-    linear-gradient(135deg, rgba(var(--family-accent-rgb), 0.08), rgba(5, 9, 16, 0.20)),
-    rgba(8, 12, 20, 0.09);
-  box-shadow:
-    0 14px 34px rgba(0,0,0,0.28),
-    0 0 24px rgba(var(--family-accent-rgb), 0.10),
-    inset 0 1px rgba(255,255,255,0.14);
-  backdrop-filter: blur(24px) saturate(1.18);
-  -webkit-backdrop-filter: blur(24px) saturate(1.18);
-  transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
-}
-
-.familyPill::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    linear-gradient(125deg, rgba(255,255,255,0.20), transparent 26%, transparent 74%, rgba(var(--family-accent-rgb), 0.12)),
-    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.14), transparent 32%);
-  mix-blend-mode: screen;
-  opacity: 0.66;
-}
-
-.familyPill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 0 42px rgba(var(--family-ring-rgb), 0.045);
 }
 
 .familyPill:hover,
 .familyPill[data-state="active"] {
-  transform: translateY(-1px);
-  border-color: rgba(var(--family-ring-rgb), 0.62);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.04)),
-    radial-gradient(circle at 14% 0%, rgba(var(--family-ring-rgb), 0.20), transparent 36%),
-    linear-gradient(135deg, rgba(var(--family-accent-rgb), 0.18), rgba(5, 10, 18, 0.24)),
-    rgba(8, 12, 20, 0.12);
-  box-shadow:
-    0 0 0 1px rgba(var(--family-ring-rgb), 0.24),
-    0 0 18px rgba(var(--family-ring-rgb), 0.16),
-    0 0 54px rgba(var(--family-accent-rgb), 0.24),
-    0 16px 48px rgba(0,0,0,0.34),
-    inset 0 1px rgba(255,255,255,0.24);
 }
 
 .familyPill span {
   display: block;
   position: relative;
   z-index: 1;
-  color: rgba(var(--family-ring-rgb), 0.90);
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   font-weight: 900;
@@ -458,25 +287,12 @@
   justify-content: center;
   gap: 8px;
   min-height: 48px;
-  border-radius: 999px;
   padding: 0 20px;
-  color: var(--lg-ink, #eef5ff);
-  text-decoration: none;
   font-weight: 800;
   cursor: pointer;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.04)),
-    rgba(8,12,20,0.12);
-  transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
 .glassActionPrimary {
-  border-color: rgba(var(--active-family-ring-rgb), 0.44);
-  box-shadow:
-    0 0 0 1px rgba(var(--active-family-ring-rgb), 0.18),
-    0 0 36px rgba(var(--active-family-accent-rgb), 0.18),
-    0 16px 40px rgba(0,0,0,0.32),
-    inset 0 1px rgba(255,255,255,0.22);
 }
 
 .directorPoster {
@@ -487,21 +303,11 @@
 
 .posterImage {
   min-height: 340px;
-  border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(5, 8, 14, 0.04), rgba(5, 8, 14, 0.36)),
-    radial-gradient(circle at 72% 18%, rgba(var(--active-family-accent-rgb), 0.16), transparent 24%),
-    var(--active-family-image);
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 22px 54px rgba(0,0,0,0.32);
-  filter: url("#prisma-liquid-refraction") saturate(1.04) brightness(0.96);
 }
 
 .posterGlass {
   margin-top: -74px;
   margin-inline: 18px;
-  border-radius: 28px;
   padding: 18px 20px;
 }
 
@@ -516,9 +322,6 @@
   display: inline-flex;
   margin-top: 0.6rem;
   padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-  color: rgba(235,244,255,0.90);
 }
 
 .familyBoard {
@@ -528,42 +331,17 @@
 }
 
 .familyCard {
-  --family-accent: var(--active-family-accent);
-  --family-ring: var(--active-family-ring);
-  --family-accent-rgb: var(--active-family-accent-rgb);
-  --family-ring-rgb: var(--active-family-ring-rgb);
-  --family-image: var(--active-family-image);
   display: grid;
   grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1fr);
   gap: 16px;
   padding: 16px;
-  border-radius: 28px;
-  border-color: rgba(var(--family-ring-rgb), 0.20);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.026)),
-    linear-gradient(135deg, rgba(var(--family-accent-rgb), 0.065), rgba(4, 8, 14, 0.24)),
-    rgba(8, 12, 20, 0.10);
 }
 
 .familyCard[data-active="true"] {
-  border-color: rgba(var(--family-ring-rgb), 0.62);
-  box-shadow:
-    0 0 0 1px rgba(var(--family-ring-rgb), 0.24),
-    0 0 52px rgba(var(--family-accent-rgb), 0.20),
-    0 18px 56px rgba(0,0,0,0.34),
-    inset 0 1px rgba(255,255,255,0.24);
 }
 
 .familyImage {
   min-height: 184px;
-  border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(5,8,14,0.08), rgba(5,8,14,0.28)),
-    radial-gradient(circle at 76% 20%, rgba(var(--family-accent-rgb), 0.16), transparent 26%),
-    var(--family-image);
-  background-size: cover;
-  background-position: center;
-  filter: url("#prisma-liquid-refraction") saturate(1.03) brightness(0.98);
 }
 
 .familyInfo {
@@ -577,7 +355,6 @@
 }
 
 .warningBand {
-  border-radius: 30px;
   padding: 22px 24px;
 }
 
@@ -591,36 +368,11 @@
 .tooltipContent {
   z-index: 95;
   max-width: 280px;
-  border-radius: 16px;
   padding: 10px 12px;
   font-size: 0.86rem;
-  color: var(--lg-ink);
 }
 
 .tooltipArrow {
-  fill: rgba(12, 20, 32, 0.86);
-}
-
-:global(html[data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel],
-:global(html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel],
-:global(html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel] {
-  background-color: rgba(8, 12, 20, 0.10);
-  color: var(--lg-ink, #eef5ff);
-  box-shadow: inherit;
-}
-
-:global(html[data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel="family-pill"],
-:global(html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel="family-pill"],
-:global(html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]) .surface [data-lg-glass-panel="family-pill"] {
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.025)),
-    radial-gradient(circle at 18% 0%, rgba(var(--family-ring-rgb), 0.12), transparent 34%),
-    linear-gradient(135deg, rgba(var(--family-accent-rgb), 0.08), rgba(5, 9, 16, 0.20));
-  border: 1px solid rgba(var(--family-ring-rgb), 0.22);
-  box-shadow:
-    0 14px 34px rgba(0,0,0,0.28),
-    0 0 24px rgba(var(--family-accent-rgb), 0.10),
-    inset 0 1px rgba(255,255,255,0.14);
 }
 
 @media (max-width: 1180px) {
@@ -675,7 +427,5 @@
   .familyPill,
   .glassAction,
   .familyCardAction {
-    transition: none;
-    animation: none;
   }
 }

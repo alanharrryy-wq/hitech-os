@@ -12,6 +12,7 @@ export type RuntimeSnapshotQueryResult = {
   businessName: string | null;
   storeName: string | null;
   terminalName: string | null;
+  terminalRegistered: boolean;
   openShift: {
     id: string;
     openedAt: Date;

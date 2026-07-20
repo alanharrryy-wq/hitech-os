@@ -25,6 +25,7 @@ export function PosProductSearch({
   error,
   resultCount,
   state,
+  disabled = false,
   onSearch,
   onClear
 }: {
@@ -34,6 +35,7 @@ export function PosProductSearch({
   error: unknown;
   resultCount?: number;
   state?: UiState;
+  disabled?: boolean;
   onSearch: () => void;
   onClear: () => void;
 }) {
@@ -44,6 +46,7 @@ export function PosProductSearch({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (disabled) return;
     onSearch();
   }
 
@@ -79,9 +82,10 @@ export function PosProductSearch({
           type="search"
           aria-controls={searchResultsId}
           autoComplete="off"
+          disabled={disabled}
         />
         {query ? (
-          <button className={styles.posPremiumSearchClear} type="button" onClick={onClear} disabled={loading} aria-label="Limpiar búsqueda">
+          <button className={styles.posPremiumSearchClear} type="button" onClick={onClear} disabled={loading || disabled} aria-label="Limpiar búsqueda">
             <X aria-hidden="true" size={18} />
           </button>
         ) : null}

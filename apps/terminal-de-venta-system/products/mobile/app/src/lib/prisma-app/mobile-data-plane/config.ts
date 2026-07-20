@@ -1,7 +1,23 @@
 import type { MobileDataPlaneConfig } from "./types";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../../../shared/customer/prisma-original-customer";
 
-export type MobileDataPlaneConfigOverrides = Partial<Pick<MobileDataPlaneConfig, "businessId" | "terminalId" | "salesDate">>;
+export type MobileDataPlaneConfigOverrides = Partial<
+  Pick<
+    MobileDataPlaneConfig,
+    | "actorId"
+    | "tenantId"
+    | "businessId"
+    | "branchId"
+    | "terminalId"
+    | "salesDate"
+    | "licenseId"
+    | "mobileDeviceId"
+    | "customerId"
+    | "businessName"
+    | "planLabel"
+    | "authorizationLabel"
+  >
+>;
 
 function readInt(name: string, fallback: number, min = 0, max = Number.MAX_SAFE_INTEGER): number {
   const raw = process.env[name];
@@ -38,23 +54,26 @@ function cleanOverride(value: string | null | undefined): string | undefined {
 
 export function getMobileDataPlaneConfig(overrides: MobileDataPlaneConfigOverrides = {}): MobileDataPlaneConfig {
   const businessId = cleanOverride(overrides.businessId) ?? readString("PRISMA_MOBILE_BUSINESS_ID", PRISMA_ORIGINAL_CUSTOMER.businessId);
+  const branchId = cleanOverride(overrides.branchId) ?? cleanOverride(process.env.PRISMA_MOBILE_BRANCH_ID) ?? null;
   const terminalId = cleanOverride(overrides.terminalId) ?? readString("PRISMA_MOBILE_TERMINAL_ID", PRISMA_ORIGINAL_CUSTOMER.tabletTerminalId);
   return {
+    actorId: cleanOverride(overrides.actorId) ?? readString("PRISMA_MOBILE_ACTOR_ID", "actor_mobile_dev_loopback"),
     businessId,
+    branchId,
     terminalId,
     salesDate: cleanOverride(overrides.salesDate) ?? cleanOverride(process.env.PRISMA_MOBILE_SALES_DATE),
-    businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", PRISMA_ORIGINAL_CUSTOMER.displayName),
-    customerId: readString("PRISMA_MOBILE_CUSTOMER_ID", PRISMA_ORIGINAL_CUSTOMER.customerId),
-    tenantId: readString("PRISMA_MOBILE_TENANT_ID", PRISMA_ORIGINAL_CUSTOMER.tenantId),
-    licenseId: readString("PRISMA_MOBILE_LICENSE_ID", PRISMA_ORIGINAL_CUSTOMER.licenseId),
-    planLabel: readString("PRISMA_MOBILE_PLAN_LABEL", PRISMA_ORIGINAL_CUSTOMER.planLabel),
+    businessName: cleanOverride(overrides.businessName) ?? readString("PRISMA_MOBILE_BUSINESS_NAME", PRISMA_ORIGINAL_CUSTOMER.displayName),
+    customerId: cleanOverride(overrides.customerId) ?? readString("PRISMA_MOBILE_CUSTOMER_ID", PRISMA_ORIGINAL_CUSTOMER.customerId),
+    tenantId: cleanOverride(overrides.tenantId) ?? readString("PRISMA_MOBILE_TENANT_ID", PRISMA_ORIGINAL_CUSTOMER.tenantId),
+    licenseId: cleanOverride(overrides.licenseId) ?? readString("PRISMA_MOBILE_LICENSE_ID", PRISMA_ORIGINAL_CUSTOMER.licenseId),
+    planLabel: cleanOverride(overrides.planLabel) ?? readString("PRISMA_MOBILE_PLAN_LABEL", PRISMA_ORIGINAL_CUSTOMER.planLabel),
     activationMode: readString("PRISMA_MOBILE_ACTIVATION_MODE", "HYBRID"),
     activationModeLabel: readString("PRISMA_MOBILE_ACTIVATION_MODE_LABEL", "Activacion hibrida local firmada"),
     licenseStateLabel: readString("PRISMA_MOBILE_LICENSE_STATE_LABEL", "Licencia local firmada activa"),
-    authorizationLabel: readString("PRISMA_MOBILE_AUTHORIZATION_LABEL", "Mobile vinculado a la cuenta"),
+    authorizationLabel: cleanOverride(overrides.authorizationLabel) ?? readString("PRISMA_MOBILE_AUTHORIZATION_LABEL", "Mobile vinculado a la cuenta"),
     pcDeviceId: readString("PRISMA_MOBILE_PC_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.pcDeviceId),
     tabletDeviceId: readString("PRISMA_MOBILE_TABLET_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.tabletDeviceId),
-    mobileDeviceId: readString("PRISMA_MOBILE_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId),
+    mobileDeviceId: cleanOverride(overrides.mobileDeviceId) ?? readString("PRISMA_MOBILE_DEVICE_ID", PRISMA_ORIGINAL_CUSTOMER.mobileDeviceId),
     tabletOrigin: readOrigin("PRISMA_MOBILE_TABLET_ORIGIN", "http://127.0.0.1:3120"),
     pcOrigin: readOrigin("PRISMA_MOBILE_PC_ORIGIN", "http://127.0.0.1:3130"),
     controlOrigin: readOrigin("PRISMA_MOBILE_CONTROL_ORIGIN", null),

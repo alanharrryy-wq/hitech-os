@@ -138,7 +138,35 @@
         "Every third-party integration complies",
         "Legal compliance certification"
       ]
+    },
+    {
+      "artifact": "mobproj1 focused local verification",
+      "type": "mobile_secure_projection_gateway_phase1",
+      "scope": [
+        "mobile",
+        "auth_context",
+        "projection_gateway",
+        "cache",
+        "privacy_boundary"
+      ],
+      "status": "PASS_LOCAL_VERIFIED",
+      "proves": [
+        "All current Mobile data routes are guarded in source",
+        "Snapshot query scope overrides are removed",
+        "Five phase 1 governed read models exist",
+        "Operational snapshot persistence is removed",
+        "Legacy v18 cache is purged",
+        "Focused static verification and Mobile typecheck passed"
+      ],
+      "doesNotProve": [
+        "Hosted live session issuer",
+        "Runtime signed-session E2E",
+        "LAN or cloud access",
+        "Offline capability",
+        "Mobile mutations",
+        "Production zero-egress certification"
+      ]
     }
   ],
-  "updatedAt": "2026-07-17T19:27:40.449684-06:00"
+  "updatedAt": "2026-07-20T15:30:00-06:00"
 }
