@@ -13,7 +13,8 @@ async function resolveBusinessAndTerminal(input: RuntimeSnapshotInput) {
     return {
       businessName: terminal.business?.name ?? null,
       storeName: terminal.store?.name ?? null,
-      terminalName: terminal.name ?? null
+      terminalName: terminal.name ?? null,
+      terminalRegistered: true
     };
   }
 
@@ -21,7 +22,8 @@ async function resolveBusinessAndTerminal(input: RuntimeSnapshotInput) {
   return {
     businessName: business?.name ?? null,
     storeName: null,
-    terminalName: null
+    terminalName: null,
+    terminalRegistered: false
   };
 }
 
@@ -91,6 +93,7 @@ export async function readRuntimeSnapshotFromPrisma(input: RuntimeSnapshotInput)
     businessName: identity.status === "fulfilled" ? identity.value.businessName : empty.businessName,
     storeName: identity.status === "fulfilled" ? identity.value.storeName : empty.storeName,
     terminalName: identity.status === "fulfilled" ? identity.value.terminalName : empty.terminalName,
+    terminalRegistered: identity.status === "fulfilled" ? identity.value.terminalRegistered : empty.terminalRegistered,
     openShift: openShift.status === "fulfilled" ? openShift.value : empty.openShift,
     pendingEvents: outbox.status === "fulfilled" ? outbox.value.pendingEvents : empty.pendingEvents,
     failedEvents: outbox.status === "fulfilled" ? outbox.value.failedEvents : empty.failedEvents,

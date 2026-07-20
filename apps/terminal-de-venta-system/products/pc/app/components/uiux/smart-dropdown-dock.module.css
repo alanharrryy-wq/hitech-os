@@ -4,18 +4,6 @@
   display: block;
   margin: 0;
   overflow: visible;
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 18%, rgba(255, 255, 255, 0.1));
-  border-radius: clamp(20px, 2vw, 28px);
-  color: var(--prisma-text-primary, #f4f8fc);
-  background:
-    radial-gradient(circle at 0 0, color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 8%, transparent), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
-    color-mix(in srgb, var(--prisma-panel-surface, #08131f) 76%, transparent);
-  box-shadow:
-    0 22px 64px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px) saturate(114%);
-  -webkit-backdrop-filter: blur(16px) saturate(114%);
 }
 
 .summary {
@@ -35,9 +23,7 @@
 }
 
 .summary:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 76%, white 8%);
   outline-offset: 3px;
-  border-radius: inherit;
 }
 
 .summaryCopy {
@@ -47,7 +33,6 @@
 }
 
 .kicker {
-  color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 82%, white 10%);
   font-size: 9px;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -55,7 +40,6 @@
 }
 
 .title {
-  color: var(--prisma-text-primary, #f4f8fc);
   font-size: clamp(18px, 1.8vw, 24px);
   font-weight: 900;
   letter-spacing: -0.025em;
@@ -63,7 +47,6 @@
 
 .summaryDescription {
   overflow: hidden;
-  color: color-mix(in srgb, var(--prisma-text-secondary, #c4d1dc) 75%, white 4%);
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -76,10 +59,6 @@
   gap: 5px;
   min-height: 38px;
   padding: 8px 11px;
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 32%, transparent);
-  border-radius: 14px;
-  color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 84%, white 10%);
-  background: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 8%, transparent);
 }
 
 .healthPill strong {
@@ -97,7 +76,6 @@
   display: grid;
   gap: 14px;
   padding: 0 16px 16px;
-  border-top: 1px solid rgba(196, 228, 247, 0.09);
 }
 
 .searchBox,
@@ -112,7 +90,6 @@
 
 .searchBox > span,
 .labelRow strong {
-  color: color-mix(in srgb, var(--prisma-text-secondary, #c4d1dc) 86%, white 6%);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -123,25 +100,15 @@
 .selectCard select {
   width: 100%;
   min-height: 42px;
-  border: 1px solid rgba(163, 216, 255, 0.2);
-  border-radius: 13px;
   padding: 9px 11px;
-  color: var(--prisma-text-primary, #f4f8fc);
-  background: color-mix(in srgb, var(--prisma-control-surface, #07111d) 84%, transparent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
-  color-scheme: dark;
 }
 
 .searchBox input:focus-visible,
 .selectCard select:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 72%, white 6%);
   outline-offset: 2px;
-  border-color: transparent;
 }
 
 .selectCard select option {
-  color: var(--prisma-text-primary, #f4f8fc);
-  background: #07101b;
 }
 
 .grid {
@@ -155,9 +122,6 @@
   min-height: 126px;
   padding: 12px;
   overflow: visible;
-  border: 1px solid rgba(166, 215, 241, 0.13);
-  border-radius: 17px;
-  background: rgba(255, 255, 255, 0.025);
 }
 
 .labelRow {
@@ -169,10 +133,6 @@
 
 .labelRow em {
   padding: 4px 7px;
-  border: 1px solid rgba(169, 238, 255, 0.2);
-  border-radius: 999px;
-  color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 82%, white 8%);
-  background: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 7%, transparent);
   font-size: 9px;
   font-style: normal;
   font-weight: 950;
@@ -181,25 +141,18 @@
 }
 
 .labelRow em[data-source="fallback"] {
-  border-color: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 28%, transparent);
-  color: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 84%, white 6%);
-  background: color-mix(in srgb, var(--prisma-accent-gold, #f4c96f) 7%, transparent);
 }
 
 .selectCard small {
   min-height: 28px;
-  color: color-mix(in srgb, var(--prisma-text-secondary, #c4d1dc) 66%, transparent);
   font-size: 10px;
   line-height: 1.35;
 }
 
 .quickCreateLink {
   width: max-content;
-  color: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 84%, white 8%);
   font-size: 11px;
   font-weight: 850;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .actions {
@@ -215,38 +168,28 @@
   min-height: 40px;
   display: inline-flex;
   align-items: center;
-  border-radius: 13px;
   padding: 0 13px;
   font-size: 12px;
   font-weight: 900;
 }
 
 .actions button {
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 48%, transparent);
-  color: var(--prisma-text-primary, #f4f8fc);
-  background: color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 12%, rgba(10, 22, 36, 0.66));
   cursor: pointer;
 }
 
 .actions > a,
 .behaviorDetails > summary {
-  border: 1px solid rgba(232, 247, 255, 0.16);
-  color: color-mix(in srgb, var(--prisma-text-secondary, #c4d1dc) 82%, white 6%);
-  background: rgba(255, 255, 255, 0.025);
   cursor: pointer;
-  text-decoration: none;
 }
 
 .actions button:focus-visible,
 .actions > a:focus-visible,
 .behaviorDetails > summary:focus-visible,
 .quickCreateLink:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--prisma-accent-cyan, #75ddff) 76%, white 8%);
   outline-offset: 2px;
 }
 
 .behaviorDetails {
-  color: var(--prisma-text-secondary, #c4d1dc);
 }
 
 .behaviorDetails > summary {
@@ -261,10 +204,6 @@
   width: min(760px, calc(100vw - 48px));
   margin: 10px 0 0;
   padding: 12px 16px 12px 30px;
-  border: 1px solid rgba(190, 226, 247, 0.13);
-  border-radius: 14px;
-  background: rgba(4, 12, 21, 0.92);
-  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.32);
   font-size: 11px;
   line-height: 1.5;
 }

@@ -59,16 +59,16 @@ function SurfaceContextStrip({
   return (
     <Tooltip.Provider delayDuration={180} skipDelayDuration={80}>
       <nav
-        className={clsx("surface-context-strip", styles.contextStrip)}
+        className={styles.contextStrip}
         aria-label={`Vistas de ${groupLabel}`}
         data-prisma-component="SurfaceContextStrip"
         data-context-count={secondaryNav.length}
         data-context-mode={secondaryNav.length > 4 ? "overflow-governed" : "inline"}
       >
-        <span className={clsx("surface-context-label", styles.contextLabel)}>{groupLabel}</span>
-        <ScrollArea.Root className={clsx("surface-context-scroll", styles.contextScroll)} type="hover">
-          <ScrollArea.Viewport className={clsx("surface-context-scroll-viewport", styles.contextViewport)}>
-            <div className={clsx("surface-context-pill-row", styles.contextRow)}>
+        <span className={styles.contextLabel}>{groupLabel}</span>
+        <ScrollArea.Root className={styles.contextScroll} type="hover">
+          <ScrollArea.Viewport className={styles.contextViewport}>
+            <div className={styles.contextRow}>
               {secondaryNav.map((item) => {
                 const active = isActive(currentPath, item.href);
 
@@ -76,19 +76,19 @@ function SurfaceContextStrip({
                   <Tooltip.Root key={item.href}>
                     <Tooltip.Trigger asChild>
                       <a
-                        className={clsx("surface-context-pill", styles.contextLink, active && "is-active", active && styles.contextLinkActive)}
+                        className={clsx(styles.contextLink, active && styles.contextLinkActive)}
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         aria-label={`${item.title}. ${item.description}`}
                         data-active={active ? "true" : "false"}
                       >
-                        <span className={clsx("surface-context-pill-dot", styles.contextDot)} aria-hidden="true" />
-                        <span className={clsx("surface-context-pill-title", styles.contextTitle)}>{item.title}</span>
+                        <span className={styles.contextDot} aria-hidden="true" />
+                        <span className={styles.contextTitle}>{item.title}</span>
                       </a>
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
                       <Tooltip.Content
-                        className={clsx("surface-context-tooltip", styles.contextTooltip)}
+                        className={styles.contextTooltip}
                         sideOffset={8}
                         collisionPadding={16}
                       >
@@ -101,8 +101,8 @@ function SurfaceContextStrip({
               })}
             </div>
           </ScrollArea.Viewport>
-          <ScrollArea.Scrollbar className={clsx("surface-context-scrollbar", styles.contextScrollbar)} orientation="horizontal">
-            <ScrollArea.Thumb className={clsx("surface-context-scroll-thumb", styles.contextThumb)} />
+          <ScrollArea.Scrollbar className={styles.contextScrollbar} orientation="horizontal">
+            <ScrollArea.Thumb className={styles.contextThumb} />
           </ScrollArea.Scrollbar>
           <ScrollArea.Corner />
         </ScrollArea.Root>
@@ -123,7 +123,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
 
   return (
     <div
-      className={clsx("shell", styles.shell)}
+      className={styles.shell}
       data-prisma-panel="pc.workspace"
       data-prisma-surface="pc"
       data-prisma-route={currentPath}
@@ -133,17 +133,17 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
       data-route-intent={current.primaryQuestion}
     >
       <span hidden aria-hidden="true" data-prisma-panel="pc.workspace" data-prisma-surface="pc" data-prisma-route="*" />
-      <a className={clsx("skip-link", styles.skipLink)} href="#prisma-main-content">
+      <a className={styles.skipLink} href="#prisma-main-content">
         Saltar al contenido principal
       </a>
 
-      <aside className={clsx("sidebar", styles.sidebar)} data-prisma-component="Sidebar" aria-label="Navegación principal PC">
-        <div className={clsx("brand-block", styles.brandBlock)} data-prisma-component="BrandBlock">
-          <div className={clsx("brand-row", styles.brandRow)}>
-            <img className={clsx("brand-logo-img", styles.brandLogo)} src="/brand/prisma-logo-official.png" alt="PRISMA" />
+      <aside className={styles.sidebar} data-prisma-component="Sidebar" aria-label="Navegación principal PC">
+        <div className={styles.brandBlock} data-prisma-component="BrandBlock">
+          <div className={styles.brandRow}>
+            <img className={styles.brandLogo} src="/brand/prisma-logo-official.png" alt="PRISMA" />
             <div className={styles.brandCopy}>
               <strong>Command Center</strong>
-              <span className={clsx("subtle", styles.brandSubtitle)}>Superficie PC</span>
+              <span className={styles.brandSubtitle}>Superficie PC</span>
             </div>
           </div>
           <div className={styles.brandSignals} aria-label="Estado del chrome">
@@ -153,17 +153,17 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         </div>
 
         <section
-          className={clsx("sidebar-panel", "sidebar-nav-panel", styles.navPanel)}
+          className={styles.navPanel}
           data-prisma-component="PrimaryHumanNavigation"
           data-uiux-first-level="human-only"
         >
-          <p className={clsx("nav-group-title", styles.navHeading)}>Navegación principal</p>
-          <nav className={clsx("nav", styles.nav)} aria-label="Áreas principales">
+          <p className={styles.navHeading}>Navegación principal</p>
+          <nav className={styles.nav} aria-label="Áreas principales">
             {groupedNavigation.map((group) => {
               const groupId = `pc-nav-${stableId(group.label)}`;
               return (
-                <div className={clsx("nav-section", styles.navSection)} key={group.label} role="group" aria-labelledby={groupId}>
-                  <span className={clsx("nav-section-title", styles.navSectionTitle)} id={groupId}>
+                <div className={styles.navSection} key={group.label} role="group" aria-labelledby={groupId}>
+                  <span className={styles.navSectionTitle} id={groupId}>
                     {group.label}
                   </span>
                   <div className={styles.navItems}>
@@ -186,15 +186,15 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
       </aside>
 
       <main
-        className={clsx("main", styles.main)}
+        className={styles.main}
         id="prisma-main-content"
         tabIndex={-1}
         aria-labelledby={routeLabelId}
         data-prisma-route-viewport="true"
       >
-        <header className={clsx("topbar", styles.topbar)} data-prisma-component="TopBar" data-route-contract-resolved="true">
-          <div className={clsx("topbar-brand", styles.topbarIdentity)}>
-            <span className={clsx("brand-mark", styles.topbarMark)} aria-hidden="true">
+        <header className={styles.topbar} data-prisma-component="TopBar" data-route-contract-resolved="true">
+          <div className={styles.topbarIdentity}>
+            <span className={styles.topbarMark} aria-hidden="true">
               <PanelsTopLeft size={16} strokeWidth={1.8} />
             </span>
             <span className={styles.topbarCopy}>
@@ -213,9 +213,9 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         {!hideRouteIntentStrip ? (
           <section className={styles.routeIntent} data-prisma-component="RouteIntentStrip" aria-label="Pregunta de esta pantalla">
             <div className={styles.routeIntentCopy}>
-              <span className={clsx("kicker", styles.routeIntentKicker)}>Pregunta de la pantalla</span>
-              <h2 className={clsx("section-title", styles.routeIntentTitle)}>{current.primaryQuestion}</h2>
-              <p className={clsx("section-copy", styles.routeIntentDescription)}>{current.description}</p>
+              <span className={styles.routeIntentKicker}>Pregunta de la pantalla</span>
+              <h2 className={styles.routeIntentTitle}>{current.primaryQuestion}</h2>
+              <p className={styles.routeIntentDescription}>{current.description}</p>
             </div>
             <span className={styles.routeIntentBadge}>{current.groupLabel}</span>
           </section>

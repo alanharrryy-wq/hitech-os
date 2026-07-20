@@ -1,0 +1,312 @@
+{
+  "status": "PASS",
+  "passCount": 43,
+  "warnCount": 0,
+  "failCount": 0,
+  "blockingFailCount": 0,
+  "root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "checkedAt": "2026-07-18T10:25:11.141Z",
+  "checks": [
+    {
+      "id": "file:products/pc/app/src/uiux/copy-dictionary.ts",
+      "point": "Diccionario humano",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/src/uiux/status-translator.ts",
+      "point": "Traductor de estados",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/src/uiux/page-contracts.ts",
+      "point": "Contratos por ruta",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/src/uiux/route-map.ts",
+      "point": "Mapa de rutas",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/src/uiux/decision-model.ts",
+      "point": "Modelo de decisión",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/src/uiux/technical-route-map.ts",
+      "point": "Reubicación de términos técnicos",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/components/uiux/decision-screen.tsx",
+      "point": "DecisionScreen universal",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/components/uiux/pc-module-shell.tsx",
+      "point": "PcModuleShell",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/components/uiux/pc-subnav.tsx",
+      "point": "PcSubnav estándar",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/components/uiux/pc-route-contract-provider.tsx",
+      "point": "PcRouteContractProvider",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/tools/verify_pc_uiux_route_adoption_gate_v02.mjs",
+      "point": "Verificador V02",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "file:products/pc/app/app/dashboard/page.tsx",
+      "point": "Adopción en Hoy",
+      "status": "PASS",
+      "detail": "Archivo presente",
+      "severity": "P1"
+    },
+    {
+      "id": "route-contract-coverage",
+      "point": "Contratos para todas las rutas PC",
+      "status": "PASS",
+      "detail": "65 rutas cubiertas",
+      "severity": "P1"
+    },
+    {
+      "id": "route-map-coverage",
+      "point": "Route-map para todas las rutas PC",
+      "status": "PASS",
+      "detail": "65 rutas cubiertas",
+      "severity": "P1"
+    },
+    {
+      "id": "human-primary-navigation",
+      "point": "Navegación principal sólo humana",
+      "status": "PASS",
+      "detail": "",
+      "severity": "P1"
+    },
+    {
+      "id": "appshell-contract-actions",
+      "point": "AppShell resuelve título/acción desde contrato",
+      "status": "PASS",
+      "detail": "AppShell usa route model",
+      "severity": "P1"
+    },
+    {
+      "id": "appshell-intent-subnav",
+      "point": "AppShell muestra pregunta y subnav estándar",
+      "status": "PASS",
+      "detail": "RouteIntentStrip + PcSubnav",
+      "severity": "P1"
+    },
+    {
+      "id": "dashboard-decision-screen",
+      "point": "DecisionScreen integrado en Hoy",
+      "status": "PASS",
+      "detail": "Dashboard importa/renderiza DecisionScreen",
+      "severity": "P1"
+    },
+    {
+      "id": "dashboard-evidence",
+      "point": "EvidenceDrawer real por pantalla",
+      "status": "PASS",
+      "detail": "Dashboard alimenta evidencia desde contrato",
+      "severity": "P1"
+    },
+    {
+      "id": "decision-model:normalizePcPathname",
+      "point": "Normalización de rutas",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:getPcRouteContract",
+      "point": "Resolución de contrato por ruta",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:buildEvidenceDrawerItems",
+      "point": "Builder de evidencia",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:PC_STANDARD_SUBNAV",
+      "point": "Subnav estándar",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:getPrimaryRouteActions",
+      "point": "Acciones por contrato",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:getRouteEmptyState",
+      "point": "Empty states por contrato",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "decision-model:getRouteErrorState",
+      "point": "Error states por contrato",
+      "status": "PASS",
+      "detail": "Presente",
+      "severity": "P2"
+    },
+    {
+      "id": "evidence-closed",
+      "point": "Evidencia técnica cerrada por defecto",
+      "status": "PASS",
+      "detail": "details + data-evidence-default",
+      "severity": "P1"
+    },
+    {
+      "id": "evidence-separated",
+      "point": "Evidencia operativa separada de técnica",
+      "status": "PASS",
+      "detail": "Kinds separados",
+      "severity": "P2"
+    },
+    {
+      "id": "status-translator-used",
+      "point": "Status translator usado por badges",
+      "status": "PASS",
+      "detail": "HumanStatusBadge importa humanizePcStatus",
+      "severity": "P1"
+    },
+    {
+      "id": "confidence-freshness-translated",
+      "point": "Confidence/freshness traducidos",
+      "status": "PASS",
+      "detail": "Funciones presentes",
+      "severity": "P2"
+    },
+    {
+      "id": "actionable-table-enforces-action",
+      "point": "Tabla accionable exige Qué hacer",
+      "status": "PASS",
+      "detail": "Columna obligatoria/autogenerada",
+      "severity": "P2"
+    },
+    {
+      "id": "confirm-real-action",
+      "point": "Confirmación para acciones reales",
+      "status": "PASS",
+      "detail": "Checkbox de consecuencia presente",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Runtime",
+      "point": "Reubicación de Runtime",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Data Quality",
+      "point": "Reubicación de Data Quality",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:License Runtime",
+      "point": "Reubicación de License Runtime",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Tablet Communication",
+      "point": "Reubicación de Tablet Communication",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Devices",
+      "point": "Reubicación de Devices",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Audit",
+      "point": "Reubicación de Audit",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Counts",
+      "point": "Reubicación de Counts",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "technical-relocation:Movements",
+      "point": "Reubicación de Movements",
+      "status": "PASS",
+      "detail": "Mapeado",
+      "severity": "P2"
+    },
+    {
+      "id": "package-script-v02",
+      "point": "Script de verificación V02 en package.json",
+      "status": "PASS",
+      "detail": "node tools/verify_pc_uiux_route_adoption_gate_v02.mjs --root ../../..",
+      "severity": "P1"
+    },
+    {
+      "id": "package-smoke-declared",
+      "point": "Smoke typecheck/build declarado",
+      "status": "PASS",
+      "detail": "typecheck=true build=true",
+      "severity": "P2"
+    },
+    {
+      "id": "no-fake-green",
+      "point": "No fake green en verificador",
+      "status": "PASS",
+      "detail": "No hay PASS con detalle contradictorio",
+      "severity": "P1"
+    }
+  ]
+}

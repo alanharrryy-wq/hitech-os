@@ -10,17 +10,10 @@
   align-items: end;
   gap: 18px;
   padding: 22px 24px;
-  border: 1px solid rgba(35, 87, 146, 0.24);
-  border-radius: 28px;
-  background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.84)),
-    radial-gradient(circle at 92% 0%, rgba(0, 162, 255, 0.14), transparent 36%);
-  box-shadow: 0 22px 64px rgba(33, 75, 126, 0.13);
 }
 
 .cashHero h1 {
   margin: 4px 0 8px;
-  color: #0c2e55;
   font-size: clamp(30px, 4.5vw, 58px);
   line-height: 0.94;
   letter-spacing: -0.055em;
@@ -30,7 +23,6 @@
 .cashHero small {
   display: block;
   margin: 0;
-  color: var(--prisma-text-muted);
 }
 
 .cashHero a,
@@ -39,19 +31,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0;
-  border-radius: 16px;
   padding: 0 18px;
-  color: #ffffff;
   font-weight: 950;
-  background: linear-gradient(135deg, #0448ff, #00a2ff);
-  text-decoration: none;
   cursor: pointer;
 }
 
 .kicker {
   display: inline-flex;
-  color: var(--prisma-accent-blue);
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -87,10 +73,6 @@
 .tableCard,
 .diagnosticsCard,
 .panelStack {
-  border: 1px solid rgba(35, 87, 146, 0.20);
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 14px 42px rgba(33, 75, 126, 0.10);
 }
 
 .guidedAction,
@@ -105,7 +87,6 @@
 .sectionHead h2,
 .panelStack h2 {
   margin: 4px 0 8px;
-  color: #123a66;
   font-size: clamp(20px, 2.2vw, 32px);
   letter-spacing: -0.04em;
 }
@@ -113,7 +94,6 @@
 .guidedAction p,
 .sectionHead p {
   margin: 0;
-  color: var(--prisma-text-muted);
 }
 
 .actionForm {
@@ -125,7 +105,6 @@
 .actionForm label {
   display: grid;
   gap: 6px;
-  color: #17375f;
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.05em;
@@ -136,11 +115,7 @@
 .actionForm input {
   min-height: 42px;
   width: 100%;
-  border: 1px solid rgba(97, 141, 197, 0.32);
-  border-radius: 14px;
   padding: 9px 11px;
-  color: var(--prisma-text-primary);
-  background: rgba(255, 255, 255, 0.96);
 }
 
 .formActions {
@@ -152,12 +127,9 @@
   min-height: 38px;
   display: inline-flex;
   align-items: center;
-  border-radius: 13px;
   padding: 0 12px;
-  color: #7a4a00;
   font-size: 12px;
   font-weight: 950;
-  background: rgba(255, 239, 204, 0.92);
 }
 
 .cashBalanceStrip {
@@ -168,30 +140,21 @@
 
 .primaryBalance,
 .balanceFacts {
-  border: 1px solid rgba(35, 87, 146, 0.22);
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.90);
-  box-shadow: 0 16px 46px rgba(33, 75, 126, 0.10);
 }
 
 .primaryBalance {
   padding: 20px;
-  background:
-    linear-gradient(140deg, rgba(255, 255, 255, 0.98), rgba(229, 245, 255, 0.88)),
-    radial-gradient(circle at 8% 0%, rgba(0, 162, 255, 0.18), transparent 38%);
 }
 
 .primaryBalance strong {
   display: block;
   margin: 8px 0 6px;
-  color: #052f9f;
   font-size: clamp(36px, 5.6vw, 74px);
   line-height: 0.86;
   letter-spacing: -0.06em;
 }
 
 .primaryBalance small {
-  color: var(--prisma-text-muted);
   font-weight: 850;
 }
 
@@ -206,22 +169,18 @@
   align-content: center;
   min-height: 116px;
   padding: 14px;
-  border-left: 1px solid rgba(35, 87, 146, 0.12);
 }
 
 .balanceFacts span:first-child {
-  border-left: 0;
 }
 
 .balanceFacts strong {
-  color: #123a66;
   font-size: clamp(20px, 2.1vw, 32px);
   line-height: 0.95;
 }
 
 .balanceFacts small {
   margin-top: 6px;
-  color: var(--prisma-text-muted);
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -229,21 +188,17 @@
 
 .balanceFacts em {
   margin-top: 4px;
-  color: #315a82;
   font-size: 11px;
   font-style: normal;
 }
 
 .toneOk {
-  background: rgba(239, 255, 247, 0.86);
 }
 
 .toneWarn {
-  background: rgba(255, 248, 232, 0.90);
 }
 
 .toneDanger {
-  background: rgba(255, 241, 241, 0.90);
 }
 
 .panelStack {
@@ -256,15 +211,11 @@
 
 .panelStack p {
   margin: 0;
-  color: var(--prisma-text-muted);
 }
 
 .panelCard {
   min-height: 92px;
   padding: 12px;
-  border: 1px solid rgba(97, 141, 197, 0.20);
-  border-radius: 17px;
-  background: rgba(235, 248, 255, 0.74);
 }
 
 .panelCard strong,
@@ -273,14 +224,12 @@
 }
 
 .panelCard strong {
-  color: #073ea7;
   font-size: 13px;
   text-transform: uppercase;
 }
 
 .panelCard span {
   margin-top: 7px;
-  color: var(--prisma-text-muted);
 }
 
 .evidenceSteps ol {
@@ -288,11 +237,9 @@
   gap: 8px;
   margin: 10px 0 0;
   padding-left: 20px;
-  color: var(--prisma-text-muted);
 }
 
 .evidenceSteps strong {
-  color: #17375f;
 }
 
 .sectionHead {
@@ -300,7 +247,6 @@
 }
 
 .sectionHead span {
-  color: var(--prisma-accent-blue);
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -319,30 +265,24 @@
 .tableCard :global(th),
 .tableCard :global(td) {
   padding: 9px 10px;
-  border-bottom: 1px solid rgba(138, 175, 220, 0.16);
   text-align: left;
   vertical-align: top;
   font-size: 13px;
 }
 
 .tableCard :global(th) {
-  color: #073ea7;
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
-  background: rgba(231, 244, 255, 0.96);
 }
 
 .sessions {
-  border-left: 5px solid rgba(4, 72, 255, 0.40);
 }
 
 .movements {
-  border-left: 5px solid rgba(40, 170, 112, 0.40);
 }
 
 .conflicts {
-  border-left: 5px solid rgba(238, 158, 45, 0.48);
 }
 
 .diagnosticsCard {

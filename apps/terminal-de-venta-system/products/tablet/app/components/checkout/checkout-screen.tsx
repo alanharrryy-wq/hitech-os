@@ -75,6 +75,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
   const posContextRef = useRef<HTMLDivElement | null>(null);
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
   const busy = isCheckoutBusy(state);
+  const captureDisabled = busy || gate.previewOnly;
 
   const effectiveTenders = useMemo(
     () => normalizePaymentTenders(paymentTenders).map((tender) => {
@@ -325,13 +326,13 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
             <section className={styles.sheetWorkspace}>
               <section className={styles.captureColumn} aria-labelledby="checkout-method-title">
                 <div className={styles.columnHeading}><span>Paso 1</span><h2 id="checkout-method-title">Método de pago</h2></div>
-                <PosCustomerBinding customerId={customerId} onChange={setCustomerId} disabled={busy} />
-                <CheckoutPaymentMethods value={paymentMode} onChange={selectPaymentMode} disabled={busy} />
+                <PosCustomerBinding customerId={customerId} onChange={setCustomerId} disabled={captureDisabled} />
+                <CheckoutPaymentMethods value={paymentMode} onChange={selectPaymentMode} disabled={captureDisabled} />
 
                 {paymentMode === "mixed" ? (
                   <div className={styles.mixedControl}>
                     <span>Contribución actual</span>
-                    <CheckoutPaymentMethods value={mixedMethod} onChange={(next) => { if (next !== "mixed") setMixedMethod(next); }} disabled={busy} compact />
+                    <CheckoutPaymentMethods value={mixedMethod} onChange={(next) => { if (next !== "mixed") setMixedMethod(next); }} disabled={captureDisabled} compact />
                   </div>
                 ) : null}
 
@@ -342,7 +343,7 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                       receivedCents={captureTender.amountCents}
                       changeCents={view.changeCents}
                       onReceivedCents={(value) => updateAmount("cash", value)}
-                      disabled={busy}
+                      disabled={captureDisabled}
                     />
                   ) : (
                     <>
@@ -350,27 +351,27 @@ export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSH
                         <span>Importe</span>
                         <span className={styles.moneyInput}>
                           <i aria-hidden="true">$</i>
-                          <input id={`checkout-${captureMethod}-amount`} type="text" inputMode="decimal" autoComplete="off" value={amountDrafts[captureMethod]} onChange={(event) => updateAmountDraft(captureMethod, event.target.value)} placeholder="0.00" disabled={busy} />
+                          <input id={`checkout-${captureMethod}-amount`} type="text" inputMode="decimal" autoComplete="off" value={amountDrafts[captureMethod]} onChange={(event) => updateAmountDraft(captureMethod, event.target.value)} placeholder="0.00" disabled={captureDisabled} />
                         </span>
                       </label>
                       <label className={styles.field} htmlFor={`checkout-${captureMethod}-reference`}>
                         <span>{captureMethod === "card" ? "Autorización" : "Referencia o folio"} <small>(opcional)</small></span>
-                        <input id={`checkout-${captureMethod}-reference`} value={captureTender.reference} onChange={(event) => updateTender(captureMethod, { reference: event.target.value })} placeholder={captureMethod === "card" ? "Número de autorización" : "Referencia bancaria"} disabled={busy} />
+                        <input id={`checkout-${captureMethod}-reference`} value={captureTender.reference} onChange={(event) => updateTender(captureMethod, { reference: event.target.value })} placeholder={captureMethod === "card" ? "Número de autorización" : "Referencia bancaria"} disabled={captureDisabled} />
                       </label>
-                      <button className={styles.coverButton} type="button" onClick={() => updateAmount(captureMethod, captureTender.amountCents + view.remainingCents)} disabled={busy || view.remainingCents <= 0}>Cubrir saldo</button>
+                      <button className={styles.coverButton} type="button" onClick={() => updateAmount(captureMethod, captureTender.amountCents + view.remainingCents)} disabled={captureDisabled || view.remainingCents <= 0}>Cubrir saldo</button>
                     </>
                   )}
                 </div>
 
                 {paymentMode === "mixed" ? (
                   <>
-                    <button className={styles.addContribution} type="button" onClick={addContribution} disabled={busy || captureTender.amountCents <= 0}>Agregar pago</button>
+                    <button className={styles.addContribution} type="button" onClick={addContribution} disabled={captureDisabled || captureTender.amountCents <= 0}>Agregar pago</button>
                     <div className={styles.contributions} aria-label="Aportaciones registradas">
                       {activeContributions.length ? activeContributions.map((tender) => (
                         <div className={styles.contributionRow} key={tender.method}>
                           <span><strong>{paymentMethodLabel(tender.method)}</strong><small>{tender.reference || "Sin referencia"}</small></span>
                           <b>{formatMoney(tender.amountCents)}</b>
-                          <button type="button" onClick={() => removeContribution(tender.method)} disabled={busy} aria-label={`Eliminar aportación ${paymentMethodLabel(tender.method)}`}>Quitar</button>
+                          <button type="button" onClick={() => removeContribution(tender.method)} disabled={captureDisabled} aria-label={`Eliminar aportación ${paymentMethodLabel(tender.method)}`}>Quitar</button>
                         </div>
                       )) : <p>Agrega la primera aportación.</p>}
                     </div>

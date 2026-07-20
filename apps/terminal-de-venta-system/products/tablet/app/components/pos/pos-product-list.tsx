@@ -173,6 +173,7 @@ export function PosProductList({
   newProductHref,
   canAddProduct = true,
   blockedReason,
+  blockedActionLabel,
   onAdd,
   onSearchAgain,
   onCancelSearch
@@ -184,6 +185,7 @@ export function PosProductList({
   newProductHref: string;
   canAddProduct?: boolean;
   blockedReason?: string;
+  blockedActionLabel?: string;
   onAdd: (product: PosProduct) => void;
   onSearchAgain: () => void;
   onCancelSearch: () => void;
@@ -320,7 +322,7 @@ export function PosProductList({
                   data-prisma-qa={disabled ? "tablet-qa-disabled" : undefined}
                 >
                   <Plus aria-hidden="true" size={18} />
-                  {canAddProduct ? "Agregar" : "Caja cerrada"}
+                  {canAddProduct ? "Agregar" : blockedActionLabel ?? "Caja cerrada"}
                 </motion.button>
               </div>
             </motion.article>

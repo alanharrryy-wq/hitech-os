@@ -142,6 +142,7 @@ export function SellingWorkspace({
   const checkoutBusy = isCheckoutBusy(checkoutState);
   const checkoutReady = validateCartForCheckout(cart);
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
+  const statusLabel = gate.previewOnly ? "Vista de consulta" : checkoutStateCopy(checkoutState).label;
   const cartQty = cartTotalQty(cart);
   const cartTotal = cartTotalCents(cart);
   const newProductHref = useMemo(() => {
@@ -156,7 +157,7 @@ export function SellingWorkspace({
   }
 
   async function loadProducts(nextQuery = query) {
-    if (!gate.canOperatePos) {
+    if (!gate.canBrowseCatalog) {
       setProductState("idle");
       return;
     }
@@ -173,6 +174,10 @@ export function SellingWorkspace({
   }
 
   async function resolveCode(nextQuery = query, options: { fallbackSearch?: boolean } = {}) {
+    if (!gate.canBrowseCatalog) {
+      setProductState("idle");
+      return;
+    }
     if (!gate.canAddProduct) {
       setCheckoutError(gate.detail);
       setCheckoutState("error");
@@ -295,8 +300,8 @@ export function SellingWorkspace({
     setCart(readCartFromStorage());
     setHeldCarts(readHeldCartsFromStorage());
     setCartHydrated(true);
-    if (gate.canOperatePos) void loadProducts("");
-  }, [gate.canOperatePos]);
+    if (gate.canBrowseCatalog) void loadProducts("");
+  }, [gate.canBrowseCatalog]);
 
   useEffect(() => {
     if (!cartHydrated) return;
@@ -315,7 +320,7 @@ export function SellingWorkspace({
   }, [cart.length, checkoutBackdrop]);
 
   useEffect(() => {
-    if (!gate.canOperatePos) return;
+    if (!gate.canBrowseCatalog) return;
     const cleanQuery = query.trim();
     if (cleanQuery.length === 1) return;
     const delay = cleanQuery.length >= 2 ? 260 : 120;
@@ -323,7 +328,7 @@ export function SellingWorkspace({
       void loadProducts(cleanQuery);
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [query, gate.canOperatePos]);
+  }, [query, gate.canBrowseCatalog]);
 
   const copy = checkoutStateCopy(checkoutState);
 
@@ -466,8 +471,8 @@ export function SellingWorkspace({
       currentPath="/pos"
       title="Vender"
       kicker={runtimeSnapshot.identity.storeName}
-      subtitle={`${runtimeSnapshot.identity.terminalName} · ${runtimeSnapshot.identity.operatorName}`}
-      status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
+      subtitle={gate.previewOnly ? gate.detail : `${runtimeSnapshot.identity.terminalName} · ${runtimeSnapshot.identity.operatorName}`}
+      status={<TabletShellStatusPill tone={gate.previewOnly ? gate.tone : checkoutStateTone(checkoutState)}>{statusLabel}</TabletShellStatusPill>}
       visualSurface="tablet-pos-nocturne"
       runtimeSnapshot={runtimeSnapshot}
       visualPreset="PRISMA_NOCTURNE_REFERENCE_1607"
@@ -514,6 +519,7 @@ export function SellingWorkspace({
                 error={productError}
                 resultCount={visibleProducts.length}
                 state={productState}
+                disabled={!gate.canBrowseCatalog}
                 onSearch={() => void runPrimaryLookup(query)}
                 onClear={() => {
                   setQuery("");
@@ -576,6 +582,7 @@ export function SellingWorkspace({
                 newProductHref={newProductHref}
                 canAddProduct={gate.canAddProduct}
                 blockedReason={gate.detail}
+                blockedActionLabel={gate.previewOnly ? "Solo vista" : undefined}
                 onAdd={addProduct}
                 onSearchAgain={() => void runPrimaryLookup(query)}
                 onCancelSearch={() => {
@@ -595,6 +602,7 @@ export function SellingWorkspace({
               checkoutReason={checkoutReady.reason}
               canCheckout={gate.canCheckout}
               checkoutBlockedReason={gate.detail}
+              blockedActionLabel={gate.previewOnly ? "Solo vista" : undefined}
               onIncrement={(productId) => setCart((current) => incrementCartLine(current, productId).lines)}
               onDecrement={(productId) => setCart((current) => decrementCartLine(current, productId).lines)}
               onRemove={(productId) => setCart((current) => removeCartLine(current, productId).lines)}

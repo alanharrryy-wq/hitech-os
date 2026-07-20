@@ -52,19 +52,7 @@ export function PrismaGlassCapsule({
     'data-floating': floating ? 'true' : 'false',
   } as const;
 
-  const content = (
-    <>
-      <span aria-hidden="true" className={styles.refraction} />
-      <span aria-hidden="true" className={styles.underGlow} />
-      <span aria-hidden="true" className={styles.lobeLens} />
-      <span aria-hidden="true" className={styles.edgeFrame} />
-      <span aria-hidden="true" className={styles.volumeFrame} />
-      <span aria-hidden="true" className={styles.innerFrame} />
-      <span aria-hidden="true" className={styles.specular} />
-      <span aria-hidden="true" className={styles.liquidSheen} />
-      <span className={styles.content}>{children}</span>
-    </>
-  );
+  const content = <span className={styles.content}>{children}</span>;
 
   if (as === 'div') {
     return (

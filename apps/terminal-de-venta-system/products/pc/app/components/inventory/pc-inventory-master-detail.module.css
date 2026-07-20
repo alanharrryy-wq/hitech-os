@@ -1,10 +1,6 @@
-/* PRISMA PC Inventory Premium SYS1
-   Control mínimo útil + POS-style language: claro, táctil, fino y operable. */
-
 .inventoryShell {
   display: grid;
   gap: 18px;
-  color: #dff7ff;
 }
 
 .inventoryHero {
@@ -25,14 +21,7 @@
 .qualityPanelCompact {
   position: relative;
   min-width: 0;
-  border: 1px solid rgba(92, 115, 150, 0.16);
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(73, 212, 255, 0.13), transparent 34%),
-    linear-gradient(135deg, rgba(212, 244, 255, 0.24), rgba(212, 244, 255, 0.24));
-  box-shadow: 0 22px 58px rgba(37, 57, 91, 0.12), inset 0 1px 0 rgba(212, 244, 255, 0.24);
   padding: 20px;
-  backdrop-filter: blur(14px) saturate(1.12);
 }
 
 .heroPanel {
@@ -48,14 +37,12 @@
   font-size: clamp(2rem, 4vw, 4.2rem);
   line-height: 0.94;
   letter-spacing: -0.06em;
-  color: #f7fbff;
 }
 
 .heroPanel p,
 .slimHeader p {
   max-width: 760px;
   margin: 12px 0 0;
-  color: #c7d8e7;
 }
 
 .controlPanel {
@@ -67,7 +54,6 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.72rem;
-  color: #1f6cf0;
   font-weight: 850;
 }
 
@@ -85,10 +71,6 @@
 .tabCard,
 .queueRow,
 .workflowStep {
-  border: 1px solid rgba(92, 115, 150, 0.14);
-  border-radius: 20px;
-  background: rgba(212, 244, 255, 0.24);
-  box-shadow: inset 0 1px 0 rgba(212, 244, 255, 0.24);
   padding: 12px;
 }
 
@@ -98,7 +80,6 @@
   font-size: clamp(1.7rem, 3vw, 3rem);
   letter-spacing: -0.05em;
   line-height: 1;
-  color: #f7fbff;
 }
 
 .stripFact small,
@@ -109,7 +90,6 @@
 .queueRow span,
 .workflowStep span {
   display: block;
-  color: #c7d8e7;
   margin-top: 6px;
 }
 
@@ -136,7 +116,6 @@
 .panelHeader h2 {
   margin: 4px 0 0;
   letter-spacing: -0.035em;
-  color: #f7fbff;
 }
 
 .compactFilters {
@@ -155,10 +134,6 @@
 
 .tableFrame {
   overflow: auto;
-  border-radius: 22px;
-  border: 1px solid rgba(92, 115, 150, 0.14);
-  background: rgba(212, 244, 255, 0.24);
-  box-shadow: inset 0 1px 0 rgba(212, 244, 255, 0.24);
 }
 
 .tableFrame table {
@@ -171,7 +146,6 @@
 .tableFrame td {
   text-align: left;
   padding: 11px 12px;
-  border-bottom: 1px solid rgba(92, 115, 150, 0.10);
   vertical-align: top;
 }
 
@@ -179,16 +153,12 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #a7ddf1;
-  background: rgba(212, 244, 255, 0.24);
 }
 
 .tableFrame td {
-  color: #dbeeff;
 }
 
 .tableFrame tr:hover td {
-  background: rgba(212, 244, 255, 0.24);
 }
 
 .skuRail,
@@ -214,25 +184,15 @@
   align-items: center;
   min-height: 34px;
   padding: 7px 11px;
-  border-radius: 999px;
-  border: 1px solid rgba(92, 115, 150, 0.16);
-  background: rgba(212, 244, 255, 0.24);
-  color: #dff7ff;
-  text-decoration: none;
   font-size: 0.82rem;
-  box-shadow: 0 8px 18px rgba(37, 57, 91, 0.06);
 }
 
 .actionRail a:first-child,
 .internalTabs a:first-child,
 .chipStack a:first-child {
-  border-color: rgba(36, 107, 255, 0.26);
-  background: linear-gradient(135deg, rgba(36, 107, 255, 0.12), rgba(73, 212, 255, 0.14));
-  color: #b8ecff;
 }
 
 .actionRail span[aria-disabled="true"] {
-  opacity: 0.68;
   cursor: not-allowed;
 }
 
@@ -251,7 +211,6 @@
 }
 
 .fichaRow strong {
-  color: #f7fbff;
   text-align: right;
 }
 
@@ -260,7 +219,6 @@
 .workflowStep strong {
   display: block;
   margin-bottom: 5px;
-  color: #f7fbff;
 }
 
 .inventorySplitThree {
@@ -286,20 +244,13 @@
 .stepIndex {
   width: 42px;
   height: 42px;
-  border-radius: 16px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(36, 107, 255, 0.16), rgba(73, 212, 255, 0.22));
-  color: #9feaff;
   font-weight: 900;
 }
 
 .honestBlock {
-  border-left: 4px solid rgba(227, 160, 24, 0.54);
-  border-radius: 18px;
-  background: rgba(212, 244, 255, 0.24);
   padding: 14px;
-  color: #ffe4a3;
 }
 
 .slimHeader {
@@ -307,13 +258,6 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
   gap: 18px;
   align-items: end;
-  border: 1px solid rgba(92, 115, 150, 0.16);
-  border-radius: 34px;
-  background:
-    radial-gradient(circle at 94% 12%, rgba(167, 139, 250, 0.16), transparent 28%),
-    radial-gradient(circle at 12% 14%, rgba(73, 212, 255, 0.20), transparent 34%),
-    linear-gradient(135deg, rgba(212, 244, 255, 0.24), rgba(212, 244, 255, 0.24));
-  box-shadow: 0 24px 70px rgba(37, 57, 91, 0.12);
   padding: 22px;
 }
 
@@ -326,17 +270,12 @@
 
 .miniStats span {
   min-width: 104px;
-  border: 1px solid rgba(92, 115, 150, 0.14);
-  border-radius: 20px;
-  background: rgba(212, 244, 255, 0.24);
   padding: 11px 12px;
-  color: #c7d8e7;
   font-size: 0.8rem;
 }
 
 .miniStats strong {
   display: block;
-  color: #f7fbff;
   font-size: 1.7rem;
   letter-spacing: -0.05em;
   line-height: 1;
@@ -347,11 +286,7 @@
   grid-template-columns: minmax(320px, 1fr) minmax(240px, auto);
   gap: 12px;
   align-items: end;
-  border: 1px solid rgba(92, 115, 150, 0.12);
-  border-radius: 26px;
-  background: rgba(212, 244, 255, 0.24);
   padding: 14px;
-  box-shadow: inset 0 1px 0 rgba(212, 244, 255, 0.24);
 }
 
 .searchBox,
@@ -365,7 +300,6 @@
 .searchBox label,
 .inlineBudget label {
   grid-column: 1 / -1;
-  color: #a7ddf1;
   font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -375,24 +309,14 @@
 .searchBox input,
 .inlineBudget input {
   min-height: 44px;
-  border-radius: 18px;
-  border: 1px solid rgba(92, 115, 150, 0.18);
-  background: rgba(212, 244, 255, 0.24);
-  color: #f7fbff;
   padding: 0 12px;
-  box-shadow: inset 0 1px 0 rgba(212, 244, 255, 0.24);
 }
 
 .searchBox button,
 .inlineBudget button {
   min-height: 44px;
-  border-radius: 18px;
-  border: 1px solid rgba(36, 107, 255, 0.28);
-  background: linear-gradient(135deg, rgba(49, 118, 255, 0.58), rgba(114, 220, 255, 0.48));
-  color: #ffffff;
   padding: 0 14px;
   font-weight: 850;
-  box-shadow: 0 12px 26px rgba(36, 107, 255, 0.18);
 }
 
 .masterDetailTight .workflowPanel {
@@ -417,9 +341,6 @@
 }
 
 .priorityHeroItem {
-  border: 1px solid rgba(227, 160, 24, 0.18);
-  border-radius: 24px;
-  background: rgba(212, 244, 255, 0.24);
   padding: 16px;
   margin-bottom: 14px;
   display: grid;
@@ -429,11 +350,9 @@
 .priorityHeroItem strong {
   font-size: 1.35rem;
   letter-spacing: -0.03em;
-  color: #f7fbff;
 }
 
 .priorityHeroItem span {
-  color: #ffe4a3;
 }
 
 .timelineStack {
@@ -445,9 +364,6 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 12px;
-  border: 1px solid rgba(92, 115, 150, 0.14);
-  border-radius: 20px;
-  background: rgba(212, 244, 255, 0.24);
   padding: 12px;
 }
 
@@ -458,13 +374,11 @@
 }
 
 .timelineEvent span {
-  color: #c7d8e7;
   font-size: 0.8rem;
   margin-top: 4px;
 }
 
 .timelineEvent p {
-  color: #c6d9e8;
   margin: 8px 0 0;
 }
 
@@ -472,9 +386,6 @@
   width: 12px;
   height: 12px;
   margin-top: 5px;
-  border-radius: 999px;
-  background: rgba(86, 211, 255, 0.62);
-  box-shadow: 0 0 0 6px rgba(47, 118, 255, 0.12);
 }
 
 @media (max-width: 1180px) {
@@ -511,12 +422,7 @@
     grid-template-columns: 1fr;
   }
 }
-/* PRISMA_PC_CATALOG_DEWHITE_ICEGLASS_0707_START
-   Runtime screenshot 0707: Catalog had solid/light pearl slabs after context-strip fix.
-   Purpose: make inventory module match PC cloudglass, keep readability, remove white/perla dominance.
-*/
 .inventoryShell {
-  color: #eaf8ff;
 }
 
 .heroPanel,
@@ -530,22 +436,9 @@
 .qualityPanelCompact,
 .slimHeader,
 .intentBar {
-  border-color: rgba(173, 232, 255, 0.20);
-  background:
-    radial-gradient(circle at 12% 0%, rgba(93, 214, 255, 0.18), transparent 34%),
-    radial-gradient(circle at 94% 10%, rgba(151, 128, 255, 0.14), transparent 32%),
-    linear-gradient(145deg, rgba(8, 29, 48, 0.34), rgba(4, 16, 30, 0.24));
-  color: #eaf8ff;
-  box-shadow: 0 22px 54px rgba(0, 8, 18, 0.18), inset 0 1px 0 rgba(239, 252, 255, 0.12);
-  backdrop-filter: blur(14px) saturate(1.10);
-  -webkit-backdrop-filter: blur(14px) saturate(1.10);
 }
 
 .slimHeader {
-  background:
-    radial-gradient(circle at 92% 8%, rgba(151, 128, 255, 0.18), transparent 30%),
-    radial-gradient(circle at 12% 16%, rgba(93, 214, 255, 0.22), transparent 36%),
-    linear-gradient(145deg, rgba(10, 34, 54, 0.38), rgba(5, 18, 32, 0.26));
 }
 
 .heroPanel h1,
@@ -561,8 +454,6 @@
 .workflowStep strong,
 .priorityHeroItem strong,
 .miniStats strong {
-  color: #f7fbff;
-  text-shadow: 0 2px 18px rgba(0, 10, 20, 0.22);
 }
 
 .heroPanel p,
@@ -576,14 +467,11 @@
 .workflowStep span,
 .timelineEvent span,
 .timelineEvent p {
-  color: #c7d8e7;
 }
 
 .kicker,
 .searchBox label,
 .inlineBudget label {
-  color: #9eefff;
-  text-shadow: 0 0 18px rgba(86, 211, 255, 0.18);
 }
 
 .stripPrimary,
@@ -597,23 +485,15 @@
 .miniStats span,
 .tableFrame,
 .timelineEvent {
-  border-color: rgba(173, 232, 255, 0.18);
-  background: linear-gradient(145deg, rgba(14, 40, 60, 0.30), rgba(5, 18, 32, 0.20));
-  color: #eaf8ff;
-  box-shadow: inset 0 1px 0 rgba(239, 252, 255, 0.10);
 }
 
 .tableFrame th {
-  color: #9eefff;
-  background: rgba(16, 44, 66, 0.30);
 }
 
 .tableFrame td {
-  color: #dbeeff;
 }
 
 .tableFrame tr:hover td {
-  background: rgba(93, 214, 255, 0.10);
 }
 
 .actionRail a,
@@ -624,51 +504,28 @@
 .internalTabs span,
 .chipStack a,
 .priorityHeroItem a {
-  border-color: rgba(173, 232, 255, 0.22);
-  background: linear-gradient(145deg, rgba(93, 214, 255, 0.18), rgba(15, 38, 58, 0.26));
-  color: #eaf8ff;
-  box-shadow: 0 8px 18px rgba(0, 8, 18, 0.12), inset 0 1px 0 rgba(239, 252, 255, 0.10);
 }
 
 .actionRail a:first-child,
 .internalTabs a:first-child,
 .chipStack a:first-child {
-  border-color: rgba(93, 214, 255, 0.38);
-  background: linear-gradient(135deg, rgba(49, 118, 255, 0.28), rgba(93, 214, 255, 0.22));
-  color: #f7fbff;
 }
 
 .searchBox input,
 .inlineBudget input {
-  border-color: rgba(173, 232, 255, 0.22);
-  background: rgba(5, 17, 31, 0.42);
-  color: #f7fbff;
-  box-shadow: inset 0 1px 0 rgba(239, 252, 255, 0.08);
 }
 
 .searchBox input::placeholder,
 .inlineBudget input::placeholder {
-  color: rgba(219, 238, 255, 0.54);
 }
 
 .searchBox button,
 .inlineBudget button {
-  border-color: rgba(93, 214, 255, 0.40);
-  background: linear-gradient(135deg, rgba(49, 118, 255, 0.58), rgba(93, 214, 255, 0.48));
-  color: #f7fbff;
-  box-shadow: 0 12px 26px rgba(0, 8, 18, 0.18), 0 0 20px rgba(93, 214, 255, 0.12);
 }
 
 .honestBlock,
 .priorityHeroItem {
-  border-left-color: rgba(255, 205, 92, 0.58);
-  border-color: rgba(255, 205, 92, 0.24);
-  background: linear-gradient(145deg, rgba(255, 196, 77, 0.18), rgba(29, 22, 10, 0.22));
-  color: #ffe4a3;
 }
 
 .timelineDot {
-  background: rgba(93, 214, 255, 0.62);
-  box-shadow: 0 0 0 6px rgba(93, 214, 255, 0.12);
 }
-/* PRISMA_PC_CATALOG_DEWHITE_ICEGLASS_0707_END */
