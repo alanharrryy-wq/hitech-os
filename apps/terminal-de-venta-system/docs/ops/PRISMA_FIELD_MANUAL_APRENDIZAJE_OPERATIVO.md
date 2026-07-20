@@ -705,3 +705,30 @@ F:\descargasf\status refresh diag 0507 090852 result.zip
 - Runtime: transporte in-process; el puerto PC no fue requerido ni modificado.
 - Gates: 10/10 bloqueantes PASS, dos lectores PC read-only sin multiplicación y ausencia de IDs históricos.
 - Regla: una anomalía desconocida bloquea y restaura; nunca se borra por inferencia.
+
+## 2026-07-20 — Mobile secure projection gateway phase 1
+
+- **Tipo:** seguridad, proyecciones gobernadas, cache y boundary Mobile.
+- **Superficie:** Mobile runtime 3140; lectura Tablet/PC; shared licensing context.
+- **Contexto:** `moblive` demostró que `/api/mobile/snapshot` respondía sin
+  credenciales, aceptaba scope por query y persistía el snapshot completo en
+  `prisma.mobile.snapshot.v18`.
+- **Causa raíz:** el data plane existente agregaba fuentes correctamente, pero
+  no tenía un boundary de sesión/permiso certificado y trataba parámetros del
+  cliente como overrides de contexto.
+- **Regla nueva:** ningún endpoint `/api/mobile/*` que exponga datos puede cargar
+  el data plane antes de resolver sesión, contexto, licencia, dispositivo y
+  permiso en servidor.
+- **Regla de cache:** Mobile no persiste snapshots operacionales completos en
+  fase 1. El cache legado se purga; solo se permite fallback en memoria y siempre
+  stale.
+- **Regla de desarrollo:** el fallback sintético solo puede existir fuera de
+  producción y únicamente sobre loopback. No demuestra LAN, cloud o sesión real.
+- **Regla de mutación:** esta fase es read-only. Ningún control mutable se habilita
+  sin permission, expectedVersion, idempotencyKey, audit, read-after-write y receipt.
+- **Validación enfocada:** `verify_prisma_mobile_secure_projection_gateway_42.mjs`
+  más typecheck Mobile y verificadores estáticos existentes.
+- **Rollback:** respaldos completos en `F:\Trash-old` y rollback automático ante
+  fallo de validación.
+- **Deuda pendiente:** certificar un emisor de sesión Mobile vivo, Customer Setup
+  hosted, auth/tenant/license/device E2E y pruebas negativas cross-context.
