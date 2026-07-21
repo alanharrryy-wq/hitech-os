@@ -42,7 +42,7 @@ const requiredTokens = [
   "offline",
   "stale",
   "unknown",
-  "demo-disabled",
+  "reference-disabled",
   "PrismaMobileApiResponseSchema",
   "DataQualityReportSchema",
   "TabletConnector",
@@ -82,24 +82,14 @@ if (!textByFile.dashboard.includes("mobile-crystal-first-viewport")) {
   fail("Crystal Command must own the first visible Mobile viewport");
 }
 
-if (!textByFile.dashboard.includes('mode="home"')) {
-  fail("Dashboard must mount PrismaMobileCrystalCommand home mode before long secondary surfaces");
+if (!textByFile.dashboard.includes("<PrismaMobilePremiumNavigator")) {
+  fail("Dashboard must mount PrismaMobilePremiumNavigator as the canonical first viewport owner");
 }
 
-const homeStart = textByFile.ui.indexOf('if (mode === "home")');
-const operationStart = textByFile.ui.indexOf('if (mode === "operation")');
-const homeModeBlock = homeStart >= 0 && operationStart > homeStart
-  ? textByFile.ui.slice(homeStart, operationStart)
-  : "";
-for (const token of [
-  "HealthGauge",
-  "MomentumSparkline",
-  "SalesRhythmChart",
-  "InventoryRiskRanking",
-  "AlertSeverityDonut",
-  "SyncFreshnessChart"
-]) {
-  if (!homeModeBlock.includes(token)) fail("Home Crystal Command must render the six rescue KPI/chart modules", { token });
+for (const token of ["inicio", "ventas", "operacion", "licencias", "alertas", "stock", "sistema"]) {
+  if (!textByFile.navigator.includes(`activeTab === "${token}"`) && !textByFile.navigator.includes(`id: "${token}" as const`)) {
+    fail("Canonical Premium Navigator must expose every Mobile intelligence section", { token });
+  }
 }
 
 const forbiddenUi = ["Math.random", "faker", "mockProduction", "demo fallback", "authorization:", "cookie:", "password:", "apiKey", "private key"];
@@ -116,6 +106,7 @@ console.log(JSON.stringify({
   ok: true,
   verifier,
   chartModules: uniqueChartKeys,
-  runtimeModes: ["live", "partial", "offline", "stale", "unknown", "demo-disabled"],
+  runtimeModes: ["live", "partial", "offline", "stale", "unknown", "reference-disabled"],
+  firstViewportOwner: "PrismaMobilePremiumNavigator",
   evidenceRule: "high-critical-requires-evidence"
 }, null, 2));

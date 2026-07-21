@@ -19,6 +19,11 @@
   translate: 0 -180%;
   min-height: 42px;
   padding: 10px 16px;
+  border: 1px solid var(--pc-atlas-line-strong);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background: rgba(5, 15, 28, 0.96);
+  box-shadow: var(--pc-atlas-shadow-card);
 }
 
 .skipLink:focus-visible {
@@ -39,6 +44,15 @@
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-shell);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(121, 232, 255, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-shell);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
 }
 
 .brandBlock {
@@ -46,6 +60,7 @@
   gap: 14px;
   min-height: 0;
   padding: 18px;
+  border-block-end: 1px solid rgba(198, 226, 247, 0.1);
 }
 
 .brandRow {
@@ -71,6 +86,7 @@
 .brandCopy strong {
   font-size: 15px;
   letter-spacing: 0.025em;
+  color: var(--pc-atlas-ink);
 }
 
 .brandSubtitle {
@@ -78,6 +94,7 @@
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .brandSignals,
@@ -99,10 +116,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.055);
 }
 
 .brandSignals span:first-child,
 .topbarSignals span:first-child {
+  border-color: rgba(121, 232, 255, 0.32);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.09);
 }
 
 .navPanel {
@@ -114,6 +138,9 @@
 .navHeading {
   margin: 0 8px 10px;
   font-size: 10px;
+  color: var(--pc-atlas-ink-dim);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
 }
 
 .nav {
@@ -132,6 +159,7 @@
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: rgba(142, 183, 255, 0.7);
 }
 
 .navItems {
@@ -166,6 +194,14 @@
   gap: 16px;
   min-height: 72px;
   padding: 12px 16px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-shell);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: blur(16px) saturate(116%);
+  -webkit-backdrop-filter: blur(16px) saturate(116%);
 }
 
 .topbarIdentity {
@@ -181,6 +217,10 @@
   width: 38px;
   height: 38px;
   flex: 0 0 auto;
+  border: 1px solid rgba(121, 232, 255, 0.28);
+  border-radius: 12px;
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.08);
 }
 
 .topbarCopy {
@@ -194,6 +234,7 @@
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--pc-atlas-cyan);
 }
 
 .topbarTitle {
@@ -203,6 +244,7 @@
   letter-spacing: -0.018em;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--pc-atlas-ink);
 }
 
 .contextStrip {
@@ -215,6 +257,12 @@
   min-width: 0;
   padding: 9px 12px;
   overflow: visible;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(7, 20, 35, 0.7);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: blur(12px) saturate(112%);
+  -webkit-backdrop-filter: blur(12px) saturate(112%);
 }
 
 .contextLabel {
@@ -223,6 +271,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
+  color: var(--pc-atlas-navy);
 }
 
 .contextScroll,
@@ -252,21 +301,40 @@
   font-size: 12px;
   font-weight: 780;
   white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: transparent;
+  transition:
+    border-color var(--prisma-vos-fast-motion, 120ms) ease,
+    color var(--prisma-vos-fast-motion, 120ms) ease,
+    background-color var(--prisma-vos-fast-motion, 120ms) ease;
 }
 
 .contextLink:hover {
+  border-color: var(--pc-atlas-line);
+  color: var(--pc-atlas-ink);
+  background: rgba(121, 232, 255, 0.06);
 }
 
 .contextLinkActive {
+  border-color: rgba(121, 232, 255, 0.34);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.1);
 }
 
 .contextDot {
   width: 6px;
   height: 6px;
   flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.48;
 }
 
 .contextLinkActive .contextDot {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(121, 232, 255, 0.46);
 }
 
 .contextTitle {
@@ -286,6 +354,8 @@
 .contextThumb {
   position: relative;
   flex: 1;
+  border-radius: 999px;
+  background: rgba(121, 232, 255, 0.28);
 }
 
 .contextTooltip {
@@ -294,9 +364,15 @@
   padding: 9px 11px;
   font-size: 12px;
   line-height: 1.45;
+  border: 1px solid var(--pc-atlas-line-strong);
+  border-radius: 10px;
+  color: var(--pc-atlas-ink);
+  background: rgba(4, 14, 26, 0.96);
+  box-shadow: var(--pc-atlas-shadow-card);
 }
 
 .contextTooltipArrow {
+  fill: rgba(4, 14, 26, 0.96);
 }
 
 .routeIntent {
@@ -307,6 +383,15 @@
   min-width: 0;
   padding: clamp(18px, 2vw, 26px);
   overflow: hidden;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  background:
+    radial-gradient(circle at 4% 0%, rgba(121, 232, 255, 0.1), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-panel);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(12px) saturate(116%);
+  -webkit-backdrop-filter: blur(12px) saturate(116%);
 }
 
 .routeIntentCopy {
@@ -317,6 +402,10 @@
 
 .routeIntentKicker {
   font-size: 10px;
+  color: var(--pc-atlas-cyan);
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
 }
 
 .routeIntentTitle {
@@ -326,15 +415,20 @@
   line-height: 1.02;
   letter-spacing: -0.035em;
   text-wrap: balance;
+  color: var(--pc-atlas-ink);
 }
 
 .routeIntentDescription {
   max-width: 900px;
   margin: 0;
   line-height: 1.55;
+  color: var(--pc-atlas-ink-soft);
 }
 
 .routeIntentBadge {
+  border-color: rgba(142, 183, 255, 0.34);
+  color: var(--pc-atlas-navy);
+  background: rgba(142, 183, 255, 0.08);
 }
 
 @container pc-route (max-width: 760px) {
@@ -497,5 +591,16 @@
 @media (prefers-reduced-motion: reduce) {
   .skipLink,
   .contextLink {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .sidebar,
+  .topbar,
+  .contextStrip,
+  .routeIntent {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }

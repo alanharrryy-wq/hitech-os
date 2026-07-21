@@ -29,6 +29,17 @@
 }
 
 @layer prisma.states {
+  @media (prefers-reduced-transparency: reduce) {
+    html[data-prisma-canonical-shell="nocturne-reference-1607"] {
+      --prisma-surface-shell: rgba(5, 17, 29, 0.86);
+      --prisma-surface-panel: rgba(8, 27, 44, 0.82);
+      --prisma-surface-rail: rgba(8, 27, 44, 0.80);
+      --prisma-surface-card: rgba(13, 37, 57, 0.78);
+      --prisma-surface-info: rgba(15, 42, 64, 0.86);
+      --prisma-surface-control: rgba(17, 45, 67, 0.74);
+    }
+  }
+
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     html[data-prisma-canonical-shell="nocturne-reference-1607"] {
       --prisma-surface-shell: rgba(5, 17, 29, 0.78);

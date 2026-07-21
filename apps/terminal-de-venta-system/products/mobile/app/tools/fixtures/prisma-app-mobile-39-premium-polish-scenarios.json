@@ -1,0 +1,31 @@
+{
+  "contract": "PRISMA_APP_MOBILE_39_PREMIUM_POLISH",
+  "phase": "MOBILE_PREMIUM_POLISH_PHASE_2",
+  "scenarios": [
+    {
+      "id": "mobile-39-optional-adder-boundary",
+      "assertion": "Mobile supervisa y nunca se presenta como requisito para vender en Tablet Solo.",
+      "evidence": "docs/prisma-app/PRISMA_APP_MOBILE_39_PREMIUM_POLISH.md"
+    },
+    {
+      "id": "mobile-39-offline-truth",
+      "assertion": "Internet no se declara requisito para la venta base Tablet Solo.",
+      "evidence": "docs/atlas/ATLAS_MOBILE_OPTIONAL_ADDER_BOUNDARY_ADDENDUM.md"
+    },
+    {
+      "id": "mobile-39-no-blocking-claim",
+      "assertion": "La UI no afirma que Mobile bloquee POS, cobro, corte, ticket ni licencia local.",
+      "evidence": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+    },
+    {
+      "id": "mobile-39-glass-action-identity",
+      "assertion": "Las acciones principales usan identidad glass y mantienen contraste/foco.",
+      "evidence": "src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    },
+    {
+      "id": "mobile-39-reduced-preferences",
+      "assertion": "La superficie respeta reduced motion y reduced transparency.",
+      "evidence": "src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    }
+  ]
+}
