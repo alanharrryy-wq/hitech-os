@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 import { FEATURE_KEYS, getLicenseGovernorSnapshot } from "../../../../../../shared/licensing";
 import type { FeatureResolution, LicenseGovernorSnapshot, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
 
@@ -28,7 +29,7 @@ export type PcLicenseReadiness = {
 };
 
 function getPcFeatureKeys(): string[] {
-  return FEATURE_KEYS.filter((key) => key.startsWith("pc.") || key.startsWith("sync.") || key.startsWith("catalog.") || key.startsWith("stock.") || key.startsWith("inventory.") || key.startsWith("purchase.") || key.startsWith("receiving.") || key.startsWith("replenishment.") || key.startsWith("audit.") || key.startsWith("export.") || key.startsWith("multi.") || key.startsWith("forecast.") || key.startsWith("advanced."));
+  return FEATURE_KEYS.filter((key) => key.startsWith("pc.") || key.startsWith("sync.") || key.startsWith("catalog.") || key.startsWith("pricing.") || key.startsWith("stock.") || key.startsWith("inventory.") || key.startsWith("purchase.") || key.startsWith("receiving.") || key.startsWith("replenishment.") || key.startsWith("audit.") || key.startsWith("export.") || key.startsWith("multi.") || key.startsWith("forecast.") || key.startsWith("advanced."));
 }
 
 export function getPcLicenseGovernor(): LicenseGovernorSnapshot {
