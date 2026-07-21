@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 generator client {
   provider = "prisma-client-js"
 }
@@ -67,6 +68,10 @@ model Business {
   syncCheckpoints   SyncCheckpoint[]
   syncOutboxStatusBuckets SyncOutboxStatusBucket[]
   dataSourceFreshnesses DataSourceFreshness[]
+  promotionRules PromotionRule[]
+  discountPolicies DiscountPolicy[]
+  pricingAuthorizationRules PricingAuthorizationRule[]
+  pricingAuthorizationRequests PricingAuthorizationRequest[]
 }
 
 model Store {
@@ -113,12 +118,15 @@ model TaxRate {
   rateBps     Int
   isDefault   Boolean  @default(false)
   isActive    Boolean  @default(true)
+  idempotencyKey String?
+  version Int @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   products Product[]
 
+  @@unique([businessId, idempotencyKey])
   @@unique([businessId, name])
   @@unique([id, businessId])
   @@index([businessId, isDefault])
@@ -133,12 +141,15 @@ model PriceList {
   isActive    Boolean  @default(true)
   startsAt    DateTime
   endsAt      DateTime?
+  idempotencyKey String?
+  version Int @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
   business Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   items    PriceListItem[]
 
+  @@unique([businessId, idempotencyKey])
   @@unique([businessId, name])
   @@unique([id, businessId])
   @@index([businessId, isDefault])
@@ -152,6 +163,8 @@ model PriceListItem {
   priceCents   Int
   startsAt     DateTime
   endsAt       DateTime?
+  idempotencyKey String?
+  version Int @default(1)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
 
@@ -159,8 +172,116 @@ model PriceListItem {
   priceList PriceList @relation(fields: [priceListId, businessId], references: [id, businessId], onDelete: Cascade)
   product   Product   @relation(fields: [productId, businessId], references: [id, businessId], onDelete: Cascade)
 
+  @@unique([businessId, idempotencyKey])
   @@unique([businessId, priceListId, productId, startsAt])
   @@index([businessId, productId])
+}
+
+model PromotionRule {
+  id              String   @id
+  businessId      String
+  name            String
+  description     String?
+  ruleType        String
+  priority        Int      @default(100)
+  stackingPolicy  String   @default("EXCLUSIVE")
+  eligibilityJson String
+  benefitJson     String
+  startsAt        DateTime
+  endsAt          DateTime?
+  status          String   @default("ACTIVE")
+  idempotencyKey  String?
+  version         Int      @default(1)
+  createdById     String?
+  updatedById     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, name])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, priority])
+  @@index([businessId, startsAt, endsAt])
+}
+
+model DiscountPolicy {
+  id                   String   @id
+  businessId           String
+  name                 String
+  discountType         String
+  valueBps             Int?
+  valueCents           Int?
+  minimumSubtotalCents Int      @default(0)
+  maximumDiscountCents Int?
+  scopeJson            String
+  authorizationRuleId  String?
+  startsAt             DateTime
+  endsAt               DateTime?
+  status               String   @default("ACTIVE")
+  idempotencyKey       String?
+  version              Int      @default(1)
+  createdById          String?
+  updatedById          String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, name])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, startsAt])
+  @@index([businessId, authorizationRuleId])
+}
+
+model PricingAuthorizationRule {
+  id                 String   @id
+  businessId         String
+  name               String
+  actionType         String
+  thresholdType      String
+  thresholdValue     Int
+  requiredPermission String
+  status             String   @default("ACTIVE")
+  idempotencyKey     String?
+  version             Int      @default(1)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  requests PricingAuthorizationRequest[]
+
+  @@unique([id, businessId])
+  @@unique([businessId, name])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, actionType])
+}
+
+model PricingAuthorizationRequest {
+  id                  String   @id
+  businessId          String
+  ruleId              String
+  requestedById       String?
+  requestedActionJson String
+  reason              String
+  status              String   @default("PENDING")
+  decidedById         String?
+  decisionReason      String?
+  decidedAt           DateTime?
+  idempotencyKey      String?
+  version             Int      @default(1)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  rule PricingAuthorizationRule @relation(fields: [ruleId, businessId], references: [id, businessId], onDelete: Restrict)
+
+  @@unique([id, businessId])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, createdAt])
+  @@index([businessId, ruleId])
 }
 
 model Customer {

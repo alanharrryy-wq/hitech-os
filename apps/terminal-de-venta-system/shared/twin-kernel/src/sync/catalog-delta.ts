@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 export const CATALOG_DELTA_CONTRACT_ID = "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1" as const;
 export const CATALOG_DELTA_SCHEMA_VERSION = "1.0.0" as const;
 export const CATALOG_DELTA_STREAM = "pc.catalog.delta.v1" as const;
@@ -13,6 +14,9 @@ export const CATALOG_DELTA_ENTITY_TYPES = [
   "ProductSupplier",
   "PriceList",
   "PriceListItem",
+  "PromotionRule",
+  "DiscountPolicy",
+  "PricingAuthorizationRule",
   "DropdownCatalog",
   "DropdownOption"
 ] as const;
@@ -88,7 +92,7 @@ export type CatalogDeltaEnvelope = {
 };
 
 const ENTITY_REQUIRED_FIELDS: Record<CatalogDeltaEntityType, string[]> = {
-  TaxRate: ["id", "businessId", "name", "rateBps", "isDefault", "isActive"],
+  TaxRate: ["id", "businessId", "name", "rateBps", "isDefault", "isActive", "projectionVersion"],
   Brand: ["id", "businessId", "name", "status"],
   Supplier: ["id", "businessId", "name", "status"],
   Product: ["id", "businessId", "sku", "name", "category", "priceCents", "costCents", "isActive"],
@@ -96,8 +100,11 @@ const ENTITY_REQUIRED_FIELDS: Record<CatalogDeltaEntityType, string[]> = {
   ModifierOption: ["id", "businessId", "modifierGroupId", "name", "priceDeltaCents", "isDefault", "status", "sortOrder", "version"],
   ProductModifierGroup: ["id", "businessId", "productId", "modifierGroupId", "required", "status", "sortOrder", "version"],
   ProductSupplier: ["id", "businessId", "productId", "supplierId", "isPrimary", "status"],
-  PriceList: ["id", "businessId", "name", "currency", "isDefault", "isActive", "startsAt"],
-  PriceListItem: ["id", "businessId", "priceListId", "productId", "priceCents", "startsAt"],
+  PriceList: ["id", "businessId", "name", "currency", "isDefault", "isActive", "startsAt", "projectionVersion"],
+  PriceListItem: ["id", "businessId", "priceListId", "productId", "priceCents", "startsAt", "projectionVersion"],
+  PromotionRule: ["id", "businessId", "name", "ruleType", "priority", "stackingPolicy", "eligibilityJson", "benefitJson", "startsAt", "status", "version"],
+  DiscountPolicy: ["id", "businessId", "name", "discountType", "minimumSubtotalCents", "scopeJson", "startsAt", "status", "version"],
+  PricingAuthorizationRule: ["id", "businessId", "name", "actionType", "thresholdType", "thresholdValue", "requiredPermission", "status", "version"],
   DropdownCatalog: ["id", "businessId", "code", "label", "status"],
   DropdownOption: ["id", "businessId", "catalogId", "code", "label", "sortOrder", "isDefault", "status"]
 };
