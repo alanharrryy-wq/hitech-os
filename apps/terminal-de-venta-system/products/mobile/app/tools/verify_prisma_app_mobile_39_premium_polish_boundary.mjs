@@ -12,7 +12,7 @@ const files = {
   css: "src/components/prisma-app/prisma-mobile-dashboard.module.css",
   globals: "app/globals.css",
   doc: "docs/prisma-app/PRISMA_APP_MOBILE_39_PREMIUM_POLISH.md",
-  qa: "docs/prisma-app/qa/prisma-app-mobile-39-premium-polish-scenarios.json",
+  qa: "tools/fixtures/prisma-app-mobile-39-premium-polish-scenarios.json",
   addendum: "docs/atlas/ATLAS_MOBILE_PREMIUM_POLISH_V12_ADDENDUM.md",
   rollback: "docs/atlas/ATLAS_MOBILE_PREMIUM_POLISH_V12_ROLLBACK.md",
   mark: "public/prisma-mobile-premium-mark.svg",
