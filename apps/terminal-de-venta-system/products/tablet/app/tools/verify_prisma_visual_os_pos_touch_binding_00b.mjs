@@ -19,12 +19,16 @@ const posScreenPath = "products/tablet/app/components/pos/pos-screen.tsx";
 const posCssPath = "products/tablet/app/components/pos/pos.module.css";
 const shellTsxPath = "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx";
 const shellCssPath = "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css";
+const layoutPath = "products/tablet/app/app/layout.tsx";
+const canonicalCssPath = "products/tablet/app/app/prisma-tablet-nocturne-canonical.css";
 const pkgPath = "products/tablet/app/package.json";
 
 must(has(posScreenPath), `${posScreenPath} existe`);
 must(has(posCssPath), `${posCssPath} existe`);
 must(has(shellTsxPath), `${shellTsxPath} existe`);
 must(has(shellCssPath), `${shellCssPath} existe`);
+must(has(layoutPath), `${layoutPath} existe`);
+must(has(canonicalCssPath), `${canonicalCssPath} existe`);
 must(has(pkgPath), `${pkgPath} existe`);
 
 if (process.exitCode) process.exit(process.exitCode);
@@ -33,31 +37,32 @@ const posScreen = read(posScreenPath);
 const posCss = read(posCssPath);
 const shellTsx = read(shellTsxPath);
 const shellCss = read(shellCssPath);
+const layout = read(layoutPath);
+const canonicalCss = read(canonicalCssPath);
 const pkg = JSON.parse(read(pkgPath));
 
-must(posScreen.includes("PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"), "PosScreen conserva hook 00B");
-must(posScreen.includes('visualSurface="tablet-pos"'), "Shell recibe visualSurface tablet-pos");
-must(posScreen.includes('visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"') || posScreen.includes('visualPreset="pos-touch-00b"'), "Shell recibe preset visual actual o legacy");
-must(posScreen.includes('data-prisma-vos="00B"'), "Workspace declara data-prisma-vos 00B");
-must(posScreen.includes('data-prisma-vsurface="tablet-pos"'), "Workspace declara superficie tablet-pos");
-must(posScreen.includes('data-prisma-vpreset="POS_TOUCH"'), "Workspace declara preset POS_TOUCH");
-must(posScreen.includes('data-prisma-zone="tablet-pos-root"'), "Workspace declara zona gobernada POS root");
-must(posScreen.includes("resultCount={visibleProducts.length}"), "Search recibe conteo visible");
-must(posScreen.includes("activeCount={activeProductCount}"), "Search recibe conteo activo");
-must(posScreen.includes("state={productState}"), "Search recibe estado operativo");
+must(layout.includes('data-prisma-canonical-shell="nocturne-reference-1607"'), "Layout declara el shell canónico vigente");
+must(layout.includes('import "./prisma-tablet-nocturne-canonical.css"'), "Layout importa el owner material canónico");
+must(canonicalCss.includes("--prisma-canonical-card-backdrop-count: 0"), "Contrato canónico prohíbe backdrop blur en cards");
+must(canonicalCss.includes("prefers-reduced-transparency"), "Contrato canónico respeta transparencia reducida");
+
+must(posScreen.includes('visualSurface="tablet-pos-nocturne"'), "POS recibe la superficie canónica nocturne");
+must(posScreen.includes("PosTerminalSurface"), "POS conserva una superficie terminal principal");
+must(posScreen.includes("PosCommandDock"), "POS conserva un solo command dock operativo");
+must(posScreen.includes("showBottomDock={!checkoutBackdrop}"), "POS evita duplicar docks durante checkout");
+must(posScreen.includes("resultCount={visibleProducts.length}"), "Búsqueda recibe conteo visible");
+must(posScreen.includes("activeCount={activeProductCount}"), "Búsqueda recibe conteo activo");
+must(posScreen.includes("state={productState}"), "Búsqueda recibe estado operativo");
 
 must(shellTsx.includes("visualSurface?: string"), "Shell acepta visualSurface opcional");
-must(shellTsx.includes("visualPreset?: string"), "Shell acepta visualPreset opcional");
-must(shellTsx.includes("data-prisma-visual-surface={visualSurface}"), "Shell expone data-prisma-visual-surface");
-must(shellTsx.includes("data-prisma-visual-preset={visualPreset}"), "Shell expone data-prisma-visual-preset");
+must(shellTsx.includes('data-prisma-canonical-shell="nocturne-reference-1607"'), "Shell expone el owner canónico");
+must(shellTsx.includes("data-prisma-visual-surface={resolvedVisualSurface}"), "Shell expone la superficie visual resuelta");
+must(shellTsx.includes("showBottomDock?: boolean"), "Shell gobierna la visibilidad del dock");
 
-must(posCss.includes("PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"), "CSS POS contiene capa 00B");
-must(posCss.includes('.posWorkspace[data-prisma-vos="00B"]'), "CSS POS está acotado a data-prisma-vos");
-must(posCss.includes("--vos-pos-hit-target"), "CSS POS declara hit target táctil");
-must(posCss.includes(".catalogInsight"), "CSS POS cubre catalogInsight");
-must(posCss.includes("prefers-reduced-motion"), "CSS POS respeta reduced motion");
-must(shellCss.includes("PRISMA_VISUAL_OS_TABLET_POS_SHELL_BINDING_00B"), "CSS shell contiene binding 00B");
-must(shellCss.includes('.shell[data-prisma-visual-surface="tablet-pos"]'), "CSS shell está acotado a tablet-pos");
+must(/min-height:\s*(?:4[4-9]|5\d)px/.test(posCss), "CSS POS conserva objetivos táctiles de al menos 44px");
+must(posCss.includes("prefers-reduced-transparency"), "CSS POS respeta transparencia reducida");
+must(/min-height:\s*(?:4[4-9]|5\d)px/.test(shellCss), "CSS shell conserva objetivos táctiles de al menos 44px");
+must(shellCss.includes("prefers-reduced-transparency"), "CSS shell respeta transparencia reducida");
 
 must(Boolean(pkg.scripts?.["verify:visual-os-pos-touch-00b"]), "package.json registra verify:visual-os-pos-touch-00b");
 
@@ -72,7 +77,7 @@ if (has(manifestPath)) {
 }
 
 if (process.exitCode) {
-  console.error("[VOS 00B] BLOCKED Visual OS POS Touch binding incompleto");
+  console.error("[VOS 00B] BLOCKED contrato táctil canónico incompleto");
   process.exit(process.exitCode);
 }
-console.log("[VOS 00B] PASS Visual OS POS Touch binding listo");
+console.log("[VOS 00B] PASS contrato táctil reconciliado con nocturne-reference-1607");

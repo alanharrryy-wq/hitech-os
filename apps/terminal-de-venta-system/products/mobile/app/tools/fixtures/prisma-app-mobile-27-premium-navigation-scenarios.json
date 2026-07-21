@@ -1,0 +1,35 @@
+{
+  "contract": "PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION",
+  "scenarios": [
+    {
+      "id": "mobile-27-tab-semantics",
+      "assertion": "El navegador expone tablist, tab y tabpanel con selección única.",
+      "evidence": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+    },
+    {
+      "id": "mobile-27-keyboard-navigation",
+      "assertion": "ArrowLeft, ArrowRight, Home y End cambian el foco sin alterar rutas ni datos.",
+      "evidence": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+    },
+    {
+      "id": "mobile-27-single-active-panel",
+      "assertion": "Solo el panel activo permanece visible y conserva un único scroll principal.",
+      "evidence": "src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    },
+    {
+      "id": "mobile-27-secondary-surfaces",
+      "assertion": "Ledger, timeline y health radar viven dentro del navegador y no en una cascada del dashboard.",
+      "evidence": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+    },
+    {
+      "id": "mobile-27-content-visibility",
+      "assertion": "Las superficies pesadas fuera del viewport conservan content-visibility para evitar trabajo innecesario.",
+      "evidence": "src/components/prisma-app/prisma-mobile-dashboard.module.css"
+    },
+    {
+      "id": "mobile-27-touch-targets",
+      "assertion": "Pestañas y acciones conservan objetivos táctiles de al menos 44px y foco visible.",
+      "evidence": "app/prisma-mobile-pulse-binding.css"
+    }
+  ]
+}
