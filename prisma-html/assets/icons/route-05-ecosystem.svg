@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">Ecosistema PRISMA</title>
+  <desc id="desc">Órbitas y nodos que representan el ecosistema que construye PRISMA.</desc>
+  <defs>
+    <linearGradient id="g5" x1="9" y1="57" x2="63" y2="14" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#43D8FF"/>
+      <stop offset=".42" stop-color="#6F7BFF"/>
+      <stop offset=".75" stop-color="#F18DCA"/>
+      <stop offset="1" stop-color="#FFC96B"/>
+    </linearGradient>
+    <filter id="shadow5" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.34 0 0 0 0 0.47 0 0 0 0 1 0 0 0 .4 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="url(#g5)" stroke-linecap="round" filter="url(#shadow5)">
+    <ellipse cx="36" cy="36" rx="29" ry="13" stroke-width="2" transform="rotate(-18 36 36)"/>
+    <ellipse cx="36" cy="36" rx="28" ry="12" stroke-width="1.7" transform="rotate(56 36 36)" stroke-opacity=".75"/>
+  </g>
+  <g filter="url(#shadow5)">
+    <path d="M36 22 48 36 36 50 24 36 36 22Z" fill="url(#g5)" fill-opacity=".86" stroke="#F8FFFF" stroke-opacity=".82"/>
+    <circle cx="10" cy="41" r="4.6" fill="#4BE1FF" stroke="#EEFFFF"/>
+    <circle cx="56" cy="18" r="4.6" fill="#FFBC72" stroke="#FFF8EC"/>
+    <circle cx="58" cy="49" r="4.6" fill="#F18DD0" stroke="#FFF1FB"/>
+    <circle cx="25" cy="13" r="4.2" fill="#7481FF" stroke="#F1F2FF"/>
+  </g>
+  <circle cx="36" cy="36" r="3" fill="#FFFFFF"/>
+</svg>

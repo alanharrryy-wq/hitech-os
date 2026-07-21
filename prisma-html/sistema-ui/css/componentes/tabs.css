@@ -1,0 +1,5 @@
+prisma-tabs { display: block; }
+.prisma-tabs-list { display: flex; flex-wrap: wrap; gap: .5rem; }
+.prisma-tab { min-height: 40px; padding-inline: .9rem; border: 1px solid var(--prisma-color-border-subtle); border-radius: var(--prisma-radius-pill); background: rgba(255,255,255,.06); cursor: pointer; }
+.prisma-tab[aria-selected="true"] { color: #fff; border-color: var(--prisma-color-brand-primary); background: linear-gradient(145deg,#679ee8,var(--prisma-color-brand-primary)); }
+.prisma-tab-panel { padding-top: 1.2rem; }

@@ -1,0 +1,146 @@
+{
+  "schema_version": "2.0.0",
+  "generated_on": "2026-07-16",
+  "task": "PRISMA HTML essential narrative refactor",
+  "classification": "REFACTOR",
+  "status": "PASS_SOURCE_RUNTIME_PREVIEW_PENDING",
+  "visual_certified": false,
+  "repository": "alanharrryy-wq/hitech-os",
+  "pull_request": 178,
+  "branch": "feature/prisma-html-investor-site",
+  "structure_preserved": true,
+  "narrative_order": [
+    "Qué es PRISMA",
+    "Qué hace",
+    "Cómo funciona",
+    "Por qué es diferente",
+    "Qué ecosistema construye"
+  ],
+  "distribution": {
+    "page1": [
+      "Qué es PRISMA",
+      "Qué hace"
+    ],
+    "page3": [
+      "Cómo funciona",
+      "Por qué es diferente"
+    ],
+    "page4": [
+      "Qué ecosistema construye"
+    ],
+    "investors": "separate route",
+    "catalog": "separate utility"
+  },
+  "changed_files": [
+    "index.html",
+    "index.css",
+    "paginas/pagina-1-prisma/index.html",
+    "paginas/pagina-1-prisma/pagina.css",
+    "paginas/pagina-2-inversionistas/index.html",
+    "paginas/pagina-2-inversionistas/pagina.css",
+    "paginas/pagina-2-inversionistas/pagina.js",
+    "paginas/pagina-3-por-que-prisma/index.html",
+    "paginas/pagina-3-por-que-prisma/pagina.css",
+    "paginas/pagina-4-ecosistema-producto/index.html",
+    "paginas/pagina-4-ecosistema-producto/pagina.css",
+    "paginas/pagina-4-ecosistema-producto/pagina.js",
+    "sistema-ui/catalogo/index.html",
+    "sistema-ui/catalogo/catalogo.css",
+    "sistema-ui/catalogo/catalogo.js",
+    "README.md",
+    "CONTINUATION.md",
+    "BASELINE-MANIFEST.json",
+    "SOURCE-INTEGRITY.json",
+    "validation.json",
+    "governance/PRISMA_HTML_NARRATIVE_SWEEP_MANIFEST.json",
+    "reports/FULL_SURFACE_SWEEP.md",
+    "reports/full-surface-sweep.json",
+    "reports/source-validator-clear-pearl-offline.json",
+    "assets/images/prisma-logo.png",
+    "assets/images/prisma-logo-full.png",
+    "assets/icons/route-01-identity.svg",
+    "assets/icons/route-02-action.svg",
+    "assets/icons/route-03-flow.svg",
+    "assets/icons/route-04-difference.svg",
+    "assets/icons/route-05-ecosystem.svg"
+  ],
+  "shared_authority_changes": [],
+  "control_counts": {
+    "index": {
+      "action_links_excluding_brand": 3,
+      "buttons": 0,
+      "action_total_excluding_brand": 3,
+      "selects": 0,
+      "ranges": 0
+    },
+    "page1": {
+      "action_links_excluding_brand": 2,
+      "buttons": 0,
+      "action_total_excluding_brand": 2,
+      "selects": 0,
+      "ranges": 0
+    },
+    "investors": {
+      "action_links_excluding_brand": 1,
+      "buttons": 2,
+      "action_total_excluding_brand": 3,
+      "selects": 0,
+      "ranges": 0
+    },
+    "page3": {
+      "action_links_excluding_brand": 2,
+      "buttons": 0,
+      "action_total_excluding_brand": 2,
+      "selects": 0,
+      "ranges": 0
+    },
+    "page4": {
+      "action_links_excluding_brand": 2,
+      "buttons": 0,
+      "action_total_excluding_brand": 2,
+      "selects": 0,
+      "ranges": 0
+    },
+    "catalog": {
+      "action_links_excluding_brand": 1,
+      "buttons": 2,
+      "action_total_excluding_brand": 3,
+      "selects": 3,
+      "ranges": 2
+    }
+  },
+  "static_validation": {
+    "status": "PASS",
+    "checks": 376,
+    "warnings": 0,
+    "errors": 0
+  },
+  "browser_harness": {
+    "status": "NOT_RUN"
+  },
+  "runtime_preview": {
+    "status": "NOT_RUN"
+  },
+  "excluded": [
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "pending": [
+    "user visual review"
+  ],
+  "index_visual_refinement": {
+    "compact_logo": "restored from supplied full transparent identity",
+    "hero_logo": "complete PRISMA signature",
+    "sequence_representation": "five static multicolor SVG milestones without cards",
+    "interaction_change": "none",
+    "shared_authority_change": "none"
+  }
+}

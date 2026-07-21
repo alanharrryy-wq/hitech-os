@@ -1,0 +1,5 @@
+.prisma-columns { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: var(--prisma-space-lg); }
+.prisma-span-4 { grid-column: span 4; }
+.prisma-span-6 { grid-column: span 6; }
+.prisma-span-8 { grid-column: span 8; }
+.prisma-span-12 { grid-column: 1 / -1; }

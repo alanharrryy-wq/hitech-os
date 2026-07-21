@@ -1,0 +1,35 @@
+
+.prisma-glass {
+  position: relative;
+  background: var(--prisma-glass-background);
+  border: var(--prisma-border-width) solid var(--prisma-glass-border);
+  box-shadow: var(--prisma-glass-shadow);
+  backdrop-filter: var(--prisma-glass-filter);
+  -webkit-backdrop-filter: var(--prisma-glass-filter);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: var(--prisma-glass-reflection, none);
+    opacity: var(--prisma-glass-reflection-opacity, 0);
+    mask-image: linear-gradient(to bottom, #000 0 22%, transparent 60%);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    background: rgba(248, 250, 252, .94);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.prisma-panel {
+  border-radius: var(--prisma-radius-lg);
+  padding: var(--prisma-space-lg);
+}
+
+.prisma-panel--sm { max-width: var(--prisma-panel-sm); }
+.prisma-panel--md { max-width: var(--prisma-panel-md); }
+.prisma-panel--lg { max-width: var(--prisma-panel-lg); }

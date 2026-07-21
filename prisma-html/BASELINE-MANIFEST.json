@@ -1,0 +1,70 @@
+{
+  "schema_version": "2.1.0",
+  "name": "PRISMA HTML essential narrative refactor",
+  "classification": "REFACTOR",
+  "status": "PASS_SOURCE_RUNTIME_PREVIEW_PENDING",
+  "visual_certified": false,
+  "master_entry": "index.html",
+  "pages": {
+    "page1": "paginas/pagina-1-prisma/index.html",
+    "page2": "paginas/pagina-2-inversionistas/index.html",
+    "page3": "paginas/pagina-3-por-que-prisma/index.html",
+    "page4": "paginas/pagina-4-ecosistema-producto/index.html",
+    "catalog": "sistema-ui/catalogo/index.html"
+  },
+  "identity_asset": "assets/images/prisma-logo.png",
+  "shared_narrative_css": "sistema-ui/css/patrones/narrative-page.css",
+  "shared_narrative_js": "sistema-ui/js/componentes/prisma-narrative.js",
+  "governed_atmospheres": [
+    "assets/atmosphere/aurora-slate-veil.svg",
+    "assets/atmosphere/liquid-operations-smoke.svg"
+  ],
+  "static_checks": 377,
+  "static_errors": 0,
+  "browser_harness": "NOT_RUN_AFTER_NARRATIVE_REFACTOR",
+  "rollback_branch": "stash/prisma-html-before-clear-pearl-fix-20260715",
+  "excluded": [
+    "main merge",
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "pending": [
+    "runtime preview not run",
+    "user visual review",
+    "commit and push decision"
+  ],
+  "visual_authority": "Clear Pearl Glass light",
+  "static_warnings": 0,
+  "narrative_order": [
+    "Qué es PRISMA",
+    "Qué hace",
+    "Cómo funciona",
+    "Por qué es diferente",
+    "Qué ecosistema construye"
+  ],
+  "identity_assets": {
+    "compact_symbol": "assets/images/prisma-logo.png",
+    "full_signature": "assets/images/prisma-logo-full.png",
+    "route_icons": [
+      "assets/icons/route-01-identity.svg",
+      "assets/icons/route-02-action.svg",
+      "assets/icons/route-03-flow.svg",
+      "assets/icons/route-04-difference.svg",
+      "assets/icons/route-05-ecosystem.svg"
+    ]
+  },
+  "index_visual_refinement": {
+    "status": "SOURCE_APPLIED_RUNTIME_PREVIEW_PENDING",
+    "compact_logo_recovered_from_supplied_full_identity": true,
+    "sequence_cards_replaced_by_noninteractive_icons": true,
+    "directory_structure_preserved": true
+  }
+}

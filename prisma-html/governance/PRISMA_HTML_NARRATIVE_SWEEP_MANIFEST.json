@@ -1,0 +1,94 @@
+{
+  "schema_version": "2.0.0",
+  "classification": "REFACTOR",
+  "task": "Align PRISMA HTML to the essential five-part narrative while preserving existing architecture",
+  "status": "PASS_SOURCE_RUNTIME_PREVIEW_PENDING",
+  "visual_certified": false,
+  "branch": "feature/prisma-html-investor-site",
+  "pull_request": 178,
+  "structure_preserved": true,
+  "shared_authority": {
+    "css": "sistema-ui/css/patrones/narrative-page.css",
+    "js": "sistema-ui/js/componentes/prisma-narrative.js",
+    "entry_css": "sistema-ui/css/prisma-ui.css",
+    "entry_js": "sistema-ui/js/prisma-ui.js"
+  },
+  "shared_authority_modified": false,
+  "narrative_order": [
+    "Qué es PRISMA",
+    "Qué hace",
+    "Cómo funciona",
+    "Por qué es diferente",
+    "Qué ecosistema construye"
+  ],
+  "surfaces": {
+    "index": "index.html",
+    "page1": "paginas/pagina-1-prisma/index.html",
+    "investors": "paginas/pagina-2-inversionistas/index.html",
+    "page3": "paginas/pagina-3-por-que-prisma/index.html",
+    "page4": "paginas/pagina-4-ecosistema-producto/index.html",
+    "catalog": "sistema-ui/catalogo/index.html"
+  },
+  "control_policy": {
+    "narrative_actions_max": 2,
+    "investor_actions": 3,
+    "catalog_button_actions": 3,
+    "brand_link_excluded_from_action_count": true
+  },
+  "gates": {
+    "narrative_scenes_per_page": 3,
+    "horizontal_overflow_allowed": false,
+    "no_important": true,
+    "no_document_write": true,
+    "no_active_base64_images": true,
+    "source_validation_required": true,
+    "visual_claim_without_browser": false
+  },
+  "validation": {
+    "status": "PASS",
+    "checks": 377,
+    "warnings": 0,
+    "errors": 0
+  },
+  "browser": {
+    "status": "NOT_RUN"
+  },
+  "excluded": [
+    "main merge",
+    "commit",
+    "push",
+    "Tablet runtime",
+    "PC runtime",
+    "Mobile runtime",
+    "Chart Lab runtime",
+    "Control Center runtime",
+    "database",
+    "Prisma schema",
+    "processes",
+    "ports",
+    "deployments"
+  ],
+  "pending": [
+    "user visual review",
+    "commit and push decision"
+  ],
+  "index_visual_refinement": {
+    "scope": [
+      "index.html",
+      "index.css",
+      "assets/images/prisma-logo.png",
+      "assets/images/prisma-logo-full.png",
+      "assets/icons/route-01-identity.svg",
+      "assets/icons/route-02-action.svg",
+      "assets/icons/route-03-flow.svg",
+      "assets/icons/route-04-difference.svg",
+      "assets/icons/route-05-ecosystem.svg"
+    ],
+    "shared_authority_modified": false,
+    "structure_preserved": true,
+    "interactive_controls_added": 0,
+    "cards_removed_from_sequence": 5,
+    "static_milestone_icons_added": 5,
+    "status": "PASS_SOURCE_RUNTIME_PREVIEW_PENDING"
+  }
+}

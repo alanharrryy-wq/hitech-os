@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0.0",
+  "classification": "FIX",
+  "task": "Restore PRISMA HTML Clear Pearl Glass light authority",
+  "status": "PASS_SOURCE_RUNTIME_PREVIEW_PENDING",
+  "visual_certified": false,
+  "generated_at": "2026-07-15T18:35:01",
+  "branch": "feature/prisma-html-investor-site",
+  "head": "2acfef4c6a6406181d8f865e1875ea9968d0350d",
+  "rollback_branch": "stash/prisma-html-before-clear-pearl-fix-20260715",
+  "validation_mode": "OFFLINE_SOURCE_ONLY",
+  "visual_validation": "NOT_RUN_BY_USER_REQUEST",
+  "pip": "NOT_RUN",
+  "browser": "NOT_RUN",
+  "servers": "NOT_TOUCHED",
+  "ports": "NOT_TOUCHED",
+  "source_validation": {
+    "status": "PASS",
+    "checks": 376,
+    "warnings": 0,
+    "errors": 0,
+    "report": "reports/source-validator-clear-pearl-offline.json"
+  },
+  "shared_authority": {
+    "tokens": "sistema-ui/css/tokens/colores.css",
+    "materiality": "sistema-ui/temas/tema-base.css",
+    "theme": "sistema-ui/temas/tema-prisma.css",
+    "narrative": "sistema-ui/css/patrones/narrative-page.css"
+  },
+  "assets": [
+    "assets/images/prisma-logo.png",
+    "assets/atmosphere/aurora-slate-veil.svg",
+    "assets/atmosphere/liquid-operations-smoke.svg"
+  ],
+  "layers": [
+    {
+      "id": "L0",
+      "name": "pearl atmospheric background"
+    },
+    {
+      "id": "L1",
+      "name": "cold illumination and halo"
+    },
+    {
+      "id": "L2",
+      "name": "Clear Pearl Glass surface"
+    },
+    {
+      "id": "L3",
+      "name": "content and typography"
+    },
+    {
+      "id": "L4",
+      "name": "active interaction state"
+    }
+  ],
+  "excluded": [
+    "browser",
+    "visual certification",
+    "servers",
+    "ports",
+    "runtime apps",
+    "database",
+    "Prisma schema",
+    "deployments"
+  ]
+}

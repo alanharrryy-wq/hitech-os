@@ -1,0 +1,22 @@
+[data-prisma-theme="inversionistas"] {
+  --prisma-page-background:
+    radial-gradient(circle at 16% 12%,rgba(168,205,255,.42),transparent 28rem),
+    radial-gradient(circle at 86% 12%,rgba(255,255,255,.88),transparent 36rem),
+    linear-gradient(145deg,#f8fafc,var(--prisma-color-background-cool) 55%,#f7f9fb);
+  --prisma-glass-background: linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.035) 46%,rgba(255,255,255,.085));
+  --prisma-glass-shadow: inset 0 1px 0 var(--prisma-color-edge-highlight),inset 0 -1px 0 rgba(71,93,124,.07),0 28px 76px var(--prisma-shadow-color);
+  --prisma-glass-reflection: none;
+  --prisma-glass-reflection-opacity: 0;
+  --prisma-button-height: 43px;
+  --prisma-button-padding: 16px;
+  --prisma-button-background: linear-gradient(145deg,rgba(255,255,255,.62) 0%,rgba(238,244,252,.34) 48%,rgba(196,216,244,.25) 100%);
+  --prisma-button-shadow: inset 0 1px 0 rgba(255,255,255,.92),inset 0 -1px 0 rgba(71,93,124,.07),0 12px 22px rgba(57,73,99,.12),0 3px 5px rgba(57,73,99,.08);
+  --prisma-button-filter: blur(22px) saturate(130%);
+  --prisma-button-hover-background: linear-gradient(145deg,rgba(255,255,255,.78) 0%,rgba(226,238,253,.48) 48%,rgba(171,201,242,.34) 100%);
+  --prisma-button-hover-shadow: inset 0 1px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(71,93,124,.08),0 18px 30px rgba(57,73,99,.15),0 5px 8px rgba(57,73,99,.09);
+  --prisma-button-primary-border: rgba(40,104,199,.26);
+  --prisma-button-primary-background: linear-gradient(145deg,#79acee 0%,#4c87da 44%,#2868c7 100%);
+  --prisma-button-primary-shadow: inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(20,62,130,.18),0 15px 26px rgba(40,104,199,.22),0 4px 7px rgba(43,76,123,.12);
+  --prisma-button-primary-hover-background: linear-gradient(145deg,#8ab8f1 0%,#5b94df 44%,#3375d4 100%);
+  --prisma-button-primary-hover-shadow: inset 0 1px 0 rgba(255,255,255,.52),inset 0 -1px 0 rgba(20,62,130,.18),0 20px 34px rgba(40,104,199,.27),0 6px 10px rgba(43,76,123,.13);
+}

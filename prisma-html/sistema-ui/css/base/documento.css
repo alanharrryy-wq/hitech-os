@@ -1,0 +1,20 @@
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--prisma-color-background-page); }
+body {
+  margin: 0;
+  color: var(--prisma-color-text-primary);
+  font-family: var(--prisma-font-sans);
+  background: var(--prisma-page-background);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--prisma-layer-background);
+  pointer-events: none;
+  opacity: var(--prisma-grid-opacity, .42);
+  background-image:
+    linear-gradient(rgba(75,96,126,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75,96,126,.032) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 80%);
+}
