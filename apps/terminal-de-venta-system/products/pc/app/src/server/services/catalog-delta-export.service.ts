@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 import {
@@ -25,6 +26,9 @@ const ENTITY_ORDER: CatalogDeltaEntityType[] = [
   "ProductSupplier",
   "PriceList",
   "PriceListItem",
+  "PromotionRule",
+  "DiscountPolicy",
+  "PricingAuthorizationRule",
   "DropdownCatalog",
   "DropdownOption"
 ];
@@ -122,6 +126,7 @@ function mapTaxRate(row: any) {
     rateBps: row.rateBps,
     isDefault: row.isDefault,
     isActive: row.isActive,
+    projectionVersion: Number(row.version ?? 1),
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt)
   });
@@ -218,6 +223,7 @@ function mapPriceList(row: any) {
     isActive: row.isActive,
     startsAt: iso(row.startsAt),
     endsAt: dateOrNull(row.endsAt),
+    projectionVersion: Number(row.version ?? 1),
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt)
   }));
@@ -232,8 +238,39 @@ function mapPriceListItem(row: any) {
     priceCents: row.priceCents,
     startsAt: iso(row.startsAt),
     endsAt: dateOrNull(row.endsAt),
+    projectionVersion: Number(row.version ?? 1),
     createdAt: iso(row.createdAt),
     updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapPromotionRule(row: any) {
+  return mapRecord("PromotionRule", row, cleanObject({
+    id: row.id, businessId: row.businessId, name: row.name, description: row.description,
+    ruleType: row.ruleType, priority: row.priority, stackingPolicy: row.stackingPolicy,
+    eligibilityJson: row.eligibilityJson, benefitJson: row.benefitJson,
+    startsAt: iso(row.startsAt), endsAt: dateOrNull(row.endsAt), status: row.status,
+    version: Number(row.version ?? 1), createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapDiscountPolicy(row: any) {
+  return mapRecord("DiscountPolicy", row, cleanObject({
+    id: row.id, businessId: row.businessId, name: row.name, discountType: row.discountType,
+    valueBps: row.valueBps, valueCents: row.valueCents,
+    minimumSubtotalCents: row.minimumSubtotalCents, maximumDiscountCents: row.maximumDiscountCents,
+    scopeJson: row.scopeJson, authorizationRuleId: row.authorizationRuleId,
+    startsAt: iso(row.startsAt), endsAt: dateOrNull(row.endsAt), status: row.status,
+    version: Number(row.version ?? 1), createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
+  }));
+}
+
+function mapPricingAuthorizationRule(row: any) {
+  return mapRecord("PricingAuthorizationRule", row, cleanObject({
+    id: row.id, businessId: row.businessId, name: row.name, actionType: row.actionType,
+    thresholdType: row.thresholdType, thresholdValue: row.thresholdValue,
+    requiredPermission: row.requiredPermission, status: row.status,
+    version: Number(row.version ?? 1), createdAt: iso(row.createdAt), updatedAt: iso(row.updatedAt)
   }));
 }
 
@@ -287,6 +324,9 @@ async function collectCatalogRecords(businessId: string): Promise<CatalogDeltaRe
     productSuppliers,
     priceLists,
     priceListItems,
+    promotionRules,
+    discountPolicies,
+    pricingAuthorizationRules,
     dropdownCatalogs,
     dropdownOptions
   ] = await Promise.all([
@@ -300,6 +340,9 @@ async function collectCatalogRecords(businessId: string): Promise<CatalogDeltaRe
     db.productSupplier.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.priceList.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.priceListItem.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
+    db.$queryRawUnsafe('SELECT * FROM "PromotionRule" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
+    db.$queryRawUnsafe('SELECT * FROM "DiscountPolicy" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
+    db.$queryRawUnsafe('SELECT * FROM "PricingAuthorizationRule" WHERE "businessId" = ? ORDER BY "updatedAt" ASC, "id" ASC', businessId).catch(() => []),
     db.dropdownCatalog.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] }),
     db.dropdownOption.findMany({ where: { businessId }, orderBy: [{ updatedAt: "asc" }, { id: "asc" }] })
   ]);
@@ -319,6 +362,9 @@ async function collectCatalogRecords(businessId: string): Promise<CatalogDeltaRe
     ...productSuppliers.map(mapProductSupplier),
     ...priceLists.map(mapPriceList),
     ...priceListItems.map(mapPriceListItem),
+    ...promotionRules.map(mapPromotionRule),
+    ...discountPolicies.map(mapDiscountPolicy),
+    ...pricingAuthorizationRules.map(mapPricingAuthorizationRule),
     ...dropdownCatalogs.map(mapDropdownCatalog),
     ...dropdownOptions.map(mapDropdownOption)
   ].sort((a, b) => a.cursor.localeCompare(b.cursor));

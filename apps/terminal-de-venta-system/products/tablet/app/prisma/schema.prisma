@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 generator client {
   provider = "prisma-client-js"
   output   = "../.generated/prisma-client"
@@ -55,6 +56,7 @@ model Business {
   supportIncidents     SupportIncident[]
   outboxEvents         OutboxEvent[]
   syncCheckpoints      SyncCheckpoint[]
+  pricingProjectionRecords PricingProjectionRecord[]
 }
 
 model Store {
@@ -149,6 +151,28 @@ model PriceListItem {
 
   @@unique([businessId, priceListId, productId, startsAt])
   @@index([businessId, productId])
+}
+
+model PricingProjectionRecord {
+  id               String   @id
+  businessId       String
+  entityType       String
+  entityId         String
+  version          Int      @default(1)
+  status           String   @default("ACTIVE")
+  startsAt         DateTime?
+  endsAt           DateTime?
+  payloadJson      String
+  sourceCursor     String?
+  sourceOccurredAt DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, entityType, entityId])
+  @@index([businessId, status, entityType])
+  @@index([businessId, startsAt, endsAt])
 }
 
 model Customer {

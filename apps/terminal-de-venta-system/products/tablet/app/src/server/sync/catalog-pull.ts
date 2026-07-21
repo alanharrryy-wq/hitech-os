@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 import { DEFAULT_POS_API_BUSINESS_ID, DEFAULT_POS_API_TERMINAL_ID } from "@/server/pos-api/validators";
@@ -25,6 +26,9 @@ const ENTITY_APPLY_ORDER: CatalogDeltaEntityType[] = [
   "ProductSupplier",
   "PriceList",
   "PriceListItem",
+  "PromotionRule",
+  "DiscountPolicy",
+  "PricingAuthorizationRule",
   "DropdownCatalog",
   "DropdownOption"
 ];
@@ -576,6 +580,31 @@ async function applyPriceListItem(tx: any, item: CatalogDeltaRecord, targetBusin
   return null;
 }
 
+async function upsertPricingProjectionRecord(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
+  const payload = item.payload;
+  const entityType = item.entityType;
+  const entityId = asString(payload.id) || item.entityId;
+  const id = `pricing_projection:${targetBusinessId}:${entityType}:${entityId}`.slice(0, 240);
+  const version = asInt(payload.version ?? payload.projectionVersion, 1);
+  const status = asString(payload.status) || (payload.isActive === false ? "INACTIVE" : "ACTIVE");
+  const startsAt = payload.startsAt ? date(payload.startsAt, date(item.occurredAt)) : null;
+  const endsAt = payload.endsAt ? date(payload.endsAt) : null;
+  const occurredAt = date(item.occurredAt);
+  await tx.$executeRawUnsafe(
+    `INSERT INTO "PricingProjectionRecord"
+      ("id","businessId","entityType","entityId","version","status","startsAt","endsAt","payloadJson","sourceCursor","sourceOccurredAt","createdAt","updatedAt")
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT("businessId","entityType","entityId") DO UPDATE SET
+       "version"=excluded."version", "status"=excluded."status",
+       "startsAt"=excluded."startsAt", "endsAt"=excluded."endsAt",
+       "payloadJson"=excluded."payloadJson", "sourceCursor"=excluded."sourceCursor",
+       "sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt` ,
+    id, targetBusinessId, entityType, entityId, version, status, startsAt, endsAt,
+    JSON.stringify(payload), item.cursor, occurredAt, occurredAt, occurredAt
+  );
+  return null;
+}
+
 async function applyDropdownCatalog(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
   const payload = item.payload;
   const id = asString(payload.id) || item.entityId;
@@ -644,7 +673,7 @@ async function applyDropdownOption(tx: any, item: CatalogDeltaRecord, targetBusi
 }
 
 async function applyOne(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
-  if (item.entityType === "TaxRate") return applyTaxRate(tx, item, targetBusinessId);
+  if (item.entityType === "TaxRate") { const issue = await applyTaxRate(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
   if (item.entityType === "Brand") return applyBrand(tx, item, targetBusinessId);
   if (item.entityType === "Supplier") return applySupplier(tx, item, targetBusinessId);
   if (item.entityType === "Product") return applyProduct(tx, item, targetBusinessId);
@@ -652,8 +681,9 @@ async function applyOne(tx: any, item: CatalogDeltaRecord, targetBusinessId: str
   if (item.entityType === "ModifierOption") return applyModifierOption(tx, item, targetBusinessId);
   if (item.entityType === "ProductModifierGroup") return applyProductModifierGroup(tx, item, targetBusinessId);
   if (item.entityType === "ProductSupplier") return applyProductSupplier(tx, item, targetBusinessId);
-  if (item.entityType === "PriceList") return applyPriceList(tx, item, targetBusinessId);
-  if (item.entityType === "PriceListItem") return applyPriceListItem(tx, item, targetBusinessId);
+  if (item.entityType === "PriceList") { const issue = await applyPriceList(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
+  if (item.entityType === "PriceListItem") { const issue = await applyPriceListItem(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
+  if (item.entityType === "PromotionRule" || item.entityType === "DiscountPolicy" || item.entityType === "PricingAuthorizationRule") return upsertPricingProjectionRecord(tx, item, targetBusinessId);
   if (item.entityType === "DropdownCatalog") return applyDropdownCatalog(tx, item, targetBusinessId);
   if (item.entityType === "DropdownOption") return applyDropdownOption(tx, item, targetBusinessId);
   return conflict("unknown_entity", `Unsupported entity ${item.entityType}.`, item, "rejected");
