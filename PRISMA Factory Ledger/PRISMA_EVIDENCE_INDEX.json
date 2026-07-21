@@ -92,6 +92,81 @@
         "Installer is runtime verified",
         "Distribution is ready"
       ]
+    },
+    {
+      "artifact": "custsurf 1507 185809 result.zip",
+      "type": "tablet_customer_surface_reduction",
+      "scope": [
+        "tablet",
+        "productization",
+        "chart_lab_protection"
+      ],
+      "status": "PASS",
+      "proves": [
+        "Known internal/lab Tablet page directories are outside the App Router",
+        "Customer-facing Tablet routes remain present",
+        "Tablet outbox API remains present",
+        "Chart Lab source tree was byte-identical before and after",
+        "Retired routes are blocked with HTTP 404 by Tablet middleware"
+      ],
+      "doesNotProve": [
+        "Fresh browser runtime ScreensQA",
+        "Hosted production deployment",
+        "Clean distributable release artifact"
+      ]
+    },
+    {
+      "artifact": "custodia 1707 1927 result.zip",
+      "type": "local_first_data_custody_contract",
+      "scope": [
+        "productization",
+        "privacy_boundary",
+        "remote_ops",
+        "support"
+      ],
+      "status": "PASS_SOURCE_READY",
+      "proves": [
+        "Canonical local-first custody contract installed",
+        "Machine-readable contract installed",
+        "Security/privacy and Remote Ops docs reference the contract",
+        "Factory Ledger and evidence indices registered",
+        "Changed files validated and rollback created"
+      ],
+      "doesNotProve": [
+        "Runtime zero egress",
+        "Production no-telemetry configuration",
+        "Every third-party integration complies",
+        "Legal compliance certification"
+      ]
+    },
+    {
+      "artifact": "mobproj1 focused local verification",
+      "type": "mobile_secure_projection_gateway_phase1",
+      "scope": [
+        "mobile",
+        "auth_context",
+        "projection_gateway",
+        "cache",
+        "privacy_boundary"
+      ],
+      "status": "PASS_LOCAL_VERIFIED",
+      "proves": [
+        "All current Mobile data routes are guarded in source",
+        "Snapshot query scope overrides are removed",
+        "Five phase 1 governed read models exist",
+        "Operational snapshot persistence is removed",
+        "Legacy v18 cache is purged",
+        "Focused static verification and Mobile typecheck passed"
+      ],
+      "doesNotProve": [
+        "Hosted live session issuer",
+        "Runtime signed-session E2E",
+        "LAN or cloud access",
+        "Offline capability",
+        "Mobile mutations",
+        "Production zero-egress certification"
+      ]
     }
-  ]
+  ],
+  "updatedAt": "2026-07-20T15:30:00-06:00"
 }

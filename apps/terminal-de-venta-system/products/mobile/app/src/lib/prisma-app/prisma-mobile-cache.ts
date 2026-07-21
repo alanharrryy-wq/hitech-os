@@ -1,43 +1,56 @@
-import { PrismaMobileClientSnapshotSchema, type PrismaMobileClientSnapshot, type PrismaMobileSnapshotPayload } from "./prisma-mobile-snapshot-contract";
+import type {
+  PrismaMobileClientSnapshot,
+  PrismaMobileSnapshotPayload
+} from "./prisma-mobile-snapshot-contract";
 
-const PRISMA_MOBILE_CACHE_KEY = "prisma.mobile.snapshot.v18";
-const MAX_CACHE_AGE_MS = 1000 * 60 * 30;
+const LEGACY_PRISMA_MOBILE_CACHE_KEY = "prisma.mobile.snapshot.v18";
+const MAX_MEMORY_CACHE_AGE_MS = 1000 * 60 * 5;
 
-type CachedSnapshotRecord = {
-  snapshot: PrismaMobileSnapshotPayload;
-  source: "local-cache";
-  fetchedAt: string;
-  stale: boolean;
-  errors: string[];
-};
+let memorySnapshot: PrismaMobileClientSnapshot | null = null;
 
-export function readCachedPrismaMobileSnapshot(): PrismaMobileClientSnapshot | null {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(PRISMA_MOBILE_CACHE_KEY);
-  if (!raw) return null;
+function purgeLegacyPersistentSnapshot(): void {
+  if (typeof window === "undefined") return;
   try {
-    const parsed = JSON.parse(raw) as CachedSnapshotRecord;
-    const fetchedAt = Date.parse(parsed.fetchedAt);
-    const isExpired = Number.isNaN(fetchedAt) || Date.now() - fetchedAt > MAX_CACHE_AGE_MS;
-    return PrismaMobileClientSnapshotSchema.parse({
-      ...parsed,
-      source: "local-cache",
-      stale: true,
-      errors: isExpired ? ["La copia local existe, pero ya no está fresca."] : []
-    });
+    window.localStorage.removeItem(LEGACY_PRISMA_MOBILE_CACHE_KEY);
   } catch {
-    window.localStorage.removeItem(PRISMA_MOBILE_CACHE_KEY);
-    return null;
+    // Storage can be unavailable in hardened browsers. The cache remains memory-only.
   }
 }
 
+export function readCachedPrismaMobileSnapshot(): PrismaMobileClientSnapshot | null {
+  purgeLegacyPersistentSnapshot();
+  if (!memorySnapshot) return null;
+
+  const fetchedAt = Date.parse(memorySnapshot.fetchedAt);
+  const expired =
+    Number.isNaN(fetchedAt) ||
+    Date.now() - fetchedAt > MAX_MEMORY_CACHE_AGE_MS;
+
+  if (expired) {
+    memorySnapshot = null;
+    return null;
+  }
+
+  return {
+    ...memorySnapshot,
+    source: "local-cache",
+    stale: true,
+    errors: ["Lectura temporal en memoria; solicita datos frescos."]
+  };
+}
+
 export function writeCachedPrismaMobileSnapshot(snapshot: PrismaMobileSnapshotPayload): void {
-  if (typeof window === "undefined") return;
-  const record: CachedSnapshotRecord = { snapshot, source: "local-cache", fetchedAt: new Date().toISOString(), stale: true, errors: [] };
-  try { window.localStorage.setItem(PRISMA_MOBILE_CACHE_KEY, JSON.stringify(record)); } catch {}
+  purgeLegacyPersistentSnapshot();
+  memorySnapshot = {
+    snapshot,
+    source: "local-cache",
+    fetchedAt: new Date().toISOString(),
+    stale: true,
+    errors: []
+  };
 }
 
 export function clearCachedPrismaMobileSnapshot(): void {
-  if (typeof window === "undefined") return;
-  window.localStorage.removeItem(PRISMA_MOBILE_CACHE_KEY);
+  memorySnapshot = null;
+  purgeLegacyPersistentSnapshot();
 }

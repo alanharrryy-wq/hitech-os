@@ -1,29 +1,20 @@
+// PRISMA_PRICING_OWNER_V1
 import { AppShell } from "@components/layout/app-shell";
-import { SectionCard } from "@components/ui/section-card";
-import { pcI07ValidationData } from "@/lib/i07/validation-data";
+import { PricingPolicyWorkspace } from "@components/pricing/pricing-policy-workspace";
+import { getPricingPolicySnapshot } from "@/server/services/pricing-policy.service";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function PricingPolicyPage() {
+  const workspace = await getPricingPolicySnapshot();
   return (
     <AppShell currentPath="/politica-precios">
       <section className="hero">
-        <div className="kicker">capa i07</div>
+        <div className="kicker">precios, impuestos y autorización</div>
         <h1 style={{ margin: 0 }}>Política de precios</h1>
-        <div className="subtle">Vigilancia de antigüedad y presión comercial para actualización de precios.</div>
+        <div className="subtle">Owners canónicos con auditoría, outbox, versionado e idempotencia.</div>
       </section>
-      <SectionCard title="Regla vigente" subtitle="Política operativa para esta iteración.">
-        <div className="list">
-          <div className="list-item"><strong>Precio desactualizado:</strong> mayor a {pcI07ValidationData.policy.priceStaleDays} días desde <code>updatedAt</code>.</div>
-          <div className="list-item"><strong>Stale &gt; 14 días:</strong> {pcI07ValidationData.totals.stale_prices_14d}</div>
-          <div className="list-item"><strong>Stale &gt; 7 días:</strong> {pcI07ValidationData.totals.stale_prices_7d}</div>
-        </div>
-      </SectionCard>
-      <SectionCard title="Presión comercial" subtitle="Muestra de SKUs viejos con movimiento de venta proxy.">
-        <div className="list">
-          {pcI07ValidationData.samples.salePressureTop.slice(0, 8).map((item) => (
-            <div key={item.sku} className="list-item">{item.sku} · {item.name} · {item.priceAgeDays} días · {item.unitsSold} uds</div>
-          ))}
-        </div>
-      </SectionCard>
+      <PricingPolicyWorkspace initialWorkspace={workspace} />
     </AppShell>
   );
 }

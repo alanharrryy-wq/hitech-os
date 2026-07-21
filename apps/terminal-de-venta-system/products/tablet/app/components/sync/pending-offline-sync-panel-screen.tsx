@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import type { PendingSendStatus, SyncPanelResponse } from "@/lib/pending-offline-sync/sync-panel-contract";
 import { filterSyncItems } from "@/lib/pending-offline-sync/sync-panel-view-model";
@@ -184,7 +183,7 @@ function syncHeadline(panel: SyncPanelResponse | null) {
   return "Pendientes al día";
 }
 
-export function PendingOfflineSyncPanelScreen() {
+export function SyncWorkspace() {
   const [panel, setPanel] = useState<SyncPanelResponse | null>(null);
   const [filter, setFilter] = useState<FilterMode>("needs_attention");
   const [actionMode, setActionMode] = useState<ActionMode>(null);
@@ -316,7 +315,7 @@ export function PendingOfflineSyncPanelScreen() {
       title="Pendientes y conexión"
       subtitle="Lo que quedó guardado localmente, lo que falló y lo que necesita atención."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
-      dockMode="inline"
+      showRouteHeader={false}
     >
       <main className={styles.page}>
         <section className={styles.hero}>
@@ -342,14 +341,6 @@ export function PendingOfflineSyncPanelScreen() {
             </button>
           </div>
         </section>
-
-        <QuickActionStrip label="Acciones rapidas de pendientes">
-          <QuickActionTile title={sentAwaitingAckCount > 0 && pendingOrFailedCount === 0 ? "Confirmar enviados" : "Enviar pendientes"} description="Envía pendientes y confirma enviados contra PC sin duplicar ventas." actionLabel={actionMode === "sending" ? "Enviando" : sentAwaitingAckCount > 0 && pendingOrFailedCount === 0 ? "Confirmar" : "Enviar"} icon="bell" tone="primary" onClick={() => void dispatchNow(false)} disabled={busy || sendableCount === 0} owner="sync" />
-          <QuickActionTile title="Reintentar pendientes" description="Prepara fallidos y ejecuta reintento protegido." actionLabel={actionMode === "retrying" ? "Reintentando" : "Reintentar"} icon="arrow-right" tone="warning" onClick={() => void retryFailed()} disabled={busy || retryableCount === 0} owner="sync" />
-          <QuickActionTile title="Exportar respaldo" description="Abre el respaldo offline de la cola local." actionLabel="Respaldo" icon="save" tone="sync" href="/offline" owner="offline" />
-          <QuickActionTile title="Modo offline" description="Revisa ventas y movimientos guardados en esta Tablet." actionLabel="Ver" icon="dashboard" tone="license" href="/offline" owner="offline" />
-          <QuickActionTile title="Actualizar estado" description="Relee pendientes, licencia y salud PC." actionLabel={busy ? "Actualizando" : "Actualizar"} icon="search" tone="neutral" onClick={() => void load()} disabled={busy} owner="sync" />
-        </QuickActionStrip>
 
         {busy || dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}
         {error ? <div className={styles.alert} role="alert">{error}</div> : null}
@@ -465,6 +456,8 @@ export function PendingOfflineSyncPanelScreen() {
     </PrismaTabletShellUnified>
   );
 }
+
+export const PendingOfflineSyncPanelScreen = SyncWorkspace;
 
 function readError(error: unknown) {
   if (error instanceof Error) return visibleSyncError(error.message);

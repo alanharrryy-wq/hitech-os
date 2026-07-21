@@ -1,6 +1,7 @@
 {
   "contractId": "PRISMA_SYNC_EVENT_CONTRACT_V1",
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
+  "eventVersion": "1.0.0",
   "sourceOfTruth": "shared/contracts/sync-event-contract.v1.json",
   "eventTopics": [
     "sale.created",
@@ -15,6 +16,7 @@
     "shift.opened",
     "shift.closed",
     "stock.adjusted",
+    "inventory.operation.recorded",
     "catalog.product.created",
     "catalog.product.updated",
     "sync.event.sent",
@@ -33,7 +35,8 @@
     "sent",
     "failed",
     "acked",
-    "conflict"
+    "conflict",
+    "dead_letter"
   ],
   "lifecycleStates": [
     "created_local",
@@ -58,22 +61,97 @@
     "sale_outside_shift",
     "inconsistent_sequence",
     "invalid_schema",
-    "unknown_topic"
+    "unknown_topic",
+    "wrong_scope",
+    "payload_hash_mismatch",
+    "idempotency_payload_mismatch",
+    "unsupported_event_version",
+    "unsupported_schema_version",
+    "stale_sequence",
+    "batch_checksum_mismatch"
   ],
   "envelopeFields": [
     "eventId",
+    "source",
+    "subject",
     "eventType",
     "topic",
-    "idempotencyKey",
-    "businessId",
-    "terminalId",
-    "actorId",
-    "source",
-    "occurredAt",
-    "payload",
+    "eventVersion",
     "schemaVersion",
-    "correlationId"
+    "tenantId",
+    "customerId",
+    "businessId",
+    "storeId",
+    "terminalId",
+    "deviceId",
+    "actorId",
+    "aggregateId",
+    "originRecordId",
+    "idempotencyKey",
+    "sequence",
+    "correlationId",
+    "causationId",
+    "traceId",
+    "occurredAt",
+    "capturedAt",
+    "payloadHash",
+    "batchId",
+    "batchChecksum",
+    "payload"
   ],
+  "requiredTransportFields": [
+    "eventId",
+    "source",
+    "subject",
+    "eventType",
+    "topic",
+    "eventVersion",
+    "schemaVersion",
+    "tenantId",
+    "businessId",
+    "storeId",
+    "terminalId",
+    "deviceId",
+    "actorId",
+    "aggregateId",
+    "originRecordId",
+    "idempotencyKey",
+    "sequence",
+    "correlationId",
+    "causationId",
+    "traceId",
+    "occurredAt",
+    "capturedAt",
+    "payloadHash",
+    "batchId",
+    "batchChecksum",
+    "payload"
+  ],
+  "scopeFields": [
+    "tenantId",
+    "customerId",
+    "businessId",
+    "storeId",
+    "terminalId",
+    "deviceId",
+    "actorId"
+  ],
+  "timestampPolicy": {
+    "transportFormat": "ISO-8601 UTC",
+    "acceptedInputFormats": [
+      "ISO-8601",
+      "epoch-milliseconds",
+      "epoch-seconds"
+    ],
+    "normalizationRequired": true,
+    "clockSkewMustBeObserved": true
+  },
+  "integrityPolicy": {
+    "payloadHash": "sha256(stable-json(payload))",
+    "batchChecksum": "sha256(stable-json([{eventId,payloadHash,sequence}]))",
+    "sameIdempotencyKeyDifferentPayload": "conflict",
+    "checkpointAdvance": "accepted-or-duplicate-only"
+  },
   "compatibilityMappings": [
     {
       "legacy": "topic",

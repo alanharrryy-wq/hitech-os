@@ -18,6 +18,7 @@ function buildTicketEvidence(sale: Awaited<ReturnType<typeof posEngineRepository
     businessId: sale.businessId,
     terminalId: sale.terminalId,
     cashSessionId: sale.cashSessionId,
+    customerId: sale.customerId,
     clientRequestId: sale.clientRequestId,
     status: sale.status,
     completedAt: sale.completedAt?.toISOString() ?? sale.createdAt.toISOString(),

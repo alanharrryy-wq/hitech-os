@@ -23,6 +23,17 @@ model Business {
   stores                  Store[]
   terminals               Terminal[]
   products                Product[]
+  productVariants         ProductVariant[]
+  modifierGroups          ModifierGroup[]
+  modifierOptions         ModifierOption[]
+  productModifierGroups   ProductModifierGroup[]
+  customers               Customer[]
+  customerContacts        CustomerContact[]
+  customerFiscalProfiles  CustomerFiscalProfile[]
+  customerSegments        CustomerSegment[]
+  customerSegmentMemberships CustomerSegmentMembership[]
+  customerCreditEntries   CustomerCreditEntry[]
+  customerMergeCases      CustomerMergeCase[]
   barcodes                Barcode[]
   priceLists              PriceList[]
   priceListItems          PriceListItem[]
@@ -53,6 +64,7 @@ model Business {
   permissions             Permission[]
   auditEvents             AuditEvent[]
   supportIncidents        SupportIncident[]
+  operationalTasks        OperationalTask[]
   outboxEvents            OutboxEvent[]
   syncAttempts            SyncAttempt[]
   syncConflicts           SyncConflict[]
@@ -156,6 +168,156 @@ model PriceListItem {
   @@index([businessId, productId])
 }
 
+model Customer {
+  id              String   @id
+  businessId      String
+  displayName     String
+  phone           String?
+  email           String?
+  fiscalDataJson  String?
+  segment         String?
+  creditCents     Int      @default(0)
+  isActive        Boolean  @default(true)
+  version         Int      @default(1)
+  sourceSurface   String   @default("pc")
+  tombstoneAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business           Business                    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contacts           CustomerContact[]
+  fiscalProfiles     CustomerFiscalProfile[]
+  creditEntries      CustomerCreditEntry[]
+  segmentMemberships CustomerSegmentMembership[]
+  mergeSources       CustomerMergeCase[]         @relation("CustomerMergeSource")
+  mergeTargets       CustomerMergeCase[]         @relation("CustomerMergeTarget")
+  sales              Sale[]
+
+  @@unique([id, businessId])
+  @@index([businessId, displayName])
+  @@index([businessId, email])
+  @@index([businessId, updatedAt])
+  @@index([businessId, tombstoneAt])
+}
+
+model CustomerContact {
+  id         String   @id
+  businessId String
+  customerId String
+  label      String
+  channel    String
+  value      String
+  isPrimary  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, customerId, channel, value])
+  @@index([businessId, customerId, isPrimary])
+}
+
+model CustomerFiscalProfile {
+  id             String   @id
+  businessId     String
+  customerId     String
+  legalName      String
+  rfc            String?
+  taxRegime      String?
+  postalCode     String?
+  usageCode      String?
+  invoicingEmail String?
+  isPrimary      Boolean  @default(true)
+  version        Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@index([businessId, customerId, isPrimary])
+  @@index([businessId, rfc])
+}
+
+model CustomerSegment {
+  id         String   @id
+  businessId String
+  name       String
+  color      String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  business    Business                    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  memberships CustomerSegmentMembership[]
+
+  @@unique([id, businessId])
+  @@unique([businessId, name])
+  @@index([businessId, isActive, name])
+}
+
+model CustomerSegmentMembership {
+  id         String   @id
+  businessId String
+  customerId String
+  segmentId  String
+  createdAt  DateTime @default(now())
+
+  business Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer Customer        @relation(fields: [customerId, businessId], references: [id, businessId], onDelete: Cascade)
+  segment  CustomerSegment @relation(fields: [segmentId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([businessId, customerId, segmentId])
+  @@index([businessId, segmentId])
+}
+
+model CustomerCreditEntry {
+  id                String   @id
+  businessId        String
+  customerId        String
+  saleId            String?
+  entryType         String
+  amountCents       Int
+  balanceAfterCents Int
+  reason            String?
+  idempotencyKey    String?
+  createdAt         DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId, businessId], references: [id, businessId], onDelete: Cascade)
+  sale     Sale?    @relation(fields: [saleId, businessId], references: [id, businessId])
+
+  @@unique([id, businessId])
+  @@unique([businessId, customerId, idempotencyKey])
+  @@index([businessId, customerId, createdAt])
+  @@index([businessId, saleId])
+}
+
+model CustomerMergeCase {
+  id               String   @id
+  businessId       String
+  sourceCustomerId String
+  targetCustomerId String
+  status           String   @default("open")
+  reason           String?
+  requestedBy      String?
+  approvedBy       String?
+  createdAt        DateTime @default(now())
+  resolvedAt       DateTime?
+
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sourceCustomer Customer @relation("CustomerMergeSource", fields: [sourceCustomerId, businessId], references: [id, businessId], onDelete: Restrict)
+  targetCustomer Customer @relation("CustomerMergeTarget", fields: [targetCustomerId, businessId], references: [id, businessId], onDelete: Restrict)
+
+  @@unique([id, businessId])
+  @@index([businessId, status, createdAt])
+  @@index([businessId, sourceCustomerId])
+  @@index([businessId, targetCustomerId])
+}
+
 model Product {
   id          String   @id
   businessId  String
@@ -167,6 +329,7 @@ model Product {
   costCents   Int
   stockOnHand Int      @default(0)
   taxRateId   String?
+  mediaRef    String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
@@ -184,12 +347,111 @@ model Product {
   saleLines            SaleLine[]
   saleReturnLines      SaleReturnLine[]
   replenishmentSignals ReplenishmentSignal[]
+  variantParents       ProductVariant[] @relation("ProductVariantParent")
+  variantSellables     ProductVariant[] @relation("ProductVariantSellable")
+  modifierGroups       ProductModifierGroup[]
 
   @@unique([businessId, sku])
   @@unique([id, businessId])
   @@index([businessId, brandId])
   @@index([businessId, isActive])
   @@index([businessId, category])
+}
+
+model ProductVariant {
+  id               String   @id
+  businessId       String
+  productId        String
+  variantProductId String
+  label            String
+  attributesJson   String?
+  sortOrder        Int      @default(0)
+  status           String   @default("ACTIVE")
+  idempotencyKey   String?
+  version          Int      @default(1)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  product        Product  @relation("ProductVariantParent", fields: [productId, businessId], references: [id, businessId], onDelete: Cascade)
+  variantProduct Product  @relation("ProductVariantSellable", fields: [variantProductId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, idempotencyKey])
+  @@unique([businessId, variantProductId])
+  @@unique([businessId, productId, variantProductId])
+  @@index([businessId, productId, status, sortOrder])
+  @@index([businessId, variantProductId])
+}
+
+model ModifierGroup {
+  id            String   @id
+  businessId    String
+  name          String
+  minSelections Int      @default(0)
+  maxSelections Int      @default(1)
+  status        String   @default("ACTIVE")
+  sortOrder     Int      @default(0)
+  idempotencyKey String?
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+
+  business     Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  options      ModifierOption[]
+  productLinks ProductModifierGroup[]
+
+  @@unique([id, businessId])
+  @@unique([businessId, name])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, sortOrder])
+}
+
+model ModifierOption {
+  id              String   @id
+  businessId      String
+  modifierGroupId String
+  name            String
+  priceDeltaCents Int      @default(0)
+  isDefault       Boolean  @default(false)
+  status          String   @default("ACTIVE")
+  sortOrder       Int      @default(0)
+  idempotencyKey  String?
+  version         Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  group    ModifierGroup @relation(fields: [modifierGroupId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, modifierGroupId, name])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, modifierGroupId, status, sortOrder])
+}
+
+model ProductModifierGroup {
+  id              String   @id
+  businessId      String
+  productId       String
+  modifierGroupId String
+  required        Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  status          String   @default("ACTIVE")
+  idempotencyKey  String?
+  version         Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  product  Product       @relation(fields: [productId, businessId], references: [id, businessId], onDelete: Cascade)
+  group    ModifierGroup @relation(fields: [modifierGroupId, businessId], references: [id, businessId], onDelete: Cascade)
+
+  @@unique([id, businessId])
+  @@unique([businessId, productId, modifierGroupId])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, productId, status, sortOrder])
+  @@index([businessId, modifierGroupId, status])
 }
 
 model Barcode {
@@ -512,6 +774,7 @@ model Sale {
   businessId    String
   terminalId    String
   cashSessionId String?
+  customerId    String?
   folio         String
   cashier       String
   totalCents    Int
@@ -521,6 +784,8 @@ model Sale {
   business       Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
   terminal       Terminal            @relation(fields: [terminalId, businessId], references: [id, businessId])
   cashSession    CashSession?        @relation(fields: [cashSessionId], references: [id], onDelete: SetNull)
+  customer       Customer?           @relation(fields: [customerId, businessId], references: [id, businessId])
+  customerCreditEntries CustomerCreditEntry[]
   lines          SaleLine[]
   paymentTenders SalePaymentTender[]
   returnLines    SaleReturnLine[]
@@ -528,6 +793,7 @@ model Sale {
   @@unique([businessId, folio])
   @@unique([id, businessId])
   @@index([businessId, createdAt])
+  @@index([businessId, customerId])
 }
 
 model SaleLine {
@@ -540,6 +806,7 @@ model SaleLine {
   qty         Int
   priceCents  Int
   totalCents  Int
+  modifierSnapshotJson String?
   createdAt   DateTime @default(now())
 
   business    Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
@@ -643,6 +910,8 @@ model User {
   cashAdjustments          CashAdjustment[]
   openedSupportIncidents   SupportIncident[] @relation("SupportIncidentOpenedBy")
   assignedSupportIncidents SupportIncident[] @relation("SupportIncidentAssignedTo")
+  createdOperationalTasks OperationalTask[] @relation("OperationalTaskCreatedBy")
+  assignedOperationalTasks OperationalTask[] @relation("OperationalTaskAssignedTo")
 
   @@unique([businessId, email])
   @@unique([id, businessId])
@@ -726,6 +995,37 @@ model SupportIncident {
 
   @@unique([id, businessId])
   @@index([businessId, status, severity])
+  @@index([businessId, createdAt])
+}
+
+model OperationalTask {
+  id             String   @id
+  businessId     String
+  createdById    String?
+  assignedToId   String?
+  title          String
+  description    String?
+  area           String
+  priority       String   @default("medium")
+  status         String   @default("open")
+  href           String?
+  source         String   @default("manual")
+  idempotencyKey String?
+  version        Int      @default(1)
+  dueAt          DateTime?
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  createdBy  User?    @relation("OperationalTaskCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  assignedTo User?    @relation("OperationalTaskAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@unique([id, businessId])
+  @@unique([businessId, idempotencyKey])
+  @@index([businessId, status, priority])
+  @@index([businessId, assignedToId, updatedAt])
   @@index([businessId, createdAt])
 }
 

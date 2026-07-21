@@ -8,7 +8,7 @@ const requiredFiles = [
   "src/components/prisma-app/prisma-mobile-dashboard.module.css",
   "src/components/prisma-app/index.ts",
   "docs/prisma-app/PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION.md",
-  "docs/prisma-app/qa/prisma-app-mobile-27-premium-navigation-scenarios.json"
+  "tools/fixtures/prisma-app-mobile-27-premium-navigation-scenarios.json"
 ];
 
 function read(relativePath) {
@@ -27,7 +27,7 @@ const dashboard = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
 const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
 const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css");
 const pkg = JSON.parse(read("package.json"));
-const qa = JSON.parse(read("docs/prisma-app/qa/prisma-app-mobile-27-premium-navigation-scenarios.json"));
+const qa = JSON.parse(read("tools/fixtures/prisma-app-mobile-27-premium-navigation-scenarios.json"));
 const longSurfaceTags = [
   "<PrismaMobileCommandCenter",
   "<PrismaMobileActionInbox",
@@ -60,7 +60,7 @@ const checks = [
   [longSurfaceTags.every((tag) => !dashboard.includes(tag)), "dashboard no longer renders long modules in one waterfall"],
   [navigator.includes('role="tablist"') && navigator.includes('role="tab"') && navigator.includes('role="tabpanel"'), "navigator exposes accessible tab roles"],
   [navigator.includes("ArrowRight") && navigator.includes("ArrowLeft") && navigator.includes("Home") && navigator.includes("End"), "navigator supports keyboard tab rail"],
-  [navigator.includes("PrismaMobileHealthRadar") && navigator.includes("PrismaMobileDecisionLedger") && navigator.includes("PrismaMobilePulseTimeline"), "navigator sections include previously raw modules"],
+  [navigator.includes('const TAB_ORDER: PremiumTabId[] = ["inicio", "ventas", "operacion", "licencias", "alertas", "stock", "sistema"]'), "navigator declares the seven canonical Mobile sections"],
   [css.includes("PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION START"), "css marker present"],
   [css.includes(".premiumTabRail") && css.includes(".premiumTabPanel") && css.includes(".premiumTabActive"), "premium navigation styles present"],
   [css.includes(".decisionLedger") && css.includes(".pulseTimeline") && css.includes(".healthRadarAxes"), "raw text components have formatting styles"],
@@ -77,5 +77,3 @@ if (failed.length > 0) {
   throw new Error(`PRISMA App Mobile 27 premium navigation verification failed: ${failed.map(([, label]) => label).join(", ")}`);
 }
 console.log("OK PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION verified");
-
-

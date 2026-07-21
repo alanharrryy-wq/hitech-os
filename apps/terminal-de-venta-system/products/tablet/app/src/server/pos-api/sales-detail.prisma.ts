@@ -285,6 +285,7 @@ async function mapSaleDetail(sale: any, resolvedBy: SaleDetailResolvedBy) {
     terminalId: sale.terminalId,
     terminalName: sale.terminal?.name ?? null,
     cashSessionId: sale.cashSessionId ?? null,
+    customerId: sale.customerId ?? null,
     cashSession: sale.cashSession
       ? {
           id: sale.cashSession.id,
@@ -343,6 +344,7 @@ function hydrateRawSale(row: RawRow, lines: RawRow[], paymentTenders: RawRow[], 
     businessId: asString(row.businessId),
     terminalId: asString(row.terminalId),
     cashSessionId,
+    customerId: asNullableString(row.customerId),
     clientRequestId: asNullableString(row.clientRequestId),
     folio: asString(row.folio),
     cashier: asString(row.cashier, "tablet-cashier"),
@@ -404,7 +406,7 @@ async function rawSaleByNeedle(input: GetSaleDetailInput, needle: string, scoped
 
   const saleRows = await rawRows(
     `SELECT
-       s.id, s.businessId, s.terminalId, s.cashSessionId, s.clientRequestId, s.folio, s.cashier,
+       s.id, s.businessId, s.terminalId, s.cashSessionId, s.customerId, s.clientRequestId, s.folio, s.cashier,
        s.subtotalCents, s.discountCents, s.totalCents, s.completedAt, s.paymentMethod,
        s.cashReceivedCents, s.changeCents, s.status, s.createdAt,
        t.name AS terminalName,

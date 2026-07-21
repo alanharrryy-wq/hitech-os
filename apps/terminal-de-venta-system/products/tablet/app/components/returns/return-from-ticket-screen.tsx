@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
 import type { SalesTodaySummary, SalesTodayTicket } from "@/lib/sales-today/types";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
@@ -49,6 +48,17 @@ function selectedCount(selection: ReturnSelection) {
 
 function HeaderState({ tone, children }: { tone: "ok" | "warn" | "danger" | "neutral"; children: string }) {
   return <TabletShellStatusPill tone={tone}>{children}</TabletShellStatusPill>;
+}
+
+type ReturnsWorkspaceProps =
+  | { mode: "landing"; businessId?: string; runtimeSnapshot?: TabletRuntimeSnapshot }
+  | { mode: "ticket"; saleId: string; businessId?: string; runtimeSnapshot?: TabletRuntimeSnapshot };
+
+export function ReturnsWorkspace(props: ReturnsWorkspaceProps) {
+  if (props.mode === "ticket") {
+    return <ReturnFromTicketScreen saleId={props.saleId} businessId={props.businessId} runtimeSnapshot={props.runtimeSnapshot} />;
+  }
+  return <ReturnsLandingScreen businessId={props.businessId} runtimeSnapshot={props.runtimeSnapshot} />;
 }
 
 export function ReturnsLandingScreen({
@@ -105,6 +115,7 @@ export function ReturnsLandingScreen({
       subtitle="Elige un ticket cerrado y devuelve productos sin perder evidencia de caja."
       status={<HeaderState tone={state.status === "error" ? "danger" : tickets.length ? "ok" : "warn"}>{state.status === "error" ? "Revisar lectura" : `${tickets.length} tickets elegibles`}</HeaderState>}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <main className={styles.returnPage}
         data-surface="tablet"
@@ -149,13 +160,6 @@ export function ReturnsLandingScreen({
             <a data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-a-2" data-kind="button" data-role="button" className={styles.secondaryButton} href="/sales/today">Ver ventas de hoy</a>
           </div>
         </section>
-
-        <QuickActionStrip label="Acciones rapidas de devoluciones">
-          <QuickActionTile title="Nueva devolucion" description="Selecciona un ticket cerrado y conserva evidencia local." actionLabel="Elegir ticket" icon="receipt" tone="inventory" href="#tickets-devolucion" owner="returns" kind="quick-create" />
-          <QuickActionTile title="Buscar ticket" description="La lista muestra tickets elegibles del día." actionLabel="Buscar" icon="search" tone="neutral" href="#tickets-devolucion" owner="returns" />
-          <QuickActionTile title="Ventas recientes" description="Consulta tickets cerrados antes de devolver." actionLabel="Ver ventas" icon="chart" tone="primary" href="/sales/today" owner="sales" />
-          <QuickActionTile title="Actualizar tickets" description="Relee tickets cerrados sin cambiar datos." actionLabel="Actualizar" icon="bell" tone="sync" onClick={() => setReloadToken((value) => value + 1)} owner="returns" />
-        </QuickActionStrip>
 
         {returnFlash ? (
           <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-3" data-kind="badge" data-role="container" className={styles.success} role="status" aria-live="polite">
@@ -326,6 +330,8 @@ export function ReturnFromTicketScreen({
       subtitle="Selecciona productos del ticket cerrado y registra la devolución contextual."
       status={<HeaderState tone={done ? "ok" : amount > 0 ? "warn" : state.status === "error" ? "danger" : "neutral"}>{done || (amount > 0 ? `${qty} pzas · ${formatMoney(amount)}` : "Selecciona productos")}</HeaderState>}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
+      showBottomDock={false}
     >
       <main data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-main-11" data-kind="panel" data-role="container" className={styles.returnPage}>
         {done ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="return_from_ticket_screen" data-target="return-from-ticket-screen-div-12" data-kind="panel" data-role="container" className={styles.success}>{done}</div> : null}

@@ -13,6 +13,8 @@ export const TABLET_SYNC_EVENTS: ReadonlyArray<SharedSyncEvent> = [
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
+  "inventory.operation.recorded",
+  "customer.created",
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",

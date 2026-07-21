@@ -1,6 +1,6 @@
 export const PRISMA_TABLET_VISUAL_V2 = {
-  name: "PRISMA Softglass Terminal V2",
-  dataAttribute: "PRISMA_SOFTGLASS_TERMINAL_V2",
+  name: "PRISMA Nocturne Terminal V3",
+  dataAttribute: "PRISMA_NOCTURNE_TERMINAL_V3",
   canonicalViewport: {
     width: 1180,
     height: 820,
@@ -12,15 +12,15 @@ export const PRISMA_TABLET_VISUAL_V2 = {
   criticalLabelMinPx: 15,
   actionTextMinPx: 16,
   tokens: {
-    pearl: "#fbfdff",
-    mist: "#eaf2fa",
-    frost: "rgba(255, 255, 255, 0.74)",
-    softSilver: "#cdd9e7",
+    night: "#030912",
+    petroleum: "#0b2133",
+    glass: "rgba(9, 28, 45, 0.58)",
+    coldEdge: "rgba(154, 210, 255, 0.24)",
     cyan: "#34d6ff",
-    blue: "#2f82ff",
-    lavender: "#9b8cff",
-    champagne: "#ead7a2",
-    graphite: "#142033"
+    blue: "#4d8dff",
+    violet: "#9a8cff",
+    success: "#63e6ad",
+    ink: "#f4f9ff"
   },
   scale: {
     radiusControl: "clamp(16px, 1.8vw, 24px)",

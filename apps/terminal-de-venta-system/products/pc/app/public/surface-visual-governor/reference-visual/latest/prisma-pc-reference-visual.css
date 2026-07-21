@@ -1,15 +1,4 @@
 :root {
-  --prv-bg: #10151d;
-  --prv-ink: #f3f7fb;
-  --prv-muted: rgba(225, 235, 246, .72);
-  --prv-dim: rgba(225, 235, 246, .54);
-  --prv-line: rgba(191, 218, 255, .2);
-  --prv-glass: rgba(18, 27, 39, .68);
-  --prv-glass-soft: rgba(255, 255, 255, .055);
-  --prv-ice: #a9d8ff;
-  --prv-mint: #b9f3de;
-  --prv-coral: #ff9b8d;
-  --prv-violet: #ccb8ff;
 }
 
 .prismaReferenceVisual {
@@ -18,38 +7,7 @@
   isolation: isolate;
   overflow: hidden;
   padding: clamp(20px, 3vw, 48px);
-  color: var(--prv-ink);
-  background: radial-gradient(circle at 18% 10%, rgba(118, 160, 212, .26), transparent 32%), linear-gradient(135deg, #0d1118 0%, #111923 52%, #0f141b 100%);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.prismaReferenceVisual::before {
-  content: "";
-  position: fixed;
-  inset: -5%;
-  z-index: -3;
-  background-image:
-    linear-gradient(180deg, rgba(10, 14, 20, .18), rgba(10, 14, 20, .58)),
-    url('/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: .62;
-  filter: saturate(.82) contrast(1.08) brightness(.78);
-  transform: scale(1.03);
-  animation: prvSlowDrift 84s ease-in-out infinite alternate;
-}
-
-.prismaReferenceVisual::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 72% 12%, rgba(169, 216, 255, .18), transparent 28%),
-    radial-gradient(circle at 18% 86%, rgba(204, 184, 255, .12), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 24%, rgba(0,0,0,.25));
-  mix-blend-mode: screen;
 }
 
 .prvHero,
@@ -80,7 +38,6 @@
 .prvLead {
   max-width: 920px;
   margin: 22px 0 0;
-  color: var(--prv-muted);
   font-size: clamp(18px, 2vw, 25px);
   line-height: 1.42;
 }
@@ -88,7 +45,6 @@
 .prvKicker,
 .prvEyebrow {
   margin: 0 0 12px;
-  color: var(--prv-mint);
   text-transform: uppercase;
   letter-spacing: .16em;
   font-size: 12px;
@@ -98,29 +54,9 @@
 .prvGlass {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--prv-line);
-  border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.105), rgba(255,255,255,.025)),
-    var(--prv-glass);
-  box-shadow: 0 30px 90px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.14);
-  backdrop-filter: blur(6px);
-}
-
-.prvGlass::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(255,255,255,.16), transparent 30%),
-    linear-gradient(110deg, transparent 0%, rgba(255,255,255,.055) 36%, transparent 72%);
-  mix-blend-mode: screen;
 }
 
 .prvRim {
-  box-shadow: 0 32px 110px rgba(0,0,0,.42), 0 0 0 1px rgba(169,216,255,.10), inset 0 1px 0 rgba(255,255,255,.18);
 }
 
 .prvStatusCard {
@@ -129,23 +65,15 @@
   gap: 10px;
   min-height: 100%;
   padding: 24px;
-  border: 1px solid rgba(185, 243, 222, .24);
-  border-radius: 28px;
-  background: linear-gradient(180deg, rgba(185,243,222,.09), rgba(255,255,255,.035));
-  color: var(--prv-muted);
 }
 
 .prvStatusCard strong {
-  color: var(--prv-ink);
   font-size: 20px;
 }
 
 .prvLiveDot {
   width: 13px;
   height: 13px;
-  border-radius: 999px;
-  background: var(--prv-mint);
-  box-shadow: 0 0 24px rgba(185,243,222,.82);
 }
 
 .prvActionRow {
@@ -160,18 +88,10 @@
   align-items: center;
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid rgba(169,216,255,.22);
-  border-radius: 999px;
-  color: var(--prv-ink);
-  background: rgba(255,255,255,.055);
-  text-decoration: none;
   font-weight: 800;
 }
 
 .prvButtonPrimary {
-  color: #07111a;
-  background: linear-gradient(135deg, var(--prv-ice), var(--prv-mint));
-  box-shadow: 0 0 34px rgba(169,216,255,.34);
 }
 
 .prvGrid {
@@ -198,7 +118,6 @@
 .prvCard p,
 .prvPanel p {
   margin: 0;
-  color: var(--prv-muted);
   line-height: 1.6;
 }
 
@@ -210,7 +129,6 @@
 }
 
 .prvPanelQuiet {
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)), rgba(13,20,30,.72);
 }
 
 .prvBudget,
@@ -229,14 +147,10 @@
 .prvGate,
 .prvAsset,
 .prvLinks a {
-  border: 1px solid rgba(169,216,255,.16);
-  border-radius: 18px;
-  background: rgba(255,255,255,.052);
 }
 
 .prvBudget span {
   padding: 12px;
-  color: var(--prv-muted);
   font-size: 13px;
 }
 
@@ -248,9 +162,9 @@
   padding: 12px;
 }
 
-.prvGate strong { color: var(--prv-ink); }
-.prvGate span { color: var(--prv-mint); font-weight: 900; }
-.prvGate p { margin: 0; color: var(--prv-dim); }
+.prvGate strong { }
+.prvGate span { font-weight: 900; }
+.prvGate p { margin: 0; }
 
 .prvAssetWall {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -261,18 +175,11 @@
   padding: 14px;
   display: flex;
   align-items: end;
-  color: var(--prv-ink);
-  text-decoration: none;
-  background-image:
-    linear-gradient(180deg, transparent, rgba(0,0,0,.68)),
-    url('/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png');
-  background-size: cover;
-  background-position: center;
 }
 
-.prvAsset:nth-child(1) { background-image: linear-gradient(180deg, transparent, rgba(0,0,0,.68)), url('/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg'); }
-.prvAsset:nth-child(3) { background-image: linear-gradient(180deg, transparent, rgba(0,0,0,.68)), url('/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg'); }
-.prvAsset:nth-child(4) { background-image: linear-gradient(180deg, transparent, rgba(0,0,0,.68)), url('/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/aurora-slate-veil.svg'); }
+.prvAsset:nth-child(1) { }
+.prvAsset:nth-child(3) { }
+.prvAsset:nth-child(4) { }
 
 .prvLinks {
   display: grid;
@@ -285,8 +192,6 @@
 .prvLinks a {
   display: flex;
   padding: 12px 14px;
-  color: var(--prv-ice);
-  text-decoration: none;
   font-weight: 750;
 }
 
@@ -299,22 +204,7 @@
   display: block;
   margin-top: 16px;
   padding: 14px;
-  border-radius: 16px;
-  color: var(--prv-mint);
-  background: rgba(0,0,0,.22);
   white-space: normal;
-}
-
-@keyframes prvSlowDrift {
-  from { transform: scale(1.03) translate3d(-1.2%, -.8%, 0); }
-  to { transform: scale(1.06) translate3d(1.2%, .8%, 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prismaReferenceVisual::before {
-    animation: none;
-    transform: scale(1.03);
-  }
 }
 
 @media (max-width: 1180px) {

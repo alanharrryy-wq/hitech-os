@@ -1,48 +1,26 @@
 {
-  "task": "Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.",
+  "task": "PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.",
   "apps": [
-    "backgrounds",
-    "chart-lab",
-    "control-center",
     "database-sync",
-    "mobile",
     "pc",
     "productization",
     "quality",
     "shared-kernel",
-    "shared-ui",
-    "tablet",
-    "web"
+    "tablet"
   ],
   "change_types": [
-    "data_sync",
-    "visual"
+    "data_sync"
   ],
   "required_gates": [
     "real_db_destructive_tests_forbidden",
     "schema_parity_required",
     "sync_fixture_required",
-    "visual_manifest_required",
-    "visual_evidence_required",
-    "layer_budget_required",
-    "no_fake_green",
     "authority_readset_lock_required",
     "app_impact_matrix_required",
     "contract_gate_matrix_required",
     "rollback_required",
     "diagnostic_zip_on_failure",
-    "no_fake_green",
-    "visual_capability_matrix_required",
-    "visual_stack_decision_required",
-    "app_visual_exploitation_matrix_required",
-    "visual_capability_rejection_reasons_required",
-    "visual_exploitation_contract_required",
-    "app_capability_requirements_required",
-    "screen_visual_stack_plan_required",
-    "premium_acceptance_bar_required",
-    "used_rejected_capability_matrix_required",
-    "layer_budget_decision_required",
-    "visual_evidence_or_pending_verification_required"
+    "no_fake_green"
   ],
   "forbidden_default_actions": [
     "kill dev processes",
@@ -95,30 +73,6 @@
       "reason": "tablet_authority"
     },
     {
-      "path": "quality/contracts/mobile-truthfulness.contract.json",
-      "bytes": 519,
-      "sha256": "7814441d8ae6ca2bc9b96b19feb82dea09de1d8c7f6edd4f5e0db53b0ca3b56a",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "quality/contracts/control-audit-only.contract.json",
-      "bytes": 483,
-      "sha256": "49d4bce2a68b8f865012319a664498e0f55b6d1fbe715d8c0934634c83796eee",
-      "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "quality/contracts/operational-drift.contract.json",
-      "bytes": 549,
-      "sha256": "4322fe3921675e81bdca86b174d8e2e2b2a317dedf046e9a013e10188a504a59",
-      "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
       "path": "quality/contracts/cloudflare-optional-base.contract.json",
       "bytes": 558,
       "sha256": "1117d1ea3439c528e138a7401478f01672fdc37c17404f794a9263ae19f32b8a",
@@ -130,6 +84,14 @@
       "path": "quality/contracts/contracts.json",
       "bytes": 10359,
       "sha256": "f0ed5192988e1dc3c694402c322a51562210444d4245354c91795297068c59e0",
+      "extension": ".json",
+      "source_id": "app:quality",
+      "reason": "quality_authority"
+    },
+    {
+      "path": "quality/contracts/control-audit-only.contract.json",
+      "bytes": 483,
+      "sha256": "49d4bce2a68b8f865012319a664498e0f55b6d1fbe715d8c0934634c83796eee",
       "extension": ".json",
       "source_id": "app:quality",
       "reason": "quality_authority"
@@ -167,9 +129,25 @@
       "reason": "quality_authority"
     },
     {
+      "path": "quality/contracts/mobile-truthfulness.contract.json",
+      "bytes": 519,
+      "sha256": "7814441d8ae6ca2bc9b96b19feb82dea09de1d8c7f6edd4f5e0db53b0ca3b56a",
+      "extension": ".json",
+      "source_id": "app:quality",
+      "reason": "quality_authority"
+    },
+    {
       "path": "quality/contracts/no-destructive-testing-on-real-db.contract.json",
       "bytes": 513,
       "sha256": "65c97e44376a63595682ff87fda044e7da7eaa2be403cd48e86cfaee8bb04c3b",
+      "extension": ".json",
+      "source_id": "app:quality",
+      "reason": "quality_authority"
+    },
+    {
+      "path": "quality/contracts/operational-drift.contract.json",
+      "bytes": 549,
+      "sha256": "4322fe3921675e81bdca86b174d8e2e2b2a317dedf046e9a013e10188a504a59",
       "extension": ".json",
       "source_id": "app:quality",
       "reason": "quality_authority"

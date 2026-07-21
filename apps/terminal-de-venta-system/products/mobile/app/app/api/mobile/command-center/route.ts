@@ -1,15 +1,19 @@
 import { noStoreJsonInit } from "@/lib/prisma-app/prisma-app-api-contracts";
-import { loadMobileDataPlaneState } from "@/lib/prisma-app/mobile-data-plane/state-loader";
 import { buildSnapshotPayload } from "@/lib/prisma-app/mobile-data-plane/payload-builders";
 import { sourceFromRuntimeMode } from "@/lib/prisma-app/mobile-data-plane/runtime-mode";
 import { buildPrismaMobileCommandCenter, PRISMA_MOBILE_COMMAND_CENTER_CONTRACT_ID } from "@/lib/prisma-app/prisma-mobile-command-center";
 import { createClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
+import { loadAuthorizedMobileState } from "@/lib/prisma-app/mobile-security";
 
-export async function GET() {
-  const state = await loadMobileDataPlaneState();
+export const runtime = "nodejs";
+
+export async function GET(request: Request) {
+  const guarded = await loadAuthorizedMobileState(request, "RM.ACTION.INBOX");
+  if (!guarded.ok) return guarded.response;
+  const state = guarded.state;
   const source = sourceFromRuntimeMode(state.runtimeMode);
   const snapshot = buildSnapshotPayload(state);
-  const clientSnapshot = createClientSnapshot(snapshot, source, state.warnings);
+  const clientSnapshot = createClientSnapshot(snapshot, source, guarded.safeWarnings);
   return Response.json({
     ok: true,
     data: buildPrismaMobileCommandCenter(clientSnapshot),

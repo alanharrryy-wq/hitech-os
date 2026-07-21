@@ -1,28 +1,21 @@
 # PRISMA AUTHORITY MESH ENVELOPE
 
-Task: Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.
+Task: PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.
 
 Status: `PASS`
 
 ## Apps / surfaces detected
 
-- backgrounds
-- chart-lab
-- control-center
 - database-sync
-- mobile
 - pc
 - productization
 - quality
 - shared-kernel
-- shared-ui
 - tablet
-- web
 
 ## Change types detected
 
 - data_sync
-- visual
 
 ## Mandatory readset lock
 
@@ -33,27 +26,12 @@ Use `.governance/current/AUTHORITY_READSET.lock.json` as the authority readset f
 - real_db_destructive_tests_forbidden
 - schema_parity_required
 - sync_fixture_required
-- visual_manifest_required
-- visual_evidence_required
-- layer_budget_required
-- no_fake_green
 - authority_readset_lock_required
 - app_impact_matrix_required
 - contract_gate_matrix_required
 - rollback_required
 - diagnostic_zip_on_failure
 - no_fake_green
-- visual_capability_matrix_required
-- visual_stack_decision_required
-- app_visual_exploitation_matrix_required
-- visual_capability_rejection_reasons_required
-- visual_exploitation_contract_required
-- app_capability_requirements_required
-- screen_visual_stack_plan_required
-- premium_acceptance_bar_required
-- used_rejected_capability_matrix_required
-- layer_budget_decision_required
-- visual_evidence_or_pending_verification_required
 
 ## Forbidden default actions
 

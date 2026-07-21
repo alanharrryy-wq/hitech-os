@@ -1,6 +1,5 @@
 import type { CommandCenterModel, SalesControlBranchSummary, SalesControlTicket } from "@/server/services/pc-command-center.service";
 import { AppShell } from "@components/layout/app-shell";
-import { SmartDropdownDock } from "@components/uiux/smart-dropdown-dock";
 import styles from "./sales-control-branch-view.module.css";
 
 function queryHref(path: string, params: Record<string, string>) {
@@ -31,14 +30,14 @@ function paymentCounts(branches: SalesControlBranchSummary[]) {
 
 function TicketActionBoard({ ticket }: { ticket: SalesControlTicket }) {
   const folioHref = queryHref("/sales-control", { q: ticket.folio });
-  const exportHref = queryHref("/api/backoffice/sales-control", { format: "json", q: ticket.folio });
+  const exportHref = queryHref("/api/backoffice/sales-control", { format: "csv", q: ticket.folio });
 
   return (
     <div className={styles.ticketActionBoard} data-prisma-component="PcSalesTicketActions">
       <a href={folioHref}>Filtrar folio</a>
       <a href="/cash-sessions">Abrir caja</a>
       <a href="/sync-operativo">Revisar sync</a>
-      <a href={exportHref}>Exportar JSON</a>
+      <a href={exportHref}>Exportar CSV</a>
       <span title="Marcar revisado requiere endpoint auditable con actor, motivo y timestamp.">
         Marcar revisado requiere endpoint auditable
       </span>
@@ -130,7 +129,7 @@ function BranchSection({ branch, openByDefault }: { branch: SalesControlBranchSu
             <article className={styles.tabletCard}>
               <strong>Sin tablet vinculada</strong>
               <span>$0</span>
-              <small>Usa el alta rápida para preparar vinculación.</small>
+              <small>Revisa equipos y licencia antes de una vinculación durable.</small>
             </article>
           )}
         </div>
@@ -228,36 +227,42 @@ function PaymentMethodStrip({ branches }: { branches: SalesControlBranchSummary[
   );
 }
 
-function AddBranchTabletForm({ href }: { href: string }) {
+function DeviceClaimHandoff() {
   return (
-    <details className={styles.addBranchDock}>
-      <summary>Alta rápida sucursal/tablet</summary>
-      <form className={styles.addBranchForm} action={href} method="get">
-        <input type="hidden" name="from" value="sales-control" />
-        <input type="hidden" name="focus" value="link-new-tablet" />
+    <section className={styles.cashActionDock} data-prisma-component="PcSalesDeviceClaimHandoff">
+      <div>
+        <span className={styles.kicker}>vinculación de dispositivos</span>
+        <h2>Revisión antes de reclamar</h2>
+        <p>El alta durable de sucursal o Tablet no está conectada todavía a un command owner, auditoría e idempotencia. Esta pantalla no captura datos que después se perderían.</p>
+      </div>
+      <div className={styles.cashActionForm}>
+        <a href="/devices">Revisar equipos autorizados</a>
+        <a href="/tablet-communication">Ver comunicación Tablet</a>
+        <a href="/settings/license">Revisar licencia y límites</a>
+      </div>
+    </section>
+  );
+}
+
+function SalesSearchFilter() {
+  return (
+    <section className={styles.addBranchDock} data-prisma-component="PcSalesBoundSearch">
+      <div>
+        <span className={styles.kicker}>filtro de ventas</span>
+        <h2>Buscar ticket consolidado</h2>
+        <p>Busca por folio, cajero, terminal o producto dentro del rango actual.</p>
+      </div>
+      <form className={styles.addBranchForm} action="/sales-control" method="get">
         <label>
-          Nombre de sucursal
-          <input name="storeName" placeholder="Ej. Sucursal Centro" />
+          Buscar
+          <input name="q" placeholder="Folio, cajero, terminal o producto" />
         </label>
-        <label>
-          Código de sucursal
-          <input name="storeCode" placeholder="Ej. CENTRO" />
-        </label>
-        <label>
-          Nombre de tablet
-          <input name="tabletName" placeholder="Ej. Tablet Caja 2" />
-        </label>
-        <label>
-          Device ID / código terminal
-          <input name="deviceId" placeholder="Pegar identificador de la tablet" />
-        </label>
-        <label>
-          Responsable inicial
-          <input name="operator" placeholder="Ej. cajero turno matutino" />
-        </label>
-        <button type="submit">Continuar vinculación</button>
+        <div className={styles.inlineActions}>
+          <button type="submit">Aplicar búsqueda</button>
+          <a href="/sales-control">Limpiar</a>
+        </div>
       </form>
-    </details>
+    </section>
   );
 }
 
@@ -265,33 +270,14 @@ function CashActionDock({ syncHref }: { syncHref: string }) {
   return (
     <section className={styles.cashActionDock} data-prisma-component="PcSalesCashActionRail">
       <div>
-        <span className={styles.kicker}>rail de caja</span>
-        <h2>Acción de caja</h2>
-        <p>Elige intención. PRISMA abre flujo seguro y deja bloqueadas las mutaciones que aún requieren auditoría.</p>
+        <span className={styles.kicker}>revisión de caja</span>
+        <h2>Ledger antes de mutar</h2>
+        <p>Revisa sesiones, movimientos y diferencias; las mutaciones permanecen fuera de esta pantalla hasta tener command owner auditable.</p>
       </div>
-      <form className={styles.cashActionForm} action="/cash-sessions" method="get">
-        <label>
-          Acción
-          <select name="cashAction" defaultValue="close">
-            <option value="withdrawal">Registrar retiro</option>
-            <option value="deposit">Registrar ingreso</option>
-            <option value="close">Cerrar caja</option>
-            <option value="reopen">Reabrir con permiso</option>
-            <option value="markVarianceReviewed">Marcar diferencia revisada</option>
-          </select>
-        </label>
-        <label>
-          Motivo
-          <select name="reason" defaultValue="review">
-            <option value="review">Revisión operativa</option>
-            <option value="cash-count">Conteo de efectivo</option>
-            <option value="variance">Diferencia detectada</option>
-            <option value="manager-approval">Aprobación de gerente</option>
-          </select>
-        </label>
-        <button type="submit">Abrir caja guiada</button>
+      <div className={styles.cashActionForm}>
+        <a href="/cash-sessions">Abrir revisión de caja</a>
         <a href={syncHref}>Ver sync</a>
-      </form>
+      </div>
     </section>
   );
 }
@@ -362,11 +348,11 @@ export function SalesControlBranchView({ model }: { model: CommandCenterModel })
 
         <section className={styles.ledgerShell}>
           <aside className={styles.operationRail} aria-label="Filtros y acciones de caja">
-            <SmartDropdownDock currentPath={model.currentPath} title="Filtros compactos de ventas" />
+            <SalesSearchFilter />
             <CashActionDock syncHref={view.syncHref} />
             <PaymentMethodStrip branches={view.branches} />
             <SalesOperationChecklist />
-            <AddBranchTabletForm href={view.addBranchHref} />
+            <DeviceClaimHandoff />
           </aside>
 
           <section className={styles.ledgerMain} aria-label="Tickets y sucursales">

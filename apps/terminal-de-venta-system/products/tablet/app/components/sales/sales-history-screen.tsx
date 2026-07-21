@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import type { SalesTodaySummary } from "@/lib/sales-today/types";
 import { buildSalesKpis, filterTickets } from "@/lib/sales-today/view-model";
@@ -89,6 +88,7 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
       subtitle="Consulta local de tickets sin depender de PC."
       status={<TabletShellStatusPill tone="ok">Consulta local</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <main className={styles.salesPage}
         data-surface="tablet"
@@ -121,12 +121,11 @@ export function SalesHistoryScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SN
           <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_history_screen" data-target="sales-history-screen-p-2" data-kind="text" data-role="text">Busca tickets locales por rangos acotados. La Tablet consulta su propia base y sigue vendiendo aunque PC no esté disponible.</p>
         </section>
 
-        <QuickActionStrip label="Acciones rapidas de historial">
-          <QuickActionTile title="Buscar ticket" description="Enfoca los filtros locales de historial." actionLabel="Buscar" icon="search" tone="neutral" href="#buscar-ticket-historial" owner="sales" />
-          <QuickActionTile title="Filtrar fecha" description="Ajusta el rango acotado de consulta local." actionLabel="Filtrar" icon="chart" tone="jewel" href="#rango-ventas" owner="sales" />
-          <QuickActionTile title="Exportar historial" description="Usa exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
-          <QuickActionTile title="Crear devolucion" description="Abre devoluciones desde tickets cerrados." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
-        </QuickActionStrip>
+        <nav className={styles.workspaceTabs} aria-label="Vistas de ventas">
+          <a className={styles.workspaceTab} href="/sales/today">Hoy</a>
+          <a className={styles.workspaceTabActive} href="/sales/history" aria-current="page">Historial</a>
+          <a className={styles.workspaceTab} href="/returns">Devoluciones</a>
+        </nav>
 
         <div className={styles.rangeBar} id="rango-ventas" role="tablist" aria-label="Rangos de historial"
           data-surface="tablet"

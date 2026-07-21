@@ -1,12 +1,31 @@
-@import "../../../shared-ui/prisma/tokens/prisma-theme.css";
-@import "../../../shared-ui/prisma/components/prisma-components.css";
+@import "../../../shared-ui/prisma/visual-os/prisma-visual-os.tokens.css";
 
 :root {
-  --prisma-ref-bg: #050706;
-  --prisma-ref-surface: #282b2a;
-  --prisma-ref-text: #00ff41;
-  --prisma-ref-chevron: #8a8f8b;
-  --prisma-ref-border: rgba(255, 255, 255, 0.04);
+  color-scheme: dark;
+  --pc-atlas-ink: #f2f8ff;
+  --pc-atlas-ink-soft: rgba(224, 237, 250, 0.76);
+  --pc-atlas-ink-dim: rgba(204, 220, 236, 0.58);
+  --pc-atlas-line: rgba(198, 226, 247, 0.16);
+  --pc-atlas-line-strong: rgba(139, 222, 246, 0.36);
+  --pc-atlas-shell: rgba(5, 15, 28, 0.62);
+  --pc-atlas-panel: rgba(8, 22, 38, 0.58);
+  --pc-atlas-card: rgba(10, 27, 45, 0.46);
+  --pc-atlas-control: rgba(16, 36, 55, 0.58);
+  --pc-atlas-row: rgba(199, 229, 247, 0.035);
+  --pc-atlas-cyan: #79e8ff;
+  --pc-atlas-emerald: #7cebbd;
+  --pc-atlas-violet: #c5a8ff;
+  --pc-atlas-amber: #ffd27d;
+  --pc-atlas-magenta: #ff91d5;
+  --pc-atlas-pink: #ffb1c8;
+  --pc-atlas-navy: #8eb7ff;
+  --pc-atlas-danger: #ff9fa7;
+  --pc-atlas-radius-shell: 24px;
+  --pc-atlas-radius-panel: 18px;
+  --pc-atlas-radius-control: 12px;
+  --pc-atlas-shadow: 0 22px 64px rgba(0, 5, 15, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --pc-atlas-shadow-card: 0 14px 34px rgba(0, 5, 15, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --pc-atlas-focus: 0 0 0 3px rgba(121, 232, 255, 0.28);
 }
 
 * {
@@ -22,8 +41,18 @@ body {
 
 body {
   min-height: 100vh;
-  color: var(--prisma-text-primary);
-  font-family: var(--prisma-font-family);
+  color: var(--pc-atlas-ink);
+  background-color: #030a13;
+  background-image:
+    linear-gradient(128deg, rgba(2, 8, 16, 0.82), rgba(7, 20, 35, 0.52) 48%, rgba(2, 8, 16, 0.78)),
+    radial-gradient(900px 620px at 82% 8%, rgba(121, 232, 255, 0.1), transparent 68%),
+    radial-gradient(760px 520px at 12% 82%, rgba(197, 168, 255, 0.08), transparent 72%),
+    url("/visual-backgrounds/pc/assets/pc-graphite-cloudglass-base-3015a4e7.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow-x: hidden;
 }
 
@@ -33,90 +62,21 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
-.shell {
-  width: min(100%, 1520px);
-  margin: 0 auto;
-  padding: clamp(12px, 1.7vw, 26px);
-  display: grid;
-  grid-template-columns: clamp(198px, 20vw, 282px) minmax(0, 1fr);
-  gap: clamp(10px, 1.4vw, 24px);
-  align-items: start;
+::selection {
+  color: #03101a;
+  background: rgba(121, 232, 255, 0.78);
 }
 
-.sidebar {
-  position: sticky;
-  top: clamp(10px, 1.4vw, 22px);
-  height: calc(100dvh - clamp(20px, 2.8vw, 44px));
-  min-height: 0;
-  max-height: calc(100dvh - clamp(20px, 2.8vw, 44px));
-  padding: clamp(10px, 1.15vw, 18px);
-  border-radius: clamp(20px, 2.1vw, var(--prisma-radius-xl));
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1vw, 16px);
-  overflow: hidden;
-  align-self: start;
-}
-
-.brand-block,
-.sidebar-panel {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
-}
-
-[data-theme="prisma-light"] .brand-block,
-[data-theme="prisma-light"] .sidebar-panel {
-  background:
-    var(--prisma-frosted-accent-gradient),
-    var(--prisma-glass-gradient);
-}
-
-.brand-block {
-  min-height: 172px;
-  display: grid;
-  place-items: center;
-  padding: 18px 10px;
-  background:
-    radial-gradient(circle at 50% 8%, rgba(232, 189, 103, 0.14), transparent 36%),
-    var(--prisma-glass-gradient);
-}
-
-.brand-row {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
-  box-shadow: 0 16px 34px var(--prisma-accent-gold-glow);
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.brand-mark.prisma-mark {
-  width: 74px;
-  height: 94px;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pc-atlas-cyan);
+  outline-offset: 3px;
+  box-shadow: var(--pc-atlas-focus);
 }
 
 .prisma-shard {
@@ -124,26 +84,9 @@ input {
   height: 88px;
   display: block;
   position: relative;
-  filter: drop-shadow(0 18px 24px rgba(232, 189, 103, 0.22));
-}
-
-.prisma-shard::before,
-.prisma-shard::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(50% 0, 93% 68%, 50% 100%, 7% 68%);
-  border: 1px solid rgba(245, 209, 131, 0.72);
-  background: linear-gradient(145deg, rgba(255, 232, 170, 0.08), rgba(232, 189, 103, 0.24) 52%, rgba(255, 255, 255, 0.04));
-}
-
-.prisma-shard::after {
-  clip-path: polygon(50% 0, 50% 100%, 7% 68%);
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.08), rgba(232, 189, 103, 0.04));
 }
 
 .brand {
-  color: var(--prisma-text-primary);
   font-size: 24px;
   font-weight: 880;
   line-height: 1;
@@ -152,58 +95,17 @@ input {
 }
 
 .subtle {
-  color: var(--prisma-text-muted);
-}
-
-.brand-row .subtle {
-  max-width: 170px;
-  margin: 4px auto 0;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.sidebar-panel {
-  padding: 14px;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .panel-label,
-.kicker,
-.nav-group-title {
+.kicker {
   margin: 0;
-  color: var(--prisma-accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 850;
-}
-
-.nav-group-title {
-  margin-bottom: 10px;
-}
-
-.nav {
-  display: grid;
-  gap: 9px;
-}
-
-.nav a {
-  min-height: 48px;
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  align-items: center;
-  gap: 11px;
-  padding: 9px 11px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid transparent;
-  color: var(--prisma-text-secondary);
-  background: color-mix(in srgb, var(--prisma-glass-surface) 44%, transparent);
-}
-
-.nav a:hover {
-  color: var(--prisma-text-primary);
-  border-color: var(--prisma-border-medium);
-  background: var(--prisma-hover-surface);
-  transform: translateY(-1px);
+  color: var(--pc-atlas-cyan);
 }
 
 .nav-icon {
@@ -212,10 +114,6 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  color: var(--prisma-accent-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-gold) 18%, transparent);
   font-size: 12px;
 }
 
@@ -232,8 +130,8 @@ input {
 }
 
 .nav-desc {
-  color: var(--prisma-text-muted);
   font-size: 12px;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .sidebar-spacer {
@@ -252,6 +150,9 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-control);
 }
 
 .footer-actions {
@@ -265,63 +166,43 @@ input {
   display: grid;
   place-items: center;
   padding: 10px;
-  border-radius: var(--prisma-radius-md);
-  color: var(--prisma-accent-gold);
-  border: 1px solid var(--prisma-border-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent);
   font-size: 13px;
   font-weight: 780;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(121, 232, 255, 0.07);
 }
 
-[data-theme="prisma-light"] .footer-chip {
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-.main {
-  min-width: 0;
-  display: grid;
-  gap: 18px;
-  align-content: start;
-}
-
-.topbar,
 .hero,
 .card,
 .panel {
   position: relative;
   overflow: hidden;
-  border-radius: var(--prisma-radius-xl);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-panel-gradient);
-  box-shadow: var(--prisma-shadow-glass);
-  backdrop-filter: blur(22px);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  color: var(--pc-atlas-ink);
 }
 
-.topbar::before,
-.hero::before,
-.card::before,
-.panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
+.hero {
   background:
-    linear-gradient(125deg, var(--prisma-soft-highlight), transparent 30%, transparent 72%, color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent));
-  opacity: 0.72;
+    radial-gradient(circle at 8% 0%, rgba(121, 232, 255, 0.1), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.01)),
+    var(--pc-atlas-panel);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(12px) saturate(118%);
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
 }
 
-.topbar {
-  min-height: 76px;
-  display: grid;
-  grid-template-columns: auto minmax(260px, 1fr) auto;
-  gap: 14px;
-  align-items: center;
-  padding: 14px 18px;
+.card,
+.panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.006)),
+    var(--pc-atlas-card);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-.topbar-brand,
 .search-shell,
 .user-shell,
 .chip,
@@ -335,34 +216,19 @@ input {
   z-index: 1;
 }
 
-.topbar-brand {
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px 8px 8px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  font-weight: 800;
-}
-
 .search-shell {
   height: 50px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 0 16px;
-  border-radius: var(--prisma-radius-md);
-  color: var(--prisma-text-muted);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-control);
 }
 
 .search-shell input {
   width: 100%;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--prisma-text-primary);
 }
 
 .user-shell {
@@ -378,10 +244,9 @@ input {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  color: var(--prisma-text-secondary);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  background: rgba(121, 232, 255, 0.07);
 }
 
 .avatar {
@@ -390,10 +255,11 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--prisma-radius-pill);
-  color: var(--prisma-text-on-gold);
-  background: var(--prisma-gold-gradient);
   font-weight: 900;
+  border: 1px solid rgba(121, 232, 255, 0.34);
+  border-radius: 50%;
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.1);
 }
 
 .hero {
@@ -413,10 +279,11 @@ input {
 
 .hero-title {
   margin: 6px 0 0;
-  color: var(--prisma-text-primary);
   font-size: clamp(34px, 4vw, 54px);
   line-height: 0.98;
   font-weight: 860;
+  color: var(--pc-atlas-ink);
+  letter-spacing: -0.035em;
 }
 
 .hero-copy {
@@ -426,9 +293,9 @@ input {
 .hero-copy p {
   max-width: 720px;
   margin: 12px 0 0;
-  color: var(--prisma-text-secondary);
   font-size: 16px;
   line-height: 1.5;
+  color: var(--pc-atlas-ink-soft);
 }
 
 .hero-badges,
@@ -449,32 +316,18 @@ input {
   align-items: center;
   gap: 8px;
   padding: 0 14px;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  color: var(--prisma-text-secondary);
   font-size: 13px;
   font-weight: 720;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.055);
 }
 
 .alert-chip {
-  color: var(--prisma-accent-gold-soft);
-  border-color: var(--prisma-border-gold);
-  background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--prisma-accent-gold) 20%, transparent), transparent 60%),
-    var(--prisma-glass-gradient);
-}
-
-[data-theme="prisma-light"] .chip,
-[data-theme="prisma-light"] .alert-chip,
-[data-theme="prisma-light"] .inline-chip {
-  background: var(--prisma-frosted-accent-gradient);
-  border-color: var(--prisma-accent-cool-frosted-strong);
-}
-
-[data-theme="prisma-light"] .alert-chip {
-  color: var(--prisma-accent-gold-strong);
-  border-color: var(--prisma-border-gold);
+  border-color: rgba(255, 210, 125, 0.3);
+  color: var(--pc-atlas-amber);
+  background: rgba(255, 210, 125, 0.075);
 }
 
 .inline-chip {
@@ -511,30 +364,27 @@ input {
 
 .card-title {
   margin: 10px 0 0;
-  color: var(--prisma-text-secondary);
   font-size: 14px;
+  color: var(--pc-atlas-ink-soft);
 }
 
 .metric {
   position: relative;
   z-index: 1;
   margin-top: 14px;
-  color: var(--prisma-accent-gold-soft);
   font-size: clamp(34px, 4vw, 52px);
   font-weight: 860;
   line-height: 1;
-}
-
-[data-theme="prisma-light"] .metric {
-  color: var(--prisma-accent-gold-strong);
+  color: var(--pc-atlas-ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-note {
   position: relative;
   z-index: 1;
   margin-top: 8px;
-  color: var(--prisma-text-muted);
   font-size: 13px;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .metric-details {
@@ -544,9 +394,9 @@ input {
 .metric-detail {
   min-width: 160px;
   padding: 12px 14px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-row);
 }
 
 .metric-detail strong {
@@ -561,11 +411,10 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px;
-  color: var(--prisma-accent-gold);
-  border: 1px solid color-mix(in srgb, var(--prisma-accent-gold) 18%, transparent);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 10%, transparent);
-  box-shadow: 0 0 26px color-mix(in srgb, var(--prisma-accent-gold) 16%, transparent);
+  border: 1px solid rgba(121, 232, 255, 0.24);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.07);
 }
 
 .grid-span-8 {
@@ -582,23 +431,25 @@ input {
 
 .section-title {
   margin: 5px 0 0;
-  color: var(--prisma-text-primary);
   font-size: 25px;
   line-height: 1.12;
+  color: var(--pc-atlas-ink);
+  letter-spacing: -0.025em;
 }
 
 .section-copy {
-  color: var(--prisma-text-secondary);
   max-width: 620px;
+  color: var(--pc-atlas-ink-soft);
+  line-height: 1.5;
 }
 
 .table-wrap {
   position: relative;
   z-index: 1;
   overflow: auto;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-surface);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(4, 14, 25, 0.34);
 }
 
 .table-wrap table {
@@ -610,23 +461,23 @@ input {
 th,
 td {
   padding: 14px;
-  border-bottom: 1px solid var(--prisma-border-soft);
   text-align: left;
   vertical-align: middle;
   font-size: 14px;
+  border-bottom: 1px solid rgba(198, 226, 247, 0.1);
 }
 
 th {
-  color: var(--prisma-accent-gold);
-  background: color-mix(in srgb, var(--prisma-accent-gold) 7%, transparent);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 11px;
   font-weight: 850;
+  color: var(--pc-atlas-cyan);
+  background: rgba(5, 18, 32, 0.92);
 }
 
 tr:hover td {
-  background: var(--prisma-hover-surface);
+  background: rgba(121, 232, 255, 0.055);
 }
 
 .badge {
@@ -635,28 +486,30 @@ tr:hover td {
   align-items: center;
   justify-content: center;
   padding: 0 10px;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid transparent;
   font-size: 12px;
   font-weight: 800;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: var(--pc-atlas-row);
 }
 
 .badge.ok {
-  color: var(--prisma-success);
-  background: color-mix(in srgb, var(--prisma-success) 12%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-success) 22%, transparent);
+  border-color: rgba(124, 235, 189, 0.34);
+  color: var(--pc-atlas-emerald);
+  background: rgba(124, 235, 189, 0.08);
 }
 
 .badge.warn {
-  color: var(--prisma-warning);
-  background: color-mix(in srgb, var(--prisma-warning) 12%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-warning) 22%, transparent);
+  border-color: rgba(255, 210, 125, 0.34);
+  color: var(--pc-atlas-amber);
+  background: rgba(255, 210, 125, 0.08);
 }
 
 .badge.danger {
-  color: var(--prisma-danger);
-  background: color-mix(in srgb, var(--prisma-danger) 12%, transparent);
-  border-color: color-mix(in srgb, var(--prisma-danger) 22%, transparent);
+  border-color: rgba(255, 159, 167, 0.34);
+  color: var(--pc-atlas-danger);
+  background: rgba(255, 159, 167, 0.08);
 }
 
 .list {
@@ -672,9 +525,9 @@ tr:hover td {
   justify-content: space-between;
   gap: 14px;
   padding: 14px 16px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
+  border-block-end: 1px solid rgba(198, 226, 247, 0.1);
+  color: var(--pc-atlas-ink-soft);
+  background: transparent;
 }
 
 .empty-state {
@@ -683,16 +536,13 @@ tr:hover td {
   display: grid;
   gap: 8px;
   padding: 20px;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px dashed var(--prisma-border-gold);
-  background:
-    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--prisma-accent-gold) 14%, transparent), transparent 54%),
-    var(--prisma-glass-gradient);
-  color: var(--prisma-text-secondary);
+  border: 1px dashed var(--pc-atlas-line-strong);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.035);
 }
 
 .empty-state strong {
-  color: var(--prisma-text-primary);
   font-size: 18px;
 }
 
@@ -703,16 +553,10 @@ tr:hover td {
   justify-content: space-between;
   gap: 12px;
   padding: 13px 16px;
-  border-radius: var(--prisma-radius-md);
-  border: 1px solid var(--prisma-border-gold);
-  background:
-    radial-gradient(circle at 14% 0%, color-mix(in srgb, var(--prisma-accent-gold) 18%, transparent), transparent 58%),
-    var(--prisma-glass-gradient);
-  color: var(--prisma-text-primary);
-}
-
-[data-theme="prisma-light"] .alert-strip {
-  background: var(--prisma-frosted-accent-gradient);
+  border: 1px solid rgba(255, 210, 125, 0.28);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-amber);
+  background: rgba(75, 48, 12, 0.32);
 }
 
 .dashboard-actions {
@@ -727,34 +571,26 @@ tr:hover td {
   gap: 10px;
   align-content: start;
   padding: 18px;
-  border-radius: var(--prisma-radius-lg);
-  border: 1px solid var(--prisma-border-soft);
-  background: var(--prisma-glass-gradient);
-  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
-}
-
-[data-theme="prisma-light"] .action-card {
-  background: var(--prisma-frosted-accent-gradient);
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background: var(--pc-atlas-row);
 }
 
 .action-card strong {
-  color: var(--prisma-text-primary);
   font-size: 18px;
 }
 
 .action-card span {
-  color: var(--prisma-text-secondary);
   font-size: 13px;
   line-height: 1.4;
 }
 
 .footer-note {
-  color: var(--prisma-text-muted);
   font-size: 13px;
 }
 
 .code {
-  color: var(--prisma-accent-gold-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -773,41 +609,101 @@ tr:hover td {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* Prisma Dark Selector Component */
-.prisma-dark-selector {
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"]), input, select, textarea) {
+  min-height: 40px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-control);
+}
+
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"])) {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  height: 52px;
-  min-height: 44px;
+  justify-content: center;
+  gap: 8px;
   padding: 0 14px;
-  border-radius: 2px;
-  background: var(--prisma-ref-surface);
-  border: 1px solid var(--prisma-ref-border);
-  box-shadow: none;
+  cursor: pointer;
+  font-weight: 780;
+  transition:
+    border-color var(--prisma-vos-fast-motion, 120ms) ease,
+    background-color var(--prisma-vos-fast-motion, 120ms) ease,
+    color var(--prisma-vos-fast-motion, 120ms) ease;
 }
 
-.prisma-dark-selector-text {
-  color: var(--prisma-ref-text);
-  font-size: 14px;
-  font-weight: 500;
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"])):hover {
+  border-color: var(--pc-atlas-line-strong);
+  background-color: rgba(121, 232, 255, 0.1);
 }
 
-.prisma-dark-selector-chevron {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  color: var(--prisma-ref-chevron);
+body[data-prisma-surface="pc"] :where(.btn-primary, button[data-primary="true"]) {
+  border-color: rgba(121, 232, 255, 0.5);
+  color: #eaffff;
+  background:
+    linear-gradient(135deg, rgba(121, 232, 255, 0.22), rgba(197, 168, 255, 0.1)),
+    rgba(9, 27, 44, 0.72);
+  box-shadow: 0 9px 24px rgba(0, 5, 15, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Referencia Visual Page */
+body[data-prisma-surface="pc"] :where(input, select, textarea) {
+  width: 100%;
+  padding: 9px 12px;
+}
+
+body[data-prisma-surface="pc"] :where(input, select, textarea)::placeholder {
+  color: var(--pc-atlas-ink-dim);
+}
+
+body[data-prisma-surface="pc"] :where(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+[data-summary-tone="ok"] {
+  border-color: rgba(124, 235, 189, 0.3);
+}
+
+[data-summary-tone="warn"] {
+  border-color: rgba(255, 210, 125, 0.3);
+}
+
+[data-summary-tone="danger"] {
+  border-color: rgba(255, 145, 213, 0.3);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --pc-atlas-shell: rgba(5, 15, 28, 0.96);
+    --pc-atlas-panel: rgba(8, 22, 38, 0.94);
+    --pc-atlas-card: rgba(10, 27, 45, 0.94);
+    --pc-atlas-control: rgba(16, 36, 55, 0.92);
+  }
+
+  .hero {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
+}
+
 .referencia-visual-container {
   width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--prisma-ref-bg);
 }
 
 .referencia-visual-canvas {
@@ -823,22 +719,11 @@ tr:hover td {
 
 .referencia-visual-label {
   margin: 0;
-  color: #a0a0a0;
   font-size: 16px;
   font-weight: 400;
 }
 
 @media (max-width: 1180px) {
-  .shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: relative;
-    top: 0;
-    height: auto;
-    min-height: auto;
-  }
 
   .dashboard-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -852,13 +737,6 @@ tr:hover td {
 }
 
 @media (max-width: 780px) {
-  .shell {
-    padding: 18px;
-  }
-
-  .topbar {
-    grid-template-columns: 1fr;
-  }
 
   .user-shell,
   .hero-header,
@@ -881,35 +759,13 @@ tr:hover td {
     grid-column: span 1;
   }
 }
-
-
-/* PRISMA_GLASS_DEPTH_PASS_01: PC backoffice optical pass */
 body {
-  background:
-    var(--prisma-scene-noise),
-    var(--prisma-app-background-radial);
 }
 
-.sidebar {
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 30%, var(--prisma-border-soft));
-  background:
-    radial-gradient(circle at 50% -4%, rgba(245, 209, 131, 0.18), transparent 32%),
-    linear-gradient(180deg, var(--prisma-sidebar-surface), var(--prisma-cart-panel-surface));
-  box-shadow:
-    var(--prisma-shadow-glass),
-    0 0 64px rgba(232, 189, 103, 0.035);
-  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
-}
-
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar,
 .hero,
 .card,
 .panel,
-.topbar-brand,
 .search-shell,
 .user-shell,
 .metric-detail,
@@ -918,116 +774,18 @@ body {
 .alert-chip,
 .inline-chip,
 .alert-strip {
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 30%, var(--prisma-border-soft));
-  background:
-    var(--prisma-glass-inner-bloom),
-    var(--prisma-glass-vignette),
-    var(--prisma-glass-gradient);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--prisma-glass-edge-top) 56%, transparent),
-    inset 0 -1px 0 var(--prisma-glass-edge-bottom),
-    0 22px 64px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(calc(var(--prisma-glass-blur) * 0.78)) saturate(var(--prisma-glass-saturate));
-  -webkit-backdrop-filter: blur(calc(var(--prisma-glass-blur) * 0.78)) saturate(var(--prisma-glass-saturate));
-}
-
-.topbar::before,
-.hero::before,
-.card::before,
-.panel::before,
-.brand-block::before,
-.sidebar-panel::before,
-.footer-stack > *::before,
-.action-card::before {
-  background:
-    linear-gradient(180deg, var(--prisma-glass-edge-top), transparent 16%),
-    linear-gradient(118deg, rgba(255, 255, 255, 0.13), transparent 32%, transparent 72%, color-mix(in srgb, var(--prisma-accent-gold) 13%, transparent));
-  opacity: 0.7;
-  mix-blend-mode: screen;
-}
-
-.topbar::after,
-.hero::after,
-.card::after,
-.panel::after,
-.brand-block::after,
-.sidebar-panel::after,
-.footer-stack > *::after,
-.action-card::after {
-  content: "";
-  position: absolute;
-  inset: auto 14px 0;
-  height: 1px;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, var(--prisma-glass-edge-bottom), transparent);
-  opacity: 0.78;
 }
 
 .metric-card {
-  background:
-    radial-gradient(circle at 72% 0%, rgba(232, 189, 103, 0.12), transparent 36%),
-    var(--prisma-glass-inner-bloom),
-    var(--prisma-panel-gradient);
 }
 
 .metric {
-  text-shadow:
-    0 0 18px color-mix(in srgb, var(--prisma-accent-gold) 24%, transparent),
-    0 16px 34px rgba(0, 0, 0, 0.28);
 }
 
-[data-theme="prisma-light"] .brand-block,
-[data-theme="prisma-light"] .sidebar-panel,
-[data-theme="prisma-light"] .footer-stack > *,
-[data-theme="prisma-light"] .topbar,
-[data-theme="prisma-light"] .hero,
-[data-theme="prisma-light"] .card,
-[data-theme="prisma-light"] .panel,
-[data-theme="prisma-light"] .topbar-brand,
-[data-theme="prisma-light"] .search-shell,
-[data-theme="prisma-light"] .user-shell,
-[data-theme="prisma-light"] .metric-detail,
-[data-theme="prisma-light"] .action-card,
-[data-theme="prisma-light"] .chip,
-[data-theme="prisma-light"] .alert-chip,
-[data-theme="prisma-light"] .inline-chip,
-[data-theme="prisma-light"] .alert-strip {
-  background:
-    var(--prisma-glass-inner-bloom),
-    var(--prisma-panel-gradient);
-}
-
-/* PRISMA_LIVING_BACKGROUND_PASS_01B: PC visible living scene pass */
-.shell {
-  position: relative;
-  isolation: isolate;
-  background: transparent;
-}
-
-.shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    linear-gradient(104deg, transparent 9%, rgba(255,255,255,0.07) 34%, transparent 46%),
-    radial-gradient(ellipse at 58% 2%, rgba(255,230,165,0.20), transparent 24%),
-    radial-gradient(ellipse at 74% 18%, rgba(150,206,235,0.14), transparent 28%);
-  filter: blur(10px) saturate(1.15);
-  opacity: 0.78;
-  animation: prismaLivingSceneDriftA 40s ease-in-out infinite alternate;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .card,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell,
 .metric-detail,
@@ -1036,65 +794,21 @@ body {
 .alert-chip,
 .inline-chip,
 .alert-strip {
-  background:
-    var(--prisma-glass-inner-bloom),
-    var(--prisma-glass-vignette),
-    var(--prisma-glass-gradient);
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 42%, var(--prisma-border-soft));
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--prisma-glass-edge-top) 62%, transparent),
-    inset 0 -1px 0 var(--prisma-glass-edge-bottom),
-    0 30px 86px rgba(0,0,0,0.38),
-    0 0 56px rgba(83,126,162,0.075);
-  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
 }
 
 .hero,
 .card,
 .panel {
-  background:
-    radial-gradient(circle at 44% -12%, rgba(255,255,255,0.19), transparent 34%),
-    radial-gradient(circle at 85% 0%, rgba(232,189,103,0.105), transparent 36%),
-    linear-gradient(180deg, rgba(27,40,53,0.34), rgba(4,11,18,0.35));
 }
 
 .metric-card {
-  background:
-    radial-gradient(circle at 50% -18%, rgba(255,255,255,0.17), transparent 30%),
-    radial-gradient(circle at 82% 6%, rgba(232,189,103,0.12), transparent 34%),
-    linear-gradient(180deg, rgba(26,39,53,0.32), rgba(4,11,18,0.34));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .shell::before { animation: none; }
-}
-
-/* PRISMA_LAYER_DISCIPLINE_PASS_01C: PC layer discipline */
-.shell {
-  background: transparent;
-  animation: none;
-}
-
-.shell::before {
-  display: none;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
-  background: var(--prisma-layer-panel-surface);
-  border-color: var(--prisma-layer-edge);
-  box-shadow: var(--prisma-layer-soft-shadow);
-  backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate));
-  -webkit-backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate));
 }
 
 .card,
@@ -1105,40 +819,13 @@ body {
 .alert-chip,
 .inline-chip,
 .alert-strip {
-  background: var(--prisma-layer-card-surface);
-  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 20%, var(--prisma-border-soft));
-  box-shadow: var(--prisma-layer-card-shadow);
-  backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10);
-  -webkit-backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.10);
 }
 
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
-   PC backoffice: governed premium surfaces; no local duplicated scene. */
-.shell {
-  background: transparent;
-  animation: none;
-}
-
-.shell::before {
-  display: none;
-}
-
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
-  background: var(--prisma-glass-panel-governed);
-  border-color: color-mix(in srgb, var(--prisma-edge-top-governed) 42%, rgba(255,255,255,0.08));
-  box-shadow: var(--prisma-shadow-depth-governed), var(--prisma-inner-stroke-governed);
-  backdrop-filter: blur(var(--prisma-blur-panel-governed)) saturate(1.26);
-  -webkit-backdrop-filter: blur(var(--prisma-blur-panel-governed)) saturate(1.26);
 }
 
 .card,
@@ -1149,26 +836,6 @@ body {
 .alert-chip,
 .inline-chip,
 .alert-strip {
-  background: var(--prisma-glass-card-governed);
-  border-color: rgba(255,255,255,0.105);
-  box-shadow: var(--prisma-shadow-card-governed);
-  backdrop-filter: blur(var(--prisma-blur-card-governed)) saturate(1.16);
-  -webkit-backdrop-filter: blur(var(--prisma-blur-card-governed)) saturate(1.16);
-}
-
-.hero::before,
-.panel::before,
-.sidebar::before,
-.topbar::before {
-  opacity: 0.62;
-  mix-blend-mode: screen;
-}
-
-.card::before,
-.metric-card::before,
-.action-card::before {
-  opacity: 0.12;
-  mix-blend-mode: normal;
 }
 
 html[data-layer-card-blur="0"] .card,
@@ -1179,40 +846,17 @@ html[data-prisma-profile="perf"] .card,
 html[data-layer-profile="perf"] .card,
 html[data-prisma-profile="perf"] .metric-card,
 html[data-layer-profile="perf"] .metric-card {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  background: rgba(8, 16, 24, 0.74);
-}
-/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D END */
-
-/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::START */
-
-.shell {
-  width: min(100%, 1548px);
-  gap: 28px;
 }
 
-.sidebar,
 .hero,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
 .metric-card,
 .card,
 .panel,
 .metric-detail {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0) 20%),
-    var(--prisma-glass-gradient);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow:
-    var(--prisma-shadow-glass),
-    0 20px 48px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(1.08);
 }
 
 .hero {
-  border-radius: calc(var(--prisma-radius-xl) + 6px);
 }
 
 .metric-card {
@@ -1220,44 +864,15 @@ html[data-layer-profile="perf"] .metric-card {
 }
 
 .metric {
-  text-shadow: 0 10px 22px rgba(232, 189, 103, 0.12);
 }
-/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::END */
-
-/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I START
-   PC Backoffice local polish. Visual-only: no layout or TSX changes. */
 body {
-  background:
-    repeating-radial-gradient(circle at 34% 44%, rgba(255,255,255,0.026) 0 1px, transparent 1px 5px),
-    radial-gradient(ellipse at 50% -14%, rgba(255,226,158,0.24), transparent 28%),
-    radial-gradient(ellipse at 76% 5%, rgba(207,234,248,0.17), transparent 24%),
-    radial-gradient(ellipse at 27% 17%, rgba(84,135,176,0.18), transparent 36%),
-    linear-gradient(180deg, #101b26 0%, #06101b 44%, #01050a 100%);
 }
 
-.sidebar,
-.topbar,
 .hero,
 .panel,
-.brand-block,
-.sidebar-panel,
 .footer-stack > *,
-.topbar-brand,
 .search-shell,
 .user-shell {
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba(255,235,183,0.13), transparent 34%),
-    radial-gradient(ellipse at 84% 0%, rgba(197,230,247,0.10), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,0.11), transparent 20%),
-    linear-gradient(148deg, rgba(29,45,60,0.72), rgba(6,15,25,0.64) 54%, rgba(3,8,14,0.78));
-  border-color: rgba(255, 229, 166, 0.24);
-  box-shadow:
-    0 36px 96px rgba(0,0,0,0.58),
-    0 0 46px rgba(75,121,164,0.12),
-    inset 0 1px 0 rgba(255,245,218,0.32),
-    inset 0 -1px 0 rgba(0,0,0,0.54);
-  backdrop-filter: blur(34px) saturate(1.36);
-  -webkit-backdrop-filter: blur(34px) saturate(1.36);
 }
 
 .card,
@@ -1271,158 +886,40 @@ body {
 .table-wrap,
 .list-item,
 .footer-chip {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.135), transparent 27%),
-    radial-gradient(ellipse at 18% 18%, rgba(197,230,247,0.12), transparent 34%),
-    linear-gradient(150deg, rgba(30,43,57,0.62), rgba(6,15,25,0.66));
-  border-color: rgba(255,255,255,0.13);
-  box-shadow:
-    0 24px 62px rgba(0,0,0,0.46),
-    0 0 32px rgba(70,116,158,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.20),
-    inset 0 -1px 0 rgba(0,0,0,0.42);
-  backdrop-filter: blur(24px) saturate(1.20);
-  -webkit-backdrop-filter: blur(24px) saturate(1.20);
 }
 
 .hero {
-  background:
-    radial-gradient(ellipse at 16% 0%, rgba(255,226,158,0.17), transparent 34%),
-    radial-gradient(ellipse at 84% 0%, rgba(197,230,247,0.13), transparent 32%),
-    linear-gradient(150deg, rgba(34,51,67,0.70), rgba(6,15,25,0.62));
 }
 
 .metric-card {
-  background:
-    radial-gradient(ellipse at 76% -10%, rgba(239,196,111,0.18), transparent 34%),
-    radial-gradient(ellipse at 18% 18%, rgba(197,230,247,0.12), transparent 34%),
-    linear-gradient(150deg, rgba(31,45,59,0.64), rgba(6,15,25,0.68));
 }
 
 .metric,
 .card-icon,
 .alert-chip,
 .footer-chip {
-  color: #ffdc94;
-  text-shadow: 0 0 24px rgba(239,196,111,0.25);
 }
 
-.avatar,
-.brand-mark:not(.prisma-mark) {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,250,229,0.78), transparent 44%),
-    linear-gradient(180deg, #ffe7ab 0%, #efc46f 42%, #b97831 100%);
-  box-shadow: 0 0 32px rgba(239,196,111,0.28);
+.avatar {
 }
-
-.nav a.active,
-.nav a[aria-current="page"],
-.nav a:hover {
-  border-color: rgba(255,221,153,0.52);
-  box-shadow: 0 0 26px rgba(239,196,111,0.18), inset 0 1px 0 rgba(255,246,218,0.18);
-}
-/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */
-
-
-/* PRISMA_PC_SHELL_ZOOM_SCROLL_TRACE_03 START
-   Fix operativo: con zoom in la navegación lateral ya no queda mochada. */
 html,
 body {
   overflow-y: auto;
 }
-
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 50;
-  transform: translateY(-140%);
-  padding: 10px 14px;
-  border-radius: var(--prisma-radius-pill);
-  border: 1px solid rgba(255, 221, 153, 0.52);
-  background: rgba(5, 12, 20, 0.94);
-  color: var(--prisma-accent-gold);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.42);
-  transition: transform 140ms ease;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-  outline: 2px solid rgba(255, 221, 153, 0.66);
-  outline-offset: 2px;
-}
-
-.shell {
-  min-height: 100vh;
-  padding-block: clamp(14px, 2vw, 26px);
-}
-
-.sidebar {
-  min-height: 0;
-  max-height: calc(100dvh - 44px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-  -webkit-overflow-scrolling: touch;
-}
-
-.sidebar::-webkit-scrollbar { width: 9px; }
-.sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.025); border-radius: 999px; }
-.sidebar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(255,220,148,0.46), rgba(83,126,162,0.32));
-  border: 2px solid rgba(2,8,14,0.84);
-  border-radius: 999px;
-}
-.sidebar { scrollbar-color: rgba(255,220,148,0.48) rgba(255,255,255,0.035); scrollbar-width: thin; }
 .sidebar-spacer { flex: 1 0 18px; min-height: 18px; }
-.main, .topbar, .search-shell { min-width: 0; }
+.search-shell { min-width: 0; }
 
 @media (max-height: 820px) and (min-width: 1181px) {
-  .shell { padding-block: 14px; }
-  .sidebar { top: 14px; max-height: calc(100dvh - 28px); gap: 12px; padding: 14px; }
-  .brand-block { min-height: 128px; padding: 12px 10px; }
-  .brand-mark.prisma-mark { width: 58px; height: 72px; }
   .prisma-shard { width: 46px; height: 70px; }
   .brand { font-size: 20px; }
-  .nav a { min-height: 44px; padding: 8px 10px; }
   .footer-pill { min-height: 42px; padding-block: 10px; }
 }
 
-@media (max-width: 1180px) {
-  .sidebar { max-height: none; overflow-y: visible; }
-}
-
 @media (max-width: 980px) {
-  .shell {
-    grid-template-columns: clamp(166px, 25vw, 218px) minmax(0, 1fr);
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .sidebar {
-    top: 10px;
-    height: calc(100dvh - 20px);
-    max-height: calc(100dvh - 20px);
-    padding: 10px;
-    gap: 8px;
-  }
-
-  .brand-block {
-    min-height: 104px;
-    padding: 10px 6px;
-  }
 
   .brand {
     font-size: clamp(13px, 2vw, 18px);
     letter-spacing: 0.12em;
-  }
-
-  .nav a {
-    min-height: 40px;
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 8px;
-    padding: 7px 8px;
   }
 
   .nav-title {
@@ -1434,56 +931,15 @@ body {
     font-size: 10px;
     line-height: 1.15;
   }
-
-  .sidebar-panel {
-    padding: 10px;
-  }
-
-  .topbar { grid-template-columns: 1fr; }
   .user-shell { flex-wrap: wrap; }
 }
-/* PRISMA_PC_SHELL_ZOOM_SCROLL_TRACE_03 END */
-
-
-/* PRISMA_PC_READABILITY_SCROLL_ESMX_04 START */
-.sidebar { height: auto; max-height: none; overflow: visible; display: flex; flex-direction: column; min-height: 0; }
-.brand-block, .footer-stack { flex: 0 0 auto; }
+.footer-stack { flex: 0 0 auto; }
 .sidebar-nav-panel, .sidebar-utility-panel { overflow: visible; }
-#contenido-principal:focus { outline: 2px solid rgba(255, 216, 143, 0.58); outline-offset: 10px; }
-@media (max-width: 1180px) { .sidebar { height: auto; max-height: none; overflow: visible; } }
-/* PRISMA_PC_READABILITY_SCROLL_ESMX_04 END */
-
-/* PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 START */
+#contenido-principal:focus { outline-offset: 10px; }
 @media (min-width: 1181px) {
-  .shell {
-    align-items: start;
-  }
 
-  .sidebar {
-    position: relative;
-    top: auto;
-    height: auto;
-    max-height: none;
-    min-height: 0;
-    overflow: visible;
-    display: block;
-    padding-bottom: 18px;
-    scrollbar-gutter: stable both-edges;
-  }
-
-  .brand-block,
-  .sidebar-panel,
   .footer-stack {
     margin-bottom: 14px;
-  }
-
-  .brand-block {
-    min-height: clamp(112px, 18vh, 160px);
-  }
-
-  .brand-mark.prisma-mark {
-    width: clamp(44px, 7vh, 64px);
-    height: clamp(58px, 9vh, 82px);
   }
 
   .prisma-shard {
@@ -1494,432 +950,12 @@ body {
   .brand {
     font-size: clamp(18px, 2.2vh, 22px);
   }
-
-  .nav a {
-    min-height: 42px;
-  }
 }
 
 #prisma-main-content:focus {
-  outline: 2px solid rgba(255, 216, 143, 0.58);
   outline-offset: 10px;
 }
-/* PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 END */
-
-/* PRISMA_PC_LIGHT_PREMIUM_GLASS_20260506_v01C START */
-/*
-  Visual-only PC Backoffice Light pass.
-  Intent: premium pearl-white admin surface, blue operational actions, dense readable tables.
-  Scope: PC only. Tablet/Mobile/POS flows untouched.
-*/
 html[data-prisma-surface="pc-backoffice"] {
-  --prisma-pc-light-bg-app: #edf4ff;
-  --prisma-pc-light-bg-canvas: #f8fbff;
-  --prisma-pc-light-ink: #08142f;
-  --prisma-pc-light-text-secondary: #42516f;
-  --prisma-pc-light-text-muted: #6f7f9b;
-  --prisma-pc-light-text-faint: #99a8bf;
-  --prisma-pc-light-blue: #1557ff;
-  --prisma-pc-light-blue-hover: #3374ff;
-  --prisma-pc-light-blue-deep: #0731a6;
-  --prisma-pc-light-blue-soft: rgba(21, 87, 255, 0.10);
-  --prisma-pc-light-blue-ring: rgba(21, 87, 255, 0.28);
-  --prisma-pc-light-blue-glow: rgba(21, 87, 255, 0.24);
-  --prisma-pc-light-border-soft: rgba(191, 207, 232, 0.74);
-  --prisma-pc-light-border-medium: rgba(156, 181, 218, 0.76);
-  --prisma-pc-light-border-strong: rgba(21, 87, 255, 0.38);
-  --prisma-pc-light-panel: rgba(9, 18, 30, 0.76);
-  --prisma-pc-light-panel-dense: rgba(10, 20, 34, 0.86);
-  --prisma-pc-light-card: rgba(10, 20, 34, 0.70);
-  --prisma-pc-light-card-dense: rgba(12, 24, 39, 0.82);
-  --prisma-pc-light-table: rgba(11, 23, 38, 0.82);
-  --prisma-pc-light-control: rgba(10, 20, 34, 0.78);
-  --prisma-pc-light-popover: rgba(12, 24, 39, 0.86);
-  --prisma-pc-light-panel-blur: 32px;
-  --prisma-pc-light-card-blur: 20px;
-  --prisma-pc-light-control-blur: 12px;
-  --prisma-pc-light-saturate: 1.20;
-  --prisma-pc-light-radius-sm: 12px;
-  --prisma-pc-light-radius-md: 16px;
-  --prisma-pc-light-radius-lg: 22px;
-  --prisma-pc-light-radius-xl: 30px;
-  --prisma-pc-light-shadow-panel:
-    0 28px 76px rgba(23, 42, 82, 0.13),
-    0 10px 26px rgba(21, 87, 255, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  --prisma-pc-light-shadow-card:
-    0 18px 44px rgba(26, 45, 78, 0.10),
-    0 1px 0 rgba(255, 255, 255, 0.92) inset;
-  --prisma-pc-light-shadow-card-hover:
-    0 22px 56px rgba(21, 66, 135, 0.15),
-    0 0 0 1px rgba(21, 87, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.94);
-  --prisma-pc-light-shadow-blue:
-    0 18px 38px rgba(21, 87, 255, 0.27),
-    0 8px 18px rgba(7, 49, 166, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.34);
-  --prisma-pc-light-primary-gradient:
-    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.42), transparent 35%),
-    linear-gradient(145deg, #72adff 0%, #3f86ff 18%, #1557ff 48%, #0e43d6 76%, #0731a6 100%);
-  --prisma-pc-light-selected-gradient:
-    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.36), transparent 36%),
-    linear-gradient(135deg, rgba(21, 87, 255, 0.18), rgba(255, 255, 255, 0.72));
-  --prisma-pc-light-panel-material:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(245, 249, 255, 0.46));
-  --prisma-pc-light-card-material:
-    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.74), transparent 34%),
-    linear-gradient(150deg, rgba(255, 255, 255, 0.62), rgba(239, 246, 255, 0.38));
-  --prisma-pc-light-table-material:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(249, 252, 255, 0.84));
-  --prisma-pc-light-warning: #b77716;
-  --prisma-pc-light-danger: #c43d3d;
-  --prisma-pc-light-success: #1f8f5f;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] {
-  color-scheme: light;
-  --prisma-app-background: var(--prisma-pc-light-bg-app);
-  --prisma-app-background-radial:
-    radial-gradient(circle at 16% -8%, rgba(96, 154, 255, 0.18), transparent 34%),
-    radial-gradient(circle at 88% 8%, rgba(198, 222, 255, 0.42), transparent 29%),
-    radial-gradient(circle at 52% -4%, rgba(255, 255, 255, 0.92), transparent 28%),
-    radial-gradient(circle at 50% 118%, rgba(21, 87, 255, 0.075), transparent 42%),
-    linear-gradient(180deg, #f9fcff 0%, #edf4ff 52%, #e7effc 100%);
-  --prisma-scene-noise:
-    repeating-radial-gradient(circle at 34% 44%, rgba(8, 20, 47, 0.018) 0 1px, transparent 1px 5px);
-  --prisma-text-primary: var(--prisma-pc-light-ink);
-  --prisma-text-secondary: var(--prisma-pc-light-text-secondary);
-  --prisma-text-muted: var(--prisma-pc-light-text-muted);
-  --prisma-text-faint: var(--prisma-pc-light-text-faint);
-  --prisma-text-on-gold: #ffffff;
-  --prisma-text-on-primary: #ffffff;
-  --prisma-action-primary: var(--prisma-pc-light-blue);
-  --prisma-action-primary-hover: var(--prisma-pc-light-blue-hover);
-  --prisma-action-primary-deep: var(--prisma-pc-light-blue-deep);
-  --prisma-action-primary-soft: var(--prisma-pc-light-blue-soft);
-  --prisma-action-primary-ring: var(--prisma-pc-light-blue-ring);
-  --prisma-action-primary-gradient: var(--prisma-pc-light-primary-gradient);
-  --prisma-accent-gold: var(--prisma-pc-light-blue);
-  --prisma-accent-gold-soft: var(--prisma-pc-light-blue-hover);
-  --prisma-accent-gold-strong: var(--prisma-pc-light-blue-deep);
-  --prisma-accent-gold-glow: var(--prisma-pc-light-blue-glow);
-  --prisma-border-gold: var(--prisma-pc-light-border-strong);
-  --prisma-gold-gradient: var(--prisma-pc-light-primary-gradient);
-  --prisma-gold-gradient-strong: var(--prisma-pc-light-primary-gradient);
-  --prisma-active-surface: var(--prisma-pc-light-primary-gradient);
-  --prisma-hover-surface: rgba(219, 232, 255, 0.62);
-  --prisma-border-soft: var(--prisma-pc-light-border-soft);
-  --prisma-border-medium: var(--prisma-pc-light-border-medium);
-  --prisma-border-strong: rgba(115, 145, 190, 0.80);
-  --prisma-sidebar-surface: var(--prisma-pc-light-panel);
-  --prisma-panel-surface: var(--prisma-pc-light-panel);
-  --prisma-card-surface: var(--prisma-pc-light-card);
-  --prisma-cart-panel-surface: var(--prisma-pc-light-panel-dense);
-  --prisma-glass-surface: var(--prisma-pc-light-card);
-  --prisma-panel-gradient: var(--prisma-pc-light-panel-material);
-  --prisma-glass-gradient: var(--prisma-pc-light-card-material);
-  --prisma-frosted-accent-gradient:
-    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.90), transparent 34%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(238, 246, 255, 0.50));
-  --prisma-soft-highlight: rgba(255, 255, 255, 0.88);
-  --prisma-shadow-glass: var(--prisma-pc-light-shadow-panel);
-  --prisma-shadow-gold: var(--prisma-pc-light-shadow-blue);
-  --prisma-shadow-primary-glow: var(--prisma-pc-light-shadow-blue);
-  --prisma-success: var(--prisma-pc-light-success);
-  --prisma-warning: var(--prisma-pc-light-warning);
-  --prisma-danger: var(--prisma-pc-light-danger);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] body,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] body {
-  color: var(--prisma-pc-light-ink);
-  background: var(--prisma-scene-noise), var(--prisma-app-background-radial);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] body::before,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    linear-gradient(112deg, transparent 10%, rgba(255, 255, 255, 0.38) 34%, transparent 49%),
-    radial-gradient(ellipse at 54% 2%, rgba(255, 255, 255, 0.58), transparent 23%),
-    radial-gradient(ellipse at 72% 18%, rgba(105, 162, 255, 0.12), transparent 30%);
-  filter: blur(12px) saturate(1.08);
-  opacity: 0.74;
-  animation: prismaPcPearlDrift 34s ease-in-out infinite alternate;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .shell,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .shell {
-  width: min(100%, 1580px);
-  gap: clamp(18px, 2vw, 28px);
-  background: transparent;
-  isolation: isolate;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .hero,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .panel,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-block,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .search-shell,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .user-shell,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .hero,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .panel,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-block,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .search-shell,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .user-shell {
-  color: var(--prisma-pc-light-ink);
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.86), transparent 30%),
-    linear-gradient(116deg, rgba(255, 255, 255, 0.28), transparent 36%, transparent 72%, rgba(105, 162, 255, 0.08)),
-    var(--prisma-pc-light-panel-material);
-  border-color: var(--prisma-pc-light-border-soft);
-  box-shadow: var(--prisma-pc-light-shadow-panel);
-  backdrop-filter: blur(var(--prisma-pc-light-panel-blur)) saturate(var(--prisma-pc-light-saturate));
-  -webkit-backdrop-filter: blur(var(--prisma-pc-light-panel-blur)) saturate(var(--prisma-pc-light-saturate));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .card,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric-card,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric-detail,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .action-card,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .chip,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .alert-chip,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .inline-chip,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .alert-strip,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .list-item,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .empty-state,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .footer-chip,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .data-state-card,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] [class*="supplier" i][class*="card" i],
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .card,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric-card,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric-detail,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .action-card,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .chip,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .alert-chip,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .inline-chip,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .alert-strip,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .list-item,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .empty-state,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .footer-chip,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .data-state-card,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] [class*="supplier" i][class*="card" i] {
-  color: var(--prisma-pc-light-ink);
-  background: var(--prisma-pc-light-card-material);
-  border-color: var(--prisma-pc-light-border-soft);
-  box-shadow: var(--prisma-pc-light-shadow-card);
-  backdrop-filter: blur(var(--prisma-pc-light-card-blur)) saturate(1.14);
-  -webkit-backdrop-filter: blur(var(--prisma-pc-light-card-blur)) saturate(1.14);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .table-wrap,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] table,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .mini-card-table-v07,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .table-wrap,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] table,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .mini-card-table-v07 {
-  background: var(--prisma-pc-light-table-material);
-  border-color: var(--prisma-pc-light-border-soft);
-  box-shadow:
-    0 18px 42px rgba(23, 42, 82, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.06);
-  -webkit-backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.06);
-  font-variant-numeric: tabular-nums;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] th,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  color: #12346f;
-  background:
-    linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(233, 241, 255, 0.90));
-  border-bottom-color: rgba(156, 181, 218, 0.86);
-  letter-spacing: 0.075em;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] td,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] td {
-  color: var(--prisma-pc-light-text-secondary);
-  border-bottom-color: rgba(199, 213, 235, 0.68);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] tr:hover td,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] tr:hover td {
-  color: var(--prisma-pc-light-ink);
-  background:
-    linear-gradient(90deg, rgba(21, 87, 255, 0.10), rgba(255, 255, 255, 0.54));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
-  transition:
-    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 140ms ease,
-    background 180ms ease,
-    color 140ms ease;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover {
-  transform: translateY(-2px);
-  border-color: rgba(21, 87, 255, 0.28);
-  box-shadow: var(--prisma-pc-light-shadow-card-hover);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a {
-  color: var(--prisma-pc-light-text-secondary);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(238, 246, 255, 0.38));
-  border-color: rgba(198, 213, 235, 0.60);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a:hover,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a:hover {
-  color: var(--prisma-pc-light-ink);
-  background: var(--prisma-pc-light-selected-gradient);
-  border-color: rgba(21, 87, 255, 0.30);
-  box-shadow: 0 12px 26px rgba(21, 87, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"],
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] {
-  color: #ffffff;
-  background: var(--prisma-pc-light-primary-gradient);
-  border-color: rgba(21, 87, 255, 0.56);
-  box-shadow: var(--prisma-pc-light-shadow-blue);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav-icon,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav-icon {
-  color: var(--prisma-pc-light-blue);
-  background: rgba(21, 87, 255, 0.10);
-  border-color: rgba(21, 87, 255, 0.18);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.24);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .avatar,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .avatar {
-  color: #ffffff;
-  background: var(--prisma-pc-light-primary-gradient);
-  box-shadow: var(--prisma-pc-light-shadow-blue);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard {
-  filter: drop-shadow(0 18px 24px rgba(21, 87, 255, 0.22));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard::before,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard::before {
-  border-color: rgba(21, 87, 255, 0.56);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(21, 87, 255, 0.30) 52%, rgba(7, 49, 166, 0.12));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(21, 87, 255, 0.08));
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip) {
-  color: var(--prisma-pc-light-blue-deep);
-  text-shadow: none;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric {
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(button, .button, .primary-button, .action-primary, [data-variant="primary"]),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(button, .button, .primary-button, .action-primary, [data-variant="primary"]) {
-  border-radius: var(--prisma-pc-light-radius-md);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(button:not(:disabled), a, input, select, textarea):focus-visible,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(button:not(:disabled), a, input, select, textarea):focus-visible {
-  outline: 3px solid var(--prisma-pc-light-blue-ring);
-  outline-offset: 3px;
-  box-shadow: 0 0 0 6px rgba(21, 87, 255, 0.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(input, select, textarea, .search-shell),
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(input, select, textarea, .search-shell) {
-  color: var(--prisma-pc-light-ink);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(239, 246, 255, 0.50));
-  border-color: var(--prisma-pc-light-border-soft);
-  backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.10);
-  -webkit-backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.ok,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.ok {
-  color: #126a47;
-  border-color: rgba(31, 143, 95, 0.28);
-  background: rgba(31, 143, 95, 0.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.warn,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.warn {
-  color: #935707;
-  border-color: rgba(183, 119, 22, 0.32);
-  background: rgba(183, 119, 22, 0.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.danger,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.danger {
-  color: #9f2f2f;
-  border-color: rgba(196, 61, 61, 0.30);
-  background: rgba(196, 61, 61, 0.10);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .skip-link,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .skip-link {
-  color: #ffffff;
-  border-color: rgba(21, 87, 255, 0.42);
-  background: var(--prisma-pc-light-primary-gradient);
-  box-shadow: var(--prisma-pc-light-shadow-blue);
-}
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-appearance-selector,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-appearance-selector {
-  color: var(--prisma-pc-light-text-secondary);
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(191, 207, 232, 0.82);
-  box-shadow: 0 14px 32px rgba(23, 42, 82, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
 .prisma-appearance-selector {
@@ -1930,11 +966,6 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-app
   align-items: center;
   gap: 10px;
   padding: 6px 8px 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: var(--prisma-glass-gradient);
-  color: var(--prisma-text-secondary);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .prisma-appearance-label {
@@ -1948,64 +979,25 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-app
   display: inline-flex;
   gap: 4px;
   padding: 4px;
-  border-radius: 999px;
-  background: rgba(8, 20, 47, 0.06);
 }
 
 .prisma-appearance-option {
   min-height: 32px;
-  border: 0;
-  border-radius: 999px;
   padding: 0 10px;
-  color: inherit;
-  background: transparent;
   cursor: pointer;
   font-size: 12px;
   font-weight: 820;
 }
 
 .prisma-appearance-option[data-active="true"] {
-  color: #ffffff;
-  background: var(--prisma-pc-light-primary-gradient);
-  box-shadow: 0 10px 24px rgba(21, 87, 255, 0.22), inset 0 1px 0 rgba(255,255,255,0.28);
 }
 
-.prisma-appearance-option:active,
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active {
-  transform: translateY(1px) scale(0.992);
+.prisma-appearance-option:active {
 }
-
-html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb,
-html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(21, 87, 255, 0.42), rgba(115, 154, 230, 0.24));
-  border-color: rgba(248, 251, 255, 0.86);
-}
-
-@keyframes prismaPcPearlDrift {
-  from { transform: translate3d(-1.2%, -0.8%, 0) scale(1); opacity: 0.66; }
-  to { transform: translate3d(1.1%, 0.9%, 0) scale(1.018); opacity: 0.86; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-prisma-surface="pc-backoffice"] body::before,
-  html[data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
-    animation: none;
-    transition-duration: 1ms;
-  }
-}
-/* PRISMA_PC_LIGHT_PREMIUM_GLASS_20260506_v01C END */
-
-/* PRISMA_PC_PRODUCT_CLEANUP_01_VISIBLE_RELEASE_HARDENING
-   Capa final de saneamiento visual para PC app.
-   Quita scrollbar amarillo heredado, reduce particiones raras y protege textos largos. */
 :root {
-  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -2014,32 +1006,17 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(83,119,185,0.32), rgba(83,119,185,0.18));
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background-clip: padding-box;
 }
 
-.sidebar,
 .app-sidebar,
 nav[aria-label="Navegación principal"] {
   scrollbar-gutter: auto;
 }
 
-.sidebar::before,
-.sidebar::after,
-.sidebar-panel::before,
-.sidebar-panel::after {
-  pointer-events: none;
-}
-
 .nav-link,
-.sidebar a,
-.sidebar button,
 .card,
 .metric-card,
 .hero,
@@ -2058,18 +1035,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 .alert-strip .subtle {
-  color: var(--prisma-text-secondary, #53617a);
-}
-
-/* PRISMA_PC_HOME_BUSINESS_OVERVIEW_01_CLOSE_THE_DEAL_BRAND */
-.brand-logo-img {
-  width: min(184px, 86%);
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 26px;
-  object-fit: contain;
-  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
 }
 
 .prisma-home {
@@ -2082,12 +1047,6 @@ nav[aria-label="Navegación principal"] {
 .prisma-home-final {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--prisma-border-soft);
-  border-radius: 34px;
-  background:
-    radial-gradient(circle at 12% 8%, rgba(62, 137, 255, 0.16), transparent 36%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(236, 244, 255, 0.84));
-  box-shadow: 0 26px 70px rgba(28, 64, 122, 0.10), inset 0 1px 0 rgba(255,255,255,0.85);
 }
 
 .prisma-home-hero {
@@ -2108,7 +1067,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 .prisma-home-kicker {
-  color: #0a46af;
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -2124,7 +1082,6 @@ nav[aria-label="Navegación principal"] {
 
 .prisma-home h1 {
   max-width: 780px;
-  color: #060c27;
   font-size: clamp(46px, 6.2vw, 92px);
   line-height: 0.9;
   letter-spacing: -0.075em;
@@ -2132,7 +1089,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 .prisma-home h2 {
-  color: #07112f;
   font-size: clamp(34px, 4.4vw, 64px);
   line-height: 0.95;
   letter-spacing: -0.055em;
@@ -2140,7 +1096,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 .prisma-home h3 {
-  color: #07112f;
   font-size: 22px;
   line-height: 1.05;
   letter-spacing: -0.03em;
@@ -2149,7 +1104,6 @@ nav[aria-label="Navegación principal"] {
 
 .prisma-home p {
   max-width: 680px;
-  color: #405171;
   font-size: 17px;
   line-height: 1.65;
 }
@@ -2175,22 +1129,15 @@ nav[aria-label="Navegación principal"] {
   justify-content: center;
   min-height: 48px;
   padding: 0 20px;
-  border-radius: 999px;
   font-size: 14px;
   font-weight: 900;
   letter-spacing: -0.01em;
 }
 
 .prisma-home-primary {
-  color: white;
-  background: linear-gradient(135deg, #083aa5, #2767ff 52%, #66d9ff);
-  box-shadow: 0 18px 42px rgba(39, 103, 255, 0.34);
 }
 
 .prisma-home-secondary {
-  color: #0a2f7d;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(61, 117, 204, 0.22);
 }
 
 .prisma-home-proof span,
@@ -2199,10 +1146,6 @@ nav[aria-label="Navegación principal"] {
   align-items: center;
   min-height: 32px;
   padding: 0 12px;
-  border-radius: 999px;
-  color: #0b347f;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(63, 118, 196, 0.2);
   font-size: 12px;
   font-weight: 850;
 }
@@ -2218,29 +1161,19 @@ nav[aria-label="Navegación principal"] {
   position: absolute;
   width: 82%;
   aspect-ratio: 1;
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(91, 203, 255, 0.45), transparent 34%),
-    radial-gradient(circle at 50% 80%, rgba(16, 62, 198, 0.3), transparent 48%);
-  filter: blur(10px);
-  opacity: 0.9;
 }
 
 .prisma-home-logo {
   position: absolute;
   top: 2%;
   width: min(330px, 62%);
-  border-radius: 38px;
   z-index: 2;
-  filter: drop-shadow(0 30px 70px rgba(7, 43, 112, 0.28));
 }
 
 .prisma-home-ecosystem {
   position: relative;
   z-index: 3;
   width: min(680px, 100%);
-  transform: translateY(84px);
-  filter: drop-shadow(0 34px 70px rgba(21, 52, 113, 0.22));
 }
 
 .prisma-home-section {
@@ -2277,10 +1210,6 @@ nav[aria-label="Navegación principal"] {
 .prisma-question {
   position: relative;
   overflow: hidden;
-  border-radius: 26px;
-  border: 1px solid rgba(53, 104, 179, 0.16);
-  background: rgba(255,255,255,0.68);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86);
 }
 
 .prisma-pain-card,
@@ -2295,9 +1224,6 @@ nav[aria-label="Navegación principal"] {
 .prisma-card-dot {
   width: 34px;
   height: 34px;
-  border-radius: 13px;
-  background: linear-gradient(145deg, #0b3ca7, #4bbdff);
-  box-shadow: 0 16px 32px rgba(35, 106, 246, 0.28);
 }
 
 .prisma-pain-card p,
@@ -2311,7 +1237,6 @@ nav[aria-label="Navegación principal"] {
 }
 
 .prisma-ecosystem-card > span {
-  color: #104cb7;
   font-size: 12px;
   font-weight: 920;
   letter-spacing: 0.12em;
@@ -2345,40 +1270,13 @@ nav[aria-label="Navegación principal"] {
 .prisma-check-list li {
   position: relative;
   padding-left: 34px;
-  color: #1e2b48;
   font-size: 15px;
   line-height: 1.42;
   font-weight: 740;
 }
 
-.prisma-check-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 2px;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #0b45ba, #63d5ff);
-  box-shadow: 0 12px 26px rgba(34, 110, 255, 0.22);
-}
-
-.prisma-check-list li::after {
-  content: "";
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  width: 7px;
-  height: 4px;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-  transform: rotate(-45deg);
-}
-
 .prisma-panel-asset {
   width: 100%;
-  border-radius: 28px;
-  filter: drop-shadow(0 26px 56px rgba(25, 69, 139, 0.16));
 }
 
 .prisma-question-grid {
@@ -2390,7 +1288,6 @@ nav[aria-label="Navegación principal"] {
   display: flex;
   align-items: center;
   padding: 22px;
-  color: #07112f;
   font-size: 22px;
   line-height: 1.05;
   font-weight: 920;
@@ -2414,20 +1311,14 @@ nav[aria-label="Navegación principal"] {
   gap: 5px;
   align-content: center;
   padding: 16px 18px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(49, 99, 178, 0.14);
-  color: #17213b;
   font-size: 15px;
   font-weight: 780;
 }
 
 .prisma-compare-row > div:first-child {
-  color: #64708a;
 }
 
 .prisma-compare-row span {
-  color: #0d4bbb;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -2441,9 +1332,6 @@ nav[aria-label="Navegación principal"] {
   gap: 28px;
   align-items: center;
   padding: clamp(30px, 4vw, 56px);
-  background:
-    radial-gradient(circle at 16% 50%, rgba(70, 193, 255, 0.34), transparent 36%),
-    linear-gradient(135deg, #030716, #071b4b 55%, #0c3bb5);
 }
 
 .prisma-home-final img {
@@ -2451,17 +1339,13 @@ nav[aria-label="Navegación principal"] {
   z-index: 2;
   width: 220px;
   max-width: 100%;
-  border-radius: 32px;
-  filter: drop-shadow(0 24px 54px rgba(89, 196, 255, 0.28));
 }
 
 .prisma-home-final h2,
 .prisma-home-final p {
-  color: white;
 }
 
 .prisma-home-final p {
-  color: rgba(232, 241, 255, 0.78);
   margin: 16px 0 22px;
 }
 
@@ -2469,28 +1353,16 @@ nav[aria-label="Navegación principal"] {
   position: absolute;
   inset: auto -10% -30% 30%;
   height: 220px;
-  background: radial-gradient(circle, rgba(103, 216, 255, 0.34), transparent 62%);
-  filter: blur(4px);
 }
 
 html,
-body,
-.shell,
-.sidebar {
-  scrollbar-color: rgba(55, 118, 224, 0.3) transparent;
+body {
 }
 
-*::-webkit-scrollbar-track,
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
+*::-webkit-scrollbar-track {
 }
 
-*::-webkit-scrollbar-thumb,
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(55, 118, 224, 0.28);
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+*::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 1120px) {
@@ -2519,7 +1391,6 @@ body,
   .prisma-home-hero,
   .prisma-home-section,
   .prisma-home-final {
-    border-radius: 24px;
     padding: 24px;
   }
 
@@ -2528,14 +1399,11 @@ body,
     grid-template-columns: 1fr;
   }
 }
-
-/* START PRISMA_PC_HOME_MEDIA_ASSETS_02 */
 .prisma-home-inline-logo {
   width: min(220px, 52vw);
   height: auto;
   object-fit: contain;
   margin-bottom: 2px;
-  filter: drop-shadow(0 24px 42px rgba(14, 75, 186, 0.18));
 }
 
 .prisma-home-hero-media {
@@ -2553,12 +1421,6 @@ body,
   position: relative;
   overflow: hidden;
   margin: 0;
-  border-radius: 34px;
-  border: 1px solid rgba(72, 120, 190, 0.18);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(100, 202, 255, 0.20), transparent 40%),
-    rgba(255, 255, 255, 0.72);
-  box-shadow: 0 26px 72px rgba(25, 68, 142, 0.14), inset 0 1px 0 rgba(255,255,255,0.88);
 }
 
 .prisma-home-media-card img {
@@ -2573,9 +1435,6 @@ body,
 }
 
 .prisma-media-showcase {
-  background:
-    radial-gradient(circle at 10% 0%, rgba(42, 113, 255, 0.11), transparent 34%),
-    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(236,245,255,0.86));
 }
 
 .prisma-media-grid {
@@ -2594,32 +1453,17 @@ body,
   right: 22px;
   bottom: 20px;
   padding: 14px 16px;
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 22px;
-  color: #07112f;
   font-size: 14px;
   font-weight: 850;
   line-height: 1.35;
-  background: rgba(255,255,255,0.76);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 18px 40px rgba(16, 48, 108, 0.14);
 }
 
 .prisma-multistore-photo {
   min-height: 450px;
-  background: #061331;
 }
 
 .prisma-multistore-photo img {
   object-position: center;
-}
-
-.brand-logo-img {
-  width: min(194px, 86%);
-  height: auto;
-  object-fit: contain;
-  border-radius: 18px;
-  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
 }
 
 @media (max-width: 1280px) {
@@ -2643,9 +1487,6 @@ body,
     min-height: 420px;
   }
 }
-/* END PRISMA_PC_HOME_MEDIA_ASSETS_02 */
-
-/* START PRISMA_PC_HOME_HERO_IMAGE_03 */
 .prisma-home-hero-media {
   grid-template-columns: minmax(430px, 0.70fr) minmax(680px, 1fr);
   gap: clamp(28px, 3.6vw, 58px);
@@ -2658,10 +1499,6 @@ body,
   min-height: unset;
   aspect-ratio: 16 / 9;
   width: 100%;
-  border-radius: 34px;
-  background: white;
-  border: 1px solid rgba(72, 120, 190, 0.16);
-  box-shadow: 0 28px 72px rgba(25, 68, 142, 0.14), inset 0 1px 0 rgba(255,255,255,0.92);
 }
 
 .prisma-home-main-poster img {
@@ -2669,13 +1506,11 @@ body,
   height: 100%;
   object-fit: contain;
   object-position: center;
-  background: white;
 }
 
 .prisma-home-media-card img[src="/landing/prisma-home-hero-commercial.png"] {
   object-fit: contain;
   object-position: center;
-  background: white;
 }
 
 .prisma-home-inline-logo {
@@ -2683,7 +1518,6 @@ body,
   height: auto;
   object-fit: contain;
   margin-bottom: 2px;
-  filter: drop-shadow(0 24px 42px rgba(14, 75, 186, 0.18));
 }
 
 @media (max-width: 1280px) {
@@ -2700,72 +1534,45 @@ body,
 
 @media (max-width: 720px) {
   .prisma-home-main-poster {
-    border-radius: 24px;
   }
 }
-/* END PRISMA_PC_HOME_HERO_IMAGE_03 */
-
-/* START PRISMA_PC_HOME_VISUAL_TUNE_20260506 */
 .prisma-home {
-  --prisma-ink: #374151;
-  --prisma-ink-strong: #273244;
-  --prisma-ink-soft: #596579;
-  --prisma-blue: #1458d4;
-  --prisma-blue-deep: #08378e;
-  --prisma-line: rgba(76,111,166,.18);
-  --prisma-display-font: "Inter Variable", "Inter", "Aptos Display", "Aptos", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-family: var(--prisma-display-font);
-  color: var(--prisma-ink);
   gap: clamp(24px, 3vw, 38px);
 }
-.prisma-home h1,.prisma-home h2,.prisma-home h3{color:var(--prisma-ink-strong);font-family:var(--prisma-display-font);text-wrap:balance;text-shadow:none;}
+.prisma-home h1,.prisma-home h2,.prisma-home h3{text-wrap:balance;}
 .prisma-home h1{max-width:840px;font-size:clamp(43px,5.4vw,78px);line-height:1.015;letter-spacing:-.048em;font-weight:760;}
 .prisma-home h2{font-size:clamp(32px,3.85vw,58px);line-height:1.04;letter-spacing:-.038em;font-weight:730;}
 .prisma-home h3{font-size:clamp(20px,1.65vw,25px);line-height:1.14;letter-spacing:-.018em;font-weight:700;}
-.prisma-home p,.prisma-section-lead{color:var(--prisma-ink-soft);font-weight:460;}
+.prisma-home p,.prisma-section-lead{font-weight:460;}
 .prisma-home-hero-copy>p,.prisma-section-lead{font-size:clamp(17px,1.35vw,21px);line-height:1.68;}
-.prisma-home-kicker{color:var(--prisma-blue);font-size:11px;font-weight:760;letter-spacing:.18em;}
-.prisma-home-hero,.prisma-home-section{border-radius:clamp(26px,2.6vw,40px);box-shadow:0 20px 58px rgba(28,64,122,.075),inset 0 1px 0 rgba(255,255,255,.86);}
+.prisma-home-kicker{font-size:11px;font-weight:760;letter-spacing:.18em;}
+.prisma-home-hero,.prisma-home-section{}
 .prisma-home-pain .prisma-section-heading,.prisma-before-after .prisma-section-heading,.prisma-home-final>div:last-child{max-width:1060px;margin-left:auto;margin-right:auto;text-align:center;justify-items:center;}
 .prisma-home-pain .prisma-section-heading p,.prisma-before-after .prisma-section-heading p,.prisma-home-final p{max-width:780px;}
-.prisma-pain-card,.prisma-ecosystem-card,.prisma-question{border:1px solid rgba(64,104,166,.13);background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(246,249,255,.68));box-shadow:0 14px 34px rgba(25,68,142,.07),inset 0 1px 0 rgba(255,255,255,.9);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
-.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover{transform:translateY(-2px);border-color:rgba(20,88,212,.24);box-shadow:0 20px 46px rgba(25,68,142,.105),inset 0 1px 0 rgba(255,255,255,.94);}
-.prisma-home-primary,.prisma-home-secondary{min-height:50px;padding:0 22px;font-weight:740;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;}
-.prisma-home-primary:hover,.prisma-home-secondary:hover{transform:translateY(-1px);}.prisma-home-primary:active,.prisma-home-secondary:active{transform:translateY(0);}
-.prisma-home-primary:focus-visible,.prisma-home-secondary:focus-visible{outline:3px solid rgba(20,88,212,.32);outline-offset:4px;}
-.prisma-home-secondary{background:rgba(255,255,255,.88);border-color:rgba(20,88,212,.26);color:var(--prisma-blue-deep);}
-.prisma-home-proof span,.prisma-mini-tags b{background:rgba(255,255,255,.66);color:#31517d;font-weight:680;border-color:rgba(90,128,188,.16);}
-.prisma-before-after-story{background:radial-gradient(circle at 50% -10%,rgba(52,128,255,.13),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.96),rgba(239,246,255,.88));}
-.prisma-compare-flow{display:grid;gap:0;max-width:1080px;margin:0 auto;border-top:1px solid var(--prisma-line);border-bottom:1px solid var(--prisma-line);}
-.prisma-compare-step{display:grid;grid-template-columns:72px minmax(0,1fr) 54px minmax(0,1.15fr);align-items:center;gap:clamp(12px,2.4vw,30px);min-height:104px;padding:clamp(20px,2.2vw,30px) 0;border-bottom:1px solid rgba(76,111,166,.14);}
-.prisma-compare-step:last-child{border-bottom:0;}.prisma-compare-number{color:rgba(20,88,212,.28);font-size:clamp(28px,3vw,42px);font-weight:650;letter-spacing:-.055em;font-variant-numeric:tabular-nums;}
-.prisma-compare-before,.prisma-compare-after{display:grid;gap:7px;min-width:0;}.prisma-compare-before span,.prisma-compare-after span{color:var(--prisma-blue);font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:760;}
-.prisma-compare-before p,.prisma-compare-after p{margin:0;max-width:none;line-height:1.24;}.prisma-compare-before p{color:#778195;font-size:clamp(17px,1.45vw,22px);font-weight:560;}.prisma-compare-after p{color:var(--prisma-ink-strong);font-size:clamp(18px,1.55vw,24px);font-weight:720;}
-.prisma-compare-arrow{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;color:var(--prisma-blue);background:rgba(20,88,212,.08);font-size:22px;font-weight:760;}
-.prisma-compare-table,.prisma-compare-row{display:contents;}.prisma-compare-row>div{border:0;background:transparent;box-shadow:none;border-radius:0;}
-.prisma-home-final{grid-template-columns:200px minmax(0,1fr);background:radial-gradient(circle at 20% 45%,rgba(92,202,255,.26),transparent 34%),linear-gradient(135deg,#0b1e45,#1149b2 58%,#1c6fff);box-shadow:0 24px 70px rgba(13,49,118,.22);}
-.prisma-home-final h2{color:#f7fbff;max-width:980px;}.prisma-home-final p{color:rgba(236,245,255,.82);}.prisma-home-media-card{box-shadow:0 22px 56px rgba(25,68,142,.115),inset 0 1px 0 rgba(255,255,255,.88);}
-@media (max-width:980px){.prisma-compare-step{grid-template-columns:58px 1fr;gap:14px 18px}.prisma-compare-arrow{grid-column:1/-1;justify-self:center;transform:rotate(90deg)}.prisma-compare-after{grid-column:2}.prisma-home-final{grid-template-columns:1fr;text-align:center;justify-items:center}}
+.prisma-pain-card,.prisma-ecosystem-card,.prisma-question{}
+.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover{}
+.prisma-home-primary,.prisma-home-secondary{min-height:50px;padding:0 22px;font-weight:740;}
+.prisma-home-primary:hover,.prisma-home-secondary:hover{}.prisma-home-primary:active,.prisma-home-secondary:active{}
+.prisma-home-primary:focus-visible,.prisma-home-secondary:focus-visible{outline:2px solid currentColor;outline-offset:4px;}
+.prisma-home-secondary{}
+.prisma-home-proof span,.prisma-mini-tags b{font-weight:680;}
+.prisma-before-after-story{}
+.prisma-compare-flow{display:grid;gap:0;max-width:1080px;margin:0 auto;}
+.prisma-compare-step{display:grid;grid-template-columns:72px minmax(0,1fr) 54px minmax(0,1.15fr);align-items:center;gap:clamp(12px,2.4vw,30px);min-height:104px;padding:clamp(20px,2.2vw,30px) 0;}
+.prisma-compare-step:last-child{}.prisma-compare-number{font-size:clamp(28px,3vw,42px);font-weight:650;letter-spacing:-.055em;font-variant-numeric:tabular-nums;}
+.prisma-compare-before,.prisma-compare-after{display:grid;gap:7px;min-width:0;}.prisma-compare-before span,.prisma-compare-after span{font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:760;}
+.prisma-compare-before p,.prisma-compare-after p{margin:0;max-width:none;line-height:1.24;}.prisma-compare-before p{font-size:clamp(17px,1.45vw,22px);font-weight:560;}.prisma-compare-after p{font-size:clamp(18px,1.55vw,24px);font-weight:720;}
+.prisma-compare-arrow{display:grid;place-items:center;width:42px;height:42px;font-size:22px;font-weight:760;}
+.prisma-compare-table,.prisma-compare-row{display:contents;}.prisma-compare-row>div{}
+.prisma-home-final{grid-template-columns:200px minmax(0,1fr);}
+.prisma-home-final h2{max-width:980px;}.prisma-home-final p{}.prisma-home-media-card{}
+@media (max-width:980px){.prisma-compare-step{grid-template-columns:58px 1fr;gap:14px 18px}.prisma-compare-arrow{grid-column:1/-1;justify-self:center}.prisma-compare-after{grid-column:2}.prisma-home-final{grid-template-columns:1fr;text-align:center;justify-items:center}}
 @media (max-width:720px){.prisma-home h1{font-size:clamp(40px,14vw,58px)}.prisma-home h2{font-size:clamp(30px,10.5vw,44px)}.prisma-compare-step{grid-template-columns:1fr;text-align:left;padding:24px 0}.prisma-compare-number,.prisma-compare-arrow,.prisma-compare-after{grid-column:auto}.prisma-compare-arrow{justify-self:start}}
-@media (prefers-reduced-motion:reduce){.prisma-home *,.prisma-home *::before,.prisma-home *::after{animation-duration:.001ms;animation-iteration-count:1;scroll-behavior:auto;transition-duration:.001ms}.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover,.prisma-home-primary:hover,.prisma-home-secondary:hover{transform:none}}
-/* END PRISMA_PC_HOME_VISUAL_TUNE_20260506 */
-
-/* START PRISMA_PC_INTERACTIVITY_LAYER_20260506 */
-.prisma-command-center{position:relative;overflow:hidden;display:grid;gap:clamp(18px,2.3vw,26px);padding:clamp(28px,4vw,56px);border:1px solid rgba(80,125,190,.18);border-radius:clamp(26px,3vw,42px);background:radial-gradient(circle at 8% 0%,rgba(31,111,255,.14),transparent 34%),radial-gradient(circle at 94% 18%,rgba(99,211,255,.18),transparent 28%),linear-gradient(145deg,rgba(255,255,255,.94),rgba(236,246,255,.86));box-shadow:0 26px 70px rgba(28,64,122,.105),inset 0 1px 0 rgba(255,255,255,.9)}
-.prisma-command-heading{display:grid;gap:14px;max-width:980px;margin:0 auto;text-align:center;justify-items:center}.prisma-command-heading h2{max-width:940px;color:#273244;font-size:clamp(32px,4.1vw,62px);line-height:1.04;letter-spacing:-.043em;font-weight:730;text-wrap:balance}.prisma-command-heading p{max-width:780px;color:#596579;font-size:clamp(16px,1.25vw,20px);line-height:1.64}.prisma-command-tabs,.prisma-command-actions,.prisma-command-kpis{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.prisma-command-tabs button,.prisma-command-actions button,.prisma-command-module-rail button,.prisma-command-incident-list button{appearance:none;border:0;font:inherit;cursor:pointer}.prisma-command-tabs button{min-height:44px;padding:0 18px;border-radius:999px;color:#335071;font-size:13px;font-weight:780;background:rgba(255,255,255,.72);border:1px solid rgba(78,126,190,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.86);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{transform:translateY(-1px)}.prisma-command-tabs button.is-active,.prisma-command-module-rail button.is-active{color:#fff;background:linear-gradient(135deg,#0a45bf,#2767ff 58%,#63d5ff);border-color:rgba(39,103,255,.34);box-shadow:0 16px 36px rgba(39,103,255,.24)}.prisma-command-tabs button:focus-visible,.prisma-command-actions button:focus-visible,.prisma-command-module-rail button:focus-visible,.prisma-command-incident-list button:focus-visible,.prisma-command-select select:focus-visible,.prisma-command-incidents input:focus-visible{outline:3px solid rgba(39,103,255,.28);outline-offset:4px}.prisma-command-hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:center;padding:clamp(20px,2.4vw,30px);border-radius:30px;border:1px solid rgba(72,120,190,.16);background:rgba(255,255,255,.66);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}.prisma-command-hero span,.prisma-command-panel-kicker,.prisma-command-select span,.prisma-command-incidents label span{color:#1458d4;font-size:10px;font-weight:790;letter-spacing:.16em;text-transform:uppercase}.prisma-command-hero h3,.prisma-command-module-panel h3,.prisma-command-incidents h3{margin:8px 0 0;color:#273244;font-size:clamp(22px,2.2vw,34px);line-height:1.08;letter-spacing:-.03em;font-weight:730}.prisma-command-hero p,.prisma-command-module-panel p{margin-top:10px;color:#596579;font-size:15px;line-height:1.55}.prisma-command-select{display:grid;gap:8px}.prisma-command-select select,.prisma-command-incidents input{width:100%;min-height:46px;border-radius:16px;border:1px solid rgba(76,111,166,.22);color:#273244;background:rgba(255,255,255,.86);padding:0 14px;font:inherit;font-size:14px;font-weight:660}.prisma-command-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.prisma-command-kpis article{display:grid;gap:8px;min-height:126px;padding:18px;border-radius:24px;border:1px solid rgba(72,120,190,.14);background:rgba(255,255,255,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}.prisma-command-kpis span,.prisma-command-kpis small{color:#66748b;font-size:12px;font-weight:720}.prisma-command-kpis strong{color:#26344b;font-size:clamp(28px,3vw,42px);line-height:1;letter-spacing:-.045em;font-weight:720}.prisma-command-workspace{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1fr) minmax(320px,.95fr);gap:16px;align-items:stretch}.prisma-command-module-rail,.prisma-command-module-panel,.prisma-command-incidents{display:grid;gap:12px;padding:16px;border-radius:28px;border:1px solid rgba(72,120,190,.15);background:rgba(255,255,255,.58);box-shadow:inset 0 1px 0 rgba(255,255,255,.84)}.prisma-command-module-rail button{display:grid;gap:5px;width:100%;min-height:76px;padding:14px;border-radius:20px;text-align:left;color:#334158;background:rgba(255,255,255,.64);border:1px solid rgba(76,111,166,.13);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.prisma-command-module-rail button span{font-size:14px;font-weight:780}.prisma-command-module-rail button b{font-size:12px;color:inherit;opacity:.72}.prisma-command-module-panel{align-content:start;padding:clamp(20px,2.4vw,30px)}.prisma-command-meter{position:relative;overflow:hidden;height:12px;margin:10px 0;border-radius:999px;background:rgba(58,87,132,.12)}.prisma-command-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#0a45bf,#2767ff,#63d5ff);box-shadow:0 10px 24px rgba(39,103,255,.22);transition:width .24s ease}.prisma-command-actions{justify-content:flex-start;margin-top:8px}.prisma-command-actions button{min-height:42px;padding:0 14px;border-radius:999px;color:#0a3f9e;background:rgba(20,88,212,.08);border:1px solid rgba(20,88,212,.16);font-size:13px;font-weight:750}.prisma-command-search-row{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:14px;align-items:end}.prisma-command-incidents label{display:grid;gap:7px}.prisma-command-incident-list{display:grid;gap:10px;max-height:390px;overflow:auto;padding-right:4px}.prisma-command-incident-list button,.prisma-command-empty{display:grid;gap:6px;width:100%;padding:14px;border-radius:18px;text-align:left;background:rgba(255,255,255,.68);border:1px solid rgba(76,111,166,.14);color:#273244}.prisma-command-incident-list button span{width:fit-content;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:820;letter-spacing:.1em;text-transform:uppercase}.prisma-command-incident-list button b{font-size:14px}.prisma-command-incident-list button small,.prisma-command-empty{color:#64708a;font-size:13px;line-height:1.38;font-weight:560}.prisma-command-incident-list .severity-alta span{color:#991b1b;background:rgba(239,68,68,.11)}.prisma-command-incident-list .severity-media span{color:#92400e;background:rgba(245,158,11,.13)}.prisma-command-incident-list .severity-baja span{color:#166534;background:rgba(34,197,94,.12)}.prisma-command-live{min-height:54px;display:flex;align-items:center;gap:8px;padding:14px 18px;border-radius:22px;color:#3d4c66;background:rgba(255,255,255,.68);border:1px solid rgba(76,111,166,.14);font-size:14px;line-height:1.42}.prisma-command-live strong{color:#1458d4}@media(max-width:1180px){.prisma-command-workspace{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto}.prisma-command-module-rail button{min-width:160px}}@media(max-width:860px){.prisma-command-hero,.prisma-command-search-row{grid-template-columns:1fr}.prisma-command-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.prisma-command-center{padding:22px;border-radius:24px}.prisma-command-kpis{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:1fr}.prisma-command-module-rail button{min-width:0}}@media(prefers-reduced-motion:reduce){.prisma-command-center *,.prisma-command-center *::before,.prisma-command-center *::after{transition-duration:.001ms;animation-duration:.001ms;animation-iteration-count:1;scroll-behavior:auto}.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{transform:none}}
-/* END PRISMA_PC_INTERACTIVITY_LAYER_20260506 */
-
-/* PRISMA_PC_IMPACT_01_NAV_REAL_START */
-.prisma-command-route-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:6px 0 10px}.prisma-command-route-row a{display:inline-flex;min-height:36px;align-items:center;justify-content:center;padding:0 14px;border-radius:999px;color:#fff;background:linear-gradient(135deg,#0a45bf,#2767ff 58%,#63d5ff);border:1px solid rgba(39,103,255,.34);font-size:13px;font-weight:780;box-shadow:0 14px 30px rgba(39,103,255,.18);transition:transform .18s ease,box-shadow .18s ease}.prisma-command-route-row a:hover{transform:translateY(-1px);box-shadow:0 18px 38px rgba(39,103,255,.24)}.prisma-command-route-row a:focus-visible{outline:3px solid rgba(39,103,255,.28);outline-offset:4px}.prisma-command-route-row small{color:#64708a;font-size:12px;font-weight:650}.prisma-command-actions button[data-prisma-route="true"],.prisma-command-incident-list button[data-prisma-route="true"]{position:relative}.prisma-command-actions button[data-prisma-route="true"]::after{content:"↗";font-size:12px;margin-left:6px;opacity:.72}.prisma-command-live[data-prisma-nav-ready="true"]{border-color:rgba(39,103,255,.22);box-shadow:0 14px 34px rgba(39,103,255,.1),inset 0 1px 0 rgba(255,255,255,.86)}
-@media(prefers-reduced-motion:reduce){.prisma-command-route-row a:hover{transform:none}}
-/* PRISMA_PC_IMPACT_01_NAV_REAL_END */
-
-/* PRISMA_PROVEEDORES_SHELL_PLAYWRIGHT_FIX_20260526_BEGIN */
-/*
-  Proveedores now renders inside the PC AppShell. These scoped guards keep the
-  legacy supplier cockpit readable inside the narrower main column and prevent
-  the letter-by-letter column collapse observed in the 1920x1080 Playwright shot.
-*/
+@media (prefers-reduced-motion:reduce){.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover,.prisma-home-primary:hover,.prisma-home-secondary:hover{}}
+.prisma-command-center{position:relative;overflow:hidden;display:grid;gap:clamp(18px,2.3vw,26px);padding:clamp(28px,4vw,56px)}
+.prisma-command-heading{display:grid;gap:14px;max-width:980px;margin:0 auto;text-align:center;justify-items:center}.prisma-command-heading h2{max-width:940px;font-size:clamp(32px,4.1vw,62px);line-height:1.04;letter-spacing:-.043em;font-weight:730;text-wrap:balance}.prisma-command-heading p{max-width:780px;font-size:clamp(16px,1.25vw,20px);line-height:1.64}.prisma-command-tabs,.prisma-command-actions,.prisma-command-kpis{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.prisma-command-tabs button,.prisma-command-actions button,.prisma-command-module-rail button,.prisma-command-incident-list button{font:inherit;cursor:pointer}.prisma-command-tabs button{min-height:44px;padding:0 18px;font-size:13px;font-weight:780}.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{}.prisma-command-tabs button.is-active,.prisma-command-module-rail button.is-active{}.prisma-command-tabs button:focus-visible,.prisma-command-actions button:focus-visible,.prisma-command-module-rail button:focus-visible,.prisma-command-incident-list button:focus-visible,.prisma-command-select select:focus-visible,.prisma-command-incidents input:focus-visible{outline:2px solid currentColor;outline-offset:4px}.prisma-command-hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:center;padding:clamp(20px,2.4vw,30px)}.prisma-command-hero span,.prisma-command-panel-kicker,.prisma-command-select span,.prisma-command-incidents label span{font-size:10px;font-weight:790;letter-spacing:.16em;text-transform:uppercase}.prisma-command-hero h3,.prisma-command-module-panel h3,.prisma-command-incidents h3{margin:8px 0 0;font-size:clamp(22px,2.2vw,34px);line-height:1.08;letter-spacing:-.03em;font-weight:730}.prisma-command-hero p,.prisma-command-module-panel p{margin-top:10px;font-size:15px;line-height:1.55}.prisma-command-select{display:grid;gap:8px}.prisma-command-select select,.prisma-command-incidents input{width:100%;min-height:46px;padding:0 14px;font:inherit;font-size:14px;font-weight:660}.prisma-command-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.prisma-command-kpis article{display:grid;gap:8px;min-height:126px;padding:18px}.prisma-command-kpis span,.prisma-command-kpis small{font-size:12px;font-weight:720}.prisma-command-kpis strong{font-size:clamp(28px,3vw,42px);line-height:1;letter-spacing:-.045em;font-weight:720}.prisma-command-workspace{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1fr) minmax(320px,.95fr);gap:16px;align-items:stretch}.prisma-command-module-rail,.prisma-command-module-panel,.prisma-command-incidents{display:grid;gap:12px;padding:16px}.prisma-command-module-rail button{display:grid;gap:5px;width:100%;min-height:76px;padding:14px;text-align:left}.prisma-command-module-rail button span{font-size:14px;font-weight:780}.prisma-command-module-rail button b{font-size:12px}.prisma-command-module-panel{align-content:start;padding:clamp(20px,2.4vw,30px)}.prisma-command-meter{position:relative;overflow:hidden;height:12px;margin:10px 0}.prisma-command-meter span{display:block;height:100%}.prisma-command-actions{justify-content:flex-start;margin-top:8px}.prisma-command-actions button{min-height:42px;padding:0 14px;font-size:13px;font-weight:750}.prisma-command-search-row{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:14px;align-items:end}.prisma-command-incidents label{display:grid;gap:7px}.prisma-command-incident-list{display:grid;gap:10px;max-height:390px;overflow:auto;padding-right:4px}.prisma-command-incident-list button,.prisma-command-empty{display:grid;gap:6px;width:100%;padding:14px;text-align:left}.prisma-command-incident-list button span{width:fit-content;padding:4px 8px;font-size:10px;font-weight:820;letter-spacing:.1em;text-transform:uppercase}.prisma-command-incident-list button b{font-size:14px}.prisma-command-incident-list button small,.prisma-command-empty{font-size:13px;line-height:1.38;font-weight:560}.prisma-command-incident-list .severity-alta span{}.prisma-command-incident-list .severity-media span{}.prisma-command-incident-list .severity-baja span{}.prisma-command-live{min-height:54px;display:flex;align-items:center;gap:8px;padding:14px 18px;font-size:14px;line-height:1.42}.prisma-command-live strong{}@media(max-width:1180px){.prisma-command-workspace{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto}.prisma-command-module-rail button{min-width:160px}}@media(max-width:860px){.prisma-command-hero,.prisma-command-search-row{grid-template-columns:1fr}.prisma-command-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.prisma-command-center{padding:22px}.prisma-command-kpis{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:1fr}.prisma-command-module-rail button{min-width:0}}@media(prefers-reduced-motion:reduce){.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{}}
+.prisma-command-route-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:6px 0 10px}.prisma-command-route-row a{display:inline-flex;min-height:36px;align-items:center;justify-content:center;padding:0 14px;font-size:13px;font-weight:780}.prisma-command-route-row a:hover{}.prisma-command-route-row a:focus-visible{outline:2px solid currentColor;outline-offset:4px}.prisma-command-route-row small{font-size:12px;font-weight:650}.prisma-command-actions button[data-prisma-route="true"],.prisma-command-incident-list button[data-prisma-route="true"]{position:relative}.prisma-command-live[data-prisma-nav-ready="true"]{}
+@media(prefers-reduced-motion:reduce){.prisma-command-route-row a:hover{}}
 .supplier-page,
 .supplier-page * {
   box-sizing: border-box;
@@ -2915,995 +1722,8 @@ body,
     grid-template-columns: 1fr;
   }
 }
-/* PRISMA_PROVEEDORES_SHELL_PLAYWRIGHT_FIX_20260526_END */
-
-/* PRISMA_DELAYER_01_BEGIN
-   PC de-container pass: keep layout/card hierarchy, remove repeated frosted shells and excessive halos.
-*/
 html[data-prisma-surface="pc-backoffice"] {
-  --prisma-shadow-glass: 0 10px 24px rgba(31, 68, 105, 0.08);
-  --prisma-shadow-card: 0 8px 20px rgba(31, 68, 105, 0.07);
-  --prisma-glass-gradient: rgba(255, 255, 255, 0.54);
-  --prisma-panel-gradient: linear-gradient(180deg, rgba(12, 24, 39, 0.86), rgba(7, 16, 28, 0.74));
-  --prisma-sidebar-surface: rgba(8, 18, 30, 0.82);
-  --prisma-cart-panel-surface: rgba(9, 20, 34, 0.76);
 }
-
-html[data-prisma-surface="pc-backoffice"] :is(
-  .sidebar,
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .supplier-page section,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-) {
-  background: rgba(255, 255, 255, 0.60);
-  border-color: rgba(89, 130, 171, 0.18);
-  box-shadow: 0 8px 22px rgba(31, 68, 105, 0.07);
-  backdrop-filter: blur(8px) saturate(1.02);
-  -webkit-backdrop-filter: blur(8px) saturate(1.02);
-}
-
-html[data-prisma-surface="pc-backoffice"] :is(
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-)::before,
-html[data-prisma-surface="pc-backoffice"] :is(
-  .brand-block,
-  .sidebar-panel,
-  .footer-stack > *,
-  .hero,
-  .panel,
-  .card,
-  .metric-card,
-  .decision-card,
-  .inventory-item-card-v11,
-  .trust-card-v07,
-  .calendar-event-v07,
-  .order-card-v07,
-  .surface-signal-card,
-  .audit-step-v07,
-  .audit-event-card,
-  .money-panel-v07
-)::after {
-  opacity: 0.12;
-  filter: none;
-}
-
-html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-secondary, .chip, .inline-chip, .data-chip-v07, .workflow-pill) {
-  background: rgba(255, 255, 255, 0.44);
-  box-shadow: none;
-}
-/* PRISMA_DELAYER_01_END */
-
-/* PRISMA_PC_LEFT_RAIL_SAFE_BRAND_NAV_0807_BEGIN
-   PC-only, left-rail-only. Uses appmap/pcatlas guidance:
-   - keep aside.sidebar as layout anchor;
-   - keep brand-block and nav structure;
-   - make the rear rail panel visually start below the logo;
-   - neutralize only the inner navigation panel appearance;
-   - no global PC material/button/card changes, no forced priority.
-*/
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar {
-  position: relative;
-  isolation: isolate;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset-inline: 0;
-  top: clamp(270px, 29vh, 330px);
-  bottom: clamp(8px, 1vw, 14px);
-  pointer-events: none;
-  border: 1px solid rgba(132, 220, 246, 0.22);
-  border-radius: clamp(22px, 2vw, 34px);
-  background:
-    radial-gradient(ellipse at 16% 0%, rgba(255, 255, 255, 0.085), transparent 36%),
-    linear-gradient(180deg, rgba(17, 45, 66, 0.46), rgba(6, 22, 38, 0.36));
-  box-shadow: 0 18px 42px rgba(0, 10, 22, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(12px) saturate(1.06);
-  -webkit-backdrop-filter: blur(12px) saturate(1.06);
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar > * {
-  position: relative;
-  z-index: 1;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block {
-  min-height: clamp(232px, 27vh, 304px);
-  padding: clamp(18px, 2.1vw, 30px) clamp(10px, 1.4vw, 18px) clamp(14px, 1.8vw, 24px);
-  display: grid;
-  place-items: center;
-  text-align: center;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-block, .brand-row, .brand)::before,
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-block, .brand-row, .brand)::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.brand-row, .brand) {
-  width: 100%;
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  gap: clamp(11px, 1.15vw, 18px);
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block :is(.brand-logo-img, .prisma-shard, .prisma-home-logo, .prisma-home-inline-logo, img[class*="logo" i], svg[class*="logo" i]) {
-  width: min(86%, 190px);
-  max-width: clamp(132px, 12.8vw, 190px);
-  height: auto;
-  max-height: clamp(122px, 15.5vh, 184px);
-  object-fit: contain;
-  box-shadow: none;
-  filter: drop-shadow(0 18px 30px rgba(55, 182, 255, 0.24));
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .brand-block :is(.subtle, small, p) {
-  max-width: min(96%, 250px);
-  margin-inline: auto;
-  text-align: center;
-  color: rgba(249, 253, 255, 0.98);
-  font-size: clamp(13px, 0.94vw, 16px);
-  font-weight: 920;
-  line-height: 1.16;
-  letter-spacing: 0.155em;
-  text-transform: uppercase;
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.96),
-    0 0 8px rgba(126, 235, 255, 0.58),
-    0 0 20px rgba(58, 173, 255, 0.28);
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel) {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel)::before,
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.sidebar-panel, .sidebar-nav-panel)::after {
-  content: none;
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar .sidebar-nav-panel > :is(.panel-label, .panel-title, .kicker, .nav-heading, .nav-section-title, h2, h3):first-child {
-  display: none;
-}
-
-:is(
-  html[data-prisma-surface="pc-backoffice"],
-  html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
-  html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"]
-) .sidebar :is(.nav-section-title, .nav-group-title, .sidebar-section-title, [data-nav-section-title]) {
-  color: rgba(250, 253, 255, 0.98);
-  font-size: clamp(12px, 0.84vw, 14px);
-  font-weight: 930;
-  letter-spacing: 0.125em;
-  line-height: 1.2;
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.88),
-    0 0 7px rgba(126, 235, 255, 0.34),
-    0 0 14px rgba(58, 173, 255, 0.14);
-}
-/* PRISMA_PC_LEFT_RAIL_SAFE_BRAND_NAV_0807_END */
-
-/* PRISMA_PC_NAV_ONLY_RAIL_PANEL_0807_BEGIN */
-/*
-  PC-only left rail: one navigation panel, no logo panel.
-  DOM-grounded scope: .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar
-  Keeps AppShell/Sidebar/BrandBlock/PrimaryHumanNavigation structure intact.
-  No global cards, pills, tables, buttons, Prisma, ports, processes, Git, Tablet, Mobile or Chart Lab.
-*/
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::before,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::after {
-  content: none;
-  opacity: 0;
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row > div {
-  background: transparent;
-  background-image: none;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block {
-  padding-block: clamp(18px, 3.2vh, 34px) clamp(14px, 2.4vh, 24px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-logo-img {
-  width: clamp(122px, 9.4vw, 168px);
-  height: auto;
-  max-width: 72%;
-  box-shadow: none;
-  filter: drop-shadow(0 14px 26px rgba(55, 182, 255, 0.23));
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-block .subtle {
-  color: rgba(250, 254, 255, 0.96);
-  font-size: clamp(14px, 0.92vw, 17px);
-  letter-spacing: 0.24em;
-  text-align: center;
-  text-transform: uppercase;
-  text-shadow:
-    0 0 9px rgba(137, 239, 255, 0.38),
-    0 0 18px rgba(137, 239, 255, 0.18),
-    0 1px 8px rgba(0, 10, 24, 0.52);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel {
-  align-self: stretch;
-  width: 100%;
-  margin-top: clamp(10px, 1.35vh, 18px);
-  padding: clamp(18px, 2.1vh, 24px) clamp(16px, 1.3vw, 22px) clamp(20px, 2.25vh, 28px);
-  border: 1px solid rgba(129, 218, 246, 0.26);
-  border-radius: clamp(24px, 2vw, 32px);
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(137, 239, 255, 0.055), transparent 34%),
-    linear-gradient(165deg, rgba(18, 55, 76, 0.48), rgba(5, 22, 38, 0.42) 62%, rgba(3, 14, 27, 0.38));
-  box-shadow:
-    0 16px 36px rgba(0, 8, 20, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(12px) saturate(1.06);
-  -webkit-backdrop-filter: blur(12px) saturate(1.06);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-group-title {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav {
-  gap: clamp(11px, 1.15vh, 15px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-section {
-  margin-block: 0 clamp(10px, 1.15vh, 15px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel .nav-section-title {
-  color: rgba(250, 254, 255, 0.95);
-  font-size: clamp(12px, 0.82vw, 14px);
-  letter-spacing: 0.045em;
-  text-shadow:
-    0 0 8px rgba(137, 239, 255, 0.24),
-    0 1px 8px rgba(0, 10, 24, 0.45);
-}
-/* PRISMA_PC_NAV_ONLY_RAIL_PANEL_0807_END */
-
-/* PRISMA_PC_REMOVE_ROUTE_INTENT_AND_SMART_FILTERS_0807_BEGIN
-   PC-only: remove visible route-intent question strips and SmartDropdownDock intelligent filters from all PC surfaces.
-   Scope: .shell[data-prisma-surface="pc"] only.
-   This intentionally does not touch top context strips, navigation rail, cards, tables, global materials, Tablet, Mobile, Chart Lab, Git, Prisma, ports, or processes.
-*/
-.shell[data-prisma-surface="pc"] :is(
-  [data-prisma-component="RouteIntentStrip"],
-  [data-prisma-component="SmartDropdownDock"],
-  [aria-label^="Filtros inteligentes"],
-  [class*="smart-dropdown-dock_dock"],
-  [class*="smart-dropdown-dock__dock"],
-  [class*="smart-dropdown-dock"]
-) {
-  display: none;
-}
-/* PRISMA_PC_REMOVE_ROUTE_INTENT_AND_SMART_FILTERS_0807_END */
-
-/* PRISMA_PC_LEFT_RAIL_COMPACT_LOGO_NAV_0807_BEGIN
-   PC-only left rail correction after DOM-confirmed sidebar work.
-   Goal: keep the PRISMA logo/brand independent, keep one navigation panel, restore slimmer nav ovals, and enlarge the logo.
-   Scope: .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar only.
-   Guardrails: no global PC materials, no top pills, no cards/tables/buttons outside rail, no processes/ports/Prisma/Git, no forced-priority declarations.
-*/
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  padding-top: clamp(16px, 2.1vh, 26px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-block {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  min-height: auto;
-  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 24px) clamp(14px, 2.1vh, 24px);
-  display: grid;
-  place-items: center;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  gap: clamp(10px, 1.2vh, 16px);
-  text-align: center;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-logo-img {
-  width: clamp(176px, 12vw, 220px);
-  max-width: 84%;
-  height: auto;
-  object-fit: contain;
-  box-shadow: none;
-  filter: drop-shadow(0 16px 28px rgba(44, 174, 255, 0.18));
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row .subtle {
-  color: rgba(255, 255, 255, 0.96);
-  font-size: clamp(14px, 0.92vw, 16px);
-  line-height: 1.14;
-  letter-spacing: 0.18em;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-align: center;
-  text-shadow:
-    0 0 7px rgba(255, 255, 255, 0.54),
-    0 0 18px rgba(119, 230, 255, 0.22),
-    0 2px 8px rgba(0, 8, 18, 0.32);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel.sidebar-panel {
-  width: 100%;
-  box-sizing: border-box;
-  margin: clamp(10px, 1.6vh, 18px) 0 0;
-  padding: clamp(16px, 1.8vw, 22px) clamp(14px, 1.5vw, 20px) clamp(20px, 2.2vw, 28px);
-  border-radius: clamp(24px, 2.6vw, 34px) clamp(24px, 2.6vw, 34px) 0 0;
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(143, 236, 255, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(14, 50, 72, 0.58), rgba(5, 23, 38, 0.52));
-  border: 1px solid rgba(137, 224, 247, 0.24);
-  border-bottom-color: rgba(137, 224, 247, 0.10);
-  box-shadow: 0 16px 34px rgba(0, 10, 22, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px) saturate(1.08);
-  -webkit-backdrop-filter: blur(12px) saturate(1.08);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-group-title {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav {
-  display: grid;
-  gap: clamp(12px, 1.7vh, 18px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  display: grid;
-  gap: clamp(7px, 0.9vh, 10px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-  color: rgba(255, 255, 255, 0.96);
-  font-size: clamp(13px, 0.86vw, 15px);
-  line-height: 1.05;
-  letter-spacing: 0.055em;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(148, 235, 255, 0.30), 0 1px 6px rgba(0, 8, 18, 0.28);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a {
-  width: calc(100% - clamp(16px, 1.8vw, 28px));
-  max-width: 100%;
-  min-height: clamp(46px, 4.8vh, 56px);
-  margin-inline: auto;
-  padding: clamp(7px, 0.75vw, 10px) clamp(12px, 1vw, 16px);
-  border-radius: 999px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: clamp(9px, 0.75vw, 12px);
-  white-space: normal;
-  overflow: hidden;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-icon {
-  width: clamp(32px, 2vw, 38px);
-  height: clamp(32px, 2vw, 38px);
-  min-width: clamp(32px, 2vw, 38px);
-  flex: 0 0 clamp(32px, 2vw, 38px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-copy {
-  min-width: 0;
-  display: grid;
-  gap: 2px;
-  text-align: left;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-title {
-  font-size: clamp(14px, 0.92vw, 16px);
-  line-height: 1.08;
-  overflow-wrap: anywhere;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a .nav-desc {
-  font-size: clamp(11px, 0.72vw, 13px);
-  line-height: 1.14;
-  overflow-wrap: anywhere;
-}
-/* PRISMA_PC_LEFT_RAIL_COMPACT_LOGO_NAV_0807_END */
-
-/* PRISMA_PC_NAV_OVAL_SLIM_0808_BEGIN */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  min-height: 44px;
-  padding-block: 7px;
-  padding-inline: 12px 14px;
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  border-radius: 999px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-icon {
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
-  min-height: 30px;
-  display: grid;
-  place-items: center;
-  line-height: 1;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-copy {
-  min-width: 0;
-  display: grid;
-  align-content: center;
-  gap: 1px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-title {
-  line-height: 1.05;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-desc {
-  max-width: 100%;
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  gap: 8px;
-}
-/* PRISMA_PC_NAV_OVAL_SLIM_0808_END */
-
-/* PRISMA_PC_PURCHASING_MATERIAL_FIX_0808_BEGIN */
-
-/* Rail: baja blur y opacidad sin cambiar layout */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  background: linear-gradient(180deg, rgba(36, 63, 82, 0.055), rgba(9, 26, 40, 0.045));
-  border-color: rgba(153, 211, 236, 0.085);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-panel.sidebar-nav-panel {
-  background: linear-gradient(180deg, rgba(10, 39, 58, 0.105), rgba(7, 29, 46, 0.075));
-  border-color: rgba(142, 214, 238, 0.105);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(5px) saturate(1.01);
-  -webkit-backdrop-filter: blur(5px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  background: linear-gradient(180deg, rgba(33, 76, 103, 0.13), rgba(18, 47, 68, 0.09));
-  border-color: rgba(136, 208, 235, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][aria-current="page"] {
-  background: linear-gradient(180deg, rgba(59, 120, 168, 0.17), rgba(31, 66, 103, 0.12));
-  border-color: rgba(154, 222, 245, 0.18);
-}
-
-/* Compras: scope exacto, nada global */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"] {
-  background: linear-gradient(180deg, rgba(10, 29, 45, 0.28), rgba(5, 17, 30, 0.22));
-  border-color: rgba(128, 211, 239, 0.14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(5px) saturate(1.01);
-  -webkit-backdrop-filter: blur(5px) saturate(1.01);
-}
-
-/* Baja los subpaneles: menos caja sobre caja */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.card, .metric-card, details.card) {
-  background: linear-gradient(180deg, rgba(11, 32, 50, 0.20), rgba(5, 17, 30, 0.16));
-  border-color: rgba(128, 211, 239, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(3px) saturate(1.005);
-  -webkit-backdrop-filter: blur(3px) saturate(1.005);
-}
-
-/* Evita mini-cajones dentro de métricas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  .metric-card .list-item {
-  background: rgba(255, 255, 255, 0.018);
-  border-color: rgba(128, 211, 239, 0.10);
-  box-shadow: none;
-}
-
-/* Tabla menos ataúd azul marino */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  .table-wrap {
-  background: rgba(8, 25, 40, 0.16);
-  border-color: rgba(128, 211, 239, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(table, thead, tbody, tr) {
-  background: transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  tbody tr {
-  border-color: rgba(128, 211, 239, 0.09);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  tbody tr:hover {
-  background: rgba(128, 211, 239, 0.055);
-}
-
-/* Botones de compras: quitar gris muerto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn, .footer-chip) {
-  background: linear-gradient(180deg, rgba(45, 113, 144, 0.28), rgba(14, 50, 72, 0.18));
-  border-color: rgba(137, 230, 255, 0.28);
-  color: rgba(244, 252, 255, 0.96);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 0 14px rgba(98, 212, 246, 0.045);
-  backdrop-filter: blur(3px) saturate(1.01);
-  -webkit-backdrop-filter: blur(3px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn-primary, .footer-chip.is-active, .footer-chip[aria-current="page"]) {
-  background: linear-gradient(180deg, rgba(75, 158, 190, 0.34), rgba(21, 72, 96, 0.24));
-  border-color: rgba(137, 230, 255, 0.38);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 0 16px rgba(98, 212, 246, 0.07);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  :is(.btn:hover, .footer-chip:hover) {
-  background: linear-gradient(180deg, rgba(83, 174, 206, 0.38), rgba(24, 82, 107, 0.27));
-  border-color: rgba(158, 238, 255, 0.42);
-}
-
-/* Evidencia técnica menos bloque sólido */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/purchasing"]
-  details.card[data-prisma-component="EvidenceDrawer"] {
-  background: rgba(8, 25, 40, 0.18);
-}
-
-/* PRISMA_PC_PURCHASING_MATERIAL_FIX_0808_END */
-
-/* PRISMA_PC_SUBNAV_CHIPS_FIX_0808_BEGIN */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-block: 12px 14px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  overflow: visible;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip {
-  min-height: 32px;
-  min-width: 0;
-  max-width: min(190px, 100%);
-  padding: 8px 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 1 auto;
-  border-radius: 999px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
-  line-height: 1;
-  font-size: clamp(0.72rem, 0.68rem + 0.12vw, 0.82rem);
-  color: rgba(238, 249, 255, 0.94);
-  background: linear-gradient(180deg, rgba(43, 104, 132, 0.20), rgba(12, 41, 62, 0.13));
-  border: 1px solid rgba(136, 220, 246, 0.20);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-  text-shadow: 0 1px 7px rgba(0, 8, 18, 0.32);
-  backdrop-filter: blur(2px) saturate(1.01);
-  -webkit-backdrop-filter: blur(2px) saturate(1.01);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip.is-active,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip[aria-current="page"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip[data-active="true"] {
-  color: rgba(255, 255, 255, 0.98);
-  background: linear-gradient(180deg, rgba(72, 160, 192, 0.29), rgba(17, 67, 91, 0.20));
-  border-color: rgba(147, 234, 255, 0.34);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055), 0 0 12px rgba(99, 217, 249, 0.055);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  nav.inline-list[data-prisma-component="PcSubnav"] .footer-chip:hover {
-  color: #ffffff;
-  background: linear-gradient(180deg, rgba(84, 180, 210, 0.32), rgba(20, 78, 103, 0.23));
-  border-color: rgba(160, 239, 255, 0.40);
-}
-/* PRISMA_PC_SUBNAV_CHIPS_FIX_0808_END */
-
-/* PRISMA_PC_DASHBOARD_FLATTEN_0808_BEGIN */
-
-/* Scope exacto: Dashboard/Hoy dentro de PcModuleShell */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"] {
-  background: linear-gradient(180deg, rgba(8, 25, 40, 0.24), rgba(4, 15, 28, 0.18));
-  border-color: rgba(128, 211, 239, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.022);
-  backdrop-filter: blur(4px) saturate(1.01);
-  -webkit-backdrop-filter: blur(4px) saturate(1.01);
-}
-
-/* Grids más respirables para que no se encime texto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is([data-prisma-component="AttentionSummary"], [data-prisma-component="DashboardTaskBoard"] .dashboard-grid) {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-  gap: 16px;
-  align-items: start;
-}
-
-/* Quitar efecto panel-sobre-panel en cards internas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  ) {
-  position: relative;
-  background: rgba(255, 255, 255, 0.012);
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-/* Divisor ornamental: centro 4px, lados finitos, sin caja extra */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  )::before {
-  content: "";
-  position: absolute;
-  left: clamp(12px, 2.2vw, 28px);
-  right: clamp(12px, 2.2vw, 28px);
-  top: 0;
-  height: 4px;
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg,
-      transparent 0%,
-      rgba(135, 225, 250, 0.08) 16%,
-      rgba(135, 225, 250, 0.50) 46%,
-      rgba(236, 252, 255, 0.72) 50%,
-      rgba(135, 225, 250, 0.50) 54%,
-      rgba(135, 225, 250, 0.08) 84%,
-      transparent 100%);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(
-    [data-prisma-component="AttentionSummary"] .metric-card,
-    [data-prisma-component="DashboardTaskBoard"] .metric-card,
-    [data-prisma-component="NextBestAction"],
-    [data-prisma-component="ActionableTable"],
-    details.card[data-prisma-component="EvidenceDrawer"]
-  )::after {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translateX(-50%) rotate(45deg);
-  border-radius: 2px;
-  background: rgba(218, 249, 255, 0.58);
-  box-shadow: 0 0 10px rgba(126, 222, 250, 0.22);
-}
-
-/* Lista: ya no cajas internas pesadas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list {
-  display: grid;
-  gap: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item {
-  display: block;
-  min-height: auto;
-  padding: 9px 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  text-align: left;
-  line-height: 1.28;
-  overflow-wrap: anywhere;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item + .list-item {
-  border-top: 1px solid rgba(135, 225, 250, 0.105);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .metric-card .list-item strong {
-  display: inline-block;
-  margin-right: 6px;
-  white-space: nowrap;
-  color: rgba(246, 253, 255, 0.96);
-}
-
-/* Botones: texto centrado, sin encimarse, sin gris muerto */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(.btn, button) {
-  min-height: 34px;
-  max-width: 100%;
-  padding: 8px 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  line-height: 1.08;
-  border-radius: 999px;
-  color: rgba(242, 251, 255, 0.96);
-  background: linear-gradient(180deg, rgba(44, 110, 140, 0.22), rgba(13, 45, 66, 0.15));
-  border-color: rgba(135, 225, 250, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(.btn-primary, a.btn[aria-current="page"]) {
-  background: linear-gradient(180deg, rgba(70, 155, 188, 0.30), rgba(18, 67, 92, 0.21));
-  border-color: rgba(144, 234, 255, 0.34);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(button[disabled], button[aria-disabled="true"]) {
-  opacity: 0.72;
-  color: rgba(220, 236, 245, 0.72);
-  background: rgba(255,255,255,0.035);
-  border-color: rgba(180, 215, 230, 0.10);
-}
-
-/* Acciones más ordenadas */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .inline-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 9px;
-}
-
-/* Tabla en dashboard también baja peso visual */
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  .table-wrap {
-  background: rgba(8, 25, 40, 0.14);
-  border-color: rgba(128, 211, 239, 0.12);
-  box-shadow: none;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"]
-  section.card[data-prisma-component="PcModuleShell"][data-prisma-route="/dashboard"]
-  :is(table, thead, tbody, tr) {
-  background: transparent;
-}
-
-/* PRISMA_PC_DASHBOARD_FLATTEN_0808_END */
-
-
-/* PRISMA_PC_SHELL_GOVERNOR_PROBE_0808_BEGIN */
-
-/*
-  Jefe pequeño de layout PC.
-  Scope: sólo Dashboard PC, viewport >= 700px.
-  Objetivo: probar autoridad de scroll sin tocar cards/tablas/materiales.
-*/
 @media (min-width: 700px) {
   body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"] {
     height: 100dvh;
@@ -3917,491 +1737,13 @@ html[data-prisma-surface="pc-backoffice"] :is(.nav a, .footer-chip, .button-seco
     min-height: 0;
     overflow: hidden;
   }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] {
-    height: 100%;
-    min-height: 0;
-    max-height: 100dvh;
-    display: grid;
-    grid-template-columns: clamp(242px, 31vw, 276px) minmax(0, 1fr);
-    align-items: stretch;
-    gap: clamp(6px, 0.8vw, 12px);
-    padding: 10px;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] > aside.sidebar[data-prisma-component="Sidebar"] {
-    position: relative;
-    inset: auto;
-    align-self: stretch;
-    block-size: 100%;
-    height: 100%;
-    min-height: 0;
-    max-height: none;
-    inline-size: 100%;
-    max-inline-size: none;
-    margin: 0;
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    .shell[data-prisma-component="AppShell"][data-prisma-surface="pc"] > main.main {
-    block-size: 100%;
-    height: 100%;
-    min-height: 0;
-    max-height: none;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scroll-padding-top: 128px;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > header.topbar[data-prisma-component="TopBar"] {
-    position: sticky;
-    top: 0;
-    z-index: 80;
-    margin-top: 0;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > header.topbar[data-prisma-component="TopBar"]::after {
-    content: "JEFE PC";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 0.66rem;
-    line-height: 1;
-    letter-spacing: 0.08em;
-    color: rgba(247, 252, 255, 0.92);
-    background: rgba(76, 180, 210, 0.20);
-    border: 1px solid rgba(150, 238, 255, 0.30);
-    box-shadow: 0 0 12px rgba(95, 218, 250, 0.14);
-    pointer-events: none;
-  }
-
-  body[data-prisma-panel="pc.dashboard.route"][data-prisma-surface="pc"][data-prisma-route="/dashboard"]
-    main.main > nav.surface-context-strip[data-prisma-component="SurfaceContextStrip"] {
-    position: sticky;
-    top: 58px;
-    z-index: 79;
-  }
 }
-
-/* PRISMA_PC_SHELL_GOVERNOR_PROBE_0808_END */
-
-/* PRISMA_PC_SCROLL_OWNER_0807_BEGIN
-   Purpose:
-   - PC-only scroll ownership governor.
-   - The viewport/root no longer owns PC page scrolling.
-   - The rail stays in place because .shell is viewport-height and hidden overflow.
-   - main.main owns content scroll; topbar and context strip can stick inside main.
-   - aside.sidebar owns only its own internal rail overflow.
-   - This replaces the earlier sticky-rail attempt because body/html overflow created the wrong sticky ancestor.
-
-   Move guide:
-   - Move this whole block as one unit.
-   - Keep it in the PC global stylesheet unless a canonical PC shell stylesheet is created.
-   - Keep body[data-prisma-surface="pc"] in every selector.
-   - Do not broaden to .sidebar, .main, .topbar, or .shell globally.
-   - Do not add important flags. Fix specificity by keeping the PC shell owner later in cascade or by moving to canonical owner.
-
-   Runtime contract:
-   - window/html scroll should stop being the active PC app scroller.
-   - main.main should become the scroll container.
-   - aside.sidebar should stay visible while main.main scrolls.
-   - topbar should remain visible at the top of main.main while main content scrolls.
-*/
 @media (min-width: 700px) {
   body[data-prisma-surface="pc"] {
-    block-size: 100dvh;
-    min-block-size: 100dvh;
     overflow: hidden;
   }
 
   body[data-prisma-surface="pc"] .prisma-app-content {
-    block-size: 100dvh;
-    min-block-size: 100dvh;
     overflow: hidden;
   }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    block-size: 100dvh;
-    min-block-size: 100dvh;
-    max-block-size: 100dvh;
-    overflow: hidden;
-    column-gap: clamp(12px, 1.15vw, 20px);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-    position: relative;
-    top: auto;
-    align-self: stretch;
-    flex: 0 0 clamp(232px, 16.4vw, 276px);
-    inline-size: clamp(232px, 16.4vw, 276px);
-    block-size: auto;
-    max-block-size: none;
-    min-block-size: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(205, 235, 245, 0.22) transparent;
-    z-index: 24;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar:hover,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar:focus-within {
-    scrollbar-color: rgba(225, 245, 255, 0.38) transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-track,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-thumb,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(230, 244, 252, 0.14), rgba(230, 244, 252, 0.30));
-    border-radius: 999px;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-    block-size: 100%;
-    min-block-size: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(205, 235, 245, 0.22) transparent;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 34;
-    isolation: isolate;
-    backdrop-filter: blur(14px) saturate(1.08);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .surface-context-strip {
-    position: sticky;
-    top: calc(62px + clamp(6px, 0.8vh, 10px));
-    z-index: 33;
-    isolation: isolate;
-    backdrop-filter: blur(12px) saturate(1.05);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .brand-row .subtle {
-    display: none;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-    block-size: 0;
-    margin: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-    min-block-size: 44px;
-    margin-block: 6px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(22, 48, 60, 0.28), rgba(45, 82, 94, 0.15));
-    border-color: rgba(224, 245, 255, 0.18);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 10px 24px rgba(0, 0, 0, 0.12);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:hover,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:focus-visible {
-    background: radial-gradient(circle at 18% 28%, rgba(226, 247, 255, 0.24), transparent 34%), linear-gradient(135deg, rgba(35, 74, 88, 0.34), rgba(71, 112, 124, 0.18));
-    border-color: rgba(232, 248, 255, 0.36);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 0 1px rgba(221, 244, 255, 0.12), 0 0 22px rgba(210, 240, 255, 0.16);
-  }
-
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"].active,
-  body[data-prisma-surface="pc"] .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"] {
-    background: radial-gradient(circle at 18% 28%, rgba(238, 250, 255, 0.32), transparent 38%), linear-gradient(135deg, rgba(42, 88, 102, 0.46), rgba(85, 130, 143, 0.24));
-    border-color: rgba(240, 252, 255, 0.48);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20), 0 0 0 1px rgba(232, 248, 255, 0.16), 0 0 26px rgba(220, 245, 255, 0.20);
-  }
 }
-/* PRISMA_PC_SCROLL_OWNER_0807_END */
-
-/* PRISMA_PC_RAIL_SIZE_UNIFIER_0807_BEGIN
-  PC-only rail and top navigation size unifier.
-
-  Contract:
-  - One canonical rail size for every PC AppShell route.
-  - Same oval width, icon size, copy rhythm and active/hover neon across /dashboard, /catalog,
-    /purchasing, /proveedores and the rest of PC surfaces.
-  - Keep section semantics in DOM, but hide visual section labels to reduce rail noise.
-  - Do not touch Tablet, Mobile, Chart Lab, DB, Prisma, ports, processes or Git.
-  - Do not remove RouteIntentStrip/SmartDropdownDock rules installed by the prior PC-only cleanup.
-  - No important declarations: this block wins by scope + being appended after older rail experiments.
-
-  Move guide:
-  If the rail moves later, migrate this block as a single contract. Keep the token variables on
-  .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] and keep all selectors scoped
-  to that shell. Do not split rail sizing into route pages.
-*/
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-  --pc-rail-fit-width: clamp(214px, 14.2vw, 232px);
-  --pc-rail-fit-gap: clamp(12px, 0.9vw, 18px);
-  --pc-rail-fit-item-width: min(100%, 194px);
-  --pc-rail-fit-item-height: 40px;
-  --pc-rail-fit-icon: 28px;
-  --pc-rail-fit-copy-title: clamp(12px, 0.78vw, 13.5px);
-  --pc-rail-fit-copy-desc: clamp(10px, 0.64vw, 11px);
-  column-gap: var(--pc-rail-fit-gap);
-  align-items: stretch;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar {
-  inline-size: var(--pc-rail-fit-width);
-  flex: 0 0 var(--pc-rail-fit-width);
-  padding-block: clamp(8px, 1.05vh, 14px);
-  padding-inline: clamp(8px, 0.65vw, 12px);
-  gap: clamp(10px, 1.1vh, 14px);
-  background: linear-gradient(180deg, rgba(36, 63, 82, 0.052), rgba(9, 26, 40, 0.036));
-  border-color: rgba(153, 211, 236, 0.075);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  backdrop-filter: blur(5px) saturate(1.02);
-  -webkit-backdrop-filter: blur(5px) saturate(1.02);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.20) transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-thumb,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar-thumb {
-  background: rgba(190, 228, 247, 0.20);
-  border-radius: 999px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar::-webkit-scrollbar-track,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .sidebar-nav-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block {
-  min-height: auto;
-  margin: 0;
-  padding: clamp(3px, 0.8vh, 7px) 0 clamp(4px, 0.85vh, 8px);
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-row {
-  display: grid;
-  justify-items: center;
-  gap: 5px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .brand-logo-img {
-  inline-size: clamp(80px, 7.2vw, 104px);
-  block-size: auto;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .brand-block .subtle {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar > .sidebar-panel.sidebar-nav-panel {
-  align-self: stretch;
-  width: 100%;
-  margin: 0;
-  padding: clamp(10px, 1.18vh, 14px) clamp(8px, 0.72vw, 10px);
-  border-radius: clamp(20px, 1.55vw, 25px);
-  background: linear-gradient(180deg, rgba(10, 39, 58, 0.088), rgba(7, 29, 46, 0.062));
-  border-color: rgba(142, 214, 238, 0.105);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.022),
-    0 16px 30px rgba(0, 10, 24, 0.10);
-  backdrop-filter: blur(6px) saturate(1.03);
-  -webkit-backdrop-filter: blur(6px) saturate(1.03);
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-gutter: stable both-edges;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.18) transparent;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-group-title,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section-title {
-  display: none;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  display: grid;
-  gap: 8px;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-section {
-  margin: 0;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-  min-height: var(--pc-rail-fit-item-height);
-  width: var(--pc-rail-fit-item-width);
-  max-width: 194px;
-  justify-self: center;
-  display: grid;
-  grid-template-columns: var(--pc-rail-fit-icon) minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-  padding-block: 5px;
-  padding-inline: 9px 10px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(33, 76, 103, 0.105), rgba(18, 47, 68, 0.075));
-  border: 1px solid rgba(136, 208, 235, 0.125);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.026),
-    0 8px 18px rgba(0, 8, 18, 0.085);
-  backdrop-filter: blur(5px) saturate(1.02);
-  -webkit-backdrop-filter: blur(5px) saturate(1.02);
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:hover,
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"]:focus-visible {
-  background: linear-gradient(180deg, rgba(58, 121, 157, 0.145), rgba(20, 58, 84, 0.095));
-  border-color: rgba(152, 230, 252, 0.245);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 18px rgba(116, 223, 255, 0.16),
-    0 10px 20px rgba(0, 8, 18, 0.11);
-  transform: translateX(1px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][data-active="true"],
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"][aria-current="page"] {
-  background: linear-gradient(180deg, rgba(73, 145, 190, 0.185), rgba(31, 75, 111, 0.128));
-  border-color: rgba(157, 232, 255, 0.32);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    0 0 22px rgba(126, 235, 255, 0.22),
-    0 12px 24px rgba(0, 8, 18, 0.13);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-icon {
-  inline-size: var(--pc-rail-fit-icon);
-  block-size: var(--pc-rail-fit-icon);
-  min-inline-size: var(--pc-rail-fit-icon);
-  min-block-size: var(--pc-rail-fit-icon);
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(104, 187, 218, 0.14), rgba(48, 112, 143, 0.10));
-  border: 1px solid rgba(154, 222, 245, 0.18);
-  color: rgba(222, 250, 255, 0.94);
-  font-size: clamp(10px, 0.63vw, 11px);
-  font-weight: 850;
-  line-height: 1;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-copy {
-  min-width: 0;
-  display: grid;
-  align-content: center;
-  gap: 1px;
-  overflow: hidden;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-title {
-  font-size: var(--pc-rail-fit-copy-title);
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav-desc {
-  max-width: 100%;
-  font-size: var(--pc-rail-fit-copy-desc);
-  line-height: 1.05;
-  opacity: 0.82;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar {
-  min-height: 52px;
-  padding-block: 7px;
-  padding-inline: clamp(12px, 1.05vw, 18px);
-  border-radius: clamp(22px, 1.8vw, 30px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .topbar .topbar-brand {
-  min-height: 34px;
-  padding-block: 5px;
-  padding-inline: 10px 13px;
-  border-radius: 999px;
-  font-size: clamp(12px, 0.82vw, 14px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main > .surface-context-strip {
-  min-height: 42px;
-  padding-block: 5px;
-  padding-inline: clamp(8px, 0.8vw, 12px);
-  border-radius: clamp(18px, 1.55vw, 24px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main .surface-context-pill {
-  min-height: 31px;
-  padding-block: 5px;
-  padding-inline: 11px;
-  border-radius: 999px;
-  font-size: clamp(12px, 0.8vw, 13px);
-}
-
-.shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > main.main .surface-context-scroll-viewport {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(190, 228, 247, 0.18) transparent;
-}
-
-@media (max-width: 960px) {
-  .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] {
-    --pc-rail-fit-width: clamp(186px, 28vw, 212px);
-    --pc-rail-fit-item-width: min(100%, 174px);
-    --pc-rail-fit-gap: 10px;
-  }
-
-  .shell[data-prisma-panel="pc.workspace"][data-prisma-surface="pc"] > aside.sidebar .nav a[data-prisma-component="NavItem"] {
-    max-width: 174px;
-  }
-}
-/* PRISMA_PC_RAIL_SIZE_UNIFIER_0807_END */

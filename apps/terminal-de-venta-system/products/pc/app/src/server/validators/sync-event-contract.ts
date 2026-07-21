@@ -3,17 +3,31 @@ import { SHARED_SYNC_LIFECYCLE_STATES } from "@shared-kernel/sync/events";
 
 export const REQUIRED_SYNC_EVENT_FIELDS = [
   "eventId",
+  "source",
+  "subject",
   "eventType",
   "topic",
-  "idempotencyKey",
-  "businessId",
-  "terminalId",
-  "actorId",
-  "source",
-  "occurredAt",
-  "payload",
+  "eventVersion",
   "schemaVersion",
-  "correlationId"
+  "tenantId",
+  "businessId",
+  "storeId",
+  "terminalId",
+  "deviceId",
+  "actorId",
+  "aggregateId",
+  "originRecordId",
+  "idempotencyKey",
+  "sequence",
+  "correlationId",
+  "causationId",
+  "traceId",
+  "occurredAt",
+  "capturedAt",
+  "payloadHash",
+  "batchId",
+  "batchChecksum",
+  "payload"
 ] as const;
 
 export const RECOGNIZED_SYNC_TOPICS = [
@@ -29,8 +43,10 @@ export const RECOGNIZED_SYNC_TOPICS = [
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
+  "inventory.operation.recorded",
   "catalog.product.created",
   "catalog.product.updated",
+  "customer.created",
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",
@@ -43,7 +59,8 @@ export const RECOGNIZED_SYNC_TOPICS = [
   "product.supplier.updated"
 ] as const;
 
-export const SUPPORTED_SYNC_SCHEMA_VERSIONS = ["1.0.0"] as const;
+export const SUPPORTED_SYNC_EVENT_VERSIONS = ["1.0.0"] as const;
+export const SUPPORTED_SYNC_SCHEMA_VERSIONS = ["1.0.0", "1.1.0"] as const;
 export const SYNC_LIFECYCLE_STATES = SHARED_SYNC_LIFECYCLE_STATES;
 export type SyncLifecycleState = (typeof SYNC_LIFECYCLE_STATES)[number];
 
@@ -59,18 +76,32 @@ export type SyncConflictFinding = {
 
 export type SyncEventEnvelope = {
   eventId: string;
+  source: string;
+  subject: string;
   eventType: string;
   topic: string;
-  idempotencyKey: string;
-  businessId: string;
-  terminalId: string;
-  actorId: string;
-  source: string;
-  occurredAt: string;
-  payload: Record<string, unknown>;
+  eventVersion: string;
   schemaVersion: string;
-  aggregateId?: string;
-  correlationId?: string;
+  tenantId: string;
+  customerId?: string;
+  businessId: string;
+  storeId: string;
+  terminalId: string;
+  deviceId: string;
+  actorId: string;
+  aggregateId: string;
+  originRecordId: string;
+  idempotencyKey: string;
+  sequence: number;
+  correlationId: string;
+  causationId: string;
+  traceId: string;
+  occurredAt: string;
+  capturedAt: string;
+  payloadHash: string;
+  batchId: string;
+  batchChecksum: string;
+  payload: Record<string, unknown>;
 };
 
 export type SyncIngestResult = {
@@ -95,6 +126,7 @@ export type SyncIngestClassification = {
     storageModel?: string;
     idempotencyKey: "eventId" | "idempotencyKey";
     recognizedTopics: readonly string[];
+    supportedEventVersions?: readonly string[];
     supportedSchemaVersions: readonly string[];
     note: string;
   };
@@ -108,6 +140,13 @@ export const SYNC_CONFLICT_CATALOG: Record<string, Omit<SyncConflictFinding, "de
   terminal_not_registered: { code: "terminal_not_registered", label: "Terminal no registrada", severity: "conflict" },
   sale_outside_shift: { code: "sale_outside_shift", label: "Venta fuera de turno", severity: "conflict" },
   inconsistent_sequence: { code: "inconsistent_sequence", label: "Secuencia inconsistente", severity: "conflict" },
+  stale_sequence: { code: "stale_sequence", label: "Secuencia vencida", severity: "conflict" },
+  wrong_scope: { code: "wrong_scope", label: "Scope no autorizado", severity: "rejected" },
+  payload_hash_mismatch: { code: "payload_hash_mismatch", label: "Hash de payload inválido", severity: "rejected" },
+  idempotency_payload_mismatch: { code: "idempotency_payload_mismatch", label: "Idempotencia con payload distinto", severity: "conflict" },
+  unsupported_event_version: { code: "unsupported_event_version", label: "Versión de evento no soportada", severity: "rejected" },
+  unsupported_schema_version: { code: "unsupported_schema_version", label: "Versión de schema no soportada", severity: "rejected" },
+  batch_checksum_mismatch: { code: "batch_checksum_mismatch", label: "Checksum de lote inválido", severity: "rejected" },
   invalid_schema: { code: "invalid_schema", label: "Schema inválido", severity: "rejected" },
   unknown_topic: { code: "unknown_topic", label: "Topic desconocido", severity: "rejected" }
 };
@@ -124,6 +163,15 @@ function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function asSequence(value: unknown): number | null {
+  if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0) return value;
+  if (typeof value === "string" && /^\d+$/.test(value.trim())) {
+    const parsed = Number(value);
+    if (Number.isSafeInteger(parsed) && parsed >= 0) return parsed;
+  }
+  return null;
+}
+
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (!isRecord(value)) return value;
@@ -135,6 +183,22 @@ function stable(value: unknown): unknown {
 
 export function syncPayloadFingerprint(value: unknown) {
   return crypto.createHash("sha256").update(JSON.stringify(stable(value))).digest("hex");
+}
+
+export function normalizeSyncTimestamp(value: unknown): string {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString();
+  if (typeof value === "number" && Number.isFinite(value)) {
+    const milliseconds = Math.abs(value) >= 100_000_000_000 ? value : value * 1000;
+    const date = new Date(milliseconds);
+    return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+  }
+  if (typeof value === "string" && value.trim()) {
+    const text = value.trim();
+    if (/^-?\d{10,}$/.test(text)) return normalizeSyncTimestamp(Number(text));
+    const date = new Date(text);
+    return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+  }
+  return "";
 }
 
 export function extractSyncEvents(input: unknown): unknown[] {
@@ -187,8 +251,16 @@ export function canonicalEventType(input: Record<string, unknown>) {
 export function getSyncConflictCatalog(): SyncConflictFinding[] {
   return Object.values(SYNC_CONFLICT_CATALOG).map((item) => ({
     ...item,
-    detail: "Clasificación canónica usada por PC I05 para exponer conflictos de ingest."
+    detail: "Clasificación canónica usada por PC para ingest, proyección, conflicto y replay."
   }));
+}
+
+function expectedScopeValue(name: "tenantId" | "customerId", eventValue: string) {
+  const envName = name === "tenantId" ? "PRISMA_SYNC_TENANT_ID" : "PRISMA_SYNC_CUSTOMER_ID";
+  const expected = process.env[envName]?.trim() ?? "";
+  return expected && eventValue && expected !== eventValue
+    ? conflict("wrong_scope", `${name} ${eventValue} no coincide con ${envName}.`)
+    : null;
 }
 
 export function validateSyncEventEnvelope(input: unknown): { event: SyncEventEnvelope | null; errors: string[]; conflicts: SyncConflictFinding[] } {
@@ -197,60 +269,109 @@ export function validateSyncEventEnvelope(input: unknown): { event: SyncEventEnv
   if (!isRecord(input)) {
     return { event: null, errors: ["El evento debe ser objeto JSON."], conflicts: [conflict("invalid_schema", "La entrada no es objeto JSON.")] };
   }
-  for (const field of REQUIRED_SYNC_EVENT_FIELDS) {
-    if (field === "eventType" || field === "topic" || field === "idempotencyKey" || field === "correlationId") continue;
-    if (!(field in input)) errors.push(`Falta campo requerido: ${field}.`);
-  }
+
   const eventId = asString(input.eventId);
   const topic = canonicalEventType(input);
   const eventType = topic;
-  const idempotencyKey = asString(input.idempotencyKey) || eventId;
-  const businessId = asString(input.businessId);
-  const terminalId = asString(input.terminalId);
-  const actorId = asString(input.actorId);
   const source = asString(input.source);
-  const occurredAt = asString(input.occurredAt);
+  const subject = asString(input.subject);
+  const eventVersion = asString(input.eventVersion);
   const schemaVersion = asString(input.schemaVersion);
-  const payload = isRecord(input.payload) ? input.payload : null;
+  const tenantId = asString(input.tenantId);
+  const customerId = asString(input.customerId);
+  const businessId = asString(input.businessId);
+  const storeId = asString(input.storeId);
+  const terminalId = asString(input.terminalId);
+  const deviceId = asString(input.deviceId);
+  const actorId = asString(input.actorId);
   const aggregateId = asString(input.aggregateId);
+  const originRecordId = asString(input.originRecordId);
+  const idempotencyKey = asString(input.idempotencyKey) || eventId;
+  const sequence = asSequence(input.sequence);
   const correlationId = asString(input.correlationId);
+  const causationId = asString(input.causationId);
+  const traceId = asString(input.traceId);
+  const occurredAt = normalizeSyncTimestamp(input.occurredAt);
+  const capturedAt = normalizeSyncTimestamp(input.capturedAt);
+  const payloadHash = asString(input.payloadHash).toLowerCase();
+  const batchId = asString(input.batchId);
+  const batchChecksum = asString(input.batchChecksum).toLowerCase();
+  const payload = isRecord(input.payload) ? input.payload : null;
 
-  if (!eventId) errors.push("eventId debe ser texto no vacío.");
-  if (!topic) errors.push("eventType/topic debe ser texto no vacío.");
-  if (!idempotencyKey) errors.push("idempotencyKey debe ser texto no vacío o resolverse desde eventId.");
-  if (!businessId) errors.push("businessId debe ser texto no vacío.");
-  if (!terminalId) errors.push("terminalId debe ser texto no vacío.");
-  if (!actorId) errors.push("actorId debe ser texto no vacío.");
-  if (!source) errors.push("source debe ser texto no vacío.");
-  if (!occurredAt || Number.isNaN(Date.parse(occurredAt))) errors.push("occurredAt debe ser fecha ISO válida.");
+  for (const [name, value] of Object.entries({
+    eventId, source, subject, eventType, topic, eventVersion, schemaVersion,
+    tenantId, businessId, storeId, terminalId, deviceId, actorId, aggregateId,
+    originRecordId, idempotencyKey, correlationId, causationId, traceId,
+    occurredAt, capturedAt, payloadHash, batchId, batchChecksum
+  })) {
+    if (!value) errors.push(`${name} debe ser texto no vacío.`);
+  }
+  if (sequence === null) errors.push("sequence debe ser entero seguro no negativo.");
   if (!payload) errors.push("payload debe ser objeto JSON.");
 
   if (topic && !RECOGNIZED_SYNC_TOPICS.includes(topic as (typeof RECOGNIZED_SYNC_TOPICS)[number])) {
     conflicts.push(conflict("unknown_topic", `Topic recibido: ${topic}.`));
     errors.push(`topic no reconocido: ${topic}.`);
   }
-  if (!SUPPORTED_SYNC_SCHEMA_VERSIONS.includes(schemaVersion as (typeof SUPPORTED_SYNC_SCHEMA_VERSIONS)[number])) {
-    conflicts.push(conflict("invalid_schema", `schemaVersion recibido: ${schemaVersion || "(vacío)"}.`));
+  if (eventVersion && !SUPPORTED_SYNC_EVENT_VERSIONS.includes(eventVersion as (typeof SUPPORTED_SYNC_EVENT_VERSIONS)[number])) {
+    conflicts.push(conflict("unsupported_event_version", `eventVersion recibido: ${eventVersion}.`));
   }
+  if (schemaVersion && !SUPPORTED_SYNC_SCHEMA_VERSIONS.includes(schemaVersion as (typeof SUPPORTED_SYNC_SCHEMA_VERSIONS)[number])) {
+    conflicts.push(conflict("unsupported_schema_version", `schemaVersion recibido: ${schemaVersion}.`));
+  }
+  if (payload && payloadHash && syncPayloadFingerprint(payload) !== payloadHash) {
+    conflicts.push(conflict("payload_hash_mismatch", "payloadHash no coincide con sha256(stable-json(payload))."));
+  }
+  if (payloadHash && !/^[a-f0-9]{64}$/.test(payloadHash)) {
+    errors.push("payloadHash debe ser SHA-256 hexadecimal.");
+  }
+  if (batchChecksum && !/^[a-f0-9]{64}$/.test(batchChecksum)) {
+    errors.push("batchChecksum debe ser SHA-256 hexadecimal.");
+  }
+
+  const tenantConflict = expectedScopeValue("tenantId", tenantId);
+  if (tenantConflict) conflicts.push(tenantConflict);
+  const customerConflict = expectedScopeValue("customerId", customerId);
+  if (customerConflict) conflicts.push(customerConflict);
+
   if (errors.length > 0 || conflicts.some((item) => item.severity === "rejected")) {
-    return { event: null, errors, conflicts: conflicts.length ? conflicts : [conflict("invalid_schema", "Evento inválido por contrato mínimo.")] };
+    return {
+      event: null,
+      errors,
+      conflicts: conflicts.length ? conflicts : [conflict("invalid_schema", "Evento inválido por contrato canónico.")]
+    };
   }
+
   const event: SyncEventEnvelope = {
     eventId,
+    source,
+    subject,
     eventType,
     topic,
-    idempotencyKey,
-    businessId,
-    terminalId,
-    actorId,
-    source,
-    occurredAt,
-    payload: payload ?? {},
+    eventVersion,
     schemaVersion,
-    ...(aggregateId ? { aggregateId } : {}),
-    ...(correlationId ? { correlationId } : {})
+    tenantId,
+    ...(customerId ? { customerId } : {}),
+    businessId,
+    storeId,
+    terminalId,
+    deviceId,
+    actorId,
+    aggregateId,
+    originRecordId,
+    idempotencyKey,
+    sequence: sequence ?? 0,
+    correlationId,
+    causationId,
+    traceId,
+    occurredAt,
+    capturedAt,
+    payloadHash,
+    batchId,
+    batchChecksum,
+    payload: payload ?? {}
   };
-  return { event, errors, conflicts: payloadConflicts(event) };
+  return { event, errors, conflicts: [...conflicts, ...payloadConflicts(event)] };
 }
 
 function summary(results: SyncIngestResult[]): Record<SyncEventStatus, number> {
@@ -268,22 +389,43 @@ function topStatus(sum: Record<SyncEventStatus, number>): SyncEventStatus {
 
 export function classifySyncIngestPayload(input: unknown): SyncIngestClassification {
   const candidates = extractSyncEvents(input);
-  const seen = new Set<string>();
+  const seen = new Map<string, string>();
   const results: SyncIngestResult[] = [];
   for (const candidate of candidates) {
     const validation = validateSyncEventEnvelope(candidate);
     const eventId = isRecord(candidate) ? asString(candidate.eventId) || null : null;
     const topic = isRecord(candidate) ? canonicalEventType(candidate) || null : null;
-    if (validation.event && seen.has(validation.event.idempotencyKey)) {
-      results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: "duplicate", lifecycleStatus: "received", conflicts: [conflict("duplicate_event", "El idempotencyKey aparece repetido dentro del mismo lote.")], errors: [] });
-      continue;
-    }
     if (!validation.event) {
       results.push({ eventId, topic, status: "rejected", conflicts: validation.conflicts, errors: validation.errors });
       continue;
     }
-    seen.add(validation.event.idempotencyKey);
-    results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: validation.conflicts.length ? "conflict" : "accepted", lifecycleStatus: validation.conflicts.length ? "conflict" : "validated", conflicts: validation.conflicts, errors: [] });
+    const priorHash = seen.get(validation.event.idempotencyKey);
+    if (priorHash) {
+      const samePayload = priorHash === validation.event.payloadHash;
+      results.push({
+        eventId: validation.event.eventId,
+        topic: validation.event.topic,
+        status: samePayload ? "duplicate" : "conflict",
+        lifecycleStatus: samePayload ? "received" : "conflict",
+        conflicts: [conflict(
+          samePayload ? "duplicate_event" : "idempotency_payload_mismatch",
+          samePayload
+            ? "El idempotencyKey aparece repetido dentro del mismo lote con payload idéntico."
+            : "El idempotencyKey aparece repetido dentro del mismo lote con payload distinto."
+        )],
+        errors: []
+      });
+      continue;
+    }
+    seen.set(validation.event.idempotencyKey, validation.event.payloadHash);
+    results.push({
+      eventId: validation.event.eventId,
+      topic: validation.event.topic,
+      status: validation.conflicts.length ? "conflict" : "accepted",
+      lifecycleStatus: validation.conflicts.length ? "conflict" : "validated",
+      conflicts: validation.conflicts,
+      errors: []
+    });
   }
   const sum = summary(results);
   return {
@@ -295,8 +437,9 @@ export function classifySyncIngestPayload(input: unknown): SyncIngestClassificat
       persistence: "dry_run",
       idempotencyKey: "idempotencyKey",
       recognizedTopics: RECOGNIZED_SYNC_TOPICS,
+      supportedEventVersions: SUPPORTED_SYNC_EVENT_VERSIONS,
       supportedSchemaVersions: SUPPORTED_SYNC_SCHEMA_VERSIONS,
-      note: "Clasificación sin persistencia. Usa POST sin dryRun para persistir en OutboxEvent."
+      note: "Clasificación sin persistencia. Usa POST para persistir en OutboxEvent y observabilidad canónica."
     }
   };
 }

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { captureDeepScreenshots, envDeepCaptureOptions, emitProgress } = require("./surf8.deep-capture.cjs");
+const { legalEvidenceEnabled, applyLegalRedaction, sanitizeText, sanitizeUrl, sanitizeObject, sanitizeConsoleEntry, sanitizeNetworkEntry } = require("./surf8.legal-evidence.cjs");
 
 function registerSurf8VisualQaTests(test, expect) {
   const planPath = process.env.PRISMA_SURF_PLAN_JSON;
@@ -14,6 +15,7 @@ function registerSurf8VisualQaTests(test, expect) {
   const captureScreenshots = String(process.env.PRISMA_SURF_SCREENSHOTS || "1") !== "0";
   const fullPage = String(process.env.PRISMA_SURF_FULLPAGE || "1") === "1";
   const deepCaptureOptions = envDeepCaptureOptions({ fullPage });
+  const deepCaptureBudget = captureScreenshots ? Number(deepCaptureOptions.captureBudgetMs || 240000) : 0;
   const settleMs = Number(process.env.PRISMA_SURF_SETTLE_MS || 220);
   const gotoTimeout = Number(process.env.PRISMA_SURF_GOTO_TIMEOUT_MS || 45000);
   const gotoRetries = Number(process.env.PRISMA_SURF_GOTO_RETRIES || 2);
@@ -21,8 +23,8 @@ function registerSurf8VisualQaTests(test, expect) {
   const screenshotTimeout = Number(process.env.PRISMA_SURF_SCREENSHOT_TIMEOUT_MS || 15000);
   const probeTimeout = Number(process.env.PRISMA_SURF_PROBE_TIMEOUT_MS || 1400);
   const defaultTestTimeout = Math.max(
-    180000,
-    (gotoTimeout * (gotoRetries + 1)) + screenshotTimeout + (clickTimeout * 3) + 55000
+    240000,
+    (gotoTimeout * (gotoRetries + 1)) + deepCaptureBudget + (screenshotTimeout * 2) + (clickTimeout * 3) + 60000
   );
   const testTimeout = Number(process.env.PRISMA_SURF_TEST_TIMEOUT_MS || defaultTestTimeout);
   const onlinePorts = new Set(String(process.env.PRISMA_SURF_ONLINE_PORTS || "").split(",").map(s => s.trim()).filter(Boolean));
@@ -49,11 +51,15 @@ function registerSurf8VisualQaTests(test, expect) {
     gpuMode,
     chromiumArgs: gpuArgs,
     launchOptionsEnabled: useGpuLaunchOptions,
+    testTimeout,
+    deepCaptureBudget,
+    deepCaptureOptions,
     capturedAt: new Date().toISOString()
   }, null, 2));
 
   test.describe.configure({ mode: "parallel" });
-  test.use({ viewport, trace: "retain-on-failure", screenshot: "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
+  const legalMode = legalEvidenceEnabled();
+  test.use({ viewport, trace: legalMode ? "off" : "retain-on-failure", screenshot: legalMode ? "off" : "only-on-failure", video: "off", ...(launchOptions ? { launchOptions } : {}) });
   test.setTimeout(testTimeout);
 
   function safeName(value) {
@@ -84,10 +90,16 @@ function registerSurf8VisualQaTests(test, expect) {
   }
 
   function bounded(promise, ms, fallback) {
+    let timer = null;
+    const timeoutPromise = new Promise(resolve => {
+      timer = setTimeout(() => resolve(fallback), ms);
+    });
     return Promise.race([
       Promise.resolve(promise).catch(() => fallback),
-      new Promise(resolve => setTimeout(() => resolve(fallback), ms))
-    ]);
+      timeoutPromise
+    ]).finally(() => {
+      if (timer) clearTimeout(timer);
+    });
   }
 
   function urlPathMatches(currentUrl, expectedUrl) {
@@ -202,9 +214,11 @@ function registerSurf8VisualQaTests(test, expect) {
 
   async function captureComputed(page, target, status, extra = {}) {
     const paths = targetPaths(target);
+    const legalRedaction = await applyLegalRedaction(page).catch(error => ({ enabled: true, status: "BLOCKED_UNREDACTED", error: sanitizeText(error && error.message ? error.message : String(error)) }));
+    extra = sanitizeObject(extra);
     const viewport = page.viewportSize() || { width: 0, height: 0 };
-    const title = await bounded(page.title(), probeTimeout, null);
-    const url = page.url();
+    const title = sanitizeText(await bounded(page.title(), probeTimeout, null));
+    const url = sanitizeUrl(page.url());
     const capturedAt = new Date().toISOString();
 
     const visual = await page.evaluate(({ targetMeta }) => {
@@ -288,13 +302,14 @@ function registerSurf8VisualQaTests(test, expect) {
       function selectorGuess(el) {
         if (!el || !el.tagName) return "";
         const tag = el.tagName.toLowerCase();
+        const quoteCss = value => String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
         const dataAttrs = ["data-prisma-shell", "data-prisma-background", "data-prisma-cloudglass", "data-prisma-route", "data-testid", "data-test-id", "data-prisma-interface-target"];
         for (const attr of dataAttrs) {
           const val = el.getAttribute(attr);
-          if (val !== null) return val === "" ? `${tag}[${attr}]` : `${tag}[${attr}="${String(val).slice(0, 80)}"]`;
+          if (val !== null) return val === "" ? `${tag}[${attr}]` : `${tag}[${attr}="${quoteCss(String(val).slice(0, 80))}"]`;
         }
-        if (el.id) return `${tag}#${String(el.id).slice(0, 80)}`;
-        const cls = classText(el).split(/\s+/).filter(Boolean).slice(0, 3);
+        if (el.id) return `${tag}#${CSS.escape(String(el.id).slice(0, 80))}`;
+        const cls = classText(el).split(/\s+/).filter(Boolean).slice(0, 3).map(value => CSS.escape(value));
         if (cls.length) return `${tag}.${cls.join(".")}`;
         const parent = el.parentElement;
         if (!parent) return tag;
@@ -474,7 +489,8 @@ function registerSurf8VisualQaTests(test, expect) {
       title,
       viewport: visual.viewport || viewport,
       document: visual.document || {},
-      domSnapshot: visual.domSnapshot || null
+      domSnapshot: visual.domSnapshot || null,
+      legalRedaction
     };
 
     if (captureScreenshots) {
@@ -560,21 +576,21 @@ function registerSurf8VisualQaTests(test, expect) {
         if (type === "error" || type === "warning" || type === "warn") {
           consoleEntries.push({
             type,
-            text: msg.text(),
-            location: msg.location ? msg.location() : null
+            text: sanitizeText(msg.text()),
+            location: sanitizeObject(msg.location ? msg.location() : null)
           });
         }
       });
       page.on("pageerror", error => {
-        consoleEntries.push({ type: "pageerror", text: error && error.message ? error.message : String(error), location: null });
+        consoleEntries.push(sanitizeConsoleEntry({ type: "pageerror", text: error && error.message ? error.message : String(error), location: null }));
       });
       page.on("requestfailed", request => {
         networkFailures.push({
           type: "requestfailed",
-          url: request.url(),
+          url: sanitizeUrl(request.url()),
           method: request.method(),
           resourceType: request.resourceType(),
-          failure: request.failure(),
+          failure: sanitizeObject(request.failure()),
         });
       });
       page.on("response", response => {
@@ -582,7 +598,7 @@ function registerSurf8VisualQaTests(test, expect) {
         if (status >= 400) {
           networkFailures.push({
             type: "http_error",
-            url: response.url(),
+            url: sanitizeUrl(response.url()),
             status,
             statusText: response.statusText(),
             requestMethod: response.request().method(),

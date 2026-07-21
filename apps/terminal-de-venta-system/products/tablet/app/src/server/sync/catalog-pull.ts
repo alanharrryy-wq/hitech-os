@@ -1,3 +1,4 @@
+// PRISMA_PRICING_OWNER_V1
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 import { DEFAULT_POS_API_BUSINESS_ID, DEFAULT_POS_API_TERMINAL_ID } from "@/server/pos-api/validators";
@@ -19,9 +20,15 @@ const ENTITY_APPLY_ORDER: CatalogDeltaEntityType[] = [
   "Brand",
   "Supplier",
   "Product",
+  "ModifierGroup",
+  "ModifierOption",
+  "ProductModifierGroup",
   "ProductSupplier",
   "PriceList",
   "PriceListItem",
+  "PromotionRule",
+  "DiscountPolicy",
+  "PricingAuthorizationRule",
   "DropdownCatalog",
   "DropdownOption"
 ];
@@ -351,6 +358,8 @@ async function applyProduct(tx: any, item: CatalogDeltaRecord, targetBusinessId:
   if (idConflict) return idConflict;
   const brandId = maybeString(payload.brandId);
   const taxRateId = maybeString(payload.taxRateId);
+  const hasMediaRef = Object.prototype.hasOwnProperty.call(payload, "mediaRef");
+  const mediaRef = maybeString(payload.mediaRef);
   if (brandId) {
     const brand = await tx.brand.findFirst({ where: { id: brandId, businessId: targetBusinessId }, select: { id: true } });
     if (!brand) return conflict("missing_dependency", `Brand ${brandId} is missing for Product ${id}.`, item);
@@ -393,7 +402,72 @@ async function applyProduct(tx: any, item: CatalogDeltaRecord, targetBusinessId:
       updatedAt: date(payload.updatedAt, date(item.occurredAt))
     }
   });
+  if (hasMediaRef) {
+    await tx.$executeRaw`
+      UPDATE "Product" SET "mediaRef" = ${mediaRef} WHERE "businessId" = ${targetBusinessId} AND "id" = ${id}
+    `;
+  }
   return replaceProductBarcodes(tx, item, targetBusinessId, id, payload.barcodes);
+}
+
+async function rawBusinessConflict(tx: any, table: "ModifierGroup" | "ModifierOption" | "ProductModifierGroup", id: string, targetBusinessId: string, item: CatalogDeltaRecord) {
+  const rows = await tx.$queryRawUnsafe(`SELECT "businessId" FROM "${table}" WHERE "id" = ? LIMIT 1`, id) as Array<{ businessId: string }>;
+  if (rows[0] && rows[0].businessId !== targetBusinessId) return conflict("invalid_schema", `${table} ${id} belongs to another business.`, item);
+  return null;
+}
+
+async function applyModifierGroup(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
+  const payload = item.payload;
+  const id = asString(payload.id) || item.entityId;
+  const idConflict = await rawBusinessConflict(tx, "ModifierGroup", id, targetBusinessId, item);
+  if (idConflict) return idConflict;
+  const name = asString(payload.name);
+  const now = date(item.occurredAt);
+  await tx.$executeRaw`
+    INSERT INTO "ModifierGroup" ("id", "businessId", "name", "minSelections", "maxSelections", "status", "sortOrder", "version", "createdAt", "updatedAt")
+    VALUES (${id}, ${targetBusinessId}, ${name}, ${Math.max(0, asInt(payload.minSelections))}, ${Math.max(1, asInt(payload.maxSelections, 1))}, ${asString(payload.status) || "ACTIVE"}, ${asInt(payload.sortOrder)}, ${Math.max(1, asInt(payload.version, 1))}, ${date(payload.createdAt, now)}, ${date(payload.updatedAt, now)})
+    ON CONFLICT("id") DO UPDATE SET "name" = excluded."name", "minSelections" = excluded."minSelections", "maxSelections" = excluded."maxSelections", "status" = excluded."status", "sortOrder" = excluded."sortOrder", "version" = excluded."version", "updatedAt" = excluded."updatedAt"
+  `;
+  return null;
+}
+
+async function applyModifierOption(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
+  const payload = item.payload;
+  const id = asString(payload.id) || item.entityId;
+  const modifierGroupId = asString(payload.modifierGroupId);
+  const idConflict = await rawBusinessConflict(tx, "ModifierOption", id, targetBusinessId, item);
+  if (idConflict) return idConflict;
+  const groups = await tx.$queryRaw`SELECT "id" FROM "ModifierGroup" WHERE "id" = ${modifierGroupId} AND "businessId" = ${targetBusinessId} LIMIT 1` as Array<{ id: string }>;
+  if (!groups[0]) return conflict("missing_dependency", `ModifierGroup ${modifierGroupId} is missing for ModifierOption ${id}.`, item);
+  const now = date(item.occurredAt);
+  await tx.$executeRaw`
+    INSERT INTO "ModifierOption" ("id", "businessId", "modifierGroupId", "name", "priceDeltaCents", "isDefault", "status", "sortOrder", "version", "createdAt", "updatedAt")
+    VALUES (${id}, ${targetBusinessId}, ${modifierGroupId}, ${asString(payload.name)}, ${asInt(payload.priceDeltaCents)}, ${asBool(payload.isDefault)}, ${asString(payload.status) || "ACTIVE"}, ${asInt(payload.sortOrder)}, ${Math.max(1, asInt(payload.version, 1))}, ${date(payload.createdAt, now)}, ${date(payload.updatedAt, now)})
+    ON CONFLICT("id") DO UPDATE SET "name" = excluded."name", "priceDeltaCents" = excluded."priceDeltaCents", "isDefault" = excluded."isDefault", "status" = excluded."status", "sortOrder" = excluded."sortOrder", "version" = excluded."version", "updatedAt" = excluded."updatedAt"
+  `;
+  return null;
+}
+
+async function applyProductModifierGroup(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
+  const payload = item.payload;
+  const id = asString(payload.id) || item.entityId;
+  const productId = asString(payload.productId);
+  const modifierGroupId = asString(payload.modifierGroupId);
+  const idConflict = await rawBusinessConflict(tx, "ProductModifierGroup", id, targetBusinessId, item);
+  if (idConflict) return idConflict;
+  const [products, groups] = await Promise.all([
+    tx.product.findFirst({ where: { id: productId, businessId: targetBusinessId }, select: { id: true } }),
+    tx.$queryRaw`SELECT "id" FROM "ModifierGroup" WHERE "id" = ${modifierGroupId} AND "businessId" = ${targetBusinessId} LIMIT 1` as Promise<Array<{ id: string }>>
+  ]);
+  if (!products) return conflict("missing_dependency", `Product ${productId} is missing for ProductModifierGroup ${id}.`, item);
+  if (!groups[0]) return conflict("missing_dependency", `ModifierGroup ${modifierGroupId} is missing for ProductModifierGroup ${id}.`, item);
+  const now = date(item.occurredAt);
+  await tx.$executeRaw`
+    INSERT INTO "ProductModifierGroup" ("id", "businessId", "productId", "modifierGroupId", "required", "sortOrder", "status", "version", "createdAt", "updatedAt")
+    VALUES (${id}, ${targetBusinessId}, ${productId}, ${modifierGroupId}, ${asBool(payload.required)}, ${asInt(payload.sortOrder)}, ${asString(payload.status) || "ACTIVE"}, ${Math.max(1, asInt(payload.version, 1))}, ${date(payload.createdAt, now)}, ${date(payload.updatedAt, now)})
+    ON CONFLICT("id") DO UPDATE SET "required" = excluded."required", "sortOrder" = excluded."sortOrder", "status" = excluded."status", "version" = excluded."version", "updatedAt" = excluded."updatedAt"
+  `;
+  return null;
 }
 
 async function applyProductSupplier(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
@@ -506,6 +580,31 @@ async function applyPriceListItem(tx: any, item: CatalogDeltaRecord, targetBusin
   return null;
 }
 
+async function upsertPricingProjectionRecord(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
+  const payload = item.payload;
+  const entityType = item.entityType;
+  const entityId = asString(payload.id) || item.entityId;
+  const id = `pricing_projection:${targetBusinessId}:${entityType}:${entityId}`.slice(0, 240);
+  const version = asInt(payload.version ?? payload.projectionVersion, 1);
+  const status = asString(payload.status) || (payload.isActive === false ? "INACTIVE" : "ACTIVE");
+  const startsAt = payload.startsAt ? date(payload.startsAt, date(item.occurredAt)) : null;
+  const endsAt = payload.endsAt ? date(payload.endsAt) : null;
+  const occurredAt = date(item.occurredAt);
+  await tx.$executeRawUnsafe(
+    `INSERT INTO "PricingProjectionRecord"
+      ("id","businessId","entityType","entityId","version","status","startsAt","endsAt","payloadJson","sourceCursor","sourceOccurredAt","createdAt","updatedAt")
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT("businessId","entityType","entityId") DO UPDATE SET
+       "version"=excluded."version", "status"=excluded."status",
+       "startsAt"=excluded."startsAt", "endsAt"=excluded."endsAt",
+       "payloadJson"=excluded."payloadJson", "sourceCursor"=excluded."sourceCursor",
+       "sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt` ,
+    id, targetBusinessId, entityType, entityId, version, status, startsAt, endsAt,
+    JSON.stringify(payload), item.cursor, occurredAt, occurredAt, occurredAt
+  );
+  return null;
+}
+
 async function applyDropdownCatalog(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
   const payload = item.payload;
   const id = asString(payload.id) || item.entityId;
@@ -574,13 +673,17 @@ async function applyDropdownOption(tx: any, item: CatalogDeltaRecord, targetBusi
 }
 
 async function applyOne(tx: any, item: CatalogDeltaRecord, targetBusinessId: string) {
-  if (item.entityType === "TaxRate") return applyTaxRate(tx, item, targetBusinessId);
+  if (item.entityType === "TaxRate") { const issue = await applyTaxRate(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
   if (item.entityType === "Brand") return applyBrand(tx, item, targetBusinessId);
   if (item.entityType === "Supplier") return applySupplier(tx, item, targetBusinessId);
   if (item.entityType === "Product") return applyProduct(tx, item, targetBusinessId);
+  if (item.entityType === "ModifierGroup") return applyModifierGroup(tx, item, targetBusinessId);
+  if (item.entityType === "ModifierOption") return applyModifierOption(tx, item, targetBusinessId);
+  if (item.entityType === "ProductModifierGroup") return applyProductModifierGroup(tx, item, targetBusinessId);
   if (item.entityType === "ProductSupplier") return applyProductSupplier(tx, item, targetBusinessId);
-  if (item.entityType === "PriceList") return applyPriceList(tx, item, targetBusinessId);
-  if (item.entityType === "PriceListItem") return applyPriceListItem(tx, item, targetBusinessId);
+  if (item.entityType === "PriceList") { const issue = await applyPriceList(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
+  if (item.entityType === "PriceListItem") { const issue = await applyPriceListItem(tx, item, targetBusinessId); if (!issue) await upsertPricingProjectionRecord(tx, item, targetBusinessId); return issue; }
+  if (item.entityType === "PromotionRule" || item.entityType === "DiscountPolicy" || item.entityType === "PricingAuthorizationRule") return upsertPricingProjectionRecord(tx, item, targetBusinessId);
   if (item.entityType === "DropdownCatalog") return applyDropdownCatalog(tx, item, targetBusinessId);
   if (item.entityType === "DropdownOption") return applyDropdownOption(tx, item, targetBusinessId);
   return conflict("unknown_entity", `Unsupported entity ${item.entityType}.`, item, "rejected");

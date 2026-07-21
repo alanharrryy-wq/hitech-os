@@ -1,95 +1,133 @@
-.surface {
-  min-width: 0;
-  min-height: min(760px, calc(100dvh - 74px));
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
-  gap: 8px;
-  position: relative;
-  isolation: isolate;
-  padding: clamp(4px, 0.55vw, 8px);
-  border-radius: 20px;
-  background: transparent;
-}
+@layer prisma.components {
+  .surface {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
 
-.header {
-  display: none;
-  min-height: 0;
-  align-items: center;
-  gap: 10px;
-  padding: 0 4px 2px;
-  color: rgba(84, 98, 122, 0.82);
-  font-size: 0.78rem;
-  font-weight: 760;
-}
+  .surface[data-prisma-cart-state="blocked"] {
+    grid-template-rows: minmax(0, 1fr);
+    place-items: center;
+    overflow: visible;
+  }
 
-.header strong {
-  color: var(--prisma-soft-blue, #377dff);
-  font-weight: 900;
-}
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 34px;
+    padding: 0 7px 7px;
+    border: 0;
+    background: transparent;
+    color: rgba(211, 221, 232, 0.66);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
 
-.header small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .header > span {
+    color: rgba(244, 249, 255, 0.78);
+  }
 
-.body {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(320px, 31vw, 370px);
-  gap: clamp(8px, 0.95vw, 13px);
-  align-items: stretch;
-}
+  .header > strong {
+    color: var(--prisma-cyan-300);
+  }
 
-.canvas,
-.ticketRail {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  align-content: start;
-  gap: 14px;
-  border: 1px solid var(--prisma-soft-line, rgba(139, 152, 174, 0.22));
-  border-radius: 20px;
-  background:
-    linear-gradient(145deg, rgba(255,255,255,0.78), rgba(247,250,255,0.54)),
-    radial-gradient(circle at 14% 0%, rgba(121, 213, 255, 0.13), transparent 42%);
-  box-shadow: var(--prisma-soft-shadow-small, 0 12px 32px rgba(36,54,87,.1)), inset 0 1px 0 rgba(255,255,255,0.88);
-  backdrop-filter: blur(20px) saturate(1.12);
-  -webkit-backdrop-filter: blur(20px) saturate(1.12);
-}
+  .header > small {
+    color: rgba(211, 221, 232, 0.58);
+  }
 
-.canvas {
-  padding: clamp(7px, 0.85vw, 12px);
-}
-
-.ticketRail {
-  padding: clamp(8px, 0.85vw, 12px);
-}
-
-.commandDock {
-  min-width: 0;
-}
-
-.commandDockInner {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.commandDockInner::-webkit-scrollbar {
-  display: none;
-}
-
-.commandDockInner > * {
-  min-height: 44px;
-}
-
-@media (max-width: 1060px) {
   .body {
-    grid-template-columns: minmax(0, 1fr);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(350px, 31%);
+    gap: clamp(14px, 1.35vw, 20px);
+    min-height: 0;
+  }
+
+  .canvas {
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 3px 8px 0;
+    background: transparent;
+  }
+
+  .ticketRail {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    padding: clamp(16px, 1.6vw, 22px);
+    border: 1px solid rgba(235, 244, 255, 0.20);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 88% 4%, rgba(255, 198, 120, 0.09), transparent 28%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 44%),
+      rgba(9, 12, 17, 0.54);
+    box-shadow:
+      0 28px 74px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(26px) saturate(1.08);
+    -webkit-backdrop-filter: blur(26px) saturate(1.08);
+  }
+
+  .ticketRail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 11%;
+    left: 11%;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  }
+
+  .commandDock,
+  .commandDockInner {
+    min-width: 0;
+    background: transparent;
+  }
+
+  @media (max-width: 960px) {
+    .surface {
+      height: auto;
+      min-height: auto;
+      overflow: visible;
+    }
+
+    .body {
+      grid-template-columns: 1fr;
+    }
+
+    .ticketRail {
+      min-height: 440px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .canvas {
+      padding-right: 0;
+    }
+
+    .ticketRail {
+      padding: 14px;
+      border-radius: 22px;
+    }
   }
 }

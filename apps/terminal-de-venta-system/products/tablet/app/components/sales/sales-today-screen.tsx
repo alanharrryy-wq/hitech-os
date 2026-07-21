@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import type { SalesTodaySummary } from "@/lib/sales-today/types";
 import { buildSalesKpis, filterTickets } from "@/lib/sales-today/view-model";
@@ -16,11 +15,29 @@ import styles from "./sales.module.css";
 export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
   const [summary, setSummary] = useState<SalesTodaySummary | null>(null);
   const [query, setQuery] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [reloadToken, setReloadToken] = useState(0);
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
 
   useEffect(() => {
-    requestJson<{ summary: SalesTodaySummary }>("/api/pos/sales/today").then((response) => setSummary(response.data.summary));
-  }, []);
+    let alive = true;
+    setSummary(null);
+    setError(null);
+    requestJson<{ summary: SalesTodaySummary }>("/api/pos/sales/today")
+      .then((response) => {
+        if (alive) setSummary(response.data.summary);
+      })
+      .catch((caught) => {
+        if (!alive) return;
+        const message = caught && typeof caught === "object" && "message" in caught
+          ? String((caught as { message?: string }).message ?? "No se pudieron cargar las ventas de hoy.")
+          : "No se pudieron cargar las ventas de hoy.";
+        setError(message);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [reloadToken]);
 
   const tickets = useMemo(() => (summary ? filterTickets(summary.tickets, query) : []), [summary, query]);
 
@@ -29,8 +46,13 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
       currentPath="/sales/today"
       title="Ventas de hoy"
       subtitle="Tickets cerrados y resumen operativo del día."
-      status={<TabletShellStatusPill tone="ok">Tickets cerrados</TabletShellStatusPill>}
+      status={
+        <TabletShellStatusPill tone={error ? "danger" : summary ? "ok" : "neutral"}>
+          {error ? "Revisar ventas" : summary ? `${summary.tickets.length} tickets` : "Cargando"}
+        </TabletShellStatusPill>
+      }
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <main className={styles.salesPage}
         data-surface="tablet"
@@ -62,12 +84,11 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
           >Resumen de caja operativo</h1>
           <p data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="sales_today_screen" data-target="sales-today-screen-p-2" data-kind="text" data-role="text">Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p>
         </section>
-        <QuickActionStrip label="Acciones rapidas de ventas de hoy">
-          <QuickActionTile title="Nueva venta" description={gate.canShowSellNavigation ? "Abre POS para capturar otro ticket." : gate.detail} actionLabel={gate.canShowSellNavigation ? "Vender" : gate.actionLabel} icon="cart" tone={gate.canShowSellNavigation ? "primary" : "warning"} href={gate.actionHref} owner="pos" kind="quick-create" />
-          <QuickActionTile title="Buscar ticket" description="Enfoca la búsqueda local por folio, cajero o producto." actionLabel="Buscar" icon="search" tone="neutral" href="#buscar-ticket" owner="sales" />
-          <QuickActionTile title="Exportar ventas" description="Abre exportaciones locales confirmadas." actionLabel="Exportar" icon="save" tone="sync" href="/settings/export" owner="exports" />
-          <QuickActionTile title="Nueva devolucion" description="Elige un ticket cerrado para devolver productos." actionLabel="Devolver" icon="receipt" tone="inventory" href="/returns" owner="returns" kind="quick-create" />
-        </QuickActionStrip>
+        <nav className={styles.workspaceTabs} aria-label="Vistas de ventas">
+          <a className={styles.workspaceTabActive} href="/sales/today" aria-current="page">Hoy</a>
+          <a className={styles.workspaceTab} href="/sales/history">Historial</a>
+          <a className={styles.workspaceTab} href="/returns">Devoluciones</a>
+        </nav>
         {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : <div className={styles.empty}
           data-surface="tablet"
           data-screen="sales"
@@ -104,9 +125,19 @@ export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAP
             data-kind="button"
             data-role="action"
           >{gate.canShowSellNavigation ? "Volver a vender" : gate.actionLabel}</a>
+          <button className={styles.secondary} type="button" onClick={() => setReloadToken((value) => value + 1)} disabled={!summary && !error}>
+            Actualizar
+          </button>
         </div>
         <ContextualExportActions surface="sales" />
-        <SalesTicketList tickets={tickets} />
+        {error ? (
+          <section className={styles.stateCard} role="alert">
+            <h2>No se pudieron cargar las ventas</h2>
+            <p>{error}</p>
+            <button className={styles.primary} type="button" onClick={() => setReloadToken((value) => value + 1)}>Reintentar</button>
+          </section>
+        ) : null}
+        {summary ? <SalesTicketList tickets={tickets} /> : null}
       </main>
     </PrismaTabletShellUnified>
   );

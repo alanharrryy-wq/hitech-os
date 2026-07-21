@@ -1,13 +1,13 @@
 # PRISMA Authority Mesh Report
 
 - Status: `PASS`
-- Task: `Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.`
+- Task: `PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.`
 - Repo: `F:\repos\hitech-os\apps\terminal-de-venta-system`
-- Authority files found: `979`
+- Authority files found: `509`
 - Missing patterns: `0`
 - Critical missing: `0`
-- Apps: `backgrounds, chart-lab, control-center, database-sync, mobile, pc, productization, quality, shared-kernel, shared-ui, tablet, web`
-- Change types: `data_sync, visual`
+- Apps: `database-sync, pc, productization, quality, shared-kernel, tablet`
+- Change types: `data_sync`
 
 ## Generated files
 

@@ -218,6 +218,122 @@
         "runtime visual QA",
         "source fix only if screenshot shows real defect"
       ]
+    },
+    {
+      "id": "tablet.customer_surface_reduction",
+      "displayName": "Tablet customer surface reduction with Chart Lab protection",
+      "domain": "productization",
+      "surfaces": [
+        "tablet",
+        "chart_lab",
+        "shared_ui"
+      ],
+      "classification": "FIX",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_TABLET_CUSTOMER_SURFACES_REDUCED_CHART_LAB_PRESERVED",
+      "doNotRebuild": true,
+      "nextGate": "Run fresh Tablet ScreensQA against customer routes, then certify a clean distributable package.",
+      "evidence": [
+        "custsurf 1507 185809 result.zip",
+        "verify_tablet_customer_surface_reduction_1507.mjs",
+        "dbevid 1507 1826 result.zip"
+      ],
+      "doesNotProve": [
+        "Hosted production deployment",
+        "Fresh runtime ScreensQA",
+        "Distribution-ready installer"
+      ],
+      "allowedActions": [
+        "runtime ScreensQA",
+        "release packaging",
+        "read-only verification"
+      ],
+      "forbiddenActions": [
+        "re-expose retired internal routes in final navigation",
+        "modify Chart Lab as part of Tablet cleanup"
+      ]
+    },
+    {
+      "id": "productization.local_first_data_custody",
+      "displayName": "PRISMA local-first customer operational data custody contract",
+      "domain": "productization",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "local_agent",
+        "remote_ops",
+        "licensing",
+        "diagnostics"
+      ],
+      "classification": "DONE",
+      "status": "SOURCE_READY",
+      "stateLabel": "PASS_LOCAL_FIRST_CUSTODY_CONTRACT_SOURCE_READY",
+      "doNotRebuild": true,
+      "nextGate": "Run runtime data-egress, endpoint payload and support-bundle certification before claiming zero custody certified.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md",
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.json",
+        "custodia 1707 1927 result.zip"
+      ],
+      "doesNotProve": [
+        "No operational payload leaves every runtime",
+        "All telemetry is disabled",
+        "Production configuration matches the contract",
+        "Legal compliance certification"
+      ],
+      "allowedActions": [
+        "read-only verification",
+        "runtime network egress certification",
+        "support bundle certification",
+        "legal review"
+      ],
+      "forbiddenClaims": [
+        "Do not claim zero custody certified from source documentation alone.",
+        "Do not claim full legal compliance."
+      ]
+    },
+    {
+      "id": "mobile.secure_projection_gateway_phase1",
+      "displayName": "PRISMA Mobile secure read-only projection gateway phase 1",
+      "domain": "mobile",
+      "surfaces": [
+        "mobile",
+        "tablet",
+        "pc",
+        "licensing"
+      ],
+      "classification": "VERIFY",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_LOCAL_VERIFIED",
+      "doNotRebuild": false,
+      "nextGate": "Runtime signed-session auth/context/license/device E2E and negative cross-context certification; do not enable mutations.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/ops/mobile/PRISMA_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1.md",
+        "verify:secure-projection-gateway",
+        "mobproj1 focused validation reports"
+      ],
+      "doesNotProve": [
+        "Hosted live session issuance",
+        "LAN or cloud reachability",
+        "Production device claim",
+        "Offline read or queued commands",
+        "Mobile mutations",
+        "Runtime zero-egress certification"
+      ],
+      "allowedActions": [
+        "runtime read-only auth E2E",
+        "negative tenant/business/branch/terminal tests",
+        "Customer Setup hosted session integration",
+        "Phase 1 read-model UI binding"
+      ],
+      "forbiddenActions": [
+        "enable Mobile mutations",
+        "trust query parameters or localStorage as authority",
+        "claim offline support",
+        "claim live production auth from local verification"
+      ]
     }
-  ]
+  ],
+  "updatedAt": "2026-07-20T15:30:00-06:00"
 }

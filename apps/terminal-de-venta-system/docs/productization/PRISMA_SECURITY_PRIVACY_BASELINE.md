@@ -103,3 +103,23 @@ Licencia puede limitar features, pero no debe impedir exportar ni respaldar dato
 ## Criterio de aceptación
 
 La capa pasa baseline si un técnico puede explicar qué datos salen, qué acciones entran y cómo se revierte un cambio sin ponerse pálido.
+
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:BEGIN -->
+## Autoridad canónica de custodia local
+
+La frontera completa está definida en:
+
+```text
+PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md
+PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.json
+```
+
+Regla resumida:
+
+- los datos operativos permanecen bajo control del cliente;
+- Remote Ops recibe únicamente metadatos mínimos permitidos;
+- no se envían DB, ventas, clientes, empleados, inventarios ni payloads por defecto;
+- soporte que exponga datos requiere autorización específica;
+- el estado documental es `SOURCE_READY`;
+- no afirmar “custodia cero certificada” hasta pasar el gate runtime de egreso y diagnósticos.
+<!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:END -->

@@ -1,4 +1,5 @@
 import { InventoryRepository } from "@/server/repositories/inventory.repository";
+import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 import { buildInventoryFindings, inventoryAccuracy, signedMovementDelta, stockState } from "@/server/validators/inventory-integrity";
 import type { AuditCountView, InventoryAuditSeverityFilter, InventoryCountStatusFilter, InventoryFilters, InventoryStateFilter, InventoryWorkspace, StockLedgerEntry, StockSnapshotView } from "@/modules/inventory/types";
 
@@ -145,10 +146,11 @@ export async function getInventoryWorkspace(input: Partial<Record<keyof Inventor
   const generatedAt = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date());
 
   try {
+    const businessId = await resolvePcBusinessScope();
     const [snapshotRows, movementRows, countRows] = await Promise.all([
-      repository.listSnapshots(filters),
-      repository.listMovements(filters),
-      repository.listCounts(filters)
+      repository.listSnapshots(businessId, filters),
+      repository.listMovements(businessId, filters),
+      repository.listCounts(businessId, filters)
     ]);
 
     const snapshots = snapshotRows.map(mapSnapshot);

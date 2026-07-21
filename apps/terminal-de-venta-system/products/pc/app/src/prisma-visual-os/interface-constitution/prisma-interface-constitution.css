@@ -1,23 +1,8 @@
 :root {
-  --prisma-pc-bg-0: #080a0d;
-  --prisma-pc-bg-1: #10151b;
-  --prisma-pc-bg-2: #171d25;
-  --prisma-pc-glass: rgba(130, 150, 175, 0.12);
-  --prisma-pc-border: rgba(255,255,255,0.14);
-  --prisma-pc-text: rgba(245,248,255,0.94);
-  --prisma-pc-muted: rgba(218,228,242,0.68);
-  --prisma-pc-action: rgba(84, 170, 255, 0.42);
-  --prisma-pc-warning: rgba(235, 184, 80, 0.38);
-  --prisma-pc-critical: rgba(255, 94, 106, 0.42);
 }
 
 .prisma-decision-page {
   min-height: 100dvh;
-  color: var(--prisma-pc-text);
-  background:
-    radial-gradient(circle at 76% 20%, rgba(95,145,210,0.10), transparent 34%),
-    radial-gradient(circle at 18% 28%, rgba(196,202,212,0.075), transparent 38%),
-    linear-gradient(145deg, var(--prisma-pc-bg-0), var(--prisma-pc-bg-1) 45%, var(--prisma-pc-bg-2));
   padding: clamp(16px, 2vw, 28px);
 }
 
@@ -27,11 +12,6 @@
 .prisma-actionable-table,
 .prisma-insight-chart-frame,
 .prisma-evidence-drawer {
-  background: linear-gradient(180deg, rgba(210,225,245,0.13), rgba(105,125,150,0.08)), var(--prisma-pc-glass);
-  border: 1px solid var(--prisma-pc-border);
-  border-radius: 24px;
-  backdrop-filter: blur(18px) saturate(126%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 18px 54px rgba(0,0,0,0.24);
 }
 
 .prisma-decision-header {
@@ -55,7 +35,6 @@
   text-transform: uppercase;
   letter-spacing: .14em;
   font-size: 11px;
-  color: var(--prisma-pc-muted);
 }
 
 .prisma-status-line,
@@ -63,7 +42,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  color: var(--prisma-pc-muted);
 }
 
 .prisma-decision-panel,
@@ -82,18 +60,13 @@
 }
 
 .prisma-attention-summary article {
-  border-radius: 18px;
   padding: 14px;
-  background: rgba(255,255,255,0.055);
-  border: 1px solid rgba(255,255,255,0.10);
 }
 
 [data-prisma-priority="critical"] {
-  box-shadow: 0 0 0 1px rgba(255,94,106,0.26), 0 0 30px rgba(255,94,106,0.10);
 }
 
 [data-prisma-priority="high"] {
-  box-shadow: 0 0 0 1px rgba(235,184,80,0.22), 0 0 26px rgba(235,184,80,0.09);
 }
 
 .prisma-table-scroll,
@@ -104,30 +77,16 @@
 
 .prisma-empty-state,
 .prisma-error-state {
-  border-radius: 18px;
   padding: 16px;
-  background: rgba(255,255,255,0.055);
-  border: 1px solid rgba(255,255,255,0.10);
 }
 
 .prisma-error-state {
-  box-shadow: 0 0 0 1px rgba(255,94,106,0.22);
 }
 
 .prisma-evidence-drawer summary {
   cursor: pointer;
-  color: var(--prisma-pc-text);
 }
 
 .prisma-evidence-body {
   margin-top: 14px;
-  color: var(--prisma-pc-muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .001ms;
-    animation-iteration-count: 1;
-    scroll-behavior: auto;
-  }
 }

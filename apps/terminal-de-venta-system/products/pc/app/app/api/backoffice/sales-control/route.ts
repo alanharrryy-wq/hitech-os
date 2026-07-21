@@ -1,4 +1,5 @@
 import { ok, toBackofficeError } from "@/lib/backoffice/api-response";
+import { guardPcFeatureForApi } from "@/server/licensing/pc-license-api";
 import { commandCenterToCsv, getPcSalesControl } from "@/server/services/pc-command-center.service";
 
 export const runtime = "nodejs";
@@ -7,6 +8,10 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   try {
     const params = new URL(request.url).searchParams;
+    if (params.get("format") === "csv") {
+      const licenseGate = await guardPcFeatureForApi("export.sales.basic");
+      if (licenseGate) return licenseGate;
+    }
     const model = await getPcSalesControl(params);
     if (params.get("format") === "csv") {
       return new Response(commandCenterToCsv(model), {

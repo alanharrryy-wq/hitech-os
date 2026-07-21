@@ -4,22 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import { motion } from "motion/react";
-import type { CartLine, CompletedSaleReceipt, PosProduct, UiState } from "@/lib/pos/cart-state";
+import type { CartLine, PosProduct, UiState } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, clearCartStorage, formatMoney, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
 import { addProductToCart, clearCart, decrementCartLine, incrementCartLine, removeCartLine, validateCartForCheckout } from "@/lib/pos/cart-engine";
-import type { PaymentMethod, PaymentTenderInput } from "@/lib/pos/payment-state";
-import { createDefaultPaymentTenders, normalizePaymentTenders } from "@/lib/pos/payment-state";
-import { completeCartSale } from "@/lib/pos/payment-flow";
 import type { CheckoutState } from "@/lib/pos/payment-contract";
 import { checkoutStateCopy, checkoutStateTone, isCheckoutBusy } from "@/lib/pos/payment-contract";
-import { clearPaymentRequestRecord, getOrCreatePaymentRequestId } from "@/lib/pos/payment-idempotency";
+import { clearPaymentRequestRecord } from "@/lib/pos/payment-idempotency";
 import type { HeldCart } from "@/lib/pos/held-carts";
 import { addHeldCart, readHeldCartsFromStorage, removeHeldCart, writeHeldCartsToStorage } from "@/lib/pos/held-carts";
 import { PosProductSearch } from "./pos-product-search";
 import { PosProductList } from "./pos-product-list";
 import { PosTicketPanel } from "./pos-ticket-panel";
-import { PosCobroSurface } from "./pos-cobro-surface";
-import { PosSaleSuccess } from "./pos-sale-success";
 import { PosLiveBinding } from "./pos-live-binding";
 import { PosCommandDock, PosProductCanvas, PosTerminalBody, PosTerminalHeader, PosTerminalSurface, PosTicketRail } from "./terminal-v2";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
@@ -119,20 +114,23 @@ function looksLikeScannedCode(value: string) {
   return /^\d{6,14}$/.test(clean) || /^[A-Z0-9][A-Z0-9_-]{5,}$/i.test(clean);
 }
 
-export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
+export function SellingWorkspace({
+  runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT,
+  checkoutBackdrop = false
+}: {
+  runtimeSnapshot?: TabletRuntimeSnapshot;
+  checkoutBackdrop?: boolean;
+}) {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<PosProduct[]>([]);
   const [productState, setProductState] = useState<UiState>("idle");
   const [productError, setProductError] = useState<unknown>(null);
   const [cart, setCart] = useState<CartLine[]>([]);
+  const [cartHydrated, setCartHydrated] = useState(false);
   const [heldCarts, setHeldCarts] = useState<HeldCart[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(FEATURED_CATEGORY);
-  const [paymentOpen, setPaymentOpen] = useState(false);
-  const [paymentTenders, setPaymentTenders] = useState<PaymentTenderInput[]>(() => createDefaultPaymentTenders());
   const [checkoutState, setCheckoutState] = useState<CheckoutState>("idle");
   const [checkoutError, setCheckoutError] = useState<unknown>(null);
-  const [clientRequestId, setClientRequestId] = useState("");
-  const [lastReceipt, setLastReceipt] = useState<CompletedSaleReceipt | null>(null);
 
   const categories = useMemo(
     () => [FEATURED_CATEGORY, ...Array.from(new Set(products.map((product) => product.category?.trim()).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, "es-MX"))],
@@ -144,6 +142,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   const checkoutBusy = isCheckoutBusy(checkoutState);
   const checkoutReady = validateCartForCheckout(cart);
   const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
+  const statusLabel = gate.previewOnly ? "Vista de consulta" : checkoutStateCopy(checkoutState).label;
   const cartQty = cartTotalQty(cart);
   const cartTotal = cartTotalCents(cart);
   const newProductHref = useMemo(() => {
@@ -158,7 +157,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   }
 
   async function loadProducts(nextQuery = query) {
-    if (!gate.canOperatePos) {
+    if (!gate.canBrowseCatalog) {
       setProductState("idle");
       return;
     }
@@ -175,6 +174,10 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   }
 
   async function resolveCode(nextQuery = query, options: { fallbackSearch?: boolean } = {}) {
+    if (!gate.canBrowseCatalog) {
+      setProductState("idle");
+      return;
+    }
     if (!gate.canAddProduct) {
       setCheckoutError(gate.detail);
       setCheckoutState("error");
@@ -214,7 +217,6 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       setCheckoutState("error");
       return;
     }
-    setLastReceipt(null);
     setCheckoutState("idle");
     setCheckoutError(null);
     const result = addProductToCart(cart, product);
@@ -225,24 +227,14 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     setCart(result.lines);
   }
 
-  function resetPaymentState() {
-    setPaymentOpen(false);
+  function resetCheckoutState() {
     setCheckoutState("idle");
     setCheckoutError(null);
-    setPaymentTenders(createDefaultPaymentTenders());
-    setClientRequestId("");
     clearPaymentRequestRecord();
   }
 
-  function updatePaymentTender(method: PaymentMethod, patch: Partial<Pick<PaymentTenderInput, "amountCents" | "reference">>) {
-    setPaymentTenders((current) =>
-      normalizePaymentTenders(current).map((tender) => (tender.method === method ? { ...tender, ...patch } : tender))
-    );
-  }
-
   function clearTicket() {
-    setLastReceipt(null);
-    resetPaymentState();
+    resetCheckoutState();
     setCart((current) => clearCart(current).lines);
   }
 
@@ -259,8 +251,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       return;
     }
     setHeldCartShelf(result.heldCarts);
-    setLastReceipt(null);
-    resetPaymentState();
+    resetCheckoutState();
     setCart([]);
     clearCartStorage();
   }
@@ -277,8 +268,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       setCheckoutState("error");
       return;
     }
-    setLastReceipt(null);
-    resetPaymentState();
+    resetCheckoutState();
     setCart(heldCart.lines);
     setHeldCartShelf(removeHeldCart(heldCarts, heldCartId));
   }
@@ -287,7 +277,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     setHeldCartShelf(removeHeldCart(heldCarts, heldCartId));
   }
 
-  async function openCheckout() {
+  function openCheckout() {
     if (!gate.canCheckout) {
       setCheckoutError(gate.detail);
       setCheckoutState("error");
@@ -301,55 +291,36 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     }
     setCheckoutError(null);
     setCheckoutState("review");
-    setPaymentOpen(true);
-    try {
-      const requestId = clientRequestId || (await getOrCreatePaymentRequestId(cart));
-      setClientRequestId(requestId);
-    } catch (error) {
-      setCheckoutError(error);
-      setCheckoutState("error");
-    }
-  }
-
-  async function confirmSale(paymentTendersOverride: PaymentTenderInput[] = paymentTenders) {
-    if (checkoutBusy) return;
-    if (!gate.canCheckout) {
-      setCheckoutError(gate.detail);
-      setCheckoutState("error");
-      return;
-    }
-    const requestId = clientRequestId || (await getOrCreatePaymentRequestId(cart));
-    setClientRequestId(requestId);
-    setCheckoutState("submitting");
-    setCheckoutError(null);
-    try {
-      const receipt = await completeCartSale({ lines: cart, paymentTenders: paymentTendersOverride, clientRequestId: requestId });
-      setLastReceipt(receipt);
-      setCart([]);
-      clearCartStorage();
-      clearPaymentRequestRecord();
-      setPaymentOpen(false);
-      setPaymentTenders(createDefaultPaymentTenders());
-      setCheckoutState("success");
-      await loadProducts(query);
-    } catch (error) {
-      setCheckoutError(error);
-      setCheckoutState("error");
-    }
+    writeCartToStorage(cart);
+    window.sessionStorage.setItem("prisma.tablet.pos.checkoutReturnFocus.v1", "1");
+    window.location.assign("/checkout");
   }
 
   useEffect(() => {
     setCart(readCartFromStorage());
     setHeldCarts(readHeldCartsFromStorage());
-    if (gate.canOperatePos) void loadProducts("");
-  }, [gate.canOperatePos]);
+    setCartHydrated(true);
+    if (gate.canBrowseCatalog) void loadProducts("");
+  }, [gate.canBrowseCatalog]);
 
   useEffect(() => {
+    if (!cartHydrated) return;
     writeCartToStorage(cart);
-  }, [cart]);
+  }, [cart, cartHydrated]);
 
   useEffect(() => {
-    if (!gate.canOperatePos) return;
+    if (checkoutBackdrop || !cart.length || typeof window === "undefined") return;
+    const key = "prisma.tablet.pos.checkoutReturnFocus.v1";
+    if (window.sessionStorage.getItem(key) !== "1") return;
+    window.sessionStorage.removeItem(key);
+    const frame = window.requestAnimationFrame(() => {
+      document.querySelector<HTMLElement>('[data-prisma-component="CheckoutButton"]')?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [cart.length, checkoutBackdrop]);
+
+  useEffect(() => {
+    if (!gate.canBrowseCatalog) return;
     const cleanQuery = query.trim();
     if (cleanQuery.length === 1) return;
     const delay = cleanQuery.length >= 2 ? 260 : 120;
@@ -357,7 +328,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       void loadProducts(cleanQuery);
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [query, gate.canOperatePos]);
+  }, [query, gate.canBrowseCatalog]);
 
   const copy = checkoutStateCopy(checkoutState);
 
@@ -369,9 +340,9 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         subtitle={gate.detail}
         status={<TabletShellStatusPill tone={gate.tone}>{gate.actionLabel}</TabletShellStatusPill>}
         runtimeSnapshot={runtimeSnapshot}
-        visualSurface="tablet-pos"
-        visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
-        showBottomDock={false}
+        visualSurface="tablet-pos-nocturne"
+        visualPreset="PRISMA_NOCTURNE_REFERENCE_1607"
+        showBottomDock={!checkoutBackdrop}
       >
         <PosTerminalSurface
           cartState="blocked"
@@ -500,16 +471,16 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
       currentPath="/pos"
       title="Vender"
       kicker={runtimeSnapshot.identity.storeName}
-      subtitle={`${runtimeSnapshot.identity.terminalName} · ${runtimeSnapshot.identity.operatorName}`}
-      status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
-      visualSurface="tablet-pos"
+      subtitle={gate.previewOnly ? gate.detail : `${runtimeSnapshot.identity.terminalName} · ${runtimeSnapshot.identity.operatorName}`}
+      status={<TabletShellStatusPill tone={gate.previewOnly ? gate.tone : checkoutStateTone(checkoutState)}>{statusLabel}</TabletShellStatusPill>}
+      visualSurface="tablet-pos-nocturne"
       runtimeSnapshot={runtimeSnapshot}
-      visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
-      showBottomDock={false}
+      visualPreset="PRISMA_NOCTURNE_REFERENCE_1607"
+      showBottomDock={!checkoutBackdrop}
     >
       <PosTerminalSurface
         cartState={cart.length ? "active" : "empty"}
-        paymentOpen={paymentOpen}
+        paymentOpen={false}
         visualState={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
       >
         <PosLiveBinding />
@@ -548,6 +519,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                 error={productError}
                 resultCount={visibleProducts.length}
                 state={productState}
+                disabled={!gate.canBrowseCatalog}
                 onSearch={() => void runPrimaryLookup(query)}
                 onClear={() => {
                   setQuery("");
@@ -610,6 +582,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
                 newProductHref={newProductHref}
                 canAddProduct={gate.canAddProduct}
                 blockedReason={gate.detail}
+                blockedActionLabel={gate.previewOnly ? "Solo vista" : undefined}
                 onAdd={addProduct}
                 onSearchAgain={() => void runPrimaryLookup(query)}
                 onCancelSearch={() => {
@@ -629,6 +602,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
               checkoutReason={checkoutReady.reason}
               canCheckout={gate.canCheckout}
               checkoutBlockedReason={gate.detail}
+              blockedActionLabel={gate.previewOnly ? "Solo vista" : undefined}
               onIncrement={(productId) => setCart((current) => incrementCartLine(current, productId).lines)}
               onDecrement={(productId) => setCart((current) => decrementCartLine(current, productId).lines)}
               onRemove={(productId) => setCart((current) => removeCartLine(current, productId).lines)}
@@ -642,19 +616,8 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         </PosTerminalBody>
       </PosTerminalSurface>
 
-      <PosCobroSurface
-        open={paymentOpen}
-        lines={cart}
-        state={checkoutState}
-        error={checkoutError}
-        paymentTenders={paymentTenders}
-        clientRequestId={clientRequestId}
-        onPaymentTenderChange={updatePaymentTender}
-        onClose={() => setPaymentOpen(false)}
-        onConfirm={(draftPaymentTenders) => void confirmSale(draftPaymentTenders)}
-      />
-
-      <PosSaleSuccess sale={lastReceipt} onNewSale={clearTicket} />
     </PrismaTabletShellUnified>
   );
 }
+
+export const PosScreen = SellingWorkspace;

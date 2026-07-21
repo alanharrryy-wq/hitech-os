@@ -1,13 +1,15 @@
 import type { TabletRuntimeSnapshot, TabletRuntimeTone } from "@/lib/tablet-runtime-snapshot/shell-contract";
 
-export type OperationalGateCode = "OPEN_CASH_SESSION" | "SHIFT_NOT_OPEN" | "LICENSE_BLOCKED";
+export type OperationalGateCode = "OPEN_CASH_SESSION" | "SHIFT_NOT_OPEN" | "LICENSE_BLOCKED" | "POS_PREVIEW";
 
 export type CanSellDecision = {
   canSell: boolean;
   canOperatePos: boolean;
+  canBrowseCatalog: boolean;
   canShowSellNavigation: boolean;
   canAddProduct: boolean;
   canCheckout: boolean;
+  previewOnly: boolean;
   code: OperationalGateCode;
   tone: TabletRuntimeTone;
   title: string;
@@ -21,9 +23,11 @@ function buildDecision(open: boolean): CanSellDecision {
     return {
       canSell: true,
       canOperatePos: true,
+      canBrowseCatalog: true,
       canShowSellNavigation: true,
       canAddProduct: true,
       canCheckout: true,
+      previewOnly: false,
       code: "OPEN_CASH_SESSION",
       tone: "ok",
       title: "Caja abierta",
@@ -36,15 +40,35 @@ function buildDecision(open: boolean): CanSellDecision {
   return {
     canSell: false,
     canOperatePos: false,
+    canBrowseCatalog: false,
     canShowSellNavigation: false,
     canAddProduct: false,
     canCheckout: false,
+    previewOnly: false,
     code: "SHIFT_NOT_OPEN",
     tone: "warn",
     title: "Caja cerrada",
     detail: "Abre turno/caja antes de vender. PRISMA Tablet no abre turnos automáticamente para completar ventas.",
     actionHref: "/shift",
     actionLabel: "Abrir turno"
+  };
+}
+
+function buildPreviewDecision(): CanSellDecision {
+  return {
+    canSell: false,
+    canOperatePos: true,
+    canBrowseCatalog: false,
+    canShowSellNavigation: true,
+    canAddProduct: false,
+    canCheckout: false,
+    previewOnly: true,
+    code: "POS_PREVIEW",
+    tone: "neutral",
+    title: "Vista POS de consulta",
+    detail: "Esta Tablet no tiene una terminal local registrada. Puedes recorrer la interfaz, pero el catálogo, carrito y cobro permanecen bloqueados y no se registra ninguna venta.",
+    actionHref: "/setup",
+    actionLabel: "Configurar terminal"
   };
 }
 
@@ -55,9 +79,11 @@ function buildLicenseBlockedDecision(snapshot: TabletRuntimeSnapshot): CanSellDe
   return {
     canSell: false,
     canOperatePos: false,
+    canBrowseCatalog: false,
     canShowSellNavigation: false,
     canAddProduct: false,
     canCheckout: false,
+    previewOnly: false,
     code: "LICENSE_BLOCKED",
     tone: license.tone === "danger" ? "danger" : "warn",
     title: license.label || "Licencia requiere atención",
@@ -74,6 +100,7 @@ export function hasOpenShiftOrCashSession(snapshot: Pick<TabletRuntimeSnapshot, 
 }
 
 export function decideCanSellFromRuntimeSnapshot(snapshot: TabletRuntimeSnapshot): CanSellDecision {
+  if (!snapshot.terminalRegistered) return buildPreviewDecision();
   return buildLicenseBlockedDecision(snapshot) ?? buildDecision(hasOpenShiftOrCashSession(snapshot));
 }
 

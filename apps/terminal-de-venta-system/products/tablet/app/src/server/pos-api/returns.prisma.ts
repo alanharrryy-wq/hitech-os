@@ -51,11 +51,13 @@ function sumAmount(lines: Array<{ amountCents: number }>) {
   return lines.reduce((sum, line) => sum + line.amountCents, 0);
 }
 
+// PRISMA_SYNC_DEFINITIVE_1607_RETURN_ENVELOPE
 function envelopeBase(input: any, options: { eventId: string; topic: string; terminalId: string; actorId: string; aggregateId: string; correlationId: string; occurredAt: Date; source: string; payload: Record<string, unknown>; }) {
+  const topic = options.topic;
   return {
     eventId: options.eventId,
-    eventType: options.topic,
-    topic: options.topic,
+    eventType: topic,
+    topic,
     idempotencyKey: `${options.topic}:${input.businessId}:${options.terminalId}:${options.aggregateId}:${options.eventId}`,
     businessId: input.businessId,
     terminalId: options.terminalId,

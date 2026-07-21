@@ -1,4 +1,4 @@
-import { CatalogScreen } from "@components/catalog/catalog-screen";
+import { ProductCatalogWorkspace } from "@components/catalog/catalog-screen";
 
 export const dynamic = "force-dynamic";
 
@@ -8,5 +8,5 @@ export const metadata = {
 };
 
 export default function CatalogPage() {
-  return <CatalogScreen />;
+  return <ProductCatalogWorkspace />;
 }

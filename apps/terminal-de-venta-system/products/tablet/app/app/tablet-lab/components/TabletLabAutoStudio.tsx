@@ -138,7 +138,7 @@ type Tabctl7RecipeSpec = {
   changeTypes: string[];
   effectGroup: string;
   tone?: PresetTone;
-  backgroundMode?: string;
+  backgroundMode?: string | null;
   scopeHint: string;
   risk: Tabctl7RecipeRisk;
   tags: string[];

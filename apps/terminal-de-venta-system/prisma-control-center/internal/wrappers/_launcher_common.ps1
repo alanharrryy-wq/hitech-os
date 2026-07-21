@@ -781,12 +781,25 @@ function Show-ModuleMenu {
   }
   Write-Host " 0) Cancelar" -ForegroundColor DarkGray
   Write-Host ""
-  $choice = Read-Host "Elige modulo"
-  if ($choice -eq "0") { return $null }
-  if ($choice -notmatch '^\d+$') { throw "Opcion invalida: $choice" }
-  $index = [int]$choice - 1
-  if ($index -lt 0 -or $index -ge $services.Count) { throw "Opcion fuera de rango: $choice" }
-  return $services[$index]
+
+  while ($true) {
+    $choice = ([string](Read-Host "Elige modulo")).Trim()
+    if ($choice -eq "0") { return $null }
+
+    $selectedNumber = 0
+    if (-not [int]::TryParse($choice, [ref]$selectedNumber)) {
+      Write-Host "[PRISMA] Opcion invalida. Escribe un numero entre 0 y $($services.Count)." -ForegroundColor Yellow
+      continue
+    }
+
+    $index = $selectedNumber - 1
+    if ($index -lt 0 -or $index -ge $services.Count) {
+      Write-Host "[PRISMA] Opcion fuera de rango. Escribe un numero entre 0 y $($services.Count)." -ForegroundColor Yellow
+      continue
+    }
+
+    return $services[$index]
+  }
 }
 
 function Start-ModuleCloudflare {

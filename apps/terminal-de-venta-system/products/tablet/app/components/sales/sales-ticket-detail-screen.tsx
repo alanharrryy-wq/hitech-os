@@ -35,6 +35,7 @@ type TicketDetail = {
   terminalId: string;
   terminalName?: string | null;
   cashSessionId?: string | null;
+  customerId?: string | null;
   cashSession?: {
     id: string;
     storeId: string;
@@ -372,6 +373,7 @@ export function SalesTicketDetailScreen({
       subtitle="Detalle operativo del ticket cerrado."
       status={<TabletShellStatusPill tone="ok">Ticket cerrado</TabletShellStatusPill>}
       runtimeSnapshot={runtimeSnapshot}
+      showRouteHeader={false}
     >
       <main className={styles.salesPage}
         data-surface="tablet"
@@ -536,6 +538,7 @@ export function SalesTicketDetailScreen({
               <p>Negocio: {state.ticket.businessName ?? "Negocio local"}</p>
               {state.ticket.storeId || state.ticket.storeName ? <p>Tienda: {state.ticket.storeName ?? "Tienda local"}</p> : null}
               <p>Terminal: {state.ticket.terminalName ?? "Terminal local"}</p>
+              {state.ticket.customerId ? <p>Cliente: asociado al ticket</p> : <p>Cliente: venta sin cliente</p>}
               {state.ticket.cashSessionId ? <p>Turno/caja: {state.ticket.cashSession?.cashier ? `Caja de ${state.ticket.cashSession.cashier}` : "Turno de venta"}</p> : null}
               <p>Pago: {paymentMethodLabel(state.ticket.paymentMethod)} · {formatMoney(state.ticket.totalCents)}</p>
               {typeof state.ticket.cashReceivedCents === "number" ? <p>Recibido: {formatMoney(state.ticket.cashReceivedCents)}</p> : null}

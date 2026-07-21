@@ -1,471 +1,24 @@
 {
   "schema_version": "1.0.0",
   "tool": "PRISMA Authority Mesh",
-  "generated_at": "2026-06-24T14:00:50-06:00",
+  "generated_at": "2026-07-17T09:41:40-06:00",
   "repo": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-  "task": "Corregir PRISMA Tablet Visual Surface V2 para que todas las rutas visibles Tablet rendericen surfaces V2 reales, no sólo root tokens, eliminando documentedLegacySurface como estado terminado, sin Playwright, sin tocar PC/Mobile visualmente, sin regresiones funcionales ni sync.",
+  "task": "PC96FLOW functional data completion in PC and Tablet with shared kernel, local database schema and additive migrations, durable sync, audit, idempotency, ACK/checkpoint/conflict and quality verification. Resolve canonical owner chains for command center, sales, cash, catalog, pricing, inventory, purchasing, customers, security, organization devices, sync and licensing readiness. Complete the corresponding Tablet POS, checkout, catalog, inventory, sales, returns, shift, offline sync, settings and setup routes. Preserve unrelated current Tablet stylesheet changes.",
   "full_mode": false,
   "status": "PASS",
   "apps_detected": [
-    "backgrounds",
-    "chart-lab",
-    "control-center",
     "database-sync",
-    "mobile",
     "pc",
     "productization",
     "quality",
     "shared-kernel",
-    "shared-ui",
-    "tablet",
-    "web"
+    "tablet"
   ],
   "change_types_detected": [
-    "data_sync",
-    "visual"
+    "data_sync"
   ],
-  "authority_file_count": 979,
+  "authority_file_count": 509,
   "readset": [
-    {
-      "path": "config/prisma-visual-os/ai-doctor-policy-00y.json",
-      "bytes": 799,
-      "sha256": "76c2ab9259c92e56078a764c6f89399193771ba01dd059858b14cf2d852213cc",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/doctor-policy-00x.json",
-      "bytes": 483,
-      "sha256": "7054ea5471d65c0fd1d950e192a4cc4b024c51545c6e6fefd18e00175a274658",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/final-stabilization-00zf.json",
-      "bytes": 441,
-      "sha256": "c9b78d69fa7e4c09b61340ff39c88c0739cb32cfc1a9eb01b5b99ce21c6a7c59",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/guards/prisma-visual-guardrails-00s.json",
-      "bytes": 868,
-      "sha256": "6ea491fa07d8735c88a52851bccdbb3d4704f43adebb2e72a278f8061efd7480",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/presets/prisma-light-operational-pos.recipe.00p.json",
-      "bytes": 175,
-      "sha256": "476e3b01c8422631fc2b76c94c2913e5d1e03f1256bedc3bfad72f497f6bbfa9",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/presets/prisma-light-operational-pos.semantic-map.00p.json",
-      "bytes": 406,
-      "sha256": "dd5688cdcc804a07a5c8640ec38f3a8edf83d63f39394a8e6f6f0bc0f54603e4",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/presets/prisma-light-operational-pos.tokens.00p.json",
-      "bytes": 894,
-      "sha256": "efe02dc9a62856bac1ef48df8d201fcdb9499ca4f869f36dcdaba1e8be9cccad",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/prisma-visual-controls.active.json",
-      "bytes": 1612,
-      "sha256": "e4dae7165c1d24d5d714837b3be3ca970455e836d848988bbe203f4e68f26132",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/recipes/BLACK_PREMIUM_BLADE_v01.json",
-      "bytes": 538,
-      "sha256": "48058a6334974b601cbf5fe147b876287d7b600dd9901dc2e1fb1e07bcc5339e",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/recipes/CRYSTAL_POS_ANGEL_LIVE_v01.json",
-      "bytes": 525,
-      "sha256": "2cf142ca1f04480969137b2473675bb1aaf318ef5c286ce11c639d5f447b3d74",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/tree-reorg-00za.json",
-      "bytes": 869,
-      "sha256": "9785bcf6fb3c09a9a741828f05e32c32b36630911068f25cfa213c3c54df9454",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/tree-reorg-00zc.json",
-      "bytes": 586,
-      "sha256": "7e782ce0b8b816096fa10d963a45853ef901ef12e3ca87468e46b34f5b16b714",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-os/tree-reorg-close-00ze.json",
-      "bytes": 722,
-      "sha256": "99d46a19c7f6463e8fddd98f3a3c27e36a42bd73883a55077440ab8979a101db",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/components.registry.json",
-      "bytes": 55477,
-      "sha256": "6c2a3f8507f07e66765a6f6616a011e0c181f061320861635c71c457ba2db3ae",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/future-components.registry.json",
-      "bytes": 3994,
-      "sha256": "03498c088ae0319d211bb5a1bc9682865c0ff5404a2fa4922cc2153d002c9eff",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/migration-candidates.registry.json",
-      "bytes": 159193,
-      "sha256": "ae563b0a1403f4812efb214b4ddadee292e93b104327cfa337575cd24e5eca98",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/no-touch.registry.json",
-      "bytes": 633,
-      "sha256": "b034226206ecace2c790d429e791cab8babb2da1a691a21a3e13a95cc3a30a10",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/recipes.registry.json",
-      "bytes": 2298,
-      "sha256": "73bbda921cf648ded189e8f2fe9a538eae67cfefaaab1b7391702a36a8800313",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/route-bindings.registry.json",
-      "bytes": 34146,
-      "sha256": "0802d32c429e613ced7095856b680c28a61a05bd96eec390274c3c8b6acdcedd",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/component.schema.json",
-      "bytes": 1031,
-      "sha256": "585433a9bc864ce51a7e121c496a0957b71c4430240b0411638402b6c7073947",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/migration-candidate.schema.json",
-      "bytes": 201,
-      "sha256": "1f142b9a908aea54761cf5abe8c70637ba3be1278127a866a1e2611ef9f268cb",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/recipe.schema.json",
-      "bytes": 194,
-      "sha256": "b69a7a2d58685fb93617e5ee78c8ff32aacf2c60e68a548799f1125ce1a97df1",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/result-fail.schema.json",
-      "bytes": 1515,
-      "sha256": "b256cd8602b5617281dbffba00cd01bdf3bc1f4fea2e724e137d928ff8f91566",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/route-binding.schema.json",
-      "bytes": 190,
-      "sha256": "df080b09bc6943de923271025519de9e3a46a4b0c656440ab2686f03c2439d59",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/surface-adapter.schema.json",
-      "bytes": 771,
-      "sha256": "e19398f86744343aa7b1ba90c24c3549bff3c8eff86788af3d36427f2e94c30c",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/token.schema.json",
-      "bytes": 194,
-      "sha256": "c02968c07fbda6d4c5b4d10b630d21068965771130cf5c5941f8d60e91044172",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/schemas/visual-qa.schema.json",
-      "bytes": 195,
-      "sha256": "175dfb12193b46af861e43e8917fde706ed7fd18c032113ddeb40788f8919385",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/surface-adapters.registry.json",
-      "bytes": 10838,
-      "sha256": "dde340229fe0d920baac7075371b4f61472d294c02e606e0bb8fc8e65c5680b3",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/tokens.registry.json",
-      "bytes": 2092,
-      "sha256": "4764669f5d610ebe3cc8f27c9c4a7276b9b381a27a7032a73ae657d593b5fc89",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/viscurate-authority-map.json",
-      "bytes": 7451,
-      "sha256": "441eacd143ee7c2268e5a2302a5789d173fa2c03b73cc8e0be042a0c62d2fb45",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/viscurate-layer-budget.json",
-      "bytes": 14418,
-      "sha256": "58fee9ad548ece7bf2f1d33d4d9c285ed6f043c5f17663fe07b3e9fe709d6a32",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual-system/viscurate-recipe-map.json",
-      "bytes": 2511,
-      "sha256": "0471c97c2e1bc3283406917e14093b465adf16cf35efe0f5c7efcc545c141b82",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/adoption-scorecard.json",
-      "bytes": 1275,
-      "sha256": "0cd4503788decfbca177ad7aa92f55a78105a191d050aa2be5669e23db2f1b5b",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/archive-map.json",
-      "bytes": 18307,
-      "sha256": "4020857fc4ef49dd0cdbb3973f5730b9c2f96d222e7453a1e0858d565ab061ca",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-capability-map.json",
-      "bytes": 12825,
-      "sha256": "8968f2d7481c356d8851efaf9dedfe21999028dcd6aa8b0a3fe7117afdd32d24",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-engine-map.json",
-      "bytes": 4148,
-      "sha256": "cceb37c6417834e16243228ec4977cadae5487f523616d8dbedf186ac81c66d5",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-governance-map.json",
-      "bytes": 2259,
-      "sha256": "c809c479cb0ffe6c80e0e85e3cc037768a57b012ae5e4690c51778a577e8d7a9",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-map.json",
-      "bytes": 23085,
-      "sha256": "cc2facad894c0d4133aa7533f645e5c71535f862ff108a56f0c493cfcfd1f35b",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-runtime-map.json",
-      "bytes": 1426,
-      "sha256": "8636381b03d99b9bfda61d3f2fa39417ad13fc5219f4468c0f82d36c18c91f2f",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/atlas-source-map.json",
-      "bytes": 26766,
-      "sha256": "b3bc57b9481002b1bcd08c13322f92d9331aaa1418194d21e62aa94ab22572de",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/authority-map.json",
-      "bytes": 7451,
-      "sha256": "441eacd143ee7c2268e5a2302a5789d173fa2c03b73cc8e0be042a0c62d2fb45",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/chart-lab-usage-map.json",
-      "bytes": 2065,
-      "sha256": "990c5032112bffa04432f46d447327ec830d328dc7ce65b2c7634479c45e3cec",
-      "extension": ".json",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "config/prisma-visual/cleanup-map.json",
-      "bytes": 5612,
-      "sha256": "746beab310745d18074141c415c58aeb305b9b94a428550fcc17b4c26002f4e6",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/component-catalog.json",
-      "bytes": 114780,
-      "sha256": "2c26dec86db0185756e07edca52cf75d00d911a86cfe5ad2f6750575283475d5",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/component-variants.json",
-      "bytes": 148784,
-      "sha256": "ceff22dbdb5505b29b2a977c7ed8bbe7262a5805238d69d9fe214b2da78ad32c",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/context-motors-map.json",
-      "bytes": 20429,
-      "sha256": "f704e7d298637d672563ebce9ee1317b0e3a0dcc16b9789bb426ab73d44c349e",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/context-motors.map.json",
-      "bytes": 20423,
-      "sha256": "7615f4ca1c64c20e4ed68ba1940591d2e7edd3a7e02f6089cb7e02e719a6a497",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/context-motors.usage.json",
-      "bytes": 3340,
-      "sha256": "f5f5bb3b97c2eb6fe11f94f1b02256772b6c3b08953e55ab0a9cf40c82b4348a",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/context-packaging-policy.json",
-      "bytes": 404,
-      "sha256": "51c77a2a803f8c5613bd45f389d2b60885968a94c415d5209014d48f7d692e90",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/domain-contracts.json",
-      "bytes": 14063,
-      "sha256": "e92f770508dc6b99cb65d984a49e6ebd4c682f923f40feb33303866cbba06047",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/generator-contracts.json",
-      "bytes": 1044,
-      "sha256": "4a820a16f285d30169cca08147786d889d869ffe2db288625d7bd1221620c569",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/layer-budget.json",
-      "bytes": 54417,
-      "sha256": "ac36bbfc33cc51fb3fd7e8a265e9457ddc425914c2b6f43fc448ec9fe634e71a",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/library-map.json",
-      "bytes": 4472,
-      "sha256": "12dbfa335d3bb5d14d321295d12943eea4c7fa2870afed8576bdda0b8446f882",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/migration-tiers.json",
-      "bytes": 32960,
-      "sha256": "7770fbd3fab3ffee2f1f43e20e3cfc8d82a79d8c1d580740010e5c0351e8d766",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/mobile-usage-map.json",
-      "bytes": 5254,
-      "sha256": "c5562d41a384a028064a5ba872447136ef4aaa56a6c45fa70e7ebb30a6f9a356",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
     {
       "path": "config/prisma-visual/pc-usage-map.json",
       "bytes": 61606,
@@ -475,52 +28,12 @@
       "reason": "pc_authority"
     },
     {
-      "path": "config/prisma-visual/recipe-map.json",
-      "bytes": 42183,
-      "sha256": "3c73bc753c8e5a1fb380906f1a20e2301313731cfa81de1f41c3549dffaea0e9",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/screen-blueprints.json",
-      "bytes": 10056,
-      "sha256": "894ac951071b8a36393d5de0f7536c03c65ddd3461b4d58af0e1a1e9eeca2928",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "config/prisma-visual/surface-adapters.json",
-      "bytes": 22105,
-      "sha256": "c6781dc92f9a13a97fa2aa1522059ddd64dedd7486df111af0ce0a4be18eb697",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "config/prisma-visual/tablet-premium-implementation-1006.json",
-      "bytes": 1187,
-      "sha256": "356972c3c1e93f4f217cbd5af1ff960e8c1ed04c68124d902fefd1c7bc702009",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
       "path": "config/prisma-visual/tablet-usage-map.json",
       "bytes": 35151,
       "sha256": "e6610afe671190b83aef53875427fd96b978cec3e9e13926cbaff59d49ad6815",
       "extension": ".json",
       "source_id": "app:tablet",
       "reason": "tablet_authority"
-    },
-    {
-      "path": "config/prisma-visual/visual-debt-map.json",
-      "bytes": 43950,
-      "sha256": "07358ee07990a53d447ce5324e1be164458b04e25fd6754dc97ba0ac282c1c52",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
     },
     {
       "path": "docs/PRISMA_CURRENT_STATE.json",
@@ -724,8 +237,8 @@
     },
     {
       "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00C_VERTICAL_DATA_MODELS.md",
-      "bytes": 46765,
-      "sha256": "e0a6baf4d77f48b15fadd0b035a0d23a48f8008eb073d993ed7bb9cdec5c1760",
+      "bytes": 46766,
+      "sha256": "0b1ed12f2afdc07dd5f01a16596f8410211345219f5c93681548b811de5902f4",
       "extension": ".md",
       "source_id": "app:shared-kernel",
       "reason": "shared-kernel_authority"
@@ -907,633 +420,9 @@
       "reason": "shared-kernel_authority"
     },
     {
-      "path": "docs/design/ACCESSIBILITY_AND_CONTRAST.md",
-      "bytes": 504,
-      "sha256": "fd09f4d29e2ff119c5e8276402a46f76d52c221a22898ada3489fd6029a489bf",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PC_BACKOFFICE_UI_GUIDE.md",
-      "bytes": 445,
-      "sha256": "61454fd30bfbfc46d3ddfb479804e67c8cb9190f4ffb671cad92e83dbbb45cd0",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_00T_RELEASE_GATE_CLEANUP_00U.md",
-      "bytes": 2059,
-      "sha256": "c051f9bb6fc07fa1e9398a92f2fc4e51ca414230c1fb34c4c13880e69131e750",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E.md",
-      "bytes": 5482,
-      "sha256": "400a5310d3485b431acdd81d2fd3827279e9f9082cab675cf69cdcdf5cdd1517",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D.md",
-      "bytes": 1426,
-      "sha256": "901a46d4cd3f10332d6482557afc8a05e665e921252d963529a8e6182e0acaf6",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_ACCEPTANCE_00P.md",
-      "bytes": 120,
-      "sha256": "e4681d69b9751f8a799edcbcc63403bb3866d71bef44478227b34bed07b917f3",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_MIGRATION_00P.md",
-      "bytes": 96,
-      "sha256": "5ce51ddd5024ddfc5c75255c0acfa606b6b4dbb7a1b8dd401f591a26e836ab54",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P.md",
-      "bytes": 132,
-      "sha256": "69eb94092309574f04c29d1d38d0f1cb6f1d0f68a9d6f292e96ab46751ab7664",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_POS_VISUAL_01_TOP_LAYERS_PACKSHOTS.md",
-      "bytes": 1292,
-      "sha256": "dcd6fa13d1718226680d33f3f273652e785969d220040b0f358234b76a3e046e",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_REFERENCE_VISUAL_SCOPE_01H.json",
-      "bytes": 1874,
-      "sha256": "ebd9903ab649f47cc0f0622a48d1bc85bd1897d14347b18e3ba8333f8e9ecd7a",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_REFERENCE_VISUAL_TARGET_01H.md",
-      "bytes": 1632,
-      "sha256": "07bfa18e36c6014eac3fa1b63cd1711eba1b3e3c28a4cfbe32a46626941f3517",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_SHOW_POS_AI_DOCTOR_OFFLINE_00Y.md",
-      "bytes": 2044,
-      "sha256": "ed831130c5c43271ba86d21830299025d6cdcc92f053e6a55f15ce1bb53c0066",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_SHOW_POS_DOCTOR_00U.md",
-      "bytes": 1913,
-      "sha256": "3ba34c0867101ec9b9a810f8d2137c3921530bdafe4402ff0dd45f5d8e82c128",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_SHOW_POS_DOCTOR_SMART_00X.md",
-      "bytes": 1357,
-      "sha256": "8b0cfb0d0a24870cd828a97af73b315e75ad262fb2d4cce8ef52b98f504dc35f",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00A.md",
-      "bytes": 10291,
-      "sha256": "07ec43f703f82e3acc10200d67adce2fce16a2980507035c5772770e93dbd901",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00B_PRODUCT_ROOT_AUTONOMY_PATCH.md",
-      "bytes": 2718,
-      "sha256": "58a7337ca12c68f5f35266f3eeff4982eaf9d70143cd85d6b7a59074c417aae7",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
-      "bytes": 8121,
-      "sha256": "8a8685bc063e8c3465bb3738328ce6614affcb223e4e718527d810cc1fca1ac6",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00C_REBASE.md",
-      "bytes": 663,
-      "sha256": "f140788bdf9d71dda06a297f3784979ce83a2f978f8fd5555709479f0808c8d2",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_CHANGE_MANIFEST_TEMPLATE_00B.json",
-      "bytes": 1698,
-      "sha256": "13443278fefd934c55bd4647d94ef33dbc4fdb5464e144cb2c8963838097a199",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_CHANGE_MANIFEST_TEMPLATE_00C.json",
-      "bytes": 1674,
-      "sha256": "fc01e8fd09a4391c59dd50992ec20371ea922e269407f24dbba4bb0e39ae140c",
-      "extension": ".json",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_CONTROLS_RUNTIME_00E.md",
-      "bytes": 758,
-      "sha256": "916a82beb581dbb36ac0c1c371c17ef9ca4df387ada074c520180e3ea746ddac",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_IMPLEMENTATION_BRIEF.md",
-      "bytes": 553,
-      "sha256": "44235b0548dd16d8ca50c65f8d3591a363ca35fc450d2db4281501d2a425ab89",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_00D_00E_CONTRACT.md",
-      "bytes": 2305,
-      "sha256": "5ba7391ad152307221c0e807326e9071f5793a96e08a148159268f1433f3c068",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_CONTROL_PLANE_00A.md",
-      "bytes": 4916,
-      "sha256": "fb977f180c35744b2dcda772b20e3eb9e81459c9f017f7a3f13d26817448d597",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_CROSS_SURFACE_BINDINGS_00J_00K.md",
-      "bytes": 1448,
-      "sha256": "e15c1ad5872d500d40a99383375fb068bf56421f98a920377154b96b43deb3fc",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_FINAL_STABILIZATION_00ZF.md",
-      "bytes": 412,
-      "sha256": "4e8217d7212c38d2f91bff7a332266b144e83b502c138d0a534bd23ca12d056c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_LAYERS_00D.md",
-      "bytes": 2315,
-      "sha256": "38b5a6b83b99b2a5439a9e80a78e0c71a172247ddbbd067639e8f60664fd0dce",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C.md",
-      "bytes": 2152,
-      "sha256": "86b3003f2465c3a8650a98e67df9dba772e876b096f95a4ae89d2ce9b073efd0",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_POS_LIVE_BINDING_00T.md",
-      "bytes": 1643,
-      "sha256": "3e82a5c4ce9d543ed6934c465d1d7694f0c1ef164477dd8c59e9bdb98a4dbcc9",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B.md",
-      "bytes": 1330,
-      "sha256": "ef24396e9d974b0bca94d8e1da46d8975a01f7d851d990676c88f6201829cb9f",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_QA_RELEASE_GATE_00L_00M_00N.md",
-      "bytes": 1974,
-      "sha256": "e4edfa4d30700aeb967dcecb7dff280ca47892c038ea1451525d8842ca4cb7ef",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_README_STATUS_00W.md",
-      "bytes": 1155,
-      "sha256": "25325477b506c2cdb5df8d47716d7a166167bfdae682de701305bbc9cb80d2ad",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_OS_STUDIO_PRO_QA_00R_00S.md",
-      "bytes": 1293,
-      "sha256": "824138fe7ca302262118c8a154396e147eaf5139f208b878e8973a5dd5fd382c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/PRISMA_VISUAL_SYSTEM.md",
-      "bytes": 506,
-      "sha256": "ec71c07ccf1c26e734f1ccb7d37ab5cee5ddffd168e49cd0027e8b9e1acf8f0d",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/RESPONSIVE_BREAKPOINTS.md",
-      "bytes": 462,
-      "sha256": "f610ff6233f74cd0d89cc167be1d7cf527561ebc69acb4f03eda8d891e2c072c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/TABLET_TOUCH_UI_GUIDE.md",
-      "bytes": 598,
-      "sha256": "cecfe3158b6df226ee008c0dc1d88033d21fb228586e52e0b138b2d82f59b56c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/UI_COMPONENT_INVENTORY.md",
-      "bytes": 745,
-      "sha256": "f97a330ea6adcba0e3a44156fec10dce857afba634fe25c1e9a2c08482078ea5",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/UI_STATES_AND_FEEDBACK.md",
-      "bytes": 1254,
-      "sha256": "6c94b5a82822c5c56d60fa15f1153e9aef941dfd70ded283e3a514bd6d2ff1a2",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_COMPONENT_CATALOG.md",
-      "bytes": 529,
-      "sha256": "160d2a814d8597636644866e36486658ed0f6a3a03bb4fd9940e81c6dae6e61b",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_DONE_DEFINITION.md",
-      "bytes": 598,
-      "sha256": "36b34e55306a51c751f8c2b0c7e0d52ec45255c9ae0cd1981a46db21fcb61c7e",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_INJECTION_TEMPLATES.md",
-      "bytes": 2351,
-      "sha256": "f8d7bdeab7713eaed6ed70dae2cf6a5c72c53873c81065d5c6840820c985f6cf",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_MIGRATION_PLAYBOOK.md",
-      "bytes": 2218,
-      "sha256": "26f906186291403bbd6072b9bc2d2b60053607723f2df3ae6f6d602db340655a",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_SURFACE_ADAPTERS.md",
-      "bytes": 128,
-      "sha256": "6de74d82222374cc64473c7ee123eecf3e41efbea1ff230caa522b2cc4dfdd2c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_TOKENS_AND_RECIPES.md",
-      "bytes": 174,
-      "sha256": "b0cd22fcb1f771574c9e6590f95806142a0cca5e10e06e4f6c0d43581c1c0744",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_VISUAL_QA_MATRIX.md",
-      "bytes": 352,
-      "sha256": "0b49af32e39de265e4c15381286f58726ee1efec344b15c2ba176e93d0702c86",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/PRISMA_VISUAL_SYSTEM_MASTER.md",
-      "bytes": 1043,
-      "sha256": "e4c11d5672befaf17072ab20af430fefeb34ad412fff649377a2b0000d8d3519",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual-system/VISCURATE.md",
-      "bytes": 156,
-      "sha256": "e223fca8688a922c9e6d7c17458605e8082ddaf4c0f8f266049d09f6ecb46d6a",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/ADOPTION_SCORECARD.md",
-      "bytes": 535,
-      "sha256": "35abf63d760078eb3f4793b9f4e98ff98eac47ee934842a6ac03dc2126287f50",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/ATLAS_AND_MOTORS_REPORT.md",
-      "bytes": 2141,
-      "sha256": "cdc395c1ac3a016b698d22e29efa3fecb71fb3d6707a3415cb5f0c1133778977",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/ATLAS_AUDIT.md",
-      "bytes": 4591,
-      "sha256": "072c7d869524ec352b7771e710d31958ccb5337c79f3a180412582537301b94e",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/CONTEXT_MOTORS_AUDIT.md",
-      "bytes": 1760,
-      "sha256": "1697628b0da2c1e0a56d32262382e3a6a19b93aa66fc0791d59ec428d083709c",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/CONTINUATION.md",
-      "bytes": 269,
-      "sha256": "7e85955102b4f99d0dedc7fc7276e8ab7f2b0674b45ae80bfee3339bb589e30a",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/FINAL_VERDICT.md",
-      "bytes": 1291,
-      "sha256": "3b2ce16f71388732762bf76dd1ebc6b0b6b335372a00d8d732335f9a1fcf954f",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/GENERATOR_REPORT.md",
-      "bytes": 577,
-      "sha256": "4d75d1d6dc13aaa2dfe5240a481addd76c5dc9bc6c7eb67258769c55a01817f6",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/GIT_SCOPE_REPORT.md",
-      "bytes": 344,
-      "sha256": "725847a91d769e511de448646de653c9a42b9a4a56f4374a70abee1d5e0aae99",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/MIGRATION_PLAN.md",
-      "bytes": 1678,
-      "sha256": "e812f5c5a05bcb4ccba95716066e92847601886397b8643a5bbb83861d54d593",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/README.md",
-      "bytes": 963,
-      "sha256": "2ff0deaaca5a3da4b534643767d399857d8df2a5d3c312e236c326b5da63efa4",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/RISKS_PENDING.md",
-      "bytes": 302,
-      "sha256": "8c775a8c08186e1d443f52422eeca24dfacd553d8eb4b6ad2145f7d70e560b61",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/VALIDATION_MATRIX.md",
-      "bytes": 1972,
-      "sha256": "59daf05767048b6e0cfe712900e4df413ff5738220d1c33e3a34e786bf949df6",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/VISUAL_CATALOG_V2_REPORT.md",
-      "bytes": 1867,
-      "sha256": "b0343bd094526d899bdb3e2e4c7dee8fc7d1a791d991f882888703ca20941c1b",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/VISUAL_DEBT_REPORT.md",
-      "bytes": 10832,
-      "sha256": "cd4f5a644c5a613ad556a474bc0f155ab422f51794c6ed10677f8c95534b6388",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/VISUAL_EXISTING_SYSTEM_AUDIT.md",
-      "bytes": 1019,
-      "sha256": "761dd2e8d70c672ea5b29c84b77fd86aacf23a023353b8a293b1b95a4e440bbb",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/archive.md",
-      "bytes": 11965,
-      "sha256": "2e2e4f8040dc6c8bc07ec648bcd23a19f9220fc01d7949d06a624a3effbef204",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/atlas-integration.md",
-      "bytes": 465,
-      "sha256": "59e7e7c3c4bde388787c19ec8ba553285cfa9d29b40faa0a0479a7ddc88f9d1d",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/authority.md",
-      "bytes": 1858,
-      "sha256": "887f325e941f50eef472f267336ba25f515e3324161aa52ca6482bb65dd2cfb3",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/catalog.md",
-      "bytes": 551,
-      "sha256": "76a3fbb84e4bd341f3124315d60335c673edacc85b79f5e13c848324d5bd8499",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/chart-lab.md",
-      "bytes": 94,
-      "sha256": "dd600f0a2b093a75d9f13bce1b8d3f2e6877b50e511207b87a60420906c94ba1",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/cleanup.md",
-      "bytes": 2529,
-      "sha256": "593d5da490c1d8d6093c4579f020423d41d80bf55afd8134de2ebbcbd097fb3f",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/layer-map.md",
-      "bytes": 130,
-      "sha256": "b71d35c820d885d0da6323e6fb8803ee421e9c0d8e3b78b2b709a4e49c5494f3",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/library.md",
-      "bytes": 951,
-      "sha256": "3726184ef627186e751266754c0f5c346b5066570cbcb253c6b4281f64ae9eb3",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/migration.md",
-      "bytes": 138,
-      "sha256": "537fbccf532af1624497c7c6b2b8bb58907ec940440499d6d7d5d8bf1a72bdcb",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/mobile.md",
-      "bytes": 95,
-      "sha256": "46fd1e818f7d010a1d26021da79221178d22c0942775672780c976374f857994",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/next.md",
-      "bytes": 126,
-      "sha256": "d4d165d2ff138369b9f3223b4aaa55fc9811f5c130fc45a9916d0507fc39c0bc",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/pc.md",
-      "bytes": 88,
-      "sha256": "82c727779f9c66a651a333e72baf25788f11adf1ada1ce1099c067bbf64bdb19",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/recipes.md",
-      "bytes": 321,
-      "sha256": "cf65f03913f1bc333ecc3c830bec35cf3ab5ffcd98e0ba85c5b20973e9d4b3c5",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/surfaces.md",
-      "bytes": 1101,
-      "sha256": "3f0669b65a3f57aacf3eaa62172e552601c9f46bd0a06a8b7448677c145dcfa3",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/tablet-premium-implementation-1006.md",
-      "bytes": 1214,
-      "sha256": "ad38099e10f58c4f4ba1c909f9462ae488988194c499cd97a7d12f83f56c95b7",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
-      "path": "docs/design/prisma-visual/tablet.md",
-      "bytes": 151,
-      "sha256": "de05fff0cd60bd348f1d8598929b45b77e567257271d23c3ae3938a5003db04a",
-      "extension": ".md",
-      "source_id": "type:visual",
-      "reason": "visual_authority"
-    },
-    {
       "path": "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
-      "bytes": 23107,
-      "sha256": "a839c82ebaa446c6cb53a3fe58203b0541999631da74d5058b6b38bed565d8e6",
+      "bytes": 36511,
+      "sha256": "7d49fff70b190cb22644e3c8d06176b8ca749d799f2a1785e6c94f8095e4027f",
       "extension": ".md",
       "source_id": "field_manual",
       "reason": "global_required"
@@ -1559,8 +448,8 @@
       "bytes": 3862,
       "sha256": "5b1135c4476f2e59b103ed1293f8cc9dd6bbac142d4bd7fdbe4b078b586786fe",
       "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
     },
     {
       "path": "docs/prisma/PRISMA_CHART_CREATION_KIT.md",
@@ -1715,6 +604,14 @@
       "reason": "database-sync_authority"
     },
     {
+      "path": "docs/prisma/PRISMA_SYNC_CLOSURE_PATCH_20260518.md",
+      "bytes": 2317,
+      "sha256": "388637d616a1f3a45999016b57059ebc66be8d34cefd383771378e7f2da351c6",
+      "extension": ".md",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
       "path": "docs/prisma/PRISMA_SYNC_STANDARD.md",
       "bytes": 2266,
       "sha256": "887e6293714b0337108d4bb5788c5bced65bbba8c49f8b202aa1addcb62ae123",
@@ -1745,6 +642,14 @@
       "extension": ".md",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
+    },
+    {
+      "path": "docs/productization/E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md",
+      "bytes": 2302,
+      "sha256": "062c0e1e830fba83309bdae92e1d70487bed57c22e62713245f42600e201e5f2",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
     },
     {
       "path": "docs/productization/PRISMA_AI_READY_SUPPORT_CONTRACT.md",
@@ -1828,8 +733,8 @@
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_INSTALLATION_MODES.md",
-      "bytes": 1285,
-      "sha256": "1423ef16826b7b66d2549d6ec3295110ba366f3b2fc153ac6133095c33f8838d",
+      "bytes": 1812,
+      "sha256": "4496656baa2bb48d993e7d0db90946040f734ca74e9f359ed80134038613a0c3",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1844,16 +749,24 @@
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_LAYOUT_CONTRACT.md",
-      "bytes": 2266,
-      "sha256": "9d82f042989311580973428326ac4495b867099dfef3e267b7ea3a6aafb7d008",
+      "bytes": 2712,
+      "sha256": "53836fa496ac2a0068bb43899714a0068a17f821a6858f8f9271e351325dec1f",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
     },
     {
       "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_TOUCHPOINTS.md",
-      "bytes": 1676,
-      "sha256": "aeefc3baec268fc1a5f04ca17cad628a2894525a90ecbdc261bdedfc45401f89",
+      "bytes": 2292,
+      "sha256": "e47a1d644296336cfb0aa85d5319462cdaaa8daa9d34326531843a8fe75e0897",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
+      "path": "docs/productization/PRISMA_CUSTOMER_SETUP_MULTI_DEVICE_CONTRACT.md",
+      "bytes": 3993,
+      "sha256": "2c42435db96a980870706fac822ec18051927bc6889f50b31ce164b69900d20a",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1868,8 +781,8 @@
     },
     {
       "path": "docs/productization/PRISMA_DEVICE_ACTIVATION_CONTRACT_05.md",
-      "bytes": 1608,
-      "sha256": "b4e26ee8258217a7848f68aa02815ff5a1eecb2e83a920e9b80dfd67e8d7e031",
+      "bytes": 2170,
+      "sha256": "43a1f9b6167b3aed96134f5c3bd59c7e211ee6630771ae2724301af0f07f8db6",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1924,16 +837,16 @@
     },
     {
       "path": "docs/productization/PRISMA_LICENSES_README.md",
-      "bytes": 26344,
-      "sha256": "7811fa7a8fa8eec84852263d718d48d87d651afaba7d4502e8fc4e46282dccb1",
+      "bytes": 27305,
+      "sha256": "9f006797c9826b1f58bafb3a33e81440dd2f6b9cda61c23861c1511e089245aa",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
     },
     {
       "path": "docs/productization/PRISMA_LICENSE_ADMIN_PORTAL_CONTRACT_05.md",
-      "bytes": 1589,
-      "sha256": "9d8731ee932c4b187a86b88e6b3a81bd7d8d2727ae33690c2a5153dce99a55e9",
+      "bytes": 2014,
+      "sha256": "eb722bd3835ee7002787c4e214c806e25919984735026837b0e9814e53fc0921",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -1995,6 +908,14 @@
       "reason": "productization_authority"
     },
     {
+      "path": "docs/productization/PRISMA_LICENSE_PRODUCTIZATION_FLOW.md",
+      "bytes": 4830,
+      "sha256": "1cadf6d587e7a42e6f477fe06e3115ace650c9aef5d113f5d8ac9f3587dff49c",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
       "path": "docs/productization/PRISMA_LICENSE_RUNTIME_OPERATOR_FLOW.md",
       "bytes": 6920,
       "sha256": "055a4812165f452631a3983825f3ad269a8efcca7c7f020e7d49afcb91ee9516",
@@ -2004,8 +925,8 @@
     },
     {
       "path": "docs/productization/PRISMA_LICENSE_SERVER_CONTRACT_05.md",
-      "bytes": 2996,
-      "sha256": "d57c315cb4791d5d21a65f106334bd9fc5e1ec09f2e0a342990304fcfad19ae7",
+      "bytes": 3628,
+      "sha256": "a80668aeee92ff36047734ad4804ab4d7623f153ef1223b855ef37eea303ef2a",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -2070,6 +991,14 @@
       "path": "docs/productization/PRISMA_OFFLINE_GRACE_POLICY.md",
       "bytes": 2484,
       "sha256": "edfeb9b1a1007e0764a25f291e697340002a76be66fdff5b584af54014e8faeb",
+      "extension": ".md",
+      "source_id": "app:productization",
+      "reason": "productization_authority"
+    },
+    {
+      "path": "docs/productization/PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md",
+      "bytes": 6158,
+      "sha256": "fde57545fd83d4b6750d5c51232c7247eec3ba1274c8302153803bfcf86f5b99",
       "extension": ".md",
       "source_id": "app:productization",
       "reason": "productization_authority"
@@ -2313,94 +1242,6 @@
       "extension": ".md",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/CONTINUATION.md",
-      "bytes": 135,
-      "sha256": "713ba75acec4ace406daad47877131e05d06ef0db42f063a1fc3dfca4f4d4eed",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/LAYER_MAP.md",
-      "bytes": 81037,
-      "sha256": "00930c5dba900e6d91e7fd0164019c78761febe36aadf226b1892c2c2a699f05",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/background-audit.md",
-      "bytes": 155641,
-      "sha256": "13c3bcec796688d4a50d22448b812a0bb761031754a2bcea3637b0a7b604578c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/candidates-cleanup.md",
-      "bytes": 131949,
-      "sha256": "99bd7052cb5ef0ef45f1b6c3c3c66900a7f142555838a2d0f1a3591e9af7cb6c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/file-layer-index.csv",
-      "bytes": 229772,
-      "sha256": "9ac9f51765b1fb6c01b9a828fcee5a964eb6b63d150a9cd6ff0cbeba74a9ca29",
-      "extension": ".csv",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/layer-map.json",
-      "bytes": 24184427,
-      "sha256": "86712a55325dccd2b14dd73b36e5220424f506045cb3aa906af79578498187e5",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/library-audit.md",
-      "bytes": 1078,
-      "sha256": "e4e2ea4ea653145b5c2cd931082353b5033adb94f844cd65895014d9f3fcf160",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/no-touch.md",
-      "bytes": 181741,
-      "sha256": "4c4a3842c7ef00ecf80ed80fae204f77979114cbdc493f80f78a3c6f4da9be2c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/route-map.md",
-      "bytes": 39204,
-      "sha256": "06fd319eee3d18863d37d3a499c5ce5a879229f158d4b3d964f132328126b85b",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/rules-extract.md",
-      "bytes": 40918,
-      "sha256": "46d0987e3fd7e0c5b69d298e1c91f8a00a1014341237e0d61707def9179d9c63",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/selector-layer-index.csv",
-      "bytes": 4180640,
-      "sha256": "30d8c009800243fa8fd02046c92b1571359a001b5a7d4552b93fdcee4d2045fd",
-      "extension": ".csv",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
     },
     {
       "path": "manifests/PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE.manifest.json",
@@ -2795,750 +1636,6 @@
       "reason": "shared-kernel_authority"
     },
     {
-      "path": "prisma-control-center/README_FROST_TACTICAL_V1.md",
-      "bytes": 1064,
-      "sha256": "76f5fe4dd45f4c86d146047f9259c381ee077958a8eb0975fed843cb302367fb",
-      "extension": ".md",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/README_LAUNCHERS_MINIMOS.md",
-      "bytes": 2081,
-      "sha256": "c9db6a66516d2f2e851d89e9a5f99ae12249005a4ff4f57fe93159e41d3010bf",
-      "extension": ".md",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/README_OPERADOR.md",
-      "bytes": 1934,
-      "sha256": "806e770e631b098ef0a040e9b66a3cdeaa14138d9bc59a238bf0d1e33a6d40e7",
-      "extension": ".md",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/README_OPERADOR_CRYSTAL.md",
-      "bytes": 993,
-      "sha256": "2860f4758ea321688adb8d38720ce86a06c0ce9b337974a9b4dee6784d7510dc",
-      "extension": ".md",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/__init__.py",
-      "bytes": 447,
-      "sha256": "91f4370422b4a4d77b375e962bc1f4ae9e023dc3fb2439b5bcaade31a310a254",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/action_contracts.py",
-      "bytes": 906,
-      "sha256": "0587337d824ffd211cd6ff3252377f9d3ae16d1d236d2cfeeead579e98bd9e2a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/action_preview.py",
-      "bytes": 1059,
-      "sha256": "1e89523613ffdfc00634f196ed890a33b60e9e3826ca4495a8839df5ce40b1d6",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/answer_pack_builder.py",
-      "bytes": 773,
-      "sha256": "cceb248efcafc0881d58e1f57eab7ad45e53b359dd7795839a3c524eb875be63",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/api.py",
-      "bytes": 10640,
-      "sha256": "6cb637d4fa9d3eea2a16c0208183c9c48927644d55af67371f85e136113440ee",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/approval_gate.py",
-      "bytes": 352,
-      "sha256": "ef4326e973e925be9feb031961671b0d4bc58ce1e21d31e57da32adf9f9fc43f",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/atomic_io.py",
-      "bytes": 1258,
-      "sha256": "d2fbfc61f7815f25bb4b9a0e765d5640411f5a57fd2f62189ad94f73ccbc644d",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/authority_resolver.py",
-      "bytes": 1853,
-      "sha256": "0e0525b2dc3874fe47a48e21f9ba116e0ba0f37ff391a205bd9149dfd45590f7",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/authority_store.py",
-      "bytes": 1063,
-      "sha256": "bf03c33e2289a626133c4caf27a5b21bd77f9d04f577321f2e23cf50251a17da",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/canon_resolver.py",
-      "bytes": 515,
-      "sha256": "82c467f4145cfcf6634d56fb4324e9cc19c07e764c1278ab16219d46a881736d",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/clock.py",
-      "bytes": 2004,
-      "sha256": "1b6442c6ba6394a8e7b305fce8dd48f7405359a383a1751224f398d455b49539",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/compaction_engine.py",
-      "bytes": 1726,
-      "sha256": "b0590edbd1dd43f04152aa5f0190721c1012a13c09b25217c1ee96172d9207ba",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/compaction_policy.py",
-      "bytes": 907,
-      "sha256": "14207ccab422814c5ce4bd6132c4e9e2766782db8c7d2d0e0c862bc88e53654e",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/constants.py",
-      "bytes": 5566,
-      "sha256": "c4f578c436724a4d7242cb18e3a631d54e679f3d2722763953a9182528c7ffd0",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/context_enrichment.py",
-      "bytes": 283,
-      "sha256": "8f26003fe30b24d91e41a9ab70dba5d41b49d3b1280bbc63ac35f917ccc62e42",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/context_resolver.py",
-      "bytes": 793,
-      "sha256": "ec4a50d846eca1fe24f061c50b0587cf8d5e9f0f72cd892c48445942ca94dd60",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/context_scoring.py",
-      "bytes": 805,
-      "sha256": "af22be861a4d766a733fead3c4792aaf7ae855a65d82f33ba6e3f98b1bd36f2c",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/contracts.py",
-      "bytes": 1060,
-      "sha256": "8fc6fb1dc8f7ee550b2906eb9948a5b2074391512460ff9e151862a192bfda3e",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/controlled_action_layer.py",
-      "bytes": 609,
-      "sha256": "efd8cc6eff1a779d2f8d2b34dccfff9fa681b5d52de92108fbcf61f465ac17ff",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/decision_trace.py",
-      "bytes": 1163,
-      "sha256": "5942f8083232383294974d0a585750327d19256508591191edd1bb6ca91c0754",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/diagnostics.py",
-      "bytes": 1183,
-      "sha256": "8039781cf827b4b92125d4cff45bf299cf4eb7cc4b091eb4bfaf16140be8dc4b",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/drawer_payloads.py",
-      "bytes": 1209,
-      "sha256": "6ca00b525e37cc17a660c25838a7eb0ae0761e105ebfbd46abe8e0452d95825d",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/endpoint_contracts.py",
-      "bytes": 1847,
-      "sha256": "fef314f6a7640aca034b44176a65b59875b6d903483e5cdfc8a7618840f5c554",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/episodic_memory.py",
-      "bytes": 1404,
-      "sha256": "6574b60fde49ce7158fc3f0b93c9b2ed018e5123a65d46e02e8d4cc0de2562ce",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_classifier.py",
-      "bytes": 3677,
-      "sha256": "c90dcbf50f614276766ed64f51a1990d0ba8712c4064696810a0f8f4fa20148c",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_digest.py",
-      "bytes": 1594,
-      "sha256": "0bee9b517340e5aca29e4364b5b02882c806c0f95785e0bbd6763abe5dce9191",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_ingestor.py",
-      "bytes": 4151,
-      "sha256": "ffda179f03ce40d7e28dc7abc8dfd19bb3d38625d7f40bca35804a5985d62a3a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_intake.py",
-      "bytes": 8771,
-      "sha256": "bc6ced41f4faed8e9be54002cf0929807f8e2c9f2bec1fef7b264c9d19329149",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_registry.py",
-      "bytes": 3061,
-      "sha256": "995521666ca39023c2855294c4f5aaf43ea37b332516da0c19ccb51433ad153a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/evidence_summary.py",
-      "bytes": 2868,
-      "sha256": "0871441832e04aaabe80f3097da760685ebc37c468d1163e8042efae01526ae7",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/f3_engine.py",
-      "bytes": 11225,
-      "sha256": "431226b71a5934ac48d60bcfd9f8e3de2618930901f504cbb9f1e2c16fe5fa7d",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/f4_to_f9_engine.py",
-      "bytes": 3190,
-      "sha256": "a9c3801de3871158a0db96a3820e7590c8891cb5366cd9be621405a863f5d155",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/feedback_loop.py",
-      "bytes": 1062,
-      "sha256": "1f96e940e764a8c66323c47a7bae179de82048312a378dd3aad229188d3a09ce",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/feedback_schema.py",
-      "bytes": 1120,
-      "sha256": "5ea80155fa211ed6b54228b4feb5f48724eb3635e1a23a78e0aca9b9a664fc22",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/feedback_stats.py",
-      "bytes": 1419,
-      "sha256": "c1f9b581decc1642fc9d5b2f4c5fd77ff4b5da0171d4f8b37cbeb2515f0dda04",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/file_fingerprints.py",
-      "bytes": 2196,
-      "sha256": "6e455d36ddcf0779b855c5cd55130217dad008ffba214166f82aa125832343ca",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/fixtures.py",
-      "bytes": 2450679,
-      "sha256": "3bf205022cebbf4c42e46a39d4b8a663b82f4434bea75ce97fe1f86cc480d4ef",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/governance_bridge.py",
-      "bytes": 829,
-      "sha256": "b3f565824ef9b6da09c98fdcacf9bddecc4b64b4e74ad6b8d52921a87380ceb3",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/governance_report.py",
-      "bytes": 614,
-      "sha256": "b975efb822bd0f4a00e0f4909c2ff748c1434a267af7376e0971b9007bb88d07",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/graph_builder.py",
-      "bytes": 2198,
-      "sha256": "851c5e89c784f50e6e8200b2a39130f0e60617e193b8cad7841430b678edb845",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/graph_digest.py",
-      "bytes": 1048,
-      "sha256": "8c0eee45acc9949c2cf444288e1119d176469b96a05b1eb650e052f3eff2be8d",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/hashes.py",
-      "bytes": 1522,
-      "sha256": "3961533f204fc49e845e12405dbfaeb24b47d0d0b6cb7047a73896220545bcc3",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/intake_policy.py",
-      "bytes": 4496,
-      "sha256": "a4adebf9082f813bb1a5fca13017ee1094df3779a25218e69d426220c54876c8",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/locks.py",
-      "bytes": 1322,
-      "sha256": "757a6f9e6e6878d17f56d5988a57eab9a85b91fbe7424f7ba96695c797d54cc7",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/manifest_detector.py",
-      "bytes": 1295,
-      "sha256": "56e2e2695199f69c8e125e579f30d31bf91bf5ce24fcb9a3760f84cadc2da8f0",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/memory_compactor.py",
-      "bytes": 1322,
-      "sha256": "3b3cb4dbda83cdfd9ccfa44d34b21ae6c3aaed199fc1faced4bbb52d2e07fd82",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/memory_store.py",
-      "bytes": 1962,
-      "sha256": "64575ca068706474da9cdb0d9abeb0521b9f3d7ca0eb2179d5562ef817d8d128",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/noise_budget.py",
-      "bytes": 1022,
-      "sha256": "8ec511139fd194a18a7dcdc048b8760b1a6b0953846dbda3e7c2172913060d7a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/outcome_recorder.py",
-      "bytes": 924,
-      "sha256": "1438271c349614ffb62987022266f416dab2bb2ef8c0245c611229e094f00e7a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/pass_fail_detector.py",
-      "bytes": 1623,
-      "sha256": "5463ef00b3a33176deaf59a3c5741f33bb138294e8c7b20cd51149a2b726816f",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/paths.py",
-      "bytes": 3783,
-      "sha256": "1c84e77115e92ddbcf52e4c32fda57c093fb65db04d692477b1bfba46bb7eba9",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/pattern_digest.py",
-      "bytes": 1137,
-      "sha256": "88852a0061f5419f917c0e4c374308417fefb6b672698cbef38b986d918a2827",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/pattern_miner.py",
-      "bytes": 1650,
-      "sha256": "59966630ae73838363f96577274d9976cfbe81caa74dd9cd65373a74244048e0",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/pattern_reporter.py",
-      "bytes": 1501,
-      "sha256": "85ae2bfa7ecd06ab0d5e79f30bbbd92d3377d16d9caecd8b7023f17d9a38bcad",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/policy_checks.py",
-      "bytes": 686,
-      "sha256": "c1d41905827c1b5153be2fdf9088d4e7ac7a197ce2054e7ffa724fd8fdc1abfc",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/procedural_memory.py",
-      "bytes": 1853,
-      "sha256": "82e651e13ecc85c281fdf7e33ebb8ae9775f1441c5f3f1acc1f7a7ae9ee10d35",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/protocol_recipes.py",
-      "bytes": 1769,
-      "sha256": "5bfeff697b5f780d435e90641d387064b4db461e153ecc9a5c5d01cf98be239c",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/protocol_router.py",
-      "bytes": 1893,
-      "sha256": "c2dcb37a23ad2218844724068f2072f5c4b1684c549a8d1bc109f4222d182c6b",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/protocol_stats_writer.py",
-      "bytes": 3940,
-      "sha256": "fadf1570da1454f7a024b9e42d73b3485fe10c8335188291f552bdc71ad5c051",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/public_redaction.py",
-      "bytes": 1271,
-      "sha256": "84e80a97b28522ef9d430c5636432a97fec4564cd2bbdfa820acf6c6c9f6b6d0",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/query_classifier.py",
-      "bytes": 1124,
-      "sha256": "ed078d88257abc36680d426ac4f9a8fa4aaa54f314dab84df5b34d8d24c4599c",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/query_context.py",
-      "bytes": 799,
-      "sha256": "ec9725f00deae865ef9dc1ad3b49cebee332773bf5c684453efb94fe78743398",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/query_enricher.py",
-      "bytes": 1031,
-      "sha256": "18691f6d08ca9ea3ef990afa18e14b7a1406163db67cf291e2b5957acac8edfd",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/recommendation_engine.py",
-      "bytes": 1480,
-      "sha256": "b6e65d44b7db133fe3a54b2ac0a5ccc05d011a77a52e99a018874120de8dbe5a",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/release_train_alignment.py",
-      "bytes": 632,
-      "sha256": "e368d26840964ae2c4720e85f5cead7b7f23cf2d9658458f5bd52065956baf6e",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/render_plan.py",
-      "bytes": 1042,
-      "sha256": "cb027706aa770b8da833b2d0625f39ed86fab54fc27ca01e98b800f31be651be",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/report_json.py",
-      "bytes": 888,
-      "sha256": "8d75589c29c2943eef49ae62858bf762cf5291c8022ce36444f224866b4a2ba1",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/report_markdown.py",
-      "bytes": 2318,
-      "sha256": "14f4b9d3a04f65ce6aa307df071558e27961a95eb5bc61c691a1823cdeeb5c83",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/reports.py",
-      "bytes": 1130,
-      "sha256": "898218d1c32cd6129cd4a92844d68c92df81a75f919d52b963bea5ad1781dfdc",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/retention_rules.py",
-      "bytes": 168,
-      "sha256": "e6ff6fc5353b6338728949eb4a306bc652dfb15052a7635502bec98daa04f9c0",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/rollback_planner.py",
-      "bytes": 440,
-      "sha256": "3cbc3e4681e4d792376a55cb2a7259740eb3ae4ee64c49f19c66c89163c8844c",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/runtime_probe.py",
-      "bytes": 1023,
-      "sha256": "d6ef1430b188ca0920b0e527dd2dc58bc44677ce43131a551c1f1541bcc7bb95",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/safe_response_composer.py",
-      "bytes": 1413,
-      "sha256": "2641abc0190e3f355f26f1c9a18a08c2880f2f065e4c7a2411b1cb77a4f7c72b",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/safe_ui_governor.py",
-      "bytes": 1751,
-      "sha256": "327c07ebc6cae3f300db6ab1269b3c1f085dc916eae5372dd79c80b64e287a05",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/safety.py",
-      "bytes": 3321,
-      "sha256": "a76a127e42e25891cd42b55cb85bffa363a4a5d7cdf80b700c4b10a6d5c36a85",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/sanitize.py",
-      "bytes": 1651,
-      "sha256": "c8a5ddb5ea89f3a22a8298ccbd4edc91f443832a7f7a156c7f08518b464bbf19",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/scoring.py",
-      "bytes": 2118,
-      "sha256": "e2b5883a0f4e65bd4e228ece3e76d8561ad18ed0a6e2da45cc6d7f47c7f40029",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/secret_scanner.py",
-      "bytes": 2161,
-      "sha256": "1eb67c707d12fcda2b340dc9ae566777e331abc0496d8feb1a0dfee77a720100",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/semantic_memory.py",
-      "bytes": 1716,
-      "sha256": "9666107e1a26eaf7aa5e75ba0e4350119607e354101755aad69d9452d06afa66",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/snapshot_manager.py",
-      "bytes": 597,
-      "sha256": "1b1ba613319117ddf15356afaa31445fc7b8bbcfc8a5d8237b59f9abf562f892",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/store_hygiene.py",
-      "bytes": 757,
-      "sha256": "2d1c98b5c8650c04af4b0a7c90bed5cda5ce3d13e0b47ad4cdccbb19cd00de87",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/store_manifest.py",
-      "bytes": 988,
-      "sha256": "bc19cb6d4c0a7964df77e0f64df188cdea3ada7f82d4adbbfe874b331a4863de",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/surface_detector.py",
-      "bytes": 1491,
-      "sha256": "c773cb6c45c02ee450a380ba2a786ded282458d1e525288527aa51784e053ee5",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/text_extractors.py",
-      "bytes": 3398,
-      "sha256": "d42235eb1888aa905c23e9fd30eba6e1f5f78d9313b3b51ac435573a5cb80f5e",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/tools_status.py",
-      "bytes": 1205,
-      "sha256": "e14d8f74396aea81274e9a132d429693810bc592a77675d841c5704abee13b53",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/ui_copy.py",
-      "bytes": 1210,
-      "sha256": "c29b9509def758c3d57b208d4794852502b3c6ed212d3bbb5882f2ab9694291f",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/ui_modes.py",
-      "bytes": 727,
-      "sha256": "1186a617f395f5cae6e94700d0628a51050175b64a012d5398ab0f23232141cb",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/verify.py",
-      "bytes": 2847,
-      "sha256": "8016c2045c5a970d3cce9fd53ad89a170c9b31fecd268b481901c7f62b4f9031",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
-      "path": "prisma-control-center/internal/py/prismo_learning/zip_inspector.py",
-      "bytes": 6519,
-      "sha256": "4ec9425c5b887a0bc8ffcc34a22e78af15f65ec231568b8469bfafeb1ea4aea7",
-      "extension": ".py",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
-    },
-    {
       "path": "prisma/migrations/20260425000000_canonical_foundation/migration.sql",
       "bytes": 22125,
       "sha256": "878c33953ae6e38e13de4a8bdef290c20c8380952a71e19df728e340c16eb04e",
@@ -3625,1310 +1722,6 @@
       "extension": ".sql",
       "source_id": "type:data_sync",
       "reason": "data_sync_authority"
-    },
-    {
-      "path": "products/0.backgrounds/README.md",
-      "bytes": 270,
-      "sha256": "41494ac2a8c25616285aebfb7a23b043e1613cf24e78a20bdc5ab249a7530c2d",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/active-backgrounds.json",
-      "bytes": 1819,
-      "sha256": "02837d4d49996b6cd6fc5ff7df545213842954d0918da1e9ec1f3cc7cd689343",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/archive-index/checksums.sha256",
-      "bytes": 6838,
-      "sha256": "35a02206b85e4ef7661f6589883bb0d905f5d083ffd0b5494e9115cf84eb7cba",
-      "extension": ".sha256",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/archive-index/imported-zips.json",
-      "bytes": 108,
-      "sha256": "9712a105a50b6619d821d96d49b3ee1f728bd450b4a7fd310167105f96753097",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/archive-index/source-assets.json",
-      "bytes": 29199,
-      "sha256": "75aac87057e95f3688ad3e868de79e861f838b4730deab4ed657d4d17cc7dd39",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/01_prisma_base_graphite_cloudglass-3015a4e7.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/02-prisma-fractures-light-overlay-alpha-e78c27fe.png",
-      "bytes": 4424931,
-      "sha256": "e78c27fe22498b30a8f01badc476adc2ed479b2a88906b6b2a003f82558bb553",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/02_prisma_fractures_light_overlay_alpha-e78c27fe.png",
-      "bytes": 4424931,
-      "sha256": "e78c27fe22498b30a8f01badc476adc2ed479b2a88906b6b2a003f82558bb553",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/03-prisma-mist-dust-overlay-alpha-f94bfa24.png",
-      "bytes": 10566164,
-      "sha256": "f94bfa24f656db356a45e435f68b9a0a1584663c418c8375cdf3cf64a7c3dc67",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/03_prisma_mist_dust_overlay_alpha-f94bfa24.png",
-      "bytes": 10566164,
-      "sha256": "f94bfa24f656db356a45e435f68b9a0a1584663c418c8375cdf3cf64a7c3dc67",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/aivars-vilks-an8imfipg1c-unsplash-a6733bc8.jpg",
-      "bytes": 9513515,
-      "sha256": "a6733bc83e6729da9ca6e5d16ac42ecfcbd8ef1f80904df653e785d6a6ddbbe4",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/aivars-vilks-vx5fugsv490-unsplash-9267b59c.jpg",
-      "bytes": 10192796,
-      "sha256": "9267b59c5c9caaa86afdf2e15f40eb35701b0e81501572ba75ac9428ee039db7",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/alex-avila-a4g-5z8l9gm-unsplash-e4d87da4.jpg",
-      "bytes": 3790889,
-      "sha256": "e4d87da4f91c63bb515f2888a43aa03e88c74c5580ff4a00bc126f3aa1e81307",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/alex-avila-a4g_5z8l9gm-unsplash-e4d87da4.jpg",
-      "bytes": 3790889,
-      "sha256": "e4d87da4f91c63bb515f2888a43aa03e88c74c5580ff4a00bc126f3aa1e81307",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/alpine-crystal-5c45ddb3.jpg",
-      "bytes": 869316,
-      "sha256": "5c45ddb39bf5e4793d7f63a4638aa291d51a8b016e27029d2cc344220b1dbdb5",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/andreas-slotosch-epfp8uwywp0-unsplash-8c1953b1.jpg",
-      "bytes": 4626793,
-      "sha256": "8c1953b1267185f3af4d37a689b5df56c7f626f7ffa1950c158e4441d007f403",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/aurora-night-05a0dd86.jpg",
-      "bytes": 1100065,
-      "sha256": "05a0dd8631eb31ad730b1aeb4e1750551206e6c83e144d3a277fcd349ff74ca4",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/aurora-slate-veil-7eacb016.svg",
-      "bytes": 1191,
-      "sha256": "7eacb0164fe1c392c9dcb71a0e08ac184ce6b5698e841b7f201577c6656898be",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/benjamin-voros-egfvccm-mzo-unsplash-133fe212.jpg",
-      "bytes": 1103526,
-      "sha256": "133fe212c78073e3a4f7c5aecc29ca1c740672e56bd480723f39ddfa1d186cb1",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/daniil-silantev-irbkrfmeelg-unsplash-3c252b74.jpg",
-      "bytes": 4255140,
-      "sha256": "3c252b74ffed9c4fc641ae12cba0b391eb6ce5e91d532a977c2448e31166e7eb",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/daniil-silantev-rl7sz19fgrq-unsplash-83cbe1f3.jpg",
-      "bytes": 3336730,
-      "sha256": "83cbe1f36b97364c3ee601931e83ab9997a14bab1f2de22311d33257baf75f46",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/dave-hoefler-ayx3tkuw-mw-unsplash-5308ca93.jpg",
-      "bytes": 2012612,
-      "sha256": "5308ca9368547194aee2f347b05cb32206faf6483088ffde563fb350f9ece5f8",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/dawid-zawila-prjywl-saww-unsplash-1228e72f.jpg",
-      "bytes": 591234,
-      "sha256": "1228e72f072158f54c7a0c805acbdec6728e7c99a13a762a756387b48042dbaa",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/fabrice-villard-tkoa1swwhug-unsplash-fb952060.jpg",
-      "bytes": 2808201,
-      "sha256": "fb952060a754c81e6f5ebab35ca0c64e374968b426f4c4602f867155d754de22",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/farhan-nsrdn-uyvk8hrkex8-unsplash-3b1b8c65.jpg",
-      "bytes": 2145664,
-      "sha256": "3b1b8c65ca8d2836234e33b2cdabd5dfaef23319f24f7ce58755adac004af3f4",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/filip-kvasnak-tvjx2dteciq-unsplash-cedfa2a0.jpg",
-      "bytes": 2390500,
-      "sha256": "cedfa2a05855cd4d024f90b367f58c995bf87ea03cf61cf8f78e5b407d108769",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/florian-schindler-eyj2rsmgnu0-unsplash-73fc3550.jpg",
-      "bytes": 14161122,
-      "sha256": "73fc35508e007f763383f79f6b74ed5873420ae438791627058aca73ca1ad360",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/fog-forest-79c1741e.jpg",
-      "bytes": 1045992,
-      "sha256": "79c1741e5246c17a21bdaa389382c750e5c2aa7fe9420212cd9f61684b52e2f9",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/kate-kasiutich-xnwp566j7gi-unsplash-5e25cfc8.jpg",
-      "bytes": 5126038,
-      "sha256": "5e25cfc8bd6422f1f8575b4b464fcef1c328d5239f8301699a4aa3c4670d4b86",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/katie-mukhina-xwtdnwezor8-unsplash-d7a7947f.jpg",
-      "bytes": 3419016,
-      "sha256": "d7a7947f98b1e285b2448bfeb0b8671cbd4461b242e5023d5768608117c6662e",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/kenneth-li-sq15nflsdtc-unsplash-4845de7e.jpg",
-      "bytes": 1141818,
-      "sha256": "4845de7ee3fb2ae49cd01663a41c82ee2c536d982b979d8dcba240f80948b062",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/kristaps-ungurs-2beofe8wwyw-unsplash-e92c2932.jpg",
-      "bytes": 7860819,
-      "sha256": "e92c293204dc14902b37a52f2e0b9299eeba534695f346f95faea94a92b363f6",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/kristaps-ungurs-8tfbu1sbrn4-unsplash-f0c875dd.jpg",
-      "bytes": 15098907,
-      "sha256": "f0c875dd1e4231634033ae4102091b7b238923f8337117015eac3b6972bb6493",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/laura-adai-e5apkrnucmg-unsplash-bed5ed5a.jpg",
-      "bytes": 2131434,
-      "sha256": "bed5ed5a09d2594e68b1c22b83122d52fe6f97256dfe629a4911a7460a7781fb",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/leon-rohrwild-5apkpfvda8i-unsplash-28703759.jpg",
-      "bytes": 1287235,
-      "sha256": "28703759c5a9f35e7b4da28369f71a628d0ddbcfe5acd1da8c94ae9d11cebf9f",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/leon-rohrwild-mxcwgjgo-us-unsplash-740b1635.jpg",
-      "bytes": 1287060,
-      "sha256": "740b1635f4b77e1ba5ba237ac08c8710a8e0b9b7e760fd00070f9952357afefb",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/liquid-operations-smoke-6ddc58de.svg",
-      "bytes": 2520,
-      "sha256": "6ddc58de617baef084ab591d6d778bce59a7e96ab67d348a37a31309aa74824a",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/liquid-operations-ui-reference-ba047f42.png",
-      "bytes": 2918510,
-      "sha256": "ba047f42db7038f9930a9473b73cffb9fe54fcd10c2b8e4382bce65f63d9171c",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/marco-grosso-abghh9toxue-unsplash-c6f829d3.jpg",
-      "bytes": 4566684,
-      "sha256": "c6f829d3a2d87cd9f6f73fc482b0059c498430bc684fd7d1ff3b7d1c7daf76cb",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/marek-piwnicki-ktllnfb9cbs-unsplash-782bc811.jpg",
-      "bytes": 5754144,
-      "sha256": "782bc811966203fca1c06ff9118c81493eab171037b156e61b465444e1c3f52a",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/obsidian-cloud-motion-6ab40acf.svg",
-      "bytes": 959,
-      "sha256": "6ab40acf7fa6360d5dd65346b6046490f93d4072d37a519ec01d7a61795f9a5a",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/ocean-vapor-59515046.jpg",
-      "bytes": 622672,
-      "sha256": "5951504615aaa85fdf31b8c3d8c15a6ba7f027b15cbff85f156fcc35ce6dcc42",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/pascal-debrunner-8xkimx3so8u-unsplash-f28148f1.jpg",
-      "bytes": 7388837,
-      "sha256": "f28148f1876d1278c222d8ac39b0654ab6f205a84f00d9862810aa44ccda567c",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/pascal-debrunner-ob8dtqylzme-unsplash-24b527ea.jpg",
-      "bytes": 2909254,
-      "sha256": "24b527ea560822467b5cfb55774c436dc291edbb9346a73adc72b70950e8cc79",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/pc-client-snow-mountains-6b5a6db0.png",
-      "bytes": 4376708,
-      "sha256": "6b5a6db01046fa2c2b67f42e65b8c5ae872dd0e615beea96edba231355b69e3f",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/pc/pc-graphite-cloudglass-base-3015a4e7.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/philipp-dusel-2f-m1fvojt4-unsplash-c1c2b99d.jpg",
-      "bytes": 12568053,
-      "sha256": "c1c2b99dc7bef605ad66b1e9dd3e23cb86d51dd26bbef576b003d68e9b6bea77",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/roberto-shumski-0bzbsiuwoom-unsplash-912baca0.jpg",
-      "bytes": 2329452,
-      "sha256": "912baca04fffbdd4fb592e52725ed705f88cf3de8a0ee322f4f5959ef715837b",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/roberto-shumski-vj5k8-oyl-4-unsplash-12dee268.jpg",
-      "bytes": 8247859,
-      "sha256": "12dee26871af9c59a6c6a88ad4ab46552978f4e8eb8825ad835e944f528b6949",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/roberto-shumski-vj5k8_oyl_4-unsplash-12dee268.jpg",
-      "bytes": 8247859,
-      "sha256": "12dee26871af9c59a6c6a88ad4ab46552978f4e8eb8825ad835e944f528b6949",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/simon-spring-zmmrlehsfqy-unsplash-43b47726.jpg",
-      "bytes": 3330462,
-      "sha256": "43b4772634d0348bf09cce49f90f0614e8dc80c63bd408bb3d8eaaeb24d79006",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/storm-cloud-operations-real-9245d5f5.jpg",
-      "bytes": 173999,
-      "sha256": "9245d5f589df75a53a2e3509a5a5971ea14d2fe9366cde1e083586e917c35219",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/storm-glass-horizon-89ce674e.svg",
-      "bytes": 1286,
-      "sha256": "89ce674e6d9a4f9474330b7b008e930b5e8eec2d7bc15cb94ea47e0a93dcf951",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/tablet-cloudglass-default.jpg",
-      "bytes": 415340,
-      "sha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/tablet-cloudglass-default.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-c8eaaa50.svg",
-      "bytes": 610,
-      "sha256": "c8eaaa508616c0d848ea5a76d72fb0ee69b939b7922645e0206169c8e2cbce34",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-ee21f92c.svg",
-      "bytes": 1335,
-      "sha256": "ee21f92cb8004b1716aebe89f48272e5ed5ded32b11d66d9b04e0eb08c8ed7ba",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-governor.svg",
-      "bytes": 610,
-      "sha256": "c8eaaa508616c0d848ea5a76d72fb0ee69b939b7922645e0206169c8e2cbce34",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/venti-views-7wl-hlnfi4y-unsplash-e910b06d.jpg",
-      "bytes": 4087597,
-      "sha256": "e910b06d4e073ee74b98d8c8ddc20cc161418a89c1c6dc3c746eac7f29a3053b",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/visual-smoke-test-expected-9855ea1c.svg",
-      "bytes": 2360,
-      "sha256": "9855ea1c013b351f52526d4735924a7131a1e655f263d1ad4a934ee34a17c989",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/visual-smoke-test.expected-9855ea1c.svg",
-      "bytes": 2360,
-      "sha256": "9855ea1c013b351f52526d4735924a7131a1e655f263d1ad4a934ee34a17c989",
-      "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/assets/zhang-liven-bilh-yznd0i-unsplash-e341c2b6.jpg",
-      "bytes": 825545,
-      "sha256": "e341c2b6cc4f18f677a1500b687f7db61c7e946cb104bf9326f6e23e9c9b2604",
-      "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/backgrounds.catalog.json",
-      "bytes": 57433,
-      "sha256": "e02b7937742ddf6fe29a89cf632c218a8dc8c556f3680995ea342113b890c606",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/dawid-zawila-prjYWL-sAww-unsplash.zip",
-      "bytes": 149311325,
-      "sha256": "88115d21f0d49ccddf141eb2e73c05d5c05a018b3d982e3f2287c5b1e6a154da",
-      "extension": ".zip",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/manifests/chart-lab.backgrounds.json",
-      "bytes": 56572,
-      "sha256": "dfaf7e0f98ea0eaf414b4742ffc8238091f64997a79e67f035ceb851b785e01c",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/manifests/mobile.backgrounds.json",
-      "bytes": 56569,
-      "sha256": "70e7fc32bcbcaeef13cdb85d6b9045c65e404bae3d090a47ec9d8ef8d86d76e2",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/manifests/pc.backgrounds.json",
-      "bytes": 36840,
-      "sha256": "a6043017df705d0d468ca4c60d734431f08e1f51e69d0ad1bc145d1d96118880",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/manifests/tablet.backgrounds.json",
-      "bytes": 56569,
-      "sha256": "52d11119ff297711e7ae92aa4d25e62337b8f2d54998f5cdaf316d474b82431e",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "products/0.backgrounds/manifests/web.backgrounds.json",
-      "bytes": 56566,
-      "sha256": "a65e79cb86ee49f223e7ea3c8571fe663c57cc5da504367a39996aa88149eee4",
-      "extension": ".json",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/CHART_SOURCE_MODES.md",
-      "bytes": 683,
-      "sha256": "dc4c75d75d7f77584fe4e46d5caf50e591ababfa15f10e15c4c7e406bc67c134",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/PROMOTION_READINESS.md",
-      "bytes": 497,
-      "sha256": "21b7e08b169e4d6218ff9f32ab4ed0d8677e8e9c094c84fd27f88f724a0d2995",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/VISUAL_BASELINE_RUNBOOK.md",
-      "bytes": 672,
-      "sha256": "cf813172d3dec0bf97435137faffd0a7d1f18ba87d1fa510cfa86890bcc9772d",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/maps/PRISMA_CHART_LAB_MAPS_REFERENCE.md",
-      "bytes": 870,
-      "sha256": "1f1c77ff0ec0dbc380519ee3e08a0ffa65e65e6403f6c7d0765ae4cfa8d86504",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/surface-visual-governor/pilot-02-chart-lab-recipe-export.md",
-      "bytes": 1301,
-      "sha256": "7083bfe587ec4bc4bc967e988d40c7e215821bc46767697dfeccdf46206a8acd",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/docs/surface-visual-governor/pilot-16-chart-lab-recipe-studio-v2.md",
-      "bytes": 603,
-      "sha256": "637eebff4fd3a03f1aef0d833e7a3350b44f8e90ebb6aba02174636d592b0909",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/public/visual-backgrounds/chart-lab/README.md",
-      "bytes": 125,
-      "sha256": "2478fba14ab26550c0cfaf64040afe7c9666d3fc69b3e6fb846ea89188bd9161",
-      "extension": ".md",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/public/visual-backgrounds/chart-lab/active-background.json",
-      "bytes": 178,
-      "sha256": "17f91c95bb4731826ce1b15ec1d9bb402bad0f567d46b5025a3f9d4b68d43007",
-      "extension": ".json",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/public/visual-backgrounds/chart-lab/assets/tablet-cloudglass-default.jpg",
-      "bytes": 415340,
-      "sha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
-      "extension": ".jpg",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/public/visual-backgrounds/chart-lab/assets/tablet-cloudglass-default.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/chart-lab/app/public/visual-backgrounds/chart-lab/backgrounds.manifest.json",
-      "bytes": 62664,
-      "sha256": "ef9aa05c04801ee18d1b1e9c0e5a3641a1c5adca248b1188f2e36ad2a60f2571",
-      "extension": ".json",
-      "source_id": "app:chart-lab",
-      "reason": "chart-lab_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE.md",
-      "bytes": 9253,
-      "sha256": "f9880f81d77bad4d912ab80d57046aef1ab3f735e6ee492e6d3cf71f8c266daa",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_FUNCTIONAL_ENGINES.md",
-      "bytes": 6333,
-      "sha256": "b109bf0962723fdef1c2b37b0fb77a0564af758e7df7fbe982bd59fda0211874",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_INTERACTION.md",
-      "bytes": 6440,
-      "sha256": "b6331bde06c887e55c5dc869496f4fe083f44d3beb4ea46248af2c89ef5e585a",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_OPTIONAL_ADDER_BOUNDARY_ADDENDUM.md",
-      "bytes": 719,
-      "sha256": "85f12fc8f71d9463cddcf7cd1b2c79322ec22bfe62fcb0a7b1de15f04f81791d",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_PREMIUM_POLISH_V12_ADDENDUM.md",
-      "bytes": 648,
-      "sha256": "1ca60c5e1acef8f10c7ba78feae9b3d612159bfe595221745786306c3990d9f7",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_RUNTIME_DELIVERY.md",
-      "bytes": 6101,
-      "sha256": "7e0bd7625db14e076afaa9e3ec1cd5ab094ee4c8bb07a15153a91610f0f74654",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_VISUAL.md",
-      "bytes": 6226,
-      "sha256": "4d74be5c43a308b261d4ed4d447d86c2308fbc90bb1e6429acdb9085ebb80ef2",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/atlas/atlas.mobile.json",
-      "bytes": 4484,
-      "sha256": "e1ad428fede069cd8816f28924c86b0f3e875df24043599d068a1d76f727218b",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_02_COMMERCIAL_PLAYBOOK.md",
-      "bytes": 2515,
-      "sha256": "c53e83fd1fe43edaa5c748d21a2fb9b9baf6489c77bcb3a711f7804d5b3226e0",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_02_INFORMATION_ARCHITECTURE.md",
-      "bytes": 2072,
-      "sha256": "692e4755498111dbd83c993d90023c29e7c64720f66e8131ec12c2ce9c0c9269",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_02_SCREEN_CONTRACTS.md",
-      "bytes": 2671,
-      "sha256": "921722794a69f26fd45accd9dfac4fdce6146576d11df0a0e4b8e89fbf857ddb",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_18_MATURITY_AUDIT.json",
-      "bytes": 51574,
-      "sha256": "e668d76ec83ac8c305f753619f0d2fbd4d7c026f5e4393159b44f4b26bd02c3a",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_18_PRODUCTION_DATA_CLEANUP.md",
-      "bytes": 1260,
-      "sha256": "81d2335efa44f4dbf827bd8357d29180d5330a1903a53b405aefe532b32f6494",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_18_ROADMAP.md",
-      "bytes": 3026,
-      "sha256": "0bf14e277ccc41d2a137cb7f191812d29a5889789ed98103babfbf6a0a5ab4d9",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_19_HYDRATION_GUARD.md",
-      "bytes": 1298,
-      "sha256": "519bc15ce231410d5e134bcfc0d90a67ae2cd85565ad862acb6c4d16b203760f",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_20_COMMAND_CENTER.md",
-      "bytes": 1604,
-      "sha256": "8793e9a4673fd28e6987354abe0526b79845e86942581bdc30f82e7d55ca8bb3",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_21_OWNER_ACTION_INBOX.md",
-      "bytes": 1344,
-      "sha256": "079389b65bc89ad0bdcdb06f257407bcf7a173c72c98f695b1ee3a609c727905",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_22_DAILY_BRIEF.md",
-      "bytes": 1181,
-      "sha256": "43ff5e547f4af3a4f4e05338ff582d06482d65b087363478ac4808d608f59e32",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_23_DECISION_LEDGER.md",
-      "bytes": 833,
-      "sha256": "80a0ed2a103b7921a17ca9bc29efdd4f3f1422590d8fa5eecf94b92ec8a3358c",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_24_PULSE_TIMELINE.md",
-      "bytes": 826,
-      "sha256": "cb889da959bbacb2ca86cced3a338792fb3a610fcf91a974bc35e83b5a497c75",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_25C_HEALTH_RADAR_KEY_GUARD_VERIFIER_FIX.md",
-      "bytes": 760,
-      "sha256": "b23f3beb7cd27372cd343d20f5040cdeb6b1896f6d45e6fd4dc63e47a0581418",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL.md",
-      "bytes": 1330,
-      "sha256": "23a96c4517591651b2bdd0805ed0d4eb001419c61105d5f21f56d7dc6bbb93d5",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_25E_DATA_PLANE_TYPE_CONTRACT_FINAL.md",
-      "bytes": 1193,
-      "sha256": "d8b407688b715abf2d235c6643675610243658c05c94a1e3c6c1d244404c2b89",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_25F_HEALTH_RADAR_VERIFIER_COMPAT_FINAL.md",
-      "bytes": 1489,
-      "sha256": "197625fd81125600737eaf2758771249f8189c59fd1f459d729a5ad19bca3f9d",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_25_HEALTH_RADAR.md",
-      "bytes": 161,
-      "sha256": "8e87620c92f04c6fa1ee8c9ac807693a009171166f09044f13ac4db74d4dd99e",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_26_RUNTIME_ERROR_GUARD.md",
-      "bytes": 1890,
-      "sha256": "535a5e13216ec264ac1b7dca76dc21595fdd57d7cacf844880bb2b4dd0020deb",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION.md",
-      "bytes": 2575,
-      "sha256": "d21de8958fe45323aebe8aa11327b13110e6470fa373843a32d2671e18948c35",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_28_DATA_READINESS.md",
-      "bytes": 4506,
-      "sha256": "0b9321ce45afc319ac8af1dde1bdc34c8f80ae27e08a997ca4c9db696991b121",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_29_WHATSAPP_INSTALL_GATE.md",
-      "bytes": 1136,
-      "sha256": "854e3b7c023776dc730bd373708edb8e6fff2060b59b16d9b5dbd496846de7bf",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_30_INSTALL_LANDING_BLACK.md",
-      "bytes": 1630,
-      "sha256": "3a6e6b6ca947551eed21cc5895d64c9d64d75d8c3cf5ef63b7f0bfc469a21cc3",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_31_PWA_INSTALL_ASSETS_FINAL.md",
-      "bytes": 96,
-      "sha256": "73eab5010a5aa6ea1d368fde3b4bdabc9ccc509f046b439b070f93ecd2709035",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_32_DATA_PLANE_HYDRATION_RUNTIME_FINAL.md",
-      "bytes": 133,
-      "sha256": "8736763222e2ea235b843e1305c47fb1ed18a485372dafb9af6b01218e3b1e02",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_32_DATA_PLANE_RUNTIME_ACCEPTANCE.md",
-      "bytes": 722,
-      "sha256": "1727bb23ceee23045e600b36c2c25840a56e1c8bcaea8b8aa88f9632c174ef27",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_33_COMMAND_CENTER_OWNER_INBOX_FINAL.md",
-      "bytes": 101,
-      "sha256": "e0dac450ff6969e75ed8b7e2f06431430fc73811fc110393570eb930019134bc",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_33_MANDO_ACCEPTANCE.md",
-      "bytes": 1102,
-      "sha256": "648a365603555b37890b966a676adbc2b0873c54746acc3cb8bffd431f43f17d",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_34_DAILY_BRIEF_LEDGER_TIMELINE_FINAL.md",
-      "bytes": 100,
-      "sha256": "f49d8647734b0bf9b3c8bb815ecf4ca129e01f58b5dfce3cf3a6f05c314a16bd",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_35_HEALTH_RADAR_ALERTS_READINESS_FINAL.md",
-      "bytes": 65,
-      "sha256": "291ad7825fb88a03c3be2e8edd8dc656f51dbf1b4d91e6e10f68f0c311ca727e",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_36_FINAL_QA.md",
-      "bytes": 76,
-      "sha256": "0f3846ff252de3ca03ecfc56b592dc4abcd77ea7526e0af5188ddd0d050d9317",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_36_RELEASE_NOTES.md",
-      "bytes": 114,
-      "sha256": "37bc83c8f7daa6c7bd016e3f226e312b38a45cec80c869724234e484a470fe8e",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_38_OPTIONAL_ADDER_BOUNDARY.md",
-      "bytes": 343,
-      "sha256": "d3fa988b67821381c95248bf7f710978b728927dc1864e396a3109180e584d55",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_39_PREMIUM_POLISH.md",
-      "bytes": 489,
-      "sha256": "3bd0d977342dcff1bb4230baafdf1bbbc0f72d4c654603bdc210ede21838a681",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md",
-      "bytes": 1530,
-      "sha256": "c04fc1a79b4f8fe59e5e0fced7e62a8d999af10a774859e6a54dff8145d91291",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/PRISMA_APP_MOBILE_HEALTH_RADAR_KEYS_HOTFIX_01.md",
-      "bytes": 487,
-      "sha256": "7a68bf1653234a55229441c8d33cc5f1c8cea8690dee52702f356c0433566a7e",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/playstore-readiness.md",
-      "bytes": 160,
-      "sha256": "5ba03f7c8177324cac02c5c08ef3c0164da0793546bdc37a18c3aa9d31222f8f",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-18-connected-operational-scenarios.json",
-      "bytes": 332906,
-      "sha256": "c9b163771085a862323b0c4cd3fa9580935bf01827daa1d00783597655f63f27",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-19-hydration-regression-scenarios.json",
-      "bytes": 135178,
-      "sha256": "beb8582ba104800023edf8dbdfdee5d6d86d109f99040054256a379e6d278dbd",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-20-command-center-regression-corpus.jsonl",
-      "bytes": 1270080,
-      "sha256": "aca0fe7f0cfa99b481f835a85dfd536154c8a2f48e9e0ae4d3ea890eec619bae",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-20-command-center-scenarios.json",
-      "bytes": 417683,
-      "sha256": "88584c60a43f681bf1bbc901d68b19c2f5638272029b518164d75f6e3b7b5689",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-21-owner-action-inbox-regression-corpus.jsonl",
-      "bytes": 1284480,
-      "sha256": "164f83750b24a5043ea5284f7c9db010d582964757dc4e383dc7ae42eadd8d1e",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-21-owner-action-inbox-scenarios.json",
-      "bytes": 232304,
-      "sha256": "2fd6f4661dd8ad6e514bcc64cc4b407b3b3c5cc84b36a9393cbe5d7168b9bab9",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-22-daily-brief-regression-corpus.jsonl",
-      "bytes": 1373318,
-      "sha256": "fdcedd8079e30b25c3b0ea4ac2a12bdc2d5a2f1df7d5a7f7ee82b4734405e72c",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-22-daily-brief-scenarios.json",
-      "bytes": 225169,
-      "sha256": "db1ef83acf7b9df8b10306b4b5e40f907212da32daa7a51dba042a05654c04a1",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-23-decision-ledger-regression-corpus.jsonl",
-      "bytes": 1706238,
-      "sha256": "b2b3229f9340017e062d9a7d18d9c3b89713f26944d004769abbc17b3cc0b49e",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-23-decision-ledger-scenarios.json",
-      "bytes": 318392,
-      "sha256": "39a890e52b2ec8a7f29da31ecaa05b2e5c5c07145d4b0a47b42b36e15fb74d08",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-24-pulse-timeline-regression-corpus.jsonl",
-      "bytes": 1816304,
-      "sha256": "cc0061a3dbdb45eb5715b10d3960924d7ba623d5c7bc8e1fa0471eacbb06d775",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-24-pulse-timeline-scenarios.json",
-      "bytes": 198310,
-      "sha256": "a70cd64347576eeac2336483be38c6094739a497759da9a3b9f19aa906f376ef",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25-health-radar-regression-corpus.jsonl",
-      "bytes": 4297125,
-      "sha256": "f133d33babb15f81bca7c1579fe2811ae40221c54ca10c8b53d4dd1ec810978a",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25-health-radar-scenarios.json",
-      "bytes": 106553,
-      "sha256": "07aaabd49b8dc6db35b703d22d056ab4c4b2558f889cc37f600c18c6cb05f89c",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25c-health-radar-key-guard-scenarios.json",
-      "bytes": 187587,
-      "sha256": "cabede40e0ca9be448e5d9da3b8dc5b92fd6055a7799b79a0031c235d95412e6",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25c-health-radar-key-regression-corpus.jsonl",
-      "bytes": 2280000,
-      "sha256": "04117939ffc2b1180a3666d161839a98a60528caf8fd91e9ad027d52d027014b",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25d-health-radar-key-regression-corpus.jsonl",
-      "bytes": 3884043,
-      "sha256": "7e246ec9c381e55222da124f752494c8acbb56bdd320ac022edb275b65fa21ad",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25e-type-contract-regression-corpus.jsonl",
-      "bytes": 1863260,
-      "sha256": "8a6e45397b9794065bcdfcbdd56d61ebf8ca8442e5ca4d3a62925f4eb80453de",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-25f-health-radar-verifier-compat-corpus.jsonl",
-      "bytes": 874200,
-      "sha256": "1e64abe07e25db84e1a5d14806d52535b154ec93a451a6b3eabfd0545d1a77de",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-27-premium-navigation-scenarios.json",
-      "bytes": 2013,
-      "sha256": "864886ddb7799b9dbdde167699063361eb3ed760ca748a1bfd201e9e1f22c270",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-28-data-readiness-scenarios.json",
-      "bytes": 3069,
-      "sha256": "3beaf25447f470372a3f073beb0291b333ed19cf172edb10f8da2d5bec9577f4",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-28-data-readiness-state-matrix.json",
-      "bytes": 109580,
-      "sha256": "d3799b351a10f30591f6b9c5a9c437fe99ea3a22e7564c21d4386a0d61798aec",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-29-whatsapp-install-gate-scenarios.json",
-      "bytes": 617,
-      "sha256": "93340e25896f75ccbbb96794401f0267e8724e381ae9b77e44b8337ebb8b6186",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-30-install-landing-black-scenarios.json",
-      "bytes": 1026,
-      "sha256": "a4d73c3765184c163bf5a244bfc52bb5b17d27456cb7c0cb41b99041a6ba0a94",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-31-pwa-install-assets-regression-corpus.jsonl",
-      "bytes": 970551,
-      "sha256": "7c380258cb0a6ae74ee513b8d761c6eed257ee47b0951ac6fbeab2e4f01c54e1",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-32-data-plane-runtime-corpus.jsonl",
-      "bytes": 1320480,
-      "sha256": "00aa7fed44a802674ff6fc62a21cba211b4c9be70820478f18740a2a0fa6856a",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-32-origin-failure-matrix.json",
-      "bytes": 199,
-      "sha256": "d80e1ca63e7c5cb3dc37f434e5b4d58653d9d58000450ca3a59f186993a14cd6",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-32-source-state-runtime-scenarios.json",
-      "bytes": 2348,
-      "sha256": "65ec675f742562a360153e0da30e3081b637a2ddb362ac23e41855113def8810",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-33-mando-runtime-scenarios.json",
-      "bytes": 1993,
-      "sha256": "2f259ae192059b14a9227eb787ef21219beda4f5109494bdb8db09a495ebcf09",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-35-alerts-readiness-regression-corpus.jsonl",
-      "bytes": 1659634,
-      "sha256": "77acdd37a5045b1c53e7f542ba1e6e42e45455a668c2d1344081d1b3be2c1b53",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-36-release-smoke-corpus.jsonl",
-      "bytes": 1980716,
-      "sha256": "99bcc308ddcb1de453767b2bf700c0d176baf0a7cf80f1b65404392adfe98f0f",
-      "extension": ".jsonl",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-38-optional-adder-boundary-scenarios.json",
-      "bytes": 809,
-      "sha256": "a6162c528c5bff87602cbdf42c48ad692425c698601922aabf5ba041d33acc16",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/prisma-app/qa/prisma-app-mobile-39-premium-polish-scenarios.json",
-      "bytes": 782,
-      "sha256": "b8f3623bbf7dca37ef4b6a08ce236156660a13d7f2a67c8474eaf6902d73c5bf",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/docs/surface-visual-governor/pilot-09-mobile-supervisor-thin-mist-shell.md",
-      "bytes": 227,
-      "sha256": "d46eaabe7b82e513e93389fd39f1604fcdd91d6b84aa7e188b7c3156fb145898",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/public/visual-backgrounds/mobile/README.md",
-      "bytes": 122,
-      "sha256": "e75d0519e77d685865a53a8e6116ad2d3cca1b2e9ca8e388c6bfce673c2e1d02",
-      "extension": ".md",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/public/visual-backgrounds/mobile/active-background.json",
-      "bytes": 175,
-      "sha256": "840fd850a6f732748ed1fe36ea6741442026dbefb958aefb22f354d02f604860",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/public/visual-backgrounds/mobile/assets/tablet-cloudglass-default.jpg",
-      "bytes": 415340,
-      "sha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
-      "extension": ".jpg",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/public/visual-backgrounds/mobile/assets/tablet-cloudglass-default.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
-    },
-    {
-      "path": "products/mobile/app/public/visual-backgrounds/mobile/backgrounds.manifest.json",
-      "bytes": 62358,
-      "sha256": "7186b2a17561b1c7124147590e72dc90f41fe9e3708458f885e45782e32df5b2",
-      "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
     },
     {
       "path": "products/pc/app/docs/atlas/ATLAS_PC.md",
@@ -5203,518 +1996,6 @@
       "reason": "pc_authority"
     },
     {
-      "path": "products/shared-ui/prisma/GOLDEN_VISUAL_SPEC.md",
-      "bytes": 4080,
-      "sha256": "ff54f62937a7857e686c292956b786dd4611c865f7509e0fdcc627c616d7ef0e",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/README.md",
-      "bytes": 1938,
-      "sha256": "238b123c36e6266f3137640c47bbfcd7489894045252dd7b22708410b3cac99a",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/chart-lab.adapter.md",
-      "bytes": 334,
-      "sha256": "d0a413b89d7034413e4c9da05e3cdead9ff8e8534986e7cf82d0b15cc01b8fa6",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/customer-display.reserved.adapter.md",
-      "bytes": 349,
-      "sha256": "893be11f7100bee73fd0c5f8739892d2180fd78bbe26cd3921a2db1b3fadf404",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/demo-mode.reserved.adapter.md",
-      "bytes": 322,
-      "sha256": "87ff9dd6c5a0d4723b89547e387e4498e027458425eaba533622c976cf3158ed",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/kiosk.reserved.adapter.md",
-      "bytes": 328,
-      "sha256": "7babe770eaeeac9a8e0b8c71197d064decc608d457d9d678638cb9e88c02b5b1",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/manager-console.reserved.adapter.md",
-      "bytes": 339,
-      "sha256": "ef4c59f7843f5dc1b21434fe4b9c1801b437bc8962a4f258de819dc04acae22f",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/mobile.adapter.md",
-      "bytes": 334,
-      "sha256": "1be47aa69b847abb93f20c3cafc8fa701759f1a76e1c06958203bee81c381a2f",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/pc.adapter.md",
-      "bytes": 328,
-      "sha256": "56906a60f3028922edbed017fb56171ce6d07b6240da58d175bb8cea377888f4",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/tablet.adapter.md",
-      "bytes": 331,
-      "sha256": "ef5d48ec307dbf1aae28de53753aa9f58a7f7363365ffaac6d19ce42844e0098",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/training-mode.reserved.adapter.md",
-      "bytes": 329,
-      "sha256": "3f6e2db0abb6429ca11670430d83bb9753731ce869f8ced98e0f3010ef7ea9b2",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/adapters/warehouse-scanner.reserved.adapter.md",
-      "bytes": 351,
-      "sha256": "1ffceec5c1eae81a1c044407e7c5fd9fab56b258af17c37b764d187da47eb2b7",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/brand/brand-usage.json",
-      "bytes": 203,
-      "sha256": "e51f2ae0d01f7da1e8515f6316078b31c74ccaf34a0396e2eb9b66925118ee45",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaActionButton.tsx",
-      "bytes": 644,
-      "sha256": "6acf66315bad16447c5049f5d1a6e3794dd67b48c23494ca6a46bf43279ca6f2",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaBackgroundLayer.tsx",
-      "bytes": 704,
-      "sha256": "a5cfbd4d7e998cbeab8bb0958298572703cffd09d8bbfda6e70a93de69d659b6",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaCartPanel.tsx",
-      "bytes": 479,
-      "sha256": "9f9447a37eadfec4a7abc263d1ce48d6b901d12428e8dce0e5db396476ea5a1e",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaCheckoutPanel.tsx",
-      "bytes": 493,
-      "sha256": "d32df44e65a761aaf42efa33cf4c9ab30100cd796677c2475f7f8b6124b1be2b",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaCommandPanel.tsx",
-      "bytes": 495,
-      "sha256": "9d7b7cfc2e7a01f9b6ab078b782040e6ab688f3b92c021942d4273cc1106c4a9",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaComponents.module.css",
-      "bytes": 3195,
-      "sha256": "03c5c9773805c08ff489d1aed3cb7005916cb259ec316372017e092b6b09e1e7",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaDataPanel.tsx",
-      "bytes": 556,
-      "sha256": "6cf9c9afc67cbda4cfde52dcc0023c731f36d8a4882a936290ebbcefa96c37f8",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaGlassCard.tsx",
-      "bytes": 595,
-      "sha256": "b8ffc552c36466cb48d3290bf3001a636db1404bdc45c8ad570dc537194e4076",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaMetricCard.tsx",
-      "bytes": 690,
-      "sha256": "e4660ef308a0ecb07c9b1cf82cce4c951b0cdb5e201c5948607ccd404e6e5799",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaProductCard.tsx",
-      "bytes": 799,
-      "sha256": "d01a13fe8f78b3c94280eb03362ef67ec38122b388c86702dcd5d99a9c3fdaf5",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaRouteFrame.tsx",
-      "bytes": 470,
-      "sha256": "4bf2c37ecfe58e26dfa1fe83702c2f527cc2f377dca8a5da408b6eb22f0d7bbf",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaShellFrame.tsx",
-      "bytes": 457,
-      "sha256": "a06afdfb6ef7fd00577572418d55a84323059a91b473f8fc7f711163ac986deb",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaStateBanner.tsx",
-      "bytes": 545,
-      "sha256": "6466812e22c62fad3723ae0a5dc8b917069a9f29bdf23b0372d2d5c5b388a9c3",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/PrismaSurfacePanel.tsx",
-      "bytes": 604,
-      "sha256": "3f515190b2a2b9498d9a1cb5d1cb3f89eb71642c860a5315de9cd2bed9197162",
-      "extension": ".tsx",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/index.ts",
-      "bytes": 506,
-      "sha256": "f0f3c38463106dc349a513301e00c296b9d1601b75f6c51869edfdaca00ea6d9",
-      "extension": ".ts",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/prisma-components.css",
-      "bytes": 25305,
-      "sha256": "6913530b1cd7bce42d107a81542cb68a872ab6eb9c088a30565557b3a5194afb",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/components/types.ts",
-      "bytes": 1089,
-      "sha256": "9c82748bc335641fb5eb503d7ce114651fe61a45f9771428b0f3314af496d4a3",
-      "extension": ".ts",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/effects/prisma-reference-effects.css",
-      "bytes": 4230,
-      "sha256": "71d464fa427da6c7c8ee2810a7e39475f233f83a391eee4ad776bc5f4effdc6e",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/chart-lab-recipes.css",
-      "bytes": 136,
-      "sha256": "cc2549e1d0ec46bcba706e651b3229608f3eb7506583e07916b93a83a2414330",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/mobile-recipes.css",
-      "bytes": 143,
-      "sha256": "b1ce442113f8d9e5b2f1d2bf735f4d6616ab1f1bbbabfccd98f62a32ba7f3d14",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/pc-recipes.css",
-      "bytes": 188,
-      "sha256": "7cff422a4d1810be30af49b7bcf431b88637f6cf8f81a58f850039a164b9a963",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/prisma-recipes.css",
-      "bytes": 579,
-      "sha256": "e1e26bf8a118b9ee7c28fd212380894bdf650a50fc55b8904c20414ccc5c36e1",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/tablet-premium.recipes.json",
-      "bytes": 1258,
-      "sha256": "6827a46603388ea54aed8350b0105984ba9acff1432f2d4c35217b4e2f635d48",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/tablet-recipes.css",
-      "bytes": 146,
-      "sha256": "0d8953b4228b5a927eb7d491946c4e686c30bbe569fca81bce8e2b37cec312d8",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/recipes/visual-recipes.curated.json",
-      "bytes": 2511,
-      "sha256": "0471c97c2e1bc3283406917e14093b465adf16cf35efe0f5c7efcc545c141b82",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/add-future-component-family.template.md",
-      "bytes": 152,
-      "sha256": "71206799125418806c1d95987fd8e7c9f75bbf8b7980098e6e19fc835a8a0ad3",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/migrate-legacy-css.template.md",
-      "bytes": 152,
-      "sha256": "3432533786e3ef4de9dc60a19bcf530febdf8d2eadcc5a36752b38d2aecc85d4",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-background-recipe.template.md",
-      "bytes": 160,
-      "sha256": "6ad508fcdbf45b5f85a74db6e2633bf6a29511ff694e0aecbfdcbffc3729fa19",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-card.template.md",
-      "bytes": 475,
-      "sha256": "ec6d1aa1e582b5d0f455ae36fe74fdaf5656c339fcd586bcc53c91f960b6bb48",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-data-display.template.md",
-      "bytes": 530,
-      "sha256": "6bd073dd6a0bad0d93ac4d00609659164baac7c23dac3079d1b4745d192372d1",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-mobile-screen.template.md",
-      "bytes": 129,
-      "sha256": "019d335128999a011a7ede53a302884ed3fce21a71a4a440cfe3baea53bcfcf3",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-panel.template.md",
-      "bytes": 532,
-      "sha256": "19ccc3552ea9c05e374457697c37db59c77e6ecc76f53f546515ffbadff3936b",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-pc-screen.template.md",
-      "bytes": 155,
-      "sha256": "423c0a92d267b8124a9ddf36fda29dfeede4092df4faf0916abfa6106503a72d",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-shell.template.md",
-      "bytes": 659,
-      "sha256": "0ffbd5d3f2c82b1afe27a10ca748b3af18d5e1db99c8230e87cc5baf9b847786",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-state.template.md",
-      "bytes": 126,
-      "sha256": "8a6b7b80e4780f2f5b04f85a96cc36e55ae7eeee2c62f3ce5634723f59ed165b",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/new-tablet-screen.template.md",
-      "bytes": 194,
-      "sha256": "2b5271f5c692ad0236a834ed83672604657523e85fba600406fcb6a5eea1dd2b",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/templates/split-choncho-css.template.md",
-      "bytes": 179,
-      "sha256": "b5f9a287b92dd5da2cf6f90317549eb29d97b362b93111b7f9071b388b786ab3",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/tokens/prisma-theme.css",
-      "bytes": 999,
-      "sha256": "81de4973dcf13cb7fafd0b2133922b86851b039807bf831d265dc31c2746166b",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/tokens/tablet-premium.css",
-      "bytes": 3026,
-      "sha256": "045900a5bce32858dfc7453ddf55f0e46ba8b7fa921038e9da5746261a359a3e",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/README.md",
-      "bytes": 619,
-      "sha256": "a9d1cedc99ff201def7939ac534dabe80ab775a24357849e31835469b4fd2739",
-      "extension": ".md",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.controls.json",
-      "bytes": 6237,
-      "sha256": "7b679d3435aa270447e3d8490d229306ce79fc60b4c3df6352efe42116a166f5",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.golden-screens.00c.json",
-      "bytes": 3223,
-      "sha256": "b07f050eee39471806feb0dc316e26ee1872e439dc9e1122290dca642804439f",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.layers.json",
-      "bytes": 3488,
-      "sha256": "c7a116e4f117c573842a6379204ee3600a445086ca8f6122e1dba37a4843bbe5",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.presets.json",
-      "bytes": 3065,
-      "sha256": "18ef4e6dd732bacefa4822756bce58838066ed139b4950bc7a209ccaf51eec71",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.qa-matrix.00l.json",
-      "bytes": 2398,
-      "sha256": "6428350a350304eca855d4e3ef79e57ccb22d33aaa407ff067bf510a7f1b7dd0",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.recipes.json",
-      "bytes": 5264,
-      "sha256": "1d89b168d4207c65f593a0cce130a8ce4df5dcbc32e0aa5f797e6045a2763777",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.release-gate.00n.json",
-      "bytes": 1435,
-      "sha256": "592ede4daf365a5aa69370c07977f1465987d2fef46522f1a250484a4ec42471",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.runtime.schema.json",
-      "bytes": 1384,
-      "sha256": "c1e8b5cd72f69100e37eb016ee7f09b2ba654e5f213a62b9ef1787e982357d00",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.scorecard.json",
-      "bytes": 1804,
-      "sha256": "f347e315a1ab5e5e5371aac5e3bd9b050e74ea4b87cbb163048e49b8628a489f",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.tokens.css",
-      "bytes": 3663,
-      "sha256": "00592b0733955199b4bdb42d2529c335002c3e2a833ad447cea85b7d28aeb54c",
-      "extension": ".css",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
-      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.variant-packs.00m.json",
-      "bytes": 2312,
-      "sha256": "af8a6e3ca32864e831e0de7d48db1f3b699709d8afc0c3b0a843f420e4baf41f",
-      "extension": ".json",
-      "source_id": "app:shared-ui",
-      "reason": "shared-ui_authority"
-    },
-    {
       "path": "products/tablet/app/docs/architecture/PRISMA_TABLET_CATALOG_STOCK_SELLING_ASSIST_03J_03K_CONTRACT.md",
       "bytes": 6349,
       "sha256": "a01b1a53f544c09c383ac25b6dc11b8469a8f809277e4201ae7739f5d03e0fc4",
@@ -5963,54 +2244,6 @@
       "reason": "tablet_authority"
     },
     {
-      "path": "products/web/app/docs/surface-visual-governor/pilot-11-eit-web-public-sober-shell.md",
-      "bytes": 176,
-      "sha256": "f5bcb47d5aba09db5d99fc892e28fad93b2c018384928bf77a4d934cf694799c",
-      "extension": ".md",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/web/app/public/visual-backgrounds/web/README.md",
-      "bytes": 119,
-      "sha256": "e2c8e6bd78494d3f92905da0245e311f46b5a1b61073d53775bac357ee622b55",
-      "extension": ".md",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/web/app/public/visual-backgrounds/web/active-background.json",
-      "bytes": 172,
-      "sha256": "3c245892b97bff244a881fbe5913dbb3372e23235d52e5ce08fcbb7e3495deaa",
-      "extension": ".json",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/web/app/public/visual-backgrounds/web/assets/tablet-cloudglass-default.jpg",
-      "bytes": 415340,
-      "sha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
-      "extension": ".jpg",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/web/app/public/visual-backgrounds/web/assets/tablet-cloudglass-default.png",
-      "bytes": 19761037,
-      "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
-      "extension": ".png",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
-      "path": "products/web/app/public/visual-backgrounds/web/backgrounds.manifest.json",
-      "bytes": 62052,
-      "sha256": "103165d0d2578fe32abc70f41e614dc0258dc3d3e1a4d8f8216ff7307af95ab5",
-      "extension": ".json",
-      "source_id": "app:web",
-      "reason": "web_authority"
-    },
-    {
       "path": "quality/PRISMA_COMMERCIAL_PACKAGE_HYGIENE_POLICY.json",
       "bytes": 1626,
       "sha256": "fd6f846e019e75fa6f7d55de2171b2368655f4bfeb0b465d800fa9f16304421a",
@@ -6079,8 +2312,8 @@
       "bytes": 483,
       "sha256": "49d4bce2a68b8f865012319a664498e0f55b6d1fbe715d8c0934634c83796eee",
       "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
+      "source_id": "app:quality",
+      "reason": "quality_authority"
     },
     {
       "path": "quality/contracts/customer-assurance.contract.json",
@@ -6119,8 +2352,8 @@
       "bytes": 519,
       "sha256": "7814441d8ae6ca2bc9b96b19feb82dea09de1d8c7f6edd4f5e0db53b0ca3b56a",
       "extension": ".json",
-      "source_id": "app:mobile",
-      "reason": "mobile_authority"
+      "source_id": "app:quality",
+      "reason": "quality_authority"
     },
     {
       "path": "quality/contracts/no-destructive-testing-on-real-db.contract.json",
@@ -6143,8 +2376,8 @@
       "bytes": 549,
       "sha256": "4322fe3921675e81bdca86b174d8e2e2b2a317dedf046e9a013e10188a504a59",
       "extension": ".json",
-      "source_id": "app:control-center",
-      "reason": "control-center_authority"
+      "source_id": "app:quality",
+      "reason": "quality_authority"
     },
     {
       "path": "quality/contracts/prisma-not-pos-only.contract.json",
@@ -7865,8 +4098,8 @@
     "candidate_files": [
       {
         "path": ".governance/current/MISSING_OR_UNMAPPED_RISK.md",
-        "bytes": 645,
-        "sha256": "27acef3f1843e0e5af491ff7f931e402b7fd66aa854028212353373c5b09b3d3",
+        "bytes": 665,
+        "sha256": "8dd05893d94aeb7c87413e31e90e501913b294d657c95c4cd48a0a302ce11518",
         "sample_items": [
           "- Status: `PASS`",
           "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
@@ -7879,232 +4112,246 @@
           "- Status: `PASS`",
           "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
           "- Status: `PASS`",
-          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈68"
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12"
+        ],
+        "item_count_estimate": 12
+      },
+      {
+        "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/.governance/current/MISSING_OR_UNMAPPED_RISK.md",
+        "bytes": 665,
+        "sha256": "8dd05893d94aeb7c87413e31e90e501913b294d657c95c4cd48a0a302ce11518",
+        "sample_items": [
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12"
         ],
         "item_count_estimate": 12
       }
     ],
-    "candidate_count": 1
+    "candidate_count": 2
   },
   "visual_capability_resolver": {
     "schema_version": "2.0.0",
-    "visual_required": true,
+    "visual_required": false,
     "capability_count": 27,
     "available_capability_count": 26,
     "apps": [
-      "backgrounds",
-      "chart-lab",
-      "control-center",
       "database-sync",
-      "mobile",
       "pc",
       "productization",
       "quality",
       "shared-kernel",
-      "shared-ui",
-      "tablet",
-      "web"
+      "tablet"
     ],
     "candidate_target_files": [
       {
-        "path": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
-        "score": 110,
-        "bytes": 1730
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts",
-        "score": 110,
-        "bytes": 543
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/sync/project-tablet-to-pc/route.ts",
-        "score": 110,
-        "bytes": 549
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/tablet-communication/governance-command/route.ts",
-        "score": 110,
-        "bytes": 1354
-      },
-      {
-        "path": "products/pc/app/app/api/backoffice/tablet-communication/route.ts",
-        "score": 110,
-        "bytes": 531
-      },
-      {
-        "path": "products/pc/app/app/api/charts/pc/tablet-catalog-freshness-grid/route.ts",
-        "score": 110,
-        "bytes": 902
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/error.tsx",
-        "score": 110,
-        "bytes": 538
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/loading.tsx",
-        "score": 110,
-        "bytes": 341
-      },
-      {
-        "path": "products/pc/app/app/tablet-communication/page.tsx",
-        "score": 110,
-        "bytes": 370
-      },
-      {
         "path": "products/tablet/app/app/api/pos/sync/health/pc/route.ts",
-        "score": 110,
+        "score": 160,
         "bytes": 3648
       },
       {
-        "path": "products/tablet/app/src/server/sync/pc-origin.ts",
-        "score": 110,
-        "bytes": 4915
+        "path": "products/tablet/app/docs/pos/PRISMA_POS_VISUAL_04_CART_CHECKOUT_HIERARCHY.md",
+        "score": 150,
+        "bytes": 1063
       },
       {
-        "path": "products/pc/app/docs/PC_TABLET_CATALOG_MIRROR_04D.md",
-        "score": 100,
-        "bytes": 1030
+        "path": "products/tablet/app/docs/pos/PRISMA_TABLET_CHECKOUT_FINALIZATION_FIX_31.md",
+        "score": 150,
+        "bytes": 1049
       },
       {
-        "path": "products/pc/app/docs/PC_TABLET_COMMUNICATION_NOTES.md",
-        "score": 100,
-        "bytes": 1822
+        "path": "products/tablet/app/docs/pos/PRISMA_TABLET_SELL_CHECKOUT_PAYMENT_FLOW_04A.md",
+        "score": 150,
+        "bytes": 688
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileActionInbox.tsx",
-        "score": 80,
-        "bytes": 4763
+        "path": "products/tablet/app/docs/qa/pos-checkout-02/acceptance.md",
+        "score": 150,
+        "bytes": 843
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileCommandCenter.tsx",
-        "score": 80,
-        "bytes": 5114
+        "path": "products/tablet/app/docs/qa/pos-checkout-02/smoke-tests.md",
+        "score": 150,
+        "bytes": 593
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileCrystalCommand.tsx",
-        "score": 80,
-        "bytes": 16178
+        "path": "products/tablet/app/components/checkout/checkout-cash-calculator.tsx",
+        "score": 130,
+        "bytes": 2057
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDailyBrief.tsx",
-        "score": 80,
-        "bytes": 3178
+        "path": "products/tablet/app/components/checkout/checkout-payment-methods.tsx",
+        "score": 130,
+        "bytes": 1706
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
-        "score": 80,
-        "bytes": 15679
+        "path": "products/tablet/app/components/checkout/checkout-screen.tsx",
+        "score": 130,
+        "bytes": 20975
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
-        "score": 80,
-        "bytes": 2684
+        "path": "products/tablet/app/components/checkout/checkout-summary-card.tsx",
+        "score": 130,
+        "bytes": 77
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileHealthRadar.tsx",
-        "score": 80,
-        "bytes": 3797
+        "path": "products/tablet/app/components/checkout/checkout-summary.tsx",
+        "score": 130,
+        "bytes": 1331
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMetricCard.tsx",
-        "score": 80,
-        "bytes": 691
+        "path": "products/tablet/app/components/checkout/payment-method-selector.tsx",
+        "score": 130,
+        "bytes": 94
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx",
-        "score": 80,
-        "bytes": 12858
+        "path": "products/tablet/app/components/checkout/ticket-confirmation.tsx",
+        "score": 130,
+        "bytes": 89
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePanels.tsx",
-        "score": 80,
-        "bytes": 9786
+        "path": "products/tablet/app/components/pos/pos-cobro-surface.tsx",
+        "score": 130,
+        "bytes": 26802
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
-        "score": 80,
-        "bytes": 15016
+        "path": "products/tablet/app/components/pos/pos-error-banner.tsx",
+        "score": 130,
+        "bytes": 1033
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
-        "score": 80,
-        "bytes": 3162
+        "path": "products/tablet/app/components/pos/pos-live-binding.tsx",
+        "score": 130,
+        "bytes": 8118
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
-        "score": 80,
-        "bytes": 10592
+        "path": "products/tablet/app/components/pos/pos-packshots.ts",
+        "score": 130,
+        "bytes": 30607
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaInstallPage.tsx",
-        "score": 80,
-        "bytes": 2266
+        "path": "products/tablet/app/components/pos/pos-payment-panel.tsx",
+        "score": 130,
+        "bytes": 33420
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
-        "score": 80,
-        "bytes": 2320
+        "path": "products/tablet/app/components/pos/pos-payment-risk-banner.tsx",
+        "score": 130,
+        "bytes": 1309
       },
       {
-        "path": "products/mobile/app/src/components/prisma-app/index.ts",
-        "score": 80,
-        "bytes": 877
+        "path": "products/tablet/app/components/pos/pos-product-list.tsx",
+        "score": 130,
+        "bytes": 14747
       },
       {
-        "path": "products/pc/app/app/components/PrismaAtmosphericBackground.tsx",
-        "score": 80,
-        "bytes": 1906
+        "path": "products/tablet/app/components/pos/pos-product-search.tsx",
+        "score": 130,
+        "bytes": 3321
       },
       {
-        "path": "products/pc/app/components/backoffice/data-table.tsx",
-        "score": 80,
-        "bytes": 3234
+        "path": "products/tablet/app/components/pos/pos-sale-success.tsx",
+        "score": 130,
+        "bytes": 4699
       },
       {
-        "path": "products/pc/app/components/backoffice/empty-state.tsx",
-        "score": 80,
-        "bytes": 270
+        "path": "products/tablet/app/components/pos/pos-screen.tsx",
+        "score": 130,
+        "bytes": 25937
       },
       {
-        "path": "products/pc/app/components/backoffice/executive-dashboard.tsx",
-        "score": 80,
-        "bytes": 4270
+        "path": "products/tablet/app/components/pos/pos-shortcuts.tsx",
+        "score": 130,
+        "bytes": 670
       },
       {
-        "path": "products/pc/app/components/backoffice/ingest-event-panel.tsx",
-        "score": 80,
-        "bytes": 1489
+        "path": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "score": 130,
+        "bytes": 14209
       },
       {
-        "path": "products/pc/app/components/backoffice/kpi-card.tsx",
-        "score": 80,
-        "bytes": 692
+        "path": "products/tablet/app/components/pos/terminal-v2/index.ts",
+        "score": 130,
+        "bytes": 146
       },
       {
-        "path": "products/pc/app/components/backoffice/module-overview-page.tsx",
-        "score": 80,
-        "bytes": 3316
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-command-dock.tsx",
+        "score": 130,
+        "bytes": 57
       },
       {
-        "path": "products/pc/app/components/backoffice/status-badge.tsx",
-        "score": 80,
-        "bytes": 527
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-product-canvas.tsx",
+        "score": 130,
+        "bytes": 59
       },
       {
-        "path": "products/pc/app/components/catalog/catalog-dashboard.tsx",
-        "score": 80,
-        "bytes": 11579
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-header.tsx",
+        "score": 130,
+        "bytes": 60
       },
       {
-        "path": "products/pc/app/components/control/cash-sessions-operational-view.tsx",
-        "score": 80,
-        "bytes": 7388
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.tsx",
+        "score": 130,
+        "bytes": 4409
       },
       {
-        "path": "products/pc/app/components/control/pc-command-actions.tsx",
-        "score": 80,
-        "bytes": 2811
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-ticket-rail.tsx",
+        "score": 130,
+        "bytes": 56
+      },
+      {
+        "path": "products/tablet/app/components/pos/use-prisma-packshot-skin.ts",
+        "score": 130,
+        "bytes": 1316
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-cart-panel.tsx",
+        "score": 130,
+        "bytes": 12887
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-category-rail.tsx",
+        "score": 130,
+        "bytes": 1981
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-data.ts",
+        "score": 130,
+        "bytes": 4511
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx",
+        "score": 130,
+        "bytes": 6898
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx",
+        "score": 130,
+        "bytes": 2326
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx",
+        "score": 130,
+        "bytes": 2606
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-grid.tsx",
+        "score": 130,
+        "bytes": 628
+      },
+      {
+        "path": "products/tablet/app/components/prisma-dark-pos/prisma-route-ui.tsx",
+        "score": 130,
+        "bytes": 8299
       }
     ],
     "govmesh3_outputs": [

@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { QuickActionStrip, QuickActionTile } from "@components/tablet-action-tiles/tablet-action-tiles";
 import { requestJson } from "@/lib/pos/cart-state";
 import styles from "./offline-export-audit.module.css";
 
@@ -87,7 +86,7 @@ function movementReasonCopy(reason: string) {
   return reason || "Movimiento local";
 }
 
-export function OfflineExportAuditScreen() {
+export function OfflineResilienceWorkspace() {
   const [audit, setAudit] = useState<OfflineAudit | null>(null);
   const [state, setState] = useState<ScreenState>("loading");
   const [error, setError] = useState<string | null>(null);
@@ -124,6 +123,7 @@ export function OfflineExportAuditScreen() {
       title="Sin conexión y respaldo"
       subtitle="No pierdes ventas: la Tablet guarda los movimientos y los envia cuando vuelve la conexión."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
+      showRouteHeader={false}
     >
       <main className={styles.page}
         data-surface="tablet"
@@ -160,13 +160,6 @@ export function OfflineExportAuditScreen() {
             {state === "loading" ? "Actualizando…" : "Actualizar"}
           </button>
         </section>
-
-        <QuickActionStrip label="Acciones rapidas offline">
-          <QuickActionTile title="Exportar respaldo" description="Abre los archivos reales de ventas, pendientes y movimientos." actionLabel="Descargar" icon="save" tone="sync" href="#respaldo-local" owner="offline" />
-          <QuickActionTile title="Ver pendientes" description="Revisa y reintenta movimientos por enviar." actionLabel="Pendientes" icon="bell" tone="warning" href="/sync" owner="sync" />
-          <QuickActionTile title="Reintentar conexion" description="Relee la auditoría offline local." actionLabel={state === "loading" ? "Actualizando" : "Actualizar"} icon="search" tone="neutral" onClick={() => void load()} disabled={state === "loading"} owner="offline" />
-          <QuickActionTile title="Sincronizacion" description="Abre el panel de continuidad y conexión." actionLabel="Abrir" icon="arrow-right" tone="primary" href="/sync" owner="sync" />
-        </QuickActionStrip>
 
         {state === "error" ? <div data-surface="tablet" data-screen="pos" data-zone="unknown_group" data-panel="offline_export_audit_screen" data-target="offline-export-audit-screen-div-5" data-kind="panel" data-role="container" className={styles.alert}>{error}</div> : null}
 
@@ -353,3 +346,5 @@ export function OfflineExportAuditScreen() {
     </PrismaTabletShellUnified>
   );
 }
+
+export const OfflineExportAuditScreen = OfflineResilienceWorkspace;

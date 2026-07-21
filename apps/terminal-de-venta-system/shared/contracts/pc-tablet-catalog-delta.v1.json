@@ -4,7 +4,11 @@
   "stream": "pc.catalog.delta.v1",
   "sourceOfTruth": "shared/contracts/pc-tablet-catalog-delta.v1.json",
   "direction": "PC_TO_TABLET",
-  "modes": ["delta", "bootstrap", "resync"],
+  "modes": [
+    "delta",
+    "bootstrap",
+    "resync"
+  ],
   "operation": "upsert",
   "checkpointStrategy": "updatedAt_entityRank_id",
   "entities": [
@@ -15,6 +19,9 @@
     "ProductSupplier",
     "PriceList",
     "PriceListItem",
+    "PromotionRule",
+    "DiscountPolicy",
+    "PricingAuthorizationRule",
     "DropdownCatalog",
     "DropdownOption"
   ],
@@ -49,8 +56,9 @@
     "unknown_entity"
   ],
   "notes": [
-    "PC exports canonical catalog/master-data deltas from Prisma canonical DB.",
+    "PC exports canonical catalog and pricing deltas from Prisma canonical DB.",
     "Tablet maps source PC businessId into its local operational business scope so offline sales stay local.",
-    "Product stockOnHand is set on create only; catalog updates do not reset local Tablet sale stock."
+    "Product stockOnHand is set on create only; catalog updates do not reset local Tablet sale stock.",
+    "Pricing policies are projected as versioned local read models. Authorization requests remain PC-only."
   ]
 }

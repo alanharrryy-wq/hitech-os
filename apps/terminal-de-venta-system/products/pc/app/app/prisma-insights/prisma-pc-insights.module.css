@@ -1,11 +1,6 @@
 .shell {
   min-height: 100vh;
   padding: 32px;
-  color: #071426;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, .94), rgba(237, 244, 255, .86)),
-    radial-gradient(circle at 16% 12%, rgba(99, 223, 255, .28), transparent 30%),
-    #eef4fb;
 }
 
 .hero {
@@ -26,13 +21,11 @@
 
 .hero p {
   max-width: 760px;
-  color: #526176;
   font-size: 1rem;
 }
 
 .eyebrow {
   margin: 0;
-  color: #086dff;
   font-size: .78rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -44,11 +37,6 @@
 .focusPanel,
 .toolbar,
 .card {
-  border: 1px solid rgba(134, 154, 184, .32);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, .76);
-  box-shadow: 0 22px 70px rgba(8, 27, 55, .12);
-  backdrop-filter: blur(18px);
 }
 
 .telemetry {
@@ -62,7 +50,6 @@
 .telemetry small,
 .cardFooter,
 .cardHeader span {
-  color: #637187;
 }
 
 .telemetry strong {
@@ -85,7 +72,6 @@
 }
 
 .filterGroup span {
-  color: #526176;
   font-size: .75rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -100,19 +86,13 @@
 .filterGroup button,
 .resetButton {
   min-height: 34px;
-  border: 1px solid rgba(8, 109, 255, .22);
-  border-radius: 999px;
   padding: 0 13px;
-  color: #071426;
-  background: rgba(255, 255, 255, .8);
   font-weight: 800;
   cursor: pointer;
 }
 
 .resetButton {
   margin-left: auto;
-  background: #071426;
-  color: #fff;
 }
 
 .focusPanel {
@@ -125,7 +105,6 @@
 }
 
 .focusPanel span {
-  color: #637187;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -163,10 +142,7 @@
 
 .cardHeader small {
   align-self: start;
-  border-radius: 999px;
   padding: 6px 10px;
-  color: #086dff;
-  background: rgba(8, 109, 255, .10);
   font-weight: 900;
 }
 
@@ -179,7 +155,6 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid rgba(134, 154, 184, .22);
   margin-top: 12px;
   padding-top: 10px;
   font-size: .76rem;
@@ -200,7 +175,6 @@
 .disabledPanel span {
   display: inline-block;
   margin-top: 12px;
-  color: #526176;
 }
 
 @media (max-width: 980px) {
