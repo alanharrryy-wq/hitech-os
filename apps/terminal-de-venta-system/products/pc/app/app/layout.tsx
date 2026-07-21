@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
 
   return (
-    <html lang="es-MX" data-prisma-surface="pc-backoffice">
+    <html lang="es-MX" data-prisma-surface="pc-backoffice" data-prisma-visual-os="PC_DENSE_ADMIN">
       <body
         className={styles.body}
         data-prisma-panel={prismaRoutePanelId(route)}

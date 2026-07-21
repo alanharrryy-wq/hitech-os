@@ -1,4 +1,31 @@
+@import "../../../shared-ui/prisma/visual-os/prisma-visual-os.tokens.css";
+
 :root {
+  color-scheme: dark;
+  --pc-atlas-ink: #f2f8ff;
+  --pc-atlas-ink-soft: rgba(224, 237, 250, 0.76);
+  --pc-atlas-ink-dim: rgba(204, 220, 236, 0.58);
+  --pc-atlas-line: rgba(198, 226, 247, 0.16);
+  --pc-atlas-line-strong: rgba(139, 222, 246, 0.36);
+  --pc-atlas-shell: rgba(5, 15, 28, 0.62);
+  --pc-atlas-panel: rgba(8, 22, 38, 0.58);
+  --pc-atlas-card: rgba(10, 27, 45, 0.46);
+  --pc-atlas-control: rgba(16, 36, 55, 0.58);
+  --pc-atlas-row: rgba(199, 229, 247, 0.035);
+  --pc-atlas-cyan: #79e8ff;
+  --pc-atlas-emerald: #7cebbd;
+  --pc-atlas-violet: #c5a8ff;
+  --pc-atlas-amber: #ffd27d;
+  --pc-atlas-magenta: #ff91d5;
+  --pc-atlas-pink: #ffb1c8;
+  --pc-atlas-navy: #8eb7ff;
+  --pc-atlas-danger: #ff9fa7;
+  --pc-atlas-radius-shell: 24px;
+  --pc-atlas-radius-panel: 18px;
+  --pc-atlas-radius-control: 12px;
+  --pc-atlas-shadow: 0 22px 64px rgba(0, 5, 15, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --pc-atlas-shadow-card: 0 14px 34px rgba(0, 5, 15, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --pc-atlas-focus: 0 0 0 3px rgba(121, 232, 255, 0.28);
 }
 
 * {
@@ -14,15 +41,42 @@ body {
 
 body {
   min-height: 100vh;
+  color: var(--pc-atlas-ink);
+  background-color: #030a13;
+  background-image:
+    linear-gradient(128deg, rgba(2, 8, 16, 0.82), rgba(7, 20, 35, 0.52) 48%, rgba(2, 8, 16, 0.78)),
+    radial-gradient(900px 620px at 82% 8%, rgba(121, 232, 255, 0.1), transparent 68%),
+    radial-gradient(760px 520px at 12% 82%, rgba(197, 168, 255, 0.08), transparent 72%),
+    url("/visual-backgrounds/pc/assets/pc-graphite-cloudglass-base-3015a4e7.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow-x: hidden;
 }
 
 a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
+}
+
+::selection {
+  color: #03101a;
+  background: rgba(121, 232, 255, 0.78);
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pc-atlas-cyan);
+  outline-offset: 3px;
+  box-shadow: var(--pc-atlas-focus);
 }
 
 .prisma-shard {
@@ -41,6 +95,7 @@ input {
 }
 
 .subtle {
+  color: var(--pc-atlas-ink-dim);
 }
 
 .panel-label,
@@ -50,6 +105,7 @@ input {
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 850;
+  color: var(--pc-atlas-cyan);
 }
 
 .nav-icon {
@@ -75,6 +131,7 @@ input {
 
 .nav-desc {
   font-size: 12px;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .sidebar-spacer {
@@ -93,6 +150,9 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-control);
 }
 
 .footer-actions {
@@ -108,6 +168,9 @@ input {
   padding: 10px;
   font-size: 13px;
   font-weight: 780;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(121, 232, 255, 0.07);
 }
 
 .hero,
@@ -115,6 +178,29 @@ input {
 .panel {
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  color: var(--pc-atlas-ink);
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(121, 232, 255, 0.1), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.01)),
+    var(--pc-atlas-panel);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(12px) saturate(118%);
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
+}
+
+.card,
+.panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.006)),
+    var(--pc-atlas-card);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .search-shell,
@@ -136,6 +222,9 @@ input {
   align-items: center;
   gap: 12px;
   padding: 0 16px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-control);
 }
 
 .search-shell input {
@@ -155,6 +244,9 @@ input {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  background: rgba(121, 232, 255, 0.07);
 }
 
 .avatar {
@@ -164,6 +256,10 @@ input {
   align-items: center;
   justify-content: center;
   font-weight: 900;
+  border: 1px solid rgba(121, 232, 255, 0.34);
+  border-radius: 50%;
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.1);
 }
 
 .hero {
@@ -186,6 +282,8 @@ input {
   font-size: clamp(34px, 4vw, 54px);
   line-height: 0.98;
   font-weight: 860;
+  color: var(--pc-atlas-ink);
+  letter-spacing: -0.035em;
 }
 
 .hero-copy {
@@ -197,6 +295,7 @@ input {
   margin: 12px 0 0;
   font-size: 16px;
   line-height: 1.5;
+  color: var(--pc-atlas-ink-soft);
 }
 
 .hero-badges,
@@ -219,9 +318,16 @@ input {
   padding: 0 14px;
   font-size: 13px;
   font-weight: 720;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.055);
 }
 
 .alert-chip {
+  border-color: rgba(255, 210, 125, 0.3);
+  color: var(--pc-atlas-amber);
+  background: rgba(255, 210, 125, 0.075);
 }
 
 .inline-chip {
@@ -259,6 +365,7 @@ input {
 .card-title {
   margin: 10px 0 0;
   font-size: 14px;
+  color: var(--pc-atlas-ink-soft);
 }
 
 .metric {
@@ -268,6 +375,8 @@ input {
   font-size: clamp(34px, 4vw, 52px);
   font-weight: 860;
   line-height: 1;
+  color: var(--pc-atlas-ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-note {
@@ -275,6 +384,7 @@ input {
   z-index: 1;
   margin-top: 8px;
   font-size: 13px;
+  color: var(--pc-atlas-ink-dim);
 }
 
 .metric-details {
@@ -284,6 +394,9 @@ input {
 .metric-detail {
   min-width: 160px;
   padding: 12px 14px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: var(--pc-atlas-row);
 }
 
 .metric-detail strong {
@@ -298,6 +411,10 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(121, 232, 255, 0.24);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.07);
 }
 
 .grid-span-8 {
@@ -316,16 +433,23 @@ input {
   margin: 5px 0 0;
   font-size: 25px;
   line-height: 1.12;
+  color: var(--pc-atlas-ink);
+  letter-spacing: -0.025em;
 }
 
 .section-copy {
   max-width: 620px;
+  color: var(--pc-atlas-ink-soft);
+  line-height: 1.5;
 }
 
 .table-wrap {
   position: relative;
   z-index: 1;
   overflow: auto;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(4, 14, 25, 0.34);
 }
 
 .table-wrap table {
@@ -340,6 +464,7 @@ td {
   text-align: left;
   vertical-align: middle;
   font-size: 14px;
+  border-bottom: 1px solid rgba(198, 226, 247, 0.1);
 }
 
 th {
@@ -347,9 +472,12 @@ th {
   letter-spacing: 0.06em;
   font-size: 11px;
   font-weight: 850;
+  color: var(--pc-atlas-cyan);
+  background: rgba(5, 18, 32, 0.92);
 }
 
 tr:hover td {
+  background: rgba(121, 232, 255, 0.055);
 }
 
 .badge {
@@ -360,15 +488,28 @@ tr:hover td {
   padding: 0 10px;
   font-size: 12px;
   font-weight: 800;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: var(--pc-atlas-row);
 }
 
 .badge.ok {
+  border-color: rgba(124, 235, 189, 0.34);
+  color: var(--pc-atlas-emerald);
+  background: rgba(124, 235, 189, 0.08);
 }
 
 .badge.warn {
+  border-color: rgba(255, 210, 125, 0.34);
+  color: var(--pc-atlas-amber);
+  background: rgba(255, 210, 125, 0.08);
 }
 
 .badge.danger {
+  border-color: rgba(255, 159, 167, 0.34);
+  color: var(--pc-atlas-danger);
+  background: rgba(255, 159, 167, 0.08);
 }
 
 .list {
@@ -384,6 +525,9 @@ tr:hover td {
   justify-content: space-between;
   gap: 14px;
   padding: 14px 16px;
+  border-block-end: 1px solid rgba(198, 226, 247, 0.1);
+  color: var(--pc-atlas-ink-soft);
+  background: transparent;
 }
 
 .empty-state {
@@ -392,6 +536,10 @@ tr:hover td {
   display: grid;
   gap: 8px;
   padding: 20px;
+  border: 1px dashed var(--pc-atlas-line-strong);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.035);
 }
 
 .empty-state strong {
@@ -405,6 +553,10 @@ tr:hover td {
   justify-content: space-between;
   gap: 12px;
   padding: 13px 16px;
+  border: 1px solid rgba(255, 210, 125, 0.28);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-amber);
+  background: rgba(75, 48, 12, 0.32);
 }
 
 .dashboard-actions {
@@ -419,6 +571,10 @@ tr:hover td {
   gap: 10px;
   align-content: start;
   padding: 18px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background: var(--pc-atlas-row);
 }
 
 .action-card strong {
@@ -452,6 +608,96 @@ tr:hover td {
 .grid.cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
+
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"]), input, select, textarea) {
+  min-height: 40px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-control);
+}
+
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"])) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  cursor: pointer;
+  font-weight: 780;
+  transition:
+    border-color var(--prisma-vos-fast-motion, 120ms) ease,
+    background-color var(--prisma-vos-fast-motion, 120ms) ease,
+    color var(--prisma-vos-fast-motion, 120ms) ease;
+}
+
+body[data-prisma-surface="pc"] :where(.btn, button:not([role="tab"])):hover {
+  border-color: var(--pc-atlas-line-strong);
+  background-color: rgba(121, 232, 255, 0.1);
+}
+
+body[data-prisma-surface="pc"] :where(.btn-primary, button[data-primary="true"]) {
+  border-color: rgba(121, 232, 255, 0.5);
+  color: #eaffff;
+  background:
+    linear-gradient(135deg, rgba(121, 232, 255, 0.22), rgba(197, 168, 255, 0.1)),
+    rgba(9, 27, 44, 0.72);
+  box-shadow: 0 9px 24px rgba(0, 5, 15, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body[data-prisma-surface="pc"] :where(input, select, textarea) {
+  width: 100%;
+  padding: 9px 12px;
+}
+
+body[data-prisma-surface="pc"] :where(input, select, textarea)::placeholder {
+  color: var(--pc-atlas-ink-dim);
+}
+
+body[data-prisma-surface="pc"] :where(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+[data-summary-tone="ok"] {
+  border-color: rgba(124, 235, 189, 0.3);
+}
+
+[data-summary-tone="warn"] {
+  border-color: rgba(255, 210, 125, 0.3);
+}
+
+[data-summary-tone="danger"] {
+  border-color: rgba(255, 145, 213, 0.3);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --pc-atlas-shell: rgba(5, 15, 28, 0.96);
+    --pc-atlas-panel: rgba(8, 22, 38, 0.94);
+    --pc-atlas-card: rgba(10, 27, 45, 0.94);
+    --pc-atlas-control: rgba(16, 36, 55, 0.92);
+  }
+
+  .hero {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
+}
+
 .referencia-visual-container {
   width: 100%;
   min-height: 100vh;
