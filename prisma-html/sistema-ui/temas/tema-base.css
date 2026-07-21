@@ -1,18 +1,18 @@
-
 [data-prisma-theme] {
   --prisma-page-background:
-    radial-gradient(circle at 15% 8%, rgba(168, 205, 255, .42), transparent 28rem),
-    radial-gradient(circle at 86% 16%, rgba(224, 233, 246, .95), transparent 34rem),
-    linear-gradient(145deg, #f8fafc 0%, var(--prisma-color-background-cool) 52%, #f7f9fb 100%);
+    radial-gradient(circle at 14% 8%, rgba(166, 211, 246, .46), transparent 28rem),
+    radial-gradient(circle at 86% 14%, rgba(255, 255, 255, .96), transparent 34rem),
+    radial-gradient(circle at 70% 78%, rgba(211, 229, 242, .56), transparent 32rem),
+    linear-gradient(145deg, #f8fbfd 0%, var(--prisma-color-background-cool) 54%, #f6fafc 100%);
   --prisma-glass-background:
-    linear-gradient(135deg, rgba(255, 255, 255, .115), rgba(255, 255, 255, .032) 46%, rgba(255, 255, 255, .085));
-  --prisma-glass-border: var(--prisma-color-border-subtle);
+    linear-gradient(135deg, rgba(255, 255, 255, .78), rgba(244, 250, 253, .58) 48%, rgba(221, 235, 245, .52));
+  --prisma-glass-border: rgba(72, 111, 148, .19);
   --prisma-glass-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .74),
-    inset 0 -1px 0 rgba(71, 93, 124, .07),
-    var(--prisma-shadow-panel);
-  --prisma-glass-filter: blur(30px) saturate(135%) contrast(104%);
+    inset 0 1px 0 rgba(255, 255, 255, .98),
+    inset 0 -1px 0 rgba(66, 102, 136, .08),
+    0 24px 68px rgba(55, 82, 108, .14);
+  --prisma-glass-filter: blur(26px) saturate(128%) contrast(102%);
   --prisma-glass-reflection:
-    linear-gradient(115deg, rgba(255, 255, 255, .58) 0%, rgba(255, 255, 255, .08) 23%, transparent 46%);
-  --prisma-glass-reflection-opacity: .5;
+    linear-gradient(115deg, rgba(255, 255, 255, .82) 0%, rgba(255, 255, 255, .18) 25%, transparent 48%);
+  --prisma-glass-reflection-opacity: .62;
 }

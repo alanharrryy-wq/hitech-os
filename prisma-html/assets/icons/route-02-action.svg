@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">Acción operativa</title>
+  <desc id="desc">Movimiento coordinado que representa lo que hace PRISMA.</desc>
+  <defs>
+    <linearGradient id="g2" x1="10" y1="14" x2="61" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#78F1F5"/>
+      <stop offset=".46" stop-color="#4AA5FF"/>
+      <stop offset="1" stop-color="#8E6EFF"/>
+    </linearGradient>
+    <radialGradient id="c2" cx="0" cy="0" r="1" gradientTransform="translate(36 36) rotate(90) scale(17)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ECFFFF"/>
+      <stop offset=".32" stop-color="#62DFFF"/>
+      <stop offset="1" stop-color="#3767F4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow2" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.18 0 0 0 0 0.57 0 0 0 0 1 0 0 0 .38 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="36" cy="36" r="30" fill="url(#c2)" opacity=".75"/>
+  <g fill="none" stroke="url(#g2)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow2)">
+    <path d="M17 29A21 21 0 0 1 48 17"/>
+    <path d="m45 12 7 5-6 7"/>
+    <path d="M55 39A21 21 0 0 1 27 57"/>
+    <path d="m30 62-7-5 5-7"/>
+    <path d="M22 49A21 21 0 0 1 18 36"/>
+  </g>
+  <path d="M36 24 47 36 36 48 25 36 36 24Z" fill="url(#g2)" fill-opacity=".86" stroke="#F1FFFF" stroke-opacity=".75"/>
+  <circle cx="36" cy="36" r="3.6" fill="#F7FFFF"/>
+</svg>

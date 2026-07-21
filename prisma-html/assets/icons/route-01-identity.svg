@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">Identidad PRISMA</title>
+  <desc id="desc">Prisma luminoso que representa qué es PRISMA.</desc>
+  <defs>
+    <linearGradient id="g1" x1="12" y1="8" x2="60" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9FAFF"/>
+      <stop offset=".38" stop-color="#69D6FF"/>
+      <stop offset=".72" stop-color="#4B7CFF"/>
+      <stop offset="1" stop-color="#A58BFF"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0" cy="0" r="1" gradientTransform="translate(36 38) rotate(90) scale(31)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63D8FF" stop-opacity=".52"/>
+      <stop offset="1" stop-color="#63D8FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow1" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.15 0 0 0 0 0.48 0 0 0 0 1 0 0 0 .35 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="36" cy="36" r="34" fill="url(#glow1)"/>
+  <circle cx="36" cy="36" r="29" fill="none" stroke="url(#g1)" stroke-opacity=".34"/>
+  <g filter="url(#shadow1)">
+    <path d="M36 8 57 38 36 63 15 38 36 8Z" fill="url(#g1)" fill-opacity=".18" stroke="url(#g1)" stroke-width="1.7"/>
+    <path d="M36 8 36 39 15 38 36 8Z" fill="#F3FDFF" fill-opacity=".76"/>
+    <path d="M36 8 57 38 36 39 36 8Z" fill="#6BA6FF" fill-opacity=".34"/>
+    <path d="M15 38 36 39 36 63 15 38Z" fill="#2E73FF" fill-opacity=".52"/>
+    <path d="M57 38 36 63 36 39 57 38Z" fill="#8ADFFF" fill-opacity=".58"/>
+    <path d="M36 15V51" stroke="#F6FFFF" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

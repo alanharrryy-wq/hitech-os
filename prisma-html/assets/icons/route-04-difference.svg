@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">Diferencia demostrable</title>
+  <desc id="desc">Dos planos que convergen para representar por qué PRISMA es diferente.</desc>
+  <defs>
+    <linearGradient id="g4a" x1="12" y1="14" x2="42" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#62F2DE"/>
+      <stop offset="1" stop-color="#3088FF"/>
+    </linearGradient>
+    <linearGradient id="g4b" x1="60" y1="12" x2="31" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5A0FF"/>
+      <stop offset="1" stop-color="#6E73FF"/>
+    </linearGradient>
+    <filter id="shadow4" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.32 0 0 0 0 0.48 0 0 0 0 1 0 0 0 .4 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#shadow4)">
+    <path d="M11 19 36 11 36 61 11 51V19Z" fill="url(#g4a)" fill-opacity=".75" stroke="#EBFFFF" stroke-opacity=".76"/>
+    <path d="M61 19 36 11 36 61 61 51V19Z" fill="url(#g4b)" fill-opacity=".72" stroke="#FFF2FF" stroke-opacity=".76"/>
+    <path d="M36 11V61" stroke="#FFFFFF" stroke-width="1.7"/>
+    <path d="M19 35 31 29V43L19 35Z" fill="#EFFFFF" fill-opacity=".8"/>
+    <path d="M53 35 41 29V43L53 35Z" fill="#FFF1FF" fill-opacity=".8"/>
+  </g>
+</svg>

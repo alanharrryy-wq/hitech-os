@@ -2,25 +2,27 @@
   .ecosystem-map {
     min-height: 560px;
     display: grid;
-    grid-template-rows: 1fr auto;
-    gap: 18px;
+    grid-template-columns: minmax(250px, .7fr) minmax(0, 1.3fr);
+    gap: clamp(20px, 4vw, 48px);
     align-items: center;
   }
 
   .ecosystem-core {
-    width: min(330px, 70vw);
+    width: min(320px, 68vw);
     aspect-ratio: 1;
     justify-self: center;
     display: grid;
     place-items: center;
     align-content: center;
-    gap: 4px;
+    gap: 5px;
     padding: 28px;
-    border: 1px solid rgba(117, 198, 255, .25);
+    border: 1px solid rgba(40, 104, 199, .20);
     border-radius: 50%;
     text-align: center;
-    background: radial-gradient(circle at 36% 24%, rgba(255, 255, 255, .18), transparent 22%), rgba(9, 18, 28, .6);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 36px 86px rgba(0, 0, 0, .3);
+    background:
+      radial-gradient(circle at 34% 22%, rgba(255, 255, 255, .82), transparent 24%),
+      linear-gradient(145deg, rgba(255, 255, 255, .62), rgba(219, 234, 244, .48));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .90), 0 28px 72px rgba(48, 76, 103, .12);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
   }
@@ -32,128 +34,182 @@
   }
 
   .ecosystem-core strong {
-    color: #fff;
-    font-size: .78rem;
+    color: #203b55;
+    font-size: .84rem;
     letter-spacing: .13em;
   }
 
   .ecosystem-core span {
     color: var(--prisma-narrative-muted);
-    font-size: .68rem;
+    font-size: .7rem;
   }
 
-  .ecosystem-surface-grid {
+  .ecosystem-families {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 10px;
   }
 
-  .ecosystem-surface-grid button {
-    min-height: 70px;
+  .ecosystem-families article {
+    min-height: 150px;
     display: grid;
-    place-items: center;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 18px;
     align-content: center;
-    gap: 3px;
-    border: 1px solid rgba(205, 229, 250, .16);
-    border-radius: 18px;
-    color: #fff;
-    cursor: pointer;
-    background: rgba(255, 255, 255, .05);
+    padding: 24px;
+    border: 1px solid rgba(68, 108, 145, .16);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .48);
   }
 
-  .ecosystem-surface-grid button :is(b, span) {
-    display: block;
-  }
-
-  .ecosystem-surface-grid button b {
-    font-size: .78rem;
-  }
-
-  .ecosystem-surface-grid button span {
-    color: var(--prisma-narrative-muted);
-    font-size: .66rem;
-  }
-
-  .ecosystem-surface-grid button:hover,
-  .ecosystem-surface-grid button:focus-visible {
-    border-color: rgba(117, 198, 255, .5);
-    background: rgba(117, 198, 255, .1);
-  }
-
-  .surface-panel dl {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px 18px;
-    margin: 22px 0 0;
-  }
-
-  .surface-panel dl div {
-    padding-top: 12px;
-    border-top: 1px solid rgba(205, 229, 250, .14);
-  }
-
-  .surface-panel dt {
+  .ecosystem-families article > span {
+    grid-row: 1 / 4;
+    align-self: center;
     color: var(--prisma-narrative-accent);
-    font-size: .66rem;
-    font-weight: 800;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 850;
   }
 
-  .surface-panel dd {
-    margin: 6px 0 0;
+  .ecosystem-families h2 {
+    color: #203449;
+    font-size: 1.8rem;
+    letter-spacing: -.04em;
+  }
+
+  .ecosystem-families p {
+    margin-top: 4px;
     color: var(--prisma-narrative-muted);
     line-height: 1.45;
   }
 
-  .capability-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 24px;
+  .ecosystem-families strong {
+    margin-top: 9px;
+    color: #245b8e;
+    font-size: .76rem;
   }
 
-  .capability-strip span {
-    min-height: 34px;
-    display: inline-flex;
+  .ecosystem-journey {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr) auto);
     align-items: center;
-    padding-inline: 12px;
-    border: 1px solid rgba(205, 229, 250, .15);
-    border-radius: 999px;
-    color: #d8e8f6;
-    background: rgba(255, 255, 255, .045);
-    font-size: .72rem;
+    gap: 10px;
   }
 
-  .journey-code {
-    display: block;
-    overflow-x: auto;
-    margin-top: 18px;
-    padding: 12px 14px;
-    border: 1px solid rgba(117, 198, 255, .18);
-    border-radius: 14px;
-    color: #cfeaff;
-    background: rgba(0, 0, 0, .22);
-    font-size: .72rem;
-    white-space: nowrap;
+  .ecosystem-journey article {
+    min-height: 270px;
+    display: grid;
+    align-content: center;
+    gap: 10px;
+    padding: 28px;
+    border: 1px solid rgba(68, 108, 145, .16);
+    border-radius: 26px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, .64), rgba(225, 239, 248, .42));
+  }
+
+  .ecosystem-journey article:nth-of-type(3) {
+    grid-column: 5;
+  }
+
+  .ecosystem-journey > i {
+    color: var(--prisma-narrative-accent);
+    font-style: normal;
+  }
+
+  .ecosystem-journey span {
+    color: var(--prisma-narrative-accent);
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .ecosystem-journey h3 {
+    color: #203449;
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .ecosystem-journey p {
+    color: var(--prisma-narrative-muted);
+    line-height: 1.5;
+  }
+
+  .ecosystem-journey small {
+    color: #245b8e;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: .68rem;
+  }
+
+  .ecosystem-outcome {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .ecosystem-outcome article {
+    min-height: 220px;
+    display: grid;
+    align-content: end;
+    gap: 12px;
+    padding: 26px;
+    border: 1px solid rgba(68, 108, 145, .16);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .48);
+  }
+
+  .ecosystem-outcome article span {
+    color: #203449;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .ecosystem-outcome article p {
+    color: var(--prisma-narrative-muted);
+    line-height: 1.5;
+  }
+
+  .ecosystem-outcome blockquote {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: clamp(24px, 4vw, 40px);
+    border: 1px solid rgba(40, 104, 199, .18);
+    border-radius: 28px;
+    color: #203449;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(97, 173, 230, .18), transparent 18rem),
+      rgba(255, 255, 255, .48);
+    font-size: clamp(1.7rem, 3.4vw, 3.1rem);
+    font-weight: 780;
+    line-height: 1.05;
+    letter-spacing: -.045em;
   }
 
   @media (max-width: 900px) {
     .ecosystem-map {
-      min-height: 420px;
+      min-height: 0;
+      grid-template-columns: 1fr;
+    }
+
+    .ecosystem-core {
+      width: 220px;
+    }
+
+    .ecosystem-journey {
+      grid-template-columns: 1fr;
+    }
+
+    .ecosystem-journey article:nth-of-type(3) {
+      grid-column: auto;
+    }
+
+    .ecosystem-journey > i {
+      justify-self: center;
+      transform: rotate(90deg);
     }
   }
 
   @media (max-width: 560px) {
-    body[data-prisma-page="product-ecosystem"] .prisma-scene:first-of-type .prisma-scene-actions {
-      display: none;
-    }
-
-    .ecosystem-map {
-      min-height: 230px;
-      gap: 12px;
-    }
-
     .ecosystem-core {
       width: 155px;
       padding: 12px;
@@ -163,50 +219,31 @@
       max-height: 60px;
     }
 
-    .ecosystem-surface-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 5px;
+    .ecosystem-families article {
+      min-height: 128px;
+      padding: 18px;
+      border-radius: 20px;
     }
 
-    .ecosystem-surface-grid button {
-      min-height: 46px;
-      border-radius: 12px;
+    .ecosystem-journey article {
+      min-height: 190px;
+      padding: 22px 18px;
+      border-radius: 22px;
     }
 
-    .surface-panel {
-      min-height: 0;
-    }
-
-    .surface-panel dl {
+    .ecosystem-outcome {
       grid-template-columns: 1fr;
-      gap: 6px;
-      margin-top: 10px;
     }
 
-    .surface-panel dl div {
-      padding-top: 6px;
+    .ecosystem-outcome article {
+      min-height: 170px;
+      padding: 22px 18px;
+      border-radius: 22px;
     }
 
-    .surface-panel dd {
-      margin-top: 3px;
-      font-size: .76rem;
-    }
-
-    .capability-strip {
-      margin-top: 10px;
-      gap: 5px;
-    }
-
-    .capability-strip span {
-      min-height: 27px;
-      padding-inline: 8px;
-      font-size: .61rem;
-    }
-
-    .journey-code {
-      margin-top: 9px;
-      padding: 8px 9px;
-      font-size: .58rem;
+    .ecosystem-outcome blockquote {
+      grid-column: auto;
+      border-radius: 22px;
     }
   }
 }

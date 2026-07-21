@@ -3,8 +3,6 @@ const previous = document.getElementById('prevSlide');
 const next = document.getElementById('nextSlide');
 const current = document.getElementById('currentSlide');
 const progress = document.getElementById('investorProgress');
-const chaptersButton = document.getElementById('chaptersButton');
-const chaptersMenu = document.getElementById('chaptersMenu');
 let index = 0;
 
 function showSlide(nextIndex) {
@@ -18,30 +16,17 @@ function showSlide(nextIndex) {
   progress.style.width = `${((index + 1) / slides.length) * 100}%`;
   previous.disabled = index === 0;
   next.disabled = index === slides.length - 1;
-  chaptersMenu.hidden = true;
-  chaptersButton.setAttribute('aria-expanded', 'false');
 }
 
 previous.addEventListener('click', () => showSlide(index - 1));
 next.addEventListener('click', () => showSlide(index + 1));
-chaptersButton.addEventListener('click', () => {
-  const open = chaptersMenu.hidden;
-  chaptersMenu.hidden = !open;
-  chaptersButton.setAttribute('aria-expanded', String(open));
-});
-
-document.querySelectorAll('[data-goto]').forEach((button) => {
-  button.addEventListener('click', () => showSlide(Number(button.dataset.goto)));
-});
 
 document.addEventListener('keydown', (event) => {
   if (event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
   if (event.key === 'ArrowRight' || event.key === 'PageDown') showSlide(index + 1);
   if (event.key === 'ArrowLeft' || event.key === 'PageUp') showSlide(index - 1);
-  if (event.key === 'Escape') {
-    chaptersMenu.hidden = true;
-    chaptersButton.setAttribute('aria-expanded', 'false');
-  }
+  if (event.key === 'Home') showSlide(0);
+  if (event.key === 'End') showSlide(slides.length - 1);
 });
 
 showSlide(0);

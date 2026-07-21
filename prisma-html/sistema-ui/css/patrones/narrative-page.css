@@ -2,17 +2,17 @@ body[data-prisma-narrative] {
   min-height: 100%;
   overflow-x: clip;
   color: var(--prisma-narrative-ink);
-  background: #0a1017;
+  background: #eef4f8;
   scroll-snap-type: y proximity;
   --prisma-scene-min: calc(100svh - 88px);
   --prisma-atmosphere-url: url("../../../assets/atmosphere/aurora-slate-veil.svg");
-  --prisma-narrative-ink: #eef5ff;
-  --prisma-narrative-muted: #aebdce;
-  --prisma-narrative-panel: rgba(12, 20, 30, .58);
-  --prisma-narrative-panel-strong: rgba(10, 18, 28, .78);
-  --prisma-narrative-border: rgba(190, 224, 255, .18);
-  --prisma-narrative-accent: #75c6ff;
-  --prisma-narrative-accent-2: #bba8ff;
+  --prisma-narrative-ink: #263b50;
+  --prisma-narrative-muted: #62768a;
+  --prisma-narrative-panel: rgba(255, 255, 255, .66);
+  --prisma-narrative-panel-strong: rgba(249, 252, 254, .88);
+  --prisma-narrative-border: rgba(68, 108, 145, .19);
+  --prisma-narrative-accent: #2868c7;
+  --prisma-narrative-accent-2: #6d98c7;
 }
 
 body[data-prisma-narrative="liquid"] {
@@ -25,11 +25,15 @@ body[data-prisma-narrative]::before {
   inset: 0;
   z-index: -3;
   pointer-events: none;
+  opacity: .86;
+  background-color: #eef5f9;
   background-image:
-    linear-gradient(180deg, rgba(5, 10, 16, .28), rgba(5, 10, 16, .74)),
+    linear-gradient(180deg, rgba(251, 253, 255, .93), rgba(230, 240, 247, .88)),
     var(--prisma-atmosphere-url);
   background-size: cover;
   background-position: center;
+  background-blend-mode: screen, soft-light;
+  filter: brightness(1.2) saturate(.7);
 }
 
 body[data-prisma-narrative]::after {
@@ -39,10 +43,10 @@ body[data-prisma-narrative]::after {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(circle at 18% 12%, rgba(105, 190, 255, .16), transparent 30rem),
-    radial-gradient(circle at 82% 70%, rgba(176, 139, 255, .12), transparent 34rem),
-    linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+    radial-gradient(circle at 17% 10%, rgba(91, 166, 224, .19), transparent 30rem),
+    radial-gradient(circle at 84% 70%, rgba(182, 211, 232, .32), transparent 34rem),
+    linear-gradient(rgba(64, 101, 136, .028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(64, 101, 136, .028) 1px, transparent 1px);
   background-size: auto, auto, 64px 64px, 64px 64px;
   mask-image: linear-gradient(to bottom, #000, transparent 94%);
 }
@@ -63,12 +67,17 @@ body[data-prisma-narrative]::after {
   align-items: center;
   gap: 14px;
   padding: 8px 10px 8px 12px;
-  border: 1px solid var(--prisma-narrative-border);
+  border: 1px solid rgba(255, 255, 255, .54);
   border-radius: 24px;
-  background: rgba(7, 14, 22, .68);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 18px 44px rgba(0, 0, 0, .22);
-  backdrop-filter: blur(22px) saturate(130%);
-  -webkit-backdrop-filter: blur(22px) saturate(130%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .24), rgba(226, 243, 253, .10)),
+    rgba(244, 250, 254, .08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .74),
+    inset 0 -1px 0 rgba(89, 145, 184, .08),
+    0 10px 30px rgba(44, 78, 105, .08);
+  backdrop-filter: blur(32px) saturate(154%);
+  -webkit-backdrop-filter: blur(32px) saturate(154%);
 }
 
 .prisma-narrative-brand {
@@ -93,7 +102,7 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-narrative-brand strong {
-  color: #f7fbff;
+  color: #1e3a56;
   font-size: .78rem;
   letter-spacing: .16em;
 }
@@ -118,7 +127,7 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-narrative-location strong {
-  color: #fff;
+  color: #244b70;
   font-size: .82rem;
 }
 
@@ -131,7 +140,7 @@ body[data-prisma-narrative]::after {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .2);
+  background: rgba(55, 91, 124, .20);
   transition: width var(--prisma-motion-normal), background var(--prisma-motion-normal);
 }
 
@@ -148,9 +157,9 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-narrative-nav .prisma-button {
-  color: #eef6ff;
-  border-color: rgba(210, 232, 255, .18);
-  background: rgba(255, 255, 255, .06);
+  color: #29445e;
+  border-color: rgba(68, 108, 145, .18);
+  background: rgba(255, 255, 255, .58);
 }
 
 .prisma-narrative-nav .prisma-button--primary {
@@ -174,7 +183,7 @@ body[data-prisma-narrative]::after {
   position: absolute;
   top: 30px;
   left: clamp(12px, 4vw, 60px);
-  color: rgba(205, 228, 250, .55);
+  color: rgba(46, 80, 112, .58);
   font-size: .67rem;
   font-weight: 760;
   letter-spacing: .17em;
@@ -195,7 +204,7 @@ body[data-prisma-narrative]::after {
 
 .prisma-scene-copy :is(h1, h2) {
   margin: 0;
-  color: #f4f8fc;
+  color: #203449;
   font-size: clamp(3.15rem, 7vw, 7.4rem);
   line-height: .9;
   letter-spacing: -.072em;
@@ -220,7 +229,7 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-scene-copy strong {
-  color: #fff;
+  color: #203b55;
 }
 
 .prisma-eyebrow--dark {
@@ -240,9 +249,9 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-scene-actions .prisma-button {
-  color: #eef6ff;
-  border-color: rgba(210, 232, 255, .2);
-  background: rgba(255, 255, 255, .07);
+  color: #29445e;
+  border-color: rgba(68, 108, 145, .20);
+  background: rgba(255, 255, 255, .62);
 }
 
 .prisma-scene-actions .prisma-button--primary,
@@ -256,15 +265,15 @@ body[data-prisma-narrative]::after {
   padding: clamp(24px, 4vw, 48px);
   border: 1px solid var(--prisma-narrative-border);
   border-radius: 34px;
-  background: linear-gradient(145deg, rgba(15, 27, 41, .74), rgba(8, 16, 25, .48));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 30px 90px rgba(0, 0, 0, .28);
-  backdrop-filter: blur(28px) saturate(125%);
-  -webkit-backdrop-filter: blur(28px) saturate(125%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(231, 241, 247, .58));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .98), 0 30px 86px rgba(48, 76, 103, .14);
+  backdrop-filter: blur(26px) saturate(126%);
+  -webkit-backdrop-filter: blur(26px) saturate(126%);
 }
 
 .prisma-scene-card h3 {
   margin: 0;
-  color: #f5f9fd;
+  color: #203449;
   font-size: clamp(1.7rem, 3.4vw, 3.3rem);
   line-height: 1;
   letter-spacing: -.045em;
@@ -281,7 +290,7 @@ body[data-prisma-narrative]::after {
   align-items: center;
   gap: 8px;
   margin-bottom: 18px;
-  color: #d9ecff;
+  color: #315e87;
   font-size: .72rem;
   font-weight: 730;
   letter-spacing: .08em;
@@ -326,11 +335,11 @@ body[data-prisma-narrative]::after {
   justify-content: center;
   gap: 8px;
   padding-inline: 15px;
-  border: 1px solid rgba(205, 229, 250, .16);
+  border: 1px solid rgba(68, 108, 145, .18);
   border-radius: 999px;
-  color: #c9d9e7;
+  color: #3c5b76;
   cursor: pointer;
-  background: rgba(255, 255, 255, .045);
+  background: rgba(255, 255, 255, .52);
   scroll-snap-align: start;
   transition: transform var(--prisma-motion-fast), color var(--prisma-motion-fast), border-color var(--prisma-motion-fast), background var(--prisma-motion-fast);
 }
@@ -347,7 +356,7 @@ body[data-prisma-narrative]::after {
 .prisma-step:focus-visible,
 .prisma-narrative a:focus-visible,
 .prisma-narrative button:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid #2868c7;
   outline-offset: 3px;
 }
 
@@ -375,7 +384,7 @@ body[data-prisma-narrative]::after {
 
 .prisma-panel-title {
   margin-top: 12px;
-  color: #f5f9fd;
+  color: #203449;
   font-size: clamp(1.8rem, 3.4vw, 3.25rem);
   line-height: 1.02;
   letter-spacing: -.045em;
@@ -397,7 +406,7 @@ body[data-prisma-narrative]::after {
 .prisma-proof-line > div {
   min-width: 0;
   padding: 15px;
-  border-top: 1px solid rgba(205, 229, 250, .16);
+  border-top: 1px solid rgba(68, 108, 145, .17);
 }
 
 .prisma-proof-line :is(strong, span) {
@@ -405,7 +414,7 @@ body[data-prisma-narrative]::after {
 }
 
 .prisma-proof-line strong {
-  color: #fff;
+  color: #203b55;
   font-size: 1.15rem;
 }
 
@@ -420,25 +429,25 @@ body[data-prisma-narrative]::after {
   align-items: center;
   min-height: 28px;
   padding-inline: 10px;
-  border: 1px solid rgba(115, 209, 173, .3);
+  border: 1px solid rgba(35, 120, 90, .24);
   border-radius: 999px;
-  color: #a9f2d1;
-  background: rgba(64, 174, 129, .1);
+  color: #176647;
+  background: rgba(60, 174, 128, .10);
   font-size: .66rem;
   font-weight: 790;
   letter-spacing: .09em;
 }
 
 .prisma-status-chip[data-status="construction"] {
-  color: #ffe1a9;
-  border-color: rgba(241, 175, 70, .34);
-  background: rgba(241, 175, 70, .1);
+  color: #95510f;
+  border-color: rgba(195, 116, 35, .28);
+  background: rgba(233, 167, 73, .12);
 }
 
 .prisma-status-chip[data-status="roadmap"] {
-  color: #d8c8ff;
-  border-color: rgba(178, 143, 255, .34);
-  background: rgba(178, 143, 255, .1);
+  color: #6448a0;
+  border-color: rgba(119, 91, 181, .27);
+  background: rgba(151, 121, 211, .12);
 }
 
 .prisma-page-transition {
@@ -448,7 +457,7 @@ body[data-prisma-narrative]::after {
   align-items: center;
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid rgba(205, 229, 250, .14);
+  border-top: 1px solid rgba(68, 108, 145, .17);
 }
 
 .prisma-page-transition__link {
@@ -457,11 +466,11 @@ body[data-prisma-narrative]::after {
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border: 1px solid rgba(205, 229, 250, .16);
+  border: 1px solid rgba(68, 108, 145, .18);
   border-radius: 18px;
-  color: #eef6ff;
+  color: #29445e;
   text-decoration: none;
-  background: rgba(255, 255, 255, .045);
+  background: rgba(255, 255, 255, .54);
 }
 
 .prisma-page-transition__link[data-direction="next"] {
@@ -669,13 +678,13 @@ body[data-prisma-narrative]::after {
   }
 
   :is(.prisma-mobile-tab-nav > button, .prisma-mobile-tab-select select) {
-    min-width: 44px;
-    min-height: 44px;
-    border: 1px solid rgba(205, 229, 250, .18);
-    border-radius: 14px;
-    color: #eef6ff;
-    background: rgba(255, 255, 255, .055);
-  }
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid rgba(68, 108, 145, .20);
+  border-radius: 14px;
+  color: #29445e;
+  background: rgba(255, 255, 255, .66);
+}
 
   .prisma-mobile-tab-nav > button {
     cursor: pointer;
@@ -814,8 +823,11 @@ body[data-prisma-narrative]::after {
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .prisma-narrative-nav,
+  .prisma-narrative-nav {
+    background: rgba(244, 250, 254, .90);
+  }
+
   .prisma-scene-card {
-    background: rgba(8, 16, 25, .94);
+    background: rgba(248, 252, 254, .96);
   }
 }

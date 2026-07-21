@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#08111a" />
+  <meta name="theme-color" content="#eef5fa" />
   <title>PRISMA UI · Sistema visual</title>
   <meta name="description" content="Fundamentos, componentes, patrones y materialidad gobernada del sistema visual PRISMA." />
   <link rel="stylesheet" href="../css/prisma-ui.css" />
@@ -18,8 +18,7 @@
       </a>
       <div class="prisma-narrative-location"><strong>CATÁLOGO</strong><span>4 vistas</span></div>
       <div class="prisma-narrative-nav-actions">
-        <a class="prisma-button prisma-button--quiet" href="../../index.html">Índice</a>
-        <a class="prisma-button prisma-button--primary" href="../../paginas/pagina-1-prisma/index.html">Recorrido</a>
+        <a class="prisma-button prisma-button--primary" href="../../index.html">Índice</a>
       </div>
     </nav>
 
@@ -27,26 +26,18 @@
       <div>
         <p class="prisma-eyebrow--dark">SISTEMA VISUAL OPERATIVO</p>
         <h1>Una identidad. <span>Cuatro vistas de trabajo.</span></h1>
-        <p>Fundamentos, componentes, patrones y materialidad viven en una sola autoridad. Selecciona una vista. El catálogo muestra una categoría a la vez.</p>
+        <p>Fundamentos, componentes, patrones y materialidad viven en una sola autoridad. El selector cambia de vista sin llenar la página de botones.</p>
       </div>
       <img src="../../assets/images/prisma-logo.png" alt="PRISMA · Sistema Inteligente de Gestión Operativa" width="160" height="166" />
     </header>
 
-    <section class="catalog-workspace prisma-scene-card" data-prisma-tabs>
+    <section class="catalog-workspace prisma-scene-card">
       <div class="catalog-toolbar">
-        <div>
-          <span class="prisma-interaction-hint">Selecciona una vista</span>
-          <div class="prisma-tablist" role="tablist" aria-label="Vistas del catálogo">
-            <button class="prisma-tab" id="catalog-tab-1" role="tab" aria-selected="true" aria-controls="catalog-panel-1">Fundamentos</button>
-            <button class="prisma-tab" id="catalog-tab-2" role="tab" aria-selected="false" aria-controls="catalog-panel-2">Componentes</button>
-            <button class="prisma-tab" id="catalog-tab-3" role="tab" aria-selected="false" aria-controls="catalog-panel-3">Patrones</button>
-            <button class="prisma-tab" id="catalog-tab-4" role="tab" aria-selected="false" aria-controls="catalog-panel-4">Materialidad</button>
-          </div>
-        </div>
+        <label class="catalog-view"><span>Vista</span><select class="prisma-select" id="catalogViewSelect"><option value="catalog-panel-1">Fundamentos</option><option value="catalog-panel-2">Componentes</option><option value="catalog-panel-3">Patrones</option><option value="catalog-panel-4">Materialidad</option></select></label>
         <label class="catalog-theme"><span>Tema</span><select class="prisma-select" id="themeSelect"><option value="prisma">PRISMA</option><option value="inversionistas">Inversionistas</option><option value="alto-contraste">Alto contraste</option></select></label>
       </div>
 
-      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-1" role="tabpanel" aria-labelledby="catalog-tab-1">
+      <section class="catalog-panel" id="catalog-panel-1">
         <header><p class="prisma-panel-kicker">FUNDAMENTOS</p><h2>Color, tipografía, espacio y atmósfera.</h2></header>
         <div class="catalog-foundations">
           <article class="catalog-palette"><span style="--swatch:#2868c7"><i></i><b>Primary</b><small>#2868C7</small></span><span style="--swatch:#1d4f9c"><i></i><b>Deep</b><small>#1D4F9C</small></span><span style="--swatch:#75c6ff"><i></i><b>Signal</b><small>#75C6FF</small></span><span style="--swatch:#bba8ff"><i></i><b>Prismatic</b><small>#BBA8FF</small></span></article>
@@ -55,27 +46,27 @@
         </div>
       </section>
 
-      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-2" role="tabpanel" aria-labelledby="catalog-tab-2" hidden>
+      <section class="catalog-panel" id="catalog-panel-2" hidden>
         <header><p class="prisma-panel-kicker">COMPONENTES</p><h2>Acciones, superficies, datos y estados.</h2></header>
         <div class="catalog-components">
-          <article><small>ACCIONES</small><div class="catalog-buttons"><button class="prisma-button prisma-button--primary">Confirmar</button><button class="prisma-button">Ver evidencia</button><button class="prisma-button prisma-button--danger">Revocar</button></div></article>
+          <article><small>ACCIONES</small><div class="catalog-buttons"><button class="prisma-button prisma-button--primary" type="button">Confirmar</button><button class="prisma-button" type="button">Ver evidencia</button></div></article>
           <article class="catalog-glass-card"><small>SUPERFICIE</small><h3>Clear Pearl Glass</h3><p>Una superficie focal, un borde óptico y un contenido dominante.</p><span class="prisma-status-chip">OPERATIVO</span></article>
           <article><small>ESTADOS</small><div class="catalog-states"><span class="prisma-status-chip">OPERATIVO</span><span class="prisma-status-chip">VALIDADO</span><span class="prisma-status-chip" data-status="construction">EN CONSTRUCCIÓN</span><span class="prisma-status-chip" data-status="roadmap">ROADMAP</span></div></article>
           <article><small>DATOS</small><div class="catalog-metrics"><span><b>228</b><small>aceptadas</small></span><span><b>2</b><small>pendientes</small></span><span><b>1</b><small>rechazada</small></span></div></article>
         </div>
       </section>
 
-      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-3" role="tabpanel" aria-labelledby="catalog-tab-3" hidden>
+      <section class="catalog-panel" id="catalog-panel-3" hidden>
         <header><p class="prisma-panel-kicker">PATRONES</p><h2>Tres escenas, una interacción y una transición.</h2></header>
         <div class="catalog-patterns">
           <article><span>01</span><h3>Impacto</h3><p>Una tesis central y una prueba visual.</p></article>
-          <article><span>02</span><h3>Comprensión</h3><p>Tabs o stepper con instrucción visible y respuesta inmediata.</p></article>
-          <article><span>03</span><h3>Resultado</h3><p>Evidencia, cierre y transición a la siguiente página.</p></article>
+          <article><span>02</span><h3>Comprensión</h3><p>Una sola interacción dominante, únicamente cuando agrega comprensión.</p></article>
+          <article><span>03</span><h3>Resultado</h3><p>Evidencia, cierre y continuidad hacia la siguiente página.</p></article>
         </div>
-        <nav class="catalog-transition-example" aria-label="Ejemplo de transición"><button type="button">← Qué es PRISMA</button><span>02 / 04</span><button type="button">Ecosistema →</button></nav>
+        <div class="catalog-transition-example" aria-label="Ejemplo de transición"><span>← Anterior</span><strong>02 / 03</strong><span>Siguiente →</span></div>
       </section>
 
-      <section class="prisma-tabpanel catalog-panel" id="catalog-panel-4" role="tabpanel" aria-labelledby="catalog-tab-4" hidden>
+      <section class="catalog-panel" id="catalog-panel-4" hidden>
         <header><p class="prisma-panel-kicker">MATERIALIDAD GOBERNADA</p><h2>Atmósfera, vidrio y presupuesto de capas.</h2></header>
         <div class="catalog-material">
           <div class="catalog-lab" id="catalogLab">
@@ -89,12 +80,6 @@
           </form>
         </div>
       </section>
-
-      <nav class="prisma-page-transition" aria-label="Transición del catálogo">
-        <a class="prisma-page-transition__link" data-direction="prev" href="../../index.html"><span>←</span><span><small>Volver</small><strong>Índice completo</strong></span></a>
-        <span class="prisma-page-transition__count">UI / 04</span>
-        <a class="prisma-page-transition__link" data-direction="next" href="../../paginas/pagina-1-prisma/index.html"><span><small>Recorrido</small><strong>Qué es PRISMA</strong></span><span>→</span></a>
-      </nav>
     </section>
   </main>
   <script type="module" src="../js/prisma-ui.js"></script>
