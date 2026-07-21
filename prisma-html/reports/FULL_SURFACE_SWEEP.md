@@ -1,69 +1,72 @@
-# PRISMA HTML · Full Surface Sweep
+# PRISMA HTML · Refactor narrativo esencial
 
 ## Resultado
 
-`PASS_BROWSER_HARNESS_USER_VISUAL_REVIEW_PENDING`
+`PASS_SOURCE_RUNTIME_PREVIEW_PENDING`
 
-No representa certificación visual final. El barrido cerró validación estática y navegador Chromium; la revisión directa en Safari/iPhone sigue abierta.
+La estructura de carpetas, rutas y autoridades compartidas permanece intacta. El cambio se distribuyó en los HTML, CSS y JavaScript locales que ya gobernaban cada superficie.
 
-## Alcance
+## Nuevo orden
 
-- Índice maestro.
-- Página 1: Qué es PRISMA.
-- Página 2: Investor Deck.
-- Página 3: Por qué PRISMA.
-- Página 4: Ecosistema del producto.
-- Catálogo del sistema UI.
-- Sistema narrativo compartido.
-- Identidad y atmósferas gobernadas.
+1. Qué es PRISMA.
+2. Qué hace.
+3. Cómo funciona.
+4. Por qué es diferente.
+5. Qué ecosistema construye.
 
-## Contrato aplicado
+## Distribución
 
-- Tres escenas por página narrativa.
-- Máximo `3.0` alturas de viewport en móvil, equivalente a pantalla inicial más dos desplazamientos.
-- Cero overflow horizontal.
-- Controles móviles de al menos 44 CSS px.
-- Selector nativo más botones anterior/siguiente para tabs y steppers móviles.
-- Logo único: `assets/images/prisma-logo.png`.
-- Navegación de transición consistente.
-- Sin `!important`, `document.write()` ni imágenes Base64 activas.
+- Página 1: qué es + qué hace.
+- Página 3: cómo funciona + por qué es diferente.
+- Página 4: ecosistema.
+- Investor Deck: ruta separada con navegación anterior/siguiente.
+- Catálogo UI: herramienta separada con selector de vistas.
 
-## Evidencia
+## Reducción de controles
 
-- Validación estática: `PASS`.
-- Checks: `382`.
-- Errores: `0`.
-- Browser harness: `PASS`.
-- Viewports: `320×568`, `375×667`, `1440×900`.
-- Consola: 0 errores.
-- Page errors: 0.
-- Target-size issues: 0.
-- Interacciones probadas: tabs, steppers, deck, superficies, catálogo y transparencia alpha 0.
+| Superficie | Acciones visibles, sin contar la marca | Botones | Selectores |
+|---|---:|---:|---:|
+| index | 3 | 0 | 0 |
+| page1 | 2 | 0 | 0 |
+| investors | 3 | 2 | 0 |
+| page3 | 2 | 0 | 0 |
+| page4 | 2 | 0 | 0 |
+| catalog | 3 | 2 | 3 |
 
-## Scroll móvil 320×568
 
-| Superficie | Alturas de viewport |
-|---|---:|
-| index | 1.930 |
-| page1 | 2.817 |
-| page2 | 1.000 |
-| page3 | 2.817 |
-| page4 | 2.817 |
-| catalog | 2.423 |
+## Refinamiento visual de la entrada
 
-## Assets gobernados
+- Se recuperó un símbolo compacto desde la identidad completa transparente proporcionada por el usuario.
+- La firma completa PRISMA se usa como protagonista de la portada.
+- Las cinco tarjetas de secuencia se sustituyeron por cinco hitos SVG estáticos, elegantes y multicolor.
+- No se agregaron botones ni comportamiento interactivo.
+- No se modificaron autoridades compartidas ni la estructura de directorios.
+- La revisión visual en navegador permanece pendiente y no se declara certificación visual.
 
-- `aurora-slate-veil.svg` desde Background Catalog.
-- `liquid-operations-smoke.svg` desde Background Catalog.
+## Validación fuente
 
-## Rollback
+- Estado: PASS.
+- Checks: 376.
+- Warnings: 0.
+- Errores: 0.
+- IDs duplicados: 0.
+- Referencias locales rotas: 0.
+- JavaScript inválido: 0.
+- `!important`: 0.
+- Browser harness: no ejecutado.
+- Certificación visual: no declarada.
 
-Rama remota previa al barrido:
+## Autoridades preservadas
 
-`stash/prisma-html-before-narrative-sweep-20260715`
+No se modificaron:
+
+- `sistema-ui/css/patrones/narrative-page.css`
+- `sistema-ui/js/componentes/prisma-narrative.js`
+- tokens globales;
+- temas compartidos;
+- estructura de directorios;
+- rutas públicas.
 
 ## Pendiente
 
-- Revisión directa en Safari/iPhone.
-- Aprobación visual del usuario.
-- Decisión explícita de merge.
+- Revisión visual manual del usuario.

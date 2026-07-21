@@ -133,8 +133,10 @@ def main():
         'index.html', 'index.css',
         'paginas/pagina-1-prisma/index.html', 'paginas/pagina-1-prisma/pagina.css', 'paginas/pagina-1-prisma/pagina.js',
         'paginas/pagina-2-inversionistas/index.html', 'paginas/pagina-2-inversionistas/pagina.css', 'paginas/pagina-2-inversionistas/pagina.js',
+        'paginas/pagina-3-por-que-prisma/index.html', 'paginas/pagina-3-por-que-prisma/pagina.css', 'paginas/pagina-3-por-que-prisma/pagina.js',
+        'paginas/pagina-4-ecosistema-producto/index.html', 'paginas/pagina-4-ecosistema-producto/pagina.css', 'paginas/pagina-4-ecosistema-producto/pagina.js',
         'sistema-ui/css/prisma-ui.css', 'sistema-ui/js/prisma-ui.js', 'sistema-ui/catalogo/index.html',
-        'assets/images/prisma-logo.svg', 'README.md', 'TREE.md', 'BASELINE-MANIFEST.json',
+        'assets/images/prisma-logo.png', 'README.md', 'TREE.md', 'BASELINE-MANIFEST.json',
     ]
 
     for relative in expected:
