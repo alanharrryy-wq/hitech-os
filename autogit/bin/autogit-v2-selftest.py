@@ -29,6 +29,7 @@ blocked_patterns = [
     '-Command", ps, str(p)',
     "-Command', ps, str(p)",
     'json.loads(text_or_empty(p))',
+    '--delete-branch',
 ]
 
 for pattern in blocked_patterns:

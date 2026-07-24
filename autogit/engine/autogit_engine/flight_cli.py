@@ -673,7 +673,7 @@ def apply_plan(args):
             if not args.wait_checks and not args.allow_merge_no_checks:
                 raise FlightError("Merge requires --wait-checks or --allow-merge-no-checks")
             progress(90, "Merge PR")
-            m=runner.run(["gh","pr","merge",url,"--merge","--delete-branch"], timeout=600, name="gh_pr_merge")
+            m=runner.run(["gh","pr","merge",url,"--merge"], timeout=600, name="gh_pr_merge")
             merged={"returncode":m.returncode,"stdout":m.stdout,"stderr":m.stderr,"ok":m.returncode==0}
             if m.returncode != 0:
                 raise FlightError("PR merge failed")
@@ -733,7 +733,7 @@ def merge_command(args):
             raise FlightError("Checks failed; merge blocked")
     elif not args.allow_merge_no_checks:
         raise FlightError("Merge requires --wait-checks or --allow-merge-no-checks")
-    m=runner.run(["gh","pr","merge",args.pr,"--merge","--delete-branch"], timeout=600, name="gh_pr_merge")
+    m=runner.run(["gh","pr","merge",args.pr,"--merge"], timeout=600, name="gh_pr_merge")
     summary={"result":"ok" if m.returncode==0 else "failed", "returncode":m.returncode, "stdout":m.stdout, "stderr":m.stderr}
     summary["post_run_hygiene"] = ag100_write_post_run_hygiene_report(repo, runner, report, context="merge_command")
     # AG98_SYNC_LOCAL_MAIN_HOOK_V1
