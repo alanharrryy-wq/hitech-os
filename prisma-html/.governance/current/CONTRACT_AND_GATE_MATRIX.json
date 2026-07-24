@@ -1,0 +1,40 @@
+{
+  "schema": "PRISMA_CONTRACT_GATE_MATRIX_V1",
+  "task_id": "PRISMA.HTML.ALLCHAT.CLOUDFLARE.READY.1",
+  "gates": [
+    {
+      "id": "TARGET_BASELINE_OR_DESIRED",
+      "blocking": true
+    },
+    {
+      "id": "BACKUP_BEFORE_CHANGE",
+      "blocking": true
+    },
+    {
+      "id": "SOURCE_VALIDATOR",
+      "blocking": true
+    },
+    {
+      "id": "ATLAS_VALIDATOR",
+      "blocking": true
+    },
+    {
+      "id": "PREMIUM_OWNER_CONTRACT",
+      "blocking": true
+    },
+    {
+      "id": "PUBLIC_BUILD_NO_LEAK",
+      "blocking": true
+    },
+    {
+      "id": "BROWSER_CAPTURE",
+      "blocking": false,
+      "meaning": "evidence capture only; human visual review required"
+    },
+    {
+      "id": "CLOUDFLARE_DEPLOY",
+      "blocking": false,
+      "status": "NOT_AUTHORIZED_NOT_EXECUTED"
+    }
+  ]
+}

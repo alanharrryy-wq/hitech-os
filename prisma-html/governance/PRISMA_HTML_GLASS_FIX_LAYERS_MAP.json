@@ -1,0 +1,55 @@
+{
+  "schema_version": "PRISMA_HTML_GLASS_FIX_LAYERS_MAP_1.0",
+  "status": "PASS",
+  "created_at": "2026-07-20T21:51:14.866047+00:00",
+  "layers": [
+    {
+      "order": 0,
+      "id": "ATMOSPHERE",
+      "owner": "existing scene/background assets",
+      "changed": false
+    },
+    {
+      "order": 1,
+      "id": "GLOBAL_CHROME",
+      "owner": "topbar/sidebar/search/actions",
+      "control": "--atlas-chrome-alpha"
+    },
+    {
+      "order": 2,
+      "id": "STRUCTURAL_CONTENT",
+      "owner": "sections/panels/fields",
+      "control": "--atlas-content-alpha"
+    },
+    {
+      "order": 3,
+      "id": "FLOATING_OVERLAYS",
+      "owner": "select/menu/drawer/sheet/popover/dialog/window",
+      "control": "--atlas-content-alpha"
+    },
+    {
+      "order": 4,
+      "id": "REUSABLE_CARDS",
+      "owner": "cards/component cards/demos/widgets/tiles",
+      "control": "--atlas-content-alpha"
+    },
+    {
+      "order": 5,
+      "id": "SEMANTIC_CONTROLS",
+      "owner": "buttons/tabs/chips/toggles/actions",
+      "control": "--atlas-chrome-alpha"
+    },
+    {
+      "order": 6,
+      "id": "ZERO_STATE_GATE",
+      "owner": "html data-atlas-layer-*-zero hard override",
+      "control": "JS applyLayer state"
+    },
+    {
+      "order": 7,
+      "id": "ACCESSIBILITY",
+      "owner": "focus/reduced-motion/high-contrast existing contracts",
+      "changed": false
+    }
+  ]
+}

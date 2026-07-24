@@ -1,0 +1,56 @@
+{
+  "schema": "PRISMA_AUTHORITY_READSET_LOCK_V1",
+  "task_id": "PRISMA.HTML.ALLCHAT.CLOUDFLARE.READY.1",
+  "generated_at": "2026-07-21T22:29:45.080606+00:00",
+  "task": "Migrate all validated work from the HTML Atlas chat into the canonical repository and prepare Cloudflare Pages publishing without deployment.",
+  "project_root": "F:\\repos\\hitech-os-prisma-html\\prisma-html",
+  "authorities": [
+    {
+      "id": "CURRENT_REPO_SNAPSHOT",
+      "source": "prisma-html (2).zip",
+      "role": "live target baseline snapshot"
+    },
+    {
+      "id": "HTMLFIX_CORRECTED",
+      "source": "htmlfix1 fix1 2007 1835.zip",
+      "role": "stable Atlas and glass source"
+    },
+    {
+      "id": "OVRGLASS_PREMIUM",
+      "source": "ovrglass1 fix1 2107 0215.zip",
+      "role": "premium overlay patch and visual targets"
+    },
+    {
+      "id": "HTMLCTX",
+      "source": "htmlctx 2007 132414 result.zip",
+      "role": "authority/manual/context evidence"
+    },
+    {
+      "id": "CLOUDFLARE_PCC",
+      "source": "prisma-control-center.zip",
+      "role": "Pages/Tunnel operational authority"
+    },
+    {
+      "id": "CLOUDFLARE_WORKER",
+      "source": "cloudflare.zip",
+      "role": "Worker/D1 separation authority"
+    },
+    {
+      "id": "PRISMA_CLOUD_CTR",
+      "source": "Prisma Cloud Ctr.zip",
+      "role": "Cloud SaaS and license operation authority"
+    },
+    {
+      "id": "OFFICIAL_CF_STATIC_HTML",
+      "source": "developers.cloudflare.com/pages/framework-guides/deploy-anything/",
+      "role": "official current Pages static HTML guidance"
+    },
+    {
+      "id": "OFFICIAL_CF_WRANGLER_PAGES",
+      "source": "developers.cloudflare.com/workers/wrangler/commands/pages/",
+      "role": "official current CLI guidance"
+    }
+  ],
+  "critical_missing": [],
+  "visual_layer_map": ".governance/current/LAYERS_MAP.json"
+}

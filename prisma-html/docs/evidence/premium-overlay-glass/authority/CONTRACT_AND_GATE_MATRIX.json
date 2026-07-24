@@ -1,0 +1,70 @@
+{
+  "schema": "PRISMA_CONTRACT_AND_GATE_MATRIX_V1",
+  "task": "# Exact visual task\n\nProject target:\n\n`F:\\descargasf\\htmlatlas 2007 0753\\prisma-html`\n\n1. Make the CAF\u00c9 pill/button substantially more premium and glassy with translucent frosted glass, Gaussian blur, cyan-to-lilac tint, refined specular highlight, thin luminous edge, and a soft controlled halo. Avoid a heavy solid fill.\n2. Make the Product Card and Circular Progress card lighter and less opaque while preserving readability and hierarchy.\n3. Make Notification Drawer and every card in Galer\u00eda de overlays less solid and more professional: translucent glass, one canonical Gaussian blur owner per temporary surface, restrained cyan edge light, subtle internal reflection, and no opaque panel stacks.\n4. Preserve layout, text, responsive behavior, keyboard behavior, focus management, Escape/backdrop closing, and semantic indicators.\n5. Preserve true transparency at 0%. At zero, governed background, border, shadow, glow, and blur must compute to transparent or none.\n6. Use a canonical/root-cause implementation only. No new `!important`, no late global override sweep, no duplicated material owners, and no extra wrappers unless optically required.\n7. Scope only this static HTML Atlas project. Exclude hitech-os, Tablet, PC, Mobile, Chart Lab, Shared UI, Prisma, servers, ports, and live processes.\n8. Before patching, generate a fresh task-scoped Authority Mesh with `AUTHORITY_READSET.lock.json`, app and contract matrices, unmapped-risk review, agent envelope, authority report, and mandatory `LAYERS_MAP.md/json`.\n",
+  "gates": [
+    {
+      "id": "GATE.AUTHORITY_LOCK",
+      "required": true,
+      "evidence": "AUTHORITY_READSET.lock.json"
+    },
+    {
+      "id": "GATE.LAYERS_MAP",
+      "required": true,
+      "evidence": [
+        "LAYERS_MAP.md",
+        "LAYERS_MAP.json"
+      ]
+    },
+    {
+      "id": "GATE.SCOPE",
+      "required": true,
+      "rule": "Only static HTML Atlas paths may change."
+    },
+    {
+      "id": "GATE.CANONICAL_OWNER",
+      "required": true,
+      "rule": "Modify canonical material owners; no late global sweep."
+    },
+    {
+      "id": "GATE.ZERO_TRANSPARENCY",
+      "required": true,
+      "rule": "At zero, background, border, shadow, glow and blur are transparent or none."
+    },
+    {
+      "id": "GATE.NO_NEW_IMPORTANT",
+      "required": true,
+      "rule": "Do not add !important."
+    },
+    {
+      "id": "GATE.MIN_CONTAINERS",
+      "required": true,
+      "rule": "No nested panels unless optically necessary."
+    },
+    {
+      "id": "GATE.ACCESSIBILITY",
+      "required": true,
+      "rule": "Keyboard, focus, Escape, backdrop and reduced motion remain correct."
+    },
+    {
+      "id": "GATE.VISUAL_EVIDENCE",
+      "required": true,
+      "rule": "Desktop and mobile before/after evidence for all four target surfaces."
+    },
+    {
+      "id": "GATE.NO_FAKE_GREEN",
+      "required": true,
+      "rule": "Static PASS is not visual PASS."
+    }
+  ],
+  "observations": {
+    "source_files": 182,
+    "css_material_records": 648,
+    "html_target_records": 44,
+    "js_interaction_records": 190,
+    "layer_entries": 648,
+    "blur_owners": 43,
+    "unclassified_layers": 462,
+    "important_occurrences": 16,
+    "duplicate_relevant_selectors": 39
+  }
+}

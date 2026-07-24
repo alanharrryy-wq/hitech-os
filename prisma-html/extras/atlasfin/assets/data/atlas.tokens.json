@@ -1,0 +1,198 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "prisma": {
+    "color": {
+      "night": {
+        "$type": "color",
+        "$value": "#02070d"
+      },
+      "surface_smoke": {
+        "$type": "color",
+        "$value": "#07111c"
+      },
+      "cyan": {
+        "$type": "color",
+        "$value": "#67e1ff",
+        "$description": "Ubicación, foco, navegación e información."
+      },
+      "emerald": {
+        "$type": "color",
+        "$value": "#66ecb1",
+        "$description": "Éxito, permitido, disponible y saludable."
+      },
+      "violet": {
+        "$type": "color",
+        "$value": "#b197ff",
+        "$description": "Licencia, configuración y capacidades."
+      },
+      "amber": {
+        "$type": "color",
+        "$value": "#ffc670",
+        "$description": "Advertencia, espera, comercio y atención."
+      },
+      "magenta": {
+        "$type": "color",
+        "$value": "#ff89cf",
+        "$description": "Excepción, diagnóstico y función avanzada."
+      },
+      "pink": {
+        "$type": "color",
+        "$value": "#ff9fca",
+        "$description": "Cliente, relación, lealtad, cuidado y datos humanos."
+      },
+      "navy": {
+        "$type": "color",
+        "$value": "#315f94",
+        "$description": "Autoridad, administración, gobernanza y contexto institucional."
+      },
+      "graphite": {
+        "$type": "color",
+        "$value": "#8997a3",
+        "$description": "Neutral estructural, cristal, chrome y superficies de referencia."
+      }
+    },
+    "motion": {
+      "press": {
+        "$type": "duration",
+        "$value": "120ms"
+      },
+      "hover": {
+        "$type": "duration",
+        "$value": "180ms"
+      },
+      "select": {
+        "$type": "duration",
+        "$value": "220ms"
+      },
+      "reveal": {
+        "$type": "duration",
+        "$value": "420ms"
+      },
+      "sweep": {
+        "$type": "duration",
+        "$value": "680ms"
+      },
+      "breathe": {
+        "$type": "duration",
+        "$value": "6800ms"
+      }
+    },
+    "transparency": {
+      "smoke_default": {
+        "$type": "number",
+        "$value": 0.08
+      },
+      "chrome_default": {
+        "$type": "number",
+        "$value": 0.28
+      },
+      "content_default": {
+        "$type": "number",
+        "$value": 0.2
+      }
+    },
+    "polish": {
+      "gaussian_soft": {
+        "$type": "dimension",
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        }
+      },
+      "gaussian_medium": {
+        "$type": "dimension",
+        "$value": {
+          "value": 30,
+          "unit": "px"
+        }
+      },
+      "gaussian_strong": {
+        "$type": "dimension",
+        "$value": {
+          "value": 46,
+          "unit": "px"
+        }
+      },
+      "energy_ring_duration": {
+        "$type": "duration",
+        "$value": "520ms"
+      },
+      "progress_specular_duration": {
+        "$type": "duration",
+        "$value": "2400ms"
+      }
+    },
+    "interaction_refinement": {
+      "button_bloom_radius": {
+        "$type": "dimension",
+        "$value": {
+          "value": 72,
+          "unit": "px"
+        }
+      },
+      "button_bloom_opacity": {
+        "$type": "number",
+        "$value": 0.58
+      },
+      "sidebar_saturation": {
+        "$type": "number",
+        "$value": 1.22
+      },
+      "sidebar_base_alpha_factor": {
+        "$type": "number",
+        "$value": 0.42
+      },
+      "click_particles": {
+        "$type": "number",
+        "$value": 0
+      }
+    },
+    "batch_3": {
+      "deferred_section_size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 620,
+          "unit": "px"
+        }
+      },
+      "toast_duration": {
+        "$type": "duration",
+        "$value": "3600ms"
+      },
+      "snackbar_duration": {
+        "$type": "duration",
+        "$value": "5200ms"
+      },
+      "loading_shimmer_duration": {
+        "$type": "duration",
+        "$value": "1700ms"
+      },
+      "accordion_motion": {
+        "$type": "duration",
+        "$value": "220ms"
+      },
+      "queue_step_duration": {
+        "$type": "duration",
+        "$value": "900ms"
+      }
+    },
+    "completion": {
+      "total_pages": {
+        "$type": "number",
+        "$value": 27
+      },
+      "total_sections": {
+        "$type": "number",
+        "$value": 26
+      },
+      "total_elements": {
+        "$type": "number",
+        "$value": 418
+      },
+      "tooltip_delay": {
+        "$type": "duration",
+        "$value": "420ms"
+      }
+    }
+  }
+}

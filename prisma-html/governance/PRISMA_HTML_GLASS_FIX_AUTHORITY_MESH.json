@@ -1,0 +1,42 @@
+{
+  "schema_version": "PRISMA_HTML_AUTHORITY_MESH_1.0",
+  "status": "PASS_TASK_AUTHORITY_LOCKED",
+  "created_at": "2026-07-20T21:51:14.866047+00:00",
+  "task": "Correct verified standalone PRISMA HTML and Atlas defects: honest 0% material controls, canonical glass owners, same-context selector duplication, evidence integrity, and browser validation.",
+  "classification": "REPAIR_AND_VALIDATE",
+  "authority_readset": [
+    "VISUAL_INTENT.md from supplied context package",
+    "PROJECT_CURRENT/extras/atlasfin/governance/LAYERS_MAP.json",
+    "PROJECT_CURRENT/extras/atlasfin/governance/AUTHORITY_MESH.json as historical authority only",
+    "PROJECT_CURRENT/BASELINE-MANIFEST.json",
+    "PROJECT_CURRENT/SOURCE-INTEGRITY.json",
+    "PROJECT_CURRENT/tools/validate_project.py"
+  ],
+  "scope": {
+    "included": [
+      "standalone PROJECT_CURRENT HTML/CSS/JS",
+      "Atlas A-Z and index",
+      "host index CSS duplicate consolidation",
+      "validation and evidence metadata"
+    ],
+    "excluded": [
+      "hitech-os repository",
+      "Tablet",
+      "PC",
+      "Mobile",
+      "database",
+      "Prisma schema",
+      "Git",
+      "user processes and ports",
+      "deployment"
+    ]
+  },
+  "hard_rules": [
+    "0% chrome/content means no residual material tint, border, shadow or backdrop filter",
+    "no new !important",
+    "no blind deletion",
+    "responsive behavior preserved",
+    "browser validation cannot be replaced by static PASS"
+  ],
+  "layers_map": "PRISMA_HTML_GLASS_FIX_LAYERS_MAP.json"
+}

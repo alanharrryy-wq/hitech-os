@@ -1,0 +1,14 @@
+{
+  "name": "prisma-html",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "cf:build": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Build",
+    "cf:status": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Status",
+    "cf:preview": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Preview",
+    "cf:production": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Production"
+  },
+  "devDependencies": {
+    "wrangler": "4.93.0"
+  }
+}
