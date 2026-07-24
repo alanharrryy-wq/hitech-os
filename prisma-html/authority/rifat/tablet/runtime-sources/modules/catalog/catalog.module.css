@@ -1,0 +1,172 @@
+@layer prisma.routes {
+  .catalogLayout {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.36fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .catalogMain,
+  .drawer {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .drawer {
+    position: sticky;
+    top: 96px;
+    max-height: calc(100dvh - 122px);
+    overflow: auto;
+    background: var(--prisma-surface-rail);
+  }
+
+  .toolbar,
+  .formHeader,
+  .formTitleLine,
+  .formActions,
+  .drawerDock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .kicker {
+    color: var(--prisma-cyan-300);
+    font-size: 0.72rem;
+    font-weight: 820;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .searchBox,
+  .field,
+  .toggleField {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+    color: var(--prisma-text-secondary);
+  }
+
+  .searchBox input,
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: var(--prisma-touch-target);
+    padding: 10px 12px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    outline: 0;
+  }
+
+  .form,
+  .twoCols {
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .twoCols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .tableWrap {
+    min-width: 0;
+    overflow: auto;
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+  }
+
+  .productTable {
+    width: 100%;
+    min-width: 720px;
+    color: var(--prisma-text-secondary);
+  }
+
+  .productTable th,
+  .productTable td {
+    padding: 12px 13px;
+    text-align: left;
+    border-bottom: 1px solid var(--prisma-line-soft);
+  }
+
+  .productTable th {
+    position: sticky;
+    top: 0;
+    z-index: var(--prisma-z-sticky);
+    color: var(--prisma-text-muted);
+    background: rgba(7, 23, 38, 0.92);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .productTable tr:hover td,
+  .selectedRow td { background: rgba(22, 58, 84, 0.34); }
+
+  .saveButton,
+  .secondarySaveButton,
+  .ghostSaveButton,
+  .cancelButton,
+  .linkButton,
+  .tableAction {
+    min-height: var(--prisma-touch-target);
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .saveButton {
+    color: #f8fcff;
+    background: var(--prisma-gradient-primary);
+    border-color: rgba(187, 231, 255, 0.44);
+    box-shadow: var(--prisma-shadow-primary);
+  }
+
+  .notice,
+  .errorBox,
+  .emptyState,
+  .drawerNote { padding: 12px 14px; color: var(--prisma-text-secondary); background: var(--prisma-surface-card); border: 1px solid var(--prisma-line-soft); border-radius: 16px; }
+  .errorBox { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .badgeOk,
+  .badgeMuted,
+  .stockOk,
+  .stockWarn,
+  .stockDanger,
+  .createModeBadge,
+  .editModeBadge { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); font-size: 0.76rem; font-weight: 780; }
+  .badgeOk,
+  .stockOk { color: var(--prisma-success-400); }
+  .stockWarn { color: var(--prisma-warning-400); }
+  .stockDanger { color: var(--prisma-danger-400); }
+  .compactCheck { min-width: var(--prisma-touch-target); min-height: var(--prisma-touch-target); }
+
+  @media (max-width: 980px) {
+    .catalogLayout { grid-template-columns: 1fr; }
+    .drawer { position: relative; top: auto; max-height: none; }
+  }
+
+  @media (max-width: 620px) {
+    .twoCols { grid-template-columns: 1fr; }
+  }
+}

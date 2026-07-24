@@ -1,0 +1,465 @@
+{
+  "schema": "prisma.ui.premium-mise-en-place.surface-stations.v1",
+  "status": "CERTIFIED",
+  "priority": [
+    "tablet",
+    "mobile",
+    "pc",
+    "web",
+    "control-center",
+    "chart-lab",
+    "shared-ui"
+  ],
+  "stations": [
+    {
+      "surface": "tablet",
+      "priority": 1,
+      "app": "PRISMA Tablet Core",
+      "root": "products/tablet/app",
+      "port": 3120,
+      "status": "CERTIFIED",
+      "routeCount": 35,
+      "panelCount": 7,
+      "visualRegionCount": 2000,
+      "editableSlotCount": 10370,
+      "owners": [
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "styleProfile": "light, tactile, high-contrast-soft, touch-first, operational clarity",
+      "guardrails": [
+        "dark/obsidian dominant Tablet theme",
+        "global CSS blast",
+        "background layer that blocks selling flow",
+        "Tablet keeps local-sale autonomy; visual layers cannot block product, cart, checkout or shift operations."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os"
+        ],
+        "should_use": [
+          "prisma-components"
+        ],
+        "consider_required": [
+          "background-catalog",
+          "class-variance-authority",
+          "cloudglass-assets",
+          "clsx",
+          "framer-motion",
+          "lucide-react",
+          "motion",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-slot",
+          "radix-tabs",
+          "radix-tooltip",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [],
+        "high_risk_optional": [
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify --surface tablet --route /pos --strict",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "mobile",
+      "priority": 2,
+      "app": "PRISMA Mobile Adder",
+      "root": "products/mobile/app",
+      "port": 3140,
+      "status": "CERTIFIED",
+      "routeCount": 5,
+      "panelCount": 1,
+      "visualRegionCount": 299,
+      "editableSlotCount": 1590,
+      "owners": [
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "styleProfile": "thin, fast, truthful, compact, low-overhead touch",
+      "guardrails": [
+        "heavy WebGL",
+        "large atmospheric backgrounds",
+        "desktop/tablet density",
+        "Mobile/App stays compact and assistive; it does not become POS."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [
+          "clsx",
+          "lucide-react",
+          "radix-slot"
+        ],
+        "consider_required": [
+          "class-variance-authority",
+          "framer-motion",
+          "motion",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-tabs",
+          "radix-tooltip",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [
+          "background-catalog",
+          "cloudglass-assets",
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "high_risk_optional": [],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "pc",
+      "priority": 3,
+      "app": "PRISMA PC Backoffice",
+      "root": "products/pc/app",
+      "port": 3130,
+      "status": "CERTIFIED",
+      "routeCount": 63,
+      "panelCount": 6,
+      "visualRegionCount": 832,
+      "editableSlotCount": 4428,
+      "owners": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "styleProfile": "desktop-grade, dense but readable, controlled glass/graphite only if PC governor allows",
+      "guardrails": [
+        "Tablet-only visuals copied blindly",
+        "unbounded WebGL in operational surfaces",
+        "PC remains governance/backoffice; do not copy Tablet selling density into PC."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [
+          "clsx",
+          "lucide-react",
+          "radix-dialog",
+          "radix-tabs",
+          "radix-tooltip"
+        ],
+        "consider_required": [
+          "class-variance-authority",
+          "framer-motion",
+          "motion",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-slot",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [
+          "background-catalog",
+          "cloudglass-assets",
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "high_risk_optional": [],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "web",
+      "priority": 4,
+      "app": "PRISMA Web/Edit",
+      "root": "products/web/app",
+      "port": 3110,
+      "status": "CERTIFIED",
+      "routeCount": 2,
+      "panelCount": 1,
+      "visualRegionCount": 42,
+      "editableSlotCount": 226,
+      "owners": [
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "styleProfile": "public/portal appropriate, lightweight, governed branding",
+      "guardrails": [
+        "POS operational assumptions in public surfaces",
+        "Web/Edit stays public or editorial safe; do not import POS assumptions."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [],
+        "consider_required": [
+          "background-catalog",
+          "class-variance-authority",
+          "cloudglass-assets",
+          "clsx",
+          "framer-motion",
+          "lucide-react",
+          "motion",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-slot",
+          "radix-tabs",
+          "radix-tooltip",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [],
+        "high_risk_optional": [
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "control-center",
+      "priority": 5,
+      "app": "Control Center",
+      "root": "prisma-control-center",
+      "port": 3150,
+      "status": "CERTIFIED",
+      "routeCount": 1,
+      "panelCount": 1,
+      "visualRegionCount": 496,
+      "editableSlotCount": 2549,
+      "owners": [
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "styleProfile": "general governed PRISMA surface",
+      "guardrails": [
+        "Control Center stays operator status and release control, with public-safe redaction."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [],
+        "consider_required": [
+          "background-catalog",
+          "class-variance-authority",
+          "cloudglass-assets",
+          "clsx",
+          "framer-motion",
+          "lucide-react",
+          "motion",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-slot",
+          "radix-tabs",
+          "radix-tooltip",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [],
+        "high_risk_optional": [
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "chart-lab",
+      "priority": 6,
+      "app": "Chart Lab",
+      "root": "products/chart-lab/app",
+      "port": 3000,
+      "status": "CERTIFIED",
+      "routeCount": 2,
+      "panelCount": 1,
+      "visualRegionCount": 414,
+      "editableSlotCount": 2160,
+      "owners": [
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "styleProfile": "visual experimentation with evidence and lab boundaries",
+      "guardrails": [
+        "promoting lab visuals to production without governor/evidence",
+        "Chart Lab can experiment, but lab visuals need governor evidence before production use."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [
+          "background-catalog",
+          "cloudglass-assets",
+          "framer-motion",
+          "gsap",
+          "motion",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "consider_required": [
+          "class-variance-authority",
+          "clsx",
+          "lucide-react",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-slot",
+          "radix-tabs",
+          "radix-tooltip",
+          "tailwind-merge",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [],
+        "high_risk_optional": [],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    },
+    {
+      "surface": "shared-ui",
+      "priority": 7,
+      "app": "Shared UI / Root quality tooling",
+      "root": "products/shared-ui",
+      "port": null,
+      "status": "CERTIFIED",
+      "routeCount": 0,
+      "panelCount": 0,
+      "visualRegionCount": 73,
+      "editableSlotCount": 367,
+      "owners": [
+        "tools/quality/ui-certainty.mjs"
+      ],
+      "styleProfile": "cross-surface primitives and recipes with strict compatibility",
+      "guardrails": [
+        "breaking changes without tri-surface evidence",
+        "Shared UI changes require cross-surface compatibility evidence before promotion."
+      ],
+      "capabilityBuckets": {
+        "must_use": [
+          "authority-map",
+          "layer-budget"
+        ],
+        "should_use": [
+          "class-variance-authority",
+          "clsx",
+          "radix-slot",
+          "tailwind-merge"
+        ],
+        "consider_required": [
+          "background-catalog",
+          "cloudglass-assets",
+          "framer-motion",
+          "lucide-react",
+          "motion",
+          "prisma-components",
+          "prisma-recipes",
+          "prisma-tokens",
+          "prisma-visual-os",
+          "radix-dialog",
+          "radix-dropdown-menu",
+          "radix-scroll-area",
+          "radix-select",
+          "radix-tabs",
+          "radix-tooltip",
+          "vanilla-extract"
+        ],
+        "bounded_optional": [],
+        "high_risk_optional": [
+          "gsap",
+          "ogl",
+          "react-spring",
+          "three"
+        ],
+        "forbidden_for_scope": []
+      },
+      "validationGates": [
+        "node tools/quality/ui-certainty.mjs scope --all",
+        "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+        "node tools/quality/ui-certainty.mjs visual-control:certify --strict"
+      ],
+      "stationReady": true
+    }
+  ]
+}

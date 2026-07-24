@@ -1,0 +1,91 @@
+{
+  "schema": "prisma.ui.panel.contract.v4",
+  "panel_id": "mobile.workspace",
+  "status": "CERTIFIED",
+  "surface": "mobile",
+  "route": "/",
+  "title": "Mobile workspace",
+  "certification_rule": "Runtime result is computed by ui-certainty.mjs. Static seed status is not accepted as final green.",
+  "owner_component": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+  "owner_css_module": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+  "canonical_selectors": [
+    "[data-prisma-panel=\"mobile.workspace\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "mobile.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "mobile"
+    },
+    {
+      "attribute": "data-prisma-route",
+      "value": "/"
+    }
+  ],
+  "allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/panels/**",
+    ".prisma-ui/panels/mobile.workspace.json",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+    "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "control-center"
+  ],
+  "target_strings": [
+    "mobile.workspace",
+    "mobile",
+    "/",
+    "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+  ],
+  "default_probe": {
+    "surface": "mobile",
+    "route": "/",
+    "point": {
+      "x": 390,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "node tools/quality/ui-certainty.mjs self-test --strict",
+    "node tools/quality/ui-certainty.mjs certify --surface mobile --strict",
+    "node tools/quality/ui-certainty.mjs contracts --surface mobile --strict",
+    "node tools/quality/ui-certainty.mjs anchors --surface mobile --strict",
+    "node tools/quality/ui-certainty.mjs selectors --surface mobile --strict",
+    "node tools/quality/ui-certainty.mjs zero-important",
+    "node tools/quality/ui-certainty.mjs scope --all"
+  ],
+  "visual_evidence": {
+    "preferred": "Source contract plus runtime probe when the target port is already alive",
+    "fallback": "Source contract, real owner anchor, selector validation and scope report"
+  },
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "quality_gates": [
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
+    "scope_guard",
+    "zero_important"
+  ],
+  "exclusive": true
+}

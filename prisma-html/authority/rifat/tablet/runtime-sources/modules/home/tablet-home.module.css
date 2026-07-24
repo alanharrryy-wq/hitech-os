@@ -1,0 +1,167 @@
+@layer prisma.routes {
+  .homeShell {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-areas:
+      "hero hero hero hero hero hero hero hero alert alert alert alert"
+      "metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics"
+      "tools tools tools tools tools tools tools tools tools tools tools tools";
+    gap: clamp(14px, 1.8vw, 22px);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .hero {
+    grid-area: hero;
+    min-width: 0;
+    display: block;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .heroMain,
+  .toolPanel {
+    min-width: 0;
+    padding: clamp(16px, 2vw, 24px);
+    display: grid;
+    align-content: center;
+    gap: 12px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .heroCopy,
+  .workflowHeader {
+    display: grid;
+    gap: 7px;
+  }
+
+  .heroCopy h2,
+  .heroCopy h1,
+  .workflowHeader h2 {
+    margin: 0;
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-weight: 620;
+    letter-spacing: -0.025em;
+  }
+
+  .heroCopy p,
+  .workflowHeader p {
+    margin: 0;
+    color: var(--prisma-text-secondary);
+    line-height: 1.45;
+  }
+
+  .heroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    min-height: var(--prisma-touch-target);
+    padding: 0 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--prisma-radius-control);
+    font-weight: 820;
+    text-decoration: none;
+  }
+
+  .primaryButton {
+    color: #f8fcff;
+    background: var(--prisma-gradient-primary);
+    border: 1px solid rgba(187, 231, 255, 0.46);
+    box-shadow: var(--prisma-shadow-primary);
+  }
+
+  .secondaryButton {
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+  }
+
+  .metricGrid {
+    grid-area: metrics;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .metricCard,
+  .alertCard {
+    min-width: 0;
+    padding: 15px;
+    display: grid;
+    gap: 6px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .metricCard strong { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; font-size: 1.4rem; }
+  .toolPanel { grid-area: tools; }
+  .alertCard { grid-area: alert; align-content: start; }
+  .alertList { display: grid; gap: 8px; }
+  .alertItem { min-height: 48px; padding: 10px 12px; display: flex; align-items: center; gap: 9px; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border-radius: 14px; }
+  .emptyAlert { color: var(--prisma-text-muted); }
+
+  .workflowLinks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .workflowLink {
+    min-height: 76px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+  }
+
+  .workflowLink span {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .workflowLink small { color: var(--prisma-text-muted); }
+  .workflowLink b { color: var(--prisma-cyan-300); font-size: 0.78rem; }
+
+  @media (max-width: 860px) {
+    .homeShell {
+      grid-template-areas:
+        "hero hero hero hero hero hero hero hero hero hero hero hero"
+        "alert alert alert alert alert alert alert alert alert alert alert alert"
+        "metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics metrics"
+        "tools tools tools tools tools tools tools tools tools tools tools tools";
+    }
+  }
+
+  @media (max-width: 620px) {
+    .metricGrid { grid-template-columns: 1fr; }
+    .workflowLinks { grid-template-columns: 1fr; }
+  }
+}

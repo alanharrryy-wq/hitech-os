@@ -1,0 +1,55 @@
+@layer prisma.routes {
+  .page {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .hero {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .hero h2 { margin: 0; font-family: "Bahnschrift", "Aptos Display", sans-serif; font-weight: 620; }
+  .muted { color: var(--prisma-text-muted); }
+  .columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+
+  .panel,
+  .exportCard,
+  .diagnostics,
+  .alert,
+  .empty {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .alert { color: var(--prisma-warning-400); border-color: rgba(255, 210, 125, 0.30); }
+  .exportSummary { padding: 10px 12px; display: grid; gap: 4px; background: var(--prisma-surface-info); border-radius: 14px; }
+  .row { min-height: 48px; padding: 9px 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--prisma-line-soft); }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .actions :where(button, a) { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+
+  @media (max-width: 760px) { .columns { grid-template-columns: 1fr; } }
+}

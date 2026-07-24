@@ -1,0 +1,90 @@
+{
+  "schema": "prisma.ui.panel.contract.v4",
+  "panel_id": "web.workspace",
+  "status": "CERTIFIED",
+  "surface": "web",
+  "route": "/",
+  "title": "Web/Edit workspace",
+  "certification_rule": "Runtime result is computed by ui-certainty.mjs. Static seed status is not accepted as final green.",
+  "owner_component": "products/web/app/src/components/EitLandingPage.tsx",
+  "owner_css_module": null,
+  "canonical_selectors": [
+    "[data-prisma-panel=\"web.workspace\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "web.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "web"
+    },
+    {
+      "attribute": "data-prisma-route",
+      "value": "/"
+    }
+  ],
+  "allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/panels/**",
+    ".prisma-ui/panels/web.workspace.json",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "products/web/app/src/components/EitLandingPage.tsx"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "web.workspace",
+    "web",
+    "/",
+    "products/web/app/src/components/EitLandingPage.tsx"
+  ],
+  "default_probe": {
+    "surface": "web",
+    "route": "/",
+    "point": {
+      "x": 640,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "node tools/quality/ui-certainty.mjs self-test --strict",
+    "node tools/quality/ui-certainty.mjs certify --surface web --strict",
+    "node tools/quality/ui-certainty.mjs contracts --surface web --strict",
+    "node tools/quality/ui-certainty.mjs anchors --surface web --strict",
+    "node tools/quality/ui-certainty.mjs selectors --surface web --strict",
+    "node tools/quality/ui-certainty.mjs zero-important",
+    "node tools/quality/ui-certainty.mjs scope --all"
+  ],
+  "visual_evidence": {
+    "preferred": "Source contract plus runtime probe when the target port is already alive",
+    "fallback": "Source contract, real owner anchor, selector validation and scope report"
+  },
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "quality_gates": [
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
+    "scope_guard",
+    "zero_important"
+  ],
+  "exclusive": true
+}

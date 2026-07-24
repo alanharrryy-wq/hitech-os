@@ -1,0 +1,91 @@
+{
+  "schema": "prisma.ui.panel.contract.v4",
+  "panel_id": "control-center.workspace",
+  "status": "CERTIFIED",
+  "surface": "control-center",
+  "route": "/",
+  "title": "Control Center workspace",
+  "certification_rule": "Runtime result is computed by ui-certainty.mjs. Static seed status is not accepted as final green.",
+  "owner_component": "prisma-control-center/internal/web/index.html",
+  "owner_css_module": "prisma-control-center/internal/web/styles.css",
+  "canonical_selectors": [
+    "[data-prisma-panel=\"control-center.workspace\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "control-center.workspace"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "control-center"
+    },
+    {
+      "attribute": "data-prisma-route",
+      "value": "/"
+    }
+  ],
+  "allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/panels/**",
+    ".prisma-ui/panels/control-center.workspace.json",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "prisma-control-center/internal/web/index.html",
+    "prisma-control-center/internal/web/styles.css"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile"
+  ],
+  "target_strings": [
+    "control-center.workspace",
+    "control-center",
+    "/",
+    "prisma-control-center/internal/web/index.html"
+  ],
+  "default_probe": {
+    "surface": "control-center",
+    "route": "/",
+    "point": {
+      "x": 960,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "node tools/quality/ui-certainty.mjs self-test --strict",
+    "node tools/quality/ui-certainty.mjs certify --surface control-center --strict",
+    "node tools/quality/ui-certainty.mjs contracts --surface control-center --strict",
+    "node tools/quality/ui-certainty.mjs anchors --surface control-center --strict",
+    "node tools/quality/ui-certainty.mjs selectors --surface control-center --strict",
+    "node tools/quality/ui-certainty.mjs zero-important",
+    "node tools/quality/ui-certainty.mjs scope --all"
+  ],
+  "visual_evidence": {
+    "preferred": "Source contract plus runtime probe when the target port is already alive",
+    "fallback": "Source contract, real owner anchor, selector validation and scope report"
+  },
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "quality_gates": [
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
+    "scope_guard",
+    "zero_important"
+  ],
+  "exclusive": true
+}

@@ -1,0 +1,431 @@
+/* PRISMA_TABLET_SETTINGS_WORKSPACE_V3_CANONICAL */
+@layer prisma.routes {
+  .workspace {
+    --settings-cyan: 103, 225, 255;
+    --settings-emerald: 102, 236, 177;
+    --settings-violet: 177, 151, 255;
+    --settings-amber: 255, 198, 112;
+    --settings-magenta: 255, 137, 207;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(176px, 0.18fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(22px, 2.8vw, 38px);
+    color: var(--prisma-text-primary);
+    background: transparent;
+  }
+
+  .sectionNav {
+    position: sticky;
+    top: 105px;
+    align-self: start;
+    min-width: 0;
+    padding: 10px;
+    display: grid;
+    gap: 5px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 0 0, rgba(var(--settings-cyan), 0.075), transparent 38%),
+      linear-gradient(152deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008)),
+      rgba(4, 9, 15, 0.58);
+    border: 1px solid rgba(226, 243, 252, 0.17);
+    border-radius: 23px;
+    box-shadow:
+      0 21px 54px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(21px) saturate(1.18);
+    -webkit-backdrop-filter: blur(21px) saturate(1.18);
+  }
+
+  .sectionNav::before {
+    content: "";
+    position: absolute;
+    inset: 0 14% auto;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(238, 249, 255, 0.52), transparent);
+  }
+
+  .sectionLink,
+  .sectionLinkActive {
+    --section-accent: var(--settings-cyan);
+    position: relative;
+    min-height: 52px;
+    padding: 0 12px 0 16px;
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    color: rgba(207, 226, 238, 0.63);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 760;
+    transition:
+      color var(--prisma-motion-fast) ease,
+      background var(--prisma-motion-fast) ease,
+      border-color var(--prisma-motion-fast) ease,
+      transform var(--prisma-motion-fast) ease;
+  }
+
+  .sectionLink[data-accent="amber"],
+  .sectionLinkActive[data-accent="amber"] {
+    --section-accent: var(--settings-amber);
+  }
+
+  .sectionLink[data-accent="violet"],
+  .sectionLinkActive[data-accent="violet"] {
+    --section-accent: var(--settings-violet);
+  }
+
+  .sectionLink svg,
+  .sectionLinkActive svg {
+    color: rgba(var(--section-accent), 0.82);
+  }
+
+  .sectionLink::before,
+  .sectionLinkActive::before {
+    content: "";
+    position: absolute;
+    top: 11px;
+    bottom: 11px;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: rgb(var(--section-accent));
+    box-shadow: 0 0 13px rgba(var(--section-accent), 0.70);
+    opacity: 0;
+  }
+
+  .sectionLink:hover,
+  .sectionLink:focus-visible,
+  .sectionLinkActive {
+    color: #f5fbff;
+    background:
+      linear-gradient(90deg, rgba(var(--section-accent), 0.11), rgba(255, 255, 255, 0.015) 68%, transparent);
+    border-color: rgba(var(--section-accent), 0.18);
+    transform: translateX(2px);
+  }
+
+  .sectionLink:focus-visible {
+    outline: 2px solid rgba(var(--section-accent), 0.78);
+    outline-offset: 2px;
+  }
+
+  .sectionLinkActive::before,
+  .sectionLink:hover::before,
+  .sectionLink:focus-visible::before {
+    opacity: 1;
+  }
+
+  .content,
+  .dataOverview {
+    min-width: 0;
+    display: grid;
+    gap: 20px;
+  }
+
+  .dataOverview {
+    width: min(100%, 920px);
+    margin: 2.5vh auto 0;
+  }
+
+  .dataHero {
+    position: relative;
+    min-height: 330px;
+    padding: clamp(28px, 5vw, 52px);
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 11px;
+    overflow: hidden;
+    isolation: isolate;
+    text-align: center;
+    background:
+      radial-gradient(circle at 86% 12%, rgba(var(--settings-amber), 0.11), transparent 30%),
+      radial-gradient(circle at 7% 90%, rgba(var(--settings-cyan), 0.08), transparent 32%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012)),
+      rgba(8, 12, 17, 0.47);
+    border: 1px solid rgba(235, 244, 255, 0.21);
+    border-radius: 30px;
+    box-shadow:
+      0 31px 92px rgba(0, 0, 0, 0.37),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(24px) saturate(1.10);
+    -webkit-backdrop-filter: blur(24px) saturate(1.10);
+  }
+
+  .dataHero::before {
+    content: "";
+    position: absolute;
+    inset: 0 11% auto;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
+  }
+
+  .dataHeroIcon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    color: rgb(var(--settings-cyan));
+    background: rgba(7, 74, 103, 0.42);
+    border: 1px solid rgba(var(--settings-cyan), 0.36);
+    border-radius: 20px;
+    box-shadow: 0 0 24px rgba(var(--settings-cyan), 0.08);
+  }
+
+  .dataEyebrow {
+    color: rgb(var(--settings-cyan));
+    font-size: 0.76rem;
+    font-weight: 830;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .dataHero h2,
+  .dataHero p {
+    margin: 0;
+  }
+
+  .dataHero h2 {
+    max-width: 24ch;
+    color: #f8fbff;
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-size: clamp(2rem, 4.6vw, 4rem);
+    line-height: 0.99;
+    font-weight: 620;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  .dataHero p {
+    max-width: 62ch;
+    color: rgba(225, 237, 245, 0.76);
+    line-height: 1.55;
+  }
+
+  .dataActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.040), rgba(255, 255, 255, 0.008)),
+      rgba(4, 9, 15, 0.51);
+    border: 1px solid rgba(226, 243, 252, 0.16);
+    border-radius: 22px;
+    box-shadow:
+      0 20px 48px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(19px) saturate(1.14);
+    -webkit-backdrop-filter: blur(19px) saturate(1.14);
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    --action-accent: var(--settings-emerald);
+    min-height: 104px;
+    padding: 17px 19px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 13px;
+    color: var(--prisma-text-primary);
+    background: transparent;
+    border: 0;
+    text-decoration: none;
+    transition:
+      color var(--prisma-motion-fast) ease,
+      background var(--prisma-motion-fast) ease;
+  }
+
+  .secondaryAction {
+    --action-accent: var(--settings-amber);
+    border-left: 1px solid rgba(222, 242, 252, 0.12);
+  }
+
+  .primaryAction:hover,
+  .secondaryAction:hover,
+  .primaryAction:focus-visible,
+  .secondaryAction:focus-visible {
+    background:
+      linear-gradient(95deg, rgba(var(--action-accent), 0.10), rgba(255, 255, 255, 0.016) 70%, transparent);
+    outline: 2px solid rgba(var(--action-accent), 0.72);
+    outline-offset: -2px;
+  }
+
+  .actionIcon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    color: rgb(var(--action-accent));
+    background: rgba(var(--action-accent), 0.065);
+    border: 1px solid rgba(var(--action-accent), 0.20);
+    border-radius: 14px;
+  }
+
+  .actionCopy {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .actionCopy strong {
+    color: #f5fbff;
+    font-size: 0.99rem;
+  }
+
+  .actionCopy small {
+    color: rgba(211, 229, 240, 0.68);
+    line-height: 1.4;
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] .content {
+    width: min(100%, 1000px);
+    margin: 1.6vh auto 0;
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-surface="Tipos de exportacion local"]) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    padding: 13px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 88% 7%, rgba(var(--settings-amber), 0.09), transparent 30%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.009)),
+      rgba(5, 10, 16, 0.55);
+    border: 1px solid rgba(231, 245, 252, 0.18);
+    border-radius: 28px;
+    box-shadow:
+      0 30px 86px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(23px) saturate(1.18);
+    -webkit-backdrop-filter: blur(23px) saturate(1.18);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile]) {
+    --tile-accent: var(--settings-cyan);
+    min-height: 112px;
+    padding: 17px 16px;
+    background:
+      linear-gradient(140deg, rgba(var(--tile-accent), 0.052), rgba(255, 255, 255, 0.010) 60%, transparent);
+    border: 1px solid rgba(var(--tile-accent), 0.14);
+    border-radius: 18px;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Ventas JSON"]) {
+    --tile-accent: var(--settings-violet);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Pendientes CSV"]) {
+    --tile-accent: var(--settings-amber);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Pendientes JSON"]) {
+    --tile-accent: var(--settings-magenta);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Movimientos CSV"]),
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Movimientos JSON"]) {
+    --tile-accent: var(--settings-emerald);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Respaldo offline"]) {
+    --tile-accent: var(--settings-violet);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile="Turno y caja"]) {
+    --tile-accent: 220, 233, 242;
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile] > span:first-child) {
+    color: rgb(var(--tile-accent));
+    background: rgba(var(--tile-accent), 0.065);
+    border-color: rgba(var(--tile-accent), 0.20);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile] > span:last-child) {
+    color: rgba(var(--tile-accent), 0.94);
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile]:hover),
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-tile]:focus-visible) {
+    background:
+      linear-gradient(100deg, rgba(var(--tile-accent), 0.12), rgba(255, 255, 255, 0.018) 72%, transparent);
+    border-color: rgba(var(--tile-accent), 0.31);
+    outline: 2px solid rgba(var(--tile-accent), 0.72);
+    outline-offset: -2px;
+  }
+
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-tile-state="deferred"]),
+  .workspace[data-prisma-settings-route="/settings/export"] :global([data-tile-state="disabled"]) {
+    opacity: 0.48;
+    filter: saturate(0.64);
+  }
+
+  @media (max-width: 860px) {
+    .workspace {
+      grid-template-columns: 1fr;
+      gap: 17px;
+    }
+
+    .sectionNav {
+      position: static;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding: 8px;
+    }
+
+    .sectionLink,
+    .sectionLinkActive {
+      grid-template-columns: 22px auto;
+      justify-content: center;
+      padding-inline: 10px;
+    }
+
+    .sectionLink::before,
+    .sectionLinkActive::before {
+      inset: auto 13px 0;
+      width: auto;
+      height: 2px;
+    }
+  }
+
+  @media (max-width: 660px) {
+    .dataActions,
+    .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-surface="Tipos de exportacion local"]) {
+      grid-template-columns: 1fr;
+    }
+
+    .secondaryAction {
+      border-top: 1px solid rgba(222, 242, 252, 0.12);
+      border-left: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sectionLink,
+    .sectionLinkActive,
+    .primaryAction,
+    .secondaryAction {
+      transition: none;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sectionNav,
+    .dataHero,
+    .dataActions,
+    .workspace[data-prisma-settings-route="/settings/export"] :global([data-quick-create-surface="Tipos de exportacion local"]) {
+      background: rgb(7, 13, 20);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+}

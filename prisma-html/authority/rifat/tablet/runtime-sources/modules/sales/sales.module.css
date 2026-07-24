@@ -1,0 +1,106 @@
+@layer prisma.routes {
+  .salesPage {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .hero,
+  .toolbar,
+  .detailHeader,
+  .diagnosticHeader,
+  .returnSummaryHeader,
+  .actionsRow,
+  .rangeBar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 9px; }
+  .hero { align-items: end; background: transparent; border: 0; box-shadow: none; }
+  .hero h2 { margin: 0; font-family: "Bahnschrift", "Aptos Display", sans-serif; font-weight: 620; }
+  .panelEyebrow { color: var(--prisma-cyan-300); font-size: 0.72rem; font-weight: 820; letter-spacing: 0.14em; text-transform: uppercase; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+
+  .workspaceTabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+  }
+
+  .workspaceTab,
+  .workspaceTabActive {
+    min-height: var(--prisma-touch-target);
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--prisma-text-muted);
+    border-radius: calc(var(--prisma-radius-control) - 5px);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .workspaceTabActive {
+    color: var(--prisma-text-primary);
+    background: rgba(62, 138, 255, 0.22);
+    box-shadow: inset 0 0 0 1px rgba(120, 221, 255, 0.2);
+  }
+
+  .panel,
+  .kpi,
+  .stateCard,
+  .returnCard,
+  .diagnosticSection,
+  .lockedDiagnostic,
+  .empty {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .kpi strong { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; font-size: 1.35rem; }
+  .historyFilters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .historyFilters :where(button, a),
+  .primary,
+  .secondary,
+  .detailCta { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+  .primary,
+  .detailCta { color: #f8fcff; background: var(--prisma-gradient-primary); border-color: rgba(187, 231, 255, 0.44); box-shadow: var(--prisma-shadow-primary); }
+  .ticketList,
+  .linesList,
+  .auditList,
+  .returnLines,
+  .actionsStack { display: grid; gap: 8px; }
+  .ticketRow,
+  .line { min-width: 0; min-height: 58px; padding: 10px 11px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid transparent; border-radius: 15px; }
+  .ticketRow:hover { border-color: var(--prisma-line-medium); }
+  .ticketMain { min-width: 0; display: grid; gap: 4px; }
+  .ticketReturnHint { color: var(--prisma-text-muted); font-size: 0.78rem; }
+  .returnBadge { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; color: var(--prisma-warning-400); background: var(--prisma-surface-control); border-radius: 999px; font-size: 0.76rem; font-weight: 780; }
+  .detailGrid,
+  .diagnosticGrid,
+  .metaGrid,
+  .returnSummary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .diagnosticMetric { padding: 11px 12px; display: grid; gap: 4px; background: var(--prisma-surface-control); border-radius: 14px; }
+
+  @media (max-width: 720px) { .detailGrid, .diagnosticGrid, .metaGrid, .returnSummary { grid-template-columns: 1fr; } }
+}
