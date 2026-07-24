@@ -1,4 +1,4 @@
-import type { PrismaIconName } from "@components/prisma-dark-pos/prisma-dark-pos-data";
+import type { PrismaIconName } from "@generated/prisma-visual-runtime/prisma-icon-types";
 import {
   TABLET_PAGE_CONTRACTS,
   type TabletPageContract

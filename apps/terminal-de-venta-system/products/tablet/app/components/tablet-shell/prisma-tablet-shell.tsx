@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { PrismaIcon } from "@generated/prisma-visual-runtime/prisma-icon";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
-import { PRISMA_TABLET_VISUAL_V2 } from "../tablet-visual-v2/tablet-visual-tokens";
+import { PRISMA_TABLET_VISUAL_RUNTIME } from "@generated/prisma-visual-runtime/visual-values";
 import {
   getTabletFlowCopy,
   getTabletFlowStage,
@@ -23,7 +23,7 @@ export function TabletShellStatusPill({ tone = "neutral", children }: { tone?: T
   );
 }
 
-const TABLET_VISUAL_V2_CANONICAL = `${PRISMA_TABLET_VISUAL_V2.canonicalViewport.width}x${PRISMA_TABLET_VISUAL_V2.canonicalViewport.height}@${PRISMA_TABLET_VISUAL_V2.canonicalViewport.zoom}`;
+const TABLET_VISUAL_RUNTIME_CANONICAL = `${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.width}x${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.height}@${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.zoom}`;
 
 function joinClasses(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -84,8 +84,8 @@ export function PrismaTabletShellUnified({
   const flowCopy = getTabletFlowCopy(flowStage, runtimeSnapshot);
   const visibleNavItems = getVisibleTabletNavItems(currentPath, runtimeSnapshot);
   const pendingCount = getTabletPendingCount(runtimeSnapshot);
-  const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos-nocturne" : "tablet-nocturne");
-  const resolvedVisualPreset = visualPreset ?? "PRISMA_NOCTURNE_REFERENCE_1607";
+  const resolvedVisualSurface = visualSurface ?? (currentPath === "/pos" || currentPath === "/checkout" ? "tablet-pos-rifat-atlas" : "tablet-rifat-atlas");
+  const resolvedVisualPreset = visualPreset ?? "PRISMA_RIFAT_ATLAS_TABLET_V1";
   const compactSellingSurface = currentPath === "/pos" || currentPath === "/checkout";
   const supportSurface = currentPath === "/settings/data" || currentPath === "/settings/export" || currentPath === "/settings/license";
   const moreActive = isTabletMoreActive(currentPath);
@@ -99,11 +99,11 @@ export function PrismaTabletShellUnified({
       data-prisma-visual-surface={resolvedVisualSurface}
       data-prisma-visual-preset={resolvedVisualPreset}
       data-prisma-preset={resolvedVisualPreset}
-      data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
-      data-prisma-canonical-viewport={TABLET_VISUAL_V2_CANONICAL}
-      data-prisma-canonical-shell="nocturne-reference-1607"
-      data-prisma-visible-upgrade="tablet-nocturne-canonical-1607"
-      data-prisma-background="nocturne-atmosphere"
+      data-prisma-visual-v2={PRISMA_TABLET_VISUAL_RUNTIME.dataAttribute}
+      data-prisma-canonical-viewport={TABLET_VISUAL_RUNTIME_CANONICAL}
+      data-prisma-canonical-shell="rifat-atlas-tablet-v1"
+      data-prisma-visible-upgrade="tablet-rifat-atlas-v1"
+      data-prisma-background="rifat-atlas-atmosphere"
       data-prisma-support-surface={supportSurface ? "true" : undefined}
     >
       <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>

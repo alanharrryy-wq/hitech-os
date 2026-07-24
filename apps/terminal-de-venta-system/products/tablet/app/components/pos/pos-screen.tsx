@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { PrismaIcon } from "@generated/prisma-visual-runtime/prisma-icon";
 import { motion } from "motion/react";
 import type { CartLine, PosProduct, UiState } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, clearCartStorage, formatMoney, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
@@ -506,6 +506,9 @@ export function SellingWorkspace({
           <PosProductCanvas>
             <motion.section
               className={styles.posPremiumCatalogArea}
+              data-prisma-panel="tablet.pos.workspace"
+              data-prisma-surface="tablet"
+              data-prisma-route="/pos"
               data-prisma-role="operational-summary"
               data-prisma-priority="primary"
               initial={{ opacity: 0, y: 14 }}

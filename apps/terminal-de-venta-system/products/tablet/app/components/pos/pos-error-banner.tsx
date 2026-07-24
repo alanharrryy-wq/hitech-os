@@ -1,4 +1,4 @@
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { PrismaIcon } from "@generated/prisma-visual-runtime/prisma-icon";
 import { friendlyPosError } from "@/lib/pos/pos-visible-errors";
 import styles from "./pos.module.css";
 
