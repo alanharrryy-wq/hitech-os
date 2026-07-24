@@ -26,7 +26,8 @@ function safeName(value) {
 function uniqueSortedPositions(maxScroll, viewportLength, overlap, maxTiles) {
   const max = Math.max(0, Math.floor(maxScroll || 0));
   const view = Math.max(1, Math.floor(viewportLength || 1));
-  const ov = Math.max(0, Math.min(view - 1, Math.floor(overlap || 0)));
+  const maxUsefulOverlap = Math.floor(view / 2);
+  const ov = Math.max(0, Math.min(view - 1, maxUsefulOverlap, Math.floor(overlap || 0)));
   const step = Math.max(1, view - ov);
   const positions = [];
   for (let y = 0; y < max; y += step) positions.push(y);
