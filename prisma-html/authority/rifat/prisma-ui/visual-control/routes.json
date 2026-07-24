@@ -1,7 +1,7 @@
 {
   "schema": "prisma.ui.visual-control.routes.v1",
   "status": "CERTIFIED",
-  "routeCount": 108,
+  "routeCount": 96,
   "routes": [
     {
       "route_id": "chart-lab.root.route",
@@ -156,18 +156,14 @@
       ],
       "ownerComponent": "products/tablet/app/app/page.tsx",
       "ownerCss": [
-        "products/tablet/app/app/prisma-tablet-light-shell.module.css",
-        "products/tablet/app/app/globals.css",
-        "products/tablet/app/app/prisma-tablet-background-workbench.css",
-        "products/tablet/app/app/prisma-tablet-light-premium-final.css",
-        "products/tablet/app/app/prisma-tablet-premium-governed.css"
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
       ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_root.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.root.route",
         "data-prisma-surface": "tablet",
@@ -180,7 +176,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.catalog.route",
@@ -194,13 +191,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/catalog/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/catalog",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_catalog.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.catalog.route",
         "data-prisma-surface": "tablet",
@@ -213,7 +212,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.checkout.route",
@@ -229,14 +229,14 @@
       ],
       "ownerComponent": "products/tablet/app/app/checkout/page.tsx",
       "ownerCss": [
-        "products/tablet/app/app/checkout/prisma-checkout-light-safe-shell.module.css"
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
       ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/checkout",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_checkout.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.checkout.route",
         "data-prisma-surface": "tablet",
@@ -249,40 +249,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.events.outbox.route",
-      "human_id": "PRISMA Tablet Core /events/outbox",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/events/outbox",
-      "routePath": "/events/outbox",
-      "pageFile": "products/tablet/app/app/events/outbox/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/events/outbox/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/events/outbox",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_events_outbox.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.events.outbox.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/events/outbox"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.existencias.route",
@@ -296,13 +264,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/existencias/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/existencias",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_existencias.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.existencias.route",
         "data-prisma-surface": "tablet",
@@ -315,7 +285,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.inventory.route",
@@ -329,13 +300,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/inventory/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
-      "runtimeUrl": null,
-      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": "http://127.0.0.1:3120/inventory",
+      "runtimeMode": "runtime",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.inventory.route",
         "data-prisma-surface": "tablet",
@@ -348,7 +321,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.inventory.low.stock.route",
@@ -362,13 +336,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/inventory/low-stock/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/inventory/low-stock",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_inventory_low_stock.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.inventory.low.stock.route",
         "data-prisma-surface": "tablet",
@@ -381,7 +357,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.offline.route",
@@ -395,13 +372,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/offline/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/offline",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_offline.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.offline.route",
         "data-prisma-surface": "tablet",
@@ -414,7 +393,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.pos.route",
@@ -425,27 +405,18 @@
       "routePath": "/pos",
       "pageFile": "products/tablet/app/app/pos/page.tsx",
       "layoutFiles": [
-        "products/tablet/app/app/layout.tsx",
-        "products/tablet/app/app/pos/layout.tsx"
+        "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/pos/page.tsx",
       "ownerCss": [
-        "products/tablet/app/app/pos/prisma-pos-light-safe-shell.module.css"
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
       ],
-      "currentPanelContract": [
-        "tablet.pos.cart-panel",
-        "tablet.pos.category-rail",
-        "tablet.pos.checkout-diagnostic",
-        "tablet.pos.payment-overlay",
-        "tablet.pos.product-grid",
-        "tablet.pos.search-card",
-        "tablet.pos.workspace"
-      ],
+      "currentPanelContract": "tablet.pos.workspace",
       "runtimeUrl": "http://127.0.0.1:3120/pos",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_pos.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.pos.route",
         "data-prisma-surface": "tablet",
@@ -458,174 +429,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.prisma.dark.pos.reference.route",
-      "human_id": "PRISMA Tablet Core /prisma-dark-pos-reference",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/prisma-dark-pos-reference",
-      "routePath": "/prisma-dark-pos-reference",
-      "pageFile": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/prisma-dark-pos-reference/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/prisma-dark-pos-reference",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_dark_pos_reference.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.prisma.dark.pos.reference.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/prisma-dark-pos-reference"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.prisma.pulse.route",
-      "human_id": "PRISMA Tablet Core /prisma-pulse",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/prisma-pulse",
-      "routePath": "/prisma-pulse",
-      "pageFile": "products/tablet/app/app/prisma-pulse/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/prisma-pulse/page.tsx",
-      "ownerCss": [
-        "products/tablet/app/app/prisma-pulse/prisma-tablet-pulse.module.css"
-      ],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/prisma-pulse",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_pulse.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.prisma.pulse.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/prisma-pulse"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.prisma.visual.catalog.route",
-      "human_id": "PRISMA Tablet Core /prisma-visual-catalog",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/prisma-visual-catalog",
-      "routePath": "/prisma-visual-catalog",
-      "pageFile": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/prisma-visual-catalog/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/prisma-visual-catalog",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_prisma_visual_catalog.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.prisma.visual.catalog.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/prisma-visual-catalog"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.referencia.visual.route",
-      "human_id": "PRISMA Tablet Core /referencia-visual",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/referencia-visual",
-      "routePath": "/referencia-visual",
-      "pageFile": "products/tablet/app/app/referencia-visual/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/referencia-visual/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/referencia-visual",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_referencia_visual.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.referencia.visual.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/referencia-visual"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.release.gate.route",
-      "human_id": "PRISMA Tablet Core /release-gate",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/release-gate",
-      "routePath": "/release-gate",
-      "pageFile": "products/tablet/app/app/release-gate/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/release-gate/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/release-gate",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_release_gate.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.release.gate.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/release-gate"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.returns.route",
@@ -639,13 +444,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/returns/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/returns",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_returns.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.returns.route",
         "data-prisma-surface": "tablet",
@@ -658,7 +465,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.sales.route",
@@ -672,13 +480,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
-      "runtimeUrl": null,
-      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": "http://127.0.0.1:3120/sales",
+      "runtimeMode": "runtime",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.route",
         "data-prisma-surface": "tablet",
@@ -691,7 +501,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.sales.history.route",
@@ -705,13 +516,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/history/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/sales/history",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sales_history.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.history.route",
         "data-prisma-surface": "tablet",
@@ -724,31 +537,34 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.sales.history.saleId.route",
-      "human_id": "PRISMA Tablet Core /sales/history/:saleId",
+      "human_id": "PRISMA Tablet Core /sales/history/[saleId]",
       "app": "PRISMA Tablet Core",
       "surface": "tablet",
-      "route": "/sales/history/:saleId",
-      "routePath": "/sales/history/:saleId",
+      "route": "/sales/history/[saleId]",
+      "routePath": "/sales/history/[saleId]",
       "pageFile": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
       "layoutFiles": [
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/history/[saleId]/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": null,
       "runtimeMode": "source-only-dynamic-route",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.history.saleId.route",
         "data-prisma-surface": "tablet",
-        "data-prisma-route": "/sales/history/:saleId"
+        "data-prisma-route": "/sales/history/[saleId]"
       },
       "excludedSurfaces": [
         "chart-lab",
@@ -757,7 +573,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": "Dynamic route requires a concrete sale identifier and is source-certified."
     },
     {
       "route_id": "tablet.sales.today.route",
@@ -771,13 +588,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/today/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/sales/today",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sales_today.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.today.route",
         "data-prisma-surface": "tablet",
@@ -790,31 +609,34 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.sales.today.saleId.route",
-      "human_id": "PRISMA Tablet Core /sales/today/:saleId",
+      "human_id": "PRISMA Tablet Core /sales/today/[saleId]",
       "app": "PRISMA Tablet Core",
       "surface": "tablet",
-      "route": "/sales/today/:saleId",
-      "routePath": "/sales/today/:saleId",
+      "route": "/sales/today/[saleId]",
+      "routePath": "/sales/today/[saleId]",
       "pageFile": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
       "layoutFiles": [
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": null,
       "runtimeMode": "source-only-dynamic-route",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.today.saleId.route",
         "data-prisma-surface": "tablet",
-        "data-prisma-route": "/sales/today/:saleId"
+        "data-prisma-route": "/sales/today/[saleId]"
       },
       "excludedSurfaces": [
         "chart-lab",
@@ -823,31 +645,34 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": "Dynamic route requires a concrete sale identifier and is source-certified."
     },
     {
       "route_id": "tablet.sales.today.saleId.return.route",
-      "human_id": "PRISMA Tablet Core /sales/today/:saleId/return",
+      "human_id": "PRISMA Tablet Core /sales/today/[saleId]/return",
       "app": "PRISMA Tablet Core",
       "surface": "tablet",
-      "route": "/sales/today/:saleId/return",
-      "routePath": "/sales/today/:saleId/return",
+      "route": "/sales/today/[saleId]/return",
+      "routePath": "/sales/today/[saleId]/return",
       "pageFile": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
       "layoutFiles": [
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sales/today/[saleId]/return/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": null,
       "runtimeMode": "source-only-dynamic-route",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sales.today.saleId.return.route",
         "data-prisma-surface": "tablet",
-        "data-prisma-route": "/sales/today/:saleId/return"
+        "data-prisma-route": "/sales/today/[saleId]/return"
       },
       "excludedSurfaces": [
         "chart-lab",
@@ -856,40 +681,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.screen.standard.preview.route",
-      "human_id": "PRISMA Tablet Core /screen-standard-preview",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/screen-standard-preview",
-      "routePath": "/screen-standard-preview",
-      "pageFile": "products/tablet/app/app/screen-standard-preview/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/screen-standard-preview/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/screen-standard-preview",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_screen_standard_preview.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.screen.standard.preview.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/screen-standard-preview"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": "Dynamic route requires a concrete sale identifier and is source-certified."
     },
     {
       "route_id": "tablet.settings.data.route",
@@ -903,13 +696,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/settings/data/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
-      "runtimeUrl": null,
-      "runtimeMode": "source-only-redirect-route",
+      "runtimeUrl": "http://127.0.0.1:3120/settings/data",
+      "runtimeMode": "runtime",
       "runtimeCertificationStatus": "SOURCE_CERTIFIED",
       "runtimeSourceCertification": "SOURCE_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/routes.json",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.settings.data.route",
         "data-prisma-surface": "tablet",
@@ -922,7 +717,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.settings.export.route",
@@ -936,13 +732,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/settings/export/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/settings/export",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_settings_export.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.settings.export.route",
         "data-prisma-surface": "tablet",
@@ -955,7 +753,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.settings.license.route",
@@ -969,13 +768,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/settings/license/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/settings/license",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_settings_license.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.settings.license.route",
         "data-prisma-surface": "tablet",
@@ -988,7 +789,44 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
+    },
+    {
+      "route_id": "tablet.setup.route",
+      "human_id": "PRISMA Tablet Core /setup",
+      "app": "PRISMA Tablet Core",
+      "surface": "tablet",
+      "route": "/setup",
+      "routePath": "/setup",
+      "pageFile": "products/tablet/app/app/setup/page.tsx",
+      "layoutFiles": [
+        "products/tablet/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/tablet/app/app/setup/page.tsx",
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
+      "currentPanelContract": null,
+      "runtimeUrl": "http://127.0.0.1:3120/setup",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
+      "anchors": {
+        "data-prisma-panel": "tablet.setup.route",
+        "data-prisma-surface": "tablet",
+        "data-prisma-route": "/setup"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "pc",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.shift.route",
@@ -1002,13 +840,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/shift/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/shift",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_shift.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.shift.route",
         "data-prisma-surface": "tablet",
@@ -1021,7 +861,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.stock.route",
@@ -1035,13 +876,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/stock/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/stock",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_stock.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.stock.route",
         "data-prisma-surface": "tablet",
@@ -1054,7 +897,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "tablet.sync.route",
@@ -1068,13 +912,15 @@
         "products/tablet/app/app/layout.tsx"
       ],
       "ownerComponent": "products/tablet/app/app/sync/page.tsx",
-      "ownerCss": [],
+      "ownerCss": [
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
+      ],
       "currentPanelContract": null,
       "runtimeUrl": "http://127.0.0.1:3120/sync",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_sync.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
         "data-prisma-panel": "tablet.sync.route",
         "data-prisma-surface": "tablet",
@@ -1087,33 +933,34 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
-      "route_id": "tablet.visual.os.route",
-      "human_id": "PRISMA Tablet Core /visual-os",
+      "route_id": "tablet.tablet.lab.route",
+      "human_id": "PRISMA Tablet Core /tablet-lab",
       "app": "PRISMA Tablet Core",
       "surface": "tablet",
-      "route": "/visual-os",
-      "routePath": "/visual-os",
-      "pageFile": "products/tablet/app/app/visual-os/page.tsx",
+      "route": "/tablet-lab",
+      "routePath": "/tablet-lab",
+      "pageFile": "products/tablet/app/app/tablet-lab/page.tsx",
       "layoutFiles": [
         "products/tablet/app/app/layout.tsx"
       ],
-      "ownerComponent": "products/tablet/app/app/visual-os/page.tsx",
+      "ownerComponent": "products/tablet/app/app/tablet-lab/page.tsx",
       "ownerCss": [
-        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
       ],
       "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os",
+      "runtimeUrl": "http://127.0.0.1:3120/tablet-lab",
       "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os.html",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": "prisma-html/authority/rifat/tablet/routes.json",
       "anchors": {
-        "data-prisma-panel": "tablet.visual.os.route",
+        "data-prisma-panel": "tablet.tablet.lab.route",
         "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os"
+        "data-prisma-route": "/tablet-lab"
       },
       "excludedSurfaces": [
         "chart-lab",
@@ -1122,211 +969,8 @@
         "mobile",
         "control-center"
       ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.detached.route",
-      "human_id": "PRISMA Tablet Core /visual-os/detached",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/detached",
-      "routePath": "/visual-os/detached",
-      "pageFile": "products/tablet/app/app/visual-os/detached/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/detached/page.tsx",
-      "ownerCss": [
-        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
-      ],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/detached",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_detached.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.detached.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/detached"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.materiality.catalog.route",
-      "human_id": "PRISMA Tablet Core /visual-os/materiality-catalog",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/materiality-catalog",
-      "routePath": "/visual-os/materiality-catalog",
-      "pageFile": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/materiality-catalog/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/materiality-catalog",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_materiality_catalog.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.materiality.catalog.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/materiality-catalog"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.pro.route",
-      "human_id": "PRISMA Tablet Core /visual-os/pro",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/pro",
-      "routePath": "/visual-os/pro",
-      "pageFile": "products/tablet/app/app/visual-os/pro/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/pro/page.tsx",
-      "ownerCss": [
-        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
-      ],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/pro",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_pro.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.pro.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/pro"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.realtime.route",
-      "human_id": "PRISMA Tablet Core /visual-os/realtime",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/realtime",
-      "routePath": "/visual-os/realtime",
-      "pageFile": "products/tablet/app/app/visual-os/realtime/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/realtime/page.tsx",
-      "ownerCss": [
-        "products/tablet/app/app/visual-os/prisma-studio-pro-qa.module.css"
-      ],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/realtime",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_realtime.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.realtime.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/realtime"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.tablet.background.gallery.route",
-      "human_id": "PRISMA Tablet Core /visual-os/tablet-background-gallery",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/tablet-background-gallery",
-      "routePath": "/visual-os/tablet-background-gallery",
-      "pageFile": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-background-gallery",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_background_gallery.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.tablet.background.gallery.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/tablet-background-gallery"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
-    },
-    {
-      "route_id": "tablet.visual.os.tablet.codex.gallery.route",
-      "human_id": "PRISMA Tablet Core /visual-os/tablet-codex-gallery",
-      "app": "PRISMA Tablet Core",
-      "surface": "tablet",
-      "route": "/visual-os/tablet-codex-gallery",
-      "routePath": "/visual-os/tablet-codex-gallery",
-      "pageFile": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
-      "layoutFiles": [
-        "products/tablet/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx",
-      "ownerCss": [],
-      "currentPanelContract": null,
-      "runtimeUrl": "http://127.0.0.1:3120/visual-os/tablet-codex-gallery",
-      "runtimeMode": "runtime",
-      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
-      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
-      "certificationEvidence": ".prisma-ui/current/runtime-html/tablet_visual_os_tablet_codex_gallery.html",
-      "anchors": {
-        "data-prisma-panel": "tablet.visual.os.tablet.codex.gallery.route",
-        "data-prisma-surface": "tablet",
-        "data-prisma-route": "/visual-os/tablet-codex-gallery"
-      },
-      "excludedSurfaces": [
-        "chart-lab",
-        "web",
-        "pc",
-        "mobile",
-        "control-center"
-      ],
-      "safetyClassification": "visualWithFunctionalRisk"
+      "safetyClassification": "visualWithFunctionalRisk",
+      "sourceOnlyReason": null
     },
     {
       "route_id": "pc.root.route",
