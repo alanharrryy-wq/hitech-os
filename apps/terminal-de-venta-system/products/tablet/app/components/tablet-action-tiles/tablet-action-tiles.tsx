@@ -1,8 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
-import type { PrismaIconName } from "@components/prisma-dark-pos/prisma-dark-pos-data";
+import { PrismaIcon } from "@generated/prisma-visual-runtime/prisma-icon";
+import type { PrismaIconName } from "@generated/prisma-visual-runtime/prisma-icon-types";
 import styles from "./tablet-action-tiles.module.css";
 
 export type QuickActionTone =

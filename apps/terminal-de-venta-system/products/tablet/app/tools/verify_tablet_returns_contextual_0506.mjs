@@ -32,7 +32,7 @@ const viewModel = read(files.viewModel);
 const pkg = read(files.packageJson);
 
 if (/redirect\s*\(\s*["']\/sales\/today["']\s*\)/.test(returnsPage)) fail("/returns must not be a redirect-only alias to /sales/today");
-if (!returnsPage.includes("ReturnsLandingScreen")) fail("/returns must render the real returns landing screen");
+if (!returnsPage.includes("ReturnsWorkspace") || !returnsPage.includes('mode="landing"')) fail("/returns must render the real returns landing workspace");
 if (!returnsPage.includes("getTabletRuntimeSnapshot") || !returnsPage.includes("runtimeSnapshot")) fail("/returns must pass runtimeSnapshot into the shell screen");
 
 if (!returnRoute.includes("await params")) fail("ticket return route must await params");
@@ -49,7 +49,7 @@ if (!returnScreen.includes("setLineQty")) fail("line quantity controls are missi
 if (!returnScreen.includes("RETURN_REASONS")) fail("return reason controls are missing");
 
 if (/\.returnPage\s*\{[^}]*color\s*:\s*(white|#fff|#ffffff)\b/is.test(returnsCss)) fail(".returnPage must not use white as default text on light Tablet background");
-if (!returnsCss.includes("#111827") && !returnsCss.includes("#0f172a")) fail("returns CSS must define dark readable text for light theme");
+if (!returnsCss.includes("var(--prisma-text-primary)")) fail("returns CSS must use the canonical high-contrast text token");
 if (!returnsCss.includes("@media")) fail("returns CSS must include responsive rules");
 if (!returnsCss.includes(".qtyControls")) fail("returns CSS must style quantity controls");
 

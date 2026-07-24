@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
-import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { PrismaIcon } from "@generated/prisma-visual-runtime/prisma-icon";
 import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { decideCanSellFromRuntimeSnapshot, type CanSellDecision } from "@/lib/operational-gate/can-sell";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";

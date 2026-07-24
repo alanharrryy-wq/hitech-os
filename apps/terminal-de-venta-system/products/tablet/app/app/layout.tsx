@@ -1,8 +1,7 @@
-import "./globals.css";
-import "./prisma-tablet-nocturne-canonical.css";
+import "../generated/prisma-visual-runtime/prisma-tablet-runtime.css";
 import { headers } from "next/headers";
-import { PRISMA_TABLET_VISUAL_V2 } from "../components/tablet-visual-v2/tablet-visual-tokens";
-import visualRootStyles from "../components/tablet-visual-v2/tablet-visual-v2-root.module.css";
+import { PRISMA_TABLET_VISUAL_RUNTIME } from "../generated/prisma-visual-runtime/visual-values";
+import visualRootStyles from "../generated/prisma-visual-runtime/prisma-runtime-root.module.css";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {
@@ -22,24 +21,24 @@ function prismaRoutePanelId(route: string) {
 
 export default async function RootLayout({ children }: { children: any }) {
   const route = normalizePrismaRoute((await headers()).get("x-prisma-route"));
-  const canonicalViewport = `${PRISMA_TABLET_VISUAL_V2.canonicalViewport.width}x${PRISMA_TABLET_VISUAL_V2.canonicalViewport.height}@${PRISMA_TABLET_VISUAL_V2.canonicalViewport.zoom}`;
+  const canonicalViewport = `${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.width}x${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.height}@${PRISMA_TABLET_VISUAL_RUNTIME.canonicalViewport.zoom}`;
 
   return (
     <html
       lang="es-MX"
       data-prisma-skin="dark"
-      data-prisma-surface="tablet-nocturne"
-      data-theme="prisma-nocturne"
-      data-prisma-visual-mode="nocturnal-translucent"
-      data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
+      data-prisma-surface="tablet-rifat-atlas"
+      data-theme="prisma-rifat-atlas"
+      data-prisma-visual-mode="rifat-atlas-canonical"
+      data-prisma-visual-v2={PRISMA_TABLET_VISUAL_RUNTIME.dataAttribute}
       data-prisma-canonical-viewport={canonicalViewport}
-      data-prisma-canonical-shell="nocturne-reference-1607"
+      data-prisma-canonical-shell="rifat-atlas-tablet-v1"
       suppressHydrationWarning
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var root=document.documentElement;root.dataset.prismaSkin="dark";root.dataset.theme="prisma-nocturne";root.dataset.prismaSurface="tablet-nocturne";root.dataset.prismaVisualMode="nocturnal-translucent";root.dataset.prismaVisualV2="${PRISMA_TABLET_VISUAL_V2.dataAttribute}";root.dataset.prismaCanonicalViewport="${canonicalViewport}";root.dataset.prismaCanonicalShell="nocturne-reference-1607";}catch(e){}})();`
+            __html: `(function(){try{var root=document.documentElement;root.dataset.prismaSkin="dark";root.dataset.theme="prisma-rifat-atlas";root.dataset.prismaSurface="tablet-rifat-atlas";root.dataset.prismaVisualMode="rifat-atlas-canonical";root.dataset.prismaVisualV2="${PRISMA_TABLET_VISUAL_RUNTIME.dataAttribute}";root.dataset.prismaCanonicalViewport="${canonicalViewport}";root.dataset.prismaCanonicalShell="rifat-atlas-tablet-v1";}catch(e){}})();`
           }}
         />
       </head>
@@ -48,8 +47,8 @@ export default async function RootLayout({ children }: { children: any }) {
         data-prisma-panel={prismaRoutePanelId(route)}
         data-prisma-surface="tablet"
         data-prisma-route={route}
-        data-prisma-nocturne-canonical="true"
-        data-prisma-visual-v2={PRISMA_TABLET_VISUAL_V2.dataAttribute}
+        data-prisma-rifat-canonical="true"
+        data-prisma-visual-v2={PRISMA_TABLET_VISUAL_RUNTIME.dataAttribute}
         data-prisma-canonical-viewport={canonicalViewport}
       >
         {children}

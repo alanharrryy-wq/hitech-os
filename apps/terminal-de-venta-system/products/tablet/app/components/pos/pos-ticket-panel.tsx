@@ -224,6 +224,9 @@ export function PosTicketPanel({
         <div
           className={checkoutReady ? styles.posPremiumDiagnosticOk : styles.posPremiumDiagnosticWarn}
           aria-live="polite"
+          data-prisma-panel="tablet.pos.checkout-diagnostic"
+          data-prisma-surface="tablet"
+          data-prisma-route="/pos"
           data-prisma-component="CheckoutDiagnostic"
           data-prisma-state={checkoutReady ? "ready" : "disabled"}
         >

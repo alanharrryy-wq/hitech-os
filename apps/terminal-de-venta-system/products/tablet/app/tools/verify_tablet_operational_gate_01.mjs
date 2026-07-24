@@ -49,10 +49,12 @@ if (!failures.length) {
   mustInclude("app/api/pos/products/search/route.ts", "guardTabletLocalPosForApi()");
   mustInclude("app/api/pos/products/resolve/route.ts", "guardTabletLocalPosForApi()");
   mustInclude("components/tablet-shell/tablet-nav.ts", "Devoluciones");
-  mustInclude("components/tablet-shell/tablet-nav.ts", "la pantalla /pos ya decide si permite cobrar");
+  mustInclude("components/tablet-shell/tablet-nav.ts", "Abre turno para vender; la Tablet no autoabre caja.");
+  mustInclude("components/tablet-shell/tablet-nav.ts", "getTabletFlowCopy");
   mustInclude("components/tablet-shell/tablet-nav.ts", "return TABLET_NAV_ITEMS");
   mustInclude("src/lib/tablet-home/home-view-model.ts", "gate.canShowSellNavigation");
-  mustInclude("components/tablet-home/tablet-home-screen.tsx", `shiftOpen ? "/pos" : "/shift"`);
+  mustInclude("src/lib/tablet-home/home-view-model.ts", "getRuntimeActionHref(snapshot)");
+  mustInclude("components/tablet-home/tablet-home-screen.tsx", "href={vm.hero.primaryHref}");
   mustInclude("app/pos/page.tsx", "getTabletRuntimeSnapshot");
   mustInclude("app/checkout/page.tsx", "getTabletRuntimeSnapshot");
   mustInclude("components/pos/pos-screen.tsx", `data-prisma-operational-gate="closed-cash"`);

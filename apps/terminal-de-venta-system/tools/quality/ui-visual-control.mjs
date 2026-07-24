@@ -194,8 +194,11 @@ function parseArgs(raw = process.argv.slice(2)) {
   return { cmd, flags };
 }
 
-function loadState() {
+function loadState(flags = {}) {
   const uiRoot = path.join(appRoot, '.prisma-ui');
+  const outputRoot = flags['output-root']
+    ? path.resolve(String(flags['output-root']))
+    : uiRoot;
   const governanceRoot = path.join(appRoot, '.governance', 'current');
   const panelDir = path.join(uiRoot, 'panels');
   const panels = exists(panelDir)
@@ -209,8 +212,8 @@ function loadState() {
     : [];
   return {
     uiRoot,
-    currentRoot: path.join(uiRoot, 'current'),
-    visualRoot: path.join(uiRoot, 'visual-control'),
+    currentRoot: path.join(outputRoot, 'current'),
+    visualRoot: path.join(outputRoot, 'visual-control'),
     governanceRoot,
     registry: readJson(path.join(uiRoot, 'registry.json'), {}),
     surfaces: readJson(path.join(uiRoot, 'surfaces.json'), { surfaces: [] }),
@@ -251,7 +254,7 @@ function evidenceClassForPath(rel) {
   if (low.startsWith('fixtures/') || low.includes('/fixtures/') || low.includes('/__fixtures__/')) return 'fixtureOnly';
   if (low.startsWith('docs/') || low.endsWith('.md')) return 'docsOnly';
   if (low.startsWith('.prisma-ui/current/') || low.startsWith('.governance/current/') || low.startsWith('reports/') || low.includes('/tools/_local/evidence/')) return 'generatedEvidenceOnly';
-  if (low.startsWith('tools/') || low.startsWith('quality/')) return 'toolingOnly';
+  if (low.startsWith('tools/') || low.includes('/tools/') || low.startsWith('quality/')) return 'toolingOnly';
   return 'activeRuntime';
 }
 
@@ -851,8 +854,8 @@ function scanImportantHits(files) {
   return hits;
 }
 
-function buildRisks(state, routes, regions, slots, layers, activeFiles, allFiles) {
-  const targets = targetSurfaceIds(state);
+function buildRisks(state, routes, regions, slots, layers, activeFiles, allFiles, requestedSurface = null) {
+  const targets = requestedSurface ? [requestedSurface] : targetSurfaceIds(state);
   const routeSurfaces = new Set(routes.map((route) => route.surface));
   const panelSurfaces = new Set(state.panels.map((panel) => panel.surface));
   const missingTargetSurfaces = targets.filter((surface) => !surfaceDefinitions(state).some((item) => item.id === surface));
@@ -968,9 +971,10 @@ function buildReuseReport(state) {
 }
 
 function buildModel(flags = {}) {
-  const state = loadState();
-  const allFiles = scanFiles();
-  const activeFiles = scanActiveFiles();
+  const state = loadState(flags);
+  const requestedSurface = flags.surface && flags.surface !== 'all' ? flags.surface : null;
+  const allFiles = scanFiles().filter((file) => !requestedSurface || surfaceFromPath(file) === requestedSurface);
+  const activeFiles = scanActiveFiles().filter((file) => !requestedSurface || surfaceFromPath(file) === requestedSurface);
   const routes = buildRoutes(state).filter((route) => {
     if (flags.surface && flags.surface !== 'all' && route.surface !== flags.surface) return false;
     if (flags.route && route.route !== flags.route) return false;
@@ -986,8 +990,9 @@ function buildModel(flags = {}) {
   const regions = buildVisualRegions(routes, panels, layerPayload.layers, components);
   const slots = buildEditableSlots(regions, components);
   const owners = buildOwners(routes, regions, components, layerPayload.layers, layerPayload.assets);
-  const risks = buildRisks(state, routes, regions, slots, layerPayload.layers, activeFiles, allFiles);
-  const surfaces = surfaceEntries(state, routes, regions, slots);
+  const risks = buildRisks(state, routes, regions, slots, layerPayload.layers, activeFiles, allFiles, requestedSurface);
+  const surfaces = surfaceEntries(state, routes, regions, slots)
+    .filter((surface) => !requestedSurface || surface.surface === requestedSurface);
   const reuseReport = buildReuseReport(state);
   const meta = gitMeta();
   const report = {
@@ -999,7 +1004,7 @@ function buildModel(flags = {}) {
     branch: meta.branch,
     status: risks.status,
     surfaceCount: surfaces.length,
-    targetSurfaceCount: targetSurfaceIds(state).length,
+    targetSurfaceCount: requestedSurface ? 1 : targetSurfaceIds(state).length,
     routeCount: routes.length,
     visualRegionCount: regions.length,
     componentOwnerCount: owners.componentOwners.length,
@@ -1038,6 +1043,7 @@ function buildModel(flags = {}) {
   };
   return {
     state,
+    requestedSurface,
     allFiles,
     activeFiles,
     surfaces,
@@ -1311,7 +1317,7 @@ function writeArtifacts(model) {
     createdAt: nowIso(),
     status: model.risks.status,
     detailPolicy: compact.detailPolicy,
-    targetSurfaces: targetSurfaceIds(model.state),
+    targetSurfaces: model.requestedSurface ? [model.requestedSurface] : targetSurfaceIds(model.state),
     authoritativeInputs: [
       '.prisma-ui/registry.json',
       '.prisma-ui/surfaces.json',
