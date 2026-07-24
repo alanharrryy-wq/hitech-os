@@ -1,0 +1,193 @@
+@layer prisma.components {
+  .gridShell,
+  .strip {
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .gridShell {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gridShell[data-density="compact"] {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .gridShell[data-density="wide"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .strip {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, 1fr);
+    overflow-x: auto;
+  }
+
+  .tile,
+  .action {
+    position: relative;
+    min-width: 0;
+    min-height: 112px;
+    padding: 17px 18px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 13px;
+    overflow: hidden;
+    color: var(--prisma-text-primary);
+    background:
+      radial-gradient(circle at 0 100%, rgba(62, 196, 255, 0.08), transparent 34%),
+      linear-gradient(128deg, rgba(5, 19, 29, 0.56), rgba(26, 30, 32, 0.35) 62%, rgba(55, 35, 23, 0.25));
+    border: 1px solid rgba(178, 222, 246, 0.18);
+    border-radius: 20px;
+    box-shadow:
+      0 16px 38px rgba(0, 8, 13, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    text-decoration: none;
+    text-align: left;
+    transition:
+      transform var(--prisma-motion-fast) ease,
+      border-color var(--prisma-motion-fast) ease,
+      background var(--prisma-motion-fast) ease,
+      box-shadow var(--prisma-motion-fast) ease;
+  }
+
+  .tile::before {
+    content: "";
+    position: absolute;
+    inset: 0 16% auto;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(216, 244, 255, 0.64), transparent);
+    opacity: 0.34;
+  }
+
+  .tile:hover,
+  .action:hover {
+    transform: translateY(-2px);
+    background:
+      radial-gradient(circle at 0 100%, rgba(62, 196, 255, 0.13), transparent 38%),
+      linear-gradient(128deg, rgba(10, 29, 42, 0.60), rgba(31, 34, 35, 0.40) 62%, rgba(68, 42, 25, 0.28));
+    border-color: rgba(121, 220, 255, 0.34);
+    box-shadow:
+      0 22px 48px rgba(0, 8, 13, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  }
+
+  .icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    color: #69e5ff;
+    background: rgba(102, 208, 250, 0.065);
+    border: 1px solid rgba(142, 224, 255, 0.20);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .copy {
+    min-width: 0;
+    display: grid;
+    gap: 5px;
+  }
+
+  .copy strong {
+    color: #f5fbff;
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-size: 1.02rem;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+  }
+
+  .copy small,
+  .copy span,
+  .extra {
+    color: rgba(211, 229, 240, 0.70);
+    font-size: 0.82rem;
+    line-height: 1.38;
+  }
+
+  .action {
+    min-height: auto;
+    padding: 0;
+    display: inline-flex;
+    grid-template-columns: none;
+    align-items: center;
+    color: #75e6ff;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 0.78rem;
+    font-weight: 820;
+    white-space: nowrap;
+  }
+
+  .action::after {
+    content: "›";
+    margin-left: 6px;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .disabled {
+    opacity: 0.44;
+    pointer-events: none;
+    filter: saturate(0.62);
+  }
+
+  .tone_primary,
+  .tone_jewel,
+  .tone_license {
+    border-color: rgba(99, 215, 255, 0.24);
+  }
+
+  .tone_success {
+    border-color: rgba(99, 230, 173, 0.22);
+  }
+
+  .tone_warning {
+    border-color: rgba(255, 205, 120, 0.23);
+  }
+
+  .tone_dangerQuiet {
+    border-color: rgba(255, 142, 156, 0.22);
+  }
+
+  .tone_inventory {
+    border-color: rgba(131, 226, 255, 0.22);
+  }
+
+  .tone_sync {
+    border-color: rgba(167, 155, 255, 0.23);
+  }
+
+  .tone_neutral {
+    border-color: rgba(181, 224, 247, 0.14);
+  }
+
+  @media (max-width: 760px) {
+    .gridShell,
+    .gridShell[data-density="wide"] {
+      grid-template-columns: 1fr;
+    }
+
+    .tile,
+    .action {
+      min-height: 104px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile,
+    .action {
+      transition: none;
+    }
+  }
+}

@@ -1,0 +1,74 @@
+@layer prisma.routes {
+  .page {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .hero,
+  .heroActions,
+  .heroMeta,
+  .queueHeader,
+  .catalogHeader,
+  .catalogActions,
+  .filterBar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 9px; }
+  .hero { align-items: end; background: transparent; border: 0; box-shadow: none; }
+  .kpis,
+  .accountGrid,
+  .catalogGrid,
+  .catalogResultGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 9px; }
+
+  .queuePanel,
+  .catalogPull,
+  .diagnostics,
+  .supportDetails,
+  .alert,
+  .empty {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .alert { color: var(--prisma-warning-400); border-color: rgba(255, 210, 125, 0.30); }
+  .queue,
+  .catalogEntityList,
+  .catalogFindings { display: grid; gap: 7px; }
+  .item { min-width: 0; min-height: 58px; padding: 10px 11px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid transparent; border-radius: 15px; }
+  .metaPill,
+  .dispatchNote,
+  .risk_ok,
+  .risk_warn,
+  .risk_danger { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); font-size: 0.76rem; font-weight: 780; }
+  .metaPill_ok,
+  .dispatchNote_ok,
+  .risk_ok { color: var(--prisma-success-400); border-color: rgba(99, 230, 173, 0.28); }
+  .metaPill_warn,
+  .dispatchNote_warn,
+  .risk_warn { color: var(--prisma-warning-400); border-color: rgba(255, 210, 125, 0.30); }
+  .metaPill_danger,
+  .dispatchNote_danger,
+  .risk_danger { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .metaPill_neutral,
+  .dispatchNote_neutral { color: var(--prisma-cyan-300); }
+  .activeFilter,
+  .primaryAction,
+  .secondaryAction,
+  .showMoreButton { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+  .activeFilter { color: var(--prisma-cyan-300); border-color: var(--prisma-line-strong); }
+  .primaryAction { color: #f8fcff; background: var(--prisma-gradient-primary); border-color: rgba(187, 231, 255, 0.44); box-shadow: var(--prisma-shadow-primary); }
+}

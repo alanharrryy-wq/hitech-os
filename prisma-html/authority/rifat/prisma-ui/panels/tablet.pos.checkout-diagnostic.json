@@ -1,0 +1,91 @@
+{
+  "schema": "prisma.ui.panel.contract.v4",
+  "panel_id": "tablet.pos.checkout-diagnostic",
+  "status": "CERTIFIED",
+  "surface": "tablet",
+  "route": "/pos",
+  "title": "Tablet POS checkout diagnostic",
+  "certification_rule": "Runtime result is computed by ui-certainty.mjs. Static seed status is not accepted as final green.",
+  "owner_component": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+  "owner_css_module": "products/tablet/app/components/pos/pos.module.css",
+  "canonical_selectors": [
+    "[data-prisma-panel=\"tablet.pos.checkout-diagnostic\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "tablet.pos.checkout-diagnostic"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "tablet"
+    },
+    {
+      "attribute": "data-prisma-route",
+      "value": "/pos"
+    }
+  ],
+  "allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/panels/**",
+    ".prisma-ui/panels/tablet.pos.checkout-diagnostic.json",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+    "products/tablet/app/components/pos/pos.module.css"
+  ],
+  "forbidden_surfaces": [
+    "pc",
+    "mobile",
+    "chart-lab",
+    "web",
+    "control-center"
+  ],
+  "target_strings": [
+    "tablet.pos.checkout-diagnostic",
+    "tablet",
+    "/pos",
+    "products/tablet/app/components/pos/pos-ticket-panel.tsx"
+  ],
+  "default_probe": {
+    "surface": "tablet",
+    "route": "/pos",
+    "point": {
+      "x": 1160,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "node tools/quality/ui-certainty.mjs self-test --strict",
+    "node tools/quality/ui-certainty.mjs certify --surface tablet --strict",
+    "node tools/quality/ui-certainty.mjs contracts --surface tablet --strict",
+    "node tools/quality/ui-certainty.mjs anchors --surface tablet --strict",
+    "node tools/quality/ui-certainty.mjs selectors --surface tablet --strict",
+    "node tools/quality/ui-certainty.mjs zero-important",
+    "node tools/quality/ui-certainty.mjs scope --all"
+  ],
+  "visual_evidence": {
+    "preferred": "Source contract plus runtime probe when the target port is already alive",
+    "fallback": "Source contract, real owner anchor, selector validation and scope report"
+  },
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "quality_gates": [
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
+    "scope_guard",
+    "zero_important"
+  ],
+  "exclusive": true
+}

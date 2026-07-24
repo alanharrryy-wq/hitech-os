@@ -1,0 +1,390 @@
+{
+  "schema": "prisma.ui.surfaces.v5",
+  "hard_states": [
+    "RUNTIME_CERTIFIED",
+    "SOURCE_CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT",
+    "RUNTIME_BLOCKED",
+    "ROUTE_UNMAPPED",
+    "ANCHOR_MISSING",
+    "SELECTOR_MISSING"
+  ],
+  "targetPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "surfaces": [
+    {
+      "id": "chart-lab",
+      "surface": "chart-lab",
+      "app": "Chart Lab",
+      "label": "Chart Lab",
+      "port": 3000,
+      "routes": [
+        "/",
+        "/recipe-studio-v2"
+      ],
+      "defaultRoute": "/",
+      "root": "products/chart-lab/app",
+      "owners": [
+        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
+      ],
+      "panels": [
+        "chart-lab.workspace"
+      ],
+      "allowedScope": [
+        "products/chart-lab/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3000"
+      }
+    },
+    {
+      "id": "web",
+      "surface": "web",
+      "app": "PRISMA Web/Edit",
+      "label": "PRISMA Web/Edit",
+      "port": 3110,
+      "routes": [
+        "/",
+        "/surface-governor-public-sober"
+      ],
+      "defaultRoute": "/",
+      "root": "products/web/app",
+      "owners": [
+        "products/web/app/src/components/EitLandingPage.tsx"
+      ],
+      "panels": [
+        "web.workspace"
+      ],
+      "allowedScope": [
+        "products/web/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3110"
+      }
+    },
+    {
+      "id": "tablet",
+      "surface": "tablet",
+      "app": "PRISMA Tablet Core",
+      "label": "PRISMA Tablet Core",
+      "port": 3120,
+      "routes": [
+        "/",
+        "/catalog",
+        "/checkout",
+        "/events/outbox",
+        "/existencias",
+        "/inventory",
+        "/inventory/low-stock",
+        "/offline",
+        "/pos",
+        "/prisma-dark-pos-reference",
+        "/prisma-pulse",
+        "/prisma-visual-catalog",
+        "/referencia-visual",
+        "/release-gate",
+        "/returns",
+        "/sales",
+        "/sales/history",
+        "/sales/history/:saleId",
+        "/sales/today",
+        "/sales/today/:saleId",
+        "/sales/today/:saleId/return",
+        "/screen-standard-preview",
+        "/settings/data",
+        "/settings/export",
+        "/settings/license",
+        "/shift",
+        "/stock",
+        "/sync",
+        "/visual-os",
+        "/visual-os/detached",
+        "/visual-os/materiality-catalog",
+        "/visual-os/pro",
+        "/visual-os/realtime",
+        "/visual-os/tablet-background-gallery",
+        "/visual-os/tablet-codex-gallery"
+      ],
+      "defaultRoute": "/pos",
+      "root": "products/tablet/app",
+      "owners": [
+        "products/tablet/app/components/pos/pos-screen.tsx",
+        "products/tablet/app/components/pos/pos-product-search.tsx",
+        "products/tablet/app/components/pos/pos-product-list.tsx",
+        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+      ],
+      "panels": [
+        "tablet.pos.workspace",
+        "tablet.pos.search-card",
+        "tablet.pos.category-rail",
+        "tablet.pos.product-grid",
+        "tablet.pos.cart-panel",
+        "tablet.pos.checkout-diagnostic",
+        "tablet.pos.payment-overlay"
+      ],
+      "allowedScope": [
+        "products/tablet/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3120/pos"
+      }
+    },
+    {
+      "id": "pc",
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "label": "PRISMA PC Backoffice",
+      "port": 3130,
+      "routes": [
+        "/",
+        "/acciones-masivas",
+        "/ajustes-inventario",
+        "/alertas-ejecutivas",
+        "/alertas-operativas",
+        "/audit",
+        "/auditoria-inventario",
+        "/cash-sessions",
+        "/catalog",
+        "/catalogo-activo",
+        "/conteos-operativos",
+        "/contratos-reporte",
+        "/counts",
+        "/dashboard",
+        "/data-quality",
+        "/detalle-registros",
+        "/devices",
+        "/estados-operativos",
+        "/existencias-criticas",
+        "/exportables",
+        "/filtros-avanzados",
+        "/filtros-fecha",
+        "/forecast-basico",
+        "/glosario",
+        "/gobierno",
+        "/incidencias-recepcion",
+        "/integridad-barcodes",
+        "/laboratorio-pc",
+        "/laboratorio-pc/chart-lab",
+        "/laboratorio-pc/dashboard-governor",
+        "/laboratorio-pc/referencia-visual",
+        "/laboratorio-pc/referencia-visual/liquid-glass",
+        "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+        "/license-runtime",
+        "/metricas-dia",
+        "/movements",
+        "/ordenes-compra",
+        "/outbox-operativo",
+        "/politica-precios",
+        "/prisma-insights",
+        "/prisma-insights/chart-lab",
+        "/proveedores",
+        "/purchasing",
+        "/receiving",
+        "/recepcion-proveedor",
+        "/referencia-visual",
+        "/referencia-visual/liquid-glass",
+        "/referencia-visual/liquid-glass-capsules",
+        "/replenishment",
+        "/sales-control",
+        "/salud-barcodes",
+        "/scorecards-negocio",
+        "/senal-reabasto",
+        "/settings",
+        "/settings/license",
+        "/stock",
+        "/sync",
+        "/sync-operativo",
+        "/tablas-operativas",
+        "/tablero-kpi",
+        "/tablet-communication",
+        "/validacion-catalogo",
+        "/vistas-ejecutivas"
+      ],
+      "defaultRoute": "/dashboard",
+      "root": "products/pc/app",
+      "owners": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "panels": [
+        "pc.workspace",
+        "pc.catalog",
+        "pc.dashboard",
+        "pc.stock",
+        "pc.settings",
+        "pc.liquid-glass-reference"
+      ],
+      "allowedScope": [
+        "products/pc/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3130/dashboard"
+      }
+    },
+    {
+      "id": "mobile",
+      "surface": "mobile",
+      "app": "PRISMA Mobile Adder",
+      "label": "PRISMA Mobile Adder",
+      "port": 3140,
+      "routes": [
+        "/",
+        "/prisma-app",
+        "/prisma-app/install",
+        "/prisma-app/offline",
+        "/prisma-command"
+      ],
+      "defaultRoute": "/",
+      "root": "products/mobile/app",
+      "owners": [
+        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
+      ],
+      "panels": [
+        "mobile.workspace"
+      ],
+      "allowedScope": [
+        "products/mobile/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3140"
+      }
+    },
+    {
+      "id": "control-center",
+      "surface": "control-center",
+      "app": "Control Center",
+      "label": "Control Center",
+      "port": 3150,
+      "routes": [
+        "/"
+      ],
+      "defaultRoute": "/",
+      "root": "prisma-control-center",
+      "owners": [
+        "prisma-control-center/internal/web/index.html"
+      ],
+      "panels": [
+        "control-center.workspace"
+      ],
+      "allowedScope": [
+        "prisma-control-center/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": "http://localhost:3150"
+      }
+    },
+    {
+      "id": "shared-ui",
+      "surface": "shared-ui",
+      "app": "Shared UI / Root quality tooling",
+      "label": "Shared UI / Root quality tooling",
+      "port": null,
+      "routes": [
+        "tooling"
+      ],
+      "defaultRoute": "tooling",
+      "root": "products/shared-ui",
+      "owners": [
+        "tools/quality/ui-certainty.mjs"
+      ],
+      "panels": [],
+      "allowedScope": [
+        "products/shared-ui/**",
+        "tools/quality/**"
+      ],
+      "runtimeProbe": {
+        "optional": true,
+        "url": null
+      }
+    }
+  ],
+  "runtimePageCertification": {
+    "schema": "prisma.ui.route.contracts.v1",
+    "route_contracts": ".prisma-ui/routes.json",
+    "routeCount": 108,
+    "countsBySurface": {
+      "chart-lab": {
+        "app": "Chart Lab",
+        "port": 3000,
+        "routeCount": 2,
+        "runtimeRoutes": 2,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 0,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      },
+      "web": {
+        "app": "PRISMA Web/Edit",
+        "port": 3110,
+        "routeCount": 2,
+        "runtimeRoutes": 2,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 0,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      },
+      "tablet": {
+        "app": "PRISMA Tablet Core",
+        "port": 3120,
+        "routeCount": 35,
+        "runtimeRoutes": 29,
+        "sourceOnlyDynamicRoutes": 3,
+        "sourceOnlyRedirectRoutes": 3,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      },
+      "pc": {
+        "app": "PRISMA PC Backoffice",
+        "port": 3130,
+        "routeCount": 63,
+        "runtimeRoutes": 58,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 5,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      },
+      "mobile": {
+        "app": "PRISMA Mobile Adder",
+        "port": 3140,
+        "routeCount": 5,
+        "runtimeRoutes": 5,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 0,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      },
+      "control-center": {
+        "app": "Control Center",
+        "port": 3150,
+        "routeCount": 1,
+        "runtimeRoutes": 1,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 0,
+        "runtimeCertifiedCount": 0,
+        "sourceCertifiedCount": 0,
+        "runtimeBlockedCount": 0
+      }
+    }
+  }
+}

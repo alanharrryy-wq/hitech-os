@@ -1,0 +1,90 @@
+@layer prisma.routes {
+  .posWorkspace,
+  .singleColumn {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .posWorkspace { grid-template-columns: minmax(0, 1fr) minmax(290px, 0.34fr); align-items: start; }
+  .rightRail,
+  .catalogPanel,
+  .cartPanel,
+  .dataPanel,
+  .miniPanel,
+  .statePanel,
+  .operationalError {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .rightRail { background: var(--prisma-surface-rail); }
+  .operationalError { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .panelHeader,
+  .runtimeBar,
+  .productFooter,
+  .productSignals,
+  .cartLine,
+  .dataRow,
+  .paymentRow,
+  .ticketSummary,
+  .totalBox { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .runtimeBar,
+  .ticketSummary,
+  .totalBox { min-height: 46px; padding: 9px 11px; background: var(--prisma-surface-info); border-radius: 14px; }
+  .productGrid,
+  .summaryGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 9px; }
+  .productCard,
+  .metricCard { min-width: 0; padding: 12px; display: grid; gap: 8px; color: var(--prisma-text-secondary); background: var(--prisma-surface-card); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-card); }
+  .productFigure { min-height: 100px; display: grid; place-items: center; color: var(--prisma-cyan-300); background: linear-gradient(145deg, rgba(38, 89, 122, 0.24), rgba(5, 18, 30, 0.08)); border-radius: 15px; }
+  .productInfo { min-width: 0; display: grid; gap: 4px; }
+  .cartLines,
+  .dataRows { display: grid; gap: 7px; }
+  .cartLine,
+  .dataRow { min-height: 52px; padding: 9px 10px; background: var(--prisma-surface-control); border-radius: 14px; }
+  .lineTotal { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; }
+  .searchBlock { min-width: 0; display: grid; gap: 6px; }
+  .searchInput { width: 100%; min-height: var(--prisma-touch-target); padding: 10px 12px; color: var(--prisma-text-primary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); }
+  .checkoutButton,
+  .secondaryButton,
+  .secondaryWideButton,
+  .paymentButton,
+  .paymentActive,
+  .scanButton,
+  .iconOnlyButton,
+  .stepper :where(button) { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); font-weight: 780; }
+  .checkoutButton { color: #f8fcff; background: var(--prisma-gradient-primary); border-color: rgba(187, 231, 255, 0.44); box-shadow: var(--prisma-shadow-primary); }
+  .secondaryWideButton { width: 100%; }
+  .paymentActive { color: var(--prisma-cyan-300); border-color: var(--prisma-line-strong); }
+  .iconOnlyButton { min-width: var(--prisma-touch-target); padding: 0; }
+  .stepper { display: inline-flex; align-items: center; gap: 6px; }
+  .statusPill,
+  .status_ok,
+  .status_warn,
+  .status_danger { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); font-size: 0.76rem; font-weight: 780; }
+  .status_ok,
+  .successLine { color: var(--prisma-success-400); }
+  .status_warn,
+  .rowWarn { color: var(--prisma-warning-400); }
+  .status_danger,
+  .rowDanger,
+  .stateDanger { color: var(--prisma-danger-400); }
+
+  @media (max-width: 900px) { .posWorkspace { grid-template-columns: 1fr; } }
+}

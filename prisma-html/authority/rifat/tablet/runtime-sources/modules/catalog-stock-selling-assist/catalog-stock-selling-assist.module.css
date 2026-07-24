@@ -1,0 +1,250 @@
+@layer prisma.routes {
+  .screen {
+    min-width: 0;
+    display: grid;
+    gap: 14px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .heroCard {
+    padding: 4px 2px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .kicker,
+  .detailKicker {
+    color: var(--prisma-cyan-300);
+    font-size: 0.72rem;
+    font-weight: 820;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .heroCard h2,
+  .detailHeader h3 {
+    margin: 4px 0 0;
+    color: var(--prisma-text-primary);
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-weight: 620;
+  }
+
+  .workspace {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 0.34fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .mainPanel,
+  .detailPanel {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .detailPanel {
+    position: sticky;
+    top: 96px;
+    background: var(--prisma-surface-rail);
+  }
+
+  .searchPanel,
+  .searchActions,
+  .detailHeader,
+  .detailActions,
+  .exportMenuBody {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .searchInputWrap {
+    min-width: min(100%, 280px);
+    min-height: var(--prisma-touch-target);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    flex: 1 1 280px;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+  }
+
+  .searchInputWrap input { min-width: 0; flex: 1; color: var(--prisma-text-primary); background: transparent; border: 0; outline: 0; }
+
+  .primaryAction,
+  .secondaryAction,
+  .ghostAction,
+  .rowAddButton,
+  .productMainButton,
+  .filterButton,
+  .filterActive,
+  .cartChip,
+  .exportMenu summary {
+    min-height: var(--prisma-touch-target);
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-control);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-control);
+    text-decoration: none;
+    font-weight: 780;
+  }
+
+  .primaryAction,
+  .rowAddButton,
+  .productMainButton {
+    color: #f8fcff;
+    background: var(--prisma-gradient-primary);
+    border-color: rgba(187, 231, 255, 0.44);
+    box-shadow: var(--prisma-shadow-primary);
+  }
+
+  .filterActive { color: var(--prisma-cyan-300); border-color: var(--prisma-line-strong); }
+  .filterRail { display: flex; gap: 7px; overflow-x: auto; }
+
+  .metricGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .metricCard,
+  .statePanel,
+  .errorBox,
+  .cartNotice,
+  .blockedMessage,
+  .detailEmpty {
+    min-width: 0;
+    min-height: 76px;
+    padding: 13px;
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+  }
+
+  .metricOk,
+  .toneOk { border-color: rgba(99, 230, 173, 0.28); }
+  .metricWarn,
+  .toneWarn { border-color: rgba(255, 210, 125, 0.30); }
+  .metricDanger,
+  .toneDanger,
+  .errorBox { border-color: rgba(255, 142, 156, 0.30); }
+  .metricNeutral,
+  .toneNeutral { border-color: var(--prisma-line-soft); }
+
+  .onlineStrip,
+  .offlineStrip {
+    min-height: 44px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-info);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: 14px;
+  }
+
+  .onlineStrip { color: var(--prisma-success-400); }
+  .offlineStrip { color: var(--prisma-warning-400); }
+
+  .productList {
+    display: grid;
+    gap: 7px;
+  }
+
+  .productRow,
+  .productRowSelected {
+    min-width: 0;
+    min-height: 64px;
+    padding: 9px 10px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    gap: 10px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid transparent;
+    border-radius: 16px;
+  }
+
+  .productRowSelected { border-color: var(--prisma-line-strong); background: var(--prisma-surface-card-hover); }
+  .productGlyph { width: 42px; height: 42px; display: grid; place-items: center; color: var(--prisma-cyan-300); background: var(--prisma-surface-control); border-radius: 13px; }
+  .productTextBlock { min-width: 0; display: grid; gap: 3px; }
+  .priceCell { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; }
+  .stockCell { color: var(--prisma-text-muted); }
+  .statusBadge { min-height: 28px; padding: 5px 9px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--prisma-surface-control); }
+  .detailGrid { display: grid; gap: 10px; }
+  .exportMenu { position: relative; }
+  .exportMenuBody { margin-top: 8px; }
+
+  .operationsSurface {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-panel);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+  }
+
+  .operationsHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .operationsHeader > div { display: grid; gap: 4px; }
+  .operationsHeader small { color: var(--prisma-text-muted); }
+  .operationsGrid,
+  .operationForm { min-width: 0; display: grid; gap: 10px; }
+  .operationsTabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .operationForm { grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; }
+  .operationField { min-width: 0; display: grid; gap: 6px; }
+  .operationField :where(input, select) { width: 100%; min-width: 0; min-height: var(--prisma-touch-target); padding: 9px 11px; color: var(--prisma-text-primary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); }
+  .operationStatus { min-height: 44px; padding: 10px 12px; display: flex; align-items: center; color: var(--prisma-success-400); background: var(--prisma-surface-info); border: 1px solid rgba(99, 230, 173, 0.28); border-radius: var(--prisma-radius-control); }
+  .operationStatus[data-state="error"] { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+
+  @media (max-width: 980px) {
+    .workspace { grid-template-columns: 1fr; }
+    .detailPanel { position: relative; top: auto; }
+    .operationForm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 680px) {
+    .metricGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .productRow,
+    .productRowSelected { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .stockCell,
+    .priceCell { grid-column: 2; }
+    .operationForm { grid-template-columns: 1fr; }
+  }
+}

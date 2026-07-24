@@ -1,0 +1,29 @@
+{
+  "schema": "prisma.ui.visual-control.risks.v1",
+  "status": "CERTIFIED",
+  "blockerCount": 0,
+  "warningCount": 0,
+  "missingTargetSurfaces": [],
+  "targetSurfacesWithoutRoutes": [],
+  "targetSurfacesWithoutPanelContracts": [],
+  "routeOwnerMissingCount": 0,
+  "regionOwnerMissingCount": 0,
+  "slotUnclassifiedCount": 0,
+  "activeImportantCount": 0,
+  "ambiguousActiveLayerOwnerCount": 0,
+  "docsOnlyCount": 422,
+  "fixtureOnlyCount": 72,
+  "generatedEvidenceOnlyCount": 0,
+  "inactiveArchiveCount": 0,
+  "blockers": [],
+  "warnings": [],
+  "activeImportantHits": [],
+  "explicitUnmappedRisks": [],
+  "classificationPolicy": {
+    "activeRuntime": "Only activeRuntime files can own live visual surfaces.",
+    "docsOnly": "Documentation can explain visuals but cannot certify runtime ownership.",
+    "fixtureOnly": "Fixtures are evidence only.",
+    "generatedEvidenceOnly": "Generated reports/evidence are not runtime owners.",
+    "inactiveArchive": "Archive/backups are excluded from ownership."
+  }
+}

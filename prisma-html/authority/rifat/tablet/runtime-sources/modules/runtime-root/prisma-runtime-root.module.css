@@ -1,0 +1,108 @@
+@layer prisma.atmosphere {
+  .visualRoot {
+    position: relative;
+    isolation: isolate;
+    min-height: 100dvh;
+    margin: 0;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-night-950);
+  }
+
+  .visualRoot::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--prisma-z-scene);
+    pointer-events: none;
+    background:
+      linear-gradient(115deg, rgba(1, 7, 14, 0.78), rgba(3, 15, 27, 0.52) 46%, rgba(2, 7, 13, 0.82)),
+      radial-gradient(circle at 16% 18%, rgba(58, 151, 255, 0.20), transparent 33%),
+      radial-gradient(circle at 84% 12%, rgba(56, 207, 255, 0.12), transparent 30%),
+      url("/assets/tablet-lab/prisma-pos-cafe-premium.png") center / cover no-repeat fixed;
+    filter: saturate(0.82) contrast(1.08) brightness(0.72);
+    transform: translateZ(0);
+  }
+
+  .visualRoot::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--prisma-z-scene);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .visualRoot[data-prisma-route="/pos"]::before {
+    background:
+      linear-gradient(112deg, rgba(1, 5, 10, 0.48), rgba(3, 9, 15, 0.18) 44%, rgba(12, 7, 3, 0.40)),
+      radial-gradient(circle at 8% 68%, rgba(68, 194, 255, 0.24), transparent 34%),
+      radial-gradient(circle at 78% 15%, rgba(255, 178, 91, 0.20), transparent 30%),
+      radial-gradient(circle at 58% 84%, rgba(76, 125, 255, 0.12), transparent 38%),
+      url("/assets/tablet-lab/prisma-pos-cafe-premium.png") center / cover no-repeat fixed;
+    filter: saturate(1.02) contrast(1.06) brightness(0.92);
+    transform: scale(1.012) translateZ(0);
+  }
+
+  .visualRoot[data-prisma-route="/pos"]::after {
+    opacity: 1;
+    background:
+      radial-gradient(circle at 12% 55%, rgba(122, 224, 255, 0.10), transparent 28%),
+      radial-gradient(circle at 82% 18%, rgba(255, 207, 139, 0.09), transparent 24%),
+      linear-gradient(180deg, rgba(1, 4, 8, 0.06), rgba(1, 4, 8, 0.20)),
+      repeating-radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.018) 0 0.7px, transparent 0.7px 3px);
+    mix-blend-mode: screen;
+  }
+
+  @media (prefers-contrast: more) {
+    .visualRoot[data-prisma-route="/pos"]::before {
+      filter: saturate(0.92) contrast(1.18) brightness(0.74);
+    }
+
+    .visualRoot[data-prisma-route="/pos"]::after {
+      opacity: 0.42;
+    }
+  }
+}
+
+/* PRISMA_TABLET_SETTINGS_ATMOSPHERE_V3_CANONICAL */
+@layer prisma.atmosphere {
+  .visualRoot[data-prisma-route="/settings/data"]::before,
+  .visualRoot[data-prisma-route="/settings/export"]::before,
+  .visualRoot[data-prisma-route="/settings/license"]::before {
+    background:
+      linear-gradient(112deg, rgba(1, 5, 10, 0.38), rgba(3, 9, 15, 0.10) 44%, rgba(12, 7, 3, 0.30)),
+      radial-gradient(circle at 8% 68%, rgba(68, 194, 255, 0.29), transparent 35%),
+      radial-gradient(circle at 80% 14%, rgba(255, 177, 88, 0.27), transparent 31%),
+      radial-gradient(circle at 56% 84%, rgba(91, 123, 255, 0.15), transparent 40%),
+      url("/assets/tablet-lab/prisma-pos-cafe-premium.png") center / cover no-repeat fixed;
+    filter: saturate(1.16) contrast(1.07) brightness(0.98);
+    transform: scale(1.014) translateZ(0);
+  }
+
+  .visualRoot[data-prisma-route="/settings/data"]::after,
+  .visualRoot[data-prisma-route="/settings/export"]::after,
+  .visualRoot[data-prisma-route="/settings/license"]::after {
+    opacity: 1;
+    background:
+      radial-gradient(circle at 12% 54%, rgba(122, 224, 255, 0.13), transparent 29%),
+      radial-gradient(circle at 84% 18%, rgba(255, 207, 139, 0.12), transparent 25%),
+      radial-gradient(circle at 60% 80%, rgba(184, 135, 255, 0.055), transparent 30%),
+      linear-gradient(180deg, rgba(1, 4, 8, 0.025), rgba(1, 4, 8, 0.14)),
+      repeating-radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.018) 0 0.7px, transparent 0.7px 3px);
+    mix-blend-mode: screen;
+  }
+
+  @media (prefers-contrast: more) {
+    .visualRoot[data-prisma-route="/settings/data"]::before,
+    .visualRoot[data-prisma-route="/settings/export"]::before,
+    .visualRoot[data-prisma-route="/settings/license"]::before {
+      filter: saturate(1.02) contrast(1.20) brightness(0.76);
+    }
+
+    .visualRoot[data-prisma-route="/settings/data"]::after,
+    .visualRoot[data-prisma-route="/settings/export"]::after,
+    .visualRoot[data-prisma-route="/settings/license"]::after {
+      opacity: 0.46;
+    }
+  }
+}

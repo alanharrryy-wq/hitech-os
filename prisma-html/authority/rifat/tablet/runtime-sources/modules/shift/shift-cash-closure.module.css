@@ -1,0 +1,81 @@
+@layer prisma.routes {
+  .page {
+    min-width: 0;
+    padding: clamp(14px, 1.8vw, 22px);
+    display: grid;
+    gap: 14px;
+    color: var(--prisma-text-primary);
+    background: var(--prisma-surface-panel);
+    background-image: var(--prisma-gradient-panel);
+    border: 1px solid var(--prisma-line-medium);
+    border-radius: var(--prisma-radius-panel);
+    box-shadow: var(--prisma-shadow-shell);
+    backdrop-filter: none;
+  }
+
+  .hero,
+  .panelHeader,
+  .heroActions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 9px; }
+  .hero { align-items: end; background: transparent; border: 0; box-shadow: none; }
+  .eyebrow { color: var(--prisma-cyan-300); font-size: 0.72rem; font-weight: 820; letter-spacing: 0.14em; text-transform: uppercase; }
+  .workspace { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
+
+  .modeChooser {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .modeCard {
+    min-height: 132px;
+    padding: 18px;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 6px;
+    color: var(--prisma-text-secondary);
+    background: linear-gradient(145deg, rgba(23, 63, 88, 0.54), rgba(10, 34, 52, 0.72));
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .modeCard span { color: var(--prisma-cyan-300); font-size: 0.72rem; font-weight: 820; letter-spacing: 0.12em; text-transform: uppercase; }
+  .modeCard strong { color: var(--prisma-text-primary); font-size: 1.25rem; }
+  .modeCard small { color: var(--prisma-text-muted); }
+  .modeCard:disabled { cursor: not-allowed; opacity: 0.5; }
+
+  .panel,
+  .flowGuard,
+  .varianceBox,
+  .cashBreakdown,
+  .errorBanner {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .errorBanner { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .kpiGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 9px; }
+  .kpiCard { min-width: 0; padding: 13px; display: grid; gap: 5px; color: var(--prisma-text-secondary); background: var(--prisma-surface-card); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-card); }
+  .field { display: grid; gap: 6px; color: var(--prisma-text-secondary); }
+  .field :where(input, textarea, select) { width: 100%; min-height: var(--prisma-touch-target); padding: 10px 12px; color: var(--prisma-text-primary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); }
+  .primaryButton,
+  .ghostButton,
+  .dangerButton,
+  .secondaryLink { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+  .primaryButton { color: #f8fcff; background: var(--prisma-gradient-primary); border-color: rgba(187, 231, 255, 0.44); box-shadow: var(--prisma-shadow-primary); }
+  .dangerButton { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
+  .note { color: var(--prisma-text-muted); line-height: 1.45; }
+
+  @media (max-width: 860px) { .workspace, .modeChooser { grid-template-columns: 1fr; } }
+}

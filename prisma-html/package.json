@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "rifat:validate": "python tools/validate_rifat_authority.py",
+    "rifat:generate:check": "python tools/generate_tablet_visual_runtime.py --check",
     "cf:build": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Build",
     "cf:status": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Status",
     "cf:preview": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Preview",

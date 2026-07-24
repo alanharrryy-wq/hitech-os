@@ -1,0 +1,32 @@
+{
+  "schema": "prisma.rifat.tablet.routes.v1",
+  "surface": "tablet",
+  "detected": 23,
+  "customerVisible": 22,
+  "internal": 1,
+  "routes": [
+    { "route": "/", "family": "home", "owner": "OperationalHomeWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "loading", "error", "offline", "stale", "blocked"] },
+    { "route": "/catalog", "family": "catalog", "owner": "ProductCatalogWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "disabled", "selected", "focus", "drawer"] },
+    { "route": "/checkout", "family": "checkout", "owner": "CheckoutWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "blocked", "permission_denied", "selected", "focus", "modal"] },
+    { "route": "/existencias", "family": "inventory", "owner": "InventoryWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus", "drawer"] },
+    { "route": "/inventory", "family": "inventory", "owner": "InventoryWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus", "drawer"] },
+    { "route": "/inventory/low-stock", "family": "inventory", "owner": "InventoryWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus", "drawer"] },
+    { "route": "/offline", "family": "continuity", "owner": "OfflineResilienceWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "blocked"] },
+    { "route": "/pos", "family": "pos", "owner": "SellingWorkspace", "shell": "PrismaTabletShellUnified", "contentSurface": "PosTerminalSurface", "states": ["normal", "empty", "loading", "error", "offline", "stale", "blocked", "conflict", "permission_denied", "disabled", "selected", "focus", "menu", "modal", "drawer"] },
+    { "route": "/returns", "family": "returns", "owner": "ReturnsWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "blocked", "permission_denied", "selected", "focus", "modal"] },
+    { "route": "/sales", "family": "sales", "owner": "SalesWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus"] },
+    { "route": "/sales/history", "family": "sales", "owner": "SalesWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus"] },
+    { "route": "/sales/history/[saleId]", "family": "sales", "owner": "SalesWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "loading", "error", "offline", "stale", "blocked"] },
+    { "route": "/sales/today", "family": "sales", "owner": "SalesWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus"] },
+    { "route": "/sales/today/[saleId]", "family": "sales", "owner": "SalesWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "loading", "error", "offline", "stale", "blocked"] },
+    { "route": "/sales/today/[saleId]/return", "family": "returns", "owner": "ReturnsWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "loading", "error", "offline", "blocked", "permission_denied", "selected", "focus", "modal"] },
+    { "route": "/settings/data", "family": "settings", "owner": "SettingsWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "error", "offline", "blocked"] },
+    { "route": "/settings/export", "family": "settings", "owner": "SettingsWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "blocked"] },
+    { "route": "/settings/license", "family": "licensing", "owner": "SettingsWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "loading", "error", "offline", "stale", "blocked", "permission_denied"] },
+    { "route": "/setup", "family": "setup", "owner": "SetupFlow", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "blocked", "permission_denied", "focus"] },
+    { "route": "/shift", "family": "cash", "owner": "ShiftWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "blocked", "permission_denied", "selected", "focus", "modal"] },
+    { "route": "/stock", "family": "inventory", "owner": "InventoryWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "selected", "focus", "drawer"] },
+    { "route": "/sync", "family": "sync", "owner": "SyncWorkspace", "shell": "PrismaTabletShellUnified", "states": ["normal", "empty", "loading", "error", "offline", "stale", "blocked", "conflict", "selected", "focus", "drawer"] },
+    { "route": "/tablet-lab", "family": "internal-lab", "owner": "TabletLabAutoStudio", "internal": true, "shell": null, "states": ["normal"] }
+  ]
+}

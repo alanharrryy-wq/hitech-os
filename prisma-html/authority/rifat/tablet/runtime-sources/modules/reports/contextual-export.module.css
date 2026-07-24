@@ -1,0 +1,21 @@
+@layer prisma.components {
+  .card {
+    min-width: 0;
+    padding: 14px;
+    display: grid;
+    gap: 9px;
+    color: var(--prisma-text-secondary);
+    background: var(--prisma-surface-card);
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: var(--prisma-radius-card);
+    box-shadow: var(--prisma-shadow-card);
+    backdrop-filter: none;
+  }
+
+  .summary,
+  .actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 9px; }
+  .summaryCopy { min-width: 0; display: grid; gap: 4px; }
+  .history { display: grid; gap: 7px; }
+  .warn { color: var(--prisma-warning-400); }
+  .actions :where(button, a) { min-height: var(--prisma-touch-target); padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; color: var(--prisma-text-secondary); background: var(--prisma-surface-control); border: 1px solid var(--prisma-line-soft); border-radius: var(--prisma-radius-control); text-decoration: none; font-weight: 780; }
+}

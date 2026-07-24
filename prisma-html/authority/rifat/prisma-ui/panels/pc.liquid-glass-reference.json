@@ -1,0 +1,91 @@
+{
+  "schema": "prisma.ui.panel.contract.v4",
+  "panel_id": "pc.liquid-glass-reference",
+  "status": "CERTIFIED",
+  "surface": "pc",
+  "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+  "title": "PC liquid glass reference",
+  "certification_rule": "Runtime result is computed by ui-certainty.mjs. Static seed status is not accepted as final green.",
+  "owner_component": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+  "owner_css_module": "products/pc/app/app/prisma-liquid-glass.module.css",
+  "canonical_selectors": [
+    "[data-prisma-panel=\"pc.liquid-glass-reference\"]"
+  ],
+  "required_anchors": [
+    {
+      "attribute": "data-prisma-panel",
+      "value": "pc.liquid-glass-reference"
+    },
+    {
+      "attribute": "data-prisma-surface",
+      "value": "pc"
+    },
+    {
+      "attribute": "data-prisma-route",
+      "value": "/laboratorio-pc/referencia-visual/liquid-glass"
+    }
+  ],
+  "allowed_files": [
+    ".prisma-ui/current/**",
+    ".prisma-ui/panels/**",
+    ".prisma-ui/panels/pc.liquid-glass-reference.json",
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    "docs/quality/UI_CERTAINTY_SUPREME_MESH.md",
+    "package.json",
+    "tools/quality/ui-certainty.mjs",
+    "tools/quality/ui-certainty/**",
+    "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+    "products/pc/app/app/prisma-liquid-glass.module.css"
+  ],
+  "forbidden_surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "mobile",
+    "control-center"
+  ],
+  "target_strings": [
+    "pc.liquid-glass-reference",
+    "pc",
+    "/laboratorio-pc/referencia-visual/liquid-glass",
+    "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+  ],
+  "default_probe": {
+    "surface": "pc",
+    "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+    "point": {
+      "x": 1160,
+      "y": 420
+    }
+  },
+  "required_checks": [
+    "node tools/quality/ui-certainty.mjs self-test --strict",
+    "node tools/quality/ui-certainty.mjs certify --surface pc --strict",
+    "node tools/quality/ui-certainty.mjs contracts --surface pc --strict",
+    "node tools/quality/ui-certainty.mjs anchors --surface pc --strict",
+    "node tools/quality/ui-certainty.mjs selectors --surface pc --strict",
+    "node tools/quality/ui-certainty.mjs zero-important",
+    "node tools/quality/ui-certainty.mjs scope --all"
+  ],
+  "visual_evidence": {
+    "preferred": "Source contract plus runtime probe when the target port is already alive",
+    "fallback": "Source contract, real owner anchor, selector validation and scope report"
+  },
+  "hard_states": [
+    "CERTIFIED",
+    "BLOCKED",
+    "DRIFT",
+    "CONFLICT"
+  ],
+  "quality_gates": [
+    "contract_validator",
+    "anchor_scanner",
+    "selector_validator",
+    "drift_detector",
+    "conflict_detector",
+    "scope_guard",
+    "zero_important"
+  ],
+  "exclusive": true
+}
