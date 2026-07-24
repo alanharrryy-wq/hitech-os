@@ -30,29 +30,25 @@ CRITICAL_PC_ROUTES = {"/", "/dashboard", "/catalog", "/stock", "/sync", "/settin
 CRITICAL_TABLET = {"/", "/pos", "/shift", "/catalog", "/stock", "/sales/today", "/sync", "/offline", "/settings/license"}
 VISUALQA_TABLET_ROUTES = [
     "/",
-    "/pos",
-    "/checkout",
     "/catalog",
-    "/sync",
-    "/sales",
-    "/sales/today",
-    "/sales/history",
-    "/shift",
-    "/returns",
-    "/stock",
+    "/checkout",
+    "/existencias",
     "/inventory",
+    "/inventory/low-stock",
     "/offline",
-    "/settings/license",
+    "/pos",
+    "/returns",
+    "/sales",
+    "/sales/history",
+    "/sales/today",
     "/settings/data",
     "/settings/export",
-    "/release-gate",
-    "/prisma-pulse",
-    "/visual-os",
-    "/visual-os/materiality-catalog",
-    "/visual-os/pro",
-    "/visual-os/realtime",
-    "/visual-os/tablet-background-gallery",
-    "/visual-os/tablet-codex-gallery",
+    "/settings/license",
+    "/setup",
+    "/shift",
+    "/stock",
+    "/sync",
+    "/tablet-lab",
 ]
 TEXT_EXTS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".html", ".py", ".md", ".json"}
 EXCLUDE_DIRS = {"node_modules", ".git", ".next", "dist", "build", "coverage", "test-results", "playwright-report", "__pycache__"}
@@ -291,7 +287,7 @@ def build_plan(term_root: Path, mode: str, workers: int, surface: str) -> dict:
             discovered_routes = {r["route"]: r for r in tablet_routes if not r["dynamic"]}
             ordered_routes = []
             for route in VISUALQA_TABLET_ROUTES:
-                if route not in ordered_routes:
+                if route in discovered_routes and route not in ordered_routes:
                     ordered_routes.append(route)
             for route in sorted(discovered_routes.keys()):
                 if route not in ordered_routes:

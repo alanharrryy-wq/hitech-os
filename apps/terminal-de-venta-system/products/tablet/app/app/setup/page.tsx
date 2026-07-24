@@ -5,8 +5,14 @@ import styles from "@components/license/license-ui.module.css";
 
 export const dynamic = "force-dynamic";
 
-export default function SetupFlow({ searchParams }: { searchParams?: { code?: string; setupCode?: string } }) {
-  const code = searchParams?.code || searchParams?.setupCode || "";
+type SetupSearchParams = {
+  code?: string;
+  setupCode?: string;
+};
+
+export default async function SetupFlow({ searchParams }: { searchParams?: Promise<SetupSearchParams> }) {
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const code = resolvedSearchParams.code || resolvedSearchParams.setupCode || "";
   const setup = resolveTabletCustomerSetup(code);
   const governor = getTabletLicenseGovernor();
 
