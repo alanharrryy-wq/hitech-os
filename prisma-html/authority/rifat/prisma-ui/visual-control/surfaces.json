@@ -3,76 +3,18 @@
   "status": "CERTIFIED",
   "surfaces": [
     {
-      "surface": "chart-lab",
-      "app": "Chart Lab",
-      "root": "products/chart-lab/app",
-      "port": 3000,
-      "routeCount": 2,
-      "panelCount": 1,
-      "visualRegionCount": 414,
-      "editableSlotCount": 2160,
-      "owners": [
-        "products/chart-lab/app/src/components/PrismaChartLabShell.tsx"
-      ],
-      "allowedScope": [
-        "products/chart-lab/**"
-      ],
-      "runtimeCertification": {
-        "app": "Chart Lab",
-        "port": 3000,
-        "routeCount": 2,
-        "runtimeRoutes": 2,
-        "sourceOnlyDynamicRoutes": 0,
-        "sourceOnlyRedirectRoutes": 0,
-        "runtimeCertifiedCount": 2,
-        "sourceCertifiedCount": 0,
-        "runtimeBlockedCount": 0
-      },
-      "status": "CERTIFIED"
-    },
-    {
-      "surface": "web",
-      "app": "PRISMA Web/Edit",
-      "root": "products/web/app",
-      "port": 3110,
-      "routeCount": 2,
-      "panelCount": 1,
-      "visualRegionCount": 42,
-      "editableSlotCount": 226,
-      "owners": [
-        "products/web/app/src/components/EitLandingPage.tsx"
-      ],
-      "allowedScope": [
-        "products/web/**"
-      ],
-      "runtimeCertification": {
-        "app": "PRISMA Web/Edit",
-        "port": 3110,
-        "routeCount": 2,
-        "runtimeRoutes": 2,
-        "sourceOnlyDynamicRoutes": 0,
-        "sourceOnlyRedirectRoutes": 0,
-        "runtimeCertifiedCount": 2,
-        "sourceCertifiedCount": 0,
-        "runtimeBlockedCount": 0
-      },
-      "status": "CERTIFIED"
-    },
-    {
       "surface": "tablet",
       "app": "PRISMA Tablet Core",
       "root": "products/tablet/app",
       "port": 3120,
-      "routeCount": 35,
+      "routeCount": 23,
       "panelCount": 7,
-      "visualRegionCount": 2000,
-      "editableSlotCount": 10370,
+      "visualRegionCount": 436,
+      "editableSlotCount": 2340,
       "owners": [
-        "products/tablet/app/components/pos/pos-screen.tsx",
-        "products/tablet/app/components/pos/pos-product-search.tsx",
-        "products/tablet/app/components/pos/pos-product-list.tsx",
-        "products/tablet/app/components/pos/pos-ticket-panel.tsx",
-        "products/tablet/app/components/pos/pos-payment-panel.tsx"
+        "products/tablet/app/app/layout.tsx",
+        "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx",
+        "products/tablet/app/generated/prisma-visual-runtime/prisma-tablet-runtime.css"
       ],
       "allowedScope": [
         "products/tablet/**"
@@ -88,111 +30,6 @@
         "sourceCertifiedCount": 6,
         "runtimeBlockedCount": 0
       },
-      "status": "CERTIFIED"
-    },
-    {
-      "surface": "pc",
-      "app": "PRISMA PC Backoffice",
-      "root": "products/pc/app",
-      "port": 3130,
-      "routeCount": 63,
-      "panelCount": 6,
-      "visualRegionCount": 832,
-      "editableSlotCount": 4428,
-      "owners": [
-        "products/pc/app/components/layout/app-shell.tsx",
-        "products/pc/app/components/uiux/pc-module-shell.tsx",
-        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
-      ],
-      "allowedScope": [
-        "products/pc/**"
-      ],
-      "runtimeCertification": {
-        "app": "PRISMA PC Backoffice",
-        "port": 3130,
-        "routeCount": 63,
-        "runtimeRoutes": 58,
-        "sourceOnlyDynamicRoutes": 0,
-        "sourceOnlyRedirectRoutes": 5,
-        "runtimeCertifiedCount": 58,
-        "sourceCertifiedCount": 5,
-        "runtimeBlockedCount": 0
-      },
-      "status": "CERTIFIED"
-    },
-    {
-      "surface": "mobile",
-      "app": "PRISMA Mobile Adder",
-      "root": "products/mobile/app",
-      "port": 3140,
-      "routeCount": 5,
-      "panelCount": 1,
-      "visualRegionCount": 299,
-      "editableSlotCount": 1590,
-      "owners": [
-        "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx"
-      ],
-      "allowedScope": [
-        "products/mobile/**"
-      ],
-      "runtimeCertification": {
-        "app": "PRISMA Mobile Adder",
-        "port": 3140,
-        "routeCount": 5,
-        "runtimeRoutes": 5,
-        "sourceOnlyDynamicRoutes": 0,
-        "sourceOnlyRedirectRoutes": 0,
-        "runtimeCertifiedCount": 5,
-        "sourceCertifiedCount": 0,
-        "runtimeBlockedCount": 0
-      },
-      "status": "CERTIFIED"
-    },
-    {
-      "surface": "control-center",
-      "app": "Control Center",
-      "root": "prisma-control-center",
-      "port": 3150,
-      "routeCount": 1,
-      "panelCount": 1,
-      "visualRegionCount": 496,
-      "editableSlotCount": 2549,
-      "owners": [
-        "prisma-control-center/internal/web/index.html"
-      ],
-      "allowedScope": [
-        "prisma-control-center/**"
-      ],
-      "runtimeCertification": {
-        "app": "Control Center",
-        "port": 3150,
-        "routeCount": 1,
-        "runtimeRoutes": 1,
-        "sourceOnlyDynamicRoutes": 0,
-        "sourceOnlyRedirectRoutes": 0,
-        "runtimeCertifiedCount": 1,
-        "sourceCertifiedCount": 0,
-        "runtimeBlockedCount": 0
-      },
-      "status": "CERTIFIED"
-    },
-    {
-      "surface": "shared-ui",
-      "app": "Shared UI / Root quality tooling",
-      "root": "products/shared-ui",
-      "port": null,
-      "routeCount": 0,
-      "panelCount": 0,
-      "visualRegionCount": 73,
-      "editableSlotCount": 367,
-      "owners": [
-        "tools/quality/ui-certainty.mjs"
-      ],
-      "allowedScope": [
-        "products/shared-ui/**",
-        "tools/quality/**"
-      ],
-      "runtimeCertification": null,
       "status": "CERTIFIED"
     }
   ]
