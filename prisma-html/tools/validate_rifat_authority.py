@@ -86,6 +86,26 @@ def main() -> int:
     ]
     if visual_tablet_routes != route_ids:
         problems.append("canonical Visual Control Tablet routes do not match RIFAT route bindings")
+    visual_registry = load(prisma_ui / "visual-control" / "registry.json")
+    if visual_registry.get("targetSurfaces") != ["tablet"]:
+        problems.append("canonical Visual Control must target only the Tablet surface")
+    visual_risks = load(prisma_ui / "visual-control" / "risks.json")
+    required_zero_risks = (
+        "blockerCount",
+        "warningCount",
+        "routeOwnerMissingCount",
+        "regionOwnerMissingCount",
+        "slotUnclassifiedCount",
+        "activeImportantCount",
+        "ambiguousActiveLayerOwnerCount",
+    )
+    if visual_risks.get("status") != "CERTIFIED" or any(
+        visual_risks.get(key) != 0 for key in required_zero_risks
+    ):
+        problems.append("canonical Tablet Visual Control risks are not zero-certified")
+    visual_owners = load(prisma_ui / "visual-control" / "owners.json")
+    if visual_owners.get("status") != "CERTIFIED" or visual_owners.get("routeOwnerCount") != len(route_ids):
+        problems.append("canonical Tablet Visual Control route owners are incomplete")
 
     governance = AUTHORITY_ROOT / "governance" / "current"
     required_governance = (
