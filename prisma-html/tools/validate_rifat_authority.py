@@ -68,6 +68,24 @@ def main() -> int:
     for relative in ("registry.json", "surfaces.json", "routes.json", "panels", "visual-control"):
         if not (prisma_ui / relative).exists():
             problems.append(f"missing canonical prisma-ui source: {relative}")
+    canonical_routes = load(prisma_ui / "routes.json")
+    canonical_tablet_routes = [
+        row["route"] for row in canonical_routes.get("routes", []) if row.get("surface") == "tablet"
+    ]
+    if canonical_tablet_routes != route_ids:
+        problems.append("canonical prisma-ui Tablet routes do not match RIFAT route bindings")
+    canonical_surface = next(
+        (row for row in load(prisma_ui / "surfaces.json").get("surfaces", []) if row.get("id") == "tablet"),
+        None,
+    )
+    if not canonical_surface or canonical_surface.get("routes") != route_ids:
+        problems.append("canonical prisma-ui Tablet surface routes do not match RIFAT route bindings")
+    visual_routes = load(prisma_ui / "visual-control" / "routes.json")
+    visual_tablet_routes = [
+        row["route"] for row in visual_routes.get("routes", []) if row.get("surface") == "tablet"
+    ]
+    if visual_tablet_routes != route_ids:
+        problems.append("canonical Visual Control Tablet routes do not match RIFAT route bindings")
 
     governance = AUTHORITY_ROOT / "governance" / "current"
     required_governance = (
