@@ -1,0 +1,46 @@
+{
+  "schema_version": "PRISMA_ATLAS_AUTHORITY_MESH_9.0",
+  "status": "PASS_COMPLETE_NY_SOURCE_READY",
+  "created_at": "2026-07-18T08:11:26.390345-06:00",
+  "task": "Complete frozen Atlas with N-Y.",
+  "classification": "BUILD",
+  "base_contract": {
+    "required_package": "atlasb3.zip",
+    "required_manifest_status": "PASS_BATCH_3_HL",
+    "required_update_id": "ATLAS.BATCH.3.HL",
+    "base_sha256": "ee27fd17122332244fd0e78042fbfc76e7af013603b01d131409421cbc9187af",
+    "critical_files": {
+      "assets/css/atlas.css": "b762f93db482148e39e7e68516720ba2389a20a6bc065bf5cf7ebbb2a2cf2093",
+      "assets/js/atlas.js": "0c25b2871af072ad1eb90b8ac1b31f35550b274e71e2fb3125c7552e51e7ef8d",
+      "assets/data/atlas.manifest.json": "43caffeb0624cffc6082764e6b718e5d76ca079376051788279d33ece5869095"
+    }
+  },
+  "scope": {
+    "included": [
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "shared navigation refresh",
+      "shared CSS additions",
+      "shared JS additions",
+      "completion validation"
+    ],
+    "excluded": [
+      "rebuild of A-M and Z bodies",
+      "repository modifications",
+      "browser automation",
+      "external libraries"
+    ]
+  },
+  "repo_modified": false,
+  "browser_automation_used": false
+}

@@ -1,0 +1,994 @@
+{
+  "schema": "PRISMA_AUTHORITY_READSET_LOCK_V1",
+  "generated_at": "2026-07-20T19:28:32",
+  "task": "# Exact visual task\n\nProject target:\n\n`F:\\descargasf\\htmlatlas 2007 0753\\prisma-html`\n\n1. Make the CAF\u00c9 pill/button substantially more premium and glassy with translucent frosted glass, Gaussian blur, cyan-to-lilac tint, refined specular highlight, thin luminous edge, and a soft controlled halo. Avoid a heavy solid fill.\n2. Make the Product Card and Circular Progress card lighter and less opaque while preserving readability and hierarchy.\n3. Make Notification Drawer and every card in Galer\u00eda de overlays less solid and more professional: translucent glass, one canonical Gaussian blur owner per temporary surface, restrained cyan edge light, subtle internal reflection, and no opaque panel stacks.\n4. Preserve layout, text, responsive behavior, keyboard behavior, focus management, Escape/backdrop closing, and semantic indicators.\n5. Preserve true transparency at 0%. At zero, governed background, border, shadow, glow, and blur must compute to transparent or none.\n6. Use a canonical/root-cause implementation only. No new `!important`, no late global override sweep, no duplicated material owners, and no extra wrappers unless optically required.\n7. Scope only this static HTML Atlas project. Exclude hitech-os, Tablet, PC, Mobile, Chart Lab, Shared UI, Prisma, servers, ports, and live processes.\n8. Before patching, generate a fresh task-scoped Authority Mesh with `AUTHORITY_READSET.lock.json`, app and contract matrices, unmapped-risk review, agent envelope, authority report, and mandatory `LAYERS_MAP.md/json`.\n",
+  "project_root": "F:\\descargasf\\htmlatlas 2007 0753\\prisma-html",
+  "scope": {
+    "included": [
+      "static PRISMA HTML Atlas",
+      "Product Card",
+      "CAF\u00c9 pill/button",
+      "Circular Progress",
+      "Notification Drawer",
+      "Galer\u00eda de overlays",
+      "overlay demo tiles"
+    ],
+    "excluded": [
+      "hitech-os",
+      "Tablet",
+      "PC",
+      "Mobile",
+      "Chart Lab",
+      "Shared UI",
+      "Prisma",
+      "servers",
+      "ports",
+      "live processes"
+    ]
+  },
+  "authority_sources": [
+    {
+      "path": "CONTINUATION.md",
+      "sha256": "75c371996d931a1873068b59dd3a1ebc8605d0c99a9fabb8f951f543fc31a7c7",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "README.md",
+      "sha256": "ea74f3763443c68b7b616bac1dfffdbda49f788af20836a33d27644da1b5aaee",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "TREE.md",
+      "sha256": "a0c70ecffa5c3f03f17567da6b356510fd7467ff7c585e01d79b96e51ae677dd",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "SOURCE-INTEGRITY.json",
+      "sha256": "ea84db29e92bdb222ff61e6c57fb1744c8c0f703384622f5ac7c8bd685a4af75",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "BASELINE-MANIFEST.json",
+      "sha256": "afbb2da51e4e2989c10db84416448851fb17ca72c1b96629080464a9259c3d5e",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "reports/LAYERS_MAP_CLEAR_PEARL.md",
+      "sha256": "83243963e46b788124f7e1a60ff6fe99fbe563cd875ac87ab6d3b4615163503c",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "governance/PRISMA_HTML_ATLAS_EXTRA_MANIFEST.json",
+      "sha256": "a6720a050fe97e22e8855c1e9f7bebb7d0a20c7a65c74280f90ba9944dae1936",
+      "role": "project authority / current visual governance"
+    },
+    {
+      "path": "governance/PRISMA_HTML_CLEAR_PEARL_FIX_MANIFEST.json",
+      "sha256": "f429c93eee58b489e17d1bb1c327f3bec078572cdbdb1f2edcb23bdf89d16194",
+      "role": "project authority / current visual governance"
+    }
+  ],
+  "source_snapshot": {
+    "BASELINE-MANIFEST.json": {
+      "sha256": "afbb2da51e4e2989c10db84416448851fb17ca72c1b96629080464a9259c3d5e",
+      "size": 3613,
+      "modified": "2026-07-20T22:17:22"
+    },
+    ".vscode/extensions.json": {
+      "sha256": "e0c83eedc91bdaee4d622dec3a900326fd8f7d2c7774fca685b07ecf6389dbd6",
+      "size": 59,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "ABRIR-EN-VSCODE.cmd": {
+      "sha256": "5848e918e593c352aaf2f11723a2c5ce41132035d65aa04a890e79647fb19654",
+      "size": 256,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "index.css": {
+      "sha256": "be8dfe53e65a2c41e801f74e37a22fbe1aff3c3a95a06868678d8259d44dcd3f",
+      "size": 18105,
+      "modified": "2026-07-20T21:51:14"
+    },
+    "CONTINUATION.md": {
+      "sha256": "75c371996d931a1873068b59dd3a1ebc8605d0c99a9fabb8f951f543fc31a7c7",
+      "size": 1256,
+      "modified": "2026-07-20T22:17:22"
+    },
+    ".vscode/settings.json": {
+      "sha256": "f63c4a02725ca48c980b00e6b7b53f60e0e1dec7e6775d969775752758dd057f",
+      "size": 248,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "SOURCE-INTEGRITY.json": {
+      "sha256": "ea84db29e92bdb222ff61e6c57fb1744c8c0f703384622f5ac7c8bd685a4af75",
+      "size": 5104,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "reports/ATLAS_EXTRA_INTEGRATION_REPORT.md": {
+      "sha256": "ed9ecb0d446a5ecdc917bf28977cb4a41f08156f4b5ceca8b631c7a733c04da9",
+      "size": 612,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "requirements-dev.txt": {
+      "sha256": "fc10b4b543882e4c540f2497729e294a548c7437285dd22634db4c4e5cf60f3b",
+      "size": 17,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "PREVISUALIZAR.cmd": {
+      "sha256": "1333b31e00986f4fd1114f0ab5e8943d99ec6cb4279f010bb632ab494bd93d17",
+      "size": 225,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "governance/PRISMA_HTML_GLASS_FIX_AUTHORITY_MESH.json": {
+      "sha256": "3592497f5f8363b46f9ecfdd03a01505a419a732ff12d45b27eca0db763cf599",
+      "size": 1518,
+      "modified": "2026-07-20T21:51:14"
+    },
+    "reports/htmlfix-atlas-validation-final.txt": {
+      "sha256": "5a3b5b73683e9fd06c64caa4e8305af6172a8fbb91e79faef8f56c64587e8cb6",
+      "size": 548,
+      "modified": "2026-07-20T22:17:26"
+    },
+    "index.html": {
+      "sha256": "4499c620ae4034923d736a930b5bee8ed401a07b91dff2d862ee83ca975656c0",
+      "size": 5569,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/htmlfix-atlas-validation.txt": {
+      "sha256": "5a3b5b73683e9fd06c64caa4e8305af6172a8fbb91e79faef8f56c64587e8cb6",
+      "size": 548,
+      "modified": "2026-07-20T22:17:58"
+    },
+    "governance/PRISMA_HTML_ATLAS_EXTRA_MANIFEST.json": {
+      "sha256": "a6720a050fe97e22e8855c1e9f7bebb7d0a20c7a65c74280f90ba9944dae1936",
+      "size": 1457,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "TREE.md": {
+      "sha256": "a0c70ecffa5c3f03f17567da6b356510fd7467ff7c585e01d79b96e51ae677dd",
+      "size": 10484,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "reports/PRISMA_HTML_GLASS_FIX_REPORT.json": {
+      "sha256": "dd7701999733c89eeaef0776541f34cccb70cd62c0a339544fe3abedf45111b5",
+      "size": 4403,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "governance/PRISMA_HTML_NARRATIVE_SWEEP_MANIFEST.json": {
+      "sha256": "82de58fcf476246cff077bd8a551d19d9e1e5dc129874a915e8cdeda4023170d",
+      "size": 2677,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "governance/PRISMA_HTML_CLEAR_PEARL_FIX_MANIFEST.json": {
+      "sha256": "f429c93eee58b489e17d1bb1c327f3bec078572cdbdb1f2edcb23bdf89d16194",
+      "size": 1776,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/PRISMA_HTML_GLASS_FIX_REPORT.md": {
+      "sha256": "c2be9bcd89aafc5716af2e8bb4eb75c8286d30116ca16df6d7e825f7e19650f9",
+      "size": 1273,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "tools/servidor_local.py": {
+      "sha256": "de8a623c588e7dd56010783dc5743bcec5ec58abd656a0323084a8fb2343ed73",
+      "size": 365,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/atlas-extra-host-validation.json": {
+      "sha256": "2cfb34f3b2a509e3d8ba0fe04e7704408819fadeb511ca14e8b101a4c49bc5e6",
+      "size": 55877,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "ROLLBACK-ATLAS-EXTRA.ps1": {
+      "sha256": "48fbb821e2620ab3b4497af797ddbf41a5435828fb1968d10d3ad904c05e95c7",
+      "size": 2637,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "README.md": {
+      "sha256": "ea74f3763443c68b7b616bac1dfffdbda49f788af20836a33d27644da1b5aaee",
+      "size": 2455,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/ATLAS_EXTRA_INTEGRATION_REPORT.json": {
+      "sha256": "e1e094ddcd72519e4a8f719f89e3d80de3cdf8945c29f833078a6cf4e0d43e2b",
+      "size": 1016,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/full-surface-clear-pearl-sweep.json": {
+      "sha256": "d08c7aac1455ce63645634f9bc027703d142ce1ecdc4d1b1e706d8f6fc50972c",
+      "size": 1614,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/temas/tema-alto-contraste.css": {
+      "sha256": "3c7ceeb4ff22419205fd63ff050b9e0eb68b1122c8e96006ab26669b4db4f344",
+      "size": 581,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "FILES_MANIFEST.json": {
+      "sha256": "a0282f65e8993cee9437c410be6125c517431db1472e4e44f10a16cd08afb989",
+      "size": 37577,
+      "modified": "2026-07-20T22:18:00"
+    },
+    "sistema-ui/catalogo/catalogo.css": {
+      "sha256": "9ae37ca39249fc0c3b4c8be8333cb2d6d3e934177d8369d415b74c315ab1ef15",
+      "size": 9772,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "tools/validate_project.py": {
+      "sha256": "6f376f1a7609c427492395a1eee690f55402021fd757e8ee7b59ae8cfc0e6ade",
+      "size": 10278,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/temas/tema-prisma.css": {
+      "sha256": "8a3a0b647bedd8be7e80c0d5bc2e982189bf1f323a77f0d407b1287c912f540a",
+      "size": 906,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/componentes/prisma-acordeon.js": {
+      "sha256": "741bd3add497ad443b3f52f3c21251d5d93c7b8ee77dca6c2b4aa09612f75062",
+      "size": 656,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/componentes/prisma-navbar.js": {
+      "sha256": "ae6bfc3f0dcb31b17a5f4f4df74d646b0560c8cac18c71fd9ba6d6f9c70d2185",
+      "size": 520,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/htmlfix-source-validation-final.json": {
+      "sha256": "2f2e7b673e28a94033f9dc0d2e81056a89931466b766bce2ed1b4b9a85f12cd2",
+      "size": 47820,
+      "modified": "2026-07-20T22:17:24"
+    },
+    "sistema-ui/js/componentes/prisma-modal.js": {
+      "sha256": "2e792ae329511e328ac1487b53259c3a1a67deaa614af7124ecf523416cef4f8",
+      "size": 1143,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/componentes/prisma-narrative.js": {
+      "sha256": "a6c8e9dbd7d42cb8122aa30729312127cd4faefe019995d786e030eeb75886ee",
+      "size": 5873,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/componentes/prisma-tabs.js": {
+      "sha256": "d105102bb8f6ec238fd7e3ddcc5dd80b9ea81f27585153216be874836bd7b799",
+      "size": 1441,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/comportamientos/animaciones.js": {
+      "sha256": "0825dea10363a2da158a74d8c49ffb094597134c0d40ad0898ce1d47dbc540d6",
+      "size": 93,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/comportamientos/menu.js": {
+      "sha256": "132702c27643625b6e76df13307f259c16a9a8d62cf6134d96bb5246c04633ca",
+      "size": 30,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/comportamientos/formularios.js": {
+      "sha256": "d6ce89e3028652c3899c1886e10fdbf8b59decf05811254ba2edd6c514825460",
+      "size": 372,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/full-surface-sweep.json": {
+      "sha256": "1da47f3c1923774c1f4f5b59ae29bfaef9377c99eff994df9d5f236b34a9d60c",
+      "size": 3996,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/componentes/prisma-tooltip.js": {
+      "sha256": "c3c2aee2da027388efac6784dcaaf409743fb6c66ae17cb7ff672bcbbab19423",
+      "size": 906,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/FULL_SURFACE_CLEAR_PEARL_SWEEP.md": {
+      "sha256": "c1505daae2c652aace51397e3d45dadf720ee082db212f00025773d2d7443580",
+      "size": 2100,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/comportamientos/scroll.js": {
+      "sha256": "a4849ca44da269b65ed4f35101928e86a015a3c0893cf98810dcbd9a4283df3d",
+      "size": 206,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/comportamientos/navegacion.js": {
+      "sha256": "c37cdc86d5ef0d176339482fe897ce476d020fbc8d2f419110752a7168e82298",
+      "size": 162,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/utilidades/dom.js": {
+      "sha256": "950137f97d9df6260e8fb96e19849f5f650403f28c1fe5ae5a0a6af402e8a4a4",
+      "size": 349,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/utilidades/eventos.js": {
+      "sha256": "406396df5e6ff202afcd631cc854dbdd12ea9baff640e343a0c12d15c329b9c8",
+      "size": 325,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/base/accesibilidad.css": {
+      "sha256": "c7654cc405b94c5e74196b4870c6a9f8e6b6c912f700190480fa668825087945",
+      "size": 623,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/catalogo/catalogo.js": {
+      "sha256": "b84b741c1842bd91d9e6da00e785d073ee1ef2e40d18f850185c8f0bcb69349b",
+      "size": 1701,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/prisma-ui.js": {
+      "sha256": "5c9e9cc06d74e52e9a0096507c9035c653e6d68eac3341a064ca4ede2727914a",
+      "size": 1043,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/temas/tema-inversionistas.css": {
+      "sha256": "4e94fb547efb500ea174eb0776649d1591a0e97d8017ded6791a356ac3083dc9",
+      "size": 1981,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/base/tipografia-base.css": {
+      "sha256": "478c107f5f23b3254c1ba335354e50328a54912c8d2dc2a4344c0953596de001",
+      "size": 199,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/prisma-ui.css": {
+      "sha256": "9a3ad4a4ffff05f2534bed34edac497bb02cfd55d8f4a0aa8949ad7826301894",
+      "size": 3006,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/base/reset.css": {
+      "sha256": "581b86412c35058450a05dd69c14650c86ba97eaceedbb18c70669a09c67e395",
+      "size": 260,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/temas/tema-base.css": {
+      "sha256": "730c0fbf8ce13da4dc47b6625df23a2bf51cb3c1125b0d2dbc2d52a7f4e17973",
+      "size": 988,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/catalogo/index.html": {
+      "sha256": "380a58c5d8fe20aeac83d50b08125f3fad171be18e0903a399c7a68d1c2754f2",
+      "size": 7043,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/alertas.css": {
+      "sha256": "f697735c922747753696addec7eb257c78532d25fe2941d741dff85e828eaad1",
+      "size": 469,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/base/documento.css": {
+      "sha256": "5ae43411c950ae0f035e34095421755d0e3d76f6617fe3435ce43d42e90c0437",
+      "size": 692,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/acordeones.css": {
+      "sha256": "1e528ee67b7efdf51e6d741d269f9be01c861d8b43cfe26c00f3e99264142c17",
+      "size": 493,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/js/utilidades/accesibilidad.js": {
+      "sha256": "a7edb2d08891d74f8994c9a804bc74727a0b143f4727ba98bc01a60888980507",
+      "size": 811,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/formularios.css": {
+      "sha256": "29cef24c5fb9715e0f394f42589c3be292db2425176aa3558fe6e52d3ed6b366",
+      "size": 680,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/modales.css": {
+      "sha256": "13ae1472e92a7c168d0f624b03d71406e561760703b5ef17e2f0f8474a0a1569",
+      "size": 419,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/metricas.css": {
+      "sha256": "4bc4060b689906c16c58806f71e74470bc35d510437fcfeb721ffc335eddb741",
+      "size": 371,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/tablas.css": {
+      "sha256": "88c065b7fcdaa55d8c3d0f53b4c788654d607aa3e7ece260bb38c322c60cbe39",
+      "size": 442,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "validation.json": {
+      "sha256": "433e390c4116c7667a39f5068022325f7a7e5aa67f811ff80b4bd0b9665bb833",
+      "size": 2190,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "sistema-ui/css/componentes/etiquetas.css": {
+      "sha256": "8dd9cf5236aa2eeff867617455840ca77103444b6d71a5505f7b97457a59332a",
+      "size": 797,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/paneles.css": {
+      "sha256": "233472bc3a7da5a712bd674c82dcb258ecb32a21c71a0f63d937a0a20d8d3268",
+      "size": 1040,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/tabs.css": {
+      "sha256": "55fbf961269f0bfdde45e17b412d281dbbc67f5d65ebda64076d75945ceb143b",
+      "size": 524,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/tooltips.css": {
+      "sha256": "149a9fe5d135dd8505d5b240f0cefd799d8e5a71d446a9f6196b86dc3fda4d2a",
+      "size": 362,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/navegacion.css": {
+      "sha256": "c2baebb6ec7db08d2c57728555f718ca016bef303dfef6083a52609d4647a8b6",
+      "size": 772,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/layouts/columnas.css": {
+      "sha256": "1944c659b171a9d60a870bbd789a7e83a1caa3dbcfbe9eaea4abcf6548811a17",
+      "size": 275,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/botones.css": {
+      "sha256": "8689ce0d9cd664f545d64c06cd0ae7c3d1e04dbed7f3e3bbecad035cf7f80d3c",
+      "size": 3601,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "governance/PRISMA_HTML_GLASS_FIX_LAYERS_MAP.json": {
+      "sha256": "9873347c9bd6e391f94f2da0936323cf2e18a5ef798f8141d7caef05b766a0f5",
+      "size": 1385,
+      "modified": "2026-07-20T21:51:14"
+    },
+    "sistema-ui/css/layouts/contenedores.css": {
+      "sha256": "5492e2aa41e33dc124952949a62cc33ef2a1a7464b8f63c34597a1617d2559b7",
+      "size": 166,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/tarjetas.css": {
+      "sha256": "c4f8c2d4d03a0f7bfc885bb7c05a49a893a7975693c190d3f3b0bef3500ef943",
+      "size": 811,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/componentes/indicadores.css": {
+      "sha256": "c478337f07b9ed00651ce076811ec0c988ec05c45b10b0a257a5b4007454c031",
+      "size": 965,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/layouts/responsive.css": {
+      "sha256": "bf3f50fb2f07c1dc5f7f3c0667b96b4a898e327c4a70868fadc4e6c45b4819a9",
+      "size": 188,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/layouts/grid.css": {
+      "sha256": "40e3904cae625f0a3344ba7dc0d7fad620af21ce7a169808675faa0bf56c07f1",
+      "size": 271,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/LAYERS_MAP_CLEAR_PEARL.md": {
+      "sha256": "83243963e46b788124f7e1a60ff6fe99fbe563cd875ac87ab6d3b4615163503c",
+      "size": 875,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/bloques-metricas.css": {
+      "sha256": "2e9032786ca0d7dfddffd32659e7a14c6819e9024afa032e736d0f0c008bdc04",
+      "size": 203,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/llamada-a-accion.css": {
+      "sha256": "5be6359d7c7511b0c880b063d0aeb9cc8987b917a81469287d513ae0deeed850",
+      "size": 207,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/flujo-operativo.css": {
+      "sha256": "83150ba9be54a7124d91e868c9f5cb649f4ff5017861e945f20bdb0ec6c30921",
+      "size": 2719,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/source-validator-clear-pearl-offline.json": {
+      "sha256": "6ac20b343f95d15f7ed5fb8bf2b2e3adc5dc89e494b3c80eaf5e71960232abef",
+      "size": 47627,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/precios.css": {
+      "sha256": "bd71df0f8441d47f53bb3b31d38cfb0959b116639d555c5e4062a37cd276a164",
+      "size": 315,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/FULL_SURFACE_SWEEP.md": {
+      "sha256": "87f8e8e5eae74e1c3a3f22f996eb145e47f7d80fcdaf5c7992b3bc3d9a0a3ddb",
+      "size": 2058,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/encabezados.css": {
+      "sha256": "87dbc77b0d9a8f37e95c3e12ee95e55e239ad59a30942d7f8dd1a5a09d942af1",
+      "size": 969,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/testimonios.css": {
+      "sha256": "af638982c8d3a68bf5bb97d9ee9f917265425092ebc606ff0aaed8752fbccc1c",
+      "size": 274,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/layouts/secciones.css": {
+      "sha256": "7216081b5cd0943d82927765f263d44e368ed968c6a10d3f1ab4bdce803db990",
+      "size": 173,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/navegacion-principal.css": {
+      "sha256": "82bee747dba763b2c625499841e61ad9e0340e7e4c52ca32acf0572ef30587da",
+      "size": 827,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/investor-deck.css": {
+      "sha256": "259e85813ae72c6c5d968c8f1e455e1978d63920a60e6e344ec918d8e464c98a",
+      "size": 10961,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/gramatica-operativa.css": {
+      "sha256": "b409e51ff8a48bf29d184441d4b60b0304524cd59bef7846eced7ac2b010356c",
+      "size": 4941,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/narrative-page.css": {
+      "sha256": "fbb36ff41abf5429479ea6e5b342d9980705d266f9cf4813083397f2e0cc2fb7",
+      "size": 17529,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/hero.css": {
+      "sha256": "94c7f4c18024f1fb670f0cd2f7dd58715a1aad08422ce98dd9f00b255e14241d",
+      "size": 1023,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/capas.css": {
+      "sha256": "2eb972dd367ed4c1b8418b5aa62e6fe7e3eb31e6221edda7a74c5adb9cfeb369",
+      "size": 189,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/htmlfix-source-validation.json": {
+      "sha256": "2f2e7b673e28a94033f9dc0d2e81056a89931466b766bce2ed1b4b9a85f12cd2",
+      "size": 47820,
+      "modified": "2026-07-20T22:17:58"
+    },
+    "sistema-ui/css/tokens/espaciado.css": {
+      "sha256": "7ec9672362b75e624b76182eb7a07b1b4f29a85ab9422648f975fbe6d777baf6",
+      "size": 236,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/colores.css": {
+      "sha256": "576791b45319d4cc0f71ad4f666e556238c14ca33224c35fe2b254a8837fc1be",
+      "size": 897,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/patrones/pies-de-pagina.css": {
+      "sha256": "5c8186951a196a6cf88415e301009b3c4e4d2d803dbe43fefdf305537e25bfac",
+      "size": 230,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/bordes.css": {
+      "sha256": "4c0719f6dfedf15d8d5691ad10515fbf922f9ccf076584fe3dcc11c63dd278e1",
+      "size": 183,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/dimensiones.css": {
+      "sha256": "3cda8f767c2809329886ca327cea2718ed163f80327d8fe2984923f34e215a5d",
+      "size": 378,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/movimiento.css": {
+      "sha256": "75993898db4e5b8a9f41f719d792dbfdd07ec912ca60e3441bf15443e589da16",
+      "size": 217,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/tipografia.css": {
+      "sha256": "b417bf5562fd1a1bba01032e8b39b1f8fef5c25b1769ff331a59d5a64af30771",
+      "size": 533,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/utilidades/accesibilidad.css": {
+      "sha256": "5d23b74a01bc70937054e4f13de0c2a1e0cdefc344d6886931c06f397986708e",
+      "size": 107,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/utilidades/tama\u00f1os.css": {
+      "sha256": "c7738c5068caf3acd1b7fdf3dcf0c948ec113463b690f00368634e56d1e25972",
+      "size": 136,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/utilidades/espaciado.css": {
+      "sha256": "1514a3a434c78999c20af6865cb37fcd5847a921600d9d34f18a3590df1b3081",
+      "size": 227,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/tokens/sombras.css": {
+      "sha256": "8a76d72ecdc10884fb6142e330ab4939cb275aa814ccb6bf8b1b87ef97f631af",
+      "size": 306,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-2-inversionistas/pagina.js": {
+      "sha256": "ce452a4a0b885dfa252a06a0acd8bf4b3391a6532a5109b3557761724111ec06",
+      "size": 1352,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "reports/evidence/browser-fast-audit.json": {
+      "sha256": "3cb06c236ef314f495e05facd5a100136ea75b04903d22f977dfc51addfb753d",
+      "size": 7529,
+      "modified": "2026-07-20T22:14:52"
+    },
+    "sistema-ui/css/utilidades/visibilidad.css": {
+      "sha256": "31c72ecc3a7d7470f649fcbf3c12a35749f493da27a94d34e72eacb5d7bbcac5",
+      "size": 155,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "sistema-ui/css/utilidades/alineacion.css": {
+      "sha256": "99fe1678b4a81e909bdb581774fb3853297804722147cff514ebbfa6fd8523e7",
+      "size": 204,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-1-prisma/pagina.css": {
+      "sha256": "4171d711a04ad6a629af80f58070e89d0b2cbb889825d23c776214f802fd548d",
+      "size": 5358,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-1-prisma/pagina.js": {
+      "sha256": "c5a08ad9218b5597461d1d8af34409f98a4a7be5a04102a214cd082afd3a7532",
+      "size": 74,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-2-inversionistas/pagina.css": {
+      "sha256": "a488ec8ed89a1acb79a99530a8f3b69c2d9c18e1daec8453887cc0cdb2b7fec1",
+      "size": 6553,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-1-prisma/index.html": {
+      "sha256": "8074abeefe1fdf68dae46a0eff42eba2255063a124120683eb79dd3a25f0d465",
+      "size": 5488,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-3-por-que-prisma/pagina.css": {
+      "sha256": "751ee5a80c7df40326b8e29223862f24a85aeb49c99100b87eaff45acc55dc7f",
+      "size": 4866,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-4-ecosistema-producto/pagina.css": {
+      "sha256": "cc96abbc5ab8a7b663aabb75b4a7bba26d479654334fbb238435be423d49fe70",
+      "size": 5317,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-4-ecosistema-producto/index.html": {
+      "sha256": "40f3ca428a6120e542bfb49621129e69ef48d657d45a935b3359850674770cf2",
+      "size": 5273,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-3-por-que-prisma/pagina.js": {
+      "sha256": "d745da26017b66095512e959b36d9241b60f78bc99a42461912fc2e8a06c6b6d",
+      "size": 77,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-2-inversionistas/index.html": {
+      "sha256": "018ec00183799928c03dc96c7cc875d7fb712c02650e24dfa2a6835d89271ff5",
+      "size": 7218,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "paginas/pagina-4-ecosistema-producto/pagina.js": {
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+      "size": 11,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/a-fundamentos.html": {
+      "sha256": "f00da7114cbb7e4adf732a39048230db54957bad2ecdbb94d696d16446945056",
+      "size": 22259,
+      "modified": "2026-07-20T22:13:40"
+    },
+    "paginas/pagina-3-por-que-prisma/index.html": {
+      "sha256": "a2f64d5ec8bdd37f5442a4f7fcfad62acbce5562548856d9a8a00d085ee9543a",
+      "size": 5994,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/i-paneles-cards.html": {
+      "sha256": "b1c60430c39f8cb33ad027a2c28a703e40af1cf165a2b26c4b5ee4eacc34a404",
+      "size": 21933,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/d-entrada-texto.html": {
+      "sha256": "52ade27ac3e32ccd1a8ff8ae1a2bb1f085a41463f0996585b3e9ae357932dfe9",
+      "size": 20598,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/c-acciones.html": {
+      "sha256": "131ea8229df1d9367e104b2a66a09487d0dab21b22d1434cb87275a59c902e2f",
+      "size": 18840,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/e-seleccion-filtros.html": {
+      "sha256": "430f756c0adbbbdc431238c52223a056f679324ab0c51a458b6613e74b0119de",
+      "size": 20726,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/b-materiales.html": {
+      "sha256": "2e484813a2c53e577d2dd7f31af8d97efacd6c227b22dc3ba00ce279bbe7a429",
+      "size": 18364,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/h-listas.html": {
+      "sha256": "c3715120c6ebcbf9189ea4a5a64b1ad436ebb19a3033a9cbb23a41eb36c10234",
+      "size": 24112,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/f-navegacion.html": {
+      "sha256": "1a8ce6bacfc353e3b3c2194c11aead35280947f0c5c66e161c54298cd461e819",
+      "size": 19426,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/index.html": {
+      "sha256": "030cfc6b520356a04cd3bd83bad4d54733212d8a544245d8ad71eeb0d9a5a728",
+      "size": 31586,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/g-tablas.html": {
+      "sha256": "803a8940ee31d4fb39694ec75b20dfa4a00bd318dd135cf24890b3b80f70d118",
+      "size": 22622,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/j-expansion.html": {
+      "sha256": "3c55ff0f705210f0d2066a5dde9e4158cbb50d1160bd8a76084854ca9285ce30",
+      "size": 21843,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/l-carga-progreso.html": {
+      "sha256": "f654e1897277e3bbbcfa43773ab69c5cb2beed7c489f086d031d6f44eb997607",
+      "size": 19812,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/ROLLBACK.ps1": {
+      "sha256": "9c45077a106573c840f02d93c80125553803d7237e590f25c98b7646b1a60dbb",
+      "size": 204,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/m-overlays.html": {
+      "sha256": "f1b5622070f7b5eb5b75f5d32dbf698a123a46a1355b774cbe331b8a08536161",
+      "size": 20107,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/p-movimiento.html": {
+      "sha256": "2da5780a6d8d4a9a49539096a62dac8ae449bbac5b22db83ffb9411f27769e35",
+      "size": 14912,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/n-operativos.html": {
+      "sha256": "26781e8edf1964548c17704c1bdb9ca792ef10c5b7c1cd479ba68ef4163a5e3f",
+      "size": 18297,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/RUN.ps1": {
+      "sha256": "ba54d2086b87453e32f3fc4016c4831f4b53bd6399d89a0abfe17aa16b94f27c",
+      "size": 630,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/q-responsive-accesibilidad.html": {
+      "sha256": "055b5bd397e91d0290e94c6a02ef94d1145c6bc32ba5bdb2d47c15790c0b9a30",
+      "size": 15875,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/k-estados-feedback.html": {
+      "sha256": "069d103c1aee4b6476cada3146d37f006512bf42cc7395ef366826585c9c9402",
+      "size": 22360,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/r-contenido.html": {
+      "sha256": "d9f51d9b5089345f24ead3c1be02d22197f966596f583c2c38bf7cddcfae46df",
+      "size": 15695,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/u-calendario.html": {
+      "sha256": "4dcbdeebcac2d1e897b7b4e01f379371ae69cdf822ce2bec6743c245d156fedf",
+      "size": 17391,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/s-analitica.html": {
+      "sha256": "d1481dbd253a78558e31b0592a1e2926afe31aa7f2facba62bd2889776a07888",
+      "size": 16782,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/t-archivos-medios.html": {
+      "sha256": "f36f5bc35bfcec33be93498d894a64b4629594bc0ee7bdabda88c1218dc04594",
+      "size": 16063,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/v-comercio-pagos.html": {
+      "sha256": "fa1871da7f58c3fd4b984042962add9b31b7c0deb9327728a38ca4de328bc9ab",
+      "size": 16478,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/w-identidad-seguridad.html": {
+      "sha256": "27cd067015f34fe80a9124709d09c399ab1bb9d88afbd29a0bbffd127bde4ec8",
+      "size": 16487,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/x-sistema-diagnostico.html": {
+      "sha256": "d71c64563009e5cde1dc8fc2ebde38109fa4ea39e121f1fa4bd994651d5c66eb",
+      "size": 16186,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/y-i18n-impresion-offline.html": {
+      "sha256": "426118b9cab52f6a4d43e8e0e6ca1aae04bb98ec34d3b1eaff849312b833a7fc",
+      "size": 16234,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/o-patrones-pantalla.html": {
+      "sha256": "cf283978389e8ace3110bc1c51f1efd2d73adfc1c608be392222c893efbb62b3",
+      "size": 15693,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/governance/INTERACTION_REFINEMENT_CONTRACT.json": {
+      "sha256": "4c9d08937bd4b61fed2b41af49b1ffcc06d11f71bcfe4b849042d3742c4d0127",
+      "size": 309,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/POLISH_CONTRACT.json": {
+      "sha256": "50391f0674ccf868c578375a7991bbb7d96b154b8b931e80e74f044e32cb8af5",
+      "size": 309,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/ATLAS_GLASS_OWNER_FIX_INSTALL_STATE.json": {
+      "sha256": "3702e5711c5b3f4e4f481b2e084f5bb6548e77ad02447dd0ec074e12645da119",
+      "size": 1105,
+      "modified": "2026-07-20T22:17:22"
+    },
+    "extras/atlasfin/z-gobierno.html": {
+      "sha256": "8894ac694dc187890c52758079769e4d9e0a19a95fb4447ec8d915ee0351773a",
+      "size": 20658,
+      "modified": "2026-07-20T16:22:48"
+    },
+    "extras/atlasfin/reports/ATLAS_COMPLETION_STATIC_REPORT.json": {
+      "sha256": "92c9da59e7561ea23bd4ef8d5c5a69f1d08ea59163c00d78ad68fdf634b403ea",
+      "size": 481,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/BATCH_3_HL_STATIC_REPORT.json": {
+      "sha256": "95baff9acd9d90179ba76a5b91f2cadaf380b5940db947b0f618a33f6ada130b",
+      "size": 400,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/BATCH_2_STATIC_REPORT.json": {
+      "sha256": "815138b6f083b720a07f90534c1f1433070ab71366b5b58bfbdeff9c0b951c60",
+      "size": 284,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/FUSION_LOG.txt": {
+      "sha256": "afa93dac0131ced4167b10b7283f66451177624933ab81348ae9c0cb3acbf42d",
+      "size": 575,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/INTERACTION_REFINEMENT_STATIC_REPORT.json": {
+      "sha256": "6e73286780043acefa7c22fda8a4e6d2d67f8ac2b495dbed4441ea1936bc2c4c",
+      "size": 295,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/FUSION_REPORT.json": {
+      "sha256": "d2fe3fed7dad168d009e814ced6fadd96ec153603b967b36ff188d1f6ff0c3f9",
+      "size": 360,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/POLISH_STATIC_REPORT.json": {
+      "sha256": "d0334e143544571405a241af70aaa833ad47c6687581d620c384a14863201601",
+      "size": 359,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/V4_STATIC_REPORT.json": {
+      "sha256": "0a4e22a88d69a604445efad4eb196f0c7e31e3f461dfb07ed52455d9baebed7a",
+      "size": 244,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/VALIDATION_REPORT.json": {
+      "sha256": "7113dd2e291562510f789b15f27a5ba683df20b176735755ab7f9f138671b7e2",
+      "size": 597,
+      "modified": "2026-07-20T18:53:00"
+    },
+    "extras/atlasfin/README.md": {
+      "sha256": "460c4f13291287d1d84e4504365bf2ca52c1e3829f9a1bbda548d5a80b1b9a6f",
+      "size": 3711,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/assets/data/atlas.tokens.json": {
+      "sha256": "73027b70c6de29cf09cfae052cd5c6e5eda59bca2436ed3f4bcd9360b2f643c6",
+      "size": 4536,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/assets/js/atlas.js": {
+      "sha256": "65bd66097187ef478a196e366dcace17b9e95e2ce3d24b5f7ee590435b4431c6",
+      "size": 61744,
+      "modified": "2026-07-20T22:08:00"
+    },
+    "extras/atlasfin/source/atlasui.md": {
+      "sha256": "51a4b913d6a988f5393f6b5095ce6fbe2248839a8f5c7025366f47f88174f226",
+      "size": 27477,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "assets/fonts/README.md": {
+      "sha256": "bd93b939fec74e05f4d13f1490c502742c85e07bf00410d032e72ce0304ad4b2",
+      "size": 122,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/generator/validate_atlas.py": {
+      "sha256": "d364a5f86af9df98049079704d14cc9063b4bd8d341b01e802d6e268d12afa51",
+      "size": 6188,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "assets/icons/README.md": {
+      "sha256": "ccc0de34ca6acab390e8ba44d039f7e72ca8a7db2cb1b76e8fabd545b400a4fb",
+      "size": 157,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/ATLAS_COMPLETION_CONTRACT.json": {
+      "sha256": "ec11fba2ad090bf4eb430c50a773b5c417c2dd6d332b813412413b01effa59a1",
+      "size": 2149,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/MANIFEST.json": {
+      "sha256": "dba6e155c6eb121bfc3bf286d2d2a3ff6625ee41b29bb8e3a3a646fb0928b4c8",
+      "size": 10381,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/assets/css/atlas.css": {
+      "sha256": "5826562e3ea5499d4af134f8b9b0fdb6468a7a7979420dcb1bfdb33db8bf26d4",
+      "size": 146961,
+      "modified": "2026-07-20T22:14:40"
+    },
+    "extras/atlasfin/reports/ATLAS_CHROMA_COMPARISON.json": {
+      "sha256": "210bb24afbe055ce53540edebc477b164de3631645dad48381c61df0e028c183",
+      "size": 1387,
+      "modified": "2026-07-20T16:32:28"
+    },
+    "extras/atlasfin/governance/ATLAS_CHROMA_BALANCE_MANIFEST.json": {
+      "sha256": "d77ff7c567378d9f105aca12863b5f0bc375822ad4567984e73b23b5f11dc32e",
+      "size": 1638,
+      "modified": "2026-07-20T16:32:28"
+    },
+    "extras/atlasfin/assets/data/atlas.manifest.json": {
+      "sha256": "8b51262b7cdc7f2440d1282dff3454bcd00cb4bea40a0eb09918876a1eb9d770",
+      "size": 104060,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/reports/ATLAS_CHROMA_COMPARISON.md": {
+      "sha256": "0751df9aaffdb9f8291f21cde36118eef126c89da6cfba65ff7e4c2ba71b06df",
+      "size": 201,
+      "modified": "2026-07-20T16:32:28"
+    },
+    "extras/atlasfin/governance/AUTHORITY_MESH.json": {
+      "sha256": "31e7dbc964338d52ab1e5935aa1a45e37a64f8e395dfa274116ca554e5fd9034",
+      "size": 1320,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/BATCH_3_HL_CONTRACT.json": {
+      "sha256": "91cb45eb39d63309b2e6be3cebde8515981270bdaaa55e8fa88a05ae02482255",
+      "size": 1004,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/LAYERS_MAP.json": {
+      "sha256": "3a040c6db4d3570890a58519a962cedb32ccb3436a8d4beca509a0f04d5dd546",
+      "size": 1307,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/assets/data/atlas.manifest.js": {
+      "sha256": "58fbc91d732b006d0e33fdf835c34a9c8e767a9e27283617bfccff37459bac33",
+      "size": 63994,
+      "modified": "2026-07-20T08:22:42"
+    },
+    "extras/atlasfin/governance/ATLAS_CHROMA_INSTALL_STATE.json": {
+      "sha256": "83bee069bffe1b4aa34b713319d7db7ba3a4c59b9c25befcbfc307716f62d0e4",
+      "size": 10811,
+      "modified": "2026-07-20T10:24:41"
+    },
+    "extras/atlasfin/governance/ATLAS_GLASS_SWEEP_INSTALL_STATE.json": {
+      "sha256": "3c12956cfe134478f246460bbb17fac26ebb8c8f2b03e0989528c2a95dfa8671",
+      "size": 11068,
+      "modified": "2026-07-20T10:34:37"
+    }
+  },
+  "target_visuals": [
+    "01_product_card_original.png",
+    "01_product_card_target.png",
+    "02_circular_progress_original.png",
+    "02_circular_progress_target.png",
+    "03_notification_drawer_original.png",
+    "03_notification_drawer_target.png",
+    "04_overlay_gallery_original.png",
+    "04_overlay_gallery_target.png"
+  ],
+  "lock_sha256": "41d7ece6c3d6ea50f82ebc187b2d51a5a67ea3d98d90f2f58f26f644e72e68f8"
+}

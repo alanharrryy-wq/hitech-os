@@ -1,0 +1,31 @@
+{
+  "schema": "PRISMA_HTML_CLOUDFLARE_PAGES_CONTRACT_V1",
+  "id": "PRISMA.HTML.CLOUDFLARE.PAGES.1",
+  "status": "SOURCE_READY_NOT_DEPLOYED",
+  "site_type": "static_html",
+  "public_output": "dist",
+  "deployment_model": "Cloudflare Pages",
+  "forbidden_operations": [
+    "kill processes",
+    "free ports",
+    "restart cloudflared",
+    "modify tunnel",
+    "modify DNS",
+    "deploy Worker",
+    "modify D1",
+    "print secrets"
+  ],
+  "required_gates": [
+    "source_validator_pass",
+    "atlas_validator_pass",
+    "public_output_pass",
+    "no_leak_pass",
+    "explicit_deploy_authorization",
+    "http_health_pass"
+  ],
+  "separation": {
+    "pages": "static prisma-html",
+    "worker_d1": "LICFLOW3, out of scope",
+    "tunnel": "live runtimes, out of scope"
+  }
+}

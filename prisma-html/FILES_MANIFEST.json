@@ -1,0 +1,1229 @@
+{
+  "schema_version": "PRISMA_HTML_FILES_MANIFEST_2.0",
+  "status": "PASS",
+  "generated_at": "2026-07-24T04:02:54.6275922Z",
+  "root": "prisma-html/",
+  "file_count_excluding_manifest": 244,
+  "files": [
+    {
+      "path": ".editorconfig",
+      "bytes": 156,
+      "sha256": "251DB34E2E35B25BCD7888DF2BE0F92D56E0E204A405E1374E691710ED583827"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 122,
+      "sha256": "4243324640DA3DB0069846B84B98EC04B2C658E54D92C0A243EC8B36B3B33ADF"
+    },
+    {
+      "path": ".governance/current/AGENT_PROMPT_ENVELOPE.md",
+      "bytes": 547,
+      "sha256": "84CC5A7EADC82EAE18DD4861D12829E7F2EE8F2C375D9A46975658CE067B57AC"
+    },
+    {
+      "path": ".governance/current/APP_IMPACT_MATRIX.md",
+      "bytes": 633,
+      "sha256": "8868F8D85C1B5FA356B34C450D259ABC215A1867EAEE8D05ED034EF8C56F0D65"
+    },
+    {
+      "path": ".governance/current/AUTHORITY_MESH_REPORT.md",
+      "bytes": 594,
+      "sha256": "FA42772BFE12201E136FA1D1614E78ACB66456DD0B179C44A6F10463BA63E60B"
+    },
+    {
+      "path": ".governance/current/AUTHORITY_READSET.lock.json",
+      "bytes": 1838,
+      "sha256": "6B9D2C1895D873AA1C2532FB39CF34E17DC940D9D7CBDCC6DB1DEF353A3AA177"
+    },
+    {
+      "path": ".governance/current/CONTRACT_AND_GATE_MATRIX.json",
+      "bytes": 809,
+      "sha256": "658B7C672ADC1B2B89A2BAC88682F1B7C3F4C17398D2385617E3B41B4FAFE9B3"
+    },
+    {
+      "path": ".governance/current/LAYERS_MAP.json",
+      "bytes": 429102,
+      "sha256": "EE398E85904F85F1D4BA2445F268E19F4CA7B4AD0BDCEBE0BE62DEAD7023E876"
+    },
+    {
+      "path": ".governance/current/LAYERS_MAP.md",
+      "bytes": 4012,
+      "sha256": "7B05F83771E7EF75AF4CFF565C255329F59C767D5EA0015010793070582A00F4"
+    },
+    {
+      "path": ".governance/current/MISSING_OR_UNMAPPED_RISK.md",
+      "bytes": 433,
+      "sha256": "2EC22CF926383E057AC8E04038E1CF2218570C6B1FF14CE0642DFFB547825365"
+    },
+    {
+      "path": ".vscode/extensions.json",
+      "bytes": 59,
+      "sha256": "E0C83EEDC91BDAEE4D622DEC3A900326FD8F7D2C7774FCA685B07ECF6389DBD6"
+    },
+    {
+      "path": ".vscode/settings.json",
+      "bytes": 248,
+      "sha256": "F63C4A02725CA48C980B00E6B7B53F60E0E1DEC7E6775D969775752758DD057F"
+    },
+    {
+      "path": "ABRIR-EN-VSCODE.cmd",
+      "bytes": 256,
+      "sha256": "5848E918E593C352AAF2F11723A2C5CE41132035D65AA04A890E79647FB19654"
+    },
+    {
+      "path": "assets/atmosphere/aurora-slate-veil.svg",
+      "bytes": 1191,
+      "sha256": "7EACB0164FE1C392C9DCB71A0E08AC184CE6B5698E841B7F201577C6656898BE"
+    },
+    {
+      "path": "assets/atmosphere/liquid-operations-smoke.svg",
+      "bytes": 2520,
+      "sha256": "6DDC58DE617BAEF084AB591D6D778BCE59A7E96AB67D348A37A31309AA74824A"
+    },
+    {
+      "path": "assets/fonts/README.md",
+      "bytes": 122,
+      "sha256": "BD93B939FEC74E05F4D13F1490C502742C85E07BF00410D032E72CE0304AD4B2"
+    },
+    {
+      "path": "assets/icons/README.md",
+      "bytes": 157,
+      "sha256": "CCC0DE34CA6ACAB390E8BA44D039F7E72CA8A7DB2CB1B76E8FABD545B400A4FB"
+    },
+    {
+      "path": "assets/icons/route-01-identity.svg",
+      "bytes": 1815,
+      "sha256": "CBAEC8F157A15A0F3B3A8536FDD8E3261DB2051D42FCC24DB4501533B9001EC1"
+    },
+    {
+      "path": "assets/icons/route-02-action.svg",
+      "bytes": 1678,
+      "sha256": "8F972E56C3859A308AE74774C90968F9A68E6CC93498DBC63BD8DF17B7DB1E18"
+    },
+    {
+      "path": "assets/icons/route-03-flow.svg",
+      "bytes": 1451,
+      "sha256": "1DB160A37B236B708FE497447B081D2ACD43A34D38A9D443B729F9BEE03312F2"
+    },
+    {
+      "path": "assets/icons/route-04-difference.svg",
+      "bytes": 1468,
+      "sha256": "45669FEAD34FFFF85CA6AF4F4FB83DE8D8CE01E98CDD3AE129BA1802BC13C4E5"
+    },
+    {
+      "path": "assets/icons/route-05-ecosystem.svg",
+      "bytes": 1663,
+      "sha256": "D13E082368A6F178CA4F9463CC412627A139A60AE0E78B59922237DFFA6AB9AC"
+    },
+    {
+      "path": "assets/images/prisma-logo-full.png",
+      "bytes": 1032457,
+      "sha256": "B9BBD424FF66848312A18C59B2DDA039F0F951903FEF69A261EDB5911BCB57C2"
+    },
+    {
+      "path": "assets/images/prisma-logo.png",
+      "bytes": 119371,
+      "sha256": "4B2B41C96023B4893ABFC256686907929EB9F668877E7637E1640AD105331520"
+    },
+    {
+      "path": "BASELINE-MANIFEST.json",
+      "bytes": 1128,
+      "sha256": "22BFFF33071F547F9EDE9C1A2FBD00FB64F74EFA1DD9F75EA2D71E014D1FA7B6"
+    },
+    {
+      "path": "CONTINUATION.md",
+      "bytes": 1095,
+      "sha256": "3818DEA3E34531509C161DC74AC90FA8BE81D9EAA4E847F61DF1AE204DD6EB0D"
+    },
+    {
+      "path": "deploy/cloudflare-pages.json",
+      "bytes": 385,
+      "sha256": "5C60AD905059F591BB67CAD9E9B16B0030ED4CCE135DC42666F860386946F1F0"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/AGENT_PROMPT_ENVELOPE.md",
+      "bytes": 2583,
+      "sha256": "023EE554BC2EA98DEB4A366896D8A966C1C18293D198A5DE815FB43C85D22E0C"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/APP_IMPACT_MATRIX.md",
+      "bytes": 744,
+      "sha256": "F9AF67E08372ACD05E5FB7E67AC4A0B700372E5CFA7F9E629ADE415C866507D4"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/AUTHORITY_MESH_REPORT.md",
+      "bytes": 685,
+      "sha256": "F08DBFB85E47FEF46A84CA17B0C50D95526AF65940C14B3B5F17D80853898E7E"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/AUTHORITY_READSET.lock.json",
+      "bytes": 40382,
+      "sha256": "C0A13B31D5DE82C7949396CA872A2C9C1506EBFB35483B6A916B2EE1FD4F104D"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/CONTRACT_AND_GATE_MATRIX.json",
+      "bytes": 3317,
+      "sha256": "933BEEF57AE1FC7ACAE1E454298C25D4A95C76A0E5BAA5C210F4B3B7458CBBE1"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/LAYERS_MAP.json",
+      "bytes": 311012,
+      "sha256": "B89ABE32715698DD6D23555867A59F29FB400E97DD2C0EF2879CA4E5426D989C"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/LAYERS_MAP.md",
+      "bytes": 160998,
+      "sha256": "850F8BC44D3A20E5888FF985F568A3DC06FF65F3211F43EC1A3D594A866EBA15"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/authority/MISSING_OR_UNMAPPED_RISK.md",
+      "bytes": 357,
+      "sha256": "B5E0AD32B48A2C15358F720D3212BA064B752740CA75D303F04630571349A100"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/01_product_card_original.png",
+      "bytes": 86572,
+      "sha256": "C5D75F54390B2F5E416D7F7C900D3BD14854C15A07B1E15861BE1CB3A79D7018"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/01_product_card_target.png",
+      "bytes": 1305132,
+      "sha256": "E078B5818F565AAD5601BA5114DE7789A0800D0E083E83EF92E244D6B31AD9C4"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/02_circular_progress_original.png",
+      "bytes": 83973,
+      "sha256": "F619EAC049C0A065567365F3344307B66FC72E576E85B2E639D142586F9A03F9"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/02_circular_progress_target.png",
+      "bytes": 1582067,
+      "sha256": "9B5C667042482C2163345DE0BF2F0AB90AB084E18B49D3A5EDECD085DFC54047"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/03_notification_drawer_original.png",
+      "bytes": 264602,
+      "sha256": "AA1579D1E1FEE3596DAF725ED003EAADC49A155BFAC74244B41DA2C82544951C"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/03_notification_drawer_target.png",
+      "bytes": 1267560,
+      "sha256": "CFAB01F5783ECAA9F15BA7078195EE435ED3EEFDA5A38C6E5DAE0A6D4DD59F6D"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/04_overlay_gallery_original.png",
+      "bytes": 482548,
+      "sha256": "005282722A87BBE90F501168FE6D341B477F1DF2DEE5EA00C289F62450EA2A2F"
+    },
+    {
+      "path": "docs/evidence/premium-overlay-glass/visuals/04_overlay_gallery_target.png",
+      "bytes": 1516939,
+      "sha256": "8913321CB52A4685B38643C5F8BD93A90AFEC30AD6BC583B1E4CF643331DB7A2"
+    },
+    {
+      "path": "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+      "bytes": 4377,
+      "sha256": "8E2115471352F5C343C70393F3F834880650F32EA34560EF6BB4190CA04C9D31"
+    },
+    {
+      "path": "docs/ops/PRISMA_HTML_CLOUDFLARE_AUTHORITY_SOURCES.md",
+      "bytes": 1160,
+      "sha256": "D505157FC960881725A39B18CF410175FBB4832344EA3F754223E213BD17CBA9"
+    },
+    {
+      "path": "docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_ROLLBACK.md",
+      "bytes": 833,
+      "sha256": "8D51A3448B59B22D8B229A192CFB99D700C81285634D173B7486462609013C2D"
+    },
+    {
+      "path": "docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_RUNBOOK.md",
+      "bytes": 1970,
+      "sha256": "35C892B53B1A1F69DB8F0B2BA7F0D6A8FB86D21180929127EED3D5EA2A13AC2F"
+    },
+    {
+      "path": "extras/atlasfin/a-fundamentos.html",
+      "bytes": 22005,
+      "sha256": "9C17AB31C2E134FD5008AC105A1C0CD03E0FA82CC60571152B9580C5C621856B"
+    },
+    {
+      "path": "extras/atlasfin/assets/css/atlas.css",
+      "bytes": 159206,
+      "sha256": "5CFCEFB0500372E785E2A2C341FE1C17D92BE988B16AD3C05B967C5500355B15"
+    },
+    {
+      "path": "extras/atlasfin/assets/data/atlas.manifest.js",
+      "bytes": 63994,
+      "sha256": "58FBC91D732B006D0E33FDF835C34A9C8E767A9E27283617BFCCFF37459BAC33"
+    },
+    {
+      "path": "extras/atlasfin/assets/data/atlas.manifest.json",
+      "bytes": 104060,
+      "sha256": "8B51262B7CDC7F2440D1282DFF3454BCD00CB4BEA40A0EB09918876A1EB9D770"
+    },
+    {
+      "path": "extras/atlasfin/assets/data/atlas.tokens.json",
+      "bytes": 4536,
+      "sha256": "73027B70C6DE29CF09CFAE052CD5C6E5EDA59BCA2436ED3F4BCD9360B2F643C6"
+    },
+    {
+      "path": "extras/atlasfin/assets/js/atlas.js",
+      "bytes": 61744,
+      "sha256": "65BD66097187EF478A196E366DCACE17B9E95E2CE3D24B5F7EE590435B4431C6"
+    },
+    {
+      "path": "extras/atlasfin/assets/media/prisma-logo-full.png",
+      "bytes": 305684,
+      "sha256": "37554226F3E05CF65FC0E9588A7A6EB4910C493A4EE0DB4C5A40009CE970AE8A"
+    },
+    {
+      "path": "extras/atlasfin/assets/media/prisma-mark.png",
+      "bytes": 108342,
+      "sha256": "51BAAF426570D75F7BA7584E57674AC856BED59EE871DD1D7866E18AE5A01CCB"
+    },
+    {
+      "path": "extras/atlasfin/assets/media/prisma-pos-cafe-premium.png",
+      "bytes": 3295396,
+      "sha256": "B78D7B4A33FB6CAB1F0DAFBD657F38D2929BB38BC7088D4A06138B1CADC2D346"
+    },
+    {
+      "path": "extras/atlasfin/b-materiales.html",
+      "bytes": 18254,
+      "sha256": "41C56261D929CFCA308F4C2B24242AC5FB1C0651F3F8B325DD5D8BEEE1319B91"
+    },
+    {
+      "path": "extras/atlasfin/c-acciones.html",
+      "bytes": 18722,
+      "sha256": "D1030BF4EC0AE8ADF6ABA4E56589930A3C792CE77A38FA26D17716EC7859EC56"
+    },
+    {
+      "path": "extras/atlasfin/d-entrada-texto.html",
+      "bytes": 20448,
+      "sha256": "03935B16C4865B715E0B8A04FDB1A6422D742346A664F5542395FEB1EA7DB740"
+    },
+    {
+      "path": "extras/atlasfin/e-seleccion-filtros.html",
+      "bytes": 20576,
+      "sha256": "F7821D81AAA3CEA06A1CB08549A88608DF4C1758A073DDD7DC141E3AA859FED4"
+    },
+    {
+      "path": "extras/atlasfin/f-navegacion.html",
+      "bytes": 19308,
+      "sha256": "88C3B83AA3660BF54E5737F622EDFDF763E787A3B2429B476D386A9CF37791B8"
+    },
+    {
+      "path": "extras/atlasfin/g-tablas.html",
+      "bytes": 22400,
+      "sha256": "9031A0D862B2F65A537113A6B533CDD0FF54F7ED2CA98E453A3F41AF858DD0B5"
+    },
+    {
+      "path": "extras/atlasfin/generator/validate_atlas.py",
+      "bytes": 6199,
+      "sha256": "00076F79159F96A02DADB6C8C507C9BB1C92A71203EB9B6E1EEA83268EB022C2"
+    },
+    {
+      "path": "extras/atlasfin/governance/ATLAS_CHROMA_BALANCE_MANIFEST.json",
+      "bytes": 1638,
+      "sha256": "D77FF7C567378D9F105ACA12863B5F0BC375822AD4567984E73B23B5F11DC32E"
+    },
+    {
+      "path": "extras/atlasfin/governance/ATLAS_CHROMA_INSTALL_STATE.json",
+      "bytes": 10811,
+      "sha256": "83BEE069BFFE1B4AA34B713319D7DB7BA3A4C59B9C25BEFCBFC307716F62D0E4"
+    },
+    {
+      "path": "extras/atlasfin/governance/ATLAS_COMPLETION_CONTRACT.json",
+      "bytes": 2149,
+      "sha256": "EC11FBA2AD090BF4EB430C50A773B5C417C2DD6D332B813412413B01EFFA59A1"
+    },
+    {
+      "path": "extras/atlasfin/governance/ATLAS_GLASS_OWNER_FIX_INSTALL_STATE.json",
+      "bytes": 1105,
+      "sha256": "3702E5711C5B3F4E4F481B2E084F5BB6548E77AD02447DD0EC074E12645DA119"
+    },
+    {
+      "path": "extras/atlasfin/governance/ATLAS_GLASS_SWEEP_INSTALL_STATE.json",
+      "bytes": 11068,
+      "sha256": "3C12956CFE134478F246460BBB17FAC26EBB8C8F2B03E0989528C2A95DFA8671"
+    },
+    {
+      "path": "extras/atlasfin/governance/AUTHORITY_MESH.json",
+      "bytes": 1320,
+      "sha256": "31E7DBC964338D52AB1E5935AA1A45E37A64F8E395DFA274116CA554E5FD9034"
+    },
+    {
+      "path": "extras/atlasfin/governance/BATCH_3_HL_CONTRACT.json",
+      "bytes": 1004,
+      "sha256": "91CB45EB39D63309B2E6BE3CEBDE8515981270BDAAA55E8FA88A05AE02482255"
+    },
+    {
+      "path": "extras/atlasfin/governance/INTERACTION_REFINEMENT_CONTRACT.json",
+      "bytes": 309,
+      "sha256": "4C9D08937BD4B61FED2B41AF49B1FFCC06D11F71BCFE4B849042D3742C4D0127"
+    },
+    {
+      "path": "extras/atlasfin/governance/LAYERS_MAP.json",
+      "bytes": 1307,
+      "sha256": "3A040C6DB4D3570890A58519A962CEDB32CCB3436A8D4BECA509A0F04D5DD546"
+    },
+    {
+      "path": "extras/atlasfin/governance/POLISH_CONTRACT.json",
+      "bytes": 309,
+      "sha256": "50391F0674CCF868C578375A7991BBB7D96B154B8B931E80E74F044E32CB8AF5"
+    },
+    {
+      "path": "extras/atlasfin/governance/PRISMA_HTML_PREMIUM_OVERLAY_GLASS_MANIFEST.json",
+      "bytes": 1038,
+      "sha256": "ADE4BC0D81401E6D6C8AB00BAE32AAE5CFAADD19CDC30C9B9647C1EAC3E39CA3"
+    },
+    {
+      "path": "extras/atlasfin/h-listas.html",
+      "bytes": 24098,
+      "sha256": "0277A725AAF6AA832B7C1B24801469A763D03A9DA73CBA07D86E90E6120C9E15"
+    },
+    {
+      "path": "extras/atlasfin/i-paneles-cards.html",
+      "bytes": 21946,
+      "sha256": "4A225E3ED9A25F8970BFB2F3085C9DA0BD7A2F728A4AF48C9968954E56B26280"
+    },
+    {
+      "path": "extras/atlasfin/index.html",
+      "bytes": 31080,
+      "sha256": "4EAA6760A931F532CD27E4199B4B08F6AECC2CDE9B9F46C29A16EA57ED6720EA"
+    },
+    {
+      "path": "extras/atlasfin/j-expansion.html",
+      "bytes": 21829,
+      "sha256": "D70DF79F33EC2BD84D4350EAC90D8AE5250D35BA7E5571A875FFD83DAB46C0DB"
+    },
+    {
+      "path": "extras/atlasfin/k-estados-feedback.html",
+      "bytes": 22346,
+      "sha256": "D09C7E3062B75886419A6584FCE62581B10C24EEA9D88BC96BFA3C36E3DB93C5"
+    },
+    {
+      "path": "extras/atlasfin/l-carga-progreso.html",
+      "bytes": 19821,
+      "sha256": "A0A50F106B10B9914C0BA1DD52E9CB02CED48BA53949F5D378F6317666BA2CD0"
+    },
+    {
+      "path": "extras/atlasfin/m-overlays.html",
+      "bytes": 19929,
+      "sha256": "D9ECBB9EE61E065350AABC985346D9A286D9F588DAED66056E11461D6CF3A14D"
+    },
+    {
+      "path": "extras/atlasfin/MANIFEST.json",
+      "bytes": 10381,
+      "sha256": "DBA6E155C6EB121BFC3BF286D2D2A3FF6625EE41B29BB8E3A3A646FB0928B4C8"
+    },
+    {
+      "path": "extras/atlasfin/n-operativos.html",
+      "bytes": 18297,
+      "sha256": "26781E8EDF1964548C17704C1BDB9CA792EF10C5B7C1CD479BA68EF4163A5E3F"
+    },
+    {
+      "path": "extras/atlasfin/o-patrones-pantalla.html",
+      "bytes": 15693,
+      "sha256": "CF283978389E8ACE3110BC1C51F1EFD2D73ADFC1C608BE392222C893EFBB62B3"
+    },
+    {
+      "path": "extras/atlasfin/p-movimiento.html",
+      "bytes": 14912,
+      "sha256": "2DA5780A6D8D4A9A49539096A62DAC8AE449BBAC5B22DB83FFB9411F27769E35"
+    },
+    {
+      "path": "extras/atlasfin/q-responsive-accesibilidad.html",
+      "bytes": 15875,
+      "sha256": "055B5BD397E91D0290E94C6A02EF94D1145C6BC32BA5BDB2D47C15790C0B9A30"
+    },
+    {
+      "path": "extras/atlasfin/r-contenido.html",
+      "bytes": 15695,
+      "sha256": "D9F51D9B5089345F24EAD3C1BE02D22197F966596F583C2C38BF7CDDCFAE46DF"
+    },
+    {
+      "path": "extras/atlasfin/README.md",
+      "bytes": 3711,
+      "sha256": "460C4F13291287D1D84E4504365BF2CA52C1E3829F9A1BBDA548D5A80B1B9A6F"
+    },
+    {
+      "path": "extras/atlasfin/reports/ATLAS_CHROMA_COMPARISON.json",
+      "bytes": 1387,
+      "sha256": "210BB24AFBE055CE53540EDEBC477B164DE3631645DAD48381C61DF0E028C183"
+    },
+    {
+      "path": "extras/atlasfin/reports/ATLAS_CHROMA_COMPARISON.md",
+      "bytes": 201,
+      "sha256": "0751DF9AAFFDB9F8291F21CDE36118EEF126C89DA6CFBA65FF7E4C2BA71B06DF"
+    },
+    {
+      "path": "extras/atlasfin/reports/ATLAS_COMPLETION_STATIC_REPORT.json",
+      "bytes": 481,
+      "sha256": "92C9DA59E7561EA23BD4EF8D5C5A69F1D08EA59163C00D78AD68FDF634B403EA"
+    },
+    {
+      "path": "extras/atlasfin/reports/BATCH_2_STATIC_REPORT.json",
+      "bytes": 284,
+      "sha256": "815138B6F083B720A07F90534C1F1433070AB71366B5B58BFBDEFF9C0B951C60"
+    },
+    {
+      "path": "extras/atlasfin/reports/BATCH_3_HL_STATIC_REPORT.json",
+      "bytes": 400,
+      "sha256": "95BAFF9ACD9D90179BA76A5B91F2CADAF380B5940DB947B0F618A33F6ADA130B"
+    },
+    {
+      "path": "extras/atlasfin/reports/FUSION_LOG.txt",
+      "bytes": 575,
+      "sha256": "AFA93DAC0131CED4167B10B7283F66451177624933AB81348AE9C0CB3ACBF42D"
+    },
+    {
+      "path": "extras/atlasfin/reports/FUSION_REPORT.json",
+      "bytes": 360,
+      "sha256": "D2FE3FED7DAD168D009E814CED6FADD96EC153603B967B36FF188D1F6FF0C3F9"
+    },
+    {
+      "path": "extras/atlasfin/reports/INTERACTION_REFINEMENT_STATIC_REPORT.json",
+      "bytes": 295,
+      "sha256": "6E73286780043ACEFA7C22FDA8A4E6D2D67F8AC2B495DBED4441EA1936BC2C4C"
+    },
+    {
+      "path": "extras/atlasfin/reports/POLISH_STATIC_REPORT.json",
+      "bytes": 359,
+      "sha256": "D0334E143544571405A241AF70AAA833AD47C6687581D620C384A14863201601"
+    },
+    {
+      "path": "extras/atlasfin/reports/PREMIUM_OVERLAY_GLASS_PATCH.md",
+      "bytes": 664,
+      "sha256": "ECF0B9519D2AB0586D0C2AE2D013B452B768344C4886EA92D4DF261B3DE1AB2A"
+    },
+    {
+      "path": "extras/atlasfin/reports/V4_STATIC_REPORT.json",
+      "bytes": 244,
+      "sha256": "0A4E22A88D69A604445EFAD4EB196F0C7E31E3F461DFB07ED52455D9BAEBED7A"
+    },
+    {
+      "path": "extras/atlasfin/reports/VALIDATION_REPORT.json",
+      "bytes": 622,
+      "sha256": "A8D2A7BE8B35B7330F23273ACF906B45A0F69CC86E2821C5BD52DA1DD9C85185"
+    },
+    {
+      "path": "extras/atlasfin/ROLLBACK.ps1",
+      "bytes": 204,
+      "sha256": "9C45077A106573C840F02D93C80125553803D7237E590F25C98B7646B1A60DBB"
+    },
+    {
+      "path": "extras/atlasfin/RUN.ps1",
+      "bytes": 630,
+      "sha256": "BA54D2086B87453E32F3FC4016C4831F4B53BD6399D89A0ABFE17AA16B94F27C"
+    },
+    {
+      "path": "extras/atlasfin/s-analitica.html",
+      "bytes": 16782,
+      "sha256": "D1481DBD253A78558E31B0592A1E2926AFE31AA7F2FACBA62BD2889776A07888"
+    },
+    {
+      "path": "extras/atlasfin/source/atlasui.md",
+      "bytes": 26641,
+      "sha256": "05CDACD49139EEBDC11059CCF650B7821BB99A3B2E17EA1819C6BEF109C6A454"
+    },
+    {
+      "path": "extras/atlasfin/t-archivos-medios.html",
+      "bytes": 16063,
+      "sha256": "F36F5BC35BFCEC33BE93498D894A64B4629594BC0EE7BDABDA88C1218DC04594"
+    },
+    {
+      "path": "extras/atlasfin/u-calendario.html",
+      "bytes": 17391,
+      "sha256": "4DCBDEEBCAC2D1E897B7B4E01F379371AE69CDF822CE2BEC6743C245D156FEDF"
+    },
+    {
+      "path": "extras/atlasfin/v-comercio-pagos.html",
+      "bytes": 16478,
+      "sha256": "FA1871DA7F58C3FD4B984042962ADD9B31B7C0DEB9327728A38CA4DE328BC9AB"
+    },
+    {
+      "path": "extras/atlasfin/w-identidad-seguridad.html",
+      "bytes": 16487,
+      "sha256": "27CD067015F34FE80A9124709D09C399AB1BB9D88AFBD29A0BBFFD127BDE4EC8"
+    },
+    {
+      "path": "extras/atlasfin/x-sistema-diagnostico.html",
+      "bytes": 16186,
+      "sha256": "D71C64563009E5CDE1DC8FC2EBDE38109FA4EA39E121F1FA4BD994651D5C66EB"
+    },
+    {
+      "path": "extras/atlasfin/y-i18n-impresion-offline.html",
+      "bytes": 16234,
+      "sha256": "426118B9CAB52F6A4D43E8E0E6CA1AAE04BB98EC34D3B1EAFF849312B833A7FC"
+    },
+    {
+      "path": "extras/atlasfin/z-gobierno.html",
+      "bytes": 20500,
+      "sha256": "1AE420B6B17CC41F21F5E667810CC24005DA2346C2B402DC1B1BC331A520D258"
+    },
+    {
+      "path": "governance/PRISMA_HTML_ALLCHAT_MIGRATION_MANIFEST.json",
+      "bytes": 751,
+      "sha256": "8E289D127404A75976648159E7CEE7D77296B9F2DFDFCFE0B32120DAA3945575"
+    },
+    {
+      "path": "governance/PRISMA_HTML_ATLAS_EXTRA_MANIFEST.json",
+      "bytes": 1457,
+      "sha256": "A6720A050FE97E22E8855C1E9F7BEBB7D0A20C7A65C74280F90BA9944DAE1936"
+    },
+    {
+      "path": "governance/PRISMA_HTML_CLEAR_PEARL_FIX_MANIFEST.json",
+      "bytes": 1738,
+      "sha256": "C42A26CD40532284820B68B981BB8F8B0025F5B7302641D1404F955A928BFA60"
+    },
+    {
+      "path": "governance/PRISMA_HTML_CLOUDFLARE_PAGES_CONTRACT.json",
+      "bytes": 773,
+      "sha256": "F5244730CC0585019516D3C37F710156FA4138BC638F0E5806EA0B60AE99C455"
+    },
+    {
+      "path": "governance/PRISMA_HTML_GLASS_FIX_AUTHORITY_MESH.json",
+      "bytes": 1518,
+      "sha256": "3592497F5F8363B46F9ECFDD03A01505A419A732FF12D45B27ECA0DB763CF599"
+    },
+    {
+      "path": "governance/PRISMA_HTML_GLASS_FIX_LAYERS_MAP.json",
+      "bytes": 1385,
+      "sha256": "9873347C9BD6E391F94F2DA0936323CF2E18A5EF798F8141D7CAEF05B766A0F5"
+    },
+    {
+      "path": "governance/PRISMA_HTML_NARRATIVE_SWEEP_MANIFEST.json",
+      "bytes": 2677,
+      "sha256": "82DE58FCF476246CFF077BD8A551D19D9E1E5DC129874A915E8CDEDA4023170D"
+    },
+    {
+      "path": "index.css",
+      "bytes": 18105,
+      "sha256": "887A2E41DC33721986DD112C9CA050F88A6744F97051F02C181634D633BAB521"
+    },
+    {
+      "path": "index.html",
+      "bytes": 5569,
+      "sha256": "4499C620AE4034923D736A930B5BEE8ED401A07B91DFF2D862EE83CA975656C0"
+    },
+    {
+      "path": "package.json",
+      "bytes": 673,
+      "sha256": "25C1F3764E16379EC9A2CCCDC466F438BF76E5094736B4938995FA6791EBA9E4"
+    },
+    {
+      "path": "paginas/pagina-1-prisma/index.html",
+      "bytes": 5488,
+      "sha256": "8074ABEEFE1FDF68DAE46A0EFF42EBA2255063A124120683EB79DD3A25F0D465"
+    },
+    {
+      "path": "paginas/pagina-1-prisma/pagina.css",
+      "bytes": 5358,
+      "sha256": "4171D711A04AD6A629AF80F58070E89D0B2CBB889825D23C776214F802FD548D"
+    },
+    {
+      "path": "paginas/pagina-1-prisma/pagina.js",
+      "bytes": 74,
+      "sha256": "C5A08AD9218B5597461D1D8AF34409F98A4A7BE5A04102A214CD082AFD3A7532"
+    },
+    {
+      "path": "paginas/pagina-2-inversionistas/index.html",
+      "bytes": 7218,
+      "sha256": "018EC00183799928C03DC96C7CC875D7FB712C02650E24DFA2A6835D89271FF5"
+    },
+    {
+      "path": "paginas/pagina-2-inversionistas/pagina.css",
+      "bytes": 6553,
+      "sha256": "A488EC8ED89A1ACB79A99530A8F3B69C2D9C18E1DAEC8453887CC0CDB2B7FEC1"
+    },
+    {
+      "path": "paginas/pagina-2-inversionistas/pagina.js",
+      "bytes": 1352,
+      "sha256": "CE452A4A0B885DFA252A06A0ACD8BF4B3391A6532A5109B3557761724111EC06"
+    },
+    {
+      "path": "paginas/pagina-3-por-que-prisma/index.html",
+      "bytes": 5994,
+      "sha256": "A2F64D5EC8BDD37F5442A4F7FCFAD62ACBCE5562548856D9A8A00D085EE9543A"
+    },
+    {
+      "path": "paginas/pagina-3-por-que-prisma/pagina.css",
+      "bytes": 4866,
+      "sha256": "751EE5A80C7DF40326B8E29223862F24A85AEB49C99100B87EAFF45ACC55DC7F"
+    },
+    {
+      "path": "paginas/pagina-3-por-que-prisma/pagina.js",
+      "bytes": 77,
+      "sha256": "D745DA26017B66095512E959B36D9241B60F78BC99A42461912FC2E8A06C6B6D"
+    },
+    {
+      "path": "paginas/pagina-4-ecosistema-producto/index.html",
+      "bytes": 5273,
+      "sha256": "40F3CA428A6120E542BFB49621129E69EF48D657D45A935B3359850674770CF2"
+    },
+    {
+      "path": "paginas/pagina-4-ecosistema-producto/pagina.css",
+      "bytes": 5317,
+      "sha256": "CC96ABBC5AB8A7B663AABB75B4A7BBA26D479654334FBB238435BE423D49FE70"
+    },
+    {
+      "path": "paginas/pagina-4-ecosistema-producto/pagina.js",
+      "bytes": 11,
+      "sha256": "8E609BB71C20B858C77F0E9F90BB1319DB8477B13F9F965F1A1E18524BF50881"
+    },
+    {
+      "path": "PREVISUALIZAR.cmd",
+      "bytes": 225,
+      "sha256": "1333B31E00986F4FD1114F0AB5E8943D99EC6CB4279F010BB632AB494BD93D17"
+    },
+    {
+      "path": "PRISMA-HTML.code-workspace",
+      "bytes": 381,
+      "sha256": "F6F9F40CF1BE08269A7BB85DEC0AA87A5CE5C0F3DC9EE99BA5A3140E08D51E4B"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1638,
+      "sha256": "933A46F826A2E586C71C9FD4E0D3A09A009E3ED53FE7CC1BA1C538D2E800A438"
+    },
+    {
+      "path": "reports/ATLAS_EXTRA_INTEGRATION_REPORT.json",
+      "bytes": 1016,
+      "sha256": "E1E094DDCD72519E4A8F719F89E3D80DE3CDF8945C29F833078A6CF4E0D43E2B"
+    },
+    {
+      "path": "reports/ATLAS_EXTRA_INTEGRATION_REPORT.md",
+      "bytes": 612,
+      "sha256": "ED9ECB0D446A5ECDC917BF28977CB4A41F08156F4B5CECA8B631C7A733C04DA9"
+    },
+    {
+      "path": "reports/atlas-extra-host-validation.json",
+      "bytes": 55877,
+      "sha256": "2CFB34F3B2A509E3D8BA0FE04E7704408819FADEB511CA14E8B101A4C49BC5E6"
+    },
+    {
+      "path": "reports/evidence/browser-fast-audit.json",
+      "bytes": 7529,
+      "sha256": "3CB06C236EF314F495E05FACD5A100136EA75B04903D22F977DFC51ADDFB753D"
+    },
+    {
+      "path": "reports/evidence/contact-sheet-before-after.jpg",
+      "bytes": 124835,
+      "sha256": "39994089A751C7188695863DB3C95DDBB6DB44B3DAC29033A4BF8208C2BFEB09"
+    },
+    {
+      "path": "reports/evidence/contact-sheet-desktop-final.jpg",
+      "bytes": 63470,
+      "sha256": "1DF765E54F4F363EE5D6BBD8C045F1C181B3CBACE4DDF63176FDBBCED011C9F3"
+    },
+    {
+      "path": "reports/evidence/contact-sheet-mobile-final.jpg",
+      "bytes": 52955,
+      "sha256": "5091A17EA218C904AE19AB99E1B5CEE48D5EC02FA86F1B7134F8514647AFE4A2"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-b-materiales-desktop.jpg",
+      "bytes": 144325,
+      "sha256": "4DB940A809A7B6427DA8FBA8FF61D6A5BD7D5F001DAA72F078B38FC82B747831"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-b-materiales-mobile.jpg",
+      "bytes": 45056,
+      "sha256": "4A2EF596F1953925A2B227A586CCE71D4EAA0469E36DD103F415C83DF684B4F5"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-e-seleccion-filtros-desktop.jpg",
+      "bytes": 123481,
+      "sha256": "6D12322D0F73221C86ACC00E82B7A82DDBAD261D9016EF9A6C1423614CFA20EA"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-e-seleccion-filtros-mobile.jpg",
+      "bytes": 42469,
+      "sha256": "0B2019226680882137D858771906AC47F7AFEC78DF5905C10231E375151D84D2"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-index-desktop.jpg",
+      "bytes": 135033,
+      "sha256": "03641F7B5C0639258EBAF0163127A5D8A10B437CBDF5B978DBEB1B8F822350F8"
+    },
+    {
+      "path": "reports/evidence/screenshots/after-index-mobile.jpg",
+      "bytes": 40642,
+      "sha256": "4CD36A864B3335ACEB631FB198BCF4B70CEE37E9F238AB5F922597F920007D7E"
+    },
+    {
+      "path": "reports/evidence/screenshots/before-b-materiales-desktop.jpg",
+      "bytes": 141332,
+      "sha256": "EF1E8FADC9C71794034C63BEF857B847D3570E2BB4261DF7FA70AE8E399D1FE2"
+    },
+    {
+      "path": "reports/evidence/screenshots/before-e-seleccion-filtros-desktop.jpg",
+      "bytes": 116705,
+      "sha256": "9F84702D845D94192C58B85AD926765B5333B9D30D9ED43F94E4A08AC6C58660"
+    },
+    {
+      "path": "reports/evidence/screenshots/before-index-desktop.jpg",
+      "bytes": 132284,
+      "sha256": "F66843FCAA468E597E7AD333DF600A35D311AA6FD192833A95E43547A98F4C45"
+    },
+    {
+      "path": "reports/evidence/screenshots/dropdown-keyboard-open.jpg",
+      "bytes": 128216,
+      "sha256": "7E93BC7CA9D90BD7E6EBDF52BF3313A84FBDE7E98587E1728925751CE0C8F885"
+    },
+    {
+      "path": "reports/FULL_SURFACE_CLEAR_PEARL_SWEEP.md",
+      "bytes": 2148,
+      "sha256": "3F94AD4967A860E1D07C36038ED7A5FE4855F03A18F18C430949CE5DD7EBBC9A"
+    },
+    {
+      "path": "reports/FULL_SURFACE_SWEEP.md",
+      "bytes": 2017,
+      "sha256": "579F292D3FDBACC369B6F5BEEAA4B2A7F3E6A655B13FC8A09067CABDF878A052"
+    },
+    {
+      "path": "reports/full-surface-clear-pearl-sweep.json",
+      "bytes": 1582,
+      "sha256": "636E11C1BD0E85EE93614FA5595ED051721337C462D7763ED31129EDA65A4395"
+    },
+    {
+      "path": "reports/full-surface-sweep.json",
+      "bytes": 3920,
+      "sha256": "BE1E4F1929FBCEF610BB997D964CE5284D52D7A9B8CCAD5DB9C2326E43B1875C"
+    },
+    {
+      "path": "reports/htmlfix-atlas-validation-final.txt",
+      "bytes": 548,
+      "sha256": "5A3B5B73683E9FD06C64CAA4E8305AF6172A8FBB91E79FAEF8F56C64587E8CB6"
+    },
+    {
+      "path": "reports/htmlfix-atlas-validation.txt",
+      "bytes": 548,
+      "sha256": "5A3B5B73683E9FD06C64CAA4E8305AF6172A8FBB91E79FAEF8F56C64587E8CB6"
+    },
+    {
+      "path": "reports/htmlfix-source-validation-final.json",
+      "bytes": 47820,
+      "sha256": "2F2E7B673E28A94033F9DC0D2E81056A89931466B766BCE2ED1B4B9A85F12CD2"
+    },
+    {
+      "path": "reports/htmlfix-source-validation.json",
+      "bytes": 47820,
+      "sha256": "2F2E7B673E28A94033F9DC0D2E81056A89931466B766BCE2ED1B4B9A85F12CD2"
+    },
+    {
+      "path": "reports/LAYERS_MAP_CLEAR_PEARL.md",
+      "bytes": 875,
+      "sha256": "83243963E46B788124F7E1A60FF6FE99FBE563CD875AC87AB6D3B4615163503C"
+    },
+    {
+      "path": "reports/PRISMA_HTML_GLASS_FIX_REPORT.json",
+      "bytes": 4403,
+      "sha256": "DD7701999733C89EEAEF0776541F34CCCB70CD62C0A339544FE3ABEDF45111B5"
+    },
+    {
+      "path": "reports/PRISMA_HTML_GLASS_FIX_REPORT.md",
+      "bytes": 1273,
+      "sha256": "C2BE9BCD89AAFC5716AF2E8BB4EB75C8286D30116CA16DF6D7E825F7E19650F9"
+    },
+    {
+      "path": "reports/source-validator-clear-pearl-offline.json",
+      "bytes": 49470,
+      "sha256": "B3E06BC1DCB0A4882FF43C0299925C5BD5010AA9D65DD65D1D8A4A9AA047B13C"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "bytes": 17,
+      "sha256": "FC10B4B543882E4C540F2497729E294A548C7437285DD22634DB4C4E5CF60F3B"
+    },
+    {
+      "path": "sistema-ui/catalogo/catalogo.css",
+      "bytes": 9772,
+      "sha256": "9AE37CA39249FC0C3B4C8BE8333CB2D6D3E934177D8369D415B74C315AB1EF15"
+    },
+    {
+      "path": "sistema-ui/catalogo/catalogo.js",
+      "bytes": 1701,
+      "sha256": "B84B741C1842BD91D9E6DA00E785D073EE1EF2E40D18F850185C8F0BCB69349B"
+    },
+    {
+      "path": "sistema-ui/catalogo/index.html",
+      "bytes": 7043,
+      "sha256": "380A58C5D8FE20AEAC83D50B08125F3FAD171BE18E0903A399C7A68D1C2754F2"
+    },
+    {
+      "path": "sistema-ui/css/base/accesibilidad.css",
+      "bytes": 623,
+      "sha256": "C7654CC405B94C5E74196B4870C6A9F8E6B6C912F700190480FA668825087945"
+    },
+    {
+      "path": "sistema-ui/css/base/documento.css",
+      "bytes": 692,
+      "sha256": "5AE43411C950AE0F035E34095421755D0E3D76F6617FE3435CE43D42E90C0437"
+    },
+    {
+      "path": "sistema-ui/css/base/reset.css",
+      "bytes": 260,
+      "sha256": "581B86412C35058450A05DD69C14650C86BA97EACEEDBB18C70669A09C67E395"
+    },
+    {
+      "path": "sistema-ui/css/base/tipografia-base.css",
+      "bytes": 199,
+      "sha256": "478C107F5F23B3254C1BA335354E50328A54912C8D2DC2A4344C0953596DE001"
+    },
+    {
+      "path": "sistema-ui/css/componentes/acordeones.css",
+      "bytes": 493,
+      "sha256": "1E528EE67B7EFDF51E6D741D269F9BE01C861D8B43CFE26C00F3E99264142C17"
+    },
+    {
+      "path": "sistema-ui/css/componentes/alertas.css",
+      "bytes": 469,
+      "sha256": "F697735C922747753696ADDEC7EB257C78532D25FE2941D741DFF85E828EAAD1"
+    },
+    {
+      "path": "sistema-ui/css/componentes/botones.css",
+      "bytes": 3601,
+      "sha256": "8689CE0D9CD664F545D64C06CD0AE7C3D1E04DBED7F3E3BBECAD035CF7F80D3C"
+    },
+    {
+      "path": "sistema-ui/css/componentes/etiquetas.css",
+      "bytes": 797,
+      "sha256": "8DD9CF5236AA2EEFF867617455840CA77103444B6D71A5505F7B97457A59332A"
+    },
+    {
+      "path": "sistema-ui/css/componentes/formularios.css",
+      "bytes": 680,
+      "sha256": "29CEF24C5FB9715E0F394F42589C3BE292DB2425176AA3558FE6E52D3ED6B366"
+    },
+    {
+      "path": "sistema-ui/css/componentes/indicadores.css",
+      "bytes": 965,
+      "sha256": "C478337F07B9ED00651CE076811EC0C988EC05C45B10B0A257A5B4007454C031"
+    },
+    {
+      "path": "sistema-ui/css/componentes/metricas.css",
+      "bytes": 371,
+      "sha256": "4BC4060B689906C16C58806F71E74470BC35D510437FCFEB721FFC335EDDB741"
+    },
+    {
+      "path": "sistema-ui/css/componentes/modales.css",
+      "bytes": 419,
+      "sha256": "13AE1472E92A7C168D0F624B03D71406E561760703B5EF17E2F0F8474A0A1569"
+    },
+    {
+      "path": "sistema-ui/css/componentes/navegacion.css",
+      "bytes": 772,
+      "sha256": "C2BAEBB6EC7DB08D2C57728555F718CA016BEF303DFEF6083A52609D4647A8B6"
+    },
+    {
+      "path": "sistema-ui/css/componentes/paneles.css",
+      "bytes": 1040,
+      "sha256": "233472BC3A7DA5A712BD674C82DCB258ECB32A21C71A0F63D937A0A20D8D3268"
+    },
+    {
+      "path": "sistema-ui/css/componentes/tablas.css",
+      "bytes": 442,
+      "sha256": "88C065B7FCDAA55D8C3D0F53B4C788654D607AA3E7ECE260BB38C322C60CBE39"
+    },
+    {
+      "path": "sistema-ui/css/componentes/tabs.css",
+      "bytes": 524,
+      "sha256": "55FBF961269F0BFDDE45E17B412D281DBBC67F5D65EBDA64076D75945CEB143B"
+    },
+    {
+      "path": "sistema-ui/css/componentes/tarjetas.css",
+      "bytes": 811,
+      "sha256": "C4F8C2D4D03A0F7BFC885BB7C05A49A893A7975693C190D3F3B0BEF3500EF943"
+    },
+    {
+      "path": "sistema-ui/css/componentes/tooltips.css",
+      "bytes": 362,
+      "sha256": "149A9FE5D135DD8505D5B240F0CEFD799D8E5A71D446A9F6196B86DC3FDA4D2A"
+    },
+    {
+      "path": "sistema-ui/css/layouts/columnas.css",
+      "bytes": 275,
+      "sha256": "1944C659B171A9D60A870BBD789A7E83A1CAA3DBCFBE9EAEA4ABCF6548811A17"
+    },
+    {
+      "path": "sistema-ui/css/layouts/contenedores.css",
+      "bytes": 166,
+      "sha256": "5492E2AA41E33DC124952949A62CC33EF2A1A7464B8F63C34597A1617D2559B7"
+    },
+    {
+      "path": "sistema-ui/css/layouts/grid.css",
+      "bytes": 271,
+      "sha256": "40E3904CAE625F0A3344BA7DC0D7FAD620AF21CE7A169808675FAA0BF56C07F1"
+    },
+    {
+      "path": "sistema-ui/css/layouts/responsive.css",
+      "bytes": 188,
+      "sha256": "BF3F50FB2F07C1DC5F7F3C0667B96B4A898E327C4A70868FADC4E6C45B4819A9"
+    },
+    {
+      "path": "sistema-ui/css/layouts/secciones.css",
+      "bytes": 173,
+      "sha256": "7216081B5CD0943D82927765F263D44E368ED968C6A10D3F1AB4BDCE803DB990"
+    },
+    {
+      "path": "sistema-ui/css/patrones/bloques-metricas.css",
+      "bytes": 203,
+      "sha256": "2E9032786CA0D7DFDDFFD32659E7A14C6819E9024AFA032E736D0F0C008BDC04"
+    },
+    {
+      "path": "sistema-ui/css/patrones/encabezados.css",
+      "bytes": 969,
+      "sha256": "87DBC77B0D9A8F37E95C3E12EE95E55E239AD59A30942D7F8DD1A5A09D942AF1"
+    },
+    {
+      "path": "sistema-ui/css/patrones/flujo-operativo.css",
+      "bytes": 2719,
+      "sha256": "83150BA9BE54A7124D91E868C9F5CB649F4FF5017861E945F20BDB0EC6C30921"
+    },
+    {
+      "path": "sistema-ui/css/patrones/gramatica-operativa.css",
+      "bytes": 4941,
+      "sha256": "B409E51FF8A48BF29D184441D4B60B0304524CD59BEF7846ECED7AC2B010356C"
+    },
+    {
+      "path": "sistema-ui/css/patrones/hero.css",
+      "bytes": 1023,
+      "sha256": "94C7F4C18024F1FB670F0CD2F7DD58715A1AAD08422CE98DD9F00B255E14241D"
+    },
+    {
+      "path": "sistema-ui/css/patrones/investor-deck.css",
+      "bytes": 10961,
+      "sha256": "259E85813AE72C6C5D968C8F1E455E1978D63920A60E6E344EC918D8E464C98A"
+    },
+    {
+      "path": "sistema-ui/css/patrones/llamada-a-accion.css",
+      "bytes": 207,
+      "sha256": "5BE6359D7C7511B0C880B063D0AEB9CC8987B917A81469287D513AE0DEEED850"
+    },
+    {
+      "path": "sistema-ui/css/patrones/narrative-page.css",
+      "bytes": 17529,
+      "sha256": "FBB36FF41ABF5429479EA6E5B342D9980705D266F9CF4813083397F2E0CC2FB7"
+    },
+    {
+      "path": "sistema-ui/css/patrones/navegacion-principal.css",
+      "bytes": 827,
+      "sha256": "82BEE747DBA763B2C625499841E61AD9E0340E7E4C52CA32ACF0572EF30587DA"
+    },
+    {
+      "path": "sistema-ui/css/patrones/pies-de-pagina.css",
+      "bytes": 230,
+      "sha256": "5C8186951A196A6CF88415E301009B3C4E4D2D803DBE43FEFDF305537E25BFAC"
+    },
+    {
+      "path": "sistema-ui/css/patrones/precios.css",
+      "bytes": 315,
+      "sha256": "BD71DF0F8441D47F53BB3B31D38CFB0959B116639D555C5E4062A37CD276A164"
+    },
+    {
+      "path": "sistema-ui/css/patrones/testimonios.css",
+      "bytes": 274,
+      "sha256": "AF638982C8D3A68BF5BB97D9EE9F917265425092EBC606FF0AAED8752FBCCC1C"
+    },
+    {
+      "path": "sistema-ui/css/prisma-ui.css",
+      "bytes": 3006,
+      "sha256": "9A3AD4A4FFFF05F2534BED34EDAC497BB02CFD55D8F4A0AA8949AD7826301894"
+    },
+    {
+      "path": "sistema-ui/css/tokens/bordes.css",
+      "bytes": 183,
+      "sha256": "4C0719F6DFEDF15D8D5691AD10515FBF922F9CCF076584FE3DCC11C63DD278E1"
+    },
+    {
+      "path": "sistema-ui/css/tokens/capas.css",
+      "bytes": 189,
+      "sha256": "2EB972DD367ED4C1B8418B5AA62E6FE7E3EB31E6221EDDA7A74C5ADB9CFEB369"
+    },
+    {
+      "path": "sistema-ui/css/tokens/colores.css",
+      "bytes": 897,
+      "sha256": "576791B45319D4CC0F71AD4F666E556238C14CA33224C35FE2B254A8837FC1BE"
+    },
+    {
+      "path": "sistema-ui/css/tokens/dimensiones.css",
+      "bytes": 378,
+      "sha256": "3CDA8F767C2809329886CA327CEA2718ED163F80327D8FE2984923F34E215A5D"
+    },
+    {
+      "path": "sistema-ui/css/tokens/espaciado.css",
+      "bytes": 236,
+      "sha256": "7EC9672362B75E624B76182EB7A07B1B4F29A85AB9422648F975FBE6D777BAF6"
+    },
+    {
+      "path": "sistema-ui/css/tokens/movimiento.css",
+      "bytes": 217,
+      "sha256": "75993898DB4E5B8A9F41F719D792DBFDD07EC912CA60E3441BF15443E589DA16"
+    },
+    {
+      "path": "sistema-ui/css/tokens/sombras.css",
+      "bytes": 306,
+      "sha256": "8A76D72ECDC10884FB6142E330AB4939CB275AA814CCB6BF8B1B87EF97F631AF"
+    },
+    {
+      "path": "sistema-ui/css/tokens/tipografia.css",
+      "bytes": 533,
+      "sha256": "B417BF5562FD1A1BBA01032E8B39B1F8FEF5C25B1769FF331A59D5A64AF30771"
+    },
+    {
+      "path": "sistema-ui/css/utilidades/accesibilidad.css",
+      "bytes": 107,
+      "sha256": "5D23B74A01BC70937054E4F13DE0C2A1E0CDEFC344D6886931C06F397986708E"
+    },
+    {
+      "path": "sistema-ui/css/utilidades/alineacion.css",
+      "bytes": 204,
+      "sha256": "99FE1678B4A81E909BDB581774FB3853297804722147CFF514EBBFA6FD8523E7"
+    },
+    {
+      "path": "sistema-ui/css/utilidades/espaciado.css",
+      "bytes": 227,
+      "sha256": "1514A3A434C78999C20AF6865CB37FCD5847A921600D9D34F18A3590DF1B3081"
+    },
+    {
+      "path": "sistema-ui/css/utilidades/tamaños.css",
+      "bytes": 136,
+      "sha256": "C7738C5068CAF3ACD1B7FDF3DCF0C948EC113463B690F00368634E56D1E25972"
+    },
+    {
+      "path": "sistema-ui/css/utilidades/visibilidad.css",
+      "bytes": 155,
+      "sha256": "31C72ECC3A7D7470F649FCBF3C12A35749F493DA27A94D34E72EACB5D7BBCAC5"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-acordeon.js",
+      "bytes": 656,
+      "sha256": "741BD3ADD497AD443B3F52F3C21251D5D93C7B8EE77DCA6C2B4AA09612F75062"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-modal.js",
+      "bytes": 1143,
+      "sha256": "2E792AE329511E328AC1487B53259C3A1A67DEAA614AF7124ECF523416CEF4F8"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-narrative.js",
+      "bytes": 5873,
+      "sha256": "A6C8E9DBD7D42CB8122AA30729312127CD4FAEFE019995D786E030EEB75886EE"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-navbar.js",
+      "bytes": 520,
+      "sha256": "AE6BFC3F0DCB31B17A5F4F4DF74D646B0560C8CAC18C71FD9BA6D6F9C70D2185"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-tabs.js",
+      "bytes": 1441,
+      "sha256": "D105102BB8F6EC238FD7E3DDCC5DD80B9EA81F27585153216BE874836BD7B799"
+    },
+    {
+      "path": "sistema-ui/js/componentes/prisma-tooltip.js",
+      "bytes": 906,
+      "sha256": "C3C2AEE2DA027388EFAC6784DCAAF409743FB6C66AE17CB7FF672BCBBAB19423"
+    },
+    {
+      "path": "sistema-ui/js/comportamientos/animaciones.js",
+      "bytes": 93,
+      "sha256": "0825DEA10363A2DA158A74D8C49FFB094597134C0D40AD0898CE1D47DBC540D6"
+    },
+    {
+      "path": "sistema-ui/js/comportamientos/formularios.js",
+      "bytes": 372,
+      "sha256": "D6CE89E3028652C3899C1886E10FDBF8B59DECF05811254BA2EDD6C514825460"
+    },
+    {
+      "path": "sistema-ui/js/comportamientos/menu.js",
+      "bytes": 30,
+      "sha256": "132702C27643625B6E76DF13307F259C16A9A8D62CF6134D96BB5246C04633CA"
+    },
+    {
+      "path": "sistema-ui/js/comportamientos/navegacion.js",
+      "bytes": 162,
+      "sha256": "C37CDC86D5EF0D176339482FE897CE476D020FBC8D2F419110752A7168E82298"
+    },
+    {
+      "path": "sistema-ui/js/comportamientos/scroll.js",
+      "bytes": 206,
+      "sha256": "A4849CA44DA269B65ED4F35101928E86A015A3C0893CF98810DCBD9A4283DF3D"
+    },
+    {
+      "path": "sistema-ui/js/prisma-ui.js",
+      "bytes": 1043,
+      "sha256": "5C9E9CC06D74E52E9A0096507C9035C653E6D68EAC3341A064CA4EDE2727914A"
+    },
+    {
+      "path": "sistema-ui/js/utilidades/accesibilidad.js",
+      "bytes": 811,
+      "sha256": "A7EDB2D08891D74F8994C9A804BC74727A0B143F4727BA98BC01A60888980507"
+    },
+    {
+      "path": "sistema-ui/js/utilidades/dom.js",
+      "bytes": 349,
+      "sha256": "950137F97D9DF6260E8FB96E19849F5F650403F28C1FE5AE5A0A6AF402E8A4A4"
+    },
+    {
+      "path": "sistema-ui/js/utilidades/eventos.js",
+      "bytes": 325,
+      "sha256": "406396DF5E6FF202AFCD631CC854DBDD12EA9BAFF640E343A0C12D15C329B9C8"
+    },
+    {
+      "path": "sistema-ui/temas/tema-alto-contraste.css",
+      "bytes": 581,
+      "sha256": "3C7CEEB4FF22419205FD63FF050B9E0EB68B1122C8E96006AB26669B4DB4F344"
+    },
+    {
+      "path": "sistema-ui/temas/tema-base.css",
+      "bytes": 988,
+      "sha256": "730C0FBF8CE13DA4DC47B6625DF23A2BF51CB3C1125B0D2DBC2D52A7F4E17973"
+    },
+    {
+      "path": "sistema-ui/temas/tema-inversionistas.css",
+      "bytes": 1981,
+      "sha256": "4E94FB547EFB500EA174EB0776649D1591A0E97D8017DED6791A356AC3083DC9"
+    },
+    {
+      "path": "sistema-ui/temas/tema-prisma.css",
+      "bytes": 906,
+      "sha256": "8A3A0B647BEDD8BE7E80C0D5BC2E982189BF1F323A77F0D407B1287C912F540A"
+    },
+    {
+      "path": "SOURCE-INTEGRITY.json",
+      "bytes": 1465,
+      "sha256": "50D8F825E800D4E661732BC79F552AF483AE55966C530A3AC3D7C5ED846785FF"
+    },
+    {
+      "path": "tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1",
+      "bytes": 7807,
+      "sha256": "192A4745B77F0B7C53540C294278E372AED472065BE505B5154D507FD82E1367"
+    },
+    {
+      "path": "tools/servidor_local.py",
+      "bytes": 365,
+      "sha256": "DE8A623C588E7DD56010783DC5743BCEC5EC58ABD656A0323084A8FB2343ED73"
+    },
+    {
+      "path": "tools/validate_project.py",
+      "bytes": 10278,
+      "sha256": "6F376F1A7609C427492395A1EEE690F55402021FD757E8EE7B59AE8CFC0E6ADE"
+    },
+    {
+      "path": "TREE.md",
+      "bytes": 12378,
+      "sha256": "208A5CD1D6A0F3BEF3D41B75B3823BA47E6D758FC36F3AB8393EA9295898B059"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 516,
+      "sha256": "5DC38E4070259CCA0C934EF367C44C283A27A977537957CF7B65B10176A97462"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "bytes": 161,
+      "sha256": "147FEE4C1E6ABBF9C9E850209329B219A1E2080C2621AF18E75384B916AA8C97"
+    }
+  ]
+}

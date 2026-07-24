@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "integration_id": "PRISMA.HTML.ATLAS.EXTRA.1",
+  "status": "SOURCE_INTEGRATED_RUNTIME_PREVIEW_PENDING",
+  "created_at": "2026-07-20T07:53:09-0600",
+  "host": {
+    "package": "prisma-html.zip",
+    "sha256": "FB852EB8671006763867231065E25D39B5DFBB88D22AD387961B931010944FDD",
+    "root": "prisma-html/"
+  },
+  "extra": {
+    "package": "atlasfin.zip",
+    "sha256": "C8264970B2FF8DDA48ECA1AC5163BEA83389DC721A70EB1BCFE0A6ABE06E67F7",
+    "manifest_status": "PASS_ATLAS_COMPLETE",
+    "manifest_update_id": "ATLAS.COMPLETE.NY",
+    "public_pages": 27,
+    "sections": 26,
+    "total_items": 418,
+    "destination": "extras/atlasfin/",
+    "entry": "extras/atlasfin/index.html",
+    "source_hashes_verified": true
+  },
+  "host_modified_files": [
+    "index.html",
+    "index.css",
+    "README.md",
+    "CONTINUATION.md",
+    "BASELINE-MANIFEST.json",
+    "tools/validate_project.py"
+  ],
+  "added_files": [
+    "extras/atlasfin/**",
+    "ROLLBACK-ATLAS-EXTRA.ps1",
+    "governance/PRISMA_HTML_ATLAS_EXTRA_MANIFEST.json",
+    "reports/ATLAS_EXTRA_INTEGRATION_REPORT.json",
+    "reports/ATLAS_EXTRA_INTEGRATION_REPORT.md",
+    "rollback/atlas-extra-originals/**"
+  ],
+  "scope": {
+    "main_narrative_restructured": false,
+    "atlas_css_js_mixed_into_host": false,
+    "processes_ports_servers_touched": false,
+    "browser_automation_used": false,
+    "visual_certified": false
+  },
+  "rollback": "ROLLBACK-ATLAS-EXTRA.ps1"
+}

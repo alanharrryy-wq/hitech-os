@@ -37,6 +37,14 @@ def is_local(ref):
     )
 
 
+def is_primary_scope(path):
+    return (
+        'backup_original' not in path.parts
+        and 'extras' not in path.parts
+        and 'rollback' not in path.parts
+    )
+
+
 def split_selectors(text):
     selectors, buffer, depth, quote, escape = [], [], 0, None, False
     for char in text:
@@ -109,7 +117,7 @@ def collect_selectors(root):
                 walk(inner, path, parents, context + (label,))
 
     for path in root.rglob('*.css'):
-        if 'backup_original' in path.parts:
+        if not is_primary_scope(path):
             continue
         rules = tinycss2.parse_stylesheet(path.read_text(encoding='utf-8'), skip_whitespace=True, skip_comments=True)
         parse_errors = [rule for rule in rules if rule.type == 'error']
@@ -137,6 +145,7 @@ def main():
         'paginas/pagina-4-ecosistema-producto/index.html', 'paginas/pagina-4-ecosistema-producto/pagina.css', 'paginas/pagina-4-ecosistema-producto/pagina.js',
         'sistema-ui/css/prisma-ui.css', 'sistema-ui/js/prisma-ui.js', 'sistema-ui/catalogo/index.html',
         'assets/images/prisma-logo.png', 'README.md', 'TREE.md', 'BASELINE-MANIFEST.json',
+        'extras/atlasfin/index.html', 'extras/atlasfin/MANIFEST.json',
     ]
 
     for relative in expected:
@@ -146,7 +155,7 @@ def main():
             errors.append(f'Falta {relative}')
 
     for html_path in root.rglob('*.html'):
-        if 'backup_original' in html_path.parts:
+        if not is_primary_scope(html_path):
             continue
         text = html_path.read_text(encoding='utf-8', errors='replace')
         inspector = Inspector()
@@ -183,7 +192,7 @@ def main():
 
     active = [
         path for path in root.rglob('*')
-        if path.is_file() and 'backup_original' not in path.parts and path.suffix.lower() in {'.html', '.css', '.js'}
+        if path.is_file() and is_primary_scope(path) and path.suffix.lower() in {'.html', '.css', '.js'}
     ]
     for path in active:
         text = path.read_text(encoding='utf-8', errors='replace')
@@ -225,7 +234,7 @@ def main():
     node = shutil.which('node')
     if node:
         for js_path in root.rglob('*.js'):
-            if 'backup_original' in js_path.parts:
+            if not is_primary_scope(js_path):
                 continue
             process = subprocess.run([node, '--check', str(js_path)], capture_output=True, text=True)
             ok = process.returncode == 0

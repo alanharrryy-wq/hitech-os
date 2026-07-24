@@ -1,0 +1,107 @@
+{
+  "schema_version": "PRISMA_HTML_GLASS_FIX_REPORT_1.0",
+  "status": "PASS_SOURCE_AND_INLINE_CHROMIUM_HARNESS",
+  "generated_at": "2026-07-20T22:17:23.198533+00:00",
+  "task": "Correct verified standalone PRISMA HTML and Atlas defects without touching hitech-os, apps, database, Git, processes, ports, or deployment.",
+  "authority": {
+    "mesh": "governance/PRISMA_HTML_GLASS_FIX_AUTHORITY_MESH.json",
+    "layers_map": "governance/PRISMA_HTML_GLASS_FIX_LAYERS_MAP.json"
+  },
+  "fixed": [
+    "0% chrome/content now removes residual background, border, shadow, and backdrop treatment from governed material owners",
+    "canonical owner groups separate structural content, floating overlays, reusable cards, chrome controls, active states, and semantic exemptions",
+    "11 same-context selector duplicate groups consolidated in index.css",
+    "custom select keyboard Enter no longer double-toggles open then closed",
+    "Atlas content and section grid tracks now use minmax(0,1fr) containment",
+    "late swatch media rules no longer reopen mobile horizontal overflow",
+    "three intentional opacity demonstrations are explicitly marked semantic samples",
+    "continuation, tree, validation, and integrity manifests regenerated"
+  ],
+  "changed_existing_files": [
+    {
+      "path": "index.css",
+      "before_sha256": "D3A3352D57CE9F0E56C7E8FC51FBCF660579BE0CFBAC507D1B3897CFB30EF39F",
+      "after_sha256": "BE8DFE53E65A2C41E801F74E37A22FBE1AFF3C3A95A06868678D8259D44DCD3F",
+      "before_bytes": 18011,
+      "after_bytes": 18105
+    },
+    {
+      "path": "extras/atlasfin/a-fundamentos.html",
+      "before_sha256": "7A5F7221498AEABB20B683D12410812BBDD4F8ECF50819929E65D862D3D7C405",
+      "after_sha256": "F00DA7114CBB7E4ADF732A39048230DB54957BAD2ECDBB94D696D16446945056",
+      "before_bytes": 22196,
+      "after_bytes": 22259
+    },
+    {
+      "path": "extras/atlasfin/assets/css/atlas.css",
+      "before_sha256": "3CDF5DBE79BBA4B2E9BF9F030B1B76675236F1D815E70273FBEA43398410D87D",
+      "after_sha256": "5826562E3EA5499D4AF134F8B9B0FDB6468A7A7979420DCB1BFDB33DB8BF26D4",
+      "before_bytes": 140528,
+      "after_bytes": 146961
+    },
+    {
+      "path": "extras/atlasfin/assets/js/atlas.js",
+      "before_sha256": "842754A2F21542C30E458C6B1F305E67C9108A89E4DDBFA78E6A1CFD4AB3B005",
+      "after_sha256": "65BD66097187EF478A196E366DCACE17B9E95E2CE3D24B5F7EE590435B4431C6",
+      "before_bytes": 61584,
+      "after_bytes": 61744
+    }
+  ],
+  "source_validation": {
+    "status": "PASS",
+    "checks": 379,
+    "warnings": 0,
+    "errors": 0,
+    "report": "reports/htmlfix-source-validation.json"
+  },
+  "atlas_validation": {
+    "status": "PASS",
+    "pages": 27,
+    "sections": 26,
+    "elements": 418,
+    "issues": [],
+    "report": "reports/htmlfix-atlas-validation.txt"
+  },
+  "browser_validation": {
+    "status": "PASS",
+    "pages": 27,
+    "owner_elements_checked": 1353,
+    "owner_failures": 0,
+    "overflow_failures": [],
+    "console_page_errors": 0,
+    "keyboard_dropdown_pass": true,
+    "keyboard_dropdown": {
+      "aria_expanded": "true",
+      "visible_panels": 1
+    },
+    "report": "reports/evidence/browser-fast-audit.json",
+    "screenshots": [
+      "reports/evidence/screenshots/after-b-materiales-desktop.jpg",
+      "reports/evidence/screenshots/after-b-materiales-mobile.jpg",
+      "reports/evidence/screenshots/after-e-seleccion-filtros-desktop.jpg",
+      "reports/evidence/screenshots/after-e-seleccion-filtros-mobile.jpg",
+      "reports/evidence/screenshots/after-index-desktop.jpg",
+      "reports/evidence/screenshots/after-index-mobile.jpg",
+      "reports/evidence/screenshots/before-b-materiales-desktop.jpg",
+      "reports/evidence/screenshots/before-e-seleccion-filtros-desktop.jpg",
+      "reports/evidence/screenshots/before-index-desktop.jpg",
+      "reports/evidence/screenshots/dropdown-keyboard-open.jpg"
+    ],
+    "harness": "real Chromium with supplied local HTML/CSS/JS inlined; direct host URL navigation blocked by sandbox policy",
+    "scope_boundary": "standalone supplied snapshot only; no deployment or hitech-os runtime certification"
+  },
+  "excluded_untouched": [
+    "hitech-os repository",
+    "Tablet",
+    "PC",
+    "Mobile",
+    "database",
+    "Prisma schema",
+    "Git",
+    "processes",
+    "ports",
+    "servers",
+    "deployment"
+  ],
+  "fake_green_policy": "No host/deployment certification claimed."
+}

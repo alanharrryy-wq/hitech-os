@@ -1,0 +1,38 @@
+{
+  "schema_version": "PRISMA_ATLAS_BATCH_3_CONTRACT_1.0",
+  "status": "SOURCE_READY",
+  "sections": {
+    "H": {
+      "items": 12,
+      "page": "h-listas.html"
+    },
+    "I": {
+      "items": 18,
+      "page": "i-paneles-cards.html"
+    },
+    "J": {
+      "items": 10,
+      "page": "j-expansion.html"
+    },
+    "K": {
+      "items": 21,
+      "page": "k-estados-feedback.html"
+    },
+    "L": {
+      "items": 10,
+      "page": "l-carga-progreso.html"
+    }
+  },
+  "interaction_rules": [
+    "Accordion and disclosure controls use buttons with aria-expanded.",
+    "Listbox options expose aria-selected.",
+    "Tree branches expose aria-expanded.",
+    "Alerts and transient feedback use status or alert semantics.",
+    "Progress controls expose aria-valuemin, aria-valuemax and aria-valuenow.",
+    "Motion-heavy loading effects respect reduced motion."
+  ],
+  "performance_rules": [
+    "Long sections use content-visibility auto.",
+    "Deferred sections provide contain-intrinsic-size."
+  ]
+}

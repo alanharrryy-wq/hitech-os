@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "id": "ATLAS.GLASS.SWEEP.01",
+  "status": "SOURCE_READY",
+  "scope": "prisma-html/extras/atlasfin only",
+  "affected": [
+    "27 HTML pages",
+    "assets/css/atlas.css",
+    "existing accessible select JS preserved"
+  ],
+  "excluded": [
+    "prisma-html narrative site",
+    "Tablet",
+    "PC",
+    "Mobile",
+    "servers",
+    "ports",
+    "Prisma",
+    "Git",
+    "databases"
+  ],
+  "contracts": {
+    "page_semantic_palette": true,
+    "accessible_custom_select": true,
+    "native_select_remains_state_authority": true,
+    "zero_layer_means_transparent": true,
+    "no_new_container_layers": true,
+    "no_new_important_rules": true,
+    "rollback_required": true,
+    "solid_button_fill_removed": true,
+    "solid_panel_fill_removed": true,
+    "glass_action_identity": true,
+    "glass_panel_identity": true
+  },
+  "page_accents": {
+    "INDEX": "cyan",
+    "A": "cyan",
+    "B": "violet",
+    "C": "emerald",
+    "D": "cyan",
+    "E": "amber",
+    "F": "cyan",
+    "G": "violet",
+    "H": "navy",
+    "I": "violet",
+    "J": "cyan",
+    "K": "emerald",
+    "L": "violet",
+    "M": "magenta",
+    "N": "emerald",
+    "O": "pink",
+    "P": "cyan",
+    "Q": "amber",
+    "R": "pink",
+    "S": "violet",
+    "T": "cyan",
+    "U": "amber",
+    "V": "amber",
+    "W": "navy",
+    "X": "magenta",
+    "Y": "cyan",
+    "Z": "navy"
+  },
+  "notes": {
+    "request": "Replace solid-feeling buttons and panel slabs with glass surfaces while keeping color and readability.",
+    "strategy": "Global glass sweep in CSS with spectral-page scope; no new HTML containers; accessible custom select preserved."
+  }
+}

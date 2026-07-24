@@ -1,67 +1,42 @@
-# PRISMA HTML · Sistema narrativo
+# PRISMA HTML · Sistema narrativo y Atlas
 
-Sitio HTML modular de PRISMA dentro del Draft PR `feature/prisma-html-investor-site`.
+Proyecto canónico:
 
-## Enlace maestro
+`F:\repos\hitech-os-prisma-html\prisma-html`
 
-La entrada completa es:
+## Entradas públicas
 
-`index.html`
+- Recorrido principal: `index.html`
+- Catálogo UI: `sistema-ui/catalogo/index.html`
+- Atlas completo: `extras/atlasfin/index.html`
 
-El recorrido público conserva las rutas existentes y distribuye cinco ideas en tres páginas:
+## Estado integrado
 
-1. Qué es PRISMA.
-2. Qué hace.
-3. Cómo funciona.
-4. Por qué es diferente.
-5. Qué ecosistema construye.
+- Recorrido narrativo principal presente.
+- Atlas: 27 páginas, 26 secciones y 418 elementos.
+- Glass owner repair estable incorporado.
+- Premium target owners incorporados para Product Card/CAFÉ, Circular Progress y overlays.
+- Evidencia y targets premium conservados bajo `docs/evidence/premium-overlay-glass/`.
+- Cloudflare Pages preparado con salida pública gobernada `dist/`.
+- Publicación autorizada por el usuario y trazada en el PR existente `#178`.
+- Deploy de Cloudflare Pages, DNS y dominio todavía no ejecutados por este paquete.
 
-La distribución actual es:
+## Validación
 
-- Página 1 · Qué es PRISMA + Qué hace.
-- Página 2 · Investor Deck, separado del recorrido público.
-- Página 3 · Cómo funciona + Por qué es diferente.
-- Página 4 · Qué ecosistema construye.
-- Catálogo · Sistema visual, separado del relato comercial.
+```powershell
+python tools/validate_project.py --root . --report reports/source-validator-current.json
+python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
+& '.\tools\cloudflare\PRISMA_HTML_CLOUDFLARE.ps1' -Action Build
+```
 
-## Contrato narrativo
+## Cloudflare
 
-Las páginas públicas comparten:
+Este sitio usa Cloudflare Pages para publicación estática. No usa el Worker LICFLOW3 ni los launchers de Cloudflare Tunnel para servir su contenido.
 
-- identidad oficial desde `assets/images/prisma-logo.png`;
-- atmósferas gobernadas;
-- máximo tres escenas;
-- navegación anterior/siguiente;
-- progreso visible;
-- máximo dos acciones principales por página narrativa;
-- interacción adicional sólo cuando demuestra algo que el contenido estático no puede explicar;
-- controles móviles de 44 CSS px;
-- cero overflow horizontal;
-- fallback sin `backdrop-filter`;
-- soporte para movimiento reducido.
-
-La autoridad compartida vive en:
-
-- `sistema-ui/css/patrones/narrative-page.css`
-- `sistema-ui/js/componentes/prisma-narrative.js`
-
-El refactor narrativo aprovecha las autoridades locales de cada superficie y no altera la estructura de carpetas, las rutas ni los archivos compartidos.
-
-## Atmósferas gobernadas
-
-- `assets/atmosphere/aurora-slate-veil.svg`
-- `assets/atmosphere/liquid-operations-smoke.svg`
-
-## Validación actual
-
-- Estado: `PASS_SOURCE_RUNTIME_PREVIEW_PENDING`.
-- Validación fuente offline: ejecutada sobre el refactor.
-- Validación visual: no ejecutada.
-- Browser harness: no ejecutado.
-- Servidores y puertos: no tocados.
-- Certificación visual: `false`.
-- Publicación: autorizada por el usuario y trazada en el PR existente `#178`.
+- Runbook: `docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_RUNBOOK.md`
+- Rollback: `docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_ROLLBACK.md`
+- Contrato: `governance/PRISMA_HTML_CLOUDFLARE_PAGES_CONTRACT.json`
 
 ## Límites
 
-Este proyecto no modifica Tablet POS, PC Admin, Mobile Companion, Chart Lab, Control Center, bases de datos, Prisma schema, procesos, puertos ni despliegues.
+Este paquete no modifica Tablet, PC, Mobile, Chart Lab, Control Center, bases de datos, Prisma schema, procesos, puertos, Tunnel, Worker, D1, DNS, Git remoto ni Cloudflare.

@@ -1,0 +1,38 @@
+{
+  "schema": "PRISMA_HTML_PREMIUM_OVERLAY_GLASS_MANIFEST_V1",
+  "task_lock_sha256": "41d7ece6c3d6ea50f82ebc187b2d51a5a67ea3d98d90f2f58f26f644e72e68f8",
+  "status": "PATCH_PAYLOAD_READY",
+  "scope": {
+    "included": [
+      "extras/atlasfin/i-paneles-cards.html",
+      "extras/atlasfin/l-carga-progreso.html",
+      "extras/atlasfin/assets/css/atlas.css"
+    ],
+    "excluded": [
+      "hitech-os",
+      "Tablet",
+      "PC",
+      "Mobile",
+      "Chart Lab",
+      "Shared UI",
+      "Prisma",
+      "servers",
+      "ports",
+      "live processes"
+    ]
+  },
+  "visual_targets": [
+    "Product Card / CAFE pill",
+    "Circular Progress card",
+    "Galeria de overlays",
+    "Notification Drawer and overlay action controls"
+  ],
+  "contracts": {
+    "new_important": 0,
+    "new_wrappers": 0,
+    "overlay_blur_owner": ".atlas-overlay-backdrop",
+    "nested_overlay_blur": "none",
+    "zero_state": "background/border/shadow/blur transparent or none",
+    "canonical_owner_marker": "PRISMA PREMIUM TARGETED MATERIAL OWNERS 03"
+  }
+}
