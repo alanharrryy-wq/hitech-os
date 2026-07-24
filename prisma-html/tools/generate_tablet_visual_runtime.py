@@ -123,7 +123,7 @@ def collect_expected(authority_commit: str) -> tuple[dict[Path, bytes], dict[str
         ).encode("utf-8") if extension in {".ts", ".tsx"} else b""
         expected[REPO_ROOT / entry["output"]] = prefix + source_path.read_bytes().replace(b"\r\n", b"\n")
 
-    expected[RUNTIME_ROOT / "tokens.ts"] = tokens_typescript(contract)
+    expected[RUNTIME_ROOT / "visual-values.ts"] = tokens_typescript(contract)
     expected[RUNTIME_ROOT / "route-bindings.json"] = canonical_json(routes)
     expected[RUNTIME_ROOT / "materials.json"] = canonical_json(
         {
