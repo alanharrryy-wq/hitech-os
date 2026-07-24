@@ -1,3 +1,4 @@
+import type { Prisma } from "../../../.generated/prisma-client";
 import { prisma } from "../prisma/client";
 import type { ProductResolveInput, ProductSearchInput } from "./validators";
 
@@ -19,10 +20,28 @@ export type PosApiProduct = {
   updatedAt: string;
 };
 
-type ProductRow = any;
+const PRODUCT_SELECT = {
+  id: true,
+  businessId: true,
+  sku: true,
+  name: true,
+  category: true,
+  priceCents: true,
+  costCents: true,
+  stockOnHand: true,
+  isActive: true,
+  updatedAt: true,
+  barcodes: { select: { code: true } }
+} satisfies Prisma.ProductSelect;
+
+const BARCODE_PRODUCT_INCLUDE = {
+  product: { select: PRODUCT_SELECT }
+} satisfies Prisma.BarcodeInclude;
+
+type ProductRow = Prisma.ProductGetPayload<{ select: typeof PRODUCT_SELECT }>;
 
 function toApiProduct(row: ProductRow, mediaRef: string | null = null): PosApiProduct {
-  const barcodes = Array.isArray(row.barcodes) ? row.barcodes.map((b: any) => String(b.code)) : [];
+  const barcodes = row.barcodes.map((barcode) => barcode.code);
   return {
     id: row.id,
     businessId: row.businessId,
@@ -42,14 +61,24 @@ function toApiProduct(row: ProductRow, mediaRef: string | null = null): PosApiPr
   };
 }
 
+function isMissingMediaRefColumn(error: unknown) {
+  if (!(error instanceof Error)) return false;
+  return /(?:column|campo).*(?:Product\.)?mediaRef.*(?:does not exist|no existe)|no such column.*mediaRef/i.test(error.message);
+}
+
 async function mediaRefsFor(productIds: string[]) {
   if (!productIds.length) return new Map<string, string | null>();
   const placeholders = productIds.map(() => "?").join(", ");
-  const rows = await prisma.$queryRawUnsafe<Array<{ id: string; mediaRef: string | null }>>(
-    `SELECT "id", "mediaRef" FROM "Product" WHERE "id" IN (${placeholders})`,
-    ...productIds
-  );
-  return new Map(rows.map((row) => [row.id, row.mediaRef]));
+  try {
+    const rows = await prisma.$queryRawUnsafe<Array<{ id: string; mediaRef: string | null }>>(
+      `SELECT "id", "mediaRef" FROM "Product" WHERE "id" IN (${placeholders})`,
+      ...productIds
+    );
+    return new Map(rows.map((row) => [row.id, row.mediaRef]));
+  } catch (error) {
+    if (isMissingMediaRefColumn(error)) return new Map<string, string | null>();
+    throw error;
+  }
 }
 
 export async function searchProducts(input: ProductSearchInput): Promise<PosApiProduct[]> {
@@ -60,12 +89,12 @@ export async function searchProducts(input: ProductSearchInput): Promise<PosApiP
         businessId: input.businessId,
         ...(input.includeInactive ? {} : { isActive: true })
       },
-      include: { barcodes: true },
+      select: PRODUCT_SELECT,
       orderBy: [{ isActive: "desc" }, { name: "asc" }],
       take: input.limit
     });
-    const mediaRefs = await mediaRefsFor(rows.map((row: any) => row.id));
-    return rows.map((row: any) => toApiProduct(row, mediaRefs.get(row.id) ?? null));
+    const mediaRefs = await mediaRefsFor(rows.map((row) => row.id));
+    return rows.map((row) => toApiProduct(row, mediaRefs.get(row.id) ?? null));
   }
 
   const barcodeRows = await prisma.barcode.findMany({
@@ -73,11 +102,11 @@ export async function searchProducts(input: ProductSearchInput): Promise<PosApiP
       businessId: input.businessId,
       code: { contains: q }
     },
-    include: { product: { include: { barcodes: true } } },
+    include: BARCODE_PRODUCT_INCLUDE,
     take: input.limit
   });
 
-  const barcodeProductIds = barcodeRows.map((row: any) => row.productId);
+  const barcodeProductIds = barcodeRows.map((row) => row.productId);
 
   const rows = await prisma.product.findMany({
     where: {
@@ -90,13 +119,13 @@ export async function searchProducts(input: ProductSearchInput): Promise<PosApiP
         ...(barcodeProductIds.length ? [{ id: { in: barcodeProductIds } }] : [])
       ]
     },
-    include: { barcodes: true },
+    select: PRODUCT_SELECT,
     orderBy: [{ isActive: "desc" }, { name: "asc" }],
     take: input.limit
   });
 
-  const candidates = [...rows, ...barcodeRows.flatMap((row: any) => row.product ? [row.product] : [])];
-  const mediaRefs = await mediaRefsFor(candidates.map((row: any) => row.id));
+  const candidates = [...rows, ...barcodeRows.map((row) => row.product)];
+  const mediaRefs = await mediaRefsFor(candidates.map((row) => row.id));
   const byId = new Map<string, PosApiProduct>();
   for (const row of rows) byId.set(row.id, toApiProduct(row, mediaRefs.get(row.id) ?? null));
   for (const row of barcodeRows) {
@@ -112,7 +141,7 @@ export async function resolveProduct(input: ProductResolveInput): Promise<PosApi
   const code = input.code.trim();
   const barcode = await prisma.barcode.findFirst({
     where: { businessId: input.businessId, code },
-    include: { product: { include: { barcodes: true } } }
+    include: BARCODE_PRODUCT_INCLUDE
   });
 
   if (barcode?.product) {
@@ -125,7 +154,7 @@ export async function resolveProduct(input: ProductResolveInput): Promise<PosApi
       businessId: input.businessId,
       OR: [{ id: code }, { sku: code }]
     },
-    include: { barcodes: true }
+    select: PRODUCT_SELECT
   });
 
   if (!product) return null;
