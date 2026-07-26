@@ -1476,4 +1476,253 @@
       flex-direction: column;
     }
   }
+
+  /* PRISMA_POS_READABILITY_CONTRACT_2507
+   * Canonical readability contract for the nocturne POS surface.
+   */
+  .posPremiumCatalogArea {
+    container-type: inline-size;
+  }
+
+  .posPremiumProductGrid {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+  }
+
+  .posPremiumProductCard {
+    min-height: 318px;
+    border-color: rgba(235, 244, 255, 0.28);
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.024) 52%),
+      rgba(5, 9, 14, 0.86);
+    box-shadow:
+      0 22px 54px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(18px) saturate(1.08);
+    -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  }
+
+  .posPremiumProductCard:hover {
+    border-color: rgba(152, 229, 255, 0.48);
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.032) 52%),
+      rgba(6, 12, 19, 0.91);
+  }
+
+  .posPremiumProductText {
+    gap: 7px;
+    padding: 14px 15px 9px;
+    background: linear-gradient(180deg, rgba(4, 8, 13, 0.12), rgba(4, 8, 13, 0.82));
+  }
+
+  .posPremiumProductName {
+    display: -webkit-box;
+    min-height: 2.58em;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 850;
+    letter-spacing: -0.015em;
+    line-height: 1.29;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.96);
+  }
+
+  .posPremiumCategoryButton,
+  .posPremiumCategoryButtonActive {
+    min-height: 46px;
+    border-color: rgba(225, 241, 255, 0.16);
+    background: rgba(4, 9, 15, 0.66);
+    color: rgba(240, 248, 255, 0.94);
+    font-size: 0.91rem;
+    font-weight: 820;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.92);
+  }
+
+  .posPremiumCategoryButtonActive {
+    border-color: rgba(112, 224, 255, 0.58);
+    background:
+      linear-gradient(180deg, rgba(112, 224, 255, 0.22), rgba(112, 224, 255, 0.075)),
+      rgba(5, 15, 22, 0.88);
+    color: #ffffff;
+  }
+
+  .posPremiumCatalogInsight {
+    color: rgba(229, 241, 250, 0.88);
+    font-size: 0.82rem;
+    font-weight: 720;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  }
+
+  .posPremiumCatalogInsight strong {
+    color: #ffffff;
+  }
+
+  .posPremiumProductMetaRail {
+    color: rgba(226, 238, 248, 0.92);
+    font-size: 0.78rem;
+    font-weight: 760;
+  }
+
+  .badgeOk,
+  .badgeNeutral,
+  .badgeDanger {
+    min-height: 30px;
+    padding: 4px 10px;
+    background: rgba(3, 8, 13, 0.82);
+    font-size: 0.74rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.92);
+  }
+
+  .posPremiumProductStatus,
+  .posPremiumProductStockOk,
+  .posPremiumProductStockLow,
+  .posPremiumProductStockEmpty {
+    color: rgba(231, 243, 251, 0.94);
+    font-size: 0.75rem;
+    font-weight: 790;
+    text-shadow: 0 2px 9px rgba(0, 0, 0, 0.96);
+  }
+
+  .posPremiumProductPrice {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.96);
+  }
+
+  .posPremiumProductPrice small {
+    color: rgba(225, 238, 248, 0.82);
+    font-size: 0.68rem;
+  }
+
+  .posPremiumAddButton {
+    border-color: rgba(139, 229, 255, 0.58);
+    background: rgba(13, 54, 72, 0.86);
+    color: #e6f9ff;
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  @container (max-width: 470px) {
+    .posPremiumProductGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* PRISMA_POS_GLASS_REBALANCE_2507
+   * Rebalance of the nocturne glass behavior after readability hardening.
+   * Goal: lighter translucency, sticky search/header bar, softer gaussian hover glow.
+   */
+  .posPremiumCatalogArea {
+    container-type: inline-size;
+  }
+
+  .posPremiumCatalogHeader,
+  .posPremiumCatalogToolbar,
+  .posPremiumCatalogChrome,
+  .posPremiumSearchShell,
+  .posPremiumSearchBar,
+  .posPremiumSearchSurface,
+  .posPremiumSearchContainer,
+  .posPremiumSearchCard {
+    position: sticky;
+    top: 10px;
+    z-index: 28;
+    backdrop-filter: blur(18px) saturate(1.08);
+    -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  }
+
+  .posPremiumCatalogHeader,
+  .posPremiumCatalogToolbar,
+  .posPremiumCatalogChrome {
+    background:
+      linear-gradient(180deg, rgba(4, 8, 13, 0.24), rgba(4, 8, 13, 0.08)),
+      rgba(5, 10, 16, 0.22);
+  }
+
+  .posPremiumSearchShell,
+  .posPremiumSearchBar,
+  .posPremiumSearchSurface,
+  .posPremiumSearchContainer,
+  .posPremiumSearchCard {
+    border-color: rgba(209, 233, 247, 0.13);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+      rgba(4, 10, 16, 0.30);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .posPremiumSearchInput,
+  .posPremiumSearchField,
+  .posPremiumCatalogSearchInput {
+    background: rgba(3, 8, 13, 0.14);
+    border-color: rgba(201, 227, 243, 0.11);
+    color: rgba(244, 249, 253, 0.96);
+  }
+
+  .posPremiumProductGrid {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+  }
+
+  .posPremiumProductCard {
+    border-color: rgba(231, 242, 251, 0.22);
+    background:
+      linear-gradient(154deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018) 54%),
+      rgba(4, 9, 14, 0.68);
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(16px) saturate(1.06);
+    -webkit-backdrop-filter: blur(16px) saturate(1.06);
+  }
+
+  .posPremiumProductCard:hover {
+    border-color: rgba(136, 228, 255, 0.42);
+    background:
+      linear-gradient(154deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.026) 54%),
+      rgba(6, 12, 18, 0.72);
+    box-shadow:
+      0 18px 42px rgba(0, 0, 0, 0.26),
+      0 0 22px rgba(123, 225, 255, 0.12),
+      0 0 44px rgba(123, 225, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  }
+
+  .posPremiumProductText {
+    background: linear-gradient(180deg, rgba(4, 8, 13, 0.10), rgba(4, 8, 13, 0.58));
+  }
+
+  .posPremiumProductName {
+    min-height: 2.58em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.90);
+  }
+
+  .posPremiumCategoryButton,
+  .posPremiumCategoryButtonActive {
+    background: rgba(4, 9, 15, 0.46);
+  }
+
+  .posPremiumAddButton {
+    background: rgba(12, 48, 65, 0.72);
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.20),
+      0 0 18px rgba(122, 226, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  @container (max-width: 470px) {
+    .posPremiumProductGrid {
+      grid-template-columns: 1fr;
+    }
+  }
 }
