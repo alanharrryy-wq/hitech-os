@@ -37,7 +37,9 @@
     "pretypecheck": "pnpm run verify:zero-important",
     "predev": "pnpm run verify:zero-important",
     "predev:turbopack": "pnpm run verify:zero-important",
-    "verify:pcfunc-dropdowns": "node tools/verify_pcfunc_dropdowns_2406.mjs"
+    "verify:pcfunc-dropdowns": "node tools/verify_pcfunc_dropdowns_2406.mjs",
+    "dev:webpack": "pnpm run prisma:generate && next dev --webpack -p 3130",
+    "predev:webpack": "pnpm run verify:zero-important"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",
