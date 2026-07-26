@@ -1,3 +1,4 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 export type CatalogStatusFilter = "all" | "active" | "inactive";
 export type CatalogIssueFilter = "all" | "missing_barcode" | "duplicate_barcode" | "inactive_product" | "stale_price";
 
@@ -28,6 +29,7 @@ export type CatalogProductRecord = {
   sku: string;
   name: string;
   category: string;
+  mediaRef: string | null;
   priceCents: number;
   costCents: number;
   stockOnHand: number;

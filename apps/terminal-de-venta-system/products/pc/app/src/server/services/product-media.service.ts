@@ -1,5 +1,7 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 import { resolvePcBusinessScope } from "@/server/services/pc-command-center.service";
 import { ProductMediaRepository } from "@/server/repositories/product-media.repository";
+import { loadManagedPackshotCatalog } from "@/server/product-media/managed-library";
 
 const repository = new ProductMediaRepository();
 
@@ -28,11 +30,34 @@ export function readProductMediaUpdate(body: unknown) {
 
 export async function getProductMediaWorkspace() {
   try {
-    const products = await repository.list(await resolvePcBusinessScope());
-    return { products, meta: { source: "canonical_prisma" as const, warning: null as string | null, generatedAt: new Date().toISOString() } };
+    const [products, library] = await Promise.all([
+      repository.list(await resolvePcBusinessScope()),
+      Promise.resolve(loadManagedPackshotCatalog())
+    ]);
+    return {
+      products,
+      library: library.items,
+      meta: {
+        source: "canonical_prisma" as const,
+        warning: null as string | null,
+        generatedAt: new Date().toISOString(),
+        libraryId: library.libraryId,
+        libraryCount: library.items.length
+      }
+    };
   } catch (error) {
     const reason = error instanceof Error ? error.message : "lectura no disponible";
-    return { products: [], meta: { source: "unavailable" as const, warning: `No fue posible leer referencias de imagen: ${reason}. Verifica la migración canónica.`, generatedAt: new Date().toISOString() } };
+    return {
+      products: [],
+      library: [],
+      meta: {
+        source: "unavailable" as const,
+        warning: `No fue posible leer referencias de imagen: ${reason}. Verifica la migración canónica y la biblioteca administrada.`,
+        generatedAt: new Date().toISOString(),
+        libraryId: "",
+        libraryCount: 0
+      }
+    };
   }
 }
 

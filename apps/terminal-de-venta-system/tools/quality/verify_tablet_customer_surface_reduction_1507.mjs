@@ -110,7 +110,9 @@ for (const target of chartLabRequired) check("Chart Lab preserved", fs.existsSyn
 const contractsPath = path.join(tabletRoot, "src", "navigation", "tablet-page-contracts.ts");
 const compositionPath = path.join(tabletRoot, "src", "composition", "navigation.ts");
 const navPath = path.join(tabletRoot, "components", "tablet-shell", "tablet-nav.ts");
-const middlewarePath = path.join(tabletRoot, "middleware.ts");
+// PRISMA_PROXY_COMPAT_2607
+const proxyPath = path.join(tabletRoot, "proxy.ts");
+const middlewarePath = fs.existsSync(proxyPath) ? proxyPath : path.join(tabletRoot, "middleware.ts");
 
 for (const target of [contractsPath, compositionPath, navPath, middlewarePath]) {
   check("replacement marker present", read(target).includes("CUSTOMER_SURFACE_REDUCTION_1507"), target);

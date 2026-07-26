@@ -1,3 +1,4 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 import { DataTable } from "@components/backoffice/data-table";
 import { EmptyState } from "@components/backoffice/empty-state";
 import { StatusBadge } from "@components/backoffice/status-badge";
@@ -8,6 +9,8 @@ import type { CatalogProductRecord, CatalogWorkspace } from "@/modules/catalog/t
 import type { getProductVariantWorkspace } from "@/server/services/product-variant.service";
 import type { getProductMediaWorkspace } from "@/server/services/product-media.service";
 import styles from "../inventory/pc-inventory-master-detail.module.css";
+import mediaStyles from "./product-media-workspace.module.css";
+import mediaStyles from "./product-media-workspace.module.css";
 
 function money(cents: number) {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(cents / 100);
@@ -64,6 +67,16 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
           <h2>{product.name}</h2>
         </div>
         <StatusBadge value={product.isActive ? "activo" : "inactivo"} />
+      </div>
+
+      <div className={mediaStyles.preview}>
+        {product.mediaRef ? <img src={product.mediaRef} alt={`Imagen de ${product.name}`} /> : <span>Sin imagen asignada</span>}
+        <div><strong>Imagen del catálogo</strong><small>{product.mediaRef ?? "Elige una imagen en la biblioteca inferior."}</small></div>
+      </div>
+
+      <div className={mediaStyles.preview}>
+        {product.mediaRef ? <img src={product.mediaRef} alt={`Imagen de ${product.name}`} /> : <span>Sin imagen asignada</span>}
+        <div><strong>Imagen del catálogo</strong><small>{product.mediaRef ?? "Elige una imagen en la biblioteca inferior."}</small></div>
       </div>
 
       <div className={styles.fichaStack}>
@@ -126,6 +139,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
     SKU: product.sku,
     Producto: product.name,
     Categoría: product.category,
+    Imagen: product.mediaRef ? "asignada" : "sin imagen",
     Precio: money(product.priceCents),
     Margen: margin(product),
     Códigos: product.barcodes.length,
@@ -192,7 +206,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
             </div>
             <div className={styles.tableFrame}>
               <DataTable
-                columns={["SKU", "Producto", "Categoría", "Precio", "Margen", "Códigos", "Stock", "Cobertura", "Estado"]}
+                columns={["SKU", "Producto", "Categoría", "Imagen", "Precio", "Margen", "Códigos", "Stock", "Cobertura", "Estado"]}
                 rows={rows}
                 emptyMessage="No hay productos para los criterios actuales."
               />

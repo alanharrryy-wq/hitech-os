@@ -1,24 +1,22 @@
 {
   "schema_version": "2.0.0",
   "generated_by": "PRISMA Authority Mesh Visual Capability Resolver",
-  "task": "PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes",
+  "task": "FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.",
   "visual_required": true,
   "apps": [
-    "backgrounds",
     "chart-lab",
     "control-center",
     "database-sync",
     "mobile",
     "pc",
-    "productization",
     "quality",
-    "shared-kernel",
     "shared-ui",
     "tablet",
     "web"
   ],
   "change_types": [
     "data_sync",
+    "ops_hot_injection",
     "visual"
   ],
   "capabilities": [
@@ -257,6 +255,16 @@
           "version": "^2.1.1"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^2.1.1"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^2.1.1"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -280,6 +288,16 @@
       "evidence": [
         {
           "path": "package.json",
+          "section": "dependencies",
+          "version": "^3.6.0"
+        },
+        {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^3.6.0"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^3.6.0"
         },
@@ -424,6 +442,16 @@
           "version": "^1.16.0"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.16.0"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.16.0"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -540,18 +568,6 @@
           "extension": ".png"
         },
         {
-          "path": "products/pc/app/tools/verify_pc_cloudglass_dashboard_01.py",
-          "bytes": 3929,
-          "extension": ".py",
-          "sha256": "63e81eaaaabdfa115845d3bae319b4d2a52909b22903fbd7d9c4aaf903cf7135"
-        },
-        {
-          "path": "products/pc/app/tools/verify_pc_dashboard_cloudglass_mist_v2.py",
-          "bytes": 2572,
-          "extension": ".py",
-          "sha256": "134cb6ec023c1df0f50b52300bfc36af96796e021028924f102f61be12eecf7e"
-        },
-        {
           "path": "products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/tablet-fuji-cloudglass.jpg",
           "bytes": 415340,
           "extension": ".jpg"
@@ -652,9 +668,21 @@
         },
         {
           "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css",
-          "bytes": 7481,
+          "bytes": 5276,
           "extension": ".css",
-          "sha256": "5888365b2874014353414f7c64ceee8fe28f149247a9c6ad191d1e7cd12ecea0"
+          "sha256": "39c768f29de0107c343e76f8fc796444eaecd0973efa5fbb79d724a0e6c48713"
+        },
+        {
+          "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+          "bytes": 8054,
+          "extension": ".tsx",
+          "sha256": "e1a23037163c8a62537e4b72910e053821c18d9bc3a3170f610b8e34b5cf477a"
+        },
+        {
+          "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+          "bytes": 11239,
+          "extension": ".tsx",
+          "sha256": "1d7b71e0710d3edf1ae29eb00c1a918c59fcddacd064518c667df5a13552634a"
         }
       ],
       "patterns": [
@@ -703,7 +731,17 @@
           "version": "^3.15.0"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^3.15.0"
+        },
+        {
           "path": "prisma-control-center/package.json",
+          "section": "dependencies",
+          "version": "^3.15.0"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^3.15.0"
         },
@@ -735,7 +773,17 @@
           "version": "^12.40.0"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^12.40.0"
+        },
+        {
           "path": "prisma-control-center/package.json",
+          "section": "dependencies",
+          "version": "^12.40.0"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^12.40.0"
         },
@@ -895,6 +943,16 @@
           "version": "^1.1.15"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.1.15"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.1.15"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -918,6 +976,16 @@
       "evidence": [
         {
           "path": "package.json",
+          "section": "dependencies",
+          "version": "^2.1.16"
+        },
+        {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^2.1.16"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^2.1.16"
         },
@@ -949,6 +1017,16 @@
           "version": "^1.2.10"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.2.10"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.2.10"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -972,6 +1050,16 @@
       "evidence": [
         {
           "path": "package.json",
+          "section": "dependencies",
+          "version": "^2.2.6"
+        },
+        {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^2.2.6"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^2.2.6"
         },
@@ -1003,6 +1091,16 @@
           "version": "^1.2.4"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.2.4"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.2.4"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -1030,6 +1128,16 @@
           "version": "^1.1.13"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.1.13"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.1.13"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -1053,6 +1161,16 @@
       "evidence": [
         {
           "path": "package.json",
+          "section": "dependencies",
+          "version": "^1.2.8"
+        },
+        {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.2.8"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^1.2.8"
         },
@@ -1264,6 +1382,16 @@
           "version": "^1.20.1"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.20.1"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.20.1"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -1303,18 +1431,6 @@
           "sha256": "00592b0733955199b4bdb42d2529c335002c3e2a833ad447cea85b7d28aeb54c"
         },
         {
-          "path": "products/tablet/app/components/pos/pos.visual.tokens.css",
-          "bytes": 2919,
-          "extension": ".css",
-          "sha256": "e28d2d32004c322e363209f78c3939804f3debefb9c94d591b7dd7fb397a9ff5"
-        },
-        {
-          "path": "products/tablet/app/components/pos/pos.visual.tokens.generated.css",
-          "bytes": 8264,
-          "extension": ".css",
-          "sha256": "a0dba206dc75eba7b502bdc4b6de2a96c63eef096b1f30fdca2e53d693d159b3"
-        },
-        {
           "path": "styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css",
           "bytes": 1146,
           "extension": ".css",
@@ -1351,12 +1467,6 @@
           "sha256": "243c6b687b7d80fb1c1f880f020e668da5f0df94a8c952b9c788f7036d0e606c"
         },
         {
-          "path": "products/tablet/app/components/tablet-visual-v2/tablet-visual-tokens.ts",
-          "bytes": 865,
-          "extension": ".ts",
-          "sha256": "6c05b3860c72f465640f5ad81c0fc3050187554c8dd3cd1996639d84b9ec3cef"
-        },
-        {
           "path": "shared/prisma-charts/prismaChartTokens.ts",
           "bytes": 1266,
           "extension": ".ts",
@@ -1389,6 +1499,16 @@
       "evidence": [
         {
           "path": "package.json",
+          "section": "dependencies",
+          "version": "^0.7.1"
+        },
+        {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^0.7.1"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
           "section": "dependencies",
           "version": "^0.7.1"
         },
@@ -1586,6 +1706,16 @@
           "version": "^1.0.11"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.0.11"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^1.0.11"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -1613,6 +1743,16 @@
           "version": "^0.184.0"
         },
         {
+          "path": "docs/ops/licscope/changed_files/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^0.184.0"
+        },
+        {
+          "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/apps/terminal-de-venta-system/package.json",
+          "section": "dependencies",
+          "version": "^0.184.0"
+        },
+        {
           "path": "pnpm-lock.yaml",
           "section": "lockfile",
           "version": "lock-evidence"
@@ -1629,26 +1769,6 @@
     }
   ],
   "app_visual_exploitation": [
-    {
-      "app": "backgrounds",
-      "style_profile": "governed atmosphere assets, manifests and per-surface adapters",
-      "recommended_to_exploit": [
-        "background-catalog",
-        "cloudglass-assets",
-        "layer-budget",
-        "authority-map"
-      ],
-      "available_but_cautious": [
-        "ogl",
-        "three",
-        "gsap"
-      ],
-      "missing_preferred": [],
-      "forbidden_or_guardrails": [
-        "using excluded/heavy assets without manifest"
-      ],
-      "rule": "Exploit recommended capabilities when they fit the concrete screen. Do not use cautious capabilities unless bounded and justified. Every unused available premium capability needs a reason in result evidence."
-    },
     {
       "app": "chart-lab",
       "style_profile": "visual experimentation with evidence and lab boundaries",
@@ -1753,31 +1873,7 @@
       "rule": "Exploit recommended capabilities when they fit the concrete screen. Do not use cautious capabilities unless bounded and justified. Every unused available premium capability needs a reason in result evidence."
     },
     {
-      "app": "productization",
-      "style_profile": "general governed PRISMA surface",
-      "recommended_to_exploit": [
-        "prisma-tokens",
-        "prisma-recipes"
-      ],
-      "available_but_cautious": [],
-      "missing_preferred": [],
-      "forbidden_or_guardrails": [],
-      "rule": "Exploit recommended capabilities when they fit the concrete screen. Do not use cautious capabilities unless bounded and justified. Every unused available premium capability needs a reason in result evidence."
-    },
-    {
       "app": "quality",
-      "style_profile": "general governed PRISMA surface",
-      "recommended_to_exploit": [
-        "prisma-tokens",
-        "prisma-recipes"
-      ],
-      "available_but_cautious": [],
-      "missing_preferred": [],
-      "forbidden_or_guardrails": [],
-      "rule": "Exploit recommended capabilities when they fit the concrete screen. Do not use cautious capabilities unless bounded and justified. Every unused available premium capability needs a reason in result evidence."
-    },
-    {
-      "app": "shared-kernel",
       "style_profile": "general governed PRISMA surface",
       "recommended_to_exploit": [
         "prisma-tokens",
@@ -1888,36 +1984,6 @@
       "bytes": 3648
     },
     {
-      "path": "products/tablet/app/src/server/repositories/dashboard-kpi.repository.ts",
-      "score": 160,
-      "bytes": 333
-    },
-    {
-      "path": "products/pc/app/public/surface-visual-governor/dashboard/latest/recipe-export/chart.recipe.json",
-      "score": 150,
-      "bytes": 15229
-    },
-    {
-      "path": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/recipe-export/chart.recipe.json",
-      "score": 150,
-      "bytes": 15229
-    },
-    {
-      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
-      "score": 130,
-      "bytes": 8665
-    },
-    {
-      "path": "products/pc/app/components/backoffice/executive-dashboard.tsx",
-      "score": 130,
-      "bytes": 4270
-    },
-    {
-      "path": "products/pc/app/components/catalog/catalog-dashboard.tsx",
-      "score": 130,
-      "bytes": 11649
-    },
-    {
       "path": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx",
       "score": 130,
       "bytes": 10446
@@ -1928,64 +1994,64 @@
       "bytes": 1079
     },
     {
-      "path": "products/tablet/app/components/pos/pos-cobro-surface.tsx",
+      "path": "products/tablet/app/components/pos/pos-customer-binding.tsx",
       "score": 130,
-      "bytes": 18407
+      "bytes": 3514
     },
     {
       "path": "products/tablet/app/components/pos/pos-error-banner.tsx",
       "score": 130,
-      "bytes": 585
+      "bytes": 1028
     },
     {
       "path": "products/tablet/app/components/pos/pos-live-binding.tsx",
       "score": 130,
-      "bytes": 7499
+      "bytes": 8118
     },
     {
       "path": "products/tablet/app/components/pos/pos-packshots.ts",
       "score": 130,
-      "bytes": 30607
+      "bytes": 30884
     },
     {
       "path": "products/tablet/app/components/pos/pos-payment-panel.tsx",
       "score": 130,
-      "bytes": 23429
+      "bytes": 33420
     },
     {
       "path": "products/tablet/app/components/pos/pos-payment-risk-banner.tsx",
       "score": 130,
-      "bytes": 571
+      "bytes": 1309
     },
     {
       "path": "products/tablet/app/components/pos/pos-product-list.tsx",
       "score": 130,
-      "bytes": 14747
+      "bytes": 15303
     },
     {
       "path": "products/tablet/app/components/pos/pos-product-search.tsx",
       "score": 130,
-      "bytes": 5004
+      "bytes": 3431
     },
     {
       "path": "products/tablet/app/components/pos/pos-sale-success.tsx",
       "score": 130,
-      "bytes": 1777
+      "bytes": 4699
     },
     {
       "path": "products/tablet/app/components/pos/pos-screen.tsx",
       "score": 130,
-      "bytes": 23181
+      "bytes": 26547
     },
     {
       "path": "products/tablet/app/components/pos/pos-shortcuts.tsx",
       "score": 130,
-      "bytes": 670
+      "bytes": 665
     },
     {
       "path": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
       "score": 130,
-      "bytes": 15327
+      "bytes": 14441
     },
     {
       "path": "products/tablet/app/components/pos/terminal-v2/index.ts",
@@ -2010,7 +2076,7 @@
     {
       "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.tsx",
       "score": 130,
-      "bytes": 2395
+      "bytes": 4409
     },
     {
       "path": "products/tablet/app/components/pos/terminal-v2/pos-ticket-rail.tsx",
@@ -2020,92 +2086,22 @@
     {
       "path": "products/tablet/app/components/pos/use-prisma-packshot-skin.ts",
       "score": 130,
-      "bytes": 1316
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-cart-panel.tsx",
-      "score": 130,
-      "bytes": 4883
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-category-rail.tsx",
-      "score": 130,
-      "bytes": 1773
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-data.ts",
-      "score": 130,
-      "bytes": 4511
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx",
-      "score": 130,
-      "bytes": 6898
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx",
-      "score": 130,
-      "bytes": 2326
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx",
-      "score": 130,
-      "bytes": 2187
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-grid.tsx",
-      "score": 130,
-      "bytes": 424
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-route-ui.tsx",
-      "score": 130,
-      "bytes": 8299
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-search-row.tsx",
-      "score": 130,
-      "bytes": 1730
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-sidebar.tsx",
-      "score": 130,
-      "bytes": 1746
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-top-action-bar.tsx",
-      "score": 130,
-      "bytes": 1337
-    },
-    {
-      "path": "products/tablet/app/components/tablet-home/tablet-home-screen.tsx",
-      "score": 130,
-      "bytes": 5513
+      "bytes": 245
     },
     {
       "path": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx",
       "score": 130,
-      "bytes": 33141
-    },
-    {
-      "path": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
-      "score": 120,
-      "bytes": 44244
+      "bytes": 42202
     },
     {
       "path": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.module.css",
       "score": 120,
-      "bytes": 4635
-    },
-    {
-      "path": "products/tablet/app/components/pos/pos-cobro-surface.module.css",
-      "score": 120,
-      "bytes": 17461
+      "bytes": 3044
     },
     {
       "path": "products/tablet/app/components/pos/pos.module.css",
       "score": 120,
-      "bytes": 290197
+      "bytes": 40097
     },
     {
       "path": "products/tablet/app/components/pos/pos.visual.presets.json",
@@ -2118,16 +2114,6 @@
       "bytes": 2086
     },
     {
-      "path": "products/tablet/app/components/pos/pos.visual.tokens.css",
-      "score": 120,
-      "bytes": 2919
-    },
-    {
-      "path": "products/tablet/app/components/pos/pos.visual.tokens.generated.css",
-      "score": 120,
-      "bytes": 8264
-    },
-    {
       "path": "products/tablet/app/components/pos/pos.visual.tokens.json",
       "score": 120,
       "bytes": 41916
@@ -2135,22 +2121,12 @@
     {
       "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css",
       "score": 120,
-      "bytes": 1878
-    },
-    {
-      "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos.module.css",
-      "score": 120,
-      "bytes": 76263
-    },
-    {
-      "path": "products/tablet/app/components/tablet-home/tablet-home.module.css",
-      "score": 120,
-      "bytes": 72990
+      "bytes": 2935
     },
     {
       "path": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
       "score": 120,
-      "bytes": 33434
+      "bytes": 4457
     },
     {
       "path": "products/mobile/app/app/prisma-command/charts/MobileActionInboxPriorityStack.tsx",
@@ -2190,17 +2166,12 @@
     {
       "path": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
       "score": 110,
-      "bytes": 1730
+      "bytes": 2694
     },
     {
       "path": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/chart-series-engine.ts",
       "score": 110,
       "bytes": 10105
-    },
-    {
-      "path": "products/pc/app/app/api/backoffice/dashboard/route.ts",
-      "score": 110,
-      "bytes": 775
     },
     {
       "path": "products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts",
@@ -2228,39 +2199,9 @@
       "bytes": 910
     },
     {
-      "path": "products/pc/app/app/dashboard/error.tsx",
-      "score": 110,
-      "bytes": 888
-    },
-    {
-      "path": "products/pc/app/app/dashboard/loading.tsx",
-      "score": 110,
-      "bytes": 484
-    },
-    {
-      "path": "products/pc/app/app/dashboard/page.tsx",
-      "score": 110,
-      "bytes": 7288
-    },
-    {
       "path": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
       "score": 110,
       "bytes": 3528
-    },
-    {
-      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/error.tsx",
-      "score": 110,
-      "bytes": 1079
-    },
-    {
-      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/loading.tsx",
-      "score": 110,
-      "bytes": 785
-    },
-    {
-      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
-      "score": 110,
-      "bytes": 4360
     },
     {
       "path": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
@@ -2276,6 +2217,161 @@
       "path": "products/pc/app/app/prisma-insights/charts/PcChartCard.tsx",
       "score": 110,
       "bytes": 972
+    },
+    {
+      "path": "products/pc/app/app/prisma-insights/charts/PcDecisionLedgerTimeline.tsx",
+      "score": 110,
+      "bytes": 890
+    },
+    {
+      "path": "products/pc/app/app/prisma-insights/charts/PcFinancialOperationalWaterfall.tsx",
+      "score": 110,
+      "bytes": 922
+    },
+    {
+      "path": "products/pc/app/app/prisma-insights/charts/PcInventoryRiskTreemap.tsx",
+      "score": 110,
+      "bytes": 841
+    },
+    {
+      "path": "products/pc/app/app/prisma-insights/charts/PcOperationalDensityField.tsx",
+      "score": 110,
+      "bytes": 874
+    },
+    {
+      "path": "products/pc/app/app/prisma-insights/charts/PcServiceDependencyGraph.tsx",
+      "score": 110,
+      "bytes": 943
+    },
+    {
+      "path": "products/pc/app/app/tablet-communication/error.tsx",
+      "score": 110,
+      "bytes": 538
+    },
+    {
+      "path": "products/pc/app/app/tablet-communication/loading.tsx",
+      "score": 110,
+      "bytes": 341
+    },
+    {
+      "path": "products/pc/app/app/tablet-communication/page.tsx",
+      "score": 110,
+      "bytes": 370
+    },
+    {
+      "path": "products/pc/app/src/composition/module-registry.ts",
+      "score": 110,
+      "bytes": 3212
+    },
+    {
+      "path": "products/pc/app/src/composition/navigation.ts",
+      "score": 110,
+      "bytes": 8283
+    },
+    {
+      "path": "products/pc/app/src/composition/twin-capabilities.ts",
+      "score": 110,
+      "bytes": 862
+    },
+    {
+      "path": "products/pc/app/src/lib/suppliers/in-memory-repository.ts",
+      "score": 110,
+      "bytes": 6505
+    },
+    {
+      "path": "products/pc/app/src/lib/suppliers/repository-contract.ts",
+      "score": 110,
+      "bytes": 2956
+    },
+    {
+      "path": "products/pc/app/src/prisma-visual-os/interface-constitution/InsightChartFrame.tsx",
+      "score": 110,
+      "bytes": 700
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/audit-repository.prisma.ts",
+      "score": 110,
+      "bytes": 307
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/barcode-repository.prisma.ts",
+      "score": 110,
+      "bytes": 322
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/catalog.repository.ts",
+      "score": 110,
+      "bytes": 3164
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/customer.repository.ts",
+      "score": 110,
+      "bytes": 16245
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/inventory.repository.ts",
+      "score": 110,
+      "bytes": 3264
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/operation.repository.ts",
+      "score": 110,
+      "bytes": 2840
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/operational-task.repository.ts",
+      "score": 110,
+      "bytes": 13587
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/outbox-repository.prisma.ts",
+      "score": 110,
+      "bytes": 330
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/pricing-policy.repository.ts",
+      "score": 110,
+      "bytes": 19521
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/product-media.repository.ts",
+      "score": 110,
+      "bytes": 3974
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/product-repository.prisma.ts",
+      "score": 110,
+      "bytes": 495
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/product-variant.repository.ts",
+      "score": 110,
+      "bytes": 12399
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/purchase-order-repository.prisma.ts",
+      "score": 110,
+      "bytes": 646
+    },
+    {
+      "path": "products/pc/app/src/server/repositories/stock-repository.prisma.ts",
+      "score": 110,
+      "bytes": 659
+    },
+    {
+      "path": "products/pc/app/src/server/services/pc-sync-chart-data.service.ts",
+      "score": 110,
+      "bytes": 21193
+    },
+    {
+      "path": "products/tablet/app/app/api/pos/admin/local-users/route.ts",
+      "score": 110,
+      "bytes": 3762
+    },
+    {
+      "path": "products/tablet/app/app/api/pos/admin/sales-reset/route.ts",
+      "score": 110,
+      "bytes": 3643
     }
   ],
   "decision": {

@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const systemRoot = path.resolve(__dirname, "..", "..", "..");
 
 const nextConfig = {
+  allowedDevOrigins: ["tablet.hitechrts.com", "127.0.0.1", "localhost"],
   outputFileTracingRoot: systemRoot,
   experimental: {
     externalDir: true

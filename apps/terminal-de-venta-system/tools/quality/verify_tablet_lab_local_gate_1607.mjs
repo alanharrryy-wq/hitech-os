@@ -17,7 +17,9 @@ function findRepoRoot(startDir) {
 const repoRoot = findRepoRoot(process.cwd());
 const tabletRoot = path.join(repoRoot, "apps", "terminal-de-venta-system", "products", "tablet", "app");
 const routeRoot = path.join(tabletRoot, "app", "tablet-lab");
-const middlewarePath = path.join(tabletRoot, "middleware.ts");
+// PRISMA_PROXY_COMPAT_2607
+const proxyPath = path.join(tabletRoot, "proxy.ts");
+const middlewarePath = fs.existsSync(proxyPath) ? proxyPath : path.join(tabletRoot, "middleware.ts");
 const contractsPath = path.join(tabletRoot, "src", "navigation", "tablet-page-contracts.ts");
 const compositionPath = path.join(tabletRoot, "src", "composition", "navigation.ts");
 const navPath = path.join(tabletRoot, "components", "tablet-shell", "tablet-nav.ts");

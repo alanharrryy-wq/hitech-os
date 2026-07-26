@@ -44,6 +44,8 @@ const EDITABLE_KNOBS = {
   'empty-state': ['padding', 'gap', 'alignment', 'foreground', 'background', 'visibility'],
   'modal/drawer/popover': ['width', 'height', 'minHeight', 'maxWidth', 'padding', 'gap', 'radius', 'shadow', 'background', 'zIndex range', 'visibility']
 };
+const IDENTITY_LAYER_CERTIFICATION_REGISTRY = 'config/prisma-visual/identity-layer-certifications.registry.json';
+
 const VISUAL_CONTROL_COMMANDS = new Set([
   'visual-control:inventory',
   'visual-control:owners',
@@ -572,14 +574,84 @@ function scanVisualAssets(files) {
     .sort((a, b) => a.file.localeCompare(b.file));
 }
 
+function buildCertifiedLayerRecords(layers) {
+  const registry = readJson(absApp(IDENTITY_LAYER_CERTIFICATION_REGISTRY), {
+    schema: 'prisma.ui.visual-control.layer-certifications.v1',
+    version: '1.0.0',
+    certifications: []
+  });
+  const records = [];
+  const errors = [];
+  for (const certification of Array.isArray(registry.certifications) ? registry.certifications : []) {
+    const matches = layers.filter((layer) =>
+      layer.surface === certification.surface &&
+      layer.file === certification.file &&
+      layer.selector === certification.selector
+    );
+    const expectedImplementationLayerId = compactId(`${certification.file}:${certification.selector}`);
+    if (matches.length !== 1) {
+      errors.push({
+        layerId: certification.layerId,
+        status: 'BLOCKED_BY_IMPLEMENTATION_MATCH_COUNT',
+        expectedMatchCount: 1,
+        actualMatchCount: matches.length,
+        surface: certification.surface,
+        file: certification.file,
+        selector: certification.selector
+      });
+      continue;
+    }
+    const match = matches[0];
+    if (match.layer_id !== expectedImplementationLayerId) {
+      errors.push({
+        layerId: certification.layerId,
+        status: 'BLOCKED_BY_IMPLEMENTATION_LAYER_ID_DRIFT',
+        expectedImplementationLayerId,
+        actualImplementationLayerId: match.layer_id
+      });
+      continue;
+    }
+    records.push({
+      layer_id: certification.layerId,
+      neutralMeaningId: certification.neutralMeaningId,
+      surface: certification.surface,
+      file: certification.file,
+      selector: certification.selector,
+      implementationLayerId: match.layer_id,
+      ownerCss: match.ownerCss,
+      ownerComponent: certification.ownerComponent || match.ownerComponent || null,
+      routeId: certification.routeId,
+      regionId: certification.regionId,
+      slotId: certification.slotId,
+      visualRegion: match.visualRegion,
+      layer: match.layer,
+      evidenceClass: match.evidenceClass,
+      safetyClassification: certification.safetyClassification || match.safetyClassification,
+      certificationStatus: 'CERTIFIED_EXACT_SOURCE_MATCH',
+      runtimeMutationAllowed: false,
+      productApplicationAllowed: false
+    });
+  }
+  return {
+    registryPath: IDENTITY_LAYER_CERTIFICATION_REGISTRY,
+    records: records.sort((a, b) => a.layer_id.localeCompare(b.layer_id)),
+    errors
+  };
+}
+
 function buildLayers(files) {
   const cssFiles = files.filter((file) => /\.(css|scss)$/i.test(file) && evidenceClassForPath(file) === 'activeRuntime');
   const layers = cssFiles.flatMap(parseCssLayers);
   const assets = scanVisualAssets(files);
+  const sortedLayers = layers.sort((a, b) => `${a.surface}:${a.file}:${a.selector}`.localeCompare(`${b.surface}:${b.file}:${b.selector}`));
+  const certification = buildCertifiedLayerRecords(sortedLayers);
   return {
     cssFiles,
     assets,
-    layers: layers.sort((a, b) => `${a.surface}:${a.file}:${a.selector}`.localeCompare(`${b.surface}:${b.file}:${b.selector}`))
+    layers: sortedLayers,
+    certifiedLayers: certification.records,
+    layerCertificationErrors: certification.errors,
+    layerCertificationRegistry: certification.registryPath
   };
 }
 
@@ -1012,6 +1084,8 @@ function buildModel(flags = {}) {
     assetOwnerCount: owners.assetOwners.length,
     editableSlotCount: slots.length,
     layerCount: layerPayload.layers.length,
+    certifiedLayerCount: layerPayload.certifiedLayers.length,
+    layerCertificationErrorCount: layerPayload.layerCertificationErrors.length,
     activeCssFileCount: layerPayload.cssFiles.length,
     blockerCount: risks.blockerCount,
     warningCount: risks.warningCount,
@@ -1053,6 +1127,9 @@ function buildModel(flags = {}) {
     slots,
     owners,
     layers: layerPayload.layers,
+    certifiedLayers: layerPayload.certifiedLayers,
+    layerCertificationErrors: layerPayload.layerCertificationErrors,
+    layerCertificationRegistry: layerPayload.layerCertificationRegistry,
     assets: layerPayload.assets,
     risks,
     reuseReport,
@@ -1324,7 +1401,8 @@ function writeArtifacts(model) {
       '.prisma-ui/routes.json',
       '.prisma-ui/panels/*.json',
       '.governance/current/AUTHORITY_READSET.lock.json',
-      'docs/visual-layer-map/layer-map.json'
+      'docs/visual-layer-map/layer-map.json',
+      IDENTITY_LAYER_CERTIFICATION_REGISTRY
     ],
     outputs: [
       '.prisma-ui/visual-control/surfaces.json',
@@ -1401,6 +1479,11 @@ function writeArtifacts(model) {
     countsByEvidenceClass: countBy(compact.layers, 'evidenceClass'),
     countsBySafetyClassification: countBy(compact.layers, 'safetyClassification'),
     layerSamples: sampleItems(compact.layers, 220),
+    certifiedLayerCount: model.certifiedLayers.length,
+    layerCertificationErrorCount: model.layerCertificationErrors.length,
+    layerCertificationRegistry: model.layerCertificationRegistry,
+    certifiedLayers: model.certifiedLayers,
+    layerCertificationErrors: model.layerCertificationErrors,
     assetSamples: sampleItems(model.assets, 120)
   });
   writeJson(path.join(root, 'risks.json'), { schema: 'prisma.ui.visual-control.risks.v1', ...model.risks });
@@ -1448,6 +1531,10 @@ function writeArtifacts(model) {
     detailPolicy: compact.detailPolicy,
     indexFile: '.prisma-ui/visual-control/layers.json',
     layerCount: model.layers.length,
+    certifiedLayerCount: model.certifiedLayers.length,
+    layerCertificationErrorCount: model.layerCertificationErrors.length,
+    certifiedLayers: model.certifiedLayers,
+    layerCertificationErrors: model.layerCertificationErrors,
     activeCssFileCount: model.report.activeCssFileCount,
     assetCount: model.assets.length,
     layerSamples: compact.layers.slice(0, 160),

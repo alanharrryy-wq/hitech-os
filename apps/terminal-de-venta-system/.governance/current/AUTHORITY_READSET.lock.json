@@ -1,30 +1,28 @@
 {
   "schema_version": "1.0.0",
   "tool": "PRISMA Authority Mesh",
-  "generated_at": "2026-07-05T06:53:40-06:00",
+  "generated_at": "2026-07-26T01:50:04-06:00",
   "repo": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
-  "task": "PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes",
-  "full_mode": true,
+  "task": "FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.",
+  "full_mode": false,
   "status": "PASS",
   "apps_detected": [
-    "backgrounds",
     "chart-lab",
     "control-center",
     "database-sync",
     "mobile",
     "pc",
-    "productization",
     "quality",
-    "shared-kernel",
     "shared-ui",
     "tablet",
     "web"
   ],
   "change_types_detected": [
     "data_sync",
+    "ops_hot_injection",
     "visual"
   ],
-  "authority_file_count": 980,
+  "authority_file_count": 822,
   "readset": [
     {
       "path": "config/prisma-visual-os/ai-doctor-policy-00y.json",
@@ -435,6 +433,14 @@
       "reason": "visual_authority"
     },
     {
+      "path": "config/prisma-visual/identity-layer-certifications.registry.json",
+      "bytes": 1056,
+      "sha256": "3efa198f5fc0f0498413baed06b88f86f29465bbd17ccb6422396d8b8628ccbe",
+      "extension": ".json",
+      "source_id": "type:visual",
+      "reason": "visual_authority"
+    },
+    {
       "path": "config/prisma-visual/layer-budget.json",
       "bytes": 54417,
       "sha256": "ac36bbfc33cc51fb3fd7e8a265e9457ddc425914c2b6f43fc448ec9fe634e71a",
@@ -563,262 +569,6 @@
       "reason": "global_required"
     },
     {
-      "path": "docs/architecture/DATA_MODEL_TABLET_LOCAL.md",
-      "bytes": 1378,
-      "sha256": "f9d08f4c538e0f1042bf5607a4ccb51bf96af5edf7a0b0e1660d42d1b36d5bf8",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PC_BACKOFFICE_CONTRACT.md",
-      "bytes": 1080,
-      "sha256": "129394a7e296e36f8d4d5d871efcdad7932e969f34ed0b40a0bfddfc7cfd3a0d",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md",
-      "bytes": 2066,
-      "sha256": "e979c1b422ff3182983523f4855c58fb0c4bccfd661461ca719aed61642c972c",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_ARQUITECTURA_FINAL_PC_TABLET.md",
-      "bytes": 2240,
-      "sha256": "fee0a938cd5d786846dedb4d3cef531f05ee2867f96ebb66f22c6a3f819095d2",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_SCHEMA_OWNERSHIP.md",
-      "bytes": 2833,
-      "sha256": "a325350cc3adf247f25234dad51b2b0948814d7904dd40192593c98c14a979ef",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00A_DECISION_APPENDIX.md",
-      "bytes": 20981,
-      "sha256": "9507043f8560c366fb770177f406db94a4952b7b9083d1bd6af3d7e824e7a6f3",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00A_VERTICALIZATION_PLAYBOOK.md",
-      "bytes": 161729,
-      "sha256": "ce60c38cae81e569dd9aa75fd6db1474fac2dd81acd149ad391190df32ea3aff",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00B_CAPABILITY_CATALOG.md",
-      "bytes": 226593,
-      "sha256": "f2998eead80dd37e4ed8d39646616294a8ad378180c14999f0ffce335fa2e1e1",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00B_ROUTING_MATRIX.md",
-      "bytes": 956,
-      "sha256": "339fea6cbf4c7af2dbd726c729da927acec8a2ee0e43c52679531da826e645c6",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00B_VERTICAL_PROFILE_STANDARD.md",
-      "bytes": 791,
-      "sha256": "d02b7119366b18e9c3fa7a7b788193b75ecfb18e8a2ca9f27e91e032141cbdea",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00C_CORE_DATA_BOUNDARIES.md",
-      "bytes": 1217,
-      "sha256": "0189cbeedb44e5b25b038a944eb0ccacc1b5bc60f2a57de0ba9782da4ad8a4fd",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00C_EXTENSION_MODEL_STANDARD.md",
-      "bytes": 906,
-      "sha256": "f2d2b9dd91b447045581de97b8340171d56ddfdc86537f908581c987e2a83e41",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00C_VERTICAL_ENTITY_MATRIX.md",
-      "bytes": 2679,
-      "sha256": "8f08e9d1a9e06787f3c02ec8d82fc66abe25a65ff6db4621951deb5e6d89385f",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00D_EVENT_CATALOG.md",
-      "bytes": 20271,
-      "sha256": "0375e2f02f394a7be4fb7c52b64c58a8956a09a3e9ae8da1306faebfa2492bb3",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00D_PERMISSION_MODEL.md",
-      "bytes": 3003,
-      "sha256": "1fa8114bf53ef9683fbc5f08a1cd1421331e770a26638d695319809d3d7f4da5",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00D_SYNC_AUDIT_POLICY.md",
-      "bytes": 4263,
-      "sha256": "df9814ff4731dcb5d50cb914f5d5fc4e63b6cd2605afbe515e8538aabae0a7b8",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00E_NAVIGATION_MICROCOPY_STANDARD.md",
-      "bytes": 7418,
-      "sha256": "e9488ff13fb1c7bf1434df5538730b2ea1139cde8cd3573cef32289c67c13d0d",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_00E_TABLET_PC_OPERATION_BOUNDARIES.md",
-      "bytes": 9936,
-      "sha256": "b89b38211dddc3da26c624d5a5b51f82580c2c3e6cb5094346d02942eac6d747",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS.md",
-      "bytes": 14221,
-      "sha256": "2312aeaeaaa24e55e66017b53556ae584cffce66c40d30f2cff3ed284e9cec51",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY.md",
-      "bytes": 14786,
-      "sha256": "676a7300fa31108499a85d2aa375ef5db6b34c9da0a18e8124badbca49e43ad9",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00C_VERTICAL_DATA_MODELS.md",
-      "bytes": 46765,
-      "sha256": "e0a6baf4d77f48b15fadd0b035a0d23a48f8008eb073d993ed7bb9cdec5c1760",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00D_VERTICAL_EVENTS_PERMISSIONS.md",
-      "bytes": 11203,
-      "sha256": "83d2d12cd5f8a6d63beee35567f09004cecd443521d31977ab91be104b190490",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00E_VERTICAL_UX_OPERATIONS.md",
-      "bytes": 16667,
-      "sha256": "073105b9475f1a812fb7cd257c1c20e7e5875d8c6a60e1241bf3bab66daa8bf6",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00F_VALIDATION_FIXTURES.md",
-      "bytes": 11730,
-      "sha256": "b5919818b9fac4d791a4cefa109a51db72c47591a836d6ae45b3d4920027a9e7",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/RUNTIME_MODES_CONTRACT.md",
-      "bytes": 2001,
-      "sha256": "b48270c4b0e00bc4dd047909ae1df7c6eb42b30aeded18364479b2ba54cc8277",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/SHARED_KERNEL_CONTRACT.md",
-      "bytes": 1152,
-      "sha256": "d60efad8f7fe942ed78b28f197b37e81007350de265b2cd03e9bcb2f95b9971e",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/architecture/TABLET_STANDALONE_CONTRACT.md",
-      "bytes": 1786,
-      "sha256": "a7cff0fd5cd210d7dbcaf195eaf3e160920462037f8a63b998ed74279b7f3af0",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/atlas/ATLAS_SHARED_CORE.md",
-      "bytes": 13692,
-      "sha256": "762c8c7c6f9fb125abdc2b8bf850f60917284c844c0f02c09c2ae0a9210744c4",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/atlas/ATLAS_SHARED_CORE_CONTRACTS.md",
-      "bytes": 10527,
-      "sha256": "da8f53798b902f967092285492a266d6fee17a26942d799aa44f94b68733ddfa",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/atlas/ATLAS_SHARED_CORE_FUNCTIONAL_ENGINES.md",
-      "bytes": 10339,
-      "sha256": "46a3e7a3e22271c4c13bf68d592697c0fa3abf40a9880ca0e243c4c8c4292345",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/atlas/ATLAS_SHARED_CORE_RUNTIME_INFRA.md",
-      "bytes": 4786,
-      "sha256": "259d2a542bedc68fc2408d3719c1da9acffe8848911b44692756143e5d70c3e7",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/atlas/ATLAS_SHARED_CORE_VISUAL_OS.md",
-      "bytes": 10285,
-      "sha256": "6d847f1d8481c4b0beeb5c0f9b57aa31d85db691f302245bb4edde75c5f27385",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
       "path": "docs/atlas/GOVERNOR_ATLAS_LOCATION.md",
       "bytes": 987,
       "sha256": "eaa1bcbc67027800976de7232777d7ef8505b44c500ba43528fa267df67a92f8",
@@ -841,70 +591,6 @@
       "extension": ".json",
       "source_id": "governor_atlas_map",
       "reason": "global_required"
-    },
-    {
-      "path": "docs/contracts/API_RESPONSE_CONTRACT.md",
-      "bytes": 1344,
-      "sha256": "7e0d5ed2eb40bf5003631a260a34b196f3f66390f80257383a1770621aeaf237",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/ERRORS_CONTRACT.md",
-      "bytes": 1187,
-      "sha256": "0dab09208b3bac204df5dd6523a7679cef88337bd02d999950a7c4698d5fd4c6",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/EVENT_CONTRACT.md",
-      "bytes": 2114,
-      "sha256": "0189199658c0207bc12bb9a4c195e610e215779808b67328020a8fb090f65982",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/EXPORT_CONTRACT.md",
-      "bytes": 803,
-      "sha256": "f8f4a30c9a93738c45b61a579500da6c5147cf6aaf4e6696335688266f1fc3b7",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/PERMISSIONS_AUDIT_CONTRACT.md",
-      "bytes": 1613,
-      "sha256": "c9702506b9de9e05bd3b9967ee8c4fe9b7a01a046b97885f63c37516f93987af",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/QA_ACCEPTANCE_CONTRACT.md",
-      "bytes": 1254,
-      "sha256": "255f559773b2ab7bb82fbe44bc00ac896a7ead870a7f1c85377c72caf5e8d506",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/SYNC_RECONCILIATION_CONTRACT.md",
-      "bytes": 2092,
-      "sha256": "841cd3598cf9c4b8c98df398b71a86c7abf398ced138246be5f9b850f7ec358f",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/UI_STATE_CONTRACT.md",
-      "bytes": 979,
-      "sha256": "857f63652b713691b8188ebecd26a6fdd1103a20eb88831c0b98a13a3dd3e17c",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
     },
     {
       "path": "docs/design/ACCESSIBILITY_AND_CONTRAST.md",
@@ -1532,8 +1218,8 @@
     },
     {
       "path": "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
-      "bytes": 29913,
-      "sha256": "9825918fecd6780be18d5b3f5c50ba92c062d6ebbac8a4d71203cb4db6678c4e",
+      "bytes": 38214,
+      "sha256": "d612446f5017ecb5d10388c8e6174f74f2099a02742f5ea7aa76fb97aa072b5c",
       "extension": ".md",
       "source_id": "field_manual",
       "reason": "global_required"
@@ -1715,6 +1401,14 @@
       "reason": "database-sync_authority"
     },
     {
+      "path": "docs/prisma/PRISMA_SYNC_CLOSURE_PATCH_20260518.md",
+      "bytes": 2317,
+      "sha256": "388637d616a1f3a45999016b57059ebc66be8d34cefd383771378e7f2da351c6",
+      "extension": ".md",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
       "path": "docs/prisma/PRISMA_SYNC_STANDARD.md",
       "bytes": 2266,
       "sha256": "887e6293714b0337108d4bb5788c5bced65bbba8c49f8b202aa1addcb62ae123",
@@ -1745,542 +1439,6 @@
       "extension": ".md",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_AI_READY_SUPPORT_CONTRACT.md",
-      "bytes": 2186,
-      "sha256": "1e9b913e7bfe01699e3d30ad90583ae5c2ab6465345d66e480be536044608b75",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_ANNOUNCEMENTS_CONTRACT.md",
-      "bytes": 2159,
-      "sha256": "426449a0dcd002489e4b35eb9a36f96fa45496bff25011e925c38c3fda1e03c2",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_I02_R2_WATCH_OUTPUT.md",
-      "bytes": 828,
-      "sha256": "0593110e9fce93342d517963224f3d714f6c69b135e66d376b8c8ca829d310dc",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_I02_R3_LOG_SCOPE.md",
-      "bytes": 1391,
-      "sha256": "6ba962d216edf12665adb2189ef31907566de5762950a05cba1d7cf9aeb487a0",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_RUNTIME_DOCTOR_05A.md",
-      "bytes": 402,
-      "sha256": "d390c28ec007d8f256ad45706bbd66c4ca0822c2301e4c5d1fec36abf43752e8",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_RUNTIME_DOCTOR_05A_R2.md",
-      "bytes": 717,
-      "sha256": "9db143c02112e33b5ee57c197c4233f702060db2c7c618522c817427c81b9bbf",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_RUNTIME_DOCTOR_05A_R3.md",
-      "bytes": 717,
-      "sha256": "e4b7251253614431292ca6e57991401ad7ef1be4f7335c3325ead708c1ead5f5",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_BLACK_BOX_RUNTIME_SUPERVISOR_I02.md",
-      "bytes": 803,
-      "sha256": "fb8c50552defe4e8801a5ab4b7b4b70ecd5671b436c03db6c17c6204e5aa52c8",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CENTRO_PRISMA_UI_CONTRACT.md",
-      "bytes": 2068,
-      "sha256": "45593ab2d1c3f5c9288fa31fe52d99c45985229cac4102a18cde7493687ae540",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CONFIG_SCHEMA_CONTRACT.md",
-      "bytes": 1980,
-      "sha256": "b98018049f787c6b58129a0c952cd9cab4542ce60e12582d43a5e398d28e3ccd",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CUSTOMER_INSTALLATION_MODES.md",
-      "bytes": 1812,
-      "sha256": "4496656baa2bb48d993e7d0db90946040f734ca74e9f359ed80134038613a0c3",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CUSTOMER_MESSAGING_CONTRACT.md",
-      "bytes": 2393,
-      "sha256": "417bfe928eead8afcf0c2cfb09f74d6ae05f4cf7bd328d05ac5232bff39e6d04",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_LAYOUT_CONTRACT.md",
-      "bytes": 2712,
-      "sha256": "53836fa496ac2a0068bb43899714a0068a17f821a6858f8f9271e351325dec1f",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CUSTOMER_RUNTIME_TOUCHPOINTS.md",
-      "bytes": 2292,
-      "sha256": "e47a1d644296336cfb0aa85d5319462cdaaa8daa9d34326531843a8fe75e0897",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_CUSTOMER_SETUP_MULTI_DEVICE_CONTRACT.md",
-      "bytes": 2737,
-      "sha256": "740a84995b7e420f1646f345cebe60b81a868c2fcd9a39d4ec90226f0d30d211",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_DATA_OUTSIDE_REPO_POLICY.md",
-      "bytes": 1354,
-      "sha256": "1abac9028ca1c6342a166dbb887e7a7c5425f77e3f147ecf4b12d1f48b6c6f4e",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_DEVICE_ACTIVATION_CONTRACT_05.md",
-      "bytes": 2170,
-      "sha256": "43a1f9b6167b3aed96134f5c3bd59c7e211ee6630771ae2724301af0f07f8db6",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_DEV_RELEASE_RUNTIME_SEPARATION.md",
-      "bytes": 1075,
-      "sha256": "0d305ceba23db9abd8083be44fdfa49429a2c4ef569c5057893de7521bbb6d34",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_ENTITLEMENTS_CONTRACT.md",
-      "bytes": 3038,
-      "sha256": "348f64a1be9c2a66407cde5f72c622995f863ed784e469fe2dfb3eb62ea57109",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_ENVIRONMENT_VARIABLES_POLICY.md",
-      "bytes": 1468,
-      "sha256": "9952eebbd797625d6aae9901bda121c1c9e3883a89d4fea7df84fbe4d19bd92d",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_FEATURE_GATE_ATLAS.md",
-      "bytes": 7113,
-      "sha256": "007a9c584a17b76f03b3c0a4831b8fc7b78cd9cea1f1d9f7e2b0d851af2b7bc5",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_FEATURE_KEYS_CATALOG.md",
-      "bytes": 3200,
-      "sha256": "fb7bbee93c8119f89f05695ca128019363b203a48d7dc0432a761d798b07146b",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_INSTALLATION_DRY_RUN_EXPECTATIONS.md",
-      "bytes": 10089,
-      "sha256": "cf171ac2d8036e2a8c3bd213d72430c9f4f2d0f9c2e2be9db3cc8c12380e5cb4",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSES_README.md",
-      "bytes": 26344,
-      "sha256": "7811fa7a8fa8eec84852263d718d48d87d651afaba7d4502e8fc4e46282dccb1",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_ADMIN_PORTAL_CONTRACT_05.md",
-      "bytes": 2014,
-      "sha256": "eb722bd3835ee7002787c4e214c806e25919984735026837b0e9814e53fc0921",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_AUDIT_EVENT_CATALOG.md",
-      "bytes": 2328,
-      "sha256": "dc7187f9a82e89c9212c40c68e3f5643618379e0eda0552e33088c08f07609e1",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_ENFORCEMENT_POLICY.md",
-      "bytes": 6326,
-      "sha256": "95a165e53fc8cdc01fff7dfebf64b39cadfeab314979cae12acdb26553b302f1",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_ENTITLEMENTS_CONTRACT.md",
-      "bytes": 3905,
-      "sha256": "f1c7c16d63ea21567ccf305dd71489f55d8e766785fa8d857159498e2f0b8c4f",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_LOCAL_IMPLEMENTATION_BACKLOG.md",
-      "bytes": 2864,
-      "sha256": "bf433e60551daff99ad3ca106b145b6bfea364cfe2727c635fb01b75f25cbecf",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_NO_PAYMENT_PROCESSING_ADDENDUM.md",
-      "bytes": 2605,
-      "sha256": "f637f2522d0d9f6c6586399b7bd9ecb2e1c528a37edff9655df11b0662e93c20",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_OPERATIONS_RUNBOOK.md",
-      "bytes": 2379,
-      "sha256": "26cbb435fd057155ea46860dba560e8576c37b7678a4d48c3b5cdc1da9c5754f",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_OPERATION_MATRIX.md",
-      "bytes": 1615,
-      "sha256": "5286b9dbbc559617a77ffcf0d440554cfb69f357de6197a966fbe6144f7295ee",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_RUNTIME_OPERATOR_FLOW.md",
-      "bytes": 6920,
-      "sha256": "055a4812165f452631a3983825f3ad269a8efcca7c7f020e7d49afcb91ee9516",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_SERVER_CONTRACT_05.md",
-      "bytes": 3628,
-      "sha256": "a80668aeee92ff36047734ad4804ab4d7623f153ef1223b855ef37eea303ef2a",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_SERVER_SIGNING_SCAN_POLICY_11D.md",
-      "bytes": 1581,
-      "sha256": "b49ba316eea09b3666f66cd6713180ff2fca42126131b7e6a9cdb43437c41f8e",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_SERVER_SIGNING_SCAN_POLICY_11D_ACCEPTANCE.md",
-      "bytes": 786,
-      "sha256": "096bffb8a47dfb488edcc43207e3fed52f4ba118bb3c426c161ec83b76d79a26",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_STATE_MACHINE.md",
-      "bytes": 4691,
-      "sha256": "993316284485d1ab9bd5339fd0d07d550f4afbd35fc1c45c45e33451af0f0397",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LICENSE_UI_POLICY.md",
-      "bytes": 2730,
-      "sha256": "91910c4715b7ea72d8605a8183ec9aee3129fafc2aa7f9f6c64780eb6911da47",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LOCAL_AGENT_CONTRACT.md",
-      "bytes": 2051,
-      "sha256": "61d96da5427f3f19e30fe2aacc9166c6d27d47e0575db3306013e02f62e9bf87",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_LOCAL_LICENSE_STORE_CONTRACT.md",
-      "bytes": 3485,
-      "sha256": "21d7dca6692d288ae898c49d3d14bf51d29f1315436c425683c7a219637126fe",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_NO_PAYMENT_PROCESSING_BOUNDARY.md",
-      "bytes": 1983,
-      "sha256": "2f4b2f17eb2ac5a64d8cb3cb64142eb4b82a699b01162230d725ffd8103e89d2",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_OFFLINE_GRACE_POLICY.md",
-      "bytes": 2484,
-      "sha256": "edfeb9b1a1007e0764a25f291e697340002a76be66fdff5b584af54014e8faeb",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md",
-      "bytes": 3189,
-      "sha256": "d94e4f07fd20ab010698be88604628ef8019cc8e671bca8bae1e023e27e9dfb3",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_PLUGIN_CATALOG_CONTRACT.md",
-      "bytes": 2302,
-      "sha256": "0491c0bc43260843c3aea6148c270f256106cd46ce234904a8aa36419071590f",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_PLUGIN_LIFECYCLE_PLAYBOOK.md",
-      "bytes": 9433,
-      "sha256": "01e5586b79e426cabe9190cd8ba22dca297d11782777ea9a70ea29e6f6d082ea",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RELEASE_BUNDLE_EXCLUSION_RULES.md",
-      "bytes": 4396,
-      "sha256": "def409a4deb127a412e22d77d41f91306600b1d9f0be5b007897c91fb54f8cce",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_COMMAND_ALLOWLIST.md",
-      "bytes": 1738,
-      "sha256": "88c706ab95a270a9ac78cc5cbd48f3dbf02c726d71bcdd107906bf848b7d2c59",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_OPS_API_CONCEPTS.md",
-      "bytes": 14555,
-      "sha256": "f37e0ed0a087abbce30152c70d22384596522ca8edf431d1457f1865a9ef8a1b",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_OPS_ARCHITECTURE.md",
-      "bytes": 3861,
-      "sha256": "ddf56665211177080986b7542ba3991142a1dd17458f47f6269771d82df80c1a",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_OPS_ENTITY_MODEL.md",
-      "bytes": 2671,
-      "sha256": "a65065f8a23e027b5899c231685634f27fc3ddae163127aaac334ce214098619",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_OPS_IMPLEMENTATION_BLUEPRINT.md",
-      "bytes": 2797,
-      "sha256": "ceefad3b0c022cac8295ed6831f893b88e52a365ce21a7c458cc8c00f45203ad",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_REMOTE_UPDATE_CONTRACT.md",
-      "bytes": 1716,
-      "sha256": "bb5800a391a4611227f67cd1277a146b11b68c1ace09eb28be16e086cc9e9dde",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_ROLLOUT_AND_SUPPORT_PLAYBOOK.md",
-      "bytes": 1702,
-      "sha256": "20c49e27b053c43d35cc606e083f86ef0392a815c15b0e4f88516a7ee5743e1e",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_CONFIG_BOUNDARY_01.md",
-      "bytes": 4020,
-      "sha256": "7ff8ef1d6139141550a98e2b622aa26b8bd0805f7ec0011ce81cc777780cf767",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_CONFIG_FIELD_CATALOG.md",
-      "bytes": 17404,
-      "sha256": "f741d176b5343707f661c844434e809cce118c1999bd8c4d443d2679f2d5a8d8",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_CONFIG_IMPLEMENTATION_BACKLOG.md",
-      "bytes": 1956,
-      "sha256": "9fce8483d3959c49e4c9dbcb1e35b9113ec71440ce2ae0ed5fce7a6e341acb0d",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_CONFIG_MIGRATION_ROADMAP.md",
-      "bytes": 1298,
-      "sha256": "cf826f09e2bd6fe04fd5064c147260dc4f7ffbb7b347937c9fc8d4193b3c3879",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_CONFIG_VALIDATION_PLAYBOOK.md",
-      "bytes": 9048,
-      "sha256": "704ecfef765d3e9d1ba13885e9d086fe53d9da6547a818578aa7dd98d96d5ce4",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_FAILURE_MODES.md",
-      "bytes": 3105,
-      "sha256": "a58e57ea0e463f731ad87a7557cb07304c40f4762be123ad03aeb9149358af1a",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_RUNTIME_PATH_POLICY.md",
-      "bytes": 2340,
-      "sha256": "4b909a87e86f770224af6078bc2776f710b3fbfcaa74946c3d1ce581aab965cc",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SECURITY_PRIVACY_BASELINE.md",
-      "bytes": 1864,
-      "sha256": "973d99fe7e75476b75e3d4667927ae54d1dbe61ec42e0a70582d6c604b6c2f93",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SUPPORT_AI_FUTURE_PLAYBOOK.md",
-      "bytes": 2047,
-      "sha256": "2f0f7e338f9a5114f497f53f9a2d6b99fd7bd07522348a5e19ef436302c852bf",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SUPPORT_BUNDLE_LOCAL_04_ACCEPTANCE_MATRIX.md",
-      "bytes": 1693,
-      "sha256": "c41778a0fa72aae55190a7cbc9af7f048192a9a0cfa1e4f8ce467ad22742fec6",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SUPPORT_BUNDLE_LOCAL_04_DATA_ALLOWLIST.md",
-      "bytes": 2470,
-      "sha256": "2c163f2fc8d4feb598e41c8f15d93273bd7c85ea07caa0b6b7ae4313160636a2",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SUPPORT_BUNDLE_LOCAL_04_MASTER_SPEC.md",
-      "bytes": 3194,
-      "sha256": "26993d58a7dd19b5d399fdd1e0ca26f73f1fda0aa9c6cce6b6b99b0a69d8da3f",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_SUPPORT_BUNDLE_LOCAL_04_SECRET_REDACTION_POLICY.md",
-      "bytes": 2202,
-      "sha256": "769c8af3a9f4996e4c3d54522118d4d22e64fbc508159c3798f5fb77d91093fa",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "docs/productization/PRISMA_TABLET_PC_SYNC_SALE_HARDENING_01.md",
-      "bytes": 941,
-      "sha256": "0d59af27f2e96b4520fc1a463fdd8a46a1107933d70cc85da7a3f79249a5a238",
-      "extension": ".md",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
     },
     {
       "path": "docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md",
@@ -2321,486 +1479,6 @@
       "extension": ".md",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/CONTINUATION.md",
-      "bytes": 135,
-      "sha256": "713ba75acec4ace406daad47877131e05d06ef0db42f063a1fc3dfca4f4d4eed",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/LAYER_MAP.md",
-      "bytes": 81037,
-      "sha256": "00930c5dba900e6d91e7fd0164019c78761febe36aadf226b1892c2c2a699f05",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/background-audit.md",
-      "bytes": 155641,
-      "sha256": "13c3bcec796688d4a50d22448b812a0bb761031754a2bcea3637b0a7b604578c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/candidates-cleanup.md",
-      "bytes": 131949,
-      "sha256": "99bd7052cb5ef0ef45f1b6c3c3c66900a7f142555838a2d0f1a3591e9af7cb6c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/file-layer-index.csv",
-      "bytes": 229772,
-      "sha256": "9ac9f51765b1fb6c01b9a828fcee5a964eb6b63d150a9cd6ff0cbeba74a9ca29",
-      "extension": ".csv",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/layer-map.json",
-      "bytes": 24184427,
-      "sha256": "86712a55325dccd2b14dd73b36e5220424f506045cb3aa906af79578498187e5",
-      "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/library-audit.md",
-      "bytes": 1078,
-      "sha256": "e4e2ea4ea653145b5c2cd931082353b5033adb94f844cd65895014d9f3fcf160",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/no-touch.md",
-      "bytes": 181741,
-      "sha256": "4c4a3842c7ef00ecf80ed80fae204f77979114cbdc493f80f78a3c6f4da9be2c",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/route-map.md",
-      "bytes": 39204,
-      "sha256": "06fd319eee3d18863d37d3a499c5ce5a879229f158d4b3d964f132328126b85b",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/rules-extract.md",
-      "bytes": 40918,
-      "sha256": "46d0987e3fd7e0c5b69d298e1c91f8a00a1014341237e0d61707def9179d9c63",
-      "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "docs/visual-layer-map/selector-layer-index.csv",
-      "bytes": 4180640,
-      "sha256": "30d8c009800243fa8fd02046c92b1571359a001b5a7d4552b93fdcee4d2045fd",
-      "extension": ".csv",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
-    },
-    {
-      "path": "manifests/PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE.manifest.json",
-      "bytes": 4296,
-      "sha256": "59aa1fe1c19b0b069e989cca6b5e8f5bdaa9c128e2a49da45a4bf57c48238002",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F.manifest.json",
-      "bytes": 2317,
-      "sha256": "d9d0603ad5e89e059a2b32896e43f0a05c47c11a1faeb87e57f8753d0bcc4e44",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E.manifest.json",
-      "bytes": 946,
-      "sha256": "1e49fb937d55690fe8d7b7dec2e908541a6fde9d89db4c57e652bf66c595ecc9",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_BLACK_VISUAL_REFINEMENT_01G.manifest.json",
-      "bytes": 2094,
-      "sha256": "34963042a040b4bb822194dda8443e7f63d214f4dcb4c6e778d9872487d0bff3",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_CHATGPT_SHARE_DOC_SYNC_FIX_01A.manifest.json",
-      "bytes": 696,
-      "sha256": "91c6984126b02a3edcfa150a1a7663672dd1ca78edbdf57967040cd99eb2141f",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_CROSS_SURFACE_BINDINGS_00J_00K_20260503_v01.json",
-      "bytes": 1286,
-      "sha256": "4dfda758d12a24addd7beb2d528cf54a71b7292b258b57c4ac6c770db12f23bc",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P_20260503_v01.json",
-      "bytes": 98,
-      "sha256": "c2c367c387e48df805f2f18fefa0f9d66f44d9a11bffacd19ce5516047cf4ff2",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P_20260503_v02_SAFE.json",
-      "bytes": 3858,
-      "sha256": "c52e0609fd319a6341283057e664e37ab1d47857431fde54bd9057dd6a2e961d",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_MAIN_README_CONTRACT_12E.manifest.json",
-      "bytes": 829,
-      "sha256": "9530b20cb3c31e19b2bc2004eed227c73f9068af521153fffcaed735d1a0b64c",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_REFERENCE_VISUAL_FOUNDATION_01H_NEW_FILES.manifest.json",
-      "bytes": 807,
-      "sha256": "54008b3a6383f986b5e73121700fdbd29638fe56bfddad2c60a443ad91587cf6",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_ROOT_README_REFRESH_00A.manifest.json",
-      "bytes": 802,
-      "sha256": "0f90abc4d4f1c396b3279d690b17e9bbfa7d1e4be63f6d8c56c84c65f5242109",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_SHARED_VISUAL_TRIAL_01H_SHARED_CSS.manifest.json",
-      "bytes": 1203,
-      "sha256": "f1a6435117aa2f066d25f5ae15305bd119cf1d24cdb51bada10cc9f3414b6cbb",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S_20260503_v01.json",
-      "bytes": 2581,
-      "sha256": "dcf5eaac5e1aa0109216bb4b034cd7e73f5e2a31af40d4dc25f2cba3b56f8328",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_TABLET_POS_REAL_CHECKOUT_FLOW_00R_20260503_v01.json",
-      "bytes": 2701,
-      "sha256": "9c9e0fb63f5b7eacecdad88a6c69a5a9ccb9a7af11b1da39c86d08fc241e8d02",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_TABLET_VISUAL_CONTROLLED_00F_00G_00H_00I_20260503_v01.json",
-      "bytes": 452,
-      "sha256": "ff44f9c77e3e11813514bc8602f93495bd4c2ca9725e6f04b233f07c2116c6aa",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.manifest.json",
-      "bytes": 4043,
-      "sha256": "94ffe817b4fb686c504575bf24c65bca54cb1b97945f168c5f7df01ddb8c9554",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00A.manifest.json",
-      "bytes": 1187,
-      "sha256": "f1b123f56ea76a304f85832bd6a3e7266b8c91a41a42629785ec335961708f1a",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00B.manifest.json",
-      "bytes": 4966,
-      "sha256": "1bd77f56f58a5e6a1a4520e7e2c50a50c703ac446224fafcd5dab3f324a197c5",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00C.manifest.json",
-      "bytes": 4785,
-      "sha256": "69f336d50e9f1996c1ded674f82892ed0faa274e61ba5b1212d37ac607d35d83",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00D.manifest.json",
-      "bytes": 7228,
-      "sha256": "ef06f2d411821219302ce5d682a9952d555b74e70af48f8aad3f4f0d7da51a96",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00E.manifest.json",
-      "bytes": 4161,
-      "sha256": "bc80981d0fec0d54db25514135a08289d935521865f9646a39958fc76485ae9c",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00F.manifest.json",
-      "bytes": 7470,
-      "sha256": "60097d3fdb4d47fa8ea7c13af54c503f293d27c9413f36623f80f4c881662eff",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_CONTROL_PLANE_00A.manifest.json",
-      "bytes": 3289,
-      "sha256": "89c82b2edfc66f723ae36a325d72a3e2cd4ff2629634778d4e0e24010f8bad06",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_CORE_00D_00E_20260503_v01.json",
-      "bytes": 404,
-      "sha256": "8231325ab91b45a1036636a9e35a9226f9f8c1425ca32306c59ed5a055585a49",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C_20260503_v01.json",
-      "bytes": 2827,
-      "sha256": "413b55d727e7eb8bebf804aa69cac5ca5126a7b0da8167949cd4cd327a78ae76",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_POS_LIVE_BINDING_00T_20260504_v01.json",
-      "bytes": 899,
-      "sha256": "6c1bda69534056fcc8af8008dd58b1901a507e1b27b875825abcfd1ea70317b8",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B_20260503_v01.manifest.json",
-      "bytes": 2663,
-      "sha256": "bf4df2a8cc159744177e140c45847a64cea41fbdea25e86fc8579873b8c29945",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_OS_STUDIO_PRO_QA_00R_00S_20260503_v01.json",
-      "bytes": 852,
-      "sha256": "7c7a8b09fcc98781d9d302c88fc8163bc41f168032566adeaba910b7588e4742",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01.json",
-      "bytes": 1647,
-      "sha256": "bf4b7b8c50e2ba00a5071967babaef7383dc547b790255ec030157dfde80eac5",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/install-history/install_manifest.json",
-      "bytes": 570,
-      "sha256": "acd0be68716393d40cf0d800e8c3ecf2e667c85ddc66297b9e4fb0ae17f9cce2",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_01.json",
-      "bytes": 460,
-      "sha256": "77eefe67da56b27da1909faad66b01ace1bab17fb6ef0406123b396f6a2948d4",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_02_SECTIONS.json",
-      "bytes": 556,
-      "sha256": "43c1957d7630a3f329c8ae04ffe6b61255cba11ee7f3fc45b35b4433c61778f9",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE.json",
-      "bytes": 4296,
-      "sha256": "59aa1fe1c19b0b069e989cca6b5e8f5bdaa9c128e2a49da45a4bf57c48238002",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_04_WORKSPACE_PWA_ANDROID_READY.json",
-      "bytes": 4394,
-      "sha256": "d5fe575cd9fff60498e5505e3e7b2d419f6f74d3aca4fc2050c4a8a62ac01751",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX.json",
-      "bytes": 1440,
-      "sha256": "0945010eaf0404807b8ff9a2b0b0a6b178e8f0dc138bd442d60f642f99707691",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_06_API_CONTRACTS.json",
-      "bytes": 1696,
-      "sha256": "1d4f5eb6d4bb7e3b87abe4c7d4b198a00bb0da0959a6a588a0035dc526cbddfc",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.json",
-      "bytes": 6636,
-      "sha256": "f21f817aef98c570986f53e42ba554e7a168692e62de76c31e69aa51815a89a0",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_09_PWA_DOMAIN_INSTALL_READY.json",
-      "bytes": 3002,
-      "sha256": "c532023eda2dda5ba0f87248618bab2c5d481f46324ccfbf944eaa0e781ddab5",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_10B_CLOUDFLARE_LIVE_ROUTE_REPAIR.json",
-      "bytes": 1036,
-      "sha256": "3d7c89b0491725e2bde28b456820061a882a1ca798846bae0624f5dd77548a7f",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_10C_CLOUDFLARE_DNS_FALLBACK_REPAIR.json",
-      "bytes": 1216,
-      "sha256": "cedf23efe6fdeb3610c49e7c08add81932aa81ca1c9a363900307226ff31afff",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_10_CLOUDFLARE_PWA_DOMAIN_BRIDGE.json",
-      "bytes": 3830,
-      "sha256": "9264003958e26f7f147f7c8b0b59dda2925371fcf010dc75c86cf10b0831a2f1",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_11_IOS_HOME_ICON_PLAYSTORE.json",
-      "bytes": 2007,
-      "sha256": "ca0f8cd97efc57f13994bb32ba030b8263d3041aac8e5b3be9bb940c5d0ed4b1",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/pc/MANIFEST.pc-backoffice-sync-dashboard-03.json",
-      "bytes": 6051,
-      "sha256": "b32262861746dbbe326bc61df0015c9dc5239b44c79090e1f21c4ff47ab047ce",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/rescue/PRISMA_SALVAGE_LOCAL_260503_v01.manifest.json",
-      "bytes": 396,
-      "sha256": "381e2103b3c505c7b315c1cf57f2c2ca09a041c2632b152df7e15d00cd73d8bf",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/tablet/MANIFEST.pos-01a-engine.json",
-      "bytes": 2230,
-      "sha256": "a3def4dfea0381992cb371d2590aa6b5f4fc1ecf9bf1fbfbb5b0f8e843b298e8",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/tablet/MANIFEST.pos-01b-api.json",
-      "bytes": 1349,
-      "sha256": "229bad0743b99510e34eaca802481887ff40ed6c41ed49de9ea064ca06801596",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/tablet/MANIFEST.tablet-pos-standalone-full-engine-01.json",
-      "bytes": 3393,
-      "sha256": "d5a5fb4498449a0f02fb6b6c40ba310393647e5701af4a5ecf29fe9038546a80",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "manifests/tablet/MANIFEST.tablet-pos-touch-ui-full-02.json",
-      "bytes": 3344,
-      "sha256": "2fd99a20caa639932ccfd1963230231bb65ea2c70e935b3596b3d8b2bcd1d0d9",
-      "extension": ".json",
-      "source_id": "app:productization",
-      "reason": "productization_authority"
-    },
-    {
-      "path": "packages/shared-kernel/README.md",
-      "bytes": 1031,
-      "sha256": "af0bac34b4f5a47ebf543aa159b697ce9cf2add9addf3511ed67fb18faf575df",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
     },
     {
       "path": "prisma-control-center/README_FROST_TACTICAL_V1.md",
@@ -3579,12 +2257,68 @@
       "reason": "database-sync_authority"
     },
     {
+      "path": "prisma/migrations/20260717000100_customer_canonical/migration.sql",
+      "bytes": 8135,
+      "sha256": "1362ea48a1a8f9e0150a37f75ac08ef9432b7eba877db938ed644ebb5b2c5d3f",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/migrations/20260717000200_operational_tasks/migration.sql",
+      "bytes": 1781,
+      "sha256": "2ea58bbe3b4b2a63a3a13094a4a67ce245c9c3442f1d6bb569784fa75760e61e",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/migrations/20260717000300_product_variants/migration.sql",
+      "bytes": 1943,
+      "sha256": "ebe43bb68b4c31e0876eae95dafa016fedeccb815c5ed4e89a4ca55e5a1583a5",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/migrations/20260717000400_product_media_ref/migration.sql",
+      "bytes": 136,
+      "sha256": "eee4ec2b0dbd9cb12a2dba2dde26616df2d8965cf3139914f7016e64c1e38534",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/migrations/20260717000500_product_modifiers/migration.sql",
+      "bytes": 4263,
+      "sha256": "365e28c147b78ace199622e7f1703866bbee25e30a389f4cebeebc3ff45ce8a8",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/migrations/20260720_pricing_policy_owner/migration.sql",
+      "bytes": 5729,
+      "sha256": "7e1196914331124c0fc4d8d87e7cd0eeb0cabeac4438c24a01754f03e4fb4f97",
+      "extension": ".sql",
+      "source_id": "app:database-sync",
+      "reason": "database-sync_authority"
+    },
+    {
       "path": "prisma/migrations/migration_lock.toml",
       "bytes": 124,
       "sha256": "3389dbaf2a3cf4b413275867ac6f550b27f79efe85ee9c12082cdd8c5b8239c4",
       "extension": ".toml",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
+    },
+    {
+      "path": "prisma/pricing-migration-validation.db",
+      "bytes": 1138688,
+      "sha256": "2fb68785b410016ad8dce0590bf5b8d18c3c62b060ab909ba1f4075225ed66e5",
+      "extension": ".db",
+      "source_id": "type:data_sync",
+      "reason": "data_sync_authority"
     },
     {
       "path": "prisma/runtime-smoke.mjs",
@@ -3596,8 +2330,8 @@
     },
     {
       "path": "prisma/schema.prisma",
-      "bytes": 29420,
-      "sha256": "fefc87ed90188e736948477addfd0bea8ac4730ce6cd6d457d6746a252c68f78",
+      "bytes": 44583,
+      "sha256": "3047054831782f327f0b65739221d2a5c0e44502791588482960dfec65f1eeda",
       "extension": ".prisma",
       "source_id": "app:database-sync",
       "reason": "database-sync_authority"
@@ -3639,528 +2373,528 @@
       "bytes": 270,
       "sha256": "41494ac2a8c25616285aebfb7a23b043e1613cf24e78a20bdc5ab249a7530c2d",
       "extension": ".md",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/active-backgrounds.json",
       "bytes": 1819,
       "sha256": "02837d4d49996b6cd6fc5ff7df545213842954d0918da1e9ec1f3cc7cd689343",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/archive-index/imported-zips.json",
       "bytes": 108,
       "sha256": "9712a105a50b6619d821d96d49b3ee1f728bd450b4a7fd310167105f96753097",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/archive-index/source-assets.json",
       "bytes": 29199,
       "sha256": "75aac87057e95f3688ad3e868de79e861f838b4730deab4ed657d4d17cc7dd39",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/01_prisma_base_graphite_cloudglass-3015a4e7.png",
       "bytes": 19761037,
       "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/02-prisma-fractures-light-overlay-alpha-e78c27fe.png",
       "bytes": 4424931,
       "sha256": "e78c27fe22498b30a8f01badc476adc2ed479b2a88906b6b2a003f82558bb553",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/02_prisma_fractures_light_overlay_alpha-e78c27fe.png",
       "bytes": 4424931,
       "sha256": "e78c27fe22498b30a8f01badc476adc2ed479b2a88906b6b2a003f82558bb553",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/03-prisma-mist-dust-overlay-alpha-f94bfa24.png",
       "bytes": 10566164,
       "sha256": "f94bfa24f656db356a45e435f68b9a0a1584663c418c8375cdf3cf64a7c3dc67",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/03_prisma_mist_dust_overlay_alpha-f94bfa24.png",
       "bytes": 10566164,
       "sha256": "f94bfa24f656db356a45e435f68b9a0a1584663c418c8375cdf3cf64a7c3dc67",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/aivars-vilks-an8imfipg1c-unsplash-a6733bc8.jpg",
       "bytes": 9513515,
       "sha256": "a6733bc83e6729da9ca6e5d16ac42ecfcbd8ef1f80904df653e785d6a6ddbbe4",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/aivars-vilks-vx5fugsv490-unsplash-9267b59c.jpg",
       "bytes": 10192796,
       "sha256": "9267b59c5c9caaa86afdf2e15f40eb35701b0e81501572ba75ac9428ee039db7",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/alex-avila-a4g-5z8l9gm-unsplash-e4d87da4.jpg",
       "bytes": 3790889,
       "sha256": "e4d87da4f91c63bb515f2888a43aa03e88c74c5580ff4a00bc126f3aa1e81307",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/alex-avila-a4g_5z8l9gm-unsplash-e4d87da4.jpg",
       "bytes": 3790889,
       "sha256": "e4d87da4f91c63bb515f2888a43aa03e88c74c5580ff4a00bc126f3aa1e81307",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/alpine-crystal-5c45ddb3.jpg",
       "bytes": 869316,
       "sha256": "5c45ddb39bf5e4793d7f63a4638aa291d51a8b016e27029d2cc344220b1dbdb5",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/andreas-slotosch-epfp8uwywp0-unsplash-8c1953b1.jpg",
       "bytes": 4626793,
       "sha256": "8c1953b1267185f3af4d37a689b5df56c7f626f7ffa1950c158e4441d007f403",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/aurora-night-05a0dd86.jpg",
       "bytes": 1100065,
       "sha256": "05a0dd8631eb31ad730b1aeb4e1750551206e6c83e144d3a277fcd349ff74ca4",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/aurora-slate-veil-7eacb016.svg",
       "bytes": 1191,
       "sha256": "7eacb0164fe1c392c9dcb71a0e08ac184ce6b5698e841b7f201577c6656898be",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/benjamin-voros-egfvccm-mzo-unsplash-133fe212.jpg",
       "bytes": 1103526,
       "sha256": "133fe212c78073e3a4f7c5aecc29ca1c740672e56bd480723f39ddfa1d186cb1",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/daniil-silantev-irbkrfmeelg-unsplash-3c252b74.jpg",
       "bytes": 4255140,
       "sha256": "3c252b74ffed9c4fc641ae12cba0b391eb6ce5e91d532a977c2448e31166e7eb",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/daniil-silantev-rl7sz19fgrq-unsplash-83cbe1f3.jpg",
       "bytes": 3336730,
       "sha256": "83cbe1f36b97364c3ee601931e83ab9997a14bab1f2de22311d33257baf75f46",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/dave-hoefler-ayx3tkuw-mw-unsplash-5308ca93.jpg",
       "bytes": 2012612,
       "sha256": "5308ca9368547194aee2f347b05cb32206faf6483088ffde563fb350f9ece5f8",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/dawid-zawila-prjywl-saww-unsplash-1228e72f.jpg",
       "bytes": 591234,
       "sha256": "1228e72f072158f54c7a0c805acbdec6728e7c99a13a762a756387b48042dbaa",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/fabrice-villard-tkoa1swwhug-unsplash-fb952060.jpg",
       "bytes": 2808201,
       "sha256": "fb952060a754c81e6f5ebab35ca0c64e374968b426f4c4602f867155d754de22",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/farhan-nsrdn-uyvk8hrkex8-unsplash-3b1b8c65.jpg",
       "bytes": 2145664,
       "sha256": "3b1b8c65ca8d2836234e33b2cdabd5dfaef23319f24f7ce58755adac004af3f4",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/filip-kvasnak-tvjx2dteciq-unsplash-cedfa2a0.jpg",
       "bytes": 2390500,
       "sha256": "cedfa2a05855cd4d024f90b367f58c995bf87ea03cf61cf8f78e5b407d108769",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/florian-schindler-eyj2rsmgnu0-unsplash-73fc3550.jpg",
       "bytes": 14161122,
       "sha256": "73fc35508e007f763383f79f6b74ed5873420ae438791627058aca73ca1ad360",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/fog-forest-79c1741e.jpg",
       "bytes": 1045992,
       "sha256": "79c1741e5246c17a21bdaa389382c750e5c2aa7fe9420212cd9f61684b52e2f9",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/kate-kasiutich-xnwp566j7gi-unsplash-5e25cfc8.jpg",
       "bytes": 5126038,
       "sha256": "5e25cfc8bd6422f1f8575b4b464fcef1c328d5239f8301699a4aa3c4670d4b86",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/katie-mukhina-xwtdnwezor8-unsplash-d7a7947f.jpg",
       "bytes": 3419016,
       "sha256": "d7a7947f98b1e285b2448bfeb0b8671cbd4461b242e5023d5768608117c6662e",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/kenneth-li-sq15nflsdtc-unsplash-4845de7e.jpg",
       "bytes": 1141818,
       "sha256": "4845de7ee3fb2ae49cd01663a41c82ee2c536d982b979d8dcba240f80948b062",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/kristaps-ungurs-2beofe8wwyw-unsplash-e92c2932.jpg",
       "bytes": 7860819,
       "sha256": "e92c293204dc14902b37a52f2e0b9299eeba534695f346f95faea94a92b363f6",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/kristaps-ungurs-8tfbu1sbrn4-unsplash-f0c875dd.jpg",
       "bytes": 15098907,
       "sha256": "f0c875dd1e4231634033ae4102091b7b238923f8337117015eac3b6972bb6493",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/laura-adai-e5apkrnucmg-unsplash-bed5ed5a.jpg",
       "bytes": 2131434,
       "sha256": "bed5ed5a09d2594e68b1c22b83122d52fe6f97256dfe629a4911a7460a7781fb",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/leon-rohrwild-5apkpfvda8i-unsplash-28703759.jpg",
       "bytes": 1287235,
       "sha256": "28703759c5a9f35e7b4da28369f71a628d0ddbcfe5acd1da8c94ae9d11cebf9f",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/leon-rohrwild-mxcwgjgo-us-unsplash-740b1635.jpg",
       "bytes": 1287060,
       "sha256": "740b1635f4b77e1ba5ba237ac08c8710a8e0b9b7e760fd00070f9952357afefb",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/liquid-operations-smoke-6ddc58de.svg",
       "bytes": 2520,
       "sha256": "6ddc58de617baef084ab591d6d778bce59a7e96ab67d348a37a31309aa74824a",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/liquid-operations-ui-reference-ba047f42.png",
       "bytes": 2918510,
       "sha256": "ba047f42db7038f9930a9473b73cffb9fe54fcd10c2b8e4382bce65f63d9171c",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/marco-grosso-abghh9toxue-unsplash-c6f829d3.jpg",
       "bytes": 4566684,
       "sha256": "c6f829d3a2d87cd9f6f73fc482b0059c498430bc684fd7d1ff3b7d1c7daf76cb",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/marek-piwnicki-ktllnfb9cbs-unsplash-782bc811.jpg",
       "bytes": 5754144,
       "sha256": "782bc811966203fca1c06ff9118c81493eab171037b156e61b465444e1c3f52a",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/obsidian-cloud-motion-6ab40acf.svg",
       "bytes": 959,
       "sha256": "6ab40acf7fa6360d5dd65346b6046490f93d4072d37a519ec01d7a61795f9a5a",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/ocean-vapor-59515046.jpg",
       "bytes": 622672,
       "sha256": "5951504615aaa85fdf31b8c3d8c15a6ba7f027b15cbff85f156fcc35ce6dcc42",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/pascal-debrunner-8xkimx3so8u-unsplash-f28148f1.jpg",
       "bytes": 7388837,
       "sha256": "f28148f1876d1278c222d8ac39b0654ab6f205a84f00d9862810aa44ccda567c",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/pascal-debrunner-ob8dtqylzme-unsplash-24b527ea.jpg",
       "bytes": 2909254,
       "sha256": "24b527ea560822467b5cfb55774c436dc291edbb9346a73adc72b70950e8cc79",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/pc-client-snow-mountains-6b5a6db0.png",
       "bytes": 4376708,
       "sha256": "6b5a6db01046fa2c2b67f42e65b8c5ae872dd0e615beea96edba231355b69e3f",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/pc/pc-graphite-cloudglass-base-3015a4e7.png",
       "bytes": 19761037,
       "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/philipp-dusel-2f-m1fvojt4-unsplash-c1c2b99d.jpg",
       "bytes": 12568053,
       "sha256": "c1c2b99dc7bef605ad66b1e9dd3e23cb86d51dd26bbef576b003d68e9b6bea77",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/roberto-shumski-0bzbsiuwoom-unsplash-912baca0.jpg",
       "bytes": 2329452,
       "sha256": "912baca04fffbdd4fb592e52725ed705f88cf3de8a0ee322f4f5959ef715837b",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/roberto-shumski-vj5k8-oyl-4-unsplash-12dee268.jpg",
       "bytes": 8247859,
       "sha256": "12dee26871af9c59a6c6a88ad4ab46552978f4e8eb8825ad835e944f528b6949",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/roberto-shumski-vj5k8_oyl_4-unsplash-12dee268.jpg",
       "bytes": 8247859,
       "sha256": "12dee26871af9c59a6c6a88ad4ab46552978f4e8eb8825ad835e944f528b6949",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/simon-spring-zmmrlehsfqy-unsplash-43b47726.jpg",
       "bytes": 3330462,
       "sha256": "43b4772634d0348bf09cce49f90f0614e8dc80c63bd408bb3d8eaaeb24d79006",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/storm-cloud-operations-real-9245d5f5.jpg",
       "bytes": 173999,
       "sha256": "9245d5f589df75a53a2e3509a5a5971ea14d2fe9366cde1e083586e917c35219",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/storm-glass-horizon-89ce674e.svg",
       "bytes": 1286,
       "sha256": "89ce674e6d9a4f9474330b7b008e930b5e8eec2d7bc15cb94ea47e0a93dcf951",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/tablet-cloudglass-default.jpg",
       "bytes": 415340,
       "sha256": "957ca8b71ed3177da04ad5c2246693f5c504056d9ad3c5bb58c9d97b0d2978b1",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/tablet-cloudglass-default.png",
       "bytes": 19761037,
       "sha256": "3015a4e7007ed200267cd6c50d2f2b10f2a4b000148dcd749c8e4c7dd95c4d88",
       "extension": ".png",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-c8eaaa50.svg",
       "bytes": 610,
       "sha256": "c8eaaa508616c0d848ea5a76d72fb0ee69b939b7922645e0206169c8e2cbce34",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-ee21f92c.svg",
       "bytes": 1335,
       "sha256": "ee21f92cb8004b1716aebe89f48272e5ed5ded32b11d66d9b04e0eb08c8ed7ba",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/tablet-soft-gray-clouds-governor.svg",
       "bytes": 610,
       "sha256": "c8eaaa508616c0d848ea5a76d72fb0ee69b939b7922645e0206169c8e2cbce34",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/venti-views-7wl-hlnfi4y-unsplash-e910b06d.jpg",
       "bytes": 4087597,
       "sha256": "e910b06d4e073ee74b98d8c8ddc20cc161418a89c1c6dc3c746eac7f29a3053b",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/visual-smoke-test-expected-9855ea1c.svg",
       "bytes": 2360,
       "sha256": "9855ea1c013b351f52526d4735924a7131a1e655f263d1ad4a934ee34a17c989",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/visual-smoke-test.expected-9855ea1c.svg",
       "bytes": 2360,
       "sha256": "9855ea1c013b351f52526d4735924a7131a1e655f263d1ad4a934ee34a17c989",
       "extension": ".svg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/assets/zhang-liven-bilh-yznd0i-unsplash-e341c2b6.jpg",
       "bytes": 825545,
       "sha256": "e341c2b6cc4f18f677a1500b687f7db61c7e946cb104bf9326f6e23e9c9b2604",
       "extension": ".jpg",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/backgrounds.catalog.json",
       "bytes": 57433,
       "sha256": "e02b7937742ddf6fe29a89cf632c218a8dc8c556f3680995ea342113b890c606",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/manifests/chart-lab.backgrounds.json",
       "bytes": 56572,
       "sha256": "dfaf7e0f98ea0eaf414b4742ffc8238091f64997a79e67f035ceb851b785e01c",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/manifests/mobile.backgrounds.json",
       "bytes": 56569,
       "sha256": "70e7fc32bcbcaeef13cdb85d6b9045c65e404bae3d090a47ec9d8ef8d86d76e2",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/manifests/pc.backgrounds.json",
       "bytes": 36840,
       "sha256": "a6043017df705d0d468ca4c60d734431f08e1f51e69d0ad1bc145d1d96118880",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/manifests/tablet.backgrounds.json",
       "bytes": 56569,
       "sha256": "52d11119ff297711e7ae92aa4d25e62337b8f2d54998f5cdaf316d474b82431e",
       "extension": ".json",
-      "source_id": "app:backgrounds",
-      "reason": "backgrounds_authority"
+      "source_id": "type:visual",
+      "reason": "visual_authority"
     },
     {
       "path": "products/0.backgrounds/manifests/web.backgrounds.json",
@@ -7873,8 +6607,39 @@
     "candidate_files": [
       {
         "path": ".governance/current/MISSING_OR_UNMAPPED_RISK.md",
-        "bytes": 645,
-        "sha256": "ad7dc621c22da5ec681f0fc1f3f5089e69cf3cc03eccf11eda6c47da5b8081e3",
+        "bytes": 1255,
+        "sha256": "4a8248681dba50a0b575c95025b09c63fdbb947cfb64ec4db7e0f2995cd75220",
+        "sample_items": [
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- `tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
+          "- Status: `PASS`",
+          "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12"
+        ],
+        "item_count_estimate": 23
+      },
+      {
+        "path": "tools/_local/evidence/supcockpit-20260710-132126/backups_before_changes/.governance/current/MISSING_OR_UNMAPPED_RISK.md",
+        "bytes": 665,
+        "sha256": "8dd05893d94aeb7c87413e31e90e501913b294d657c95c4cd48a0a302ce11518",
         "sample_items": [
           "- Status: `PASS`",
           "- `.governance/current/MISSING_OR_UNMAPPED_RISK.md` — items≈12",
@@ -7892,7 +6657,7 @@
         "item_count_estimate": 12
       }
     ],
-    "candidate_count": 1
+    "candidate_count": 2
   },
   "visual_capability_resolver": {
     "schema_version": "2.0.0",
@@ -7900,15 +6665,12 @@
     "capability_count": 27,
     "available_capability_count": 26,
     "apps": [
-      "backgrounds",
       "chart-lab",
       "control-center",
       "database-sync",
       "mobile",
       "pc",
-      "productization",
       "quality",
-      "shared-kernel",
       "shared-ui",
       "tablet",
       "web"
@@ -7925,36 +6687,6 @@
         "bytes": 3648
       },
       {
-        "path": "products/tablet/app/src/server/repositories/dashboard-kpi.repository.ts",
-        "score": 160,
-        "bytes": 333
-      },
-      {
-        "path": "products/pc/app/public/surface-visual-governor/dashboard/latest/recipe-export/chart.recipe.json",
-        "score": 150,
-        "bytes": 15229
-      },
-      {
-        "path": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/recipe-export/chart.recipe.json",
-        "score": 150,
-        "bytes": 15229
-      },
-      {
-        "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
-        "score": 130,
-        "bytes": 8665
-      },
-      {
-        "path": "products/pc/app/components/backoffice/executive-dashboard.tsx",
-        "score": 130,
-        "bytes": 4270
-      },
-      {
-        "path": "products/pc/app/components/catalog/catalog-dashboard.tsx",
-        "score": 130,
-        "bytes": 11649
-      },
-      {
         "path": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx",
         "score": 130,
         "bytes": 10446
@@ -7965,64 +6697,64 @@
         "bytes": 1079
       },
       {
-        "path": "products/tablet/app/components/pos/pos-cobro-surface.tsx",
+        "path": "products/tablet/app/components/pos/pos-customer-binding.tsx",
         "score": 130,
-        "bytes": 18407
+        "bytes": 3514
       },
       {
         "path": "products/tablet/app/components/pos/pos-error-banner.tsx",
         "score": 130,
-        "bytes": 585
+        "bytes": 1028
       },
       {
         "path": "products/tablet/app/components/pos/pos-live-binding.tsx",
         "score": 130,
-        "bytes": 7499
+        "bytes": 8118
       },
       {
         "path": "products/tablet/app/components/pos/pos-packshots.ts",
         "score": 130,
-        "bytes": 30607
+        "bytes": 30884
       },
       {
         "path": "products/tablet/app/components/pos/pos-payment-panel.tsx",
         "score": 130,
-        "bytes": 23429
+        "bytes": 33420
       },
       {
         "path": "products/tablet/app/components/pos/pos-payment-risk-banner.tsx",
         "score": 130,
-        "bytes": 571
+        "bytes": 1309
       },
       {
         "path": "products/tablet/app/components/pos/pos-product-list.tsx",
         "score": 130,
-        "bytes": 14747
+        "bytes": 15303
       },
       {
         "path": "products/tablet/app/components/pos/pos-product-search.tsx",
         "score": 130,
-        "bytes": 5004
+        "bytes": 3431
       },
       {
         "path": "products/tablet/app/components/pos/pos-sale-success.tsx",
         "score": 130,
-        "bytes": 1777
+        "bytes": 4699
       },
       {
         "path": "products/tablet/app/components/pos/pos-screen.tsx",
         "score": 130,
-        "bytes": 23181
+        "bytes": 26547
       },
       {
         "path": "products/tablet/app/components/pos/pos-shortcuts.tsx",
         "score": 130,
-        "bytes": 670
+        "bytes": 665
       },
       {
         "path": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
         "score": 130,
-        "bytes": 15327
+        "bytes": 14441
       },
       {
         "path": "products/tablet/app/components/pos/terminal-v2/index.ts",
@@ -8047,7 +6779,7 @@
       {
         "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.tsx",
         "score": 130,
-        "bytes": 2395
+        "bytes": 4409
       },
       {
         "path": "products/tablet/app/components/pos/terminal-v2/pos-ticket-rail.tsx",
@@ -8057,62 +6789,92 @@
       {
         "path": "products/tablet/app/components/pos/use-prisma-packshot-skin.ts",
         "score": 130,
-        "bytes": 1316
+        "bytes": 245
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-cart-panel.tsx",
+        "path": "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx",
         "score": 130,
-        "bytes": 4883
+        "bytes": 42202
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-category-rail.tsx",
-        "score": 130,
-        "bytes": 1773
+        "path": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.module.css",
+        "score": 120,
+        "bytes": 3044
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-data.ts",
-        "score": 130,
-        "bytes": 4511
+        "path": "products/tablet/app/components/pos/pos.module.css",
+        "score": 120,
+        "bytes": 40097
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx",
-        "score": 130,
-        "bytes": 6898
+        "path": "products/tablet/app/components/pos/pos.visual.presets.json",
+        "score": 120,
+        "bytes": 6169
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx",
-        "score": 130,
-        "bytes": 2326
+        "path": "products/tablet/app/components/pos/pos.visual.schema.json",
+        "score": 120,
+        "bytes": 2086
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-card.tsx",
-        "score": 130,
-        "bytes": 2187
+        "path": "products/tablet/app/components/pos/pos.visual.tokens.json",
+        "score": 120,
+        "bytes": 41916
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-product-grid.tsx",
-        "score": 130,
-        "bytes": 424
+        "path": "products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css",
+        "score": 120,
+        "bytes": 2935
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-route-ui.tsx",
-        "score": 130,
-        "bytes": 8299
+        "path": "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+        "score": 120,
+        "bytes": 4457
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-search-row.tsx",
-        "score": 130,
-        "bytes": 1730
+        "path": "products/mobile/app/app/prisma-command/charts/MobileActionInboxPriorityStack.tsx",
+        "score": 110,
+        "bytes": 933
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-sidebar.tsx",
-        "score": 130,
-        "bytes": 1746
+        "path": "products/mobile/app/app/prisma-command/charts/MobileChartCard.tsx",
+        "score": 110,
+        "bytes": 925
       },
       {
-        "path": "products/tablet/app/components/prisma-dark-pos/prisma-top-action-bar.tsx",
-        "score": 130,
-        "bytes": 1337
+        "path": "products/mobile/app/app/prisma-command/charts/MobileConfidenceMeterBands.tsx",
+        "score": 110,
+        "bytes": 907
+      },
+      {
+        "path": "products/mobile/app/app/prisma-command/charts/MobileFreshnessRings.tsx",
+        "score": 110,
+        "bytes": 864
+      },
+      {
+        "path": "products/mobile/app/app/prisma-command/charts/MobileHealthRadarCompact.tsx",
+        "score": 110,
+        "bytes": 893
+      },
+      {
+        "path": "products/mobile/app/app/prisma-command/charts/MobileIncidentSparkCards.tsx",
+        "score": 110,
+        "bytes": 1424
+      },
+      {
+        "path": "products/mobile/app/app/prisma-command/charts/MobileOwnerPulseTimeline.tsx",
+        "score": 110,
+        "bytes": 866
+      },
+      {
+        "path": "products/mobile/app/src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
+        "score": 110,
+        "bytes": 2694
+      },
+      {
+        "path": "products/mobile/app/src/lib/prisma-app/mobile-intelligence/chart-series-engine.ts",
+        "score": 110,
+        "bytes": 10105
       }
     ],
     "govmesh3_outputs": [

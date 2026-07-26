@@ -55,7 +55,7 @@ function isRetiredTabletRoute(pathname: string) {
   return RETIRED_TABLET_ROUTE_PREFIXES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname || "/";
   const localTabletLab = isLocalTabletLabRequest(request, pathname);
 

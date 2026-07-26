@@ -127,6 +127,7 @@ class Service:
     start_kind: str
     start_command: List[str] | str
     health_urls: List[str] = field(default_factory=list)
+    content_probe: Dict[str, object] = field(default_factory=dict)
     source: str = "generated"
     reset_default: bool = False
 
@@ -211,12 +212,16 @@ class FastIgnit:
         for item in data.get("services", []):
             port = int(item["port"])
             base_url = item.get("localUrl") or f"http://127.0.0.1:{port}/"
+            # Readiness must stay cheap. UI fallbacks such as /pos or /
+            # can trigger heavyweight route compilation and inflate dev RAM.
+            # Use the configured health endpoint only; services without one
+            # retain their base URL as the explicit readiness target.
             health_urls = []
-            hp = item.get("healthPath") or "/"
-            health_urls.append(base_url.rstrip("/") + "/" + hp.lstrip("/"))
-            for alt in item.get("alternateHealthPaths", []) or []:
-                health_urls.append(base_url.rstrip("/") + "/" + str(alt).lstrip("/"))
-            health_urls.append(base_url)
+            hp = str(item.get("healthPath") or "").strip()
+            if hp:
+                health_urls.append(base_url.rstrip("/") + "/" + hp.lstrip("/"))
+            else:
+                health_urls.append(base_url)
             cwd = str(item.get("cwd") or self.terminal_root)
             start_kind, start_command, source_note = normalize_shell_command(str(item.get("startCommand") or ""), cwd)
             services[port] = Service(
@@ -228,6 +233,7 @@ class FastIgnit:
                 start_kind=start_kind,
                 start_command=start_command,
                 health_urls=health_urls,
+                content_probe=dict(item.get("contentProbe") or {}),
                 source=source_note,
             )
 
@@ -269,19 +275,41 @@ class FastIgnit:
         )
         self.services = services
 
-    def probe_url(self, url: str, timeout: float = 0.75) -> Tuple[bool, str]:
-        req = urllib.request.Request(url, headers={"User-Agent": "PRISMA-Fast-Ignit/1.0"})
+    # PRISMA_FAST_IGNIT_STABILITY_V2
+    def probe_url(self, url: str, timeout: float = 2.0, probe: Optional[Dict[str, object]] = None) -> Tuple[bool, str]:
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "PRISMA-Fast-Ignit/2.0",
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
+            },
+        )
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 code = int(getattr(resp, "status", 200))
-                return 200 <= code < 500, f"HTTP {code}"
+                body = resp.read(262144).decode("utf-8", errors="replace")
+                if not (200 <= code < 300):
+                    return False, f"HTTP {code}"
+                cfg = probe or {}
+                needles = [str(x) for x in (cfg.get("needles") or [])]
+                if needles:
+                    mode = str(cfg.get("mode") or "any").lower()
+                    hits = [needle.lower() in body.lower() for needle in needles]
+                    matched = all(hits) if mode == "all" else any(hits)
+                    if not matched:
+                        return False, f"HTTP {code}; content probe failed ({mode}: {needles})"
+                return True, f"HTTP {code}"
         except Exception as exc:
             return False, str(exc)
 
     def service_ready(self, svc: Service) -> Tuple[bool, str, str]:
+        proc = self.processes.get(svc.port)
+        if proc is not None and proc.poll() is not None:
+            return False, "", f"process exited with code {proc.returncode}"
         last = ""
         for url in svc.health_urls or [svc.url]:
-            ok, msg = self.probe_url(url)
+            ok, msg = self.probe_url(url, probe=svc.content_probe)
             if ok:
                 return True, url, msg
             last = f"{url}: {msg}"
@@ -410,6 +438,7 @@ class FastIgnit:
                     if ok:
                         res.ready = True
                         res.ready_url = url
+                        res.error = ""
                         res.elapsed_sec = round(time.monotonic() - self.started_at, 3)
                         if res.action == "pending":
                             res.action = "reused"
@@ -425,6 +454,32 @@ class FastIgnit:
                 label = ", ".join(f"{p}:{'ok' if self.results[p].ready else '...'}" for p in sorted(self.results))
                 print_progress(ready_count, total, label)
             time.sleep(0.75)
+
+    def verify_stability(self, selected: List[Service], duration_sec: int = 18) -> Tuple[bool, str]:
+        deadline = time.monotonic() + max(6, int(duration_sec))
+        failures: Dict[int, int] = {svc.port: 0 for svc in selected}
+        while time.monotonic() < deadline:
+            for svc in selected:
+                res = self.results[svc.port]
+                proc = self.processes.get(svc.port)
+                if proc is not None and proc.poll() is not None:
+                    res.ready = False
+                    res.error = f"process exited during stability gate with code {proc.returncode}"
+                    return False, f"{svc.port} {svc.name}: {res.error}"
+                ok, url, msg = self.service_ready(svc)
+                if ok:
+                    failures[svc.port] = 0
+                    res.ready = True
+                    res.ready_url = url
+                    res.error = ""
+                else:
+                    failures[svc.port] += 1
+                    res.error = msg
+                    if failures[svc.port] >= 2:
+                        res.ready = False
+                        return False, f"{svc.port} {svc.name}: unstable health: {msg}"
+            time.sleep(2.0)
+        return all(self.results[svc.port].ready for svc in selected), "stable"
 
     def write_outputs(self, status: str, error: str = "") -> Path:
         elapsed = round(time.monotonic() - self.started_at, 3)
@@ -506,6 +561,20 @@ class FastIgnit:
         try:
             while True:
                 alive = {p: proc for p, proc in self.processes.items() if proc.poll() is None}
+                dead = {p: proc for p, proc in self.processes.items() if proc.poll() is not None}
+                if dead:
+                    details = []
+                    for port, proc in dead.items():
+                        res = self.results.get(port)
+                        if res is not None:
+                            res.ready = False
+                            res.error = f"process exited after PASS with code {proc.returncode}"
+                        details.append(f"{port}:exit={proc.returncode}")
+                    err = "Proceso(s) murieron despues del readiness PASS: " + ", ".join(details)
+                    zip_path = self.write_outputs("FAIL", error=err)
+                    print(f"[Fast Ignit] FALSO VERDE BLOQUEADO: {err}", flush=True)
+                    print(f"[Fast Ignit] Evidencia actualizada: {zip_path}", flush=True)
+                    return 1
                 if not alive:
                     print("[Fast Ignit] Todos los procesos hijos terminaron.", flush=True)
                     return 0
@@ -561,6 +630,7 @@ class FastIgnit:
                         res.action = "reused"
                         res.ready = True
                         res.ready_url = url
+                        res.error = ""
                         res.elapsed_sec = round(time.monotonic() - self.started_at, 3)
                     else:
                         res.action = "pending-start"
@@ -584,10 +654,14 @@ class FastIgnit:
                     time.sleep(0.75)
             print_progress(4, 6, "esperando HTTP ready")
             self.wait_ready(selected, int(self.args.timeout))
-            print_progress(5, 6, "generando evidencia")
             all_ready = all(self.results[p].ready for p in self.results)
+            stability_error = ""
+            if all_ready:
+                print("[Fast Ignit] Gate anti-falso-verde: verificando estabilidad 18s...", flush=True)
+                all_ready, stability_error = self.verify_stability(selected, 18)
+            print_progress(5, 6, "generando evidencia")
             status = "PASS" if all_ready else "FAIL"
-            zip_path = self.write_outputs(status)
+            zip_path = self.write_outputs(status, error=stability_error if not all_ready else "")
             print_progress(6, 6, f"{status}: {zip_path}")
             print(f"\n[Fast Ignit] Reporte: {self.report_path}")
             print(f"[Fast Ignit] ZIP: {zip_path}")

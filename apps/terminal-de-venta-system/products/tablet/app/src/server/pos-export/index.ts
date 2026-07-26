@@ -1,4 +1,3 @@
-import { prisma } from "../prisma/client";
 import { getTabletRuntimeMeta } from "../pos-runtime";
 import { getOperationalDayRange, getRecentInventoryMovements } from "../pos-reports";
 import { listRecentEvents } from "../pos-outbox";
@@ -33,35 +32,29 @@ export function csvResponse(filename: string, csv: string, extraHeaders: Record<
   });
 }
 
+/* PRISMA_TABLET_SALES_EXPORT_CANONICAL_READMODEL_2607
+ * Reuse the same proven read model used by /sales/today.
+ * This removes the divergent direct sale query and keeps PAID/COMPLETED semantics aligned.
+ */
 export async function buildSalesTodayExport(input: PosExportInput) {
   const range = getOperationalDayRange(input.date);
-  const sales = await prisma.sale.findMany({
-    where: {
-      businessId: input.businessId,
-      status: "COMPLETED",
-      createdAt: { gte: range.from, lt: range.to },
-      ...(input.terminalId ? { terminalId: input.terminalId } : {})
-    },
-    include: { lines: true },
-    orderBy: { createdAt: "asc" },
-    take: input.limit
-  });
   const summary = await getTodaySalesSummary({
     businessId: input.businessId,
     terminalId: input.terminalId,
     date: input.date
   });
+  const sales = summary.tickets.slice(0, input.limit);
 
   const rows = sales.flatMap((sale: any) =>
     sale.lines.map((line: any) => ({
-      saleId: sale.id,
+      saleId: sale.saleId,
       folio: sale.folio,
       businessId: sale.businessId,
       terminalId: sale.terminalId,
       cashier: sale.cashier,
       status: sale.status,
       saleTotalCents: sale.totalCents,
-      createdAt: sale.createdAt.toISOString(),
+      createdAt: sale.createdAt,
       lineId: line.id,
       productId: line.productId,
       sku: line.sku,
@@ -73,21 +66,9 @@ export async function buildSalesTodayExport(input: PosExportInput) {
   );
 
   const headers = [
-    "saleId",
-    "folio",
-    "businessId",
-    "terminalId",
-    "cashier",
-    "status",
-    "saleTotalCents",
-    "createdAt",
-    "lineId",
-    "productId",
-    "sku",
-    "productName",
-    "qty",
-    "priceCents",
-    "lineTotalCents"
+    "saleId", "folio", "businessId", "terminalId", "cashier", "status",
+    "saleTotalCents", "createdAt", "lineId", "productId", "sku",
+    "productName", "qty", "priceCents", "lineTotalCents"
   ];
 
   return {
@@ -98,6 +79,7 @@ export async function buildSalesTodayExport(input: PosExportInput) {
       summary,
       sales,
       rows,
+      source: "canonical-sales-today-summary",
       runtime: getTabletRuntimeMeta()
     },
     csv: toCsv(headers, rows)
