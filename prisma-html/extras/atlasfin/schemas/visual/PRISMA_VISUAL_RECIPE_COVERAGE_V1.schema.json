@@ -1,0 +1,44 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_VISUAL_RECIPE_COVERAGE_V1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "schema": "PRISMA_VISUAL_RECIPE_COVERAGE_V1",
+      "version": "1.0.0"
+    }
+  ],
+  "properties": {
+    "covered": {
+      "type": "array"
+    },
+    "required": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "PRISMA_VISUAL_RECIPE_COVERAGE_V1"
+    },
+    "status": {
+      "type": "string"
+    },
+    "unresolved": {
+      "type": "array"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version"
+  ],
+  "title": "PRISMA_VISUAL_RECIPE_COVERAGE_V1",
+  "type": "object",
+  "version": "1.0.0",
+  "x-discriminator": "schema",
+  "x-migration": {
+    "from": [],
+    "strategy": "explicit-and-lossless"
+  }
+}

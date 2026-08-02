@@ -6,7 +6,9 @@
   <meta name="description" content="PRISMA Visual Family Atlas">
   <title>PRISMA Visual Family Atlas · Completo</title>
   <link rel="stylesheet" href="assets/css/atlas.css">
+  <link rel="stylesheet" href="assets/css/visual-recipe-dock.css">
   <script defer src="assets/data/atlas.manifest.js"></script>
+  <script defer src="assets/data/visual.recipe.registry.js"></script>
   <script defer src="assets/js/atlas.js"></script>
 </head>
 <body data-atlas-chroma="spectral-page" data-atlas-premium="select-layer-sweep" data-atlas-page="INDEX" data-default-accent="cyan">
@@ -237,49 +239,7 @@
         Controla por separado la escena, el chrome global y las superficies de contenido. Ninguna capa vuelve a ocultar silenciosamente a las demás.
       </p>
     </div>
-    <div class="atlas-layer-controls">
-      <label class="atlas-layer-control">
-        <span class="atlas-layer-control__head">
-          <span class="atlas-demo__label">Capa 1 · Smoke</span>
-          <output class="atlas-layer-control__value" data-layer-output="smoke">8%</output>
-        </span>
-        <input type="range" min="0" max="100" step="1" value="8"
-          data-layer-control="smoke" aria-label="Smoke de la escena">
-        <span class="atlas-layer-control__scale">
-          <span>Sin smoke</span><span>Smoke fuerte</span>
-        </span>
-      </label>
 
-      <label class="atlas-layer-control">
-        <span class="atlas-layer-control__head">
-          <span class="atlas-demo__label">Capa 2 · Chrome global</span>
-          <output class="atlas-layer-control__value" data-layer-output="chrome">28%</output>
-        </span>
-        <input type="range" min="0" max="100" step="1" value="28"
-          data-layer-control="chrome" aria-label="Opacidad de topbar, rail y buscador">
-        <span class="atlas-layer-control__scale">
-          <span>Cristal</span><span>Sólido</span>
-        </span>
-      </label>
-
-      <label class="atlas-layer-control">
-        <span class="atlas-layer-control__head">
-          <span class="atlas-demo__label">Capa 3 · Contenido</span>
-          <output class="atlas-layer-control__value" data-layer-output="content">20%</output>
-        </span>
-        <input type="range" min="0" max="100" step="1" value="20"
-          data-layer-control="content" aria-label="Opacidad de secciones y cards">
-        <span class="atlas-layer-control__scale">
-          <span>Cristal</span><span>Sólido</span>
-        </span>
-      </label>
-
-      <div class="atlas-layer-controls__actions">
-        <button class="atlas-button" type="button" data-reset-layers>
-          Restaurar grafito
-        </button>
-      </div>
-    </div>
   </header>
 </section>
 
@@ -377,9 +337,9 @@
 <section class="atlas-section atlas-reveal">
   <header class="atlas-section__header">
     <div>
-      <p class="atlas-eyebrow">Piloto + Lote 2</p>
-      <h2>Mapa A–Z</h2>
-      <p>Las páginas activas prueban fundamentos, datos densos, overlays y gobierno.</p>
+      <p class="atlas-eyebrow">Atlas completo · 27 páginas</p>
+      <h2>Mapa A–Z completo</h2>
+      <p>Las 26 secciones están implementadas y enlazadas desde esta portada canónica.</p>
     </div>
   </header>
   <div class="atlas-grid">
@@ -388,7 +348,7 @@
               <span class="atlas-component-card__id">A · 14 elementos</span>
               <h3>Fundamentos visuales</h3>
               <p>Colores estructurales del sistema.</p>
-              <a class="atlas-button" href="a-fundamentos.html">Abrir piloto</a>
+              <a class="atlas-button" href="a-fundamentos.html">Abrir sección</a>
             </article>
 
 
@@ -396,7 +356,7 @@
               <span class="atlas-component-card__id">B · 13 elementos</span>
               <h3>Materiales y superficies</h3>
               <p>Fondo fotográfico principal.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="b-materiales.html">Abrir sección</a>
             </article>
 
 
@@ -404,7 +364,7 @@
               <span class="atlas-component-card__id">C · 14 elementos</span>
               <h3>Acciones y botones</h3>
               <p>Acción principal de una sección.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="c-acciones.html">Abrir sección</a>
             </article>
 
 
@@ -412,7 +372,7 @@
               <span class="atlas-component-card__id">D · 18 elementos</span>
               <h3>Entrada de texto</h3>
               <p>Captura texto breve.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="d-entrada-texto.html">Abrir sección</a>
             </article>
 
 
@@ -420,7 +380,7 @@
               <span class="atlas-component-card__id">E · 18 elementos</span>
               <h3>Selección y filtros</h3>
               <p>Selección simple mediante lista.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="e-seleccion-filtros.html">Abrir sección</a>
             </article>
 
 
@@ -428,7 +388,7 @@
               <span class="atlas-component-card__id">F · 14 elementos</span>
               <h3>Navegación</h3>
               <p>Marca, contexto y estado global.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="f-navegacion.html">Abrir sección</a>
             </article>
 
 
@@ -436,7 +396,7 @@
               <span class="atlas-component-card__id">G · 20 elementos</span>
               <h3>Tablas y visualización de datos</h3>
               <p>Presenta datos en filas y columnas.</p>
-              <a class="atlas-button" href="g-tablas.html">Abrir piloto</a>
+              <a class="atlas-button" href="g-tablas.html">Abrir sección</a>
             </article>
 
 
@@ -444,7 +404,7 @@
               <span class="atlas-component-card__id">H · 12 elementos</span>
               <h3>Listas y colecciones</h3>
               <p>Lista lineal de elementos.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="h-listas.html">Abrir sección</a>
             </article>
 
 
@@ -452,7 +412,7 @@
               <span class="atlas-component-card__id">I · 18 elementos</span>
               <h3>Paneles, cards y tiles</h3>
               <p>Agrupa contenido funcional principal.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="i-paneles-cards.html">Abrir sección</a>
             </article>
 
 
@@ -460,7 +420,7 @@
               <span class="atlas-component-card__id">J · 10 elementos</span>
               <h3>Expansión y contenido progresivo</h3>
               <p>Expande o contrae contenido relacionado.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="j-expansion.html">Abrir sección</a>
             </article>
 
 
@@ -468,7 +428,7 @@
               <span class="atlas-component-card__id">K · 21 elementos</span>
               <h3>Estados y feedback</h3>
               <p>Mensaje dentro del flujo.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="k-estados-feedback.html">Abrir sección</a>
             </article>
 
 
@@ -476,7 +436,7 @@
               <span class="atlas-component-card__id">L · 10 elementos</span>
               <h3>Carga y progreso</h3>
               <p>Espera breve indeterminada.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="l-carga-progreso.html">Abrir sección</a>
             </article>
 
 
@@ -484,7 +444,7 @@
               <span class="atlas-component-card__id">M · 14 elementos</span>
               <h3>Overlays y capas temporales</h3>
               <p>Ayuda breve por hover o foco.</p>
-              <a class="atlas-button" href="m-overlays.html">Abrir piloto</a>
+              <a class="atlas-button" href="m-overlays.html">Abrir sección</a>
             </article>
 
 
@@ -492,7 +452,7 @@
               <span class="atlas-component-card__id">N · 25 elementos</span>
               <h3>Componentes operativos PRISMA</h3>
               <p>Venta activa y productos.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="n-operativos.html">Abrir sección</a>
             </article>
 
 
@@ -500,7 +460,7 @@
               <span class="atlas-component-card__id">O · 17 elementos</span>
               <h3>Patrones de pantalla</h3>
               <p>Mensaje principal de la ruta.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="o-patrones-pantalla.html">Abrir sección</a>
             </article>
 
 
@@ -508,7 +468,7 @@
               <span class="atlas-component-card__id">P · 13 elementos</span>
               <h3>Movimiento e interacción</h3>
               <p>Elevación mínima al apuntar.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="p-movimiento.html">Abrir sección</a>
             </article>
 
 
@@ -516,7 +476,7 @@
               <span class="atlas-component-card__id">Q · 15 elementos</span>
               <h3>Responsive, teclado y accesibilidad</h3>
               <p>Distribución para pantalla ancha.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="q-responsive-accesibilidad.html">Abrir sección</a>
             </article>
 
 
@@ -524,7 +484,7 @@
               <span class="atlas-component-card__id">R · 18 elementos</span>
               <h3>Contenido y comunicación</h3>
               <p>Navega a otro recurso.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="r-contenido.html">Abrir sección</a>
             </article>
 
 
@@ -532,7 +492,7 @@
               <span class="atlas-component-card__id">S · 20 elementos</span>
               <h3>Visualización y analítica</h3>
               <p>Agrupa métricas principales.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="s-analitica.html">Abrir sección</a>
             </article>
 
 
@@ -540,7 +500,7 @@
               <span class="atlas-component-card__id">T · 18 elementos</span>
               <h3>Archivos, medios, captura y exportación</h3>
               <p>Carga uno o varios archivos.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="t-archivos-medios.html">Abrir sección</a>
             </article>
 
 
@@ -548,7 +508,7 @@
               <span class="atlas-component-card__id">U · 14 elementos</span>
               <h3>Calendario, agenda y tiempo</h3>
               <p>Muestra un mes completo.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="u-calendario.html">Abrir sección</a>
             </article>
 
 
@@ -556,7 +516,7 @@
               <span class="atlas-component-card__id">V · 18 elementos</span>
               <h3>Comercio, pagos y documentos</h3>
               <p>Muestra precio vigente.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="v-comercio-pagos.html">Abrir sección</a>
             </article>
 
 
@@ -564,7 +524,7 @@
               <span class="atlas-component-card__id">W · 16 elementos</span>
               <h3>Identidad, permisos y seguridad</h3>
               <p>Acceso mediante credenciales.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="w-identidad-seguridad.html">Abrir sección</a>
             </article>
 
 
@@ -572,7 +532,7 @@
               <span class="atlas-component-card__id">X · 16 elementos</span>
               <h3>Sistema, dispositivos y diagnóstico</h3>
               <p>Estado operativo del dispositivo.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="x-sistema-diagnostico.html">Abrir sección</a>
             </article>
 
 
@@ -580,7 +540,7 @@
               <span class="atlas-component-card__id">Y · 14 elementos</span>
               <h3>Internacionalización, impresión y offline</h3>
               <p>Selecciona región y formato.</p>
-              <span class="atlas-pill">Lote futuro</span>
+              <a class="atlas-button" href="y-i18n-impresion-offline.html">Abrir sección</a>
             </article>
 
 
@@ -588,7 +548,7 @@
               <span class="atlas-component-card__id">Z · 18 elementos</span>
               <h3>Gobierno y contratos canónicos</h3>
               <p>Identificador estable del componente.</p>
-              <a class="atlas-button" href="z-gobierno.html">Abrir piloto</a>
+              <a class="atlas-button" href="z-gobierno.html">Abrir sección</a>
             </article>
 
   </div>

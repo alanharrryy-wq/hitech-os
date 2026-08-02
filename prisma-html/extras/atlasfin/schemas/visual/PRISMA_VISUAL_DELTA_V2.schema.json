@@ -1,0 +1,89 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_VISUAL_DELTA_V2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "schema": "PRISMA_VISUAL_DELTA_V2",
+      "version": "2.0.0"
+    }
+  ],
+  "properties": {
+    "assetDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "canonicalDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "deltaBindingRequirements": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "deltaIntent": {
+      "type": "string"
+    },
+    "deltaPatchHints": {
+      "type": "array"
+    },
+    "instructionOnly": {
+      "type": "boolean"
+    },
+    "resolvedDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "PRISMA_VISUAL_DELTA_V2"
+    },
+    "semanticDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "stateDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "structuralDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "variantDifferences": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version"
+  ],
+  "title": "PRISMA_VISUAL_DELTA_V2",
+  "type": "object",
+  "version": "2.0.0",
+  "x-discriminator": "schema",
+  "x-migration": {
+    "from": [],
+    "strategy": "explicit-and-lossless"
+  }
+}
