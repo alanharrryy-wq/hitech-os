@@ -10,6 +10,7 @@
   <script defer src="assets/data/atlas.manifest.js"></script>
   <script defer src="assets/data/visual.recipe.registry.js"></script>
   <script defer src="assets/js/atlas.js"></script>
+  <script defer src="assets/js/visrec2/governed-control-engine.js"></script>
 </head>
 <body data-atlas-chroma="spectral-page" data-atlas-premium="select-layer-sweep" data-atlas-page="INDEX" data-default-accent="cyan">
   <div class="atlas-scene" aria-hidden="true">
@@ -228,6 +229,29 @@
       <img src="assets/media/prisma-logo-full.png" alt="PRISMA, Sistema Inteligente de Gestión Operativa">
     </div>
   </div>
+</section>
+
+<section class="atlas-section atlas-control-launcher atlas-reveal" aria-labelledby="atlas-control-launcher-title">
+  <div>
+    <p class="atlas-eyebrow">Control visual gobernado</p>
+    <h2 id="atlas-control-launcher-title">De la autoridad al plan, sin tocar el producto</h2>
+    <p>Abre el piloto certificado Tablet POS → Cobrar para recorrer UIMAP, owner, slot, layer, binding, receta, evidencia, gates y rollback dentro de esta misma cabina.</p>
+  </div>
+  <button class="atlas-button atlas-button--primary" type="button" data-atlas-control-open aria-controls="atlas-canonical-control" aria-expanded="false">
+    Abrir control canónico
+  </button>
+</section>
+
+<section id="atlas-canonical-control" class="atlas-section atlas-control" data-atlas-control-panel aria-labelledby="atlas-control-title" hidden>
+  <header class="atlas-control__header">
+    <div>
+      <p class="atlas-eyebrow">Atlasfin · vista regenerable</p>
+      <h2 id="atlas-control-title">Control visual canónico</h2>
+      <p>Proyección read-only. UIMAP, UI Bridge, RIFAT y los owners activos conservan la autoridad.</p>
+    </div>
+    <button class="atlas-button" type="button" data-atlas-control-close>Cerrar</button>
+  </header>
+  <div data-atlas-control-content></div>
 </section>
 
 <section class="atlas-section atlas-reveal">
