@@ -1,8 +1,35 @@
 {
-  "mode": "app_map",
   "buttonLabel": "App Map",
-  "selectorLabel": "App a mapear",
+  "mode": "app_map",
+  "outputFiles": [
+    "01_SURFACE_REGISTRY.json",
+    "02_ROUTE_COMPONENT_MAP.json",
+    "03_COMPONENT_OWNERSHIP_MAP.json",
+    "04_LAYER_ROLE_KIND_MAP.json",
+    "05_SELECTOR_GRAPH.json",
+    "06_SELECTOR_USAGE.csv",
+    "07_TOKEN_GRAPH.json",
+    "08_LEGACY_TOKEN_ALIAS_MAP.json",
+    "09_STATE_MATRIX.json",
+    "10_CONTROL_APPLICABILITY_MATRIX.json",
+    "11_PRESET_ELIGIBILITY_REGISTRY.json",
+    "12_POS_PROTECTION_MAP.json",
+    "13_ZERO_MEANS_ZERO_AUDIT.json",
+    "14_IMPORTANT_AUDIT_FILTERED.md",
+    "15_ORPHAN_DUPLICATE_SHARED_SELECTORS.md",
+    "16_PRESET_PROMOTION_CONTRACT.md",
+    "17_CONTINUATION.md",
+    "app_map_viewer.html",
+    "PRISMA_UI_COMPONENT_ATLAS.json",
+    "PRISMA_UI_ALIAS_REGISTRY.json",
+    "PRISMA_UI_CONFLICTS.json",
+    "PRISMA_UI_COVERAGE.json",
+    "PRISMA_UI_DEPRECATIONS.json",
+    "NDC_UI_CURATION_DELTA.jsonl",
+    "PRISMA_UI_BRIDGE_HANDOFF.json"
+  ],
   "readOnly": true,
+  "selectorLabel": "App a mapear",
   "targets": [
     {
       "id": "",
@@ -41,24 +68,21 @@
       "label": "Todas"
     }
   ],
-  "outputFiles": [
-    "01_SURFACE_REGISTRY.json",
-    "02_ROUTE_COMPONENT_MAP.json",
-    "03_COMPONENT_OWNERSHIP_MAP.json",
-    "04_LAYER_ROLE_KIND_MAP.json",
-    "05_SELECTOR_GRAPH.json",
-    "06_SELECTOR_USAGE.csv",
-    "07_TOKEN_GRAPH.json",
-    "08_LEGACY_TOKEN_ALIAS_MAP.json",
-    "09_STATE_MATRIX.json",
-    "10_CONTROL_APPLICABILITY_MATRIX.json",
-    "11_PRESET_ELIGIBILITY_REGISTRY.json",
-    "12_POS_PROTECTION_MAP.json",
-    "13_ZERO_MEANS_ZERO_AUDIT.json",
-    "14_IMPORTANT_AUDIT_FILTERED.md",
-    "15_ORPHAN_DUPLICATE_SHARED_SELECTORS.md",
-    "16_PRESET_PROMOTION_CONTRACT.md",
-    "17_CONTINUATION.md",
-    "app_map_viewer.html"
-  ]
+  "uimapExtension": {
+    "canonicalOutputs": [
+      "PRISMA_UI_COMPONENT_ATLAS.json",
+      "PRISMA_UI_ALIAS_REGISTRY.json",
+      "PRISMA_UI_CONFLICTS.json",
+      "PRISMA_UI_COVERAGE.json",
+      "PRISMA_UI_DEPRECATIONS.json",
+      "NDC_UI_CURATION_DELTA.jsonl",
+      "PRISMA_UI_BRIDGE_HANDOFF.json"
+    ],
+    "cli": "python -m code_atlas.app_map.uimap",
+    "id": "uimap1",
+    "productSourceMutationAllowed": false,
+    "readOnly": true,
+    "taskId": "MAP_ALL_PRISMA_UI_SURFACES_SOURCE_ONLY_V1",
+    "visualApplicationAllowed": false
+  }
 }
