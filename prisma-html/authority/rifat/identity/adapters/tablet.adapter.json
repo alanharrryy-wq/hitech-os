@@ -1,0 +1,39 @@
+{
+  "schema": "prisma.identity.surface-adapter.v1",
+  "id": "prisma.adapter.tablet.v1",
+  "surface": "tablet",
+  "role": "END_SURFACE",
+  "readiness": "BINDING_READY_SOURCE_ONLY",
+  "intent": "Luminous touch-first adaptation. Dark shell is forbidden by current product authority.",
+  "tokenOverrides": {
+    "density.controlHeight": "52px",
+    "density.touchTarget": "52px",
+    "typography.bodySize": "17px",
+    "typography.labelSize": "14px",
+    "border.radiusControl": "14px"
+  },
+  "projectionRules": {
+    "meaningOrder": [
+      "semantic-token",
+      "identity-profile",
+      "surface-adapter",
+      "owner-slot-binding",
+      "compiled-projection"
+    ],
+    "bindingRegistry": "registries/bindings.registry.json",
+    "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
+    "fewestContainersPossible": true,
+    "zeroVisualKnobMeansTransparent": true,
+    "preserveFunctionalBehavior": true,
+    "manualRuntimeEditsForbidden": true
+  },
+  "forbiddenMutations": [
+    "functional-behavior",
+    "database-or-sync",
+    "backend",
+    "deploy-or-dns",
+    "process-or-port",
+    "priority-override",
+    "global-css-blast"
+  ]
+}

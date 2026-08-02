@@ -1,0 +1,67 @@
+@import "../../../shared-ui/prisma/visual-os/prisma-visual-os.tokens.css";
+@import "../../../../styles/prisma-visual-os/prisma-visual-layers.css";
+@import "../../../../styles/prisma-visual-os/prisma-visual-controls.generated.css";
+
+/*
+  PRISMA Crystal Command Mobile: app binding
+  PRISMA Visual OS 00K - Mobile Pulse Binding.
+  Runtime role after Mobile Cloud Center cleanup: keep verifier/touch/focus tokens,
+  but do not own backgrounds, atmosphere, shells or route layout.
+*/
+html[data-prisma-surface="mobile-pulse"] {
+  color-scheme: dark;
+  --prisma-mobile-vos-safe-x: 0px;
+  --prisma-mobile-vos-touch: max(44px, var(--prisma-vos-min-touch-target, 44px));
+  --prisma-mobile-vos-gap: 10px;
+  --prisma-mobile-vos-border: rgba(247, 239, 215, 0.16);
+  --prisma-mobile-vos-panel: transparent;
+}
+
+html[data-prisma-surface="mobile-pulse"],
+html[data-prisma-surface="mobile-pulse"] body {
+  min-height: 100%;
+  margin: 0;
+  background-color: #07111f;
+  background-image:
+    radial-gradient(900px 560px at 14% 8%, rgba(128, 214, 255, 0.16), transparent 58%),
+    radial-gradient(760px 520px at 84% 12%, rgba(90, 146, 218, 0.14), transparent 63%),
+    linear-gradient(140deg, rgba(2, 8, 15, 0.46), rgba(9, 24, 40, 0.24) 42%, rgba(1, 7, 14, 0.5)),
+    url("/backgrounds/prisma-mobile/appmovil-command-center-simon-spring.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: screen, soft-light, multiply, normal;
+}
+
+html[data-prisma-surface="mobile-pulse"] body::before {
+  display: none;
+}
+
+html[data-prisma-surface="mobile-pulse"] main[data-prisma-product="mobile"] {
+  min-height: 100svh;
+  padding: 0;
+  background: transparent;
+}
+
+html[data-prisma-surface="mobile-pulse"] main[data-prisma-product="mobile"] :is(section, aside, article) {
+  scroll-margin-top: 18px;
+}
+
+html[data-prisma-surface="mobile-pulse"] main[data-prisma-product="mobile"] :is(button, a[role="button"]) {
+  min-height: var(--prisma-mobile-vos-touch);
+  touch-action: manipulation;
+}
+
+html[data-prisma-surface="mobile-pulse"] main[data-prisma-product="mobile"] :is(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--prisma-accent-gold, #ffd977) 70%, white 10%);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-prisma-surface="mobile-pulse"] *,
+  html[data-prisma-surface="mobile-pulse"] *::before,
+  html[data-prisma-surface="mobile-pulse"] *::after {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}

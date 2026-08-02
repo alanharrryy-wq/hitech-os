@@ -6,6 +6,7 @@ import {
 
 /**
  * TABUX_1707_NAVIGATION
+ * CUSTOMER_SURFACE_REDUCTION_1507
  * Four canonical destinations plus the shell-owned More sheet form the five-item dock.
  */
 type TabletNavSnapshot = {

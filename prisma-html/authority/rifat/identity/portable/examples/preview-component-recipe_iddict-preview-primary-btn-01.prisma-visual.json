@@ -1,0 +1,129 @@
+{
+  "applicationPolicy": {
+    "mode": "INSTRUCTION_ONLY",
+    "productApplicationAllowed": false,
+    "requiredFutureEvidence": [
+      "fresh Authority Mesh for the exact target",
+      "concrete owner/route/region/slot binding",
+      "pre-change hashes",
+      "transactional backup and rollback",
+      "surface-specific static validation",
+      "visual evidence",
+      "no fake green"
+    ],
+    "requiresFutureGovernedApplicationGate": true,
+    "runtimeMutationAllowed": false
+  },
+  "artifactVersion": "1.0.0",
+  "compatibility": {
+    "productBindingResolved": false,
+    "selectedSurface": "shared-ui",
+    "supportedSurfaces": [
+      "shared-ui"
+    ],
+    "surfaceRuntimeProjectionAllowed": false
+  },
+  "createdAt": "2026-07-25T05:28:51.045758Z",
+  "element": {
+    "componentUiId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+    "neutralMeaningId": "ACT.primary",
+    "objectId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+    "version": "1.0.0"
+  },
+  "exportId": "PEX.preview-component-recipe-iddict-preview-primary-btn-01.c118eb776bb0",
+  "identity": {
+    "identityProfileId": "prisma.clear-operational.v1",
+    "identityProfileVersion": "1.0.0",
+    "recipePresetId": "REC.button.primary"
+  },
+  "instructionOnly": true,
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "c118eb776bb03277d90a3e98cd262afc0a35b472eb3a112c0e5531fc7bb927fc",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "coveredTopLevelFields": [
+      "applicationPolicy",
+      "artifactVersion",
+      "compatibility",
+      "createdAt",
+      "element",
+      "identity",
+      "instructionOnly",
+      "kind",
+      "manifest",
+      "origin",
+      "preview",
+      "runtimeMutationAllowed",
+      "schema",
+      "target",
+      "values"
+    ]
+  },
+  "kind": "preview-component-recipe",
+  "manifest": {
+    "recordCount": 1,
+    "records": [
+      {
+        "instructionOnly": true,
+        "recordId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+        "recordKind": "preview-component-recipe"
+      }
+    ]
+  },
+  "origin": {
+    "authority": "prisma-html/authority/rifat/identity",
+    "generatedBy": "tools/portable_identity_export.py",
+    "selectedProfileId": "prisma.clear-operational.v1",
+    "sourcePath": "registries/portable-export.registry.json",
+    "sourceRegistry": "registries/portable-export.registry.json"
+  },
+  "preview": {
+    "resolvedTokens": {
+      "border.radiusControl": "13px",
+      "color.accent": "#2563eb",
+      "color.accentText": "#ffffff",
+      "motion.easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "motion.fast": "120ms"
+    }
+  },
+  "runtimeMutationAllowed": false,
+  "schema": "prisma.identity.portable-element-export.v1",
+  "target": {
+    "bindingStatus": "BLOCKED_BY_MISSING_BINDING",
+    "missingBindings": [
+      "ownerId",
+      "regionId",
+      "routeId",
+      "slotId"
+    ],
+    "ownerId": null,
+    "regionId": null,
+    "routeId": null,
+    "slotId": null,
+    "surfaceBindingSources": {
+      "layerSource": null,
+      "ownerSource": null,
+      "routeSource": "authority/rifat/prisma-ui/routes.json",
+      "slotSource": null
+    },
+    "surfaceId": "shared-ui",
+    "surfaceReadiness": "NEUTRAL_SOURCE_READY"
+  },
+  "values": {
+    "componentName": "Preview primary action",
+    "resolvedTokens": {
+      "border.radiusControl": "13px",
+      "color.accent": "#2563eb",
+      "color.accentText": "#ffffff",
+      "motion.easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "motion.fast": "120ms"
+    },
+    "tokenRefs": [
+      "color.accent",
+      "color.accentText",
+      "border.radiusControl",
+      "motion.fast",
+      "motion.easing"
+    ]
+  }
+}

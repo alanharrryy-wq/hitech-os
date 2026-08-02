@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "canonicalName": {
+      "type": "string"
+    },
+    "family": {
+      "type": "string"
+    },
+    "layer": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "live",
+        "mapped",
+        "planned",
+        "reserved",
+        "deprecated"
+      ]
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredTokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenPatterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "qa": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "canonicalName",
+    "family",
+    "layer",
+    "status",
+    "surfaces",
+    "requiredTokens",
+    "forbiddenPatterns",
+    "qa"
+  ]
+}

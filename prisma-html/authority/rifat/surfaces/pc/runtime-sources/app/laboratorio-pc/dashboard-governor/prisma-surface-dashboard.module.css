@@ -1,0 +1,49 @@
+.dashboardSurface {
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.backgroundField,.scrimField{ position:absolute; inset:0; pointer-events:none; }
+.backgroundField{ z-index:-3; }
+.scrimField{ z-index:-2; }
+.shell{ width:min(1480px, calc(100vw - 48px)); margin:0 auto; padding:24px 0 34px; display:grid; gap:18px; }
+.topbar,.heroPanel,.kpiCard,.actionPanel,.chartFrame,.evidencePanel,.governorCard{ }
+.topbar{ min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:18px; padding:14px 18px; }
+.brandCluster,.statusCluster,.heroActions,.chartHeader{ display:flex; align-items:center; gap:12px; }
+.brandMark{ width:42px; height:42px; display:grid; place-items:center; font-weight:900; }
+.eyebrow{ margin:0; text-transform:uppercase; letter-spacing:.16em; font-size:.72rem; font-weight:800; }
+.topbar h1,.heroCopy h2,.actionPanel h3,.chartFrame h3,.evidencePanel h3{ margin:0; letter-spacing:-.04em; }
+.statusCluster{ padding:10px 13px; }
+.liveDot{ width:10px; height:10px; }
+.heroPanel{ min-height:330px; display:grid; grid-template-columns:1.45fr .75fr; gap:18px; padding:26px; }
+.heroCopy{ max-width:860px; display:grid; align-content:center; gap:16px; }
+.heroCopy h2{ max-width:780px; font-size:clamp(2.55rem,5vw,5.7rem); line-height:.88; }
+.heroCopy p,.governorCard p,.kpiCard p,.actionPanel li,.evidencePanel dd,.chartHeader span{ }
+.heroCopy>p{ max-width:760px; margin:0; font-size:1.05rem; line-height:1.7; }
+.primaryAction,.secondaryAction{ padding:12px 16px; font-weight:800; }
+.primaryAction{ }
+.secondaryAction{ }
+.governorCard{ align-self:stretch; display:grid; align-content:end; gap:12px; padding:22px; }
+.cardKicker{ width:fit-content; padding:7px 10px; font-size:.74rem; font-weight:800; text-transform:uppercase; letter-spacing:.11em; }
+.governorCard strong{ font-size:1.8rem; line-height:1; }
+.grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.kpiCard{ min-height:178px; display:grid; align-content:end; gap:8px; padding:20px; }
+.kpiCard span{ font-weight:750; }
+.kpiCard strong{ font-size:clamp(2rem,4vw,3.4rem); letter-spacing:-.07em; }
+.kpiCard p{ margin:0; line-height:1.55; }
+.live{ }
+.warning{ }
+.locked{ }
+.workArea{ display:grid; grid-template-columns:.85fr 1.2fr .95fr; gap:14px; }
+.actionPanel,.chartFrame,.evidencePanel{ min-height:280px; padding:22px; }
+.actionPanel ul{ margin:16px 0 0; padding-left:20px; display:grid; gap:10px; }
+.chartFrame{ display:grid; align-content:space-between; gap:18px; }
+.signalBars{ height:170px; display:flex; align-items:end; gap:10px; padding-top:22px; }
+.signalBars span{ flex:1; min-height:26px; height:var(--h); }
+.evidencePanel dl{ display:grid; gap:10px; margin:16px 0 0; }
+.evidencePanel div{ display:flex; justify-content:space-between; gap:18px; padding-bottom:8px; }
+.evidencePanel dt{ font-weight:800; }
+.evidencePanel dd{ margin:0; text-align:right; }
+@media (max-width: 980px){ .heroPanel,.workArea{ grid-template-columns:1fr; } .grid{ grid-template-columns:1fr; } .shell{ width:min(100% - 26px,1480px); } .heroCopy h2{ font-size:3.1rem; } }
+@media (prefers-reduced-motion: reduce){ .backgroundField,.liveDot{ } }

@@ -1,0 +1,93 @@
+{
+  "schema": "prisma.identity.portable-export.registry.v1",
+  "version": "1.0.0",
+  "artifactSchema": "prisma.identity.portable-element-export.v1",
+  "artifactExtension": ".prisma-visual.json",
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "supportedKinds": [
+    {
+      "kind": "identity-profile",
+      "neutralMeaningId": "VIS.identity.profile",
+      "sourceRegistry": "registries/identity.registry.json",
+      "requiresConcreteElementBinding": false
+    },
+    {
+      "kind": "semantic-token",
+      "neutralMeaningIdTemplate": "TOK.{objectId}",
+      "sourceRegistry": "registries/semantic-tokens.registry.json",
+      "requiresConcreteElementBinding": true
+    },
+    {
+      "kind": "surface-adapter",
+      "neutralMeaningId": "VIS.surface.adapter",
+      "sourceRegistry": "registries/surface-adapters.registry.json",
+      "requiresConcreteElementBinding": true
+    },
+    {
+      "kind": "preview-component-recipe",
+      "neutralMeaningId": "VIS.component.recipe",
+      "sourceRegistry": "registries/portable-export.registry.json",
+      "requiresConcreteElementBinding": true
+    }
+  ],
+  "traceFields": [
+    "neutralMeaningId",
+    "identityProfileId",
+    "recipePresetId",
+    "surfaceId",
+    "ownerId",
+    "routeId",
+    "regionId",
+    "slotId",
+    "componentUiId",
+    "version"
+  ],
+  "bindingPolicy": {
+    "unknownBindingsMustRemainNull": true,
+    "missingBindingsStatus": "BLOCKED_BY_MISSING_BINDING",
+    "productApplicationForbidden": true,
+    "readOnlyImportInspection": true,
+    "futureGovernedApplicationRequired": true
+  },
+  "viewerComponents": [
+    {
+      "id": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+      "name": "Preview primary action",
+      "neutralMeaningId": "ACT.primary",
+      "recipePresetId": "REC.button.primary",
+      "surfaceId": "shared-ui",
+      "tokenRefs": [
+        "color.accent",
+        "color.accentText",
+        "border.radiusControl",
+        "motion.fast",
+        "motion.easing"
+      ],
+      "productBindingStatus": "BLOCKED_BY_MISSING_BINDING"
+    },
+    {
+      "id": "IDDICT-PREVIEW-SECONDARY-BTN-01",
+      "name": "Preview secondary action",
+      "neutralMeaningId": "ACT.secondary",
+      "recipePresetId": "REC.button.secondary",
+      "surfaceId": "shared-ui",
+      "tokenRefs": [
+        "color.textPrimary",
+        "color.surfaceElevated",
+        "material.surfaceBorder",
+        "border.radiusControl",
+        "motion.fast"
+      ],
+      "productBindingStatus": "BLOCKED_BY_MISSING_BINDING"
+    }
+  ],
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "excludedTopLevelFields": [
+      "exportId",
+      "integrity"
+    ]
+  }
+}

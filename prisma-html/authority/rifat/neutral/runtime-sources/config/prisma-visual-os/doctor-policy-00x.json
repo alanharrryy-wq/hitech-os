@@ -1,0 +1,16 @@
+{
+  "package": "PRISMA_SHOW_POS_DOCTOR_SMART_00X",
+  "version": "20260504_v01",
+  "activeLogGraceMinutes": 3,
+  "maxLogFiles": 80,
+  "criticalGates": [
+    "route /pos",
+    "realtime health",
+    "scan 00T binding",
+    "scan 00T css no-layout markers",
+    "verify 00T",
+    "verify doctor 00X"
+  ],
+  "historicalHandling": "Logs older than the current run grace window are historical unless structured JSON reports criticalFailures.",
+  "descargasfRole": "logs-and-reports-only"
+}

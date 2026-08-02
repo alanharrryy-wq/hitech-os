@@ -1,0 +1,170 @@
+{
+  "applicationPolicy": {
+    "mode": "INSTRUCTION_ONLY",
+    "productApplicationAllowed": false,
+    "requiredFutureEvidence": [
+      "fresh Authority Mesh for the exact target",
+      "concrete owner/route/region/slot binding",
+      "pre-change hashes",
+      "transactional backup and rollback",
+      "surface-specific static validation",
+      "visual evidence",
+      "no fake green"
+    ],
+    "requiresFutureGovernedApplicationGate": true,
+    "runtimeMutationAllowed": false
+  },
+  "artifactVersion": "1.0.0",
+  "compatibility": {
+    "selectedSurface": "tablet",
+    "supportedSurfaces": [
+      "tablet"
+    ],
+    "surfaceRuntimeProjectionAllowed": false
+  },
+  "createdAt": "2026-07-25T05:28:51.045667Z",
+  "element": {
+    "componentUiId": null,
+    "neutralMeaningId": "VIS.surface.adapter",
+    "objectId": "prisma.adapter.tablet.v1",
+    "version": "1.0.0"
+  },
+  "exportId": "PEX.surface-adapter-prisma.adapter.tablet.v1.2fe14b899e3f",
+  "identity": {
+    "identityProfileId": "prisma.clear-operational.v1",
+    "identityProfileVersion": "1.0.0",
+    "recipePresetId": "prisma.adapter.tablet.v1"
+  },
+  "instructionOnly": true,
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "2fe14b899e3f2ba7a95d52a990750bc5b172edd32beb7b4c5f415b4870ee858b",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "coveredTopLevelFields": [
+      "applicationPolicy",
+      "artifactVersion",
+      "compatibility",
+      "createdAt",
+      "element",
+      "identity",
+      "instructionOnly",
+      "kind",
+      "manifest",
+      "origin",
+      "preview",
+      "runtimeMutationAllowed",
+      "schema",
+      "target",
+      "values"
+    ]
+  },
+  "kind": "surface-adapter",
+  "manifest": {
+    "recordCount": 1,
+    "records": [
+      {
+        "instructionOnly": true,
+        "recordId": "prisma.adapter.tablet.v1",
+        "recordKind": "surface-adapter"
+      }
+    ]
+  },
+  "origin": {
+    "authority": "prisma-html/authority/rifat/identity",
+    "generatedBy": "tools/portable_identity_export.py",
+    "selectedProfileId": "prisma.clear-operational.v1",
+    "sourcePath": "adapters/tablet.adapter.json",
+    "sourceRegistry": "registries/surface-adapters.registry.json"
+  },
+  "preview": {
+    "surfaceIntent": "light-touch-comfortable",
+    "tokenOverrides": {
+      "border.radiusControl": "14px",
+      "density.controlHeight": "52px",
+      "density.touchTarget": "52px",
+      "typography.bodySize": "17px",
+      "typography.labelSize": "14px"
+    }
+  },
+  "runtimeMutationAllowed": false,
+  "schema": "prisma.identity.portable-element-export.v1",
+  "target": {
+    "bindingStatus": "BLOCKED_BY_MISSING_ELEMENT_BINDING",
+    "missingBindings": [
+      "componentUiId",
+      "ownerId",
+      "regionId",
+      "routeId",
+      "slotId"
+    ],
+    "ownerId": null,
+    "regionId": null,
+    "routeId": null,
+    "slotId": null,
+    "surfaceBindingSources": {
+      "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+      "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+      "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
+      "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json"
+    },
+    "surfaceId": "tablet",
+    "surfaceReadiness": "CERTIFIED_BINDING_SOURCE"
+  },
+  "values": {
+    "adapter": {
+      "forbiddenMutations": [
+        "functional-behavior",
+        "database-or-sync",
+        "backend",
+        "deploy-or-dns",
+        "process-or-port",
+        "priority-override",
+        "global-css-blast"
+      ],
+      "id": "prisma.adapter.tablet.v1",
+      "intent": "Luminous touch-first adaptation. Dark shell is forbidden by current product authority.",
+      "projectionRules": {
+        "bindingRegistry": "registries/bindings.registry.json",
+        "fewestContainersPossible": true,
+        "manualRuntimeEditsForbidden": true,
+        "meaningOrder": [
+          "semantic-token",
+          "identity-profile",
+          "surface-adapter",
+          "owner-slot-binding",
+          "compiled-projection"
+        ],
+        "preserveFunctionalBehavior": true,
+        "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
+        "zeroVisualKnobMeansTransparent": true
+      },
+      "readiness": "BINDING_READY_SOURCE_ONLY",
+      "role": "END_SURFACE",
+      "schema": "prisma.identity.surface-adapter.v1",
+      "surface": "tablet",
+      "tokenOverrides": {
+        "border.radiusControl": "14px",
+        "density.controlHeight": "52px",
+        "density.touchTarget": "52px",
+        "typography.bodySize": "17px",
+        "typography.labelSize": "14px"
+      }
+    },
+    "resolvedTokenCount": 53,
+    "surfaceBinding": {
+      "editableSlotCount": 2340,
+      "layerCount": 948,
+      "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+      "missing": [],
+      "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+      "readiness": "CERTIFIED_BINDING_SOURCE",
+      "regionOwnerCount": 436,
+      "routeCount": 23,
+      "routeOwnerCount": 23,
+      "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
+      "runtimeProjectionAllowed": false,
+      "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
+      "surface": "tablet"
+    }
+  }
+}

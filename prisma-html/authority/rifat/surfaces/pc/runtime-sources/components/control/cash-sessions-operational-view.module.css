@@ -1,0 +1,322 @@
+.cashConsole {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 72px;
+}
+
+.cashHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px;
+  padding: 22px 24px;
+}
+
+.cashHero h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(30px, 4.5vw, 58px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.cashHero p,
+.cashHero small {
+  display: block;
+  margin: 0;
+}
+
+.cashHero a,
+.formActions button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.kicker {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.consoleGrid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.cashRail {
+  position: sticky;
+  top: 18px;
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.cashMain {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.guidedAction,
+.evidenceSteps,
+.commandActions,
+.tableCard,
+.diagnosticsCard,
+.panelStack {
+}
+
+.guidedAction,
+.evidenceSteps,
+.commandActions {
+  padding: 16px;
+}
+
+.guidedAction h2,
+.evidenceSteps h2,
+.commandActions h2,
+.sectionHead h2,
+.panelStack h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(20px, 2.2vw, 32px);
+  letter-spacing: -0.04em;
+}
+
+.guidedAction p,
+.sectionHead p {
+  margin: 0;
+}
+
+.actionForm {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.actionForm label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.actionForm select,
+.actionForm input {
+  min-height: 42px;
+  width: 100%;
+  padding: 9px 11px;
+}
+
+.formActions {
+  display: grid;
+  gap: 8px;
+}
+
+.formActions span {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.cashBalanceStrip {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: 12px;
+}
+
+.primaryBalance,
+.balanceFacts {
+}
+
+.primaryBalance {
+  padding: 20px;
+}
+
+.primaryBalance strong {
+  display: block;
+  margin: 8px 0 6px;
+  font-size: clamp(36px, 5.6vw, 74px);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+}
+
+.primaryBalance small {
+  font-weight: 850;
+}
+
+.balanceFacts {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(110px, 1fr));
+  overflow: hidden;
+}
+
+.balanceFacts span {
+  display: grid;
+  align-content: center;
+  min-height: 116px;
+  padding: 14px;
+}
+
+.balanceFacts span:first-child {
+}
+
+.balanceFacts strong {
+  font-size: clamp(20px, 2.1vw, 32px);
+  line-height: 0.95;
+}
+
+.balanceFacts small {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.balanceFacts em {
+  margin-top: 4px;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.toneOk {
+}
+
+.toneWarn {
+}
+
+.toneDanger {
+}
+
+.panelStack {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.35fr) repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 14px;
+  align-items: stretch;
+}
+
+.panelStack p {
+  margin: 0;
+}
+
+.panelCard {
+  min-height: 92px;
+  padding: 12px;
+}
+
+.panelCard strong,
+.panelCard span {
+  display: block;
+}
+
+.panelCard strong {
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.panelCard span {
+  margin-top: 7px;
+}
+
+.evidenceSteps ol {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.evidenceSteps strong {
+}
+
+.sectionHead {
+  padding: 16px 18px 10px;
+}
+
+.sectionHead span {
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.tableCard :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableCard :global(th),
+.tableCard :global(td) {
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.tableCard :global(th) {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.sessions {
+}
+
+.movements {
+}
+
+.conflicts {
+}
+
+.diagnosticsCard {
+  padding: 16px;
+}
+
+.diagnosticsCard pre {
+  overflow: auto;
+  max-height: 420px;
+}
+
+@media (max-width: 1260px) {
+  .consoleGrid,
+  .cashBalanceStrip,
+  .panelStack {
+    grid-template-columns: 1fr;
+  }
+
+  .cashRail {
+    position: static;
+    max-height: none;
+  }
+
+  .balanceFacts {
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+  }
+}
+
+@media (max-width: 780px) {
+  .cashHero {
+    grid-template-columns: 1fr;
+  }
+
+  .balanceFacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

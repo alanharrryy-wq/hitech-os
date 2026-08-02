@@ -97,3 +97,17 @@ Para declarar una mejora visual cerrada se requiere:
 - comprobación de rutas y assets;
 - revisión humana de las capturas;
 - si está desplegado, health check de la URL pública.
+
+
+### 2026-07-26 · VISREC2 V2 sin expansión de controles
+
+**Tipo:** SOURCE_EXTENSION / GOVERNANCE / UX
+
+VISREC2 evolucionó a recetas V2 con visual stack, estados, variantes, adaptadores,
+assets, aliases, migración e inspección read-only. La complejidad se resolvió en
+registries y motores internos; se preservó exactamente el conjunto de controles
+visibles de V1 y no se agregaron sliders, selectores ni controles individuales.
+
+**Regla:** una capacidad interna nueva no justifica un control nuevo. Exponer sólo
+decisiones humanas necesarias y mantener compatibilidad, binding, cobertura y
+readiness como semáforos separados.

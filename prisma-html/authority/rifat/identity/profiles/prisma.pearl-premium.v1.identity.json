@@ -1,0 +1,49 @@
+{
+  "schema": "prisma.identity.profile.v1",
+  "id": "prisma.pearl-premium.v1",
+  "version": "1.0.0",
+  "status": "CANDIDATE",
+  "name": "PRISMA Pearl Premium",
+  "intent": "Perla técnica, profundidad óptica moderada y acciones de alto refinamiento sin perder legibilidad.",
+  "traits": [
+    "pearl",
+    "premium",
+    "optical",
+    "refined",
+    "readable"
+  ],
+  "tokenOverrides": {
+    "color.canvas": "#eef4fb",
+    "color.surface": "rgba(255,255,255,0.76)",
+    "color.surfaceElevated": "rgba(255,255,255,0.93)",
+    "color.surfaceMuted": "#e4ebf5",
+    "color.textPrimary": "#152033",
+    "color.textSecondary": "#58677c",
+    "color.accent": "#155eef",
+    "material.surfaceFill": "linear-gradient(150deg, rgba(255,255,255,0.96), rgba(232,242,255,0.70))",
+    "material.surfaceBorder": "rgba(96,120,154,0.22)",
+    "material.surfaceShadow": "0 24px 64px rgba(37,99,235,0.12)",
+    "material.backdropFilter": "blur(24px) saturate(1.14)",
+    "border.radiusControl": "15px",
+    "border.radiusPanel": "24px",
+    "motion.normal": "250ms",
+    "motion.easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "asset.iconStyle": "line-glass"
+  },
+  "surfaceIntent": {
+    "tablet": "light-pearl-touch",
+    "pc": "premium-structured",
+    "mobile": "pearl-priority",
+    "web": "premium-narrative",
+    "chart-lab": "crystal-data",
+    "control-center": "executive-authority",
+    "shared-ui": "neutral-source"
+  },
+  "forbidden": [
+    "dark-tablet-shell",
+    "nested-panel-stack",
+    "decorative-opacity-that-hides-data",
+    "priority-override",
+    "manual-generated-runtime-edit"
+  ]
+}

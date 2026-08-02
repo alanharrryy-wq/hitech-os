@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.binding-envelope.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "instructionOnly",
+    "runtimeMutationAllowed",
+    "productApplicationAllowed",
+    "status",
+    "sourceArtifact",
+    "matches",
+    "authoritySnapshot",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.binding-envelope.v1"
+    },
+    "instructionOnly": {
+      "const": true
+    },
+    "runtimeMutationAllowed": {
+      "const": false
+    },
+    "productApplicationAllowed": {
+      "const": false
+    },
+    "status": {
+      "type": "string"
+    },
+    "sourceArtifact": {
+      "type": "object"
+    },
+    "matches": {
+      "type": "array"
+    },
+    "authoritySnapshot": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

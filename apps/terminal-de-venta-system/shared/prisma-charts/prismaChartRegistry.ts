@@ -186,7 +186,7 @@ export const prismaChartRegistry: PrismaChartDefinition[] = [
     id: "tablet.shift-pulse-strip",
     surface: "tablet",
     title: "Shift Pulse Strip",
-    componentName: "TabletShiftPulseStrip",
+    componentName: "LabEChartFrame",
     renderer: "svg",
     echartsSeries: ["line", "bar"],
     purpose: "Answer whether the current shift can keep operating.",
@@ -194,15 +194,15 @@ export const prismaChartRegistry: PrismaChartDefinition[] = [
     filters: tabletFilters,
     interactions: tabletInteractions,
     accessibility: "Large touch summary labels and non-color status text.",
-    responsive: "180-220px tactical card for tablet touch surfaces.",
+    responsive: "Chart Lab preview preserves the Tablet-targeted 180-220px tactical card contract.",
     dataContract: "ShiftPulseBucket[]",
-    route: "/prisma-pulse"
+    route: "/?chart=tablet.shift-pulse-strip"
   },
   {
     id: "tablet.sync-outbox-status-matrix",
     surface: "tablet",
     title: "Sync Outbox Status Matrix",
-    componentName: "TabletSyncOutboxStatusMatrix",
+    componentName: "LabEChartFrame",
     renderer: "svg",
     echartsSeries: ["heatmap"],
     purpose: "Show what is pending, failed, old, or blocking in the local outbox.",
@@ -210,9 +210,9 @@ export const prismaChartRegistry: PrismaChartDefinition[] = [
     filters: tabletFilters,
     interactions: tabletInteractions,
     accessibility: "Cell tooltip includes count, oldest age, retry count, and blocking text.",
-    responsive: "Compact matrix with touch-safe cell focus.",
+    responsive: "Chart Lab preview preserves the compact matrix and touch-safe cell-focus contract.",
     dataContract: "SyncOutboxMatrixCell[]",
-    route: "/prisma-pulse"
+    route: "/?chart=tablet.sync-outbox-status-matrix"
   },
   {
     id: "mobile.owner-pulse-timeline",

@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0",
+  "future": [
+    {
+      "id": "kitchen-display",
+      "canonicalName": "KitchenDisplay",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "public-display",
+      "canonicalName": "PublicDisplay",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "training-mode-panel",
+      "canonicalName": "TrainingModePanel",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "demo-mode-panel",
+      "canonicalName": "DemoModePanel",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "customer-facing-receipt",
+      "canonicalName": "CustomerFacingReceipt",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    },
+    {
+      "id": "queue-status-board",
+      "canonicalName": "QueueStatusBoard",
+      "family": "future_display",
+      "layer": "surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console"
+      ],
+      "requiredTokens": [
+        "color",
+        "density"
+      ],
+      "forbiddenPatterns": [
+        "hardcoded-runtime-background",
+        "final-important",
+        "unregistered-shell-wrapper",
+        "global-css-hack"
+      ],
+      "qa": [
+        "schema",
+        "registry",
+        "no-touch",
+        "forbidden-pattern-scan"
+      ]
+    }
+  ]
+}

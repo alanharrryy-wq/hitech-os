@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.portable-element-export.v1",
+  "title": "PRISMA Portable Visual Element Export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "artifactVersion",
+    "exportId",
+    "kind",
+    "createdAt",
+    "instructionOnly",
+    "runtimeMutationAllowed",
+    "identity",
+    "element",
+    "target",
+    "values",
+    "origin",
+    "compatibility",
+    "applicationPolicy",
+    "manifest",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.portable-element-export.v1"
+    },
+    "artifactVersion": {
+      "type": "string",
+      "pattern": "^1\\."
+    },
+    "exportId": {
+      "type": "string",
+      "minLength": 12
+    },
+    "kind": {
+      "enum": [
+        "identity-profile",
+        "semantic-token",
+        "surface-adapter",
+        "preview-component-recipe"
+      ]
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "instructionOnly": {
+      "const": true
+    },
+    "runtimeMutationAllowed": {
+      "const": false
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "identityProfileId",
+        "identityProfileVersion",
+        "recipePresetId"
+      ],
+      "properties": {
+        "identityProfileId": {
+          "type": "string"
+        },
+        "identityProfileVersion": {
+          "type": "string"
+        },
+        "recipePresetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "element": {
+      "type": "object",
+      "required": [
+        "neutralMeaningId",
+        "objectId",
+        "componentUiId",
+        "version"
+      ],
+      "properties": {
+        "neutralMeaningId": {
+          "type": "string"
+        },
+        "objectId": {
+          "type": "string"
+        },
+        "componentUiId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "surfaceId",
+        "ownerId",
+        "routeId",
+        "regionId",
+        "slotId",
+        "bindingStatus",
+        "missingBindings"
+      ],
+      "properties": {
+        "surfaceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ownerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "routeId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "regionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "slotId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bindingStatus": {
+          "type": "string"
+        },
+        "missingBindings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "values": {
+      "type": "object"
+    },
+    "origin": {
+      "type": "object"
+    },
+    "compatibility": {
+      "type": "object"
+    },
+    "preview": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "applicationPolicy": {
+      "type": "object"
+    },
+    "manifest": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "canonicalization",
+        "coveredTopLevelFields",
+        "canonicalPayloadSha256"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalization": {
+          "const": "json-sort-keys-compact-utf8-v1"
+        },
+        "coveredTopLevelFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "canonicalPayloadSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

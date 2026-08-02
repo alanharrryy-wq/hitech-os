@@ -1,0 +1,128 @@
+{
+  "applicationPolicy": {
+    "mode": "INSTRUCTION_ONLY",
+    "productApplicationAllowed": false,
+    "requiredFutureEvidence": [
+      "fresh Authority Mesh for the exact target",
+      "concrete owner/route/region/slot binding",
+      "pre-change hashes",
+      "transactional backup and rollback",
+      "surface-specific static validation",
+      "visual evidence",
+      "no fake green"
+    ],
+    "requiresFutureGovernedApplicationGate": true,
+    "runtimeMutationAllowed": false
+  },
+  "artifactVersion": "1.0.0",
+  "compatibility": {
+    "selectedSurface": "tablet",
+    "supportedSurfaces": [
+      "shared-ui",
+      "tablet",
+      "pc",
+      "mobile",
+      "web",
+      "chart-lab",
+      "control-center"
+    ],
+    "surfaceRuntimeProjectionAllowed": false,
+    "valueType": "color"
+  },
+  "createdAt": "2026-07-25T05:28:51.045563Z",
+  "element": {
+    "componentUiId": null,
+    "neutralMeaningId": "TOK.color.accent",
+    "objectId": "color.accent",
+    "version": "1.0.0"
+  },
+  "exportId": "PEX.semantic-token-color.accent.18ee2d8e7e0f",
+  "identity": {
+    "identityProfileId": "prisma.clear-operational.v1",
+    "identityProfileVersion": "1.0.0",
+    "recipePresetId": "prisma.clear-operational.v1"
+  },
+  "instructionOnly": true,
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "18ee2d8e7e0f7eae4f2066ce554dea7a642c96839a9ec9c57bb00069d0bf8733",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "coveredTopLevelFields": [
+      "applicationPolicy",
+      "artifactVersion",
+      "compatibility",
+      "createdAt",
+      "element",
+      "identity",
+      "instructionOnly",
+      "kind",
+      "manifest",
+      "origin",
+      "preview",
+      "runtimeMutationAllowed",
+      "schema",
+      "target",
+      "values"
+    ]
+  },
+  "kind": "semantic-token",
+  "manifest": {
+    "recordCount": 1,
+    "records": [
+      {
+        "instructionOnly": true,
+        "recordId": "color.accent",
+        "recordKind": "semantic-token"
+      }
+    ]
+  },
+  "origin": {
+    "authority": "prisma-html/authority/rifat/identity",
+    "generatedBy": "tools/portable_identity_export.py",
+    "selectedProfileId": "prisma.clear-operational.v1",
+    "sourcePath": "registries/semantic-tokens.registry.json",
+    "sourceRegistry": "registries/semantic-tokens.registry.json"
+  },
+  "preview": {
+    "type": "color",
+    "value": "#2563eb"
+  },
+  "runtimeMutationAllowed": false,
+  "schema": "prisma.identity.portable-element-export.v1",
+  "target": {
+    "bindingStatus": "BLOCKED_BY_MISSING_ELEMENT_BINDING",
+    "missingBindings": [
+      "componentUiId",
+      "ownerId",
+      "regionId",
+      "routeId",
+      "slotId"
+    ],
+    "ownerId": null,
+    "regionId": null,
+    "routeId": null,
+    "slotId": null,
+    "surfaceBindingSources": {
+      "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+      "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+      "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
+      "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json"
+    },
+    "surfaceId": "tablet",
+    "surfaceReadiness": "CERTIFIED_BINDING_SOURCE"
+  },
+  "values": {
+    "cssVariable": "--prisma-identity-color-accent",
+    "defaultValue": "#2563eb",
+    "definition": {
+      "default": "#2563eb",
+      "description": "Primary action accent.",
+      "group": "color",
+      "id": "color.accent",
+      "required": true,
+      "type": "color"
+    },
+    "overrideSource": "identity-profile",
+    "resolvedValue": "#2563eb"
+  }
+}

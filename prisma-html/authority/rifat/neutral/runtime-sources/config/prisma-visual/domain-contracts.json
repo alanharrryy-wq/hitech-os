@@ -1,0 +1,575 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.090Z",
+  "domains": [
+    {
+      "id": "commerce",
+      "status": "governed",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "role": "Domain contract for commerce",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.state-banner",
+        "prisma.product-card",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "mapped-tablet-catalog-product-drawer",
+        "mapped-tablet-catalog-product-form"
+      ],
+      "allowedRecipes": [
+        "product-commerce",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "checkout",
+      "status": "governed",
+      "surfaces": [
+        "tablet"
+      ],
+      "role": "Domain contract for checkout",
+      "allowedComponents": [
+        "prisma.action-button",
+        "prisma.route-frame",
+        "prisma.shell-frame",
+        "prisma.background-layer",
+        "prisma.cart-panel",
+        "prisma.checkout-panel",
+        "mapped-tablet-checkout-summary-card",
+        "mapped-tablet-pos-payment-panel"
+      ],
+      "allowedRecipes": [
+        "checkout-panel",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "governed",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "role": "Domain contract for inventory",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.state-banner",
+        "prisma.product-card",
+        "prisma.data-panel",
+        "prisma.metric-card",
+        "mapped-tablet-catalog-product-drawer",
+        "mapped-tablet-catalog-product-form"
+      ],
+      "allowedRecipes": [
+        "data-panel",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "sync",
+      "status": "governed",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "role": "Domain contract for sync",
+      "allowedComponents": [
+        "mapped-pc-ingest-event-panel",
+        "mapped-pc-pc-sync-chart-promotion-panel"
+      ],
+      "allowedRecipes": [
+        "state-banner",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "license",
+      "status": "governed",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "role": "Domain contract for license",
+      "allowedComponents": [
+        "mapped-tablet-license-blocked-card",
+        "mapped-tablet-license-gate-banner",
+        "mapped-tablet-license-refresh-panel",
+        "mapped-tablet-license-status-card",
+        "mapped-pc-license-blocked-card",
+        "mapped-pc-license-gate-banner",
+        "mapped-pc-license-refresh-panel",
+        "mapped-pc-license-status-card"
+      ],
+      "allowedRecipes": [
+        "state-banner",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "reports",
+      "status": "governed",
+      "surfaces": [
+        "pc"
+      ],
+      "role": "Domain contract for reports",
+      "allowedComponents": [
+        "prisma.command-panel"
+      ],
+      "allowedRecipes": [
+        "data-panel",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "analytics",
+      "status": "governed",
+      "surfaces": [
+        "pc",
+        "chart-lab"
+      ],
+      "role": "Domain contract for analytics",
+      "allowedComponents": [
+        "mapped-pc-kpi-card"
+      ],
+      "allowedRecipes": [
+        "metric-card",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "admin",
+      "status": "governed",
+      "surfaces": [
+        "pc",
+        "manager-console"
+      ],
+      "role": "Domain contract for admin",
+      "allowedComponents": [
+        "mapped-pc-app-shell",
+        "mapped-pc-tri-db-status-card"
+      ],
+      "allowedRecipes": [
+        "pc-graphite-glass",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_pc",
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "command-ai",
+      "status": "governed",
+      "surfaces": [
+        "pc",
+        "shared-ui"
+      ],
+      "role": "Domain contract for command-ai",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "command-panel",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "mobile-companion",
+      "status": "governed",
+      "surfaces": [
+        "mobile"
+      ],
+      "role": "Domain contract for mobile-companion",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "mobile-mist",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_app_movil"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "chart-lab",
+      "status": "governed",
+      "surfaces": [
+        "chart-lab"
+      ],
+      "role": "Domain contract for chart-lab",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "chart-lab-analysis",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_lab_chart"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "training",
+      "status": "reserved",
+      "surfaces": [
+        "training-mode"
+      ],
+      "role": "Domain contract for training",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "reserved-safe-display",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "demo",
+      "status": "reserved",
+      "surfaces": [
+        "demo-mode"
+      ],
+      "role": "Domain contract for demo",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "reserved-safe-display",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "public-display",
+      "status": "reserved",
+      "surfaces": [
+        "public-display",
+        "customer-display"
+      ],
+      "role": "Domain contract for public-display",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "reserved-safe-display",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    },
+    {
+      "id": "future-surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "warehouse-scanner",
+        "manager-console",
+        "training-mode",
+        "demo-mode",
+        "public-display",
+        "customer-display"
+      ],
+      "role": "Domain contract for future-surface",
+      "allowedComponents": [
+        "prisma.surface-panel",
+        "prisma.glass-card",
+        "prisma.action-button",
+        "prisma.state-banner",
+        "prisma.route-frame"
+      ],
+      "allowedRecipes": [
+        "reserved-safe-display",
+        "surface-panel"
+      ],
+      "blockedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "atlasReferences": [
+        "atlas-capability-map",
+        "atlas-engine-map"
+      ],
+      "motorReferences": [
+        "motor_gobierno"
+      ],
+      "runtimeBoundaries": [
+        "no private background runtime",
+        "respect surface adapter role"
+      ],
+      "validation": [
+        "validate-domain-contracts",
+        "validate-governed-system"
+      ]
+    }
+  ]
+}

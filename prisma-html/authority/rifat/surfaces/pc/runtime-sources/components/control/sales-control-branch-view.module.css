@@ -1,0 +1,608 @@
+.salesLedger {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 72px;
+}
+
+.ledgerHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px;
+  padding: 22px 24px;
+}
+
+.ledgerHero h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(30px, 4.5vw, 58px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.ledgerHero p,
+.ledgerHero small {
+  display: block;
+  margin: 0;
+}
+
+.kicker {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.syncButton {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  font-weight: 950;
+}
+
+.financialStrip {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.88fr) minmax(0, 1.12fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.financialLead {
+  display: grid;
+  gap: 12px;
+}
+
+.primaryTotal,
+.recentActivityTotal,
+.financialFacts {
+}
+
+.primaryTotal {
+  padding: 20px;
+}
+
+.recentActivityTotal {
+  padding: 16px 18px;
+}
+
+.primaryTotal strong,
+.recentActivityTotal strong {
+  display: block;
+  margin: 8px 0 6px;
+  font-size: clamp(36px, 5.8vw, 78px);
+  line-height: 0.86;
+  letter-spacing: 0;
+}
+
+.recentActivityTotal strong {
+  font-size: clamp(26px, 3vw, 44px);
+}
+
+.primaryTotal small,
+.recentActivityTotal small {
+  font-weight: 800;
+}
+
+.financialFacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(112px, 1fr));
+  overflow: hidden;
+}
+
+.financialFacts span {
+  display: grid;
+  align-content: center;
+  min-height: 112px;
+  padding: 14px;
+}
+
+.financialFacts span:first-child {
+}
+
+.financialFacts strong {
+  font-size: clamp(20px, 2.2vw, 34px);
+  line-height: 0.95;
+}
+
+.financialFacts small {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.ledgerShell {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.operationRail {
+  position: sticky;
+  top: 18px;
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.ledgerMain {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.branchRail,
+.paymentStrip,
+.cashActionDock,
+.operationChecklist,
+.addBranchDock,
+.emptyState {
+}
+
+.branchRail {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.62fr) minmax(0, 1.38fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+}
+
+.branchRail h2,
+.paymentStrip h2,
+.cashActionDock h2,
+.operationChecklist h2 {
+  margin: 4px 0 6px;
+  font-size: 20px;
+  letter-spacing: -0.035em;
+}
+
+.branchRail p,
+.cashActionDock p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.branchRailList {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(164px, 1fr);
+  gap: 9px;
+  overflow-x: auto;
+}
+
+.branchRailList a {
+  display: grid;
+  gap: 5px;
+  min-height: 78px;
+  padding: 10px 12px;
+}
+
+.branchRailList span,
+.branchRailList small {
+}
+
+.branchRailList strong {
+  font-size: 20px;
+}
+
+.updatedNote {
+  text-align: right;
+}
+
+.paymentStrip,
+.cashActionDock,
+.operationChecklist,
+.addBranchDock {
+  padding: 16px;
+}
+
+.paymentList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.paymentList span {
+  display: grid;
+  padding: 10px;
+}
+
+.paymentList strong {
+  font-size: 24px;
+}
+
+.paymentList small {
+  font-weight: 850;
+}
+
+.cashActionForm,
+.addBranchForm {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cashActionForm label,
+.addBranchForm label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cashActionForm select,
+.addBranchForm input {
+  min-height: 42px;
+  width: 100%;
+  padding: 9px 11px;
+}
+
+.cashActionForm button,
+.addBranchForm button {
+  min-height: 44px;
+  padding: 0 14px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.cashActionForm a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 950;
+}
+
+.operationChecklist ol {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.operationChecklist strong {
+}
+
+.addBranchDock > summary {
+  cursor: pointer;
+  font-weight: 950;
+  list-style: none;
+}
+
+.addBranchDock > summary::-webkit-details-marker,
+.branchSummary::-webkit-details-marker {
+  display: none;
+}
+
+.branchList {
+  display: grid;
+  gap: 12px;
+}
+
+.branchCard {
+  overflow: hidden;
+}
+
+.branchSummary {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  list-style: none;
+}
+
+.branchSummary strong {
+  display: block;
+  font-size: 22px;
+}
+
+.branchSummary small {
+}
+
+.branchStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(74px, 1fr));
+  gap: 8px;
+  text-align: right;
+}
+
+.branchStats span,
+.okPill,
+.warnPill,
+.statusPill {
+  padding: 8px 10px;
+  font-weight: 950;
+}
+
+.branchStats span {
+}
+
+.branchStats small {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.okPill,
+.warnPill,
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.okPill,
+.statusPill {
+}
+
+.warnPill {
+}
+
+.branchBody {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 16px 16px;
+}
+
+.tabletRail {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.tabletCard {
+  padding: 12px;
+}
+
+.tabletCard strong,
+.tabletCard span,
+.tabletCard small,
+.tabletCard em {
+  display: block;
+}
+
+.tabletCard span {
+  margin: 8px 0 4px;
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.tabletCard small {
+}
+
+.tabletCard em {
+  margin-top: 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.ticketTableWrap {
+  overflow-x: auto;
+}
+
+.ticketTable {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+}
+
+.ticketTable th,
+.ticketTable td {
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.ticketTable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.amountCell {
+  font-weight: 950;
+}
+
+.ticketDisclosure summary {
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.ticketDetail {
+  width: min(860px, calc(100vw - 92px));
+  margin-top: 10px;
+  padding: 14px;
+}
+
+.ticketDetailHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+
+.ticketDetailHeader h3 {
+  margin: 4px 0 0;
+  font-size: 24px;
+}
+
+.ticketDetailHeader strong {
+  font-size: 26px;
+}
+
+.ticketDetailGrid {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 7px 12px;
+  margin-bottom: 14px;
+}
+
+.ticketDetailGrid span {
+  font-size: 12px;
+}
+
+.ticketSplit {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 14px;
+}
+
+.ticketSplit h4 {
+  margin: 0 0 8px;
+}
+
+.ticketSplit ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.ticketSplit li {
+  margin: 6px 0;
+}
+
+.ticketSplit li span,
+.ticketSplit li small,
+.ticketSplit li strong {
+  margin-right: 10px;
+}
+
+.evidenceNote {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.ticketActionBoard,
+.inlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ticketActionBoard {
+  margin-top: 14px;
+}
+
+.ticketActionBoard a,
+.ticketActionBoard span,
+.inlineActions a {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ticketActionBoard a,
+.inlineActions a {
+}
+
+.ticketActionBoard span {
+}
+
+.emptyState {
+  padding: 26px;
+}
+
+@media (max-width: 1260px) {
+  .ledgerShell,
+  .financialStrip,
+  .branchBody {
+    grid-template-columns: 1fr;
+  }
+
+  .operationRail {
+    position: static;
+    max-height: none;
+  }
+
+  .financialFacts {
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .ledgerHero,
+  .branchRail,
+  .branchSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .branchStats,
+  .financialFacts,
+  .paymentList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    text-align: left;
+  }
+
+  .ticketSplit {
+    grid-template-columns: 1fr;
+  }
+}
+.salesLedger {
+}
+
+.salesLedger :is(.ledgerHero, .financialStrip, .ledgerShell, .branchRail, .branchSummary, .branchBody, .ticketDetail, .ticketTableWrap, .paymentStrip, .cashActionDock, .operationChecklist, .addBranchDock, .emptyState, .tabletCard, .evidenceNote) {
+}
+
+.salesLedger :is(.ledgerHero, .branchSummary, .ticketDetail) {
+}
+
+.salesLedger :is(.branchCard, .ticketDisclosure, .ticketSplit > *, .ticketDetailGrid > *, .paymentList li, .financialFacts span) {
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 1), .ticketSplit > *:nth-child(3n + 1), .financialFacts span:nth-child(3n + 1)) {
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 2), .ticketSplit > *:nth-child(3n + 2), .financialFacts span:nth-child(3n + 2)) {
+}
+
+.salesLedger :is(.branchCard:nth-child(3n + 3), .ticketSplit > *:nth-child(3n + 3), .financialFacts span:nth-child(3n + 3)) {
+}
+
+.salesLedger :is(h1, h2, h3, h4, strong, .primaryTotal, .recentActivityTotal, .amountCell, .branchSummary strong, .paymentList strong, .ticketDetailHeader h3, .operationChecklist strong, .tabletCard strong) {
+}
+
+.salesLedger :is(p, span, small, label, td, th, .updatedNote, .financialLead, .branchStats, .tabletCard span) {
+}
+
+.salesLedger :is(.okPill, .warnPill, .statusPill) {
+}
+
+.salesLedger .okPill {
+}
+
+.salesLedger .warnPill {
+}
+
+.salesLedger :is(a, button, .syncButton, .inlineActions button, .ticketActionBoard a, .cashActionForm button, .addBranchForm button) {
+}
+
+.salesLedger :is(input, select, textarea) {
+}
+
+.ticketDetailGrid,
+.ticketSplit {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}

@@ -1,0 +1,431 @@
+.surface {
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.fixedBackground,
+.fixedAmbient,
+.oglAura {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fixedBackground {
+  z-index: 0;
+}
+
+.oglAura {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.fixedAmbient {
+  z-index: 2;
+}
+
+.tabsRoot {
+  position: relative;
+  z-index: 3;
+  min-height: 100dvh;
+}
+
+.shellScroller {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.shellViewport {
+  width: 100%;
+  height: 100%;
+}
+
+.shellContent {
+  min-height: 100dvh;
+  padding: clamp(16px, 2vw, 24px);
+  display: grid;
+  gap: clamp(18px, 2vw, 26px);
+}
+
+.scrollbar {
+  display: flex;
+  user-select: none;
+  touch-action: none;
+  padding: 4px;
+  width: 14px;
+  z-index: 5;
+}
+
+.scrollThumb {
+  flex: 1;
+}
+
+.svgFilters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.directorTopbar,
+.directorHero,
+.familyCard,
+.warningBand,
+.status,
+.posterGlass,
+.familySelectTrigger,
+.selectContent,
+.tooltipContent,
+.glassAction,
+.familyCardAction {
+  position: relative;
+  overflow: hidden;
+}
+
+.directorTopbar {
+  min-height: 74px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandMark {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  font-weight: 900;
+}
+
+.brandText {
+  display: grid;
+  gap: 2px;
+}
+
+.brandText strong {
+  font-size: 1.15rem;
+}
+
+.brandText span,
+.status span span {
+}
+
+.controlCluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status {
+  padding: 12px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.liveDot {
+  width: 10px;
+  height: 10px;
+}
+
+.familySelectTrigger {
+  min-width: 210px;
+  min-height: 48px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.familySelectTrigger:focus-visible,
+.familyPill:focus-visible,
+.glassAction:focus-visible,
+.familyCardAction:focus-visible {
+  outline-offset: 3px;
+}
+
+.selectIcon {
+}
+
+.selectContent {
+  z-index: 90;
+  padding: 8px;
+  min-width: 230px;
+}
+
+.selectViewport {
+  display: grid;
+  gap: 4px;
+}
+
+.selectItem {
+  position: relative;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.selectItem[data-highlighted],
+.selectItem[data-state="checked"] {
+}
+
+.directorHero {
+  min-height: clamp(600px, 64vw, 780px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+  gap: clamp(20px, 3vw, 38px);
+  align-items: stretch;
+  padding: clamp(24px, 4vw, 54px);
+}
+
+.directorBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.heroCopy,
+.directorPoster {
+  position: relative;
+  z-index: 1;
+}
+
+.kicker,
+.eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.directorTitle {
+  display: grid;
+  max-width: 9ch;
+  margin: 0.4rem 0 0;
+  font-size: clamp(4rem, 8vw, 8.6rem);
+  line-height: 0.82;
+  letter-spacing: -0.095em;
+  font-weight: 950;
+}
+
+.lead {
+  max-width: 74ch;
+  margin-top: 1.15rem;
+  font-size: clamp(1rem, 1.3vw, 1.26rem);
+  line-height: 1.72;
+}
+
+.directorPills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 30px;
+  max-width: 780px;
+}
+
+.familyPill {
+  position: relative;
+  display: grid;
+  align-content: center;
+  text-align: left;
+  min-height: 88px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.familyPill:hover,
+.familyPill[data-state="active"] {
+}
+
+.familyPill span {
+  display: block;
+  position: relative;
+  z-index: 1;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  font-weight: 900;
+}
+
+.familyPill strong {
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  font-size: 1.08rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.glassAction,
+.familyCardAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.glassActionPrimary {
+}
+
+.directorPoster {
+  display: grid;
+  align-content: end;
+  min-height: 100%;
+}
+
+.posterImage {
+  min-height: 340px;
+}
+
+.posterGlass {
+  margin-top: -74px;
+  margin-inline: 18px;
+  padding: 18px 20px;
+}
+
+.posterGlass h2,
+.familyInfo h2,
+.warningBand h2 {
+  margin: 0.36rem 0 0.48rem;
+}
+
+.posterGlass code,
+.codeList code {
+  display: inline-flex;
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.6rem;
+}
+
+.familyBoard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 22px);
+}
+
+.familyCard {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.familyCard[data-active="true"] {
+}
+
+.familyImage {
+  min-height: 184px;
+}
+
+.familyInfo {
+  display: grid;
+  align-content: center;
+}
+
+.familyCardAction {
+  justify-self: start;
+  margin-top: 0.8rem;
+}
+
+.warningBand {
+  padding: 22px 24px;
+}
+
+.codeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.9rem;
+}
+
+.tooltipContent {
+  z-index: 95;
+  max-width: 280px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+}
+
+.tooltipArrow {
+}
+
+@media (max-width: 1180px) {
+  .directorHero,
+  .familyBoard {
+    grid-template-columns: 1fr;
+  }
+
+  .directorPills {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .shellContent {
+    padding: 14px;
+  }
+
+  .directorTopbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .controlCluster {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .familySelectTrigger,
+  .status {
+    width: 100%;
+  }
+
+  .directorTitle {
+    font-size: clamp(3.25rem, 14vw, 5.2rem);
+  }
+
+  .familyCard {
+    grid-template-columns: 1fr;
+  }
+
+  .posterGlass {
+    margin-inline: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oglAura,
+  .fixedBackground,
+  .fixedAmbient,
+  .familyPill,
+  .glassAction,
+  .familyCardAction {
+  }
+}

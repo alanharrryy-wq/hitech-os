@@ -1,0 +1,240 @@
+/* PRISMA Control Center V59 · PRISMO Selector-Safe Frost Evidence
+   Scope: body[data-theme="tactical"] #prismo-console only.
+   Rules: exact selectors only; no shell hiding; no wildcard class selectors.
+*/
+
+:root {
+  --prisma-cc-v59-ice-text: #edf5ff;
+  --prisma-cc-v59-body-text: #d8e4f0;
+  --prisma-cc-v59-muted-text: #afc4d8;
+  --prisma-cc-v59-panel-fill: rgba(35, 49, 66, .42);
+  --prisma-cc-v59-panel-fill-strong: rgba(31, 44, 59, .54);
+  --prisma-cc-v59-tech-fill: rgba(22, 34, 48, .42);
+  --prisma-cc-v59-border: rgba(214, 231, 252, .22);
+  --prisma-cc-v59-border-strong: rgba(214, 231, 252, .32);
+  --prisma-cc-v59-shadow: 0 18px 44px rgba(4, 10, 18, .22), inset 0 1px 0 rgba(255,255,255,.12);
+  --prisma-cc-v59-shadow-deep: 0 24px 64px rgba(4, 10, 18, .30), inset 0 1px 0 rgba(255,255,255,.13);
+}
+
+html[data-prisma-cc-v59="selector-safe-frost-evidence"] body[data-theme="tactical"] #prismo-console,
+body[data-theme="tactical"] #prismo-console.prisma-v59-ready {
+  isolation: isolate;
+  color: var(--prisma-cc-v59-body-text);
+}
+
+body[data-theme="tactical"] #prismo-console .prismo-topbar,
+body[data-theme="tactical"] #prismo-console .prismo-panel,
+body[data-theme="tactical"] #prismo-console .prismo-center-stage,
+body[data-theme="tactical"] #prismo-console #prismoComposer,
+body[data-theme="tactical"] #prismo-console .prismo-response-card,
+body[data-theme="tactical"] #prismo-console .prismo-bottom-card,
+body[data-theme="tactical"] #prismo-console .prismo-render-grid > * {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035) 22%, rgba(255,255,255,.02) 100%),
+    var(--prisma-cc-v59-panel-fill);
+  border: 1px solid var(--prisma-cc-v59-border);
+  box-shadow: var(--prisma-cc-v59-shadow);
+  backdrop-filter: blur(8px) saturate(132%) brightness(.98);
+  -webkit-backdrop-filter: blur(8px) saturate(132%) brightness(.98);
+}
+
+body[data-theme="tactical"] #prismo-console .prismo-panel,
+body[data-theme="tactical"] #prismo-console .prismo-center-stage {
+  border-radius: 30px;
+}
+
+body[data-theme="tactical"] #prismo-console #prismoComposer,
+body[data-theme="tactical"] #prismo-console .prismo-response-card,
+body[data-theme="tactical"] #prismo-console .prismo-bottom-card {
+  border-radius: 22px;
+}
+
+body[data-theme="tactical"] #prismo-console .prismo-authority-list,
+body[data-theme="tactical"] #prismo-console .prismo-evidence-list,
+body[data-theme="tactical"] #prismo-console #prismoResponseStream,
+body[data-theme="tactical"] #prismo-console textarea,
+body[data-theme="tactical"] #prismo-console .prismo-file-row {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025)),
+    var(--prisma-cc-v59-tech-fill);
+  border-color: rgba(214, 231, 252, .18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 28px rgba(4,10,18,.14);
+  backdrop-filter: blur(6px) saturate(122%) brightness(.98);
+  -webkit-backdrop-filter: blur(6px) saturate(122%) brightness(.98);
+}
+
+body[data-theme="tactical"] #prismo-console h2,
+body[data-theme="tactical"] #prismo-console h3,
+body[data-theme="tactical"] #prismo-console .prismo-label,
+body[data-theme="tactical"] #prismo-console label {
+  color: var(--prisma-cc-v59-ice-text);
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgba(0,0,0,.28), 0 0 14px rgba(152,210,255,.12);
+}
+
+body[data-theme="tactical"] #prismo-console p,
+body[data-theme="tactical"] #prismo-console .prismo-answer,
+body[data-theme="tactical"] #prismo-console .prismo-empty,
+body[data-theme="tactical"] #prismo-console textarea,
+body[data-theme="tactical"] #prismo-console .prismo-file-note,
+body[data-theme="tactical"] #prismo-console small {
+  color: var(--prisma-cc-v59-body-text);
+  text-shadow: 0 1px 0 rgba(0,0,0,.24), 0 0 10px rgba(150,205,255,.08);
+}
+
+body[data-theme="tactical"] #prismo-console textarea::placeholder {
+  color: rgba(199, 218, 235, .62);
+}
+
+body[data-theme="tactical"] #prismo-console textarea:focus {
+  border-color: rgba(151, 218, 255, .48);
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 0 1px rgba(135, 212, 255, .20),
+    0 0 24px rgba(96, 203, 255, .17),
+    0 14px 36px rgba(4,10,18,.18);
+}
+
+body[data-theme="tactical"] #prismoComposer > .prismo-mode-row,
+body[data-theme="tactical"] #prismoSuggestionRow,
+body[data-theme="tactical"] #prismoComposer .prisma-v56-action-bar {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body[data-theme="tactical"] #prismoComposer > .prismo-actions-row:empty {
+  min-height: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+
+body[data-theme="tactical"] #prismoComposer #prismaV59PrimaryActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 12px 0 8px;
+  padding: 0;
+}
+
+body[data-theme="tactical"] #prismoSendButton,
+body[data-theme="tactical"] #prismoClearButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 999px;
+  font-weight: 850;
+  letter-spacing: .012em;
+  transform: translateZ(0);
+}
+
+body[data-theme="tactical"] #prismoSendButton {
+  color: #effaff;
+  border-color: rgba(135, 219, 255, .44);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05) 42%, rgba(0,0,0,.08)),
+    rgba(35, 79, 107, .72);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 0 0 1px rgba(255,255,255,.055),
+    0 0 22px rgba(96, 203, 255, .28),
+    0 16px 38px rgba(4,10,18,.25);
+}
+
+body[data-theme="tactical"] #prismoClearButton {
+  color: #dceeff;
+  border-color: rgba(214, 231, 252, .22);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.025)),
+    rgba(28, 42, 57, .50);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 14px rgba(140, 204, 255, .10),
+    0 12px 28px rgba(4,10,18,.18);
+}
+
+body[data-theme="tactical"] #prismoSendButton:hover,
+body[data-theme="tactical"] #prismoClearButton:hover {
+  transform: translateY(-1px) translateZ(0);
+}
+
+body[data-theme="tactical"] #prismoResponseStream .prismo-answer.prisma-v56-status-copy {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body[data-theme="tactical"] #prismoBridgeStatus,
+body[data-theme="tactical"] #prismoAuthorityStatus,
+body[data-theme="tactical"] #prismoSafetyStatus,
+body[data-theme="tactical"] #prismoHtmlStatus {
+  position: relative;
+  overflow: visible;
+  border-color: rgba(154, 227, 255, .32);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(255,255,255,.16), transparent 36%),
+    rgba(26, 45, 61, .56);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 18px rgba(96, 203, 255, .16),
+    0 12px 28px rgba(4, 10, 18, .20);
+  color: #e8f5ff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.28), 0 0 12px rgba(120,210,255,.16);
+}
+
+body[data-theme="tactical"] #prismoBridgeStatus::before,
+body[data-theme="tactical"] #prismoAuthorityStatus::before,
+body[data-theme="tactical"] #prismoSafetyStatus::before,
+body[data-theme="tactical"] #prismoHtmlStatus::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  border-radius: 999px;
+  vertical-align: .02em;
+  animation: prisma-v59-led-breathe 5.8s ease-in-out infinite;
+}
+
+body[data-theme="tactical"] #prismoBridgeStatus::before,
+body[data-theme="tactical"] #prismoAuthorityStatus::before {
+  background: radial-gradient(circle, rgba(245,255,252,1) 0 18%, rgba(95,255,204,.98) 19% 52%, rgba(22,146,112,.72) 53% 100%);
+  box-shadow: 0 0 0 1px rgba(230,255,247,.34), 0 0 10px rgba(88,255,196,.90), 0 0 24px rgba(88,255,196,.58), 0 0 50px rgba(88,255,196,.25);
+}
+
+body[data-theme="tactical"] #prismoSafetyStatus::before,
+body[data-theme="tactical"] #prismoHtmlStatus::before {
+  background: radial-gradient(circle, rgba(238,252,255,1) 0 18%, rgba(99,221,255,.98) 19% 52%, rgba(38,122,184,.72) 53% 100%);
+  box-shadow: 0 0 0 1px rgba(230,250,255,.36), 0 0 10px rgba(112,224,255,.94), 0 0 25px rgba(112,224,255,.60), 0 0 52px rgba(112,224,255,.26);
+}
+
+body[data-theme="tactical"] #prismo-console .prismo-tag[data-state="ok"],
+body[data-theme="tactical"] #prismo-console .prismo-tag[data-state="online"] {
+  box-shadow: 0 0 18px rgba(112,224,255,.14), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body[data-theme="tactical"] #prismo-console * {
+  scrollbar-color: rgba(120,190,230,.55) rgba(255,255,255,.06);
+  scrollbar-width: thin;
+}
+
+@keyframes prisma-v59-led-breathe {
+  0%, 100% { transform: scale(1); opacity: .84; filter: brightness(1.08) saturate(1.18); }
+  50% { transform: scale(1.17); opacity: 1; filter: brightness(1.32) saturate(1.48); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="tactical"] #prismoBridgeStatus::before,
+  body[data-theme="tactical"] #prismoAuthorityStatus::before,
+  body[data-theme="tactical"] #prismoSafetyStatus::before,
+  body[data-theme="tactical"] #prismoHtmlStatus::before {
+    animation: none;
+  }
+}

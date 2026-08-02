@@ -5,7 +5,7 @@
 This pack adds a shared PRISMA chart foundation and three preview surfaces:
 
 - PC Backoffice: governance and analysis at `/prisma-insights`.
-- Tablet Operations: two touch-first operational charts at `/prisma-pulse`.
+- Tablet-origin operations: two touch-first chart contracts remain inspectable in Chart Lab; the retired customer route `/prisma-pulse` is not restored.
 - Mobile Owner Command: supervision charts at `/prisma-command`.
 
 The pack follows the PRISMA product law:

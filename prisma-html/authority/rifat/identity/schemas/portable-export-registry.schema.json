@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.portable-export.registry.v1",
+  "title": "PRISMA Portable Export Registry",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "artifactSchema",
+    "artifactExtension",
+    "supportedKinds",
+    "traceFields",
+    "bindingPolicy",
+    "viewerComponents",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.portable-export.registry.v1"
+    },
+    "version": {
+      "type": "string"
+    },
+    "artifactSchema": {
+      "const": "prisma.identity.portable-element-export.v1"
+    },
+    "artifactExtension": {
+      "const": ".prisma-visual.json"
+    },
+    "supportedKinds": {
+      "type": "array",
+      "minItems": 4
+    },
+    "traceFields": {
+      "type": "array",
+      "minItems": 10
+    },
+    "bindingPolicy": {
+      "type": "object"
+    },
+    "viewerComponents": {
+      "type": "array",
+      "minItems": 2
+    },
+    "integrity": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

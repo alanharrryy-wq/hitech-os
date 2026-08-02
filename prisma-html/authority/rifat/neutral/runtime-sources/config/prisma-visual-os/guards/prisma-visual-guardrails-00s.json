@@ -1,0 +1,41 @@
+{
+  "version": "00S",
+  "rules": [
+    {
+      "id": "tablet_density_min",
+      "surface": "tablet_pos",
+      "if": {
+        "density": "<34"
+      },
+      "level": "block",
+      "message": "Tablet POS requiere targets t\u00e1ctiles reales."
+    },
+    {
+      "id": "blur_contrast",
+      "if": {
+        "blur": ">72",
+        "contrast": "<66"
+      },
+      "level": "block",
+      "message": "Blur alto y contraste bajo bloquean operaci\u00f3n."
+    },
+    {
+      "id": "tablet_motion",
+      "surface": "tablet_pos",
+      "if": {
+        "motion": ">64"
+      },
+      "level": "warn",
+      "message": "Motion alto puede estorbar en caja."
+    },
+    {
+      "id": "neon_glow",
+      "if": {
+        "neon": ">78",
+        "glow": ">72"
+      },
+      "level": "warn",
+      "message": "Ne\u00f3n + glow altos requieren revisi\u00f3n visual."
+    }
+  ]
+}

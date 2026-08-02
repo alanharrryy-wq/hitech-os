@@ -1,0 +1,42 @@
+/* V70 · quita SOLO la placa/panel detrás de READ-ONLY / BACKEND BRIDGE / NO MUTATION */
+/* No cambia chips. No cambia upload. No cambia cards principales. */
+
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-rail::before,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-rail::after,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-footer-status,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-footer-status::before,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-footer-status::after,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail::before,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-rail::after,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row::before,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-row::after{
+  background:transparent;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+/* Si los chips viven dentro de una bottom-card, sólo se desnuda la card que contiene status */
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prismo-status-chip),
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prismo-tag[data-state]),
+body[data-prisma-interface="prismo"] #prismo-console .prismo-bottom-card:has(.prisma-v56-status-copy){
+  background:transparent;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  min-height:0;
+}
+
+/* Los óvalos se quedan como estaban */
+body[data-prisma-interface="prismo"] #prismo-console .prismo-status-chip,
+body[data-prisma-interface="prismo"] #prismo-console .prismo-tag[data-state],
+body[data-prisma-interface="prismo"] #prismo-console .prisma-v56-status-copy{
+  border-radius:999px;
+}

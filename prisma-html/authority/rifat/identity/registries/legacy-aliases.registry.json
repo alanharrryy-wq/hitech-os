@@ -1,0 +1,30 @@
+{
+  "schema": "prisma.identity.legacy-aliases.registry.v1",
+  "version": "1.0.0",
+  "aliases": [
+    {
+      "aliasId": "ALIAS.RECIPE_PRESET.REC.BUTTON.PRIMARY.V1",
+      "legacyField": "recipePresetId",
+      "legacyValue": "REC.button.primary",
+      "canonicalField": "recipeId",
+      "canonicalValue": "REC.button.primary",
+      "status": "ACTIVE_COMPATIBILITY_ALIAS"
+    },
+    {
+      "aliasId": "ALIAS.OBJECT.IDDICT.PREVIEW.PRIMARY.V1",
+      "legacyField": "objectId",
+      "legacyValue": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+      "canonicalField": "neutralMeaningId",
+      "canonicalValue": "ACT.primary",
+      "status": "ACTIVE_COMPATIBILITY_ALIAS"
+    },
+    {
+      "aliasId": "ALIAS.COMPONENT.IDDICT.PREVIEW.PRIMARY.V1",
+      "legacyField": "componentUiId",
+      "legacyValue": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+      "canonicalField": "componentUiId",
+      "canonicalValue": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+      "status": "SURFACE_BINDING_ALIAS"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
+  "recipes": [
+    {
+      "name": "tablet-cloudglass-light",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "adapter + Visual OS",
+      "intent": "claro, táctil, luminoso, legible",
+      "do": [
+        "use tablet public runtime background",
+        "keep background visible"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "dark dominant"
+      ]
+    },
+    {
+      "name": "pc-graphite-glass",
+      "status": "core",
+      "surfaces": [
+        "pc"
+      ],
+      "source": "PC adapter",
+      "intent": "backoffice denso y analítico",
+      "do": [
+        "dense panels",
+        "tokenized graphite"
+      ],
+      "dont": [
+        "copy tablet directly"
+      ]
+    },
+    {
+      "name": "mobile-mist",
+      "status": "core",
+      "surfaces": [
+        "mobile"
+      ],
+      "source": "Mobile adapter",
+      "intent": "companion compacto",
+      "do": [
+        "thumb-friendly",
+        "vertical status"
+      ],
+      "dont": [
+        "tiny tablet"
+      ]
+    },
+    {
+      "name": "chart-lab-analysis",
+      "status": "core",
+      "surfaces": [
+        "chart-lab"
+      ],
+      "source": "Chart Lab adapter",
+      "intent": "experimento gobernado",
+      "do": [
+        "isolate lab effects"
+      ],
+      "dont": [
+        "production contamination"
+      ]
+    },
+    {
+      "name": "glass-pill",
+      "status": "recipe",
+      "surfaces": [
+        "shared"
+      ],
+      "source": "Liquid Glass/Visual OS",
+      "intent": "controles/chips enfocados",
+      "do": [
+        "contrast"
+      ],
+      "dont": [
+        "blur everywhere"
+      ]
+    },
+    {
+      "name": "surface-panel",
+      "status": "core",
+      "surfaces": [
+        "shared"
+      ],
+      "source": "PrismaSurfacePanel",
+      "intent": "panel gobernado",
+      "do": [
+        "tokens"
+      ],
+      "dont": [
+        "global hacks"
+      ]
+    },
+    {
+      "name": "product-commerce",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "commerce components",
+      "intent": "venta táctil",
+      "do": [
+        "big touch targets"
+      ],
+      "dont": [
+        "pc dense tables"
+      ]
+    }
+  ]
+}

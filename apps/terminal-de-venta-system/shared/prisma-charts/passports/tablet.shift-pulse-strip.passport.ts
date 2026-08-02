@@ -10,10 +10,10 @@ export const tabletShiftPulseStripPassport = {
   status: "partial_real",
   questionAnswered: "Can the Tablet keep operating right now?",
   primaryUser: "operator",
-  routePreview: "/prisma-pulse?preview=charts",
-  routeProduction: "/prisma-pulse",
-  componentFile: "products/tablet/app/app/prisma-pulse/charts/TabletShiftPulseStrip.tsx",
-  cardWrapperFile: "products/tablet/app/app/prisma-pulse/charts/TabletChartCard.tsx",
+  routePreview: "/?chart=tablet.shift-pulse-strip",
+  routeProduction: "/?chart=tablet.shift-pulse-strip",
+  componentFile: "products/chart-lab/app/src/prisma-charts/components/LabEChartFrame.tsx",
+  cardWrapperFile: "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
   optionBuilderFile: "shared/prisma-charts/prismaChartOptions.ts",
   optionBuilderName: "shiftPulseStripOption",
   contractFile: "shared/prisma-charts/prismaChartContracts.ts",
@@ -29,9 +29,8 @@ export const tabletShiftPulseStripPassport = {
   states: supportedStates,
   interactions: ["tapFocus", "reset"],
   accessibility: commonAccessibility,
-  knownRisks: ["Current safe source is current runtime snapshot, not full shift history."],
+  knownRisks: ["Current safe source is the recorded runtime snapshot, not full shift history.", "The retired Tablet /prisma-pulse customer route must not be restored; this chart is inspected in Chart Lab."],
   doNotTouch: commonDoNotTouch,
-  editPlaybook: editPlaybook({ visualRecipe: "stripRecipe", adapterName: "buildTabletShiftPulseStripViewModel", contractType: "ShiftPulseBucket", componentFile: "products/tablet/app/app/prisma-pulse/charts/TabletShiftPulseStrip.tsx", deckFile: "products/tablet/app/app/prisma-pulse/PrismaTabletPulsePanel.tsx" }),
-  validation: validation("/prisma-pulse?preview=charts")
+  editPlaybook: editPlaybook({ visualRecipe: "stripRecipe", adapterName: "buildTabletShiftPulseStripViewModel", contractType: "ShiftPulseBucket", componentFile: "products/chart-lab/app/src/prisma-charts/components/LabEChartFrame.tsx", deckFile: "products/chart-lab/app/src/components/PrismaChartLabShell.tsx" }),
+  validation: validation("/?chart=tablet.shift-pulse-strip")
 } satisfies PrismaChartPassport;
-

@@ -1,0 +1,192 @@
+.multiContextRoot {
+  --mcs-cyan: #87e7ff;
+  --mcs-violet: #c7b7ff;
+  --mcs-gold: #ffd977;
+  display: grid;
+  gap: 10px;
+  color: #fff8e7;
+}
+
+.obsidian {
+  --mcs-accent: #87e7ff;
+}
+
+.silver {
+  --mcs-accent: #e8edf2;
+}
+
+.graphite {
+  --mcs-accent: #ffd977;
+}
+
+.contextHeader,
+.contextDeck,
+.glassPlate,
+.heroCard,
+.statusCard,
+.evidenceCard,
+.radarCard,
+.timelineCard,
+.switchSheet,
+.sheetShell {
+  border: 1px solid rgba(255, 248, 231, 0.14);
+  border-radius: 20px;
+  padding: 11px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+    rgba(7, 12, 10, 0.56);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 14px 38px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.contextHeader,
+.contextBrand,
+.contextDeck,
+.statusQuad,
+.commandGrid,
+.sourceMatrix,
+.recentContexts,
+.selectorStack,
+.searchRow,
+.liveStrip {
+  display: grid;
+  gap: 8px;
+}
+
+.contextBrand {
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+}
+
+.contextBrand img {
+  width: 34px;
+  height: 34px;
+}
+
+.contextRail,
+.themeRail,
+.liveStrip {
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.contextRail::-webkit-scrollbar,
+.themeRail::-webkit-scrollbar,
+.liveStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.themeRail button,
+.contextFacet,
+.themeActive,
+.contextActive {
+  appearance: none;
+  border: 1px solid rgba(255, 248, 231, 0.14);
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 248, 231, 0.78);
+  cursor: pointer;
+}
+
+.contextActive,
+.themeActive {
+  border-color: rgba(255, 217, 119, 0.34);
+  color: #fff8e7;
+  background: rgba(255, 217, 119, 0.15);
+}
+
+.crystalCube,
+.radarOrb,
+.orbitalAura {
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, rgba(255, 217, 119, 0.2), rgba(255, 255, 255, 0.05));
+}
+
+.orbitalAura {
+  display: none;
+}
+
+.liveDot,
+.appliedPulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #91f0b8;
+  box-shadow: 0 0 18px rgba(145, 240, 184, 0.55);
+}
+
+.appliedPulse {
+  animation: mcsCta 0.5s ease;
+}
+
+.toneOk {
+  color: #91f0b8;
+}
+
+.toneReview,
+.toneUrgent {
+  color: #ffd977;
+}
+
+.toneOffline {
+  color: #9ec9ff;
+}
+
+.sheetBackdrop {
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.sheetShell {
+  display: none;
+}
+
+.sheetOpen {
+  display: grid;
+}
+
+.cardEyebrow,
+.orbLabel {
+  color: rgba(255, 248, 231, 0.55);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.evidenceGauge {
+  min-width: 0;
+}
+
+.timelineCard svg {
+  width: 100%;
+  color: var(--mcs-accent);
+}
+
+.timelineCard path {
+  fill: none;
+  stroke: url("#prismaMcsSpark");
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+@keyframes mcsSheen {
+  from { opacity: 0.44; }
+  to { opacity: 0.86; }
+}
+
+@keyframes mcsSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mcsCta {
+  0% { transform: scale(0.95); }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
