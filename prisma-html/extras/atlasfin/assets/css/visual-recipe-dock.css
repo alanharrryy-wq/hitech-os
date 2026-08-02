@@ -484,3 +484,181 @@ body.is-visrec2-selecting,body.is-visrec2-selecting *{cursor:crosshair}.visrec2-
 @media (max-width: 720px) {
   .visrec2-governance-grid { grid-template-columns: 1fr; }
 }
+
+/* Atlasfin canonical visual-control pilot · scoped, source-only */
+.atlas-control-launcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-color: rgba(var(--atlas-accent), .28);
+  background: linear-gradient(135deg, rgba(var(--atlas-accent), .1), rgba(255,255,255,.025));
+}
+.atlas-control-launcher > div { max-width: 760px; }
+.atlas-control[hidden] { display: none; }
+.atlas-control {
+  display: grid;
+  gap: 1rem;
+  scroll-margin-top: 88px;
+  border-color: rgba(var(--atlas-accent), .34);
+  background: rgba(8, 14, 25, .72);
+}
+.atlas-control__header,
+.atlas-control-plan__header,
+.atlas-control-pagination,
+.atlas-control-operation header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.atlas-control__header h2,
+.atlas-control-card h3,
+.atlas-control-operation h4 { margin: 0; }
+.atlas-control-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .65rem;
+}
+.atlas-control-summary > div,
+.atlas-control-coverage > div {
+  display: grid;
+  gap: .3rem;
+  min-width: 0;
+  padding: .78rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 13px;
+  background: rgba(255,255,255,.035);
+}
+.atlas-control-summary span,
+.atlas-control-coverage span,
+.atlas-control-operation span {
+  color: rgba(239,244,255,.56);
+  font-size: .67rem;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+.atlas-control-summary code { overflow-wrap: anywhere; }
+.atlas-control-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.atlas-control-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,.03);
+}
+.atlas-control-hierarchy,
+.atlas-control-gates,
+.atlas-control-files {
+  display: grid;
+  gap: .35rem;
+  margin: .85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.atlas-control-hierarchy li,
+.atlas-control-gates li {
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: .75rem;
+  align-items: start;
+  padding: .48rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+.atlas-control-hierarchy span { color: rgba(239,244,255,.55); font-size: .72rem; }
+.atlas-control-hierarchy code,
+.atlas-control-gates code,
+.atlas-control-files code { overflow-wrap: anywhere; }
+.atlas-control-gates li { grid-template-columns: minmax(130px, 1fr) minmax(160px, auto); }
+.atlas-control-gates strong { text-align: right; font-size: .68rem; overflow-wrap: anywhere; }
+.atlas-control-field,
+.atlas-control-search {
+  display: grid;
+  gap: .4rem;
+}
+.atlas-control-field span,
+.atlas-control-search span { color: rgba(239,244,255,.6); font-size: .7rem; }
+.atlas-control-field select,
+.atlas-control-search input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 11px;
+  background: rgba(0,0,0,.22);
+  color: #fff;
+  padding: .58rem .7rem;
+  font: inherit;
+}
+.atlas-control-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+  margin-top: .8rem;
+}
+.atlas-control-coverage strong { font-size: 1.35rem; }
+.atlas-control-note,
+.atlas-control-operation p,
+.atlas-control-empty { color: rgba(239,244,255,.63); font-size: .76rem; line-height: 1.55; }
+.atlas-control-plan { display: grid; gap: .85rem; }
+.atlas-control-search { width: min(300px, 100%); }
+.atlas-control-operations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+}
+.atlas-control-operation {
+  min-width: 0;
+  padding: .85rem;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  content-visibility: auto;
+  contain-intrinsic-size: 190px;
+}
+.atlas-control-operation header strong { color: rgba(239,244,255,.72); font-size: .7rem; }
+.atlas-control-operation > code { display: block; margin-top: .55rem; overflow-wrap: anywhere; }
+.atlas-control-pagination > div { display: flex; gap: .5rem; }
+.atlas-control-pagination span { color: rgba(239,244,255,.58); font-size: .72rem; }
+.atlas-control-evidence { display: grid; gap: .65rem; }
+.atlas-control-evidence > div { display: grid; gap: .25rem; }
+.atlas-control-evidence dt { color: rgba(239,244,255,.55); font-size: .7rem; }
+.atlas-control-evidence dd { margin: 0; overflow-wrap: anywhere; font-size: .7rem; }
+.atlas-control-workflow { columns: 2; padding-left: 1.15rem; color: rgba(239,244,255,.72); font-size: .7rem; }
+.atlas-control-workflow li { padding: .22rem .2rem; break-inside: avoid; }
+.atlas-control-history {
+  display: grid;
+  gap: .4rem;
+  margin: .8rem 0;
+  padding-left: 1.15rem;
+}
+.atlas-control-history li { padding-left: .25rem; }
+.atlas-control-history strong,
+.atlas-control-history small { display: block; overflow-wrap: anywhere; }
+.atlas-control-history strong { font-size: .7rem; }
+.atlas-control-history small { margin-top: .15rem; color: rgba(239,244,255,.54); }
+.atlas-control-files { margin-bottom: .8rem; }
+.atlas-control-status--pass { color: rgb(102,236,177); }
+.atlas-control-status--blocked { color: rgb(255,190,79); }
+.atlas-control-status--neutral { color: rgb(103,225,255); }
+.atlas-control-loading,
+.atlas-control-error { padding: 1rem; border-radius: 14px; background: rgba(255,255,255,.035); }
+.atlas-control-error { color: rgb(255,133,153); }
+@media (max-width: 900px) {
+  .atlas-control-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .atlas-control-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .atlas-control-launcher,
+  .atlas-control__header,
+  .atlas-control-plan__header,
+  .atlas-control-pagination { align-items: stretch; flex-direction: column; }
+  .atlas-control-summary,
+  .atlas-control-coverage,
+  .atlas-control-operations { grid-template-columns: 1fr; }
+  .atlas-control-gates li { grid-template-columns: 1fr; }
+  .atlas-control-gates strong { text-align: left; }
+  .atlas-control-workflow { columns: 1; }
+}

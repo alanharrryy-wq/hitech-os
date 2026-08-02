@@ -1,0 +1,1220 @@
+{
+  "applicationReadiness": "BLOCKED_PENDING_EVIDENCE_AND_EXPLICIT_AUTHORIZATION",
+  "authority": {
+    "authorityOrder": [
+      "CANONICAL_AUTHORITY",
+      "FACTORY_LEDGER",
+      "FRESH_AUTHORITY_MESH",
+      "ACTIVE_OWNERS_AND_GENERATORS",
+      "CONTRACTS_AND_GATES",
+      "RUNTIME_EVIDENCE",
+      "GIT_HISTORY_CONTEXT_ONLY"
+    ],
+    "canonicalCabin": "prisma-html/extras/atlasfin",
+    "codeAtlasUiBridge": "tools/code-atlas/src/code_atlas/ui_bridge",
+    "recipe": {
+      "bridgeCanonicalPayloadSha256": "6438156a6d19a850c0eeb09c72121c1c8c07ef081f8ae0806a84c87e078d1651",
+      "bridgeSelectedPath": "prisma-html/authority/rifat/identity/portable/v2/examples/REC.button.primary.tablet-pos-cobrar.v2.prisma-visual.json",
+      "bridgeSelectedSha256": "6f0a1aa128f2de3a15f061518bbe1464e073a59bf8b625f98ccd2aa2d688aee4",
+      "fullStackPath": "prisma-html/authority/rifat/identity/recipes/examples/REC.button.primary.tablet-pos-cobrar.full-stack.json",
+      "fullStackSha256": "7a25bd5cab6ac5a9ea44a4b384ee171a58f4ddf49d1045eb5476bea6cd7b39f7"
+    },
+    "rifatBindingRegistry": {
+      "path": "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+      "sha256": "1ae701d377974923ee69fb456a13d6600a2577d8200fccd5472e9cb3b60c93bf"
+    },
+    "uimap": {
+      "batchArtifactSha256": "4fa1025a8d44a1360ef36c8f51be298b0252fa4a6d9382bdf3d9b3697386b5d4",
+      "batchId": "BATCH.tb.90329799098ce65f",
+      "contractHash": "47CCF7D6C81A29D84E6C8D8426F5E4C241EC85E783B1C38F76AC19951939BBE9",
+      "sourceReference": "EXTERNALLY_SUPPLIED_IMMUTABLE_CERTIFIED_BATCH",
+      "sourceSnapshotHash": "7EF65B42C9E11C1FA296C7ACAA997FCF41C9ADEB36742619A6CB4337F5F21E60",
+      "supersedesBatchId": "BATCH.tb.0c636941e08755d1"
+    }
+  },
+  "controlId": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1",
+  "evidence": {
+    "mamastrophic": {
+      "requiredFor": [
+        "VISUAL_EVIDENCE_GATE",
+        "RUNTIME_CERTIFICATION_GATE"
+      ],
+      "status": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE"
+    },
+    "runtime": {
+      "sourceOnlyEvidenceMustNotBePromoted": true,
+      "status": "NOT_CERTIFIED"
+    },
+    "source": {
+      "coverageArtifact": "prisma-html/authority/rifat/identity/recipes/examples/REC.button.primary.tablet-pos-cobrar.coverage.json",
+      "coverageEvidenceStale": true,
+      "declaredCoverageOwnerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+      "declaredCoverageStyleSha256": "fc80de7a963ded76839d2dae429c17623ca5075463615753e9033868d5fd053f",
+      "ownerEvidenceStale": false,
+      "ownerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+      "styleSha256": "711eb50386ce4c22257103aae543e1dd38aa0853a23a4ee30ad873ce70a570e5"
+    }
+  },
+  "gates": [
+    {
+      "blocks": [],
+      "gateId": "CANONICAL_AUTHORITY",
+      "status": "PASS"
+    },
+    {
+      "blocks": [],
+      "gateId": "UIMAP_EXACT_TARGET",
+      "status": "PASS"
+    },
+    {
+      "blocks": [],
+      "gateId": "RIFAT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "blocks": [],
+      "gateId": "UI_BRIDGE_SOURCE_PLAN",
+      "status": "PASS"
+    },
+    {
+      "blocks": [
+        "RUNTIME_CERTIFICATION",
+        "PRODUCT_APPLICATION"
+      ],
+      "gateId": "RECIPE_COVERAGE_FRESHNESS",
+      "status": "BLOCKED_BY_STALE_RUNTIME_EVIDENCE"
+    },
+    {
+      "blocks": [
+        "VISUAL_EVIDENCE",
+        "RUNTIME_CERTIFICATION"
+      ],
+      "gateId": "MAMASTROPHIC_VISUAL_EVIDENCE",
+      "status": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE"
+    },
+    {
+      "blocks": [
+        "SOURCE_MUTATION"
+      ],
+      "gateId": "PRODUCT_APPLICATION",
+      "status": "DISABLED_BY_CONTRACT"
+    }
+  ],
+  "history": [
+    {
+      "batchId": "BATCH.tb.90329799098ce65f",
+      "event": "UIMAP_BATCH_SELECTED",
+      "mutationPerformed": false,
+      "supersedesBatchId": "BATCH.tb.0c636941e08755d1"
+    },
+    {
+      "event": "UI_BRIDGE_SOURCE_PLAN_BUILT",
+      "mutationPerformed": false,
+      "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+      "status": "PLAN_READY_FOR_REVIEW"
+    },
+    {
+      "event": "PRODUCT_APPLICATION_NOT_EXECUTED",
+      "mutationPerformed": false,
+      "reason": "DISABLED_BY_CONTRACT"
+    }
+  ],
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "20cf3ecc3d79768d7947da5950bbd11dd00ea9db2613695bfc00141210b0aec8"
+  },
+  "pilot": {
+    "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+    "bindingStatus": "RESOLVED",
+    "componentId": "WGT.tb.pos.cobrar",
+    "componentUiId": "TB-POS-PAY-COBRAR-BTN-01",
+    "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+    "interfaceId": "IFC.tb.retail.pos_sale",
+    "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+    "ownerFile": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-ticket-panel.tsx",
+    "ownerId": "OWN.tb.pos_ticket_panel",
+    "regionId": "ZONE.tb.pos.payment",
+    "routeId": "ROUTE.tb.pos",
+    "routePath": "/pos",
+    "selector": ".cobrarReferenceButton",
+    "slotId": "SLOT.tb.pos.payment.cobrar",
+    "styleSourceFile": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css",
+    "surfaceId": "SURF.tb.pos",
+    "visualTargetIds": [
+      "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.01",
+      "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.02",
+      "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.03",
+      "VTR.TB-POS-PAY-COBRAR-BTN-01.PSEUDO_ELEMENT.04",
+      "VTR.TB-POS-PAY-COBRAR-BTN-01.PSEUDO_ELEMENT.05"
+    ]
+  },
+  "plan": {
+    "adapterId": "ADP.TB.TOUCH.V2",
+    "applicationEnabled": false,
+    "blockingReasons": [],
+    "mode": "READ_ONLY_SOURCE_PLAN",
+    "operationCount": 11,
+    "operations": [
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE_VISUAL_PRESERVE_STRUCTURE",
+        "kind": "BASE_SELECTOR",
+        "matchedVisualTargetIds": [
+          "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.01"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "center",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "align-items"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "linear-gradient(135deg, token(color.accent), color-mix(in srgb, token(color.accent) 78%, #0f172a))",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+            },
+            "property": "background"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "token(border.width) solid color-mix(in srgb, token(color.accentText) 34%, token(color.accent))",
+              "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+            },
+            "property": "border"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "color-mix(in srgb, token(color.accentText) 34%, token(color.accent))",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+            },
+            "property": "border-color"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "surface-adapted-token",
+              "value": "border.radiusControl",
+              "zeroSemantics": "ZERO_MEANS_SQUARE"
+            },
+            "property": "border-radius"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "border.width",
+              "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+            },
+            "property": "border-width"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "0 14px 32px color-mix(in srgb, token(color.accent) 28%, transparent), inset 0 1px 0 color-mix(in srgb, token(color.accentText) 30%, transparent)",
+              "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+            },
+            "property": "box-shadow"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "color.accentText",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND"
+            },
+            "property": "color"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "pointer",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "cursor"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "grid",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "display"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.fast",
+              "zeroSemantics": "ZERO_MEANS_INSTANT"
+            },
+            "property": "duration"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.easing",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "easing"
+          },
+          {
+            "instruction": {
+              "mode": "NONE",
+              "source": "recipe",
+              "value": "none",
+              "zeroSemantics": "NONE_MEANS_NO_FILTER"
+            },
+            "property": "filter"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "inherit",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "font"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "10px",
+              "zeroSemantics": "ZERO_MEANS_NO_GAP"
+            },
+            "property": "gap"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "42px minmax(0, 1fr) auto",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "grid-template-columns"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "68px",
+              "zeroSemantics": "ZERO_MEANS_NO_MINIMUM"
+            },
+            "property": "min-height"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "hidden",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "overflow"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "9px 14px",
+              "zeroSemantics": "ZERO_MEANS_NO_PADDING"
+            },
+            "property": "padding"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "relative",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "position"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "left",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "text-align"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "0 1px 8px color-mix(in srgb, #0f172a 30%, transparent)",
+              "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+            },
+            "property": "text-shadow"
+          },
+          {
+            "instruction": {
+              "mode": "NONE",
+              "source": "recipe",
+              "value": "none",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+            },
+            "property": "transform"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "transform token(motion.fast) token(motion.easing), filter token(motion.fast) token(motion.easing), box-shadow token(motion.fast) token(motion.easing), border-color token(motion.fast) token(motion.easing), background token(motion.fast) token(motion.easing)",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+            },
+            "property": "transition"
+          }
+        ],
+        "propertyCount": 24,
+        "searchText": "base base_selector .cobrarreferencebutton vtr.tb-pos-pay-cobrar-btn-01.control.01 align-items background border border-color border-radius border-width box-shadow color cursor display duration easing filter font gap grid-template-columns min-height overflow padding position text-align text-shadow transform transition",
+        "selector": ".cobrarReferenceButton",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "base"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "kind": "PSEUDO_ELEMENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-POS-PAY-COBRAR-BTN-01.PSEUDO_ELEMENT.04"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": "TRANSITION_ONLY_NO_INFINITE_ANIMATION",
+              "zeroSemantics": "NONE_MEANS_NO_ANIMATION"
+            },
+            "property": "animation-policy"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "linear-gradient(90deg, transparent, color-mix(in srgb, token(color.accentText) 34%, transparent), transparent)",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+            },
+            "property": "background"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "-30%",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "bottom"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "\"\"",
+              "zeroSemantics": "EMPTY_MEANS_NO_GENERATED_CONTENT"
+            },
+            "property": "content"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.slow",
+              "zeroSemantics": "ZERO_MEANS_INSTANT"
+            },
+            "property": "duration"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.easing",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "easing"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": true,
+              "zeroSemantics": "FALSE_MEANS_NOT_RENDERED"
+            },
+            "property": "enabled"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "-38%",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "left"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": 1,
+              "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+            },
+            "property": "opacity"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "none",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "pointer-events"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "absolute",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "position"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": "SINGLE_PASS_ON_HOVER",
+              "zeroSemantics": "DISABLED_MEANS_NO_SHEEN"
+            },
+            "property": "sheen-policy"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": {
+                "block": "160%",
+                "inline": "28%"
+              },
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA"
+            },
+            "property": "size"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "-30%",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "top"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "translateX(0) skewX(-18deg)",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+            },
+            "property": "transform"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "transform token(motion.slow) token(motion.easing), opacity token(motion.fast) token(motion.easing)",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+            },
+            "property": "transition"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "28%",
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_WIDTH"
+            },
+            "property": "width"
+          }
+        ],
+        "propertyCount": 17,
+        "searchText": "before pseudo_element .cobrarreferencebutton::before vtr.tb-pos-pay-cobrar-btn-01.pseudo_element.04 animation-policy background bottom content duration easing enabled left opacity pointer-events position sheen-policy size top transform transition width",
+        "selector": ".cobrarReferenceButton::before",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "before"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "kind": "STATE",
+        "matchedVisualTargetIds": [
+          "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.03"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "INHERIT",
+              "source": "recipe",
+              "value": "base.background",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+            },
+            "property": "background"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "token(border.width) solid color-mix(in srgb, token(color.accentText) 46%, token(color.accent))",
+              "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+            },
+            "property": "border"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "color-mix(in srgb, token(color.accentText) 46%, token(color.accent))",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+            },
+            "property": "border-color"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "0 18px 40px color-mix(in srgb, token(color.accent) 34%, transparent), 0 0 22px color-mix(in srgb, token(color.focus) 16%, transparent), inset 0 1px 0 color-mix(in srgb, token(color.accentText) 34%, transparent)",
+              "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+            },
+            "property": "box-shadow"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.fast",
+              "zeroSemantics": "ZERO_MEANS_INSTANT"
+            },
+            "property": "duration"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.easing",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "easing"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": "RAISED_ONE_STEP",
+              "zeroSemantics": "NONE_MEANS_NO_ELEVATION"
+            },
+            "property": "elevation"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "saturate(1.03) brightness(1.02)",
+              "zeroSemantics": "NONE_MEANS_NO_FILTER"
+            },
+            "property": "filter"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "translateY(token(state.hoverLift))",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+            },
+            "property": "transform"
+          },
+          {
+            "instruction": {
+              "mode": "INHERIT",
+              "source": "recipe",
+              "value": "base.transition",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+            },
+            "property": "transition"
+          }
+        ],
+        "propertyCount": 10,
+        "searchText": "hover state .cobrarreferencebutton:hover vtr.tb-pos-pay-cobrar-btn-01.control.03 background border border-color box-shadow duration easing elevation filter transform transition",
+        "selector": ".cobrarReferenceButton:hover",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "hover"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "kind": "STATE_PSEUDO_ELEMENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-POS-PAY-COBRAR-BTN-01.PSEUDO_ELEMENT.05"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": "TRANSITION_ONLY_NO_LOOP",
+              "zeroSemantics": "NONE_MEANS_NO_ANIMATION"
+            },
+            "property": "animation-policy"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.slow",
+              "zeroSemantics": "ZERO_MEANS_INSTANT"
+            },
+            "property": "duration"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "motion.easing",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "easing"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "outside-inline-end",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "final-position"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "112%",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "left"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": 1,
+              "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+            },
+            "property": "opacity"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "translateX(535%) skewX(-18deg)",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+            },
+            "property": "transform"
+          },
+          {
+            "instruction": {
+              "mode": "INHERIT",
+              "source": "recipe",
+              "value": "before.transition",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+            },
+            "property": "transition"
+          }
+        ],
+        "propertyCount": 8,
+        "searchText": "hoverbefore state_pseudo_element .cobrarreferencebutton:hover::before vtr.tb-pos-pay-cobrar-btn-01.pseudo_element.05 animation-policy duration easing final-position left opacity transform transition",
+        "selector": ".cobrarReferenceButton:hover::before",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "hoverBefore"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "kind": "STATE",
+        "matchedVisualTargetIds": [
+          "VTR.TB-POS-PAY-COBRAR-BTN-01.CONTROL.02"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "NONE",
+              "source": "recipe",
+              "value": "none",
+              "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+            },
+            "property": "box-shadow"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": {
+                "foreground": "inherit",
+                "minimum": "WCAG_AA_TEXT",
+                "readability": "REQUIRED"
+              },
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "contrast-policy"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "not-allowed",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "cursor"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": "saturate(0.20) brightness(0.96)",
+              "zeroSemantics": "NONE_MEANS_NO_FILTER"
+            },
+            "property": "filter"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "state.disabledOpacity",
+              "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+            },
+            "property": "opacity"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": "DISABLED",
+              "zeroSemantics": "DISABLED_MEANS_NOT_RENDERED"
+            },
+            "property": "pseudo-element-behavior"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": 0.2,
+              "zeroSemantics": "ZERO_MEANS_DESATURATED"
+            },
+            "property": "saturation"
+          },
+          {
+            "instruction": {
+              "mode": "NONE",
+              "source": "recipe",
+              "value": "none",
+              "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+            },
+            "property": "transform"
+          }
+        ],
+        "propertyCount": 8,
+        "searchText": "disabled state .cobrarreferencebutton:disabled vtr.tb-pos-pay-cobrar-btn-01.control.02 box-shadow contrast-policy cursor filter opacity pseudo-element-behavior saturation transform",
+        "selector": ".cobrarReferenceButton:disabled",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "disabled"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_REPLACE_VISUAL_PRESERVE_STRUCTURE",
+        "kind": "SUBCOMPONENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-HOME-PAYMENT-POS-TICKET-PANEL-COBRAR-ICON-PNL-01.ICON.01"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "color-mix(in srgb, token(color.accentText) 14%, transparent)",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+            },
+            "property": "background"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "token(border.width) solid color-mix(in srgb, #0f172a 20%, transparent)",
+              "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+            },
+            "property": "border"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "color-mix(in srgb, #0f172a 20%, transparent)",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+            },
+            "property": "border-color"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "calc(token(border.radiusControl) - 2px)",
+              "zeroSemantics": "ZERO_MEANS_SQUARE"
+            },
+            "property": "border-radius"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "border.width",
+              "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+            },
+            "property": "border-width"
+          },
+          {
+            "instruction": {
+              "mode": "EXPRESSION",
+              "source": "identityProfile+recipe",
+              "value": "inset 0 1px 0 color-mix(in srgb, token(color.accentText) 22%, transparent)",
+              "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+            },
+            "property": "box-shadow"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "grid",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "display"
+          },
+          {
+            "instruction": {
+              "mode": "NONE",
+              "source": "recipe",
+              "value": "none",
+              "zeroSemantics": "NONE_MEANS_NO_FILTER"
+            },
+            "property": "filter"
+          },
+          {
+            "instruction": {
+              "mode": "TOKEN",
+              "source": "semantic-token",
+              "value": "color.accentText",
+              "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND"
+            },
+            "property": "foreground"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "42px",
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_HEIGHT"
+            },
+            "property": "height"
+          },
+          {
+            "instruction": {
+              "mode": "LITERAL",
+              "source": "recipe",
+              "value": 1,
+              "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+            },
+            "property": "opacity"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "center",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "place-items"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": {
+                "block": "42px",
+                "iconGlyph": "21px",
+                "inline": "42px"
+              },
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA"
+            },
+            "property": "size-policy"
+          },
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "recipe",
+              "value": {
+                "disabled": "INHERIT_PARENT_OPACITY_AND_FILTER",
+                "loading": "PRESERVE_LAYOUT_NO_UNREGISTERED_SPINNER"
+              },
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "state-interaction"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "42px",
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_WIDTH"
+            },
+            "property": "width"
+          }
+        ],
+        "propertyCount": 15,
+        "searchText": "icon subcomponent .cobraricon vtr.tb-home-payment-pos-ticket-panel-cobrar-icon-pnl-01.icon.01 background border border-color border-radius border-width box-shadow display filter foreground height opacity place-items size-policy state-interaction width",
+        "selector": ".cobrarIcon",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "icon"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "kind": "SUBCOMPONENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-HOME-PAYMENT-POS-TICKET-PANEL-COBRAR-COPY-PNL-01.TEXT.01"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "grid",
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "display"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "1px",
+              "zeroSemantics": "ZERO_MEANS_NO_GAP"
+            },
+            "property": "gap"
+          }
+        ],
+        "propertyCount": 2,
+        "searchText": "copy subcomponent .cobrarcopy vtr.tb-home-payment-pos-ticket-panel-cobrar-copy-pnl-01.text.01 display gap",
+        "selector": ".cobrarCopy",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "copy"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "kind": "SUBCOMPONENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-HOME-PAYMENT-POS-TICKET-PANEL-COBRAR-COPY-PNL-01.TEXT.03"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "1.02rem",
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_TEXT"
+            },
+            "property": "font-size"
+          }
+        ],
+        "propertyCount": 1,
+        "searchText": "copystrong subcomponent .cobrarcopy strong vtr.tb-home-payment-pos-ticket-panel-cobrar-copy-pnl-01.text.03 font-size",
+        "selector": ".cobrarCopy strong",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "copyStrong"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "kind": "SUBCOMPONENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-HOME-PAYMENT-POS-TICKET-PANEL-COBRAR-COPY-PNL-01.TEXT.02"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": 0.72,
+              "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+            },
+            "property": "opacity"
+          }
+        ],
+        "propertyCount": 1,
+        "searchText": "copysmall subcomponent .cobrarcopy small vtr.tb-home-payment-pos-ticket-panel-cobrar-copy-pnl-01.text.02 opacity",
+        "selector": ".cobrarCopy small",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "copySmall"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "kind": "SUBCOMPONENT",
+        "matchedVisualTargetIds": [
+          "VTR.TB-HOME-PAYMENT-POS-TICKET-PANEL-COBRAR-AMOUNT-PNL-01.TEXT.01"
+        ],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "1.15rem",
+              "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_TEXT"
+            },
+            "property": "font-size"
+          },
+          {
+            "instruction": {
+              "mode": "PRESERVE_STRUCTURAL",
+              "source": "structuralFingerprint",
+              "value": "-0.03em",
+              "zeroSemantics": "ZERO_MEANS_DEFAULT_TRACKING"
+            },
+            "property": "letter-spacing"
+          }
+        ],
+        "propertyCount": 2,
+        "searchText": "amount subcomponent .cobraramount vtr.tb-home-payment-pos-ticket-panel-cobrar-amount-pnl-01.text.01 font-size letter-spacing",
+        "selector": ".cobrarAmount",
+        "targetResolutionStatus": "SOURCE_RESOLVED",
+        "unitId": "amount"
+      },
+      {
+        "applicationPolicy": "EXPLICIT_INHERIT_BASE",
+        "kind": "COMPONENT_STATE",
+        "matchedVisualTargetIds": [],
+        "patchPolicy": "PLAN_ONLY_NO_SOURCE_MUTATION",
+        "propertyChanges": [
+          {
+            "instruction": {
+              "mode": "POLICY",
+              "source": "component-state-contract",
+              "value": {
+                "copyMayChange": true,
+                "icon": "PRESERVE_LAYOUT_NO_UNREGISTERED_EFFECT",
+                "layoutMutation": false,
+                "unregisteredSpinner": "FORBIDDEN",
+                "visualState": "INHERIT_BASE"
+              },
+              "zeroSemantics": "NOT_ZERO_CAPABLE"
+            },
+            "property": "loading-policy"
+          }
+        ],
+        "propertyCount": 1,
+        "searchText": "loading component_state [data-prisma-state=\"loading\"] loading-policy",
+        "selector": "[data-prisma-state=\"loading\"]",
+        "targetResolutionStatus": "POLICY_ONLY_NO_SOURCE_TARGET_REQUIRED",
+        "unitId": "loading"
+      }
+    ],
+    "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+    "schema": "prisma.ui.bridge.plan.v1",
+    "semanticDiffChecksum": "cce8e5bb71f331491b564c4d029df8cf722cef6065cdc73cc1727a965bab13b5",
+    "sourceMutationPerformed": false,
+    "status": "PLAN_READY_FOR_REVIEW"
+  },
+  "projectionRole": "REGENERABLE_READ_ONLY_VIEW_NOT_SOURCE_OF_TRUTH",
+  "recipe": {
+    "coverageStatus": "COMPLETE",
+    "instructionOnly": true,
+    "knownDeclarationCount": 49,
+    "missingKnownDeclarationCount": 0,
+    "missingPropertyCount": 0,
+    "options": [
+      {
+        "recipeId": "REC.button.primary",
+        "status": "COMPATIBLE_CERTIFIED_SOURCE_ONLY"
+      }
+    ],
+    "plannedPropertyCount": 89,
+    "productApplicationAllowed": false,
+    "recipeId": "REC.button.primary",
+    "runtimeMutationAllowed": false,
+    "unitCount": 11,
+    "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1"
+  },
+  "rendering": {
+    "initialOperationRenderCount": 0,
+    "loadPolicy": "LAZY_ON_EXPLICIT_OPEN",
+    "operationPageSize": 4,
+    "searchPolicy": "PRECOMPUTED_SCALAR_SEARCH_TEXT_NO_JSON_STRINGIFY"
+  },
+  "rescuedPatterns": [
+    {
+      "copiedFiles": [],
+      "origin": "NON_AUTHORITY_PARALLEL_PROTOTYPE_IDEA_ONLY",
+      "pattern": "PROVENANCE_VISIBLE_WITH_EACH_DECISION"
+    },
+    {
+      "copiedFiles": [],
+      "origin": "NON_AUTHORITY_PARALLEL_PROTOTYPE_IDEA_ONLY",
+      "pattern": "HIERARCHY_RISKS_GATES_HISTORY_ROLLBACK"
+    }
+  ],
+  "rollback": {
+    "beforeHashes": {
+      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-ticket-panel.tsx": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css": "711eb50386ce4c22257103aae543e1dd38aa0853a23a4ee30ad873ce70a570e5"
+    },
+    "currentPlan": "NO_SOURCE_MUTATION_PERFORMED_NO_ROLLBACK_REQUIRED",
+    "futurePolicy": "RESTORE_ONLY_EXACT_AUTHORIZED_PATCH_WITH_BEFORE_HASH_MATCH",
+    "protectedFiles": [
+      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    ]
+  },
+  "safety": {
+    "instructionOnly": true,
+    "productApplicationAllowed": false,
+    "runtimeMutationAllowed": false,
+    "sourceMutationPerformed": false,
+    "surfaceExpansionAllowed": false
+  },
+  "schema": "PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1",
+  "schemaVersion": "1.0.0",
+  "status": "READY_FOR_SOURCE_ONLY_PLANNING",
+  "workflow": [
+    "SELECT_CERTIFIED_TARGET",
+    "SELECT_COMPATIBLE_RECIPE",
+    "REVIEW_COVERED_AND_MISSING_PROPERTIES",
+    "REVIEW_DETERMINISTIC_SOURCE_PLAN",
+    "COLLECT_BEFORE_VISUAL_EVIDENCE",
+    "PASS_APPLICATION_AUTHORIZATION_GATE",
+    "APPLY_IN_FUTURE_AUTHORIZED_WORKFLOW",
+    "COLLECT_AFTER_VISUAL_EVIDENCE",
+    "VERIFY_GATES_OR_ROLL_BACK"
+  ]
+}
