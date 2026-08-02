@@ -38,10 +38,6 @@ const files = {
   licenseRefresh: "components/license/license-refresh-panel.tsx",
   sync: "components/sync/pending-offline-sync-panel-screen.tsx",
   touchPos: "components/tablet-pos/touch-pos-ui.tsx",
-  pulsePage: "app/prisma-pulse/page.tsx",
-  pulsePanel: "app/prisma-pulse/PrismaTabletPulsePanel.tsx",
-  pulseMatrix: "app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx",
-  pulseShift: "app/prisma-pulse/charts/TabletShiftPulseStrip.tsx",
   salesDetail: "components/sales/sales-ticket-detail-screen.tsx"
 };
 
@@ -66,16 +62,6 @@ const forbidden = [
   ["components/sync/pending-offline-sync-panel-screen.tsx", "evento(s) mandado"],
   ["components/tablet-pos/touch-pos-ui.tsx", "ACK"],
   ["components/tablet-pos/touch-pos-ui.tsx", "Eventos locales"],
-  ["app/prisma-pulse/page.tsx", "PRISMA Pulse"],
-  ["app/prisma-pulse/page.tsx", "Visual OS"],
-  ["app/prisma-pulse/page.tsx", "runtime, sincronización"],
-  ["app/prisma-pulse/PrismaTabletPulsePanel.tsx", "Pendientes sync"],
-  ["app/prisma-pulse/PrismaTabletPulsePanel.tsx", "outbox local"],
-  ["app/prisma-pulse/PrismaTabletPulsePanel.tsx", "Pulse preview"],
-  ["app/prisma-pulse/PrismaTabletPulsePanel.tsx", "Operations Pulse"],
-  ["app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx", "Sync Outbox Status Matrix"],
-  ["app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx", "outbox local"],
-  ["app/prisma-pulse/charts/TabletShiftPulseStrip.tsx", "Shift Pulse Strip"],
   ["components/sales/sales-ticket-detail-screen.tsx", "Evidencia técnica"]
 ];
 
@@ -86,7 +72,7 @@ for (const [file, text] of forbidden) {
 
 check("home has six or fewer primary cards", (files.home.match(/href:/g) ?? []).length <= 8, "includes hero links plus quick cards");
 check("home copy exposes Accesos principales", files.home.includes("Accesos principales") && files.home.includes("Lo necesario para operar"));
-check("pulse route is renamed for operator", files.pulsePage.includes('title="Estado operativo"') && files.pulsePanel.includes("<h1>Estado operativo</h1>"));
+check("retired prisma-pulse customer route stays absent", !fs.existsSync(path.join(appRoot, "app", "prisma-pulse")));
 
 const failed = checks.filter((item) => !item.ok);
 if (failed.length) {
