@@ -13,6 +13,7 @@ from .recipes import RecipeRepository
 from .repository import BridgeRepository
 from .resolver import resolve_component
 from .selftest import main as selftest_main
+from .cobrar_application import execute_cobrar_transaction
 
 
 def _recipes(paths: list[str], profile_paths: list[str]) -> RecipeRepository:
@@ -42,6 +43,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     sub.add_parser("apply-status")
     p_apply = sub.add_parser("apply")
     p_apply.add_argument("plan")
+    p_cobrar = sub.add_parser("apply-cobrar", help="Exact governed Atlasfin Cobrar transaction; not a generic writer")
+    p_cobrar.add_argument("request")
+    p_cobrar.add_argument("--repo-root", required=True)
+    p_cobrar.add_argument("--evidence-root", required=True)
+    p_cobrar.add_argument("--mode", choices=("preview", "apply", "verify"), default="preview")
     args = parser.parse_args(list(argv) if argv is not None else None)
     try:
         if args.command == "selftest": return selftest_main()
@@ -49,6 +55,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(APPLICATION_STATUS, ensure_ascii=False, indent=2, sort_keys=True)); return 0
         if args.command == "apply":
             apply_plan(args.plan); return 0
+        if args.command == "apply-cobrar":
+            result = execute_cobrar_transaction(args.request, args.repo_root, args.evidence_root, args.mode)
+            print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
         repo = BridgeRepository.load(args.inputs, require_valid=args.command != "validate")
         if args.command == "validate":
             if args.output: write_json(args.output, repo.validation)
