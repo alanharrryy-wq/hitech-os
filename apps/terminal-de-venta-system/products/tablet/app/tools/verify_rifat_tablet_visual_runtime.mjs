@@ -13,6 +13,7 @@ const generatedUiRoot = path.join(repoRoot, "apps", "terminal-de-venta-system", 
 const sha256 = (value) => crypto.createHash("sha256").update(value).digest("hex");
 const read = (file) => fs.readFileSync(file);
 const readText = (file) => fs.readFileSync(file, "utf8");
+const readCanonicalUiSource = (file) => Buffer.from(readText(file).replace(/\r\n/g, "\n"), "utf8");
 const readJson = (file) => JSON.parse(readText(file));
 const relRepo = (file) => path.relative(repoRoot, file).replace(/\\/g, "/");
 
@@ -161,7 +162,9 @@ const uiDrift = canonicalUiFiles.flatMap((source) => {
   const relative = path.relative(canonicalUiRoot, source);
   const output = path.join(generatedUiRoot, relative);
   if (!fs.existsSync(output)) return [{ path: relative.replace(/\\/g, "/"), issue: "missing" }];
-  return read(source).equals(read(output)) ? [] : [{ path: relative.replace(/\\/g, "/"), issue: "drift" }];
+  return readCanonicalUiSource(source).equals(read(output))
+    ? []
+    : [{ path: relative.replace(/\\/g, "/"), issue: "drift" }];
 });
 check("authority.single-prisma-ui", uiDrift.length === 0, uiDrift);
 
