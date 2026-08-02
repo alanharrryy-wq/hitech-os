@@ -8,6 +8,7 @@ from code_atlas.coverage.important_gate import main as gate_main
 from code_atlas.db_glass.reality_check import main as db_main
 from code_atlas.manifest.todo_el_show_plus import main as todo_main
 from code_atlas.operational.main import main as operational_main
+from code_atlas.ui_bridge.cli import main as ui_bridge_main
 
 
 # UIMAP1_CLI_INTEGRATION_START
@@ -25,6 +26,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("todo-plus")
     sub.add_parser("operational")
     sub.add_parser("uimap")
+    sub.add_parser("ui-bridge")
     ns, rest = parser.parse_known_args(argv)
     if ns.command == "coverage":
         return coverage_main(rest)
@@ -38,6 +40,8 @@ def main(argv: list[str] | None = None) -> int:
         return operational_main(rest)
     if ns.command == "uimap":
         return uimap_main(rest)
+    if ns.command == "ui-bridge":
+        return ui_bridge_main(rest)
     parser.error("unknown command")
     return 2
 
