@@ -1,20 +1,27 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
 from pathlib import Path
 
 PAGES = ["index.html", "a-fundamentos.html", "b-materiales.html", "c-acciones.html", "d-entrada-texto.html", "e-seleccion-filtros.html", "f-navegacion.html", "g-tablas.html", "h-listas.html", "i-paneles-cards.html", "j-expansion.html", "k-estados-feedback.html", "l-carga-progreso.html", "m-overlays.html", "n-operativos.html", "o-patrones-pantalla.html", "p-movimiento.html", "q-responsive-accesibilidad.html", "r-contenido.html", "s-analitica.html", "t-archivos-medios.html", "u-calendario.html", "v-comercio-pagos.html", "w-identidad-seguridad.html", "x-sistema-diagnostico.html", "y-i18n-impresion-offline.html", "z-gobierno.html"]
-SCHEMAS = ["PRISMA_VISUAL_PROPERTY_REGISTRY_V1", "PRISMA_VISUAL_FAMILY_REGISTRY_V1", "PRISMA_VISUAL_PRESET_REGISTRY_V1", "PRISMA_VISUAL_RECIPE_REGISTRY_V4", "PRISMA_VISUAL_STATE_REGISTRY_V1", "PRISMA_VISUAL_VARIANT_REGISTRY_V1", "PRISMA_SURFACE_ADAPTER_REGISTRY_V2", "PRISMA_VISUAL_ASSET_REGISTRY_V1", "PRISMA_PORTABLE_VISUAL_TRANSFER_V2", "PRISMA_VISUAL_BINDING_REQUIREMENTS_V1", "PRISMA_VISUAL_RECIPE_COVERAGE_V1", "PRISMA_VISUAL_MIGRATION_REPORT_V1", "PRISMA_VISUAL_IMPORT_INSPECTION_V1", "PRISMA_VISUAL_DELTA_V2", "PRISMA_VISREC2_CONSOLE_STATE_V2"]
-MODULES = ["runtime.js", "selection-engine.js", "fingerprint-engine.js", "property-engine.js", "recipe-engine.js", "state-engine.js", "adapter-engine.js", "compatibility-engine.js", "preview-engine.js", "export-engine.js", "migration-engine.js", "import-inspector.js", "checksum-engine.js", "console-engine.js"]
+SCHEMAS = ["PRISMA_VISUAL_PROPERTY_REGISTRY_V1", "PRISMA_VISUAL_FAMILY_REGISTRY_V1", "PRISMA_VISUAL_PRESET_REGISTRY_V1", "PRISMA_VISUAL_RECIPE_REGISTRY_V4", "PRISMA_VISUAL_STATE_REGISTRY_V1", "PRISMA_VISUAL_VARIANT_REGISTRY_V1", "PRISMA_SURFACE_ADAPTER_REGISTRY_V2", "PRISMA_VISUAL_ASSET_REGISTRY_V1", "PRISMA_PORTABLE_VISUAL_TRANSFER_V2", "PRISMA_VISUAL_BINDING_REQUIREMENTS_V1", "PRISMA_VISUAL_RECIPE_COVERAGE_V1", "PRISMA_VISUAL_MIGRATION_REPORT_V1", "PRISMA_VISUAL_IMPORT_INSPECTION_V1", "PRISMA_VISUAL_DELTA_V2", "PRISMA_VISREC2_CONSOLE_STATE_V2", "PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1"]
+MODULES = ["runtime.js", "selection-engine.js", "fingerprint-engine.js", "property-engine.js", "recipe-engine.js", "state-engine.js", "adapter-engine.js", "compatibility-engine.js", "preview-engine.js", "export-engine.js", "migration-engine.js", "import-inspector.js", "checksum-engine.js", "console-engine.js", "governed-control-engine.js"]
 VISREC2_TASK_COUNT = 20
 VISIBLE_CONTROL_COUNTS = {"properties": 12, "states": 12, "variants": 8, "targets": 4, "transferModes": 3}
+
+
+def canonical_sha256(value: object) -> str:
+    payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("atlas_root")
-    parser.add_argument("--report", required=True)
+    parser.add_argument("--report")
     args = parser.parse_args()
     atlas = Path(args.atlas_root).resolve()
     issues = []
@@ -55,6 +62,104 @@ def main() -> int:
         if not (module_dir / name).is_file():
             issues.append({"code": "MODULE_MISSING", "path": name})
 
+    pilot_json_path = data / "visual-control.cobrar.pilot.json"
+    pilot_js_path = data / "visual-control.cobrar.pilot.js"
+    index_text = (atlas / "index.html").read_text(encoding="utf-8", errors="replace")
+    for marker in [
+        'src="assets/js/visrec2/governed-control-engine.js"',
+        "data-atlas-control-open",
+        "data-atlas-control-panel",
+        "data-atlas-control-content",
+    ]:
+        if index_text.count(marker) != 1:
+            issues.append({"code": "CANONICAL_CONTROL_MARKER", "marker": marker, "actual": index_text.count(marker)})
+    if "Lote futuro" in index_text:
+        issues.append({"code": "FUTURE_BATCH_MARKER_PRESENT"})
+
+    pilot = None
+    if not pilot_json_path.is_file():
+        issues.append({"code": "CONTROL_PILOT_MISSING", "path": pilot_json_path.name})
+    else:
+        pilot_text = pilot_json_path.read_text(encoding="utf-8")
+        pilot = json.loads(pilot_text)
+        if re.search(r"[A-Za-z]:\\\\", pilot_text) or "file://" in pilot_text.lower():
+            issues.append({"code": "CONTROL_PILOT_LOCAL_PATH"})
+        expected_pilot = {
+            "surfaceId": "SURF.tb.pos",
+            "routeId": "ROUTE.tb.pos",
+            "ownerId": "OWN.tb.pos_ticket_panel",
+            "regionId": "ZONE.tb.pos.payment",
+            "slotId": "SLOT.tb.pos.payment.cobrar",
+            "componentUiId": "TB-POS-PAY-COBRAR-BTN-01",
+            "selector": ".cobrarReferenceButton",
+            "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+            "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+            "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+        }
+        for field, expected in expected_pilot.items():
+            actual = pilot.get("pilot", {}).get(field)
+            if actual != expected:
+                issues.append({"code": "CONTROL_PILOT_HIERARCHY", "field": field, "expected": expected, "actual": actual})
+        safety = pilot.get("safety", {})
+        plan = pilot.get("plan", {})
+        if pilot.get("status") != "READY_FOR_SOURCE_ONLY_PLANNING":
+            issues.append({"code": "CONTROL_PLANNING_STATUS", "actual": pilot.get("status")})
+        if any(safety.get(field) is not False for field in ["runtimeMutationAllowed", "productApplicationAllowed", "sourceMutationPerformed"]):
+            issues.append({"code": "CONTROL_MUTATION_GUARD", "actual": safety})
+        if plan.get("applicationEnabled") is not False or plan.get("status") != "PLAN_READY_FOR_REVIEW":
+            issues.append({"code": "CONTROL_BRIDGE_GUARD", "actual": {"applicationEnabled": plan.get("applicationEnabled"), "status": plan.get("status")}})
+        if plan.get("operationCount") != 11 or len(plan.get("operations", [])) != 11:
+            issues.append({"code": "CONTROL_PLAN_OPERATION_COUNT", "actual": plan.get("operationCount")})
+        if pilot.get("recipe", {}).get("plannedPropertyCount") != 89 or pilot.get("recipe", {}).get("missingPropertyCount") != 0:
+            issues.append({"code": "CONTROL_RECIPE_COVERAGE_COUNTS", "actual": pilot.get("recipe")})
+        if sum(operation.get("propertyCount", 0) for operation in plan.get("operations", []) if isinstance(operation, dict)) != 89:
+            issues.append({"code": "CONTROL_PLAN_PROPERTY_COUNT"})
+        if plan.get("blockingReasons"):
+            issues.append({"code": "CONTROL_SOURCE_PLAN_BLOCKED", "actual": plan.get("blockingReasons")})
+        gate_statuses = {gate.get("gateId"): gate.get("status") for gate in pilot.get("gates", []) if isinstance(gate, dict)}
+        required_gate_statuses = {
+            "RECIPE_COVERAGE_FRESHNESS": "BLOCKED_BY_STALE_RUNTIME_EVIDENCE",
+            "MAMASTROPHIC_VISUAL_EVIDENCE": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE",
+            "PRODUCT_APPLICATION": "DISABLED_BY_CONTRACT",
+        }
+        for gate_id, expected in required_gate_statuses.items():
+            if gate_statuses.get(gate_id) != expected:
+                issues.append({"code": "CONTROL_GATE_TRUTH", "gateId": gate_id, "expected": expected, "actual": gate_statuses.get(gate_id)})
+        if pilot.get("evidence", {}).get("runtime", {}).get("status") != "NOT_CERTIFIED":
+            issues.append({"code": "CONTROL_RUNTIME_PROMOTION"})
+        rendering = pilot.get("rendering", {})
+        if rendering.get("loadPolicy") != "LAZY_ON_EXPLICIT_OPEN" or rendering.get("initialOperationRenderCount") != 0 or rendering.get("operationPageSize") != 4:
+            issues.append({"code": "CONTROL_RENDERING_POLICY", "actual": rendering})
+        integrity = pilot.get("integrity", {})
+        payload_without_integrity = dict(pilot)
+        payload_without_integrity.pop("integrity", None)
+        if integrity.get("canonicalPayloadSha256") != canonical_sha256(payload_without_integrity):
+            issues.append({"code": "CONTROL_INTEGRITY"})
+
+    if not pilot_js_path.is_file():
+        issues.append({"code": "CONTROL_PILOT_JS_MISSING", "path": pilot_js_path.name})
+    elif pilot is not None:
+        js_text = pilot_js_path.read_text(encoding="utf-8")
+        prefix = "window.PRISMA_ATLASFIN_VISUAL_CONTROL = "
+        if not js_text.startswith(prefix) or not js_text.endswith(";\n"):
+            issues.append({"code": "CONTROL_PILOT_JS_WRAPPER"})
+        else:
+            js_payload = json.loads(js_text[len(prefix):-2])
+            if js_payload != pilot:
+                issues.append({"code": "CONTROL_PILOT_JS_PARITY"})
+
+    control_module_path = module_dir / "governed-control-engine.js"
+    if control_module_path.is_file():
+        control_text = control_module_path.read_text(encoding="utf-8", errors="replace")
+        for marker in ['document.createElement("script")', ".slice(", "operationPageSize", "searchText"]:
+            if marker not in control_text:
+                issues.append({"code": "CONTROL_RUNTIME_MARKER", "marker": marker})
+        if "JSON.stringify" in control_text:
+            issues.append({"code": "CONTROL_MASS_STRINGIFY_SEARCH"})
+        control_css = (atlas / "assets/css/visual-recipe-dock.css").read_text(encoding="utf-8", errors="replace")
+        if "content-visibility: auto" not in control_css or "contain-intrinsic-size" not in control_css:
+            issues.append({"code": "CONTROL_VIRTUALIZATION_MISSING"})
+
     master = json.loads((data / "visual.recipe.registry.json").read_text(encoding="utf-8"))
     transfer = master.get("transfer_console", {})
     if master.get("schema") != "PRISMA_VISUAL_RECIPE_REGISTRY_V4":
@@ -89,7 +194,7 @@ def main() -> int:
 
     report = {
         "status": "PASS" if not issues else "FAIL",
-        "schema": "PRISMA_VISREC2_ATLAS_VALIDATION_V2",
+        "schema": "PRISMA_VISREC2_ATLAS_VALIDATION_V3",
         "pageCoverage": f"{len(PAGES)}/{len(PAGES)}",
         "taskCoverage": f"{len(transfer.get('tasks', []))}/{VISREC2_TASK_COUNT}",
         "visibleControlsPreserved": not any(issue["code"] == "VISIBLE_CONTROL_DRIFT" for issue in issues),
@@ -97,9 +202,10 @@ def main() -> int:
         "instructionOnly": transfer.get("instruction_only"),
         "issues": issues,
     }
-    report_path = Path(args.report).resolve()
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    if args.report:
+        report_path = Path(args.report).resolve()
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "PASS" else 2
 
