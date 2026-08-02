@@ -3,11 +3,11 @@
   "recipeId": "REC.button.primary",
   "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
   "sourceCssPath": "products/tablet/app/components/pos/pos.module.css",
-  "sourceCssSha256": "fc80de7a963ded76839d2dae429c17623ca5075463615753e9033868d5fd053f",
+  "sourceCssSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd",
   "sourceComponentPath": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
   "sourceComponentSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
   "recipeCoverageStatus": "COMPLETE",
-  "knownDeclarationCount": 49,
+  "knownDeclarationCount": 54,
   "uncoveredKnownDeclarationCount": 0,
   "units": [
     {
@@ -47,6 +47,7 @@
         "bottom",
         "content",
         "left",
+        "opacity",
         "pointer-events",
         "position",
         "top",
@@ -54,7 +55,7 @@
         "transition",
         "width"
       ],
-      "knownDeclarationCount": 10,
+      "knownDeclarationCount": 11,
       "uncoveredKnownProperties": [],
       "recipePropertyCount": 17
     },
@@ -63,11 +64,12 @@
       "selector": ".cobrarReferenceButton:hover",
       "coverageStatus": "DEFINED",
       "knownProperties": [
+        "border-color",
         "box-shadow",
         "filter",
         "transform"
       ],
-      "knownDeclarationCount": 3,
+      "knownDeclarationCount": 4,
       "uncoveredKnownProperties": [],
       "recipePropertyCount": 10
     },
@@ -76,9 +78,10 @@
       "selector": ".cobrarReferenceButton:hover::before",
       "coverageStatus": "DEFINED",
       "knownProperties": [
-        "left"
+        "left",
+        "transform"
       ],
-      "knownDeclarationCount": 1,
+      "knownDeclarationCount": 2,
       "uncoveredKnownProperties": [],
       "recipePropertyCount": 8
     },
@@ -87,12 +90,13 @@
       "selector": ".cobrarReferenceButton:disabled",
       "coverageStatus": "DEFINED",
       "knownProperties": [
+        "box-shadow",
         "cursor",
         "filter",
         "opacity",
         "transform"
       ],
-      "knownDeclarationCount": 4,
+      "knownDeclarationCount": 5,
       "uncoveredKnownProperties": [],
       "recipePropertyCount": 8
     },
@@ -104,12 +108,13 @@
         "background",
         "border",
         "border-radius",
+        "box-shadow",
         "display",
         "height",
         "place-items",
         "width"
       ],
-      "knownDeclarationCount": 7,
+      "knownDeclarationCount": 8,
       "uncoveredKnownProperties": [],
       "recipePropertyCount": 15
     },

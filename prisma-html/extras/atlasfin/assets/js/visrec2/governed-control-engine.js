@@ -8,7 +8,9 @@
   const closeButton = panel.querySelector("[data-atlas-control-close]");
   const content = panel.querySelector("[data-atlas-control-content]");
   const dataSource = "assets/data/visual-control.cobrar.pilot.js";
+  const applicationSource = "assets/data/visual-application.cobrar.current.js";
   let payload = null;
+  let applicationPayload = null;
   let loading = null;
   let page = 0;
   let query = "";
@@ -31,32 +33,72 @@
     return "atlas-control-status--neutral";
   };
 
-  function loadPayload() {
-    if (payload) return Promise.resolve(payload);
-    if (loading) return loading;
-    loading = new Promise((resolve, reject) => {
-      const existing = window.PRISMA_ATLASFIN_VISUAL_CONTROL;
-      if (existing) {
-        payload = existing;
-        resolve(payload);
-        return;
-      }
+  function loadScript(source, dataKey) {
+    return new Promise((resolve, reject) => {
       const script = document.createElement("script");
-      script.src = dataSource;
+      script.src = source;
       script.async = true;
-      script.dataset.atlasControlData = "cobrar-pilot";
-      script.addEventListener("load", () => {
-        if (!window.PRISMA_ATLASFIN_VISUAL_CONTROL) {
-          reject(new Error("El payload gobernado no declaró su contrato."));
-          return;
-        }
-        payload = window.PRISMA_ATLASFIN_VISUAL_CONTROL;
-        resolve(payload);
-      }, { once: true });
-      script.addEventListener("error", () => reject(new Error("No se pudo cargar el payload gobernado.")), { once: true });
+      script.dataset.atlasControlData = dataKey;
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", () => reject(new Error(`No se pudo cargar ${dataKey}.`)), { once: true });
       document.head.append(script);
     });
+  }
+
+  function loadPayload() {
+    if (payload && applicationPayload) return Promise.resolve(payload);
+    if (loading) return loading;
+    loading = Promise.all([
+      window.PRISMA_ATLASFIN_VISUAL_CONTROL ? Promise.resolve() : loadScript(dataSource, "cobrar-pilot"),
+      window.PRISMA_ATLASFIN_VISUAL_APPLICATION ? Promise.resolve() : loadScript(applicationSource, "cobrar-application"),
+    ]).then(() => {
+      payload = window.PRISMA_ATLASFIN_VISUAL_CONTROL;
+      applicationPayload = window.PRISMA_ATLASFIN_VISUAL_APPLICATION;
+      if (!payload || !applicationPayload) throw new Error("Los payloads gobernados no declararon sus contratos.");
+      return payload;
+    });
     return loading;
+  }
+
+  function requestTemplate() {
+    return {
+      schema: "PRISMA_ATLASFIN_VISUAL_APPLICATION_REQUEST_V1",
+      schemaVersion: "1.0.0",
+      taskId: applicationPayload.taskId,
+      controlId: applicationPayload.controlId,
+      transactionId: applicationPayload.transactionId,
+      componentUiId: payload.pilot.componentUiId,
+      recipeId: payload.recipe.recipeId,
+      visualStackId: payload.recipe.visualStackId,
+      bindingId: payload.pilot.bindingId,
+      adapterId: payload.plan.adapterId,
+      layerId: payload.pilot.layerId,
+      implementationLayerId: payload.pilot.implementationLayerId,
+      planId: "BRPLAN.ca4eebf8f3a79d3ec6944488",
+      planChecksum: "cce8fd8567744602264cf386902ad2e8e1f78042919a4b9365d158c351f83153",
+      authorization: "EXPLICIT_USER_AUTHORIZATION_ATLASFIN_COBRAR_V1",
+      maxProductFileCount: 1,
+      productFiles: applicationPayload.productFiles,
+      selectors: applicationPayload.selectors,
+      before: applicationPayload.after,
+      beforeEvidence: {
+        phase: "BEFORE",
+        status: "PASS",
+        selector: ".cobrarReferenceButton",
+        path: "SELECT_LOCAL_BEFORE_EVIDENCE_FILE_IN_RUNNER",
+        sha256: applicationPayload.preview.evidenceBundle.beforeEvidenceSha256,
+      },
+      note: "Atlasfin exports this portable request. The runner must bind the local BEFORE evidence path and revalidate every hash before writing.",
+    };
+  }
+
+  function downloadJson(filename, value) {
+    const blob = new Blob([`${JSON.stringify(value, null, 2)}\n`], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
   }
 
   function hierarchyMarkup(pilot) {
@@ -124,12 +166,14 @@
     const source = payload.evidence.source;
     const mamastrophic = payload.evidence.mamastrophic;
     const protectedFiles = payload.rollback.protectedFiles;
+    const application = applicationPayload;
+    const evidence = application.preview.evidenceBundle;
     content.innerHTML = `
       <div class="atlas-control-summary">
         <div><span>Planeación</span><strong class="atlas-control-status--pass">${escapeHtml(payload.status)}</strong></div>
-        <div><span>Aplicación</span><strong class="atlas-control-status--blocked">${escapeHtml(payload.applicationReadiness)}</strong></div>
+        <div><span>Aplicación actual</span><strong class="atlas-control-status--pass">${escapeHtml(application.status)}</strong></div>
         <div><span>Plan UI Bridge</span><code>${escapeHtml(payload.plan.planId)}</code></div>
-        <div><span>Mutación</span><strong>Desactivada</strong></div>
+        <div><span>Post-plan</span><strong class="atlas-control-status--pass">${escapeHtml(application.preview.postApplicationPlan.status)}</strong></div>
       </div>
 
       <div class="atlas-control-layout">
@@ -152,7 +196,7 @@
             <div><strong>${escapeHtml(payload.recipe.missingPropertyCount)}</strong><span>propiedades conocidas sin cubrir</span></div>
             <div><strong>${escapeHtml(payload.recipe.unitCount)}</strong><span>unidades paginadas</span></div>
           </div>
-          <p class="atlas-control-note">La cobertura declarada es completa, pero su hash CSS está obsoleto. Eso bloquea certificación runtime y aplicación; no bloquea revisar el plan source-only.</p>
+          <p class="atlas-control-note">La cobertura está fresca y el resultado actual está certificado por UIMAP, UI Bridge y evidencia Mamastrophic BEFORE/AFTER. El piloto V1 conserva intactos sus guards source-only históricos.</p>
         </section>
       </div>
 
@@ -184,13 +228,20 @@
         </section>
 
         <section class="atlas-control-card">
-          <p class="atlas-eyebrow">Ciclo futuro y rollback</p>
-          <h3>Aplicar sigue bloqueado</h3>
-          <ol class="atlas-control-workflow">${payload.workflow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
-          <p class="atlas-control-note">${escapeHtml(payload.rollback.currentPlan)}</p>
-          <ol class="atlas-control-history">${payload.history.map((entry) => `<li><strong>${escapeHtml(entry.event)}</strong><small>${escapeHtml(entry.batchId || entry.planId || entry.reason)}</small></li>`).join("")}</ol>
+          <p class="atlas-eyebrow">Transacción exacta y rollback</p>
+          <h3>Cobrar aplicado y verificable</h3>
+          <p class="atlas-control-note">El navegador sólo prepara/exporta solicitudes y lee evidencia. La escritura pertenece al runner exacto de UI Bridge.</p>
+          <div class="atlas-control-actions" role="group" aria-label="Evidencia de aplicación">
+            <button class="atlas-button atlas-button--primary" type="button" data-atlas-application-action="request">Preparar solicitud</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="before">Ver BEFORE</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="patch">Ver patch</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="gates">Ver gates</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="rollback">Ver rollback</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="result">Ver resultado</button>
+            <button class="atlas-button" type="button" data-atlas-application-action="after">Ver AFTER</button>
+          </div>
+          <pre class="atlas-control-inspector" data-atlas-application-inspector tabindex="0">${escapeHtml(JSON.stringify({ status: application.status, batchId: application.preview.uimap.batchId, evidenceSha256: evidence.sha256 }, null, 2))}</pre>
           <ul class="atlas-control-files">${protectedFiles.map((file) => `<li><code>${escapeHtml(file)}</code></li>`).join("")}</ul>
-          <button class="atlas-button atlas-button--primary" type="button" disabled aria-disabled="true">Aplicar receta · bloqueado por contrato</button>
         </section>
       </div>
     `;
@@ -209,6 +260,27 @@
     content.querySelector("[data-atlas-control-next]").addEventListener("click", () => {
       page += 1;
       render();
+    });
+    const inspector = content.querySelector("[data-atlas-application-inspector]");
+    content.querySelectorAll("[data-atlas-application-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.atlasApplicationAction;
+        if (action === "request") {
+          downloadJson("atlasfin-cobrar-application-request.json", requestTemplate());
+          inspector.textContent = "Solicitud portable exportada. No se escribió ningún archivo de producto.";
+          return;
+        }
+        const views = {
+          before: { source: application.before, evidenceSha256: evidence.beforeEvidenceSha256, screenshotSha256: evidence.beforeScreenshotSha256 },
+          patch: { changedLineCount: application.preview.changedLineCount, patchSha256: application.preview.patchSha256, portableArtifact: application.preview.portableArtifact, postApplicationPlan: application.preview.postApplicationPlan },
+          gates: { runtimeStatus: application.status, comparison: evidence.comparison, states: evidence.states, console: evidence.console, network: evidence.network },
+          rollback: application.rollback,
+          result: application,
+          after: { source: application.after, evidenceSha256: evidence.afterEvidenceSha256, screenshotSha256: evidence.afterScreenshotSha256 },
+        };
+        inspector.textContent = JSON.stringify(views[action], null, 2);
+        inspector.focus();
+      });
     });
   }
 

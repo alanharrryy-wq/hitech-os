@@ -9,6 +9,8 @@ from pathlib import Path
 ATLAS = Path(__file__).resolve().parents[1]
 DATA_PATH = ATLAS / "assets/data/visual-control.cobrar.pilot.json"
 JS_PATH = ATLAS / "assets/data/visual-control.cobrar.pilot.js"
+APPLICATION_DATA_PATH = ATLAS / "assets/data/visual-application.cobrar.current.json"
+APPLICATION_JS_PATH = ATLAS / "assets/data/visual-application.cobrar.current.js"
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -19,6 +21,7 @@ class CanonicalVisualControlTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.payload = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+        cls.application = json.loads(APPLICATION_DATA_PATH.read_text(encoding="utf-8"))
 
     def test_exact_cobrar_hierarchy(self) -> None:
         pilot = self.payload["pilot"]
@@ -43,9 +46,21 @@ class CanonicalVisualControlTest(unittest.TestCase):
 
     def test_honest_evidence_gates(self) -> None:
         statuses = {gate["gateId"]: gate["status"] for gate in self.payload["gates"]}
-        self.assertEqual(statuses["RECIPE_COVERAGE_FRESHNESS"], "BLOCKED_BY_STALE_RUNTIME_EVIDENCE")
-        self.assertEqual(statuses["MAMASTROPHIC_VISUAL_EVIDENCE"], "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE")
+        self.assertEqual(statuses["RECIPE_COVERAGE_FRESHNESS"], "PASS")
+        self.assertEqual(statuses["MAMASTROPHIC_VISUAL_EVIDENCE"], "SOURCE_EVIDENCE_AVAILABLE_RUNTIME_REVIEW_REQUIRED")
         self.assertEqual(self.payload["evidence"]["runtime"]["status"], "NOT_CERTIFIED")
+
+    def test_current_application_is_separate_and_runtime_certified(self) -> None:
+        current = self.application
+        self.assertEqual(current["schema"], "PRISMA_ATLASFIN_VISUAL_APPLICATION_RESULT_V1")
+        self.assertEqual(current["status"], "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED")
+        self.assertTrue(current["sourceMutationPerformed"])
+        self.assertEqual(current["productFileCount"], 1)
+        self.assertEqual(current["preview"]["postApplicationPlan"]["status"], "NO_ACTIONABLE_DIFF")
+        self.assertEqual(current["preview"]["postApplicationPlan"]["changedLineCount"], 0)
+        self.assertTrue(current["preview"]["evidenceBundle"]["comparison"]["pixel"]["visuallyChanged"])
+        self.assertEqual(current["preview"]["evidenceBundle"]["console"]["newErrorCount"], 0)
+        self.assertTrue(current["rollback"]["ready"])
 
     def test_portable_integrity_and_js_parity(self) -> None:
         integrity = self.payload.pop("integrity")
@@ -61,6 +76,18 @@ class CanonicalVisualControlTest(unittest.TestCase):
         portable_text = DATA_PATH.read_text(encoding="utf-8")
         self.assertNotIn(":\\\\", portable_text)
         self.assertNotIn("F:\\\\", portable_text)
+
+        application_integrity = self.application.pop("integrity")
+        try:
+            actual_application = hashlib.sha256(canonical_bytes(self.application)).hexdigest()
+        finally:
+            self.application["integrity"] = application_integrity
+        self.assertEqual(actual_application, application_integrity["canonicalPayloadSha256"])
+        application_js = APPLICATION_JS_PATH.read_text(encoding="utf-8")
+        self.assertTrue(application_js.startswith("window.PRISMA_ATLASFIN_VISUAL_APPLICATION = "))
+        application_payload = json.loads(application_js.removeprefix("window.PRISMA_ATLASFIN_VISUAL_APPLICATION = ").removesuffix(";\n"))
+        self.assertEqual(application_payload, self.application)
+        self.assertNotIn(":\\\\", APPLICATION_DATA_PATH.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

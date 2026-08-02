@@ -372,7 +372,49 @@
         "global Node process scans or process-name kills",
         "Prisma generate during guarded startup"
       ]
+    },
+    {
+      "id": "visual.atlasfin.tablet_pos_cobrar",
+      "displayName": "Atlasfin governed REC.button.primary application to Tablet POS Cobrar",
+      "domain": "visual",
+      "surfaces": [
+        "atlasfin",
+        "code_atlas",
+        "rifat",
+        "tablet"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VISUAL_CERTIFIED",
+      "stateLabel": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Use BATCH.tb.131ff748bb7c8cf2 and the current Atlasfin application projection as the certified baseline; recertify only after target, recipe, owner, route, layer, binding, CSS, or runtime drift.",
+      "evidence": [
+        "atlasapply_0208-1254_final.zip",
+        "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.json",
+        "BATCH.tb.131ff748bb7c8cf2",
+        "Mamastrophic BEFORE/AFTER exact-target captures"
+      ],
+      "doesNotProve": [
+        "Focus-visible on a natively disabled Cobrar target",
+        "Loading state without a real checkout side effect",
+        "A completed sale or payment mutation",
+        "Hosted production deployment",
+        "Any component, recipe, route, or product file outside the exact certified target"
+      ],
+      "allowedActions": [
+        "read-only Atlasfin evidence review",
+        "exact-target UI Bridge request export and validation",
+        "drift-triggered Mamastrophic recertification",
+        "byte-exact rollback drill"
+      ],
+      "forbiddenActions": [
+        "generic browser product writes",
+        "wildcard product-file application",
+        "edit immutable historical UIMAP batches",
+        "promote source-only V1 booleans",
+        "claim console-clean when the identical preexisting dev 404 baseline remains"
+      ]
     }
   ],
-  "updatedAt": "2026-07-26T10:52:48-06:00"
+  "updatedAt": "2026-08-02T12:54:27-06:00"
 }

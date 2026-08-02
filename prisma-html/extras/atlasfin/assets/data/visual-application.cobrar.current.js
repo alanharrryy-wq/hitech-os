@@ -1,0 +1,210 @@
+window.PRISMA_ATLASFIN_VISUAL_APPLICATION = {
+  "after": {
+    "authorityCssSha256": "bae907948238073eba339e1be7532814b3498ec25c36104221b0ee84c0584be0",
+    "ownerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+    "productCssSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd"
+  },
+  "authorityFiles": [
+    "prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css"
+  ],
+  "before": {
+    "authorityCssSha256": "e5f73a18baadbf80b5a12757250d8899a33e1d8606487519f7bcd10a1ee21520",
+    "ownerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+    "productCssSha256": "711eb50386ce4c22257103aae543e1dd38aa0853a23a4ee30ad873ce70a570e5"
+  },
+  "controlId": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1",
+  "createdAt": "2026-08-02T18:31:38Z",
+  "idempotencyDisposition": "ALREADY_APPLIED_AND_VERIFIED",
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "811245f9865b5fa9e728922048a83c117bf194fa4be9a3695b286b04cf9939ac"
+  },
+  "mode": "verify",
+  "observedAtExecution": {
+    "authorityCssSha256": "bae907948238073eba339e1be7532814b3498ec25c36104221b0ee84c0584be0",
+    "ownerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+    "productCssSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd"
+  },
+  "policyOnlySelectors": [
+    "[data-prisma-state=\"loading\"]"
+  ],
+  "preview": {
+    "changedLineCount": 97,
+    "evidenceBundle": {
+      "afterEvidenceSha256": "5a417a8b68cfd66ad5609c214aeb9bbeae458a790c40b4e336277f3b64711fa1",
+      "afterScreenshotSha256": "64aa05c51b8bb37a51557eb149d44b509e153c9f396d2a807c6533530b871bd6",
+      "artifactName": "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.json",
+      "beforeEvidenceSha256": "977e1446599f464c167d82a2434cdcb6e60acccf3ea7383a3fd9ceb2d3195f9c",
+      "beforeScreenshotSha256": "5e1ec298f683d3b9b744eb8ea6aeaddccedce41d670f8369dd35e5c9442d02dd",
+      "comparison": {
+        "bboxStable": true,
+        "changedComputedStyles": [
+          {
+            "after": "1px solid color(srgb 0.435765 0.596235 0.948235)",
+            "before": "1px solid rgba(138, 231, 255, 0.72)",
+            "property": "border"
+          },
+          {
+            "after": "color(srgb 0.435765 0.596235 0.948235)",
+            "before": "rgba(138, 231, 255, 0.72)",
+            "property": "borderColor"
+          },
+          {
+            "after": "14px",
+            "before": "18px",
+            "property": "borderRadius"
+          },
+          {
+            "after": "rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(37, 99, 235), color(srgb 0.126118 0.322667 0.755059)) repeat scroll 0% 0% / auto padding-box border-box",
+            "before": "radial-gradient(circle at 14% 18%, rgba(129, 235, 255, 0.58), rgba(0, 0, 0, 0) 30%) repeat scroll 0% 0% / auto padding-box border-box, rgba(0, 0, 0, 0) linear-gradient(112deg, rgb(40, 125, 245), rgb(33, 83, 210) 54%, rgb(58, 199, 240)) repeat scroll 0% 0% / auto padding-box border-box",
+            "property": "background"
+          },
+          {
+            "after": "linear-gradient(135deg, rgb(37, 99, 235), color(srgb 0.126118 0.322667 0.755059))",
+            "before": "radial-gradient(circle at 14% 18%, rgba(129, 235, 255, 0.58), rgba(0, 0, 0, 0) 30%), linear-gradient(112deg, rgb(40, 125, 245), rgb(33, 83, 210) 54%, rgb(58, 199, 240))",
+            "property": "backgroundImage"
+          },
+          {
+            "after": "none",
+            "before": "rgba(30, 92, 226, 0.34) 0px 20px 46px 0px, rgba(112, 224, 255, 0.13) 0px 0px 0px 1px, rgba(255, 255, 255, 0.34) 0px 1px 0px 0px inset",
+            "property": "boxShadow"
+          },
+          {
+            "after": "color(srgb 0.0588235 0.0901961 0.164706 / 0.3) 0px 1px 8px",
+            "before": "rgba(0, 31, 84, 0.34) 0px 1px 10px",
+            "property": "textShadow"
+          },
+          {
+            "after": "transform 0.12s cubic-bezier(0.22, 1, 0.36, 1), filter 0.12s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.12s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.12s cubic-bezier(0.22, 1, 0.36, 1), background 0.12s cubic-bezier(0.22, 1, 0.36, 1)",
+            "before": "transform 0.14s, filter 0.14s, box-shadow 0.14s",
+            "property": "transition"
+          },
+          {
+            "after": "saturate(0.2) brightness(0.96)",
+            "before": "saturate(0.45)",
+            "property": "filter"
+          }
+        ],
+        "pixel": {
+          "changedPixelRatio": 1.0,
+          "changedPixels": 25392,
+          "differenceBoundingBox": [
+            0,
+            0,
+            368,
+            69
+          ],
+          "height": 69,
+          "meanAbsoluteChannelDifference": [
+            8.85956206679269,
+            17.741808443604285,
+            26.26358695652174
+          ],
+          "sameDimensions": true,
+          "totalPixels": 25392,
+          "visuallyChanged": true,
+          "width": 368
+        },
+        "sameBrowser": true,
+        "sameRoute": true,
+        "sameTarget": true,
+        "sameViewport": true
+      },
+      "console": {
+        "afterCount": 3,
+        "beforeCount": 3,
+        "caveat": "Both captures contain the same unattributed dev-console 404 plus React DevTools/HMR messages; it is not hidden or called console-clean.",
+        "identicalBaseline": true,
+        "newErrorCount": 0,
+        "status": "PASS_NO_NEW_ERRORS_IDENTICAL_PREEXISTING_CONSOLE_BASELINE"
+      },
+      "network": {
+        "afterFailureCount": 0,
+        "beforeFailureCount": 0,
+        "diagnosticHttpErrorCount": 0,
+        "status": "PASS_NO_TARGET_NETWORK_FAILURES"
+      },
+      "sha256": "0e25691a758b7232b01536287f63d0e9c141e07c5a0a13c31249480d04942d75",
+      "states": [
+        {
+          "reason": null,
+          "state": "normal",
+          "status": "PASS"
+        },
+        {
+          "reason": null,
+          "state": "disabled",
+          "status": "PASS"
+        },
+        {
+          "reason": null,
+          "state": "hover",
+          "status": "PASS"
+        },
+        {
+          "reason": "Native disabled target is not focusable.",
+          "state": "focus-visible",
+          "status": "SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT"
+        },
+        {
+          "reason": null,
+          "state": "reduced-motion",
+          "status": "PASS"
+        },
+        {
+          "reason": null,
+          "state": "loading",
+          "status": "SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT"
+        }
+      ]
+    },
+    "patchSha256": "0c0c470599a1d08eb1dc6c8f85a7728ece6bbf43f32dee0a0b37dfa6fb55076e",
+    "portableArtifact": "evidence/transaction/COBRAR_EXACT_TARGET.preview.patch",
+    "postApplicationPlan": {
+      "changedLineCount": 0,
+      "idempotencyDisposition": "ALREADY_APPLIED_AND_VERIFIED",
+      "status": "NO_ACTIONABLE_DIFF"
+    },
+    "previousAuthorizedPlan": {
+      "checksum": "cce8fd8567744602264cf386902ad2e8e1f78042919a4b9365d158c351f83153",
+      "operationCount": 11,
+      "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+      "plannedPropertyCount": 89
+    },
+    "uimap": {
+      "batchId": "BATCH.tb.131ff748bb7c8cf2",
+      "batchSha256": "d2e6744e76385ff4cd091063c5eee2f15738b7ef38ac4ad0531a156557efce0d",
+      "sourceSnapshotHash": "7CFB0A7B7F1C967E7E4EACCB91AD52646E869FFC78C85D53075F22579F1AB1A2",
+      "supersedesBatchId": "BATCH.tb.90329799098ce65f"
+    }
+  },
+  "productFileCount": 1,
+  "productFiles": [
+    "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+  ],
+  "requestSha256": "114602e55c315e9f95a3dde2d53b85af5fa14979bc650969b5b52c450e1071bb",
+  "rollback": {
+    "policy": "RESTORE_EXACT_BEFORE_BYTES_AND_REVALIDATE",
+    "portableManifest": "evidence/rollback/MANIFEST.json",
+    "ready": true
+  },
+  "schema": "PRISMA_ATLASFIN_VISUAL_APPLICATION_RESULT_V1",
+  "schemaVersion": "1.0.0",
+  "selectors": [
+    ".cobrarReferenceButton",
+    ".cobrarReferenceButton::before",
+    ".cobrarReferenceButton:hover",
+    ".cobrarReferenceButton:hover::before",
+    ".cobrarReferenceButton:disabled",
+    ".cobrarIcon",
+    ".cobrarCopy",
+    ".cobrarCopy strong",
+    ".cobrarCopy small",
+    ".cobrarAmount",
+    "[data-prisma-state=\"loading\"]"
+  ],
+  "sourceMutationPerformed": true,
+  "status": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED",
+  "taskId": "ATLASFIN_COBRAR_FULL_GOVERNED_APPLICATION_V1",
+  "transactionId": "ATLASFIN.APPLY.TABLET.POS.COBRAR.V1"
+};

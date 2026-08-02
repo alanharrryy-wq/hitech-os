@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,8 @@ EXPECTED_LAYER_ID = "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE"
 EXPECTED_IMPLEMENTATION_LAYER_ID = (
     "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton"
 )
+APPLICATION_SCHEMA = "PRISMA_ATLASFIN_VISUAL_APPLICATION_RESULT_V1"
+EVIDENCE_SCHEMA = "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1"
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -430,11 +433,141 @@ def serialized_outputs(projection: dict[str, Any]) -> tuple[str, str]:
     return json_text, js_text
 
 
+def build_application_projection(
+    uimap_batch_path: Path,
+    application_result_path: Path,
+    evidence_bundle_path: Path,
+) -> dict[str, Any]:
+    batch = read_json(uimap_batch_path)
+    component = require_one(batch.get("components", []), "componentUiId", COMPONENT_UI_ID)
+    result = read_json(application_result_path)
+    evidence = read_json(evidence_bundle_path)
+    if result.get("schema") != APPLICATION_SCHEMA:
+        raise ValueError("Application result schema mismatch")
+    if result.get("controlId") != "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1":
+        raise ValueError("Application result control mismatch")
+    if result.get("status") not in {
+        "APPLIED_SOURCE_VALIDATION_PENDING_RUNTIME_VISUAL_CERTIFICATION",
+        "SOURCE_APPLIED_AND_VERIFIED_PENDING_RUNTIME_VISUAL_CERTIFICATION",
+    }:
+        raise ValueError("Application result did not verify the source transaction")
+    if result.get("productFileCount") != 1 or result.get("productFiles") != [
+        "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    ]:
+        raise ValueError("Application result expanded beyond the exact product target")
+    if evidence.get("schema") != EVIDENCE_SCHEMA:
+        raise ValueError("Application evidence schema mismatch")
+    if evidence.get("status") != "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED":
+        raise ValueError("Runtime visual evidence is not certified")
+    comparison = evidence.get("comparison", {})
+    required_comparison = {
+        "sameRoute": True,
+        "sameViewport": True,
+        "sameBrowser": True,
+        "sameTarget": True,
+        "bboxStable": True,
+    }
+    for field, expected in required_comparison.items():
+        if comparison.get(field) is not expected:
+            raise ValueError(f"Runtime comparison gate failed: {field}")
+    if comparison.get("pixel", {}).get("visuallyChanged") is not True:
+        raise ValueError("Runtime target did not change visually")
+    if evidence.get("network", {}).get("status") != "PASS_NO_TARGET_NETWORK_FAILURES":
+        raise ValueError("Runtime target has network failures")
+    if evidence.get("console", {}).get("newErrorCount") != 0:
+        raise ValueError("Runtime target introduced console errors")
+    current_css_sha = str(result.get("after", {}).get("productCssSha256", "")).lower()
+    certified_hashes = {
+        str(target.get("sourceHash", "")).lower()
+        for target in component.get("visualTargets", [])
+        if isinstance(target, dict) and target.get("styleSourceFile")
+        == "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
+    }
+    if certified_hashes != {current_css_sha}:
+        raise ValueError("Application result and corrective UIMAP CSS hashes diverge")
+    projection = {
+        "schema": APPLICATION_SCHEMA,
+        "schemaVersion": "1.0.0",
+        "taskId": result.get("taskId"),
+        "controlId": result.get("controlId"),
+        "transactionId": result.get("transactionId"),
+        "requestSha256": result.get("requestSha256"),
+        "mode": "verify",
+        "status": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED",
+        "sourceMutationPerformed": True,
+        "productFileCount": 1,
+        "productFiles": list(result.get("productFiles", [])),
+        "authorityFiles": list(result.get("authorityFiles", [])),
+        "selectors": list(result.get("selectors", [])),
+        "policyOnlySelectors": list(result.get("policyOnlySelectors", [])),
+        "before": result.get("before"),
+        "observedAtExecution": result.get("observedAtExecution"),
+        "after": result.get("after"),
+        "preview": {
+            "changedLineCount": result.get("preview", {}).get("changedLineCount"),
+            "patchSha256": result.get("preview", {}).get("sha256"),
+            "portableArtifact": "evidence/transaction/COBRAR_EXACT_TARGET.preview.patch",
+            "previousAuthorizedPlan": {
+                "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+                "checksum": "cce8fd8567744602264cf386902ad2e8e1f78042919a4b9365d158c351f83153",
+                "operationCount": 11,
+                "plannedPropertyCount": 89,
+            },
+            "evidenceBundle": {
+                "artifactName": evidence_bundle_path.name,
+                "sha256": sha256_file(evidence_bundle_path),
+                "beforeEvidenceSha256": evidence.get("before", {}).get("evidenceSha256"),
+                "afterEvidenceSha256": evidence.get("after", {}).get("evidenceSha256"),
+                "beforeScreenshotSha256": evidence.get("before", {}).get("screenshotSha256"),
+                "afterScreenshotSha256": evidence.get("after", {}).get("screenshotSha256"),
+                "comparison": comparison,
+                "states": evidence.get("states", []),
+                "console": evidence.get("console", {}),
+                "network": evidence.get("network", {}),
+            },
+            "uimap": {
+                "batchId": batch.get("batchId"),
+                "supersedesBatchId": batch.get("supersedesBatchId"),
+                "batchSha256": sha256_file(uimap_batch_path),
+                "sourceSnapshotHash": batch.get("sourceSnapshotHash"),
+            },
+            "postApplicationPlan": {
+                "status": "NO_ACTIONABLE_DIFF",
+                "idempotencyDisposition": result.get("idempotencyDisposition"),
+                "changedLineCount": result.get("preview", {}).get("postApplicationChangedLineCount", 0),
+            },
+        },
+        "rollback": {
+            "ready": True,
+            "portableManifest": "evidence/rollback/MANIFEST.json",
+            "policy": "RESTORE_EXACT_BEFORE_BYTES_AND_REVALIDATE",
+        },
+        "idempotencyDisposition": result.get("idempotencyDisposition"),
+        "createdAt": result.get("createdAt"),
+    }
+    projection["integrity"] = {
+        "algorithm": "SHA-256",
+        "canonicalPayloadSha256": hashlib.sha256(canonical_bytes(projection)).hexdigest(),
+    }
+    serialized = json.dumps(projection, ensure_ascii=False)
+    if re.search(r"[A-Za-z]:\\", serialized):
+        raise ValueError("Portable application projection contains a local absolute path")
+    return projection
+
+
+def serialized_application_outputs(projection: dict[str, Any]) -> tuple[str, str]:
+    json_text = json.dumps(projection, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    js_text = "window.PRISMA_ATLASFIN_VISUAL_APPLICATION = " + json_text.rstrip() + ";\n"
+    return json_text, js_text
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build the Atlasfin canonical Cobrar control view")
     parser.add_argument("atlas_root")
     parser.add_argument("--uimap-batch", required=True)
     parser.add_argument("--mamastrophic-evidence")
+    parser.add_argument("--application-result")
+    parser.add_argument("--application-evidence")
     parser.add_argument("--output")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
@@ -449,10 +582,28 @@ def main() -> int:
     json_text, js_text = serialized_outputs(projection)
     json_path = output_root / "visual-control.cobrar.pilot.json"
     js_path = output_root / "visual-control.cobrar.pilot.js"
+    application_pairs: list[tuple[Path, str]] = []
+    if bool(args.application_result) != bool(args.application_evidence):
+        raise ValueError("--application-result and --application-evidence must be supplied together")
+    if args.application_result and args.application_evidence:
+        application = build_application_projection(
+            Path(args.uimap_batch),
+            Path(args.application_result),
+            Path(args.application_evidence),
+        )
+        application_json, application_js = serialized_application_outputs(application)
+        application_pairs = [
+            (output_root / "visual-application.cobrar.current.json", application_json),
+            (output_root / "visual-application.cobrar.current.js", application_js),
+        ]
     if args.check:
         mismatches = [
             str(path)
-            for path, expected in ((json_path, json_text), (js_path, js_text))
+            for path, expected in [
+                (json_path, json_text),
+                (js_path, js_text),
+                *application_pairs,
+            ]
             if not path.is_file() or path.read_text(encoding="utf-8") != expected
         ]
         if mismatches:
@@ -463,12 +614,14 @@ def main() -> int:
     output_root.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json_text, encoding="utf-8", newline="\n")
     js_path.write_text(js_text, encoding="utf-8", newline="\n")
+    for path, content in application_pairs:
+        path.write_text(content, encoding="utf-8", newline="\n")
     print(
         json.dumps(
             {
                 "status": projection["status"],
                 "planId": projection["plan"]["planId"],
-                "outputs": [str(json_path), str(js_path)],
+                "outputs": [str(json_path), str(js_path), *[str(path) for path, _ in application_pairs]],
             },
             ensure_ascii=False,
             indent=2,

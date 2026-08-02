@@ -60,3 +60,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Pl
 - This prevents false install failure on `F:
 epos\hitech-os	ools\Plawright Mamastrophic\...`.
 - Keeps the arr5 fix1 GPU string repairs and GPU modes `off|auto|on`.
+# Atlasfin exact-target evidence
+
+`RUN.ps1 -Mode point-probe` accepts `-Selector`, `-AuthoritySelector`,
+`-ComponentUiId`, and `-EvidencePhase BEFORE|AFTER`. This additive mode keeps the
+existing point probe and emits `reports/exact-target-evidence.json` plus a
+target-only screenshot, computed styles, bounding box, sanitized DOM marker,
+console/network diagnostics, and truthful state dispositions. It never clicks
+the target or fabricates loading/focus/disabled product state.

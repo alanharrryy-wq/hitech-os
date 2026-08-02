@@ -98,6 +98,10 @@ const selftestResolve = has('--selftest-resolve');
 const surface = arg('--surface', 'tablet');
 const port = Number(arg('--port', surface === 'tablet' ? '3120' : '3000'));
 const route = arg('--route', surface === 'tablet' ? '/pos' : '/');
+const exactSelector = arg('--selector', '');
+const authoritySelector = arg('--authority-selector', exactSelector);
+const componentUiId = arg('--component-ui-id', '');
+const evidencePhase = arg('--evidence-phase', '');
 const outDir = path.resolve(arg('--out-dir', path.join('F:\\descargasf', `mam point ${surface}`)));
 const reportsDir = path.join(outDir, 'reports');
 const screensDir = path.join(outDir, 'screens');
@@ -130,6 +134,36 @@ const baseUrl = `http://127.0.0.1:${port}`;
 const url = new URL(route || '/', baseUrl).toString();
 const consoleMessages = [];
 const networkFailures = [];
+const httpErrors = [];
+
+const exactComputedProperties = [
+  'position','display','gridTemplateColumns','alignItems','gap','minHeight','padding','overflow',
+  'border','borderColor','borderWidth','borderRadius','background','backgroundColor','backgroundImage',
+  'boxShadow','color','cursor','font','textAlign','textShadow','transition','transform','filter','opacity'
+];
+
+async function computedSnapshot(locator, pseudo = null) {
+  return locator.evaluate((el, args) => {
+    const cs = getComputedStyle(el, args.pseudo);
+    const computed = {};
+    for (const property of args.properties) computed[property] = cs[property] || '';
+    const rect = el.getBoundingClientRect();
+    const attrs = {};
+    for (const attr of Array.from(el.attributes || [])) {
+      if (attr.name.startsWith('data-') || ['id','type','disabled','aria-disabled','aria-label'].includes(attr.name)) attrs[attr.name] = attr.value;
+    }
+    return {
+      pseudo: args.pseudo,
+      computed,
+      rect: { x:rect.x, y:rect.y, left:rect.left, top:rect.top, right:rect.right, bottom:rect.bottom, width:rect.width, height:rect.height },
+      attributes: attrs,
+      disabled: Boolean(el.disabled),
+      focusVisible: el.matches(':focus-visible'),
+      text: String(el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
+      dom: `<${el.tagName.toLowerCase()} ${Array.from(el.attributes || []).filter(a => a.name.startsWith('data-') || ['id','type','disabled','aria-disabled','aria-label'].includes(a.name)).map(a => `${a.name}="${String(a.value).replace(/"/g, '&quot;')}"`).join(' ')}>`
+    };
+  }, { pseudo, properties: exactComputedProperties });
+}
 
 function defaultPoint(surfaceName, w, h) {
   if (surfaceName === 'tablet') return { x: Math.floor(w * 0.86), y: Math.floor(h * 0.55), reason: 'tablet-right-rail-default' };
@@ -161,13 +195,77 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
   try {
     const resolved = resolvePlaywright(reportsDir);
     const { chromium } = resolved;
-    browser = await chromium.launch({ headless: true });
+    let browserLaunch = { mode: 'bundled-chromium' };
+    try {
+      browser = await chromium.launch({ headless: true });
+    } catch (error) {
+      const message = error && error.message ? String(error.message) : String(error);
+      if (!message.includes("Executable doesn't exist")) throw error;
+      browser = await chromium.launch({ headless: true, channel: 'msedge' });
+      browserLaunch = { mode: 'system-channel', channel: 'msedge', fallbackReason: 'BUNDLED_CHROMIUM_EXECUTABLE_MISSING' };
+    }
     const page = await browser.newPage({ viewport: { width: viewportW, height: viewportH } });
     page.on('console', msg => consoleMessages.push(sanitizeConsoleEntry({ type: msg.type(), text: msg.text().slice(0, 800) })));
     page.on('requestfailed', req => networkFailures.push(sanitizeNetworkEntry({ url: sanitizeUrl(req.url()), failure: req.failure() ? req.failure().errorText : 'unknown' })));
+    page.on('response', response => {
+      if (response.status() >= 400) httpErrors.push(sanitizeNetworkEntry({ url: sanitizeUrl(response.url()), status: response.status(), resourceType: response.request().resourceType() }));
+    });
     const nav = await gotoWithRetry(page);
     if (!nav.ok && !allowPartial) throw new Error(`Navigation failed ${sanitizeUrl(url)}: ${nav.error ? sanitizeText(nav.error.message) : 'unknown'}`);
     const legalRedaction = await applyLegalRedaction(page).catch(error => ({ enabled: true, status: 'BLOCKED_UNREDACTED', error: sanitizeText(error && error.message ? error.message : String(error)) }));
+    let exactEvidence = null;
+    if (exactSelector) {
+      const target = page.locator(exactSelector);
+      const count = await target.count();
+      if (count !== 1) throw new Error(`Exact target cardinality mismatch selector=${exactSelector} count=${count}`);
+      const states = [];
+      const base = await computedSnapshot(target);
+      const beforePseudo = await computedSnapshot(target, '::before');
+      states.push({ state: 'normal', status: 'PASS', snapshot: base, beforePseudo });
+      states.push({ state: 'disabled', status: base.disabled ? 'PASS' : 'SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT', snapshot: base });
+      await target.hover({ timeout: gotoTimeout });
+      await page.waitForTimeout(180);
+      const hover = await computedSnapshot(target);
+      states.push({ state: 'hover', status: 'PASS', snapshot: hover, beforePseudo: await computedSnapshot(target, '::before') });
+      if (!noScreens) await target.screenshot({ path: path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.exact-target-hover.png`) });
+      if (!base.disabled) {
+        await page.keyboard.press('Tab');
+        for (let i = 0; i < 80 && !(await target.evaluate(el => el === document.activeElement)); i++) await page.keyboard.press('Tab');
+        const focus = await computedSnapshot(target);
+        states.push({ state: 'focus-visible', status: focus.focusVisible ? 'PASS' : 'FAIL_FOCUS_VISIBLE_NOT_REACHED', snapshot: focus });
+      } else {
+        states.push({ state: 'focus-visible', status: 'SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT', reason: 'Native disabled target is not focusable.' });
+      }
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      states.push({ state: 'reduced-motion', status: 'PASS', snapshot: await computedSnapshot(target) });
+      states.push({ state: 'loading', status: base.attributes['data-prisma-state'] === 'loading' ? 'PASS' : 'SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT' });
+      let targetScreenshot = null;
+      if (!noScreens) {
+        targetScreenshot = path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.exact-target.png`);
+        await target.screenshot({ path: targetScreenshot });
+      }
+      exactEvidence = {
+        schema: 'prisma.mamastrophic.exact-target-evidence.v1',
+        taskId: 'ATLASFIN_COBRAR_FULL_GOVERNED_APPLICATION_V1',
+        controlId: 'ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1',
+        componentUiId,
+        phase: evidencePhase || 'UNSPECIFIED',
+        status: states.some(row => String(row.status).startsWith('FAIL')) ? 'FAIL' : 'PASS',
+        runtimeSelector: exactSelector,
+        authoritySelector,
+        route,
+        viewport: { width: viewportW, height: viewportH, deviceScaleFactor: 1 },
+        browserLaunch,
+        targetScreenshot,
+        states,
+        console: consoleMessages,
+        networkFailures,
+        httpErrors,
+        capturedAt: new Date().toISOString()
+      };
+      writeJson(path.join(reportsDir, 'exact-target-evidence.json'), exactEvidence);
+      fs.writeFileSync(path.join(domDir, 'exact-target.dom.txt'), sanitizeText(base.dom), 'utf8');
+    }
     let capture = await page.evaluate(({ point, surface, route, url }) => {
       function rectOf(el) { const r = el.getBoundingClientRect(); return { x:r.x,y:r.y,left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height }; }
       function dataAttrs(el) { const out={}; for (const a of Array.from(el.attributes || [])) if (a.name.startsWith('data-')) out[a.name]=a.value; return out; }
@@ -191,7 +289,9 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
     capture.navigation = nav;
     capture.console = consoleMessages;
     capture.networkFailures = networkFailures;
+    capture.httpErrors = httpErrors;
     capture.resolution = { moduleName: resolved.moduleName, root: resolved.root, resolved: resolved.resolved, method: resolved.method };
+    capture.browserLaunch = browserLaunch;
     writeJson(path.join(reportsDir, 'point-stack.json'), capture);
     writeJson(path.join(domDir, `${safeName(surface)}.point-stack.dom.json`), capture);
     let screenshotPath = null;
@@ -222,7 +322,7 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
       md.push(`| ${row.rank} | ${mdEscape(row.selectorGuess)} | ${mdEscape(cs.position)} | ${mdEscape(cs.zIndex)} | ${mdEscape((cs.background || cs.backgroundColor || '').slice(0,90))} | ${Math.round(r.x)},${Math.round(r.y)} ${Math.round(r.width)}x${Math.round(r.height)} | ${mdEscape(row.textSample).slice(0,90)} |`);
     }
     fs.writeFileSync(path.join(reportsDir, 'point-stack.md'), md.join('\n'), 'utf8');
-    writeJson(path.join(reportsDir, 'point-summary.json'), { status: 'PASS', surface, route, url: sanitizeUrl(url), point, stackCount: capture.stack.length, suspiciousCount: capture.suspiciousLayers.length, screenshot: screenshotPath, resolution: capture.resolution, legalRedaction, startedAt, finishedAt:new Date().toISOString() });
+    writeJson(path.join(reportsDir, 'point-summary.json'), { status: exactEvidence && exactEvidence.status !== 'PASS' ? 'FAIL' : 'PASS', surface, route, url: sanitizeUrl(url), point, stackCount: capture.stack.length, suspiciousCount: capture.suspiciousLayers.length, screenshot: screenshotPath, exactEvidence, resolution: capture.resolution, legalRedaction, startedAt, finishedAt:new Date().toISOString() });
     console.log(`POINT_PROBE_PASS surface=${surface} route=${route} x=${point.x} y=${point.y}`);
     await browser.close();
     process.exit(0);

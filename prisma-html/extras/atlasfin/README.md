@@ -146,20 +146,21 @@ W Seguridad, X Diagnóstico y Y Internacionalización/impresión/offline.
 Resultado final: 27 páginas, 26 secciones y 418 elementos.
 Los cuerpos A–M y Z permanecen congelados; únicamente se refresca su navegación.
 
-## Canonical visual control ready
+## Canonical visual control and exact Cobrar application
 
 Atlasfin is the single canonical visual-control cabin. The Tablet POS → Cobrar pilot joins the certified UIMAP hierarchy, RIFAT binding and recipe, and the existing Code Atlas UI Bridge into one regenerable read-only projection.
 
 - Open the control from `index.html`; its payload loads only on demand.
 - The plan is paginated and uses precomputed scalar search text.
-- `runtimeMutationAllowed=false`.
-- `productApplicationAllowed=false`.
-- No product source is changed by the generator, browser module, runner, or rollback drill.
-- Missing Mamastrophic evidence and stale coverage hashes remain explicit visual/runtime blockers.
+- The historical V1 pilot still has `runtimeMutationAllowed=false` and `productApplicationAllowed=false`.
+- The separate current transaction projection is `assets/data/visual-application.cobrar.current.json`.
+- The browser prepares/exports requests and reads BEFORE, patch, gates, rollback, result, and AFTER; it never writes product files.
+- Only the existing UI Bridge exact Cobrar runner can validate/apply the one-file product transaction.
+- Mamastrophic evidence records real state skips instead of fabricating loading or focus on a disabled control.
 
 Regenerate only with an immutable certified UIMAP batch:
 
-`py -3 generator/build_canonical_visual_control.py . --uimap-batch <batch.json>`
+`py -3 generator/build_canonical_visual_control.py . --uimap-batch <batch.json> --mamastrophic-evidence <evidence.json> --application-result <result.json> --application-evidence <bundle.json>`
 
 Validate without opening a browser:
 

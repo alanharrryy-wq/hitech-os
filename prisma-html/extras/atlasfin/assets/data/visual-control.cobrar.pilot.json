@@ -21,25 +21,27 @@
     },
     "rifatBindingRegistry": {
       "path": "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
-      "sha256": "1ae701d377974923ee69fb456a13d6600a2577d8200fccd5472e9cb3b60c93bf"
+      "sha256": "26c3b4255db69aaf9f572f28be40d8467935d8690cc8ab94efb21dba8eb25b8b"
     },
     "uimap": {
-      "batchArtifactSha256": "4fa1025a8d44a1360ef36c8f51be298b0252fa4a6d9382bdf3d9b3697386b5d4",
-      "batchId": "BATCH.tb.90329799098ce65f",
-      "contractHash": "47CCF7D6C81A29D84E6C8D8426F5E4C241EC85E783B1C38F76AC19951939BBE9",
+      "batchArtifactSha256": "d2e6744e76385ff4cd091063c5eee2f15738b7ef38ac4ad0531a156557efce0d",
+      "batchId": "BATCH.tb.131ff748bb7c8cf2",
+      "contractHash": "A921C919D72EB766164ED6E2D70BEAC7F8231720D7CC2BEC71FFBD2243255C75",
       "sourceReference": "EXTERNALLY_SUPPLIED_IMMUTABLE_CERTIFIED_BATCH",
-      "sourceSnapshotHash": "7EF65B42C9E11C1FA296C7ACAA997FCF41C9ADEB36742619A6CB4337F5F21E60",
-      "supersedesBatchId": "BATCH.tb.0c636941e08755d1"
+      "sourceSnapshotHash": "7CFB0A7B7F1C967E7E4EACCB91AD52646E869FFC78C85D53075F22579F1AB1A2",
+      "supersedesBatchId": "BATCH.tb.90329799098ce65f"
     }
   },
   "controlId": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1",
   "evidence": {
     "mamastrophic": {
+      "artifactName": "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.json",
       "requiredFor": [
         "VISUAL_EVIDENCE_GATE",
         "RUNTIME_CERTIFICATION_GATE"
       ],
-      "status": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE"
+      "sha256": "0e25691a758b7232b01536287f63d0e9c141e07c5a0a13c31249480d04942d75",
+      "status": "SOURCE_EVIDENCE_AVAILABLE_RUNTIME_REVIEW_REQUIRED"
     },
     "runtime": {
       "sourceOnlyEvidenceMustNotBePromoted": true,
@@ -47,12 +49,12 @@
     },
     "source": {
       "coverageArtifact": "prisma-html/authority/rifat/identity/recipes/examples/REC.button.primary.tablet-pos-cobrar.coverage.json",
-      "coverageEvidenceStale": true,
+      "coverageEvidenceStale": false,
       "declaredCoverageOwnerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
-      "declaredCoverageStyleSha256": "fc80de7a963ded76839d2dae429c17623ca5075463615753e9033868d5fd053f",
+      "declaredCoverageStyleSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd",
       "ownerEvidenceStale": false,
       "ownerSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
-      "styleSha256": "711eb50386ce4c22257103aae543e1dd38aa0853a23a4ee30ad873ce70a570e5"
+      "styleSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd"
     }
   },
   "gates": [
@@ -77,20 +79,14 @@
       "status": "PASS"
     },
     {
-      "blocks": [
-        "RUNTIME_CERTIFICATION",
-        "PRODUCT_APPLICATION"
-      ],
+      "blocks": [],
       "gateId": "RECIPE_COVERAGE_FRESHNESS",
-      "status": "BLOCKED_BY_STALE_RUNTIME_EVIDENCE"
+      "status": "PASS"
     },
     {
-      "blocks": [
-        "VISUAL_EVIDENCE",
-        "RUNTIME_CERTIFICATION"
-      ],
+      "blocks": [],
       "gateId": "MAMASTROPHIC_VISUAL_EVIDENCE",
-      "status": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE"
+      "status": "SOURCE_EVIDENCE_AVAILABLE_RUNTIME_REVIEW_REQUIRED"
     },
     {
       "blocks": [
@@ -102,15 +98,15 @@
   ],
   "history": [
     {
-      "batchId": "BATCH.tb.90329799098ce65f",
+      "batchId": "BATCH.tb.131ff748bb7c8cf2",
       "event": "UIMAP_BATCH_SELECTED",
       "mutationPerformed": false,
-      "supersedesBatchId": "BATCH.tb.0c636941e08755d1"
+      "supersedesBatchId": "BATCH.tb.90329799098ce65f"
     },
     {
       "event": "UI_BRIDGE_SOURCE_PLAN_BUILT",
       "mutationPerformed": false,
-      "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+      "planId": "BRPLAN.443dc1d03f9afacdda0b2062",
       "status": "PLAN_READY_FOR_REVIEW"
     },
     {
@@ -121,7 +117,7 @@
   ],
   "integrity": {
     "algorithm": "SHA-256",
-    "canonicalPayloadSha256": "20cf3ecc3d79768d7947da5950bbd11dd00ea9db2613695bfc00141210b0aec8"
+    "canonicalPayloadSha256": "c2b61183db4407bbc98e436dfb167f5b93b710589e028d46f141048672c4cfec"
   },
   "pilot": {
     "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
@@ -1140,7 +1136,7 @@
         "unitId": "loading"
       }
     ],
-    "planId": "BRPLAN.ca4eebf8f3a79d3ec6944488",
+    "planId": "BRPLAN.443dc1d03f9afacdda0b2062",
     "schema": "prisma.ui.bridge.plan.v1",
     "semanticDiffChecksum": "cce8e5bb71f331491b564c4d029df8cf722cef6065cdc73cc1727a965bab13b5",
     "sourceMutationPerformed": false,
@@ -1150,7 +1146,7 @@
   "recipe": {
     "coverageStatus": "COMPLETE",
     "instructionOnly": true,
-    "knownDeclarationCount": 49,
+    "knownDeclarationCount": 54,
     "missingKnownDeclarationCount": 0,
     "missingPropertyCount": 0,
     "options": [
@@ -1187,7 +1183,7 @@
   "rollback": {
     "beforeHashes": {
       "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-ticket-panel.tsx": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
-      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css": "711eb50386ce4c22257103aae543e1dd38aa0853a23a4ee30ad873ce70a570e5"
+      "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd"
     },
     "currentPlan": "NO_SOURCE_MUTATION_PERFORMED_NO_ROLLBACK_REQUIRED",
     "futurePolicy": "RESTORE_ONLY_EXACT_AUTHORIZED_PATCH_WITH_BEFORE_HASH_MATCH",

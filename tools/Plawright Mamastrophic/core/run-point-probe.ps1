@@ -14,7 +14,11 @@ param(
   [switch]$NoScreenshots,
   [switch]$AllowPartial,
   [string]$ArtifactRoot = '',
-  [switch]$NoZip
+  [switch]$NoZip,
+  [string]$Selector = '',
+  [string]$AuthoritySelector = '',
+  [string]$ComponentUiId = '',
+  [ValidateSet('','BEFORE','AFTER')][string]$EvidencePhase = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -171,6 +175,10 @@ foreach ($s in $catalog) {
     '--out-dir', $surfaceOut
   )
   if ($AllowPartial) { $args += '--allow-partial' }
+  if (-not [string]::IsNullOrWhiteSpace($Selector)) { $args += @('--selector', $Selector) }
+  if (-not [string]::IsNullOrWhiteSpace($AuthoritySelector)) { $args += @('--authority-selector', $AuthoritySelector) }
+  if (-not [string]::IsNullOrWhiteSpace($ComponentUiId)) { $args += @('--component-ui-id', $ComponentUiId) }
+  if (-not [string]::IsNullOrWhiteSpace($EvidencePhase)) { $args += @('--evidence-phase', $EvidencePhase) }
   $cmdText = ($Node.Source + ' ' + (($args | ForEach-Object { ConvertTo-Arg $_ }) -join ' '))
   Set-Content -LiteralPath (Join-Path $surfaceOut 'point-probe.command.txt') -Encoding UTF8 -Value $cmdText
   & $Node.Source @args *>&1 | Tee-Object -FilePath (Join-Path $surfaceOut 'point-probe.log')

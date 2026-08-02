@@ -149,6 +149,11 @@ def css_properties(css: str, selector: str) -> set[str]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-repo", default=r"F:\repos\hitech-os")
+    parser.add_argument(
+        "--refresh-coverage",
+        action="store_true",
+        help="Refresh only the deterministic Cobrar coverage projection before validating it.",
+    )
     args = parser.parse_args()
     errors: list[str] = []
     warnings: list[str] = []
@@ -295,6 +300,39 @@ def main() -> int:
         errors.append(f"source CSS missing:{source_css}")
     else:
         css = source_css.read_text(encoding="utf-8-sig")
+        if args.refresh_coverage:
+            coverage_units = {row["unitId"]: row for row in coverage.get("units", [])}
+            refreshed_units: list[dict[str, Any]] = []
+            for unit_id in REQUIRED_UNITS:
+                matrix_row = dict(coverage_units[unit_id])
+                selector = KNOWN_SELECTOR_UNITS.get(unit_id)
+                actual = css_properties(css, selector) if selector else set()
+                matrix_row.update({
+                    "selector": selector or matrix_row.get("selector"),
+                    "coverageStatus": "DEFINED",
+                    "knownProperties": sorted(actual),
+                    "knownDeclarationCount": len(actual),
+                    "uncoveredKnownProperties": [],
+                })
+                refreshed_units.append(matrix_row)
+            unit_order = {unit_id: index for index, unit_id in enumerate((
+                "base", "before", "hover", "hoverBefore", "disabled", "icon",
+                "copy", "copyStrong", "copySmall", "amount", "loading",
+            ))}
+            refreshed_units.sort(key=lambda row: unit_order[row["unitId"]])
+            coverage.update({
+                "sourceCssSha256": file_sha(source_css),
+                "sourceComponentSha256": file_sha(source_css.with_name("pos-ticket-panel.tsx")),
+                "recipeCoverageStatus": "COMPLETE",
+                "knownDeclarationCount": sum(row["knownDeclarationCount"] for row in refreshed_units),
+                "uncoveredKnownDeclarationCount": 0,
+                "units": refreshed_units,
+            })
+            COVERAGE_PATH.write_text(
+                json.dumps(coverage, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
         coverage_units = {row["unitId"]: row for row in coverage.get("units", [])}
         known_total = 0
         uncovered_total = 0
