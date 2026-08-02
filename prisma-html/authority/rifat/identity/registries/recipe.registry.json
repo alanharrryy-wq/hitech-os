@@ -1,0 +1,24 @@
+{
+  "schema": "prisma.identity.recipe.registry.v1",
+  "version": "1.0.0",
+  "recipeCount": 1,
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false,
+  "recipes": [
+    {
+      "recipeId": "REC.button.primary",
+      "familyId": "FAM.button.action",
+      "presetId": "PRESET.button.primary.clear-operational.v1",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "path": "recipes/examples/REC.button.primary.tablet-pos-cobrar.full-stack.json",
+      "coveragePath": "recipes/examples/REC.button.primary.tablet-pos-cobrar.coverage.json",
+      "compatibilityContract": "contract/REC.button.primary.compatibility.json",
+      "portableVNext": "portable/v2/examples/REC.button.primary.tablet-pos-cobrar.v2.prisma-visual.json",
+      "recipeCoverageStatus": "COMPLETE",
+      "canonicalRecipeSha256": "debba4345ea1ec27963be2cf73e8d26a5151c89b2072dd584863777c06643758",
+      "fileSha256": "7a25bd5cab6ac5a9ea44a4b384ee171a58f4ddf49d1045eb5476bea6cd7b39f7"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.089Z",
+  "summary": {
+    "components": 43,
+    "liveComponents": 13,
+    "mappedComponents": 22,
+    "reservedComponents": 7
+  },
+  "surfaces": [
+    {
+      "surface": "tablet",
+      "routes": 36,
+      "governedRoutes": 36,
+      "blockedRoutes": 3,
+      "sharedUiAdoptionPct": 100,
+      "status": "strong"
+    },
+    {
+      "surface": "pc",
+      "routes": 64,
+      "governedRoutes": 64,
+      "blockedRoutes": 2,
+      "sharedUiAdoptionPct": 100,
+      "status": "strong"
+    },
+    {
+      "surface": "mobile",
+      "routes": 5,
+      "governedRoutes": 5,
+      "blockedRoutes": 0,
+      "sharedUiAdoptionPct": 100,
+      "status": "strong"
+    },
+    {
+      "surface": "chart-lab",
+      "routes": 2,
+      "governedRoutes": 2,
+      "blockedRoutes": 0,
+      "sharedUiAdoptionPct": 100,
+      "status": "strong"
+    }
+  ],
+  "nextBatchRecommended": [
+    {
+      "surface": "tablet",
+      "reason": "lowest shared-ui adoption among mapped routes"
+    },
+    {
+      "surface": "pc",
+      "reason": "lowest shared-ui adoption among mapped routes"
+    },
+    {
+      "surface": "mobile",
+      "reason": "lowest shared-ui adoption among mapped routes"
+    }
+  ]
+}

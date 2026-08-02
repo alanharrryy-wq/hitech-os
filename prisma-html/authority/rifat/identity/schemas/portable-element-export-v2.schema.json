@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.portable-element-export.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "artifactVersion",
+    "exportId",
+    "kind",
+    "createdAt",
+    "instructionOnly",
+    "runtimeMutationAllowed",
+    "productApplicationAllowed",
+    "compatibilityStatus",
+    "bindingStatus",
+    "recipeCoverageStatus",
+    "applicationReadiness",
+    "evidenceStatus",
+    "recipeId",
+    "familyId",
+    "presetId",
+    "identityProfileId",
+    "sourceArtifact",
+    "target",
+    "values",
+    "origin",
+    "applicationPolicy",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.portable-element-export.v2"
+    },
+    "artifactVersion": {
+      "type": "string",
+      "pattern": "^2\\."
+    },
+    "exportId": {
+      "type": "string",
+      "minLength": 12
+    },
+    "kind": {
+      "const": "full-stack-recipe"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "instructionOnly": {
+      "const": true
+    },
+    "runtimeMutationAllowed": {
+      "const": false
+    },
+    "productApplicationAllowed": {
+      "const": false
+    },
+    "compatibilityStatus": {
+      "const": "COMPATIBLE_V1_ADDITIVE_EXTENSION"
+    },
+    "bindingStatus": {
+      "const": "RESOLVED"
+    },
+    "recipeCoverageStatus": {
+      "const": "COMPLETE"
+    },
+    "applicationReadiness": {
+      "type": "string"
+    },
+    "evidenceStatus": {
+      "type": "string"
+    },
+    "recipeId": {
+      "const": "REC.button.primary"
+    },
+    "familyId": {
+      "type": "string"
+    },
+    "presetId": {
+      "type": "string"
+    },
+    "identityProfileId": {
+      "const": "prisma.clear-operational.v1"
+    },
+    "sourceArtifact": {
+      "type": "object"
+    },
+    "target": {
+      "type": "object"
+    },
+    "values": {
+      "type": "object"
+    },
+    "origin": {
+      "type": "object"
+    },
+    "applicationPolicy": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    }
+  }
+}

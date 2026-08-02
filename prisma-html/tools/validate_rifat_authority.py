@@ -10,8 +10,10 @@ import sys
 from pathlib import Path
 
 PRISMA_HTML_ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY_ROOT = PRISMA_HTML_ROOT.parent
 AUTHORITY_ROOT = PRISMA_HTML_ROOT / "authority" / "rifat"
 TABLET_ROOT = AUTHORITY_ROOT / "tablet"
+VISUAL_SOURCE_MANIFEST = AUTHORITY_ROOT / "visual-source-manifest.json"
 WINDOWS_PATH = re.compile(r"[A-Za-z]:\\\\")
 
 
@@ -19,11 +21,73 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def validate_visual_source_manifest(problems: list[str]) -> int:
+    if not VISUAL_SOURCE_MANIFEST.is_file():
+        problems.append("missing canonical visual source manifest")
+        return 0
+
+    manifest = load(VISUAL_SOURCE_MANIFEST)
+    entries = manifest.get("entries", [])
+    if manifest.get("entryCount") != len(entries):
+        problems.append("visual source manifest entry count mismatch")
+    if manifest.get("projectionCount") != len(entries):
+        problems.append("visual source manifest projection count mismatch")
+    if manifest.get("surfaceCount") != len({entry.get("surface") for entry in entries}):
+        problems.append("visual source manifest surface count mismatch")
+
+    sources: set[str] = set()
+    outputs: set[str] = set()
+    for entry in entries:
+        source_ref = entry.get("source")
+        output_ref = entry.get("output")
+        if not isinstance(source_ref, str) or not isinstance(output_ref, str):
+            problems.append("visual source manifest contains a non-string path")
+            continue
+        if source_ref in sources:
+            problems.append(f"duplicate visual source: {source_ref}")
+        if output_ref in outputs:
+            problems.append(f"duplicate visual output: {output_ref}")
+        sources.add(source_ref)
+        outputs.add(output_ref)
+
+        if Path(source_ref).is_absolute() or Path(output_ref).is_absolute():
+            problems.append(f"absolute visual projection path forbidden: {source_ref} -> {output_ref}")
+            continue
+        source_path = REPOSITORY_ROOT / source_ref
+        output_path = REPOSITORY_ROOT / output_ref
+        if not source_path.is_file():
+            problems.append(f"missing canonical visual source: {source_ref}")
+            continue
+        if not output_path.is_file():
+            problems.append(f"missing visual projection output: {output_ref}")
+            continue
+
+        source_hash = sha256(source_path)
+        output_hash = sha256(output_path)
+        if source_hash != entry.get("sourceSha256"):
+            problems.append(f"visual source hash mismatch: {source_ref}")
+        if output_hash != entry.get("outputSha256"):
+            problems.append(f"visual output hash mismatch: {output_ref}")
+        if entry.get("projectionMode") == "exact-byte-copy" and source_hash != output_hash:
+            problems.append(f"exact-copy visual projection drift: {source_ref} -> {output_ref}")
+        if entry.get("generated") is not True or entry.get("manualEditsForbidden") is not True:
+            problems.append(f"visual projection safety flags missing: {output_ref}")
+        if b"!important" in source_path.read_bytes():
+            problems.append(f"priority override forbidden: {source_ref}")
+
+    return len(entries)
+
+
 def main() -> int:
     problems: list[str] = []
     contract = load(TABLET_ROOT / "runtime.contract.json")
     routes = load(TABLET_ROOT / "routes.json")
     sources = load(TABLET_ROOT / "css-source-manifest.json")
+    visual_source_entries = validate_visual_source_manifest(problems)
 
     if contract.get("authorityRepo") != "hitech-os-prisma-html/prisma-html":
         problems.append("authority repo mismatch")
@@ -60,7 +124,7 @@ def main() -> int:
     atlas = contract["atlas"]
     for path_key, hash_key in (("tokens", "tokensSha256"), ("css", "cssSha256")):
         path = PRISMA_HTML_ROOT / atlas[path_key]
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        actual = sha256(path)
         if actual != atlas[hash_key]:
             problems.append(f"Atlas hash mismatch: {atlas[path_key]}")
 
@@ -132,6 +196,7 @@ def main() -> int:
                 "customerVisibleRoutes": routes["customerVisible"],
                 "canonicalCssSources": len(sources["coreFragments"]) + len(sources["moduleSources"]),
                 "adapterSources": len(sources["adapterSources"]),
+                "visualSourceEntries": visual_source_entries,
                 "importantCount": 0 if not any("priority override" in item for item in problems) else None,
                 "problems": problems,
             },

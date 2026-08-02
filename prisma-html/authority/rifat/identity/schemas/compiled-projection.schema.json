@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.compiled-projection.schema.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "surface",
+    "profileId",
+    "status",
+    "runtimeProjectionAllowed",
+    "tokens",
+    "binding"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.compiled-projection.v1"
+    },
+    "surface": {
+      "type": "string"
+    },
+    "profileId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "runtimeProjectionAllowed": {
+      "const": false
+    },
+    "tokens": {
+      "type": "object"
+    },
+    "binding": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

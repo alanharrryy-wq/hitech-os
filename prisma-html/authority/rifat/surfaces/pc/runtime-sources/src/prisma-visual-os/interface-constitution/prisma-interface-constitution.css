@@ -1,0 +1,92 @@
+:root {
+}
+
+.prisma-decision-page {
+  min-height: 100dvh;
+  padding: clamp(16px, 2vw, 28px);
+}
+
+.prisma-decision-header,
+.prisma-decision-panel,
+.prisma-next-best-action,
+.prisma-actionable-table,
+.prisma-insight-chart-frame,
+.prisma-evidence-drawer {
+}
+
+.prisma-decision-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.prisma-decision-header h1,
+.prisma-decision-panel h2,
+.prisma-next-best-action h2,
+.prisma-actionable-table h2,
+.prisma-insight-chart-frame h2 {
+  margin: 0;
+}
+
+.prisma-eyebrow {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 11px;
+}
+
+.prisma-status-line,
+.prisma-decision-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.prisma-decision-panel,
+.prisma-next-best-action,
+.prisma-actionable-table,
+.prisma-insight-chart-frame,
+.prisma-evidence-drawer {
+  padding: 18px;
+  margin-block: 14px;
+}
+
+.prisma-attention-summary {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.prisma-attention-summary article {
+  padding: 14px;
+}
+
+[data-prisma-priority="critical"] {
+}
+
+[data-prisma-priority="high"] {
+}
+
+.prisma-table-scroll,
+.prisma-chart-canvas {
+  min-width: 0;
+  overflow: auto;
+}
+
+.prisma-empty-state,
+.prisma-error-state {
+  padding: 16px;
+}
+
+.prisma-error-state {
+}
+
+.prisma-evidence-drawer summary {
+  cursor: pointer;
+}
+
+.prisma-evidence-body {
+  margin-top: 14px;
+}

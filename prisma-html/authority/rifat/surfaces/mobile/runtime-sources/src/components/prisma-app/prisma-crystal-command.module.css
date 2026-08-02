@@ -1,0 +1,124 @@
+.crystalCommand {
+  display: grid;
+  gap: 10px;
+  color: #fff8e7;
+}
+
+.crystalPanel,
+.emptyState,
+.evidenceStrip,
+.gaugeButton,
+.rankingList article,
+.timelineList article,
+.sparkCard,
+.tooltipLine {
+  border: 1px solid rgba(255, 248, 231, 0.14);
+  border-radius: 20px;
+  padding: 11px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+    rgba(7, 12, 10, 0.56);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 14px 38px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.heroGauge,
+.donutLayout,
+.radarGrid,
+.briefGrid,
+.syncGrid {
+  display: grid;
+  gap: 9px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.gaugeTrack,
+.donutBase {
+  width: 112px;
+  height: 112px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 217, 119, 0.22);
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(255, 217, 119, 0.18), transparent 55%),
+    rgba(255, 255, 255, 0.06);
+}
+
+.gaugeValue {
+  color: #ffd977;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.segmented {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.segmented::-webkit-scrollbar {
+  display: none;
+}
+
+.segmented button,
+.gaugeButton {
+  appearance: none;
+  border-radius: 999px;
+  color: rgba(255, 248, 231, 0.76);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.segmentActive {
+  color: #fff8e7;
+  border-color: rgba(255, 217, 119, 0.34);
+  background: rgba(255, 217, 119, 0.15);
+}
+
+.evidenceStrip,
+.bulletTrack,
+.timelineList,
+.rankingList {
+  display: grid;
+  gap: 7px;
+  color: rgba(255, 248, 231, 0.72);
+  font-size: 0.74rem;
+}
+
+.barChart {
+  min-height: 110px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+}
+
+.donutSlice {
+  stroke: #ffd977;
+}
+
+.severityCritical,
+.severityHigh {
+  color: #ff9b8f;
+  border-color: rgba(255, 155, 143, 0.32);
+}
+
+.severityMedium,
+.severityLow,
+.severityInfo {
+  color: #ffd977;
+  border-color: rgba(255, 217, 119, 0.28);
+}
+
+@media (max-width: 374px) {
+  .heroGauge,
+  .donutLayout,
+  .radarGrid,
+  .briefGrid,
+  .syncGrid {
+    grid-template-columns: 1fr;
+  }
+}

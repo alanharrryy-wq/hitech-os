@@ -1,0 +1,84 @@
+/* V71 · CORRECT TARGET
+   Quita sólo la placa detrás de READ-ONLY / BACKEND BRIDGE / NO MUTATION.
+   Mantiene intactos los óvalos.
+*/
+
+body[data-prisma-interface="prismo"] #prismoResponseStream:has(> .prismo-response-card .prismo-answer[data-prisma-v59-copy-neutralized="true"]),
+body[data-prisma-interface="prismo"] #prismoResponseStream.prisma-v56-status-surface:has(> .prismo-response-card .prismo-answer[data-prisma-v59-copy-neutralized="true"]){
+  background:transparent;
+  background-image:none;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  min-height:0;
+  height:auto;
+  padding:12px 0 0;
+  margin:14px auto 0;
+  border-radius:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+body[data-prisma-interface="prismo"] #prismoResponseStream:has(> .prismo-response-card .prismo-answer[data-prisma-v59-copy-neutralized="true"])::before,
+body[data-prisma-interface="prismo"] #prismoResponseStream:has(> .prismo-response-card .prismo-answer[data-prisma-v59-copy-neutralized="true"])::after{
+  content:none;
+  display:none;
+  background:transparent;
+  box-shadow:none;
+  border:0;
+}
+
+body[data-prisma-interface="prismo"] #prismoResponseStream > .prismo-response-card:has(.prismo-answer[data-prisma-v59-copy-neutralized="true"]){
+  background:transparent;
+  background-image:none;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  min-height:0;
+  height:auto;
+  padding:0;
+  margin:0;
+  border-radius:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:0;
+  animation:none;
+}
+
+body[data-prisma-interface="prismo"] #prismoResponseStream > .prismo-response-card:has(.prismo-answer[data-prisma-v59-copy-neutralized="true"])::before,
+body[data-prisma-interface="prismo"] #prismoResponseStream > .prismo-response-card:has(.prismo-answer[data-prisma-v59-copy-neutralized="true"])::after{
+  content:none;
+  display:none;
+  background:transparent;
+  box-shadow:none;
+  border:0;
+}
+
+body[data-prisma-interface="prismo"] #prismoResponseStream > .prismo-response-card:has(.prismo-answer[data-prisma-v59-copy-neutralized="true"]) > .prismo-response-meta{
+  background:transparent;
+  background-image:none;
+  border:0;
+  outline:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  padding:0;
+  margin:0;
+  min-height:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+}
+
+/* No tocar los óvalos: sólo asegurar que sigan vivos */
+body[data-prisma-interface="prismo"] #prismoResponseStream .prismo-tag{
+  opacity:1;
+  visibility:visible;
+}

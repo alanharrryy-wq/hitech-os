@@ -1,0 +1,486 @@
+/* PRISMA Visual Recipe Dock · owner-scoped, task VISDOCK1 */
+.atlas-recipe-dock-trigger {
+  border-color: rgba(var(--atlas-accent), .34);
+}
+
+.atlas-recipe-dock-trigger[aria-expanded="true"] {
+  color: #fff;
+  background:
+    radial-gradient(circle at 0 0, rgba(var(--atlas-accent), .42), transparent 62%),
+    rgba(5, 15, 24, .86);
+  border-color: rgba(var(--atlas-accent), .72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .15),
+    0 0 0 1px rgba(var(--atlas-accent), .20),
+    0 0 24px rgba(var(--atlas-accent), .22);
+}
+
+.atlas-recipe-dock-shell {
+  position: fixed;
+  z-index: 140;
+  inset: 92px 0 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.atlas-recipe-dock-shell[data-open="true"] {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.atlas-recipe-dock__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  background: rgba(0, 0, 0, .26);
+  border: 0;
+  opacity: 0;
+  cursor: default;
+  transition: opacity 180ms ease;
+}
+
+.atlas-recipe-dock-shell[data-open="true"] .atlas-recipe-dock__backdrop {
+  opacity: 1;
+}
+
+.atlas-recipe-dock {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 10px;
+  width: min(440px, calc(100vw - 20px));
+  padding: 18px;
+  overflow: auto;
+  color: var(--atlas-text);
+  background:
+    radial-gradient(circle at 100% 0, rgba(var(--atlas-accent-2), .18), transparent 38%),
+    radial-gradient(circle at 0 100%, rgba(var(--atlas-accent), .12), transparent 42%),
+    linear-gradient(152deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .018)),
+    rgba(4, 9, 15, .94);
+  border: 1px solid rgba(226, 243, 252, .24);
+  border-radius: 24px;
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, .52),
+    inset 0 1px 0 rgba(255, 255, 255, .12),
+    0 0 34px rgba(var(--atlas-accent), .12);
+  backdrop-filter: blur(28px) saturate(1.34);
+  opacity: 0;
+  transform: translateX(calc(100% + 24px));
+  transition:
+    transform 220ms var(--atlas-ease),
+    opacity 180ms ease;
+}
+
+.atlas-recipe-dock-shell[data-open="true"] .atlas-recipe-dock {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.atlas-recipe-dock__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(226, 243, 252, .14);
+}
+
+.atlas-recipe-dock__header h2 {
+  margin: 4px 0 7px;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.atlas-recipe-dock__header p:last-child {
+  margin: 0;
+  color: var(--atlas-text-2);
+  line-height: 1.55;
+}
+
+.atlas-recipe-dock__close {
+  position: sticky;
+  top: 0;
+}
+
+.atlas-recipe-dock .atlas-layer-controls {
+  margin-top: 16px;
+  grid-template-columns: 1fr;
+}
+
+.atlas-recipe-dock .atlas-layer-control {
+  min-height: 0;
+}
+
+.atlas-recipe-dock .atlas-layer-controls__actions {
+  grid-column: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.atlas-recipe-dock .atlas-button--recipe {
+  justify-content: center;
+}
+
+body.is-recipe-dock-open {
+  overflow: hidden;
+}
+
+@media (max-width: 820px) {
+  .atlas-top-actions .atlas-recipe-dock-trigger {
+    display: inline-flex;
+  }
+
+  .atlas-recipe-dock-shell {
+    inset: 132px 0 0;
+  }
+
+  .atlas-recipe-dock {
+    top: auto;
+    right: 7px;
+    bottom: 7px;
+    left: 7px;
+    width: auto;
+    max-height: calc(100vh - 146px);
+    border-radius: 22px;
+    transform: translateY(calc(100% + 18px));
+  }
+
+  .atlas-recipe-dock-shell[data-open="true"] .atlas-recipe-dock {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 520px) {
+  .atlas-recipe-dock-trigger {
+    width: 42px;
+    padding: 0;
+  }
+
+  .atlas-recipe-dock-trigger__label {
+    display: none;
+  }
+
+  .atlas-recipe-dock {
+    padding: 14px;
+  }
+
+  .atlas-recipe-dock .atlas-layer-controls__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-recipe-dock,
+  .atlas-recipe-dock__backdrop {
+    transition-duration: 1ms;
+  }
+}
+
+
+
+/* VISRECA1 · contextual recipes on every Atlas page */
+.atlas-recipe-context,
+.atlas-recipe-accent-panel,
+.atlas-recipe-coverage,
+.atlas-recipe-import {
+  padding: 13px;
+  color: var(--atlas-text);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / calc(var(--atlas-content-alpha) * .10)), transparent),
+    rgb(3 8 12 / calc(var(--atlas-content-alpha) * .58));
+  border: 1px solid rgb(181 220 245 / calc(.08 + var(--atlas-content-alpha) * .25));
+  border-radius: 15px;
+}
+
+.atlas-recipe-context {
+  display: grid;
+  gap: 5px;
+  margin-top: 16px;
+}
+
+.atlas-recipe-context > span {
+  color: var(--atlas-text-3);
+  font-size: .64rem;
+  text-transform: uppercase;
+  letter-spacing: .10em;
+}
+
+.atlas-recipe-context > strong {
+  color: var(--atlas-text);
+  font-size: .92rem;
+}
+
+.atlas-recipe-context > code {
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  color: rgb(var(--atlas-accent));
+  font-size: .64rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.atlas-recipe-accent-panel {
+  display: grid;
+  gap: 11px;
+}
+
+.atlas-recipe-accent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.atlas-recipe-accent {
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  color: var(--atlas-text-2);
+  background: rgb(255 255 255 / .035);
+  border: 1px solid rgb(181 220 245 / .13);
+  border-radius: 11px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.atlas-recipe-accent > span {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(var(--recipe-accent));
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / .20),
+    0 0 14px rgb(var(--recipe-accent) / .28);
+}
+
+.atlas-recipe-accent > strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: .70rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.atlas-recipe-accent:hover,
+.atlas-recipe-accent:focus-visible {
+  color: var(--atlas-text);
+  border-color: rgb(var(--recipe-accent) / .56);
+  background: rgb(var(--recipe-accent) / .10);
+}
+
+.atlas-recipe-accent.is-active {
+  color: #fff;
+  border-color: rgb(var(--recipe-accent) / .74);
+  background:
+    linear-gradient(135deg, rgb(var(--recipe-accent) / .18), transparent),
+    rgb(255 255 255 / .05);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .12),
+    0 0 0 1px rgb(var(--recipe-accent) / .16);
+}
+
+.atlas-recipe-coverage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.atlas-recipe-coverage strong {
+  width: 100%;
+  margin-bottom: 2px;
+  color: rgb(var(--atlas-accent));
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.atlas-recipe-coverage span {
+  padding: 5px 8px;
+  color: var(--atlas-text-2);
+  background: rgb(var(--atlas-accent) / .07);
+  border: 1px solid rgb(var(--atlas-accent) / .16);
+  border-radius: 999px;
+  font-size: .62rem;
+}
+
+.atlas-recipe-import {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.atlas-recipe-import p {
+  margin: 0;
+  color: var(--atlas-text-3);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+
+.atlas-recipe-import__button {
+  position: relative;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.atlas-recipe-import__button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.atlas-recipe-import__status {
+  grid-column: 1 / -1;
+  min-height: 34px;
+  padding: 8px 10px;
+  color: var(--atlas-text-3);
+  background: rgb(0 0 0 / .18);
+  border: 1px solid rgb(181 220 245 / .12);
+  border-radius: 10px;
+  font-family: Consolas, "Cascadia Code", monospace;
+  font-size: .62rem;
+  line-height: 1.45;
+}
+
+.atlas-recipe-import__status[data-status="pass"] {
+  color: #b9ffd8;
+  border-color: rgb(105 255 175 / .34);
+}
+
+.atlas-recipe-import__status[data-status="fail"] {
+  color: #ffd0d0;
+  border-color: rgb(255 110 110 / .38);
+}
+
+.atlas-recipe-import__status[data-status="pending"] {
+  color: #fff0b5;
+  border-color: rgb(255 211 105 / .32);
+}
+
+@media (max-width: 520px) {
+  .atlas-recipe-accent-grid,
+  .atlas-recipe-import {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-recipe-import__status {
+    grid-column: auto;
+  }
+}
+
+/* PRISMA VISREC2 · Visual Transfer Console */
+.visrec2-trigger{display:inline-flex;align-items:center;gap:.42rem;white-space:nowrap}
+.visrec2-shell{position:fixed;inset:0;z-index:1200;pointer-events:none}
+.visrec2-shell[data-open="true"]{pointer-events:auto}
+.visrec2-backdrop{position:absolute;inset:0;border:0;background:rgba(3,5,10,.38);opacity:0;transition:opacity .22s ease;cursor:default}
+.visrec2-shell[data-open="true"] .visrec2-backdrop{opacity:1}
+.visrec2-console{--visrec2-width:min(560px,calc(100vw - 24px));position:absolute;top:calc(var(--atlas-topbar-height,76px) + 10px);right:10px;bottom:10px;width:var(--visrec2-width);display:grid;grid-template-rows:auto auto minmax(0,1fr);overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:24px;background:linear-gradient(155deg,rgba(15,19,28,.96),rgba(9,12,19,.92));box-shadow:0 30px 110px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(28px) saturate(1.25);-webkit-backdrop-filter:blur(28px) saturate(1.25);color:#f6f8ff;transform:translateX(calc(100% + 28px));opacity:0;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s ease;outline:none}
+.visrec2-shell[data-open="true"] .visrec2-console{transform:translateX(0);opacity:1}
+.visrec2-header{display:flex;justify-content:space-between;gap:20px;padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.visrec2-header h2{margin:.15rem 0 .3rem;font-size:1.25rem;line-height:1.1}
+.visrec2-header p{margin:0;color:rgba(239,244,255,.68);font-size:.83rem}
+.visrec2-tabs{display:flex;gap:4px;padding:8px 10px;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.08);scrollbar-width:thin}
+.visrec2-tabs button{border:0;border-radius:999px;padding:.58rem .74rem;background:transparent;color:rgba(245,248,255,.68);font:inherit;font-size:.76rem;font-weight:750;cursor:pointer;white-space:nowrap}
+.visrec2-tabs button:hover,.visrec2-tabs button.is-active{background:rgba(var(--atlas-accent),.17);color:#fff;box-shadow:inset 0 0 0 1px rgba(var(--atlas-accent),.28)}
+.visrec2-body{overflow:auto;padding:16px 18px 28px;scrollbar-width:thin}
+.visrec2-pane{display:none;min-width:0}
+.visrec2-pane.is-active{display:block}
+.visrec2-pane>h3,.visrec2-pane details,.visrec2-pane fieldset,.visrec2-pane section{margin:0 0 16px}
+.visrec2-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.visrec2-actions .atlas-button{min-height:36px;padding:.58rem .78rem;font-size:.76rem}
+.visrec2-selection{display:grid;gap:4px;margin:0 0 14px;padding:12px 14px;border-left:3px solid rgba(var(--atlas-accent),.8);background:rgba(255,255,255,.035);border-radius:0 14px 14px 0}
+.visrec2-selection strong{font-size:.88rem}.visrec2-selection span{font-size:.75rem;color:rgba(240,244,255,.64)}
+.visrec2-segment{display:flex;flex-wrap:wrap;gap:6px;border:0;padding:0}
+.visrec2-segment legend,.visrec2-checks legend{width:100%;margin-bottom:8px;font-size:.7rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:rgba(239,244,255,.58)}
+.visrec2-segment label{cursor:pointer}.visrec2-segment input{position:absolute;opacity:0;pointer-events:none}
+.visrec2-segment span{display:block;padding:.52rem .68rem;border:1px solid rgba(255,255,255,.1);border-radius:999px;font-size:.72rem;color:rgba(245,248,255,.72)}
+.visrec2-segment input:checked+span{border-color:rgba(var(--atlas-accent),.58);background:rgba(var(--atlas-accent),.18);color:#fff}
+.visrec2-inventory-summary{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.visrec2-inventory-summary span{display:flex;align-items:baseline;gap:4px;padding:.42rem .58rem;border-radius:10px;background:rgba(255,255,255,.045);font-size:.67rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(239,244,255,.6)}
+.visrec2-inventory-summary strong{color:#fff;font-size:.92rem}
+.visrec2-inventory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:260px;overflow:auto;margin-bottom:16px}
+.visrec2-inventory button{display:grid;gap:2px;text-align:left;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.028);color:#fff;padding:9px 10px;cursor:pointer;min-width:0}
+.visrec2-inventory button:hover{border-color:rgba(var(--atlas-accent),.42);background:rgba(var(--atlas-accent),.09)}
+.visrec2-inventory button span{font-size:.62rem;text-transform:uppercase;color:rgba(239,244,255,.48)}
+.visrec2-inventory button strong,.visrec2-inventory button code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.visrec2-inventory button strong{font-size:.74rem}.visrec2-inventory button code{font-size:.59rem;color:rgba(239,244,255,.46)}
+.visrec2-pane details{border-top:1px solid rgba(255,255,255,.08);padding-top:12px}
+.visrec2-pane summary{cursor:pointer;font-weight:760;font-size:.78rem}
+.visrec2-identity{display:grid;gap:6px;margin-top:10px}
+.visrec2-identity>div{display:grid;grid-template-columns:115px minmax(0,1fr) 30px;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+.visrec2-identity span{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(239,244,255,.5)}
+.visrec2-identity code{font-size:.63rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(224,234,255,.88)}
+.visrec2-identity button{border:0;background:transparent;color:#fff;cursor:pointer}
+.visrec2-property-controls{display:grid;gap:4px;margin:12px 0 18px}
+.visrec2-property-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(135px,1fr) 24px;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.visrec2-property-row>span{display:grid;gap:2px}.visrec2-property-row strong{font-size:.76rem}.visrec2-property-row small{font-size:.58rem;color:rgba(239,244,255,.46)}
+.visrec2-property-row select,.visrec2-field input,.visrec2-field textarea,.visrec2-pane select{width:100%;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(0,0,0,.24);color:#fff;padding:.55rem .65rem;font:inherit;font-size:.76rem}
+.visrec2-range{display:grid;grid-template-columns:minmax(0,1fr) 46px;align-items:center;gap:7px}.visrec2-range input{width:100%;accent-color:rgb(var(--atlas-accent))}.visrec2-range output{text-align:right;font-size:.68rem;color:rgba(239,244,255,.68)}
+.visrec2-layer-block{padding:12px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+.visrec2-layer-block h3{margin:0 0 10px;font-size:.82rem}.visrec2-layer-block>label{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:10px;padding:7px 0;font-size:.72rem}
+.visrec2-accent-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}.visrec2-accent-grid button{display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.025);color:#fff;padding:.5rem;font-size:.62rem;cursor:pointer}.visrec2-accent-grid button span{width:11px;height:11px;border-radius:50%;background:rgb(var(--visrec2-accent));box-shadow:0 0 14px rgba(var(--visrec2-accent),.62)}
+.visrec2-field{display:grid;gap:7px;margin:0 0 14px}.visrec2-field>span{font-size:.7rem;font-weight:760;color:rgba(239,244,255,.68)}
+.visrec2-checks{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;margin:0 0 16px}.visrec2-checks label{display:flex;gap:6px;align-items:center;padding:.48rem .6rem;border-radius:10px;background:rgba(255,255,255,.035);font-size:.7rem}.visrec2-checks input{accent-color:rgb(var(--atlas-accent))}
+.visrec2-compatibility{border-left:3px solid rgba(var(--atlas-accent),.8);padding:11px 13px;background:rgba(255,255,255,.03);border-radius:0 14px 14px 0}.visrec2-compatibility header{display:flex;justify-content:space-between;align-items:center}.visrec2-compatibility strong{font-size:1.25rem}.visrec2-compatibility ul{margin:8px 0 0;padding-left:18px;font-size:.7rem;color:rgba(239,244,255,.7)}.visrec2-compatibility .is-warning{color:#ffd98a}.visrec2-compatibility .is-pass{color:#a8f0c2}
+.visrec2-collection,.visrec2-history{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:6px}.visrec2-collection li,.visrec2-history li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:11px;background:rgba(255,255,255,.03);font-size:.68rem}.visrec2-collection button{border:0;background:transparent;color:#fff;cursor:pointer}.visrec2-history small{grid-column:1/-1;color:rgba(239,244,255,.48)}
+.visrec2-delta{padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}.visrec2-delta h3{margin:0 0 10px;font-size:.8rem}.visrec2-delta [data-delta-summary]{display:grid;gap:3px;font-size:.7rem;color:rgba(239,244,255,.6)}
+.visrec2-import{display:grid;gap:8px;padding:18px;border:1px dashed rgba(var(--atlas-accent),.42);border-radius:16px;background:rgba(var(--atlas-accent),.05);font-size:.76rem}.visrec2-import input{font:inherit;font-size:.7rem}.visrec2-import-comparison{margin-top:16px;overflow:auto}.visrec2-import-comparison table,.visrec2-task-table{width:100%;border-collapse:collapse;font-size:.66rem}.visrec2-import-comparison th,.visrec2-import-comparison td,.visrec2-task-table th,.visrec2-task-table td{padding:8px 7px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:top}.visrec2-task-table td:first-child{color:#78e7a7;font-size:1rem}.visrec2-task-table small{display:block;margin-top:2px;color:rgba(239,244,255,.44)}
+.visrec2-empty{color:rgba(239,244,255,.5);font-size:.72rem}.visrec2-console.is-frozen .visrec2-property-controls,.visrec2-console.is-frozen [data-family-control]{opacity:.45;pointer-events:none}
+.visrec2-highlight{position:absolute;z-index:1300;pointer-events:none;border:2px solid rgb(var(--atlas-accent));border-radius:10px;background:rgba(var(--atlas-accent),.08);box-shadow:0 0 0 9999px rgba(0,0,0,.12),0 0 24px rgba(var(--atlas-accent),.45)}
+.visrec2-highlight span{position:absolute;left:0;top:-30px;max-width:300px;padding:6px 9px;border-radius:8px;background:rgb(var(--atlas-accent));color:#061017;font-size:.67rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.is-visrec2-selecting,body.is-visrec2-selecting *{cursor:crosshair}.visrec2-selected-source{outline:2px solid rgba(var(--atlas-accent),.72);outline-offset:3px;box-shadow:0 0 0 4px rgba(var(--atlas-accent),.16)}.visrec2-preview-target{will-change:transform,background-color,box-shadow,backdrop-filter}
+@media(max-width:760px){.visrec2-console{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:min(88vh,760px);border-radius:24px;transform:translateY(calc(100% + 24px))}.visrec2-shell[data-open="true"] .visrec2-console{transform:translateY(0)}.visrec2-inventory{grid-template-columns:1fr}.visrec2-accent-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.visrec2-property-row{grid-template-columns:minmax(0,1fr) minmax(120px,1fr) 24px}}
+@media(prefers-reduced-motion:reduce){.visrec2-console,.visrec2-backdrop{transition:none}}
+/* PRISMA VISREC2 V2 · read-only governance summaries */
+.visrec2-governance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+}
+.visrec2-readout {
+  display: grid;
+  gap: .45rem;
+  padding: .8rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  background: rgba(255,255,255,.035);
+}
+.visrec2-readout header,
+.visrec2-readout li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.visrec2-readout ul {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.visrec2-readout code {
+  overflow-wrap: anywhere;
+}
+.visrec2-status--complete { color: rgb(102, 236, 177); }
+.visrec2-status--partial,
+.visrec2-status--blocked { color: rgb(255, 190, 79); }
+.visrec2-status--invalid { color: rgb(255, 85, 119); }
+.visrec2-lock-reason {
+  display: block;
+  color: var(--atlas-text-muted);
+  font-size: .78rem;
+}
+@media (max-width: 720px) {
+  .visrec2-governance-grid { grid-template-columns: 1fr; }
+}

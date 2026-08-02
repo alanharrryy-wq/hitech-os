@@ -1,0 +1,439 @@
+{
+  "schema": "prisma.identity.semantic-tokens.registry.v1",
+  "version": "1.0.0",
+  "authority": "prisma-html/authority/rifat/identity",
+  "policy": {
+    "neutralMeaningFirst": true,
+    "runtimeValuesOwnedByProfiles": true,
+    "manualRuntimeEditsForbidden": true,
+    "priorityOverridesForbidden": true,
+    "unknownTokenIsBlocking": true
+  },
+  "tokenCount": 53,
+  "tokens": [
+    {
+      "id": "color.canvas",
+      "group": "color",
+      "type": "color",
+      "default": "#f4f7fb",
+      "description": "Page/app canvas.",
+      "required": true
+    },
+    {
+      "id": "color.surface",
+      "group": "color",
+      "type": "color",
+      "default": "rgba(255,255,255,0.82)",
+      "description": "Primary surface fill.",
+      "required": true
+    },
+    {
+      "id": "color.surfaceElevated",
+      "group": "color",
+      "type": "color",
+      "default": "rgba(255,255,255,0.94)",
+      "description": "Elevated surface fill.",
+      "required": true
+    },
+    {
+      "id": "color.surfaceMuted",
+      "group": "color",
+      "type": "color",
+      "default": "#e9eef5",
+      "description": "Muted region fill.",
+      "required": true
+    },
+    {
+      "id": "color.textPrimary",
+      "group": "color",
+      "type": "color",
+      "default": "#172033",
+      "description": "Primary readable text.",
+      "required": true
+    },
+    {
+      "id": "color.textSecondary",
+      "group": "color",
+      "type": "color",
+      "default": "#5d687a",
+      "description": "Secondary readable text.",
+      "required": true
+    },
+    {
+      "id": "color.textMuted",
+      "group": "color",
+      "type": "color",
+      "default": "#7e8999",
+      "description": "Muted readable text.",
+      "required": true
+    },
+    {
+      "id": "color.accent",
+      "group": "color",
+      "type": "color",
+      "default": "#2563eb",
+      "description": "Primary action accent.",
+      "required": true
+    },
+    {
+      "id": "color.accentText",
+      "group": "color",
+      "type": "color",
+      "default": "#ffffff",
+      "description": "Text on accent.",
+      "required": true
+    },
+    {
+      "id": "color.success",
+      "group": "color",
+      "type": "color",
+      "default": "#15803d",
+      "description": "Success signal.",
+      "required": true
+    },
+    {
+      "id": "color.warning",
+      "group": "color",
+      "type": "color",
+      "default": "#b45309",
+      "description": "Warning signal.",
+      "required": true
+    },
+    {
+      "id": "color.danger",
+      "group": "color",
+      "type": "color",
+      "default": "#b91c1c",
+      "description": "Danger signal.",
+      "required": true
+    },
+    {
+      "id": "color.focus",
+      "group": "color",
+      "type": "color",
+      "default": "#0ea5e9",
+      "description": "Focus ring signal.",
+      "required": true
+    },
+    {
+      "id": "material.surfaceFill",
+      "group": "material",
+      "type": "css-value",
+      "default": "linear-gradient(145deg, rgba(255,255,255,0.92), rgba(244,248,253,0.78))",
+      "description": "Canonical surface material.",
+      "required": true
+    },
+    {
+      "id": "material.surfaceBorder",
+      "group": "material",
+      "type": "css-value",
+      "default": "rgba(71,85,105,0.18)",
+      "description": "Canonical surface border.",
+      "required": true
+    },
+    {
+      "id": "material.surfaceShadow",
+      "group": "material",
+      "type": "css-value",
+      "default": "0 18px 50px rgba(15,23,42,0.10)",
+      "description": "Canonical surface shadow.",
+      "required": true
+    },
+    {
+      "id": "material.backdropFilter",
+      "group": "material",
+      "type": "css-value",
+      "default": "blur(18px) saturate(1.08)",
+      "description": "Canonical backdrop treatment.",
+      "required": true
+    },
+    {
+      "id": "typography.fontBody",
+      "group": "typography",
+      "type": "font-family",
+      "default": "Inter, ui-sans-serif, system-ui, sans-serif",
+      "description": "Body font stack.",
+      "required": true
+    },
+    {
+      "id": "typography.fontDisplay",
+      "group": "typography",
+      "type": "font-family",
+      "default": "Inter, ui-sans-serif, system-ui, sans-serif",
+      "description": "Display font stack.",
+      "required": true
+    },
+    {
+      "id": "typography.bodySize",
+      "group": "typography",
+      "type": "length",
+      "default": "16px",
+      "description": "Base body size.",
+      "required": true
+    },
+    {
+      "id": "typography.labelSize",
+      "group": "typography",
+      "type": "length",
+      "default": "13px",
+      "description": "Base label size.",
+      "required": true
+    },
+    {
+      "id": "typography.titleSize",
+      "group": "typography",
+      "type": "length",
+      "default": "30px",
+      "description": "Base title size.",
+      "required": true
+    },
+    {
+      "id": "typography.weightRegular",
+      "group": "typography",
+      "type": "number",
+      "default": 400,
+      "description": "Regular weight.",
+      "required": true
+    },
+    {
+      "id": "typography.weightMedium",
+      "group": "typography",
+      "type": "number",
+      "default": 560,
+      "description": "Medium weight.",
+      "required": true
+    },
+    {
+      "id": "typography.weightStrong",
+      "group": "typography",
+      "type": "number",
+      "default": 720,
+      "description": "Strong weight.",
+      "required": true
+    },
+    {
+      "id": "motion.fast",
+      "group": "motion",
+      "type": "duration",
+      "default": "120ms",
+      "description": "Fast response duration.",
+      "required": true
+    },
+    {
+      "id": "motion.normal",
+      "group": "motion",
+      "type": "duration",
+      "default": "220ms",
+      "description": "Normal transition duration.",
+      "required": true
+    },
+    {
+      "id": "motion.slow",
+      "group": "motion",
+      "type": "duration",
+      "default": "360ms",
+      "description": "Slow reveal duration.",
+      "required": true
+    },
+    {
+      "id": "motion.easing",
+      "group": "motion",
+      "type": "easing",
+      "default": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "description": "Canonical easing.",
+      "required": true
+    },
+    {
+      "id": "density.controlHeight",
+      "group": "density",
+      "type": "length",
+      "default": "44px",
+      "description": "Default control height.",
+      "required": true
+    },
+    {
+      "id": "density.touchTarget",
+      "group": "density",
+      "type": "length",
+      "default": "48px",
+      "description": "Minimum touch target.",
+      "required": true
+    },
+    {
+      "id": "density.space1",
+      "group": "density",
+      "type": "length",
+      "default": "4px",
+      "description": "Micro spacing.",
+      "required": true
+    },
+    {
+      "id": "density.space2",
+      "group": "density",
+      "type": "length",
+      "default": "8px",
+      "description": "Small spacing.",
+      "required": true
+    },
+    {
+      "id": "density.space3",
+      "group": "density",
+      "type": "length",
+      "default": "12px",
+      "description": "Medium spacing.",
+      "required": true
+    },
+    {
+      "id": "density.space4",
+      "group": "density",
+      "type": "length",
+      "default": "16px",
+      "description": "Large spacing.",
+      "required": true
+    },
+    {
+      "id": "density.space5",
+      "group": "density",
+      "type": "length",
+      "default": "24px",
+      "description": "Section spacing.",
+      "required": true
+    },
+    {
+      "id": "border.width",
+      "group": "border",
+      "type": "length",
+      "default": "1px",
+      "description": "Default border width.",
+      "required": true
+    },
+    {
+      "id": "border.radiusControl",
+      "group": "border",
+      "type": "length",
+      "default": "12px",
+      "description": "Control corner radius.",
+      "required": true
+    },
+    {
+      "id": "border.radiusPanel",
+      "group": "border",
+      "type": "length",
+      "default": "18px",
+      "description": "Panel corner radius.",
+      "required": true
+    },
+    {
+      "id": "border.radiusHero",
+      "group": "border",
+      "type": "length",
+      "default": "28px",
+      "description": "Hero corner radius.",
+      "required": true
+    },
+    {
+      "id": "layer.base",
+      "group": "layer",
+      "type": "integer",
+      "default": 0,
+      "description": "Base canvas layer.",
+      "required": true
+    },
+    {
+      "id": "layer.surface",
+      "group": "layer",
+      "type": "integer",
+      "default": 10,
+      "description": "Surface layer.",
+      "required": true
+    },
+    {
+      "id": "layer.sticky",
+      "group": "layer",
+      "type": "integer",
+      "default": 30,
+      "description": "Sticky layer.",
+      "required": true
+    },
+    {
+      "id": "layer.overlay",
+      "group": "layer",
+      "type": "integer",
+      "default": 50,
+      "description": "Overlay layer.",
+      "required": true
+    },
+    {
+      "id": "layer.modal",
+      "group": "layer",
+      "type": "integer",
+      "default": 70,
+      "description": "Modal layer.",
+      "required": true
+    },
+    {
+      "id": "layer.toast",
+      "group": "layer",
+      "type": "integer",
+      "default": 90,
+      "description": "Toast layer.",
+      "required": true
+    },
+    {
+      "id": "state.disabledOpacity",
+      "group": "state",
+      "type": "number",
+      "default": 0.48,
+      "description": "Disabled opacity.",
+      "required": true
+    },
+    {
+      "id": "state.hoverLift",
+      "group": "state",
+      "type": "length",
+      "default": "-1px",
+      "description": "Hover translation.",
+      "required": true
+    },
+    {
+      "id": "state.pressScale",
+      "group": "state",
+      "type": "number",
+      "default": 0.985,
+      "description": "Pressed scale.",
+      "required": true
+    },
+    {
+      "id": "state.focusWidth",
+      "group": "state",
+      "type": "length",
+      "default": "3px",
+      "description": "Focus ring width.",
+      "required": true
+    },
+    {
+      "id": "asset.logoPrimary",
+      "group": "asset",
+      "type": "path",
+      "default": "assets/images/prisma-logo-full.png",
+      "description": "Primary PRISMA logo.",
+      "required": true
+    },
+    {
+      "id": "asset.logoMark",
+      "group": "asset",
+      "type": "path",
+      "default": "assets/images/prisma-logo.png",
+      "description": "PRISMA logo mark.",
+      "required": true
+    },
+    {
+      "id": "asset.iconStyle",
+      "group": "asset",
+      "type": "enum",
+      "default": "line-soft",
+      "description": "Canonical icon family.",
+      "required": true
+    }
+  ]
+}

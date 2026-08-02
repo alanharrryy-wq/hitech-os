@@ -1,0 +1,126 @@
+/* PRISMA CC V5.4 · True Mist + Glacier Boost
+   Fondo/atmósfera solamente. Nada sobre texto/tablas/cards. */
+
+html, body {
+  min-height: 100%;
+}
+
+body[data-theme="tactical"] {
+  isolation: isolate;
+}
+
+/* Mata probe anterior si quedó por ahí */
+#prisma-atmosphere-v53-root,
+#prisma-atmosphere-v53-badge {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Root de atmósfera */
+#prisma-atmo-v54-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+#prisma-atmo-v54-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  visibility: visible;
+  opacity: .96;
+  filter: saturate(1.34) brightness(1.16) contrast(1.06);
+}
+
+/* Velo de lectura: deja ver la atmósfera, pero protege legibilidad */
+#prisma-atmo-v54-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 560px at 18% 8%, rgba(212, 235, 255, .07), transparent 62%),
+    radial-gradient(980px 620px at 84% 12%, rgba(112, 182, 235, .06), transparent 62%),
+    linear-gradient(180deg, rgba(8,15,24,.05), rgba(8,15,24,.16) 52%, rgba(5,10,16,.22));
+}
+
+#prisma-atmo-v54-badge {
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  padding: 8px 11px;
+  border-radius: 999px;
+  font: 700 11px/1.1 ui-sans-serif, system-ui, Segoe UI, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #d9ecff;
+  background: rgba(14, 31, 48, .68);
+  border: 1px solid rgba(164, 225, 255, .34);
+  box-shadow: 0 0 18px rgba(103, 212, 255, .22), 0 0 26px rgba(178, 132, 255, .12);
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+}
+
+/* UI por encima */
+.page,
+.topbarWrap,
+main,
+.panel,
+.card,
+.glass,
+.prismo-shell,
+.prismo-grid,
+.qualityHero,
+.commandPanel,
+.topology,
+.timelineCard {
+  position: relative;
+  z-index: 10;
+}
+
+/* Motion UI sutil */
+button, .opButton, .dockBtn, .pill, .signal, .chip, .status, .tab, [role="tab"] {
+  transition:
+    transform .22s ease,
+    box-shadow .24s ease,
+    border-color .24s ease,
+    filter .24s ease;
+}
+
+button:hover, .opButton:hover, .dockBtn:hover, .pill:hover, .chip:hover, .status:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow:
+    0 0 0 1px rgba(210,236,255,.12),
+    0 0 16px rgba(103,212,255,.18),
+    0 0 24px rgba(182,146,255,.09);
+  filter: brightness(1.04) saturate(1.06);
+}
+
+button:focus-visible, .opButton:focus-visible, .dockBtn:focus-visible,
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(210,236,255,.38),
+    0 0 16px rgba(103,212,255,.24),
+    0 0 24px rgba(182,146,255,.12);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #prisma-atmo-v54-canvas {
+    opacity: .62;
+  }
+  button, .opButton, .dockBtn, .pill, .signal, .chip, .status, .tab, [role="tab"] {
+    transition: none;
+  }
+}

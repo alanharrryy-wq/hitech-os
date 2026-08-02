@@ -10,10 +10,10 @@ export const tabletSyncOutboxStatusMatrixPassport = {
   status: "partial_real",
   questionAnswered: "What local outbox work needs attention before/after sync?",
   primaryUser: "operator",
-  routePreview: "/prisma-pulse?preview=charts",
-  routeProduction: "/prisma-pulse",
-  componentFile: "products/tablet/app/app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx",
-  cardWrapperFile: "products/tablet/app/app/prisma-pulse/charts/TabletChartCard.tsx",
+  routePreview: "/?chart=tablet.sync-outbox-status-matrix",
+  routeProduction: "/?chart=tablet.sync-outbox-status-matrix",
+  componentFile: "products/chart-lab/app/src/prisma-charts/components/LabEChartFrame.tsx",
+  cardWrapperFile: "products/chart-lab/app/src/components/PrismaChartLabShell.tsx",
   optionBuilderFile: "shared/prisma-charts/prismaChartOptions.ts",
   optionBuilderName: "syncOutboxMatrixOption",
   contractFile: "shared/prisma-charts/prismaChartContracts.ts",
@@ -29,9 +29,8 @@ export const tabletSyncOutboxStatusMatrixPassport = {
   states: supportedStates,
   interactions: ["tapTooltip", "tapFocus", "reset"],
   accessibility: commonAccessibility,
-  knownRisks: ["Item-type breakdown depends on outbox topics; unknown events remain itemType=event."],
+  knownRisks: ["Item-type breakdown depends on outbox topics; unknown events remain itemType=event.", "The retired Tablet /prisma-pulse customer route must not be restored; this chart is inspected in Chart Lab."],
   doNotTouch: commonDoNotTouch,
-  editPlaybook: editPlaybook({ visualRecipe: "matrixRecipe", adapterName: "buildTabletSyncOutboxStatusMatrixViewModel", contractType: "SyncOutboxMatrixCell", componentFile: "products/tablet/app/app/prisma-pulse/charts/TabletSyncOutboxStatusMatrix.tsx", deckFile: "products/tablet/app/app/prisma-pulse/PrismaTabletPulsePanel.tsx" }),
-  validation: validation("/prisma-pulse?preview=charts")
+  editPlaybook: editPlaybook({ visualRecipe: "matrixRecipe", adapterName: "buildTabletSyncOutboxStatusMatrixViewModel", contractType: "SyncOutboxMatrixCell", componentFile: "products/chart-lab/app/src/prisma-charts/components/LabEChartFrame.tsx", deckFile: "products/chart-lab/app/src/components/PrismaChartLabShell.tsx" }),
+  validation: validation("/?chart=tablet.sync-outbox-status-matrix")
 } satisfies PrismaChartPassport;
-

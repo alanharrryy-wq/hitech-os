@@ -1,0 +1,32 @@
+{
+  "global": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "build/**"
+  ],
+  "surface_specific": {
+    "tablet_task": [
+      "products/pc/**",
+      "products/mobile/**",
+      "products/chart-lab/**"
+    ],
+    "pc_task": [
+      "products/tablet/**",
+      "products/mobile/**",
+      "products/chart-lab/**"
+    ],
+    "mobile_task": [
+      "products/tablet/**",
+      "products/pc/**",
+      "products/chart-lab/**"
+    ]
+  },
+  "dangerous_commands": [
+    "pc:typecheck hot",
+    "prisma generate while dev processes live",
+    "dev server lifecycle management",
+    "git reset --hard",
+    "git clean -fd"
+  ]
+}

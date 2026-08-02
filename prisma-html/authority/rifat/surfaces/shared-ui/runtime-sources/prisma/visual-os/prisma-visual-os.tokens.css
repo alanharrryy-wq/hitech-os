@@ -1,0 +1,114 @@
+
+/*
+  PRISMA Visual Operating System - 00A CSS Contract Bridge
+  This file defines tri-surface governance variables. It does not force adoption by itself.
+  Future packages bind Tablet / PC / Mobile selectors to these tokens.
+*/
+
+:root,
+[data-prisma-visual-os="DUAL_BALANCE"] {
+  --prisma-vos-brand-tone: hybrid;
+  --prisma-vos-surface-density: 54;
+  --prisma-vos-operational-contrast: 80;
+  --prisma-vos-depth-glass: 62;
+  --prisma-vos-commercial-emphasis: action;
+  --prisma-vos-motion-temper: 32;
+  --prisma-vos-touch-safety: 86;
+  --prisma-vos-data-legibility: 84;
+  --prisma-vos-critical-action-weight: 84;
+  --prisma-vos-ambient-noise: 24;
+  --prisma-vos-state-signal-strength: 80;
+  --prisma-vos-surface-separation: 72;
+
+  --prisma-vos-min-touch-target: 44px;
+  --prisma-vos-pos-touch-target: 52px;
+  --prisma-vos-pc-row-min: 38px;
+  --prisma-vos-mobile-card-min: 72px;
+  --prisma-vos-fast-motion: 120ms;
+  --prisma-vos-base-motion: 180ms;
+  --prisma-vos-slow-motion: 260ms;
+}
+
+[data-prisma-visual-os="BLACK_PREMIUM"] {
+  --prisma-vos-brand-tone: premium;
+  --prisma-vos-surface-density: 48;
+  --prisma-vos-operational-contrast: 74;
+  --prisma-vos-depth-glass: 82;
+  --prisma-vos-commercial-emphasis: action;
+  --prisma-vos-motion-temper: 38;
+  --prisma-vos-touch-safety: 84;
+  --prisma-vos-data-legibility: 78;
+  --prisma-vos-critical-action-weight: 88;
+  --prisma-vos-ambient-noise: 42;
+  --prisma-vos-state-signal-strength: 76;
+  --prisma-vos-surface-separation: 74;
+}
+
+[data-prisma-visual-os="LIGHT_OPERATIONAL"] {
+  --prisma-vos-brand-tone: operational;
+  --prisma-vos-surface-density: 58;
+  --prisma-vos-operational-contrast: 86;
+  --prisma-vos-depth-glass: 38;
+  --prisma-vos-commercial-emphasis: data;
+  --prisma-vos-motion-temper: 24;
+  --prisma-vos-touch-safety: 86;
+  --prisma-vos-data-legibility: 90;
+  --prisma-vos-critical-action-weight: 80;
+  --prisma-vos-ambient-noise: 12;
+  --prisma-vos-state-signal-strength: 84;
+  --prisma-vos-surface-separation: 76;
+}
+
+[data-prisma-visual-os="POS_TOUCH_REFERENCE"] {
+  --prisma-vos-brand-tone: premium;
+  --prisma-vos-surface-density: 44;
+  --prisma-vos-operational-contrast: 82;
+  --prisma-vos-depth-glass: 72;
+  --prisma-vos-commercial-emphasis: action;
+  --prisma-vos-motion-temper: 30;
+  --prisma-vos-touch-safety: 94;
+  --prisma-vos-data-legibility: 86;
+  --prisma-vos-critical-action-weight: 94;
+  --prisma-vos-ambient-noise: 26;
+  --prisma-vos-state-signal-strength: 84;
+  --prisma-vos-surface-separation: 78;
+}
+
+[data-prisma-visual-os="PC_DENSE_ADMIN"] {
+  --prisma-vos-brand-tone: operational;
+  --prisma-vos-surface-density: 78;
+  --prisma-vos-operational-contrast: 84;
+  --prisma-vos-depth-glass: 44;
+  --prisma-vos-commercial-emphasis: data;
+  --prisma-vos-motion-temper: 18;
+  --prisma-vos-data-legibility: 92;
+  --prisma-vos-critical-action-weight: 76;
+  --prisma-vos-ambient-noise: 14;
+  --prisma-vos-state-signal-strength: 86;
+  --prisma-vos-surface-separation: 80;
+}
+
+[data-prisma-visual-os="MOBILE_PULSE"] {
+  --prisma-vos-brand-tone: hybrid;
+  --prisma-vos-surface-density: 36;
+  --prisma-vos-operational-contrast: 84;
+  --prisma-vos-depth-glass: 58;
+  --prisma-vos-commercial-emphasis: data;
+  --prisma-vos-motion-temper: 28;
+  --prisma-vos-touch-safety: 92;
+  --prisma-vos-data-legibility: 88;
+  --prisma-vos-critical-action-weight: 82;
+  --prisma-vos-ambient-noise: 20;
+  --prisma-vos-state-signal-strength: 90;
+  --prisma-vos-surface-separation: 74;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-prisma-visual-os] {
+    --prisma-vos-motion-temper: 0;
+    --prisma-vos-fast-motion: 1ms;
+    --prisma-vos-base-motion: 1ms;
+    --prisma-vos-slow-motion: 1ms;
+  }
+}

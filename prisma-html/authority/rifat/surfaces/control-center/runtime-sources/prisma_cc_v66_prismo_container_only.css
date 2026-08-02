@@ -1,0 +1,37 @@
+/* PRISMA CC V66 · only the big PRISMO center container */
+/* No topbar. No Cabina. No other surfaces. No child cards. */
+
+body[data-prisma-interface="prismo"] #prismoConsoleSurface{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.004)),
+    rgba(10, 22, 36, .035);
+  border:1px solid rgba(214,231,252,.055);
+  box-shadow:
+    0 14px 42px rgba(3,8,15,.065),
+    inset 0 1px 0 rgba(255,255,255,.030);
+  backdrop-filter:blur(1.25px) saturate(106%);
+  -webkit-backdrop-filter:blur(1.25px) saturate(106%);
+}
+
+body[data-prisma-interface="prismo"] #prismo-console{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.020), rgba(255,255,255,.004) 55%, rgba(255,255,255,.006)),
+    rgba(10, 22, 36, .050);
+  border:1px solid rgba(214,231,252,.070);
+  box-shadow:
+    0 14px 46px rgba(3,8,15,.075),
+    inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter:blur(1.75px) saturate(108%);
+  -webkit-backdrop-filter:blur(1.75px) saturate(108%);
+}
+
+/* matar cualquier velo/pseudo capa del contenedor grande, sin tocar cards internas */
+body[data-prisma-interface="prismo"] #prismoConsoleSurface::before,
+body[data-prisma-interface="prismo"] #prismoConsoleSurface::after,
+body[data-prisma-interface="prismo"] #prismo-console::before,
+body[data-prisma-interface="prismo"] #prismo-console::after{
+  opacity:.18;
+  background:transparent;
+  box-shadow:none;
+  pointer-events:none;
+}

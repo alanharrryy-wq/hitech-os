@@ -1,0 +1,70 @@
+/* PRISMA CC V5.2 Atmosphere Layer Fix
+   Pone Pixi/atmósfera entre el fondo y la UI, sin tapar texto ni panels. */
+
+html,
+body {
+  min-height: 100%;
+}
+
+body[data-theme="tactical"] {
+  isolation: isolate;
+}
+
+/* Canvas Pixi / atmosphere: visible, pero detrás de la interfaz */
+#prisma-atmosphere-root,
+#prisma-cc-atmosphere,
+.prisma-atmosphere-root,
+.prisma-cc-atmosphere,
+canvas[data-prisma-atmosphere="true"],
+canvas.prisma-cc-atmosphere-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+  visibility: visible;
+  opacity: .72;
+  mix-blend-mode: screen;
+  filter: saturate(1.28) brightness(1.18) contrast(1.08);
+}
+
+/* Scrim suave encima de Pixi para que no se coma texto */
+body[data-theme="tactical"] .prisma-atmosphere-scrim-v52 {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(780px 460px at 18% 8%, rgba(198,226,255,.08), transparent 62%),
+    linear-gradient(180deg, rgba(7,14,22,.08), rgba(7,14,22,.20) 54%, rgba(5,10,16,.26));
+}
+
+/* UI siempre por encima */
+.page,
+.topbarWrap,
+main,
+.panel,
+.card,
+.glass,
+.prismo-shell,
+.prismo-grid,
+.qualityHero,
+.commandPanel,
+.topology,
+.timelineCard {
+  position: relative;
+  z-index: 5;
+}
+
+/* Dropdowns, overlays y popups aún más arriba */
+select,
+option,
+.dropdown,
+.popover,
+[role="listbox"],
+[role="menu"],
+[role="dialog"] {
+  z-index: 30;
+}

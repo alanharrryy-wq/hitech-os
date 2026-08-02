@@ -1,0 +1,251 @@
+{
+  "schema": "prisma.identity.element-bindings.registry.v1",
+  "version": "1.1.0",
+  "status": "SOURCE_READY_ONE_RESOLVED_BINDING",
+  "scope": [
+    "tablet",
+    "shared-ui"
+  ],
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false,
+  "authoritySnapshot": {
+    "snapshotId": "6f7a7cd4366d295c3434930ab14048cd01759620047a7a954166f4232e81248e",
+    "meshRunId": "idlayer1-2507-120436",
+    "generatedAt": "2026-08-02T14:21:36.779242+00:00",
+    "files": [
+      {
+        "path": "authority/rifat/prisma-ui/routes.json",
+        "sha256": "af4c674fa3eb1dee0b81db5e14b1d3856fa809d54bf907f2a8d0303c30be7017",
+        "bytes": 138156,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/surfaces.json",
+        "sha256": "9fcc3ddaa5fe82427a3f94e6632ef38397d2e8c25b4462272a7a98b01ab831fe",
+        "bytes": 9588,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
+        "sha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
+        "bytes": 123370,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/components.json",
+        "sha256": "5b436dc4e70e286692c57cad1ccaab18cfa8ba41f2dbafd01facd64084147aea",
+        "bytes": 59405,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
+        "sha256": "a67b15090c0b8e90e7dc3afe2eaa95a4a1e4e5bd9c86efdea08c59be27405391",
+        "bytes": 271414,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/layers.json",
+        "sha256": "7dee5ced38ea9ebed722ba3f6ded10979f60c8bb7af881ef44609524802527b4",
+        "bytes": 172289,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/bindings.registry.json",
+        "sha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
+        "bytes": 3847,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/portable-export.registry.json",
+        "sha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "bytes": 2696,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "tools/portable_identity_export_core.py",
+        "sha256": "ed4e4f658b60e841c7fcb30a1b3c7089d3518f72c65149e536ec3f22d49cb75e",
+        "bytes": 15339,
+        "required": true,
+        "readOnly": true
+      }
+    ],
+    "driftPolicy": "ANY_HASH_CHANGE_BLOCKS_RESOLUTION",
+    "canonicalization": "json-sort-keys-compact-utf8-v1"
+  },
+  "policies": {
+    "unknownBindingsRemainNull": true,
+    "fullyResolvedRequiresAllTraceFields": true,
+    "requiredTraceFields": [
+      "ownerId",
+      "routeId",
+      "regionId",
+      "slotId",
+      "componentUiId",
+      "layerId"
+    ],
+    "oneToManyAllowed": true,
+    "ambiguousOneToManyMustRemainBlocked": true,
+    "collisionPolicy": "DUPLICATE_FULLY_RESOLVED_TARGET_IS_ERROR",
+    "orphanPolicy": "UNKNOWN_AUTHORITY_REFERENCE_IS_ERROR",
+    "compactLayerIndexCannotProveLayerId": true,
+    "runtimeProjectionAllowed": false
+  },
+  "bindings": [
+    {
+      "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "selector": {
+        "neutralMeaningId": "ACT.primary",
+        "identityProfileId": "*",
+        "recipePresetId": "REC.button.primary",
+        "objectId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+        "surfaceId": "tablet"
+      },
+      "cardinality": "ONE_TO_ONE_CANDIDATE",
+      "status": "RESOLVED",
+      "reason": "The canonical visual-control generator certified one exact neutral layer record for .cobrarReferenceButton.",
+      "targets": [
+        {
+          "targetId": "TGT.TABLET.POS.COBRAR.PRIMARY.V1",
+          "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "routeId": "tablet.pos.route",
+          "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+          "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+          "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+          "ownerCssId": "products.tablet.app.components.pos.pos.module.css",
+          "selector": ".cobrarReferenceButton",
+          "missingBindings": [],
+          "status": "RESOLVED",
+          "safetyClassification": "visualWithFunctionalRisk",
+          "evidence": {
+            "routeSource": "authority/rifat/prisma-ui/routes.json",
+            "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+            "componentSource": "authority/rifat/prisma-ui/visual-control/components.json",
+            "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
+            "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+            "sourceComponentPath": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+            "sourceCssPath": "products/tablet/app/components/pos/pos.module.css",
+            "layerLookupResult": "CERTIFIED_EXACT_LAYER_RECORD",
+            "layerCertificationRegistry": "config/prisma-visual/identity-layer-certifications.registry.json",
+            "layerGenerator": "tools/quality/ui-visual-control.mjs"
+          },
+          "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton"
+        }
+      ]
+    },
+    {
+      "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
+      "selector": {
+        "neutralMeaningId": "TOK.color.accent",
+        "identityProfileId": "*",
+        "recipePresetId": "*",
+        "objectId": "color.accent",
+        "surfaceId": "tablet"
+      },
+      "cardinality": "ONE_TO_MANY_NON_EXHAUSTIVE",
+      "status": "BLOCKED_BY_AMBIGUOUS_ONE_TO_MANY",
+      "reason": "A semantic accent token can project to many Tablet owners. The compact index proves samples but not exhaustive governed coverage.",
+      "targets": [
+        {
+          "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.BASE.V1",
+          "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "routeId": "tablet.pos.route",
+          "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+          "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+          "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "layerId": null,
+          "ownerCssId": "products.tablet.app.components.pos.pos.module.css",
+          "selector": ".cobrarReferenceButton",
+          "missingBindings": [
+            "layerId",
+            "exhaustiveTargetSet"
+          ],
+          "status": "BLOCKED_BY_AMBIGUOUS_ONE_TO_MANY"
+        },
+        {
+          "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.BEFORE.V1",
+          "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "routeId": "tablet.pos.route",
+          "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+          "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.before.layer",
+          "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "layerId": null,
+          "ownerCssId": "products.tablet.app.components.pos.pos.module.css",
+          "selector": ".cobrarReferenceButton::before",
+          "missingBindings": [
+            "layerId",
+            "exhaustiveTargetSet"
+          ],
+          "status": "BLOCKED_BY_AMBIGUOUS_ONE_TO_MANY"
+        },
+        {
+          "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.ICON.V1",
+          "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "routeId": "tablet.pos.route",
+          "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+          "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobraricon.layer",
+          "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "layerId": null,
+          "ownerCssId": "products.tablet.app.components.pos.pos.module.css",
+          "selector": ".cobrarIcon",
+          "missingBindings": [
+            "layerId",
+            "exhaustiveTargetSet"
+          ],
+          "status": "BLOCKED_BY_AMBIGUOUS_ONE_TO_MANY"
+        }
+      ]
+    },
+    {
+      "bindingId": "BND.SURFACE.ADAPTER.TABLET.V1",
+      "selector": {
+        "neutralMeaningId": "VIS.surface.adapter",
+        "identityProfileId": "*",
+        "recipePresetId": "prisma.adapter.tablet.v1",
+        "objectId": "prisma.adapter.tablet.v1",
+        "surfaceId": "tablet"
+      },
+      "cardinality": "ONE_TO_MANY_UNBOUNDED",
+      "status": "BLOCKED_BY_SCOPE_TOO_BROAD",
+      "reason": "A surface adapter is not a concrete element binding. It requires an explicit owner and slot selection per projected object.",
+      "targets": []
+    },
+    {
+      "bindingId": "BND.ACT.PRIMARY.SHAREDUI.V1",
+      "selector": {
+        "neutralMeaningId": "ACT.primary",
+        "identityProfileId": "*",
+        "recipePresetId": "REC.button.primary",
+        "objectId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+        "surfaceId": "shared-ui"
+      },
+      "cardinality": "NONE",
+      "status": "BLOCKED_BY_MISSING_BINDING",
+      "reason": "Shared UI is a neutral recipe source and has no surface-specific owner, route, region, slot or layer authority.",
+      "targets": []
+    },
+    {
+      "bindingId": "BND.IDENTITY.PROFILE.SHAREDUI.V1",
+      "selector": {
+        "neutralMeaningId": "VIS.identity.profile",
+        "identityProfileId": "*",
+        "recipePresetId": "*",
+        "objectId": "*",
+        "surfaceId": "shared-ui"
+      },
+      "cardinality": "NONE",
+      "status": "BLOCKED_BY_MISSING_BINDING",
+      "reason": "An identity profile is neutral meaning, not a concrete UI element.",
+      "targets": []
+    }
+  ]
+}
