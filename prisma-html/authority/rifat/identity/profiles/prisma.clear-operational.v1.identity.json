@@ -1,0 +1,48 @@
+{
+  "schema": "prisma.identity.profile.v1",
+  "id": "prisma.clear-operational.v1",
+  "version": "1.0.0",
+  "status": "ACTIVE_CANDIDATE",
+  "name": "PRISMA Clear Operational",
+  "intent": "Claridad operativa luminosa, táctil y confiable con vidrio perlado contenido.",
+  "traits": [
+    "luminous",
+    "operational",
+    "calm",
+    "precise",
+    "touch-friendly"
+  ],
+  "tokenOverrides": {
+    "color.canvas": "#f3f7fb",
+    "color.surface": "rgba(255,255,255,0.84)",
+    "color.surfaceElevated": "rgba(255,255,255,0.96)",
+    "color.surfaceMuted": "#e8eef6",
+    "color.textPrimary": "#182235",
+    "color.textSecondary": "#5e6a7d",
+    "color.accent": "#2563eb",
+    "material.surfaceFill": "linear-gradient(145deg, rgba(255,255,255,0.94), rgba(239,246,255,0.78))",
+    "material.surfaceBorder": "rgba(71,85,105,0.16)",
+    "material.surfaceShadow": "0 18px 52px rgba(15,23,42,0.10)",
+    "material.backdropFilter": "blur(18px) saturate(1.08)",
+    "border.radiusControl": "13px",
+    "border.radiusPanel": "20px",
+    "motion.normal": "210ms",
+    "asset.iconStyle": "line-soft"
+  },
+  "surfaceIntent": {
+    "tablet": "light-touch-comfortable",
+    "pc": "information-dense-clear",
+    "mobile": "priority-first-touch",
+    "web": "narrative-luminous",
+    "chart-lab": "data-legible",
+    "control-center": "authoritative-clear",
+    "shared-ui": "neutral-source"
+  },
+  "forbidden": [
+    "dark-tablet-shell",
+    "nested-panel-stack",
+    "opaque-zero-value-layer",
+    "priority-override",
+    "manual-generated-runtime-edit"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "prisma.identity.profile.v1",
+  "id": "prisma.high-contrast-operations.v1",
+  "version": "1.0.0",
+  "status": "CANDIDATE",
+  "name": "PRISMA High Contrast Operations",
+  "intent": "Contraste operacional reforzado para lectura veloz, foco visible y estados inequívocos.",
+  "traits": [
+    "high-contrast",
+    "accessible",
+    "decisive",
+    "operational",
+    "low-ambiguity"
+  ],
+  "tokenOverrides": {
+    "color.canvas": "#f7f8fa",
+    "color.surface": "#ffffff",
+    "color.surfaceElevated": "#ffffff",
+    "color.surfaceMuted": "#e9edf2",
+    "color.textPrimary": "#0d1522",
+    "color.textSecondary": "#344054",
+    "color.textMuted": "#526173",
+    "color.accent": "#003cc5",
+    "color.focus": "#006dff",
+    "material.surfaceFill": "#ffffff",
+    "material.surfaceBorder": "rgba(13,21,34,0.28)",
+    "material.surfaceShadow": "0 12px 32px rgba(13,21,34,0.12)",
+    "material.backdropFilter": "none",
+    "border.radiusControl": "10px",
+    "border.radiusPanel": "14px",
+    "state.focusWidth": "4px",
+    "typography.weightMedium": 620,
+    "motion.fast": "90ms",
+    "motion.normal": "160ms",
+    "asset.iconStyle": "line-strong"
+  },
+  "surfaceIntent": {
+    "tablet": "light-high-contrast-touch",
+    "pc": "dense-high-contrast",
+    "mobile": "priority-high-contrast",
+    "web": "accessible-direct",
+    "chart-lab": "data-contrast",
+    "control-center": "command-contrast",
+    "shared-ui": "neutral-source"
+  },
+  "forbidden": [
+    "low-contrast-copy",
+    "dark-tablet-shell",
+    "nested-panel-stack",
+    "priority-override",
+    "manual-generated-runtime-edit"
+  ]
+}

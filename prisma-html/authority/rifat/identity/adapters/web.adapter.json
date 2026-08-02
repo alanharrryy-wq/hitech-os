@@ -1,0 +1,37 @@
+{
+  "schema": "prisma.identity.surface-adapter.v1",
+  "id": "prisma.adapter.web.v1",
+  "surface": "web",
+  "role": "END_SURFACE",
+  "readiness": "DISCOVERY_REQUIRED",
+  "intent": "Narrative and public-facing adaptation without departing from semantic identity.",
+  "tokenOverrides": {
+    "typography.titleSize": "40px",
+    "density.space5": "32px",
+    "border.radiusHero": "34px"
+  },
+  "projectionRules": {
+    "meaningOrder": [
+      "semantic-token",
+      "identity-profile",
+      "surface-adapter",
+      "owner-slot-binding",
+      "compiled-projection"
+    ],
+    "bindingRegistry": "registries/bindings.registry.json",
+    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "fewestContainersPossible": true,
+    "zeroVisualKnobMeansTransparent": true,
+    "preserveFunctionalBehavior": true,
+    "manualRuntimeEditsForbidden": true
+  },
+  "forbiddenMutations": [
+    "functional-behavior",
+    "database-or-sync",
+    "backend",
+    "deploy-or-dns",
+    "process-or-port",
+    "priority-override",
+    "global-css-blast"
+  ]
+}

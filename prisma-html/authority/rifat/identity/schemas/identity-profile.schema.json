@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.profile.schema.v1",
+  "title": "PRISMA identity profile",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "status",
+    "name",
+    "intent",
+    "traits",
+    "tokenOverrides",
+    "surfaceIntent",
+    "forbidden"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.profile.v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^prisma\\.[a-z0-9-]+\\.v[0-9]+$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ACTIVE_CANDIDATE",
+        "CANDIDATE",
+        "FROZEN"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "traits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 3
+    },
+    "tokenOverrides": {
+      "type": "object"
+    },
+    "surfaceIntent": {
+      "type": "object"
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

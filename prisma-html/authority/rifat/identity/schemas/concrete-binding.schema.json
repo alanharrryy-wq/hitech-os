@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.element-binding.v1",
+  "title": "PRISMA concrete identity binding",
+  "type": "object",
+  "required": [
+    "bindingId",
+    "selector",
+    "cardinality",
+    "status",
+    "targets"
+  ],
+  "properties": {
+    "bindingId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selector": {
+      "type": "object"
+    },
+    "cardinality": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "targets": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}
