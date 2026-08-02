@@ -84,7 +84,7 @@ jobs:
           echo "CI_METRIC_PNPM_CACHE_HIT=${{ steps.setup-node.outputs.cache-hit }}" >> "$GITHUB_ENV"
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 

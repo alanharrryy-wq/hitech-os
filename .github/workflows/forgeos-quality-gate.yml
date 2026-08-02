@@ -45,7 +45,7 @@ jobs:
           fi
           echo "run_gate=false" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         if: steps.scope.outputs.run_gate == 'true'
         with:
           python-version: "3.11"
