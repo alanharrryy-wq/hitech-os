@@ -49,6 +49,10 @@ function scanBrowserViolations() {
   for (const root of roots) {
     for (const filePath of walkFiles(root, { allowExt: [".ts", ".tsx", ".js", ".jsx", ".mjs"] })) {
       if (allowSegments.some((segment) => filePath.includes(segment))) continue;
+      // Next.js route handlers always execute on the server even when they live
+      // below app/. Treating route.ts/route.js as browser modules creates false
+      // positives for legitimate filesystem and database access at HTTP boundaries.
+      if (/^route\.(?:[cm]?[jt]s|[jt]sx)$/i.test(path.basename(filePath))) continue;
       const text = fs.readFileSync(filePath, "utf8");
       // PRISMA_SURF_FIN2_SERVER_ONLY_BROWSER_SURFACE_GUARD:
       // Next.js files that explicitly import `server-only` may live under app/
