@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Governed, read-only resolver for PRISMA portable visual identity bindings."""
+"""Governed resolver for PRISMA portable visual identity bindings."""
 from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +59,30 @@ def verify_portable_artifact(artifact: dict[str, Any]) -> list[str]:
 
 def load_registry() -> dict[str, Any]:
     return load_json(REGISTRY_PATH)
+
+
+def refresh_authority_snapshot(registry: dict[str, Any]) -> bool:
+    snapshot = registry["authoritySnapshot"]
+    refreshed_files = []
+    for item in snapshot["files"]:
+        path = ROOT / item["path"]
+        if not path.is_file():
+            raise FileNotFoundError(f"required authority source is missing: {item['path']}")
+        refreshed_files.append(
+            {
+                **item,
+                "sha256": sha256_file(path),
+                "bytes": path.stat().st_size,
+            }
+        )
+    snapshot_id = sha256_bytes(canonical_bytes(refreshed_files))
+    changed = snapshot.get("snapshotId") != snapshot_id or snapshot.get("files") != refreshed_files
+    snapshot["files"] = refreshed_files
+    snapshot["snapshotId"] = snapshot_id
+    snapshot["canonicalization"] = CANONICALIZATION
+    if changed:
+        snapshot["generatedAt"] = datetime.now(timezone.utc).isoformat()
+    return changed
 
 
 def current_authority_snapshot(registry: dict[str, Any]) -> dict[str, Any]:
