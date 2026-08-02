@@ -223,19 +223,29 @@ def resolve_runtime_roots(product_root: Path) -> dict[str, list[Path]]:
     return resolved
 
 
+NEXT_ROUTE_ENTRYPOINT_KINDS = {
+    "page": "page",
+    "route": "api_route",
+    "layout": "layout",
+    "template": "template",
+    "loading": "loading",
+    "error": "error_boundary",
+    "global-error": "global_error_boundary",
+    "not-found": "not_found_boundary",
+    "default": "parallel_route_default",
+}
+
+
 def route_path_from_file(root: Path, path: Path) -> tuple[str, str] | None:
     rel = path.relative_to(root).as_posix()
-    name = path.name.lower()
-    if name not in {"page.tsx", "page.jsx", "page.ts", "page.js", "route.ts", "route.js", "layout.tsx", "layout.jsx"}:
+    stem = path.stem.lower()
+    is_next_route_entrypoint = stem in NEXT_ROUTE_ENTRYPOINT_KINDS and path.suffix.lower() in SOURCE_EXTS
+    if not is_next_route_entrypoint:
         # classic pages router
         if "/pages/" not in f"/{rel.lower()}" and not rel.lower().startswith("pages/"):
             return None
     parts = list(path.relative_to(root).parts)
-    kind = "page"
-    if name.startswith("route."):
-        kind = "api_route"
-    elif name.startswith("layout."):
-        kind = "layout"
+    kind = NEXT_ROUTE_ENTRYPOINT_KINDS.get(stem, "page")
     if "app" in [p.lower() for p in parts]:
         idx = [p.lower() for p in parts].index("app")
         route_parts = parts[idx + 1 : -1]
@@ -817,12 +827,22 @@ def widget_type_id(kind: str) -> str:
     return stable_id("WID", kind)
 
 
-def component_locator(runtime_alias: str, route_path: str, region: str, element: str, kind: str, ordinal: int) -> str:
-    surface = upper_token(route_surface_slug(route_path), "HOME", 16)
+def component_locator(
+    runtime_alias: str,
+    route_path: str,
+    region: str,
+    element: str,
+    kind: str,
+    ordinal: int,
+    owner_identity: str | None = None,
+) -> str:
+    route_identity = slug(route_path.strip("/") or "home")
+    surface = upper_token(route_identity, "HOME", 64)
     zone = upper_token(region, "MAIN", 12)
+    owner = upper_token(owner_identity or "owner", "OWNER", 160)
     item = upper_token(element, "ITEM", 24)
     suffix = WIDGET_TYPE_SUFFIX.get(kind, "CTL")
-    return f"{runtime_alias.upper()}-{surface}-{zone}-{item}-{suffix}-{ordinal:02d}"
+    return f"{runtime_alias.upper()}-{surface}-{zone}-{owner}-{item}-{suffix}-{ordinal:02d}"
 
 
 def source_snapshot_hash(file_hashes: dict[str, str]) -> str:

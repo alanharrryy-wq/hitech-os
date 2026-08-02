@@ -314,6 +314,50 @@ def choose_element_name(candidate: UiCandidate) -> str:
     return slug(candidate.tag_name)
 
 
+def canonical_owner_identity(candidate: UiCandidate) -> str:
+    """Build a stable owner identity from the canonical source path.
+
+    Discovery order is deliberately excluded. Repeated route-boundary symbols
+    such as ``Error`` and ``Loading`` therefore remain distinct without
+    ordinal collision suffixes.
+    """
+    normalized = str(candidate.owner_file or candidate.render_source_file or "").replace("\\", "/")
+    if (
+        candidate.runtime_alias == "tb"
+        and normalized.lower().endswith("products/tablet/app/components/pos/pos-ticket-panel.tsx")
+    ):
+        return "pos_ticket_panel"
+    without_extension = re.sub(
+        r"\.(?:tsx?|jsx?|mjs|cjs|vue|svelte)$",
+        "",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    marker_by_runtime = {
+        "tb": "/products/tablet/",
+        "pc": "/products/pc/",
+        "mb": "/products/mobile/",
+        "web": "/products/web/",
+        "cl": "/products/chart-lab/",
+        "cc": "/products/control-center/",
+        "cmd": "/prisma-control-center/",
+    }
+    marker = marker_by_runtime.get(candidate.runtime_alias)
+    scoped = without_extension
+    if marker and marker in f"/{without_extension}":
+        scoped = f"/{without_extension}".split(marker, 1)[1]
+    elif candidate.runtime_alias == "shared" and "/packages/" in f"/{without_extension}":
+        scoped = "packages/" + f"/{without_extension}".split("/packages/", 1)[1]
+    scoped = re.sub(r"^(?:app/|src/)+", "", scoped, flags=re.IGNORECASE)
+    return slug(scoped or candidate.owner_symbol or "owner")
+
+
+def canonical_route_identity(candidate: UiCandidate, owner_identity: str) -> str:
+    if str(candidate.route_id).endswith(".unrouted"):
+        return owner_identity
+    return slug(candidate.route_path.strip("/") or "home")
+
+
 def visual_target_rows(targets: list[CssTarget], implementation_layer_id: str | None, generated: bool) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for index, target in enumerate(targets, start=1):
@@ -363,7 +407,17 @@ def record_from_candidate(
     )
     element = "cobrar" if is_golden else choose_element_name(candidate)
     widget_kind = "button" if is_golden else candidate.widget_kind
-    locator = component_locator(runtime, route_path, region, element, widget_kind, ordinal)
+    owner_identity = canonical_owner_identity(candidate)
+    route_identity = canonical_route_identity(candidate, owner_identity)
+    locator = component_locator(
+        runtime,
+        route_path,
+        region,
+        element,
+        widget_kind,
+        ordinal,
+        owner_identity,
+    )
     selector = f".{candidate.class_name}" if candidate.class_name else None
     auth, auth_blockers = selector_authority(authority, selector) if selector else (None, [])
 
@@ -381,10 +435,14 @@ def record_from_candidate(
     )
     route_id = GOLDEN_TRACE_DEFAULT["routeId"] if is_golden else candidate.route_id
     region_id = stable_id("ZONE", runtime, route_surface, region)
-    slot_id = stable_id("SLOT", runtime, route_surface, region, element)
-    owner_id = stable_id("OWN", runtime, candidate.owner_symbol)
+    slot_id = stable_id("SLOT", runtime, route_identity, region, owner_identity, element)
+    owner_id = stable_id("OWN", runtime, owner_identity)
     component_id = stable_id(
-        "WGT", runtime, route_surface, "cobrar" if is_golden else candidate.owner_symbol, "" if is_golden else element
+        "WGT",
+        runtime,
+        route_identity,
+        "cobrar" if is_golden else owner_identity,
+        "" if is_golden else element,
     )
     if component_id.endswith(".item"):
         component_id = component_id[:-5]
@@ -652,17 +710,6 @@ def _mark_collision(record: dict[str, Any], reason: str = "CANONICAL_ID_COLLISIO
     record["blockingReasons"] = sorted(set(record["blockingReasons"]) | {reason})
 
 
-def _unique_collision_value(field: str, value: str, index: int, record: dict[str, Any]) -> str:
-    if field == "componentUiId":
-        base = re.sub(r"-\d{2}$", "", value)
-        return f"{base}-{index:02d}"
-    if field == "componentId":
-        return f"{value}.projection_{index:02d}"
-    if field == "slotId":
-        return f"{value}_slot_{index:02d}"
-    return f"{value}_{index:02d}"
-
-
 def _dedupe_key_token(key: tuple[str, str, str, str]) -> str:
     payload = json.dumps(list(key), ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     return sha256_bytes(payload)
@@ -801,7 +848,8 @@ def deduplicate_records(records: list[dict[str, Any]]) -> tuple[list[dict[str, A
         })
 
     output = list(by_key.values())
-    # Canonical outputs must remain unique. Real tuple collisions are registered and deterministically disambiguated.
+    # Canonical outputs must remain unique. A collision is evidence that route or
+    # owner discovery needs repair; never hide it behind ordinal suffixes.
     for field in ("componentUiId", "componentId", "slotId"):
         groups: dict[str, list[dict[str, Any]]] = {}
         for record in output:
@@ -812,27 +860,14 @@ def deduplicate_records(records: list[dict[str, Any]]) -> tuple[list[dict[str, A
             distinct_owners = {str(record.get("ownerFile")) for record in group}
             if len(group) < 2 or len(distinct_owners) < 2:
                 continue
-            ordered = sorted(group, key=lambda record: (
-                0 if record.get("legacyIdPreserved") else 1,
-                str(record.get("ownerFile")),
-                str(record.get("renderSourceFile")),
-            ))
-            resolved_values: list[str] = []
-            for index, record in enumerate(ordered, start=1):
-                if index == 1 and record.get("legacyIdPreserved"):
-                    new_value = value
-                else:
-                    new_value = _unique_collision_value(field, value, index, record)
-                record[field] = new_value
-                resolved_values.append(new_value)
+            for record in group:
                 _mark_collision(record)
             conflicts.append({
                 "conflictType": "CANONICAL_ID_COLLISION",
                 "field": field,
                 "value": value,
                 "owners": sorted(distinct_owners),
-                "resolvedUniqueValues": resolved_values,
-                "resolution": "BLOCKED_AND_DETERMINISTICALLY_DISAMBIGUATED",
+                "resolution": "UNRESOLVED_REQUIRES_ROUTE_OR_OWNER_REPAIR",
             })
 
     canonical_by_dedupe_key = {
@@ -1308,13 +1343,25 @@ def validate_outputs(
         if record_errors:
             per_record.append({"componentUiId": record.get("componentUiId"), "errors": record_errors})
             errors.extend(f"{record.get('componentUiId')}:{item}" for item in record_errors)
-    for field in ("componentUiId", "componentId"):
+    for field in ("componentUiId", "componentId", "slotId"):
         values = [str(record.get(field) or "") for record in records]
         duplicates = sorted({value for value in values if value and values.count(value) > 1})
         if duplicates:
             errors.append(f"duplicate_{field}:" + ",".join(duplicates[:50]))
     if aliases_have_cycle(aliases):
         errors.append("circular_alias_detected")
+    owner_files_by_id: dict[str, set[str]] = {}
+    owner_ids_by_file: dict[str, set[str]] = {}
+    for record in records:
+        owner_id = str(record.get("ownerId") or "")
+        owner_file = str(record.get("ownerFile") or "")
+        if owner_id and owner_file:
+            owner_files_by_id.setdefault(owner_id, set()).add(owner_file)
+            owner_ids_by_file.setdefault(owner_file, set()).add(owner_id)
+    if any(len(files) > 1 for files in owner_files_by_id.values()):
+        errors.append("owner_id_maps_to_multiple_owner_files")
+    if any(len(ids) > 1 for ids in owner_ids_by_file.values()):
+        errors.append("owner_file_maps_to_multiple_owner_ids")
     alias_target_errors = validate_alias_targets(records, aliases)
     errors.extend(alias_target_errors)
     if product_before_hash != product_after_hash:
@@ -1552,7 +1599,13 @@ def run_uimap(
             region = infer_region(candidate.route_path, candidate.class_name, candidate.render_symbol, candidate.widget_kind)
             element = choose_element_name(candidate)
             locator_base = component_locator(
-                alias, candidate.route_path, region, element, candidate.widget_kind, 1
+                alias,
+                candidate.route_path,
+                region,
+                element,
+                candidate.widget_kind,
+                1,
+                canonical_owner_identity(candidate),
             ).rsplit("-", 1)[0]
             ordinal_counter[locator_base] = ordinal_counter.get(locator_base, 0) + 1
             targets = css_index.get(candidate.class_name or "", [])

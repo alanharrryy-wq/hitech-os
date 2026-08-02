@@ -7,13 +7,22 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from .contracts import ADAPTERS, SCHEMA_VERSION, record_schema, validate_record, validate_schema_subset
+from .contracts import (
+    ADAPTERS,
+    SCHEMA_VERSION,
+    record_schema,
+    slug,
+    stable_id,
+    validate_record,
+    validate_schema_subset,
+)
 from .discovery import (
     CssTarget,
     UiCandidate,
     extract_ui_candidates_from_file,
     make_state_support,
     parallel_hash,
+    route_path_from_file,
 )
 from .runner import (
     GOLDEN_BINDING_ID,
@@ -158,12 +167,18 @@ class UimapTests(unittest.TestCase):
             legacy = [row for row in aliases["aliases"] if row.get("reason") == "CERTIFIED_LEGACY_ID_PRESERVED"]
             self.assertEqual(len(legacy), 6)
 
-    def test_02_collision_ids_blocked(self):
+    def test_02_collision_ids_blocked_without_ordinal_rewrite(self):
         a = minimal_record("PC-HOME-MAIN-X-BTN-01", "WGT.pc.home.x", "a.tsx")
         b = minimal_record("PC-HOME-MAIN-X-BTN-01", "WGT.pc.home.y", "b.tsx")
         records, _, conflicts = deduplicate_records([a, b])
         self.assertTrue(conflicts)
         self.assertTrue(all(r["targetResolutionStatus"] == "BLOCKED_BY_CONFLICT" for r in records))
+        self.assertEqual({r["componentUiId"] for r in records}, {"PC-HOME-MAIN-X-BTN-01"})
+        self.assertFalse(any("projection_" in r["componentId"] for r in records))
+        self.assertTrue(all(
+            row["resolution"] == "UNRESOLVED_REQUIRES_ROUTE_OR_OWNER_REPAIR"
+            for row in conflicts
+        ))
 
     def test_03_legacy_alias_registry(self):
         a = minimal_record("PC-HOME-MAIN-X-BTN-01", "WGT.pc.home.x", "a.tsx")
@@ -450,6 +465,70 @@ class UimapTests(unittest.TestCase):
         errors = validate_alias_targets([canonical], aliases)
         self.assertTrue(any(error.startswith("alias_owner_provenance_mismatch:") for error in errors))
         self.assertTrue(any(error.startswith("alias_component_provenance_mismatch:") for error in errors))
+
+    def test_24_next_route_boundaries_are_route_entrypoints(self):
+        root = Path("products/pc/app")
+        self.assertEqual(
+            route_path_from_file(root, root / "app/audit/error.tsx"),
+            ("/audit", "error_boundary"),
+        )
+        self.assertEqual(
+            route_path_from_file(root, root / "app/settings/license/loading.tsx"),
+            ("/settings/license", "loading"),
+        )
+
+    def test_25_source_owner_identity_prevents_route_collision(self):
+        def candidate(route: str, owner: str) -> UiCandidate:
+            return UiCandidate(
+                runtime_alias="pc",
+                route_path=route,
+                route_id=stable_id("ROUTE", "pc", slug(route)),
+                route_source_file=owner,
+                render_source_file=owner,
+                render_symbol="Error",
+                owner_file=owner,
+                owner_symbol="Error",
+                class_name="btn",
+                tag_name="button",
+                widget_kind="button",
+                text_hint="Retry",
+                instance_policy="SINGLE_OR_STATIC",
+                data_attributes={},
+                source_hash="A" * 64,
+            )
+
+        audit = record_from_candidate(
+            candidate("/audit", "apps/terminal-de-venta-system/products/pc/app/app/audit/error.tsx"),
+            [],
+            {},
+            1,
+            {},
+            [],
+        )
+        catalog = record_from_candidate(
+            candidate("/catalog", "apps/terminal-de-venta-system/products/pc/app/app/catalog/error.tsx"),
+            [],
+            {},
+            1,
+            {},
+            [],
+        )
+        records, _, conflicts = deduplicate_records([catalog, audit])
+        reversed_records, _, reversed_conflicts = deduplicate_records([
+            json.loads(json.dumps(audit)),
+            json.loads(json.dumps(catalog)),
+        ])
+        self.assertFalse(conflicts)
+        self.assertFalse(reversed_conflicts)
+        self.assertEqual(len({record["componentId"] for record in records}), 2)
+        self.assertEqual(len({record["slotId"] for record in records}), 2)
+        self.assertEqual(len({record["componentUiId"] for record in records}), 2)
+        self.assertEqual(
+            [(record["ownerFile"], record["componentId"], record["slotId"]) for record in records],
+            [(record["ownerFile"], record["componentId"], record["slotId"]) for record in reversed_records],
+        )
+        self.assertFalse(any("projection_" in record["componentId"] for record in records))
+        self.assertFalse(any("_slot_" in record["slotId"] for record in records))
 
 
 if __name__ == "__main__":
