@@ -166,9 +166,37 @@
         "Mobile mutations",
         "Production zero-egress certification"
       ]
+    },
+    {
+      "artifact": "atlasapply_0208-1254_final.zip",
+      "type": "atlasfin_tablet_pos_cobrar_governed_application",
+      "scope": [
+        "atlasfin",
+        "code_atlas_ui_bridge",
+        "rifat",
+        "uimap",
+        "tablet_pos_cobrar"
+      ],
+      "status": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED",
+      "proves": [
+        "REC.button.primary applied to exactly one Tablet POS product CSS file through the canonical RIFAT projection",
+        "Corrective immutable UIMAP batch supersedes BATCH.tb.90329799098ce65f and preserves the certified Cobrar binding",
+        "Mamastrophic BEFORE and AFTER used the same route, viewport, browser and exact target",
+        "The target changed visually while retaining its 368x69 runtime bounding box",
+        "No target network failures and no new console errors were introduced",
+        "Second UI Bridge execution produced NO_ACTIONABLE_DIFF",
+        "Historical source-only V1 application guards remain false"
+      ],
+      "doesNotProve": [
+        "Focus-visible or loading runtime state when the target is natively disabled",
+        "Checkout, payment or database mutation",
+        "A clean dev console baseline; both captures retain the same unattributed 404",
+        "Hosted production deployment",
+        "Visual certification outside Tablet POS Cobrar"
+      ]
     }
   ],
-  "updatedAt": "2026-07-20T15:30:00-06:00",
+  "updatedAt": "2026-08-02T12:54:27-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -179,6 +207,16 @@
         "runtime-certification.json",
         "sabotage-report.json",
         "overhead.json"
+      ]
+    },
+    {
+      "capabilityId": "visual.atlasfin.tablet_pos_cobrar",
+      "status": "RUNTIME_VISUAL_CERTIFIED",
+      "runId": "atlasapply_0208-1254",
+      "evidence": [
+        "atlasapply_0208-1254_final.zip",
+        "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.json",
+        "BATCH.tb.131ff748bb7c8cf2"
       ]
     }
   ]
