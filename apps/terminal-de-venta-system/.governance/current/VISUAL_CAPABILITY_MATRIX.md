@@ -1,39 +1,39 @@
 # PRISMA Visual Capability Matrix
 
-- Task: `PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes`
+- Task: `FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.`
 - Status: `PASS`
-- Generated: `2026-07-05T06:53:40-06:00`
+- Generated: `2026-07-26T01:50:04-06:00`
 - Visual required: `True`
 
 | Capability | Kind | Available | Risk | Default decision | Evidence count | Contribution |
 |---|---|---:|---|---|---:|---|
 | background-catalog | repo_capability | yes | medium | review | 40 | Governed atmospheric/background assets per surface. |
-| clsx | package | yes | low | use_if_relevant | 2 | Safe local class composition. |
-| tailwind-merge | package | yes | low | use_if_relevant | 2 | Conflict-aware utility class merge if Tailwind utilities are in use. |
+| clsx | package | yes | low | use_if_relevant | 4 | Safe local class composition. |
+| tailwind-merge | package | yes | low | use_if_relevant | 4 | Conflict-aware utility class merge if Tailwind utilities are in use. |
 | authority-map | repo_capability | yes | low | mandatory | 2 | Connects recipes/components to allowed surfaces and authority constraints. |
 | layer-budget | repo_capability | yes | low | mandatory | 12 | Limits visual depth/effects so premium layers do not crush performance or clarity. |
-| lucide-react | package | yes | low | use_if_relevant | 2 | Lightweight governed icons for actions/status/navigation clarity. |
+| lucide-react | package | yes | low | use_if_relevant | 4 | Lightweight governed icons for actions/status/navigation clarity. |
 | cloudglass-assets | repo_capability | yes | medium | review | 40 | Liquid/Pill/Cloudglass references, assets, docs, runtime implementations and candidates. |
 | framer-motion | package | yes | medium | use_if_relevant | 1 | Bounded microinteractions: tap feedback, panel reveal, cart/payment transitions. |
-| gsap | package | yes | high | bounded_optional_high_risk | 3 | Timeline animation only when already used safely and not overkill. |
-| motion | package | yes | medium | use_if_relevant | 3 | Bounded microinteractions if compatible with current import style. |
+| gsap | package | yes | high | bounded_optional_high_risk | 5 | Timeline animation only when already used safely and not overkill. |
+| motion | package | yes | medium | use_if_relevant | 5 | Bounded microinteractions if compatible with current import style. |
 | react-spring | package | yes | medium | use_if_relevant | 1 | Spring microinteractions if target surface already uses it. |
 | react-spring-web | package | no | medium | not_available | 0 | Spring microinteractions if target surface already uses it. |
 | prisma-components | repo_capability | yes | low | prefer | 13 | Governed PRISMA surfaces, cards, panels, action buttons and product/cart/checkout components. |
-| radix-dialog | package | yes | low | use_if_relevant | 2 | Accessible dialog/confirmation surfaces for checkout and guarded actions. |
-| radix-dropdown-menu | package | yes | low | use_if_relevant | 2 | Accessible command/menu surfaces for structured actions. |
-| radix-scroll-area | package | yes | low | use_if_relevant | 2 | Controlled scroll for product grids, carts and dense touch regions. |
-| radix-select | package | yes | low | use_if_relevant | 2 | Accessible selects for filters, variants and checkout options. |
-| radix-slot | package | yes | low | use_if_relevant | 2 | Composition primitive for PRISMA buttons/panels without DOM noise. |
-| radix-tabs | package | yes | low | use_if_relevant | 2 | Accessible tabbed segmentation for categories or payment modes. |
-| radix-tooltip | package | yes | medium | use_if_relevant | 2 | Non-blocking help for secondary controls when touch UX stays clear. |
+| radix-dialog | package | yes | low | use_if_relevant | 4 | Accessible dialog/confirmation surfaces for checkout and guarded actions. |
+| radix-dropdown-menu | package | yes | low | use_if_relevant | 4 | Accessible command/menu surfaces for structured actions. |
+| radix-scroll-area | package | yes | low | use_if_relevant | 4 | Controlled scroll for product grids, carts and dense touch regions. |
+| radix-select | package | yes | low | use_if_relevant | 4 | Accessible selects for filters, variants and checkout options. |
+| radix-slot | package | yes | low | use_if_relevant | 4 | Composition primitive for PRISMA buttons/panels without DOM noise. |
+| radix-tabs | package | yes | low | use_if_relevant | 4 | Accessible tabbed segmentation for categories or payment modes. |
+| radix-tooltip | package | yes | medium | use_if_relevant | 4 | Non-blocking help for secondary controls when touch UX stays clear. |
 | prisma-recipes | repo_capability | yes | low | prefer | 27 | Approved visual recipes including liquid/glass/pill/cloudglass where authorized. |
-| vanilla-extract | package | yes | medium | use_if_relevant | 2 | Static governed tokens/styles when repo pattern already exists. |
-| prisma-tokens | repo_capability | yes | low | prefer | 14 | Governed spacing, color, radius, shadow, typography and state primitives. |
-| class-variance-authority | package | yes | low | use_if_relevant | 2 | Typed class variants for governed component states. |
+| vanilla-extract | package | yes | medium | use_if_relevant | 4 | Static governed tokens/styles when repo pattern already exists. |
+| prisma-tokens | repo_capability | yes | low | prefer | 11 | Governed spacing, color, radius, shadow, typography and state primitives. |
+| class-variance-authority | package | yes | low | use_if_relevant | 4 | Typed class variants for governed component states. |
 | prisma-visual-os | repo_capability | yes | low | prefer | 25 | Governed controls, layers, presets, recipes and release gates. |
-| ogl | package | yes | high | bounded_optional_high_risk | 2 | Bounded ambient/background WebGL only when layer budget allows. |
-| three | package | yes | high | bounded_optional_high_risk | 2 | 3D/WebGL for lab/background use, rarely for operational POS. |
+| ogl | package | yes | high | bounded_optional_high_risk | 4 | Bounded ambient/background WebGL only when layer budget allows. |
+| three | package | yes | high | bounded_optional_high_risk | 4 | 3D/WebGL for lab/background use, rarely for operational POS. |
 
 ## Rule
 

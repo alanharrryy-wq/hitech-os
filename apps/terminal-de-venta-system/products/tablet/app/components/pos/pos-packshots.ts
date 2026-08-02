@@ -1,5 +1,6 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 export type PosPackshotKind = "bottle" | "water" | "bag" | "carton" | "bread" | "jar" | "box";
-export type PrismaPackshotSkin = "light" | "dark";
+export type PrismaPackshotSkin = "dark";
 
 export type PosPackshot = {
   src: string;
@@ -16,8 +17,7 @@ export type PosPackshot = {
  * Visual-only resolver for skin-aware product packshots.
  *
  * Public asset contract:
- *   products/tablet/app/public/products/packshots/light/*.png -> /products/packshots/light/*.png
- *   products/tablet/app/public/products/packshots/dark/*.png  -> /products/packshots/dark/*.png
+ *   managed product media -> /product-media/catalog/*.png
  *
  * Why v03 exists:
  * v02 mapped the generated image library, but water products still collapsed into one
@@ -45,7 +45,7 @@ export const POS_PACKSHOT_FILENAMES = [
 
 const LEGACY_GENERIC_BASE = "/pos-packshots";
 const LEGACY_PRODUCT_BASE = "/products/packshots";
-const SKIN_PRODUCT_BASE = "/products/packshots";
+const SKIN_PRODUCT_BASE = "/product-media/catalog";
 
 const DEFAULT_FALLBACK_FILE = "cereal_box_512.png";
 
@@ -248,21 +248,21 @@ function unique(values: string[]) {
   return values.filter((value, index, list) => value && list.indexOf(value) === index);
 }
 
-function oppositeSkin(skin: PrismaPackshotSkin): PrismaPackshotSkin {
-  return skin === "dark" ? "light" : "dark";
+function oppositeSkin(_skin: PrismaPackshotSkin): PrismaPackshotSkin {
+  return "dark";
 }
 
-function normalizeSkin(skin?: PrismaPackshotSkin | null): PrismaPackshotSkin {
-  return skin === "dark" ? "dark" : "light";
+function normalizeSkin(_skin?: PrismaPackshotSkin | null): PrismaPackshotSkin {
+  return "dark";
 }
 
 function fileToSlug(file: string) {
   return file.replace(/\.png$/i, "");
 }
 
-function skinPath(skin: PrismaPackshotSkin, fileOrSlug: string) {
+function skinPath(_skin: PrismaPackshotSkin, fileOrSlug: string) {
   const file = fileOrSlug.endsWith(".png") ? fileOrSlug : `${fileOrSlug}.png`;
-  return `${SKIN_PRODUCT_BASE}/${skin}/${file}`;
+  return `${SKIN_PRODUCT_BASE}/${file}`;
 }
 
 function legacyProductPath(file: string) {
@@ -475,7 +475,6 @@ export function resolveProductPackshot(
   const directSlug = slugifyPackshot(name);
   const rule =
     ruleFromGeneratedAliases(text) ??
-    ruleFromLegacySpecificProductText(text) ??
     ruleFromGenericCategoryText(text) ??
     ruleFromGeneratedSlug(name, category);
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,6 +14,18 @@ const dbPath = process.env.TABLET_DATABASE_PATH
   : path.join(appRoot, "data", "tablet-pos.db");
 const databaseUrl = process.env.TABLET_DATABASE_URL ?? `file:${dbPath.replace(/\\/g, "/")}`;
 const command = process.argv[2] ?? "help";
+
+// PRISMA_TABLET_CANONICAL_SCOPE_SEED_142
+function stableTenantId(prefix, ...parts) {
+  return `${prefix}_${createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 18)}`;
+}
+
+function resolvedSeedBusinessId() {
+  return process.env.PRISMA_SYNC_BUSINESS_ID?.trim()
+    || process.env.PRISMA_TABLET_BUSINESS_ID?.trim()
+    || process.env.NEXT_PUBLIC_PRISMA_SYNC_BUSINESS_ID?.trim()
+    || "biz_78b3c840796a4a4dad";
+}
 
 function printHelp() {
   console.log(`Tablet DB helper
@@ -150,15 +163,15 @@ async function seed() {
   const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
 
   try {
-    const businessId = "biz_tablet_standalone";
-    const defaultStoreId = "store_tablet_local";
-    const defaultTerminalId = "terminal_tablet_local_01";
-    const defaultTaxRateId = "tax_mx_iva_16";
+    const businessId = resolvedSeedBusinessId();
+    const defaultStoreId = process.env.PRISMA_TABLET_STORE_ID?.trim() || stableTenantId("store", businessId, "LOCAL");
+    const defaultTerminalId = process.env.PRISMA_TABLET_TERMINAL_ID?.trim() || stableTenantId("terminal", businessId, "TBL-LOCAL");
+    const defaultTaxRateId = stableTenantId("tax", businessId, "IVA-16");
 
     await prisma.business.upsert({
       where: { id: businessId },
-      update: { name: "PRISMA Tablet Standalone", currency: "MXN" },
-      create: { id: businessId, name: "PRISMA Tablet Standalone", taxId: null, currency: "MXN" }
+      update: { name: process.env.PRISMA_TABLET_BUSINESS_NAME?.trim() || "Prisma Original Customer", currency: "MXN" },
+      create: { id: businessId, name: process.env.PRISMA_TABLET_BUSINESS_NAME?.trim() || "Prisma Original Customer", taxId: null, currency: "MXN" }
     });
 
     const localStore = await prisma.store.upsert({

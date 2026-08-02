@@ -1,6 +1,6 @@
 # PRISMA Premium Acceptance Bar
 
-- Task: `PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes`
+- Task: `FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.`
 
 ## Minimum bar
 

@@ -1,21 +1,19 @@
 {
-  "task": "PRISMA data-to-surface certification: PC sales-control, Tablet POS, Mobile client-first home and tabs, Chart Lab runtime counters, Data Lifecycle dashboard; correct loaders APIs queries contracts and verifiers without browser runtime servers Prisma generate migrations or production changes",
+  "task": "FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.",
   "apps": [
-    "backgrounds",
     "chart-lab",
     "control-center",
     "database-sync",
     "mobile",
     "pc",
-    "productization",
     "quality",
-    "shared-kernel",
     "shared-ui",
     "tablet",
     "web"
   ],
   "change_types": [
     "data_sync",
+    "ops_hot_injection",
     "visual"
   ],
   "required_gates": [
@@ -51,7 +49,12 @@
     "regenerate Prisma hot",
     "delete files permanently",
     "force push",
-    "global CSS blast without manifest"
+    "global CSS blast without manifest",
+    "kill processes",
+    "free ports",
+    "start dev server",
+    "regenerate prisma hot",
+    "pc:typecheck hot"
   ],
   "contracts_found": [
     {
@@ -197,70 +200,6 @@
       "extension": ".json",
       "source_id": "app:quality",
       "reason": "quality_authority"
-    },
-    {
-      "path": "docs/contracts/API_RESPONSE_CONTRACT.md",
-      "bytes": 1344,
-      "sha256": "7e0d5ed2eb40bf5003631a260a34b196f3f66390f80257383a1770621aeaf237",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/ERRORS_CONTRACT.md",
-      "bytes": 1187,
-      "sha256": "0dab09208b3bac204df5dd6523a7679cef88337bd02d999950a7c4698d5fd4c6",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/EVENT_CONTRACT.md",
-      "bytes": 2114,
-      "sha256": "0189199658c0207bc12bb9a4c195e610e215779808b67328020a8fb090f65982",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/EXPORT_CONTRACT.md",
-      "bytes": 803,
-      "sha256": "f8f4a30c9a93738c45b61a579500da6c5147cf6aaf4e6696335688266f1fc3b7",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/PERMISSIONS_AUDIT_CONTRACT.md",
-      "bytes": 1613,
-      "sha256": "c9702506b9de9e05bd3b9967ee8c4fe9b7a01a046b97885f63c37516f93987af",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/QA_ACCEPTANCE_CONTRACT.md",
-      "bytes": 1254,
-      "sha256": "255f559773b2ab7bb82fbe44bc00ac896a7ead870a7f1c85377c72caf5e8d506",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/SYNC_RECONCILIATION_CONTRACT.md",
-      "bytes": 2092,
-      "sha256": "841cd3598cf9c4b8c98df398b71a86c7abf398ced138246be5f9b850f7ec358f",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
-    },
-    {
-      "path": "docs/contracts/UI_STATE_CONTRACT.md",
-      "bytes": 979,
-      "sha256": "857f63652b713691b8188ebecd26a6fdd1103a20eb88831c0b98a13a3dd3e17c",
-      "extension": ".md",
-      "source_id": "app:shared-kernel",
-      "reason": "shared-kernel_authority"
     }
   ],
   "critical_missing": [],

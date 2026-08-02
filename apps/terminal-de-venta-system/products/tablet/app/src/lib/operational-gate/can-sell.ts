@@ -37,18 +37,20 @@ function buildDecision(open: boolean): CanSellDecision {
     };
   }
 
+  // PRISMA_SHIFT_CLOSED_CATALOG_BROWSE_01
+  // Browsing is read-only while the shift is closed; cart mutation and checkout remain blocked.
   return {
     canSell: false,
-    canOperatePos: false,
-    canBrowseCatalog: false,
-    canShowSellNavigation: false,
+    canOperatePos: true,
+    canBrowseCatalog: true,
+    canShowSellNavigation: true,
     canAddProduct: false,
     canCheckout: false,
     previewOnly: false,
     code: "SHIFT_NOT_OPEN",
     tone: "warn",
     title: "Caja cerrada",
-    detail: "Abre turno/caja antes de vender. PRISMA Tablet no abre turnos automáticamente para completar ventas.",
+    detail: "Puedes revisar el catálogo. Abre turno/caja para agregar productos y cobrar; PRISMA no registra ventas sin una sesión abierta.",
     actionHref: "/shift",
     actionLabel: "Abrir turno"
   };

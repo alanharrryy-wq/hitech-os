@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { resolve, sep } from "node:path";
 import type { Prisma } from "../../../.generated/prisma-client";
 import { prisma } from "../prisma/client";
 import type { ProductResolveInput, ProductSearchInput } from "./validators";
@@ -19,6 +21,25 @@ export type PosApiProduct = {
   isActive: boolean;
   updatedAt: string;
 };
+
+/* PRISMA_TABLET_MEDIAREF_EXISTENCE_GATE_2607
+ * A local mediaRef is portable only when its public file exists.
+ * Missing local references fall back to the governed Tablet packshot resolver.
+ * HTTPS references stay allowed. DB and sync data are never mutated here.
+ */
+const TABLET_PUBLIC_ROOT = resolve(process.cwd(), "public");
+
+function sanitizeTabletMediaRef(value: string | null) {
+  const ref = value?.trim() ?? "";
+  if (!ref) return null;
+  if (/^https:\/\//i.test(ref)) return ref;
+  if (!ref.startsWith("/product-media/") || ref.startsWith("//")) return null;
+
+  const candidate = resolve(TABLET_PUBLIC_ROOT, ref.replace(/^\/+/, ""));
+  const rootPrefix = `${TABLET_PUBLIC_ROOT}${sep}`.toLowerCase();
+  if (!candidate.toLowerCase().startsWith(rootPrefix)) return null;
+  return existsSync(candidate) ? ref : null;
+}
 
 const PRODUCT_SELECT = {
   id: true,
@@ -74,7 +95,7 @@ async function mediaRefsFor(productIds: string[]) {
       `SELECT "id", "mediaRef" FROM "Product" WHERE "id" IN (${placeholders})`,
       ...productIds
     );
-    return new Map(rows.map((row) => [row.id, row.mediaRef]));
+    return new Map(rows.map((row) => [row.id, sanitizeTabletMediaRef(row.mediaRef)]));
   } catch (error) {
     if (isMissingMediaRefColumn(error)) return new Map<string, string | null>();
     throw error;

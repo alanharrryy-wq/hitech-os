@@ -1,3 +1,4 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 
@@ -40,7 +41,7 @@ export class ProductMediaRepository {
   async list(businessId: string) {
     const rows = await prisma.$queryRaw<ProductRow[]>`
       SELECT "id", "businessId", "sku", "name", "mediaRef", "updatedAt" FROM "Product"
-      WHERE "businessId" = ${businessId} AND "isActive" = true ORDER BY "name" ASC, "sku" ASC LIMIT 300
+      WHERE "businessId" = ${businessId} AND "isActive" = true ORDER BY "name" ASC, "sku" ASC LIMIT 5000
     `;
     return rows.map(toRecord);
   }

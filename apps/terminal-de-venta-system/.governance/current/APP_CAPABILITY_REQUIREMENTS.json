@@ -1,309 +1,4 @@
 {
-  "backgrounds": {
-    "style_profile": "governed atmosphere assets, manifests and per-surface adapters",
-    "guardrails": [
-      "using excluded/heavy assets without manifest"
-    ],
-    "capabilities": [
-      {
-        "capability": "authority-map",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Connects recipes/components to allowed surfaces and authority constraints.",
-        "evidence_count": 2,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "background-catalog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "backgrounds",
-        "default_decision": "review",
-        "visual_contribution": "Governed atmospheric/background assets per surface.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "class-variance-authority",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "variants",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "cloudglass-assets",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "liquid-glass",
-        "default_decision": "review",
-        "visual_contribution": "Liquid/Pill/Cloudglass references, assets, docs, runtime implementations and candidates.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "clsx",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "framer-motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions: tap feedback, panel reveal, cart/payment transitions.",
-        "evidence_count": 1,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "gsap",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "motion",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "layer-budget",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Limits visual depth/effects so premium layers do not crush performance or clarity.",
-        "evidence_count": 12,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "lucide-react",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "icons",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "ogl",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "prisma-components",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "prisma-shared-ui",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed PRISMA surfaces, cards, panels, action buttons and product/cart/checkout components.",
-        "evidence_count": 13,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-recipes",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "recipes",
-        "default_decision": "prefer",
-        "visual_contribution": "Approved visual recipes including liquid/glass/pill/cloudglass where authorized.",
-        "evidence_count": 27,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-tokens",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "tokens",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-visual-os",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "visual-os",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed controls, layers, presets, recipes and release gates.",
-        "evidence_count": 25,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dialog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dropdown-menu",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-scroll-area",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-select",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-slot",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tabs",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tooltip",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "react-spring",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 1,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "react-spring-web",
-        "available": false,
-        "level": "not_available",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "not_available",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 0,
-        "reason": "Capability not detected in current repo scan."
-      },
-      {
-        "capability": "tailwind-merge",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "three",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "vanilla-extract",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "styling",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      }
-    ]
-  },
   "chart-lab": {
     "style_profile": "visual experimentation with evidence and lab boundaries",
     "guardrails": [
@@ -340,7 +35,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -362,7 +57,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -384,7 +79,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -406,7 +101,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -417,7 +112,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -428,7 +123,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -461,7 +156,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -483,7 +178,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -494,7 +189,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -505,7 +200,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -516,7 +211,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -527,7 +222,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -538,7 +233,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -549,7 +244,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -582,7 +277,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -593,7 +288,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -604,7 +299,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -643,7 +338,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -665,7 +360,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -687,7 +382,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -709,7 +404,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -720,7 +415,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -731,7 +426,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -764,7 +459,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -786,7 +481,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -797,7 +492,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -808,7 +503,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -819,7 +514,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -830,7 +525,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -841,7 +536,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -852,7 +547,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -885,7 +580,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -896,7 +591,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -907,7 +602,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -946,7 +641,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -968,7 +663,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -990,7 +685,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -1012,7 +707,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1023,7 +718,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1034,7 +729,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -1067,7 +762,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1089,7 +784,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1100,7 +795,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1111,7 +806,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1122,7 +817,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1133,7 +828,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1144,7 +839,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1155,7 +850,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1188,7 +883,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1199,7 +894,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -1210,7 +905,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -1253,7 +948,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1275,7 +970,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1297,7 +992,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
       },
       {
@@ -1319,7 +1014,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1330,7 +1025,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1341,7 +1036,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
       },
       {
@@ -1374,7 +1069,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1396,7 +1091,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1407,7 +1102,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1418,7 +1113,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1429,7 +1124,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1440,7 +1135,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1451,7 +1146,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1462,7 +1157,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1495,7 +1190,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1506,7 +1201,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Blocked for this app/scope unless a stronger authority explicitly overrides it."
       },
       {
@@ -1517,7 +1212,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -1559,7 +1254,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1581,7 +1276,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1603,7 +1298,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
@@ -1625,7 +1320,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1636,7 +1331,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1647,7 +1342,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
@@ -1680,7 +1375,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1702,7 +1397,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1713,7 +1408,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1724,7 +1419,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1735,7 +1430,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1746,7 +1441,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1757,7 +1452,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1768,7 +1463,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -1801,7 +1496,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -1812,7 +1507,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Available but must stay bounded to a safe surface/layer with evidence."
       },
       {
@@ -1823,310 +1518,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      }
-    ]
-  },
-  "productization": {
-    "style_profile": "general governed PRISMA surface",
-    "guardrails": [],
-    "capabilities": [
-      {
-        "capability": "authority-map",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Connects recipes/components to allowed surfaces and authority constraints.",
-        "evidence_count": 2,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "background-catalog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "backgrounds",
-        "default_decision": "review",
-        "visual_contribution": "Governed atmospheric/background assets per surface.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "class-variance-authority",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "variants",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "cloudglass-assets",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "liquid-glass",
-        "default_decision": "review",
-        "visual_contribution": "Liquid/Pill/Cloudglass references, assets, docs, runtime implementations and candidates.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "clsx",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "framer-motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions: tap feedback, panel reveal, cart/payment transitions.",
-        "evidence_count": 1,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "gsap",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "motion",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "layer-budget",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Limits visual depth/effects so premium layers do not crush performance or clarity.",
-        "evidence_count": 12,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "lucide-react",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "icons",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "ogl",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "prisma-components",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "prisma-shared-ui",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed PRISMA surfaces, cards, panels, action buttons and product/cart/checkout components.",
-        "evidence_count": 13,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-recipes",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "recipes",
-        "default_decision": "prefer",
-        "visual_contribution": "Approved visual recipes including liquid/glass/pill/cloudglass where authorized.",
-        "evidence_count": 27,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-tokens",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "tokens",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-visual-os",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "visual-os",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed controls, layers, presets, recipes and release gates.",
-        "evidence_count": 25,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dialog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dropdown-menu",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-scroll-area",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-select",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-slot",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tabs",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tooltip",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "react-spring",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 1,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "react-spring-web",
-        "available": false,
-        "level": "not_available",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "not_available",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 0,
-        "reason": "Capability not detected in current repo scan."
-      },
-      {
-        "capability": "tailwind-merge",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "three",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "vanilla-extract",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "styling",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -2165,7 +1557,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2187,7 +1579,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2209,7 +1601,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -2231,7 +1623,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2242,7 +1634,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2253,7 +1645,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -2286,7 +1678,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2308,7 +1700,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2319,7 +1711,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2330,7 +1722,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2341,7 +1733,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2352,7 +1744,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2363,7 +1755,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2374,7 +1766,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2407,7 +1799,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2418,7 +1810,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -2429,310 +1821,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      }
-    ]
-  },
-  "shared-kernel": {
-    "style_profile": "general governed PRISMA surface",
-    "guardrails": [],
-    "capabilities": [
-      {
-        "capability": "authority-map",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Connects recipes/components to allowed surfaces and authority constraints.",
-        "evidence_count": 2,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "background-catalog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "backgrounds",
-        "default_decision": "review",
-        "visual_contribution": "Governed atmospheric/background assets per surface.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "class-variance-authority",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "variants",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "cloudglass-assets",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "liquid-glass",
-        "default_decision": "review",
-        "visual_contribution": "Liquid/Pill/Cloudglass references, assets, docs, runtime implementations and candidates.",
-        "evidence_count": 40,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "clsx",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "framer-motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions: tap feedback, panel reveal, cart/payment transitions.",
-        "evidence_count": 1,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "gsap",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "motion",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "layer-budget",
-        "available": true,
-        "level": "must_use",
-        "risk": "low",
-        "family": "governance",
-        "default_decision": "mandatory",
-        "visual_contribution": "Limits visual depth/effects so premium layers do not crush performance or clarity.",
-        "evidence_count": 12,
-        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
-      },
-      {
-        "capability": "lucide-react",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "icons",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "motion",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "ogl",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "prisma-components",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "prisma-shared-ui",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed PRISMA surfaces, cards, panels, action buttons and product/cart/checkout components.",
-        "evidence_count": 13,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-recipes",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "recipes",
-        "default_decision": "prefer",
-        "visual_contribution": "Approved visual recipes including liquid/glass/pill/cloudglass where authorized.",
-        "evidence_count": 27,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-tokens",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "tokens",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "prisma-visual-os",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "visual-os",
-        "default_decision": "prefer",
-        "visual_contribution": "Governed controls, layers, presets, recipes and release gates.",
-        "evidence_count": 25,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dialog",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-dropdown-menu",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-scroll-area",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-select",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-slot",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tabs",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "radix-tooltip",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "radix",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "react-spring",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 1,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "react-spring-web",
-        "available": false,
-        "level": "not_available",
-        "risk": "medium",
-        "family": "motion",
-        "default_decision": "not_available",
-        "visual_contribution": "Spring microinteractions if target surface already uses it.",
-        "evidence_count": 0,
-        "reason": "Capability not detected in current repo scan."
-      },
-      {
-        "capability": "tailwind-merge",
-        "available": true,
-        "level": "consider_required",
-        "risk": "low",
-        "family": "class-composition",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
-      },
-      {
-        "capability": "three",
-        "available": true,
-        "level": "high_risk_optional",
-        "risk": "high",
-        "family": "webgl",
-        "default_decision": "bounded_optional_high_risk",
-        "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
-        "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
-      },
-      {
-        "capability": "vanilla-extract",
-        "available": true,
-        "level": "consider_required",
-        "risk": "medium",
-        "family": "styling",
-        "default_decision": "use_if_relevant",
-        "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -2773,7 +1862,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -2795,7 +1884,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -2817,7 +1906,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -2839,7 +1928,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2850,7 +1939,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2861,7 +1950,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -2894,7 +1983,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2916,7 +2005,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2927,7 +2016,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2938,7 +2027,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2949,7 +2038,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2960,7 +2049,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -2971,7 +2060,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -2982,7 +2071,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3015,7 +2104,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
@@ -3026,7 +2115,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3037,7 +2126,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -3075,13 +2164,13 @@
       {
         "capability": "class-variance-authority",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "cloudglass-assets",
@@ -3097,24 +2186,24 @@
       {
         "capability": "clsx",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "framer-motion",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "medium",
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions: tap feedback, panel reveal, cart/payment transitions.",
         "evidence_count": 1,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "gsap",
@@ -3124,7 +2213,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3141,24 +2230,24 @@
       {
         "capability": "lucide-react",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "motion",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "medium",
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 5,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "ogl",
@@ -3168,63 +2257,63 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
         "capability": "prisma-components",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "prisma-shared-ui",
         "default_decision": "prefer",
         "visual_contribution": "Governed PRISMA surfaces, cards, panels, action buttons and product/cart/checkout components.",
         "evidence_count": 13,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "prisma-recipes",
         "available": true,
-        "level": "consider_required",
+        "level": "must_use",
         "risk": "low",
         "family": "recipes",
         "default_decision": "prefer",
         "visual_contribution": "Approved visual recipes including liquid/glass/pill/cloudglass where authorized.",
         "evidence_count": 27,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
       },
       {
         "capability": "prisma-tokens",
         "available": true,
-        "level": "consider_required",
+        "level": "must_use",
         "risk": "low",
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 11,
+        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
       },
       {
         "capability": "prisma-visual-os",
         "available": true,
-        "level": "consider_required",
+        "level": "must_use",
         "risk": "low",
         "family": "visual-os",
         "default_decision": "prefer",
         "visual_contribution": "Governed controls, layers, presets, recipes and release gates.",
         "evidence_count": 25,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "reason": "Foundational governed capability for premium work; use unless blocked and documented."
       },
       {
         "capability": "radix-dialog",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "radix-dropdown-menu",
@@ -3234,30 +2323,30 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
         "capability": "radix-scroll-area",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "radix-select",
         "available": true,
-        "level": "consider_required",
+        "level": "should_use",
         "risk": "low",
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
-        "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
+        "evidence_count": 4,
+        "reason": "Expected to improve this app/screen when compatible; rejection needs explicit rationale."
       },
       {
         "capability": "radix-slot",
@@ -3267,7 +2356,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3278,7 +2367,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3289,7 +2378,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3322,7 +2411,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3333,7 +2422,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3344,7 +2433,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]
@@ -3385,7 +2474,7 @@
         "family": "variants",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Typed class variants for governed component states.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3407,7 +2496,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Safe local class composition.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3429,7 +2518,7 @@
         "family": "motion",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Timeline animation only when already used safely and not overkill.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3451,7 +2540,7 @@
         "family": "icons",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Lightweight governed icons for actions/status/navigation clarity.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3462,7 +2551,7 @@
         "family": "motion",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Bounded microinteractions if compatible with current import style.",
-        "evidence_count": 3,
+        "evidence_count": 5,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3473,7 +2562,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "Bounded ambient/background WebGL only when layer budget allows.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3506,7 +2595,7 @@
         "family": "tokens",
         "default_decision": "prefer",
         "visual_contribution": "Governed spacing, color, radius, shadow, typography and state primitives.",
-        "evidence_count": 14,
+        "evidence_count": 11,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3528,7 +2617,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible dialog/confirmation surfaces for checkout and guarded actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3539,7 +2628,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible command/menu surfaces for structured actions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3550,7 +2639,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Controlled scroll for product grids, carts and dense touch regions.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3561,7 +2650,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible selects for filters, variants and checkout options.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3572,7 +2661,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Composition primitive for PRISMA buttons/panels without DOM noise.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3583,7 +2672,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Accessible tabbed segmentation for categories or payment modes.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3594,7 +2683,7 @@
         "family": "radix",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Non-blocking help for secondary controls when touch UX stays clear.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3627,7 +2716,7 @@
         "family": "class-composition",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Conflict-aware utility class merge if Tailwind utilities are in use.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       },
       {
@@ -3638,7 +2727,7 @@
         "family": "webgl",
         "default_decision": "bounded_optional_high_risk",
         "visual_contribution": "3D/WebGL for lab/background use, rarely for operational POS.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "High-risk visual/power capability; use only with strong benefit, layer budget and performance rationale."
       },
       {
@@ -3649,7 +2738,7 @@
         "family": "styling",
         "default_decision": "use_if_relevant",
         "visual_contribution": "Static governed tokens/styles when repo pattern already exists.",
-        "evidence_count": 2,
+        "evidence_count": 4,
         "reason": "Must be evaluated for this task; use if it improves outcome without breaking guardrails."
       }
     ]

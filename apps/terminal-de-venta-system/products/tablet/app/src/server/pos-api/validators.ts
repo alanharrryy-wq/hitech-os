@@ -1,3 +1,4 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 
 import type { CompleteLocalSaleInput, PosCartLineInput, PosModifierSelectionInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
 import { PRISMA_ORIGINAL_CUSTOMER, normalizePrismaOriginalBusinessId, normalizePrismaOriginalTerminalId } from "../../../../../../shared/customer/prisma-original-customer";
@@ -116,7 +117,7 @@ export function readProductSearchInput(searchParams: URLSearchParams): ProductSe
   return {
     q: asString(searchParams.get("q")),
     businessId: normalizeBusinessId(searchParams.get("businessId")),
-    limit: asPositiveInteger(searchParams.get("limit"), 144, 240),
+    limit: asPositiveInteger(searchParams.get("limit"), 5000, 5000),
     includeInactive: asBoolean(searchParams.get("includeInactive"), false)
   };
 }

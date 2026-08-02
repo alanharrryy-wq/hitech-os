@@ -1,0 +1,24 @@
+{
+  "schema": "prisma.ui.visual-control.layer-certifications.v1",
+  "version": "1.0.0",
+  "status": "SOURCE_READY",
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false,
+  "certifications": [
+    {
+      "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+      "neutralMeaningId": "ACT.primary",
+      "surface": "tablet",
+      "file": "products/tablet/app/components/pos/pos.module.css",
+      "selector": ".cobrarReferenceButton",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "routeId": "tablet.pos.route",
+      "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+      "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+      "expectedImplementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "certificationPolicy": "EXACTLY_ONE_IMPLEMENTATION_MATCH_REQUIRED"
+    }
+  ]
+}

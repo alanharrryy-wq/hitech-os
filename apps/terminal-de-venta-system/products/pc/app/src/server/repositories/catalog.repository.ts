@@ -1,3 +1,4 @@
+/* PRISMA_DARK_PACKSHOTS_197 */
 import { prisma } from "@/server/prisma/client";
 import type { CatalogFilters, CatalogProductRecord } from "@/modules/catalog/types";
 
@@ -33,7 +34,7 @@ function whereFromFilters(businessId: string, filters: CatalogFilters) {
 }
 
 export class CatalogRepository {
-  async listProducts(businessId: string, filters: CatalogFilters, limit = 250): Promise<CatalogProductRecord[]> {
+  async listProducts(businessId: string, filters: CatalogFilters, limit = 5000): Promise<CatalogProductRecord[]> {
     const db = prisma as any;
     const rows = await db.product.findMany({
       where: whereFromFilters(businessId, filters),
@@ -53,6 +54,7 @@ export class CatalogRepository {
         sku: row.sku,
         name: row.name,
         category: row.category,
+        mediaRef: typeof row.mediaRef === "string" ? row.mediaRef : null,
         priceCents: Number(row.priceCents ?? 0),
         costCents: Number(row.costCents ?? 0),
         stockOnHand: Number(row.stockOnHand ?? 0),
