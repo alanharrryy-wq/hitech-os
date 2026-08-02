@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "capabilityId": "CAP.RUNTIME.ZERO_IDLE_GUARD",
+  "classification": "BUILD",
+  "surface": "tablet",
+  "port": 3120,
+  "owner": "prisma-control-center/Fast Ignit",
+  "platform": "Windows",
+  "nodeRuntimeContract": {
+    "version": "24.18.0",
+    "status": "LTS",
+    "source": "official nodejs.org Windows portable ZIP",
+    "archiveSha256Required": true,
+    "nodeExeSha256Required": true,
+    "canonicalRoot": "F:\\PRISMA_CTX\\RUNTIMES",
+    "globalPathModified": false,
+    "globalNodeUninstalled": false,
+    "tabletOnlyResolution": true,
+    "rollback": "F:\\Trash-old\\zeroguard_node_<run>\\ROLLBACK_NODE24.ps1"
+  },
+  "processContract": {
+    "creation": "CREATE_SUSPENDED",
+    "assignment": "AssignProcessToJobObject before ResumeThread",
+    "treeBoundary": "Windows Job Object",
+    "killOnOwnerClose": "JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE",
+    "rootExitWait": "RegisterWaitForSingleObject",
+    "processNameKill": false,
+    "globalNodeScan": false
+  },
+  "memoryContract": {
+    "metric": "Windows Job committed memory",
+    "notification": "JobObjectNotificationLimitInformation",
+    "delivery": "I/O completion port",
+    "deferredPersistenceChecksPerIncident": 1,
+    "automaticRecoveriesPerIncident": 1,
+    "recurrence": "FAIL_CLOSED",
+    "coldCompileHardKill": false
+  },
+  "startupContract": {
+    "finite": true,
+    "bundler": "webpack",
+    "prismaGenerate": false,
+    "criticalRoutes": [
+      "/",
+      "/pos",
+      "/sales/today",
+      "/settings/export",
+      "/settings/license",
+      "/offline"
+    ],
+    "chunkStatus": 200,
+    "chunkContentValidation": true,
+    "healthConsecutive": 3,
+    "activeProbesAfterCertified": 0
+  },
+  "installerCertificationContract": {
+    "mode": "real Tablet runtime on an ephemeral loopback shadow port",
+    "livePort3120Mutation": false,
+    "livePort3120Stop": false,
+    "livePort3120Restart": false,
+    "liveNextDevCacheMutation": false,
+    "shadowDistDir": "unique .next-zero-idle-shadow-<run> moved to F:\\Trash-old after certification",
+    "shadowProcessResidentAfterCertification": false,
+    "adoption": "the next user-controlled Fast Ignit Tablet start owns 3120 through the Job Object",
+    "honestGate": "LOCAL_SHADOW_VERIFIED until guarded 3120 operational evidence exists",
+    "nodeExecutable": "explicit certified portable Node path; never ambient EOL Node"
+  },
+  "cacheContract": {
+    "path": "products/tablet/app/.next/dev",
+    "wholeNextDelete": false,
+    "incompatibleAction": "move to F:\\Trash-old with manifest and rollback"
+  },
+  "passiveBeacon": {
+    "file": "products/tablet/app/instrumentation-client.ts",
+    "endpoint": "/api/runtime-evidence/chunk-load",
+    "timers": 0,
+    "polling": 0,
+    "maxPerBrowserSession": 1,
+    "pii": false,
+    "salesData": false
+  },
+  "excluded": [
+    "database",
+    "schema",
+    "migrations",
+    "business data",
+    "sync",
+    "secrets",
+    "git",
+    "deploy",
+    "pc",
+    "mobile",
+    "web",
+    "chart_lab",
+    "shared_ui"
+  ]
+}

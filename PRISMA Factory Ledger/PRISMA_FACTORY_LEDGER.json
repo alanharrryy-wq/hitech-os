@@ -333,7 +333,46 @@
         "claim offline support",
         "claim live production auth from local verification"
       ]
+    },
+    {
+      "id": "runtime.tablet.zero_idle_guard",
+      "displayName": "PRISMA Zero-Idle Runtime Guard",
+      "domain": "runtime",
+      "surfaces": [
+        "tablet",
+        "control_center",
+        "tooling",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "LOCAL_SHADOW_VERIFIED",
+      "stateLabel": "PASS_ZERO_IDLE_RUNTIME_GUARD_LOCAL_SHADOW_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "At the next user-controlled Fast Ignit Tablet restart, adopt the guard on 3120 and retain live operational evidence; do not rebuild the guard.",
+      "evidence": [
+        "zeroguard_2607_105026",
+        "runtime-certification.json",
+        "sabotage-report.json",
+        "overhead.json"
+      ],
+      "doesNotProve": [
+        "Hosted production deployment",
+        "Future Node or Next versions",
+        "Unrelated PRISMA surfaces",
+        "Adoption by the already-running pre-install Tablet 3120 process"
+      ],
+      "allowedActions": [
+        "user-controlled Fast Ignit restart",
+        "runtime recertification",
+        "read-only evidence review"
+      ],
+      "forbiddenActions": [
+        "periodic WMI, HTTP or Playwright monitoring",
+        "global Node process scans or process-name kills",
+        "Prisma generate during guarded startup"
+      ]
     }
   ],
-  "updatedAt": "2026-07-20T15:30:00-06:00"
+  "updatedAt": "2026-07-26T10:52:48-06:00"
 }

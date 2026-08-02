@@ -23,6 +23,11 @@ import traceback
 import urllib.request
 import urllib.error
 import zipfile
+
+from zero_idle_guard import (
+    GuardError, WindowsJobGuard, build_fingerprint, persist_fingerprint,
+    prepare_dev_cache, validate_tablet_package, resolve_certified_node,
+)
 from dataclasses import dataclass, asdict, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
@@ -145,6 +150,7 @@ class ServiceResult:
     log_file: str = ""
     elapsed_sec: float = 0.0
     error: str = ""
+    zero_idle: Dict[str, object] = field(default_factory=dict)
 
 
 class Tee:
@@ -187,6 +193,8 @@ class FastIgnit:
         self.results: Dict[int, ServiceResult] = {}
         self.processes: Dict[int, subprocess.Popen] = {}
         self.stream_threads: List[threading.Thread] = []
+        self.zero_idle_guards: Dict[int, WindowsJobGuard] = {}
+        self.zero_idle_recoveries = 0
         self.started_at = time.monotonic()
         self.out_base.mkdir(parents=True, exist_ok=True)
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -372,7 +380,62 @@ class FastIgnit:
             if os.name == "nt":
                 creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
 
-            if bool(self.args.stream):
+            if svc.port == 3120:
+                if os.name != "nt":
+                    raise GuardError("Tablet 3120 Zero-Idle requires Windows Job Objects")
+                if not bool(self.args.hold):
+                    raise GuardError(
+                        "TABLET_3120_GUARDED_START_REQUIRES_HOLD: "
+                        "Fast Ignit must remain the Job owner"
+                    )
+                tablet_root = Path(cwd)
+                package_gate = validate_tablet_package(tablet_root)
+                node_executable, node_gate = resolve_certified_node()
+                node_text = "v" + str(node_gate["version"])
+                fingerprint = build_fingerprint(self.repo_root, tablet_root, node_text)
+                cache = prepare_dev_cache(
+                    self.repo_root, tablet_root, fingerprint, Path(r"F:\Trash-old"),
+                    "zeroguard_" + self.stamp.replace(" ", "_"),
+                )
+                zero_important = self.repo_root / "tools" / "quality" / "verify-zero-important.mjs"
+                zero_cp = subprocess.run(
+                    [node_executable, str(zero_important)],
+                    cwd=str(self.repo_root),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=120,
+                    check=False,
+                )
+                if zero_cp.returncode != 0:
+                    raise GuardError(
+                        "TABLET_ZERO_IMPORTANT_GATE_FAILED_BEFORE_START: "
+                        + zero_cp.stdout[-4000:]
+                    )
+                next_bin = tablet_root / "node_modules" / "next" / "dist" / "bin" / "next"
+                if not next_bin.is_file():
+                    raise GuardError(f"TABLET_NEXT_BIN_MISSING: {next_bin}")
+                env = env.copy()
+                env["PRISMA_NODE24_EXE"] = node_executable
+                env["PATH"] = str(Path(node_executable).parent) + os.pathsep + env.get("PATH", "")
+                cmd = [
+                    node_executable, str(next_bin), "dev", "--webpack",
+                    "-H", "127.0.0.1", "-p", "3120",
+                ]
+                guard = WindowsJobGuard(self.run_dir / "zero-idle", "tablet_" + self.stamp.replace(" ", "_"))
+                proc = guard.launch(cmd, tablet_root, env, log_file)
+                self.zero_idle_guards[svc.port] = guard
+                result.zero_idle = {
+                    "status": "STARTED_SUSPENDED_ASSIGNED_RESUMED",
+                    "node": node_gate,
+                    "nodeExecutable": node_executable,
+                    "packageGate": package_gate,
+                    "fingerprint": fingerprint,
+                    "cache": cache,
+                }
+            elif bool(self.args.stream):
                 proc = subprocess.Popen(
                     cmd,
                     cwd=cwd,
@@ -481,6 +544,32 @@ class FastIgnit:
             time.sleep(2.0)
         return all(self.results[svc.port].ready for svc in selected), "stable"
 
+    def certify_zero_idle(self, selected: List[Service]) -> Tuple[bool, str]:
+        for svc in selected:
+            guard = self.zero_idle_guards.get(svc.port)
+            if guard is None:
+                continue
+            try:
+                report = guard.certify(svc.url, Path(svc.cwd))
+                if guard.policy is not None:
+                    guard.policy.recoveries_used = self.zero_idle_recoveries
+                marker = persist_fingerprint(Path(svc.cwd), self.results[svc.port].zero_idle["fingerprint"])
+                self.results[svc.port].zero_idle.update({
+                    "status": "CERTIFIED",
+                    "certification": report,
+                    "fingerprintMarker": str(marker),
+                    "idlePolicy": {
+                        "processWait": "RegisterWaitForSingleObject",
+                        "memoryWait": "I/O completion port",
+                        "httpPollingAfterCertified": 0,
+                        "wmiPolling": 0,
+                        "residentAdditionalProcesses": 0,
+                    },
+                })
+            except Exception as exc:
+                return False, f"Zero-Idle certification failed for {svc.port}: {exc}"
+        return True, "CERTIFIED"
+
     def write_outputs(self, status: str, error: str = "") -> Path:
         elapsed = round(time.monotonic() - self.started_at, 3)
         summary = {
@@ -560,8 +649,45 @@ class FastIgnit:
         print("[Fast Ignit] Ctrl+C apaga los procesos iniciados por Fast Ignit.", flush=True)
         try:
             while True:
-                alive = {p: proc for p, proc in self.processes.items() if proc.poll() is None}
-                dead = {p: proc for p, proc in self.processes.items() if proc.poll() is not None}
+                tablet_guard = self.zero_idle_guards.get(3120)
+                if tablet_guard is not None:
+                    try:
+                        non_tablet_running = any(
+                            p != 3120 and proc.poll() is None
+                            for p, proc in self.processes.items()
+                        )
+                        event = tablet_guard.next_event(
+                            timeout=1.0 if non_tablet_running else None
+                        )
+                    except Exception:
+                        event = None
+                    if event:
+                        event_type = str(event.get("action") or event.get("type") or "")
+                        if event_type in ("root-exit", "fail-closed", "fail-closed-recurrence"):
+                            err = "Zero-Idle FAIL_CLOSED: " + json.dumps(event, ensure_ascii=False)
+                            zip_path = self.write_outputs("FAIL", error=err)
+                            print(f"[Fast Ignit] {err}", flush=True)
+                            print(f"[Fast Ignit] Evidencia: {zip_path}", flush=True)
+                            return 1
+                        if event_type == "recover-once":
+                            if self.zero_idle_recoveries >= 1:
+                                err = "Zero-Idle FAIL_CLOSED: second recovery request"
+                                self.write_outputs("FAIL", error=err)
+                                return 1
+                            self.zero_idle_recoveries += 1
+                            tablet_guard.close(kill=True)
+                            self.zero_idle_guards.pop(3120, None)
+                            svc = self.services[3120]
+                            self.results[3120] = self.start_service(svc)
+                            self.wait_ready([svc], int(self.args.timeout))
+                            ok, why = self.verify_stability([svc], 18)
+                            if ok:
+                                ok, why = self.certify_zero_idle([svc])
+                            if not ok:
+                                self.write_outputs("FAIL", error="Zero-Idle recovery failed: " + why)
+                                return 1
+                alive = {p: proc for p, proc in self.processes.items() if p != 3120 and proc.poll() is None}
+                dead = {p: proc for p, proc in self.processes.items() if p != 3120 and proc.poll() is not None}
                 if dead:
                     details = []
                     for port, proc in dead.items():
@@ -575,13 +701,22 @@ class FastIgnit:
                     print(f"[Fast Ignit] FALSO VERDE BLOQUEADO: {err}", flush=True)
                     print(f"[Fast Ignit] Evidencia actualizada: {zip_path}", flush=True)
                     return 1
-                if not alive:
+                if not alive and tablet_guard is None:
                     print("[Fast Ignit] Todos los procesos hijos terminaron.", flush=True)
                     return 0
-                time.sleep(1.0)
+                if tablet_guard is None:
+                    time.sleep(1.0)
         except KeyboardInterrupt:
             print("\n[Fast Ignit] Ctrl+C recibido. Terminando procesos hijos...", flush=True)
+            for guard in list(self.zero_idle_guards.values()):
+                try:
+                    guard.close(kill=True, wait_timeout=30.0)
+                except Exception:
+                    pass
+            self.zero_idle_guards.clear()
             for port, proc in list(self.processes.items()):
+                if port == 3120:
+                    continue
                 if proc.poll() is None:
                     try:
                         proc.terminate()
@@ -593,6 +728,8 @@ class FastIgnit:
                     break
                 time.sleep(0.25)
             for port, proc in list(self.processes.items()):
+                if port == 3120:
+                    continue
                 if proc.poll() is None:
                     try:
                         proc.kill()
@@ -626,6 +763,8 @@ class FastIgnit:
                     svc = futs[fut]
                     res = self.results[svc.port]
                     ok, url, msg = fut.result()
+                    if ok and svc.port == 3120 and self.args.mode != "status":
+                        raise GuardError("TABLET_3120_OWNER_UNKNOWN: stop only the proven Tablet owner before guarded launch")
                     if ok and svc.port not in reset_ports and self.args.mode != "clean":
                         res.action = "reused"
                         res.ready = True
@@ -659,6 +798,9 @@ class FastIgnit:
             if all_ready:
                 print("[Fast Ignit] Gate anti-falso-verde: verificando estabilidad 18s...", flush=True)
                 all_ready, stability_error = self.verify_stability(selected, 18)
+            if all_ready:
+                print("[Fast Ignit] Zero-Idle: certificacion finita, chunks, health 3/3 y baseline...", flush=True)
+                all_ready, stability_error = self.certify_zero_idle(selected)
             print_progress(5, 6, "generando evidencia")
             status = "PASS" if all_ready else "FAIL"
             zip_path = self.write_outputs(status, error=stability_error if not all_ready else "")
