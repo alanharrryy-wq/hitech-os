@@ -1,0 +1,232 @@
+.dailyFinanceCanvas {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 72px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px;
+  padding: 22px 24px;
+}
+
+.hero h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(30px, 4.5vw, 58px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.hero p {
+  margin: 0;
+}
+
+.hero a,
+.cashRibbon a,
+.actionRail a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-weight: 950;
+}
+
+.hero a,
+.cashRibbon a,
+.primaryAction {
+}
+
+.kicker {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.canvasGrid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.filterRail {
+  position: sticky;
+  top: 18px;
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+}
+
+.readoutMain {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.actionRail,
+.financeStrip,
+.cashRibbon,
+.analysisLedger {
+}
+
+.actionRail {
+  padding: 16px;
+}
+
+.actionRail h2,
+.cashRibbon h2,
+.sectionHead h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(20px, 2.2vw, 32px);
+  letter-spacing: -0.04em;
+}
+
+.actionRail div {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.actionRail a {
+}
+
+.actionRail .primaryAction {
+}
+
+.financeStrip {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: 12px;
+  padding: 12px;
+}
+
+.mainSignal {
+  padding: 18px;
+}
+
+.mainSignal strong {
+  display: block;
+  margin: 8px 0 6px;
+  font-size: clamp(38px, 6vw, 82px);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+}
+
+.mainSignal small,
+.signalStack small,
+.cashRibbon p,
+.sectionHead p {
+}
+
+.signalStack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.signalStack article {
+  display: grid;
+  align-content: center;
+  min-height: 154px;
+  padding: 14px;
+}
+
+.signalStack span {
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.signalStack strong {
+  margin: 8px 0 5px;
+  font-size: clamp(24px, 2.8vw, 42px);
+}
+
+.signalStack a {
+  margin-top: 10px;
+  font-weight: 950;
+}
+
+.cashRibbon {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+}
+
+.cashRibbon p,
+.sectionHead p {
+  margin: 0;
+}
+
+.analysisLedger {
+  overflow: hidden;
+}
+
+.sectionHead {
+  padding: 16px 18px;
+}
+
+.analysisTable {
+  display: grid;
+  min-width: 760px;
+}
+
+.tableHead,
+.tableRow {
+  display: grid;
+  grid-template-columns: 0.72fr 1.2fr 1fr 1fr;
+  gap: 0;
+}
+
+.tableHead span,
+.tableRow span,
+.tableRow strong {
+  padding: 11px 12px;
+}
+
+.tableHead {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.tableRow strong {
+}
+
+.tableRow span {
+}
+
+@media (max-width: 1180px) {
+  .canvasGrid,
+  .financeStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .filterRail {
+    position: static;
+    max-height: none;
+  }
+
+  .signalStack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .hero,
+  .cashRibbon {
+    grid-template-columns: 1fr;
+  }
+
+  .signalStack {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,112 @@
+/*
+  PRISMA Control Center · Tactical Frost V4.1 Bright Background Override
+  Purpose: brighten the background only. No dependency changes. No full project replacement.
+  Keeps the premium panel system intact while making the photographic atmosphere readable.
+*/
+
+:root{ --prisma-frost-v41-bright-bg-loaded:1; }
+
+body[data-theme="tactical"]{
+  --frost-v41-bg-asset:url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg');
+  --frost-v41-bg-base:#14212d;
+  --frost-v41-scrim-top:rgba(24,37,50,.18);
+  --frost-v41-scrim-mid:rgba(13,27,42,.30);
+  --frost-v41-scrim-bottom:rgba(5,12,23,.52);
+  --frost-v41-mist-cyan:rgba(177,232,255,.145);
+  --frost-v41-mist-pearl:rgba(246,251,255,.145);
+  --frost-v41-vignette-side:rgba(1,7,14,.42);
+  background:
+    linear-gradient(180deg,var(--frost-v41-scrim-top),var(--frost-v41-scrim-mid) 44%,var(--frost-v41-scrim-bottom)),
+    radial-gradient(980px 600px at 52% -8%,rgba(255,255,255,.155),transparent 60%),
+    radial-gradient(760px 520px at 86% 17%,rgba(153,208,246,.125),transparent 67%),
+    radial-gradient(850px 580px at 8% 76%,rgba(96,132,164,.135),transparent 72%),
+    var(--frost-v41-bg-asset) center 55% / cover fixed no-repeat,
+    var(--frost-v41-bg-base);
+}
+
+/* Override V4 dark masks. El fondo ahora respira, no se queda en sótano. */
+body[data-theme="tactical"]::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:1;
+  background:
+    radial-gradient(1100px 640px at 50% -10%,var(--frost-v41-mist-pearl),transparent 60%),
+    radial-gradient(760px 500px at 88% 24%,var(--frost-v41-mist-cyan),transparent 68%),
+    radial-gradient(820px 560px at 3% 72%,rgba(79,115,149,.18),transparent 72%),
+    linear-gradient(90deg,var(--frost-v41-vignette-side),rgba(9,21,34,.12) 45%,rgba(1,7,14,.48)),
+    linear-gradient(180deg,rgba(11,24,38,.02),rgba(8,18,31,.25) 56%,rgba(3,9,17,.55));
+  background-size:auto;
+  background-repeat:no-repeat;
+  mask-image:none;
+  -webkit-mask-image:none;
+}
+
+body[data-theme="tactical"]::after{
+  content:"";
+  position:fixed;
+  inset:-7%;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.62;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(640px 270px at 24% 8%,rgba(255,255,255,.145),transparent 73%),
+    radial-gradient(520px 250px at 76% 20%,rgba(169,238,255,.13),transparent 75%),
+    radial-gradient(760px 330px at 50% 92%,rgba(174,153,255,.07),transparent 79%),
+    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.048) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.044) 86%,transparent 96%);
+  animation:frostV41BrightGlacier 118s cubic-bezier(.38,0,.2,1) infinite;
+  will-change:transform;
+}
+
+@keyframes frostV41BrightGlacier{
+  0%{transform:translate3d(-.38%,-.12%,0) scale(1.010)}
+  50%{transform:translate3d(.32%,.28%,0) scale(1.014)}
+  100%{transform:translate3d(-.18%,.05%,0) scale(1.010)}
+}
+
+/* The top shell stays readable against the lighter field. */
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .picker,
+body[data-theme="tactical"] .qPanel,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .lifecyclePanel,
+body[data-theme="tactical"] .lifecycleHero,
+body[data-theme="tactical"] .licenseOpsPanel,
+body[data-theme="tactical"] .licenseOpsHero,
+body[data-theme="tactical"] .ops-action-panel,
+body[data-theme="tactical"] .blackbox-command,
+body[data-theme="tactical"] .release-panel,
+body[data-theme="tactical"] .commandPanel,
+body[data-theme="tactical"] .opCommandPanel,
+body[data-theme="tactical"] .glass-card{
+  box-shadow:
+    0 30px 86px rgba(0,0,0,.36),
+    0 8px 24px rgba(1,6,13,.24),
+    0 0 42px rgba(174,153,255,.115),
+    0 0 22px rgba(169,238,255,.060),
+    inset 0 1px 0 rgba(255,255,255,.40),
+    inset 0 0 0 1px rgba(255,255,255,.060),
+    inset 0 -1px 0 rgba(169,238,255,.13);
+}
+
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .lifecycleHero,
+body[data-theme="tactical"] .licenseOpsHero{
+  box-shadow:
+    0 34px 92px rgba(0,0,0,.39),
+    0 10px 32px rgba(1,6,13,.27),
+    0 0 44px rgba(174,153,255,.13),
+    0 0 26px rgba(169,238,255,.085),
+    inset 0 1px 0 rgba(255,255,255,.52),
+    inset 0 0 0 1px rgba(255,255,255,.080),
+    inset 0 -1px 0 rgba(169,238,255,.18);
+}
+
+@media (prefers-reduced-motion: reduce){
+  body[data-theme="tactical"]::after{animation:none;}
+}

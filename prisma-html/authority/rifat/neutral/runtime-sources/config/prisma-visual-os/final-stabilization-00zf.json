@@ -1,0 +1,24 @@
+{
+  "package": "PRISMA_VISUAL_OS_FINAL_STABILIZATION_00ZF_20260505_v01",
+  "status": "final-stabilization",
+  "hardGates": [
+    "00T",
+    "00X",
+    "00Y",
+    "00U",
+    "00W",
+    "00N",
+    "01H",
+    "00ZF"
+  ],
+  "legacy": {
+    "tools/prisma-pos-visual-control": "keep",
+    "tools/visual": "keep",
+    "rootShims": "keep"
+  },
+  "nonGoals": [
+    "delete legacy tools",
+    "rewrite POS layout CSS",
+    "touch shared-kernel"
+  ]
+}

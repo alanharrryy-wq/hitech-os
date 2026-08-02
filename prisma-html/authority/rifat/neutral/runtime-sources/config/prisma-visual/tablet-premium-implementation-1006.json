@@ -1,0 +1,38 @@
+{
+  "id": "tablet-premium-max-visual-1106",
+  "surface": "tablet",
+  "scope": "Tablet only: premium visual runtime/effects + /pos, /checkout, /sync, /catalog, /stock, /settings/license layer cleanup; no PC/Mobile/Chart Lab",
+  "routes": [
+    "/pos",
+    "/checkout",
+    "/sync",
+    "/catalog",
+    "/stock",
+    "/settings/license",
+    "/offline",
+    "/release-gate"
+  ],
+  "background": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+  "layerMapBasis": {
+    "routesMapped": 35,
+    "layersDetected": 3446,
+    "backgroundBlockersDetected": 143,
+    "topDebtFiles": [
+      "products/tablet/app/components/pos/pos.module.css",
+      "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+      "products/tablet/app/components/sync/pending-offline-sync-panel.module.css"
+    ]
+  },
+  "noTouch": [
+    "PrismaTabletShellUnified structure",
+    "POS ticket/catalog/payment states",
+    "Checkout/payment states",
+    "Sync/offline/license/release states",
+    "focus-visible/reduced-motion/reduced-transparency rules"
+  ],
+  "excludedSurfaces": {
+    "pc": "out-of-scope",
+    "mobile": "out-of-scope",
+    "chart-lab": "out-of-scope"
+  }
+}
