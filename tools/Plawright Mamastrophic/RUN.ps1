@@ -32,7 +32,11 @@ param(
   [int]$PointY = -1,
   [int]$ViewportWidth = 1365,
   [int]$ViewportHeight = 768,
-  [int]$SettleMs = 700
+  [int]$SettleMs = 700,
+  [string]$Selector = '',
+  [string]$AuthoritySelector = '',
+  [string]$ComponentUiId = '',
+  [ValidateSet('','BEFORE','AFTER')][string]$EvidencePhase = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -296,6 +300,10 @@ if ($Mode -eq 'point-probe') {
   if ($NoScreenshots) { $ppArgs += '-NoScreenshots' }
   if ($AllowPartial) { $ppArgs += '-AllowPartial' }
   if (-not [string]::IsNullOrWhiteSpace($ArtifactRoot)) { $ppArgs += @('-ArtifactRoot', $ArtifactRoot) }
+  if (-not [string]::IsNullOrWhiteSpace($Selector)) { $ppArgs += @('-Selector', $Selector) }
+  if (-not [string]::IsNullOrWhiteSpace($AuthoritySelector)) { $ppArgs += @('-AuthoritySelector', $AuthoritySelector) }
+  if (-not [string]::IsNullOrWhiteSpace($ComponentUiId)) { $ppArgs += @('-ComponentUiId', $ComponentUiId) }
+  if (-not [string]::IsNullOrWhiteSpace($EvidencePhase)) { $ppArgs += @('-EvidencePhase', $EvidencePhase) }
   if ($NoZip) { $ppArgs += '-NoZip' }
   & powershell @ppArgs
   exit $LASTEXITCODE
