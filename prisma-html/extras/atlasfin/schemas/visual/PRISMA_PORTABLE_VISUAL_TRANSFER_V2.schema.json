@@ -1,0 +1,184 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_PORTABLE_VISUAL_TRANSFER_V2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "assets": [],
+      "binding_requirements": {},
+      "compatibility": {},
+      "coverage": {},
+      "direct_target_mutation": false,
+      "evidence": {},
+      "export_kind": "selection",
+      "identity": {},
+      "instruction_only": true,
+      "integrity": {},
+      "locks": {},
+      "migration": {},
+      "recipe": {},
+      "schema": "PRISMA_PORTABLE_VISUAL_TRANSFER_V2",
+      "schema_version": "2.0.0",
+      "source": {},
+      "state_matrix": {},
+      "surface_intent": {},
+      "variant_matrix": {},
+      "version": "2.0.0",
+      "visual_stack": {}
+    }
+  ],
+  "properties": {
+    "adapter": {
+      "type": "object"
+    },
+    "asset_pack": {
+      "type": "object"
+    },
+    "assets": {
+      "type": "array"
+    },
+    "binding_requirements": {
+      "type": "object"
+    },
+    "capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "compatibility": {
+      "type": "object"
+    },
+    "coverage": {
+      "type": "object"
+    },
+    "delta": {
+      "type": "object"
+    },
+    "direct_target_mutation": {
+      "const": false
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "export_id": {
+      "type": "string"
+    },
+    "export_kind": {
+      "enum": [
+        "selection",
+        "page",
+        "collection",
+        "delta",
+        "profile",
+        "recipe",
+        "family",
+        "preset",
+        "theme",
+        "state-set",
+        "adapter",
+        "asset-pack"
+      ]
+    },
+    "exported_at": {
+      "type": "string"
+    },
+    "family": {
+      "type": "object"
+    },
+    "identity": {
+      "type": "object"
+    },
+    "instruction_only": {
+      "const": true
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "items": {
+      "type": "array"
+    },
+    "locks": {
+      "type": "object"
+    },
+    "migration": {
+      "type": "object"
+    },
+    "preset": {
+      "type": "object"
+    },
+    "producer": {
+      "type": "object"
+    },
+    "profile": {
+      "type": "object"
+    },
+    "recipe": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "PRISMA_PORTABLE_VISUAL_TRANSFER_V2"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "source": {
+      "type": "object"
+    },
+    "state_matrix": {
+      "type": "object"
+    },
+    "state_set": {
+      "type": "object"
+    },
+    "surface_intent": {
+      "type": "object"
+    },
+    "theme": {
+      "type": "object"
+    },
+    "variant_matrix": {
+      "type": "object"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "visual_stack": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "schema_version",
+    "export_kind",
+    "instruction_only",
+    "direct_target_mutation",
+    "identity",
+    "source",
+    "recipe",
+    "visual_stack",
+    "state_matrix",
+    "variant_matrix",
+    "surface_intent",
+    "assets",
+    "locks",
+    "compatibility",
+    "binding_requirements",
+    "coverage",
+    "evidence",
+    "migration",
+    "integrity"
+  ],
+  "title": "PRISMA_PORTABLE_VISUAL_TRANSFER_V2",
+  "type": "object",
+  "version": "2.0.0",
+  "x-discriminator": "schema",
+  "x-migration": {
+    "from": [
+      "PRISMA_PORTABLE_VISUAL_TRANSFER_V1"
+    ],
+    "strategy": "explicit-and-lossless"
+  }
+}

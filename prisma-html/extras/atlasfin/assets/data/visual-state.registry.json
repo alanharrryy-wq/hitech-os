@@ -1,0 +1,357 @@
+{
+  "items": [
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "default",
+      "label": "Default",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {},
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "hover",
+      "label": "Hover",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "motion.hoverTransform": [
+          "translateY(-1px)"
+        ],
+        "shadow.hover": [
+          {
+            "blur": 28,
+            "color": "rgba(0,0,0,.28)",
+            "spread": 0,
+            "x": 0,
+            "y": 10
+          }
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": false
+    },
+    {
+      "accessibilityImpact": "focus-visible-required",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "focus",
+      "label": "Focus",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.focus": "#83e7ff"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "focus-visible-required",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "focus-visible",
+      "label": "Focus Visible",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.focus": "#83e7ff",
+        "shadow.focus": [
+          {
+            "blur": 0,
+            "color": "rgba(131,231,255,.38)",
+            "spread": 3,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "pressed",
+      "label": "Pressed",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "motion.pressedTransform": [
+          "scale(.985)"
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "active",
+      "label": "Active",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.selection": "#8a72ff"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "selected",
+      "label": "Selected",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.selection": "#8a72ff"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "disabled",
+      "label": "Disabled",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.disabled": "#7f8798",
+        "filter.disabled": [
+          "saturate(.55)"
+        ],
+        "interaction.cursor": "not-allowed"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "stable-layout",
+      "filterPolicy": "explicit",
+      "id": "loading",
+      "label": "Loading",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "filter.loading": [
+          "saturate(.8)"
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": true
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "success",
+      "label": "Success",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.accent": "#35d38a"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "warning",
+      "label": "Warning",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.accent": "#ffbe4f"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "error",
+      "label": "Error",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.accent": "#ff5577"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "expanded",
+      "label": "Expanded",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {},
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "collapsed",
+      "label": "Collapsed",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {},
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "dragging",
+      "label": "Dragging",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "motion.transform": [
+          "scale(1.01)"
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "drop-target",
+      "label": "Drop Target",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.focus": "#83e7ff"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "stale",
+      "label": "Stale",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "filter.base": [
+          "saturate(.65)"
+        ]
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "offline",
+      "label": "Offline",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.accent": "#ffbe4f"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    },
+    {
+      "accessibilityImpact": "preserve-semantic-state",
+      "contentReplacementPolicy": "preserve",
+      "filterPolicy": "explicit",
+      "id": "blocked",
+      "label": "Blocked",
+      "motionPolicy": "explicit",
+      "propertyOverrides": {
+        "color.accent": "#ff5577",
+        "interaction.pointerEvents": "none"
+      },
+      "pseudoElementBehavior": "recipe",
+      "shadowPolicy": "explicit",
+      "subcomponentVisibility": {
+        "spinner": false
+      },
+      "touchRequired": true
+    }
+  ],
+  "schema": "PRISMA_VISUAL_STATE_REGISTRY_V1",
+  "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+  "version": "1.0.0"
+}

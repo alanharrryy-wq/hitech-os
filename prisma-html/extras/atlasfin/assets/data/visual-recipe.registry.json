@@ -1,0 +1,1541 @@
+{
+  "items": [
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "button",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.button.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "focus_ring",
+        "icon",
+        "label",
+        "root"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.BUTTON.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": true,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.BUTTON.ICON.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.BUTTON.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.BUTTON.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.BUTTON.VALUE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "card",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.card.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "label",
+        "root",
+        "supporting_text",
+        "value"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": false,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.CARD.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.CARD.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.CARD.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.CARD.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.CARD.VALUE.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "input",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.input.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "focus_ring",
+        "label",
+        "root",
+        "supporting_text",
+        "value"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.INPUT.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": true,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.INPUT.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.INPUT.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.INPUT.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.INPUT.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.INPUT.VALUE.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "table",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.table.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "label",
+        "root",
+        "value"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": false,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.TABLE.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.TABLE.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.TABLE.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.TABLE.VALUE.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "navigation",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.navigation.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "focus_ring",
+        "icon",
+        "label",
+        "root"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.NAVIGATION.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": true,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.NAVIGATION.ICON.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.NAVIGATION.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.NAVIGATION.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.NAVIGATION.VALUE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "overlay",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.overlay.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "focus_ring",
+        "label",
+        "overlays",
+        "root",
+        "supporting_text"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.OVERLAY.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": true,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.OVERLAY.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.OVERLAY.OVERLAYS.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.OVERLAY.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.OVERLAY.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.OVERLAY.VALUE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "panel",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.panel.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "label",
+        "root",
+        "supporting_text"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": false,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.PANEL.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.PANEL.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.PANEL.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.PANEL.VALUE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    },
+    {
+      "artifactStatus": "SOURCE_READY",
+      "familyKind": "component",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "locks": [],
+      "noTouchRules": [
+        "logic",
+        "content",
+        "hierarchy",
+        "accessibility",
+        "no-important",
+        "no-new-containers",
+        "no-owner-change",
+        "no-route-change",
+        "no-component-change",
+        "no-event-change",
+        "no-layout-expansion",
+        "no-global-token-write"
+      ],
+      "recipeId": "REC.component.governed.v2",
+      "requiredCapabilities": [
+        "focus-visible",
+        "reduced-motion",
+        "portable-assets"
+      ],
+      "requiredStates": [
+        "default",
+        "hover",
+        "focus",
+        "focus-visible",
+        "pressed",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "success",
+        "warning",
+        "error",
+        "expanded",
+        "collapsed",
+        "dragging",
+        "drop-target",
+        "stale",
+        "offline",
+        "blocked"
+      ],
+      "requiredSubcomponents": [
+        "focus_ring",
+        "label",
+        "root"
+      ],
+      "stateSetId": "STATESET.INTERACTIVE.COMPLETE.V1",
+      "variantSetId": "VARIANTSET.GOVERNED.V1",
+      "version": "2.0.0",
+      "visualStack": {
+        "badge": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.BADGE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='badge']",
+          "semanticRole": "badge",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "focus_ring": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.COMPONENT.FOCUS_RING.V2",
+          "properties": {
+            "color.focus": "#83e7ff",
+            "shadow.focus": [
+              {
+                "blur": 0,
+                "color": "rgba(131,231,255,.38)",
+                "spread": 3,
+                "x": 0,
+                "y": 0
+              }
+            ]
+          },
+          "required": true,
+          "selectorHint": "[data-part='focus_ring']",
+          "semanticRole": "focus-ring",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "icon": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.ICON.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='icon']",
+          "semanticRole": "icon",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "label": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.COMPONENT.LABEL.V2",
+          "properties": {},
+          "required": true,
+          "selectorHint": "[data-part='label']",
+          "semanticRole": "label",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "overlays": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.OVERLAYS.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='overlays']",
+          "semanticRole": "overlays",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_after": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.PSEUDO_AFTER.V2",
+          "properties": {
+            "pseudo.after.enabled": false,
+            "pseudo.after.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::after",
+          "semanticRole": "pseudo-after",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "pseudo_before": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.PSEUDO_BEFORE.V2",
+          "properties": {
+            "pseudo.before.enabled": false,
+            "pseudo.before.opacity": 0
+          },
+          "required": false,
+          "selectorHint": "::before",
+          "semanticRole": "pseudo-before",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "root": {
+          "coverageStatus": "COMPLETE",
+          "partId": "PART.COMPONENT.ROOT.V2",
+          "properties": {
+            "border.radius": 16,
+            "border.width": 1,
+            "color.background": "#141820",
+            "color.foreground": "#f6f8ff",
+            "interaction.touchAction": "manipulation",
+            "motion.duration": 220
+          },
+          "required": true,
+          "selectorHint": "[data-part='root']",
+          "semanticRole": "root",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "spinner": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.SPINNER.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='spinner']",
+          "semanticRole": "spinner",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "supporting_text": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.SUPPORTING_TEXT.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='supporting_text']",
+          "semanticRole": "supporting-text",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        },
+        "value": {
+          "coverageStatus": "NOT_REQUIRED",
+          "partId": "PART.COMPONENT.VALUE.V2",
+          "properties": {},
+          "required": false,
+          "selectorHint": "[data-part='value']",
+          "semanticRole": "value",
+          "stateOverrides": {},
+          "variantOverrides": {}
+        }
+      }
+    }
+  ],
+  "schema": "PRISMA_VISUAL_RECIPE_REGISTRY_V4",
+  "version": "4.0.0"
+}

@@ -3,6 +3,7 @@
   const manifest = window.PRISMA_ATLAS_MANIFEST;
   const root = document.documentElement;
   const body = document.body;
+  const visrec2Enabled = true;
 
   const accentById = Object.fromEntries(
     manifest.accent_roles.map((accent) => [accent.id, accent])
@@ -43,7 +44,8 @@
 
   const pageId = body.dataset.atlasPage || "INDEX";
   const pagePalette = pagePaletteById[pageId] || pagePaletteById.INDEX;
-  const userAccentKey = "prisma-atlas-accent-user-v1";
+  const legacyUserAccentKey = "prisma-atlas-accent-user-v1";
+  const userAccentKey = `prisma-atlas-accent-user-v2-${pageId}`;
   const migrationKey = "prisma-atlas-chroma-migrated-v1";
 
   const role = (id, fallback) => accentById[id] || accentById[fallback] || accentById.cyan;
@@ -77,7 +79,206 @@
     setAccent(body.dataset.defaultAccent || pagePalette[0]);
   };
 
-  setAccent(localStorage.getItem(userAccentKey) || body.dataset.defaultAccent || pagePalette[0]);
+
+  const currentPageSection = () =>
+    manifest.sections.find((section) => section.letter === pageId) || null;
+
+  const currentPageLabel = () => {
+    const section = currentPageSection();
+    return pageId === "INDEX"
+      ? "Índice general · 418 elementos"
+      : `${pageId} · ${section?.title || document.title}`;
+  };
+
+  const ensureAtlasRecipeDockMarkup = () => {
+    const topActions = document.querySelector(".atlas-top-actions");
+    if (topActions && !topActions.querySelector("[data-open-recipe-dock]")) {
+      const trigger = document.createElement("button");
+      trigger.className = "atlas-button atlas-recipe-dock-trigger";
+      trigger.type = "button";
+      trigger.dataset.openRecipeDock = "";
+      trigger.setAttribute("aria-controls", "atlas-recipe-dock");
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.innerHTML = '<span aria-hidden="true">💾</span><span class="atlas-recipe-dock-trigger__label">Recetas</span>';
+      const indexLink = Array.from(topActions.querySelectorAll("a")).find(
+        (link) => link.getAttribute("href") === "index.html"
+      );
+      topActions.insertBefore(trigger, indexLink || null);
+    }
+
+    document.querySelector("[data-recipe-dock]")?.remove();
+
+    const accentButtons = (manifest.accent_roles || [])
+      .map(
+        (accent) => `
+          <button class="atlas-recipe-accent" type="button"
+            data-accent-choice="${accent.id}"
+            style="--recipe-accent:${accent.rgb}"
+            aria-label="Usar acento ${accent.name}"
+            title="${accent.purpose}">
+            <span aria-hidden="true"></span>
+            <strong>${accent.name}</strong>
+          </button>`
+      )
+      .join("");
+
+    const shell = document.createElement("div");
+    shell.className = "atlas-recipe-dock-shell";
+    shell.dataset.recipeDock = "";
+    shell.setAttribute("aria-hidden", "true");
+    shell.innerHTML = `
+      <button class="atlas-recipe-dock__backdrop" type="button"
+        data-close-recipe-dock aria-label="Cerrar panel de recetas"></button>
+      <aside class="atlas-recipe-dock" id="atlas-recipe-dock"
+        data-recipe-dock-panel role="dialog" aria-modal="true"
+        aria-labelledby="atlas-recipe-dock-title" tabindex="-1">
+        <header class="atlas-recipe-dock__header">
+          <div>
+            <p class="atlas-eyebrow">Receta visual portátil</p>
+            <h2 id="atlas-recipe-dock-title">Receta de esta superficie</h2>
+            <p>Capas globales, acento semántico y contexto completo de la página actual.</p>
+          </div>
+          <button class="atlas-icon-button atlas-recipe-dock__close" type="button"
+            data-close-recipe-dock aria-label="Cerrar panel de recetas">✕</button>
+        </header>
+
+        <section class="atlas-recipe-context" aria-label="Superficie actual">
+          <span>Superficie actual</span>
+          <strong data-recipe-page-label>${currentPageLabel()}</strong>
+          <code data-recipe-page-id>${pageId === "INDEX" ? "SURF.HTML.ATLASFIN.INDEX" : `SURF.HTML.ATLASFIN.${pageId}`}</code>
+        </section>
+
+        <div class="atlas-layer-controls" data-visual-recipe-region="REG.ATLASFIN.RECIPE_DOCK">
+          <label class="atlas-layer-control" data-visual-component-id="ATL-SMOKE-LAYER-01">
+            <span class="atlas-layer-control__head">
+              <span class="atlas-demo__label">Capa 1 · Escena y smoke</span>
+              <span class="atlas-layer-control__value-actions">
+                <output class="atlas-layer-control__value" data-layer-output="smoke">8%</output>
+                <button class="atlas-recipe-save" type="button"
+                  data-export-visual-recipe="RCP.ATLAS.SCENE.SMOKE.02"
+                  aria-label="Guardar receta de escena y smoke para esta página"
+                  title="Descargar receta de esta capa">
+                  <span aria-hidden="true">⇩</span>
+                </button>
+              </span>
+            </span>
+            <code class="atlas-layer-control__id">ATL-SMOKE-LAYER-01</code>
+            <input type="range" min="0" max="100" step="1" value="8"
+              data-layer-control="smoke" aria-label="Smoke de la escena">
+            <span class="atlas-layer-control__scale">
+              <span>Sin smoke</span><span>Smoke fuerte</span>
+            </span>
+          </label>
+
+          <label class="atlas-layer-control" data-visual-component-id="ATL-CHROME-LAYER-01">
+            <span class="atlas-layer-control__head">
+              <span class="atlas-demo__label">Capa 2 · Chrome global</span>
+              <span class="atlas-layer-control__value-actions">
+                <output class="atlas-layer-control__value" data-layer-output="chrome">28%</output>
+                <button class="atlas-recipe-save" type="button"
+                  data-export-visual-recipe="RCP.ATLAS.CHROME.GLASS.02"
+                  aria-label="Guardar receta del chrome para esta página"
+                  title="Descargar receta de esta capa">
+                  <span aria-hidden="true">⇩</span>
+                </button>
+              </span>
+            </span>
+            <code class="atlas-layer-control__id">ATL-CHROME-LAYER-01</code>
+            <input type="range" min="0" max="100" step="1" value="28"
+              data-layer-control="chrome" aria-label="Opacidad del chrome global">
+            <span class="atlas-layer-control__scale">
+              <span>Cristal</span><span>Sólido</span>
+            </span>
+          </label>
+
+          <label class="atlas-layer-control" data-visual-component-id="ATL-CONTENT-LAYER-01">
+            <span class="atlas-layer-control__head">
+              <span class="atlas-demo__label">Capa 3 · Contenido</span>
+              <span class="atlas-layer-control__value-actions">
+                <output class="atlas-layer-control__value" data-layer-output="content">20%</output>
+                <button class="atlas-recipe-save" type="button"
+                  data-export-visual-recipe="RCP.ATLAS.CONTENT.GLASS.02"
+                  aria-label="Guardar receta del contenido para esta página"
+                  title="Descargar receta de esta capa">
+                  <span aria-hidden="true">⇩</span>
+                </button>
+              </span>
+            </span>
+            <code class="atlas-layer-control__id">ATL-CONTENT-LAYER-01</code>
+            <input type="range" min="0" max="100" step="1" value="20"
+              data-layer-control="content" aria-label="Opacidad de secciones y tarjetas">
+            <span class="atlas-layer-control__scale">
+              <span>Cristal</span><span>Sólido</span>
+            </span>
+          </label>
+
+          <section class="atlas-recipe-accent-panel" data-visual-component-id="ATL-PAGE-ACCENT-01"
+            aria-labelledby="atlas-recipe-accent-title">
+            <span class="atlas-layer-control__head">
+              <span>
+                <span class="atlas-demo__label" id="atlas-recipe-accent-title">Acento semántico · Página actual</span>
+                <code class="atlas-layer-control__id">ATL-${pageId}-ACCENT-01</code>
+              </span>
+              <button class="atlas-recipe-save" type="button"
+                data-export-visual-recipe="RCP.ATLAS.PAGE.ACCENT.01"
+                aria-label="Guardar receta del acento semántico de esta página"
+                title="Descargar receta del acento">
+                <span aria-hidden="true">⇩</span>
+              </button>
+            </span>
+            <div class="atlas-recipe-accent-grid" data-recipe-accent-grid>
+              ${accentButtons}
+            </div>
+          </section>
+
+          <section class="atlas-recipe-coverage" aria-label="Contenido de la receta de página">
+            <strong>La receta de esta página incluye</strong>
+            <span>capas</span><span>acento semántico</span><span>materiales</span>
+            <span>blur</span><span>bordes</span><span>sombras</span><span>radios</span>
+            <span>tipografía</span><span>spacing</span><span>movimiento</span>
+            <span>fondo + hash</span><span>inventario de componentes</span>
+            <span>valores resueltos</span><span>IDs y bindings</span>
+          </section>
+
+          <div class="atlas-layer-controls__actions">
+            <button class="atlas-button atlas-button--recipe" type="button"
+              data-export-visual-recipe-bundle>
+              Guardar receta de esta página
+            </button>
+            <button class="atlas-button" type="button" data-reset-layers>
+              Restaurar grafito
+            </button>
+          </div>
+
+          <section class="atlas-recipe-import" aria-labelledby="atlas-recipe-import-title">
+            <div>
+              <strong id="atlas-recipe-import-title">Revisión de archivo</strong>
+              <p>Lee IDs y verifica checksum. Nunca aplica cambios.</p>
+            </div>
+            <label class="atlas-button atlas-recipe-import__button">
+              Revisar receta
+              <input type="file" accept=".json,.prisma-visual.json,application/json"
+                data-import-visual-recipe>
+            </label>
+            <output class="atlas-recipe-import__status" data-visual-recipe-import-status
+              aria-live="polite">Sin archivo seleccionado.</output>
+          </section>
+        </div>
+      </aside>`;
+
+    const atlasShell = document.querySelector(".atlas-shell");
+    const sidebar = atlasShell?.querySelector(".atlas-sidebar");
+    if (atlasShell) atlasShell.insertBefore(shell, sidebar || atlasShell.firstChild);
+  };
+
+  if (!visrec2Enabled) ensureAtlasRecipeDockMarkup();
+
+  setAccent(
+    localStorage.getItem(userAccentKey) ||
+      localStorage.getItem(legacyUserAccentKey) ||
+      body.dataset.defaultAccent ||
+      pagePalette[0]
+  );
 
   document.querySelectorAll("[data-accent-choice]").forEach((button) => {
     button.addEventListener("click", () => setAccent(button.dataset.accentChoice, { persist: true }));
@@ -130,17 +331,12 @@
     }))
   );
 
-  const pageMap = {
-    A: "a-fundamentos.html",
-    B: "b-materiales.html",
-    C: "c-acciones.html",
-    D: "d-entrada-texto.html",
-    E: "e-seleccion-filtros.html",
-    F: "f-navegacion.html",
-    G: "g-tablas.html",
-    M: "m-overlays.html",
-    Z: "z-gobierno.html",
-  };
+  const pageMap = Object.fromEntries(
+    manifest.sections
+      .filter((section) => manifest.implemented_sections.includes(section.letter))
+      .map((section) => [section.letter, section.page])
+      .filter(([, page]) => typeof page === "string" && page.length > 0)
+  );
 
   const renderResults = (query = "") => {
     const normalized = query.trim().toLowerCase();
@@ -204,6 +400,7 @@
     if (button.dataset.resultImplemented !== "true") return;
     const page = pageMap[button.dataset.resultSection];
     const slug = button.dataset.resultSlug;
+    if (!page) return;
     window.location.href = `${page}#${slug}`;
   });
 
@@ -300,8 +497,798 @@
     Object.entries(layerDefaults).forEach(([name, value]) => {
       applyLayer(name, value);
     });
-    setAccent("graphite");
+    setAccent("graphite", { persist: true });
   });
+
+
+  // PRISMA Portable Visual Recipe Exporter V3 · contextual, registry-driven and instruction-only.
+  const visualRecipeRegistry = window.PRISMA_VISUAL_RECIPE_REGISTRY;
+  const visualRecipeExportSchema =
+    visualRecipeRegistry?.export_schema || "PRISMA_PORTABLE_VISUAL_RECIPE_V3";
+
+  const canonicalizeVisualRecipe = (value) => {
+    if (Array.isArray(value)) return value.map(canonicalizeVisualRecipe);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(
+        Object.keys(value)
+          .sort()
+          .map((key) => [key, canonicalizeVisualRecipe(value[key])])
+      );
+    }
+    return value;
+  };
+
+  const stableVisualRecipeJson = (value) =>
+    JSON.stringify(canonicalizeVisualRecipe(value));
+
+  const fallbackVisualRecipeChecksum = (text) => {
+    let hash = 0x811c9dc5;
+    for (let index = 0; index < text.length; index += 1) {
+      hash ^= text.charCodeAt(index);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16).padStart(8, "0").toUpperCase();
+  };
+
+  const checksumVisualRecipe = async (payload, preferredAlgorithm = "SHA-256") => {
+    const canonical = stableVisualRecipeJson(payload);
+    if (
+      preferredAlgorithm === "SHA-256" &&
+      window.crypto?.subtle &&
+      window.TextEncoder
+    ) {
+      const bytes = new TextEncoder().encode(canonical);
+      const digest = await window.crypto.subtle.digest("SHA-256", bytes);
+      return {
+        algorithm: "SHA-256",
+        value: Array.from(new Uint8Array(digest))
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("")
+          .toUpperCase(),
+      };
+    }
+    return {
+      algorithm: "FNV-1A-32",
+      value: fallbackVisualRecipeChecksum(canonical),
+    };
+  };
+
+  const visualRecipeTimestamp = () => new Date().toISOString();
+  const visualRecipeFileStamp = () =>
+    new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  const sanitizeVisualRecipeFilename = (value) =>
+    String(value)
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+
+  let visualRecipeToastTimer = null;
+  const showVisualRecipeToast = (message) => {
+    let toast = document.querySelector("[data-visual-recipe-toast]");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "atlas-recipe-toast";
+      toast.dataset.visualRecipeToast = "";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    window.clearTimeout(visualRecipeToastTimer);
+    visualRecipeToastTimer = window.setTimeout(() => {
+      toast.classList.remove("is-visible");
+    }, 3000);
+  };
+
+  const downloadVisualRecipe = (filename, payload) => {
+    const blob = new Blob([`${JSON.stringify(payload, null, 2)}\n`], {
+      type: "application/json;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.hidden = true;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
+  const currentAtlasPageContext = () => {
+    const section = currentPageSection();
+    const normalizedPageId = pageId || "INDEX";
+    const pageFile = section?.page || "index.html";
+    const pageTitle =
+      normalizedPageId === "INDEX"
+        ? "Índice general"
+        : section?.title || document.title;
+    return {
+      page_id: normalizedPageId,
+      page_title: pageTitle,
+      page_file: pageFile,
+      document_title: document.title,
+      source_path: `extras/atlasfin/${pageFile}`,
+      surface_id: "SURF.HTML.ATLASFIN",
+      surface_instance_id: `SURF.HTML.ATLASFIN.${normalizedPageId}`,
+      owner_id: `OWN.ATLASFIN.PAGE.${normalizedPageId}`,
+      route_id: `ROUTE.ATLASFIN.${normalizedPageId}`,
+      region_id: `REG.ATLASFIN.PAGE.${normalizedPageId}`,
+      slot_id: "SLOT.ATLASFIN.PAGE.RECIPE",
+      component_id: `ATL-${normalizedPageId}-PAGE-RECIPE-01`,
+      ui_id: `ATL-${normalizedPageId}-RECIPE-DOCK-01`,
+      default_accent_id: body.dataset.defaultAccent || pagePalette[0],
+      active_accent_id: root.dataset.accent || body.dataset.defaultAccent || pagePalette[0],
+      semantic_palette: [...pagePalette],
+      manifest_item_count: section?.items?.length || manifest.total_items || 0,
+      manifest_items: section?.items || [],
+      url: {
+        protocol: window.location.protocol,
+        pathname: window.location.pathname,
+        hash: window.location.hash,
+      },
+    };
+  };
+
+  const currentVisualLayerValue = (key) => {
+    const control = document.querySelector(`[data-layer-control="${key}"]`);
+    const fallback = layerDefaults[key] ?? 0;
+    const value = Number(control?.value ?? fallback);
+    return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : fallback;
+  };
+
+  const rootComputedStyle = () => window.getComputedStyle(root);
+
+  const captureRootVariables = (names = []) => {
+    const style = rootComputedStyle();
+    return Object.fromEntries(
+      names.map((name) => [name, style.getPropertyValue(name).trim()])
+    );
+  };
+
+  const captureComputedTarget = (target) => {
+    const node = document.querySelector(target.selector);
+    if (!node) {
+      return {
+        selector: target.selector,
+        pseudo: target.pseudo || null,
+        role: target.role,
+        status: "TARGET_NOT_FOUND",
+        values: {},
+      };
+    }
+    const style = window.getComputedStyle(node, target.pseudo || null);
+    return {
+      selector: target.selector,
+      pseudo: target.pseudo || null,
+      role: target.role,
+      status: "RESOLVED",
+      matched_count: document.querySelectorAll(target.selector).length,
+      values: Object.fromEntries(
+        (target.computed_properties || []).map((property) => [
+          property,
+          style.getPropertyValue(property).trim(),
+        ])
+      ),
+    };
+  };
+
+  const resolveCanonicalValue = (value) => {
+    if (value && typeof value === "object" && value.css_variable) {
+      return {
+        source: "css_variable",
+        css_variable: value.css_variable,
+        value: rootComputedStyle().getPropertyValue(value.css_variable).trim(),
+      };
+    }
+    if (value && typeof value === "object" && value.runtime_from) {
+      if (value.runtime_from === "documentElement.dataset.accent") {
+        return {
+          source: "runtime_dataset",
+          runtime_from: value.runtime_from,
+          value: root.dataset.accent || body.dataset.defaultAccent || pagePalette[0],
+        };
+      }
+      return {
+        source: "runtime_reference",
+        runtime_from: value.runtime_from,
+        value: null,
+      };
+    }
+    if (value && typeof value === "object" && value.computed_from) {
+      const node = document.querySelector(value.computed_from);
+      const style = node ? window.getComputedStyle(node) : null;
+      return {
+        source: "computed_target",
+        selector: value.computed_from,
+        value: style
+          ? {
+              color: style.color,
+              background_color: style.backgroundColor,
+              border_radius: style.borderRadius,
+              font_family: style.fontFamily,
+              font_size: style.fontSize,
+              font_weight: style.fontWeight,
+            }
+          : null,
+      };
+    }
+    return value;
+  };
+
+  const contextualizeVisualRecipeElement = (element) => {
+    const page = currentAtlasPageContext();
+    const isAccent = element.key === "accent";
+    return {
+      ...element,
+      surface_id: page.surface_id,
+      source_surface_instance_id: page.surface_instance_id,
+      route_id: page.route_id,
+      region_id: page.region_id,
+      source_path: page.source_path,
+      component_id: isAccent ? `ATL-${page.page_id}-ACCENT-01` : element.component_id,
+      ui_id: isAccent ? `ATL-${page.page_id}-ACCENT-CONTROL-01` : element.ui_id,
+      page_context: page,
+    };
+  };
+
+  const canonicalElementValues = (rawElement) => {
+    const element = contextualizeVisualRecipeElement(rawElement);
+    const values = Object.fromEntries(
+      Object.entries(element.canonical_values || {}).map(([key, value]) => [
+        key,
+        resolveCanonicalValue(value),
+      ])
+    );
+    if (element.runtime_control?.control_key !== "accent") {
+      values[element.runtime_control.property_id] = {
+        source: "governed_control",
+        value: currentVisualLayerValue(element.runtime_control.control_key),
+        unit: element.runtime_control.unit,
+        css_variable: element.runtime_control.css_variable,
+        storage_key: element.runtime_control.storage_key,
+      };
+    } else if (element.runtime_control?.control_key === "accent") {
+      const accent = accentById[root.dataset.accent] || accentById[pagePalette[0]];
+      values[element.runtime_control.property_id] = {
+        source: "governed_choice",
+        value: accent?.id || root.dataset.accent,
+        label: accent?.name || null,
+        hex: accent?.value || null,
+        rgb: accent?.rgb || null,
+        purpose: accent?.purpose || null,
+        storage_key: userAccentKey,
+      };
+    }
+    return values;
+  };
+
+  const referencedRegistryItems = (rawElement) => {
+    const element = contextualizeVisualRecipeElement(rawElement);
+    const registries = visualRecipeRegistry?.registries || {};
+    const pick = (registryName, idField, ids) =>
+      (registries[registryName]?.items || []).filter((item) =>
+        ids.filter(Boolean).includes(item[idField])
+      );
+    const activeAccent = root.dataset.accent || body.dataset.defaultAccent || pagePalette[0];
+    return {
+      materials: pick("materials", "material_id", [element.material_id]),
+      presets: pick("presets", "preset_id", [element.preset_id]),
+      semantic_accents:
+        element.key === "accent"
+          ? pick("semantic_accents", "accent_id", [activeAccent])
+          : [],
+      states: pick("states", "state_profile_id", [
+        element.canonical_values?.["state.profile"],
+      ]),
+      motion: pick("motion", "motion_profile_id", [
+        element.canonical_values?.["motion.profile"],
+      ]),
+      assets: (registries.assets?.items || []).filter((item) =>
+        (element.asset_ids || []).includes(item.asset_id)
+      ),
+    };
+  };
+
+  const visualRuntimeContext = () => ({
+    page_context: currentAtlasPageContext(),
+    accent_id: root.dataset.accent || body.dataset.defaultAccent || "graphite",
+    accent_hex: rootComputedStyle().getPropertyValue("--atlas-accent-hex").trim(),
+    motion_mode: root.dataset.motion || "normal",
+    color_scheme: rootComputedStyle().getPropertyValue("color-scheme").trim(),
+    viewport: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      device_pixel_ratio: window.devicePixelRatio || 1,
+    },
+    layer_values: Object.fromEntries(
+      Object.keys(layerDefaults).map((key) => [key, currentVisualLayerValue(key)])
+    ),
+  });
+
+  const captureAtlasPageInventory = () => {
+    const page = currentAtlasPageContext();
+    const main = document.querySelector(".atlas-main") || document.body;
+    const manifestBySlug = Object.fromEntries(
+      (page.manifest_items || []).map((item) => [item.slug, item])
+    );
+    const anchors = Array.from(main.querySelectorAll("[id]"))
+      .filter((node) => !node.closest("[data-recipe-dock]"))
+      .slice(0, visualRecipeRegistry?.page_inventory_contract?.max_dom_items || 500)
+      .map((node) => {
+        const manifestItem = manifestBySlug[node.id] || null;
+        return {
+          id: node.id,
+          tag: node.tagName.toLowerCase(),
+          classes: Array.from(node.classList).slice(0, 12),
+          role: node.getAttribute("role"),
+          aria_label: node.getAttribute("aria-label"),
+          manifest_item_id: manifestItem?.id || null,
+          manifest_name: manifestItem?.name || null,
+          semantic_id:
+            manifestItem?.id || `UI.ATLAS.${page.page_id}.${node.id.toUpperCase().replace(/[^A-Z0-9]+/g, "_")}`,
+        };
+      });
+
+    const count = (selector) => main.querySelectorAll(selector).length;
+    const surfaceTargets = [
+      {
+        selector: ".atlas-topbar",
+        role: "global_chrome",
+        computed_properties: [
+          "background-color",
+          "background-image",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "backdrop-filter",
+          "color",
+          "font-family",
+        ],
+      },
+      {
+        selector: ".atlas-sidebar",
+        role: "navigation_chrome",
+        computed_properties: [
+          "background-color",
+          "background-image",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "backdrop-filter",
+        ],
+      },
+      {
+        selector: ".atlas-main",
+        role: "page_main",
+        computed_properties: [
+          "color",
+          "background-color",
+          "font-family",
+          "font-size",
+          "line-height",
+          "padding",
+          "gap",
+        ],
+      },
+      {
+        selector: ".atlas-section",
+        role: "page_section",
+        computed_properties: [
+          "background-color",
+          "background-image",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "backdrop-filter",
+          "padding",
+          "gap",
+          "color",
+          "font-family",
+        ],
+      },
+      {
+        selector: ".atlas-card",
+        role: "page_card",
+        computed_properties: [
+          "background-color",
+          "background-image",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "backdrop-filter",
+          "padding",
+          "gap",
+          "color",
+          "font-family",
+        ],
+      },
+      {
+        selector: ".atlas-demo",
+        role: "page_demo",
+        computed_properties: [
+          "background-color",
+          "background-image",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "backdrop-filter",
+          "padding",
+          "gap",
+          "color",
+          "font-family",
+        ],
+      },
+    ];
+
+    return {
+      schema: "PRISMA_ATLAS_PAGE_INVENTORY_V1",
+      page,
+      manifest_items: page.manifest_items,
+      id_anchors: anchors,
+      component_counts: {
+        ids: anchors.length,
+        sections: count(".atlas-section"),
+        cards: count(".atlas-card"),
+        demos: count(".atlas-demo"),
+        buttons: count("button"),
+        links: count("a[href]"),
+        inputs: count("input"),
+        selects: count("select"),
+        textareas: count("textarea"),
+        tables: count("table"),
+        headings: count("h1,h2,h3,h4,h5,h6"),
+        figures: count("figure"),
+        dialogs: count('[role="dialog"],dialog'),
+      },
+      resolved_surface_targets: surfaceTargets.map(captureComputedTarget),
+    };
+  };
+
+  const visualRecipeElementPayload = (rawElement) => {
+    const element = contextualizeVisualRecipeElement(rawElement);
+    const page = currentAtlasPageContext();
+    return {
+      schema: visualRecipeExportSchema,
+      schema_version: "3.0.0",
+      export_kind: "single_visual_recipe_for_current_page",
+      export_id: `EXP.${page.page_id}.${element.component_id}.${visualRecipeFileStamp()}`,
+      exported_at: visualRecipeTimestamp(),
+      page_context: page,
+      identity: {
+        semantic_id: element.semantic_id,
+        recipe_id: element.recipe_id,
+        preset_id: element.preset_id,
+        material_id: element.material_id,
+        source_surface_id: page.surface_id,
+        source_surface_instance_id: page.surface_instance_id,
+        target_surface_ids: element.compatible_targets,
+        owner_id: element.owner_id,
+        page_owner_id: page.owner_id,
+        route_id: page.route_id,
+        region_id: page.region_id,
+        slot_id: element.slot_id,
+        component_id: element.component_id,
+        ui_id: element.ui_id,
+        version: element.version,
+      },
+      canonical_recipe: {
+        label: element.label,
+        description: element.description,
+        values: canonicalElementValues(element),
+        registries: referencedRegistryItems(element),
+      },
+      resolved_recipe: {
+        captured_at: visualRecipeTimestamp(),
+        targets: (element.targets || []).map(captureComputedTarget),
+        root_css_variables: captureRootVariables(
+          visualRecipeRegistry?.surface_capture?.css_variables || []
+        ),
+      },
+      binding: {
+        source_adapter_id: visualRecipeRegistry.surface.adapter_id,
+        target_bindings: element.target_bindings,
+        origin_chain: [
+          element.semantic_id,
+          element.recipe_id,
+          element.preset_id,
+          page.surface_instance_id,
+          page.owner_id,
+          page.route_id,
+          page.region_id,
+          element.slot_id,
+          element.component_id,
+        ],
+      },
+      compatibility: {
+        compatible_targets: element.compatible_targets,
+        adapter_required: element.adapter_required,
+        direct_target_mutation: false,
+      },
+      runtime_context: visualRuntimeContext(),
+      preview_evidence: {
+        status: "NOT_CAPTURED",
+        reason: "STATIC_EXPORT_ONLY",
+        optional: true,
+      },
+      instructions: {
+        next_step:
+          "Resolve a concrete target binding, validate owner/route/region/slot/component, then generate a governed patch with evidence and rollback.",
+        target_application_status: "BLOCKED_BY_MISSING_ELEMENT_BINDING",
+        direct_application_allowed: false,
+      },
+    };
+  };
+
+  const finalizeVisualRecipePayload = async (payload) => ({
+    ...payload,
+    checksum: await checksumVisualRecipe(payload),
+  });
+
+  const exportSingleVisualRecipe = async (recipeId, button) => {
+    const element = visualRecipeRegistry?.elements?.find(
+      (candidate) => candidate.recipe_id === recipeId
+    );
+    if (!element) {
+      showVisualRecipeToast("No encontré el registro gobernado de esta receta.");
+      return;
+    }
+    const page = currentAtlasPageContext();
+    button?.classList.add("is-saving");
+    try {
+      const payload = await finalizeVisualRecipePayload(
+        visualRecipeElementPayload(element)
+      );
+      const filename = `visrec_${sanitizeVisualRecipeFilename(
+        page.page_id
+      )}_${sanitizeVisualRecipeFilename(
+        payload.identity.component_id
+      )}_${visualRecipeFileStamp()}.prisma-visual.json`;
+      downloadVisualRecipe(filename, payload);
+      showVisualRecipeToast(
+        `${payload.identity.component_id} guardado para ${page.page_title}.`
+      );
+    } finally {
+      button?.classList.remove("is-saving");
+    }
+  };
+
+  const exportVisualRecipeBundle = async (button) => {
+    if (!visualRecipeRegistry?.elements?.length) {
+      showVisualRecipeToast("No encontré el registro de recetas visuales.");
+      return;
+    }
+    const page = currentAtlasPageContext();
+    button?.classList.add("is-saving");
+    try {
+      const bundle = visualRecipeRegistry.bundle;
+      const componentId = bundle.component_id_template.replace("{PAGE_ID}", page.page_id);
+      const uiId = bundle.ui_id_template.replace("{PAGE_ID}", page.page_id);
+      const payload = await finalizeVisualRecipePayload({
+        schema: visualRecipeExportSchema,
+        schema_version: "3.0.0",
+        export_kind: "current_page_visual_recipe_bundle",
+        export_id: `EXP.${componentId}.${visualRecipeFileStamp()}`,
+        exported_at: visualRecipeTimestamp(),
+        page_context: page,
+        identity: {
+          semantic_id: bundle.semantic_id,
+          recipe_id: bundle.recipe_id,
+          preset_id: bundle.preset_id,
+          source_surface_id: page.surface_id,
+          source_surface_instance_id: page.surface_instance_id,
+          target_surface_ids: Array.from(
+            new Set(
+              visualRecipeRegistry.elements.flatMap(
+                (element) => element.compatible_targets
+              )
+            )
+          ),
+          owner_id: page.owner_id,
+          route_id: page.route_id,
+          region_id: page.region_id,
+          slot_id: bundle.slot_id,
+          component_id: componentId,
+          ui_id: uiId,
+          version: bundle.version,
+        },
+        registry_manifest: {
+          registry_version: visualRecipeRegistry.registry_version,
+          schemas: Object.fromEntries(
+            Object.entries(visualRecipeRegistry.registries || {}).map(
+              ([key, value]) => [key, { schema: value.schema, version: value.version }]
+            )
+          ),
+          property_definitions:
+            visualRecipeRegistry.registries?.properties?.items || [],
+        },
+        surface_recipe: {
+          root_css_variables: captureRootVariables(
+            visualRecipeRegistry.surface_capture?.css_variables || []
+          ),
+          runtime_context: visualRuntimeContext(),
+        },
+        page_inventory: captureAtlasPageInventory(),
+        recipes: visualRecipeRegistry.elements.map(visualRecipeElementPayload),
+        portability_contract: visualRecipeRegistry.portability_contract,
+        preview_evidence: {
+          status: "NOT_CAPTURED",
+          reason: "STATIC_EXPORT_ONLY",
+          optional: true,
+        },
+        instructions: {
+          next_step:
+            "Upload this page recipe for read-only inspection, choose Tablet, PC, Mobile or another surface, and resolve concrete bindings before any governed application.",
+          target_application_status: "BLOCKED_BY_MISSING_ELEMENT_BINDING",
+          direct_application_allowed: false,
+        },
+      });
+      const filename = `visrec_${sanitizeVisualRecipeFilename(
+        componentId
+      )}_${visualRecipeFileStamp()}.prisma-visual.json`;
+      downloadVisualRecipe(filename, payload);
+      showVisualRecipeToast(
+        `Receta completa de ${page.page_title} guardada con inventario, IDs y checksum.`
+      );
+    } finally {
+      button?.classList.remove("is-saving");
+    }
+  };
+
+  const verifyImportedVisualRecipe = async (payload) => {
+    if (!payload || typeof payload !== "object") {
+      return { ok: false, message: "El archivo no contiene un objeto JSON." };
+    }
+    const acceptedSchemas = [
+      visualRecipeRegistry?.export_schema,
+      ...(visualRecipeRegistry?.legacy_export_schemas || []),
+    ];
+    if (!acceptedSchemas.includes(payload.schema)) {
+      return { ok: false, message: `Schema no compatible: ${payload.schema || "sin schema"}.` };
+    }
+    if (!payload.checksum?.algorithm || !payload.checksum?.value) {
+      return { ok: false, message: "La receta no contiene checksum." };
+    }
+    const { checksum, ...unsignedPayload } = payload;
+    const calculated = await checksumVisualRecipe(
+      unsignedPayload,
+      checksum.algorithm
+    );
+    if (calculated.algorithm !== checksum.algorithm) {
+      return {
+        ok: false,
+        message: `No se pudo verificar ${checksum.algorithm} en este navegador.`,
+      };
+    }
+    if (calculated.value !== String(checksum.value).toUpperCase()) {
+      return { ok: false, message: "Checksum inválido: el archivo fue alterado." };
+    }
+    const identity = payload.identity || {};
+    const page = payload.page_context?.page_title || payload.page_context?.page_id || "sin página";
+    return {
+      ok: true,
+      message: `PASS · ${identity.component_id || payload.export_kind} · ${page}`,
+    };
+  };
+
+  document.querySelectorAll("[data-export-visual-recipe]").forEach((button) => {
+    button.addEventListener("click", () => {
+      exportSingleVisualRecipe(button.dataset.exportVisualRecipe, button);
+    });
+  });
+
+  document
+    .querySelector("[data-export-visual-recipe-bundle]")
+    ?.addEventListener("click", (event) => {
+      exportVisualRecipeBundle(event.currentTarget);
+    });
+
+  const visualRecipeImportInput = document.querySelector(
+    "[data-import-visual-recipe]"
+  );
+  const visualRecipeImportStatus = document.querySelector(
+    "[data-visual-recipe-import-status]"
+  );
+  visualRecipeImportInput?.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (visualRecipeImportStatus) {
+      visualRecipeImportStatus.textContent = "Revisando checksum…";
+      visualRecipeImportStatus.dataset.status = "pending";
+    }
+    try {
+      const payload = JSON.parse(await file.text());
+      const result = await verifyImportedVisualRecipe(payload);
+      if (visualRecipeImportStatus) {
+        visualRecipeImportStatus.textContent = result.message;
+        visualRecipeImportStatus.dataset.status = result.ok ? "pass" : "fail";
+      }
+      showVisualRecipeToast(result.message);
+    } catch (error) {
+      const message = `Archivo inválido: ${error.message}`;
+      if (visualRecipeImportStatus) {
+        visualRecipeImportStatus.textContent = message;
+        visualRecipeImportStatus.dataset.status = "fail";
+      }
+      showVisualRecipeToast(message);
+    } finally {
+      event.target.value = "";
+    }
+  });
+
+  // PRISMA Visual Recipe Dock shared by all 27 Atlas pages.
+  const recipeDockShell = document.querySelector("[data-recipe-dock]");
+  const recipeDockPanel = document.querySelector("[data-recipe-dock-panel]");
+  const recipeDockTrigger = document.querySelector("[data-open-recipe-dock]");
+  let recipeDockReturnFocus = null;
+
+  const recipeDockFocusables = () =>
+    recipeDockPanel
+      ? Array.from(
+          recipeDockPanel.querySelectorAll(
+            'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((node) => node.getClientRects().length > 0)
+      : [];
+
+  const setRecipeDockOpen = (open) => {
+    if (!recipeDockShell || !recipeDockPanel || !recipeDockTrigger) return;
+    if (open) recipeDockReturnFocus = document.activeElement;
+    recipeDockShell.dataset.open = String(open);
+    recipeDockShell.setAttribute("aria-hidden", String(!open));
+    recipeDockTrigger.setAttribute("aria-expanded", String(open));
+    body.classList.toggle("is-recipe-dock-open", open);
+    if (open) {
+      requestAnimationFrame(() => {
+        const focusTarget = recipeDockFocusables()[0] || recipeDockPanel;
+        focusTarget.focus();
+      });
+    } else {
+      recipeDockReturnFocus?.focus?.();
+      recipeDockReturnFocus = null;
+    }
+  };
+
+  recipeDockTrigger?.addEventListener("click", () => {
+    setRecipeDockOpen(recipeDockShell?.dataset.open !== "true");
+  });
+
+  recipeDockShell
+    ?.querySelectorAll("[data-close-recipe-dock]")
+    .forEach((button) => {
+      button.addEventListener("click", () => setRecipeDockOpen(false));
+    });
+
+  if (new URLSearchParams(window.location.search).get("recipeDock") === "open") {
+    setRecipeDockOpen(true);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (recipeDockShell?.dataset.open !== "true") return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setRecipeDockOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const items = recipeDockFocusables();
+    if (!items.length) {
+      event.preventDefault();
+      recipeDockPanel?.focus();
+      return;
+    }
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
 
   // Table lab.
   document.querySelectorAll("[data-atlas-table]").forEach((table) => {
@@ -1578,5 +2565,52 @@
   window.addEventListener("resize", () => positionAtlasSelect(atlasSelectState.current), { passive: true });
   window.addEventListener("scroll", () => positionAtlasSelect(atlasSelectState.current), { passive: true, capture: true });
 
+
+  // PRISMA VISREC2 V2 · one public runtime, registry-driven and instruction-only.
+  const loadVisualTransferRuntimeV2 = () => {
+    if (window.PRISMA_VISREC2_RUNTIME_V2) return Promise.resolve(window.PRISMA_VISREC2_RUNTIME_V2);
+    if (window.__PRISMA_VISREC2_RUNTIME_PROMISE__) return window.__PRISMA_VISREC2_RUNTIME_PROMISE__;
+    window.__PRISMA_VISREC2_RUNTIME_PROMISE__ = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "assets/js/visrec2/runtime.js";
+      script.async = true;
+      script.dataset.visrec2Runtime = "v2";
+      script.addEventListener("load", () => resolve(window.PRISMA_VISREC2_RUNTIME_V2));
+      script.addEventListener("error", () => reject(new Error("No fue posible cargar VISREC2 Runtime V2.")));
+      document.head.appendChild(script);
+    });
+    return window.__PRISMA_VISREC2_RUNTIME_PROMISE__;
+  };
+
+  const initVisualTransferConsole = async () => {
+    const runtime = await loadVisualTransferRuntimeV2();
+    if (!runtime) throw new Error("VISREC2 Runtime V2 no expuso su contrato público.");
+    await runtime.init({
+      registry: visualRecipeRegistry,
+      root,
+      body,
+      pageId,
+      manifest,
+      layerDefaults,
+      applyLayer,
+      setAccent,
+      pageContext: currentAtlasPageContext,
+      pageLabel: currentPageLabel,
+      checksum: checksumVisualRecipe,
+      stableJson: stableVisualRecipeJson,
+      fallbackChecksum: fallbackVisualRecipeChecksum,
+      timestamp: visualRecipeTimestamp,
+      fileStamp: visualRecipeFileStamp,
+      sanitizeFilename: sanitizeVisualRecipeFilename,
+      toast: showVisualRecipeToast,
+      download: downloadVisualRecipe,
+      capturePageInventory: captureAtlasPageInventory,
+    });
+  };
+
+  initVisualTransferConsole().catch((error) => {
+    console.error("VISREC2 V2 bootstrap failed", error);
+    showVisualRecipeToast("VISREC2 no pudo iniciar; revisa la validación de registries.");
+  });
 
 })();
