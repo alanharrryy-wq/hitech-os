@@ -1,0 +1,91 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Atlasfin canonical visual-control pilot",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "schemaVersion",
+    "controlId",
+    "projectionRole",
+    "status",
+    "applicationReadiness",
+    "authority",
+    "pilot",
+    "recipe",
+    "evidence",
+    "plan",
+    "gates",
+    "rollback",
+    "safety",
+    "rendering",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {"const": "PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1"},
+    "schemaVersion": {"const": "1.0.0"},
+    "controlId": {"const": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1"},
+    "projectionRole": {"const": "REGENERABLE_READ_ONLY_VIEW_NOT_SOURCE_OF_TRUTH"},
+    "status": {"const": "READY_FOR_SOURCE_ONLY_PLANNING"},
+    "applicationReadiness": {"type": "string"},
+    "authority": {"type": "object"},
+    "pilot": {
+      "type": "object",
+      "required": ["surfaceId", "routeId", "ownerId", "regionId", "slotId", "componentUiId", "selector", "layerId", "implementationLayerId", "bindingId"],
+      "properties": {
+        "surfaceId": {"const": "SURF.tb.pos"},
+        "routeId": {"const": "ROUTE.tb.pos"},
+        "ownerId": {"const": "OWN.tb.pos_ticket_panel"},
+        "regionId": {"const": "ZONE.tb.pos.payment"},
+        "slotId": {"const": "SLOT.tb.pos.payment.cobrar"},
+        "componentUiId": {"const": "TB-POS-PAY-COBRAR-BTN-01"},
+        "selector": {"const": ".cobrarReferenceButton"},
+        "layerId": {"const": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE"},
+        "implementationLayerId": {"const": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton"},
+        "bindingId": {"const": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1"}
+      },
+      "additionalProperties": true
+    },
+    "recipe": {"type": "object"},
+    "evidence": {"type": "object"},
+    "plan": {
+      "type": "object",
+      "required": ["planId", "status", "applicationEnabled", "operationCount", "operations"],
+      "properties": {
+        "planId": {"pattern": "^BRPLAN\\.[a-f0-9]{24}$"},
+        "status": {"const": "PLAN_READY_FOR_REVIEW"},
+        "applicationEnabled": {"const": false},
+        "operationCount": {"const": 11},
+        "operations": {"type": "array", "minItems": 11, "maxItems": 11}
+      },
+      "additionalProperties": true
+    },
+    "gates": {"type": "array", "minItems": 7},
+    "workflow": {"type": "array", "minItems": 9},
+    "history": {"type": "array", "minItems": 3},
+    "rollback": {"type": "object"},
+    "safety": {
+      "type": "object",
+      "required": ["runtimeMutationAllowed", "productApplicationAllowed", "sourceMutationPerformed"],
+      "properties": {
+        "runtimeMutationAllowed": {"const": false},
+        "productApplicationAllowed": {"const": false},
+        "sourceMutationPerformed": {"const": false}
+      },
+      "additionalProperties": true
+    },
+    "rendering": {"type": "object"},
+    "rescuedPatterns": {"type": "array", "minItems": 2},
+    "integrity": {"type": "object"}
+  },
+  "additionalProperties": false,
+  "x-discriminator": "controlId",
+  "examples": [
+    {"controlId": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1", "status": "READY_FOR_SOURCE_ONLY_PLANNING"}
+  ],
+  "x-migration": {
+    "from": [],
+    "policy": "Additive canonical projection; never import parallel projection artifacts as authority."
+  }
+}
