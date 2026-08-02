@@ -1,0 +1,27 @@
+{
+  "adapterIds": {
+    "cc": "ADP.CC.OPERATIONS.V2",
+    "cl": "ADP.CL.ANALYTIC.V2",
+    "cmd": "ADP.CMD.OPERATIONS.V2",
+    "mb": "ADP.MB.TOUCH.V2",
+    "pc": "ADP.PC.ADMIN.V2",
+    "shared": "ADP.SHARED.NEUTRAL.V2",
+    "tb": "ADP.TB.TOUCH.V2",
+    "web": "ADP.WEB.RESPONSIVE.V2"
+  },
+  "applicationEnabled": false,
+  "governorRoot": "${PRISMA_GOVERNOR_ROOT}",
+  "metadata": {
+    "browserAutomationAllowed": false,
+    "productApplicationAllowed": false,
+    "runtimeMutationAllowed": false
+  },
+  "outputRoot": "${CODE_ATLAS_OUTPUT_ROOT}",
+  "productRoot": "${PRISMA_PRODUCT_ROOT}",
+  "profileId": "prisma.ui.bridge.v1",
+  "recipePaths": [
+    "${PRISMA_GOVERNOR_ROOT}/authority/rifat/identity/recipes",
+    "${PRISMA_GOVERNOR_ROOT}/authority/rifat/identity/portable/v2"
+  ],
+  "schema": "code-atlas.ui-bridge-profile.v1"
+}

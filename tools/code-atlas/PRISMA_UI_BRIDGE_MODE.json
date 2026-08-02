@@ -1,0 +1,22 @@
+{
+  "applicationEnabled": false,
+  "classification": "BUILD",
+  "entrypoints": [
+    "python -m code_atlas.cli.main ui-bridge",
+    "python -m code_atlas.ui_bridge"
+  ],
+  "extends": [
+    "APP_MAP_MODE.json",
+    "SURFACE_TARGET_ATLAS_MODE.json"
+  ],
+  "futureApplicationGate": "FRESH_EXACT_TARGET_AUTHORITY_MESH_REQUIRED",
+  "modeId": "prisma_ui_bridge",
+  "outputs": [
+    "PRISMA_UI_BRIDGE_PLAN.json",
+    "PRISMA_UI_BRIDGE_DIFF.json"
+  ],
+  "schema": "code-atlas.ui-bridge-mode.v1",
+  "schemaVersion": "1.0.0",
+  "sourceOnly": true,
+  "uimapContractOwner": "code_atlas.app_map.uimap.contracts"
+}
