@@ -8,7 +8,19 @@
     "cf:build": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Build",
     "cf:status": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Status",
     "cf:preview": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Preview",
-    "cf:production": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Production"
+    "cf:production": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Production",
+    "identity:validate": "python tools/validate_identity_dictionary.py",
+    "identity:compile": "python tools/compile_identity_dictionary.py --write",
+    "identity:compile:check": "python tools/compile_identity_dictionary.py --check",
+    "identity:status": "python tools/identity_dictionary.py status",
+    "identity:list": "python tools/identity_dictionary.py list",
+    "identity:export:list": "python tools/portable_identity_export.py list",
+    "identity:export:validate": "python tools/validate_portable_identity_export.py",
+    "identity:export:examples": "python tools/portable_identity_export.py examples",
+    "identity:bindings:validate": "python -B tools/validate_identity_bindings.py",
+    "identity:bindings:inspect": "python -B tools/identity_binding_resolver.py example",
+    "identity:bindings:coverage": "python -B tools/identity_binding_resolver.py coverage",
+    "identity:bindings:sources": "python -B tools/identity_binding_resolver.py sources"
   },
   "devDependencies": {
     "wrangler": "4.93.0"

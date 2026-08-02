@@ -14,7 +14,7 @@
     "ANCHOR_MISSING",
     "SELECTOR_MISSING"
   ],
-  "routeCount": 96,
+  "routeCount": 94,
   "countsBySurface": {
     "chart-lab": {
       "app": "Chart Lab",
@@ -2360,44 +2360,6 @@
       ]
     },
     {
-      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
-      "panel_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
-      "app": "PRISMA PC Backoffice",
-      "surface": "pc",
-      "port": 3130,
-      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
-      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
-      "layoutFiles": [
-        "products/pc/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
-      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
-      "middleware": "products/pc/app/middleware.ts",
-      "currentPanelContract": "pc.workspace",
-      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules",
-      "runtimeMode": "runtime",
-      "sourceJustification": null,
-      "redirectTarget": null,
-      "anchors": {
-        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
-        "data-prisma-surface": "pc",
-        "data-prisma-route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
-      },
-      "canonical_selectors": [
-        "[data-prisma-panel=\"pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route\"]"
-      ],
-      "allowed_files": [
-        ".prisma-ui/current/**",
-        ".prisma-ui/routes.json",
-        "tools/quality/ui-certainty.mjs",
-        "tools/quality/ui-runtime-certainty.mjs",
-        "package.json",
-        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
-        "products/pc/app/app/layout.tsx",
-        "products/pc/app/middleware.ts"
-      ]
-    },
-    {
       "route_id": "pc.license.runtime.route",
       "panel_id": "pc.license.runtime.route",
       "app": "PRISMA PC Backoffice",
@@ -2925,44 +2887,6 @@
         "tools/quality/ui-runtime-certainty.mjs",
         "package.json",
         "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
-        "products/pc/app/app/layout.tsx",
-        "products/pc/app/middleware.ts"
-      ]
-    },
-    {
-      "route_id": "pc.referencia.visual.liquid.glass.capsules.route",
-      "panel_id": "pc.referencia.visual.liquid.glass.capsules.route",
-      "app": "PRISMA PC Backoffice",
-      "surface": "pc",
-      "port": 3130,
-      "route": "/referencia-visual/liquid-glass-capsules",
-      "pageFile": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
-      "layoutFiles": [
-        "products/pc/app/app/layout.tsx"
-      ],
-      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
-      "anchorOwnerComponent": "products/pc/app/app/layout.tsx",
-      "middleware": "products/pc/app/middleware.ts",
-      "currentPanelContract": "pc.workspace",
-      "runtimeUrl": null,
-      "runtimeMode": "source-only-redirect-route",
-      "sourceJustification": "This page is a source-level redirect alias to /laboratorio-pc/referencia-visual/liquid-glass-capsules; the canonical target route carries runtime UI anchors.",
-      "redirectTarget": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
-      "anchors": {
-        "data-prisma-panel": "pc.referencia.visual.liquid.glass.capsules.route",
-        "data-prisma-surface": "pc",
-        "data-prisma-route": "/referencia-visual/liquid-glass-capsules"
-      },
-      "canonical_selectors": [
-        "[data-prisma-panel=\"pc.referencia.visual.liquid.glass.capsules.route\"]"
-      ],
-      "allowed_files": [
-        ".prisma-ui/current/**",
-        ".prisma-ui/routes.json",
-        "tools/quality/ui-certainty.mjs",
-        "tools/quality/ui-runtime-certainty.mjs",
-        "package.json",
-        "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
         "products/pc/app/app/layout.tsx",
         "products/pc/app/middleware.ts"
       ]
