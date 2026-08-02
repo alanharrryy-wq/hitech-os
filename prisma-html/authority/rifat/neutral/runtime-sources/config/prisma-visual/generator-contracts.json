@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.091Z",
+  "modes": [
+    "dry-run",
+    "safe-scaffold"
+  ],
+  "defaultMode": "dry-run",
+  "allowedSurfaces": [
+    "tablet",
+    "pc",
+    "mobile",
+    "chart-lab",
+    "kiosk"
+  ],
+  "dryRunGuarantees": [
+    "repoWrites false",
+    "no production route writes",
+    "manifest produced"
+  ],
+  "allowedWriteRoot": "tools/prisma-visual/generated-screens",
+  "forbiddenPatterns": [
+    "products/0.backgrounds",
+    "Fuji",
+    "soft-gray-clouds",
+    "css-priority-override",
+    "global-css-hack"
+  ],
+  "requiredInputs": [
+    "surface",
+    "domain",
+    "route",
+    "screenIntent",
+    "criticality",
+    "density",
+    "recipe"
+  ],
+  "blueprintIds": [
+    "blueprint.tablet.commerce-review",
+    "blueprint.pc.admin-overview",
+    "blueprint.mobile.owner-pulse",
+    "blueprint.chart-lab.analysis",
+    "blueprint.kiosk.future-display"
+  ],
+  "validatorsRequired": [
+    "validate-generator-contracts",
+    "validate-governed-system"
+  ]
+}

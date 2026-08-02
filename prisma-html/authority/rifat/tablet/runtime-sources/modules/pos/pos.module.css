@@ -1620,10 +1620,6 @@
    * Rebalance of the nocturne glass behavior after readability hardening.
    * Goal: lighter translucency, sticky search/header bar, softer gaussian hover glow.
    */
-  .posPremiumCatalogArea {
-    container-type: inline-size;
-  }
-
   .posPremiumCatalogHeader,
   .posPremiumCatalogToolbar,
   .posPremiumCatalogChrome,
@@ -1667,11 +1663,6 @@
     background: rgba(3, 8, 13, 0.14);
     border-color: rgba(201, 227, 243, 0.11);
     color: rgba(244, 249, 253, 0.96);
-  }
-
-  .posPremiumProductGrid {
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 16px;
   }
 
   .posPremiumProductCard {
@@ -1720,9 +1711,4 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
-  @container (max-width: 470px) {
-    .posPremiumProductGrid {
-      grid-template-columns: 1fr;
-    }
-  }
 }

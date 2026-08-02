@@ -1,0 +1,115 @@
+.shell {
+  --cmd-text: #fff8e7;
+  --cmd-muted: rgba(255, 248, 231, 0.72);
+  --cmd-line: rgba(255, 248, 231, 0.14);
+  --cmd-gold: #ffd977;
+  min-height: 100svh;
+  width: 100%;
+  color: var(--cmd-text);
+  background:
+    linear-gradient(180deg, rgba(4, 9, 8, 0.28), rgba(4, 9, 8, 0.94)),
+    url("/backgrounds/prisma-mobile/appmovil-command-center-simon-spring.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: max(14px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  overflow-x: hidden;
+}
+
+.header,
+.disabledPanel,
+.focusPanel,
+.card,
+.sparkCard,
+.emptySpark {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  border: 1px solid var(--cmd-line);
+  border-radius: 24px;
+  padding: 12px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04)),
+    rgba(7, 12, 10, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 16px 46px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(7px) saturate(1.12);
+}
+
+.header p,
+.disabledPanel p,
+.cardHeader span,
+.cardFooter,
+.signalRow,
+.focusPanel span {
+  color: var(--cmd-muted);
+  font-size: 0.74rem;
+  line-height: 1.35;
+}
+
+.header h1,
+.disabledPanel h1 {
+  margin: 2px 0;
+  font-size: clamp(1.5rem, 8vw, 2.3rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.filterRail {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filterRail::-webkit-scrollbar {
+  display: none;
+}
+
+.filterRail button {
+  appearance: none;
+  border: 1px solid var(--cmd-line);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--cmd-text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.grid,
+.sparkGrid {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.cardHeader,
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chartFrame {
+  min-height: 154px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.signalRow {
+  width: min(430px, 100%);
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.signalRow span {
+  border: 1px solid var(--cmd-line);
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: rgba(255, 255, 255, 0.06);
+}

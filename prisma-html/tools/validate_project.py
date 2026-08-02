@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -10,6 +11,17 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import tinycss2
+
+
+MANIFEST_IGNORED_DIRS = {
+    '__pycache__',
+    '.wrangler',
+    'cloudflare-results',
+    'dist',
+    'node_modules',
+}
+MANIFEST_IGNORED_NAMES = {'.DS_Store', 'Thumbs.db'}
+MANIFEST_IGNORED_SUFFIXES = ('.fail.zip', '.partial.zip', '.pyc', '.result.zip')
 
 
 class Inspector(HTMLParser):
@@ -44,6 +56,66 @@ def is_primary_scope(path):
         and 'extras' not in path.parts
         and 'rollback' not in path.parts
     )
+
+
+def validate_files_manifest(root):
+    manifest_path = root / 'FILES_MANIFEST.json'
+    issues = []
+    if not manifest_path.is_file():
+        return {'ok': False, 'entry_count': 0, 'issues': ['FILES_MANIFEST.json missing']}
+
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
+    except (OSError, json.JSONDecodeError) as error:
+        return {'ok': False, 'entry_count': 0, 'issues': [f'FILES_MANIFEST.json invalid: {error}']}
+
+    entries = manifest.get('files', [])
+    if manifest.get('file_count_excluding_manifest') != len(entries):
+        issues.append('declared file count does not match manifest entries')
+
+    paths = [entry.get('path') for entry in entries]
+    valid_paths = [path for path in paths if isinstance(path, str)]
+    if len(valid_paths) != len(entries):
+        issues.append('manifest contains a non-string path')
+    if len(valid_paths) != len(set(valid_paths)):
+        issues.append('manifest contains duplicate paths')
+
+    actual_paths = set()
+    for path in root.rglob('*'):
+        if not path.is_file() or path == manifest_path:
+            continue
+        relative = path.relative_to(root)
+        if any(part in MANIFEST_IGNORED_DIRS for part in relative.parts):
+            continue
+        if path.name in MANIFEST_IGNORED_NAMES or path.name.endswith(MANIFEST_IGNORED_SUFFIXES):
+            continue
+        actual_paths.add(relative.as_posix())
+
+    manifest_paths = set(valid_paths)
+    uncovered = sorted(actual_paths - manifest_paths)
+    extraneous = sorted(manifest_paths - actual_paths)
+    if uncovered:
+        issues.append(f'uncovered files: {uncovered[:20]}')
+    if extraneous:
+        issues.append(f'extraneous or missing files: {extraneous[:20]}')
+
+    for entry in entries:
+        relative = entry.get('path')
+        if not isinstance(relative, str):
+            continue
+        if '#U' in relative or Path(relative).is_absolute() or '..' in Path(relative).parts:
+            issues.append(f'unsafe or mechanically corrupted path: {relative}')
+            continue
+        path = root / relative
+        if not path.is_file():
+            continue
+        if path.stat().st_size != entry.get('bytes'):
+            issues.append(f'byte count mismatch: {relative}')
+        digest = hashlib.sha256(path.read_bytes()).hexdigest().upper()
+        if digest != entry.get('sha256'):
+            issues.append(f'SHA-256 mismatch: {relative}')
+
+    return {'ok': not issues, 'entry_count': len(entries), 'issues': issues}
 
 
 def split_selectors(text):
@@ -198,6 +270,16 @@ def main():
         checks.append({'check': 'exists', 'path': relative, 'ok': ok})
         if not ok:
             errors.append(f'Falta {relative}')
+
+    manifest_check = validate_files_manifest(root)
+    checks.append({
+        'check': 'files_manifest_integrity',
+        'ok': manifest_check['ok'],
+        'entry_count': manifest_check['entry_count'],
+        'details': manifest_check['issues'],
+    })
+    if not manifest_check['ok']:
+        errors.append('FILES_MANIFEST.json no representa exactamente las fuentes actuales')
 
     for html_path in root.rglob('*.html'):
         if not is_primary_scope(html_path):

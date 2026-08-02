@@ -1,0 +1,255 @@
+:root {
+  --recipe-studio-bg: #0e1724;
+  --recipe-studio-ink: #edf6ff;
+  --recipe-studio-muted: #9fb4c8;
+  --recipe-studio-line: rgba(214, 232, 255, 0.18);
+  --recipe-studio-panel: rgba(18, 31, 48, 0.86);
+  --recipe-studio-panel-strong: rgba(22, 43, 64, 0.94);
+  --recipe-studio-good: #9ff5cf;
+  --recipe-studio-bad: #ffb4a6;
+  --recipe-studio-action: #9fd7ff;
+}
+
+.shell {
+  min-height: 100dvh;
+  padding: 24px;
+  color: var(--recipe-studio-ink);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(120, 181, 255, 0.22), transparent 30%),
+    radial-gradient(circle at 88% 14%, rgba(167, 138, 255, 0.16), transparent 30%),
+    linear-gradient(135deg, #08111c 0%, var(--recipe-studio-bg) 52%, #111827 100%);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 18px;
+}
+
+.hero h1,
+.panelHeader h2,
+.auditPanel h2 {
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 5vw, 64px);
+}
+
+.hero p {
+  max-width: 920px;
+  color: var(--recipe-studio-muted);
+  line-height: 1.55;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--recipe-studio-action);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.scoreCard,
+.rail,
+.editorPanel,
+.auditPanel {
+  border: 1px solid var(--recipe-studio-line);
+  background: var(--recipe-studio-panel);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+}
+
+.scoreCard {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  border-radius: 28px;
+  padding: 22px;
+}
+
+.scoreCard span {
+  color: var(--recipe-studio-good);
+  font-weight: 900;
+}
+
+.scoreCard strong {
+  color: var(--recipe-studio-bad);
+  font-size: 26px;
+}
+
+.scoreCard small {
+  color: var(--recipe-studio-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 360px;
+  gap: 16px;
+  min-height: calc(100dvh - 210px);
+}
+
+.rail,
+.editorPanel,
+.auditPanel {
+  min-height: 0;
+  border-radius: 28px;
+  padding: 16px;
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recipeButton,
+.activeButton,
+.copyButton {
+  width: 100%;
+  border: 1px solid var(--recipe-studio-line);
+  border-radius: 18px;
+  padding: 12px 14px;
+  color: var(--recipe-studio-ink);
+  background: rgba(255, 255, 255, 0.04);
+  text-align: left;
+  cursor: pointer;
+}
+
+.activeButton {
+  border-color: rgba(159, 215, 255, 0.62);
+  background: rgba(159, 215, 255, 0.14);
+}
+
+.recipeButton span,
+.activeButton span {
+  display: block;
+  font-weight: 900;
+}
+
+.recipeButton small,
+.activeButton small {
+  color: var(--recipe-studio-muted);
+}
+
+.copyButton {
+  margin-top: auto;
+  text-align: center;
+  font-weight: 900;
+  color: #07111d;
+  background: linear-gradient(135deg, #b9ecff, #a7ffd4);
+}
+
+.editorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--recipe-studio-panel-strong);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.passPill,
+.failPill {
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.passPill {
+  color: #052012;
+  background: var(--recipe-studio-good);
+}
+
+.failPill {
+  color: #2b0903;
+  background: var(--recipe-studio-bad);
+}
+
+.editor {
+  flex: 1;
+  min-height: 520px;
+  width: 100%;
+  resize: none;
+  border: 1px solid var(--recipe-studio-line);
+  border-radius: 20px;
+  padding: 16px;
+  color: #eaf6ff;
+  background: rgba(0, 0, 0, 0.28);
+  font-family: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  outline: none;
+}
+
+.auditPanel {
+  overflow: auto;
+}
+
+.validationList {
+  display: grid;
+  gap: 10px;
+}
+
+.passBox,
+.failBox {
+  border: 1px solid var(--recipe-studio-line);
+  border-radius: 18px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.passBox strong,
+.failBox strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.passBox span,
+.failBox span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.passBox span {
+  color: #052012;
+  background: var(--recipe-studio-good);
+}
+
+.failBox span {
+  color: #2b0903;
+  background: var(--recipe-studio-bad);
+}
+
+.passBox p,
+.failBox p,
+.passBox small,
+.failBox small {
+  color: var(--recipe-studio-muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 1180px) {
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editor {
+    min-height: 380px;
+  }
+}

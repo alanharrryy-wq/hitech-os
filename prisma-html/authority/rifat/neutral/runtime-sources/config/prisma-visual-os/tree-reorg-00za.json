@@ -1,0 +1,32 @@
+{
+  "package": "PRISMA_VISUAL_OS_TREE_REORG_ENGINE_00ZA_20260504_v01",
+  "version": "20260504_v01",
+  "intent": "Create a governed tree reorg engine for tools/prisma-visual-os before moving files.",
+  "visualOsRootRelative": "apps/terminal-de-venta-system/tools/prisma-visual-os",
+  "defaultMode": "dry-run",
+  "applyDefaultMoveMode": "scaffold",
+  "targetTree": [
+    "doctors",
+    "launchers",
+    "verifiers",
+    "realtime",
+    "scoring",
+    "generators",
+    "gates",
+    "qa",
+    "docs",
+    "tree",
+    "_plans"
+  ],
+  "rootKeep": [
+    "run_prisma_show_pos_doctor.cmd",
+    "run_prisma_show_pos_ai_doctor.cmd",
+    "README_PRISMA_VISUAL_OS_LIVE_STUDIO_00O_00T.md"
+  ],
+  "safety": {
+    "noRuntimeMutation": true,
+    "onlyOperatesInside": "tools/prisma-visual-os",
+    "fullMoveRequiresForce": true,
+    "defaultApplyOnlyCreatesFoldersAndIndex": true
+  }
+}

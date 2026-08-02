@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "version": "00D_00E_20260503_v01",
+    "status": "active-runtime-contract",
+    "owner": "Chat A",
+    "description": "Active controls consumed by the 00E generator. Edit this file, generate CSS, then verify."
+  },
+  "preset": "POS_TOUCH_REFERENCE",
+  "surface": "tablet-pos",
+  "controls": {
+    "glass": 76,
+    "glow": 42,
+    "depth": 78,
+    "density": 44,
+    "contrast": 84,
+    "motion": 28,
+    "touch": 94,
+    "actionWeight": 95,
+    "stateSignal": 86,
+    "debugLayers": false
+  },
+  "layers": {
+    "background": {
+      "strength": 74,
+      "notes": "deep navy cinematic base"
+    },
+    "atmosphere": {
+      "strength": 42,
+      "notes": "premium haze without washing out text"
+    },
+    "shell": {
+      "strength": 66,
+      "notes": "tablet frame stays calm"
+    },
+    "surface": {
+      "strength": 78,
+      "notes": "glass cards, strong separation"
+    },
+    "content": {
+      "strength": 88,
+      "notes": "price and stock clarity first"
+    },
+    "action": {
+      "strength": 96,
+      "notes": "COBRAR dominates"
+    },
+    "state": {
+      "strength": 86,
+      "notes": "error/offline/stock visible"
+    },
+    "focus": {
+      "strength": 84,
+      "notes": "touch and keyboard feedback"
+    },
+    "overlay": {
+      "strength": 72,
+      "notes": "payment panel above surface"
+    },
+    "debug": {
+      "strength": 0,
+      "notes": "off by default"
+    }
+  },
+  "safety": {
+    "minTouchTargetPx": 44,
+    "posPrimaryTouchTargetPx": 56,
+    "minContrastScore": 78,
+    "allowManualCssDrift": false
+  }
+}

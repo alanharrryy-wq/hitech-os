@@ -1,0 +1,1507 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.085Z",
+  "recipes": [
+    {
+      "name": "tablet-cloudglass-light",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "adapter + Visual OS",
+      "intent": "claro, táctil, luminoso, legible",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "deprecated.legacy-fuji-background"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use tablet public runtime background",
+        "keep background visible"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "dark dominant"
+      ]
+    },
+    {
+      "name": "pc-graphite-glass",
+      "status": "core",
+      "surfaces": [
+        "pc"
+      ],
+      "source": "PC adapter",
+      "intent": "backoffice denso y analítico",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "dense panels",
+        "tokenized graphite"
+      ],
+      "dont": [
+        "copy tablet directly"
+      ]
+    },
+    {
+      "name": "mobile-mist",
+      "status": "core",
+      "surfaces": [
+        "mobile"
+      ],
+      "source": "Mobile adapter",
+      "intent": "companion compacto",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "thumb-friendly",
+        "vertical status"
+      ],
+      "dont": [
+        "tiny tablet"
+      ]
+    },
+    {
+      "name": "chart-lab-analysis",
+      "status": "core",
+      "surfaces": [
+        "chart-lab"
+      ],
+      "source": "Chart Lab adapter",
+      "intent": "experimento gobernado",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "isolate lab effects"
+      ],
+      "dont": [
+        "production contamination"
+      ]
+    },
+    {
+      "name": "glass-pill",
+      "status": "recipe",
+      "surfaces": [
+        "shared"
+      ],
+      "source": "Liquid Glass/Visual OS",
+      "intent": "controles/chips enfocados",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "contrast"
+      ],
+      "dont": [
+        "blur everywhere"
+      ]
+    },
+    {
+      "name": "surface-panel",
+      "status": "core",
+      "surfaces": [
+        "shared",
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PrismaSurfacePanel",
+      "intent": "panel gobernado",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.surface-panel"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "tokens"
+      ],
+      "dont": [
+        "global hacks"
+      ]
+    },
+    {
+      "name": "product-commerce",
+      "status": "core",
+      "surfaces": [
+        "tablet"
+      ],
+      "source": "commerce components",
+      "intent": "venta táctil",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "big touch targets"
+      ],
+      "dont": [
+        "pc dense tables"
+      ]
+    },
+    {
+      "name": "glass-card",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for glass-card",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.glass-card"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "action-button",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for action-button",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.action-button"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "state-banner",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for state-banner",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.state-banner"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "route-frame",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for route-frame",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.route-frame"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "shell-frame",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for shell-frame",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.shell-frame"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "background-layer",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for background-layer",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.background-layer"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "product-card",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for product-card",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.product-card"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "cart-panel",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for cart-panel",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.cart-panel"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "checkout-panel",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for checkout-panel",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.checkout-panel"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "data-panel",
+      "status": "recipe",
+      "surfaces": [
+        "pc",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for data-panel",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.data-panel"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "metric-card",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for metric-card",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.metric-card"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "command-panel",
+      "status": "recipe",
+      "surfaces": [
+        "pc",
+        "mobile",
+        "chart-lab",
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for command-panel",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "prisma.command-panel"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "surface-specific-mapped",
+      "status": "recipe",
+      "surfaces": [
+        "tablet",
+        "pc"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for surface-specific-mapped",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "mapped-tablet-catalog-product-drawer",
+        "mapped-tablet-catalog-product-form",
+        "mapped-tablet-catalog-product-table",
+        "mapped-tablet-checkout-summary-card",
+        "mapped-tablet-app-shell",
+        "mapped-tablet-license-blocked-card",
+        "mapped-tablet-license-gate-banner",
+        "mapped-tablet-license-refresh-panel",
+        "mapped-tablet-license-status-card",
+        "mapped-tablet-pos-error-banner",
+        "mapped-tablet-pos-payment-panel",
+        "mapped-tablet-pos-payment-risk-banner",
+        "mapped-tablet-pos-product-list",
+        "mapped-pc-ingest-event-panel",
+        "mapped-pc-kpi-card",
+        "mapped-pc-app-shell",
+        "mapped-pc-license-blocked-card",
+        "mapped-pc-license-gate-banner",
+        "mapped-pc-license-refresh-panel",
+        "mapped-pc-license-status-card",
+        "mapped-pc-pc-sync-chart-promotion-panel",
+        "mapped-pc-tri-db-status-card"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "reserved-future-surface",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console",
+        "training-mode",
+        "demo-mode",
+        "public-display"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for reserved-future-surface",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [
+        "reserved.kiosk.shell",
+        "reserved.customer-display.shell",
+        "reserved.warehouse-scanner.shell",
+        "reserved.manager-console.shell",
+        "reserved.training-mode.shell",
+        "reserved.demo-mode.shell",
+        "reserved.public-display.shell"
+      ],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "shared-ui-foundation",
+      "status": "recipe",
+      "surfaces": [
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for shared-ui-foundation",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "visual-os-governance",
+      "status": "core",
+      "surfaces": [
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for visual-os-governance",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "surface-governor-policy",
+      "status": "core",
+      "surfaces": [
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for surface-governor-policy",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "reserved-safe-display",
+      "status": "reserved",
+      "surfaces": [
+        "kiosk",
+        "customer-display",
+        "warehouse-scanner",
+        "manager-console",
+        "training-mode",
+        "demo-mode",
+        "public-display"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for reserved-safe-display",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    },
+    {
+      "name": "liquid-panel",
+      "status": "recipe",
+      "surfaces": [
+        "shared-ui"
+      ],
+      "source": "PRISMA Visual Catalog Governed v2",
+      "intent": "Governed recipe for liquid-panel",
+      "density": "adapter-controlled",
+      "backgroundBehavior": "must resolve through surface adapter backgroundContract",
+      "motionBehavior": "must stay inside adapter motionBudget",
+      "allowedComponents": [],
+      "blockedComponents": [],
+      "tokens": [
+        "--prisma-color-text",
+        "--prisma-color-muted",
+        "--prisma-color-border",
+        "--prisma-surface-panel-bg",
+        "--prisma-surface-card-bg",
+        "--prisma-action-bg",
+        "--prisma-action-text",
+        "--prisma-radius-card",
+        "--prisma-radius-panel",
+        "--prisma-radius-action",
+        "--prisma-shadow-soft",
+        "--prisma-shadow-lifted",
+        "--prisma-glass-blur",
+        "--prisma-density-gap",
+        "--prisma-motion-fast",
+        "--prisma-focus-ring"
+      ],
+      "libraries": [],
+      "atlasReferences": [
+        "atlas-source-map"
+      ],
+      "effectBoundaries": [
+        "no global CSS hacks",
+        "no products/0.backgrounds runtime"
+      ],
+      "promotionRules": [
+        "validators pass",
+        "rollback exists",
+        "no-touch clearance"
+      ],
+      "do": [
+        "use catalog components",
+        "respect adapter density"
+      ],
+      "dont": [
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds"
+      ]
+    }
+  ]
+}

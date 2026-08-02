@@ -1,0 +1,162 @@
+/* PRISMA CC V57 · Panel & Text Clarity Frontfix */
+
+:root{
+  --v57-panel-bg: rgba(35, 49, 66, .42);
+  --v57-panel-bg-strong: rgba(31, 44, 59, .54);
+  --v57-panel-edge: rgba(214, 231, 252, .22);
+  --v57-text: #d8e4f0;
+  --v57-text-strong: #edf5ff;
+  --v57-text-side: #c4d2e0;
+}
+
+/* 1) Baja presencia de atmósfera */
+#prisma-atmosphere-v53-root,
+#prisma-atmosphere-root,
+#prisma-cc-atmosphere,
+#prisma-atmosphere-v54-root,
+#prisma-atmosphere-v55-root,
+#prisma-atmosphere-v56-root,
+.prisma-atmosphere-root,
+.prisma-cc-atmosphere,
+canvas[data-prisma-atmosphere],
+canvas.prisma-cc-atmosphere-canvas {
+  opacity: .28;
+  filter: saturate(.96) brightness(.92) contrast(1.02);
+  pointer-events: none;
+}
+
+#prisma-atmosphere-v53-badge,
+#prisma-atmosphere-v54-badge,
+#prisma-atmosphere-v55-badge,
+#prisma-atmosphere-v56-badge {
+  opacity: .12;
+}
+
+/* 2) UI claramente al frente */
+body[data-theme="tactical"] .page,
+body[data-theme="tactical"] main,
+body[data-theme="tactical"] .topbarWrap,
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .prismo-shell,
+body[data-theme="tactical"] .prismo-grid,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .commandPanel,
+body[data-theme="tactical"] .topology,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .glass {
+  position: relative;
+  z-index: 12;
+}
+
+/* 3) Paneles un poco más oscuros */
+body[data-theme="tactical"] .prismo-shell,
+body[data-theme="tactical"] .prismo-grid > *,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .commandPanel,
+body[data-theme="tactical"] .topology,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .glass,
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] input[type="text"],
+body[data-theme="tactical"] input[type="search"] {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.035) 22%, rgba(255,255,255,.02) 100%),
+    var(--v57-panel-bg);
+  border: 1px solid var(--v57-panel-edge);
+  box-shadow:
+    0 18px 44px rgba(4,10,18,.22),
+    inset 0 1px 0 rgba(255,255,255,.12);
+  backdrop-filter: blur(8px) saturate(132%) brightness(.98);
+  -webkit-backdrop-filter: blur(8px) saturate(132%) brightness(.98);
+}
+
+/* paneles internos aún un pelín más sólidos */
+body[data-theme="tactical"] .prismo-grid > * > .card,
+body[data-theme="tactical"] .prismo-grid > * > .panel,
+body[data-theme="tactical"] .commandPanel .card,
+body[data-theme="tactical"] .topology .node,
+body[data-theme="tactical"] .timelineCard {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02) 100%),
+    rgba(30, 42, 56, .48);
+}
+
+/* 4) Tipografía más clara y al frente */
+body[data-theme="tactical"],
+body[data-theme="tactical"] p,
+body[data-theme="tactical"] li,
+body[data-theme="tactical"] label,
+body[data-theme="tactical"] small,
+body[data-theme="tactical"] span,
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] input {
+  color: var(--v57-text);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.24),
+    0 0 10px rgba(150, 205, 255, .08);
+  opacity: 1;
+}
+
+body[data-theme="tactical"] h1,
+body[data-theme="tactical"] h2,
+body[data-theme="tactical"] h3,
+body[data-theme="tactical"] h4,
+body[data-theme="tactical"] h5,
+body[data-theme="tactical"] h6,
+body[data-theme="tactical"] b,
+body[data-theme="tactical"] strong,
+body[data-theme="tactical"] .heroTitle,
+body[data-theme="tactical"] .topbarTitle,
+body[data-theme="tactical"] .metricValue,
+body[data-theme="tactical"] .qualitySealValue {
+  color: var(--v57-text-strong);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.28),
+    0 0 14px rgba(152, 210, 255, .12);
+  opacity: 1;
+}
+
+/* 5) Laterales: tipografía un poco más oscura/seria */
+body[data-theme="tactical"] .authorityMap,
+body[data-theme="tactical"] .evidenceDeck,
+body[data-theme="tactical"] .impactMap,
+body[data-theme="tactical"] .runtimeSignals,
+body[data-theme="tactical"] .contextPack,
+body[data-theme="tactical"] .ledger {
+  color: var(--v57-text-side);
+}
+
+body[data-theme="tactical"] .authorityMap p,
+body[data-theme="tactical"] .evidenceDeck p,
+body[data-theme="tactical"] .impactMap p,
+body[data-theme="tactical"] .runtimeSignals p,
+body[data-theme="tactical"] .contextPack p,
+body[data-theme="tactical"] .ledger p,
+body[data-theme="tactical"] .authorityMap small,
+body[data-theme="tactical"] .evidenceDeck small,
+body[data-theme="tactical"] .impactMap small,
+body[data-theme="tactical"] .runtimeSignals small,
+body[data-theme="tactical"] .contextPack small,
+body[data-theme="tactical"] .ledger small {
+  color: #bccadb;
+}
+
+/* 6) Composer/input más legible */
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] input[type="text"],
+body[data-theme="tactical"] input[type="search"] {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.03) 100%),
+    var(--v57-panel-bg-strong);
+  color: #eef6ff;
+}
+
+body[data-theme="tactical"] textarea::placeholder,
+body[data-theme="tactical"] input::placeholder {
+  color: #b9c9d9;
+  opacity: .92;
+}

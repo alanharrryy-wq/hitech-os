@@ -1,0 +1,44 @@
+.body {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+.runtimeHost {
+  display: contents;
+}
+
+.backgroundHost {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.appContent {
+  position: relative;
+  z-index: 10;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+.overlayRoot {
+  position: relative;
+  z-index: 1200;
+  width: 0;
+  height: 0;
+  isolation: isolate;
+}
+
+@media print {
+  .backgroundHost,
+  .overlayRoot {
+    display: none;
+  }
+
+  .appContent {
+    min-height: auto;
+  }
+}

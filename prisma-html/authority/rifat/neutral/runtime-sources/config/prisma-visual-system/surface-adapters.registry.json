@@ -1,0 +1,394 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-11T00:46:03",
+  "adapters": [
+    {
+      "surfaceId": "tablet",
+      "status": "current",
+      "role": "standalone POS / venta táctil",
+      "density": "touch",
+      "defaultTheme": "light-operational-cloudglass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/tablet/assets/tablet-cloudglass-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds",
+          "Fuji",
+          "soft-gray-clouds"
+        ]
+      },
+      "shellContract": "claro, táctil, luminoso, legible",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "tablet-cloudglass-light",
+        "glass-pill",
+        "surface-panel",
+        "product-commerce"
+      ],
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "forbiddenPatterns": [
+        "dark-dominante",
+        "Fuji",
+        "soft-gray-clouds",
+        "products/0.backgrounds-runtime-url"
+      ],
+      "accessibilityConstraints": [
+        "touch-target-min-44",
+        "contrast-readable",
+        "focus-visible"
+      ],
+      "runtimeBoundaries": [
+        "no-pc-dependency-to-sell",
+        "no-prisma-generate-hot-gate"
+      ]
+    },
+    {
+      "surfaceId": "pc",
+      "status": "current",
+      "role": "backoffice/admin/análisis",
+      "density": "dense",
+      "defaultTheme": "graphite-admin-cloudglass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/pc/assets/pc-cloudglass-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "denso, legible, analítico, ordenado",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "pc-graphite-glass",
+        "data-panel",
+        "metric-card",
+        "command-panel"
+      ],
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-select",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion",
+        "ogl"
+      ],
+      "forbiddenPatterns": [
+        "tablet-aesthetic-direct-copy",
+        "oversized-touch-containers",
+        "ogl-for-layout"
+      ],
+      "accessibilityConstraints": [
+        "keyboard-navigation",
+        "data-density-legible",
+        "focus-visible"
+      ],
+      "runtimeBoundaries": [
+        "no-tablet-shell-inheritance"
+      ]
+    },
+    {
+      "surfaceId": "mobile",
+      "status": "current",
+      "role": "companion/pulse/alertas",
+      "density": "compact/thumb",
+      "defaultTheme": "mobile-mist",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/mobile/assets/mobile-mist-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "compacto, vertical, rápido, thumb-friendly",
+      "layerBudget": {
+        "maxShellDepth": 1,
+        "maxFullViewportOpaquePanels": 0,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "mobile-mist",
+        "state-banner",
+        "metric-card"
+      ],
+      "allowedLibraries": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-slot",
+        "motion",
+        "framer-motion"
+      ],
+      "forbiddenPatterns": [
+        "tablet-small-copy",
+        "wide-table-layout"
+      ],
+      "accessibilityConstraints": [
+        "thumb-zone",
+        "tap-target-min-44"
+      ],
+      "runtimeBoundaries": [
+        "mobile-is-companion-not-tablet"
+      ]
+    },
+    {
+      "surfaceId": "chart-lab",
+      "status": "current",
+      "role": "experimental/lab visual",
+      "density": "lab",
+      "defaultTheme": "analytical-glass",
+      "backgroundContract": {
+        "runtimePublicUrl": "/visual-backgrounds/chart-lab/assets/chart-lab-default.jpg",
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "experimental pero gobernado",
+      "layerBudget": {
+        "maxShellDepth": 2,
+        "maxFullViewportOpaquePanels": 1,
+        "backgroundMustRemainVisible": true
+      },
+      "allowedRecipes": [
+        "chart-lab-analysis",
+        "liquid-panel"
+      ],
+      "allowedLibraries": [
+        "ogl",
+        "motion",
+        "framer-motion",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip"
+      ],
+      "forbiddenPatterns": [
+        "production-promotion-without-contract",
+        "global-css-export"
+      ],
+      "accessibilityConstraints": [
+        "lab-contrast-notes",
+        "no-seizure-motion"
+      ],
+      "runtimeBoundaries": [
+        "isolated-lab"
+      ]
+    },
+    {
+      "surfaceId": "kiosk",
+      "status": "reserved",
+      "role": "reserved kiosk surface",
+      "density": "reserved",
+      "defaultTheme": "kiosk-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "customer-display",
+      "status": "reserved",
+      "role": "reserved customer-display surface",
+      "density": "reserved",
+      "defaultTheme": "customer-display-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "warehouse-scanner",
+      "status": "reserved",
+      "role": "reserved warehouse-scanner surface",
+      "density": "reserved",
+      "defaultTheme": "warehouse-scanner-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "manager-console",
+      "status": "reserved",
+      "role": "reserved manager-console surface",
+      "density": "reserved",
+      "defaultTheme": "manager-console-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "training-mode",
+      "status": "reserved",
+      "role": "reserved training-mode surface",
+      "density": "reserved",
+      "defaultTheme": "training-mode-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "demo-mode",
+      "status": "reserved",
+      "role": "reserved demo-mode surface",
+      "density": "reserved",
+      "defaultTheme": "demo-mode-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    },
+    {
+      "surfaceId": "public-display",
+      "status": "reserved",
+      "role": "reserved public-display surface",
+      "density": "reserved",
+      "defaultTheme": "public-display-reserved",
+      "backgroundContract": {
+        "runtimePublicUrl": null,
+        "reserved": true,
+        "forbiddenRuntimeSources": [
+          "products/0.backgrounds"
+        ]
+      },
+      "shellContract": "Reserved. No usar hasta promoción explícita.",
+      "layerBudget": {
+        "reserved": true
+      },
+      "allowedRecipes": [],
+      "allowedLibraries": [],
+      "forbiddenPatterns": [
+        "production-use-before-promotion"
+      ],
+      "accessibilityConstraints": [
+        "define-before-live"
+      ],
+      "runtimeBoundaries": [
+        "reserved-no-runtime"
+      ]
+    }
+  ],
+  "compatibility": "synced-from-prisma-visual"
+}

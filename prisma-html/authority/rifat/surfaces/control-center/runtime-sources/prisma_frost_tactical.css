@@ -1,0 +1,906 @@
+/*
+  PRISMA Control Center · Tactical Frost V3 Lowblur Base
+  Base: user-provided PRISMA_CC_BACKUP_BEFORE_FROST_TACTICAL_V2_20260526_115529.zip
+  Purpose: remove background grid, make all productive surfaces blue-gray light glass,
+  reduce blur to nearly none, and keep Codex-style semantic gaussian glow only where useful.
+  No external dependencies. CSS-only visual layer.
+*/
+
+:root{ --prisma-frost-v3-loaded: 1; }
+
+body[data-theme="tactical"]{
+  --bg:#07101b;
+  --bg2:#0a1521;
+  --text:#f4f8fc;
+  --muted:#c4d1dc;
+  --panel:rgba(133,158,179,.245);
+  --glass:rgba(184,207,224,.16);
+  --edge:rgba(232,247,255,.34);
+  --line:rgba(226,241,251,.20);
+  --line-2:rgba(232,247,255,.30);
+  --accent:#a9eeff;
+  --accent2:#c4d6ff;
+  --accent3:#d7c6ff;
+  --ok:#8ff7d1;
+  --warn:#ffd38c;
+  --shape-panel:inset(0 round 24px);
+  --shape-card:inset(0 round 18px);
+  --shape-topbar:inset(0 round 30px);
+  --radius-xl:24px;
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:12px;
+  --blur:.65px;
+  --shadow:0 18px 52px rgba(0,0,0,.30), 0 2px 10px rgba(8,17,27,.20);
+  --prisma-frost-panel-fill:rgba(138,164,185,.265);
+  --prisma-frost-card-fill:rgba(128,153,174,.215);
+  --prisma-frost-rail-fill:rgba(150,176,196,.235);
+  --prisma-frost-hairline:rgba(232,247,255,.245);
+  --prisma-frost-highlight:rgba(255,255,255,.20);
+  --prisma-frost-neon:rgba(169,238,255,.22);
+  --prisma-frost-neon-soft:rgba(169,238,255,.105);
+  --prisma-frost-danger:rgba(255,123,132,.24);
+  --prisma-frost-warning:rgba(255,211,140,.24);
+  background:
+    linear-gradient(180deg,rgba(5,10,18,.56),rgba(7,14,24,.78) 44%,rgba(3,8,15,.90)),
+    radial-gradient(760px 460px at 22% 12%,rgba(232,246,255,.11),transparent 64%),
+    radial-gradient(620px 420px at 78% 4%,rgba(169,221,255,.075),transparent 67%),
+    url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg') center center / cover fixed no-repeat,
+    #07101b;
+  color:var(--text);
+}
+
+/* A la chingada la cuadricula: ninguna layer global puede dibujar mesh/grid. */
+body[data-theme="tactical"]::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:1;
+  background:
+    linear-gradient(90deg,rgba(4,10,18,.62),rgba(6,13,22,.22) 38%,rgba(2,8,15,.76)),
+    radial-gradient(900px 560px at 50% -6%,rgba(255,255,255,.13),transparent 60%),
+    radial-gradient(760px 420px at 88% 18%,rgba(110,156,202,.12),transparent 64%),
+    linear-gradient(180deg,rgba(5,11,19,.05),rgba(4,10,17,.54) 50%,rgba(1,5,10,.82));
+  background-size:auto;
+  mask-image:none;
+  -webkit-mask-image:none;
+}
+
+body[data-theme="tactical"]::after{
+  content:"";
+  position:fixed;
+  inset:-8%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.42;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(380px 170px at 18% 12%,rgba(255,255,255,.12),transparent 70%),
+    radial-gradient(420px 210px at 76% 15%,rgba(169,238,255,.10),transparent 72%),
+    radial-gradient(560px 240px at 46% 84%,rgba(199,220,255,.06),transparent 74%),
+    linear-gradient(108deg,transparent 7%,rgba(255,255,255,.040) 23%,transparent 40%,transparent 70%,rgba(169,238,255,.035) 83%,transparent 94%);
+  animation:frostV3Atmosphere 92s cubic-bezier(.42,0,.22,1) infinite;
+}
+
+@keyframes frostV3Atmosphere{
+  0%{transform:translate3d(-.7%,-.2%,0) scale(1.01)}
+  50%{transform:translate3d(.6%,.5%,0) scale(1.015)}
+  100%{transform:translate3d(-.3%,.1%,0) scale(1.01)}
+}
+
+body[data-theme="tactical"] .page,
+body[data-theme="tactical"] .topbarWrap,
+body[data-theme="tactical"] .v40QuickRail,
+body[data-theme="tactical"] .v40ToastStack,
+body[data-theme="tactical"] .v40CommandPalette{position:relative; z-index:1;}
+
+/* Universal work glass, Codex G1/G2: blue-gray, almost no blur, readable. */
+body[data-theme="tactical"] .glass,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .picker,
+body[data-theme="tactical"] .metric,
+body[data-theme="tactical"] .signal,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .dockBtn,
+body[data-theme="tactical"] .dockSearch,
+body[data-theme="tactical"] .themeSelect,
+body[data-theme="tactical"] .node,
+body[data-theme="tactical"] .miniChartWrap,
+body[data-theme="tactical"] .qPanel,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .qualityAction,
+body[data-theme="tactical"] .qualityResultBox,
+body[data-theme="tactical"] .qualitySealCard,
+body[data-theme="tactical"] .lifecyclePanel,
+body[data-theme="tactical"] .lifecycleHero,
+body[data-theme="tactical"] .lifecycleDomainCard,
+body[data-theme="tactical"] .lifecycleSealCard,
+body[data-theme="tactical"] .lifecycleV5Panel,
+body[data-theme="tactical"] .licenseOpsPanel,
+body[data-theme="tactical"] .licenseOpsHero,
+body[data-theme="tactical"] .licenseOpsCard,
+body[data-theme="tactical"] .licenseOpsSealCard,
+body[data-theme="tactical"] .ops-action-panel,
+body[data-theme="tactical"] .ops-action,
+body[data-theme="tactical"] .ops-result,
+body[data-theme="tactical"] .ops-diag,
+body[data-theme="tactical"] .blackbox-command,
+body[data-theme="tactical"] .bb-evidence-card,
+body[data-theme="tactical"] .bb-event,
+body[data-theme="tactical"] .release-panel,
+body[data-theme="tactical"] .glass-card,
+body[data-theme="tactical"] .release-tile,
+body[data-theme="tactical"] .release-terminal,
+body[data-theme="tactical"] .opCommandPanel,
+body[data-theme="tactical"] .opButton,
+body[data-theme="tactical"] .commandPanel,
+body[data-theme="tactical"] .commandCard,
+body[data-theme="tactical"] .commandStatus,
+body[data-theme="tactical"] .topologyMap{
+  clip-path:var(--shape-card);
+  color:var(--text);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.205),rgba(255,255,255,.070) 21%,rgba(12,24,38,.155) 100%),
+    radial-gradient(140% 130% at 10% 0%,rgba(255,255,255,.105),transparent 32%),
+    radial-gradient(120% 130% at 96% 0%,rgba(169,238,255,.070),transparent 34%),
+    var(--prisma-frost-panel-fill);
+  border:1px solid var(--prisma-frost-hairline);
+  box-shadow:
+    0 18px 46px rgba(0,0,0,.285),
+    0 0 0 1px rgba(255,255,255,.028),
+    inset 0 1px 0 var(--prisma-frost-highlight),
+    inset 0 -1px 0 rgba(169,238,255,.080);
+  backdrop-filter:blur(.65px) saturate(112%) contrast(1.015);
+  -webkit-backdrop-filter:blur(.65px) saturate(112%) contrast(1.015);
+}
+
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .metric,
+body[data-theme="tactical"] .signal,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .dockBtn,
+body[data-theme="tactical"] .qualityAction,
+body[data-theme="tactical"] .licenseOpsCard,
+body[data-theme="tactical"] .release-tile,
+body[data-theme="tactical"] .ops-action,
+body[data-theme="tactical"] .commandCard{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.185),rgba(255,255,255,.052) 26%,rgba(5,16,28,.10) 100%),
+    radial-gradient(120% 110% at 12% 0%,rgba(255,255,255,.075),transparent 33%),
+    var(--prisma-frost-card-fill);
+  backdrop-filter:blur(.45px) saturate(110%);
+  -webkit-backdrop-filter:blur(.45px) saturate(110%);
+}
+
+body[data-theme="tactical"] .topbar{
+  clip-path:var(--shape-topbar);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.230),rgba(255,255,255,.080) 28%,rgba(10,22,35,.145) 100%),
+    radial-gradient(120% 160% at 9% 0%,rgba(255,255,255,.145),transparent 42%),
+    radial-gradient(110% 140% at 91% 0%,rgba(169,238,255,.115),transparent 45%),
+    rgba(118,146,169,.235);
+  border-color:rgba(239,250,255,.36);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.34),
+    0 0 26px rgba(169,238,255,.080),
+    inset 0 1px 0 rgba(255,255,255,.30),
+    inset 0 -1px 0 rgba(169,238,255,.10);
+  backdrop-filter:blur(.9px) saturate(116%) contrast(1.02);
+  -webkit-backdrop-filter:blur(.9px) saturate(116%) contrast(1.02);
+}
+
+/* Kill heavy sweep animations on surfaces. Keep only a lazy specular whisper. */
+body[data-theme="tactical"] .topbar::before,
+body[data-theme="tactical"] .panel::before,
+body[data-theme="tactical"] .card::before,
+body[data-theme="tactical"] .picker::before,
+body[data-theme="tactical"] .metric::before,
+body[data-theme="tactical"] .signal::before,
+body[data-theme="tactical"] .timelineCard::before,
+body[data-theme="tactical"] .dockBtn::before,
+body[data-theme="tactical"] .dockSearch::before,
+body[data-theme="tactical"] .node::before,
+body[data-theme="tactical"] .miniChartWrap::before,
+body[data-theme="tactical"] .qPanel::before,
+body[data-theme="tactical"] .qualityHero::before,
+body[data-theme="tactical"] .licenseOpsPanel::before,
+body[data-theme="tactical"] .lifecyclePanel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.52;
+  mix-blend-mode:screen;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.120),rgba(255,255,255,0) 32%),
+    radial-gradient(240px 105px at 14% 0%,rgba(255,255,255,.105),transparent 62%);
+  animation:none;
+  transform:none;
+}
+
+body[data-theme="tactical"] .topbar::after,
+body[data-theme="tactical"] .panel::after,
+body[data-theme="tactical"] .card::after,
+body[data-theme="tactical"] .metric::after,
+body[data-theme="tactical"] .signal::after,
+body[data-theme="tactical"] .timelineCard::after,
+body[data-theme="tactical"] .picker::after{
+  opacity:.18;
+  animation:none;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.055) 42%,transparent 78%);
+}
+
+body[data-theme="tactical"] .sectionText,
+body[data-theme="tactical"] .muted,
+body[data-theme="tactical"] .statusLine,
+body[data-theme="tactical"] p{ color:rgba(224,234,242,.84); }
+body[data-theme="tactical"] .sectionTitle,
+body[data-theme="tactical"] h1,
+body[data-theme="tactical"] h2,
+body[data-theme="tactical"] h3{ color:#f7fbff; text-shadow:0 1px 14px rgba(169,238,255,.08); }
+
+body[data-theme="tactical"] .themeSelect,
+body[data-theme="tactical"] input,
+body[data-theme="tactical"] select,
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] button{
+  color:var(--text);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.135),rgba(255,255,255,.040)),
+    rgba(122,150,172,.20);
+  border-color:rgba(232,247,255,.24);
+  backdrop-filter:blur(.35px) saturate(108%);
+  -webkit-backdrop-filter:blur(.35px) saturate(108%);
+}
+
+/* Selective gaussian neon: only semantic/interactive states, not every card. */
+body[data-theme="tactical"] .dockBtn:hover,
+body[data-theme="tactical"] .card:hover,
+body[data-theme="tactical"] .metric:hover,
+body[data-theme="tactical"] .qualityAction:hover,
+body[data-theme="tactical"] .lifecycleGhostButton:hover,
+body[data-theme="tactical"] .licenseOpsCard:hover,
+body[data-theme="tactical"] .ops-action:hover,
+body[data-theme="tactical"] .release-tile:hover,
+body[data-theme="tactical"] .commandCard:hover{
+  transform:translateY(-1px);
+  border-color:rgba(189,242,255,.46);
+  box-shadow:
+    0 22px 56px rgba(0,0,0,.30),
+    0 0 24px var(--prisma-frost-neon-soft),
+    inset 0 1px 0 rgba(255,255,255,.265);
+}
+
+body[data-theme="tactical"] .dockBtn:focus-visible,
+body[data-theme="tactical"] .themeSelect:focus,
+body[data-theme="tactical"] button:focus-visible,
+body[data-theme="tactical"] input:focus-visible,
+body[data-theme="tactical"] select:focus-visible,
+body[data-theme="tactical"] textarea:focus-visible{
+  outline:0;
+  border-color:rgba(190,246,255,.62);
+  box-shadow:
+    0 0 0 3px rgba(169,238,255,.16),
+    0 0 28px rgba(169,238,255,.18),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+
+body[data-theme="tactical"] .tag,
+body[data-theme="tactical"] .pill,
+body[data-theme="tactical"] .chip,
+body[data-theme="tactical"] .qTag,
+body[data-theme="tactical"] .lifecycleTag,
+body[data-theme="tactical"] .licenseOpsTag,
+body[data-theme="tactical"] .state-chip,
+body[data-theme="tactical"] .legendItem,
+body[data-theme="tactical"] .laneLabel,
+body[data-theme="tactical"] .routeBadge,
+body[data-theme="tactical"] .ops-mini,
+body[data-theme="tactical"] .bb-mini,
+body[data-theme="tactical"] .materialBadge{
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.040)),rgba(125,151,172,.215);
+  border-color:rgba(232,247,255,.23);
+  color:#ecf7ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+body[data-theme="tactical"] .tag.ok,
+body[data-theme="tactical"] .qTag.ok,
+body[data-theme="tactical"] .lifecycleTag.ok,
+body[data-theme="tactical"] .licenseOpsTag.ok,
+body[data-theme="tactical"] .state-chip.ok{
+  color:#eafff8;
+  border-color:rgba(143,247,209,.38);
+  background:linear-gradient(180deg,rgba(143,247,209,.18),rgba(255,255,255,.035)),rgba(111,151,151,.18);
+  box-shadow:0 0 22px rgba(143,247,209,.12), inset 0 1px 0 rgba(255,255,255,.20);
+}
+body[data-theme="tactical"] .tag.warn,
+body[data-theme="tactical"] .qTag.warn,
+body[data-theme="tactical"] .lifecycleTag.warn,
+body[data-theme="tactical"] .licenseOpsTag.warn,
+body[data-theme="tactical"] .state-chip.warn{
+  color:#fff5df;
+  border-color:rgba(255,211,140,.40);
+  background:linear-gradient(180deg,rgba(255,211,140,.18),rgba(255,255,255,.035)),rgba(152,130,87,.16);
+  box-shadow:0 0 22px rgba(255,211,140,.12), inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+body[data-theme="tactical"] .progressFill,
+body[data-theme="tactical"] .meterFill,
+body[data-theme="tactical"] .licenseOpsBarFill,
+body[data-theme="tactical"] .lifecycleBarFill,
+body[data-theme="tactical"] .qProgressFill,
+body[data-theme="tactical"] [class*="barFill"],
+body[data-theme="tactical"] [class*="BarFill"]{
+  background:linear-gradient(90deg,#a9eeff,#c4d6ff 58%,#d7c6ff);
+  box-shadow:0 0 18px rgba(169,238,255,.28), 0 0 30px rgba(196,214,255,.13);
+}
+
+body[data-theme="tactical"] .swatches i,
+body[data-theme="tactical"] .liveDot,
+body[data-theme="tactical"] .statusDot,
+body[data-theme="tactical"] .pulseDot{
+  background:#a9eeff;
+  box-shadow:0 0 16px rgba(169,238,255,.42),0 0 30px rgba(169,238,255,.18);
+}
+
+body[data-theme="tactical"] .heroIcon,
+body[data-theme="tactical"] .iconBox,
+body[data-theme="tactical"] .nodeIcon,
+body[data-theme="tactical"] .qMonogram{
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(237,250,255,.82),rgba(169,238,255,.34) 44%,rgba(70,100,132,.25));
+  box-shadow:0 0 26px rgba(169,238,255,.16), inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+/* Existing topology/chart traces keep a restrained neon gaussian. */
+body[data-theme="tactical"] .channelPulse,
+body[data-theme="tactical"] .routeSweep,
+body[data-theme="tactical"] .routeSweepAlt{
+  opacity:.28;
+  filter:drop-shadow(0 0 8px rgba(169,238,255,.24));
+}
+body[data-theme="tactical"] .channelCore,
+body[data-theme="tactical"] .routeCore,
+body[data-theme="tactical"] .routeCoreAlt,
+body[data-theme="tactical"] .chartStroke,
+body[data-theme="tactical"] .chartStroke2{
+  filter:drop-shadow(0 0 7px rgba(169,238,255,.20));
+}
+
+/* Tactical should not look disabled. Old contrast sometimes dimmed cards too much. */
+body[data-theme="tactical"] [disabled],
+body[data-theme="tactical"] .disabled{
+  opacity:.62;
+  filter:saturate(.82);
+}
+
+@media (prefers-reduced-motion: reduce){
+  body[data-theme="tactical"]::after,
+  body[data-theme="tactical"] *,
+  body[data-theme="tactical"] *::before,
+  body[data-theme="tactical"] *::after{
+    animation:none;
+    transition:none;
+  }
+}
+
+/* === PRISMA FROST TACTICAL V4 · BACKGROUND REPAIR + PREMIUM PANEL SYSTEM ===
+   Intent: reparar fondo/capas y subir paneles a double-glass hero sin dependencias externas.
+   Codex mapping:
+   - background: graphite icefield / motion-glacier, no grid
+   - material: G3 major panel + G4 double glass/hydro surface on key panels
+   - shadow: executive_depth + floating_dialog
+   - glow: insight_violet gaussian, scoped only to hero/active/focus/status
+   - motion: silk interactions + glacier ambience
+*/
+body[data-theme="tactical"]{
+  --frost-v4-bg-asset:url('/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg');
+  --frost-v4-text:#f5f9ff;
+  --frost-v4-muted:rgba(224,234,244,.78);
+  --frost-v4-panel-rgb:142,165,184;
+  --frost-v4-panel-fill:rgba(var(--frost-v4-panel-rgb),.205);
+  --frost-v4-panel-fill-2:rgba(110,135,158,.125);
+  --frost-v4-card-fill:rgba(140,166,188,.155);
+  --frost-v4-inner-fill:rgba(236,248,255,.052);
+  --frost-v4-edge:rgba(239,250,255,.42);
+  --frost-v4-edge-hero:rgba(248,253,255,.66);
+  --frost-v4-edge-cyan:rgba(172,241,255,.40);
+  --frost-v4-violet:rgba(174,153,255,.18);
+  --frost-v4-violet-soft:rgba(174,153,255,.075);
+  --frost-v4-cyan-soft:rgba(169,238,255,.11);
+  --frost-v4-shadow-executive:0 30px 86px rgba(0,0,0,.43),0 8px 24px rgba(1,6,13,.30);
+  --frost-v4-shadow-floating:0 18px 44px rgba(0,0,0,.30),0 2px 9px rgba(7,18,30,.30);
+  --frost-v4-glow-insight:0 0 44px rgba(174,153,255,.14),0 0 24px rgba(169,238,255,.075);
+  --topbar-height:116px;
+  --content-gap:14px;
+  --side-pad:20px;
+  --shape-panel:inset(0 round 27px);
+  --shape-card:inset(0 round 19px);
+  --shape-topbar:inset(0 round 34px);
+  background:
+    linear-gradient(180deg,rgba(3,7,13,.54),rgba(3,8,15,.74) 48%,rgba(1,5,10,.93)),
+    var(--frost-v4-bg-asset) center center / cover fixed no-repeat,
+    #050b13;
+  color:var(--frost-v4-text);
+  overflow-x:hidden;
+}
+
+/* TAREA 1 · Background corrections. No grid. No black scroll band. Fondo vive fijo y continuo. */
+body[data-theme="tactical"]::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:1;
+  background:
+    radial-gradient(1050px 620px at 50% -10%,rgba(242,250,255,.13),transparent 58%),
+    radial-gradient(700px 470px at 88% 21%,rgba(130,183,223,.14),transparent 66%),
+    radial-gradient(760px 520px at 4% 72%,rgba(52,78,105,.20),transparent 70%),
+    linear-gradient(90deg,rgba(0,5,12,.76),rgba(6,16,26,.30) 43%,rgba(0,5,12,.82)),
+    linear-gradient(180deg,rgba(4,10,18,.12),rgba(2,7,13,.56) 54%,rgba(1,4,8,.86));
+  background-size:auto;
+  background-repeat:no-repeat;
+  mask-image:none;
+  -webkit-mask-image:none;
+}
+body[data-theme="tactical"]::after{
+  content:"";
+  position:fixed;
+  inset:-7%;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.46;
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(520px 230px at 22% 8%,rgba(255,255,255,.12),transparent 72%),
+    radial-gradient(460px 230px at 76% 20%,rgba(169,238,255,.10),transparent 74%),
+    radial-gradient(680px 300px at 50% 92%,rgba(174,153,255,.055),transparent 78%),
+    linear-gradient(114deg,transparent 8%,rgba(255,255,255,.032) 24%,transparent 42%,transparent 72%,rgba(169,238,255,.03) 86%,transparent 96%);
+  animation:frostV4Glacier 118s cubic-bezier(.38,0,.2,1) infinite;
+  will-change:transform;
+}
+@keyframes frostV4Glacier{
+  0%{transform:translate3d(-.45%,-.16%,0) scale(1.010)}
+  50%{transform:translate3d(.35%,.30%,0) scale(1.014)}
+  100%{transform:translate3d(-.20%,.06%,0) scale(1.010)}
+}
+body[data-theme="tactical"] .page{position:relative; z-index:1; width:min(1340px,100%); padding-top:calc(env(safe-area-inset-top) + 10px);}
+body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 20px); gap:14px;}
+body[data-theme="tactical"] .v40QuickRail{display:none; visibility:hidden; opacity:0; pointer-events:none;}
+body[data-theme="tactical"] [class*="QuickRail"],
+body[data-theme="tactical"] [aria-label="PRISMA quick controls"]{display:none;}
+
+/* Header constitution: no title collision, no theme box overlap. */
+body[data-theme="tactical"] .topbarWrap{
+  position:fixed;
+  left:50%;
+  right:auto;
+  top:calc(env(safe-area-inset-top) + 14px);
+  transform:translateX(-50%);
+  width:min(1130px,calc(100vw - 104px));
+  z-index:40;
+}
+body[data-theme="tactical"] .topbar{
+  min-height:108px;
+  height:auto;
+  padding:15px 20px;
+  border-radius:34px;
+  clip-path:none;
+  overflow:hidden;
+}
+body[data-theme="tactical"] .topbarGrid{
+  display:grid;
+  grid-template-columns:minmax(420px,1fr) auto;
+  gap:18px;
+  align-items:center;
+  min-width:0;
+}
+body[data-theme="tactical"] .brandRow,
+body[data-theme="tactical"] .titles{min-width:0;}
+body[data-theme="tactical"] .titles h1{
+  font-size:clamp(31px,3.2vw,47px);
+  letter-spacing:.075em;
+  line-height:.92;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+body[data-theme="tactical"] .titles p{display:none;}
+body[data-theme="tactical"] .brandEyebrow{opacity:.62;}
+body[data-theme="tactical"] .surfaceSwitch{
+  position:relative;
+  transform:none;
+  inset:auto;
+  width:auto;
+  min-width:min(520px,42vw);
+  max-width:560px;
+  justify-self:end;
+  z-index:2;
+}
+
+/* TAREA 2 · Paneles chingones: G3/G4 double glass, optical rim, executive + floating shadow. */
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .picker,
+body[data-theme="tactical"] .qPanel,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .lifecyclePanel,
+body[data-theme="tactical"] .lifecycleHero,
+body[data-theme="tactical"] .licenseOpsPanel,
+body[data-theme="tactical"] .licenseOpsHero,
+body[data-theme="tactical"] .ops-action-panel,
+body[data-theme="tactical"] .blackbox-command,
+body[data-theme="tactical"] .release-panel,
+body[data-theme="tactical"] .commandPanel,
+body[data-theme="tactical"] .opCommandPanel,
+body[data-theme="tactical"] .glass-card{
+  clip-path:none;
+  border-radius:27px;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.235),rgba(255,255,255,.082) 20%,rgba(8,19,31,.155) 100%),
+    radial-gradient(160% 130% at 9% 0%,rgba(255,255,255,.145),transparent 33%),
+    radial-gradient(130% 120% at 94% 1%,rgba(169,238,255,.090),transparent 36%),
+    linear-gradient(145deg,rgba(255,255,255,.040),rgba(174,153,255,.025) 46%,rgba(169,238,255,.030)),
+    var(--frost-v4-panel-fill);
+  border:1px solid var(--frost-v4-edge);
+  box-shadow:
+    var(--frost-v4-shadow-executive),
+    var(--frost-v4-glow-insight),
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 0 0 1px rgba(255,255,255,.055),
+    inset 0 -1px 0 rgba(169,238,255,.13);
+  backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025);
+  -webkit-backdrop-filter:blur(1.6px) saturate(125%) contrast(1.025);
+  transition:transform .34s cubic-bezier(.2,.8,.2,1), border-color .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s cubic-bezier(.2,.8,.2,1), background .34s cubic-bezier(.2,.8,.2,1);
+}
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .lifecycleHero,
+body[data-theme="tactical"] .licenseOpsHero{
+  border-color:var(--frost-v4-edge-hero);
+  box-shadow:
+    0 34px 96px rgba(0,0,0,.46),
+    0 10px 34px rgba(1,6,13,.34),
+    0 0 46px rgba(174,153,255,.16),
+    0 0 28px rgba(169,238,255,.10),
+    inset 0 1px 0 rgba(255,255,255,.52),
+    inset 0 0 0 1px rgba(255,255,255,.080),
+    inset 0 -1px 0 rgba(169,238,255,.18);
+}
+body[data-theme="tactical"] .panel::before,
+body[data-theme="tactical"] .picker::before,
+body[data-theme="tactical"] .topbar::before,
+body[data-theme="tactical"] .qPanel::before,
+body[data-theme="tactical"] .qualityHero::before,
+body[data-theme="tactical"] .lifecyclePanel::before,
+body[data-theme="tactical"] .licenseOpsPanel::before,
+body[data-theme="tactical"] .commandPanel::before,
+body[data-theme="tactical"] .ops-action-panel::before,
+body[data-theme="tactical"] .blackbox-command::before,
+body[data-theme="tactical"] .release-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:.78;
+  mix-blend-mode:screen;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.165),rgba(255,255,255,0) 29%),
+    radial-gradient(380px 148px at 11% -3%,rgba(255,255,255,.18),transparent 62%),
+    radial-gradient(260px 120px at 82% -2%,rgba(169,238,255,.12),transparent 65%);
+  animation:none;
+  transform:none;
+}
+body[data-theme="tactical"] .panel::after,
+body[data-theme="tactical"] .picker::after,
+body[data-theme="tactical"] .topbar::after,
+body[data-theme="tactical"] .qPanel::after,
+body[data-theme="tactical"] .qualityHero::after,
+body[data-theme="tactical"] .lifecyclePanel::after,
+body[data-theme="tactical"] .licenseOpsPanel::after,
+body[data-theme="tactical"] .commandPanel::after,
+body[data-theme="tactical"] .ops-action-panel::after,
+body[data-theme="tactical"] .blackbox-command::after,
+body[data-theme="tactical"] .release-panel::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:calc(27px - 1px);
+  pointer-events:none;
+  opacity:.68;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.11),transparent 25%,transparent 66%,rgba(169,238,255,.060)),
+    linear-gradient(180deg,rgba(255,255,255,.050),rgba(0,0,0,.045));
+  border:1px solid rgba(255,255,255,.075);
+  box-shadow:inset 0 0 42px rgba(255,255,255,.030), inset 0 0 28px rgba(169,238,255,.032);
+  mix-blend-mode:screen;
+}
+
+/* Cards/rows: lower budget G2, still premium but not hero. */
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .metric,
+body[data-theme="tactical"] .signal,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .dockBtn,
+body[data-theme="tactical"] .dockSearch,
+body[data-theme="tactical"] .qualityAction,
+body[data-theme="tactical"] .qualityResultBox,
+body[data-theme="tactical"] .qualitySealCard,
+body[data-theme="tactical"] .lifecycleDomainCard,
+body[data-theme="tactical"] .lifecycleSealCard,
+body[data-theme="tactical"] .licenseOpsCard,
+body[data-theme="tactical"] .licenseOpsSealCard,
+body[data-theme="tactical"] .ops-action,
+body[data-theme="tactical"] .ops-result,
+body[data-theme="tactical"] .ops-diag,
+body[data-theme="tactical"] .bb-evidence-card,
+body[data-theme="tactical"] .bb-event,
+body[data-theme="tactical"] .release-tile,
+body[data-theme="tactical"] .release-terminal,
+body[data-theme="tactical"] .opButton,
+body[data-theme="tactical"] .commandCard,
+body[data-theme="tactical"] .commandStatus,
+body[data-theme="tactical"] .node,
+body[data-theme="tactical"] .miniChartWrap,
+body[data-theme="tactical"] .topologyMap{
+  clip-path:none;
+  border-radius:19px;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.155),rgba(255,255,255,.055) 24%,rgba(7,18,30,.110) 100%),
+    radial-gradient(120% 110% at 12% 0%,rgba(255,255,255,.095),transparent 36%),
+    radial-gradient(110% 120% at 96% 0%,rgba(169,238,255,.060),transparent 38%),
+    var(--frost-v4-card-fill);
+  border:1px solid rgba(232,247,255,.25);
+  box-shadow:
+    var(--frost-v4-shadow-floating),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 0 0 1px rgba(255,255,255,.042),
+    inset 0 -1px 0 rgba(169,238,255,.090);
+  backdrop-filter:blur(.85px) saturate(116%) contrast(1.018);
+  -webkit-backdrop-filter:blur(.85px) saturate(116%) contrast(1.018);
+  transition:transform .26s cubic-bezier(.2,.8,.2,1), border-color .26s cubic-bezier(.2,.8,.2,1), box-shadow .26s cubic-bezier(.2,.8,.2,1);
+}
+body[data-theme="tactical"] .card::before,
+body[data-theme="tactical"] .metric::before,
+body[data-theme="tactical"] .signal::before,
+body[data-theme="tactical"] .timelineCard::before,
+body[data-theme="tactical"] .dockBtn::before,
+body[data-theme="tactical"] .dockSearch::before,
+body[data-theme="tactical"] .qualityAction::before,
+body[data-theme="tactical"] .licenseOpsCard::before,
+body[data-theme="tactical"] .ops-action::before,
+body[data-theme="tactical"] .opButton::before,
+body[data-theme="tactical"] .commandCard::before,
+body[data-theme="tactical"] .node::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:.58;
+  mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(255,255,255,.120),rgba(255,255,255,0) 34%),radial-gradient(220px 100px at 13% 0%,rgba(255,255,255,.105),transparent 65%);
+  animation:none;
+  transform:none;
+}
+body[data-theme="tactical"] .card::after,
+body[data-theme="tactical"] .metric::after,
+body[data-theme="tactical"] .signal::after,
+body[data-theme="tactical"] .timelineCard::after,
+body[data-theme="tactical"] .dockBtn::after,
+body[data-theme="tactical"] .dockSearch::after,
+body[data-theme="tactical"] .qualityAction::after,
+body[data-theme="tactical"] .ops-action::after,
+body[data-theme="tactical"] .opButton::after,
+body[data-theme="tactical"] .commandCard::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:calc(19px - 1px);
+  pointer-events:none;
+  opacity:.40;
+  background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.045) 32%,transparent 72%);
+  mix-blend-mode:screen;
+  transform:none;
+  animation:none;
+}
+
+/* Hero rim / refraction only where it matters. */
+body[data-theme="tactical"] .topbar,
+body[data-theme="tactical"] .panel:hover,
+body[data-theme="tactical"] .picker:hover,
+body[data-theme="tactical"] .qualityHero,
+body[data-theme="tactical"] .licenseOpsHero,
+body[data-theme="tactical"] .lifecycleHero{
+  filter:drop-shadow(0 0 1px rgba(239,250,255,.34));
+}
+body[data-theme="tactical"] .panel:hover,
+body[data-theme="tactical"] .picker:hover,
+body[data-theme="tactical"] .card:hover,
+body[data-theme="tactical"] .metric:hover,
+body[data-theme="tactical"] .qualityAction:hover,
+body[data-theme="tactical"] .licenseOpsCard:hover,
+body[data-theme="tactical"] .ops-action:hover,
+body[data-theme="tactical"] .release-tile:hover,
+body[data-theme="tactical"] .commandCard:hover,
+body[data-theme="tactical"] .opButton:hover{
+  transform:translate3d(0,-2px,0);
+  border-color:rgba(241,252,255,.44);
+  box-shadow:
+    0 30px 78px rgba(0,0,0,.40),
+    0 0 46px rgba(174,153,255,.13),
+    0 0 28px rgba(169,238,255,.10),
+    inset 0 1px 0 rgba(255,255,255,.36),
+    inset 0 0 0 1px rgba(255,255,255,.065),
+    inset 0 -1px 0 rgba(169,238,255,.14);
+}
+
+/* Rectangulo fantasma del pill: recorta todo dentro de su propia cápsula. */
+body[data-theme="tactical"] .tag,
+body[data-theme="tactical"] .pill,
+body[data-theme="tactical"] .chip,
+body[data-theme="tactical"] .qTag,
+body[data-theme="tactical"] .lifecycleTag,
+body[data-theme="tactical"] .licenseOpsTag,
+body[data-theme="tactical"] .state-chip,
+body[data-theme="tactical"] .legendItem,
+body[data-theme="tactical"] .laneLabel,
+body[data-theme="tactical"] .routeBadge,
+body[data-theme="tactical"] .ops-mini,
+body[data-theme="tactical"] .bb-mini,
+body[data-theme="tactical"] .materialBadge{
+  clip-path:none;
+  border-radius:999px;
+  overflow:hidden;
+  position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,.036)),rgba(140,166,188,.135);
+  border:1px solid rgba(232,247,255,.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), inset 0 -1px 0 rgba(169,238,255,.08);
+}
+body[data-theme="tactical"] .tag::before,
+body[data-theme="tactical"] .tag::after,
+body[data-theme="tactical"] .pill::before,
+body[data-theme="tactical"] .pill::after,
+body[data-theme="tactical"] .chip::before,
+body[data-theme="tactical"] .chip::after{border-radius:inherit; inset:0;}
+body[data-theme="tactical"] .tag.ok,
+body[data-theme="tactical"] .qTag.ok,
+body[data-theme="tactical"] .lifecycleTag.ok,
+body[data-theme="tactical"] .licenseOpsTag.ok,
+body[data-theme="tactical"] .state-chip.ok{
+  color:#b9ffe7;
+  border-color:rgba(133,255,218,.42);
+  box-shadow:0 0 24px rgba(133,255,218,.12), inset 0 1px 0 rgba(255,255,255,.32);
+}
+body[data-theme="tactical"] .tag.warn,
+body[data-theme="tactical"] .qTag.warn,
+body[data-theme="tactical"] .lifecycleTag.warn,
+body[data-theme="tactical"] .licenseOpsTag.warn,
+body[data-theme="tactical"] .state-chip.warn{
+  color:#ffe2a8;
+  border-color:rgba(255,211,140,.38);
+  box-shadow:0 0 24px rgba(255,211,140,.10), inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+/* Topology: no milk glass, more readable canvas. */
+body[data-theme="tactical"] .topologyMap,
+body[data-theme="tactical"] .topologyShell{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.088),rgba(255,255,255,.026) 38%,rgba(8,20,32,.10)),
+    rgba(109,134,156,.105);
+  backdrop-filter:blur(.25px) saturate(108%);
+  -webkit-backdrop-filter:blur(.25px) saturate(108%);
+  border-color:rgba(232,247,255,.28);
+}
+body[data-theme="tactical"] .node{background:linear-gradient(180deg,rgba(255,255,255,.145),rgba(255,255,255,.045)),rgba(120,146,168,.15);}
+body[data-theme="tactical"] .channelCore,
+body[data-theme="tactical"] .routeCore,
+body[data-theme="tactical"] .routeCoreAlt,
+body[data-theme="tactical"] .chartStroke,
+body[data-theme="tactical"] .chartStroke2{opacity:.72; filter:drop-shadow(0 0 8px rgba(169,238,255,.16));}
+body[data-theme="tactical"] .channelPulse,
+body[data-theme="tactical"] .routeSweep,
+body[data-theme="tactical"] .routeSweepAlt{opacity:.28;}
+
+/* Custom select visual, replacing native dropdown for theme picker. */
+body[data-theme="tactical"] .themeSelect{position:absolute; inline-size:1px; block-size:1px; opacity:0; pointer-events:none;}
+body[data-theme="tactical"] .selectWrap{position:relative; overflow:visible; z-index:45;}
+body[data-theme="tactical"] .prisma-theme-combo{position:relative; width:100%; min-width:280px; z-index:70;}
+body[data-theme="tactical"] .prisma-theme-trigger{
+  width:100%; min-height:58px; padding:0 46px 0 18px; text-align:left;
+  border-radius:18px; border:1px solid rgba(232,247,255,.34); color:#f7fbff;
+  background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.052)),rgba(140,166,188,.18);
+  box-shadow:var(--frost-v4-shadow-floating),inset 0 1px 0 rgba(255,255,255,.27);
+  backdrop-filter:blur(.7px) saturate(116%); -webkit-backdrop-filter:blur(.7px) saturate(116%);
+  cursor:pointer; font:inherit; font-weight:800;
+}
+body[data-theme="tactical"] .prisma-theme-trigger::after{content:"⌄"; position:absolute; right:17px; top:50%; transform:translateY(-50%); opacity:.86;}
+body[data-theme="tactical"] .prisma-theme-list{
+  display:none; position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:90; padding:8px;
+  border-radius:18px; border:1px solid rgba(232,247,255,.34); background:linear-gradient(180deg,rgba(116,143,165,.96),rgba(70,92,112,.96));
+  box-shadow:0 26px 80px rgba(0,0,0,.46),0 0 38px rgba(174,153,255,.12),inset 0 1px 0 rgba(255,255,255,.28);
+  backdrop-filter:blur(6px) saturate(132%); -webkit-backdrop-filter:blur(6px) saturate(132%);
+}
+body[data-theme="tactical"] .prisma-theme-combo[data-open="1"] .prisma-theme-list{display:grid; gap:6px;}
+body[data-theme="tactical"] .prisma-theme-option{
+  min-height:42px; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; border-radius:13px; border:1px solid transparent;
+  background:transparent; color:#f6fbff; cursor:pointer; padding:0 12px; font-weight:800; text-align:left;
+}
+body[data-theme="tactical"] .prisma-theme-option:hover,
+body[data-theme="tactical"] .prisma-theme-option[aria-selected="true"]{background:rgba(169,238,255,.14); border-color:rgba(232,247,255,.28); box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 0 24px rgba(169,238,255,.08);}
+
+/* Native controls fallback: no Windows-white dropdown panel when possible. */
+body[data-theme="tactical"] option{background:#607286; color:#f7fbff;}
+body[data-theme="tactical"] input,
+body[data-theme="tactical"] textarea,
+body[data-theme="tactical"] button,
+body[data-theme="tactical"] select{
+  border-radius:16px;
+}
+
+/* Motion-silk and motion-glacier: not dead, not feria. */
+body[data-theme="tactical"] .surfaceSwitch button,
+body[data-theme="tactical"] .prisma-theme-trigger,
+body[data-theme="tactical"] .prisma-theme-option,
+body[data-theme="tactical"] .opButton,
+body[data-theme="tactical"] .dockBtn,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .picker{transition:transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1), border-color .24s cubic-bezier(.2,.8,.2,1), background .24s cubic-bezier(.2,.8,.2,1);}
+body[data-theme="tactical"] .surfaceSwitch button:hover,
+body[data-theme="tactical"] .prisma-theme-trigger:hover{transform:translateY(-1px); border-color:rgba(241,252,255,.46); box-shadow:0 18px 54px rgba(0,0,0,.34),0 0 28px rgba(174,153,255,.12),inset 0 1px 0 rgba(255,255,255,.34);}
+body[data-theme="tactical"] .progressFill,
+body[data-theme="tactical"] .meterFill,
+body[data-theme="tactical"] .licenseOpsBarFill,
+body[data-theme="tactical"] .lifecycleBarFill,
+body[data-theme="tactical"] .qProgressFill,
+body[data-theme="tactical"] [class*="barFill"],
+body[data-theme="tactical"] [class*="BarFill"]{box-shadow:0 0 24px rgba(169,238,255,.18),0 0 36px rgba(174,153,255,.10);}
+body[data-theme="tactical"] .liveDot,
+body[data-theme="tactical"] .statusDot,
+body[data-theme="tactical"] .pulseDot,
+body[data-theme="tactical"] .swatches i{box-shadow:0 0 20px rgba(169,238,255,.30),0 0 34px rgba(174,153,255,.12);}
+
+/* Reduce old hard artifacts from inline/V40 styles. */
+body[data-theme="tactical"] .glass::before,
+body[data-theme="tactical"] .glass::after{animation:none;}
+body[data-theme="tactical"] .commandStatus{padding:0; background:transparent; box-shadow:none; border-color:transparent; overflow:visible;}
+body[data-theme="tactical"] .commandStatus .tag{min-width:max-content;}
+body[data-theme="tactical"] .materialBadge{grid-column:1/-1;}
+body[data-theme="tactical"] .pickerGrid{align-items:center;}
+body[data-theme="tactical"] .sectionText,
+body[data-theme="tactical"] .muted,
+body[data-theme="tactical"] .statusLine,
+body[data-theme="tactical"] p{color:var(--frost-v4-muted);}
+body[data-theme="tactical"] .sectionTitle,
+body[data-theme="tactical"] h1,
+body[data-theme="tactical"] h2,
+body[data-theme="tactical"] h3{color:#f8fbff; text-shadow:0 1px 18px rgba(169,238,255,.09);}
+
+@media (max-width: 980px){
+  body[data-theme="tactical"]{--topbar-height:148px;}
+  body[data-theme="tactical"] .topbarWrap{width:calc(100vw - 28px);}
+  body[data-theme="tactical"] .topbarGrid{grid-template-columns:1fr;}
+  body[data-theme="tactical"] .surfaceSwitch{justify-self:stretch; min-width:0; max-width:none;}
+  body[data-theme="tactical"] .titles h1{font-size:clamp(26px,8vw,38px);}
+  body[data-theme="tactical"] main{padding-top:calc(var(--topbar-height) + 18px);}
+}
+@media (prefers-reduced-motion: reduce){
+  body[data-theme="tactical"]::after{animation:none;}
+  body[data-theme="tactical"] *,
+  body[data-theme="tactical"] *::before,
+  body[data-theme="tactical"] *::after{transition-duration:.01ms; animation-duration:.01ms; animation-iteration-count:1;}
+}
+/* === PRISMA FROST TACTICAL V4 END === */

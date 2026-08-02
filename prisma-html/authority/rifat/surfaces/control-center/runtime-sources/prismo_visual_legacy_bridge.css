@@ -1,0 +1,170 @@
+/* PRISMO Visual Legacy Bridge v1
+   Restores the pre-Codex visual stack for the new Adaptive Intelligence Theater.
+   Scope: PRISMO Control Center only. No global html/body background force.
+*/
+
+body[data-prisma-interface="prismo"] #prismoConsoleSurface,
+#prismoConsoleSurface { position: relative; isolation: isolate; }
+
+#prismo-console.prismo-shell,
+#prismo-console[data-prismo-console="adaptive-intelligence-theater-v1"] {
+  --prismo-bg: #070b11;
+  --prismo-panel: rgba(13, 19, 29, .74);
+  --prismo-panel-soft: rgba(20, 29, 43, .54);
+  --prismo-line: rgba(183, 220, 255, .18);
+  --prismo-line-hot: rgba(105, 202, 255, .42);
+  --prismo-text: rgba(241, 248, 255, .95);
+  --prismo-muted: rgba(202, 220, 236, .68);
+  --prismo-ok: #73f2c3;
+  --prismo-warn: #f6d37a;
+  --prismo-danger: #ff8a8a;
+  --prismo-info: #80c7ff;
+  --prismo-violet: #b8a4ff;
+  --prismo-radius: 24px;
+  --prismo-glass-alpha: .74;
+  --prismo-panel-alpha: .74;
+  --prismo-border-alpha: .20;
+  --prismo-rim-alpha: .42;
+  --prismo-glow-strength: .55;
+  --prismo-blur: 26px;
+  --prismo-shadow-depth: 0 22px 58px rgba(0, 0, 0, .26);
+  --prismo-bg-atmosphere-alpha: .75;
+  --prismo-z-background: 0;
+  --prismo-z-content: 1;
+  --prismo-z-dropdown: 80;
+  --prismo-z-drawer: 110;
+  --prismo-z-command: 140;
+  --prismo-z-toast: 170;
+  --prismo-portal-layer: var(--prismo-z-drawer);
+  color: var(--prismo-text);
+  background:
+    radial-gradient(760px 340px at 16% 0%, rgba(90, 180, 255, .16), transparent 66%),
+    radial-gradient(560px 260px at 88% 16%, rgba(115, 242, 195, .10), transparent 62%),
+    linear-gradient(145deg, #06080d, #0c121c 52%, #06080d);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .18);
+  border: 1px solid rgba(224, 239, 255, .20);
+  border-radius: 30px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#prismo-console .prismo-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: var(--prismo-z-background);
+  pointer-events: none;
+  opacity: var(--prismo-bg-atmosphere-alpha);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, .028) 1px, transparent 1px),
+    linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, .08) 30%, transparent 43%, transparent 64%, rgba(115, 242, 195, .05) 72%, transparent 82%);
+  background-size: 46px 46px, 46px 46px, 100% 100%;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .85), transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .85), transparent 96%);
+  mix-blend-mode: screen;
+}
+
+#prismo-console > :not(.prismo-atmosphere),
+#prismo-console .prismo-center-stage,
+#prismo-console .prismo-signal-intake,
+#prismo-console .prismo-side-stack,
+#prismo-console .prismo-theater-layout { position: relative; z-index: var(--prismo-z-content); }
+
+#prismo-console .prismo-topbar,
+#prismo-console .prismo-composer,
+#prismo-console .prismo-panel,
+#prismo-console .prismo-response-stream,
+#prismo-console .prismo-render-card,
+#prismo-console .prismo-bottom-card,
+#prismo-console .prismo-guidance-panel,
+#prismo-console .prismo-feedback-dock,
+#prismo-console .prismo-theater-card,
+#prismo-console .prismo-memory-chain,
+#prismo-console .prismo-technical-drawer,
+#prismo-console .prismo-stage-frame,
+#prismo-console .prismo-command-palette,
+#prismo-console .prismo-guidance-field select,
+#prismo-console .prismo-inferred-chip {
+  border-color: var(--prismo-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .035)),
+    linear-gradient(128deg, rgba(128, 199, 255, .07), transparent 44%, rgba(115, 242, 195, .05)),
+    var(--prismo-panel);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, .26), inset 0 1px 0 rgba(255, 255, 255, .20);
+  backdrop-filter: blur(var(--prismo-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--prismo-blur)) saturate(150%);
+}
+
+#prismo-console .prismo-render-card,
+#prismo-console .prismo-mini-card,
+#prismo-console .prismo-authority-row,
+#prismo-console .prismo-flow-node,
+#prismo-console .prismo-impact-item,
+#prismo-console .prismo-risk-item,
+#prismo-console .prismo-check-item,
+#prismo-console .prismo-context-item,
+#prismo-console .prismo-diff-col,
+#prismo-console .prismo-runtime-signal,
+#prismo-console .prismo-ladder-step,
+#prismo-console .prismo-evidence-item,
+#prismo-console .prismo-memory-item {
+  border: 1px solid var(--prismo-line);
+  background: rgba(255, 255, 255, .045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+#prismo-console .prismo-mode-chip,
+#prismo-console .prismo-suggestion-chip,
+#prismo-console .prismo-tag,
+#prismo-console .prismo-status-chip,
+#prismo-console .prismo-theater-chip,
+#prismo-console .prismo-feedback-dock button {
+  border-color: var(--prismo-line);
+  color: var(--prismo-text);
+  background: rgba(255, 255, 255, .055);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+#prismo-console .prismo-mode-chip[aria-pressed="true"],
+#prismo-console .prismo-primary-action,
+#prismo-console .prismo-feedback-dock button[aria-pressed="true"],
+#prismo-console .prismo-tag[data-state="ok"],
+#prismo-console .prismo-status-chip[data-state="online"] {
+  color: rgba(242, 252, 255, .98);
+  border-color: rgba(115, 242, 195, .38);
+  background:
+    linear-gradient(180deg, rgba(115, 242, 195, .18), rgba(128, 199, 255, .08)),
+    rgba(255, 255, 255, .075);
+  box-shadow: 0 14px 28px rgba(24, 116, 128, .16), inset 0 1px 0 rgba(255, 255, 255, .20);
+}
+
+#prismo-console .prismo-textarea,
+#prismo-console textarea,
+#prismo-console select,
+#prismo-console input {
+  color: var(--prismo-text);
+  border-color: rgba(183, 220, 255, .20);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .025)),
+    rgba(4, 10, 18, .58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+#prismo-console .prismo-topbar h2,
+#prismo-console .prismo-theater-card h3,
+#prismo-console .prismo-panel h3 { color: var(--prismo-text); text-shadow: 0 0 28px rgba(128, 199, 255, .12); }
+#prismo-console .prismo-kicker,
+#prismo-console .prismo-label,
+#prismo-console .prismo-panel-head small,
+#prismo-console .prismo-router-head small { color: var(--prismo-info); }
+#prismo-console .prismo-answer,
+#prismo-console .prismo-panel p,
+#prismo-console .prismo-render-card p,
+#prismo-console .prismo-technical-drawer pre { color: var(--prismo-muted); filter: none; }
+#prismo-console .prismo-technical-drawer { z-index: var(--prismo-z-drawer); }
+#prismo-console .prismo-command-palette { z-index: var(--prismo-z-command); }
+
+@media (max-width: 1180px) { #prismo-console .prismo-theater-layout { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  #prismo-console *, #prismo-console *::before, #prismo-console *::after { animation-duration: .01ms; animation-iteration-count: 1; transition-duration: .01ms; }
+}

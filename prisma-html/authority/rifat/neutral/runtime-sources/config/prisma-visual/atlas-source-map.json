@@ -1,0 +1,854 @@
+{
+  "version": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.096Z",
+  "sources": [
+    {
+      "id": "docs.atlas.atlas.registry",
+      "path": "docs/atlas/atlas.registry.json",
+      "source": "docs/atlas/atlas.registry.json",
+      "name": "atlas.registry.json",
+      "surface": "shared",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core",
+      "path": "docs/atlas/atlas.shared-core.json",
+      "source": "docs/atlas/atlas.shared-core.json",
+      "name": "atlas.shared-core.json",
+      "surface": "shared",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.master.index",
+      "path": "docs/atlas/ATLAS_MASTER_INDEX.md",
+      "source": "docs/atlas/ATLAS_MASTER_INDEX.md",
+      "name": "ATLAS_MASTER_INDEX.md",
+      "surface": "shared",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core",
+      "path": "docs/atlas/ATLAS_SHARED_CORE.md",
+      "source": "docs/atlas/ATLAS_SHARED_CORE.md",
+      "name": "ATLAS_SHARED_CORE.md",
+      "surface": "shared",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core.contracts",
+      "path": "docs/atlas/ATLAS_SHARED_CORE_CONTRACTS.md",
+      "source": "docs/atlas/ATLAS_SHARED_CORE_CONTRACTS.md",
+      "name": "ATLAS_SHARED_CORE_CONTRACTS.md",
+      "surface": "shared",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core.functional.engines",
+      "path": "docs/atlas/ATLAS_SHARED_CORE_FUNCTIONAL_ENGINES.md",
+      "source": "docs/atlas/ATLAS_SHARED_CORE_FUNCTIONAL_ENGINES.md",
+      "name": "ATLAS_SHARED_CORE_FUNCTIONAL_ENGINES.md",
+      "surface": "shared",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core.runtime.infra",
+      "path": "docs/atlas/ATLAS_SHARED_CORE_RUNTIME_INFRA.md",
+      "source": "docs/atlas/ATLAS_SHARED_CORE_RUNTIME_INFRA.md",
+      "name": "ATLAS_SHARED_CORE_RUNTIME_INFRA.md",
+      "surface": "shared",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.atlas.shared.core.visual.os",
+      "path": "docs/atlas/ATLAS_SHARED_CORE_VISUAL_OS.md",
+      "source": "docs/atlas/ATLAS_SHARED_CORE_VISUAL_OS.md",
+      "name": "ATLAS_SHARED_CORE_VISUAL_OS.md",
+      "surface": "shared",
+      "type": "recipe",
+      "kind": "recipe",
+      "status": "recipe",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "visual density",
+        "allowed recipes",
+        "background contract"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.governor.atlas.map",
+      "path": "docs/atlas/governor.atlas-map.json",
+      "source": "docs/atlas/governor.atlas-map.json",
+      "name": "governor.atlas-map.json",
+      "surface": "surface-governor",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.atlas.governor.atlas.location",
+      "path": "docs/atlas/GOVERNOR_ATLAS_LOCATION.md",
+      "source": "docs/atlas/GOVERNOR_ATLAS_LOCATION.md",
+      "name": "GOVERNOR_ATLAS_LOCATION.md",
+      "surface": "surface-governor",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet",
+      "path": "products/tablet/app/docs/atlas/atlas.tablet.json",
+      "source": "products/tablet/app/docs/atlas/atlas.tablet.json",
+      "name": "atlas.tablet.json",
+      "surface": "tablet",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet",
+      "path": "products/tablet/app/docs/atlas/ATLAS_TABLET.md",
+      "source": "products/tablet/app/docs/atlas/ATLAS_TABLET.md",
+      "name": "ATLAS_TABLET.md",
+      "surface": "tablet",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet.functional.engines",
+      "path": "products/tablet/app/docs/atlas/ATLAS_TABLET_FUNCTIONAL_ENGINES.md",
+      "source": "products/tablet/app/docs/atlas/ATLAS_TABLET_FUNCTIONAL_ENGINES.md",
+      "name": "ATLAS_TABLET_FUNCTIONAL_ENGINES.md",
+      "surface": "tablet",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet.interaction",
+      "path": "products/tablet/app/docs/atlas/ATLAS_TABLET_INTERACTION.md",
+      "source": "products/tablet/app/docs/atlas/ATLAS_TABLET_INTERACTION.md",
+      "name": "ATLAS_TABLET_INTERACTION.md",
+      "surface": "tablet",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet.runtime.delivery",
+      "path": "products/tablet/app/docs/atlas/ATLAS_TABLET_RUNTIME_DELIVERY.md",
+      "source": "products/tablet/app/docs/atlas/ATLAS_TABLET_RUNTIME_DELIVERY.md",
+      "name": "ATLAS_TABLET_RUNTIME_DELIVERY.md",
+      "surface": "tablet",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.tablet.app.docs.atlas.atlas.tablet.visual",
+      "path": "products/tablet/app/docs/atlas/ATLAS_TABLET_VISUAL.md",
+      "source": "products/tablet/app/docs/atlas/ATLAS_TABLET_VISUAL.md",
+      "name": "ATLAS_TABLET_VISUAL.md",
+      "surface": "tablet",
+      "type": "recipe",
+      "kind": "recipe",
+      "status": "recipe",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "visual density",
+        "allowed recipes",
+        "background contract"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc",
+      "path": "products/pc/app/docs/atlas/atlas.pc.json",
+      "source": "products/pc/app/docs/atlas/atlas.pc.json",
+      "name": "atlas.pc.json",
+      "surface": "pc",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc",
+      "path": "products/pc/app/docs/atlas/ATLAS_PC.md",
+      "source": "products/pc/app/docs/atlas/ATLAS_PC.md",
+      "name": "ATLAS_PC.md",
+      "surface": "pc",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc.functional.engines",
+      "path": "products/pc/app/docs/atlas/ATLAS_PC_FUNCTIONAL_ENGINES.md",
+      "source": "products/pc/app/docs/atlas/ATLAS_PC_FUNCTIONAL_ENGINES.md",
+      "name": "ATLAS_PC_FUNCTIONAL_ENGINES.md",
+      "surface": "pc",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc.interaction",
+      "path": "products/pc/app/docs/atlas/ATLAS_PC_INTERACTION.md",
+      "source": "products/pc/app/docs/atlas/ATLAS_PC_INTERACTION.md",
+      "name": "ATLAS_PC_INTERACTION.md",
+      "surface": "pc",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc.runtime.delivery",
+      "path": "products/pc/app/docs/atlas/ATLAS_PC_RUNTIME_DELIVERY.md",
+      "source": "products/pc/app/docs/atlas/ATLAS_PC_RUNTIME_DELIVERY.md",
+      "name": "ATLAS_PC_RUNTIME_DELIVERY.md",
+      "surface": "pc",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.pc.app.docs.atlas.atlas.pc.visual",
+      "path": "products/pc/app/docs/atlas/ATLAS_PC_VISUAL.md",
+      "source": "products/pc/app/docs/atlas/ATLAS_PC_VISUAL.md",
+      "name": "ATLAS_PC_VISUAL.md",
+      "surface": "pc",
+      "type": "recipe",
+      "kind": "recipe",
+      "status": "recipe",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "visual density",
+        "allowed recipes",
+        "background contract"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile",
+      "path": "products/mobile/app/docs/atlas/atlas.mobile.json",
+      "source": "products/mobile/app/docs/atlas/atlas.mobile.json",
+      "name": "atlas.mobile.json",
+      "surface": "mobile",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile",
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE.md",
+      "source": "products/mobile/app/docs/atlas/ATLAS_MOBILE.md",
+      "name": "ATLAS_MOBILE.md",
+      "surface": "mobile",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile.functional.engines",
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_FUNCTIONAL_ENGINES.md",
+      "source": "products/mobile/app/docs/atlas/ATLAS_MOBILE_FUNCTIONAL_ENGINES.md",
+      "name": "ATLAS_MOBILE_FUNCTIONAL_ENGINES.md",
+      "surface": "mobile",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile.interaction",
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_INTERACTION.md",
+      "source": "products/mobile/app/docs/atlas/ATLAS_MOBILE_INTERACTION.md",
+      "name": "ATLAS_MOBILE_INTERACTION.md",
+      "surface": "mobile",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile.runtime.delivery",
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_RUNTIME_DELIVERY.md",
+      "source": "products/mobile/app/docs/atlas/ATLAS_MOBILE_RUNTIME_DELIVERY.md",
+      "name": "ATLAS_MOBILE_RUNTIME_DELIVERY.md",
+      "surface": "mobile",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "products.mobile.app.docs.atlas.atlas.mobile.visual",
+      "path": "products/mobile/app/docs/atlas/ATLAS_MOBILE_VISUAL.md",
+      "source": "products/mobile/app/docs/atlas/ATLAS_MOBILE_VISUAL.md",
+      "name": "ATLAS_MOBILE_VISUAL.md",
+      "surface": "mobile",
+      "type": "recipe",
+      "kind": "recipe",
+      "status": "recipe",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "visual density",
+        "allowed recipes",
+        "background contract"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.prisma.prisma.chart.atlas",
+      "path": "docs/prisma/PRISMA_CHART_ATLAS.md",
+      "source": "docs/prisma/PRISMA_CHART_ATLAS.md",
+      "name": "PRISMA_CHART_ATLAS.md",
+      "surface": "chart-lab",
+      "type": "engine",
+      "kind": "engine",
+      "status": "engine",
+      "freshness": "current",
+      "authorityLevel": "secondary",
+      "signalsExtracted": [
+        "functional engines",
+        "runtime rules",
+        "interaction rules"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.productization.prisma.feature.gate.atlas",
+      "path": "docs/productization/PRISMA_FEATURE_GATE_ATLAS.md",
+      "source": "docs/productization/PRISMA_FEATURE_GATE_ATLAS.md",
+      "name": "PRISMA_FEATURE_GATE_ATLAS.md",
+      "surface": "all",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.surface.visual.governor.00.prisma.surface.visual.governor.master.index",
+      "path": "docs/surface-visual-governor/00_PRISMA_SURFACE_VISUAL_GOVERNOR_MASTER_INDEX.md",
+      "source": "docs/surface-visual-governor/00_PRISMA_SURFACE_VISUAL_GOVERNOR_MASTER_INDEX.md",
+      "name": "00_PRISMA_SURFACE_VISUAL_GOVERNOR_MASTER_INDEX.md",
+      "surface": "surface-governor",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.surface.visual.governor.01.where.everything.lives",
+      "path": "docs/surface-visual-governor/01_WHERE_EVERYTHING_LIVES.md",
+      "source": "docs/surface-visual-governor/01_WHERE_EVERYTHING_LIVES.md",
+      "name": "01_WHERE_EVERYTHING_LIVES.md",
+      "surface": "surface-governor",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.surface.visual.governor.hub.surface.governor.inventory",
+      "path": "docs/surface-visual-governor/_hub/surface_governor_inventory.json",
+      "source": "docs/surface-visual-governor/_hub/surface_governor_inventory.json",
+      "name": "surface_governor_inventory.json",
+      "surface": "surface-governor",
+      "type": "core",
+      "kind": "core",
+      "status": "core",
+      "freshness": "current",
+      "authorityLevel": "primary",
+      "signalsExtracted": [
+        "surface role",
+        "governance gates",
+        "route hints"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    },
+    {
+      "id": "docs.surface.visual.governor.hub.result.zip.inventory",
+      "path": "docs/surface-visual-governor/_hub/result_zip_inventory.json",
+      "source": "docs/surface-visual-governor/_hub/result_zip_inventory.json",
+      "name": "result_zip_inventory.json",
+      "surface": "surface-governor",
+      "type": "archive",
+      "kind": "archive",
+      "status": "archive",
+      "freshness": "current",
+      "authorityLevel": "archive",
+      "signalsExtracted": [
+        "historical evidence"
+      ],
+      "usedBy": [
+        "surface-adapters.json",
+        "domain-contracts.json",
+        "screen-blueprints.json",
+        "migration-tiers.json"
+      ],
+      "conflicts": [],
+      "notes": "Distilled into governed v2 maps; not copied literal."
+    }
+  ]
+}

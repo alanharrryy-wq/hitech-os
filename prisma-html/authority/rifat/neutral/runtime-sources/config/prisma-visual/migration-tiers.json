@@ -1,0 +1,1160 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.089Z",
+  "tiers": [
+    {
+      "id": "tier-0-observe",
+      "description": "Inventory only. No production wiring.",
+      "risk": "low",
+      "requiredEvidence": [
+        "usage map evidence",
+        "validator pass"
+      ],
+      "allowedActions": [
+        "dry-run",
+        "plan",
+        "safe scaffold under tools"
+      ]
+    },
+    {
+      "id": "tier-1-wrapper",
+      "description": "Introduce Prisma wrapper/shell without changing flow semantics.",
+      "risk": "low-medium",
+      "requiredEvidence": [
+        "usage map evidence",
+        "validator pass"
+      ],
+      "allowedActions": [
+        "dry-run",
+        "plan",
+        "safe scaffold under tools"
+      ]
+    },
+    {
+      "id": "tier-2-panel",
+      "description": "Replace local panel/card with governed shared-ui panel.",
+      "risk": "medium",
+      "requiredEvidence": [
+        "usage map evidence",
+        "validator pass"
+      ],
+      "allowedActions": [
+        "dry-run",
+        "plan",
+        "safe scaffold under tools"
+      ]
+    },
+    {
+      "id": "tier-3-flow",
+      "description": "Migrate full visual flow with route-level evidence.",
+      "risk": "high",
+      "requiredEvidence": [
+        "usage map evidence",
+        "validator pass"
+      ],
+      "allowedActions": [
+        "dry-run",
+        "plan",
+        "safe scaffold under tools"
+      ]
+    },
+    {
+      "id": "tier-4-authority",
+      "description": "Promote as authority route after release gate evidence.",
+      "risk": "very-high",
+      "requiredEvidence": [
+        "visual review focal",
+        "validators pass",
+        "rollback package",
+        "release gate approval"
+      ],
+      "allowedActions": [
+        "dry-run",
+        "plan",
+        "safe scaffold under tools"
+      ]
+    },
+    {
+      "id": "blocked",
+      "description": "Do not touch until explicit clearance.",
+      "risk": "blocked",
+      "requiredEvidence": [
+        "usage map evidence",
+        "validator pass"
+      ],
+      "allowedActions": []
+    }
+  ],
+  "assignments": [
+    {
+      "surface": "tablet",
+      "route": "/prisma-visual-catalog",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/prisma-visual-catalog/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "visual-evidence-next; then migrate existing low-risk route"
+    },
+    {
+      "surface": "tablet",
+      "route": "/",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/catalog",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/catalog/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/checkout",
+      "tier": "blocked",
+      "evidence": [
+        "products/tablet/app/app/checkout/page.tsx"
+      ],
+      "noTouch": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence"
+    },
+    {
+      "surface": "tablet",
+      "route": "/events/outbox",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/events/outbox/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/existencias",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/existencias/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/inventory",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/inventory/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/inventory/low-stock",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/inventory/low-stock/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/offline",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/offline/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/pos",
+      "tier": "blocked",
+      "evidence": [
+        "products/tablet/app/app/pos/page.tsx"
+      ],
+      "noTouch": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence"
+    },
+    {
+      "surface": "tablet",
+      "route": "/prisma-dark-pos-reference",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/prisma-dark-pos-reference/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/prisma-pulse",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/prisma-pulse/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/referencia-visual",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/referencia-visual/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/release-gate",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/release-gate/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/returns",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/returns/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/runtime-snapshot-preview",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/runtime-snapshot-preview/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/history",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/history/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/history/[saleId]",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/history/[saleId]/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/today/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today/[saleId]",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/today/[saleId]/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today/[saleId]/return",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sales/today/[saleId]/return/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/screen-standard-preview",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/screen-standard-preview/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/data",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/settings/data/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/export",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/settings/export/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/license",
+      "tier": "blocked",
+      "evidence": [
+        "products/tablet/app/app/settings/license/page.tsx"
+      ],
+      "noTouch": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence"
+    },
+    {
+      "surface": "tablet",
+      "route": "/shift",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/shift/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/stock",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/stock/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/sync",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/sync/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/detached",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/detached/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/materiality-catalog",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/materiality-catalog/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/pro",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/pro/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/realtime",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/realtime/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/tablet-background-gallery",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/tablet-background-gallery/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/tablet-codex-gallery",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/tablet/app/app/visual-os/tablet-codex-gallery/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/acciones-masivas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/ajustes-inventario/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/alertas-ejecutivas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/alertas-operativas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/audit",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/audit/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/auditoria-inventario/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/cash-sessions/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/catalog",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/catalog/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/catalogo-activo/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/conteos-operativos/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/contratos-reporte/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/counts",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/counts/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/dashboard",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/dashboard/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/data-quality",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/data-quality/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/detalle-registros/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/devices",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/devices/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/estados-operativos/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/existencias-criticas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/exportables",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/exportables/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/filtros-avanzados/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/filtros-fecha/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/forecast-basico/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/glosario",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/glosario/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/gobierno",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/gobierno/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/incidencias-recepcion/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/integridad-barcodes/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/license-runtime",
+      "tier": "blocked",
+      "evidence": [
+        "products/pc/app/app/license-runtime/page.tsx"
+      ],
+      "noTouch": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence"
+    },
+    {
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/metricas-dia/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/movements",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/movements/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/ordenes-compra/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/outbox-operativo/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/politica-precios",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/politica-precios/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/prisma-insights/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/prisma-insights/chart-lab/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/proveedores",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/proveedores/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/purchasing",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/purchasing/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/receiving",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/receiving/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/recepcion-proveedor/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/referencia-visual/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/replenishment",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/replenishment/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/sales-control",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/sales-control/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/salud-barcodes/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/scorecards-negocio/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/senal-reabasto/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/settings",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/settings/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/settings/license",
+      "tier": "blocked",
+      "evidence": [
+        "products/pc/app/app/settings/license/page.tsx"
+      ],
+      "noTouch": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence"
+    },
+    {
+      "surface": "pc",
+      "route": "/stock",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/stock/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/sync",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/sync/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/sync-operativo/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/tablas-operativas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/tablero-kpi/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/tablet-communication/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/unknown",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/referencia-visual/liquid-glass-capsules/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/validacion-catalogo/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/pc/app/app/vistas-ejecutivas/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "mobile",
+      "route": "/",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/mobile/app/app/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/mobile/app/app/prisma-app/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app/install",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/mobile/app/app/prisma-app/install/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app/offline",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/mobile/app/app/prisma-app/offline/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-command",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/mobile/app/app/prisma-command/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "chart-lab",
+      "route": "/",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/chart-lab/app/app/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    },
+    {
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "tier": "tier-1-wrapper",
+      "evidence": [
+        "products/chart-lab/app/app/recipe-studio-v2/page.tsx"
+      ],
+      "noTouch": false,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review"
+    }
+  ]
+}

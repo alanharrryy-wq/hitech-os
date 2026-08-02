@@ -1,0 +1,58 @@
+/*
+  PRISMA Visual OS 00D - Official layer CSS bridge.
+  This file defines layer variables and safe utility hooks. Product CSS opts in using data-prisma-layer or surface attributes.
+*/
+:root {
+  --prisma-vos-layer-background-z: 0;
+  --prisma-vos-layer-atmosphere-z: 1;
+  --prisma-vos-layer-shell-z: 2;
+  --prisma-vos-layer-surface-z: 3;
+  --prisma-vos-layer-content-z: 4;
+  --prisma-vos-layer-action-z: 5;
+  --prisma-vos-layer-state-z: 6;
+  --prisma-vos-layer-focus-z: 7;
+  --prisma-vos-layer-overlay-z: 8;
+  --prisma-vos-layer-debug-z: 99;
+
+  --prisma-vos-bg-ink: #03070d;
+  --prisma-vos-bg-navy: #07131f;
+  --prisma-vos-atmosphere-gold: rgba(232, 189, 103, 0.16);
+  --prisma-vos-atmosphere-blue: rgba(104, 167, 255, 0.12);
+  --prisma-vos-layer-line: rgba(255, 255, 255, 0.08);
+  --prisma-vos-action-glow: rgba(232, 189, 103, 0.26);
+  --prisma-vos-state-danger-glow: rgba(255, 77, 109, 0.28);
+  --prisma-vos-focus-ring: 0 0 0 3px rgba(232, 189, 103, 0.22), 0 0 0 1px rgba(232, 189, 103, 0.48);
+}
+
+[data-prisma-layer="background"] { position: relative; z-index: var(--prisma-vos-layer-background-z); }
+[data-prisma-layer="atmosphere"] { position: relative; z-index: var(--prisma-vos-layer-atmosphere-z); pointer-events: none; }
+[data-prisma-layer="shell"] { position: relative; z-index: var(--prisma-vos-layer-shell-z); }
+[data-prisma-layer="surface"] { position: relative; z-index: var(--prisma-vos-layer-surface-z); }
+[data-prisma-layer="content"] { position: relative; z-index: var(--prisma-vos-layer-content-z); }
+[data-prisma-layer="action"] { position: relative; z-index: var(--prisma-vos-layer-action-z); }
+[data-prisma-layer="state"] { position: relative; z-index: var(--prisma-vos-layer-state-z); }
+[data-prisma-layer="focus"] { position: relative; z-index: var(--prisma-vos-layer-focus-z); }
+[data-prisma-layer="overlay"] { position: relative; z-index: var(--prisma-vos-layer-overlay-z); }
+[data-prisma-layer="debug"] { position: relative; z-index: var(--prisma-vos-layer-debug-z); }
+
+[data-prisma-debug-layers="true"] [data-prisma-layer] {
+  outline: 1px dashed color-mix(in srgb, var(--prisma-accent-gold, #e8bd67) 66%, transparent);
+  outline-offset: 2px;
+}
+
+[data-prisma-debug-layers="true"] [data-prisma-layer]::after {
+  content: attr(data-prisma-layer);
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: var(--prisma-vos-layer-debug-z);
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #07131f;
+  background: #e8bd67;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}

@@ -1,0 +1,606 @@
+.shell {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: clamp(248px, 19vw, 296px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(14px, 1.7vw, 26px);
+  width: min(100%, 1680px);
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: clamp(14px, 1.7vw, 26px);
+}
+
+.skipLink {
+  position: fixed;
+  inset-block-start: 10px;
+  inset-inline-start: 10px;
+  z-index: 2000;
+  translate: 0 -180%;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid var(--pc-atlas-line-strong);
+  border-radius: var(--pc-atlas-radius-control);
+  color: var(--pc-atlas-ink);
+  background: rgba(5, 15, 28, 0.96);
+  box-shadow: var(--pc-atlas-shadow-card);
+}
+
+.skipLink:focus-visible {
+  translate: 0;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.sidebar {
+  position: sticky;
+  inset-block-start: clamp(14px, 1.7vw, 26px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  max-height: calc(100dvh - (clamp(14px, 1.7vw, 26px) * 2));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-shell);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(121, 232, 255, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-shell);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
+}
+
+.brandBlock {
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+  padding: 18px;
+  border-block-end: 1px solid rgba(198, 226, 247, 0.1);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brandLogo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.brandCopy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.brandCopy strong {
+  font-size: 15px;
+  letter-spacing: 0.025em;
+  color: var(--pc-atlas-ink);
+}
+
+.brandSubtitle {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--pc-atlas-ink-dim);
+}
+
+.brandSignals,
+.topbarSignals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.brandSignals span,
+.topbarSignals span,
+.routeIntentBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding-inline: 10px;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: rgba(121, 232, 255, 0.055);
+}
+
+.brandSignals span:first-child,
+.topbarSignals span:first-child {
+  border-color: rgba(121, 232, 255, 0.32);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.09);
+}
+
+.navPanel {
+  min-height: 0;
+  padding: 0 10px 14px;
+  overflow: visible;
+}
+
+.navHeading {
+  margin: 0 8px 10px;
+  font-size: 10px;
+  color: var(--pc-atlas-ink-dim);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: grid;
+  gap: 14px;
+}
+
+.navSection {
+  display: grid;
+  gap: 6px;
+}
+
+.navSectionTitle {
+  padding-inline: 9px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(142, 183, 255, 0.7);
+}
+
+.navItems {
+  display: grid;
+  gap: 4px;
+}
+
+.main {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  align-content: start;
+  gap: clamp(14px, 1.4vw, 20px);
+  min-width: 0;
+  padding-block-end: clamp(14px, 1.7vw, 26px);
+  container: pc-route / inline-size;
+  scroll-margin-block-start: 90px;
+}
+
+.main:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.topbar {
+  position: sticky;
+  inset-block-start: clamp(14px, 1.7vw, 26px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 16px;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-shell);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: blur(16px) saturate(116%);
+  -webkit-backdrop-filter: blur(16px) saturate(116%);
+}
+
+.topbarIdentity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.topbarMark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(121, 232, 255, 0.28);
+  border-radius: 12px;
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.08);
+}
+
+.topbarCopy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.topbarEyebrow {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pc-atlas-cyan);
+}
+
+.topbarTitle {
+  overflow: hidden;
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 850;
+  letter-spacing: -0.018em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--pc-atlas-ink);
+}
+
+.contextStrip {
+  position: relative;
+  z-index: 28;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 9px 12px;
+  overflow: visible;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-control);
+  background: rgba(7, 20, 35, 0.7);
+  box-shadow: var(--pc-atlas-shadow-card);
+  backdrop-filter: blur(12px) saturate(112%);
+  -webkit-backdrop-filter: blur(12px) saturate(112%);
+}
+
+.contextLabel {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--pc-atlas-navy);
+}
+
+.contextScroll,
+.contextViewport {
+  min-width: 0;
+  width: 100%;
+}
+
+.contextViewport {
+  overflow: hidden;
+}
+
+.contextRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.contextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 780;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--pc-atlas-ink-soft);
+  background: transparent;
+  transition:
+    border-color var(--prisma-vos-fast-motion, 120ms) ease,
+    color var(--prisma-vos-fast-motion, 120ms) ease,
+    background-color var(--prisma-vos-fast-motion, 120ms) ease;
+}
+
+.contextLink:hover {
+  border-color: var(--pc-atlas-line);
+  color: var(--pc-atlas-ink);
+  background: rgba(121, 232, 255, 0.06);
+}
+
+.contextLinkActive {
+  border-color: rgba(121, 232, 255, 0.34);
+  color: var(--pc-atlas-cyan);
+  background: rgba(121, 232, 255, 0.1);
+}
+
+.contextDot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.48;
+}
+
+.contextLinkActive .contextDot {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(121, 232, 255, 0.46);
+}
+
+.contextTitle {
+  overflow: hidden;
+  max-width: 230px;
+  text-overflow: ellipsis;
+}
+
+.contextScrollbar {
+  display: flex;
+  height: 7px;
+  padding-top: 3px;
+  touch-action: none;
+  user-select: none;
+}
+
+.contextThumb {
+  position: relative;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(121, 232, 255, 0.28);
+}
+
+.contextTooltip {
+  z-index: 80;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 9px 11px;
+  font-size: 12px;
+  line-height: 1.45;
+  border: 1px solid var(--pc-atlas-line-strong);
+  border-radius: 10px;
+  color: var(--pc-atlas-ink);
+  background: rgba(4, 14, 26, 0.96);
+  box-shadow: var(--pc-atlas-shadow-card);
+}
+
+.contextTooltipArrow {
+  fill: rgba(4, 14, 26, 0.96);
+}
+
+.routeIntent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  padding: clamp(18px, 2vw, 26px);
+  overflow: hidden;
+  border: 1px solid var(--pc-atlas-line);
+  border-radius: var(--pc-atlas-radius-panel);
+  background:
+    radial-gradient(circle at 4% 0%, rgba(121, 232, 255, 0.1), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.008)),
+    var(--pc-atlas-panel);
+  box-shadow: var(--pc-atlas-shadow);
+  backdrop-filter: blur(12px) saturate(116%);
+  -webkit-backdrop-filter: blur(12px) saturate(116%);
+}
+
+.routeIntentCopy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.routeIntentKicker {
+  font-size: 10px;
+  color: var(--pc-atlas-cyan);
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.routeIntentTitle {
+  margin: 0;
+  max-width: 980px;
+  font-size: clamp(22px, 2.35vw, 36px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  color: var(--pc-atlas-ink);
+}
+
+.routeIntentDescription {
+  max-width: 900px;
+  margin: 0;
+  line-height: 1.55;
+  color: var(--pc-atlas-ink-soft);
+}
+
+.routeIntentBadge {
+  border-color: rgba(142, 183, 255, 0.34);
+  color: var(--pc-atlas-navy);
+  background: rgba(142, 183, 255, 0.08);
+}
+
+@container pc-route (max-width: 760px) {
+  .routeIntent {
+    grid-template-columns: 1fr;
+  }
+
+  .routeIntentBadge {
+    width: max-content;
+  }
+}
+
+@media (max-width: 1180px) {
+  .shell {
+    grid-template-columns: 236px minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .sidebar {
+    inset-block-start: 16px;
+    max-height: calc(100dvh - 32px);
+  }
+
+  .main {
+    padding-block-end: 16px;
+  }
+
+  .topbar {
+    inset-block-start: 16px;
+  }
+
+  .brandSignals span:last-child,
+  .topbarSignals span:last-child,
+  .navSectionTitle {
+    display: none;
+  }
+
+  .nav {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 920px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+    padding: 12px;
+  }
+
+  .sidebar {
+    position: relative;
+    inset-block-start: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .brandBlock {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 12px 14px;
+  }
+
+  .brandLogo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navPanel {
+    padding: 0 10px 10px;
+  }
+
+  .navHeading {
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: inline proximity;
+  }
+
+  .navSection {
+    display: contents;
+  }
+
+  .navItems {
+    display: flex;
+    gap: 8px;
+  }
+
+  .main {
+    gap: 14px;
+  }
+
+  .topbar {
+    inset-block-start: 8px;
+  }
+}
+
+@media (max-width: 620px) {
+  .shell {
+    padding: 8px;
+  }
+
+  .brandSignals,
+  .topbarSignals,
+  .routeIntentBadge,
+  .contextLabel {
+    display: none;
+  }
+
+  .brandBlock {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    min-height: 62px;
+    padding: 10px 12px;
+  }
+
+  .topbarTitle {
+    max-width: 68vw;
+  }
+
+  .contextStrip {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px;
+  }
+
+  .routeIntent {
+    padding: 18px;
+  }
+
+  .routeIntentTitle {
+    font-size: clamp(21px, 7vw, 30px);
+  }
+}
+
+@media (max-height: 760px) and (min-width: 921px) {
+  .sidebar {
+    max-height: calc(100dvh - 20px);
+    inset-block-start: 10px;
+  }
+
+  .topbar {
+    inset-block-start: 10px;
+  }
+
+  .brandBlock {
+    padding-block: 12px;
+  }
+
+  .brandSignals {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipLink,
+  .contextLink {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .sidebar,
+  .topbar,
+  .contextStrip,
+  .routeIntent {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

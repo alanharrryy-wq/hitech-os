@@ -1,0 +1,1622 @@
+{
+  "schemaVersion": "prisma-visual-catalog-governed-v2",
+  "generatedAt": "2026-06-11T09:49:15.089Z",
+  "rules": [
+    "local CSS adds debt",
+    "high layer risk blocks migration",
+    "background review requires adapter contract check",
+    "no-touch routes stay blocked until clearance"
+  ],
+  "routes": [
+    {
+      "surface": "tablet",
+      "route": "/prisma-visual-catalog",
+      "score": 10,
+      "signals": [
+        "shared-ui-or-low-local-css",
+        "layer-risk-low",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "low",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": false,
+      "nextAction": "visual-evidence-next; then migrate existing low-risk route",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/catalog",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/checkout",
+      "score": 80,
+      "signals": [
+        "local-css-present",
+        "layer-risk-high",
+        "background-risk-review"
+      ],
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "surface": "tablet",
+      "route": "/events/outbox",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/existencias",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/inventory",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/inventory/low-stock",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/offline",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/pos",
+      "score": 80,
+      "signals": [
+        "local-css-present",
+        "layer-risk-high",
+        "background-risk-review"
+      ],
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "surface": "tablet",
+      "route": "/prisma-dark-pos-reference",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/prisma-pulse",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/referencia-visual",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/release-gate",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/returns",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/runtime-snapshot-preview",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/history",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/history/[saleId]",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today/[saleId]",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sales/today/[saleId]/return",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/screen-standard-preview",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/data",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/export",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/settings/license",
+      "score": 80,
+      "signals": [
+        "local-css-present",
+        "layer-risk-high",
+        "background-risk-review"
+      ],
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "surface": "tablet",
+      "route": "/shift",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/stock",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/sync",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/detached",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/materiality-catalog",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/pro",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/realtime",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/tablet-background-gallery",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "tablet",
+      "route": "/visual-os/tablet-codex-gallery",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/audit",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/catalog",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/counts",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/dashboard",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/data-quality",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/devices",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/exportables",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/glosario",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/gobierno",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/license-runtime",
+      "score": 80,
+      "signals": [
+        "local-css-present",
+        "layer-risk-high",
+        "background-risk-review"
+      ],
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/movements",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/politica-precios",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/proveedores",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/purchasing",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/receiving",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/replenishment",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/sales-control",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/settings",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/settings/license",
+      "score": 80,
+      "signals": [
+        "local-css-present",
+        "layer-risk-high",
+        "background-risk-review"
+      ],
+      "layerRisk": "high",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "do-not-touch-critical-route-without-visual-evidence",
+      "blockedReason": "noTouch or high layer risk"
+    },
+    {
+      "surface": "pc",
+      "route": "/stock",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/sync",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/unknown",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "score": 60,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-review"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "review",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "mobile",
+      "route": "/",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app/install",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-app/offline",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "mobile",
+      "route": "/prisma-command",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "chart-lab",
+      "route": "/",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    },
+    {
+      "surface": "chart-lab",
+      "route": "/recipe-studio-v2",
+      "score": 50,
+      "signals": [
+        "local-css-present",
+        "layer-risk-medium",
+        "background-risk-none-detected"
+      ],
+      "layerRisk": "medium",
+      "backgroundRisk": "none-detected",
+      "cssLocalHeavy": true,
+      "nextAction": "eligible-for-catalog-migration-after-visual-review",
+      "blockedReason": null
+    }
+  ],
+  "totals": {
+    "routes": 107,
+    "highDebt": 99,
+    "blocked": 5
+  }
+}
