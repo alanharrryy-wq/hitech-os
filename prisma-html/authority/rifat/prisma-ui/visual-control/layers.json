@@ -3410,5 +3410,31 @@
       "layer": "background",
       "safetyClassification": "visualWithFunctionalRisk"
     }
-  ]
+  ],
+  "certifiedLayerCount": 1,
+  "layerCertificationErrorCount": 0,
+  "layerCertificationRegistry": "config/prisma-visual/identity-layer-certifications.registry.json",
+  "certifiedLayers": [
+    {
+      "layer_id": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+      "neutralMeaningId": "ACT.primary",
+      "surface": "tablet",
+      "file": "products/tablet/app/components/pos/pos.module.css",
+      "selector": ".cobrarReferenceButton",
+      "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+      "ownerCss": "products/tablet/app/components/pos/pos.module.css",
+      "ownerComponent": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "routeId": "tablet.pos.route",
+      "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+      "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+      "visualRegion": "background",
+      "layer": "background",
+      "evidenceClass": "activeRuntime",
+      "safetyClassification": "visualWithFunctionalRisk",
+      "certificationStatus": "CERTIFIED_EXACT_SOURCE_MATCH",
+      "runtimeMutationAllowed": false,
+      "productApplicationAllowed": false
+    }
+  ],
+  "layerCertificationErrors": []
 }
