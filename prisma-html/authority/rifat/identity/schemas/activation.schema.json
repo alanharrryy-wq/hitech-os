@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.activation.schema.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "selectedProfileId",
+    "selectedAt",
+    "runtimeProjection",
+    "status"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.activation.v1"
+    },
+    "selectedProfileId": {
+      "type": "string"
+    },
+    "selectedAt": {
+      "type": "string"
+    },
+    "runtimeProjection": {
+      "const": false
+    },
+    "status": {
+      "enum": [
+        "AUTHORITY_SELECTED_SOURCE_ONLY"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.surface-adapter.schema.v1",
+  "title": "PRISMA surface adapter",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "surface",
+    "role",
+    "readiness",
+    "tokenOverrides",
+    "projectionRules",
+    "forbiddenMutations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.surface-adapter.v1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "surface": {
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "END_SURFACE",
+        "NEUTRAL_SOURCE"
+      ]
+    },
+    "readiness": {
+      "enum": [
+        "BINDING_READY_SOURCE_ONLY",
+        "DISCOVERY_REQUIRED",
+        "NEUTRAL_SOURCE_READY"
+      ]
+    },
+    "tokenOverrides": {
+      "type": "object"
+    },
+    "projectionRules": {
+      "type": "object"
+    },
+    "forbiddenMutations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

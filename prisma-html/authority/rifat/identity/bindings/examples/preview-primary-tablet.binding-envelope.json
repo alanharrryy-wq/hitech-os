@@ -1,0 +1,157 @@
+{
+  "schema": "prisma.identity.binding-envelope.v1",
+  "version": "1.0.0",
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false,
+  "status": "RESOLVED",
+  "sourceArtifact": {
+    "exportId": "PEX.preview-component-recipe-iddict-preview-primary-btn-01.733104ad5ccd",
+    "schema": "prisma.identity.portable-element-export.v1",
+    "kind": "preview-component-recipe",
+    "canonicalPayloadSha256": "733104ad5ccd8011222797bf9ffc80b4340a5b5b620e6f0b1eb591a174198368",
+    "selector": {
+      "neutralMeaningId": "ACT.primary",
+      "identityProfileId": "prisma.clear-operational.v1",
+      "recipePresetId": "REC.button.primary",
+      "objectId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+      "surfaceId": "tablet"
+    }
+  },
+  "matches": [
+    {
+      "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "selector": {
+        "neutralMeaningId": "ACT.primary",
+        "identityProfileId": "*",
+        "recipePresetId": "REC.button.primary",
+        "objectId": "IDDICT-PREVIEW-PRIMARY-BTN-01",
+        "surfaceId": "tablet"
+      },
+      "cardinality": "ONE_TO_ONE_CANDIDATE",
+      "status": "RESOLVED",
+      "reason": "The canonical visual-control generator certified one exact neutral layer record for .cobrarReferenceButton.",
+      "targets": [
+        {
+          "targetId": "TGT.TABLET.POS.COBRAR.PRIMARY.V1",
+          "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "routeId": "tablet.pos.route",
+          "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+          "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+          "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+          "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+          "ownerCssId": "products.tablet.app.components.pos.pos.module.css",
+          "selector": ".cobrarReferenceButton",
+          "missingBindings": [],
+          "status": "RESOLVED",
+          "safetyClassification": "visualWithFunctionalRisk",
+          "evidence": {
+            "routeSource": "authority/rifat/prisma-ui/routes.json",
+            "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+            "componentSource": "authority/rifat/prisma-ui/visual-control/components.json",
+            "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
+            "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+            "sourceComponentPath": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+            "sourceCssPath": "products/tablet/app/components/pos/pos.module.css",
+            "layerLookupResult": "CERTIFIED_EXACT_LAYER_RECORD",
+            "layerCertificationRegistry": "config/prisma-visual/identity-layer-certifications.registry.json",
+            "layerGenerator": "tools/quality/ui-visual-control.mjs"
+          },
+          "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton"
+        }
+      ]
+    }
+  ],
+  "authoritySnapshot": {
+    "snapshotId": "cb1798f60485bd29a05a225fad6b07de5d744a9ac8440dd57a62e4e99c6ccf9a",
+    "status": "PASS",
+    "files": [
+      {
+        "path": "authority/rifat/prisma-ui/routes.json",
+        "expectedSha256": "1f053af6fa250c184434f7dea4594277304201d136b636201928a93635e9df2d",
+        "actualSha256": "1f053af6fa250c184434f7dea4594277304201d136b636201928a93635e9df2d",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/surfaces.json",
+        "expectedSha256": "26162ebfa44eb514d4a48047c2986e1cf0887e762cc93094fb6aad85b4dbb501",
+        "actualSha256": "26162ebfa44eb514d4a48047c2986e1cf0887e762cc93094fb6aad85b4dbb501",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
+        "expectedSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
+        "actualSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/components.json",
+        "expectedSha256": "5b436dc4e70e286692c57cad1ccaab18cfa8ba41f2dbafd01facd64084147aea",
+        "actualSha256": "5b436dc4e70e286692c57cad1ccaab18cfa8ba41f2dbafd01facd64084147aea",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
+        "expectedSha256": "a67b15090c0b8e90e7dc3afe2eaa95a4a1e4e5bd9c86efdea08c59be27405391",
+        "actualSha256": "a67b15090c0b8e90e7dc3afe2eaa95a4a1e4e5bd9c86efdea08c59be27405391",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/layers.json",
+        "expectedSha256": "717734a3c1aa9eb05c0fac7c2543a50c99b7035a8c008df218ce2ea34c3b833d",
+        "actualSha256": "717734a3c1aa9eb05c0fac7c2543a50c99b7035a8c008df218ce2ea34c3b833d",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/bindings.registry.json",
+        "expectedSha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
+        "actualSha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/portable-export.registry.json",
+        "expectedSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "actualSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "tools/portable_identity_export_core.py",
+        "expectedSha256": "ed4e4f658b60e841c7fcb30a1b3c7089d3518f72c65149e536ec3f22d49cb75e",
+        "actualSha256": "ed4e4f658b60e841c7fcb30a1b3c7089d3518f72c65149e536ec3f22d49cb75e",
+        "exists": true,
+        "matches": true
+      }
+    ],
+    "drift": []
+  },
+  "applicationGate": {
+    "allowed": false,
+    "reason": "IDBIND1 resolves evidence only. Runtime/product application requires a future exact-target Mesh and visual certification."
+  },
+  "envelopeId": "BENV.PEX.preview-component-recipe-iddict-preview-primary-btn-01.733104ad5ccd.2e104661a26e",
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "canonicalPayloadSha256": "2e104661a26e691d86708378d501c43e4431382aecee1371f33aee7acee97ed3",
+    "coveredTopLevelFields": [
+      "applicationGate",
+      "authoritySnapshot",
+      "instructionOnly",
+      "matches",
+      "productApplicationAllowed",
+      "runtimeMutationAllowed",
+      "schema",
+      "sourceArtifact",
+      "status",
+      "version"
+    ]
+  }
+}

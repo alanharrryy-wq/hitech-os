@@ -1,0 +1,26 @@
+{
+  "schema": "prisma.identity.recipe-compatibility-contract.v1",
+  "recipeId": "REC.button.primary",
+  "compatibilityStatus": "COMPATIBLE_V1_ADDITIVE_EXTENSION",
+  "bindingStatus": "RESOLVED",
+  "recipeCoverageStatus": "COMPLETE",
+  "applicationReadiness": "BLOCKED_PENDING_FUTURE_EXACT_TARGET_APPLICATION_GATE",
+  "evidenceStatus": "SOURCE_EVIDENCE_COMPLETE_RUNTIME_NOT_CERTIFIED",
+  "v1ArtifactModified": false,
+  "v1SchemaModified": false,
+  "v2IsAdditive": true,
+  "aliasesRegistry": "registries/legacy-aliases.registry.json",
+  "bindingRequirements": {
+    "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+    "bindingStatusRequired": "RESOLVED",
+    "layerIdRequired": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+    "implementationLayerIdRequired": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+    "freshAuthorityMeshRequiredForApplication": true
+  },
+  "forbiddenEquivalences": [
+    "compatibilityStatus != bindingStatus",
+    "bindingStatus != recipeCoverageStatus",
+    "recipeCoverageStatus != applicationReadiness",
+    "sourceApplication != runtimeCertification"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "prisma.identity.authority-evidence.v1",
+  "meshRunId": "idmesh1-2407-224344",
+  "meshZipSha256": "0baab34c1c2a3c22f59b3642bdd024b2632ef36edb7b54b583bc401537f1e4ee",
+  "status": "PASS",
+  "taskExactMatch": true,
+  "layerMapRequired": true,
+  "layerMapCount": 300,
+  "includedSurfaces": [
+    "tablet",
+    "pc",
+    "quality",
+    "mobile",
+    "chart_lab",
+    "shared_ui",
+    "web",
+    "control_center",
+    "governance"
+  ],
+  "excludedSurfaces": [
+    "database-sync",
+    "shared-kernel",
+    "cloud_command_center",
+    "support_resolver"
+  ],
+  "targetSnapshot": {
+    "editableSlotCount": 2340,
+    "slotUnitCount": 430,
+    "certifiedVisualControlSurfaces": [
+      "tablet"
+    ],
+    "identityDictionaryFilesDetectedBeforeBuild": 0,
+    "preexistingDirtyScope": [
+      "capsules-retirement-files"
+    ],
+    "implementationMustAvoidPreexistingDirtyFiles": true
+  },
+  "constraints": [
+    "no-process-kill",
+    "no-port-free",
+    "no-dev-server-start",
+    "no-hot-prisma",
+    "no-important",
+    "no-priority-override",
+    "no-functional-change"
+  ]
+}

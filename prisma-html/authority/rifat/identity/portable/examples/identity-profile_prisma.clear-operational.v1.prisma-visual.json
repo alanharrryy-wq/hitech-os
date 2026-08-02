@@ -1,0 +1,170 @@
+{
+  "applicationPolicy": {
+    "mode": "INSTRUCTION_ONLY",
+    "productApplicationAllowed": false,
+    "requiredFutureEvidence": [
+      "fresh Authority Mesh for the exact target",
+      "concrete owner/route/region/slot binding",
+      "pre-change hashes",
+      "transactional backup and rollback",
+      "surface-specific static validation",
+      "visual evidence",
+      "no fake green"
+    ],
+    "requiresFutureGovernedApplicationGate": true,
+    "runtimeMutationAllowed": false
+  },
+  "artifactVersion": "1.0.0",
+  "compatibility": {
+    "artifactSchema": "prisma.identity.portable-element-export.v1",
+    "selectedSurface": "shared-ui",
+    "supportedSurfaces": [
+      "shared-ui",
+      "tablet",
+      "pc",
+      "mobile",
+      "web",
+      "chart-lab",
+      "control-center"
+    ],
+    "surfaceRuntimeProjectionAllowed": false
+  },
+  "createdAt": "2026-07-25T05:28:51.045366Z",
+  "element": {
+    "componentUiId": null,
+    "neutralMeaningId": "VIS.identity.profile",
+    "objectId": "prisma.clear-operational.v1",
+    "version": "1.0.0"
+  },
+  "exportId": "PEX.identity-profile-prisma.clear-operational.v1.1cdac9c3feeb",
+  "identity": {
+    "identityProfileId": "prisma.clear-operational.v1",
+    "identityProfileVersion": "1.0.0",
+    "recipePresetId": "prisma.clear-operational.v1"
+  },
+  "instructionOnly": true,
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalPayloadSha256": "1cdac9c3feeb94d6dc8235dee65200994434c75d793c479dcaee9dbd3970b77b",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "coveredTopLevelFields": [
+      "applicationPolicy",
+      "artifactVersion",
+      "compatibility",
+      "createdAt",
+      "element",
+      "identity",
+      "instructionOnly",
+      "kind",
+      "manifest",
+      "origin",
+      "preview",
+      "runtimeMutationAllowed",
+      "schema",
+      "target",
+      "values"
+    ]
+  },
+  "kind": "identity-profile",
+  "manifest": {
+    "recordCount": 1,
+    "records": [
+      {
+        "instructionOnly": true,
+        "recordId": "prisma.clear-operational.v1",
+        "recordKind": "identity-profile"
+      }
+    ]
+  },
+  "origin": {
+    "authority": "prisma-html/authority/rifat/identity",
+    "generatedBy": "tools/portable_identity_export.py",
+    "selectedProfileId": "prisma.clear-operational.v1",
+    "sourcePath": "profiles/prisma.clear-operational.v1.identity.json",
+    "sourceRegistry": "registries/identity.registry.json"
+  },
+  "preview": {
+    "tokenOverrideCount": 15,
+    "traits": [
+      "luminous",
+      "operational",
+      "calm",
+      "precise",
+      "touch-friendly"
+    ]
+  },
+  "runtimeMutationAllowed": false,
+  "schema": "prisma.identity.portable-element-export.v1",
+  "target": {
+    "bindingStatus": "BLOCKED_BY_MISSING_BINDING",
+    "missingBindings": [
+      "componentUiId",
+      "ownerId",
+      "regionId",
+      "routeId",
+      "slotId"
+    ],
+    "ownerId": null,
+    "regionId": null,
+    "routeId": null,
+    "slotId": null,
+    "surfaceBindingSources": {
+      "layerSource": null,
+      "ownerSource": null,
+      "routeSource": "authority/rifat/prisma-ui/routes.json",
+      "slotSource": null
+    },
+    "surfaceId": "shared-ui",
+    "surfaceReadiness": "NEUTRAL_SOURCE_READY"
+  },
+  "values": {
+    "profile": {
+      "forbidden": [
+        "dark-tablet-shell",
+        "nested-panel-stack",
+        "opaque-zero-value-layer",
+        "priority-override",
+        "manual-generated-runtime-edit"
+      ],
+      "id": "prisma.clear-operational.v1",
+      "intent": "Claridad operativa luminosa, táctil y confiable con vidrio perlado contenido.",
+      "name": "PRISMA Clear Operational",
+      "schema": "prisma.identity.profile.v1",
+      "status": "ACTIVE_CANDIDATE",
+      "surfaceIntent": {
+        "chart-lab": "data-legible",
+        "control-center": "authoritative-clear",
+        "mobile": "priority-first-touch",
+        "pc": "information-dense-clear",
+        "shared-ui": "neutral-source",
+        "tablet": "light-touch-comfortable",
+        "web": "narrative-luminous"
+      },
+      "tokenOverrides": {
+        "asset.iconStyle": "line-soft",
+        "border.radiusControl": "13px",
+        "border.radiusPanel": "20px",
+        "color.accent": "#2563eb",
+        "color.canvas": "#f3f7fb",
+        "color.surface": "rgba(255,255,255,0.84)",
+        "color.surfaceElevated": "rgba(255,255,255,0.96)",
+        "color.surfaceMuted": "#e8eef6",
+        "color.textPrimary": "#182235",
+        "color.textSecondary": "#5e6a7d",
+        "material.backdropFilter": "blur(18px) saturate(1.08)",
+        "material.surfaceBorder": "rgba(71,85,105,0.16)",
+        "material.surfaceFill": "linear-gradient(145deg, rgba(255,255,255,0.94), rgba(239,246,255,0.78))",
+        "material.surfaceShadow": "0 18px 52px rgba(15,23,42,0.10)",
+        "motion.normal": "210ms"
+      },
+      "traits": [
+        "luminous",
+        "operational",
+        "calm",
+        "precise",
+        "touch-friendly"
+      ],
+      "version": "1.0.0"
+    }
+  }
+}

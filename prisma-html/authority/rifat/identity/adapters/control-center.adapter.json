@@ -1,0 +1,38 @@
+{
+  "schema": "prisma.identity.surface-adapter.v1",
+  "id": "prisma.adapter.control-center.v1",
+  "surface": "control-center",
+  "role": "END_SURFACE",
+  "readiness": "DISCOVERY_REQUIRED",
+  "intent": "Authority and audit adaptation with explicit status hierarchy.",
+  "tokenOverrides": {
+    "density.controlHeight": "40px",
+    "typography.bodySize": "14px",
+    "typography.weightMedium": 600,
+    "border.radiusPanel": "16px"
+  },
+  "projectionRules": {
+    "meaningOrder": [
+      "semantic-token",
+      "identity-profile",
+      "surface-adapter",
+      "owner-slot-binding",
+      "compiled-projection"
+    ],
+    "bindingRegistry": "registries/bindings.registry.json",
+    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "fewestContainersPossible": true,
+    "zeroVisualKnobMeansTransparent": true,
+    "preserveFunctionalBehavior": true,
+    "manualRuntimeEditsForbidden": true
+  },
+  "forbiddenMutations": [
+    "functional-behavior",
+    "database-or-sync",
+    "backend",
+    "deploy-or-dns",
+    "process-or-port",
+    "priority-override",
+    "global-css-blast"
+  ]
+}

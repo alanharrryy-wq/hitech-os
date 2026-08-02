@@ -1,0 +1,530 @@
+{
+  "schema": "prisma.identity.recipe-property-registry.v1",
+  "version": "1.0.0",
+  "registryDriven": true,
+  "valueModes": [
+    "TOKEN",
+    "EXPRESSION",
+    "LITERAL",
+    "NONE",
+    "PRESERVE_STRUCTURAL",
+    "INHERIT",
+    "POLICY"
+  ],
+  "properties": [
+    {
+      "propertyId": "position",
+      "cssProperty": "position",
+      "domains": [
+        "base",
+        "pseudo-element"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "display",
+      "cssProperty": "display",
+      "domains": [
+        "base",
+        "subcomponent"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "grid-template-columns",
+      "cssProperty": "grid-template-columns",
+      "domains": [
+        "base"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "align-items",
+      "cssProperty": "align-items",
+      "domains": [
+        "base"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "gap",
+      "cssProperty": "gap",
+      "domains": [
+        "base",
+        "subcomponent"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_NO_GAP",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "min-height",
+      "cssProperty": "min-height",
+      "domains": [
+        "base"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_NO_MINIMUM",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "padding",
+      "cssProperty": "padding",
+      "domains": [
+        "base"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "ZERO_MEANS_NO_PADDING",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "overflow",
+      "cssProperty": "overflow",
+      "domains": [
+        "base"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "border",
+      "cssProperty": "border",
+      "domains": [
+        "base",
+        "hover",
+        "icon"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "ZERO_MEANS_NO_BORDER",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "border-color",
+      "cssProperty": "border-color",
+      "domains": [
+        "base",
+        "hover",
+        "icon"
+      ],
+      "valueType": "color",
+      "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "border-width",
+      "cssProperty": "border-width",
+      "domains": [
+        "base",
+        "icon"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_NO_BORDER",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "border-radius",
+      "cssProperty": "border-radius",
+      "domains": [
+        "base",
+        "icon"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_SQUARE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "background",
+      "cssProperty": "background",
+      "domains": [
+        "base",
+        "pseudo-element",
+        "hover",
+        "icon"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "box-shadow",
+      "cssProperty": "box-shadow",
+      "domains": [
+        "base",
+        "hover",
+        "disabled",
+        "icon"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NONE_MEANS_NO_SHADOW",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "color",
+      "cssProperty": "color",
+      "domains": [
+        "base",
+        "icon"
+      ],
+      "valueType": "color",
+      "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "foreground",
+      "cssProperty": "color",
+      "domains": [
+        "icon"
+      ],
+      "valueType": "color",
+      "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "cursor",
+      "cssProperty": "cursor",
+      "domains": [
+        "base",
+        "disabled"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "font",
+      "cssProperty": "font",
+      "domains": [
+        "base"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "font-size",
+      "cssProperty": "font-size",
+      "domains": [
+        "subcomponent"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_TEXT",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "letter-spacing",
+      "cssProperty": "letter-spacing",
+      "domains": [
+        "subcomponent"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_DEFAULT_TRACKING",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "text-align",
+      "cssProperty": "text-align",
+      "domains": [
+        "base"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "text-shadow",
+      "cssProperty": "text-shadow",
+      "domains": [
+        "base"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NONE_MEANS_NO_SHADOW",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "transition",
+      "cssProperty": "transition",
+      "domains": [
+        "base",
+        "pseudo-element",
+        "hover"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NONE_MEANS_NO_TRANSITION",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "duration",
+      "cssProperty": null,
+      "domains": [
+        "base",
+        "pseudo-element",
+        "hover"
+      ],
+      "valueType": "duration",
+      "zeroSemantics": "ZERO_MEANS_INSTANT",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "easing",
+      "cssProperty": null,
+      "domains": [
+        "base",
+        "pseudo-element",
+        "hover"
+      ],
+      "valueType": "easing",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "transform",
+      "cssProperty": "transform",
+      "domains": [
+        "base",
+        "pseudo-element",
+        "hover",
+        "disabled"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NONE_MEANS_NO_TRANSFORM",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "filter",
+      "cssProperty": "filter",
+      "domains": [
+        "base",
+        "hover",
+        "disabled",
+        "icon"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NONE_MEANS_NO_FILTER",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "content",
+      "cssProperty": "content",
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "string",
+      "zeroSemantics": "EMPTY_MEANS_NO_GENERATED_CONTENT",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "top",
+      "cssProperty": "top",
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "length-or-percentage",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "bottom",
+      "cssProperty": "bottom",
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "length-or-percentage",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "left",
+      "cssProperty": "left",
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "length-or-percentage",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "width",
+      "cssProperty": "width",
+      "domains": [
+        "pseudo-element",
+        "icon"
+      ],
+      "valueType": "length-or-percentage",
+      "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_WIDTH",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "height",
+      "cssProperty": "height",
+      "domains": [
+        "icon"
+      ],
+      "valueType": "length",
+      "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_HEIGHT",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "pointer-events",
+      "cssProperty": "pointer-events",
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "opacity",
+      "cssProperty": "opacity",
+      "domains": [
+        "pseudo-element",
+        "disabled",
+        "icon",
+        "subcomponent"
+      ],
+      "valueType": "number",
+      "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "enabled",
+      "cssProperty": null,
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "boolean",
+      "zeroSemantics": "FALSE_MEANS_NOT_RENDERED",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "size",
+      "cssProperty": null,
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "object",
+      "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "size-policy",
+      "cssProperty": null,
+      "domains": [
+        "icon"
+      ],
+      "valueType": "object",
+      "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "sheen-policy",
+      "cssProperty": null,
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "DISABLED_MEANS_NO_SHEEN",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "elevation",
+      "cssProperty": null,
+      "domains": [
+        "hover"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NONE_MEANS_NO_ELEVATION",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "saturation",
+      "cssProperty": null,
+      "domains": [
+        "disabled"
+      ],
+      "valueType": "number",
+      "zeroSemantics": "ZERO_MEANS_DESATURATED",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "pseudo-element-behavior",
+      "cssProperty": null,
+      "domains": [
+        "disabled"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "DISABLED_MEANS_NOT_RENDERED",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "contrast-policy",
+      "cssProperty": null,
+      "domains": [
+        "disabled"
+      ],
+      "valueType": "object",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "place-items",
+      "cssProperty": "place-items",
+      "domains": [
+        "icon"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "state-interaction",
+      "cssProperty": null,
+      "domains": [
+        "icon"
+      ],
+      "valueType": "object",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "loading-policy",
+      "cssProperty": null,
+      "domains": [
+        "state"
+      ],
+      "valueType": "object",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "animation-policy",
+      "cssProperty": null,
+      "domains": [
+        "pseudo-element",
+        "state"
+      ],
+      "valueType": "enum",
+      "zeroSemantics": "NONE_MEANS_NO_ANIMATION",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    },
+    {
+      "propertyId": "final-position",
+      "cssProperty": null,
+      "domains": [
+        "pseudo-element"
+      ],
+      "valueType": "css-value",
+      "zeroSemantics": "NOT_ZERO_CAPABLE",
+      "rendererStatus": "INSTRUCTION_ONLY_NO_RUNTIME_RENDERER"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "prisma.identity.registry.v1",
+  "version": "1.0.0",
+  "authority": "prisma-html/authority/rifat/identity",
+  "defaultProfileId": "prisma.clear-operational.v1",
+  "profileCount": 3,
+  "profiles": [
+    {
+      "id": "prisma.clear-operational.v1",
+      "name": "PRISMA Clear Operational",
+      "version": "1.0.0",
+      "status": "ACTIVE_CANDIDATE",
+      "path": "profiles/prisma.clear-operational.v1.identity.json"
+    },
+    {
+      "id": "prisma.pearl-premium.v1",
+      "name": "PRISMA Pearl Premium",
+      "version": "1.0.0",
+      "status": "CANDIDATE",
+      "path": "profiles/prisma.pearl-premium.v1.identity.json"
+    },
+    {
+      "id": "prisma.high-contrast-operations.v1",
+      "name": "PRISMA High Contrast Operations",
+      "version": "1.0.0",
+      "status": "CANDIDATE",
+      "path": "profiles/prisma.high-contrast-operations.v1.identity.json"
+    }
+  ],
+  "policy": {
+    "selectionChangesAuthorityOnly": true,
+    "runtimeProjectionRequiresSeparateGate": true,
+    "allSurfaceAdaptersRequired": true,
+    "blockedSurfaceCannotClaimGreen": true,
+    "rollbackRequiredForActivation": true
+  }
+}

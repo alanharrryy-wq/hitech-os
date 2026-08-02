@@ -1,0 +1,119 @@
+{
+  "schema": "prisma.identity.visual-stack.registry.v1",
+  "version": "1.0.0",
+  "registryDriven": true,
+  "visualStacks": [
+    {
+      "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "recipeId": "REC.button.primary",
+      "surfaceId": "tablet",
+      "selector": ".cobrarReferenceButton",
+      "unitIds": [
+        "base",
+        "before",
+        "hover",
+        "hoverBefore",
+        "disabled",
+        "icon",
+        "copy",
+        "copyStrong",
+        "copySmall",
+        "amount",
+        "loading"
+      ],
+      "requiredPropertiesByUnit": {
+        "base": [
+          "background",
+          "color",
+          "border",
+          "border-color",
+          "border-width",
+          "border-radius",
+          "box-shadow",
+          "text-shadow",
+          "transition",
+          "duration",
+          "easing",
+          "transform",
+          "filter"
+        ],
+        "before": [
+          "enabled",
+          "background",
+          "opacity",
+          "transform",
+          "position",
+          "size",
+          "transition",
+          "duration",
+          "easing",
+          "sheen-policy"
+        ],
+        "hover": [
+          "filter",
+          "box-shadow",
+          "transform",
+          "border",
+          "background",
+          "duration",
+          "easing",
+          "elevation"
+        ],
+        "hoverBefore": [
+          "transform",
+          "opacity",
+          "transition",
+          "duration",
+          "easing",
+          "final-position"
+        ],
+        "disabled": [
+          "opacity",
+          "filter",
+          "saturation",
+          "box-shadow",
+          "transform",
+          "cursor",
+          "pseudo-element-behavior",
+          "contrast-policy"
+        ],
+        "icon": [
+          "background",
+          "foreground",
+          "border",
+          "border-radius",
+          "box-shadow",
+          "size-policy",
+          "opacity",
+          "filter",
+          "state-interaction"
+        ],
+        "copy": [
+          "display",
+          "gap"
+        ],
+        "copyStrong": [
+          "font-size"
+        ],
+        "copySmall": [
+          "opacity"
+        ],
+        "amount": [
+          "font-size",
+          "letter-spacing"
+        ],
+        "loading": [
+          "loading-policy"
+        ]
+      },
+      "unknownCoveragePolicy": {
+        "implicitPreservationAllowed": false,
+        "unknownEffectStatus": "BLOCKED_BY_INCOMPLETE_RECIPE_COVERAGE",
+        "unknownStateStatus": "BLOCKED_BY_UNGOVERNED_STATE",
+        "unknownSubcomponentStatus": "BLOCKED_BY_UNGOVERNED_SUBCOMPONENT",
+        "unknownPseudoElementStatus": "BLOCKED_BY_UNGOVERNED_PSEUDO_ELEMENT",
+        "unknownAssetStatus": "BLOCKED_BY_UNGOVERNED_ASSET"
+      }
+    }
+  ]
+}

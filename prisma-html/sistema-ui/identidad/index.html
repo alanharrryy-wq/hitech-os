@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PRISMA Identity Dictionary</title>
+  <link rel="stylesheet" href="identity.css">
+  <script src="../../authority/rifat/identity/compiled/current/identity-bundle.js"></script>
+  <script src="identity.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">PRISMA Visual Governor</p>
+      <h1>Identity Dictionary</h1>
+      <p>Significado neutral → perfil → adaptador → binding → instrucción portátil.</p>
+    </div>
+    <span id="compileStatus" class="status">Cargando autoridad…</span>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Selector de identidad y superficie">
+      <label>Perfil
+        <select id="profileSelect"></select>
+      </label>
+      <label>Superficie objetivo
+        <select id="surfaceSelect"></select>
+      </label>
+      <button id="exportProfile" type="button">Guardar perfil portátil</button>
+      <button id="copyCommand" type="button">Copiar comando de activación</button>
+    </section>
+
+    <section class="summary" aria-label="Resumen de identidad">
+      <article><span>Perfil seleccionado</span><strong id="selectedProfile">—</strong></article>
+      <article><span>Binding listo</span><strong id="readyCount">—</strong></article>
+      <article><span>Superficies bloqueadas</span><strong id="blockedCount">—</strong></article>
+      <article><span>Mutaciones runtime</span><strong>0</strong></article>
+    </section>
+
+    <section class="preview" aria-label="Vista previa de identidad">
+      <div class="preview-copy">
+        <p class="eyebrow">Vista semántica</p>
+        <h2 id="profileName">—</h2>
+        <p id="profileIntent">—</p>
+        <div id="traitList" class="traits"></div>
+        <div class="actions">
+          <span class="exportable-control">
+            <button class="primary" type="button">Acción principal</button>
+            <button class="element-export-button icon-button" type="button"
+              data-export-kind="preview-component-recipe"
+              data-export-id="IDDICT-PREVIEW-PRIMARY-BTN-01"
+              aria-label="Guardar receta de acción principal"
+              title="Guardar receta portátil">↓</button>
+          </span>
+          <span class="exportable-control">
+            <button type="button">Acción secundaria</button>
+            <button class="element-export-button icon-button" type="button"
+              data-export-kind="preview-component-recipe"
+              data-export-id="IDDICT-PREVIEW-SECONDARY-BTN-01"
+              aria-label="Guardar receta de acción secundaria"
+              title="Guardar receta portátil">↓</button>
+          </span>
+        </div>
+      </div>
+      <div class="sample-data">
+        <div><span>Ventas de hoy</span><strong>$128,430</strong></div>
+        <div><span>Estado operativo</span><strong class="good">Sincronizado</strong></div>
+        <div><span>Atención</span><strong class="warn">3 pendientes</strong></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <div><p class="eyebrow">Tokens</p><h2>Vocabulario neutral exportable</h2></div>
+        <input id="tokenSearch" type="search" placeholder="Buscar token">
+      </div>
+      <div id="tokenGrid" class="token-grid"></div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <div><p class="eyebrow">Adaptadores</p><h2>Traducción por superficie</h2></div>
+      </div>
+      <div id="surfaceTable" class="surface-table"></div>
+    </section>
+
+    <section class="import-panel" aria-labelledby="importTitle">
+      <div>
+        <p class="eyebrow">Reimportación segura</p>
+        <h2 id="importTitle">Inspeccionar una instrucción portátil</h2>
+        <p>La carga verifica estructura y SHA-256. No aplica cambios sobre ninguna superficie.</p>
+      </div>
+      <label class="upload-control">
+        <span>Seleccionar archivo <code>.prisma-visual.json</code></span>
+        <input id="importArtifact" type="file" accept=".json,.prisma-visual.json,application/json">
+      </label>
+      <output id="importResult" class="import-result" aria-live="polite">
+        Aún no se ha cargado ningún artefacto.
+      </output>
+    </section>
+
+    <aside class="truth">
+      <strong>Verdad operativa:</strong> todos los archivos generados son instrucciones
+      <code>INSTRUCTION_ONLY</code>. Los bindings desconocidos permanecen nulos y bloqueados.
+      Esta pantalla no modifica Tablet, PC, Mobile, Web, Chart Lab ni Control Center.
+    </aside>
+  </main>
+</body>
+</html>

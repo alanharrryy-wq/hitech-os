@@ -1,0 +1,39 @@
+{
+  "schema": "prisma.identity.surface-adapter.v1",
+  "id": "prisma.adapter.mobile.v1",
+  "surface": "mobile",
+  "role": "END_SURFACE",
+  "readiness": "DISCOVERY_REQUIRED",
+  "intent": "Priority-first owner companion adaptation.",
+  "tokenOverrides": {
+    "density.controlHeight": "48px",
+    "density.touchTarget": "48px",
+    "typography.bodySize": "16px",
+    "typography.titleSize": "25px",
+    "border.radiusPanel": "18px"
+  },
+  "projectionRules": {
+    "meaningOrder": [
+      "semantic-token",
+      "identity-profile",
+      "surface-adapter",
+      "owner-slot-binding",
+      "compiled-projection"
+    ],
+    "bindingRegistry": "registries/bindings.registry.json",
+    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "fewestContainersPossible": true,
+    "zeroVisualKnobMeansTransparent": true,
+    "preserveFunctionalBehavior": true,
+    "manualRuntimeEditsForbidden": true
+  },
+  "forbiddenMutations": [
+    "functional-behavior",
+    "database-or-sync",
+    "backend",
+    "deploy-or-dns",
+    "process-or-port",
+    "priority-override",
+    "global-css-blast"
+  ]
+}
